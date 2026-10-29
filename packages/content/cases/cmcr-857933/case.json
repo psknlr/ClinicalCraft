@@ -1,0 +1,1990 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-857933",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "反复咯血与逐渐憋气 · 42岁女性",
+    "en": "Recurrent haemoptysis and progressive breathlessness · woman aged 42"
+  },
+  "summary": {
+    "zh-CN": "长期反复咯血后出现呼吸受限，需辨别中心气道病变与常见肺部原因。",
+    "en": "Longstanding recurrent haemoptysis is followed by airflow limitation; distinguish central-airway disease from common pulmonary causes."
+  },
+  "specialty": [
+    "respiratory-medicine",
+    "interventional-pulmonology",
+    "hematology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "李楠, 王广发, 章巍, 张红, 张晓明. 腔内介入治疗弥漫性气管支气管淀粉样变性一例. 中华结核和呼吸杂志. 2013;36(07):540-542. doi:10.3760/cma.j.issn.1001-0939.2013.07.020.",
+    "doi": "10.3760/cma.j.issn.1001-0939.2013.07.020",
+    "authors": [
+      "李楠",
+      "王广发",
+      "章巍",
+      "张红",
+      "张晓明"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "用固定性流量环定位中心气道病变。",
+      "en": "Localise central-airway disease from a fixed flow-loop pattern."
+    },
+    {
+      "zh-CN": "将刚果红组织证据与系统分型分开。",
+      "en": "Separate Congo-red tissue evidence from systemic typing."
+    },
+    {
+      "zh-CN": "识别严重狭窄和易出血对操作安全的影响。",
+      "en": "Recognise the procedural implications of severe narrowing and friability."
+    },
+    {
+      "zh-CN": "先评估狭窄和出血救援能力，再计划气道操作",
+      "en": "Assess stenosis and bleeding-rescue capability before planning airway procedures"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "陶予宁（化名）",
+      "en": "Tao Yuning (pseudonym)"
+    },
+    "age": 42,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "间断咯血10年，憋气半年，加重1个月",
+      "en": "Intermittent haemoptysis for ten years and breathlessness for six months, worse for one month"
+    },
+    "triageNote": {
+      "zh-CN": "近一个月再次咯血伴憋气，能平卧，无本次发热；需复核气道安全。",
+      "en": "Another month of haemoptysis and breathlessness, able to lie flat without current fever; airway safety needs review."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "痰里带血反复10年，大约每年一次。",
+        "en": "Blood-streaked sputum has recurred for ten years, about once yearly."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "positional"
+          },
+          {
+            "asked": "fever"
+          },
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "systemic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "咯血已经有多久？ 以前是否反复咳出血来？",
+        "en": "How long has haemoptysis been occurring? Has coughing blood happened repeatedly before?"
+      },
+      "answer": {
+        "zh-CN": "痰里带血反复10年，大约每年一次。",
+        "en": "Blood-streaked sputum has recurred for ten years, about once yearly."
+      },
+      "keywords": {
+        "zh-CN": [
+          "咯血病程",
+          "咯血已经有多久？",
+          "以前是否反复咳出血来？",
+          "咯血病程情况"
+        ],
+        "en": [
+          "haemoptysis course",
+          "How long has haemoptysis been occurring?",
+          "Has coughing blood happened repeatedly before?",
+          "haemoptysis course information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "breathing",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "憋气是怎样逐渐加重的？ 最近喘不过气有没有更频繁？",
+        "en": "How has breathlessness progressed? Has difficulty breathing become more frequent?"
+      },
+      "answer": {
+        "zh-CN": "半年前开始憋气，近一个月更明显。",
+        "en": "Breathlessness began six months ago and worsened over the last month."
+      },
+      "keywords": {
+        "zh-CN": [
+          "憋气进展",
+          "憋气是怎样逐渐加重的？",
+          "最近喘不过气有没有更频繁？",
+          "憋气进展情况"
+        ],
+        "en": [
+          "breathlessness progression",
+          "How has breathlessness progressed?",
+          "Has difficulty breathing become more frequent?",
+          "breathlessness progression information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "positional",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "晚上能平躺睡觉吗？ 躺下会不会更喘？",
+        "en": "Can you lie flat at night? Does lying down worsen breathing?"
+      },
+      "answer": {
+        "zh-CN": "晚上可以平卧，没有夜里喘得更重。",
+        "en": "I can lie flat at night without worse wheezing."
+      },
+      "keywords": {
+        "zh-CN": [
+          "夜间平卧",
+          "晚上能平躺睡觉吗？",
+          "躺下会不会更喘？",
+          "夜间平卧情况"
+        ],
+        "en": [
+          "lying flat",
+          "Can you lie flat at night?",
+          "Does lying down worsen breathing?",
+          "lying flat information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "fever",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "这一次有没有发烧？ 最近体温升高了吗？",
+        "en": "Has there been fever in this episode? Has temperature risen recently?"
+      },
+      "answer": {
+        "zh-CN": "这次没有发热。",
+        "en": "There is no fever this time."
+      },
+      "keywords": {
+        "zh-CN": [
+          "本次发热",
+          "这一次有没有发烧？",
+          "最近体温升高了吗？",
+          "本次发热情况"
+        ],
+        "en": [
+          "current fever",
+          "Has there been fever in this episode?",
+          "Has temperature risen recently?",
+          "current fever information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近胃口和体重有什么变化？ 有没有吃得少或瘦下来？",
+        "en": "How have appetite and weight changed? Have you been eating less or losing weight?"
+      },
+      "answer": {
+        "zh-CN": "胃口精神都好，体重没明显变化。",
+        "en": "Appetite and general wellbeing are good, without clear weight change."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重食欲",
+          "最近胃口和体重有什么变化？",
+          "有没有吃得少或瘦下来？",
+          "体重食欲情况"
+        ],
+        "en": [
+          "weight and appetite",
+          "How have appetite and weight changed?",
+          "Have you been eating less or losing weight?",
+          "weight and appetite information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前心律有什么问题？ 过去有心律失常吗？",
+        "en": "What previous rhythm problem was there? Was an arrhythmia diagnosed before?"
+      },
+      "answer": {
+        "zh-CN": "以前体检发现心律不齐，没有治疗。",
+        "en": "An irregular rhythm was found previously but not treated."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往心律",
+          "以前心律有什么问题？",
+          "过去有心律失常吗？",
+          "既往心律情况"
+        ],
+        "en": [
+          "previous rhythm",
+          "What previous rhythm problem was there?",
+          "Was an arrhythmia diagnosed before?",
+          "previous rhythm information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "是否吸烟或常接触清洁剂？ 家里工作中有烟或清洁化学品接触吗？",
+        "en": "Do you smoke or regularly encounter detergents? Is there smoke or cleaning-chemical exposure at home or work?"
+      },
+      "answer": {
+        "zh-CN": "不吸烟喝酒，曾接触含氯清洁剂。",
+        "en": "I do not smoke or drink and have had exposure to chlorine-containing cleaning products."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吸烟和清洁剂",
+          "是否吸烟或常接触清洁剂？",
+          "家里工作中有烟或清洁化学品接触吗？",
+          "吸烟和清洁剂情况"
+        ],
+        "en": [
+          "smoking and detergents",
+          "Do you smoke or regularly encounter detergents?",
+          "Is there smoke or cleaning-chemical exposure at home or work?",
+          "smoking and detergents information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有病前日常活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前日常活动",
+          "有关病前日常活动",
+          "病前日常活动情况",
+          "病前日常活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "听诊和叩诊肺部",
+        "en": "Auscultate and percuss lungs"
+      },
+      "finding": {
+        "zh-CN": "双肺呼吸音粗，无干湿啰音，叩诊清音，气管居中。",
+        "en": "Coarse bilateral breath sounds without wheeze or crackles, resonant percussion and a central trachea."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "systemic",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "检查末梢与淋巴结",
+        "en": "Examine peripheries and nodes"
+      },
+      "finding": {
+        "zh-CN": "无杵状指、下肢水肿或浅表淋巴结肿大。",
+        "en": "No clubbing, leg oedema or enlarged superficial nodes."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "胸部CT",
+        "en": "Chest CT"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胸部CT"
+        ],
+        "en": [
+          "Chest CT"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "气管及多处大支气管壁不规则增厚、钙化和广泛不均匀狭窄，右上肺节段性肺不张。",
+            "en": "Irregular thickening, calcification and widespread uneven narrowing of the trachea and large bronchi, with right-upper-lobe segmental atelectasis."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "flow",
+      "name": {
+        "zh-CN": "肺功能流量环",
+        "en": "Pulmonary function and flow loop"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肺功能流量环"
+        ],
+        "en": [
+          "Pulmonary function and flow loop"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "固定性上气道阻塞图形；FEV₁ 1.45 L（预计55.7%），FEV₁/FVC 50.77%，弥散预计89.4%。",
+            "en": "Fixed upper-airway obstruction pattern; FEV₁ 1.45 L (55.7% predicted), FEV₁/FVC 50.77%, diffusing capacity 89.4% predicted."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "rhythm",
+      "name": {
+        "zh-CN": "心律及系统化验",
+        "en": "Rhythm and systemic tests"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "心律及系统化验"
+        ],
+        "en": [
+          "Rhythm and systemic tests"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "频发室早及短阵室速，LVEF 60%；尿蛋白阴性，肝肾功能正常。",
+            "en": "Frequent ventricular ectopy and short ventricular tachycardia runs, LVEF 60%; urine protein negative and liver/renal function normal."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "气管镜及组织病理",
+        "en": "Bronchoscopy and histology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "气管镜及组织病理"
+        ],
+        "en": [
+          "Bronchoscopy and histology"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "气道黏膜广泛增生，最窄处约正常管径10%，易出血；病理无定形物质刚果红阳性，λ强阳性。血尿免疫固定无单克隆带，未行骨髓检查。",
+            "en": "Extensive friable airway mucosal growth with a narrowest calibre about 10% of normal; amorphous deposits were Congo-red positive and strongly lambda positive. Serum/urine immunofixation had no monoclonal band; marrow assessment was not performed."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告多次硬镜、电烧与冷冻处理，并曾气切及使用系统药物。7个月后拔除气切管，FEV₁升至1.71 L；11个月无呼吸困难或咯血，可轻体力活动。多项治疗不能分离各自效果。",
+            "en": "The report used repeated rigid bronchoscopy, thermal/cryo treatment, tracheostomy and systemic medicines. Decannulation occurred at seven months, FEV₁ reached 1.71 L, and at eleven months there was no breathlessness or haemoptysis with light activity. Effects of individual treatments cannot be separated."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "positional"
+          },
+          {
+            "asked": "fever"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "systemic"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "流量环和CT最支持什么定位？",
+        "en": "What localisation is best supported by the flow loop and CT?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "read": "flow",
+            "phase": "workup"
+          },
+          {
+            "read": "rhythm",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "固定性中心气道阻塞，应有计划地获取组织并评估气道风险",
+            "en": "Fixed central-airway obstruction requiring planned tissue assessment and airway-risk evaluation"
+          },
+          "feedback": {
+            "zh-CN": "管壁广泛病变与固定流量环相互一致。",
+            "en": "Widespread wall disease and the fixed flow-loop pattern agree."
+          },
+          "correct": true
+        },
+        {
+          "id": "asthma",
+          "text": {
+            "zh-CN": "典型可逆性哮喘足以解释全部结果",
+            "en": "Typical reversible asthma explains all findings"
+          },
+          "feedback": {
+            "zh-CN": "固定狭窄和钙化性壁病变不符合单纯哮喘解释。",
+            "en": "Fixed stenosis and calcified wall disease are not explained by asthma alone."
+          },
+          "correct": false
+        },
+        {
+          "id": "normal-listen",
+          "text": {
+            "zh-CN": "听诊无啰音即可排除危急气道狭窄",
+            "en": "Absence of crackles excludes critical airway stenosis"
+          },
+          "feedback": {
+            "zh-CN": "听诊不能替代结构及通气证据。",
+            "en": "Auscultation cannot replace structural and functional evidence."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "组织支持气道淀粉样沉积，但系统性程度仍需评估",
+            "en": "Tissue supports airway amyloid deposition, while systemic extent still needs assessment"
+          },
+          "feedback": {
+            "zh-CN": "阴性免疫固定与正常器官检验有帮助，未行骨髓等资料仍有边界。",
+            "en": "Negative immunofixation and organ tests help, but missing marrow and other data retain limits."
+          },
+          "correct": true
+        },
+        {
+          "id": "no-systemic",
+          "text": {
+            "zh-CN": "阴性免疫固定绝对排除任何系统受累",
+            "en": "Negative immunofixation absolutely excludes systemic involvement"
+          },
+          "feedback": {
+            "zh-CN": "单一筛查不能替代完整分型与器官评估。",
+            "en": "One screening test does not replace full typing and organ assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "cancer",
+          "text": {
+            "zh-CN": "易出血一定证明气道癌",
+            "en": "Friability proves airway carcinoma"
+          },
+          "feedback": {
+            "zh-CN": "活检显示沉积而不是肿瘤细胞，外观不能取代组织。",
+            "en": "Biopsy shows deposits rather than malignant cells; appearance cannot replace tissue."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何选择安全的气道与系统管理？",
+        "en": "How should airway and systemic management be planned safely?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "介入呼吸与麻醉团队规划高出血风险的气道处理，并由专科评估沉积类型及系统受累",
+            "en": "Interventional pulmonology and anaesthesia should plan high-bleeding-risk airway care, with specialist amyloid typing and systemic assessment"
+          },
+          "feedback": {
+            "zh-CN": "极窄易出血气道需要救援能力，历史联合化疗不能作为默认方案。",
+            "en": "A very narrow friable airway requires rescue capability; historical chemotherapy is not a default regimen."
+          },
+          "correct": true
+        },
+        {
+          "id": "routine",
+          "text": {
+            "zh-CN": "在无气道救援条件下常规活检即可",
+            "en": "Routine biopsy without airway rescue capability is sufficient"
+          },
+          "feedback": {
+            "zh-CN": "严重狭窄及易出血使常规取材具有额外风险。",
+            "en": "Severe narrowing and friability make routine sampling hazardous."
+          },
+          "correct": false
+        },
+        {
+          "id": "copy",
+          "text": {
+            "zh-CN": "直接复制马法兰或沙利度胺用于所有局灶病例",
+            "en": "Copy melphalan or thalidomide for every localised case"
+          },
+          "feedback": {
+            "zh-CN": "系统药物适应证与风险需重新分型评估。",
+            "en": "Systemic-drug indications and risks require reassessment of disease type."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "positional"
+          },
+          {
+            "asked": "fever"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "weight"
+          },
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "systemic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "read": "flow",
+            "phase": "workup"
+          },
+          {
+            "read": "rhythm",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "先评估狭窄和出血救援能力，再计划气道操作",
+        "en": "Assess stenosis and bleeding-rescue capability before planning airway procedures"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：用固定性流量环定位中心气道病变。同时解释以下信息仍有缺失或疑问：完整淀粉样分型、骨髓检查、心脏沉积证据及长期复发。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Localise central-airway disease from a fixed flow-loop pattern. Identify the following as missing or uncertain: Complete amyloid typing, marrow assessment, evidence of cardiac deposition and long-term recurrence. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "ct",
+        "flow",
+        "rhythm",
+        "biopsy",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告为弥漫性气管支气管淀粉样变性并严重中心气道狭窄，系统性受累评估有限。",
+      "en": "The report describes diffuse tracheobronchial amyloidosis with severe central-airway stenosis and limited systemic assessment."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "用固定性流量环定位中心气道病变。",
+        "en": "Localise central-airway disease from a fixed flow-loop pattern."
+      },
+      {
+        "zh-CN": "将刚果红组织证据与系统分型分开。",
+        "en": "Separate Congo-red tissue evidence from systemic typing."
+      },
+      {
+        "zh-CN": "识别严重狭窄和易出血对操作安全的影响。",
+        "en": "Recognise the procedural implications of severe narrowing and friability."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "用固定性流量环定位中心气道病变。",
+        "en": "Localise central-airway disease from a fixed flow-loop pattern."
+      },
+      {
+        "zh-CN": "将刚果红组织证据与系统分型分开。",
+        "en": "Separate Congo-red tissue evidence from systemic typing."
+      },
+      {
+        "zh-CN": "识别严重狭窄和易出血对操作安全的影响。",
+        "en": "Recognise the procedural implications of severe narrowing and friability."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整淀粉样分型、骨髓检查、心脏沉积证据及长期复发。",
+        "en": "Complete amyloid typing, marrow assessment, evidence of cardiac deposition and long-term recurrence."
+      }
+    ],
+    "references": [
+      "李楠, 王广发, 章巍, 张红, 张晓明. 腔内介入治疗弥漫性气管支气管淀粉样变性一例. 中华结核和呼吸杂志. 2013;36(07):540-542. doi:10.3760/cma.j.issn.1001-0939.2013.07.020.",
+      "https://rs.yiigle.com/cmaid/857933"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整淀粉样分型、骨髓检查、心脏沉积证据及长期复发。",
+      "en": "Complete amyloid typing, marrow assessment, evidence of cardiac deposition and long-term recurrence."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-857933/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "751749a84933cc8fd5ad2b51aa09c4a5cc7df4d47f366541f348ee4b625f152e"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "breathing"
+    },
+    {
+      "type": "ask",
+      "itemId": "positional"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs"
+    },
+    {
+      "type": "examine",
+      "findingId": "systemic"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "flow"
+    },
+    {
+      "type": "read",
+      "investigationId": "flow",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "rhythm"
+    },
+    {
+      "type": "read",
+      "investigationId": "rhythm",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "857933",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/857933",
+    "sourceDoi": "10.3760/cma.j.issn.1001-0939.2013.07.020",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "咯血已经有多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How long has haemoptysis been occurring?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "以前是否反复咳出血来？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Has coughing blood happened repeatedly before?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "憋气是怎样逐渐加重的？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "How has breathlessness progressed?",
+        "locale": "en",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "最近喘不过气有没有更频繁？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "Has difficulty breathing become more frequent?",
+        "locale": "en",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "晚上能平躺睡觉吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "positional"
+        ]
+      },
+      {
+        "text": "Can you lie flat at night?",
+        "locale": "en",
+        "expect": [
+          "positional"
+        ]
+      },
+      {
+        "text": "躺下会不会更喘？",
+        "locale": "zh-CN",
+        "expect": [
+          "positional"
+        ]
+      },
+      {
+        "text": "Does lying down worsen breathing?",
+        "locale": "en",
+        "expect": [
+          "positional"
+        ]
+      },
+      {
+        "text": "这一次有没有发烧？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Has there been fever in this episode?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "最近体温升高了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Has temperature risen recently?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "最近胃口和体重有什么变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "How have appetite and weight changed?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "有没有吃得少或瘦下来？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Have you been eating less or losing weight?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "以前心律有什么问题？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "What previous rhythm problem was there?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "过去有心律失常吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Was an arrhythmia diagnosed before?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "是否吸烟或常接触清洁剂？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Do you smoke or regularly encounter detergents?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "家里工作中有烟或清洁化学品接触吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Is there smoke or cleaning-chemical exposure at home or work?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

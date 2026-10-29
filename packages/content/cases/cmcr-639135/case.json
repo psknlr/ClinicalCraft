@@ -1,0 +1,1950 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-639135",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "多年全身消瘦与难控制的高血糖",
+    "en": "Years of generalised thinning and difficult glycaemic control"
+  },
+  "summary": {
+    "zh-CN": "成人逐渐消瘦后出现持续高血糖，体脂分布、代谢资料和部分相互矛盾的数值需要综合解释。",
+    "en": "Progressive adult-onset thinning precedes persistent hyperglycaemia, requiring integration of fat distribution, metabolic findings and partly discordant laboratory values."
+  },
+  "specialty": [
+    "endocrinology",
+    "hepatology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "彭年春, 时立新, 张松, 范元硕. 获得性全身性脂肪萎缩一例. 中华糖尿病杂志. 2009;01(01):67-68. doi: 10.3760/cma.j.issn.1674-5809.2009.01.019.",
+    "authors": [
+      "彭年春",
+      "时立新",
+      "张松",
+      "范元硕"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "2016 multi-society lipodystrophy guideline, doi:10.1210/jc.2016-2466, checked 2026-10-28: phenotype-based assessment and metabolic/organ surveillance; not labelled as a newly issued guideline.",
+        "MYALEPT US prescribing information revised March 2024, checked 2026-10-28: generalised lipodystrophy indication and antibody, lymphoma and hypoglycaemia precautions; approval/access in other jurisdictions is not assumed."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.1674-5809.2009.01.019"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "重建体脂变化与糖尿病的先后顺序。",
+      "en": "Reconstruct the sequence of fat loss and diabetes."
+    },
+    {
+      "zh-CN": "用体型、代谢和内分泌证据比较病因。",
+      "en": "Compare causes using body habitus, metabolic and endocrine evidence."
+    },
+    {
+      "zh-CN": "发现检验内部矛盾并保留不确定性。",
+      "en": "Identify internal laboratory contradictions and preserve uncertainty."
+    },
+    {
+      "zh-CN": "区分历史管理与现行专科适应证及安全评估。",
+      "en": "Distinguish historical management from current specialist eligibility and safety assessment."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "郑予宁（化名）",
+      "en": "Zheng Yuning (pseudonym)"
+    },
+    "age": 41,
+    "ageUnit": "years",
+    "sex": "female",
+    "weightKg": 45,
+    "chiefComplaint": {
+      "zh-CN": "全身消瘦九年，血糖升高及肝脾肿大五年",
+      "en": "Generalised thinning for nine years, with raised glucose and hepatosplenomegaly for five years"
+    },
+    "triageNote": {
+      "zh-CN": "从体型变化早于糖尿病的时间线开始；不能只因体重低而忽视严重代谢风险。",
+      "en": "Begin with body changes preceding diabetes; low body weight does not remove major metabolic risk."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "九年前开始全身消瘦，脸和躯干特别明显，没有明确诱因。",
+        "en": "Generalised thinning began nine years earlier, especially in the face and trunk, without an identified trigger."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "fat-course"
+          },
+          {
+            "asked": "glucose-course"
+          },
+          {
+            "asked": "prior-drugs"
+          },
+          {
+            "asked": "associated-symptoms"
+          },
+          {
+            "examined": "fat-distribution"
+          },
+          {
+            "examined": "abdominal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "fat-course",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "您从什么时候开始明显变瘦？",
+        "en": "When did the marked thinning begin?"
+      },
+      "answer": {
+        "zh-CN": "九年前开始全身消瘦，脸和躯干特别明显，没有明确诱因。",
+        "en": "Generalised thinning began nine years earlier, especially in the face and trunk, without an identified trigger."
+      },
+      "keywords": {
+        "zh-CN": [
+          "消瘦起始",
+          "体型变化时间",
+          "脸部变瘦",
+          "躯干消瘦"
+        ],
+        "en": [
+          "thinning onset",
+          "body change timing",
+          "facial thinning",
+          "trunk thinning"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "glucose-course",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "血糖升高是在消瘦之前还是之后发现的？",
+        "en": "Was raised glucose discovered before or after the thinning?"
+      },
+      "answer": {
+        "zh-CN": "消瘦约四年后才发现血糖升高及肝脾肿大，到现在已有五年。",
+        "en": "Raised glucose and hepatosplenomegaly were recognised about four years after thinning began, five years before this admission."
+      },
+      "keywords": {
+        "zh-CN": [
+          "血糖发现时间",
+          "糖代谢病程",
+          "肝脾发现时间",
+          "消瘦后高糖"
+        ],
+        "en": [
+          "glucose discovery timing",
+          "glycaemic course",
+          "organ enlargement timing",
+          "glucose after thinning"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-drugs",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前用过哪些降糖药，效果怎样？",
+        "en": "Which glucose-lowering medicines were used, and how well did they work?"
+      },
+      "answer": {
+        "zh-CN": "先用二甲双胍加格列本脲一年，再用成分不详的中药一年，后来一直用格列齐特；空腹和餐后两小时血糖仍约16 mmol/L。",
+        "en": "Metformin plus glibenclamide was used for one year, followed by an unspecified traditional preparation for one year, then gliclazide. Fasting and two-hour glucose remained around 16 mmol/L."
+      },
+      "keywords": {
+        "zh-CN": [
+          "降糖药经历",
+          "用药效果",
+          "口服治疗经过",
+          "格列齐特反应"
+        ],
+        "en": [
+          "glucose medicines tried",
+          "drug treatment response",
+          "oral therapy course",
+          "gliclazide response"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "associated-symptoms",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "有没有肢体麻木、视力变化或者水肿？",
+        "en": "Were there limb sensory symptoms, visual changes or swelling?"
+      },
+      "answer": {
+        "zh-CN": "没有对称性肢体麻木或疼痛，也没有视物模糊、视力下降或水肿症状。",
+        "en": "There was no symmetric limb numbness or pain, blurred or reduced vision, or oedema symptoms."
+      },
+      "keywords": {
+        "zh-CN": [
+          "伴随神经症状",
+          "视力主诉",
+          "水肿主诉",
+          "麻木疼痛症状"
+        ],
+        "en": [
+          "associated sensory symptoms",
+          "visual complaints",
+          "swelling symptoms",
+          "numbness pain symptoms"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "blood-pressure",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前发现过血压高吗？",
+        "en": "Had high blood pressure been noticed?"
+      },
+      "answer": {
+        "zh-CN": "一个月前检查时血压曾为180/80 mmHg。",
+        "en": "A check one month earlier recorded blood pressure of 180/80 mmHg."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往血压读数",
+          "高血压发现",
+          "一个月前血压",
+          "血压病程"
+        ],
+        "en": [
+          "previous pressure reading",
+          "hypertension discovery",
+          "pressure one month earlier",
+          "blood pressure course"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family-known",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人患过遗传性疾病吗？",
+        "en": "Were hereditary disorders reported in the family?"
+      },
+      "answer": {
+        "zh-CN": "原记录说没有家族遗传病史，但没有提供亲属体型检查或遗传检测。",
+        "en": "The record states no family history of hereditary disease, but supplies no examination of relatives or genetic testing."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族遗传情况",
+          "亲属相似体型",
+          "家庭遗传病",
+          "家人发病记录"
+        ],
+        "en": [
+          "hereditary family background",
+          "similar build in relatives",
+          "familial genetic disorders",
+          "affected relatives record"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "baseline-context",
+      "topic": "other",
+      "question": {
+        "zh-CN": "变瘦以前的体重和生活方式有详细记录吗？",
+        "en": "Are earlier weight and lifestyle details available?"
+      },
+      "answer": {
+        "zh-CN": "没有提供消瘦前体重、饮食摄入或运动量，不能把体脂丢失归结为已证实的节食。",
+        "en": "Weight before thinning, dietary intake and exercise levels were not supplied; the fat loss cannot be attributed to established dieting."
+      },
+      "keywords": {
+        "zh-CN": [
+          "消瘦前体重",
+          "饮食摄入记录",
+          "运动量记录",
+          "节食资料"
+        ],
+        "en": [
+          "weight before thinning",
+          "dietary intake record",
+          "exercise level record",
+          "dieting information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "除了已记录的情况，家族疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about family illnesses?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "fat-distribution",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对体脂分布和体型记录",
+        "en": "Review fat distribution and body habitus"
+      },
+      "finding": {
+        "zh-CN": "身高158 cm、体重45 kg、腰围67 cm、BMI18 kg/m²。颜面、四肢、躯干及臀部皮下脂肪菲薄约1 mm，颊部内陷、颧骨突出，肌肉与皮下静脉易见；无明显色素沉着或多毛。",
+        "en": "Height 158 cm, weight 45 kg, waist 67 cm and BMI 18 kg/m². Facial, limb, trunk and buttock subcutaneous fat was about 1 mm thick, with hollow cheeks, prominent cheekbones and visible muscles/veins; no marked pigmentation or hirsutism."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "abdominal",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "核对腹部及循环体征",
+        "en": "Review abdominal and circulatory signs"
+      },
+      "finding": {
+        "zh-CN": "腹部膨隆，肝在右肋下约三指、脾在左肋下约四指，均质软、光滑、无压痛；入院血压140/80 mmHg、脉搏90次/分，心肺未及异常。",
+        "en": "The abdomen was distended; the liver extended about three fingerbreadths below the right costal margin and the spleen four below the left, both soft, smooth and nontender. Admission pressure was 140/80 mmHg and pulse 90/min, with no reported heart/lung abnormality."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "metabolic-records",
+      "name": {
+        "zh-CN": "入院糖代谢与血脂原始记录",
+        "en": "Admission glucose and lipid source records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "入院糖代谢与血脂原始记录"
+        ],
+        "en": [
+          "Admission glucose and lipid source records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "HbA1c12%，尿糖3+、酮体阴性。甘油三酯23.30、总胆固醇5.79、HDL胆固醇1.15、LDL胆固醇5.90 mmol/L。LDL高于总胆固醇，且甘油三酯极高；该组LDL数值不可靠，原文未提供测定方法或复核。不能静默修改或据此精确分层。",
+            "en": "HbA1c was 12%, urine glucose 3+ and ketones negative. Triglycerides were 23.30, total cholesterol 5.79, HDL cholesterol 1.15 and LDL cholesterol 5.90 mmol/L. LDL exceeds total cholesterol amid extreme triglycerides; the LDL value is unreliable, with no assay method or confirmation supplied. It must not be silently corrected or used for precise classification."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "organ-records",
+      "name": {
+        "zh-CN": "肝脾和并发症检查记录",
+        "en": "Hepatosplenic and complication records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肝脾和并发症检查记录"
+        ],
+        "en": [
+          "Hepatosplenic and complication records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "超声和CT均示肝脾增大、肝密度不均；ALT71 U/L、AST30 U/L，尿白蛋白/肌酐261.4 mg/g。神经传导提示末梢感觉神经功能受损，虽本人未诉麻木。病例讨论称视网膜病变，但未提供眼底检查细节，不能据此判定分期。",
+            "en": "Ultrasound and CT showed hepatosplenomegaly and heterogeneous liver density; ALT was 71 U/L, AST 30 U/L and urine albumin/creatinine 261.4 mg/g. Nerve conduction suggested distal sensory dysfunction despite no numbness complaint. The discussion names retinopathy without fundus details, preventing staging."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "body-composition",
+      "name": {
+        "zh-CN": "体脂和内分泌后续记录",
+        "en": "Subsequent body-composition and endocrine records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "体脂和内分泌后续记录"
+        ],
+        "en": [
+          "Subsequent body-composition and endocrine records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "DXA记录总体质量45.2 kg、脂肪2.203 kg、报告脂肪比例5.1%；保留原报告数值，不重新推算精确比例。瘦素3.48 μg/L，低于原参考4.12–8.30。空腹/餐后两小时C肽0.62/0.77 nmol/L，胰岛素22.06/38.55 mIU/L。甲状腺及性激素记录正常，自身免疫抗体检测阴性；未提供遗传检测。",
+            "en": "DXA recorded total mass 45.2 kg, fat mass 2.203 kg and a reported fat fraction of 5.1%; these source figures are retained without deriving a new exact percentage. Leptin was 3.48 μg/L against a source range of 4.12–8.30. Fasting/two-hour C-peptide was 0.62/0.77 nmol/L and insulin 22.06/38.55 mIU/L. Thyroid and sex hormones were described as normal and autoimmune antibody testing negative; genetic testing was not supplied."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告使用非诺贝特、福辛普利及胰岛素泵，后来转为预混胰岛素加罗格列酮；这些是历史处置而非复用处方。空腹血糖约7 mmol/L、餐后两小时约10 mmol/L，未给随访时长、治疗后甘油三酯、体脂恢复或长期器官结局。",
+            "en": "The report used fenofibrate, fosinopril and an insulin pump, later changing to premixed insulin plus rosiglitazone; these are historical treatments rather than a reusable prescription. Fasting glucose reached about 7 mmol/L and two-hour glucose about 10 mmol/L. Follow-up duration, post-treatment triglycerides, fat recovery and long-term organ outcomes were not supplied."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "fat-course"
+          },
+          {
+            "asked": "glucose-course"
+          },
+          {
+            "asked": "prior-drugs"
+          },
+          {
+            "asked": "associated-symptoms"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "fat-distribution"
+          },
+          {
+            "examined": "abdominal"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "哪种解释最能整合成年后体脂减少、难控制血糖和严重高甘油三酯？",
+        "en": "Which interpretation best integrates adult-onset fat loss, difficult glycaemic control and severe hypertriglyceridaemia?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "metabolic-records",
+            "phase": "workup"
+          },
+          {
+            "read": "organ-records",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "lipodystrophy",
+          "text": {
+            "zh-CN": "考虑全身性脂肪萎缩相关代谢病，成年后起病支持获得性方向",
+            "en": "Consider metabolic disease associated with generalised lipodystrophy; adult onset supports an acquired form"
+          },
+          "feedback": {
+            "zh-CN": "脂肪分布变化早于高血糖，需将体型和代谢表现一起解释。",
+            "en": "Fat-distribution changes precede hyperglycaemia and must be interpreted with the metabolic phenotype."
+          },
+          "correct": true
+        },
+        {
+          "id": "ordinary",
+          "text": {
+            "zh-CN": "仅凭成人发病即可按普通2型糖尿病解释全部表现",
+            "en": "Adult onset alone makes ordinary type 2 diabetes sufficient to explain everything"
+          },
+          "feedback": {
+            "zh-CN": "不能充分解释广泛皮下脂肪丢失和高度异常的甘油三酯。",
+            "en": "This does not adequately explain widespread subcutaneous fat loss and extreme triglycerides."
+          },
+          "correct": false
+        },
+        {
+          "id": "thyroid",
+          "text": {
+            "zh-CN": "明显消瘦即可确定甲状腺功能亢进",
+            "en": "Marked thinning alone establishes hyperthyroidism"
+          },
+          "feedback": {
+            "zh-CN": "体型改变不是甲亢确证，还需要甲状腺相关证据。",
+            "en": "Body change does not establish hyperthyroidism; thyroid-specific evidence is required."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "body-composition",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "qualified",
+          "text": {
+            "zh-CN": "体脂和代谢资料支持全身性脂肪萎缩，但低瘦素单项、阴性家族史均不能独立确证病因，LDL须复核",
+            "en": "Body fat and metabolic findings support generalised lipodystrophy, but neither low leptin nor negative family history alone establishes cause; LDL needs verification"
+          },
+          "feedback": {
+            "zh-CN": "空腹胰岛素在参考范围内也不能单独排除胰岛素抵抗；成人起病支持获得性，并未完成遗传排除。",
+            "en": "Insulin within its fasting reference range does not independently exclude resistance; adult onset supports an acquired form without completing genetic exclusion."
+          },
+          "correct": true
+        },
+        {
+          "id": "normal-insulin",
+          "text": {
+            "zh-CN": "空腹胰岛素处于参考范围，说明不存在胰岛素抵抗",
+            "en": "Fasting insulin within its reference range proves there is no insulin resistance"
+          },
+          "feedback": {
+            "zh-CN": "单次分泌值需要结合高血糖、体脂缺失和临床背景解释。",
+            "en": "A single secretion value must be interpreted with hyperglycaemia, fat loss and the clinical context."
+          },
+          "correct": false
+        },
+        {
+          "id": "exact-ldl",
+          "text": {
+            "zh-CN": "将LDL5.90视为已核实，并用它精确制定血脂结论",
+            "en": "Treat LDL 5.90 as verified and build precise lipid conclusions on it"
+          },
+          "feedback": {
+            "zh-CN": "LDL高于总胆固醇的内部矛盾和极高甘油三酯要求检验复核。",
+            "en": "LDL exceeding total cholesterol and extreme triglycerides require laboratory verification."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前复盘中，哪项后续管理原则最合适？",
+        "en": "Which subsequent management principle is most appropriate in a current review?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "body-composition",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "specialist",
+          "text": {
+            "zh-CN": "由内分泌及相关专科评估高糖、高甘油三酯和器官风险，核对血脂；如考虑美曲普汀，先审查适应证与风险",
+            "en": "Arrange endocrine and relevant specialist assessment of glycaemia, triglycerides and organ risks, verify lipids, and review eligibility and risks before considering metreleptin"
+          },
+          "feedback": {
+            "zh-CN": "美曲普汀已获美国批准用于先天或获得性全身性脂肪萎缩的瘦素缺乏并发症；这不等于本例可直接处方，且需评估抗体、淋巴瘤及低血糖风险。",
+            "en": "US approval includes leptin-deficiency complications of congenital or acquired generalised lipodystrophy; this does not directly prescribe for this patient, and antibody, lymphoma and hypoglycaemia risks require assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "outdated",
+          "text": {
+            "zh-CN": "因为原文称瘦素仍是实验治疗，今天也无需讨论专科选择",
+            "en": "Because the old report calls leptin experimental, there is no reason to discuss specialist options today"
+          },
+          "feedback": {
+            "zh-CN": "历史讨论的审批状态已经过时，需要核对现行标签和当地可及性。",
+            "en": "The historical approval status is outdated; current labelling and local access need checking."
+          },
+          "correct": false
+        },
+        {
+          "id": "copy-dose",
+          "text": {
+            "zh-CN": "直接复制个案的固定胰岛素和罗格列酮方案，不再核对器官风险",
+            "en": "Copy the case fixed insulin and rosiglitazone regimen without reassessing organ risks"
+          },
+          "feedback": {
+            "zh-CN": "个案历史处方不提供当前个体化安全性保证，也不能跳过严重高甘油三酯风险。",
+            "en": "A historical regimen does not establish individual safety today or justify overlooking extreme triglyceride risk."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "fat-course"
+          },
+          {
+            "asked": "glucose-course"
+          },
+          {
+            "asked": "prior-drugs"
+          },
+          {
+            "asked": "associated-symptoms"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "blood-pressure"
+          },
+          {
+            "asked": "family-known"
+          },
+          {
+            "asked": "baseline-context"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "fat-distribution"
+          },
+          {
+            "examined": "abdominal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "metabolic-records",
+            "phase": "workup"
+          },
+          {
+            "read": "organ-records",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "body-composition",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "核对不可靠血脂，区分历史处方和现行专科治疗选择",
+        "en": "Verify unreliable lipid data and distinguish historical regimens from current specialist options"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明体脂减少在高血糖前多年出现，有助于避免仅按普通糖尿病解释。；承认缺少遗传检测、脂肪丢失前体重、血脂方法与复核、眼底原始结果及长期治疗结局；DXA百分比保留报告值。，用复述确认理解。",
+        "en": "Explain that Fat loss preceding hyperglycaemia by years helps avoid reducing the case to ordinary diabetes.; acknowledge Genetic testing, pre-fat-loss weight, lipid methods/verification, original retinal findings and long-term outcomes are absent; the DXA percentage is retained as reported. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "metabolic-records",
+        "organ-records",
+        "body-composition",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告诊断获得性全身性脂肪萎缩；成人后体脂丢失和代谢表现支持此方向，但病因分型及部分检验可靠性仍有限。",
+      "en": "The source diagnosed acquired generalised lipodystrophy; adult-onset fat loss and metabolic findings support that interpretation, with limits to causal classification and some laboratory reliability."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "体脂减少在高血糖前多年出现，有助于避免仅按普通糖尿病解释。",
+        "en": "Fat loss preceding hyperglycaemia by years helps avoid reducing the case to ordinary diabetes."
+      },
+      {
+        "zh-CN": "无麻木主诉与神经传导异常可同时存在。",
+        "en": "Absent numbness symptoms and abnormal nerve conduction can coexist."
+      },
+      {
+        "zh-CN": "保留数值矛盾比悄悄修正更符合证据边界。",
+        "en": "Retaining numerical contradictions is more faithful than silently correcting them."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "低体重不意味着没有胰岛素抵抗或血脂风险。",
+        "en": "Low weight does not exclude insulin resistance or lipid risk."
+      },
+      {
+        "zh-CN": "单次酮体阴性不能推导这种疾病永远不发生酮症。",
+        "en": "One negative ketone test does not establish that ketosis can never occur in this condition."
+      },
+      {
+        "zh-CN": "药物审批状态与历史讨论应分别核验，治疗还需当地专科评估。",
+        "en": "Medicine approval and historical discussion require separate checking, with local specialist assessment still needed."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "缺少遗传检测、脂肪丢失前体重、血脂方法与复核、眼底原始结果及长期治疗结局；DXA百分比保留报告值。",
+        "en": "Genetic testing, pre-fat-loss weight, lipid methods/verification, original retinal findings and long-term outcomes are absent; the DXA percentage is retained as reported."
+      }
+    ],
+    "references": [
+      "彭年春, 时立新, 张松, 范元硕. 获得性全身性脂肪萎缩一例. 中华糖尿病杂志. 2009;01(01):67-68. doi: 10.3760/cma.j.issn.1674-5809.2009.01.019.",
+      "https://rs.yiigle.com/cmaid/639135",
+      "https://doi.org/10.3760/cma.j.issn.1674-5809.2009.01.019",
+      "Brown RJ, Araujo-Vilar D, Cheung PT, et al. The Diagnosis and Management of Lipodystrophy Syndromes: A Multi-Society Practice Guideline. J Clin Endocrinol Metab. 2016;101(12):4500-4511. doi:10.1210/jc.2016-2466. https://pmc.ncbi.nlm.nih.gov/articles/PMC5155679/",
+      "MYALEPT (metreleptin) US prescribing information, revised March 2024, checked 2026-10-28. https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=d3b50bbd-140b-425c-b5ec-d4682aad62bc&type=display"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "缺少遗传检测、脂肪丢失前体重、血脂方法与复核、眼底原始结果及长期治疗结局；DXA百分比保留报告值。",
+      "en": "Genetic testing, pre-fat-loss weight, lipid methods/verification, original retinal findings and long-term outcomes are absent; the DXA percentage is retained as reported."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "fat-course"
+    },
+    {
+      "type": "ask",
+      "itemId": "glucose-course"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-drugs"
+    },
+    {
+      "type": "ask",
+      "itemId": "associated-symptoms"
+    },
+    {
+      "type": "ask",
+      "itemId": "blood-pressure"
+    },
+    {
+      "type": "ask",
+      "itemId": "family-known"
+    },
+    {
+      "type": "ask",
+      "itemId": "baseline-context"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "examine",
+      "findingId": "fat-distribution"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdominal"
+    },
+    {
+      "type": "order",
+      "investigationId": "metabolic-records"
+    },
+    {
+      "type": "read",
+      "investigationId": "metabolic-records",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "organ-records"
+    },
+    {
+      "type": "read",
+      "investigationId": "organ-records",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "lipodystrophy"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "body-composition"
+    },
+    {
+      "type": "read",
+      "investigationId": "body-composition",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "qualified"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "specialist"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "639135",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/639135",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于消瘦起始，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "fat-course"
+        ]
+      },
+      {
+        "text": "Could you tell me about thinning onset?",
+        "locale": "en",
+        "expect": [
+          "fat-course"
+        ]
+      },
+      {
+        "text": "我想了解体型变化时间。",
+        "locale": "zh-CN",
+        "expect": [
+          "fat-course"
+        ]
+      },
+      {
+        "text": "Please explain body change timing in more detail.",
+        "locale": "en",
+        "expect": [
+          "fat-course"
+        ]
+      },
+      {
+        "text": "关于血糖发现时间，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "glucose-course"
+        ]
+      },
+      {
+        "text": "Could you tell me about glucose discovery timing?",
+        "locale": "en",
+        "expect": [
+          "glucose-course"
+        ]
+      },
+      {
+        "text": "我想了解糖代谢病程。",
+        "locale": "zh-CN",
+        "expect": [
+          "glucose-course"
+        ]
+      },
+      {
+        "text": "Please explain glycaemic course in more detail.",
+        "locale": "en",
+        "expect": [
+          "glucose-course"
+        ]
+      },
+      {
+        "text": "关于降糖药经历，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-drugs"
+        ]
+      },
+      {
+        "text": "Could you tell me about glucose medicines tried?",
+        "locale": "en",
+        "expect": [
+          "prior-drugs"
+        ]
+      },
+      {
+        "text": "我想了解用药效果。",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-drugs"
+        ]
+      },
+      {
+        "text": "Please explain drug treatment response in more detail.",
+        "locale": "en",
+        "expect": [
+          "prior-drugs"
+        ]
+      },
+      {
+        "text": "关于伴随神经症状，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated-symptoms"
+        ]
+      },
+      {
+        "text": "Could you tell me about associated sensory symptoms?",
+        "locale": "en",
+        "expect": [
+          "associated-symptoms"
+        ]
+      },
+      {
+        "text": "我想了解视力主诉。",
+        "locale": "zh-CN",
+        "expect": [
+          "associated-symptoms"
+        ]
+      },
+      {
+        "text": "Please explain visual complaints in more detail.",
+        "locale": "en",
+        "expect": [
+          "associated-symptoms"
+        ]
+      },
+      {
+        "text": "关于既往血压读数，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood-pressure"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous pressure reading?",
+        "locale": "en",
+        "expect": [
+          "blood-pressure"
+        ]
+      },
+      {
+        "text": "我想了解高血压发现。",
+        "locale": "zh-CN",
+        "expect": [
+          "blood-pressure"
+        ]
+      },
+      {
+        "text": "Please explain hypertension discovery in more detail.",
+        "locale": "en",
+        "expect": [
+          "blood-pressure"
+        ]
+      },
+      {
+        "text": "关于家族遗传情况，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Could you tell me about hereditary family background?",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "关于消瘦前体重，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "baseline-context"
+        ]
+      },
+      {
+        "text": "Could you tell me about weight before thinning?",
+        "locale": "en",
+        "expect": [
+          "baseline-context"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/639135"
+    }
+  }
+}

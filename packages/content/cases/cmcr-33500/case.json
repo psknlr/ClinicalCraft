@@ -1,0 +1,2007 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33500",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "肢体麻木与行走困难 · 11岁7个月男孩",
+    "en": "Limb numbness and difficulty walking · boy aged 11 years 7 months"
+  },
+  "summary": {
+    "zh-CN": "感染后出现进展性无力与吞咽变化，住院后又出现新的中枢神经表现。",
+    "en": "Progressive weakness and swallowing changes follow infection, with new central neurological features later during admission."
+  },
+  "specialty": [
+    "paediatric-neurology",
+    "critical-care"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "杨颖, 冯建华, 戴宇文. 吉兰-巴雷综合征并发可逆性后部脑白质脑病综合征一例. 中华儿科杂志. 2013;51(06):477-478. doi:10.3760/cma.j.issn.0578-1310.2013.06.017.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2013.06.017",
+    "authors": [
+      "杨颖",
+      "冯建华",
+      "戴宇文"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "用反射和电生理定位初始无力。",
+      "en": "Localise the initial weakness using reflexes and neurophysiology."
+    },
+    {
+      "zh-CN": "对新出现的视力和意识症状重新定位。",
+      "en": "Relocalise when new visual and consciousness symptoms emerge."
+    },
+    {
+      "zh-CN": "不从共同时间顺序推断单一治疗致病。",
+      "en": "Do not infer one treatment cause from temporal association."
+    },
+    {
+      "zh-CN": "对新的高血压、抽搐和视力障碍及时升级评估",
+      "en": "Escalate promptly for new hypertension, seizures and visual disturbance"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "齐知远（化名）",
+      "en": "Qi Zhiyuan (pseudonym)"
+    },
+    "age": 11.583333333333334,
+    "ageUnit": "years",
+    "sex": "male",
+    "weightKg": 36,
+    "chiefComplaint": {
+      "zh-CN": "手指麻木4天，下肢行走困难2天",
+      "en": "Four days of finger numbness and two days of difficulty walking"
+    },
+    "triageNote": {
+      "zh-CN": "双腿由走不稳进展到不能站立，前一天出现吞咽困难和饮水呛咳。",
+      "en": "Unsteady walking has progressed to inability to stand, with dysphagia and choking on water since the previous day."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "4天前双手指开始麻。",
+        "en": "Both hands became numb four days ago."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "phase": "confirmation"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "后续抽搐事件伴意识改变，改由记录及陪同者提供病史。",
+      "en": "The subsequent seizure event included altered consciousness; use records and the companion for history."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "weakness"
+          },
+          {
+            "asked": "swallow"
+          },
+          {
+            "asked": "infection"
+          },
+          {
+            "examined": "motor"
+          },
+          {
+            "examined": "bulbar"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "手指麻木从什么时候开始？ 最先哪里发麻？",
+        "en": "When did finger numbness begin? Where was numbness first noticed?"
+      },
+      "answer": {
+        "zh-CN": "4天前双手指开始麻。",
+        "en": "Both hands became numb four days ago."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手指麻木",
+          "手指麻木从什么时候开始？",
+          "最先哪里发麻？",
+          "手指麻木情况"
+        ],
+        "en": [
+          "finger numbness",
+          "When did finger numbness begin?",
+          "Where was numbness first noticed?",
+          "finger numbness information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "weakness",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "走路什么时候开始困难？ 现在行走比以前费力吗？",
+        "en": "When did walking become difficult? Is walking harder than before?"
+      },
+      "answer": {
+        "zh-CN": "2天前开始走不稳，后来不能站了。",
+        "en": "Walking became unsteady two days ago and then standing became impossible."
+      },
+      "keywords": {
+        "zh-CN": [
+          "行走困难",
+          "走路什么时候开始困难？",
+          "现在行走比以前费力吗？",
+          "行走困难情况"
+        ],
+        "en": [
+          "walking difficulty",
+          "When did walking become difficult?",
+          "Is walking harder than before?",
+          "walking difficulty information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "swallow",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "喝水或吃东西会呛吗？ 吞咽有没有变困难？",
+        "en": "Is there choking with drinks or food? Has swallowing become difficult?"
+      },
+      "answer": {
+        "zh-CN": "昨天开始吞咽困难，喝水会呛。",
+        "en": "Swallowing became difficult yesterday, with choking on water."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吞咽呛咳",
+          "喝水或吃东西会呛吗？",
+          "吞咽有没有变困难？",
+          "吞咽呛咳情况"
+        ],
+        "en": [
+          "swallowing and choking",
+          "Is there choking with drinks or food?",
+          "Has swallowing become difficult?",
+          "swallowing and choking information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "infection",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "发病前有没有感冒或腹泻？ 最近是否有感染？",
+        "en": "Was there a cold or diarrhoea before onset? Has there been a recent infection?"
+      },
+      "answer": {
+        "zh-CN": "这些症状前得过上呼吸道感染。",
+        "en": "There was an upper respiratory infection before these symptoms."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期感染",
+          "发病前有没有感冒或腹泻？",
+          "最近是否有感染？",
+          "近期感染情况"
+        ],
+        "en": [
+          "recent infection",
+          "Was there a cold or diarrhoea before onset?",
+          "Has there been a recent infection?",
+          "recent infection information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "respiration",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最初有没有气促或呼吸困难？ 刚发病时喘不喘？",
+        "en": "Was there breathlessness at the start? Was breathing difficult when illness began?"
+      },
+      "answer": {
+        "zh-CN": "入院前没有觉得呼吸费力。",
+        "en": "There was no laboured breathing before admission."
+      },
+      "keywords": {
+        "zh-CN": [
+          "初期呼吸",
+          "最初有没有气促或呼吸困难？",
+          "刚发病时喘不喘？",
+          "初期呼吸情况"
+        ],
+        "en": [
+          "initial breathing",
+          "Was there breathlessness at the start?",
+          "Was breathing difficult when illness began?",
+          "initial breathing information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "bladder",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "大小便有没有变化？ 排尿或排便还正常吗？",
+        "en": "Have bowel or bladder functions changed? Are urination and bowel movements as usual?"
+      },
+      "answer": {
+        "zh-CN": "没有大小便潴留。",
+        "en": "There was no bowel or urinary retention."
+      },
+      "keywords": {
+        "zh-CN": [
+          "排便排尿",
+          "大小便有没有变化？",
+          "排尿或排便还正常吗？",
+          "排便排尿情况"
+        ],
+        "en": [
+          "bowel and bladder",
+          "Have bowel or bladder functions changed?",
+          "Are urination and bowel movements as usual?",
+          "bowel and bladder information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "development",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "出生和之后的发育顺利吗？ 过去发育有没有落后？",
+        "en": "Were birth and subsequent development uncomplicated? Was there earlier developmental delay?"
+      },
+      "answer": {
+        "zh-CN": "足月剖宫产，出生3.5公斤，生长发育正常。",
+        "en": "He was born at term by caesarean, weighing 3.5 kg, with normal development."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生与发育",
+          "出生和之后的发育顺利吗？",
+          "过去发育有没有落后？",
+          "出生与发育情况"
+        ],
+        "en": [
+          "birth and development",
+          "Were birth and subsequent development uncomplicated?",
+          "Was there earlier developmental delay?",
+          "birth and development information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "motor",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "检查肌力和反射",
+        "en": "Examine power and reflexes"
+      },
+      "finding": {
+        "zh-CN": "上肢Ⅳ级、下肢Ⅲ级，肌张力低，腱反射和腹壁反射消失，双侧Babinski阴性。",
+        "en": "Upper-limb power grade IV and lower-limb III, with reduced tone and absent tendon/abdominal reflexes; bilateral Babinski responses negative."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "bulbar",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "检查球部及意识",
+        "en": "Examine bulbar function and consciousness"
+      },
+      "finding": {
+        "zh-CN": "神清，咽反射消失，瞳孔光反射存在；颈稍抵抗。",
+        "en": "He is alert, with absent gag reflex and preserved pupil light responses; mild neck resistance."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "neurophysiology",
+      "name": {
+        "zh-CN": "神经电生理",
+        "en": "Neurophysiology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "神经电生理"
+        ],
+        "en": [
+          "Neurophysiology"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "上下肢周围神经源性损害。",
+            "en": "Peripheral neurogenic injury in upper and lower limbs."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "csf",
+      "name": {
+        "zh-CN": "连续脑脊液",
+        "en": "Serial CSF"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "连续脑脊液"
+        ],
+        "en": [
+          "Serial CSF"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "第2天细胞2×10⁶/L、蛋白526 mg/L；第30天细胞4×10⁶/L、蛋白2920.2 mg/L。",
+            "en": "Day 2 cells 2×10⁶/L and protein 526 mg/L; day 30 cells 4×10⁶/L and protein 2920.2 mg/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "early-image",
+      "name": {
+        "zh-CN": "初始中枢影像",
+        "en": "Initial central imaging"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "初始中枢影像"
+        ],
+        "en": [
+          "Initial central imaging"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "入院头CT及第2周头颅、颈胸髓MRI均无明显异常。",
+            "en": "Admission head CT and week-2 brain/cervicothoracic MRI showed no clear abnormality."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "late-neuro",
+      "name": {
+        "zh-CN": "后续突发神经事件",
+        "en": "Later abrupt neurological event"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "后续突发神经事件"
+        ],
+        "en": [
+          "Later abrupt neurological event"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "曾因呼吸肌麻痹插管后拔管。第28天头痛、意识异常、抽搐、视力下降，血压随后升至135–150/78–98 mmHg；MRI枕顶叶等多灶异常。",
+            "en": "After intubation and extubation for respiratory weakness, day 28 brought headache, altered consciousness, seizures and visual loss; BP later reached 135–150/78–98 mmHg, with multifocal parieto-occipital and other MRI abnormalities."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告按PRES方向控制抽搐和血压等，4天视力恢复，约20天眼球活动恢复，第43天MRI病灶消失；6个月无再发抽搐或视力损害，肌力恢复，仍减量抗癫痫药。",
+            "en": "Following management of seizures and BP for suspected PRES, vision recovered in four days, ocular movements in about twenty days and MRI lesions disappeared by day 43. At six months there were no recurrent seizures or visual deficits and power had recovered, while antiseizure medication was being tapered."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "weakness"
+          },
+          {
+            "asked": "swallow"
+          },
+          {
+            "asked": "infection"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "motor"
+          },
+          {
+            "examined": "bulbar"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "最初无力和反射改变支持什么方向？",
+        "en": "What initial direction is supported by weakness and reflex changes?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "neurophysiology",
+            "phase": "workup"
+          },
+          {
+            "read": "csf",
+            "phase": "workup"
+          },
+          {
+            "read": "early-image",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "急性周围神经病方向，并警惕球部与呼吸肌风险",
+            "en": "An acute peripheral neuropathy with bulbar and respiratory risk"
+          },
+          "feedback": {
+            "zh-CN": "进行性对称无力、反射消失及电生理支持周围定位。",
+            "en": "Progressive weakness, areflexia and neurophysiology support peripheral localisation."
+          },
+          "correct": true
+        },
+        {
+          "id": "brain",
+          "text": {
+            "zh-CN": "仅单侧脑卒中解释所有初期表现",
+            "en": "A unilateral stroke alone explains the initial findings"
+          },
+          "feedback": {
+            "zh-CN": "对称周围性改变和蛋白细胞分离不符合此单一解释。",
+            "en": "The peripheral pattern and protein–cell dissociation do not fit that single explanation."
+          },
+          "correct": false
+        },
+        {
+          "id": "reassure",
+          "text": {
+            "zh-CN": "入院未气促就无须监测呼吸肌",
+            "en": "No admission dyspnoea means respiratory monitoring is unnecessary"
+          },
+          "feedback": {
+            "zh-CN": "神经肌无力可进展，吞咽异常已提示重要风险。",
+            "en": "Neuromuscular weakness can progress and swallowing changes already signal risk."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "late-neuro",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "后续抽搐视力改变与高血压需考虑PRES等新中枢过程",
+            "en": "Later seizures, visual change and hypertension require consideration of PRES or another new central process"
+          },
+          "feedback": {
+            "zh-CN": "不能把所有新神经症状自动归为原来的周围神经病。",
+            "en": "New neurological symptoms must not all be attributed automatically to the original peripheral neuropathy."
+          },
+          "correct": true
+        },
+        {
+          "id": "same",
+          "text": {
+            "zh-CN": "原有GBS足以解释新MRI病灶，无须再评估",
+            "en": "Original GBS explains the new MRI lesions without reassessment"
+          },
+          "feedback": {
+            "zh-CN": "新的中枢影像和急剧血压变化需要独立评估。",
+            "en": "New central imaging changes and abrupt hypertension need separate assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "irreversible",
+          "text": {
+            "zh-CN": "出现失明即可断言永不恢复",
+            "en": "Visual loss proves permanent irreversible blindness"
+          },
+          "feedback": {
+            "zh-CN": "报告后续恢复，初始不能仅凭严重程度预言永久结局。",
+            "en": "Later recovery was reported; severity alone does not establish permanent outcome."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "新的中枢事件出现后应怎样处理？",
+        "en": "How should the new central event be managed?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "late-neuro",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "紧急神经与重症评估血压、抽搐和可逆诱因，并复核序贯影像",
+            "en": "Urgent neurological and critical-care assessment of BP, seizures and reversible triggers with serial imaging"
+          },
+          "feedback": {
+            "zh-CN": "需及时控制风险，同时不能把某项既往治疗直接定为唯一病因。",
+            "en": "Risks require timely control without declaring one prior treatment the sole cause."
+          },
+          "correct": true
+        },
+        {
+          "id": "no-review",
+          "text": {
+            "zh-CN": "只继续肢体康复，忽略血压和视力",
+            "en": "Continue limb rehabilitation alone and ignore BP and vision"
+          },
+          "feedback": {
+            "zh-CN": "急性中枢症状可能危及生命或造成永久损伤。",
+            "en": "Acute central symptoms may threaten life or cause permanent injury."
+          },
+          "correct": false
+        },
+        {
+          "id": "blame",
+          "text": {
+            "zh-CN": "已证明所有病变都由免疫球蛋白造成",
+            "en": "Immunoglobulin is proven to have caused all lesions"
+          },
+          "feedback": {
+            "zh-CN": "疾病自主神经异常及多种治疗并存，因果不能单独归因。",
+            "en": "Autonomic disease and multiple treatments coexist, preventing a single causal attribution."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "weakness"
+          },
+          {
+            "asked": "swallow"
+          },
+          {
+            "asked": "infection"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "respiration"
+          },
+          {
+            "asked": "bladder"
+          },
+          {
+            "asked": "development"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "motor"
+          },
+          {
+            "examined": "bulbar"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "neurophysiology",
+            "phase": "workup"
+          },
+          {
+            "read": "csf",
+            "phase": "workup"
+          },
+          {
+            "read": "early-image",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "late-neuro",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "对新的高血压、抽搐和视力障碍及时升级评估",
+        "en": "Escalate promptly for new hypertension, seizures and visual disturbance"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：用反射和电生理定位初始无力。同时解释以下信息仍有缺失或疑问：PRES的独立诱因、完整DWI/ADC资料及更长期神经结局。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Localise the initial weakness using reflexes and neurophysiology. Identify the following as missing or uncertain: Independent PRES trigger, complete DWI/ADC findings and longer-term neurological outcome. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "neurophysiology",
+        "csf",
+        "early-image",
+        "late-neuro",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告为GBS病程中出现PRES，早期周围神经病和后期中枢事件应分阶段解释。",
+      "en": "The report describes PRES during GBS; the early peripheral neuropathy and later central event require staged interpretation."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "用反射和电生理定位初始无力。",
+        "en": "Localise the initial weakness using reflexes and neurophysiology."
+      },
+      {
+        "zh-CN": "对新出现的视力和意识症状重新定位。",
+        "en": "Relocalise when new visual and consciousness symptoms emerge."
+      },
+      {
+        "zh-CN": "不从共同时间顺序推断单一治疗致病。",
+        "en": "Do not infer one treatment cause from temporal association."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "用反射和电生理定位初始无力。",
+        "en": "Localise the initial weakness using reflexes and neurophysiology."
+      },
+      {
+        "zh-CN": "对新出现的视力和意识症状重新定位。",
+        "en": "Relocalise when new visual and consciousness symptoms emerge."
+      },
+      {
+        "zh-CN": "不从共同时间顺序推断单一治疗致病。",
+        "en": "Do not infer one treatment cause from temporal association."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "PRES的独立诱因、完整DWI/ADC资料及更长期神经结局。",
+        "en": "Independent PRES trigger, complete DWI/ADC findings and longer-term neurological outcome."
+      }
+    ],
+    "references": [
+      "杨颖, 冯建华, 戴宇文. 吉兰-巴雷综合征并发可逆性后部脑白质脑病综合征一例. 中华儿科杂志. 2013;51(06):477-478. doi:10.3760/cma.j.issn.0578-1310.2013.06.017.",
+      "https://rs.yiigle.com/cmaid/33500"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "PRES的独立诱因、完整DWI/ADC资料及更长期神经结局。",
+      "en": "Independent PRES trigger, complete DWI/ADC findings and longer-term neurological outcome."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-33500/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "b8611798c838ab123d2150c93170766aee21e7cdb229f39e21201c9c13d773e2"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "weakness"
+    },
+    {
+      "type": "ask",
+      "itemId": "swallow"
+    },
+    {
+      "type": "ask",
+      "itemId": "infection"
+    },
+    {
+      "type": "ask",
+      "itemId": "respiration"
+    },
+    {
+      "type": "ask",
+      "itemId": "bladder"
+    },
+    {
+      "type": "ask",
+      "itemId": "development"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "examine",
+      "findingId": "motor"
+    },
+    {
+      "type": "examine",
+      "findingId": "bulbar"
+    },
+    {
+      "type": "order",
+      "investigationId": "neurophysiology"
+    },
+    {
+      "type": "read",
+      "investigationId": "neurophysiology",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "csf"
+    },
+    {
+      "type": "read",
+      "investigationId": "csf",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "early-image"
+    },
+    {
+      "type": "read",
+      "investigationId": "early-image",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "late-neuro"
+    },
+    {
+      "type": "read",
+      "investigationId": "late-neuro",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "33500",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33500",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2013.06.017",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "手指麻木从什么时候开始？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "When did finger numbness begin?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "最先哪里发麻？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Where was numbness first noticed?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "走路什么时候开始困难？",
+        "locale": "zh-CN",
+        "expect": [
+          "weakness"
+        ]
+      },
+      {
+        "text": "When did walking become difficult?",
+        "locale": "en",
+        "expect": [
+          "weakness"
+        ]
+      },
+      {
+        "text": "现在行走比以前费力吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weakness"
+        ]
+      },
+      {
+        "text": "Is walking harder than before?",
+        "locale": "en",
+        "expect": [
+          "weakness"
+        ]
+      },
+      {
+        "text": "喝水或吃东西会呛吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "swallow"
+        ]
+      },
+      {
+        "text": "Is there choking with drinks or food?",
+        "locale": "en",
+        "expect": [
+          "swallow"
+        ]
+      },
+      {
+        "text": "吞咽有没有变困难？",
+        "locale": "zh-CN",
+        "expect": [
+          "swallow"
+        ]
+      },
+      {
+        "text": "Has swallowing become difficult?",
+        "locale": "en",
+        "expect": [
+          "swallow"
+        ]
+      },
+      {
+        "text": "发病前有没有感冒或腹泻？",
+        "locale": "zh-CN",
+        "expect": [
+          "infection"
+        ]
+      },
+      {
+        "text": "Was there a cold or diarrhoea before onset?",
+        "locale": "en",
+        "expect": [
+          "infection"
+        ]
+      },
+      {
+        "text": "最近是否有感染？",
+        "locale": "zh-CN",
+        "expect": [
+          "infection"
+        ]
+      },
+      {
+        "text": "Has there been a recent infection?",
+        "locale": "en",
+        "expect": [
+          "infection"
+        ]
+      },
+      {
+        "text": "最初有没有气促或呼吸困难？",
+        "locale": "zh-CN",
+        "expect": [
+          "respiration"
+        ]
+      },
+      {
+        "text": "Was there breathlessness at the start?",
+        "locale": "en",
+        "expect": [
+          "respiration"
+        ]
+      },
+      {
+        "text": "刚发病时喘不喘？",
+        "locale": "zh-CN",
+        "expect": [
+          "respiration"
+        ]
+      },
+      {
+        "text": "Was breathing difficult when illness began?",
+        "locale": "en",
+        "expect": [
+          "respiration"
+        ]
+      },
+      {
+        "text": "大小便有没有变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "bladder"
+        ]
+      },
+      {
+        "text": "Have bowel or bladder functions changed?",
+        "locale": "en",
+        "expect": [
+          "bladder"
+        ]
+      },
+      {
+        "text": "排尿或排便还正常吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bladder"
+        ]
+      },
+      {
+        "text": "Are urination and bowel movements as usual?",
+        "locale": "en",
+        "expect": [
+          "bladder"
+        ]
+      },
+      {
+        "text": "出生和之后的发育顺利吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "Were birth and subsequent development uncomplicated?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "过去发育有没有落后？",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "Was there earlier developmental delay?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

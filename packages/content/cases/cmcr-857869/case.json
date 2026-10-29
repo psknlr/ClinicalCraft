@@ -1,0 +1,1993 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-857869",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "持续发热咳嗽与血痰 · 68岁女性",
+    "en": "Persistent fever, cough and blood-streaked sputum · woman aged 68"
+  },
+  "summary": {
+    "zh-CN": "肺部症状经抗感染后未缓解，随后出现肾脏线索；需比较感染与肺肾系统性病变。",
+    "en": "Pulmonary symptoms persist despite antimicrobial treatment, followed by renal clues; compare infection with a systemic pulmonary–renal process."
+  },
+  "specialty": [
+    "respiratory-medicine",
+    "nephrology",
+    "rheumatology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "张丽君, 陈虹. 显微镜下多血管炎一例. 中华结核和呼吸杂志. 2013;36(06):462-464. doi:10.3760/cma.j.issn.1001-0939.2013.06.017.",
+    "doi": "10.3760/cma.j.issn.1001-0939.2013.06.017",
+    "authors": [
+      "张丽君",
+      "陈虹"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "KDIGO. 2024 Clinical Practice Guideline for ANCA-associated vasculitis, with amendments. https://kdigo.org/guidelines/antineutrophilic-cytoplasmic-antibody-anca-associated-vasculitis-aav/"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "以肺肾证据建立血管炎鉴别方向",
+      "en": "Build a vasculitic differential from pulmonary–renal evidence"
+    },
+    {
+      "zh-CN": "解释初次ANCA阴性的局限",
+      "en": "Explain the limits of initially negative ANCA"
+    },
+    {
+      "zh-CN": "辨别临床诊断与组织确证",
+      "en": "Distinguish clinical from histological diagnosis"
+    },
+    {
+      "zh-CN": "提出兼顾感染及器官威胁的监测计划",
+      "en": "Propose monitoring balancing infection and organ threat"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "华予宁（化名）",
+      "en": "Hua Yuning (pseudonym)"
+    },
+    "age": 68,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "咳嗽咳痰、畏寒发热1个多月",
+      "en": "Cough, sputum, chills and fever for over a month"
+    },
+    "triageNote": {
+      "zh-CN": "午后和夜间发热，咳嗽咳痰持续，治疗后仍未明显改善，需复核连续检查。",
+      "en": "Afternoon and night fever with persistent cough and sputum has not clearly improved with treatment; serial records need reassessment."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "咳嗽咳痰、怕冷发热一个多月。",
+        "en": "I have had cough, sputum, chills and fever for over a month."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "fever-pattern"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "asked": "blood"
+          },
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "eyes"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "发热、咳嗽和咳痰有多久了？",
+        "en": "How long have fever, cough and sputum been present?"
+      },
+      "answer": {
+        "zh-CN": "咳嗽咳痰、怕冷发热一个多月。",
+        "en": "I have had cough, sputum, chills and fever for over a month."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热咳嗽病程",
+          "这一阵咳嗽发烧持续多久？",
+          "咳痰和畏寒是什么时候开始的？",
+          "发热、咳嗽和咳痰有多久了？"
+        ],
+        "en": [
+          "fever and cough course",
+          "How long has this episode of cough and fever lasted?",
+          "When did sputum and chills begin?",
+          "How long have fever, cough and sputum been present?"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "fever-pattern",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "每天什么时候发热最明显？",
+        "en": "When during the day is the fever most noticeable?"
+      },
+      "answer": {
+        "zh-CN": "下午和晚上比较明显，最高38℃。",
+        "en": "It is worse in the afternoon and evening, reaching 38°C."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热时段",
+          "下午晚上是不是更烧？",
+          "最高烧到多少，什么时候烧？",
+          "每天什么时候发热最明显？"
+        ],
+        "en": [
+          "fever timing",
+          "Is the fever worse in the afternoon or evening?",
+          "How high does the fever get, and at what time?",
+          "When during the day is the fever most noticeable?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "treatment",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前的抗感染治疗有没有效果？",
+        "en": "Did the previous antimicrobial treatment help?"
+      },
+      "answer": {
+        "zh-CN": "用过抗感染和抗结核治疗，症状没有缓解。",
+        "en": "Antimicrobials and tuberculosis treatment did not relieve the symptoms."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抗感染效果",
+          "吃药打针后咳嗽发热好些了吗？",
+          "抗结核治疗后症状有没有缓解？",
+          "之前的抗感染治疗有没有效果？"
+        ],
+        "en": [
+          "antimicrobial response",
+          "Did medicines or infusions improve the cough and fever?",
+          "Did symptoms improve with tuberculosis treatment?",
+          "Did the previous antimicrobial treatment help?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "blood",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "痰里的血是怎么变化的？",
+        "en": "How has the blood in your sputum changed?"
+      },
+      "answer": {
+        "zh-CN": "后来痰里逐渐带血，而且越来越多。",
+        "en": "Blood appeared in my sputum later and gradually increased."
+      },
+      "keywords": {
+        "zh-CN": [
+          "痰血变化",
+          "痰血是越来越多还是少了？",
+          "什么时候开始痰中带血？",
+          "痰里的血是怎么变化的？"
+        ],
+        "en": [
+          "sputum blood",
+          "Is there more or less blood in the sputum?",
+          "When did blood-streaking first appear?",
+          "How has the blood in your sputum changed?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前身体怎样，有哪些病？ 既往有没有需要治疗的疾病？",
+        "en": "What was health like before this illness? Were any earlier illnesses treated?"
+      },
+      "answer": {
+        "zh-CN": "以前有高血压和糖耐量异常。",
+        "en": "I have hypertension and impaired glucose tolerance."
+      },
+      "keywords": {
+        "zh-CN": [
+          "原有疾病",
+          "以前身体怎样，有哪些病？",
+          "既往有没有需要治疗的疾病？",
+          "原有疾病情况"
+        ],
+        "en": [
+          "previous illnesses",
+          "What was health like before this illness?",
+          "Were any earlier illnesses treated?",
+          "previous illnesses information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "thyroid",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前甲状腺出过什么问题？ 甲状腺病是如何诊治的？",
+        "en": "What previous thyroid problem was there? How was the thyroid disease assessed and treated?"
+      },
+      "answer": {
+        "zh-CN": "甲亢做过放射治疗，后来变成甲减。",
+        "en": "Hyperthyroidism was treated with radiation, followed by hypothyroidism."
+      },
+      "keywords": {
+        "zh-CN": [
+          "甲状腺经过",
+          "以前甲状腺出过什么问题？",
+          "甲状腺病是如何诊治的？",
+          "甲状腺经过情况"
+        ],
+        "en": [
+          "thyroid history",
+          "What previous thyroid problem was there?",
+          "How was the thyroid disease assessed and treated?",
+          "thyroid history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时是否服甲状腺药？ 甲状腺治疗用过哪些药物？",
+        "en": "Are thyroid medicines taken regularly? Which medicines were used for thyroid treatment?"
+      },
+      "answer": {
+        "zh-CN": "一直服左甲状腺素。",
+        "en": "I continue to take levothyroxine."
+      },
+      "keywords": {
+        "zh-CN": [
+          "甲状腺用药",
+          "平时是否服甲状腺药？",
+          "甲状腺治疗用过哪些药物？",
+          "甲状腺用药情况"
+        ],
+        "en": [
+          "thyroid medicine",
+          "Are thyroid medicines taken regularly?",
+          "Which medicines were used for thyroid treatment?",
+          "thyroid medicine information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有居住环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "居住环境暴露",
+          "有关居住环境暴露",
+          "居住环境暴露情况",
+          "居住环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有病前日常活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前日常活动",
+          "有关病前日常活动",
+          "病前日常活动情况",
+          "病前日常活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "听诊肺部",
+        "en": "Auscultate lungs"
+      },
+      "finding": {
+        "zh-CN": "双肺散在哮鸣音，左下肺细湿啰音。",
+        "en": "Scattered bilateral wheeze and fine left basal crackles."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "eyes",
+      "system": "heent",
+      "maneuver": {
+        "zh-CN": "检查眼部",
+        "en": "Examine eyes"
+      },
+      "finding": {
+        "zh-CN": "巩膜充血。",
+        "en": "Scleral injection is present."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "pulmonary",
+      "name": {
+        "zh-CN": "连续胸部CT",
+        "en": "Serial chest CT"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "连续胸部CT"
+        ],
+        "en": [
+          "Serial chest CT"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "双上肺及左下肺斑片影逐渐增大，后有小结节、弥漫模糊影及纵隔肺门淋巴结增大。",
+            "en": "Patchy upper-lobe and left lower-lobe opacities enlarged, later accompanied by small nodules, diffuse hazy opacities and enlarged mediastinal/hilar nodes."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "renal",
+      "name": {
+        "zh-CN": "尿液与肾功能",
+        "en": "Urine and renal function"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "尿液与肾功能"
+        ],
+        "en": [
+          "Urine and renal function"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "起初肾功能正常，后肌酐192 μmol/L；尿红细胞344/μL、隐血++、蛋白++。",
+            "en": "Renal function was initially normal, later creatinine 192 µmol/L with urine RBCs 344/µL, blood ++ and protein ++."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "blood",
+      "name": {
+        "zh-CN": "血常规炎症及初次免疫检查",
+        "en": "Blood count, inflammation and initial immune tests"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血常规炎症及初次免疫检查"
+        ],
+        "en": [
+          "Blood count, inflammation and initial immune tests"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "Hb 89 g/L，血小板95×10⁹/L，ESR 134 mm/h，CRP 182 mg/L；初次ANCA和ANA谱阴性，多次微生物检查阴性。",
+            "en": "Haemoglobin 89 g/L, platelets 95×10⁹/L, ESR 134 mm/h and CRP 182 mg/L; initial ANCA/ANA panel and repeated microbiology were negative."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "repeat-serology",
+      "name": {
+        "zh-CN": "后续ANCA与取材边界",
+        "en": "Subsequent ANCA and biopsy limitations"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "后续ANCA与取材边界"
+        ],
+        "en": [
+          "Subsequent ANCA and biopsy limitations"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "后续pANCA滴度先后1:32、1:100、1:10，cANCA阴性。严重呼吸衰竭限制肺肾活检，且无皮损可取材；未有组织学确证。",
+            "en": "Later pANCA titres were 1:32, 1:100 and 1:10, with negative cANCA. Severe respiratory failure limited lung/kidney biopsy, and no skin lesion was available; there was no histological confirmation."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告使用糖皮质激素并加用环磷酰胺，逐渐减量；尿检、肾功能、ESR、ANCA及胸部CT逐步改善。数月后ANCA及ESR阴性，一般状态良好；没有组织学结果。",
+            "en": "Corticosteroids and subsequently cyclophosphamide were used and tapered. Urine tests, renal function, ESR, ANCA and chest CT improved. Several months later ANCA and ESR were negative and general condition was good; histology remained unavailable."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "fever-pattern"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "asked": "blood"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "eyes"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "肺部与尿液证据如何改变诊断方向？",
+        "en": "How should lung and urine evidence change the diagnostic direction?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "pulmonary",
+            "phase": "workup"
+          },
+          {
+            "read": "renal",
+            "phase": "workup"
+          },
+          {
+            "read": "blood",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "考虑肺肾综合征和小血管炎，同时继续排查感染",
+            "en": "Consider a pulmonary–renal syndrome and small-vessel vasculitis while continuing infection assessment"
+          },
+          "feedback": {
+            "zh-CN": "血痰、贫血、尿异常及肌酐升高不能仅由肺部影像解释。",
+            "en": "Blood-streaked sputum, anaemia, urinary changes and rising creatinine require an explanation beyond lung imaging alone."
+          },
+          "correct": true
+        },
+        {
+          "id": "anca-exclude",
+          "text": {
+            "zh-CN": "初次ANCA阴性即可排除小血管炎",
+            "en": "An initially negative ANCA excludes small-vessel vasculitis"
+          },
+          "feedback": {
+            "zh-CN": "阴性血清学不能独自推翻多系统证据，应结合动态评估。",
+            "en": "Negative serology alone cannot negate multi-system evidence and requires contextual reassessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "tb-only",
+          "text": {
+            "zh-CN": "午后低热足以固定为结核诊断",
+            "en": "Afternoon low fever fixes the diagnosis as tuberculosis"
+          },
+          "feedback": {
+            "zh-CN": "症状非特异且抗结核未改善，需要重新整合肾脏及血液证据。",
+            "en": "The symptom is non-specific and treatment failed to help, requiring reintegration of renal and blood findings."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "repeat-serology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "correct",
+          "text": {
+            "zh-CN": "后续pANCA支持临床方向，但不等同MPO确证或组织学结果",
+            "en": "Later pANCA supports the clinical direction but is not MPO confirmation or histology"
+          },
+          "feedback": {
+            "zh-CN": "滴度、抗原特异性和组织病理是不同证据层级。",
+            "en": "Titre, antigen specificity and histology are distinct evidence types."
+          },
+          "correct": true
+        },
+        {
+          "id": "biopsy-present",
+          "text": {
+            "zh-CN": "可把治疗有效写成肾活检已确诊",
+            "en": "Treatment response can be recorded as biopsy confirmation"
+          },
+          "feedback": {
+            "zh-CN": "原报告因风险未活检，不能虚构病理。",
+            "en": "Biopsy was not performed because of risk; pathology cannot be invented."
+          },
+          "correct": false
+        },
+        {
+          "id": "all-infection",
+          "text": {
+            "zh-CN": "多次培养阴性彻底排除一切感染",
+            "en": "Repeated negative cultures exclude every infection"
+          },
+          "feedback": {
+            "zh-CN": "取材、既往治疗和检测范围仍限制阴性结果。",
+            "en": "Sampling, prior therapy and testing scope still limit negative findings."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当活检风险高时，应怎样处理诊断与治疗安全？",
+        "en": "When biopsy risk is high, how should diagnosis and treatment safety be handled?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "repeat-serology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "多学科权衡器官威胁、取材风险及感染可能，明确临床诊断的限制并制定监测方案",
+            "en": "Balance organ threat, biopsy risk and infection in a multidisciplinary plan, explicitly stating limits of the clinical diagnosis and monitoring"
+          },
+          "feedback": {
+            "zh-CN": "原报告以临床证据诊断，不能改写成病理确诊；延误和免疫抑制风险均需评估。",
+            "en": "The report used clinical evidence, not pathological confirmation; both delay and immunosuppression risks require assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "biopsy-required",
+          "text": {
+            "zh-CN": "未有活检就永久拒绝系统性病因评估",
+            "en": "Permanently reject systemic assessment without a biopsy"
+          },
+          "feedback": {
+            "zh-CN": "取材不可行不等于不能综合临床证据，尤其在器官威胁时。",
+            "en": "Infeasible biopsy does not prevent integrated clinical assessment, especially with threatened organs."
+          },
+          "correct": false
+        },
+        {
+          "id": "titres-only",
+          "text": {
+            "zh-CN": "仅按ANCA滴度决定全部治疗，不看器官状态",
+            "en": "Base all treatment solely on ANCA titres"
+          },
+          "feedback": {
+            "zh-CN": "血清滴度不是器官损伤、感染与毒性的替代指标。",
+            "en": "Serological titres do not replace assessment of organ injury, infection and toxicity."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "fever-pattern"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "asked": "blood"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "thyroid"
+          },
+          {
+            "asked": "regular-medication"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "eyes"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "pulmonary",
+            "phase": "workup"
+          },
+          {
+            "read": "renal",
+            "phase": "workup"
+          },
+          {
+            "read": "blood",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "repeat-serology",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "首次即选择兼顾器官威胁与感染风险的多学科计划",
+        "en": "Choose a multidisciplinary plan balancing organ threat and infection risk on the first attempt"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：肾脏线索使单纯肺感染解释不充分。同时解释以下信息仍有缺失或疑问：MPO/PR3特异抗体、完整感染排查、活检、氧合数值及长期复发和治疗毒性。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Renal clues make a lung-infection-only explanation insufficient. Identify the following as missing or uncertain: MPO/PR3-specific antibodies, complete infection evaluation, biopsy, oxygenation values and long-term relapse/toxicity. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "pulmonary",
+        "renal",
+        "blood",
+        "repeat-serology",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告临床诊断显微镜下多血管炎，依据肺肾表现、动态ANCA及治疗后变化，未有活检确证。",
+      "en": "The report clinically diagnosed microscopic polyangiitis from pulmonary–renal findings, evolving ANCA and response, without biopsy confirmation."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "肾脏线索使单纯肺感染解释不充分。",
+        "en": "Renal clues make a lung-infection-only explanation insufficient."
+      },
+      {
+        "zh-CN": "初次阴性与后续阳性应按时间记录。",
+        "en": "Initial negative and later positive tests must remain in sequence."
+      },
+      {
+        "zh-CN": "治疗反应支持判断但不能替代缺失的组织学证据。",
+        "en": "Response supports interpretation but does not replace missing histology."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "将血痰与尿异常作为跨器官线索。",
+        "en": "Connect blood-streaked sputum with urinary abnormalities."
+      },
+      {
+        "zh-CN": "不把血清学阴性理解为绝对排除。",
+        "en": "Do not treat negative serology as absolute exclusion."
+      },
+      {
+        "zh-CN": "明确临床诊断和病理确诊的不同。",
+        "en": "Distinguish clinical diagnosis from pathological confirmation."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "MPO/PR3特异抗体、完整感染排查、活检、氧合数值及长期复发和治疗毒性。",
+        "en": "MPO/PR3-specific antibodies, complete infection evaluation, biopsy, oxygenation values and long-term relapse/toxicity."
+      }
+    ],
+    "references": [
+      "张丽君, 陈虹. 显微镜下多血管炎一例. 中华结核和呼吸杂志. 2013;36(06):462-464. doi:10.3760/cma.j.issn.1001-0939.2013.06.017.",
+      "https://rs.yiigle.com/cmaid/857869",
+      "KDIGO. 2024 Clinical Practice Guideline for ANCA-associated vasculitis, with amendments. https://kdigo.org/guidelines/antineutrophilic-cytoplasmic-antibody-anca-associated-vasculitis-aav/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "MPO/PR3特异抗体、完整感染排查、活检、氧合数值及长期复发和治疗毒性。",
+      "en": "MPO/PR3-specific antibodies, complete infection evaluation, biopsy, oxygenation values and long-term relapse/toxicity."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-857869/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "f7a5b9ddd2d305bd1c82225002366f87fa2ea7e62a6f008c6a3d86956ac4180c"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever-pattern"
+    },
+    {
+      "type": "ask",
+      "itemId": "treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "blood"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "thyroid"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs"
+    },
+    {
+      "type": "examine",
+      "findingId": "eyes"
+    },
+    {
+      "type": "order",
+      "investigationId": "pulmonary"
+    },
+    {
+      "type": "read",
+      "investigationId": "pulmonary",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "renal"
+    },
+    {
+      "type": "read",
+      "investigationId": "renal",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "repeat-serology"
+    },
+    {
+      "type": "read",
+      "investigationId": "repeat-serology",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "correct"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "857869",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/857869",
+    "sourceDoi": "10.3760/cma.j.issn.1001-0939.2013.06.017",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "这一阵咳嗽发烧持续多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How long has this episode of cough and fever lasted?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "咳痰和畏寒是什么时候开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "When did sputum and chills begin?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "下午晚上是不是更烧？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever-pattern"
+        ]
+      },
+      {
+        "text": "Is the fever worse in the afternoon or evening?",
+        "locale": "en",
+        "expect": [
+          "fever-pattern"
+        ]
+      },
+      {
+        "text": "最高烧到多少，什么时候烧？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever-pattern"
+        ]
+      },
+      {
+        "text": "How high does the fever get, and at what time?",
+        "locale": "en",
+        "expect": [
+          "fever-pattern"
+        ]
+      },
+      {
+        "text": "吃药打针后咳嗽发热好些了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "Did medicines or infusions improve the cough and fever?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "抗结核治疗后症状有没有缓解？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "Did symptoms improve with tuberculosis treatment?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "痰血是越来越多还是少了？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood"
+        ]
+      },
+      {
+        "text": "Is there more or less blood in the sputum?",
+        "locale": "en",
+        "expect": [
+          "blood"
+        ]
+      },
+      {
+        "text": "什么时候开始痰中带血？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood"
+        ]
+      },
+      {
+        "text": "When did blood-streaking first appear?",
+        "locale": "en",
+        "expect": [
+          "blood"
+        ]
+      },
+      {
+        "text": "以前身体怎样，有哪些病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "What was health like before this illness?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "既往有没有需要治疗的疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Were any earlier illnesses treated?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "以前甲状腺出过什么问题？",
+        "locale": "zh-CN",
+        "expect": [
+          "thyroid"
+        ]
+      },
+      {
+        "text": "What previous thyroid problem was there?",
+        "locale": "en",
+        "expect": [
+          "thyroid"
+        ]
+      },
+      {
+        "text": "甲状腺病是如何诊治的？",
+        "locale": "zh-CN",
+        "expect": [
+          "thyroid"
+        ]
+      },
+      {
+        "text": "How was the thyroid disease assessed and treated?",
+        "locale": "en",
+        "expect": [
+          "thyroid"
+        ]
+      },
+      {
+        "text": "平时是否服甲状腺药？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Are thyroid medicines taken regularly?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "甲状腺治疗用过哪些药物？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Which medicines were used for thyroid treatment?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有预防接种方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you describe any vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      }
+    ]
+  }
+}

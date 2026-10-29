@@ -18,6 +18,7 @@ import type { CaseCard } from "../app/content.js";
 import { statusLabel } from "../app/llm.js";
 import { caseDisclaimer, ct, getLocale, reviewLine, tr, trMaybe } from "../i18n/index.js";
 import { clear, h } from "./dom.js";
+import { caseCollectionBadge, caseCollections, matchesLibraryQuery } from "./library.js";
 
 type Status = "loading" | "ready" | "failed";
 
@@ -45,6 +46,7 @@ export class Intro {
   private collection = "";
   private listEl: HTMLElement | null = null;
   private countEl: HTMLElement | null = null;
+  private resetEl: HTMLButtonElement | null = null;
   /** The case whose learning-outcomes disclosure the learner opened (kept across re-renders). */
   private outcomesOpenFor: string | null = null;
 
@@ -77,8 +79,10 @@ export class Intro {
   private select(card: CaseCard, facilityId?: string): void {
     const f = facilityId ?? this.app.content.defaultFacility(card)?.id;
     if (!f) return;
+    const keepListFocus = document.activeElement?.classList.contains("case-card");
     this.app.selectionChanged({ caseId: card.id, facilityId: f });
     this.render();
+    if (keepListFocus) this.listEl?.querySelector<HTMLButtonElement>(".case-card.active")?.focus({ preventScroll: true });
   }
 
   render(): void {
@@ -236,6 +240,7 @@ export class Intro {
       { class: "intro-selected" },
       h("div", { class: "eyebrow" }, tr("intro.selected")),
       h("b", { id: "selected-case" }, ct(card.title)),
+      h("p", { id: "selected-case-summary", class: "selected-case-summary" }, ct(card.summary)),
       card.review
         ? h("p", { id: "case-review", class: ["case-review", `review-${card.review.status}`], title: reviewNotes ? ct(reviewNotes) : null, dataset: { status: card.review.status } }, reviewLine(card.review))
         : null,
@@ -358,8 +363,8 @@ export class Intro {
       h("option", { value: "" }, tr("library.allSettings")),
       settings.map((s) => h("option", { value: s, selected: s === this.setting }, trMaybe(`setting.${s}`, s))),
     );
-    const cmcrCount = cards.filter((c) => c.tags.includes("cmcr-20")).length;
-    const collection = cmcrCount ? h("select", {
+    const collections = caseCollections(cards);
+    const collection = collections.length ? h("select", {
       id: "filter-collection",
       "aria-label": tr("library.allCollections"),
       onchange: (e: Event) => {
@@ -368,14 +373,28 @@ export class Intro {
       },
     },
     h("option", { value: "", selected: !this.collection }, tr("library.allCollections")),
-    h("option", { value: "cmcr-20", selected: this.collection === "cmcr-20" }, tr("library.cmcrCollection", { n: cmcrCount }))) : null;
-    this.countEl = h("span", { class: "count" });
-    this.listEl = h("div", { class: "case-list", id: "case-list", role: "listbox", "aria-label": tr("library.title") });
+    collections.map((item) => h("option", { value: item.id, selected: this.collection === item.id }, item.label))) : null;
+    this.countEl = h("span", { class: "count", role: "status", "aria-live": "polite", "aria-atomic": "true" });
+    this.resetEl = h("button", { type: "button", id: "library-reset", class: "link", onclick: () => {
+      this.query = this.specialty = this.setting = this.collection = "";
+      this.render();
+      this.root.querySelector<HTMLInputElement>("#library-search")?.focus();
+    } }, tr("library.clearFilters"));
+    this.listEl = h("div", { class: "case-list", id: "case-list", role: "listbox", "aria-label": tr("library.title"), onkeydown: (e: KeyboardEvent) => {
+      if (!["ArrowDown", "ArrowUp", "Home", "End"].includes(e.key)) return;
+      const buttons = [...this.listEl!.querySelectorAll<HTMLButtonElement>(".case-card")];
+      const current = buttons.indexOf(e.target as HTMLButtonElement);
+      if (current < 0) return;
+      e.preventDefault();
+      const next = e.key === "Home" ? 0 : e.key === "End" ? buttons.length - 1 : Math.max(0, Math.min(buttons.length - 1, current + (e.key === "ArrowDown" ? 1 : -1)));
+      buttons.forEach((button, index) => { button.tabIndex = index === next ? 0 : -1; });
+      buttons[next]?.focus();
+    } });
     const lib = h(
       "section",
       { class: "library", "aria-labelledby": "library-title" },
-      h("header", { class: "library-head" }, h("div", null, h("div", { class: "eyebrow" }, tr("library.kicker")), h("h2", { id: "library-title" }, tr("library.title"))), this.countEl),
-      h("div", { class: "library-filters" }, search, h("div", { class: "row wrap" }, collection, spec, sett)),
+      h("header", { class: "library-head" }, h("div", null, h("div", { class: "eyebrow" }, tr("library.kicker")), h("h2", { id: "library-title" }, tr("library.title"))), h("span", { class: "library-total" }, tr("library.count", { n: cards.length }))),
+      h("div", { class: "library-filters" }, search, h("div", { class: "row wrap" }, collection, spec, sett), h("div", { class: "library-results" }, this.countEl, this.resetEl)),
       this.listEl,
       selected ? this.selectedSummary(selected) : null,
     );
@@ -387,20 +406,7 @@ export class Intro {
     if (this.collection && !c.tags.includes(this.collection)) return false;
     if (this.specialty && !c.specialty.some((id) => specialtyLabel(id) === this.specialty)) return false;
     if (this.setting && c.setting !== this.setting) return false;
-    const q = this.query.trim().toLowerCase();
-    if (!q) return true;
-    const hay = [
-      ...Object.values(typeof c.title === "string" ? { x: c.title } : c.title),
-      ...Object.values(typeof c.summary === "string" ? { x: c.summary } : c.summary),
-      ...c.specialty,
-      ...c.specialty.map(specialtyLabel),
-      ...c.tags,
-      // Not the id: ids name the diagnosis ("stemi" would find the chest-pain case).
-      trMaybe(`setting.${c.setting}`, c.setting),
-    ]
-      .join(" ")
-      .toLowerCase();
-    return q.split(/\s+/).every((w) => hay.includes(w));
+    return matchesLibraryQuery(c, this.query);
   }
 
   private renderList(selected: CaseCard | null): void {
@@ -409,11 +415,14 @@ export class Intro {
     clear(list);
     const app = this.app;
     const shown = app.content.cards.filter((c) => this.matches(c));
-    if (this.countEl) this.countEl.textContent = tr("library.count", { n: shown.length });
+    const filtered = !!(this.query || this.specialty || this.setting || this.collection);
+    if (this.countEl) this.countEl.textContent = filtered ? tr("library.matchCount", { n: shown.length, total: app.content.cards.length }) : tr("library.browseHint");
+    if (this.resetEl) this.resetEl.hidden = !filtered;
     if (!shown.length) {
-      list.append(h("div", { class: "empty" }, tr("library.empty")));
+      list.append(h("div", { class: "empty library-empty" }, h("b", null, tr("library.empty")), h("p", null, tr("library.emptyHint"))));
       return;
     }
+    const selectedShown = shown.some((c) => c.id === selected?.id);
     for (const c of shown) {
       const save = app.saves.caseSave(c.id);
       const active = c.id === selected?.id;
@@ -426,6 +435,7 @@ export class Intro {
           class: ["case-card", active ? "active" : "", `prov-${c.provenance}`],
           role: "option",
           "aria-selected": String(active),
+          tabindex: active || (!selectedShown && c === shown[0]) ? 0 : -1,
           dataset: { case: c.id },
           onclick: () => this.select(c),
           ondblclick: () => {
@@ -444,10 +454,12 @@ export class Intro {
         ),
         h("b", { class: "case-title" }, ct(c.title)),
         h("small", { class: "case-spec" }, c.specialty.map(specialtyLabel).join(" · ")),
+        h("span", { class: "case-summary" }, ct(c.summary)),
         h(
           "div",
           { class: "case-meta" },
           dots,
+          caseCollectionBadge(c) ? h("span", { class: "collection-label" }, caseCollectionBadge(c)) : null,
           c.estimatedMinutes ? h("span", null, tr("library.minutes", { n: c.estimatedMinutes })) : null,
           h("span", { class: "locales", title: tr("library.locales") }, c.locales.map((l) => (l.startsWith("zh") ? "中" : l.toUpperCase())).join(" · ")),
           save ? h("span", { class: ["saved", save.finished ? "finished" : ""] }, save.finished ? tr("library.finished") : tr("library.saved", { done: save.done, total: save.total })) : null,

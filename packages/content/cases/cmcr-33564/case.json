@@ -1,0 +1,2003 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33564",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "皮肤渐黑与身材矮小 · 13岁男孩",
+    "en": "Progressive dark skin and short stature · boy aged 13"
+  },
+  "summary": {
+    "zh-CN": "儿童期出现的皮肤、面貌与生长变化，需要结合糖代谢及遗传证据。",
+    "en": "Childhood skin, facial and growth changes require metabolic and genetic correlation."
+  },
+  "specialty": [
+    "paediatric-endocrinology",
+    "genetics"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "马骊, 王剑, 方元勋, 鲍宽烨, 程海燕, 汪露祥. Rabson－Mendenhall综合征一例. 中华儿科杂志. 2013;51(07):545-547. doi:10.3760/cma.j.issn.0578-1310.2013.07.018.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2013.07.018",
+    "authors": [
+      "马骊",
+      "王剑",
+      "方元勋",
+      "鲍宽烨",
+      "程海燕",
+      "汪露祥"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别黑棘皮病伴生长障碍的综合征线索。",
+      "en": "Identify syndromic clues in acanthosis with growth failure."
+    },
+    {
+      "zh-CN": "将无多尿与异常血糖分开解释。",
+      "en": "Distinguish absent polyuria from abnormal glycaemia."
+    },
+    {
+      "zh-CN": "说明家系变异支持和功能验证缺失。",
+      "en": "Explain segregation support and absent functional validation."
+    },
+    {
+      "zh-CN": "制定专业血糖随访并避免由单例推导自行治疗",
+      "en": "Plan specialist glucose follow-up without deriving self-treatment from one case"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "邹知远（化名）",
+      "en": "Zou Zhiyuan (pseudonym)"
+    },
+    "age": 13,
+    "ageUnit": "years",
+    "sex": "male",
+    "weightKg": 31,
+    "chiefComplaint": {
+      "zh-CN": "皮肤渐黑、身材矮小约10年",
+      "en": "About ten years of darkening skin and short stature"
+    },
+    "triageNote": {
+      "zh-CN": "皮肤逐年变黑粗糙，伴生长落后。",
+      "en": "Skin has become progressively darker and rougher, with growth delay."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "2至3岁发现皮肤黑，后来更明显，脖子和腋下最重。",
+        "en": "Dark skin was noticed at age two to three and progressed, especially at the neck and axillae."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "teen",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "growth"
+          },
+          {
+            "asked": "speech"
+          },
+          {
+            "asked": "thirst"
+          },
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "growth-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "皮肤从什么时候开始变黑？ 哪里最黑，后来有没有加重？",
+        "en": "When did the skin start getting darker? Where is the darkening worst, and has it progressed?"
+      },
+      "answer": {
+        "zh-CN": "2至3岁发现皮肤黑，后来更明显，脖子和腋下最重。",
+        "en": "Dark skin was noticed at age two to three and progressed, especially at the neck and axillae."
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮肤变黑",
+          "皮肤从什么时候开始变黑？",
+          "哪里最黑，后来有没有加重？",
+          "皮肤变黑情况"
+        ],
+        "en": [
+          "skin darkening",
+          "When did the skin start getting darker?",
+          "Where is the darkening worst, and has it progressed?",
+          "skin darkening information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "growth",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "什么时候发现个子比同龄孩子矮？ 身高增长一直落后吗？",
+        "en": "When did you notice he was shorter than other children? Has his height gain continued to lag?"
+      },
+      "answer": {
+        "zh-CN": "2岁以后渐渐比同龄人矮。",
+        "en": "After age two he gradually became shorter than peers."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个子生长",
+          "什么时候发现个子比同龄孩子矮？",
+          "身高增长一直落后吗？",
+          "个子生长情况"
+        ],
+        "en": [
+          "height growth",
+          "When did you notice he was shorter than other children?",
+          "Has his height gain continued to lag?",
+          "height growth information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "speech",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "舌头变化影响说话吗？ 说话不清楚有没有影响学校生活？",
+        "en": "Do tongue changes affect speech? Has unclear speech affected school life?"
+      },
+      "answer": {
+        "zh-CN": "舌头厚大，说话渐不清楚，受到同学嘲笑。",
+        "en": "His tongue became large and thick, speech became less clear, and classmates teased him."
+      },
+      "keywords": {
+        "zh-CN": [
+          "舌头和说话",
+          "舌头变化影响说话吗？",
+          "说话不清楚有没有影响学校生活？",
+          "舌头和说话情况"
+        ],
+        "en": [
+          "tongue and speech",
+          "Do tongue changes affect speech?",
+          "Has unclear speech affected school life?",
+          "tongue and speech information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "thirst",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "最近特别口渴或尿多吗？ 有没有多喝水、多上厕所？",
+        "en": "Has he been unusually thirsty or passing more urine? Has he been drinking or urinating more often?"
+      },
+      "answer": {
+        "zh-CN": "没有多饮多尿，也没有头晕、头痛或晕厥。",
+        "en": "There was no polydipsia, polyuria, dizziness, headache or syncope."
+      },
+      "keywords": {
+        "zh-CN": [
+          "多饮多尿",
+          "最近特别口渴或尿多吗？",
+          "有没有多喝水、多上厕所？",
+          "多饮多尿情况"
+        ],
+        "en": [
+          "thirst and urination",
+          "Has he been unusually thirsty or passing more urine?",
+          "Has he been drinking or urinating more often?",
+          "thirst and urination information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "出生是多少周，分娩顺利吗？ 出生体重有没有记录？",
+        "en": "At what gestation was birth, and was delivery uncomplicated? Was birth weight recorded?"
+      },
+      "answer": {
+        "zh-CN": "第二胎第二产，足月家中分娩，出生体重未测。",
+        "en": "Second pregnancy and birth, delivered at term at home; birth weight was not measured."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生情况",
+          "出生是多少周，分娩顺利吗？",
+          "出生体重有没有记录？",
+          "出生情况情况"
+        ],
+        "en": [
+          "birth details",
+          "At what gestation was birth, and was delivery uncomplicated?",
+          "Was birth weight recorded?",
+          "birth details information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "development",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "什么时候会走路和说话？ 早期运动和语言发育如何？",
+        "en": "When did walking and speech develop? How did early motor and language skills develop?"
+      },
+      "answer": {
+        "zh-CN": "一岁多会走路说话，学习成绩中等。",
+        "en": "He walked and spoke after age one and had average school performance."
+      },
+      "keywords": {
+        "zh-CN": [
+          "早期发育",
+          "什么时候会走路和说话？",
+          "早期运动和语言发育如何？",
+          "早期发育情况"
+        ],
+        "en": [
+          "early development",
+          "When did walking and speech develop?",
+          "How did early motor and language skills develop?",
+          "early development information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人有类似疾病或遗传病吗？ 父母和兄弟姐妹健康情况怎样？",
+        "en": "Does anyone in the family have similar or inherited illness? How is the health of parents and siblings?"
+      },
+      "answer": {
+        "zh-CN": "父母非近亲且表型正常，姐姐健康。",
+        "en": "Parents were non-consanguineous with normal phenotypes; his sister was healthy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家属情况",
+          "家里有人有类似疾病或遗传病吗？",
+          "父母和兄弟姐妹健康情况怎样？",
+          "家属情况情况"
+        ],
+        "en": [
+          "family background",
+          "Does anyone in the family have similar or inherited illness?",
+          "How is the health of parents and siblings?",
+          "family background information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "观察皮肤毛发和口腔",
+        "en": "Inspect skin, hair and mouth"
+      },
+      "finding": {
+        "zh-CN": "颈腋黑色粗糙皮肤，多毛，厚唇大舌、牙列不齐。",
+        "en": "Dark rough neck/axillary skin, hypertrichosis, thick lips, enlarged tongue and irregular dentition."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "growth-exam",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "测量生长与外观",
+        "en": "Assess growth and appearance"
+      },
+      "finding": {
+        "zh-CN": "身高133 cm、体重31 kg，腹膨隆、指趾粗短、外生殖器肥大。",
+        "en": "Height 133 cm, weight 31 kg, protuberant abdomen, short broad digits and enlarged external genitalia."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "glucose",
+      "name": {
+        "zh-CN": "糖代谢记录",
+        "en": "Glucose metabolism"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "糖代谢记录"
+        ],
+        "en": [
+          "Glucose metabolism"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "随机血糖17.18 mmol/L，空腹9.2、2小时18.42 mmol/L，HbA1c 7.6%，空腹胰岛素9.03 mU/L。",
+            "en": "Random glucose 17.18 mmol/L, fasting 9.2 and two-hour 18.42 mmol/L, HbA1c 7.6%, fasting insulin 9.03 mU/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "bone",
+      "name": {
+        "zh-CN": "骨龄及垂体影像",
+        "en": "Bone age and pituitary imaging"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "骨龄及垂体影像"
+        ],
+        "en": [
+          "Bone age and pituitary imaging"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "骨龄约7岁，垂体和松果体未见明显异常。",
+            "en": "Bone age about seven years; no obvious pituitary or pineal abnormality."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "skin-biopsy",
+      "name": {
+        "zh-CN": "皮肤病理",
+        "en": "Skin histology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "皮肤病理"
+        ],
+        "en": [
+          "Skin histology"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "颈部和腋下活检符合黑棘皮病。",
+            "en": "Neck and axillary biopsies were consistent with acanthosis nigricans."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "genetics",
+      "name": {
+        "zh-CN": "INSR及家系检测",
+        "en": "INSR and family testing"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "INSR及家系检测"
+        ],
+        "en": [
+          "INSR and family testing"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "患儿INSR c.1904C>T (p.S635L)来自父亲，c.295_307del来自母亲；报告支持复合杂合变异。",
+            "en": "INSR c.1904C>T (p.S635L) was paternal and c.295_307del maternal, supporting compound heterozygosity in the report."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告给出Rabson–Mendenhall综合征诊断，未报告具体治疗过程或长期随访。",
+            "en": "The report diagnoses Rabson–Mendenhall syndrome but gives no treatment course or long-term follow-up."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "growth"
+          },
+          {
+            "asked": "speech"
+          },
+          {
+            "asked": "thirst"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "growth-exam"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "哪些特点要求超越单纯肥胖相关糖尿病？",
+        "en": "Which findings require looking beyond ordinary obesity-related diabetes?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "glucose",
+            "phase": "workup"
+          },
+          {
+            "read": "bone",
+            "phase": "workup"
+          },
+          {
+            "read": "skin-biopsy",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "幼年起病的综合征性胰岛素受体异常",
+            "en": "A childhood-onset syndromic insulin-receptor disorder"
+          },
+          "feedback": {
+            "zh-CN": "生长、皮肤、牙舌和生殖器改变需要统一解释。",
+            "en": "Growth, skin, dental, tongue and genital findings need a unifying explanation."
+          },
+          "correct": true
+        },
+        {
+          "id": "simple",
+          "text": {
+            "zh-CN": "仅青春期肥胖可解释全部表现",
+            "en": "Pubertal obesity alone explains all findings"
+          },
+          "feedback": {
+            "zh-CN": "生长落后及幼年起病并非这一解释所能涵盖。",
+            "en": "Early onset and growth failure are not accounted for."
+          },
+          "correct": false
+        },
+        {
+          "id": "normal",
+          "text": {
+            "zh-CN": "没有多尿可排除糖代谢异常",
+            "en": "Absence of polyuria excludes dysglycaemia"
+          },
+          "feedback": {
+            "zh-CN": "血糖和HbA1c已显示异常。",
+            "en": "Glucose and HbA1c are abnormal."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "genetics",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "表型与父母来源不同的INSR变异支持Rabson–Mendenhall谱系",
+            "en": "Phenotype and variants inherited from different parents support the Rabson–Mendenhall spectrum"
+          },
+          "feedback": {
+            "zh-CN": "家系来源增强解释力，但原文未提供功能实验。",
+            "en": "Segregation strengthens interpretation, although functional studies are unavailable."
+          },
+          "correct": true
+        },
+        {
+          "id": "parents",
+          "text": {
+            "zh-CN": "父母表型正常使遗传病不可能",
+            "en": "Normal parental phenotypes exclude inherited disease"
+          },
+          "feedback": {
+            "zh-CN": "隐性遗传携带者可表型正常。",
+            "en": "Recessive carriers may have normal phenotypes."
+          },
+          "correct": false
+        },
+        {
+          "id": "insulin",
+          "text": {
+            "zh-CN": "一次胰岛素值即可判断长期分泌能力",
+            "en": "One insulin value establishes long-term secretory capacity"
+          },
+          "feedback": {
+            "zh-CN": "需结合血糖、病程及后续动态评估。",
+            "en": "Glucose, course and longitudinal assessment are needed."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何制定后续安全计划？",
+        "en": "What is a safe follow-up plan?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "genetics",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "儿内分泌与遗传团队评估血糖风险、生长及家庭支持",
+            "en": "Endocrine and genetic teams should assess glycaemic risk, growth and family support"
+          },
+          "feedback": {
+            "zh-CN": "避免由单例自行外推药物或剂量，并关注受嘲笑的影响。",
+            "en": "Avoid extrapolated self-treatment and address the impact of teasing."
+          },
+          "correct": true
+        },
+        {
+          "id": "ignore",
+          "text": {
+            "zh-CN": "无口渴就不必监测血糖",
+            "en": "No thirst means glucose monitoring is unnecessary"
+          },
+          "feedback": {
+            "zh-CN": "症状缺如不能否认生化异常。",
+            "en": "Absent symptoms do not negate biochemical disease."
+          },
+          "correct": false
+        },
+        {
+          "id": "promise",
+          "text": {
+            "zh-CN": "基因确诊意味着已有根治药",
+            "en": "Genetic confirmation means a curative drug is established"
+          },
+          "feedback": {
+            "zh-CN": "报告没有给出这种治疗证据。",
+            "en": "The report supplies no such treatment evidence."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "growth"
+          },
+          {
+            "asked": "speech"
+          },
+          {
+            "asked": "thirst"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "development"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "growth-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "glucose",
+            "phase": "workup"
+          },
+          {
+            "read": "bone",
+            "phase": "workup"
+          },
+          {
+            "read": "skin-biopsy",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "genetics",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "制定专业血糖随访并避免由单例推导自行治疗",
+        "en": "Plan specialist glucose follow-up without deriving self-treatment from one case"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：识别黑棘皮病伴生长障碍的综合征线索。同时解释以下信息仍有缺失或疑问：功能实验、后续血糖轨迹、治疗及长期随访。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Identify syndromic clues in acanthosis with growth failure. Identify the following as missing or uncertain: Functional studies, subsequent glycaemia, treatment and long-term follow-up. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "glucose",
+        "bone",
+        "skin-biopsy",
+        "genetics",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "幼年皮肤、生长和糖代谢异常结合INSR家系变异支持Rabson–Mendenhall综合征。",
+      "en": "Childhood skin, growth and glycaemic abnormalities with segregating INSR variants support Rabson–Mendenhall syndrome."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "识别黑棘皮病伴生长障碍的综合征线索。",
+        "en": "Identify syndromic clues in acanthosis with growth failure."
+      },
+      {
+        "zh-CN": "将无多尿与异常血糖分开解释。",
+        "en": "Distinguish absent polyuria from abnormal glycaemia."
+      },
+      {
+        "zh-CN": "说明家系变异支持和功能验证缺失。",
+        "en": "Explain segregation support and absent functional validation."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "识别黑棘皮病伴生长障碍的综合征线索。",
+        "en": "Identify syndromic clues in acanthosis with growth failure."
+      },
+      {
+        "zh-CN": "将无多尿与异常血糖分开解释。",
+        "en": "Distinguish absent polyuria from abnormal glycaemia."
+      },
+      {
+        "zh-CN": "说明家系变异支持和功能验证缺失。",
+        "en": "Explain segregation support and absent functional validation."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "功能实验、后续血糖轨迹、治疗及长期随访。",
+        "en": "Functional studies, subsequent glycaemia, treatment and long-term follow-up."
+      }
+    ],
+    "references": [
+      "马骊, 王剑, 方元勋, 鲍宽烨, 程海燕, 汪露祥. Rabson－Mendenhall综合征一例. 中华儿科杂志. 2013;51(07):545-547. doi:10.3760/cma.j.issn.0578-1310.2013.07.018.",
+      "https://rs.yiigle.com/cmaid/33564"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "功能实验、后续血糖轨迹、治疗及长期随访。",
+      "en": "Functional studies, subsequent glycaemia, treatment and long-term follow-up."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-33564/fig02.png",
+      "title": {
+        "zh-CN": "原文图组 2（含后续病程，仅供复盘）",
+        "en": "Source image group 2 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "d3c50b8b52c41f95303fc7785cb5602261260334c691fa0feb515e995ebef4a5"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "growth"
+    },
+    {
+      "type": "ask",
+      "itemId": "speech"
+    },
+    {
+      "type": "ask",
+      "itemId": "thirst"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "development"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "examine",
+      "findingId": "growth-exam"
+    },
+    {
+      "type": "order",
+      "investigationId": "glucose"
+    },
+    {
+      "type": "read",
+      "investigationId": "glucose",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "bone"
+    },
+    {
+      "type": "read",
+      "investigationId": "bone",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "skin-biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "skin-biopsy",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "genetics"
+    },
+    {
+      "type": "read",
+      "investigationId": "genetics",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "33564",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33564",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2013.07.018",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "皮肤从什么时候开始变黑？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "When did the skin start getting darker?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "哪里最黑，后来有没有加重？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Where is the darkening worst, and has it progressed?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "什么时候发现个子比同龄孩子矮？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "When did you notice he was shorter than other children?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "身高增长一直落后吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "Has his height gain continued to lag?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "舌头变化影响说话吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "speech"
+        ]
+      },
+      {
+        "text": "Do tongue changes affect speech?",
+        "locale": "en",
+        "expect": [
+          "speech"
+        ]
+      },
+      {
+        "text": "说话不清楚有没有影响学校生活？",
+        "locale": "zh-CN",
+        "expect": [
+          "speech"
+        ]
+      },
+      {
+        "text": "Has unclear speech affected school life?",
+        "locale": "en",
+        "expect": [
+          "speech"
+        ]
+      },
+      {
+        "text": "最近特别口渴或尿多吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "Has he been unusually thirsty or passing more urine?",
+        "locale": "en",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "有没有多喝水、多上厕所？",
+        "locale": "zh-CN",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "Has he been drinking or urinating more often?",
+        "locale": "en",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "出生是多少周，分娩顺利吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "At what gestation was birth, and was delivery uncomplicated?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "出生体重有没有记录？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Was birth weight recorded?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "什么时候会走路和说话？",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "When did walking and speech develop?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "早期运动和语言发育如何？",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "How did early motor and language skills develop?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "家里有人有类似疾病或遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anyone in the family have similar or inherited illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "父母和兄弟姐妹健康情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How is the health of parents and siblings?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有既往健康情况方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you describe any previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      }
+    ]
+  }
+}

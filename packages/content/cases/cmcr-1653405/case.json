@@ -1,0 +1,2011 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1653405",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "反复腹胀伴恶心 · 69岁女性",
+    "en": "Recurrent abdominal distension and nausea · 69-year-old woman"
+  },
+  "summary": {
+    "zh-CN": "腹部不适与肝内占位需要结合影像和病理判断，同时识别出血风险。",
+    "en": "Abdominal symptoms and liver masses require imaging–pathology correlation and assessment of bleeding risk."
+  },
+  "specialty": [
+    "hepatology",
+    "oncology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 30,
+  "learningOutcomes": [
+    {
+      "zh-CN": "区分影像恶性提示与组织学确诊。",
+      "en": "Distinguish imaging suspicion from histological diagnosis."
+    },
+    {
+      "zh-CN": "解释正常 AFP 的局限性。",
+      "en": "Explain the limits of normal AFP."
+    },
+    {
+      "zh-CN": "识别肝血管性肿瘤的出血安全问题。",
+      "en": "Recognise the haemorrhage safety issue in a hepatic vascular tumour."
+    },
+    {
+      "zh-CN": "谨慎表达穿刺与后续出血的因果关系。",
+      "en": "Express the biopsy–haemorrhage causal relationship cautiously."
+    }
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "楊波. 18F-FDG PET/CT診斷原發性多發性肝血管肉瘤1例. 鏡湖醫學. 2025;25(02):54. doi:10.12408/j.issn2223-4462.2025.02.016",
+    "doi": "10.12408/j.issn2223-4462.2025.02.016",
+    "authors": [
+      "楊波"
+    ],
+    "license": "Authored educational adaptation; publication copyright remains with its original holders.",
+    "notes": {
+      "zh-CN": "依据单例报告改编；姓名、医院和日历日期已去标识化。问答、决策及评分为教学设计。原报告已做的检查仅供病历查阅，未记录的信息保持未知。",
+      "en": "Adapted from a single-patient report, with names, hospitals and calendar dates de-identified. Dialogue, decisions and scoring are educational design. Existing investigations are chart reviews; missing information remains unknown."
+    },
+    "review": {
+      "status": "unreviewed",
+      "guidelines": [],
+      "reviewers": [],
+      "notes": {
+        "zh-CN": "已逐例阅读并核对源病例，稀有病例按历史证据复盘；未完成全面现行指南审核，未经执业医师审核。",
+        "en": "Each source case was read and checked; rare conditions are reviewed within historical evidence. Full current-guidance and licensed-clinician reviews are not complete."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学，不构成个体诊疗建议。原报告处置不自动成为今天的推荐；不模拟未记录的生理变化。",
+    "en": "Historical teaching case, not individual medical advice. Reported care is not automatically a current recommendation; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "严知远（化名）",
+      "en": "Yan Zhiyuan (pseudonym)"
+    },
+    "age": 69,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "腹胀伴恶心 1 个月",
+      "en": "Abdominal distension and nausea for one month"
+    },
+    "triageNote": {
+      "zh-CN": "反复腹胀，查体发现肝大，需要核对影像与组织资料。",
+      "en": "Recurrent abdominal distension with hepatomegaly; imaging and tissue records need review."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "以原报告为边界回答；交流方式为教学设定。",
+        "en": "Answers within the source record; communication style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "简短日常语言，医学数据查阅病历。",
+        "en": "Brief everyday language; technical data are reviewed in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "肚子胀，还恶心。",
+        "en": "My abdomen feels bloated and I feel sick."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "actingNotes": {
+        "zh-CN": "仅使用当前阶段资料，不提前描述后续检查或结局。",
+        "en": "Use current-stage information only; do not reveal later findings or outcomes."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "就诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "病历证据与决策",
+        "en": "Chart evidence and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "后续经过与复盘",
+        "en": "Subsequent course and review"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "all": [
+              {
+                "asked": "presentation"
+              },
+              {
+                "asked": "onset"
+              },
+              {
+                "asked": "progression"
+              },
+              {
+                "asked": "associated"
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "examined": "exam-1"
+              },
+              {
+                "examined": "exam-2"
+              }
+            ]
+          },
+          {
+            "decided": "interpretation"
+          },
+          {
+            "decided": "management"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次主要哪里不舒服？",
+        "en": "What is the main problem today?"
+      },
+      "answer": {
+        "zh-CN": "肚子胀，还恶心。",
+        "en": "My abdomen feels bloated and I feel sick."
+      },
+      "keywords": {
+        "zh-CN": [
+          "主要不适",
+          "来院原因",
+          "这次症状",
+          "哪里难受"
+        ],
+        "en": [
+          "main complaint",
+          "presenting problem",
+          "reason for attending",
+          "current symptoms"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最早什么时候开始？",
+        "en": "When did this first start?"
+      },
+      "answer": {
+        "zh-CN": "有 1 个月了。",
+        "en": "It has lasted a month."
+      },
+      "keywords": {
+        "zh-CN": [
+          "起病时间",
+          "持续多久",
+          "最早发病",
+          "病了多久"
+        ],
+        "en": [
+          "symptom onset",
+          "first onset",
+          "duration",
+          "time of onset"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "progression",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这段时间病情怎样变化？",
+        "en": "How has the problem changed over time?"
+      },
+      "answer": {
+        "zh-CN": "这一阵反复出现。",
+        "en": "It has been recurring."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病情变化",
+          "逐渐加重",
+          "发作频率",
+          "症状演变"
+        ],
+        "en": [
+          "symptom progression",
+          "change over time",
+          "episode frequency",
+          "getting worse"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "associated",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "当时还伴有什么不舒服？",
+        "en": "What other symptoms occurred with it?"
+      },
+      "answer": {
+        "zh-CN": "没有发热、皮肤发黄或腹痛。",
+        "en": "No fever, jaundice or abdominal pain was reported."
+      },
+      "keywords": {
+        "zh-CN": [
+          "伴随症状",
+          "同时不适",
+          "其他表现",
+          "伴有什么"
+        ],
+        "en": [
+          "associated symptoms",
+          "accompanying symptoms",
+          "additional complaints",
+          "other symptoms"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前得过哪些病？",
+        "en": "What illnesses have you had previously?"
+      },
+      "answer": {
+        "zh-CN": "没有恶性肿瘤病史。",
+        "en": "I had no history of malignancy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "以前病史",
+          "过去疾病",
+          "慢性疾病"
+        ],
+        "en": [
+          "past medical history",
+          "previous illnesses",
+          "chronic conditions",
+          "medical background"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家族",
+          "家人"
+        ],
+        "en": [
+          "family",
+          "relatives"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "operations",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过什么手术或操作？",
+        "en": "Have you had previous operations or procedures?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术经历",
+          "既往手术",
+          "操作经历",
+          "动过手术"
+        ],
+        "en": [
+          "previous operations",
+          "surgical history",
+          "past procedures",
+          "previous surgery"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "发病前后用过什么药？",
+        "en": "What medicines were used around the illness?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用药清单",
+          "服用药物",
+          "药物疗程",
+          "吃了什么药"
+        ],
+        "en": [
+          "medication list",
+          "regular medicines",
+          "recent medication",
+          "drug treatment"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有过药物或食物过敏吗？",
+        "en": "Have medicines or foods caused an allergic reaction before?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "食物过敏",
+          "过敏经历",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "food allergies",
+          "allergy history",
+          "allergic reaction"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有过类似的病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "家人患病",
+          "遗传病史",
+          "亲属疾病"
+        ],
+        "en": [
+          "family history",
+          "illness in relatives",
+          "familial disease",
+          "hereditary history"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "生活环境或近期接触有特别的情况吗？",
+        "en": "Were there any relevant environmental or recent exposures?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境接触",
+          "接触经历",
+          "生活环境",
+          "接触物质"
+        ],
+        "en": [
+          "environmental exposure",
+          "recent exposure",
+          "living environment",
+          "contact history"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "这次生病怎样影响日常活动？",
+        "en": "How has this affected everyday activities?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "活动能力",
+          "日常活动",
+          "生活自理",
+          "活动受限"
+        ],
+        "en": [
+          "daily activities",
+          "functional capacity",
+          "self care",
+          "activity limitation"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "redflags",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有其他需要马上处理的症状？",
+        "en": "Were there other symptoms needing urgent attention?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "危险症状",
+          "紧急症状",
+          "警示症状",
+          "急性变化"
+        ],
+        "en": [
+          "warning symptoms",
+          "urgent symptoms",
+          "red flags",
+          "acute warning signs"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "prior",
+      "topic": "other",
+      "question": {
+        "zh-CN": "来这里之前在哪里看过病，怎样处理？",
+        "en": "What assessment or care occurred before this encounter?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "之前就诊",
+          "院外处理",
+          "前期诊治",
+          "此前处理"
+        ],
+        "en": [
+          "earlier assessment",
+          "previous consultation",
+          "prior care",
+          "pre-referral care"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "concerns",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "对这次病情最担心什么？",
+        "en": "What worries you most about this illness?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担心",
+          "最担心什么",
+          "治疗期望",
+          "心里顾虑"
+        ],
+        "en": [
+          "personal concerns",
+          "main worry",
+          "expectations",
+          "patient concerns"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "baseline",
+      "topic": "other",
+      "question": {
+        "zh-CN": "发病前的基础生活情况怎样？",
+        "en": "What was your baseline health and living situation?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时情况",
+          "基础生活",
+          "发病前状态",
+          "原来状况"
+        ],
+        "en": [
+          "baseline health",
+          "usual state",
+          "baseline circumstances",
+          "usual health"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "exam-1",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对入院查体记录 1",
+        "en": "Review presentation examination 1"
+      },
+      "finding": {
+        "zh-CN": "肝下缘位于剑突下约 5 cm。",
+        "en": "The liver edge was approximately 5 cm below the xiphoid."
+      },
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      },
+      "abnormal": true,
+      "required": true
+    },
+    {
+      "id": "exam-2",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对入院查体记录 2",
+        "en": "Review presentation examination 2"
+      },
+      "finding": {
+        "zh-CN": "肝质硬、表面不光滑并有压痛。",
+        "en": "The liver was hard, irregular and tender."
+      },
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      },
+      "abnormal": true,
+      "required": true
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有这项查体资料，不能视为正常。",
+    "en": "The report supplies no finding for this manoeuvre; do not assume it is normal."
+  },
+  "investigations": [
+    {
+      "id": "markers",
+      "name": {
+        "zh-CN": "调阅肿瘤标志物",
+        "en": "Review tumour markers"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅肿瘤标志物"
+        ],
+        "en": [
+          "Review tumour markers",
+          "markers"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "CA125 38.10 U/mL、CA19-9 68.60 U/mL 升高；CEA、AFP、CA15-3、CA72-4 报告正常。",
+            "en": "CA125 38.10 U/mL and CA19-9 68.60 U/mL were elevated; CEA, AFP, CA15-3 and CA72-4 were reported normal."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "ultrasound",
+      "name": {
+        "zh-CN": "调阅超声",
+        "en": "Review ultrasound"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅超声"
+        ],
+        "en": [
+          "Review ultrasound",
+          "ultrasound"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "肝多发不均匀实性肿块，最大约 12.0×10.5 cm，考虑恶性。",
+            "en": "Multiple heterogeneous solid liver masses, largest about 12.0×10.5 cm, suspicious for malignancy."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "pet",
+      "name": {
+        "zh-CN": "调阅 PET/CT",
+        "en": "Review PET/CT"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅 PET/CT"
+        ],
+        "en": [
+          "Review PET/CT",
+          "pet"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "肝多发不均匀 FDG 摄取病灶，SUVmax 7.1；最大约 11.2×10.6×7.9 cm，中心摄取稀疏，报告考虑肿瘤内出血及肝内转移。",
+            "en": "Multiple heterogeneous FDG-avid hepatic lesions, SUVmax 7.1; largest about 11.2×10.6×7.9 cm with low central uptake, interpreted as malignancy with intratumoural bleeding and intrahepatic spread."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "pathology",
+      "name": {
+        "zh-CN": "调阅既有肝穿刺病理",
+        "en": "Review the existing liver biopsy"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅既有肝穿刺病理"
+        ],
+        "en": [
+          "Review the existing liver biopsy",
+          "pathology"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "肝右叶肿物穿刺病理诊断血管肉瘤；具体免疫组化结果未载。",
+            "en": "Right hepatic mass biopsy was diagnosed as angiosarcoma; individual immunostains are not supplied."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "outcome",
+      "name": {
+        "zh-CN": "调阅原报告后续经过",
+        "en": "Review the reported subsequent course"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告记载数日后因肝内出血死亡；未给出具体抢救过程或证明穿刺为直接原因。",
+            "en": "Death from intrahepatic haemorrhage was reported a few days later, without detailed resuscitation records or proof that biopsy directly caused it."
+          },
+          "source": {
+            "zh-CN": "原报告治疗及随访段。",
+            "en": "Source treatment and follow-up section."
+          },
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "history",
+      "title": {
+        "zh-CN": "重建就诊经过",
+        "en": "Reconstruct the presentation"
+      },
+      "hint": {
+        "zh-CN": "从起病、演变及伴随症状寻找关键信息。",
+        "en": "Clarify onset, progression and associated symptoms."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "associated"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evidence",
+      "title": {
+        "zh-CN": "核对查体与病历证据",
+        "en": "Check examination and chart evidence"
+      },
+      "hint": {
+        "zh-CN": "区分患者叙述、查体记录和辅助检查报告。",
+        "en": "Distinguish the history, examination record and investigation reports."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "all": [
+              {
+                "examined": "exam-1"
+              },
+              {
+                "examined": "exam-2"
+              }
+            ]
+          },
+          {
+            "read": "markers",
+            "phase": "workup"
+          },
+          {
+            "read": "ultrasound",
+            "phase": "workup"
+          },
+          {
+            "read": "pet",
+            "phase": "workup"
+          },
+          {
+            "read": "pathology",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "reasoning",
+      "title": {
+        "zh-CN": "比较解释并制定计划",
+        "en": "Compare interpretations and plan care"
+      },
+      "hint": {
+        "zh-CN": "指出支持证据、反证和仍需核对的信息。",
+        "en": "Identify supporting evidence, conflicting evidence and remaining gaps."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "interpretation"
+          },
+          {
+            "decided": "management"
+          }
+        ]
+      }
+    },
+    {
+      "id": "review",
+      "title": {
+        "zh-CN": "复盘后续经过",
+        "en": "Review the subsequent course"
+      },
+      "hint": {
+        "zh-CN": "将报告结局与当时可获得的证据分开。",
+        "en": "Separate the reported outcome from evidence available at the decision point."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "outcome",
+            "phase": "followup"
+          },
+          {
+            "decided": "safety"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "interpretation",
+      "prompt": {
+        "zh-CN": "哪项证据建立肿瘤类型？",
+        "en": "Which evidence establishes tumour type?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "markers",
+            "phase": "workup"
+          },
+          {
+            "read": "ultrasound",
+            "phase": "workup"
+          },
+          {
+            "read": "pet",
+            "phase": "workup"
+          },
+          {
+            "read": "pathology",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
+        "en": "First review the relevant history and source records available in this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "既有组织病理支持肝血管肉瘤",
+            "en": "Existing histopathology supports hepatic angiosarcoma"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "PET/CT 提示恶性，病理确定类型。",
+            "en": "PET/CT suggests malignancy; tissue determines type."
+          }
+        },
+        {
+          "id": "alternative-1",
+          "text": {
+            "zh-CN": "SUVmax 7.1 可单独确诊血管肉瘤",
+            "en": "SUVmax 7.1 alone diagnoses angiosarcoma"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "摄取增高并无这种特异性。",
+            "en": "Increased uptake is not specific for this histology."
+          }
+        },
+        {
+          "id": "alternative-2",
+          "text": {
+            "zh-CN": "AFP 正常可排除所有肝恶性肿瘤",
+            "en": "Normal AFP excludes every hepatic malignancy"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "本例本身即显示该推论不成立。",
+            "en": "The supplied tissue evidence contradicts that inference."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "已有出血线索时如何继续评估？",
+        "en": "How should assessment proceed with bleeding clues?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "interpretation"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
+        "en": "First review the relevant history and source records available in this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "肝胆、肿瘤及介入团队评估出血和组织证据，避免未经风险评估的重复穿刺",
+            "en": "A hepatobiliary/oncology/interventional team reviews bleeding and tissue evidence before any repeat biopsy"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "这是高风险肝占位，应利用已有病理并评估出血。",
+            "en": "Use the existing tissue diagnosis while assessing haemorrhage risk."
+          }
+        },
+        {
+          "id": "alternative-1",
+          "text": {
+            "zh-CN": "只因穿刺已做过就安排重复穿刺",
+            "en": "Repeat biopsy simply because it was done before"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "原报告强调出血风险，重复操作须有明确收益。",
+            "en": "The source highlights bleeding risk; repeat sampling needs a clear benefit."
+          }
+        },
+        {
+          "id": "alternative-2",
+          "text": {
+            "zh-CN": "等待肿瘤标志物明显升高才处理",
+            "en": "Wait for substantially higher markers"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "标志物不能代替出血评估。",
+            "en": "Markers do not substitute for haemorrhage assessment."
+          }
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "prompt": {
+        "zh-CN": "怎样表达可能的因果关系？",
+        "en": "How should causality be expressed?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "outcome",
+            "phase": "followup"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
+        "en": "First review the relevant history and source records available in this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "后续出血的精确机制不能由现有资料归咎于穿刺",
+            "en": "The later bleeding cannot be definitively attributed to biopsy from these data"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "影像在穿刺前已考虑瘤内出血。",
+            "en": "Imaging already suggested intratumoural bleeding before the biopsy."
+          }
+        },
+        {
+          "id": "alternative-1",
+          "text": {
+            "zh-CN": "死亡一定由穿刺直接造成",
+            "en": "Biopsy definitely caused death"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "原文没有证明这一因果链。",
+            "en": "That causal chain is not established."
+          }
+        },
+        {
+          "id": "alternative-2",
+          "text": {
+            "zh-CN": "病理诊断后不再存在出血风险",
+            "en": "Bleeding risk disappears after diagnosis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "诊断不消除血管性肿瘤的风险。",
+            "en": "A diagnosis does not remove a vascular tumour’s risk."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "history-0",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问清主要不适",
+        "en": "Clarify the presenting problem"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "presentation"
+      }
+    },
+    {
+      "id": "history-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问清起病时间",
+        "en": "Clarify onset"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "onset"
+      }
+    },
+    {
+      "id": "history-2",
+      "domain": "history",
+      "text": {
+        "zh-CN": "询问病情演变",
+        "en": "Clarify progression"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "progression"
+      }
+    },
+    {
+      "id": "history-3",
+      "domain": "history",
+      "text": {
+        "zh-CN": "询问伴随症状",
+        "en": "Clarify associated symptoms"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "associated"
+      }
+    },
+    {
+      "id": "examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对已记录的查体发现",
+        "en": "Review the documented examination"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "exam-1"
+          },
+          {
+            "examined": "exam-2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "records",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅关键记录后再决策",
+        "en": "Review key records before deciding"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "markers",
+            "phase": "workup"
+          },
+          {
+            "read": "ultrasound",
+            "phase": "workup"
+          },
+          {
+            "read": "pet",
+            "phase": "workup"
+          },
+          {
+            "read": "pathology",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnosis",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "选择证据最支持的解释",
+        "en": "Choose the interpretation best supported by the evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "interpretation"
+      }
+    },
+    {
+      "id": "safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "识别出血风险，不无条件重复穿刺",
+        "en": "Recognise bleeding risk and avoid unassessed repeat biopsy"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "safety"
+      }
+    },
+    {
+      "id": "outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "核对原报告结局并保留未知",
+        "en": "Review the reported outcome without filling gaps"
+      },
+      "weight": 1,
+      "met": {
+        "read": "outcome",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "safe-plan",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次选择符合证据的处理路径",
+        "en": "Choose an evidence-consistent plan on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "解释证据与不确定性，核对患者或陪同者理解",
+        "en": "Explain evidence and uncertainty and check patient or companion understanding"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "以通俗语言说明主要判断、下一步及至少一项具体未知，询问理解和顾虑；不得声称未载明的疗效或预后。",
+        "en": "Use plain language for the interpretation, next step and at least one case-specific uncertainty; check understanding and concerns, without asserting undocumented benefit or prognosis."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "先区分病史、检查和推论；指出不确定性。后续经过须在完成当前决策后查阅。",
+        "en": "Distinguish history, findings and inference, and state uncertainty. The subsequent course is reviewed after completing the current decisions."
+      },
+      "interprets": [
+        "markers",
+        "ultrasound",
+        "pet",
+        "pathology",
+        "outcome"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "病理确诊肝血管肉瘤，伴影像出血线索，后续发生致死性肝内出血。",
+      "en": "Histology diagnosed hepatic angiosarcoma with imaging evidence suggesting bleeding; fatal intrahepatic haemorrhage followed."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "PET 摄取不是组织学特异诊断。",
+        "en": "PET uptake does not specify histology."
+      },
+      {
+        "zh-CN": "影像、病理和出血风险须同时考虑（原病例）。",
+        "en": "Consider imaging, pathology and bleeding risk together (source case)."
+      },
+      {
+        "zh-CN": "时间先后不自动构成穿刺致死的因果证据。",
+        "en": "Temporal sequence does not establish biopsy-related fatality."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例回顾不能证明因果或比较疗效。数字仅为原报告时点记录，不是实时监测；没有参考区间的数据不自行补区间。",
+      "en": "A single retrospective report cannot establish causality or comparative efficacy. Numbers are source time-point records, not live monitoring; missing reference intervals are not invented."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "病理免疫组化、凝血结果、血流动力学与详细抢救记录未载。",
+        "en": "Immunostains, coagulation data, haemodynamics and detailed resuscitation records are absent."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "PET 摄取不是组织学特异诊断。",
+        "en": "PET uptake does not specify histology."
+      },
+      {
+        "zh-CN": "影像、病理和出血风险须同时考虑（原病例）。",
+        "en": "Consider imaging, pathology and bleeding risk together (source case)."
+      },
+      {
+        "zh-CN": "时间先后不自动构成穿刺致死的因果证据。",
+        "en": "Temporal sequence does not establish biopsy-related fatality."
+      }
+    ],
+    "references": [
+      "楊波. 18F-FDG PET/CT診斷原發性多發性肝血管肉瘤1例. 鏡湖醫學. 2025;25(02):54. doi:10.12408/j.issn2223-4462.2025.02.016",
+      "https://rs.yiigle.com/cmaid/1653405"
+    ],
+    "notice": {
+      "zh-CN": "本评分为教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "病理免疫组化、凝血结果、血流动力学与详细抢救记录未载。",
+      "en": "Immunostains, coagulation data, haemodynamics and detailed resuscitation records are absent."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1653405/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "0572fedca68ec6d5235747951cc82233adc3fa4ffbc8f8649ae4b62d7baab04b"
+    },
+    {
+      "id": "fig03",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1653405/fig03.png",
+      "title": {
+        "zh-CN": "原文图组 3（含后续病程，仅供复盘）",
+        "en": "Source image group 3 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "4d025d03f5ae62b44aa692101bdf226308680b0d3d998c9b8f47a0cc1ccb722d"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "progression"
+    },
+    {
+      "type": "ask",
+      "itemId": "associated"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "operations"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "redflags"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior"
+    },
+    {
+      "type": "ask",
+      "itemId": "concerns"
+    },
+    {
+      "type": "ask",
+      "itemId": "baseline"
+    },
+    {
+      "type": "examine",
+      "findingId": "exam-1"
+    },
+    {
+      "type": "examine",
+      "findingId": "exam-2"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "markers",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ultrasound"
+    },
+    {
+      "type": "read",
+      "investigationId": "ultrasound",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "pet"
+    },
+    {
+      "type": "read",
+      "investigationId": "pet",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "pathology"
+    },
+    {
+      "type": "read",
+      "investigationId": "pathology",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "interpretation",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "outcome"
+    },
+    {
+      "type": "read",
+      "investigationId": "outcome",
+      "phase": "followup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "safety",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1653405",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1653405",
+    "sourceTextSha256": "3af68978f2916b7deeceae13537cc4a82534aa918e4956536ee94432feb76d33",
+    "historicalReview": true,
+    "authorChecks": {
+      "individuallyRead": true,
+      "sourceValuesRetained": true,
+      "noUnrecordedPhysiology": true,
+      "mediaAwaitingPrivacyReview": true,
+      "doiWebVerified": true,
+      "publisherVerificationFile": "publisher-verification.json"
+    },
+    "testUtterances": [
+      {
+        "text": "说说来院原因。",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Tell me your main complaint.",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "症状持续多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Describe the symptom onset.",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "病情变化过程是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "Describe the symptom progression.",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "还有哪些伴随症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "Tell me about associated symptoms.",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "讲讲既往疾病。",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Tell me your past medical history.",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "讲讲既往手术。",
+        "locale": "zh-CN",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "Tell me your surgical history.",
+        "locale": "en",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "核对一下用药清单。",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Could we review your medication list?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "请说说药物过敏史。",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Tell me about drug allergies.",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "介绍一下家族病史。",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "What is your family history?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "了解一下环境接触。",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Describe relevant environmental exposure.",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "现在的活动能力怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Describe your daily activities.",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "有没有危险症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "redflags"
+        ]
+      },
+      {
+        "text": "Were there any warning symptoms?",
+        "locale": "en",
+        "expect": [
+          "redflags"
+        ]
+      },
+      {
+        "text": "讲讲之前就诊经过。",
+        "locale": "zh-CN",
+        "expect": [
+          "prior"
+        ]
+      },
+      {
+        "text": "Describe the earlier assessment.",
+        "locale": "en",
+        "expect": [
+          "prior"
+        ]
+      },
+      {
+        "text": "想了解您的个人担心。",
+        "locale": "zh-CN",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "Tell me your personal concerns.",
+        "locale": "en",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "介绍一下平时情况。",
+        "locale": "zh-CN",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "Describe your baseline health.",
+        "locale": "en",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "主要不适具体是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Could you clarify main complaint?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "起病时间具体是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Could you clarify symptom onset?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "病情变化具体是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "Could you clarify symptom progression?",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,1851 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1069544",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "反复上腹痛伴两次血钙升高",
+    "en": "Recurrent upper abdominal pain with elevated calcium on two occasions"
+  },
+  "summary": {
+    "zh-CN": "腹痛缓解后再次发作，两次都出现血钙升高及肾结石线索，需要从病因层面重新评估。",
+    "en": "Abdominal pain recurs after initial recovery, with elevated calcium and renal stones on both occasions."
+  },
+  "specialty": [
+    "gastroenterology",
+    "endocrinology",
+    "surgery"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "谢钧韬, 叶建宇, 尹耀新, 欧希, 易辛, 刘吉奎. 以急性胰腺炎为首发表现的甲状旁腺腺瘤一例. 中华普通外科学文献（电子版）. 2010;04(01):66-67. doi: 10.3760/cma.j.issn.1674-0793.2010.01.120.",
+    "authors": [
+      "谢钧韬",
+      "叶建宇",
+      "尹耀新",
+      "欧希",
+      "易辛",
+      "刘吉奎"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "Fifth International Workshop 2022, checked 2026-10-28; scope repeated calcium/PTH biochemical classification and distinction from localisation."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.1674-0793.2010.01.120"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别胰腺炎中的高钙线索。",
+      "en": "Recognise hypercalcaemia in pancreatitis."
+    },
+    {
+      "zh-CN": "区分生化定性和影像定位。",
+      "en": "Distinguish biochemistry from localisation."
+    },
+    {
+      "zh-CN": "处理项目名称冲突。",
+      "en": "Handle conflicting analyte labels."
+    },
+    {
+      "zh-CN": "讨论肾骨和围术期风险。",
+      "en": "Discuss renal, bone and perioperative risks."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "陈知远（化名）",
+      "en": "Chen Zhiyuan (pseudonym)"
+    },
+    "age": 58,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "持续上腹胀痛伴恶心呕吐一天",
+      "en": "Persistent upper abdominal pain with nausea and vomiting for one day"
+    },
+    "triageNote": {
+      "zh-CN": "从第一次发作开始，后续复发与定位检查逐步开放。",
+      "en": "Begin with the first episode, then reveal recurrence and localisation studies."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "上腹持续胀痛，伴恶心呕吐，一天后入院。",
+        "en": "Persistent upper abdominal distension/pain with nausea and vomiting led to admission after one day."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "interval"
+          },
+          {
+            "asked": "blood-pressure"
+          },
+          {
+            "asked": "recurrence"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "pain",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "第一次腹痛怎样开始？",
+        "en": "How did the first pain episode begin?"
+      },
+      "answer": {
+        "zh-CN": "上腹持续胀痛，伴恶心呕吐，一天后入院。",
+        "en": "Persistent upper abdominal distension/pain with nausea and vomiting led to admission after one day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "初次腹痛",
+          "持续胀痛",
+          "恶心呕吐",
+          "首发经过"
+        ],
+        "en": [
+          "initial abdominal pain",
+          "persistent distension pain",
+          "nausea vomiting",
+          "first episode course"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "interval",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "第一次恢复后有什么不适？",
+        "en": "What symptoms remained after the first recovery?"
+      },
+      "answer": {
+        "zh-CN": "出院后饮食排便正常，无腹痛腹胀或骨痛腰背酸痛，无多尿多饮。",
+        "en": "After discharge intake and bowel function were normal, without abdominal or bone/back pain, polyuria or polydipsia."
+      },
+      "keywords": {
+        "zh-CN": [
+          "间歇期症状",
+          "恢复后不适",
+          "骨痛尿量",
+          "出院后状态"
+        ],
+        "en": [
+          "interval symptoms",
+          "postrecovery symptoms",
+          "bone pain urine",
+          "postdischarge state"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "blood-pressure",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "两次之间血压怎样？",
+        "en": "How was blood pressure between episodes?"
+      },
+      "answer": {
+        "zh-CN": "第一次出院后未吃降压药时血压也正常。",
+        "en": "Blood pressure was normal without antihypertensive medicine after the first discharge."
+      },
+      "keywords": {
+        "zh-CN": [
+          "间期血压",
+          "出院血压",
+          "停药血压",
+          "平时血压"
+        ],
+        "en": [
+          "interval pressure",
+          "discharge pressure",
+          "pressure without medicine",
+          "usual pressure"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "recurrence",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "后来隔多久又发作？",
+        "en": "How long later did pain recur?"
+      },
+      "answer": {
+        "zh-CN": "约二十个月后再次突然上腹胀痛、恶心呕吐，八小时后就诊。",
+        "en": "About twenty months later sudden upper abdominal pain, nausea and vomiting recurred, prompting care after eight hours."
+      },
+      "keywords": {
+        "zh-CN": [
+          "再次发作",
+          "二十个月后",
+          "复发腹痛",
+          "第二次就诊"
+        ],
+        "en": [
+          "recurrent episode",
+          "twenty months later",
+          "recurrent abdominal pain",
+          "second presentation"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family-known",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族内分泌或结石病史有记录吗？",
+        "en": "Was familial endocrine or stone disease documented?"
+      },
+      "answer": {
+        "zh-CN": "原文没有提供相关家族资料。",
+        "en": "Related family data were not supplied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族内分泌",
+          "亲属结石",
+          "家系疾病",
+          "遗传背景"
+        ],
+        "en": [
+          "family endocrine disease",
+          "relatives stones",
+          "familial illness",
+          "inherited background"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "除了已记录的情况，家族疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about family illnesses?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "核对首次腹部和颈部检查",
+        "en": "Review first abdominal and neck findings"
+      },
+      "finding": {
+        "zh-CN": "左上腹及脐周压痛，局部轻紧张，反跳可疑，Murphy阴性；颈部无可触及包块。",
+        "en": "Left upper/periumbilical tenderness with mild guarding and equivocal rebound, negative Murphy sign; no palpable neck mass."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "episodes",
+      "name": {
+        "zh-CN": "两次腹部和生化记录",
+        "en": "Two abdominal and biochemical episodes"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "两次腹部和生化记录"
+        ],
+        "en": [
+          "Two abdominal and biochemical episodes"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "首次淀粉酶1139 U/L、钙2.76 mmol/L，CT胰腺炎及左肾结石；再次淀粉酶1055.9 U/L、钙2.87 mmol/L，CT仍见胰腺炎和结石。",
+            "en": "Initial amylase 1139 U/L and calcium 2.76 mmol/L with CT pancreatitis and left renal stone; recurrence showed amylase 1055.9 U/L and calcium 2.87 mmol/L with pancreatitis/stones again."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "localisation",
+      "name": {
+        "zh-CN": "颈部定位与病理记录",
+        "en": "Neck localisation and pathology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "颈部定位与病理记录"
+        ],
+        "en": [
+          "Neck localisation and pathology"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "超声CT提示左甲状腺下极后方病灶，切除约2×1.5×1 cm，病理为甲状旁腺腺瘤。术前“31 pmol/L”项目原文误标可能，未直接转写为已核实PTH；术后明确标注PTH降至3.8 pmol/L、钙2.18 mmol/L。",
+            "en": "Ultrasound/CT localised a lesion behind the lower left thyroid; a roughly 2×1.5×1 cm resection was a parathyroid adenoma. A preoperative “31 pmol/L” analyte is questionably labelled in the source and is not silently treated as verified PTH; explicitly labelled postoperative PTH fell to 3.8 pmol/L and calcium to 2.18 mmol/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "切除后PTH和钙维持正常，曾短暂四肢麻木而无抽搐，后自行缓解；报告随访未诉不适，时长未说明。",
+            "en": "PTH and calcium remained normal after resection; transient limb tingling without convulsions resolved. Follow-up reported no symptoms without a specified duration."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "interval"
+          },
+          {
+            "asked": "blood-pressure"
+          },
+          {
+            "asked": "recurrence"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "abdomen"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "反复胰腺炎的高钙和结石意味着什么？",
+        "en": "What do hypercalcaemia and stones imply in recurrent pancreatitis?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "episodes",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "calcium",
+          "text": {
+            "zh-CN": "应调查持续高钙的内分泌病因，同时保留其他胰腺炎鉴别",
+            "en": "Investigate an endocrine cause of persistent hypercalcaemia while retaining other pancreatitis causes"
+          },
+          "feedback": {
+            "zh-CN": "两次异常和结石使血钙不能被当作偶然。",
+            "en": "Repeated abnormalities and stones make calcium difficult to dismiss as incidental."
+          },
+          "correct": true
+        },
+        {
+          "id": "ignore",
+          "text": {
+            "zh-CN": "腹痛缓解后不必再查高钙",
+            "en": "Calcium need not be reviewed once pain resolves"
+          },
+          "feedback": {
+            "zh-CN": "病因未处理可能仍持续。",
+            "en": "The unresolved cause may persist."
+          },
+          "correct": false
+        },
+        {
+          "id": "neck",
+          "text": {
+            "zh-CN": "摸不到颈部肿块就排除甲状旁腺病",
+            "en": "No palpable neck lump excludes parathyroid disease"
+          },
+          "feedback": {
+            "zh-CN": "小腺体病变通常不能靠触诊排除。",
+            "en": "Small-gland disease cannot be excluded by palpation."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "localisation",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "adenoma",
+          "text": {
+            "zh-CN": "病理与术后钙/PTH变化支持腺瘤，但术前项目标注和完整生化标准需核实",
+            "en": "Pathology and postoperative calcium/PTH changes support an adenoma, while preoperative labelling and complete biochemical criteria need verification"
+          },
+          "feedback": {
+            "zh-CN": "影像用于定位，不能取代准确生化定性。",
+            "en": "Imaging localises and does not replace accurate biochemical classification."
+          },
+          "correct": true
+        },
+        {
+          "id": "rename",
+          "text": {
+            "zh-CN": "可把“甲状腺素31”静默改为PTH31",
+            "en": "Silently relabel “thyroxine 31” as PTH 31"
+          },
+          "feedback": {
+            "zh-CN": "这会掩盖源文项目名冲突。",
+            "en": "This conceals the conflicting analyte label."
+          },
+          "correct": false
+        },
+        {
+          "id": "causal-proof",
+          "text": {
+            "zh-CN": "单例证明所有胰腺炎均由腺瘤引起",
+            "en": "This case proves all pancreatitis is caused by adenomas"
+          },
+          "feedback": {
+            "zh-CN": "单例关联不能推广为普遍因果。",
+            "en": "A single association is not universal causation."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前复核与管理应怎样做？",
+        "en": "How should current reassessment and management proceed?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "localisation",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "confirm",
+          "text": {
+            "zh-CN": "核实重复钙、白蛋白或离子钙及PTH，评估肾骨受累并由内分泌外科讨论",
+            "en": "Verify repeat calcium, albumin or ionised calcium and PTH, assess renal/bone effects and discuss with endocrine surgery"
+          },
+          "feedback": {
+            "zh-CN": "2022国际工作组将生化诊断与定位区分，围术期也需监测低钙症状。",
+            "en": "The 2022 workshop separates biochemical diagnosis from localisation; perioperative hypocalcaemic symptoms need monitoring."
+          },
+          "correct": true
+        },
+        {
+          "id": "scan-only",
+          "text": {
+            "zh-CN": "仅凭定位CT直接诊断所有功能异常",
+            "en": "Use localisation CT alone to diagnose every functional abnormality"
+          },
+          "feedback": {
+            "zh-CN": "定位不能替代激素和血钙核验。",
+            "en": "Localisation does not replace hormone and calcium verification."
+          },
+          "correct": false
+        },
+        {
+          "id": "routine-antibiotic",
+          "text": {
+            "zh-CN": "把旧文禁食和抗菌方案当所有胰腺炎默认",
+            "en": "Make historical fasting and antibiotics the default for every pancreatitis"
+          },
+          "feedback": {
+            "zh-CN": "历史综合处置不构成通用当前方案。",
+            "en": "Historical combined care is not a universal current regimen."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "interval"
+          },
+          {
+            "asked": "blood-pressure"
+          },
+          {
+            "asked": "recurrence"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "family-known"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "episodes",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "localisation",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "核实生化定性与项目名称，再作定位和围术期计划",
+        "en": "Verify biochemical classification and analyte names before localisation and perioperative planning"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明重复高钙与结石具有病因提示。；承认完整术前PTH原始报告、白蛋白/离子钙及长期结局缺失。，用复述确认理解。",
+        "en": "Explain that Repeated hypercalcaemia and stones are aetiological clues.; acknowledge Original preoperative PTH, albumin/ionised calcium and long-term outcomes are absent. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "episodes",
+        "localisation",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告以反复胰腺炎为线索发现甲状旁腺腺瘤及高钙，术前一项激素名称存在不确定性。",
+      "en": "Recurrent pancreatitis led to discovery of a parathyroid adenoma with hypercalcaemia, with uncertainty in one preoperative hormone label."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "重复高钙与结石具有病因提示。",
+        "en": "Repeated hypercalcaemia and stones are aetiological clues."
+      },
+      {
+        "zh-CN": "病理支持病灶类型。",
+        "en": "Pathology supports lesion type."
+      },
+      {
+        "zh-CN": "生化项目名错误不能被隐去。",
+        "en": "An analyte-labelling error must not be hidden."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "颈部触诊阴性不能排除。",
+        "en": "A negative neck examination does not exclude disease."
+      },
+      {
+        "zh-CN": "定位和定性是不同问题。",
+        "en": "Localisation and classification are different questions."
+      },
+      {
+        "zh-CN": "术后麻木需要低钙风险思考。",
+        "en": "Postoperative tingling raises hypocalcaemia concerns."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整术前PTH原始报告、白蛋白/离子钙及长期结局缺失。",
+        "en": "Original preoperative PTH, albumin/ionised calcium and long-term outcomes are absent."
+      }
+    ],
+    "references": [
+      "谢钧韬, 叶建宇, 尹耀新, 欧希, 易辛, 刘吉奎. 以急性胰腺炎为首发表现的甲状旁腺腺瘤一例. 中华普通外科学文献（电子版）. 2010;04(01):66-67. doi: 10.3760/cma.j.issn.1674-0793.2010.01.120.",
+      "https://rs.yiigle.com/cmaid/1069544",
+      "https://doi.org/10.3760/cma.j.issn.1674-0793.2010.01.120",
+      "Fifth International Workshop on primary hyperparathyroidism, 2022. https://doi.org/10.1002/jbmr.4677"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整术前PTH原始报告、白蛋白/离子钙及长期结局缺失。",
+      "en": "Original preoperative PTH, albumin/ionised calcium and long-term outcomes are absent."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "interval"
+    },
+    {
+      "type": "ask",
+      "itemId": "blood-pressure"
+    },
+    {
+      "type": "ask",
+      "itemId": "recurrence"
+    },
+    {
+      "type": "ask",
+      "itemId": "family-known"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "order",
+      "investigationId": "episodes"
+    },
+    {
+      "type": "read",
+      "investigationId": "episodes",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "calcium"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "localisation"
+    },
+    {
+      "type": "read",
+      "investigationId": "localisation",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "adenoma"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "confirm"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1069544",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1069544",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于初次腹痛，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Could you tell me about initial abdominal pain?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "我想了解持续胀痛。",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Please explain persistent distension pain in more detail.",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "关于间歇期症状，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "interval"
+        ]
+      },
+      {
+        "text": "Could you tell me about interval symptoms?",
+        "locale": "en",
+        "expect": [
+          "interval"
+        ]
+      },
+      {
+        "text": "我想了解恢复后不适。",
+        "locale": "zh-CN",
+        "expect": [
+          "interval"
+        ]
+      },
+      {
+        "text": "Please explain postrecovery symptoms in more detail.",
+        "locale": "en",
+        "expect": [
+          "interval"
+        ]
+      },
+      {
+        "text": "关于间期血压，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood-pressure"
+        ]
+      },
+      {
+        "text": "Could you tell me about interval pressure?",
+        "locale": "en",
+        "expect": [
+          "blood-pressure"
+        ]
+      },
+      {
+        "text": "我想了解出院血压。",
+        "locale": "zh-CN",
+        "expect": [
+          "blood-pressure"
+        ]
+      },
+      {
+        "text": "Please explain discharge pressure in more detail.",
+        "locale": "en",
+        "expect": [
+          "blood-pressure"
+        ]
+      },
+      {
+        "text": "关于再次发作，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "recurrence"
+        ]
+      },
+      {
+        "text": "Could you tell me about recurrent episode?",
+        "locale": "en",
+        "expect": [
+          "recurrence"
+        ]
+      },
+      {
+        "text": "我想了解二十个月后。",
+        "locale": "zh-CN",
+        "expect": [
+          "recurrence"
+        ]
+      },
+      {
+        "text": "Please explain twenty months later in more detail.",
+        "locale": "en",
+        "expect": [
+          "recurrence"
+        ]
+      },
+      {
+        "text": "关于家族内分泌，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Could you tell me about family endocrine disease?",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "我想了解亲属结石。",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Please explain relatives stones in more detail.",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/1069544"
+    }
+  }
+}

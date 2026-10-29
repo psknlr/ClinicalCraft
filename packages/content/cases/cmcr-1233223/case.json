@@ -1,0 +1,1895 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1233223",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "青年反复头晕与后来出现的神经症状",
+    "en": "Recurrent dizziness followed by evolving neurological symptoms"
+  },
+  "summary": {
+    "zh-CN": "初次神经检查无明确阳性表现，后续发作与连续影像改变需放在同一时间线上理解。",
+    "en": "Initial examination is unrevealing; later episodes and serial imaging changes need chronological interpretation."
+  },
+  "specialty": [
+    "neurology",
+    "radiology"
+  ],
+  "setting": "outpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "周福庆, 龚洪翰. 1例复发缓解型多发性硬化MRI连贯分析. 磁共振成像. 2011;02(04):314-316. doi: 10.3969/j.issn.1674-8034.2011.04.015.",
+    "authors": [
+      "周福庆",
+      "龚洪翰"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "ECTRIMS current McDonald criteria page, checked 2026-10-28; confirms 2024 revisions published 2025; no claim that this incomplete historical dataset fulfils every modern criterion."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3969/j.issn.1674-8034.2011.04.015"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "比较串行MRI的诊断价值。",
+      "en": "Compare the value of serial MRI."
+    },
+    {
+      "zh-CN": "解释时间与部位变化。",
+      "en": "Explain changes in time and location."
+    },
+    {
+      "zh-CN": "辨认未记录检验。",
+      "en": "Identify unrecorded testing."
+    },
+    {
+      "zh-CN": "区分历史诊断与现行复核。",
+      "en": "Distinguish historical diagnosis from current reassessment."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "蒋知远（化名）",
+      "en": "Jiang Zhiyuan (pseudonym)"
+    },
+    "age": 26,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "头晕不适一个多月",
+      "en": "Dizziness and discomfort for over one month"
+    },
+    "triageNote": {
+      "zh-CN": "从首诊开始逐步解锁后续影像。",
+      "en": "Begin at the first presentation and unlock subsequent imaging in sequence."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "已经头晕不适一个多月。",
+        "en": "Dizziness and discomfort had lasted over one month."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "sitting"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "dizziness"
+          },
+          {
+            "asked": "initial-function"
+          },
+          {
+            "asked": "prior-care"
+          },
+          {
+            "asked": "prior-medicine"
+          },
+          {
+            "examined": "initial-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "dizziness",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "头晕持续多久了？",
+        "en": "How long has dizziness lasted?"
+      },
+      "answer": {
+        "zh-CN": "已经头晕不适一个多月。",
+        "en": "Dizziness and discomfort had lasted over one month."
+      },
+      "keywords": {
+        "zh-CN": [
+          "头晕病程",
+          "首诊不适",
+          "眩晕时间",
+          "开始症状"
+        ],
+        "en": [
+          "dizziness course",
+          "initial discomfort",
+          "dizziness duration",
+          "first symptoms"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "initial-function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "第一次就诊有记录明确残疾吗？",
+        "en": "Was definite disability recorded at the first visit?"
+      },
+      "answer": {
+        "zh-CN": "初次记录EDSS为0，检查没有明显阳性体征。",
+        "en": "Initial EDSS was 0 with no clear positive examination findings."
+      },
+      "keywords": {
+        "zh-CN": [
+          "初次功能",
+          "首诊残疾",
+          "初诊活动",
+          "最早能力"
+        ],
+        "en": [
+          "initial function",
+          "first disability score",
+          "presenting activity",
+          "earliest ability"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-care",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "之前已经确诊神经系统疾病吗？",
+        "en": "Was a neurological disorder already established?"
+      },
+      "answer": {
+        "zh-CN": "首诊资料未给出已确立的神经疾病诊断。",
+        "en": "No established neurological diagnosis was provided in the first-visit record."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往神经诊断",
+          "此前病名",
+          "首诊背景",
+          "旧诊断资料"
+        ],
+        "en": [
+          "prior neurological diagnosis",
+          "previous label",
+          "first visit background",
+          "earlier diagnostic data"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-medicine",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "发病前具体用了哪些药？",
+        "en": "Which medicines were used before presentation?"
+      },
+      "answer": {
+        "zh-CN": "原文没有提供发病前具体用药。",
+        "en": "Specific pre-presentation medicines were not supplied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发病前用药",
+          "早期药物",
+          "原先处方",
+          "既往服药信息"
+        ],
+        "en": [
+          "prepresentation medicines",
+          "early medication",
+          "original prescription",
+          "prior drug information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family-known",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族有类似症状吗？",
+        "en": "Were similar symptoms reported in relatives?"
+      },
+      "answer": {
+        "zh-CN": "原文没有提供相关家族资料。",
+        "en": "Related family information was not supplied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "类似家族史",
+          "亲属神经症状",
+          "家人头晕",
+          "家系资料"
+        ],
+        "en": [
+          "similar family history",
+          "relative neurological symptoms",
+          "family dizziness",
+          "pedigree information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "除了已记录的情况，家族疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about family illnesses?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "initial-exam",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "核对首诊神经检查",
+        "en": "Review the first neurological examination"
+      },
+      "finding": {
+        "zh-CN": "查体和神经生理检查未见明显阳性表现，EDSS 0；血压110/65 mmHg、体温36.9℃。",
+        "en": "Examination and neurophysiology were unrevealing, EDSS 0; blood pressure 110/65 mmHg and temperature 36.9°C."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "baseline",
+      "name": {
+        "zh-CN": "基线MRI与化验",
+        "en": "Baseline MRI and laboratory record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "基线MRI与化验"
+        ],
+        "en": [
+          "Baseline MRI and laboratory record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "脑MRI未见明显异常，仅颈髓点状异常信号，无明显强化；常规化验无明显异常。",
+            "en": "Brain MRI was unrevealing, with only a punctate cervical cord signal abnormality and no clear enhancement; routine laboratory tests were unremarkable."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "serial",
+      "name": {
+        "zh-CN": "随后两次发作与MRI",
+        "en": "Two subsequent episodes and MRI"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "随后两次发作与MRI"
+        ],
+        "en": [
+          "Two subsequent episodes and MRI"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "约10个月后乏力、视物模糊、听力下降，EDSS 2，左室旁环形强化病灶；治疗35天后强化消失。再约9个月后症状加重伴抑郁表现，左颞叶等新增六个病灶。脑脊液仅记为未见明显异常，未给寡克隆带等详细结果。",
+            "en": "About ten months later weakness, blurred vision and reduced hearing accompanied EDSS 2 and a ring-enhancing left periventricular lesion; enhancement resolved after 35 days of treatment. About nine months later worsening with depressive features accompanied six new lesions including left temporal white matter. CSF was described only as unremarkable without detailed oligoclonal-band results."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告在第三次发作后诊断复发缓解型多发性硬化急性期；具体长期用药和后续结局未提供。",
+            "en": "The source diagnosed an acute relapse of relapsing-remitting multiple sclerosis after the third episode; long-term treatment and outcomes were not supplied."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "dizziness"
+          },
+          {
+            "asked": "initial-function"
+          },
+          {
+            "asked": "prior-care"
+          },
+          {
+            "asked": "prior-medicine"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "initial-exam"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "首诊影像应怎样解释？",
+        "en": "How should the first MRI be interpreted?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "baseline",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "uncertain",
+          "text": {
+            "zh-CN": "非特异症状与单个不典型信号需要随访和鉴别，尚不足直接确诊",
+            "en": "Nonspecific symptoms and one atypical signal require follow-up and differential assessment rather than immediate certainty"
+          },
+          "feedback": {
+            "zh-CN": "保留异常线索，但不把单点信号等同完整诊断。",
+            "en": "Retain the clue without equating one signal with a complete diagnosis."
+          },
+          "correct": true
+        },
+        {
+          "id": "normal",
+          "text": {
+            "zh-CN": "脑MRI无异常说明今后不可能有神经病",
+            "en": "An unrevealing brain MRI excludes future neurological disease"
+          },
+          "feedback": {
+            "zh-CN": "颈髓线索和后续临床变化仍有意义。",
+            "en": "The cord finding and later clinical evolution remain relevant."
+          },
+          "correct": false
+        },
+        {
+          "id": "certain",
+          "text": {
+            "zh-CN": "已能凭一点信号确诊多发性硬化",
+            "en": "One signal definitively establishes multiple sclerosis"
+          },
+          "feedback": {
+            "zh-CN": "需要综合临床、分布、时序及替代解释。",
+            "en": "Clinical features, distribution, timing and alternatives require integration."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "serial",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "dissemination",
+          "text": {
+            "zh-CN": "新部位病灶和复发构成时空演变证据，支持原报告的复发缓解型判断",
+            "en": "New lesions and relapses provide temporal and spatial evolution supporting the report’s relapsing-remitting interpretation"
+          },
+          "feedback": {
+            "zh-CN": "序列比较强于单张影像；现代标准所需其他资料仍有缺口。",
+            "en": "Serial comparison is stronger than a single scan, while modern assessment still has gaps."
+          },
+          "correct": true
+        },
+        {
+          "id": "cure",
+          "text": {
+            "zh-CN": "强化消失就表示永久治愈",
+            "en": "Loss of enhancement means permanent cure"
+          },
+          "feedback": {
+            "zh-CN": "强化只反映部分活动性，之后有新增病灶。",
+            "en": "Enhancement reflects only part of activity and later lesions appeared."
+          },
+          "correct": false
+        },
+        {
+          "id": "csf",
+          "text": {
+            "zh-CN": "笼统脑脊液正常等于已测所有抗体和标志物",
+            "en": "An unremarkable CSF statement means all biomarkers were tested"
+          },
+          "feedback": {
+            "zh-CN": "未列具体结果不能补写寡克隆带或抗体。",
+            "en": "Unlisted oligoclonal bands or antibodies cannot be invented."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前复核应强调什么？",
+        "en": "What should current reassessment emphasise?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "serial",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "specialist",
+          "text": {
+            "zh-CN": "由神经免疫专科按现行标准重审影像、临床发作及相似疾病，讨论长期治疗",
+            "en": "Neuroimmunology review should apply current criteria to imaging, attacks and mimics, then discuss long-term therapy"
+          },
+          "feedback": {
+            "zh-CN": "2024修订标准已于2025发表，旧2005阈值不能作为唯一现行规则。",
+            "en": "The 2024 revisions were published in 2025; historical 2005 thresholds are not the sole current rules."
+          },
+          "correct": true
+        },
+        {
+          "id": "old",
+          "text": {
+            "zh-CN": "只按文中2005条款机械确诊",
+            "en": "Diagnose mechanically using only the article’s 2005 clauses"
+          },
+          "feedback": {
+            "zh-CN": "标准已更新，且原始资料未完整覆盖其要求。",
+            "en": "Criteria have changed and the source dataset is incomplete."
+          },
+          "correct": false
+        },
+        {
+          "id": "wait",
+          "text": {
+            "zh-CN": "没有明显查体异常就不安排随访",
+            "en": "Avoid follow-up without obvious examination signs"
+          },
+          "feedback": {
+            "zh-CN": "连续影像和复发症状提示需要主动复核。",
+            "en": "Serial imaging and recurrent symptoms warrant reassessment."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "dizziness"
+          },
+          {
+            "asked": "initial-function"
+          },
+          {
+            "asked": "prior-care"
+          },
+          {
+            "asked": "prior-medicine"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "family-known"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "initial-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "baseline",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "serial",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "使用现行专科标准复核并排除相似病，不从单张MRI过度确诊",
+        "en": "Use current specialist criteria and assess mimics without overdiagnosing from a single MRI"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明首诊证据有限。；承认缺少完整神经定位、寡克隆带、AQP4/MOG及长期治疗资料。，用复述确认理解。",
+        "en": "Explain that Initial evidence was limited.; acknowledge Complete neurological localisation, oligoclonal bands, AQP4/MOG and long-term therapy data are missing. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "baseline",
+        "serial",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "病例展示连续临床和MRI证据如何逐步支持脱髓鞘疾病判断。",
+      "en": "The case illustrates how serial clinical and MRI evidence progressively supports a demyelinating interpretation."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "首诊证据有限。",
+        "en": "Initial evidence was limited."
+      },
+      {
+        "zh-CN": "后续新增病灶改变判断强度。",
+        "en": "New later lesions strengthen the interpretation."
+      },
+      {
+        "zh-CN": "旧标准和缺失检验必须标明。",
+        "en": "Historical criteria and missing tests must be explicit."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "不将临床症状自动称为影像孤立综合征。",
+        "en": "Do not automatically label a symptomatic case radiologically isolated syndrome."
+      },
+      {
+        "zh-CN": "强化消退不是疾病消失。",
+        "en": "Loss of enhancement is not disappearance of disease."
+      },
+      {
+        "zh-CN": "按当前标准避免过诊。",
+        "en": "Avoid overdiagnosis using current assessment."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "缺少完整神经定位、寡克隆带、AQP4/MOG及长期治疗资料。",
+        "en": "Complete neurological localisation, oligoclonal bands, AQP4/MOG and long-term therapy data are missing."
+      }
+    ],
+    "references": [
+      "周福庆, 龚洪翰. 1例复发缓解型多发性硬化MRI连贯分析. 磁共振成像. 2011;02(04):314-316. doi: 10.3969/j.issn.1674-8034.2011.04.015.",
+      "https://rs.yiigle.com/cmaid/1233223",
+      "https://doi.org/10.3969/j.issn.1674-8034.2011.04.015",
+      "ECTRIMS. McDonald Diagnostic Criteria: 2024 revisions published 2025. https://ectrims.eu/mcdonald-diagnostic-criteria"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "缺少完整神经定位、寡克隆带、AQP4/MOG及长期治疗资料。",
+      "en": "Complete neurological localisation, oligoclonal bands, AQP4/MOG and long-term therapy data are missing."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1233223/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "93a34ea1e82bbda164df2514db5750eace2b32306850f88c9af6b3343445ebea"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1233223/fig02.png",
+      "title": {
+        "zh-CN": "原文图组 2（含后续病程，仅供复盘）",
+        "en": "Source image group 2 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "803df291693cf66a6f2d4f5905fbb0b501a95c110dde49597b88c8b5ccca53a1"
+    },
+    {
+      "id": "fig03",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1233223/fig03.png",
+      "title": {
+        "zh-CN": "原文图组 3（含后续病程，仅供复盘）",
+        "en": "Source image group 3 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "3cfdae2c23701d34dacb867d0fec943fb81577d0b6191cf1bda597d230a120a1"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "dizziness"
+    },
+    {
+      "type": "ask",
+      "itemId": "initial-function"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-medicine"
+    },
+    {
+      "type": "ask",
+      "itemId": "family-known"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "initial-exam"
+    },
+    {
+      "type": "order",
+      "investigationId": "baseline"
+    },
+    {
+      "type": "read",
+      "investigationId": "baseline",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "uncertain"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "serial"
+    },
+    {
+      "type": "read",
+      "investigationId": "serial",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "dissemination"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "specialist"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1233223",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1233223",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于头晕病程，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "dizziness"
+        ]
+      },
+      {
+        "text": "Could you tell me about dizziness course?",
+        "locale": "en",
+        "expect": [
+          "dizziness"
+        ]
+      },
+      {
+        "text": "我想了解首诊不适。",
+        "locale": "zh-CN",
+        "expect": [
+          "dizziness"
+        ]
+      },
+      {
+        "text": "Please explain initial discomfort in more detail.",
+        "locale": "en",
+        "expect": [
+          "dizziness"
+        ]
+      },
+      {
+        "text": "关于初次功能，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "initial-function"
+        ]
+      },
+      {
+        "text": "Could you tell me about initial function?",
+        "locale": "en",
+        "expect": [
+          "initial-function"
+        ]
+      },
+      {
+        "text": "我想了解首诊残疾。",
+        "locale": "zh-CN",
+        "expect": [
+          "initial-function"
+        ]
+      },
+      {
+        "text": "Please explain first disability score in more detail.",
+        "locale": "en",
+        "expect": [
+          "initial-function"
+        ]
+      },
+      {
+        "text": "关于既往神经诊断，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "Could you tell me about prior neurological diagnosis?",
+        "locale": "en",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "我想了解此前病名。",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "Please explain previous label in more detail.",
+        "locale": "en",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "关于发病前用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-medicine"
+        ]
+      },
+      {
+        "text": "Could you tell me about prepresentation medicines?",
+        "locale": "en",
+        "expect": [
+          "prior-medicine"
+        ]
+      },
+      {
+        "text": "我想了解早期药物。",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-medicine"
+        ]
+      },
+      {
+        "text": "Please explain early medication in more detail.",
+        "locale": "en",
+        "expect": [
+          "prior-medicine"
+        ]
+      },
+      {
+        "text": "关于类似家族史，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Could you tell me about similar family history?",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "我想了解亲属神经症状。",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Please explain relative neurological symptoms in more detail.",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/1233223"
+    }
+  }
+}

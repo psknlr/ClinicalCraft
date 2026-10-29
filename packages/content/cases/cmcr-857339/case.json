@@ -1,0 +1,1866 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-857339",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "多年夜间憋醒与逐渐加重的呼吸困难",
+    "en": "Years of nocturnal choking with worsening breathlessness"
+  },
+  "summary": {
+    "zh-CN": "长期睡眠呼吸问题在多次局部手术后仍存在，伴体貌与多层气道异常，需要重新寻找共同原因。",
+    "en": "Sleep-related breathing problems persist despite local operations, with changes in appearance and multilevel airway abnormalities."
+  },
+  "specialty": [
+    "respiratory",
+    "endocrinology",
+    "otolaryngology"
+  ],
+  "setting": "icu",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "牛红丽, 王海播, 张瑞, 马利军. 肢端肥大症合并阻塞性睡眠呼吸暂停综合征及胸骨后甲状腺肿一例. 中华结核和呼吸杂志. 2011;34(11):862-864. doi: 10.3760/cma.j.issn.1001-0939.2011.11.023.",
+    "authors": [
+      "牛红丽",
+      "王海播",
+      "张瑞",
+      "马利军"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "14th acromegaly consensus, issue 2024, checked 2026-10-28; scope age-adjusted IGF-1 and multidisciplinary assessment, not retrospective resolution of conflicting operative history."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.1001-0939.2011.11.023"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别多层气道阻塞。",
+      "en": "Recognise multilevel airway obstruction."
+    },
+    {
+      "zh-CN": "结合体貌与内分泌线索。",
+      "en": "Integrate appearance and endocrine clues."
+    },
+    {
+      "zh-CN": "区分历史和当前检查。",
+      "en": "Distinguish historical and current studies."
+    },
+    {
+      "zh-CN": "透明处理来源内部矛盾。",
+      "en": "Handle internal source contradictions transparently."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "张予宁（化名）",
+      "en": "Zhang Yuning (pseudonym)"
+    },
+    "age": 64,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "喘憋十余年，明显加重一个月",
+      "en": "Breathlessness for over ten years, markedly worse for one month"
+    },
+    "triageNote": {
+      "zh-CN": "重症低氧背景下核对气道、睡眠和内分泌记录。",
+      "en": "Review airway, sleep and endocrine records in the context of severe hypoxaemia."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "多年打鼾、睡眠反复呼吸暂停憋醒，白天嗜睡。",
+        "en": "There were years of snoring, recurrent sleep apnoeas and choking awakenings with daytime sleepiness."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "sleep"
+          },
+          {
+            "asked": "palate-surgery"
+          },
+          {
+            "asked": "thyroid-surgery"
+          },
+          {
+            "asked": "recent"
+          },
+          {
+            "examined": "appearance"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "sleep",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "晚上和白天有什么表现？",
+        "en": "What happened at night and during the day?"
+      },
+      "answer": {
+        "zh-CN": "多年打鼾、睡眠反复呼吸暂停憋醒，白天嗜睡。",
+        "en": "There were years of snoring, recurrent sleep apnoeas and choking awakenings with daytime sleepiness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "睡眠表现",
+          "夜间憋醒",
+          "白天嗜睡",
+          "长期打鼾"
+        ],
+        "en": [
+          "sleep symptoms",
+          "nocturnal choking",
+          "daytime sleepiness",
+          "longstanding snoring"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "palate-surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前针对打鼾做过什么？",
+        "en": "What had been done for snoring?"
+      },
+      "answer": {
+        "zh-CN": "十二年前睡眠监测提示严重异常，做过腭咽成形术，但症状和AHI未明显改善。",
+        "en": "Severe abnormalities on sleep testing twelve years earlier led to palatal surgery, without clear symptom or AHI improvement."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腭咽手术",
+          "旧睡眠治疗",
+          "打鼾手术反应",
+          "早期睡眠检查"
+        ],
+        "en": [
+          "palatal surgery",
+          "earlier sleep treatment",
+          "snoring surgery response",
+          "early sleep study"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "thyroid-surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "还有其他气道相关手术吗？",
+        "en": "Were other airway-related operations performed?"
+      },
+      "answer": {
+        "zh-CN": "六年前发现胸骨后组织压迫气道，做甲状腺部分切除，气短仅稍缓解。",
+        "en": "Six years earlier retrosternal tissue was found compressing the airway; partial thyroid resection gave only slight relief."
+      },
+      "keywords": {
+        "zh-CN": [
+          "甲状腺手术",
+          "胸骨后处理",
+          "气道受压史",
+          "六年前治疗"
+        ],
+        "en": [
+          "thyroid surgery",
+          "retrosternal treatment",
+          "airway compression history",
+          "six year treatment"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "recent",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近变化怎样？",
+        "en": "What changed recently?"
+      },
+      "answer": {
+        "zh-CN": "近一个月喘憋明显加重，半年减重15 kg。",
+        "en": "Breathlessness worsened markedly over a month, with 15 kg weight loss over six months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期喘憋",
+          "一个月加重",
+          "半年减重",
+          "最近变化"
+        ],
+        "en": [
+          "recent breathing difficulty",
+          "monthly deterioration",
+          "six month weight loss",
+          "recent change"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "hypertension",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "有高血压多久了？",
+        "en": "How long has hypertension been present?"
+      },
+      "answer": {
+        "zh-CN": "高血压十余年。",
+        "en": "Hypertension had been present for over ten years."
+      },
+      "keywords": {
+        "zh-CN": [
+          "高血压病程",
+          "长期血压",
+          "血压背景",
+          "既往高压"
+        ],
+        "en": [
+          "hypertension duration",
+          "long term pressure",
+          "pressure background",
+          "prior hypertension"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往手术还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about earlier operations?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "appearance",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对体貌与气道体征",
+        "en": "Review appearance and airway findings"
+      },
+      "finding": {
+        "zh-CN": "下颌、眉弓和颧骨突出，舌及咽部软组织肥厚，颈粗短、指趾末端增粗，声音低沉且不清晰；发绀和下肢水肿。",
+        "en": "Prominent jaw, brow and cheekbones, enlarged tongue/pharyngeal tissues, a short thick neck, broad distal digits and a low indistinct voice; cyanosis and leg oedema."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "respiratory",
+      "name": {
+        "zh-CN": "历史睡眠及当前血气",
+        "en": "Historical sleep study and current blood gases"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "历史睡眠及当前血气"
+        ],
+        "en": [
+          "Historical sleep study and current blood gases"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "旧PSG AHI45次/小时、最低SaO2 55%。本次吸氧2 L/min时PaO2约31 mmHg、PaCO2约58–59 mmHg；本次未做完整PSG。原文夜间SpO2最低15%未经波形核验，不作实时模拟。",
+            "en": "Historical PSG showed AHI 45/hour and nadir SaO2 55%. Current oxygen at 2 L/min accompanied PaO2 about 31 mmHg and PaCO2 about 58–59 mmHg; no complete current PSG was performed. A source nadir SpO2 of 15% lacks waveform verification and is not simulated."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "endocrine",
+      "name": {
+        "zh-CN": "气道影像和内分泌记录",
+        "en": "Airway imaging and endocrine record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "气道影像和内分泌记录"
+        ],
+        "en": [
+          "Airway imaging and endocrine record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "CT示胸骨后甲状腺肿压迫气管、上气道弥漫肥厚；垂体占位约1.2×1.6×1.6 cm。GH41.2 mU/L，糖负荷不抑制；未提供IGF-1。",
+            "en": "CT showed retrosternal goitre compressing the trachea and diffuse upper-airway thickening; a pituitary lesion measured about 1.2×1.6×1.6 cm. GH was 41.2 mU/L without glucose suppression; IGF-1 was not supplied."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原文一段称气管造口、甲状腺及垂体手术后拔管；另一段称垂体瘤不宜手术，仅CPAP改善。两种叙述冲突，不能重建确定手术时间线；共同记载呼吸表现改善。",
+            "en": "One source passage describes tracheostomy, thyroid and pituitary operations followed by decannulation; another says pituitary surgery was unsuitable and CPAP alone improved symptoms. These conflict, so a definite operative timeline cannot be reconstructed; both describe respiratory improvement."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "sleep"
+          },
+          {
+            "asked": "palate-surgery"
+          },
+          {
+            "asked": "thyroid-surgery"
+          },
+          {
+            "asked": "recent"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "appearance"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "反复局部手术疗效差提示什么？",
+        "en": "What does poor response to repeated local surgery suggest?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "respiratory",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "multilevel",
+          "text": {
+            "zh-CN": "可能存在多层气道问题和系统性软组织增生，不能只归于单个咽部病灶",
+            "en": "Multilevel airway disease and systemic tissue growth may coexist beyond one pharyngeal lesion"
+          },
+          "feedback": {
+            "zh-CN": "体貌、舌咽肥厚及胸骨后压迫需要综合解释。",
+            "en": "Appearance, pharyngeal enlargement and retrosternal compression require integration."
+          },
+          "correct": true
+        },
+        {
+          "id": "normal",
+          "text": {
+            "zh-CN": "手术做过说明气道已正常",
+            "en": "Previous surgery means the airway is normal"
+          },
+          "feedback": {
+            "zh-CN": "实际仍有明显呼吸困难和低氧。",
+            "en": "Severe breathlessness and hypoxaemia persist."
+          },
+          "correct": false
+        },
+        {
+          "id": "weight",
+          "text": {
+            "zh-CN": "只减重就能解释全部病变",
+            "en": "Weight management alone explains every abnormality"
+          },
+          "feedback": {
+            "zh-CN": "垂体和组织形态线索不能忽略。",
+            "en": "Pituitary and tissue findings cannot be ignored."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "endocrine",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "acromegaly",
+          "text": {
+            "zh-CN": "表型、GH和垂体影像支持原报告肢端肥大症判断，但现代生化复核仍缺IGF-1",
+            "en": "Phenotype, GH and pituitary imaging support the historical acromegaly diagnosis, with IGF-1 missing for modern biochemical review"
+          },
+          "feedback": {
+            "zh-CN": "不能把未报告IGF-1补成正常或升高。",
+            "en": "Unreported IGF-1 cannot be assumed normal or elevated."
+          },
+          "correct": true
+        },
+        {
+          "id": "thyroid",
+          "text": {
+            "zh-CN": "甲状腺激素正常即可排除气管受压",
+            "en": "Normal thyroid hormones exclude tracheal compression"
+          },
+          "feedback": {
+            "zh-CN": "结构性压迫与激素功能不同。",
+            "en": "Structural compression differs from hormonal function."
+          },
+          "correct": false
+        },
+        {
+          "id": "psg",
+          "text": {
+            "zh-CN": "旧AHI就是本次完整睡眠监测结果",
+            "en": "The old AHI is a complete current sleep study"
+          },
+          "feedback": {
+            "zh-CN": "原文明示本次未做完整PSG。",
+            "en": "The source explicitly says no complete current PSG."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前安全路径应怎样表述？",
+        "en": "How should the current safety pathway be stated?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "endocrine",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "team",
+          "text": {
+            "zh-CN": "先由有经验气道与重症团队稳定呼吸，联合垂体、甲状腺和睡眠团队评估",
+            "en": "Experienced airway/critical-care teams should stabilise breathing with coordinated pituitary, thyroid and sleep assessment"
+          },
+          "feedback": {
+            "zh-CN": "严重多层阻塞和低氧需要联合规划，不能仅按一个病灶决定。",
+            "en": "Severe multilevel obstruction and hypoxaemia require coordinated planning."
+          },
+          "correct": true
+        },
+        {
+          "id": "simple-cpap",
+          "text": {
+            "zh-CN": "任何固定性气道受压都只需居家CPAP",
+            "en": "All fixed airway compression requires only home CPAP"
+          },
+          "feedback": {
+            "zh-CN": "危重气道受压可能需要专业气道干预。",
+            "en": "Critical compression may require specialist airway intervention."
+          },
+          "correct": false
+        },
+        {
+          "id": "choose-story",
+          "text": {
+            "zh-CN": "从相互冲突的术后叙述任意选一段当事实",
+            "en": "Choose one conflicting postoperative story as fact"
+          },
+          "feedback": {
+            "zh-CN": "源中手术与非手术结局互相矛盾，必须明示。",
+            "en": "Operative and non-operative outcome accounts conflict and must be disclosed."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "sleep"
+          },
+          {
+            "asked": "palate-surgery"
+          },
+          {
+            "asked": "thyroid-surgery"
+          },
+          {
+            "asked": "recent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "hypertension"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "appearance"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "respiratory",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "endocrine",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "联合处理严重气道问题并保留源文结局矛盾",
+        "en": "Coordinate severe-airway care and retain source outcome contradictions"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明多层结构改变共同影响通气。；承认缺少IGF-1、当前PSG、可核验极低SpO2波形和一致手术结局。，用复述确认理解。",
+        "en": "Explain that Multilevel structural changes jointly affect ventilation.; acknowledge IGF-1, current PSG, verifiable extreme-SpO2 waveforms and a consistent operative outcome are missing. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "respiratory",
+        "endocrine",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告提出肢端肥大症、睡眠呼吸暂停和胸骨后甲状腺压迫并存，但治疗结局叙述存在内部冲突。",
+      "en": "The report describes coexisting acromegaly, sleep apnoea and retrosternal thyroid compression, with internally conflicting treatment outcomes."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "多层结构改变共同影响通气。",
+        "en": "Multilevel structural changes jointly affect ventilation."
+      },
+      {
+        "zh-CN": "GH和表型支持进一步垂体评估。",
+        "en": "GH and phenotype support further pituitary assessment."
+      },
+      {
+        "zh-CN": "源文冲突限制结局重建。",
+        "en": "Source conflict limits outcome reconstruction."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "结构正常不能由激素正常推出。",
+        "en": "Normal hormones do not establish normal structure."
+      },
+      {
+        "zh-CN": "旧PSG与当前监测分开。",
+        "en": "Separate historical PSG from current monitoring."
+      },
+      {
+        "zh-CN": "不补写确定手术结局。",
+        "en": "Do not invent a definite operative outcome."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "缺少IGF-1、当前PSG、可核验极低SpO2波形和一致手术结局。",
+        "en": "IGF-1, current PSG, verifiable extreme-SpO2 waveforms and a consistent operative outcome are missing."
+      }
+    ],
+    "references": [
+      "牛红丽, 王海播, 张瑞, 马利军. 肢端肥大症合并阻塞性睡眠呼吸暂停综合征及胸骨后甲状腺肿一例. 中华结核和呼吸杂志. 2011;34(11):862-864. doi: 10.3760/cma.j.issn.1001-0939.2011.11.023.",
+      "https://rs.yiigle.com/cmaid/857339",
+      "https://doi.org/10.3760/cma.j.issn.1001-0939.2011.11.023",
+      "2024 acromegaly diagnosis/remission consensus. https://doi.org/10.1007/s11102-023-01360-1"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "缺少IGF-1、当前PSG、可核验极低SpO2波形和一致手术结局。",
+      "en": "IGF-1, current PSG, verifiable extreme-SpO2 waveforms and a consistent operative outcome are missing."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-857339/fig02.png",
+      "title": {
+        "zh-CN": "原文图组 2（含后续病程，仅供复盘）",
+        "en": "Source image group 2 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "e2e1263a881c849dc55c19658060a2aa811b3786a7bb97acf813c0efd4f64a1a"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "sleep"
+    },
+    {
+      "type": "ask",
+      "itemId": "palate-surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "thyroid-surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "recent"
+    },
+    {
+      "type": "ask",
+      "itemId": "hypertension"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "appearance"
+    },
+    {
+      "type": "order",
+      "investigationId": "respiratory"
+    },
+    {
+      "type": "read",
+      "investigationId": "respiratory",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "multilevel"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "endocrine"
+    },
+    {
+      "type": "read",
+      "investigationId": "endocrine",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "acromegaly"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "team"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "857339",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/857339",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于睡眠表现，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "sleep"
+        ]
+      },
+      {
+        "text": "Could you tell me about sleep symptoms?",
+        "locale": "en",
+        "expect": [
+          "sleep"
+        ]
+      },
+      {
+        "text": "我想了解夜间憋醒。",
+        "locale": "zh-CN",
+        "expect": [
+          "sleep"
+        ]
+      },
+      {
+        "text": "Please explain nocturnal choking in more detail.",
+        "locale": "en",
+        "expect": [
+          "sleep"
+        ]
+      },
+      {
+        "text": "关于腭咽手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "palate-surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about palatal surgery?",
+        "locale": "en",
+        "expect": [
+          "palate-surgery"
+        ]
+      },
+      {
+        "text": "我想了解旧睡眠治疗。",
+        "locale": "zh-CN",
+        "expect": [
+          "palate-surgery"
+        ]
+      },
+      {
+        "text": "Please explain earlier sleep treatment in more detail.",
+        "locale": "en",
+        "expect": [
+          "palate-surgery"
+        ]
+      },
+      {
+        "text": "关于甲状腺手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "thyroid-surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about thyroid surgery?",
+        "locale": "en",
+        "expect": [
+          "thyroid-surgery"
+        ]
+      },
+      {
+        "text": "我想了解胸骨后处理。",
+        "locale": "zh-CN",
+        "expect": [
+          "thyroid-surgery"
+        ]
+      },
+      {
+        "text": "Please explain retrosternal treatment in more detail.",
+        "locale": "en",
+        "expect": [
+          "thyroid-surgery"
+        ]
+      },
+      {
+        "text": "关于近期喘憋，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "recent"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent breathing difficulty?",
+        "locale": "en",
+        "expect": [
+          "recent"
+        ]
+      },
+      {
+        "text": "我想了解一个月加重。",
+        "locale": "zh-CN",
+        "expect": [
+          "recent"
+        ]
+      },
+      {
+        "text": "Please explain monthly deterioration in more detail.",
+        "locale": "en",
+        "expect": [
+          "recent"
+        ]
+      },
+      {
+        "text": "关于高血压病程，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "hypertension"
+        ]
+      },
+      {
+        "text": "Could you tell me about hypertension duration?",
+        "locale": "en",
+        "expect": [
+          "hypertension"
+        ]
+      },
+      {
+        "text": "我想了解长期血压。",
+        "locale": "zh-CN",
+        "expect": [
+          "hypertension"
+        ]
+      },
+      {
+        "text": "Please explain long term pressure in more detail.",
+        "locale": "en",
+        "expect": [
+          "hypertension"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/857339"
+    }
+  }
+}

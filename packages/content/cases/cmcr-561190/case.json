@@ -1,0 +1,2007 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-561190",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "咳嗽、茶色尿后胸痛和尿少 · 48岁男性",
+    "en": "Cough and tea-coloured urine followed by chest pain and oliguria · 48-year-old male"
+  },
+  "summary": {
+    "zh-CN": "围绕咳嗽、茶色尿后胸痛和尿少，比较现有证据、不同解释与下一步处理。",
+    "en": "Review the evidence, competing explanations and next steps for cough and tea-coloured urine followed by chest pain and oliguria."
+  },
+  "specialty": [
+    "rheumatology",
+    "nephrology"
+  ],
+  "difficulty": 4,
+  "setting": "emergency",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 30,
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别嗜酸细胞增多合并急进性肾炎。",
+      "en": "Recognise eosinophilia with rapidly progressive nephritis."
+    },
+    {
+      "zh-CN": "比较血管炎与嗜酸细胞综合征。",
+      "en": "Compare vasculitis with hypereosinophilic syndromes."
+    },
+    {
+      "zh-CN": "识别肾脏与心脏急症的优先级。",
+      "en": "Prioritise renal and cardiac emergencies."
+    },
+    {
+      "zh-CN": "说明病理未证实与残留肾损害。",
+      "en": "Explain absent tissue proof and persistent renal impairment."
+    }
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "王立,  李久荣,  陈华,  侯勇,  徐军,  郑文洁,  张奉春. 第313例　过敏性鼻炎–嗜酸性粒细胞增多–进行性少尿. 中华医学杂志. 2014;94(11):872-874. doi:10.3760/cma.j.issn.0376-2491.2014.11.020",
+    "doi": "10.3760/cma.j.issn.0376-2491.2014.11.020",
+    "authors": [
+      "王立",
+      "李久荣",
+      "陈华",
+      "侯勇",
+      "徐军",
+      "郑文洁",
+      "张奉春"
+    ],
+    "license": "Authored educational adaptation; publication copyright remains with its original holders.",
+    "notes": {
+      "zh-CN": "依据单例报告改编；姓名、医院和日历日期已去标识化。问答、决策及评分为教学设计。原报告已做的检查仅供病历查阅，未记录的信息保持未知。",
+      "en": "Adapted from a single-patient report, with names, hospitals and calendar dates de-identified. Dialogue, decisions and scoring are educational design. Existing investigations are chart reviews; missing information remains unknown."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "guidelines": [
+        "ACR/Vasculitis Foundation.2021 ANCA-associated vasculitis guideline. https://rheumatology.org/vasculitis-guideline"
+      ],
+      "reviewers": [
+        "AI-assisted internal editorial check (not a licensed clinician)"
+      ],
+      "notes": {
+        "zh-CN": "已完成AI辅助内部编辑核对：逐例对照源病例，并针对所列权威资料核对教学原则；非执业医师审核，具体治疗适用性仍需专科确认。",
+        "en": "AI-assisted internal editorial check against each source case and the listed authorities for teaching principles; not a licensed-clinician review. Patient-specific treatment eligibility still needs specialty review."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学，不构成个体诊疗建议。原报告处置不自动成为今天的推荐；不模拟未记录的生理变化。",
+    "en": "Historical teaching case, not individual medical advice. Reported care is not automatically a current recommendation; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "金清和（化名）",
+      "en": "Jin Qinghe (pseudonym)"
+    },
+    "age": 48,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "咳嗽、茶色尿后胸痛和尿少",
+      "en": "Cough and tea-coloured urine followed by chest pain and oliguria"
+    },
+    "triageNote": {
+      "zh-CN": "48岁患者，因咳嗽、茶色尿后胸痛和尿少就诊，现核对病史与原有记录。",
+      "en": "48-year-old patient presenting with cough and tea-coloured urine followed by chest pain and oliguria; history and existing records require review."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "以原报告为边界回答；交流方式为教学设定。",
+        "en": "Answers within the source record; communication style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "简短日常语言，医学数据查阅病历。",
+        "en": "Brief everyday language; technical data are reviewed in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "咳嗽后尿变茶色，最近胸痛、尿少。",
+        "en": "After coughing, my urine became tea-coloured; now I have chest pain and little urine."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "actingNotes": {
+        "zh-CN": "仅使用当前阶段资料，不提前描述后续检查或结局。",
+        "en": "Use current-stage information only; do not reveal later findings or outcomes."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "就诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "病历证据与决策",
+        "en": "Chart evidence and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "后续经过与复盘",
+        "en": "Subsequent course and review"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "all": [
+              {
+                "asked": "presentation"
+              },
+              {
+                "asked": "onset"
+              },
+              {
+                "asked": "progression"
+              },
+              {
+                "asked": "associated"
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "examined": "exam-1"
+              },
+              {
+                "examined": "exam-2"
+              }
+            ]
+          },
+          {
+            "decided": "interpretation"
+          },
+          {
+            "decided": "management"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次主要哪里不舒服？",
+        "en": "What is the main problem today?"
+      },
+      "answer": {
+        "zh-CN": "咳嗽后尿变茶色，最近胸痛、尿少。",
+        "en": "After coughing, my urine became tea-coloured; now I have chest pain and little urine."
+      },
+      "keywords": {
+        "zh-CN": [
+          "主要不适",
+          "来院原因",
+          "这次症状",
+          "哪里难受"
+        ],
+        "en": [
+          "main complaint",
+          "presenting problem",
+          "reason for attending",
+          "current symptoms"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最早什么时候开始？",
+        "en": "When did this first start?"
+      },
+      "answer": {
+        "zh-CN": "鼻子怕冷、喷嚏两年；咳嗽一个月，尿泡沫三周，胸痛两天。",
+        "en": "Cold-triggered rhinitis for two years, cough for a month, foamy urine for three weeks and chest pain for two days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "起病时间",
+          "持续多久",
+          "最早发病",
+          "病了多久"
+        ],
+        "en": [
+          "symptom onset",
+          "first onset",
+          "duration",
+          "time of onset"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "progression",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这段时间病情怎样变化？",
+        "en": "How has the problem changed over time?"
+      },
+      "answer": {
+        "zh-CN": "起初尿量没变，入院前一天少于400毫升。",
+        "en": "Urine volume was initially unchanged but fell below400 ml the day before admission."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病情变化",
+          "逐渐加重",
+          "发作频率",
+          "症状演变"
+        ],
+        "en": [
+          "symptom progression",
+          "change over time",
+          "episode frequency",
+          "getting worse"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "associated",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "当时还伴有什么不舒服？",
+        "en": "What other symptoms occurred with it?"
+      },
+      "answer": {
+        "zh-CN": "乏力、胃口差、低热、腰痛和双手发麻。",
+        "en": "Fatigue, poor appetite, low fever, back pain and numb hands."
+      },
+      "keywords": {
+        "zh-CN": [
+          "伴随症状",
+          "同时不适",
+          "其他表现",
+          "伴有什么"
+        ],
+        "en": [
+          "associated symptoms",
+          "accompanying symptoms",
+          "additional complaints",
+          "other symptoms"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前得过哪些病？",
+        "en": "What illnesses have you had previously?"
+      },
+      "answer": {
+        "zh-CN": "十年前血吸虫病治疗后好了。",
+        "en": "Schistosomiasis was treated ten years earlier."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "以前病史",
+          "过去疾病",
+          "慢性疾病"
+        ],
+        "en": [
+          "past medical history",
+          "previous illnesses",
+          "chronic conditions",
+          "medical background"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家族",
+          "家人"
+        ],
+        "en": [
+          "family",
+          "relatives"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "operations",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过什么手术或操作？",
+        "en": "Have you had previous operations or procedures?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术经历",
+          "既往手术",
+          "操作经历",
+          "动过手术"
+        ],
+        "en": [
+          "previous operations",
+          "surgical history",
+          "past procedures",
+          "previous surgery"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "发病前后用过什么药？",
+        "en": "What medicines were used around the illness?"
+      },
+      "answer": {
+        "zh-CN": "外院按支气管炎用了头孢类，症状没改善。",
+        "en": "A cephalosporin for presumed bronchitis did not help."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用药清单",
+          "服用药物",
+          "药物疗程",
+          "吃了什么药"
+        ],
+        "en": [
+          "medication list",
+          "regular medicines",
+          "recent medication",
+          "drug treatment"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有过药物或食物过敏吗？",
+        "en": "Have medicines or foods caused an allergic reaction before?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "食物过敏",
+          "过敏经历",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "food allergies",
+          "allergy history",
+          "allergic reaction"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有过类似的病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "原报告说家族史无特殊，未列具体筛查。",
+        "en": "Family history was described as unremarkable, without detailed screening."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "家人患病",
+          "遗传病史",
+          "亲属疾病"
+        ],
+        "en": [
+          "family history",
+          "illness in relatives",
+          "familial disease",
+          "hereditary history"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "生活环境或近期接触有特别的情况吗？",
+        "en": "Were there any relevant environmental or recent exposures?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境接触",
+          "接触经历",
+          "生活环境",
+          "接触物质"
+        ],
+        "en": [
+          "environmental exposure",
+          "recent exposure",
+          "living environment",
+          "contact history"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "这次生病怎样影响日常活动？",
+        "en": "How has this affected everyday activities?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "活动能力",
+          "日常活动",
+          "生活自理",
+          "活动受限"
+        ],
+        "en": [
+          "daily activities",
+          "functional capacity",
+          "self care",
+          "activity limitation"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "redflags",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有其他需要马上处理的症状？",
+        "en": "Were there other symptoms needing urgent attention?"
+      },
+      "answer": {
+        "zh-CN": "胸痛胸闷每次约十分钟，尿量持续下降。",
+        "en": "Chest pain and tightness lasted about ten minutes at a time while urine output fell."
+      },
+      "keywords": {
+        "zh-CN": [
+          "危险症状",
+          "紧急症状",
+          "警示症状",
+          "急性变化"
+        ],
+        "en": [
+          "warning symptoms",
+          "urgent symptoms",
+          "red flags",
+          "acute warning signs"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "prior",
+      "topic": "other",
+      "question": {
+        "zh-CN": "来这里之前在哪里看过病，怎样处理？",
+        "en": "What assessment or care occurred before this encounter?"
+      },
+      "answer": {
+        "zh-CN": "最初按过敏鼻炎，后来按支气管炎诊治。",
+        "en": "Initially labelled allergic rhinitis and later bronchitis."
+      },
+      "keywords": {
+        "zh-CN": [
+          "之前就诊",
+          "院外处理",
+          "前期诊治",
+          "此前处理"
+        ],
+        "en": [
+          "earlier assessment",
+          "previous consultation",
+          "prior care",
+          "pre-referral care"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "concerns",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "对这次病情最担心什么？",
+        "en": "What worries you most about this illness?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担心",
+          "最担心什么",
+          "治疗期望",
+          "心里顾虑"
+        ],
+        "en": [
+          "personal concerns",
+          "main worry",
+          "expectations",
+          "patient concerns"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "baseline",
+      "topic": "other",
+      "question": {
+        "zh-CN": "发病前的基础生活情况怎样？",
+        "en": "What was your baseline health and living situation?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时情况",
+          "基础生活",
+          "发病前状态",
+          "原来状况"
+        ],
+        "en": [
+          "baseline health",
+          "usual state",
+          "baseline circumstances",
+          "usual health"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "exam-1",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对入院查体记录 1",
+        "en": "Review presentation examination 1"
+      },
+      "finding": {
+        "zh-CN": "T37.5℃、HR104/min、RR22/min、BP138/91 mmHg。",
+        "en": "T37.5°C, HR104/min, RR22/min, BP138/91 mmHg."
+      },
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      },
+      "abnormal": true,
+      "required": true
+    },
+    {
+      "id": "exam-2",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对入院查体记录 2",
+        "en": "Review presentation examination 2"
+      },
+      "finding": {
+        "zh-CN": "双下肢轻度凹陷水肿；无皮疹，右下肺呼吸音低，无明确啰音。",
+        "en": "Mild bilateral pitting oedema; no rash, reduced right basal breath sounds and no definite crackles."
+      },
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      },
+      "abnormal": true,
+      "required": true
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有这项查体资料，不能视为正常。",
+    "en": "The report supplies no finding for this manoeuvre; do not assume it is normal."
+  },
+  "investigations": [
+    {
+      "id": "renal",
+      "name": {
+        "zh-CN": "调阅肾脏和尿液记录",
+        "en": "Review renal and urine findings"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅肾脏和尿液记录"
+        ],
+        "en": [
+          "Review renal and urine findings",
+          "renal"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "肌酐595升至739 μmol/L；尿红细胞200/μl，80%异形，24小时蛋白3.66 g；当日尿量100 ml，K5.7 mmol/L。",
+            "en": "Creatinine rose from595 to739 μmol/L; urinary RBC200/μl with80% dysmorphism, protein3.66 g/day; daily urine100 ml and K5.7 mmol/L."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "immune",
+      "name": {
+        "zh-CN": "调阅嗜酸细胞和免疫检查",
+        "en": "Review eosinophils and immune studies"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅嗜酸细胞和免疫检查"
+        ],
+        "en": [
+          "Review eosinophils and immune studies",
+          "immune"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "嗜酸细胞先为12.3×10^9/L，入院4.2×10^9/L；pANCA1:160，MPO-ANCA>200×10^3 RU/L，PR3-ANCA30×10^3 RU/L；抗GBM阴性。",
+            "en": "Eosinophils were previously12.3×10^9/L and4.2×10^9/L at admission; pANCA1:160, MPO-ANCA>200×10^3 RU/L, PR3-ANCA30×10^3 RU/L; anti-GBM negative."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "heart-lung",
+      "name": {
+        "zh-CN": "调阅心肺评估",
+        "en": "Review cardiopulmonary assessment"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅心肺评估"
+        ],
+        "en": [
+          "Review cardiopulmonary assessment",
+          "heart-lung"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "肌钙蛋白I6.06 μg/L，V4–6 ST压低；CT双肺淡片影、胸腔积液；超声少量心包积液及左室顺应性下降。",
+            "en": "TroponinI6.06 μg/L and V4–6 ST depression; CT patchy opacities and effusions; echo showed a small pericardial effusion and reduced LV compliance."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "alternatives",
+      "name": {
+        "zh-CN": "调阅鉴别检查",
+        "en": "Review differential investigations"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅鉴别检查"
+        ],
+        "en": [
+          "Review differential investigations",
+          "alternatives"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "粪便寄生虫阴性，骨髓嗜酸细胞增多，FIP1L1-PDGFRA阴性；肌电图未见明确神经源损害。未行肾活检，无冠脉造影资料。",
+            "en": "Stool parasite testing negative, marrow eosinophilia and negative FIP1L1-PDGFRA; EMG showed no definite neurogenic injury. No renal biopsy or coronary angiography was supplied."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "outcome",
+      "name": {
+        "zh-CN": "调阅原报告后续经过",
+        "en": "Review the reported subsequent course"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "血液滤过/透析及激素、环磷酰胺后嗜酸细胞下降、尿量恢复并脱离透析，心电及胸部影像改善。出院肌酐401 μmol/L，一年余随访244–273 μmol/L，ANCA阴性。",
+            "en": "Haemofiltration/dialysis with glucocorticoids and cyclophosphamide was followed by lower eosinophils, recovery of urine output and dialysis independence, with ECG/chest improvement. Creatinine was401 μmol/L at discharge and244–273 μmol/L after over a year; ANCA became negative."
+          },
+          "source": {
+            "zh-CN": "原报告治疗及随访段。",
+            "en": "Source treatment and follow-up section."
+          },
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "history",
+      "title": {
+        "zh-CN": "重建就诊经过",
+        "en": "Reconstruct the presentation"
+      },
+      "hint": {
+        "zh-CN": "从起病、演变及伴随症状寻找关键信息。",
+        "en": "Clarify onset, progression and associated symptoms."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "associated"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evidence",
+      "title": {
+        "zh-CN": "核对查体与病历证据",
+        "en": "Check examination and chart evidence"
+      },
+      "hint": {
+        "zh-CN": "区分患者叙述、查体记录和辅助检查报告。",
+        "en": "Distinguish the history, examination record and investigation reports."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "all": [
+              {
+                "examined": "exam-1"
+              },
+              {
+                "examined": "exam-2"
+              }
+            ]
+          },
+          {
+            "read": "renal",
+            "phase": "workup"
+          },
+          {
+            "read": "immune",
+            "phase": "workup"
+          },
+          {
+            "read": "heart-lung",
+            "phase": "workup"
+          },
+          {
+            "read": "alternatives",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "reasoning",
+      "title": {
+        "zh-CN": "比较解释并制定计划",
+        "en": "Compare interpretations and plan care"
+      },
+      "hint": {
+        "zh-CN": "指出支持证据、反证和仍需核对的信息。",
+        "en": "Identify supporting evidence, conflicting evidence and remaining gaps."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "interpretation"
+          },
+          {
+            "decided": "management"
+          }
+        ]
+      }
+    },
+    {
+      "id": "review",
+      "title": {
+        "zh-CN": "复盘后续经过",
+        "en": "Review the subsequent course"
+      },
+      "hint": {
+        "zh-CN": "将报告结局与当时可获得的证据分开。",
+        "en": "Separate the reported outcome from evidence available at the decision point."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "outcome",
+            "phase": "followup"
+          },
+          {
+            "decided": "safety"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "interpretation",
+      "prompt": {
+        "zh-CN": "怎样整合多系统证据最稳妥？",
+        "en": "How should the multisystem evidence be integrated?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "renal",
+            "phase": "workup"
+          },
+          {
+            "read": "immune",
+            "phase": "workup"
+          },
+          {
+            "read": "heart-lung",
+            "phase": "workup"
+          },
+          {
+            "read": "alternatives",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
+        "en": "First review the relevant history and source records available in this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "ANCA相关血管炎伴重度嗜酸细胞增多，原报告临床判断EGPA，组织机制未证实",
+            "en": "ANCA-associated vasculitis with marked eosinophilia; the source clinically diagnosed EGPA without tissue proof"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "鼻炎、嗜酸细胞、肾炎及心肺受累支持整合，但缺乏哮喘和病理需说明。",
+            "en": "Rhinitis, eosinophilia, nephritis and cardiopulmonary disease support integration, while absent documented asthma and histology remain limitations."
+          }
+        },
+        {
+          "id": "alternative-1",
+          "text": {
+            "zh-CN": "融合基因阴性完全排除所有HES",
+            "en": "A negative fusion test excludes every HES"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "该检测只排查部分分子亚型。",
+            "en": "That test assesses only some molecular subtypes."
+          }
+        },
+        {
+          "id": "alternative-2",
+          "text": {
+            "zh-CN": "肌电图阴性证明肾脏也未受累",
+            "en": "Negative EMG proves no renal involvement"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "肌电图不能推翻尿液和肌酐证据。",
+            "en": "EMG does not negate urine and creatinine findings."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "什么处理优先级符合器官危险程度？",
+        "en": "Which priority matches the organ-threatening severity?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "interpretation"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
+        "en": "First review the relevant history and source records available in this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "紧急肾脏支持并由风湿、肾脏和心脏团队评估诱导治疗与感染风险",
+            "en": "Urgent renal support and rheumatology, nephrology and cardiology assessment of induction therapy and infection risk"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "少尿、高钾和心肌损伤提示需同步支持与病因治疗。",
+            "en": "Oliguria, hyperkalaemia and myocardial injury require support alongside disease-directed care."
+          }
+        },
+        {
+          "id": "alternative-1",
+          "text": {
+            "zh-CN": "按轻型鼻炎等待门诊复查",
+            "en": "Treat as mild rhinitis and wait for outpatient review"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "存在器官威胁性损伤。",
+            "en": "Organ-threatening disease is already present."
+          }
+        },
+        {
+          "id": "alternative-2",
+          "text": {
+            "zh-CN": "只因没有哮喘而停下所有血管炎评估",
+            "en": "Stop vasculitis assessment because asthma is absent"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "表型不典型需要更谨慎鉴别，而非忽略器官急症。",
+            "en": "An atypical phenotype warrants careful differentiation, not neglect of emergencies."
+          }
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "prompt": {
+        "zh-CN": "后续肾功能改善允许作出什么结论？",
+        "en": "What conclusion is permitted by later renal improvement?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "outcome",
+            "phase": "followup"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
+        "en": "First review the relevant history and source records available in this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "可脱离透析但仍有肾功能损害，不能宣称新月体病理或冠脉炎已被证实",
+            "en": "Dialysis independence with residual renal impairment, without proof of crescentic histology or coronary arteritis"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "长期肌酐仍升高，组织和血管证据缺失。",
+            "en": "Creatinine remained elevated and tissue/vascular proof is absent."
+          }
+        },
+        {
+          "id": "alternative-1",
+          "text": {
+            "zh-CN": "肌酐下降等于肾脏完全恢复",
+            "en": "Falling creatinine means complete renal recovery"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "随访肌酐244–273 μmol/L仍提示损害。",
+            "en": "Follow-up creatinine244–273 μmol/L indicates residual impairment."
+          }
+        },
+        {
+          "id": "alternative-2",
+          "text": {
+            "zh-CN": "激素有效证明所有心肌损伤由冠脉炎造成",
+            "en": "Steroid response proves coronary arteritis caused every cardiac finding"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "原文只提出可能机制，没有直接证据。",
+            "en": "The source proposes a mechanism without direct proof."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "history-0",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问清主要不适",
+        "en": "Clarify the presenting problem"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "presentation"
+      }
+    },
+    {
+      "id": "history-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问清起病时间",
+        "en": "Clarify onset"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "onset"
+      }
+    },
+    {
+      "id": "history-2",
+      "domain": "history",
+      "text": {
+        "zh-CN": "询问病情演变",
+        "en": "Clarify progression"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "progression"
+      }
+    },
+    {
+      "id": "history-3",
+      "domain": "history",
+      "text": {
+        "zh-CN": "询问伴随症状",
+        "en": "Clarify associated symptoms"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "associated"
+      }
+    },
+    {
+      "id": "examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对已记录的查体发现",
+        "en": "Review the documented examination"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "exam-1"
+          },
+          {
+            "examined": "exam-2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "records",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅关键记录后再决策",
+        "en": "Review key records before deciding"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "renal",
+            "phase": "workup"
+          },
+          {
+            "read": "immune",
+            "phase": "workup"
+          },
+          {
+            "read": "heart-lung",
+            "phase": "workup"
+          },
+          {
+            "read": "alternatives",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnosis",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "选择证据最支持的解释",
+        "en": "Choose the interpretation best supported by the evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "interpretation"
+      }
+    },
+    {
+      "id": "safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "可脱离透析但仍有肾功能损害，不能宣称新月体病理或冠脉炎已被证实",
+        "en": "Dialysis independence with residual renal impairment, without proof of crescentic histology or coronary arteritis"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "safety"
+      }
+    },
+    {
+      "id": "outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "核对原报告结局并保留未知",
+        "en": "Review the reported outcome without filling gaps"
+      },
+      "weight": 1,
+      "met": {
+        "read": "outcome",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "safe-plan",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次选择符合证据的处理路径",
+        "en": "Choose an evidence-consistent plan on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "解释证据与不确定性，核对患者或陪同者理解",
+        "en": "Explain evidence and uncertainty and check patient or companion understanding"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "以通俗语言说明主要判断、下一步及至少一项具体未知，询问理解和顾虑；不得声称未载明的疗效或预后。",
+        "en": "Use plain language for the interpretation, next step and at least one case-specific uncertainty; check understanding and concerns, without asserting undocumented benefit or prognosis."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "先区分病史、检查和推论；指出不确定性。后续经过须在完成当前决策后查阅。",
+        "en": "Distinguish history, findings and inference, and state uncertainty. The subsequent course is reviewed after completing the current decisions."
+      },
+      "interprets": [
+        "renal",
+        "immune",
+        "heart-lung",
+        "alternatives",
+        "outcome"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告临床诊断重症EGPA伴急进性肾炎表型和心肌损伤；缺乏组织证实，随访仍残留肾损害。",
+      "en": "The source clinically diagnosed severe EGPA with rapidly progressive nephritis and myocardial injury; tissue proof was absent and renal impairment persisted."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "阴性单基因检测不能排除全部嗜酸细胞综合征。",
+        "en": "One negative molecular test does not exclude every eosinophilic syndrome."
+      },
+      {
+        "zh-CN": "严重EGPA需器官支持与专科诱导治疗评估。",
+        "en": "Severe EGPA requires organ support and specialist induction assessment."
+      },
+      {
+        "zh-CN": "临床诊断应与未证实的组织机制分开。",
+        "en": "Separate clinical diagnosis from unproven tissue mechanisms."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例回顾不能证明因果或比较疗效。数字仅为原报告时点记录，不是实时监测；没有参考区间的数据不自行补区间。",
+      "en": "A single retrospective report cannot establish causality or comparative efficacy. Numbers are source time-point records, not live monitoring; missing reference intervals are not invented."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "无肾活检、冠脉造影或明确哮喘史；心脏受累机制未确定。",
+        "en": "No renal biopsy, coronary angiography or documented asthma; the cardiac mechanism remains uncertain."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "阴性单基因检测不能排除全部嗜酸细胞综合征。",
+        "en": "One negative molecular test does not exclude every eosinophilic syndrome."
+      },
+      {
+        "zh-CN": "严重EGPA需器官支持与专科诱导治疗评估。",
+        "en": "Severe EGPA requires organ support and specialist induction assessment."
+      },
+      {
+        "zh-CN": "临床诊断应与未证实的组织机制分开。",
+        "en": "Separate clinical diagnosis from unproven tissue mechanisms."
+      }
+    ],
+    "references": [
+      "王立,  李久荣,  陈华,  侯勇,  徐军,  郑文洁,  张奉春. 第313例　过敏性鼻炎–嗜酸性粒细胞增多–进行性少尿. 中华医学杂志. 2014;94(11):872-874. doi:10.3760/cma.j.issn.0376-2491.2014.11.020",
+      "https://rs.yiigle.com/cmaid/561190",
+      "ACR/Vasculitis Foundation.2021 ANCA-associated vasculitis guideline. https://rheumatology.org/vasculitis-guideline"
+    ],
+    "notice": {
+      "zh-CN": "本评分为教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "无肾活检、冠脉造影或明确哮喘史；心脏受累机制未确定。",
+      "en": "No renal biopsy, coronary angiography or documented asthma; the cardiac mechanism remains uncertain."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-561190/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "1969cd30609e987d2e59de8b24262e4117e4d7f9dfb1360de1af92e3687e58ae"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "progression"
+    },
+    {
+      "type": "ask",
+      "itemId": "associated"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "operations"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "redflags"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior"
+    },
+    {
+      "type": "ask",
+      "itemId": "concerns"
+    },
+    {
+      "type": "ask",
+      "itemId": "baseline"
+    },
+    {
+      "type": "examine",
+      "findingId": "exam-1"
+    },
+    {
+      "type": "examine",
+      "findingId": "exam-2"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "renal"
+    },
+    {
+      "type": "read",
+      "investigationId": "renal",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "immune"
+    },
+    {
+      "type": "read",
+      "investigationId": "immune",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "heart-lung"
+    },
+    {
+      "type": "read",
+      "investigationId": "heart-lung",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "alternatives"
+    },
+    {
+      "type": "read",
+      "investigationId": "alternatives",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "interpretation",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "outcome"
+    },
+    {
+      "type": "read",
+      "investigationId": "outcome",
+      "phase": "followup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "safety",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "561190",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/561190",
+    "sourceTextSha256": "3ce0b59e92f27423aa076355773d619849b5ec6b20372ccc70e36ce1d8380530",
+    "historicalReview": true,
+    "authorChecks": {
+      "individuallyRead": true,
+      "sourceValuesRetained": true,
+      "noUnrecordedPhysiology": true,
+      "mediaAwaitingPrivacyReview": true,
+      "doiWebVerified": true,
+      "publisherVerificationFile": "publisher-verification.json"
+    },
+    "testUtterances": [
+      {
+        "text": "说说来院原因。",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Tell me your main complaint.",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "症状持续多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Describe the symptom onset.",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "病情变化过程是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "Describe the symptom progression.",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "还有哪些伴随症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "Tell me about associated symptoms.",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "讲讲既往疾病。",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Tell me your past medical history.",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "讲讲既往手术。",
+        "locale": "zh-CN",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "Tell me your surgical history.",
+        "locale": "en",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "核对一下用药清单。",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Could we review your medication list?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "请说说药物过敏史。",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Tell me about drug allergies.",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "介绍一下家族病史。",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "What is your family history?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "了解一下环境接触。",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Describe relevant environmental exposure.",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "现在的活动能力怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Describe your daily activities.",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "有没有危险症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "redflags"
+        ]
+      },
+      {
+        "text": "Were there any warning symptoms?",
+        "locale": "en",
+        "expect": [
+          "redflags"
+        ]
+      },
+      {
+        "text": "讲讲之前就诊经过。",
+        "locale": "zh-CN",
+        "expect": [
+          "prior"
+        ]
+      },
+      {
+        "text": "Describe the earlier assessment.",
+        "locale": "en",
+        "expect": [
+          "prior"
+        ]
+      },
+      {
+        "text": "想了解您的个人担心。",
+        "locale": "zh-CN",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "Tell me your personal concerns.",
+        "locale": "en",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "介绍一下平时情况。",
+        "locale": "zh-CN",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "Describe your baseline health.",
+        "locale": "en",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "主要不适具体是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Could you clarify main complaint?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "起病时间具体是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Could you clarify symptom onset?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "病情变化具体是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "Could you clarify symptom progression?",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      }
+    ]
+  }
+}

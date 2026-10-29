@@ -1,0 +1,1901 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-44848",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "足月新生儿喂养无力并反复抽搐",
+    "en": "Poor feeding and recurrent seizures in a term newborn"
+  },
+  "summary": {
+    "zh-CN": "出生评分良好的新生儿出现喂养困难和短暂抽搐，孕期用药需要与感染及代谢资料一起核对。",
+    "en": "A newborn with good birth scores develops feeding difficulty and brief seizures; maternal medicines require review alongside infection and metabolic studies."
+  },
+  "specialty": [
+    "neonatology",
+    "neurology",
+    "pharmacology"
+  ],
+  "setting": "icu",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "朱明哲. 氯氮平及氟哌啶醇致新生儿撤药综合征一例. 中华儿科杂志. 2011;49(10):796-797. doi: 10.3760/cma.j.issn.0578-1310.2011.10.019.",
+    "authors": [
+      "朱明哲"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "Current clozapine label and MHRA neonatal antipsychotic warning checked 2026-10-28; scope neonatal monitoring and individual maternal–fetal risk assessment."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.10.019"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "询问完整孕期药物史。",
+      "en": "Elicit complete prenatal medication history."
+    },
+    {
+      "zh-CN": "保留新生儿抽搐鉴别。",
+      "en": "Retain the neonatal seizure differential."
+    },
+    {
+      "zh-CN": "解释短期阴性检查局限。",
+      "en": "Explain limits of short-term negative studies."
+    },
+    {
+      "zh-CN": "进行不污名化的母婴风险沟通。",
+      "en": "Communicate maternal–infant risk without stigma."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "施清和（化名）",
+      "en": "Shi Qinghe (pseudonym)"
+    },
+    "age": 1.5833333333333333,
+    "ageUnit": "days",
+    "sex": "male",
+    "weightKg": 3.5,
+    "chiefComplaint": {
+      "zh-CN": "出生后喂养差，生后30小时起反复抽搐",
+      "en": "Poor feeding from birth and recurrent seizures from 30 hours of age"
+    },
+    "triageNote": {
+      "zh-CN": "按新生儿抽搐评估，药物暴露作为重要背景。",
+      "en": "Assess neonatal seizures with medication exposure as important context."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "（患者不能口述；陪同者转述已有病史。）",
+        "en": "(The patient cannot speak; the companion relays the recorded history.)"
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "infant",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "always": true
+    },
+    "nonVerbalReason": {
+      "zh-CN": "出生38小时，不能口述；资料由记录和教学陪同角色提供。",
+      "en": "A 38-hour-old neonate cannot speak; records and an educational companion provide history."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "seizures"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "exposure"
+          },
+          {
+            "examined": "neuro"
+          },
+          {
+            "examined": "skin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "feeding",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "出生后吃奶情况怎样？",
+        "en": "How was feeding after birth?"
+      },
+      "answer": {
+        "zh-CN": "一直吃奶差，吸吮和吞咽无力，人工喂养。",
+        "en": "Feeding was poor with weak sucking and swallowing; formula feeding was used."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生喂养",
+          "吸吮无力",
+          "吃奶困难",
+          "喂养方式"
+        ],
+        "en": [
+          "feeding from birth",
+          "weak sucking",
+          "feeding difficulty",
+          "feeding method"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "seizures",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "抽搐怎样发生？",
+        "en": "What were the seizures like?"
+      },
+      "answer": {
+        "zh-CN": "生后30小时和35小时分别出现凝视、四肢抽动和口唇发绀，每次一两分钟自行缓解，伴一次呕吐。",
+        "en": "At about 30 and 35 hours there were staring, limb jerking and lip cyanosis, each resolving after one or two minutes; vomiting occurred once."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽搐经过",
+          "凝视发作",
+          "发作时长",
+          "两次惊厥"
+        ],
+        "en": [
+          "seizure course",
+          "staring episodes",
+          "episode duration",
+          "two convulsions"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "出生时有缺氧或感染风险吗？",
+        "en": "Were birth hypoxia or infection risks reported?"
+      },
+      "answer": {
+        "zh-CN": "39周顺产，无胎膜早破，羊水清，1和5分钟Apgar均10分。",
+        "en": "Vaginal birth at 39 weeks without prelabour rupture of membranes, clear fluid and Apgar scores of 10 at one and five minutes."
+      },
+      "keywords": {
+        "zh-CN": [
+          "分娩情况",
+          "出生评分",
+          "羊水胎膜",
+          "孕周背景"
+        ],
+        "en": [
+          "delivery details",
+          "birth scores",
+          "fluid membranes",
+          "gestation background"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "孕期母亲用了哪些药？",
+        "en": "Which medicines were used during pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "母亲因精神疾病持续服氯氮平和氟哌啶醇，分娩前约五小时最后服药，未定期测血药浓度。",
+        "en": "The mother took clozapine and haloperidol throughout pregnancy for psychiatric illness, last about five hours before delivery, without regular drug-level checks."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期用药",
+          "母体暴露",
+          "末次服药",
+          "抗精神病药史"
+        ],
+        "en": [
+          "maternal medication",
+          "prenatal exposure",
+          "last maternal dose",
+          "antipsychotic history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "fever",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "发作时有发热吗？",
+        "en": "Was there fever during the episodes?"
+      },
+      "answer": {
+        "zh-CN": "体温正常，没有记载发热。",
+        "en": "Temperature was normal and fever was not reported."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热情况",
+          "发作体温",
+          "感染症状",
+          "热度记录"
+        ],
+        "en": [
+          "fever history",
+          "episode temperature",
+          "infection symptoms",
+          "temperature record"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最近有测过体重吗？",
+        "en": "Has weight been measured recently?"
+      },
+      "answer": {
+        "zh-CN": "原报告记录体重3.5 kg；其他时间点的体重未提供。",
+        "en": "The source records a weight of 3.5 kg; weights at other times were not supplied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期体重",
+          "称过体重",
+          "体重记录",
+          "最近多重"
+        ],
+        "en": [
+          "recent weight",
+          "weight measurement",
+          "weighed recently",
+          "recorded weight"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "neuro",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "核对神经和喂养反射",
+        "en": "Review neurological and feeding reflexes"
+      },
+      "finding": {
+        "zh-CN": "易激惹，肌张力略高，吸吮及拥抱反射减弱，前囟平坦，呼吸平稳。",
+        "en": "Irritable with mildly increased tone, weak suck and Moro reflexes, a flat fontanelle and steady breathing."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "核对皮肤和黄疸",
+        "en": "Review skin and jaundice"
+      },
+      "finding": {
+        "zh-CN": "面躯干黄疸，胸前和肢体散在针尖样出血点，轻度下肢凹陷水肿。",
+        "en": "Facial/truncal jaundice, scattered pinpoint chest/limb petechiae and mild pitting leg oedema."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "metabolic",
+      "name": {
+        "zh-CN": "代谢与感染初查",
+        "en": "Initial metabolic and infection studies"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "代谢与感染初查"
+        ],
+        "en": [
+          "Initial metabolic and infection studies"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "血糖3.2 mmol/L，钠139、钾4.2、钙2.21、镁1.01 mmol/L；CRP<1 mg/L，血小板306×10^9/L，总胆红素199.6 µmol/L。",
+            "en": "Glucose 3.2 mmol/L, sodium 139, potassium 4.2, calcium 2.21 and magnesium 1.01 mmol/L; CRP <1 mg/L, platelets 306×10^9/L and total bilirubin 199.6 µmol/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "neurology",
+      "name": {
+        "zh-CN": "脑脊液及超声记录",
+        "en": "CSF and ultrasound records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "脑脊液及超声记录"
+        ],
+        "en": [
+          "CSF and ultrasound records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "脑脊液白细胞2×10^6/L、糖2.2 mmol/L、外观清；TORCH IgM阴性，头颅和主要脏器超声无明显异常。未给新生儿血药浓度或脑电图。",
+            "en": "CSF was clear with white cells 2×10^6/L and glucose 2.2 mmol/L; TORCH IgM was negative and cranial/major-organ ultrasound unrevealing. Neonatal drug levels and EEG were not provided."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告用苯巴比妥控制发作并营养和退黄支持，未再抽搐，逐步停药，住院十天；电话随访两个月未报告异常。",
+            "en": "Phenobarbital, nutritional and jaundice support were followed by no further seizures, gradual withdrawal and discharge after ten days; telephone follow-up at two months reported no abnormality."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "seizures"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "neuro"
+          },
+          {
+            "examined": "skin"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "应如何把孕期暴露放入抽搐鉴别？",
+        "en": "How should prenatal exposure enter the seizure differential?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "include",
+          "text": {
+            "zh-CN": "纳入药物相关新生儿适应/撤药或锥体外系反应，同时按抽搐继续排查",
+            "en": "Include drug-related neonatal adaptation/withdrawal or extrapyramidal effects while continuing seizure assessment"
+          },
+          "feedback": {
+            "zh-CN": "暴露及早期症状支持考虑，但不能跳过感染、代谢和神经病因。",
+            "en": "Exposure and early symptoms support consideration without bypassing infectious, metabolic or neurological causes."
+          },
+          "correct": true
+        },
+        {
+          "id": "certain",
+          "text": {
+            "zh-CN": "有孕期药物就可停止所有检查",
+            "en": "Prenatal medication permits stopping all investigation"
+          },
+          "feedback": {
+            "zh-CN": "相关性并非单独因果确证。",
+            "en": "Association alone is not causal confirmation."
+          },
+          "correct": false
+        },
+        {
+          "id": "asphyxia",
+          "text": {
+            "zh-CN": "Apgar10分也能直接确诊重度出生窒息",
+            "en": "Apgar 10 directly establishes severe birth asphyxia"
+          },
+          "feedback": {
+            "zh-CN": "源文没有这类证据。",
+            "en": "The source does not supply that evidence."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "neurology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "limits",
+          "text": {
+            "zh-CN": "结果减少部分常见原因的支持，但未证明单一药物机制",
+            "en": "Results reduce support for some common causes without proving one drug mechanism"
+          },
+          "feedback": {
+            "zh-CN": "无药物浓度或EEG，不能精确区分撤药、残留药效等。",
+            "en": "Without drug levels or EEG, withdrawal and residual drug effects cannot be precisely distinguished."
+          },
+          "correct": true
+        },
+        {
+          "id": "safety-proof",
+          "text": {
+            "zh-CN": "两个月随访正常能证明孕期两药绝对安全",
+            "en": "Normal two-month follow-up proves both medicines completely safe in pregnancy"
+          },
+          "feedback": {
+            "zh-CN": "单例短期结局不能证明总体安全。",
+            "en": "One short-term outcome cannot establish general safety."
+          },
+          "correct": false
+        },
+        {
+          "id": "one-drug",
+          "text": {
+            "zh-CN": "已经证明只有氯氮平而非其他因素",
+            "en": "Clozapine alone is proven responsible"
+          },
+          "feedback": {
+            "zh-CN": "联合暴露和缺失检测不支持唯一归因。",
+            "en": "Combined exposure and missing tests prevent sole attribution."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前照护与家庭沟通应包括什么？",
+        "en": "What should current care and family communication include?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "neurology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "monitor",
+          "text": {
+            "zh-CN": "监测新生儿呼吸、喂养与发作，联合新生儿和围产精神科评估，母亲勿自行骤停治疗",
+            "en": "Monitor neonatal breathing, feeding and seizures with neonatal/perinatal psychiatric review; avoid unsupervised maternal abrupt withdrawal"
+          },
+          "feedback": {
+            "zh-CN": "现行药品警示支持观察暴露新生儿，同时母体疾病治疗也须个体化。",
+            "en": "Current labels support monitoring exposed neonates while maternal treatment remains individualised."
+          },
+          "correct": true
+        },
+        {
+          "id": "stop-mother",
+          "text": {
+            "zh-CN": "立即要求母亲自行停全部精神科药",
+            "en": "Tell the mother to stop all psychiatric medication on her own"
+          },
+          "feedback": {
+            "zh-CN": "可能造成母体复发，须专业风险收益讨论。",
+            "en": "This risks maternal relapse and requires professional benefit–risk assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "routine-drug",
+          "text": {
+            "zh-CN": "所有暴露新生儿都自动按旧文长期镇静",
+            "en": "Automatically sedate every exposed neonate using the old regimen"
+          },
+          "feedback": {
+            "zh-CN": "治疗须由实际症状和评估决定。",
+            "en": "Treatment depends on actual symptoms and assessment."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "seizures"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "fever"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "neuro"
+          },
+          {
+            "examined": "skin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "neurology",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "监测暴露新生儿并保护母婴连续照护，避免自行骤停母体治疗",
+        "en": "Monitor the exposed neonate and preserve coordinated maternal–infant care without unsupervised withdrawal"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明出生后时序与暴露相关。；承认未测新生儿药物浓度、无EEG且长期发育随访不足。，用复述确认理解。",
+        "en": "Explain that Postnatal timing is relevant to exposure.; acknowledge Neonatal drug levels and EEG are absent and long-term developmental follow-up is limited. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "metabolic",
+        "neurology",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告考虑孕期抗精神病药暴露相关新生儿撤药综合征，具体药物机制未确证。",
+      "en": "The source considered antipsychotic-exposure-associated neonatal withdrawal, without proving the specific mechanism."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "出生后时序与暴露相关。",
+        "en": "Postnatal timing is relevant to exposure."
+      },
+      {
+        "zh-CN": "阴性筛查只能回答其覆盖范围。",
+        "en": "Negative screening addresses only its scope."
+      },
+      {
+        "zh-CN": "短期好转不证明妊娠用药零风险。",
+        "en": "Short-term recovery does not establish zero pregnancy risk."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "避免对母亲精神疾病污名化。",
+        "en": "Avoid stigmatising maternal psychiatric illness."
+      },
+      {
+        "zh-CN": "记录未获得的EEG和药物浓度。",
+        "en": "Record missing EEG and drug levels."
+      },
+      {
+        "zh-CN": "区分撤药与其他适应反应可能性。",
+        "en": "Distinguish possible withdrawal from other adaptation effects."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "未测新生儿药物浓度、无EEG且长期发育随访不足。",
+        "en": "Neonatal drug levels and EEG are absent and long-term developmental follow-up is limited."
+      }
+    ],
+    "references": [
+      "朱明哲. 氯氮平及氟哌啶醇致新生儿撤药综合征一例. 中华儿科杂志. 2011;49(10):796-797. doi: 10.3760/cma.j.issn.0578-1310.2011.10.019.",
+      "https://rs.yiigle.com/cmaid/44848",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.10.019",
+      "DailyMed clozapine current label, pregnancy: https://dailymed.nlm.nih.gov/dailymed/fda/fdaDrugXsl.cfm?setid=883b5d43-0339-7dc1-f775-93791fb9b978&type=display",
+      "MHRA antipsychotics neonatal effects: https://www.gov.uk/drug-safety-update/antipsychotics-risk-of-extrapyramidal-effects-or-withdrawal-symptoms-in-newborns"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "未测新生儿药物浓度、无EEG且长期发育随访不足。",
+      "en": "Neonatal drug levels and EEG are absent and long-term developmental follow-up is limited."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "feeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "seizures"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "examine",
+      "findingId": "neuro"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "order",
+      "investigationId": "metabolic"
+    },
+    {
+      "type": "read",
+      "investigationId": "metabolic",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "include"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "neurology"
+    },
+    {
+      "type": "read",
+      "investigationId": "neurology",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "limits"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "monitor"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "44848",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/44848",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于出生喂养，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Could you tell me about feeding from birth?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "我想了解吸吮无力。",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Please explain weak sucking in more detail.",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "关于抽搐经过，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "seizures"
+        ]
+      },
+      {
+        "text": "Could you tell me about seizure course?",
+        "locale": "en",
+        "expect": [
+          "seizures"
+        ]
+      },
+      {
+        "text": "我想了解凝视发作。",
+        "locale": "zh-CN",
+        "expect": [
+          "seizures"
+        ]
+      },
+      {
+        "text": "Please explain staring episodes in more detail.",
+        "locale": "en",
+        "expect": [
+          "seizures"
+        ]
+      },
+      {
+        "text": "关于分娩情况，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Could you tell me about delivery details?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "我想了解出生评分。",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Please explain birth scores in more detail.",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "关于孕期用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about maternal medication?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "我想了解母体暴露。",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Please explain prenatal exposure in more detail.",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于发热情况，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Could you tell me about fever history?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "我想了解发作体温。",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Please explain episode temperature in more detail.",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "关于近期体重，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent weight?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/44848"
+    }
+  }
+}

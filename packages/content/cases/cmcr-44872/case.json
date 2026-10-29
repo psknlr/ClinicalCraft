@@ -1,0 +1,1879 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-44872",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "多年反复发热与进行性神经功能受损",
+    "en": "Years of recurrent fever and progressive neurological impairment"
+  },
+  "summary": {
+    "zh-CN": "女孩长期反复发热、肝脾肿大，神经症状逐步加重，需把多年检查按时间重新整合。",
+    "en": "A girl has recurrent fever, hepatosplenomegaly and worsening neurological symptoms, requiring chronological integration of years of records."
+  },
+  "specialty": [
+    "pediatrics",
+    "hematology",
+    "neurology",
+    "infectious-disease"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "王玥, 薛露, 马翠, 李春怀. 慢性活动性EB病毒感染并发中枢神经系统EB病毒相关的T淋巴细胞增生性疾病一例. 中华儿科杂志. 2011;49(10):797-800. doi: 10.3760/cma.j.issn.0578-1310.2011.10.020.",
+    "authors": [
+      "王玥",
+      "薛露",
+      "马翠",
+      "李春怀"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "2023 updated CAEBV guideline, checked 2026-10-28; scope EBV-infected T/NK-cell confirmation, viral load and specialist definitive-treatment assessment."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.10.020"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "重建多年系统和神经病程。",
+      "en": "Reconstruct a prolonged systemic/neurological course."
+    },
+    {
+      "zh-CN": "区分病毒阳性与感染细胞谱系。",
+      "en": "Distinguish viral positivity from infected lineage."
+    },
+    {
+      "zh-CN": "解释阴性噬血形态的局限。",
+      "en": "Explain limits of negative haemophagocytic morphology."
+    },
+    {
+      "zh-CN": "提出有证据边界的专科路径。",
+      "en": "Propose a specialist pathway within evidence limits."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "张清和（化名）",
+      "en": "Zhang Qinghe (pseudonym)"
+    },
+    "age": 9,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "反复发热五年半，语言运动变慢并反复抽搐",
+      "en": "Recurrent fever for five and a half years with slowed speech/movement and recurrent seizures"
+    },
+    "triageNote": {
+      "zh-CN": "这是9岁时对多年病程的回顾；早期体征和检查明确标注原阶段。",
+      "en": "This is a review at age nine; early signs and tests are explicitly labelled by their original stage."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "约三岁半时发热、咽痛、一过眼睑水肿，继而躯干瘙痒性丘疹，发热反复。",
+        "en": "At about three and a half years, fever, sore throat and transient eyelid swelling were followed by an itchy truncal rash and recurrent fever."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "neurological"
+          },
+          {
+            "asked": "previous-labels"
+          },
+          {
+            "asked": "baseline"
+          },
+          {
+            "examined": "early-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最初发病时有哪些表现？",
+        "en": "What happened at the original onset?"
+      },
+      "answer": {
+        "zh-CN": "约三岁半时发热、咽痛、一过眼睑水肿，继而躯干瘙痒性丘疹，发热反复。",
+        "en": "At about three and a half years, fever, sore throat and transient eyelid swelling were followed by an itchy truncal rash and recurrent fever."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最初发热",
+          "早年起病",
+          "开始咽痛",
+          "初期皮疹"
+        ],
+        "en": [
+          "initial fever",
+          "early onset",
+          "first sore throat",
+          "initial rash"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "neurological",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "神经症状怎样出现和变化？",
+        "en": "How did neurological symptoms evolve?"
+      },
+      "answer": {
+        "zh-CN": "先左眼看不清，后来口角歪斜、走路不稳、反复凝视发作，语言思维和动作越来越慢。",
+        "en": "Left visual loss came first, then facial asymmetry, unsteadiness, recurrent staring episodes and increasingly slow speech, thought and movement."
+      },
+      "keywords": {
+        "zh-CN": [
+          "神经进展",
+          "行走变慢",
+          "视力经过",
+          "抽搐演变"
+        ],
+        "en": [
+          "neurological progression",
+          "walking slowdown",
+          "visual course",
+          "seizure evolution"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "previous-labels",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前怎样解释这些症状？",
+        "en": "How were symptoms interpreted previously?"
+      },
+      "answer": {
+        "zh-CN": "曾按传染性单核细胞增多症、病毒性脑炎和急性播散性脑炎处理，症状一度缓解又反复。",
+        "en": "Previous labels included mononucleosis, viral encephalitis and acute disseminated encephalitis, with temporary improvement and recurrence."
+      },
+      "keywords": {
+        "zh-CN": [
+          "旧神经诊断",
+          "此前病名",
+          "反复就诊",
+          "早期治疗反应"
+        ],
+        "en": [
+          "earlier neurological diagnoses",
+          "previous labels",
+          "repeated consultations",
+          "early treatment response"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "baseline",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "发病前发育和出生情况怎样？",
+        "en": "What were birth and development before illness?"
+      },
+      "answer": {
+        "zh-CN": "足月剖宫产，无窒息，之前智力运动发育与同龄儿相仿。",
+        "en": "Term caesarean birth without asphyxia and development comparable to peers before illness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前发育",
+          "分娩背景",
+          "早期成长",
+          "原来能力"
+        ],
+        "en": [
+          "premorbid development",
+          "birth background",
+          "early growth",
+          "previous ability"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "早期有记录过敏或传染接触吗？",
+        "en": "Were allergies or infectious contacts recorded initially?"
+      },
+      "answer": {
+        "zh-CN": "早期记录否认过敏史和传染病接触史。",
+        "en": "The early record denied allergies and infectious contacts."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏接触",
+          "早期过敏史",
+          "传染接触",
+          "既往过敏"
+        ],
+        "en": [
+          "allergies and contacts",
+          "early allergy history",
+          "infectious contact",
+          "previous allergies"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最近有测过体重吗？",
+        "en": "Has weight been measured recently?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期体重",
+          "称过体重",
+          "体重记录",
+          "最近多重"
+        ],
+        "en": [
+          "recent weight",
+          "weight measurement",
+          "weighed recently",
+          "recorded weight"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "early-exam",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对早期体征记录，不冒充9岁当前检查",
+        "en": "Review early findings rather than treating them as the current examination at nine"
+      },
+      "finding": {
+        "zh-CN": "首次住院多处淋巴结肿大，最大1.5×1.0 cm，肝肋下8 cm、脾明显肿大；当时尚无阳性神经体征。",
+        "en": "At the first admission, multiple nodes up to 1.5×1.0 cm, liver 8 cm below the costal margin and marked splenomegaly were recorded; neurological signs were initially absent."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "systemic",
+      "name": {
+        "zh-CN": "多年全身和神经检查摘要",
+        "en": "Longitudinal systemic and neurological investigations"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "多年全身和神经检查摘要"
+        ],
+        "en": [
+          "Longitudinal systemic and neurological investigations"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "反复异形淋巴细胞10%–19%、血小板约103–117×10^9/L。后期血清及脑组织EBV DNA阳性；MRI白质多灶病变。脑脊液曾蛋白升高并有寡克隆带；未提供标准化全血病毒定量。",
+            "en": "Atypical lymphocytes repeatedly 10%–19% and platelets approximately 103–117×10^9/L. Later serum and brain tissue EBV DNA were positive with multifocal white-matter MRI lesions. CSF protein elevation and oligoclonal bands were recorded; standardised whole-blood viral load was not supplied."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "brain-biopsy",
+      "name": {
+        "zh-CN": "脑活检和证据边界",
+        "en": "Brain biopsy and evidence limits"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "脑活检和证据边界"
+        ],
+        "en": [
+          "Brain biopsy and evidence limits"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "小血管周围套袖样淋巴细胞聚集，CD45RO强阳性，以T细胞为主；脑组织EBV PCR阳性。未提供EBER与细胞谱系共定位或分选细胞病毒检测。多处取样未见噬血细胞。",
+            "en": "Perivascular cuff-like lymphocytic aggregates were predominantly CD45RO-positive T cells; brain-tissue EBV PCR was positive. EBER-lineage colocalisation or sorted-cell viral testing was not provided. Haemophagocytes were not seen in sampled tissues."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告改良方案后一度稳定23个月，但神经损害未明显改善；后复发、难治癫痫、颅内出血和高颅压，后续方案未控制，放弃治疗后约三个月死亡。",
+            "en": "The historical modified regimen produced 23 months of stability without clear neurological recovery; relapse, refractory seizures, intracranial bleeding and raised pressure followed. Later treatment failed and death occurred about three months after care was withdrawn."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "neurological"
+          },
+          {
+            "asked": "previous-labels"
+          },
+          {
+            "asked": "baseline"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "early-exam"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "多年全身和中枢表现如何归纳？",
+        "en": "How should years of systemic and CNS findings be framed?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "systemic",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "systemic",
+          "text": {
+            "zh-CN": "需评估持续EBV相关系统病及淋巴增殖过程，不能仅用单次自限脑炎解释",
+            "en": "Assess persistent EBV-associated systemic disease and a lymphoproliferative process rather than a single self-limited encephalitis"
+          },
+          "feedback": {
+            "zh-CN": "长期发热、肝脾肿大和病毒证据要求扩大评估。",
+            "en": "Longstanding fever, organomegaly and viral evidence warrant broader assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "ms-only",
+          "text": {
+            "zh-CN": "寡克隆带阳性就足以归为单纯多发性硬化",
+            "en": "Positive oligoclonal bands alone establish isolated multiple sclerosis"
+          },
+          "feedback": {
+            "zh-CN": "无法完整解释明显全身和病毒相关表现。",
+            "en": "This does not explain the systemic and viral findings."
+          },
+          "correct": false
+        },
+        {
+          "id": "acute",
+          "text": {
+            "zh-CN": "病程五年仍可直接按一次急性感染处理",
+            "en": "Five years of illness can be treated as one uncomplicated acute infection"
+          },
+          "feedback": {
+            "zh-CN": "反复和进展需要重审病因。",
+            "en": "Recurrence and progression require reassessment."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "brain-biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "provisional",
+          "text": {
+            "zh-CN": "原报告支持CAEBV及T细胞相关过程，但组织PCR加T细胞浸润并不直接证明感染细胞谱系",
+            "en": "The report supports CAEBV and a T-cell-associated process, but tissue PCR plus T-cell infiltration does not directly establish the infected lineage"
+          },
+          "feedback": {
+            "zh-CN": "现代诊断需要更具体的EBV感染细胞证据，未给资料不能补写。",
+            "en": "Modern diagnosis requires more specific evidence of infected cells; missing data cannot be invented."
+          },
+          "correct": true
+        },
+        {
+          "id": "hlh-excluded",
+          "text": {
+            "zh-CN": "没看见噬血细胞就永久排除HLH",
+            "en": "Absent haemophagocytes permanently exclude HLH"
+          },
+          "feedback": {
+            "zh-CN": "单项形态阴性不能替代完整综合标准。",
+            "en": "Negative morphology alone does not replace the full syndrome assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "lineage",
+          "text": {
+            "zh-CN": "已经有EBER/T细胞双染阳性证明",
+            "en": "EBER/T-cell double staining is proven positive"
+          },
+          "feedback": {
+            "zh-CN": "源中未提供这种检测。",
+            "en": "The source did not provide that test."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前专科路径应如何规划？",
+        "en": "How should a current specialist pathway be planned?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "brain-biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "specialist",
+          "text": {
+            "zh-CN": "血液、感染和神经团队完善病毒定量与感染细胞分型，评估根本治疗及中枢支持",
+            "en": "Haematology, infection and neurology teams should refine viral quantification and infected-cell typing and assess definitive therapy plus CNS support"
+          },
+          "feedback": {
+            "zh-CN": "2023指南强调完整诊断与专科治疗；不能把旧抗病毒或B细胞靶向疗程泛化。",
+            "en": "The 2023 guideline emphasises complete diagnosis and specialist treatment; historical antiviral or B-cell-targeted courses cannot be generalised."
+          },
+          "correct": true
+        },
+        {
+          "id": "ritux-all",
+          "text": {
+            "zh-CN": "所有T细胞相关病都按旧文重复利妥昔单抗",
+            "en": "Repeat historical rituximab for every T-cell-associated disease"
+          },
+          "feedback": {
+            "zh-CN": "药物靶点与感染细胞谱系必须核对。",
+            "en": "Drug target and infected-cell lineage require reconciliation."
+          },
+          "correct": false
+        },
+        {
+          "id": "cure-antiviral",
+          "text": {
+            "zh-CN": "短期退热证明单纯抗病毒已根治",
+            "en": "Temporary defervescence proves cure by antiviral treatment alone"
+          },
+          "feedback": {
+            "zh-CN": "症状暂缓不证明异常细胞过程清除。",
+            "en": "Temporary symptom control does not establish eradication of the abnormal cellular process."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "neurological"
+          },
+          {
+            "asked": "previous-labels"
+          },
+          {
+            "asked": "baseline"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "early-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "systemic",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "brain-biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确感染细胞谱系并综合评估HLH与中枢风险，不以单项阴性或旧方案定案",
+        "en": "Establish infected-cell lineage and assess HLH/CNS risk without relying on one negative test or historical regimen"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明长病程与系统受累反对单次局限脑炎。；承认缺少标准化病毒定量、感染细胞共定位、完整HLH评估及移植评估。，用复述确认理解。",
+        "en": "Explain that Long course and systemic disease argue against one isolated encephalitis.; acknowledge Standardised viral load, infected-cell colocalisation, complete HLH evaluation and transplant assessment are absent. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "systemic",
+        "brain-biopsy",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原文诊断慢性活动性EBV感染伴中枢T淋巴细胞增殖性疾病，现代感染细胞谱系确认仍缺失。",
+      "en": "The source diagnosed chronic active EBV infection with CNS T-lymphoproliferative disease, while modern infected-lineage confirmation remains missing."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "长病程与系统受累反对单次局限脑炎。",
+        "en": "Long course and systemic disease argue against one isolated encephalitis."
+      },
+      {
+        "zh-CN": "PCR和细胞表型需证明在同一细胞层面关联。",
+        "en": "PCR and cell phenotype need linkage at the infected-cell level."
+      },
+      {
+        "zh-CN": "形态未见噬血不等于排除综合征。",
+        "en": "Absent haemophagocytosis does not exclude the syndrome."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "旧文早期急性EBV因果并未完整确证。",
+        "en": "Early acute EBV causality was not fully established in the old record."
+      },
+      {
+        "zh-CN": "不同年代检查阈值不能直接混用。",
+        "en": "Testing thresholds from different eras are not interchangeable."
+      },
+      {
+        "zh-CN": "无长期改善不意味着所有现代方法无效。",
+        "en": "Historical poor recovery does not establish futility of all modern care."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "缺少标准化病毒定量、感染细胞共定位、完整HLH评估及移植评估。",
+        "en": "Standardised viral load, infected-cell colocalisation, complete HLH evaluation and transplant assessment are absent."
+      }
+    ],
+    "references": [
+      "王玥, 薛露, 马翠, 李春怀. 慢性活动性EB病毒感染并发中枢神经系统EB病毒相关的T淋巴细胞增生性疾病一例. 中华儿科杂志. 2011;49(10):797-800. doi: 10.3760/cma.j.issn.0578-1310.2011.10.020.",
+      "https://rs.yiigle.com/cmaid/44872",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.10.020",
+      "Kawada et al. Updated guidelines for chronic active EBV disease. Int J Hematol. 2023;118:568–576. https://doi.org/10.1007/s12185-023-03660-5"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "缺少标准化病毒定量、感染细胞共定位、完整HLH评估及移植评估。",
+      "en": "Standardised viral load, infected-cell colocalisation, complete HLH evaluation and transplant assessment are absent."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-44872/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "3443c127a396a5f6066d90c591a80c53e03956bb2fafb3ec0dd933a5c1d4e873"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "neurological"
+    },
+    {
+      "type": "ask",
+      "itemId": "previous-labels"
+    },
+    {
+      "type": "ask",
+      "itemId": "baseline"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "examine",
+      "findingId": "early-exam"
+    },
+    {
+      "type": "order",
+      "investigationId": "systemic"
+    },
+    {
+      "type": "read",
+      "investigationId": "systemic",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "systemic"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "brain-biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "brain-biopsy",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "provisional"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "specialist"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "44872",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/44872",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于最初发热，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Could you tell me about initial fever?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "我想了解早年起病。",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Please explain early onset in more detail.",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "关于神经进展，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "neurological"
+        ]
+      },
+      {
+        "text": "Could you tell me about neurological progression?",
+        "locale": "en",
+        "expect": [
+          "neurological"
+        ]
+      },
+      {
+        "text": "我想了解行走变慢。",
+        "locale": "zh-CN",
+        "expect": [
+          "neurological"
+        ]
+      },
+      {
+        "text": "Please explain walking slowdown in more detail.",
+        "locale": "en",
+        "expect": [
+          "neurological"
+        ]
+      },
+      {
+        "text": "关于旧神经诊断，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "previous-labels"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier neurological diagnoses?",
+        "locale": "en",
+        "expect": [
+          "previous-labels"
+        ]
+      },
+      {
+        "text": "我想了解此前病名。",
+        "locale": "zh-CN",
+        "expect": [
+          "previous-labels"
+        ]
+      },
+      {
+        "text": "Please explain previous labels in more detail.",
+        "locale": "en",
+        "expect": [
+          "previous-labels"
+        ]
+      },
+      {
+        "text": "关于病前发育，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "Could you tell me about premorbid development?",
+        "locale": "en",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "我想了解分娩背景。",
+        "locale": "zh-CN",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "Please explain birth background in more detail.",
+        "locale": "en",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "关于过敏接触，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about allergies and contacts?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "我想了解早期过敏史。",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Please explain early allergy history in more detail.",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "关于近期体重，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent weight?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/44872"
+    }
+  }
+}

@@ -1,0 +1,1895 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-44475",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "双腿皮疹、腹痛与便血迅速加重",
+    "en": "Rapid worsening of leg rash, abdominal pain and bloody stool"
+  },
+  "summary": {
+    "zh-CN": "男孩非褪色皮疹伴明显消化道出血，最初腹部影像未定位，病程中出现新的腹部和神经危险信号。",
+    "en": "A boy has non-blanching rash and gastrointestinal bleeding with initially unrevealing abdominal imaging and later abdominal/neurological red flags."
+  },
+  "specialty": [
+    "pediatrics",
+    "nephrology",
+    "paediatric-surgery",
+    "neurology"
+  ],
+  "setting": "emergency",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "孙兴珍, 田向阳, 舒思静. 过敏性紫癜合并肠套叠、脑出血一例. 中华儿科杂志. 2011;49(11):875-876. doi: 10.3760/cma.j.issn.0578-1310.2011.11.020.",
+    "authors": [
+      "孙兴珍",
+      "田向阳",
+      "舒思静"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "2024 UK paediatric IgA vasculitis recommendations, checked 2026-10-28; scope surgical/radiological consultation for suspected intussusception and renal follow-up."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.11.020"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别紫癜伴消化道出血。",
+      "en": "Recognise purpura with gastrointestinal bleeding."
+    },
+    {
+      "zh-CN": "重新评估动态急腹症。",
+      "en": "Reassess evolving acute abdominal disease."
+    },
+    {
+      "zh-CN": "识别局灶神经红旗。",
+      "en": "Recognise focal neurological red flags."
+    },
+    {
+      "zh-CN": "协调血压、肾脏与急症处理。",
+      "en": "Coordinate blood pressure, renal and emergency care."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "韩清和（化名）",
+      "en": "Han Qinghe (pseudonym)"
+    },
+    "age": 8,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "双下肢皮疹、腹痛便血四天",
+      "en": "Leg rash, abdominal pain and bloody stool for four days"
+    },
+    "triageNote": {
+      "zh-CN": "先核对初诊体征，再按时序识别新急症。",
+      "en": "Review initial findings before identifying new emergencies in sequence."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "四天前发现双腿皮疹，同时腹痛便血。",
+        "en": "Leg rash appeared four days earlier with abdominal pain and bloody stool."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "imaging-history"
+          },
+          {
+            "asked": "prior-health"
+          },
+          {
+            "examined": "rash"
+          },
+          {
+            "examined": "initial-abd"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "皮疹和腹痛便血持续多久？",
+        "en": "How long have rash, pain and bleeding lasted?"
+      },
+      "answer": {
+        "zh-CN": "四天前发现双腿皮疹，同时腹痛便血。",
+        "en": "Leg rash appeared four days earlier with abdominal pain and bloody stool."
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮疹腹痛起始",
+          "四天病程",
+          "便血经过",
+          "最初表现"
+        ],
+        "en": [
+          "rash pain onset",
+          "four day course",
+          "bloody stool course",
+          "initial features"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "pain",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "刚入院时哪里疼？",
+        "en": "Where was pain at admission?"
+      },
+      "answer": {
+        "zh-CN": "主要脐周疼痛，初诊未摸到腹部包块。",
+        "en": "Pain was periumbilical and no mass was palpated initially."
+      },
+      "keywords": {
+        "zh-CN": [
+          "初始痛点",
+          "脐周疼痛",
+          "刚入院腹部",
+          "早期包块"
+        ],
+        "en": [
+          "initial pain site",
+          "periumbilical pain",
+          "admission abdomen",
+          "early mass"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "imaging-history",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "外院腹部超声怎么说？",
+        "en": "What did the earlier abdominal ultrasound show?"
+      },
+      "answer": {
+        "zh-CN": "外院超声当时报告正常。",
+        "en": "The earlier external ultrasound was reported as normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "外院超声",
+          "之前腹部影像",
+          "旧B超",
+          "先前检查"
+        ],
+        "en": [
+          "outside ultrasound",
+          "previous abdominal imaging",
+          "earlier scan",
+          "prior investigation"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前健康情况怎样？",
+        "en": "How was health before this illness?"
+      },
+      "answer": {
+        "zh-CN": "既往身体健康。",
+        "en": "Previously healthy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康",
+          "以前疾病",
+          "病前状态",
+          "基础病史"
+        ],
+        "en": [
+          "prior health",
+          "previous illness",
+          "premorbid state",
+          "baseline history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "initial-consciousness",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "刚入院有没有意识异常或肢体无力？",
+        "en": "Was there altered consciousness or weakness initially?"
+      },
+      "answer": {
+        "zh-CN": "初诊神志清楚，肌力肌张力正常，神经病理征阴性。",
+        "en": "Initially alert with normal strength/tone and negative pathological neurological signs."
+      },
+      "keywords": {
+        "zh-CN": [
+          "初诊意识",
+          "早期肌力",
+          "初始神经",
+          "最早反应"
+        ],
+        "en": [
+          "initial consciousness",
+          "early strength",
+          "initial neurology",
+          "earliest responsiveness"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最近有测过体重吗？",
+        "en": "Has weight been measured recently?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期体重",
+          "称过体重",
+          "体重记录",
+          "最近多重"
+        ],
+        "en": [
+          "recent weight",
+          "weight measurement",
+          "weighed recently",
+          "recorded weight"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "rash",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "核对皮疹分布和褪色性",
+        "en": "Review rash distribution and blanching"
+      },
+      "finding": {
+        "zh-CN": "双腿对称暗红隆起皮疹，压之不褪色。",
+        "en": "Symmetrical raised dark-red leg lesions did not blanch."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "initial-abd",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "核对初诊腹部与血压",
+        "en": "Review initial abdomen and blood pressure"
+      },
+      "finding": {
+        "zh-CN": "重度贫血貌，血压125/95 mmHg；腹软，脐周压痛，无反跳或包块。",
+        "en": "Severe pallor and blood pressure 125/95 mmHg; soft abdomen with periumbilical tenderness but no rebound or mass."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "initial-blood",
+      "name": {
+        "zh-CN": "初始血便与血常规",
+        "en": "Initial stool and blood count"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "初始血便与血常规"
+        ],
+        "en": [
+          "Initial stool and blood count"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "Hb55 g/L，血小板298×10^9/L，白细胞24.36×10^9/L；便红细胞满视野、隐血+++。",
+            "en": "Haemoglobin 55 g/L, platelets 298×10^9/L and white count 24.36×10^9/L; stool packed with red cells and occult blood +++."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "deterioration",
+      "name": {
+        "zh-CN": "八小时后及后续急变",
+        "en": "Deterioration after eight hours and later"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "八小时后及后续急变"
+        ],
+        "en": [
+          "Deterioration after eight hours and later"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "腹痛加剧、六次鲜血便，血压140/107 mmHg并抽搐；新腹部包块，超声肠套叠11.7×5 cm。术后血尿、24小时尿蛋白5.21 g；后出现左侧无力，MRI右顶枕出血约20 mL。",
+            "en": "Pain worsened with six bloody stools, blood pressure 140/107 mmHg and a seizure; a new mass corresponded to an 11.7×5 cm intussusception. Postoperatively haematuria and 24-hour protein 5.21 g appeared; later left weakness accompanied an approximately 20 mL right parieto-occipital haemorrhage on MRI."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "空气灌肠失败后手术复位，后经综合治疗血压及神经体征恢复、出血吸收。肾活检报告紫癜性肾炎Ⅱ级，之后有间歇蛋白尿，末次随访近两个月尿检正常。",
+            "en": "Air-enema reduction failed and surgery followed. Combined care accompanied recovery of blood pressure and neurological signs with haemorrhage resolution. Biopsy reported grade II purpuric nephritis; intermittent proteinuria later resolved for the two months preceding last follow-up."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "imaging-history"
+          },
+          {
+            "asked": "prior-health"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "rash"
+          },
+          {
+            "examined": "initial-abd"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "初诊皮疹和出血最支持什么评估方向？",
+        "en": "Which direction is supported by initial rash and bleeding?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "initial-blood",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "vasculitis",
+          "text": {
+            "zh-CN": "IgA血管炎样多系统表现伴严重失血，需要持续腹部和肾脏监测",
+            "en": "An IgA-vasculitis-like multisystem pattern with severe blood loss requiring ongoing abdominal/renal assessment"
+          },
+          "feedback": {
+            "zh-CN": "正常血小板与可触及紫癜相容，但不能忽略出血严重度。",
+            "en": "Normal platelets fit palpable purpura but do not reduce bleeding severity."
+          },
+          "correct": true
+        },
+        {
+          "id": "platelets",
+          "text": {
+            "zh-CN": "所有紫癜都由血小板减少解释",
+            "en": "All purpura is explained by thrombocytopenia"
+          },
+          "feedback": {
+            "zh-CN": "血小板计数正常。",
+            "en": "Platelet count was normal."
+          },
+          "correct": false
+        },
+        {
+          "id": "normal-scan",
+          "text": {
+            "zh-CN": "旧超声正常保证以后不会肠套叠",
+            "en": "A normal old ultrasound guarantees no later intussusception"
+          },
+          "feedback": {
+            "zh-CN": "病情可演变，持续重评估必要。",
+            "en": "Disease evolves and repeated assessment is necessary."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "deterioration",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "multiple",
+          "text": {
+            "zh-CN": "新包块和局灶神经表现分别有肠套叠与脑出血证据，需要并行急症处理",
+            "en": "The new mass and focal signs have evidence of intussusception and cerebral bleeding requiring parallel emergency care"
+          },
+          "feedback": {
+            "zh-CN": "不能把新急症统称为原疾病普通腹痛或发作。",
+            "en": "New emergencies cannot be dismissed as ordinary pain or an episode of the original illness."
+          },
+          "correct": true
+        },
+        {
+          "id": "seizure-only",
+          "text": {
+            "zh-CN": "抽搐停止就排除颅内出血",
+            "en": "Seizure cessation excludes intracranial bleeding"
+          },
+          "feedback": {
+            "zh-CN": "后续局灶无力与MRI已证实出血。",
+            "en": "Later focal weakness and MRI establish bleeding."
+          },
+          "correct": false
+        },
+        {
+          "id": "normal-renal",
+          "text": {
+            "zh-CN": "此前肾功能正常排除后续肾炎",
+            "en": "Earlier normal renal function excludes later nephritis"
+          },
+          "feedback": {
+            "zh-CN": "血尿蛋白尿可出现而肌酐未必升高。",
+            "en": "Haematuria/proteinuria may emerge without raised creatinine."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "安全优先级应怎样安排？",
+        "en": "How should safety priorities be arranged?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "deterioration",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "urgent-team",
+          "text": {
+            "zh-CN": "小儿外科与重症神经肾科并行评估急腹症、颅内出血及高血压",
+            "en": "Coordinate paediatric surgery, critical neurology and renal teams for acute abdomen, intracranial bleeding and hypertension"
+          },
+          "feedback": {
+            "zh-CN": "神经局灶征和高颅压风险应先影像评估，不能机械套用腰穿建议。",
+            "en": "Focal signs and raised-pressure risk require imaging assessment rather than routine lumbar puncture."
+          },
+          "correct": true
+        },
+        {
+          "id": "lp",
+          "text": {
+            "zh-CN": "不评估高颅压就照旧文建议立即腰穿",
+            "en": "Perform immediate lumbar puncture without assessing intracranial pressure risk"
+          },
+          "feedback": {
+            "zh-CN": "颅内出血和高压背景使此方案危险。",
+            "en": "Intracranial bleeding and pressure risk make this unsafe."
+          },
+          "correct": false
+        },
+        {
+          "id": "steroid-only",
+          "text": {
+            "zh-CN": "只加激素等待包块自行消失",
+            "en": "Give more steroids and wait for the mass to resolve"
+          },
+          "feedback": {
+            "zh-CN": "肠套叠需要及时外科/影像干预判断。",
+            "en": "Intussusception needs timely surgical/radiological assessment."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "imaging-history"
+          },
+          {
+            "asked": "prior-health"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "initial-consciousness"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "rash"
+          },
+          {
+            "examined": "initial-abd"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "initial-blood",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "deterioration",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "识别新的腹部和神经急症，优先多学科处理并避免不安全腰穿",
+        "en": "Recognise new abdominal/neurological emergencies and avoid unsafe lumbar puncture"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明正常旧检查不覆盖新病程。；承认缺少完整现代IgA病理分型、脑出血机制和长期肾风险。，用复述确认理解。",
+        "en": "Explain that An old normal study does not cover evolving disease.; acknowledge Complete modern IgA pathology classification, haemorrhage mechanism and long-term renal risk are missing. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "initial-blood",
+        "deterioration",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告为IgA血管炎样疾病合并肠套叠、肾炎、高血压和脑出血。",
+      "en": "The report described an IgA-vasculitis-like illness with intussusception, nephritis, hypertension and cerebral haemorrhage."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "正常旧检查不覆盖新病程。",
+        "en": "An old normal study does not cover evolving disease."
+      },
+      {
+        "zh-CN": "多系统并发症必须分别识别。",
+        "en": "Multisystem complications require separate recognition."
+      },
+      {
+        "zh-CN": "治疗后好转不证明某一药物独立作用。",
+        "en": "Recovery after combined care does not prove one drug’s effect."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "旧“过敏性紫癜”术语需现代解释。",
+        "en": "Interpret the historical purpura terminology in modern context."
+      },
+      {
+        "zh-CN": "保留高血压与脑出血因果不确定性。",
+        "en": "Retain uncertainty in the hypertension–haemorrhage causal relationship."
+      },
+      {
+        "zh-CN": "不将雷公藤等旧疗法作为当前默认。",
+        "en": "Do not make historical Tripterygium treatment a current default."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "缺少完整现代IgA病理分型、脑出血机制和长期肾风险。",
+        "en": "Complete modern IgA pathology classification, haemorrhage mechanism and long-term renal risk are missing."
+      }
+    ],
+    "references": [
+      "孙兴珍, 田向阳, 舒思静. 过敏性紫癜合并肠套叠、脑出血一例. 中华儿科杂志. 2011;49(11):875-876. doi: 10.3760/cma.j.issn.0578-1310.2011.11.020.",
+      "https://rs.yiigle.com/cmaid/44475",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.11.020",
+      "UK national recommendations for paediatric IgA vasculitis, 2024. https://doi.org/10.1136/archdischild-2024-327364"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "缺少完整现代IgA病理分型、脑出血机制和长期肾风险。",
+      "en": "Complete modern IgA pathology classification, haemorrhage mechanism and long-term renal risk are missing."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "imaging-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "initial-consciousness"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "examine",
+      "findingId": "rash"
+    },
+    {
+      "type": "examine",
+      "findingId": "initial-abd"
+    },
+    {
+      "type": "order",
+      "investigationId": "initial-blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "initial-blood",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "vasculitis"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "deterioration"
+    },
+    {
+      "type": "read",
+      "investigationId": "deterioration",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "multiple"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "urgent-team"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "44475",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/44475",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于皮疹腹痛起始，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Could you tell me about rash pain onset?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "我想了解四天病程。",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Please explain four day course in more detail.",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "关于初始痛点，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Could you tell me about initial pain site?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "我想了解脐周疼痛。",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Please explain periumbilical pain in more detail.",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "关于外院超声，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "imaging-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about outside ultrasound?",
+        "locale": "en",
+        "expect": [
+          "imaging-history"
+        ]
+      },
+      {
+        "text": "我想了解之前腹部影像。",
+        "locale": "zh-CN",
+        "expect": [
+          "imaging-history"
+        ]
+      },
+      {
+        "text": "Please explain previous abdominal imaging in more detail.",
+        "locale": "en",
+        "expect": [
+          "imaging-history"
+        ]
+      },
+      {
+        "text": "关于既往健康，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about prior health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "我想了解以前疾病。",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Please explain previous illness in more detail.",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于初诊意识，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "initial-consciousness"
+        ]
+      },
+      {
+        "text": "Could you tell me about initial consciousness?",
+        "locale": "en",
+        "expect": [
+          "initial-consciousness"
+        ]
+      },
+      {
+        "text": "我想了解早期肌力。",
+        "locale": "zh-CN",
+        "expect": [
+          "initial-consciousness"
+        ]
+      },
+      {
+        "text": "Please explain early strength in more detail.",
+        "locale": "en",
+        "expect": [
+          "initial-consciousness"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "关于近期体重，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent weight?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/44475"
+    }
+  }
+}

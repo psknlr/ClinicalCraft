@@ -1,0 +1,2002 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-860885",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "肢端凉与手指僵硬 · 16岁7个月女孩",
+    "en": "Cold extremities and stiff fingers · girl aged 16 years 7 months"
+  },
+  "summary": {
+    "zh-CN": "长期肢端症状逐渐出现皮肤硬化和指端组织损伤，需评估多器官证据和治疗风险。",
+    "en": "Longstanding acral symptoms progress to skin tightening and digital tissue injury; assess multi-organ evidence and treatment risks."
+  },
+  "specialty": [
+    "paediatric-rheumatology",
+    "respiratory-medicine"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "许瑛杰, 吴凤歧, 赖建铭, 周志轩, 苏改秀, 尚宁秀. 利妥昔单抗治疗难治性儿童混合结缔组织病1例. 中华实用儿科临床杂志. 2013;28(09):715-716. doi:10.3760/cma.j.issn.2095-428X.2013.09.022.",
+    "doi": "10.3760/cma.j.issn.2095-428X.2013.09.022",
+    "authors": [
+      "许瑛杰",
+      "吴凤歧",
+      "赖建铭",
+      "周志轩",
+      "苏改秀",
+      "尚宁秀"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "以多器官及nRNP证据解释混合结缔组织病方向",
+      "en": "Explain the mixed-connective-tissue pattern using organ and anti-RNP evidence"
+    },
+    {
+      "zh-CN": "辨认原发雷诺不能解释的组织损伤",
+      "en": "Identify tissue injury not explained by primary Raynaud phenomenon"
+    },
+    {
+      "zh-CN": "指出正文与表1的CK、HBDH及RF不一致",
+      "en": "Identify CK, HBDH and RF discrepancies between narrative and Table 1"
+    },
+    {
+      "zh-CN": "制定兼顾缺血和免疫治疗安全的专科计划",
+      "en": "Plan specialist care addressing ischaemia and immunotherapy safety"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "余予宁（化名）",
+      "en": "Yu Yuning (pseudonym)"
+    },
+    "age": 16.583333333333332,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "肢端凉6年，手指僵硬2年，右手溃疡1个月",
+      "en": "Six years of cold extremities, two years of stiff fingers and one month of a right-hand ulcer"
+    },
+    "triageNote": {
+      "zh-CN": "手指伸展困难，近期右拇指出现坏死区，需评估局部缺血和系统性病变。",
+      "en": "Finger extension is limited and a recent necrotic area on the right thumb requires assessment of local ischaemia and systemic disease."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "手脚发凉已经6年。",
+        "en": "My hands and feet have been cold for six years."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "teen",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "stiffness"
+          },
+          {
+            "asked": "ulcer"
+          },
+          {
+            "asked": "skin"
+          },
+          {
+            "examined": "hands"
+          },
+          {
+            "examined": "joints"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "手脚发凉有多久了？",
+        "en": "How long have your hands and feet felt cold?"
+      },
+      "answer": {
+        "zh-CN": "手脚发凉已经6年。",
+        "en": "My hands and feet have been cold for six years."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肢端凉病程",
+          "肢端凉是从几年前开始的？",
+          "手足冰凉持续多长时间？",
+          "手脚发凉有多久了？"
+        ],
+        "en": [
+          "cold extremities",
+          "How many years ago did the cold extremities begin?",
+          "How long has the coldness of your hands and feet persisted?",
+          "How long have your hands and feet felt cold?"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "stiffness",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "手指僵硬多久了，能伸直吗？",
+        "en": "How long have your fingers been stiff, and can you straighten them?"
+      },
+      "answer": {
+        "zh-CN": "手指僵硬有2年，伸不直。",
+        "en": "My fingers have been stiff for two years and do not straighten fully."
+      },
+      "keywords": {
+        "zh-CN": [
+          "关节僵硬",
+          "手指发僵是什么时候开始的？",
+          "僵硬会不会影响伸手？",
+          "手指僵硬多久了，能伸直吗？"
+        ],
+        "en": [
+          "joint stiffness",
+          "When did finger stiffness begin?",
+          "Does stiffness limit finger extension?",
+          "How long have your fingers been stiff, and can you straighten them?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "ulcer",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "右手什么时候开始破溃的？",
+        "en": "When did the right-hand ulcer appear?"
+      },
+      "answer": {
+        "zh-CN": "右手出现溃疡有一个月。",
+        "en": "The right-hand ulcer has been present for a month."
+      },
+      "keywords": {
+        "zh-CN": [
+          "右手溃疡",
+          "手上的溃疡有多久？",
+          "右手破口是近期出现的吗？",
+          "右手什么时候开始破溃的？"
+        ],
+        "en": [
+          "right-hand ulcer",
+          "How long has the hand ulcer been present?",
+          "Is the break in the right-hand skin recent?",
+          "When did the right-hand ulcer appear?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "skin",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "手和前臂的皮肤有变化吗？",
+        "en": "Has the skin of your hands and forearms changed?"
+      },
+      "answer": {
+        "zh-CN": "双手和前臂的皮肤越来越紧。",
+        "en": "The skin of both hands and forearms has become tight."
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮肤变紧",
+          "皮肤有没有越来越紧？",
+          "手臂皮肤是不是硬了？",
+          "手和前臂的皮肤有变化吗？"
+        ],
+        "en": [
+          "skin tightening",
+          "Has the skin become tighter?",
+          "Has the arm skin become firmer?",
+          "Has the skin of your hands and forearms changed?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "movement",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "手脚能伸展开吗？ 僵硬有没有影响伸直？",
+        "en": "Can the hands and feet extend fully? Does stiffness prevent straightening?"
+      },
+      "answer": {
+        "zh-CN": "手指和肘能弯，但不能充分伸开。",
+        "en": "My fingers and elbows can bend but do not fully extend."
+      },
+      "keywords": {
+        "zh-CN": [
+          "伸展能力",
+          "手脚能伸展开吗？",
+          "僵硬有没有影响伸直？",
+          "伸展能力情况"
+        ],
+        "en": [
+          "extension ability",
+          "Can the hands and feet extend fully?",
+          "Does stiffness prevent straightening?",
+          "extension ability information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "swelling",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "哪些关节肿了？ 关节有没有肿起来？",
+        "en": "Which joints are swollen? Has joint swelling developed?"
+      },
+      "answer": {
+        "zh-CN": "原记录没有关节肿胀。",
+        "en": "The record describes no joint swelling."
+      },
+      "keywords": {
+        "zh-CN": [
+          "关节肿胀",
+          "哪些关节肿了？",
+          "关节有没有肿起来？",
+          "关节肿胀情况"
+        ],
+        "en": [
+          "joint swelling",
+          "Which joints are swollen?",
+          "Has joint swelling developed?",
+          "joint swelling information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-therapy",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前治疗后改善了哪些症状？ 原来的治疗有没有效果？",
+        "en": "Which symptoms improved after treatment? Did earlier treatment help?"
+      },
+      "answer": {
+        "zh-CN": "此前常规治疗后的反应需要从后续用药记录核对，不能提前说疗效。",
+        "en": "Response to the initial treatment is reviewed in the subsequent medication record rather than assumed in advance."
+      },
+      "keywords": {
+        "zh-CN": [
+          "治疗反应",
+          "之前治疗后改善了哪些症状？",
+          "原来的治疗有没有效果？",
+          "治疗反应情况"
+        ],
+        "en": [
+          "treatment response",
+          "Which symptoms improved after treatment?",
+          "Did earlier treatment help?",
+          "treatment response information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "hands",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查双手和指端",
+        "en": "Examine hands and digits"
+      },
+      "finding": {
+        "zh-CN": "双手皮肤紧绷硬，雷诺现象阳性，指甲床苍白；右拇指1×2 cm干燥坏死区，左第4趾皮肤发绀。",
+        "en": "Hand skin is tight and firm with Raynaud phenomenon and pale nail beds; a dry 1 × 2 cm necrotic area is on the right thumb, and the left fourth toe is cyanosed."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "joints",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "检查关节与钙质沉着",
+        "en": "Examine joints and calcinosis"
+      },
+      "finding": {
+        "zh-CN": "指、肘关节伸展受限但无肿胀；指关节、肘、膝有钙质沉着及部分色素脱失。",
+        "en": "Finger and elbow extension is limited without swelling; calcinosis and areas of pigment loss affect fingers, elbows and knees."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "antibodies",
+      "name": {
+        "zh-CN": "自身抗体",
+        "en": "Autoantibodies"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "自身抗体"
+        ],
+        "en": [
+          "Autoantibodies"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "ANA 1:10000颗粒型，抗nRNP++、SSA+，抗Sm、dsDNA、Scl-70、Jo-1等阴性；RF阳性，补体和CRP正常。",
+            "en": "ANA 1:10000 granular pattern, anti-nRNP ++ and SSA +; Sm, dsDNA, Scl-70 and Jo-1 among the negatives. RF was positive, complement and CRP normal."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "lung",
+      "name": {
+        "zh-CN": "肺与心脏评估",
+        "en": "Lung and cardiac assessment"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肺与心脏评估"
+        ],
+        "en": [
+          "Lung and cardiac assessment"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "限制性通气障碍；CT双上肺胸膜下小泡样气肿并考虑间质病变，食管扩张；心超未见肺高压。",
+            "en": "Restrictive ventilatory impairment; CT showed subpleural upper-lobe cystic emphysematous changes with suspected interstitial disease and oesophageal dilatation; echo showed no pulmonary hypertension."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "biochemistry",
+      "name": {
+        "zh-CN": "肌酶与免疫球蛋白",
+        "en": "Muscle enzymes and immunoglobulins"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肌酶与免疫球蛋白"
+        ],
+        "en": [
+          "Muscle enzymes and immunoglobulins"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "正文CK写56 U/L，表1为556且标高；HBDH正文285、表1为258 U/L。AST68.6、LDH322 U/L。表1初期CRP0.5 mg/L、血小板164×10⁹/L、B淋巴计数0.50（未标单位）；正文RF阳性而表1正常，保留差异。",
+            "en": "Narrative CK is 56 U/L versus Table 1 CK 556, labelled high; HBDH is 285 in text versus 258 U/L in the table. AST 68.6 and LDH 322 U/L. Initial table CRP is 0.5 mg/L, platelets 164×10⁹/L and B-cell count 0.50 without units. Narrative RF is positive but the table says normal; discrepancies are retained."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "皮肤肌肉病理及既往疗效",
+        "en": "Skin/muscle pathology and prior response"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "皮肤肌肉病理及既往疗效"
+        ],
+        "en": [
+          "Skin/muscle pathology and prior response"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "皮肤活检与硬皮病样改变相符，肌肉明显变性伴血管扩张。糖皮质激素、免疫球蛋白、环磷酰胺及甲氨蝶呤治疗后，雷诺和僵硬无明显改善。",
+            "en": "Skin biopsy supported scleroderma-like change and muscle showed marked degeneration with vascular dilatation. Raynaud symptoms and stiffness showed no clear improvement after corticosteroids, immunoglobulin, cyclophosphamide and methotrexate."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告加用两次利妥昔单抗后雷诺改善、拇指坏死未继续加重，ANA及nRNP转阴；表1加用RTX后B淋巴计数0.00、ENA及nRNP阴性，但CRP9.5 mg/L、血小板123×10⁹/L且胸片仍有间质改变。随访1年未报告过敏感染，远期疗效安全仍不确定。",
+            "en": "After two rituximab administrations the report described improved Raynaud symptoms, no progression of thumb necrosis, and negative ANA/anti-nRNP. After RTX, Table 1 records B-cell count 0.00 and negative ENA/nRNP, but CRP 9.5 mg/L, platelets 123×10⁹/L and persistent interstitial chest-film changes. No allergy/infection was reported over one year; long-term efficacy and safety remained uncertain."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "stiffness"
+          },
+          {
+            "asked": "ulcer"
+          },
+          {
+            "asked": "skin"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "hands"
+          },
+          {
+            "examined": "joints"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "哪种解释更能覆盖临床与抗体结果？",
+        "en": "Which interpretation best covers the clinical and antibody evidence?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "antibodies",
+            "phase": "workup"
+          },
+          {
+            "read": "lung",
+            "phase": "workup"
+          },
+          {
+            "read": "biochemistry",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "混合结缔组织病方向，需持续评估缺血及肺等器官受累",
+            "en": "A mixed-connective-tissue-disease pattern requiring ongoing ischaemic and organ assessment"
+          },
+          "feedback": {
+            "zh-CN": "雷诺、硬皮样改变、肌肉和肺线索与高滴度nRNP共同构成综合证据。",
+            "en": "Raynaud, scleroderma-like features, muscle/lung clues and high anti-RNP form integrated evidence."
+          },
+          "correct": true
+        },
+        {
+          "id": "primary-raynaud",
+          "text": {
+            "zh-CN": "原发雷诺可解释全部组织坏死与抗体结果",
+            "en": "Primary Raynaud phenomenon explains all necrosis and antibodies"
+          },
+          "feedback": {
+            "zh-CN": "组织坏死、多器官异常和自身抗体支持继发性系统性病变评估。",
+            "en": "Necrosis, multi-organ findings and antibodies prompt assessment of a secondary systemic disorder."
+          },
+          "correct": false
+        },
+        {
+          "id": "normal-crp",
+          "text": {
+            "zh-CN": "CRP正常足以排除活动性结缔组织病",
+            "en": "Normal CRP excludes active connective-tissue disease"
+          },
+          "feedback": {
+            "zh-CN": "CRP不是这组疾病活动的唯一标志，不能抹去临床器官损伤。",
+            "en": "CRP is not the sole activity marker and cannot negate clinical organ injury."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "correct",
+          "text": {
+            "zh-CN": "治疗无效与组织改变提示重评病程；CK标记需结合参考范围",
+            "en": "Non-response and tissue changes warrant reassessment; the CK flag needs its reference range"
+          },
+          "feedback": {
+            "zh-CN": "原文CK 56被称升高而参考区间缺失，不能自造严重肌酶增高。",
+            "en": "CK 56 is labelled raised without a range; marked enzyme elevation must not be invented."
+          },
+          "correct": true
+        },
+        {
+          "id": "antibody-cure",
+          "text": {
+            "zh-CN": "ANA转阴即可定义临床治愈",
+            "en": "Negative ANA alone defines clinical cure"
+          },
+          "feedback": {
+            "zh-CN": "局部灌注、器官功能及长期结局仍须随访。",
+            "en": "Perfusion, organ function and long-term outcomes still require follow-up."
+          },
+          "correct": false
+        },
+        {
+          "id": "biopsy-single",
+          "text": {
+            "zh-CN": "硬皮病样活检排除所有其他结缔组织病表现",
+            "en": "Scleroderma-like biopsy excludes all other connective-tissue features"
+          },
+          "feedback": {
+            "zh-CN": "病理是一部分证据，不能覆盖混合临床表型。",
+            "en": "Histology is one part of the evidence and does not erase a mixed clinical phenotype."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "对难治性病程和生物制剂应如何决策？",
+        "en": "How should refractory disease and biologic therapy be approached?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "风湿专科重新评估指端缺血、器官风险和感染筛查，在知情讨论下制定个体化方案",
+            "en": "Specialist reassessment of digital ischaemia, organ risk and infection screening with an individualised informed treatment plan"
+          },
+          "feedback": {
+            "zh-CN": "报告生物制剂后的改善可供讨论，但不足以保证疗效和远期安全。",
+            "en": "Improvement after a biologic in the report informs discussion but cannot guarantee efficacy or long-term safety."
+          },
+          "correct": true
+        },
+        {
+          "id": "guarantee",
+          "text": {
+            "zh-CN": "该单例证明利妥昔单抗是所有患儿的固定首选",
+            "en": "This case proves rituximab is the fixed first choice for every child"
+          },
+          "feedback": {
+            "zh-CN": "单例、联合治疗和有限随访无法建立普适疗效。",
+            "en": "One case, concomitant therapies and limited follow-up cannot establish universal efficacy."
+          },
+          "correct": false
+        },
+        {
+          "id": "ignore-digit",
+          "text": {
+            "zh-CN": "只追踪抗体转阴即可，不需要评估指端坏死",
+            "en": "Track antibody negativity alone without reassessing digital necrosis"
+          },
+          "feedback": {
+            "zh-CN": "抗体不能替代组织灌注、器官功能和安全监测。",
+            "en": "Antibodies do not replace assessment of tissue perfusion, organ function and safety."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "stiffness"
+          },
+          {
+            "asked": "ulcer"
+          },
+          {
+            "asked": "skin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "movement"
+          },
+          {
+            "asked": "swelling"
+          },
+          {
+            "asked": "prior-therapy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "hands"
+          },
+          {
+            "examined": "joints"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "antibodies",
+            "phase": "workup"
+          },
+          {
+            "read": "lung",
+            "phase": "workup"
+          },
+          {
+            "read": "biochemistry",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "首次即选择兼顾缺血、器官及感染风险的个体化方案",
+        "en": "Choose an individual plan addressing ischaemic, organ and infection risks on the first attempt"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：多器官表现比单一抗体更重要。同时解释以下信息仍有缺失或疑问：体重、完整感染筛查、CK参考范围、长期肺功能和远期生物制剂安全性。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: The multi-organ pattern matters more than a single antibody. Identify the following as missing or uncertain: Weight, complete infection screening, CK reference range, long-term lung function and biologic safety. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "antibodies",
+        "lung",
+        "biochemistry",
+        "biopsy",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告诊断难治性儿童混合结缔组织病；指端坏死及肺线索要求持续器官和安全评估。",
+      "en": "The report diagnosed refractory childhood mixed connective tissue disease; digital necrosis and lung findings require continued organ and safety assessment."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "多器官表现比单一抗体更重要。",
+        "en": "The multi-organ pattern matters more than a single antibody."
+      },
+      {
+        "zh-CN": "正常CRP不能否定严重指端病变。",
+        "en": "Normal CRP does not negate serious digital disease."
+      },
+      {
+        "zh-CN": "治疗前后变化不能确立单项疗法的因果效果。",
+        "en": "Before/after change cannot establish one therapy’s causal effect."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "联系雷诺、皮肤硬化及肺肌肉改变。",
+        "en": "Connect Raynaud, skin sclerosis and lung/muscle findings."
+      },
+      {
+        "zh-CN": "为未列参考范围的肌酶保留解释限制。",
+        "en": "Retain interpretation limits for enzymes without reference ranges."
+      },
+      {
+        "zh-CN": "把患者安全及长期功能放在抗体变化之前。",
+        "en": "Prioritise safety and long-term function over antibody changes."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "体重、完整感染筛查、CK参考范围、长期肺功能和远期生物制剂安全性。",
+        "en": "Weight, complete infection screening, CK reference range, long-term lung function and biologic safety."
+      }
+    ],
+    "references": [
+      "许瑛杰, 吴凤歧, 赖建铭, 周志轩, 苏改秀, 尚宁秀. 利妥昔单抗治疗难治性儿童混合结缔组织病1例. 中华实用儿科临床杂志. 2013;28(09):715-716. doi:10.3760/cma.j.issn.2095-428X.2013.09.022.",
+      "https://rs.yiigle.com/cmaid/860885"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "体重、完整感染筛查、CK参考范围、长期肺功能和远期生物制剂安全性。",
+      "en": "Weight, complete infection screening, CK reference range, long-term lung function and biologic safety."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-860885/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "573dad3b69ce61d5dc28b3a87897ac74301d77b854a6ef7dbdd236598d6f3bcf"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "stiffness"
+    },
+    {
+      "type": "ask",
+      "itemId": "ulcer"
+    },
+    {
+      "type": "ask",
+      "itemId": "skin"
+    },
+    {
+      "type": "ask",
+      "itemId": "movement"
+    },
+    {
+      "type": "ask",
+      "itemId": "swelling"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-therapy"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "examine",
+      "findingId": "hands"
+    },
+    {
+      "type": "examine",
+      "findingId": "joints"
+    },
+    {
+      "type": "order",
+      "investigationId": "antibodies"
+    },
+    {
+      "type": "read",
+      "investigationId": "antibodies",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "lung"
+    },
+    {
+      "type": "read",
+      "investigationId": "lung",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "biochemistry"
+    },
+    {
+      "type": "read",
+      "investigationId": "biochemistry",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "correct"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "860885",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/860885",
+    "sourceDoi": "10.3760/cma.j.issn.2095-428X.2013.09.022",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "肢端凉是从几年前开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How many years ago did the cold extremities begin?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "手足冰凉持续多长时间？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How long has the coldness of your hands and feet persisted?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "手指发僵是什么时候开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "stiffness"
+        ]
+      },
+      {
+        "text": "When did finger stiffness begin?",
+        "locale": "en",
+        "expect": [
+          "stiffness"
+        ]
+      },
+      {
+        "text": "僵硬会不会影响伸手？",
+        "locale": "zh-CN",
+        "expect": [
+          "stiffness"
+        ]
+      },
+      {
+        "text": "Does stiffness limit finger extension?",
+        "locale": "en",
+        "expect": [
+          "stiffness"
+        ]
+      },
+      {
+        "text": "手上的溃疡有多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "ulcer"
+        ]
+      },
+      {
+        "text": "How long has the hand ulcer been present?",
+        "locale": "en",
+        "expect": [
+          "ulcer"
+        ]
+      },
+      {
+        "text": "右手破口是近期出现的吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "ulcer"
+        ]
+      },
+      {
+        "text": "Is the break in the right-hand skin recent?",
+        "locale": "en",
+        "expect": [
+          "ulcer"
+        ]
+      },
+      {
+        "text": "皮肤有没有越来越紧？",
+        "locale": "zh-CN",
+        "expect": [
+          "skin"
+        ]
+      },
+      {
+        "text": "Has the skin become tighter?",
+        "locale": "en",
+        "expect": [
+          "skin"
+        ]
+      },
+      {
+        "text": "手臂皮肤是不是硬了？",
+        "locale": "zh-CN",
+        "expect": [
+          "skin"
+        ]
+      },
+      {
+        "text": "Has the arm skin become firmer?",
+        "locale": "en",
+        "expect": [
+          "skin"
+        ]
+      },
+      {
+        "text": "手脚能伸展开吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "movement"
+        ]
+      },
+      {
+        "text": "Can the hands and feet extend fully?",
+        "locale": "en",
+        "expect": [
+          "movement"
+        ]
+      },
+      {
+        "text": "僵硬有没有影响伸直？",
+        "locale": "zh-CN",
+        "expect": [
+          "movement"
+        ]
+      },
+      {
+        "text": "Does stiffness prevent straightening?",
+        "locale": "en",
+        "expect": [
+          "movement"
+        ]
+      },
+      {
+        "text": "哪些关节肿了？",
+        "locale": "zh-CN",
+        "expect": [
+          "swelling"
+        ]
+      },
+      {
+        "text": "Which joints are swollen?",
+        "locale": "en",
+        "expect": [
+          "swelling"
+        ]
+      },
+      {
+        "text": "关节有没有肿起来？",
+        "locale": "zh-CN",
+        "expect": [
+          "swelling"
+        ]
+      },
+      {
+        "text": "Has joint swelling developed?",
+        "locale": "en",
+        "expect": [
+          "swelling"
+        ]
+      },
+      {
+        "text": "之前治疗后改善了哪些症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-therapy"
+        ]
+      },
+      {
+        "text": "Which symptoms improved after treatment?",
+        "locale": "en",
+        "expect": [
+          "prior-therapy"
+        ]
+      },
+      {
+        "text": "原来的治疗有没有效果？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-therapy"
+        ]
+      },
+      {
+        "text": "Did earlier treatment help?",
+        "locale": "en",
+        "expect": [
+          "prior-therapy"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

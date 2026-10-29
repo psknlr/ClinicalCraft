@@ -36,6 +36,222 @@
       "file": "source.pdf",
       "sha256": "6d185f565d7c3418aeb91a52e7ed29bf2b0020c49bd4e4f5c11e263618c0ef01",
       "reason": "The journal back cover on page 2 reprints another article's PET/CT with the hospital, the patient's date of birth and the scan date burned in."
+    },
+    {
+      "case": "cmcr-1551889",
+      "file": "source.pdf",
+      "reason": "Journal back-cover ophthalmic image from another report contains a calendar acquisition date and time.",
+      "sha256": "4b84cba60ef01b28c4c1b5d6e644c72e9679f6ee371a19386f1cbac7f29b6015"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig01.png",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "547057224a5b589d510454ce1a6d228bcc4293860b97b39388bbf36e5ca1b5f0"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig02.png",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "56092c86a559f7fda653ff0229254e9ce0f0718f7e784cd62734f683d4fb7546"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig03.png",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "aebd4131ec90ab531758427a4f3221cb2983e7a263cd3c9e2913a50e737e9700"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig04.png",
+      "reason": "Burned-in patient/hospital identifiers, birth date and acquisition date/time.",
+      "sha256": "cd20d1af351b57f8b80fa9557f815b26bdd06a2c41f2f1c548d8ff571f999b67"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig05.png",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "f7a8360d29f453c571b1476a9a53534c51c168de1a178e25178d029081ee5142"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig06.png",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "82b2c656fa88554ecf942e02d7b59302dd156445cb019f41afad319ebf17df80"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig07.png",
+      "reason": "Burned-in patient name, birth date, record number and acquisition date/time.",
+      "sha256": "92826f9249052fbe7b74057ace49ca3a9e868e49c450d4095b9d67ae18ed0aa1"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "fig08.png",
+      "reason": "ECG header contains a day-level acquisition date and time.",
+      "sha256": "5beeb545403030e41f2653eae41d00fae34e86053e4c5e3abe45dfd06cc756c3"
+    },
+    {
+      "case": "cmcr-1653411",
+      "file": "source.pdf",
+      "reason": "Reprints ECG dates and identifying CT/angiography overlays.",
+      "sha256": "c45bfd669798fca17fdb15e6e5d0ee8fd6165ed13cb13a46d56ac79e8e495bb8"
+    },
+    {
+      "case": "cmcr-1653405",
+      "file": "fig02.png",
+      "reason": "PET/CT composite includes hospital, birth-date and acquisition-date overlays.",
+      "sha256": "e8ba54e0e10808cb7098cf5e1b1b2b8b4c271626c4f1ff4f12dc10d362ca8c00"
+    },
+    {
+      "case": "cmcr-1653405",
+      "file": "source.pdf",
+      "reason": "Reprints identifying PET/CT and additional journal back-cover patient imaging.",
+      "sha256": "17cd44a1e447d45fff3c79451eb0967ae7648810dbee2946fa8ae750c32af5d8"
+    },
+    {
+      "case": "cmcr-1068618",
+      "file": "source.pdf",
+      "reason": "CT figures contain day-level acquisition dates.",
+      "sha256": "5a45f2915bd778a10f61fddd5f0c7e023bae30647a796f1807a590f4a7943b80"
+    },
+    {
+      "case": "cmcr-138892",
+      "file": "fig02.png",
+      "reason": "Ultrasound has a partial acquisition-time overlay; withheld because its original uncropped context cannot be confirmed.",
+      "sha256": "2972fe31e813a688faa318c56547af8e4103d4ce20022247bde4d0f754c7f244"
+    },
+    {
+      "case": "cmcr-33729",
+      "file": "fig01.png",
+      "reason": "Ultrasound panel carries hospital and calendar acquisition date/time.",
+      "sha256": "004db6ef147f1750a5179d20d336fd8344abf42c663999ea3a6a9b2125272dd8"
+    },
+    {
+      "case": "cmcr-33736",
+      "file": "fig01.png",
+      "reason": "CT composite carries patient name, birth date, record number, hospital and acquisition date.",
+      "sha256": "3f9adcdd658f43ea201a5ef3a5a2ca926ce1a1cad50ee2aff073f8329b9522e0"
+    },
+    {
+      "case": "cmcr-33789",
+      "file": "fig02.png",
+      "reason": "Angiography panels carry patient name, hospital, record number and acquisition date.",
+      "sha256": "b5fbcb8f7bd4bad90a65d2727b93a2e44520f64230e741639d59557035e59654"
+    },
+    {
+      "case": "cmcr-598475",
+      "file": "fig03.png",
+      "reason": "Brain MRI carries a partial calendar overlay at the top edge.",
+      "sha256": "393c34df9d8867fc93f21acec79892227557688943b904f493b52e8318fdbcd4"
+    },
+    {
+      "case": "cmcr-77850",
+      "file": "fig01.png",
+      "reason": "ECG composite contains acquisition dates and record-number headers.",
+      "sha256": "532bf0c44da3d512690aded6440c2f1113586ac4364ad4d6c45849acceb0d4d7"
+    },
+    {
+      "case": "cmcr-33667",
+      "file": "fig01.png",
+      "reason": "Clinical photograph includes the child’s uncovered eyes and central face; retained only with private source files.",
+      "sha256": "b0a513685eea6df2d0b0aa893c463b3ef3940bd0335fb20b3fca211595e8ac37"
+    },
+    {
+      "case": "cmcr-598463",
+      "file": "fig01.png",
+      "reason": "MRI panel has a small blurred header whose identifying content cannot be excluded from the supplied original.",
+      "sha256": "df989cd27b74008f49a2f4432e22fb3cae858aed07a3c74859a90ce6f9e3054d"
+    },
+    {
+      "case": "cmcr-1068573",
+      "file": "fig01.png",
+      "reason": "CEA graph labels the patient’s test calendar dates.",
+      "sha256": "b41eefea8a3669fe99c7ab5c266e58580bfbd84f5daa2fbe39e84774d40f419c"
+    },
+    {
+      "case": "cmcr-1068573",
+      "file": "fig02.png",
+      "reason": "MRI composite includes record numbers and acquisition-time overlays.",
+      "sha256": "0b7c258d6a46dfef72203488b5ac490fc368d115c815e82bcdd373ac00449cc2"
+    },
+    {
+      "case": "cmcr-1068573",
+      "file": "fig03.png",
+      "reason": "MRI composite includes birth date, record numbers and calendar acquisition dates.",
+      "sha256": "58bdb318626ecdcc930eedc4ef2d813ef22bd513ca8f159a7d90e655b4611a9c"
+    },
+    {
+      "case": "cmcr-33564",
+      "file": "fig01.png",
+      "reason": "Clinical composite includes a recognisable frontal facial photograph despite an eye bar.",
+      "sha256": "1ff5fa6ae7bf91375ac372d488ddd2d0492e12343b449c2151a2229ed16132a6"
+    },
+    {
+      "case": "cmcr-639135",
+      "file": "fig01.png",
+      "reason": "Frontal facial photographs remain recognisable despite eye bars.",
+      "sha256": "da43b1ec6cc71e49a9f6bd234327af4b024264f54da035617853324d88fc7e0f"
+    },
+    {
+      "case": "cmcr-655520",
+      "file": "fig01.png",
+      "reason": "Composite contains a facial profile photograph including the nose and mouth; no separate de-identified crop is supplied.",
+      "sha256": "6b9736ed6dc01454d17e02b7a5e39fbcad2f10c01ef84883d68ef66d862cb705"
+    },
+    {
+      "case": "cmcr-857339",
+      "file": "fig01.png",
+      "reason": "Frontal facial photograph remains recognisable despite an eye bar.",
+      "sha256": "ee967e08235d7f027fc9fe48e35e7ace8a310ba0c4a156c9c668d2208cdb12a0"
+    },
+    {
+      "case": "cmcr-861099",
+      "file": "fig01.png",
+      "reason": "Hand radiograph retains a faint top-corner overlay that is not legible enough to exclude identifying metadata.",
+      "sha256": "6c0aca1b505cccc59ddea174681c00fb39b903e4b0ab7b36b1ad5cd4d4ef0e37"
+    },
+    {
+      "case": "cmcr-1067495",
+      "file": "fig01.png",
+      "reason": "Small residual image-overlay text in the upper-right corner of the lower-right MRI panel is not legible at native resolution; identifying metadata cannot be excluded.",
+      "sha256": "927a4201cb624abb7df907c982180e9aa2d30f76dfce19b8af7ac21efdb144ac"
+    },
+    {
+      "case": "cmcr-1068618",
+      "file": "fig01.png",
+      "reason": "Calendar acquisition-date and time overlays remain along the upper edge of the CT panels; additional circular institutional text is not fully legible.",
+      "sha256": "68f449a01252d487c11b7bbf06e741c6946d94394d353b93e807ab1a422e2710"
+    },
+    {
+      "case": "cmcr-1068618",
+      "file": "fig02.png",
+      "reason": "Blue circular institutional watermarks remain on both CT panels. Their full text is not legible at native resolution, so a hospital or other identifying institution cannot be excluded.",
+      "sha256": "bdee828e365c0fab1bc5636c9e77ee0071c911d43c3ea7ab01e5504d3e8413ce"
+    },
+    {
+      "case": "cmcr-1069544",
+      "file": "fig01.png",
+      "reason": "The middle CT panel retains an Image Date calendar-date overlay and acquisition time in its lower-right corner.",
+      "sha256": "05e1fdc678cd7a9533a4a5afc417f476a08d1c961e22c4a490e68158e59ecfac"
+    },
+    {
+      "case": "cmcr-1322371",
+      "file": "fig01.png",
+      "reason": "The CT panels retain calendar-date metadata along their upper-left edges, with additional small overlay text not fully legible at native resolution.",
+      "sha256": "08e1bc8ec850c3ebe02ece4a41d3c5e8aaebd93eaed8fbcd8377d3c556091682"
+    },
+    {
+      "case": "cmcr-1322444",
+      "file": "fig01.png",
+      "reason": "The MRI panels retain birth-date and examination-date overlays; the angiography panel also retains partially cropped institutional text.",
+      "sha256": "1c5087b3bd8a7ba67b898f67d8890c5d4acb05ef5dbc191df43e5757ba20bfc1"
+    },
+    {
+      "case": "cmcr-598191",
+      "file": "fig01.png",
+      "reason": "Two clinical photographs show recognisable faces despite black bars over the eyes; facial shape, nose, mouth and hair remain visible.",
+      "sha256": "7e7a964d7c1a853b7d3d2d2c53587f2a0b1943622542404f4d5760dc74ffdbfa"
     }
   ]
 }

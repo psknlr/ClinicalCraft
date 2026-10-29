@@ -1,0 +1,1982 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-861109",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "咯血贫血与既往胰腺炎 · 14岁女孩",
+    "en": "Haemoptysis, anaemia and pancreatitis history · girl aged 14"
+  },
+  "summary": {
+    "zh-CN": "长期胸腹症状与血性引流并存，需区分肺出血证据和“特发性”病因标签。",
+    "en": "Chest/abdominal symptoms and bloody drainage require distinction between evidence of bleeding and an idiopathic label."
+  },
+  "specialty": [
+    "paediatric-respiratory",
+    "gastroenterology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "李建秋, 何庆南. 伴胰腺炎型特发性肺含铁血黄素沉着症1例. 中华实用儿科临床杂志. 2013;28(22):1755-1756. doi:10.3760/cma.j.issn.2095-428X.2013.22.023.",
+    "doi": "10.3760/cma.j.issn.2095-428X.2013.22.023",
+    "authors": [
+      "李建秋",
+      "何庆南"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "整合血性引流、咯血和缺铁证据。",
+      "en": "Integrate bloody drainage, haemoptysis and iron deficiency."
+    },
+    {
+      "zh-CN": "说明含铁血黄素不能单独定因。",
+      "en": "Explain why haemosiderin does not independently establish cause."
+    },
+    {
+      "zh-CN": "提出胰腺胸腔联系和继发病因复核。",
+      "en": "Identify pancreatic-thoracic links and secondary causes for review."
+    },
+    {
+      "zh-CN": "先评估严重贫血和持续出血，保留特发性诊断的排除边界",
+      "en": "Assess severe anaemia and bleeding while retaining limits of an idiopathic diagnosis"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "唐予宁（化名）",
+      "en": "Tang Yuning (pseudonym)"
+    },
+    "age": 14,
+    "ageUnit": "years",
+    "sex": "female",
+    "weightKg": 35,
+    "chiefComplaint": {
+      "zh-CN": "上腹痛5个月、咯血4个多月、乏力2个月",
+      "en": "Five months of upper abdominal pain, over four months of haemoptysis and two months of fatigue"
+    },
+    "triageNote": {
+      "zh-CN": "反复咯血、头晕乏力，曾接受胰腺和肺部治疗。",
+      "en": "Recurrent haemoptysis, dizziness and fatigue after pancreatic and pulmonary treatment."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "五个月前左上腹痛，胰腺引流出血性液体后缓解。",
+        "en": "Left upper abdominal pain began five months earlier and improved after pancreatic drainage of bloody fluid."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "teen",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "abdomen"
+          },
+          {
+            "asked": "blood"
+          },
+          {
+            "asked": "fatigue"
+          },
+          {
+            "asked": "prior-care"
+          },
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "abdomen-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "abdomen",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "腹痛是什么时候开始，做过什么处理？ 胰腺引流出来是什么颜色的液体？",
+        "en": "When did abdominal pain begin, and how was it treated? What colour was the pancreatic drainage?"
+      },
+      "answer": {
+        "zh-CN": "五个月前左上腹痛，胰腺引流出血性液体后缓解。",
+        "en": "Left upper abdominal pain began five months earlier and improved after pancreatic drainage of bloody fluid."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最初腹痛",
+          "腹痛是什么时候开始，做过什么处理？",
+          "胰腺引流出来是什么颜色的液体？",
+          "最初腹痛情况"
+        ],
+        "en": [
+          "initial abdominal pain",
+          "When did abdominal pain begin, and how was it treated?",
+          "What colour was the pancreatic drainage?",
+          "initial abdominal pain information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "blood",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "胸痛和咯血什么时候开始？ 咳出来是血丝还是鲜血？",
+        "en": "When did chest pain and haemoptysis begin? Is the sputum blood-streaked or frankly bloody?"
+      },
+      "answer": {
+        "zh-CN": "四个多月前右胸持续痛，咳红色血丝痰，偶咳鲜血。",
+        "en": "Persistent right chest pain began over four months earlier with blood-streaked sputum and occasional fresh blood."
+      },
+      "keywords": {
+        "zh-CN": [
+          "胸痛咯血",
+          "胸痛和咯血什么时候开始？",
+          "咳出来是血丝还是鲜血？",
+          "胸痛咯血情况"
+        ],
+        "en": [
+          "chest pain and haemoptysis",
+          "When did chest pain and haemoptysis begin?",
+          "Is the sputum blood-streaked or frankly bloody?",
+          "chest pain and haemoptysis information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "fatigue",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "什么时候开始特别累或头晕？ 这两个月活动精神怎么样？",
+        "en": "When did fatigue or dizziness become prominent? How has energy been over the last two months?"
+      },
+      "answer": {
+        "zh-CN": "两个月来头晕、乏力、精神差。",
+        "en": "Dizziness, fatigue and reduced energy developed over two months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "乏力头晕",
+          "什么时候开始特别累或头晕？",
+          "这两个月活动精神怎么样？",
+          "乏力头晕情况"
+        ],
+        "en": [
+          "fatigue and dizziness",
+          "When did fatigue or dizziness become prominent?",
+          "How has energy been over the last two months?",
+          "fatigue and dizziness information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-care",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "抗感染治疗后咯血完全停了吗？ 出院之后多久又咯血一次？",
+        "en": "Did antibiotics stop the bleeding completely? How often did bleeding recur after discharge?"
+      },
+      "answer": {
+        "zh-CN": "多种抗菌和支持治疗28天后稍好，出院仍每两三天咯血。",
+        "en": "After twenty-eight days of antibiotics/support, improvement was limited and haemoptysis continued every two or three days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抗感染后变化",
+          "抗感染治疗后咯血完全停了吗？",
+          "出院之后多久又咯血一次？",
+          "抗感染后变化情况"
+        ],
+        "en": [
+          "response to antibiotics",
+          "Did antibiotics stop the bleeding completely?",
+          "How often did bleeding recur after discharge?",
+          "response to antibiotics information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "pleura",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前抽过胸水吗，是什么颜色？ 以前胸痛时是否抽出血性液体？",
+        "en": "Was pleural fluid drained before, and what colour was it? Was bloody fluid removed during earlier chest pain?"
+      },
+      "answer": {
+        "zh-CN": "数年前右胸痛，胸穿抽血性液体，曾试验抗结核一年。",
+        "en": "Years earlier, right chest pain and bloody pleural drainage led to a year of empirical TB treatment."
+      },
+      "keywords": {
+        "zh-CN": [
+          "更早血性胸水",
+          "以前抽过胸水吗，是什么颜色？",
+          "以前胸痛时是否抽出血性液体？",
+          "更早血性胸水情况"
+        ],
+        "en": [
+          "earlier bloody pleural fluid",
+          "Was pleural fluid drained before, and what colour was it?",
+          "Was bloody fluid removed during earlier chest pain?",
+          "earlier bloody pleural fluid information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "radiation",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "胸痛会传到其他地方吗？ 疼痛有没有向肩背放射？",
+        "en": "Does chest pain spread elsewhere? Does the pain radiate to the shoulder or back?"
+      },
+      "answer": {
+        "zh-CN": "右胸痛不放射。",
+        "en": "The right chest pain did not radiate."
+      },
+      "keywords": {
+        "zh-CN": [
+          "胸痛放射",
+          "胸痛会传到其他地方吗？",
+          "疼痛有没有向肩背放射？",
+          "胸痛放射情况"
+        ],
+        "en": [
+          "pain radiation",
+          "Does chest pain spread elsewhere?",
+          "Does the pain radiate to the shoulder or back?",
+          "pain radiation information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对哪些药物过敏？ 用药后出现过什么过敏反应？",
+        "en": "Which medicines have caused allergy? What allergic reactions have occurred after medicines?"
+      },
+      "answer": {
+        "zh-CN": "过敏史未记录。",
+        "en": "Allergy history is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "对哪些药物过敏？",
+          "用药后出现过什么过敏反应？",
+          "药物过敏情况"
+        ],
+        "en": [
+          "drug allergy",
+          "Which medicines have caused allergy?",
+          "What allergic reactions have occurred after medicines?",
+          "drug allergy information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "检查肺部与一般情况",
+        "en": "Review lungs and appearance"
+      },
+      "finding": {
+        "zh-CN": "贫血貌，右下肺浊音、呼吸音低及湿啰音；左肺无啰音。",
+        "en": "Pallor with right lower dullness, reduced breath sounds and crackles; no left crackles."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "abdomen-exam",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查上腹",
+        "en": "Review upper abdomen"
+      },
+      "finding": {
+        "zh-CN": "左上腹手术瘢痕和轻压痛，无反跳痛。",
+        "en": "Left upper abdominal scar and mild tenderness without rebound."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "blood",
+      "name": {
+        "zh-CN": "贫血与铁代谢",
+        "en": "Anaemia and iron"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "贫血与铁代谢"
+        ],
+        "en": [
+          "Anaemia and iron"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "Hb58 g/L、血清铁5.7 μmol/L、白蛋白29.1 g/L；原文红细胞计数排印疑误，不采为可靠值。",
+            "en": "Hb 58 g/L, serum iron 5.7 µmol/L and albumin 29.1 g/L; a questionable printed RBC count is not treated as reliable."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "pancreas",
+      "name": {
+        "zh-CN": "胰腺记录",
+        "en": "Pancreatic records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胰腺记录"
+        ],
+        "en": [
+          "Pancreatic records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "血淀粉酶659.1 U/L、尿淀粉酶10031 U/L，超声慢性胰腺炎改变。",
+            "en": "Serum amylase 659.1 U/L, urine amylase 10031 U/L and ultrasound changes of chronic pancreatitis."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "thorax",
+      "name": {
+        "zh-CN": "胸部影像及引流",
+        "en": "Thoracic imaging and drainage"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胸部影像及引流"
+        ],
+        "en": [
+          "Thoracic imaging and drainage"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "CT右下肺腔性病灶有液体，穿刺约60 mL血性液，培养无菌生长；没有提供引流液淀粉酶。",
+            "en": "A right lower cavity contained fluid; aspiration yielded about 60 mL of blood-stained fluid with no culture growth. Fluid amylase was not provided."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "haemosiderin",
+      "name": {
+        "zh-CN": "出血与免疫证据",
+        "en": "Bleeding and immune evidence"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "出血与免疫证据"
+        ],
+        "en": [
+          "Bleeding and immune evidence"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "两次痰细胞内含铁血黄素阳性；ANA、ANCA、dsDNA阴性，结核相关检查阴性。无肺活检，未完整排除全部出血原因。",
+            "en": "Two sputum samples contained intracellular haemosiderin; ANA, ANCA, dsDNA and listed TB tests were negative. No lung biopsy or complete exclusion of all bleeding causes was provided."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告出院诊断特发性肺含铁血黄素沉着症并予口服泼尼松，结局尚待追踪，没有证明长期改善。",
+            "en": "The report labelled idiopathic pulmonary haemosiderosis and prescribed prednisone, with outcome still pending and no established long-term improvement."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "abdomen"
+          },
+          {
+            "asked": "blood"
+          },
+          {
+            "asked": "fatigue"
+          },
+          {
+            "asked": "prior-care"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "abdomen-exam"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "哪些证据要求重新评估“肺脓肿”标签？",
+        "en": "What evidence requires reassessing the lung-abscess label?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "pancreas",
+            "phase": "workup"
+          },
+          {
+            "read": "thorax",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "反复血性表现和缺铁性贫血需评估肺出血及胸腹联系",
+            "en": "Recurrent blood-stained findings and iron deficiency require pulmonary bleeding and thoracoabdominal assessment"
+          },
+          "feedback": {
+            "zh-CN": "腔性影像不自动等于已确证细菌脓肿。",
+            "en": "A cavity is not automatically a proven bacterial abscess."
+          },
+          "correct": true
+        },
+        {
+          "id": "abscess",
+          "text": {
+            "zh-CN": "影像称脓腔即可不再查其他原因",
+            "en": "An imaging abscess label ends the differential"
+          },
+          "feedback": {
+            "zh-CN": "血性引流和反复贫血需要解释。",
+            "en": "Bloody drainage and recurrent anaemia need explanation."
+          },
+          "correct": false
+        },
+        {
+          "id": "anaemia-only",
+          "text": {
+            "zh-CN": "只补铁即可忽略持续咯血",
+            "en": "Iron replacement alone permits ignoring haemoptysis"
+          },
+          "feedback": {
+            "zh-CN": "必须评估持续失血来源及风险。",
+            "en": "Ongoing blood loss and risk need assessment."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "haemosiderin",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "含铁血黄素支持既往出血，尚不能独自证明特发性或与胰腺炎因果关系",
+            "en": "Haemosiderin supports prior bleeding but does not alone establish idiopathic disease or pancreatic causation"
+          },
+          "feedback": {
+            "zh-CN": "胰腺胸腔并发症、感染及其他出血病因仍需专业复核。",
+            "en": "Pancreatic thoracic complications, infection and other bleeding causes need review."
+          },
+          "correct": true
+        },
+        {
+          "id": "idiopathic",
+          "text": {
+            "zh-CN": "两次阳性已排除所有继发病因",
+            "en": "Two positive samples exclude all secondary causes"
+          },
+          "feedback": {
+            "zh-CN": "该检测不能完成病因排除。",
+            "en": "The test does not exclude every cause."
+          },
+          "correct": false
+        },
+        {
+          "id": "negative",
+          "text": {
+            "zh-CN": "ANCA阴性排除所有肺血管炎",
+            "en": "Negative ANCA excludes all pulmonary vasculitis"
+          },
+          "feedback": {
+            "zh-CN": "需结合完整临床和其他证据。",
+            "en": "Full clinical and other evidence is required."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何避免按历史诊断过早关闭鉴别？",
+        "en": "How can premature closure on the historical diagnosis be avoided?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "haemosiderin",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "呼吸、血液及消化团队评估出血稳定性、胰腺胸腔联系和免疫治疗风险",
+            "en": "Respiratory, haematology and GI teams should assess bleeding stability, pancreatic-thoracic links and immunotherapy risks"
+          },
+          "feedback": {
+            "zh-CN": "报告使用激素不等于感染等已被充分排除。",
+            "en": "Reported steroids do not prove adequate exclusion of infection."
+          },
+          "correct": true
+        },
+        {
+          "id": "steroid",
+          "text": {
+            "zh-CN": "照搬激素即可无需再评估感染",
+            "en": "Copy steroids without further infection assessment"
+          },
+          "feedback": {
+            "zh-CN": "感染未充分排除时可能增加风险。",
+            "en": "Risk may increase if infection remains insufficiently excluded."
+          },
+          "correct": false
+        },
+        {
+          "id": "causal",
+          "text": {
+            "zh-CN": "宣布胰腺炎必然引起此肺病",
+            "en": "Declare pancreatitis the proven cause of pulmonary disease"
+          },
+          "feedback": {
+            "zh-CN": "共存不等于因果。",
+            "en": "Coexistence does not prove causation."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "abdomen"
+          },
+          {
+            "asked": "blood"
+          },
+          {
+            "asked": "fatigue"
+          },
+          {
+            "asked": "prior-care"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "pleura"
+          },
+          {
+            "asked": "radiation"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "lungs"
+          },
+          {
+            "examined": "abdomen-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "pancreas",
+            "phase": "workup"
+          },
+          {
+            "read": "thorax",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "haemosiderin",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "先评估严重贫血和持续出血，保留特发性诊断的排除边界",
+        "en": "Assess severe anaemia and bleeding while retaining limits of an idiopathic diagnosis"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：整合血性引流、咯血和缺铁证据。同时解释以下信息仍有缺失或疑问：肺活检、引流液淀粉酶、完整出血鉴别和治疗后转归。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Integrate bloody drainage, haemoptysis and iron deficiency. Identify the following as missing or uncertain: Lung histology, fluid amylase, complete bleeding differential and treatment outcome. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "blood",
+        "pancreas",
+        "thorax",
+        "haemosiderin",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "具有肺出血线索并胰腺炎，原报告“特发性”及亚型标签的证据有限。",
+      "en": "Pulmonary bleeding clues coexist with pancreatitis; evidence for the source’s idiopathic/subtype label is limited."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "整合血性引流、咯血和缺铁证据。",
+        "en": "Integrate bloody drainage, haemoptysis and iron deficiency."
+      },
+      {
+        "zh-CN": "说明含铁血黄素不能单独定因。",
+        "en": "Explain why haemosiderin does not independently establish cause."
+      },
+      {
+        "zh-CN": "提出胰腺胸腔联系和继发病因复核。",
+        "en": "Identify pancreatic-thoracic links and secondary causes for review."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "整合血性引流、咯血和缺铁证据。",
+        "en": "Integrate bloody drainage, haemoptysis and iron deficiency."
+      },
+      {
+        "zh-CN": "说明含铁血黄素不能单独定因。",
+        "en": "Explain why haemosiderin does not independently establish cause."
+      },
+      {
+        "zh-CN": "提出胰腺胸腔联系和继发病因复核。",
+        "en": "Identify pancreatic-thoracic links and secondary causes for review."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "肺活检、引流液淀粉酶、完整出血鉴别和治疗后转归。",
+        "en": "Lung histology, fluid amylase, complete bleeding differential and treatment outcome."
+      }
+    ],
+    "references": [
+      "李建秋, 何庆南. 伴胰腺炎型特发性肺含铁血黄素沉着症1例. 中华实用儿科临床杂志. 2013;28(22):1755-1756. doi:10.3760/cma.j.issn.2095-428X.2013.22.023.",
+      "https://rs.yiigle.com/cmaid/861109"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "肺活检、引流液淀粉酶、完整出血鉴别和治疗后转归。",
+      "en": "Lung histology, fluid amylase, complete bleeding differential and treatment outcome."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "abdomen"
+    },
+    {
+      "type": "ask",
+      "itemId": "blood"
+    },
+    {
+      "type": "ask",
+      "itemId": "fatigue"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "pleura"
+    },
+    {
+      "type": "ask",
+      "itemId": "radiation"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen-exam"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "pancreas"
+    },
+    {
+      "type": "read",
+      "investigationId": "pancreas",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "thorax"
+    },
+    {
+      "type": "read",
+      "investigationId": "thorax",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "haemosiderin"
+    },
+    {
+      "type": "read",
+      "investigationId": "haemosiderin",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "861109",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/861109",
+    "sourceDoi": "10.3760/cma.j.issn.2095-428X.2013.22.023",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "腹痛是什么时候开始，做过什么处理？",
+        "locale": "zh-CN",
+        "expect": [
+          "abdomen"
+        ]
+      },
+      {
+        "text": "When did abdominal pain begin, and how was it treated?",
+        "locale": "en",
+        "expect": [
+          "abdomen"
+        ]
+      },
+      {
+        "text": "胰腺引流出来是什么颜色的液体？",
+        "locale": "zh-CN",
+        "expect": [
+          "abdomen"
+        ]
+      },
+      {
+        "text": "What colour was the pancreatic drainage?",
+        "locale": "en",
+        "expect": [
+          "abdomen"
+        ]
+      },
+      {
+        "text": "胸痛和咯血什么时候开始？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood"
+        ]
+      },
+      {
+        "text": "When did chest pain and haemoptysis begin?",
+        "locale": "en",
+        "expect": [
+          "blood"
+        ]
+      },
+      {
+        "text": "咳出来是血丝还是鲜血？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood"
+        ]
+      },
+      {
+        "text": "Is the sputum blood-streaked or frankly bloody?",
+        "locale": "en",
+        "expect": [
+          "blood"
+        ]
+      },
+      {
+        "text": "什么时候开始特别累或头晕？",
+        "locale": "zh-CN",
+        "expect": [
+          "fatigue"
+        ]
+      },
+      {
+        "text": "When did fatigue or dizziness become prominent?",
+        "locale": "en",
+        "expect": [
+          "fatigue"
+        ]
+      },
+      {
+        "text": "这两个月活动精神怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "fatigue"
+        ]
+      },
+      {
+        "text": "How has energy been over the last two months?",
+        "locale": "en",
+        "expect": [
+          "fatigue"
+        ]
+      },
+      {
+        "text": "抗感染治疗后咯血完全停了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "Did antibiotics stop the bleeding completely?",
+        "locale": "en",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "出院之后多久又咯血一次？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "How often did bleeding recur after discharge?",
+        "locale": "en",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "以前抽过胸水吗，是什么颜色？",
+        "locale": "zh-CN",
+        "expect": [
+          "pleura"
+        ]
+      },
+      {
+        "text": "Was pleural fluid drained before, and what colour was it?",
+        "locale": "en",
+        "expect": [
+          "pleura"
+        ]
+      },
+      {
+        "text": "以前胸痛时是否抽出血性液体？",
+        "locale": "zh-CN",
+        "expect": [
+          "pleura"
+        ]
+      },
+      {
+        "text": "Was bloody fluid removed during earlier chest pain?",
+        "locale": "en",
+        "expect": [
+          "pleura"
+        ]
+      },
+      {
+        "text": "胸痛会传到其他地方吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "radiation"
+        ]
+      },
+      {
+        "text": "Does chest pain spread elsewhere?",
+        "locale": "en",
+        "expect": [
+          "radiation"
+        ]
+      },
+      {
+        "text": "疼痛有没有向肩背放射？",
+        "locale": "zh-CN",
+        "expect": [
+          "radiation"
+        ]
+      },
+      {
+        "text": "Does the pain radiate to the shoulder or back?",
+        "locale": "en",
+        "expect": [
+          "radiation"
+        ]
+      },
+      {
+        "text": "对哪些药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Which medicines have caused allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "用药后出现过什么过敏反应？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What allergic reactions have occurred after medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any drug allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

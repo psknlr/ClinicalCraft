@@ -1,0 +1,2045 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33667",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "斜视与发育落后 · 6月龄男婴",
+    "en": "Strabismus and developmental delay · boy aged 6 months"
+  },
+  "summary": {
+    "zh-CN": "婴儿眼位变化伴视觉反应差、运动落后和饮水增多，需联系神经影像与内分泌评估。",
+    "en": "An infant has altered eye position, poor visual responses, motor delay and increased drinking; connect neuroimaging with endocrine evaluation."
+  },
+  "specialty": [
+    "paediatric-neurology",
+    "paediatric-endocrinology",
+    "ophthalmology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "刘艳萍, 高丽, 曹睿明, 王凌鸿. 视－隔发育不良一例. 中华儿科杂志. 2013;51(05):394-395. doi:10.3760/cma.j.issn.0578-1310.2013.05.019.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2013.05.019",
+    "authors": [
+      "刘艳萍",
+      "高丽",
+      "曹睿明",
+      "王凌鸿"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "Pediatric Endocrine Society. Optic nerve hypoplasia. Accessed 2026-10-28. https://pedsendo.org/patient-resource/optic-nerve-hypoplasia/"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "结合视神经和MRI证据识别视隔发育不良方向",
+      "en": "Identify a septo-optic dysplasia pattern from optic and MRI findings"
+    },
+    {
+      "zh-CN": "说明低比重尿不能单独确证尿崩症",
+      "en": "Explain why dilute urine alone cannot confirm diabetes insipidus"
+    },
+    {
+      "zh-CN": "识别GH数据内部矛盾并要求复核",
+      "en": "Identify the inconsistent GH data and request verification"
+    },
+    {
+      "zh-CN": "提出长期生长和垂体功能监测计划",
+      "en": "Propose longitudinal growth and pituitary monitoring"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "钱清和（化名）",
+      "en": "Qian Qinghe (pseudonym)"
+    },
+    "age": 6,
+    "ageUnit": "months",
+    "sex": "male",
+    "weightKg": 8.5,
+    "chiefComplaint": {
+      "zh-CN": "间断双眼上斜视20余天",
+      "en": "Intermittent upward eye deviation for over 20 days"
+    },
+    "triageNote": {
+      "zh-CN": "家长发现双眼间断上斜视，孩子仍不能稳定抬头或翻身，需综合评估。",
+      "en": "Parents report intermittent upward eye deviation; the infant cannot yet hold his head steadily or roll, prompting combined assessment."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "20多天前发现双眼经常向上斜。",
+        "en": "We noticed frequent upward eye deviation over 20 days ago."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "infant",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "any": [
+        {
+          "phase": "initial"
+        },
+        {
+          "phase": "workup"
+        },
+        {
+          "phase": "confirmation"
+        },
+        {
+          "phase": "followup"
+        }
+      ]
+    },
+    "nonVerbalReason": {
+      "zh-CN": "婴幼儿不能提供完整口述病史，由陪同者与病历说明；不能杜撰婴儿说话。",
+      "en": "An infant cannot provide a verbal medical history; use the companion and records without invented infant speech."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "motor"
+          },
+          {
+            "asked": "drinking"
+          },
+          {
+            "asked": "sleep"
+          },
+          {
+            "examined": "vision"
+          },
+          {
+            "examined": "tone"
+          },
+          {
+            "examined": "genital"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "什么时候发现孩子眼睛往上斜？",
+        "en": "When did you first notice upward eye deviation?"
+      },
+      "answer": {
+        "zh-CN": "20多天前发现双眼经常向上斜。",
+        "en": "We noticed frequent upward eye deviation over 20 days ago."
+      },
+      "keywords": {
+        "zh-CN": [
+          "眼位变化",
+          "眼睛往上翻有多久了？",
+          "双眼斜视是最近才出现的吗？",
+          "什么时候发现孩子眼睛往上斜？"
+        ],
+        "en": [
+          "eye deviation",
+          "How long have the eyes been turning upwards?",
+          "Is the eye deviation a recent change?",
+          "When did you first notice upward eye deviation?"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "motor",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "孩子能抬头、翻身和坐起来吗？",
+        "en": "Can the baby hold his head up, roll and sit?"
+      },
+      "answer": {
+        "zh-CN": "抬头不稳，不会翻身或独坐，也不会主动抓东西。",
+        "en": "He cannot hold his head steadily, roll or sit alone, and does not actively grasp objects."
+      },
+      "keywords": {
+        "zh-CN": [
+          "运动发育",
+          "现在会不会翻身或者抓东西？",
+          "抬头稳不稳，能自己坐吗？",
+          "孩子能抬头、翻身和坐起来吗？"
+        ],
+        "en": [
+          "motor development",
+          "Can he roll or grasp objects yet?",
+          "Is head control steady, and can he sit unaided?",
+          "Can the baby hold his head up, roll and sit?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "drinking",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "孩子一天喝多少水，夜里尿多吗？",
+        "en": "How much does he drink, and does he pass much urine at night?"
+      },
+      "answer": {
+        "zh-CN": "喜欢喝水，每天大约1200毫升，夜间尿多。",
+        "en": "He likes drinking, about 1200 mL daily, and urinates frequently at night."
+      },
+      "keywords": {
+        "zh-CN": [
+          "饮水夜尿",
+          "是不是特别爱喝水？",
+          "夜间排尿和平时喝水量如何？",
+          "孩子一天喝多少水，夜里尿多吗？"
+        ],
+        "en": [
+          "drinking and night urine",
+          "Does he seem unusually thirsty?",
+          "What are his night-time urination and fluid intake like?",
+          "How much does he drink, and does he pass much urine at night?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "sleep",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "出生后最初几个月睡得多吗？",
+        "en": "Did he sleep a lot in his first months?"
+      },
+      "answer": {
+        "zh-CN": "出生后前3个月很少哭，吃奶后就睡，每天大约睡22小时。",
+        "en": "During his first three months he rarely cried and slept after feeds, about 22 hours daily."
+      },
+      "keywords": {
+        "zh-CN": [
+          "早期睡眠",
+          "小时候是不是吃奶后就睡？",
+          "刚出生后一天大约睡几小时？",
+          "出生后最初几个月睡得多吗？"
+        ],
+        "en": [
+          "early sleep",
+          "Did he usually fall asleep after feeds?",
+          "About how many hours did he sleep daily after birth?",
+          "Did he sleep a lot in his first months?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "出生和早期发育情况怎样？ 生长和发育是否跟得上同龄孩子？",
+        "en": "How were birth and early development? Have growth and development kept up with peers?"
+      },
+      "answer": {
+        "zh-CN": "过期妊娠且没有羊水，孕43周加1天剖宫产，出生4.5公斤。",
+        "en": "Caesarean delivery occurred at 43 weeks and 1 day for post-term pregnancy without amniotic fluid; birthweight was 4.5 kg."
+      },
+      "keywords": {
+        "zh-CN": [
+          "分娩经过",
+          "出生和早期发育情况怎样？",
+          "生长和发育是否跟得上同龄孩子？",
+          "分娩经过情况"
+        ],
+        "en": [
+          "delivery history",
+          "How were birth and early development?",
+          "Have growth and development kept up with peers?",
+          "delivery history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "父母是否有血缘关系？ 父母是不是近亲？",
+        "en": "Are the parents biologically related? Are the parents consanguineous?"
+      },
+      "answer": {
+        "zh-CN": "父母不是近亲。",
+        "en": "The parents are not related."
+      },
+      "keywords": {
+        "zh-CN": [
+          "父母关系",
+          "父母是否有血缘关系？",
+          "父母是不是近亲？",
+          "父母关系情况"
+        ],
+        "en": [
+          "parental relationship",
+          "Are the parents biologically related?",
+          "Are the parents consanguineous?",
+          "parental relationship information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "pregnancy",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "怀孕期间有没有感染？ 孕期是否发生过发热疾病？",
+        "en": "Was there an infection during pregnancy? Was there a febrile illness in pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "孕中期母亲曾感冒发热，治疗3天后好转。",
+        "en": "The mother had a febrile cold in mid-pregnancy and recovered after three days of treatment."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期感染",
+          "怀孕期间有没有感染？",
+          "孕期是否发生过发热疾病？",
+          "孕期感染情况"
+        ],
+        "en": [
+          "pregnancy illness",
+          "Was there an infection during pregnancy?",
+          "Was there a febrile illness in pregnancy?",
+          "pregnancy illness information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "vision",
+      "system": "heent",
+      "maneuver": {
+        "zh-CN": "检查注视与瞳孔反射",
+        "en": "Examine fixation and pupillary responses"
+      },
+      "finding": {
+        "zh-CN": "不能注视追视，强光无瞬目反射；瞳孔左3 mm右4 mm，直接间接光反射消失。",
+        "en": "No fixation or tracking and no blink to bright light; left pupil 3 mm and right 4 mm, with absent direct and consensual responses."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "tone",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "检查肌张力及发育能力",
+        "en": "Examine tone and developmental abilities"
+      },
+      "finding": {
+        "zh-CN": "四肢肌张力低，不能竖头、翻身或独坐；声音刺激有反应但定位不灵敏。",
+        "en": "Limb tone is reduced, with inability to hold the head up, roll or sit; there is a response to sound but poor localisation."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "genital",
+      "system": "genitourinary",
+      "maneuver": {
+        "zh-CN": "检查外生殖器",
+        "en": "Examine external genitalia"
+      },
+      "finding": {
+        "zh-CN": "阴茎约1 cm，双侧阴囊饱满，无隐睾。",
+        "en": "Penile length was about 1 cm, with full scrotal sacs and no undescended testis."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "ophthalmic",
+      "name": {
+        "zh-CN": "眼底与诱发电位",
+        "en": "Fundoscopy and evoked potentials"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "眼底与诱发电位"
+        ],
+        "en": [
+          "Fundoscopy and evoked potentials"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "双侧视神经萎缩；视觉诱发电位潜伏期延长、振幅下降，听觉诱发电位无异常。",
+            "en": "Bilateral optic atrophy; visual evoked potentials had prolonged latency and reduced amplitude, while auditory responses were unremarkable."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "mri",
+      "name": {
+        "zh-CN": "颅脑MRI",
+        "en": "Brain MRI"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "颅脑MRI"
+        ],
+        "en": [
+          "Brain MRI"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "透明隔缺如，侧脑室和第三脑室扩大，额角呈方形；视神经及视交叉纤细。",
+            "en": "Absent septum pellucidum, enlarged lateral and third ventricles with squared frontal horns, and thin optic nerves and chiasm."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "urine",
+      "name": {
+        "zh-CN": "尿液与代谢记录",
+        "en": "Urine and metabolic record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "尿液与代谢记录"
+        ],
+        "en": [
+          "Urine and metabolic record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "尿比重多次1.002–1.006；电解质和肾功能报告正常，血糖5.12 mmol/L。因年龄小未完成禁水试验。",
+            "en": "Repeated urine specific gravity was 1.002–1.006; electrolytes and renal function were reported normal, glucose 5.12 mmol/L. Water deprivation testing was not completed because of age."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "endocrine",
+      "name": {
+        "zh-CN": "激素与发育评估",
+        "en": "Hormonal and developmental assessment"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "激素与发育评估"
+        ],
+        "en": [
+          "Hormonal and developmental assessment"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "首次GH激发试验0.10、0.05、0.09、0.18 nmol/L，报告判断GH缺乏；甲状腺功能正常。Gesell发育商35。后续GH一项写10.06 nmol/L，与文中解释不一致，需核对。",
+            "en": "Initial stimulated GH values were 0.10, 0.05, 0.09 and 0.18 nmol/L, interpreted as deficient; thyroid function was normal. Gesell developmental quotient was 35. One later GH value is printed as 10.06 nmol/L, inconsistent with the narrative interpretation and requiring verification."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "9个月复查发育商降至20，身长69 cm、体重9 kg，甲功正常。原报告未给予生长激素替代，理由包括当时身高范围及家庭经济情况，要求继续监测；中枢性尿崩症未被确证。",
+            "en": "At nine months the developmental quotient was 20, length 69 cm and weight 9 kg, with normal thyroid function. Growth hormone was not started, citing current height range and family finances, and monitoring was planned; central diabetes insipidus remained unconfirmed."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "motor"
+          },
+          {
+            "asked": "drinking"
+          },
+          {
+            "asked": "sleep"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "vision"
+          },
+          {
+            "examined": "tone"
+          },
+          {
+            "examined": "genital"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "视觉、运动和MRI结果应如何整合？",
+        "en": "How should the visual, motor and MRI findings be integrated?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "ophthalmic",
+            "phase": "workup"
+          },
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
+            "read": "urine",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "考虑视隔发育不良谱系并评估垂体各轴",
+            "en": "Consider the septo-optic dysplasia spectrum and assess pituitary axes"
+          },
+          "feedback": {
+            "zh-CN": "视神经与中线结构异常共同支持综合征方向，不能只处理眼位。",
+            "en": "Optic and midline abnormalities support a syndromic assessment rather than treating eye position alone."
+          },
+          "correct": true
+        },
+        {
+          "id": "squint",
+          "text": {
+            "zh-CN": "单纯斜视可解释发育和饮水异常",
+            "en": "Isolated strabismus explains delay and increased drinking"
+          },
+          "feedback": {
+            "zh-CN": "单纯眼位异常不能解释视神经结构、脑中线和发育改变。",
+            "en": "Isolated misalignment does not explain optic, midline brain and developmental changes."
+          },
+          "correct": false
+        },
+        {
+          "id": "di-confirmed",
+          "text": {
+            "zh-CN": "低尿比重已单独确诊中枢性尿崩症",
+            "en": "Low urine specific gravity alone confirms central diabetes insipidus"
+          },
+          "feedback": {
+            "zh-CN": "尿浓缩异常是线索，缺少配对渗透压等资料，原报告也保留问号。",
+            "en": "Dilute urine is a clue, but paired osmolality and other evidence are missing; the report itself retained uncertainty."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "endocrine",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "correct",
+          "text": {
+            "zh-CN": "结构异常明确，但激素和尿崩症结论仍需核查原始数据",
+            "en": "Structural abnormalities are established, while hormonal and diabetes-insipidus conclusions need source-data review"
+          },
+          "feedback": {
+            "zh-CN": "重复GH异常值和未完成的水代谢检查必须显式保留。",
+            "en": "The inconsistent repeat GH value and incomplete water-balance testing must remain explicit."
+          },
+          "correct": true
+        },
+        {
+          "id": "normal-thyroid",
+          "text": {
+            "zh-CN": "甲功正常说明所有垂体轴都正常",
+            "en": "Normal thyroid tests establish normality of every pituitary axis"
+          },
+          "feedback": {
+            "zh-CN": "不同垂体轴不能由单一甲状腺检查相互替代。",
+            "en": "One thyroid assessment cannot substitute for the other pituitary axes."
+          },
+          "correct": false
+        },
+        {
+          "id": "fix-value",
+          "text": {
+            "zh-CN": "把10.06自动改成0.06使报告一致",
+            "en": "Automatically change 10.06 to 0.06 to reconcile the report"
+          },
+          "feedback": {
+            "zh-CN": "这是未经证实的修订，需向原始报告核查。",
+            "en": "That is an unsupported correction requiring the original laboratory report."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续计划怎样处理内分泌风险与数据矛盾？",
+        "en": "How should the subsequent plan handle endocrine risk and inconsistent data?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "endocrine",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "儿科内分泌复核原始激素值、评估垂体功能并长期监测生长和水代谢",
+            "en": "Paediatric endocrine review of original hormone values, pituitary assessment and longitudinal growth/water-balance monitoring"
+          },
+          "feedback": {
+            "zh-CN": "一次身高尚在正常范围不能取消动态内分泌评估，矛盾值需核实。",
+            "en": "A current height in range does not remove the need for longitudinal endocrine assessment; inconsistent values need verification."
+          },
+          "correct": true
+        },
+        {
+          "id": "water",
+          "text": {
+            "zh-CN": "由家长自行严格限水验证尿崩症",
+            "en": "Ask parents to impose strict water restriction to test for diabetes insipidus"
+          },
+          "feedback": {
+            "zh-CN": "小婴儿水代谢评估需要专业监测，不能在家做禁水试验。",
+            "en": "Water-balance evaluation in an infant requires professional monitoring, not home deprivation."
+          },
+          "correct": false
+        },
+        {
+          "id": "normal-height",
+          "text": {
+            "zh-CN": "当前身高正常即可永久停止随访",
+            "en": "Stop follow-up permanently because current height is normal"
+          },
+          "feedback": {
+            "zh-CN": "身高速度和垂体功能可随时间变化，不能由单点身高排除。",
+            "en": "Growth velocity and pituitary function may evolve and cannot be excluded by one height measurement."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "motor"
+          },
+          {
+            "asked": "drinking"
+          },
+          {
+            "asked": "sleep"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "family"
+          },
+          {
+            "asked": "pregnancy"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "vision"
+          },
+          {
+            "examined": "tone"
+          },
+          {
+            "examined": "genital"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "ophthalmic",
+            "phase": "workup"
+          },
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
+            "read": "urine",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "endocrine",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "首次即避免自行禁水并安排内分泌复核",
+        "en": "Avoid unsupervised water deprivation and arrange endocrine review on the first attempt"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：视觉异常和脑中线结构应联合解读。同时解释以下信息仍有缺失或疑问：后续GH原始报告、皮质醇轴、配对血尿渗透压、确证尿崩症检查和长期治疗结局。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Visual and midline structural findings should be interpreted together. Identify the following as missing or uncertain: Original later GH report, cortisol axis, paired blood/urine osmolality, confirmatory water-balance testing and long-term treatment outcomes. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "ophthalmic",
+        "mri",
+        "urine",
+        "endocrine",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告诊断视隔发育不良合并生长激素缺乏；尿崩症仍为待确认问题，后续激素表述存在疑点。",
+      "en": "The report diagnosed septo-optic dysplasia with growth-hormone deficiency; diabetes insipidus remained unresolved, and later hormonal reporting contains an inconsistency."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "视觉异常和脑中线结构应联合解读。",
+        "en": "Visual and midline structural findings should be interpreted together."
+      },
+      {
+        "zh-CN": "饮水和低比重尿是进一步评估线索而非单项确证。",
+        "en": "Drinking and dilute urine prompt assessment rather than proving a diagnosis alone."
+      },
+      {
+        "zh-CN": "不能把印刷矛盾自行修正成符合预期的数值。",
+        "en": "A printed inconsistency must not be silently altered to an expected value."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "将发育落后纳入眼科主诉的系统评估。",
+        "en": "Include developmental delay in the systemic assessment of an eye complaint."
+      },
+      {
+        "zh-CN": "跟踪生长速度而非只看当前身高。",
+        "en": "Track growth velocity rather than current height alone."
+      },
+      {
+        "zh-CN": "将待证实内分泌诊断与已证实结构异常分开。",
+        "en": "Separate unconfirmed endocrine diagnoses from established structural findings."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "后续GH原始报告、皮质醇轴、配对血尿渗透压、确证尿崩症检查和长期治疗结局。",
+        "en": "Original later GH report, cortisol axis, paired blood/urine osmolality, confirmatory water-balance testing and long-term treatment outcomes."
+      }
+    ],
+    "references": [
+      "刘艳萍, 高丽, 曹睿明, 王凌鸿. 视－隔发育不良一例. 中华儿科杂志. 2013;51(05):394-395. doi:10.3760/cma.j.issn.0578-1310.2013.05.019.",
+      "https://rs.yiigle.com/cmaid/33667",
+      "Pediatric Endocrine Society. Optic nerve hypoplasia. Accessed 2026-10-28. https://pedsendo.org/patient-resource/optic-nerve-hypoplasia/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "后续GH原始报告、皮质醇轴、配对血尿渗透压、确证尿崩症检查和长期治疗结局。",
+      "en": "Original later GH report, cortisol axis, paired blood/urine osmolality, confirmatory water-balance testing and long-term treatment outcomes."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "motor"
+    },
+    {
+      "type": "ask",
+      "itemId": "drinking"
+    },
+    {
+      "type": "ask",
+      "itemId": "sleep"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "pregnancy"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "vision"
+    },
+    {
+      "type": "examine",
+      "findingId": "tone"
+    },
+    {
+      "type": "examine",
+      "findingId": "genital"
+    },
+    {
+      "type": "order",
+      "investigationId": "ophthalmic"
+    },
+    {
+      "type": "read",
+      "investigationId": "ophthalmic",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "mri"
+    },
+    {
+      "type": "read",
+      "investigationId": "mri",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "urine"
+    },
+    {
+      "type": "read",
+      "investigationId": "urine",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "endocrine"
+    },
+    {
+      "type": "read",
+      "investigationId": "endocrine",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "correct"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "33667",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33667",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2013.05.019",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "眼睛往上翻有多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How long have the eyes been turning upwards?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "双眼斜视是最近才出现的吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Is the eye deviation a recent change?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "现在会不会翻身或者抓东西？",
+        "locale": "zh-CN",
+        "expect": [
+          "motor"
+        ]
+      },
+      {
+        "text": "Can he roll or grasp objects yet?",
+        "locale": "en",
+        "expect": [
+          "motor"
+        ]
+      },
+      {
+        "text": "抬头稳不稳，能自己坐吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "motor"
+        ]
+      },
+      {
+        "text": "Is head control steady, and can he sit unaided?",
+        "locale": "en",
+        "expect": [
+          "motor"
+        ]
+      },
+      {
+        "text": "是不是特别爱喝水？",
+        "locale": "zh-CN",
+        "expect": [
+          "drinking"
+        ]
+      },
+      {
+        "text": "Does he seem unusually thirsty?",
+        "locale": "en",
+        "expect": [
+          "drinking"
+        ]
+      },
+      {
+        "text": "夜间排尿和平时喝水量如何？",
+        "locale": "zh-CN",
+        "expect": [
+          "drinking"
+        ]
+      },
+      {
+        "text": "What are his night-time urination and fluid intake like?",
+        "locale": "en",
+        "expect": [
+          "drinking"
+        ]
+      },
+      {
+        "text": "小时候是不是吃奶后就睡？",
+        "locale": "zh-CN",
+        "expect": [
+          "sleep"
+        ]
+      },
+      {
+        "text": "Did he usually fall asleep after feeds?",
+        "locale": "en",
+        "expect": [
+          "sleep"
+        ]
+      },
+      {
+        "text": "刚出生后一天大约睡几小时？",
+        "locale": "zh-CN",
+        "expect": [
+          "sleep"
+        ]
+      },
+      {
+        "text": "About how many hours did he sleep daily after birth?",
+        "locale": "en",
+        "expect": [
+          "sleep"
+        ]
+      },
+      {
+        "text": "出生和早期发育情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "How were birth and early development?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "生长和发育是否跟得上同龄孩子？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Have growth and development kept up with peers?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "父母是否有血缘关系？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Are the parents biologically related?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "父母是不是近亲？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Are the parents consanguineous?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "怀孕期间有没有感染？",
+        "locale": "zh-CN",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "Was there an infection during pregnancy?",
+        "locale": "en",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "孕期是否发生过发热疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "Was there a febrile illness in pregnancy?",
+        "locale": "en",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有既往健康情况方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you describe any previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      }
+    ]
+  }
+}

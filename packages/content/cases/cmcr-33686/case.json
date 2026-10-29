@@ -1,0 +1,1985 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33686",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "持续发热、肝脾大与三系减少 · 7岁1月男孩",
+    "en": "Persistent fever, hepatosplenomegaly and cytopenias · boy aged 7 years 1 month"
+  },
+  "summary": {
+    "zh-CN": "持续发热与血细胞减少需要整合感染、炎症和遗传背景证据。",
+    "en": "Persistent fever and cytopenias require integration of infection, inflammation and genetic background evidence."
+  },
+  "specialty": [
+    "paediatric-haematology",
+    "immunology",
+    "transplantation"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "唐湘凤, 栾佐, 吴南海, 章波, 王凯. 非血缘造血干细胞移植治疗MUNC13－4突变家族性噬血细胞性淋巴组织细胞增多症一例. 中华儿科杂志. 2013;51(12):944-945. doi:10.3760/cma.j.issn.0578-1310.2013.12.014.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2013.12.014",
+    "authors": [
+      "唐湘凤",
+      "栾佐",
+      "吴南海",
+      "章波",
+      "王凯"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "以组合标准识别HLH而非单一噬血细胞。",
+      "en": "Recognise HLH from combined features rather than one haemophagocyte finding."
+    },
+    {
+      "zh-CN": "识别遗传命名和合子状态的限制。",
+      "en": "Identify limits of genetic nomenclature and zygosity."
+    },
+    {
+      "zh-CN": "解释移植后血基因及嵌合结果。",
+      "en": "Explain post-transplant blood genotyping and chimerism."
+    },
+    {
+      "zh-CN": "复核遗传分型并对移植后感染和GVHD保持并行评估",
+      "en": "Verify genetic classification and assess infection and GVHD in parallel after transplant"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "孙清和（化名）",
+      "en": "Sun Qinghe (pseudonym)"
+    },
+    "age": 85,
+    "ageUnit": "months",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "间断发热约1个月",
+      "en": "About one month of intermittent fever"
+    },
+    "triageNote": {
+      "zh-CN": "按上呼吸道感染治疗效果差，持续发热伴肝脾大。",
+      "en": "Treatment for an upper respiratory infection failed to resolve fever and hepatosplenomegaly."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "反复发热约一个月。",
+        "en": "Fever recurred over about one month."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "asked": "organs"
+          },
+          {
+            "asked": "family"
+          },
+          {
+            "examined": "liver"
+          },
+          {
+            "examined": "spleen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "fever",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "发热已经反复多久？ 是不是按感冒治疗后仍然发烧？",
+        "en": "How long has the fever recurred? Did fever continue despite treatment for a cold?"
+      },
+      "answer": {
+        "zh-CN": "反复发热约一个月。",
+        "en": "Fever recurred over about one month."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热持续",
+          "发热已经反复多久？",
+          "是不是按感冒治疗后仍然发烧？",
+          "发热持续情况"
+        ],
+        "en": [
+          "fever persistence",
+          "How long has the fever recurred?",
+          "Did fever continue despite treatment for a cold?",
+          "fever persistence information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "treatment",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "最初用了什么治疗，效果怎样？ 前面的治疗能把发热控制住吗？",
+        "en": "What was tried initially, and did it help? Did earlier treatment control the fever?"
+      },
+      "answer": {
+        "zh-CN": "当地按上感治疗效果差，药名不详。",
+        "en": "Initial treatment for an upper respiratory infection was ineffective; drugs were unspecified."
+      },
+      "keywords": {
+        "zh-CN": [
+          "初期治疗反应",
+          "最初用了什么治疗，效果怎样？",
+          "前面的治疗能把发热控制住吗？",
+          "初期治疗反应情况"
+        ],
+        "en": [
+          "initial treatment response",
+          "What was tried initially, and did it help?",
+          "Did earlier treatment control the fever?",
+          "initial treatment response information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "organs",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "肝脾大是什么时候发现的？ 最初发烧时检查就说肝脾大吗？",
+        "en": "When was liver and spleen enlargement found? Was enlargement already noted at the start of fever?"
+      },
+      "answer": {
+        "zh-CN": "发热初期就查出肝脾大。",
+        "en": "Hepatosplenomegaly was found early in the febrile illness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肝脾发现",
+          "肝脾大是什么时候发现的？",
+          "最初发烧时检查就说肝脾大吗？",
+          "肝脾发现情况"
+        ],
+        "en": [
+          "liver and spleen findings",
+          "When was liver and spleen enlargement found?",
+          "Was enlargement already noted at the start of fever?",
+          "liver and spleen findings information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "有没有兄弟姐妹或亲属发生过类似疾病？ 家里有同样反复高热的病例吗？",
+        "en": "Are there siblings or relatives with similar illness? Has anyone in the family had a similar fever illness?"
+      },
+      "answer": {
+        "zh-CN": "无同胞，无类似家族史。",
+        "en": "He had no siblings and no similar family history."
+      },
+      "keywords": {
+        "zh-CN": [
+          "同胞家族史",
+          "有没有兄弟姐妹或亲属发生过类似疾病？",
+          "家里有同样反复高热的病例吗？",
+          "同胞家族史情况"
+        ],
+        "en": [
+          "siblings and family history",
+          "Are there siblings or relatives with similar illness?",
+          "Has anyone in the family had a similar fever illness?",
+          "siblings and family history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前身体怎样，有哪些病？ 既往有没有需要治疗的疾病？",
+        "en": "What was health like before this illness? Were any earlier illnesses treated?"
+      },
+      "answer": {
+        "zh-CN": "其他既往病史未详。",
+        "en": "Other prior medical history was not detailed."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往病史",
+          "以前身体怎样，有哪些病？",
+          "既往有没有需要治疗的疾病？",
+          "既往病史情况"
+        ],
+        "en": [
+          "earlier medical history",
+          "What was health like before this illness?",
+          "Were any earlier illnesses treated?",
+          "earlier medical history information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对哪些药物过敏？ 用药后出现过什么过敏反应？",
+        "en": "Which medicines have caused allergy? What allergic reactions have occurred after medicines?"
+      },
+      "answer": {
+        "zh-CN": "过敏史未记录。",
+        "en": "Allergies were not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "对哪些药物过敏？",
+          "用药后出现过什么过敏反应？",
+          "药物过敏情况"
+        ],
+        "en": [
+          "drug allergy",
+          "Which medicines have caused allergy?",
+          "What allergic reactions have occurred after medicines?",
+          "drug allergy information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "neuro",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "发病时有没有意识或抽搐变化？ 神经方面的症状有记录吗？",
+        "en": "Were there changes in consciousness or seizures? Are neurological symptoms documented?"
+      },
+      "answer": {
+        "zh-CN": "初始神经症状未详细记录。",
+        "en": "Initial neurological symptoms were not detailed."
+      },
+      "keywords": {
+        "zh-CN": [
+          "神经症状记录",
+          "发病时有没有意识或抽搐变化？",
+          "神经方面的症状有记录吗？",
+          "神经症状记录情况"
+        ],
+        "en": [
+          "neurological symptoms",
+          "Were there changes in consciousness or seizures?",
+          "Are neurological symptoms documented?",
+          "neurological symptoms information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有近期体重记录吗？",
+        "en": "Is recent weight documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期体重记录",
+          "有关近期体重记录",
+          "近期体重记录情况",
+          "近期体重记录记录"
+        ],
+        "en": [
+          "recent weight",
+          "details of recent weight",
+          "recent weight information",
+          "recent weight record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "liver",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "核对肝大",
+        "en": "Review liver enlargement"
+      },
+      "finding": {
+        "zh-CN": "原记录查体肝大，未给出床旁厘米数。",
+        "en": "The examination documented hepatomegaly without a bedside measurement."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "spleen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "核对脾大",
+        "en": "Review spleen enlargement"
+      },
+      "finding": {
+        "zh-CN": "原记录查体脾大，未给出床旁厘米数。",
+        "en": "The examination documented splenomegaly without a bedside measurement."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "cytopenia",
+      "name": {
+        "zh-CN": "血细胞及炎症",
+        "en": "Blood counts and inflammation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血细胞及炎症"
+        ],
+        "en": [
+          "Blood counts and inflammation"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "WBC3.4、中性0.84、血小板50×10⁹/L，Hb71 g/L；铁蛋白1176.6 μg/L，TG5.8 mmol/L，纤维蛋白原1.3 g/L。",
+            "en": "WBC 3.4, neutrophils 0.84 and platelets 50×10⁹/L, Hb 71 g/L; ferritin 1176.6 µg/L, triglycerides 5.8 mmol/L and fibrinogen 1.3 g/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "marrow",
+      "name": {
+        "zh-CN": "骨髓及感染",
+        "en": "Marrow and infection"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "骨髓及感染"
+        ],
+        "en": [
+          "Marrow and infection"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "骨髓噬血细胞；血EBV DNA5.43×10⁷ copies，原文未明确每体积单位。",
+            "en": "Marrow haemophagocytes and blood EBV DNA 5.43×10⁷ copies; denominator units were unspecified."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "immune",
+      "name": {
+        "zh-CN": "NK及蛋白表达",
+        "en": "NK cells and protein expression"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "NK及蛋白表达"
+        ],
+        "en": [
+          "NK cells and protein expression"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "NK细胞1.9%；报告颗粒酶B及穿孔素阳性率偏低，但不等同完整细胞毒功能测定。",
+            "en": "NK cells 1.9%; granzyme-B and perforin-positive proportions were low, not equivalent to a complete cytotoxic-function assay."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "genetic",
+      "name": {
+        "zh-CN": "原始遗传报告核对",
+        "en": "Original genetic report review"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "原始遗传报告核对"
+        ],
+        "en": [
+          "Original genetic report review"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "原文称UNC13D/MUNC13-4 c.1228A>C杂合及SH2D1A半合子变异，蛋白/碱基命名排印不清；没有完整双等位UNC13D确证。需原实验室复核，不能自行改HGVS。",
+            "en": "The text reports heterozygous UNC13D/MUNC13-4 c.1228A>C and a hemizygous SH2D1A variant with unclear nucleotide/protein typography. Complete biallelic UNC13D confirmation is absent; obtain laboratory review rather than silently repairing HGVS."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "历史HLH方案后缓解又有活动迹象，接受全相合非血缘移植。后出现HHV6阳性腹泻及临床Ⅲ度肠道GVHD，治疗后改善；9个月全供者嵌合、无病生存，无慢性GVHD。移植后血基因检测反映供者造血。",
+            "en": "After response and renewed activity on historical HLH treatment, a fully matched unrelated transplant was performed. HHV6-positive diarrhoea and clinical grade III intestinal GVHD improved with treatment; at nine months there was complete donor chimerism and disease-free survival without chronic GVHD. Post-transplant blood genotyping reflects donor haematopoiesis."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "asked": "organs"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "liver"
+          },
+          {
+            "examined": "spleen"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "应如何解释感染与炎症失控的关系？",
+        "en": "How should infection and uncontrolled inflammation be interpreted?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "cytopenia",
+            "phase": "workup"
+          },
+          {
+            "read": "marrow",
+            "phase": "workup"
+          },
+          {
+            "read": "immune",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "满足多项HLH表型证据，EBV可能为触发因素并需评估遗传易感",
+            "en": "Multiple HLH features with EBV as a possible trigger warrant genetic-susceptibility assessment"
+          },
+          "feedback": {
+            "zh-CN": "感染阳性不排除同时的免疫调节缺陷。",
+            "en": "Infection does not exclude coexisting immune dysregulation."
+          },
+          "correct": true
+        },
+        {
+          "id": "viral-only",
+          "text": {
+            "zh-CN": "EBV阳性即可按普通病毒热观察",
+            "en": "EBV positivity permits observing this as ordinary viral fever"
+          },
+          "feedback": {
+            "zh-CN": "细胞减少、低纤维蛋白原及高炎症提示更高风险。",
+            "en": "Cytopenias, low fibrinogen and inflammation indicate greater risk."
+          },
+          "correct": false
+        },
+        {
+          "id": "marrow-only",
+          "text": {
+            "zh-CN": "任何噬血细胞都单独确诊HLH",
+            "en": "Any haemophagocyte alone establishes HLH"
+          },
+          "feedback": {
+            "zh-CN": "需要组合临床和实验室标准。",
+            "en": "A clinical/laboratory combination is required."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "genetic",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "报告支持遗传评估需求，但不能按不清命名确立唯一FHL3分型",
+            "en": "Genetic assessment is warranted, but unclear nomenclature cannot establish a unique FHL3 subtype"
+          },
+          "feedback": {
+            "zh-CN": "UNC13D杂合和另一个基因信号需专业复核。",
+            "en": "Heterozygous UNC13D and another gene signal need specialist review."
+          },
+          "correct": true
+        },
+        {
+          "id": "single",
+          "text": {
+            "zh-CN": "单个UNC13D杂合变异已充分证明隐性FHL3",
+            "en": "One heterozygous UNC13D variant fully proves recessive FHL3"
+          },
+          "feedback": {
+            "zh-CN": "缺少第二等位及充分功能/家系证据。",
+            "en": "A second allele and sufficient functional/family evidence are lacking."
+          },
+          "correct": false
+        },
+        {
+          "id": "family",
+          "text": {
+            "zh-CN": "没有家族史排除遗传HLH",
+            "en": "No family history excludes hereditary HLH"
+          },
+          "feedback": {
+            "zh-CN": "家族史阴性并不排除遗传病。",
+            "en": "A negative pedigree does not exclude inherited disease."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "在考虑移植时应怎样组织照护？",
+        "en": "How should care be organised when transplantation is considered?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "genetic",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "由HLH和移植团队控制活动病、复核遗传与供者，并区分感染和GVHD",
+            "en": "HLH/transplant teams should control active disease, verify genetics/donor choice and distinguish infection from GVHD"
+          },
+          "feedback": {
+            "zh-CN": "不把旧预处理方案或供者数据直接复制为个人方案。",
+            "en": "Historical conditioning or donor details are not an individual prescription."
+          },
+          "correct": true
+        },
+        {
+          "id": "dna",
+          "text": {
+            "zh-CN": "移植后血基因正常证明全身遗传已被修复",
+            "en": "Normal blood genotype after transplant proves whole-body genetic repair"
+          },
+          "feedback": {
+            "zh-CN": "供者造血可改变血液检测，非全身基因纠正。",
+            "en": "Donor haematopoiesis changes blood testing, not every tissue genotype."
+          },
+          "correct": false
+        },
+        {
+          "id": "diarrhoea",
+          "text": {
+            "zh-CN": "移植后腹泻只可能为感染",
+            "en": "Post-transplant diarrhoea can only be infection"
+          },
+          "feedback": {
+            "zh-CN": "感染与GVHD可能并存或先后发生。",
+            "en": "Infection and GVHD may coexist or occur sequentially."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "asked": "organs"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "allergies"
+          },
+          {
+            "asked": "neuro"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "liver"
+          },
+          {
+            "examined": "spleen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "cytopenia",
+            "phase": "workup"
+          },
+          {
+            "read": "marrow",
+            "phase": "workup"
+          },
+          {
+            "read": "immune",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "genetic",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "复核遗传分型并对移植后感染和GVHD保持并行评估",
+        "en": "Verify genetic classification and assess infection and GVHD in parallel after transplant"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：以组合标准识别HLH而非单一噬血细胞。同时解释以下信息仍有缺失或疑问：原始HGVS、功能验证、完整家系与远期移植随访。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Recognise HLH from combined features rather than one haemophagocyte finding. Identify the following as missing or uncertain: Original HGVS, functional validation, complete family testing and longer transplant follow-up. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "cytopenia",
+        "marrow",
+        "immune",
+        "genetic",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "HLH表型与移植过程有记录，源文遗传分型存在不能自行修正的缺口。",
+      "en": "The HLH phenotype and transplant course are documented, while source genetic classification has unresolved gaps."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "以组合标准识别HLH而非单一噬血细胞。",
+        "en": "Recognise HLH from combined features rather than one haemophagocyte finding."
+      },
+      {
+        "zh-CN": "识别遗传命名和合子状态的限制。",
+        "en": "Identify limits of genetic nomenclature and zygosity."
+      },
+      {
+        "zh-CN": "解释移植后血基因及嵌合结果。",
+        "en": "Explain post-transplant blood genotyping and chimerism."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "以组合标准识别HLH而非单一噬血细胞。",
+        "en": "Recognise HLH from combined features rather than one haemophagocyte finding."
+      },
+      {
+        "zh-CN": "识别遗传命名和合子状态的限制。",
+        "en": "Identify limits of genetic nomenclature and zygosity."
+      },
+      {
+        "zh-CN": "解释移植后血基因及嵌合结果。",
+        "en": "Explain post-transplant blood genotyping and chimerism."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "原始HGVS、功能验证、完整家系与远期移植随访。",
+        "en": "Original HGVS, functional validation, complete family testing and longer transplant follow-up."
+      }
+    ],
+    "references": [
+      "唐湘凤, 栾佐, 吴南海, 章波, 王凯. 非血缘造血干细胞移植治疗MUNC13－4突变家族性噬血细胞性淋巴组织细胞增多症一例. 中华儿科杂志. 2013;51(12):944-945. doi:10.3760/cma.j.issn.0578-1310.2013.12.014.",
+      "https://rs.yiigle.com/cmaid/33686"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "原始HGVS、功能验证、完整家系与远期移植随访。",
+      "en": "Original HGVS, functional validation, complete family testing and longer transplant follow-up."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever"
+    },
+    {
+      "type": "ask",
+      "itemId": "treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "organs"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "neuro"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "examine",
+      "findingId": "liver"
+    },
+    {
+      "type": "examine",
+      "findingId": "spleen"
+    },
+    {
+      "type": "order",
+      "investigationId": "cytopenia"
+    },
+    {
+      "type": "read",
+      "investigationId": "cytopenia",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "marrow"
+    },
+    {
+      "type": "read",
+      "investigationId": "marrow",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "immune"
+    },
+    {
+      "type": "read",
+      "investigationId": "immune",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "genetic"
+    },
+    {
+      "type": "read",
+      "investigationId": "genetic",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "33686",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33686",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2013.12.014",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "发热已经反复多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "How long has the fever recurred?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "是不是按感冒治疗后仍然发烧？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Did fever continue despite treatment for a cold?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "最初用了什么治疗，效果怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "What was tried initially, and did it help?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "前面的治疗能把发热控制住吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "Did earlier treatment control the fever?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "肝脾大是什么时候发现的？",
+        "locale": "zh-CN",
+        "expect": [
+          "organs"
+        ]
+      },
+      {
+        "text": "When was liver and spleen enlargement found?",
+        "locale": "en",
+        "expect": [
+          "organs"
+        ]
+      },
+      {
+        "text": "最初发烧时检查就说肝脾大吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "organs"
+        ]
+      },
+      {
+        "text": "Was enlargement already noted at the start of fever?",
+        "locale": "en",
+        "expect": [
+          "organs"
+        ]
+      },
+      {
+        "text": "有没有兄弟姐妹或亲属发生过类似疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Are there siblings or relatives with similar illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "家里有同样反复高热的病例吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Has anyone in the family had a similar fever illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前身体怎样，有哪些病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "What was health like before this illness?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "既往有没有需要治疗的疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Were any earlier illnesses treated?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "对哪些药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Which medicines have caused allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "用药后出现过什么过敏反应？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What allergic reactions have occurred after medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "发病时有没有意识或抽搐变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "Were there changes in consciousness or seizures?",
+        "locale": "en",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "神经方面的症状有记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "Are neurological symptoms documented?",
+        "locale": "en",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "以前有没有既往病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier medical history?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any drug allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有神经症状记录方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "Could you describe any neurological symptoms?",
+        "locale": "en",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      }
+    ]
+  }
+}

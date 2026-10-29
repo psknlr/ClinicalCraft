@@ -1,0 +1,1973 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-655471",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "早产儿持续呼吸困难与单侧胸腔积液",
+    "en": "Persistent respiratory difficulty and unilateral pleural fluid in a premature infant"
+  },
+  "summary": {
+    "zh-CN": "产前已发现单侧胸腔积液，出生后持续依赖通气，反复引流后仍积液，需要重新寻找局部原因。",
+    "en": "Unilateral fluid was detected before birth and recurs despite drainage, with continued ventilator dependence."
+  },
+  "specialty": [
+    "neonatology",
+    "paediatric-surgery",
+    "respiratory"
+  ],
+  "setting": "icu",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "浙江大学医学院附属儿童医院新生儿监护室. 第132例——新生儿呼吸困难伴胸腔积液. 中华儿科杂志. 2011;49(05):386-388. doi: 10.3760/cma.j.issn.0578-1310.2011.05.016.",
+    "authors": [
+      "浙江大学医学院附属儿童医院新生儿监护室"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.05.016"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "重建胎儿至新生儿时间线。",
+      "en": "Reconstruct the fetal-to-neonatal timeline."
+    },
+    {
+      "zh-CN": "识别局部结构性积液线索。",
+      "en": "Recognise structural clues in a local effusion."
+    },
+    {
+      "zh-CN": "整合供血与组织学。",
+      "en": "Integrate vascular anatomy and histology."
+    },
+    {
+      "zh-CN": "说明手术前血管识别的安全价值。",
+      "en": "Explain the safety value of preoperative vascular identification."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "陈予宁（化名）",
+      "en": "Chen Yuning (pseudonym)"
+    },
+    "age": 22,
+    "ageUnit": "days",
+    "sex": "male",
+    "weightKg": 1.72,
+    "chiefComplaint": {
+      "zh-CN": "出生后呼吸困难、反复左侧胸腔积液22天",
+      "en": "Respiratory difficulty and recurrent left pleural fluid since birth, 22 days"
+    },
+    "triageNote": {
+      "zh-CN": "调阅新生儿病程，先核对产前线索和反复引流记录。",
+      "en": "Review prenatal clues and repeated drainage in the neonatal record."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "（患者不能口述；陪同者转述已有病史。）",
+        "en": "(The patient cannot speak; the companion relays the recorded history.)"
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "infant",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "always": true
+    },
+    "nonVerbalReason": {
+      "zh-CN": "早产新生儿且依赖机械通气，病史由记录和教学陪同角色提供。",
+      "en": "A premature neonate dependent on mechanical ventilation; history comes from records and an educational companion."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "prenatal"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "drainage"
+          },
+          {
+            "asked": "feeding"
+          },
+          {
+            "examined": "resp"
+          },
+          {
+            "examined": "circulation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "prenatal",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "产前有没有发现异常？",
+        "en": "Were abnormalities detected before birth?"
+      },
+      "answer": {
+        "zh-CN": "孕24周超声发现左侧胸腔积液，心脏受压右移。",
+        "en": "Ultrasound at 24 weeks showed left pleural fluid compressing and displacing the heart to the right."
+      },
+      "keywords": {
+        "zh-CN": [
+          "产前异常",
+          "胎儿超声",
+          "孕期影像",
+          "出生前积液"
+        ],
+        "en": [
+          "prenatal findings",
+          "fetal ultrasound",
+          "antenatal imaging",
+          "fluid before birth"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "出生时发生了什么？",
+        "en": "What happened at birth?"
+      },
+      "answer": {
+        "zh-CN": "孕30周、胎膜早破28小时后出生，体重1.6 kg，立即复苏插管并抽出25 mL淡黄色胸水。",
+        "en": "Birth followed 28 hours of ruptured membranes at 30 weeks, weighing 1.6 kg; resuscitation, intubation and removal of 25 mL pale-yellow pleural fluid were required."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生经过",
+          "分娩复苏",
+          "早产情况",
+          "新生儿起病"
+        ],
+        "en": [
+          "birth course",
+          "delivery resuscitation",
+          "prematurity",
+          "neonatal onset"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "drainage",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "之前胸水处理了多少次？",
+        "en": "How often had pleural fluid been drained?"
+      },
+      "answer": {
+        "zh-CN": "先后八次胸腔穿刺，每次约50–80 mL，胸水仍反复，无法撤离呼吸机。",
+        "en": "Eight aspirations removed about 50–80 mL each, but fluid recurred and ventilator weaning failed."
+      },
+      "keywords": {
+        "zh-CN": [
+          "反复引流",
+          "胸水抽取",
+          "撤机困难",
+          "既往穿刺"
+        ],
+        "en": [
+          "repeated drainage",
+          "fluid aspiration",
+          "weaning difficulty",
+          "previous thoracentesis"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "feeding",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前接受了哪些支持？",
+        "en": "What supportive treatment had been given?"
+      },
+      "answer": {
+        "zh-CN": "持续机械通气，禁食和静脉营养并使用抗菌药，二十二天仍未解决积液。",
+        "en": "Mechanical ventilation, fasting, parenteral nutrition and antibiotics had not resolved the effusion over 22 days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "营养支持",
+          "禁食经过",
+          "静脉营养",
+          "此前支持"
+        ],
+        "en": [
+          "nutritional support",
+          "fasting history",
+          "parenteral nutrition",
+          "previous support"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family-known",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家中其他孩子健康吗？",
+        "en": "Were other children in the family healthy?"
+      },
+      "answer": {
+        "zh-CN": "有一位14岁姐姐健康，未记载家族相关疾病。",
+        "en": "A 14-year-old sister was healthy; no related familial disease was documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "兄姐情况",
+          "亲属健康",
+          "家庭相关病",
+          "同胞病史"
+        ],
+        "en": [
+          "siblings health",
+          "relatives health",
+          "related family disease",
+          "sibling history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "除了已记录的情况，家族疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about family illnesses?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "resp",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "核对呼吸和胸部体征",
+        "en": "Review respiratory and chest findings"
+      },
+      "finding": {
+        "zh-CN": "呼吸58次/分，有三凹征，左肺呼吸音明显减弱，无湿啰音。",
+        "en": "Respiratory rate 58/min with retractions and markedly reduced left breath sounds, without crackles."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "circulation",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "核对循环与水肿",
+        "en": "Review circulation and oedema"
+      },
+      "finding": {
+        "zh-CN": "心率152次/分，血压49/36 mmHg，心律齐无杂音；无水肿或腹水。",
+        "en": "Heart rate 152/min, blood pressure 49/36 mmHg, regular rhythm without murmur; no oedema or ascites."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "fluid",
+      "name": {
+        "zh-CN": "胸水与病原检查",
+        "en": "Pleural fluid and pathogen records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胸水与病原检查"
+        ],
+        "en": [
+          "Pleural fluid and pathogen records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "胸水细胞260×10^6/L，单核85%，蛋白9.2 g/L；乳糜试验阴性，培养阴性。此前长期禁食，阴性乳糜试验须结合进食状态。",
+            "en": "Fluid cells 260×10^6/L, 85% mononuclear, protein 9.2 g/L; chyle test and cultures negative. Prolonged fasting limits interpretation of a negative chyle test."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "imaging",
+      "name": {
+        "zh-CN": "早期胸部及全身评估",
+        "en": "Early chest and systemic assessment"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "早期胸部及全身评估"
+        ],
+        "en": [
+          "Early chest and systemic assessment"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "超声见左侧积液与实性回声；CT见左下胸占位及纵隔右移。心脏结构功能正常，白蛋白35.3 g/L，CRP<1 mg/L。",
+            "en": "Ultrasound showed left fluid with a solid echo; CT demonstrated a left lower thoracic mass and rightward mediastinal displacement. Cardiac structure/function were normal, albumin 35.3 g/L and CRP <1 mg/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "vascular",
+      "name": {
+        "zh-CN": "增强CT与手术病理",
+        "en": "Contrast CT and surgical pathology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "增强CT与手术病理"
+        ],
+        "en": [
+          "Contrast CT and surgical pathology"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "增强CT见降主动脉分支供应病灶。手术发现独立包膜、与正常肺不相连的5.5×4×3 cm组织及血管蒂；组织有肺泡和支气管结构。",
+            "en": "Contrast CT showed an arterial branch from the descending aorta supplying the lesion. Surgery found a separately encapsulated 5.5×4×3 cm structure with a vascular pedicle, disconnected from normal lung; histology contained alveolar and bronchial structures."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告于转入后第11天切除病灶，术后第3天撤机且无引流液，第5天拔管，随后出院。",
+            "en": "The lesion was resected on day 11 after transfer; ventilation stopped on postoperative day 3 with no drainage, the drain was removed on day 5, and the infant was discharged."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "prenatal"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "drainage"
+          },
+          {
+            "asked": "feeding"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "resp"
+          },
+          {
+            "examined": "circulation"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "反复单侧积液和局部占位首先要求什么判断？",
+        "en": "What does recurrent unilateral fluid with a local mass require?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "fluid",
+            "phase": "workup"
+          },
+          {
+            "read": "imaging",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "structural",
+          "text": {
+            "zh-CN": "寻找先天性局部结构异常及供血，不能只重复引流",
+            "en": "Evaluate a congenital local structural lesion and its supply rather than drainage alone"
+          },
+          "feedback": {
+            "zh-CN": "产前起病、局部占位和持续复发使结构病因重要。",
+            "en": "Prenatal onset, a local mass and persistence make a structural cause important."
+          },
+          "correct": true
+        },
+        {
+          "id": "infection",
+          "text": {
+            "zh-CN": "反复积液已经证明抗菌药不足",
+            "en": "Recurrent fluid proves inadequate antibiotics"
+          },
+          "feedback": {
+            "zh-CN": "无病原证据，且局部实性病变仍需解释。",
+            "en": "Pathogen evidence is lacking and the solid lesion remains unexplained."
+          },
+          "correct": false
+        },
+        {
+          "id": "heart",
+          "text": {
+            "zh-CN": "一律按先天心衰处理",
+            "en": "Treat as congenital heart failure in every case"
+          },
+          "feedback": {
+            "zh-CN": "报告心脏结构和功能正常，也无全身水肿。",
+            "en": "Cardiac structure/function were reported normal without generalised oedema."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "vascular",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "sequestration",
+          "text": {
+            "zh-CN": "体循环供血、独立包膜及肺组织支持叶外型肺隔离症",
+            "en": "Systemic supply, separate encapsulation and lung tissue support extralobar pulmonary sequestration"
+          },
+          "feedback": {
+            "zh-CN": "三类证据互相补充，不能只凭胸水定性。",
+            "en": "These complementary findings classify the lesion beyond the effusion alone."
+          },
+          "correct": true
+        },
+        {
+          "id": "cyst",
+          "text": {
+            "zh-CN": "只要胸水存在就属于单纯囊肿",
+            "en": "Any pleural fluid establishes a simple cyst"
+          },
+          "feedback": {
+            "zh-CN": "此处已记录异常供血和肺组织结构。",
+            "en": "Abnormal supply and pulmonary tissue were documented."
+          },
+          "correct": false
+        },
+        {
+          "id": "chyle",
+          "text": {
+            "zh-CN": "禁食时乳糜阴性彻底排除所有淋巴问题",
+            "en": "A negative chyle test during fasting excludes all lymphatic disease"
+          },
+          "feedback": {
+            "zh-CN": "进食状态影响乳糜表现，不能作绝对排除。",
+            "en": "Feeding status affects chylous appearances and prevents absolute exclusion."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "此类证据对安全管理意味着什么？",
+        "en": "What does this evidence imply for safe management?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "vascular",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "planning",
+          "text": {
+            "zh-CN": "新生儿与小儿外科联合评估呼吸支持和血管解剖后制定处理方案",
+            "en": "Neonatal and paediatric surgical teams should integrate respiratory support with vascular anatomy in planning"
+          },
+          "feedback": {
+            "zh-CN": "异常体循环供血影响手术出血风险与操作规划。",
+            "en": "Aberrant systemic arterial supply affects bleeding risk and operative planning."
+          },
+          "correct": true
+        },
+        {
+          "id": "blind",
+          "text": {
+            "zh-CN": "按普通囊肿直接穿刺占位",
+            "en": "Puncture the mass as a simple cyst"
+          },
+          "feedback": {
+            "zh-CN": "未识别异常血管就穿刺可能造成严重损伤。",
+            "en": "Puncture without recognising anomalous vessels risks serious injury."
+          },
+          "correct": false
+        },
+        {
+          "id": "wait",
+          "text": {
+            "zh-CN": "只反复抽液，忽略占位与供血",
+            "en": "Continue aspiration alone while ignoring mass and supply"
+          },
+          "feedback": {
+            "zh-CN": "持续复发及通气依赖提示需处理病因。",
+            "en": "Persistence and ventilator dependence demand aetiological management."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "prenatal"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "drainage"
+          },
+          {
+            "asked": "feeding"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "family-known"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "resp"
+          },
+          {
+            "examined": "circulation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "fluid",
+            "phase": "workup"
+          },
+          {
+            "read": "imaging",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "vascular",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "先明确异常供血并由专科团队制定安全处理",
+        "en": "Define anomalous blood supply and plan safely with specialist teams"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明产前起病提示先天原因。；承认没有现代完整淋巴检查、后续长期肺功能或遗传评估。，用复述确认理解。",
+        "en": "Explain that Prenatal onset suggests a congenital cause.; acknowledge Modern comprehensive lymphatic testing, long-term lung function and genetic assessment are unavailable. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "fluid",
+        "imaging",
+        "vascular",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "病灶被手术及病理确认为叶外型肺隔离症，解释持续局部占位与胸腔积液。",
+      "en": "Surgery and pathology established extralobar pulmonary sequestration associated with the persistent local mass and pleural effusion."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "产前起病提示先天原因。",
+        "en": "Prenatal onset suggests a congenital cause."
+      },
+      {
+        "zh-CN": "降主动脉供血是关键解剖线索。",
+        "en": "Descending-aortic supply is a key anatomical clue."
+      },
+      {
+        "zh-CN": "独立包膜和肺组织完成类型确认。",
+        "en": "Separate encapsulation and lung tissue establish classification."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "反复积液需追溯结构原因。",
+        "en": "Recurrent fluid requires structural evaluation."
+      },
+      {
+        "zh-CN": "阴性试验要结合采样条件。",
+        "en": "Interpret negative tests in sampling context."
+      },
+      {
+        "zh-CN": "只有源中已记录的通气和时序，不推演实时生理。",
+        "en": "Retain documented ventilation and timing without invented real-time physiology."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "没有现代完整淋巴检查、后续长期肺功能或遗传评估。",
+        "en": "Modern comprehensive lymphatic testing, long-term lung function and genetic assessment are unavailable."
+      }
+    ],
+    "references": [
+      "浙江大学医学院附属儿童医院新生儿监护室. 第132例——新生儿呼吸困难伴胸腔积液. 中华儿科杂志. 2011;49(05):386-388. doi: 10.3760/cma.j.issn.0578-1310.2011.05.016.",
+      "https://rs.yiigle.com/cmaid/655471",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.05.016"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "没有现代完整淋巴检查、后续长期肺功能或遗传评估。",
+      "en": "Modern comprehensive lymphatic testing, long-term lung function and genetic assessment are unavailable."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-655471/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "c432db52c65d742d7b8ee8e85ac38d29200405ed3474376b5ae269ffdadc10d0"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "prenatal"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "drainage"
+    },
+    {
+      "type": "ask",
+      "itemId": "feeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "family-known"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "resp"
+    },
+    {
+      "type": "examine",
+      "findingId": "circulation"
+    },
+    {
+      "type": "order",
+      "investigationId": "fluid"
+    },
+    {
+      "type": "read",
+      "investigationId": "fluid",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "imaging",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "structural"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "vascular"
+    },
+    {
+      "type": "read",
+      "investigationId": "vascular",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "sequestration"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "planning"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "655471",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/655471",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于产前异常，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prenatal"
+        ]
+      },
+      {
+        "text": "Could you tell me about prenatal findings?",
+        "locale": "en",
+        "expect": [
+          "prenatal"
+        ]
+      },
+      {
+        "text": "我想了解胎儿超声。",
+        "locale": "zh-CN",
+        "expect": [
+          "prenatal"
+        ]
+      },
+      {
+        "text": "Please explain fetal ultrasound in more detail.",
+        "locale": "en",
+        "expect": [
+          "prenatal"
+        ]
+      },
+      {
+        "text": "关于出生经过，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Could you tell me about birth course?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "我想了解分娩复苏。",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Please explain delivery resuscitation in more detail.",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "关于反复引流，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "drainage"
+        ]
+      },
+      {
+        "text": "Could you tell me about repeated drainage?",
+        "locale": "en",
+        "expect": [
+          "drainage"
+        ]
+      },
+      {
+        "text": "我想了解胸水抽取。",
+        "locale": "zh-CN",
+        "expect": [
+          "drainage"
+        ]
+      },
+      {
+        "text": "Please explain fluid aspiration in more detail.",
+        "locale": "en",
+        "expect": [
+          "drainage"
+        ]
+      },
+      {
+        "text": "关于营养支持，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Could you tell me about nutritional support?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "我想了解禁食经过。",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Please explain fasting history in more detail.",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "关于兄姐情况，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Could you tell me about siblings health?",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "我想了解亲属健康。",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Please explain relatives health in more detail.",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/655471"
+    }
+  }
+}

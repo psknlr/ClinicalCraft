@@ -1,0 +1,1865 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-44477",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "多年多饮多尿后出现呕吐与脱水",
+    "en": "Vomiting and dehydration after years of thirst and polyuria"
+  },
+  "summary": {
+    "zh-CN": "少年长期大量饮水排尿，此次出现急性代谢紊乱，稳定后的持续症状提示需要重新评估。",
+    "en": "A teenager with longstanding excessive drinking and urination presents with an acute metabolic disturbance; persistent symptoms after stabilisation require reassessment."
+  },
+  "specialty": [
+    "pediatrics",
+    "endocrinology",
+    "neurology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "林宏华, 华山, 吴成, 董扬, 刘光辉, 倪虹. Wolfram综合征一例. 中华儿科杂志. 2011;49(06):470-471. doi: 10.3760/cma.j.issn.0578-1310.2011.06.017.",
+    "authors": [
+      "林宏华",
+      "华山",
+      "吴成",
+      "董扬",
+      "刘光辉",
+      "倪虹"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "ISPAD 2022 DKA chapter and current GeneReviews WFS1 Spectrum Disorder, checked 2026-10-28; scope DKA recognition/monitoring and multisystem/genetic assessment."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.06.017"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别儿童DKA的证据。",
+      "en": "Recognise paediatric DKA evidence."
+    },
+    {
+      "zh-CN": "解释稳定后持续多尿。",
+      "en": "Interpret persistent polyuria after stabilisation."
+    },
+    {
+      "zh-CN": "整合视听和泌尿表现。",
+      "en": "Integrate visual, auditory and urinary findings."
+    },
+    {
+      "zh-CN": "说明动态试验和基因结论的边界。",
+      "en": "Explain limits of dynamic testing and genetic conclusions."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "杨清和（化名）",
+      "en": "Yang Qinghe (pseudonym)"
+    },
+    "age": 13,
+    "ageUnit": "years",
+    "sex": "male",
+    "weightKg": 27,
+    "chiefComplaint": {
+      "zh-CN": "多饮多尿七年，呕吐、进食差三天",
+      "en": "Thirst and polyuria for seven years, vomiting and poor intake for three days"
+    },
+    "triageNote": {
+      "zh-CN": "先识别急性代谢危象，再按时序复核多年症状。",
+      "en": "Recognise the acute metabolic emergency before reassessing longstanding symptoms chronologically."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "七年来每天喝水约4200–6000 mL，尿量相近、像清水，偶有遗尿。",
+        "en": "For seven years, daily drinking was about 4200–6000 mL with similar amounts of clear urine and occasional enuresis."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "teen",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "polyuria"
+          },
+          {
+            "asked": "vomiting"
+          },
+          {
+            "asked": "prior-treatment"
+          },
+          {
+            "asked": "neurological-history"
+          },
+          {
+            "examined": "dehydration"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "polyuria",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "平时喝水和排尿有多少？",
+        "en": "How much was usually drunk and passed as urine?"
+      },
+      "answer": {
+        "zh-CN": "七年来每天喝水约4200–6000 mL，尿量相近、像清水，偶有遗尿。",
+        "en": "For seven years, daily drinking was about 4200–6000 mL with similar amounts of clear urine and occasional enuresis."
+      },
+      "keywords": {
+        "zh-CN": [
+          "长期饮尿",
+          "平时饮水",
+          "清水样尿",
+          "遗尿经过"
+        ],
+        "en": [
+          "longstanding drinking and urine",
+          "usual fluid intake",
+          "clear urine",
+          "enuresis course"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vomiting",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近呕吐如何发展？",
+        "en": "How did the recent vomiting progress?"
+      },
+      "answer": {
+        "zh-CN": "三天来非喷射性呕吐越来越多，吃后就吐，不能进食，精神变差。",
+        "en": "Non-projectile vomiting increased over three days, occurring after meals and preventing intake, with worsening lethargy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期呕吐",
+          "进食困难",
+          "三天变化",
+          "精神变化"
+        ],
+        "en": [
+          "recent vomiting",
+          "intake difficulty",
+          "three day change",
+          "alertness change"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-treatment",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "以前怎样处理多饮多尿？",
+        "en": "How had thirst and polyuria been treated?"
+      },
+      "answer": {
+        "zh-CN": "曾被考虑精神性多饮或尿崩症，不规律服中药和加压素，效果不佳。",
+        "en": "Psychogenic polydipsia or diabetes insipidus had been considered; irregular herbal and vasopressin treatment gave poor benefit."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此前多尿治疗",
+          "加压素使用",
+          "旧诊断处理",
+          "既往疗效"
+        ],
+        "en": [
+          "previous polyuria treatment",
+          "vasopressin use",
+          "earlier diagnostic care",
+          "prior benefit"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "neurological-history",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有头部外伤或意识丧失吗？",
+        "en": "Was there head injury or previous loss of consciousness?"
+      },
+      "answer": {
+        "zh-CN": "否认头部外伤、头痛、呕吐或昏迷的既往史。",
+        "en": "Previous head injury, headache, vomiting and coma were denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "头部外伤",
+          "旧神经病史",
+          "以前昏迷",
+          "颅脑经历"
+        ],
+        "en": [
+          "head injury",
+          "past neurological history",
+          "previous coma",
+          "cranial history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family-known",
+      "topic": "family",
+      "question": {
+        "zh-CN": "出生发育和家族背景怎样？",
+        "en": "What were birth, development and family background?"
+      },
+      "answer": {
+        "zh-CN": "足月顺产，生长智力与同龄儿相仿；父母健康，父母和祖辈非近亲婚配。",
+        "en": "Term vaginal birth and development comparable to peers; parents were healthy and parental/grandparental consanguinity was denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生发育",
+          "家族婚配",
+          "父母健康",
+          "成长经过"
+        ],
+        "en": [
+          "birth development",
+          "family consanguinity",
+          "parents health",
+          "growth course"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "除了已记录的情况，家族疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about family illnesses?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "dehydration",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对脱水和呼吸",
+        "en": "Review dehydration and breathing"
+      },
+      "finding": {
+        "zh-CN": "清醒但萎靡、极消瘦，皮肤黏膜干燥、弹性差，呼吸深长，末梢凉；心率102次/分，血压95/60 mmHg。",
+        "en": "Alert but lethargic and very thin, with dry mucosa, poor skin turgor, deep breathing and cool extremities; heart rate 102/min and blood pressure 95/60 mmHg."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "metabolic",
+      "name": {
+        "zh-CN": "急性代谢检查",
+        "en": "Acute metabolic studies"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "急性代谢检查"
+        ],
+        "en": [
+          "Acute metabolic studies"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "血糖38.74 mmol/L，尿糖++++、酮体++，pH 7.21，HCO3 4.2 mmol/L，阴离子间隙35.6 mmol/L，钠116 mmol/L、钾4.0 mmol/L；GAD及IAA阴性。",
+            "en": "Glucose 38.74 mmol/L, urine glucose ++++ and ketones ++, pH 7.21, bicarbonate 4.2 mmol/L, anion gap 35.6 mmol/L, sodium 116 mmol/L and potassium 4.0 mmol/L; GAD and IAA negative."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "persistent",
+      "name": {
+        "zh-CN": "血糖稳定后的尿量及多系统检查",
+        "en": "Urine and multisystem assessment after glucose stabilisation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血糖稳定后的尿量及多系统检查"
+        ],
+        "en": [
+          "Urine and multisystem assessment after glucose stabilisation"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "血糖稳定后仍每日饮水4700–5800 mL，低比重尿1.000–1.005；双肾积水、输尿管扩张及排尿困难。眼底视神经萎缩，高频感音神经性听力下降。原文称加压素反应差，未给完整动态数据或基因结果。",
+            "en": "After glucose stabilised, drinking remained 4700–5800 mL/day with urine specific gravity 1.000–1.005, bilateral hydronephrosis, hydroureter and voiding difficulty. Optic atrophy and high-frequency sensorineural hearing loss were found. Poor vasopressin response was reported without full dynamic data or genetic results."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告经急救后稳定，后续用胰岛素及氢氯噻嗪，约两周出院，一年内两次随访稳定；剂量和治疗选择仅作历史记录。",
+            "en": "The report described stabilisation after emergency care, subsequent insulin and hydrochlorothiazide, discharge at about two weeks and stability at two follow-ups within a year; treatment choices remain historical records."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "polyuria"
+          },
+          {
+            "asked": "vomiting"
+          },
+          {
+            "asked": "prior-treatment"
+          },
+          {
+            "asked": "neurological-history"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "dehydration"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "入院时首先需要识别什么？",
+        "en": "What must be recognised on admission?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "dka",
+          "text": {
+            "zh-CN": "糖尿病酮症酸中毒伴严重脱水和电解质紊乱",
+            "en": "Diabetic ketoacidosis with severe dehydration and electrolyte disturbance"
+          },
+          "feedback": {
+            "zh-CN": "高血糖、酮尿和代谢性酸中毒构成急症证据。",
+            "en": "Hyperglycaemia, ketonuria and metabolic acidosis establish the emergency pattern."
+          },
+          "correct": true
+        },
+        {
+          "id": "psychogenic",
+          "text": {
+            "zh-CN": "七年多饮说明此次仍只是精神性多饮",
+            "en": "Seven years of thirst means this is still psychogenic polydipsia alone"
+          },
+          "feedback": {
+            "zh-CN": "无法解释明显酮症及高阴离子间隙酸中毒。",
+            "en": "This cannot explain ketosis and high-anion-gap acidosis."
+          },
+          "correct": false
+        },
+        {
+          "id": "gastritis",
+          "text": {
+            "zh-CN": "呕吐即可按单纯胃炎处理",
+            "en": "Vomiting justifies treatment as simple gastritis"
+          },
+          "feedback": {
+            "zh-CN": "胃炎不能解释完整代谢结果。",
+            "en": "Gastritis does not explain the metabolic findings."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "persistent",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "syndrome",
+          "text": {
+            "zh-CN": "糖尿病、视神经萎缩、听力和泌尿异常支持Wolfram谱系临床怀疑，须分子及水代谢复核",
+            "en": "Diabetes, optic atrophy, hearing and urinary abnormalities support clinical suspicion of a Wolfram spectrum disorder requiring molecular and water-balance reassessment"
+          },
+          "feedback": {
+            "zh-CN": "不能把旧文不完整加压素试验视为已证明肾性尿崩，也不能补写WFS1结果。",
+            "en": "An incomplete historical vasopressin test does not prove nephrogenic diabetes insipidus, and no WFS1 result can be invented."
+          },
+          "correct": true
+        },
+        {
+          "id": "glucose",
+          "text": {
+            "zh-CN": "持续多尿全部都是未控制高血糖",
+            "en": "Persistent polyuria is entirely uncontrolled glucose"
+          },
+          "feedback": {
+            "zh-CN": "血糖已稳定，稀释尿及其他器官表现需另解释。",
+            "en": "Glucose had stabilised; dilute urine and other organ findings require further explanation."
+          },
+          "correct": false
+        },
+        {
+          "id": "gene",
+          "text": {
+            "zh-CN": "四个症状已证明某一具体致病变异",
+            "en": "Four features prove a particular pathogenic variant"
+          },
+          "feedback": {
+            "zh-CN": "临床组合不能指定基因型。",
+            "en": "A clinical pattern cannot specify a genotype."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何规划安全的后续照护？",
+        "en": "How should safe subsequent care be planned?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "persistent",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "specialist",
+          "text": {
+            "zh-CN": "在儿童糖尿病专科规范处理危象后，联合评估水代谢、视听功能、膀胱和遗传",
+            "en": "After specialist paediatric DKA care, coordinate water balance, vision/hearing, bladder and genetic assessment"
+          },
+          "feedback": {
+            "zh-CN": "危象处理需连续临床监测；后续不能因血糖正常而停止多系统评估。",
+            "en": "DKA care requires clinical monitoring; normal glucose does not end multisystem assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "bicarbonate",
+          "text": {
+            "zh-CN": "照搬旧文，对所有这类患儿常规碳酸氢钠",
+            "en": "Copy historical routine bicarbonate for all similar children"
+          },
+          "feedback": {
+            "zh-CN": "当代儿童DKA流程不支持常规碳酸氢钠，需按适应证判断。",
+            "en": "Current paediatric DKA protocols do not support routine bicarbonate; indications require assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "water",
+          "text": {
+            "zh-CN": "未经专科监测自行限制饮水做禁水试验",
+            "en": "Restrict water for an unsupervised deprivation test"
+          },
+          "feedback": {
+            "zh-CN": "重度脱水及复杂水代谢背景使此举危险。",
+            "en": "Severe dehydration and complex water balance make this dangerous."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "polyuria"
+          },
+          {
+            "asked": "vomiting"
+          },
+          {
+            "asked": "prior-treatment"
+          },
+          {
+            "asked": "neurological-history"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "family-known"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "dehydration"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "persistent",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "不照搬旧文常规纠酸和禁水流程，采用受监测的儿童专科照护",
+        "en": "Use monitored paediatric specialist care rather than copying historical routine bicarbonate or deprivation testing"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明急性代谢危象必须先识别。；承认没有WFS1/CISD2检测、完整水代谢动态数值及长期神经结局。，用复述确认理解。",
+        "en": "Explain that The acute metabolic crisis must be recognised first.; acknowledge WFS1/CISD2 testing, complete dynamic water-balance results and long-term neurological outcomes are absent. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "metabolic",
+        "persistent",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告临床诊断Wolfram综合征，合并DKA；具体遗传类型和尿崩机制尚未证实。",
+      "en": "The report clinically diagnosed Wolfram syndrome with DKA; the genetic subtype and diabetes-insipidus mechanism remain unproven."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "急性代谢危象必须先识别。",
+        "en": "The acute metabolic crisis must be recognised first."
+      },
+      {
+        "zh-CN": "血糖稳定后稀释性多尿需要新解释。",
+        "en": "Dilute polyuria after glucose control needs a new explanation."
+      },
+      {
+        "zh-CN": "视听及泌尿发现支持综合征性评估。",
+        "en": "Visual, auditory and urinary findings support syndromic assessment."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "临床综合征不等于基因确诊。",
+        "en": "A clinical syndrome is not genetic confirmation."
+      },
+      {
+        "zh-CN": "旧文肾性尿崩结论保留不确定性。",
+        "en": "Retain uncertainty about the historical nephrogenic label."
+      },
+      {
+        "zh-CN": "不把历史急救处方作为现行流程。",
+        "en": "Do not turn historical emergency prescriptions into current protocols."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "没有WFS1/CISD2检测、完整水代谢动态数值及长期神经结局。",
+        "en": "WFS1/CISD2 testing, complete dynamic water-balance results and long-term neurological outcomes are absent."
+      }
+    ],
+    "references": [
+      "林宏华, 华山, 吴成, 董扬, 刘光辉, 倪虹. Wolfram综合征一例. 中华儿科杂志. 2011;49(06):470-471. doi: 10.3760/cma.j.issn.0578-1310.2011.06.017.",
+      "https://rs.yiigle.com/cmaid/44477",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.06.017",
+      "ISPAD Clinical Practice Consensus Guidelines 2022, DKA chapter. https://www.ispad.org/static/6dd62eae-c8cb-4b4a-84e1efc768505746/Ch11PediatricDiabetes.pdf",
+      "GeneReviews. WFS1 Spectrum Disorder. https://www.ncbi.nlm.nih.gov/books/NBK4144/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "没有WFS1/CISD2检测、完整水代谢动态数值及长期神经结局。",
+      "en": "WFS1/CISD2 testing, complete dynamic water-balance results and long-term neurological outcomes are absent."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "polyuria"
+    },
+    {
+      "type": "ask",
+      "itemId": "vomiting"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "neurological-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "family-known"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "dehydration"
+    },
+    {
+      "type": "order",
+      "investigationId": "metabolic"
+    },
+    {
+      "type": "read",
+      "investigationId": "metabolic",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "dka"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "persistent"
+    },
+    {
+      "type": "read",
+      "investigationId": "persistent",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "syndrome"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "specialist"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "44477",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/44477",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于长期饮尿，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "polyuria"
+        ]
+      },
+      {
+        "text": "Could you tell me about longstanding drinking and urine?",
+        "locale": "en",
+        "expect": [
+          "polyuria"
+        ]
+      },
+      {
+        "text": "我想了解平时饮水。",
+        "locale": "zh-CN",
+        "expect": [
+          "polyuria"
+        ]
+      },
+      {
+        "text": "Please explain usual fluid intake in more detail.",
+        "locale": "en",
+        "expect": [
+          "polyuria"
+        ]
+      },
+      {
+        "text": "关于近期呕吐，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vomiting"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent vomiting?",
+        "locale": "en",
+        "expect": [
+          "vomiting"
+        ]
+      },
+      {
+        "text": "我想了解进食困难。",
+        "locale": "zh-CN",
+        "expect": [
+          "vomiting"
+        ]
+      },
+      {
+        "text": "Please explain intake difficulty in more detail.",
+        "locale": "en",
+        "expect": [
+          "vomiting"
+        ]
+      },
+      {
+        "text": "关于此前多尿治疗，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-treatment"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous polyuria treatment?",
+        "locale": "en",
+        "expect": [
+          "prior-treatment"
+        ]
+      },
+      {
+        "text": "我想了解加压素使用。",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-treatment"
+        ]
+      },
+      {
+        "text": "Please explain vasopressin use in more detail.",
+        "locale": "en",
+        "expect": [
+          "prior-treatment"
+        ]
+      },
+      {
+        "text": "关于头部外伤，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "neurological-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about head injury?",
+        "locale": "en",
+        "expect": [
+          "neurological-history"
+        ]
+      },
+      {
+        "text": "我想了解旧神经病史。",
+        "locale": "zh-CN",
+        "expect": [
+          "neurological-history"
+        ]
+      },
+      {
+        "text": "Please explain past neurological history in more detail.",
+        "locale": "en",
+        "expect": [
+          "neurological-history"
+        ]
+      },
+      {
+        "text": "关于出生发育，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Could you tell me about birth development?",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "我想了解家族婚配。",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Please explain family consanguinity in more detail.",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/44477"
+    }
+  }
+}

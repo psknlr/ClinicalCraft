@@ -1,0 +1,1933 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-638901",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "皮疹治疗期间出现烦渴和呕吐 · 33岁男性",
+    "en": "Thirst and vomiting during treatment for a skin eruption · 33-year-old male"
+  },
+  "summary": {
+    "zh-CN": "围绕皮疹治疗期间出现烦渴和呕吐，比较现有证据、不同解释与下一步处理。",
+    "en": "Review the evidence, competing explanations and next steps for thirst and vomiting during treatment for a skin eruption."
+  },
+  "specialty": [
+    "endocrinology",
+    "clinical-pharmacology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 30,
+  "learningOutcomes": [
+    {
+      "zh-CN": "从三项证据识别DKA。",
+      "en": "Recognise DKA from its three components."
+    },
+    {
+      "zh-CN": "区分急症处理与糖尿病分型。",
+      "en": "Separate emergency care from diabetes classification."
+    },
+    {
+      "zh-CN": "制定防复发教育重点。",
+      "en": "Specify recurrence-prevention education."
+    },
+    {
+      "zh-CN": "说明抗体暴露和C肽检测时点的解释局限。",
+      "en": "Explain antibody-exposure and C-peptide-timing limitations."
+    }
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "杨洋,  孙丽荣. 严重药物过敏反应后暴发1型糖尿病误诊为类固醇糖尿病一例报道. 中华糖尿病杂志. 2013;05(01):53-54. doi:10.3760/cma.j.issn.1674-5809.2013.01.013",
+    "doi": "10.3760/cma.j.issn.1674-5809.2013.01.013",
+    "authors": [
+      "杨洋",
+      "孙丽荣"
+    ],
+    "license": "Authored educational adaptation; publication copyright remains with its original holders.",
+    "notes": {
+      "zh-CN": "依据单例报告改编；姓名、医院和日历日期已去标识化。问答、决策及评分为教学设计。原报告已做的检查仅供病历查阅，未记录的信息保持未知。",
+      "en": "Adapted from a single-patient report, with names, hospitals and calendar dates de-identified. Dialogue, decisions and scoring are educational design. Existing investigations are chart reviews; missing information remains unknown."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "guidelines": [
+        "ADA/EASD et al. Hyperglycemic Crises in Adults With Diabetes: A Consensus Report.2024. doi:10.2337/dci24-0032. https://diabetesjournals.org/care/article/47/8/1257/156811/Hyperglycemic-Crises-in-Adults-With-Diabetes-A",
+        "Japan Diabetes Society. New diagnostic criteria of fulminant type1 diabetes mellitus(2012). doi:10.1111/jdi.12024. https://pmc.ncbi.nlm.nih.gov/articles/PMC4015434/"
+      ],
+      "reviewers": [
+        "AI-assisted internal editorial check (not a licensed clinician)"
+      ],
+      "notes": {
+        "zh-CN": "已完成AI辅助内部编辑核对：逐例对照源病例，并针对所列权威资料核对教学原则；非执业医师审核，具体治疗适用性仍需专科确认。",
+        "en": "AI-assisted internal editorial check against each source case and the listed authorities for teaching principles; not a licensed-clinician review. Patient-specific treatment eligibility still needs specialty review."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学，不构成个体诊疗建议。原报告处置不自动成为今天的推荐；不模拟未记录的生理变化。",
+    "en": "Historical teaching case, not individual medical advice. Reported care is not automatically a current recommendation; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "李予宁（化名）",
+      "en": "Li Yuning (pseudonym)"
+    },
+    "age": 33,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "皮疹治疗期间出现烦渴和呕吐",
+      "en": "Thirst and vomiting during treatment for a skin eruption"
+    },
+    "triageNote": {
+      "zh-CN": "33岁患者，因皮疹治疗期间出现烦渴和呕吐就诊，现核对病史与原有记录。",
+      "en": "33-year-old patient presenting with thirst and vomiting during treatment for a skin eruption; history and existing records require review."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "以原报告为边界回答；交流方式为教学设定。",
+        "en": "Answers within the source record; communication style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "简短日常语言，医学数据查阅病历。",
+        "en": "Brief everyday language; technical data are reviewed in the chart."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "最近特别渴，还恶心呕吐。",
+        "en": "I have become very thirsty with nausea and vomiting."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "actingNotes": {
+        "zh-CN": "仅使用当前阶段资料，不提前描述后续检查或结局。",
+        "en": "Use current-stage information only; do not reveal later findings or outcomes."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "就诊与病史",
+        "en": "Presentation and history"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "病历证据与决策",
+        "en": "Chart evidence and decisions"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "后续经过与复盘",
+        "en": "Subsequent course and review"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "all": [
+              {
+                "asked": "presentation"
+              },
+              {
+                "asked": "onset"
+              },
+              {
+                "asked": "progression"
+              },
+              {
+                "asked": "associated"
+              }
+            ]
+          },
+          {
+            "all": [
+              {
+                "examined": "exam-1"
+              },
+              {
+                "examined": "exam-2"
+              }
+            ]
+          },
+          {
+            "decided": "interpretation"
+          },
+          {
+            "decided": "management"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次主要哪里不舒服？",
+        "en": "What is the main problem today?"
+      },
+      "answer": {
+        "zh-CN": "最近特别渴，还恶心呕吐。",
+        "en": "I have become very thirsty with nausea and vomiting."
+      },
+      "keywords": {
+        "zh-CN": [
+          "主要不适",
+          "来院原因",
+          "这次症状",
+          "哪里难受"
+        ],
+        "en": [
+          "main complaint",
+          "presenting problem",
+          "reason for attending",
+          "current symptoms"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最早什么时候开始？",
+        "en": "When did this first start?"
+      },
+      "answer": {
+        "zh-CN": "用激素治疗皮疹约30天后出现这些症状。",
+        "en": "These symptoms appeared about30 days into steroid treatment for a skin eruption."
+      },
+      "keywords": {
+        "zh-CN": [
+          "起病时间",
+          "持续多久",
+          "最早发病",
+          "病了多久"
+        ],
+        "en": [
+          "symptom onset",
+          "first onset",
+          "duration",
+          "time of onset"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "progression",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这段时间病情怎样变化？",
+        "en": "How has the problem changed over time?"
+      },
+      "answer": {
+        "zh-CN": "用药前血糖正常，第10天发现空腹血糖偏高，后来突然难受。",
+        "en": "Glucose was normal before treatment; fasting glucose rose on day10, then I became acutely unwell."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病情变化",
+          "逐渐加重",
+          "发作频率",
+          "症状演变"
+        ],
+        "en": [
+          "symptom progression",
+          "change over time",
+          "episode frequency",
+          "getting worse"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "associated",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "当时还伴有什么不舒服？",
+        "en": "What other symptoms occurred with it?"
+      },
+      "answer": {
+        "zh-CN": "皮肤脱屑，体重也比以前轻。",
+        "en": "My skin is peeling and I have lost weight."
+      },
+      "keywords": {
+        "zh-CN": [
+          "伴随症状",
+          "同时不适",
+          "其他表现",
+          "伴有什么"
+        ],
+        "en": [
+          "associated symptoms",
+          "accompanying symptoms",
+          "additional complaints",
+          "other symptoms"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前得过哪些病？",
+        "en": "What illnesses have you had previously?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "以前病史",
+          "过去疾病",
+          "慢性疾病"
+        ],
+        "en": [
+          "past medical history",
+          "previous illnesses",
+          "chronic conditions",
+          "medical background"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家族",
+          "家人"
+        ],
+        "en": [
+          "family",
+          "relatives"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "operations",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过什么手术或操作？",
+        "en": "Have you had previous operations or procedures?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术经历",
+          "既往手术",
+          "操作经历",
+          "动过手术"
+        ],
+        "en": [
+          "previous operations",
+          "surgical history",
+          "past procedures",
+          "previous surgery"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "发病前后用过什么药？",
+        "en": "What medicines were used around the illness?"
+      },
+      "answer": {
+        "zh-CN": "服散利痛后全身起疱，随后用甲泼尼松并逐渐减量。",
+        "en": "Generalised blisters followed Saridon use; methylprednisolone was then started and tapered."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用药清单",
+          "服用药物",
+          "药物疗程",
+          "吃了什么药"
+        ],
+        "en": [
+          "medication list",
+          "regular medicines",
+          "recent medication",
+          "drug treatment"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前有过药物或食物过敏吗？",
+        "en": "Have medicines or foods caused an allergic reaction before?"
+      },
+      "answer": {
+        "zh-CN": "这次服散利痛后严重皮疹被诊断剥脱性皮炎；其他过敏未记载。",
+        "en": "The severe eruption after Saridon was diagnosed as exfoliative dermatitis; other allergies were not recorded."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "食物过敏",
+          "过敏经历",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "food allergies",
+          "allergy history",
+          "allergic reaction"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有过类似的病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "否认糖尿病家族史。",
+        "en": "I denied a family history of diabetes."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "家人患病",
+          "遗传病史",
+          "亲属疾病"
+        ],
+        "en": [
+          "family history",
+          "illness in relatives",
+          "familial disease",
+          "hereditary history"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "生活环境或近期接触有特别的情况吗？",
+        "en": "Were there any relevant environmental or recent exposures?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境接触",
+          "接触经历",
+          "生活环境",
+          "接触物质"
+        ],
+        "en": [
+          "environmental exposure",
+          "recent exposure",
+          "living environment",
+          "contact history"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "这次生病怎样影响日常活动？",
+        "en": "How has this affected everyday activities?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "活动能力",
+          "日常活动",
+          "生活自理",
+          "活动受限"
+        ],
+        "en": [
+          "daily activities",
+          "functional capacity",
+          "self care",
+          "activity limitation"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "redflags",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有其他需要马上处理的症状？",
+        "en": "Were there other symptoms needing urgent attention?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "危险症状",
+          "紧急症状",
+          "警示症状",
+          "急性变化"
+        ],
+        "en": [
+          "warning symptoms",
+          "urgent symptoms",
+          "red flags",
+          "acute warning signs"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "prior",
+      "topic": "other",
+      "question": {
+        "zh-CN": "来这里之前在哪里看过病，怎样处理？",
+        "en": "What assessment or care occurred before this encounter?"
+      },
+      "answer": {
+        "zh-CN": "血糖最初轻度升高时建议饮食控制。",
+        "en": "Dietary measures were advised when glucose first rose mildly."
+      },
+      "keywords": {
+        "zh-CN": [
+          "之前就诊",
+          "院外处理",
+          "前期诊治",
+          "此前处理"
+        ],
+        "en": [
+          "earlier assessment",
+          "previous consultation",
+          "prior care",
+          "pre-referral care"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    },
+    {
+      "id": "concerns",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "对这次病情最担心什么？",
+        "en": "What worries you most about this illness?"
+      },
+      "answer": {
+        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
+        "en": "The source notes do not provide that information; I cannot fill it in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担心",
+          "最担心什么",
+          "治疗期望",
+          "心里顾虑"
+        ],
+        "en": [
+          "personal concerns",
+          "main worry",
+          "expectations",
+          "patient concerns"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告未载；为教学补充的问题。",
+        "en": "Not supplied by the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "baseline",
+      "topic": "other",
+      "question": {
+        "zh-CN": "发病前的基础生活情况怎样？",
+        "en": "What was your baseline health and living situation?"
+      },
+      "answer": {
+        "zh-CN": "发病前BMI26，入院BMI24 kg/m²。",
+        "en": "BMI was26 before illness and24 kg/m² at admission."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时情况",
+          "基础生活",
+          "发病前状态",
+          "原来状况"
+        ],
+        "en": [
+          "baseline health",
+          "usual state",
+          "baseline circumstances",
+          "usual health"
+        ]
+      },
+      "excludeKeywords": [],
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "exam-1",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对入院查体记录 1",
+        "en": "Review presentation examination 1"
+      },
+      "finding": {
+        "zh-CN": "神清、可配合，蜷缩体位，颜面潮红。",
+        "en": "Alert and cooperative, curled posture and flushed face."
+      },
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      },
+      "abnormal": true,
+      "required": true
+    },
+    {
+      "id": "exam-2",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对入院查体记录 2",
+        "en": "Review presentation examination 2"
+      },
+      "finding": {
+        "zh-CN": "HR102/min，BP110/75 mmHg；腹软无压痛，足部脱屑，无下肢水肿。",
+        "en": "HR102/min and BP110/75 mmHg; soft nontender abdomen, peeling feet and no leg oedema."
+      },
+      "phases": [
+        "initial",
+        "workup",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+      },
+      "abnormal": true,
+      "required": true
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有这项查体资料，不能视为正常。",
+    "en": "The report supplies no finding for this manoeuvre; do not assume it is normal."
+  },
+  "investigations": [
+    {
+      "id": "acute",
+      "name": {
+        "zh-CN": "调阅急性代谢结果",
+        "en": "Review acute metabolic results"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅急性代谢结果"
+        ],
+        "en": [
+          "Review acute metabolic results",
+          "acute"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "血糖33 mmol/L，尿酮3+，尿糖4+，pH7.25，CO₂结合力18.2 mmol/L。",
+            "en": "Glucose33 mmol/L, urine ketones3+, urine glucose4+, pH7.25 and CO₂ combining power18.2 mmol/L."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "context",
+      "name": {
+        "zh-CN": "调阅HbA1c及电解质",
+        "en": "Review HbA1c and electrolytes"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅HbA1c及电解质"
+        ],
+        "en": [
+          "Review HbA1c and electrolytes",
+          "context"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "HbA1c8.2%，K4.65 mmol/L；肝肾功能、心肌标志物在原文记为正常。",
+            "en": "HbA1c8.2%, K4.65 mmol/L; liver/renal tests and cardiac markers were reported normal."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "initial-plan",
+      "name": {
+        "zh-CN": "调阅首次住院处置",
+        "en": "Review first-admission care"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "aliases": {
+        "zh-CN": [
+          "调阅首次住院处置"
+        ],
+        "en": [
+          "Review first-admission care",
+          "initial-plan"
+        ]
+      },
+      "results": {
+        "workup": {
+          "text": {
+            "zh-CN": "原报告补液和胰岛素治疗后酮体转阴，第9天患者因工作要求出院，初诊为类固醇糖尿病伴酮症酸中毒。 原表1：第3天空腹12.9、午餐后23.8 mmol/L；第9天空腹9.8、晚餐后10.2 mmol/L。仅作历史测量，不转写剂量。",
+            "en": "Fluids and insulin were followed by negative ketones; the patient requested discharge for work on day9, initially labelled steroid diabetes with ketoacidosis. SourceTable1 records day3 fasting12.9 and post-lunch23.8 mmol/L, and day9 fasting9.8 and post-dinner10.2 mmol/L. These are historical measurements, not dose instructions."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
+            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+          },
+          "available": true
+        }
+      }
+    },
+    {
+      "id": "outcome",
+      "name": {
+        "zh-CN": "调阅原报告后续经过",
+        "en": "Review the reported subsequent course"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "一年余后中断胰岛素再发DKA，IAA和ICA阳性、GAD65阴性。表2第一次检查0/120 min C肽0.3/0.5 nmol/L，血糖5.5/23.8 mmol/L；第二次0/120 min C肽0.1/0.2 nmol/L，血糖7.5/20.2 mmol/L。两表为后续检查，不能替代初发时值。之后持续胰岛素依赖、体重下降20 kg、血糖波动，作者修正为暴发1型糖尿病；当前仅可保留这一原诊断并标明标准无法完全复现。",
+            "en": "Over a year later, interruption of insulin preceded recurrentDKA; IAA/ICA were positive andGAD65 negative. Table2 gives first-test fasting/120-minute C-peptide0.3/0.5 nmol/L with glucose5.5/23.8 mmol/L, and second-test C-peptide0.1/0.2 nmol/L with glucose7.5/20.2 mmol/L. These later measurements cannot substitute for onset values. Persistent insulin dependence,20 kg weight loss and variable glucose led the authors to label fulminant type1 diabetes, but its complete criteria cannot be reproduced from the available onset evidence."
+          },
+          "source": {
+            "zh-CN": "原报告随访段及表2（已核对原CSV）。",
+            "en": "Source follow-up section andTable2, checked against the suppliedCSV."
+          },
+          "available": true
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "history",
+      "title": {
+        "zh-CN": "重建就诊经过",
+        "en": "Reconstruct the presentation"
+      },
+      "hint": {
+        "zh-CN": "从起病、演变及伴随症状寻找关键信息。",
+        "en": "Clarify onset, progression and associated symptoms."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "associated"
+          }
+        ]
+      }
+    },
+    {
+      "id": "evidence",
+      "title": {
+        "zh-CN": "核对查体与病历证据",
+        "en": "Check examination and chart evidence"
+      },
+      "hint": {
+        "zh-CN": "区分患者叙述、查体记录和辅助检查报告。",
+        "en": "Distinguish the history, examination record and investigation reports."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "all": [
+              {
+                "examined": "exam-1"
+              },
+              {
+                "examined": "exam-2"
+              }
+            ]
+          },
+          {
+            "read": "acute",
+            "phase": "workup"
+          },
+          {
+            "read": "context",
+            "phase": "workup"
+          },
+          {
+            "read": "initial-plan",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "reasoning",
+      "title": {
+        "zh-CN": "比较解释并制定计划",
+        "en": "Compare interpretations and plan care"
+      },
+      "hint": {
+        "zh-CN": "指出支持证据、反证和仍需核对的信息。",
+        "en": "Identify supporting evidence, conflicting evidence and remaining gaps."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "interpretation"
+          },
+          {
+            "decided": "management"
+          }
+        ]
+      }
+    },
+    {
+      "id": "review",
+      "title": {
+        "zh-CN": "复盘后续经过",
+        "en": "Review the subsequent course"
+      },
+      "hint": {
+        "zh-CN": "将报告结局与当时可获得的证据分开。",
+        "en": "Separate the reported outcome from evidence available at the decision point."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "outcome",
+            "phase": "followup"
+          },
+          {
+            "decided": "safety"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "interpretation",
+      "prompt": {
+        "zh-CN": "现有急性数据首先支持什么？",
+        "en": "What do the acute data support first?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "acute",
+            "phase": "workup"
+          },
+          {
+            "read": "context",
+            "phase": "workup"
+          },
+          {
+            "read": "initial-plan",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
+        "en": "First review the relevant history and source records available in this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "糖尿病酮症酸中毒，需要先处理代谢急症再判断分型",
+            "en": "Diabetic ketoacidosis, requiring acute treatment before final classification"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "高血糖、酮体和酸血症三者同时存在。",
+            "en": "Hyperglycaemia, ketosis and acidaemia are all present."
+          }
+        },
+        {
+          "id": "alternative-1",
+          "text": {
+            "zh-CN": "仅是无危险的激素后餐后血糖偏高",
+            "en": "Only harmless steroid-related postprandial hyperglycaemia"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "无法解释pH7.25及明显酮体。",
+            "en": "This does not explain pH7.25 and marked ketosis."
+          }
+        },
+        {
+          "id": "alternative-2",
+          "text": {
+            "zh-CN": "HbA1c不足9%可排除糖尿病急症",
+            "en": "HbA1c below9% excludes a diabetic emergency"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "HbA1c不能否定当前DKA证据。",
+            "en": "HbA1c does not negate current DKA evidence."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "初次稳定后，什么计划更安全？",
+        "en": "Which plan is safer after initial stabilisation?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "interpretation"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
+        "en": "First review the relevant history and source records available in this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "核对胰岛功能与糖尿病分型，落实胰岛素、血糖/酮体监测和病日教育",
+            "en": "Assess beta-cell function and classification, with insulin, glucose/ketone monitoring and sick-day education"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "不能先假定激素停用后一定不需要胰岛素。",
+            "en": "Steroid withdrawal must not be assumed to eliminate insulin need."
+          }
+        },
+        {
+          "id": "alternative-1",
+          "text": {
+            "zh-CN": "因为曾用激素，出院后自行停胰岛素",
+            "en": "Stop insulin after discharge because steroids were used"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "病因未定而停药可导致再发酮症。",
+            "en": "Stopping treatment with uncertain insulin dependence risks recurrence."
+          }
+        },
+        {
+          "id": "alternative-2",
+          "text": {
+            "zh-CN": "不监测血糖，只在口渴时补一次胰岛素",
+            "en": "Avoid monitoring and use insulin only when thirsty"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "这样无法安全管理血糖或预防酮症。",
+            "en": "This cannot safely manage glycaemia or prevent ketosis."
+          }
+        }
+      ]
+    },
+    {
+      "id": "safety",
+      "prompt": {
+        "zh-CN": "复盘后续资料，怎样表述原“暴发1型”诊断？",
+        "en": "How should the reported fulminant-type1 label be expressed after follow-up?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "outcome",
+            "phase": "followup"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
+        "en": "First review the relevant history and source records available in this phase."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "表2支持后续胰岛分泌下降，不能替代初发标准；IAA在用胰岛素后测得，分型需专科复核",
+            "en": "Table2 supports declining later insulin secretion but cannot replace onset criteria; post-insulin IAA and classification require specialist review"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "2012JDS标准要求初发时极低C肽。现有后续数值不重现该条件，仍不能证明药物因果。",
+            "en": "The2012JDS criteria require very low C-peptide at onset. Later values do not reproduce that condition and cannot establish drug causality."
+          }
+        },
+        {
+          "id": "alternative-1",
+          "text": {
+            "zh-CN": "IAA阳性证明药物直接破坏胰岛",
+            "en": "Positive IAA proves the drug directly destroyed beta cells"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "外源胰岛素暴露与缺乏机制检测限制解释。",
+            "en": "Exogenous insulin exposure and absent mechanistic tests limit interpretation."
+          }
+        },
+        {
+          "id": "alternative-2",
+          "text": {
+            "zh-CN": "再次DKA证明所有激素相关糖尿病都不可逆",
+            "en": "Recurrent DKA proves all steroid-associated diabetes is irreversible"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "单个病例不能推出所有患者的结局。",
+            "en": "One case cannot establish outcomes for every patient."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "history-0",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问清主要不适",
+        "en": "Clarify the presenting problem"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "presentation"
+      }
+    },
+    {
+      "id": "history-1",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问清起病时间",
+        "en": "Clarify onset"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "onset"
+      }
+    },
+    {
+      "id": "history-2",
+      "domain": "history",
+      "text": {
+        "zh-CN": "询问病情演变",
+        "en": "Clarify progression"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "progression"
+      }
+    },
+    {
+      "id": "history-3",
+      "domain": "history",
+      "text": {
+        "zh-CN": "询问伴随症状",
+        "en": "Clarify associated symptoms"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "associated"
+      }
+    },
+    {
+      "id": "examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对已记录的查体发现",
+        "en": "Review the documented examination"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "exam-1"
+          },
+          {
+            "examined": "exam-2"
+          }
+        ]
+      }
+    },
+    {
+      "id": "records",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅关键记录后再决策",
+        "en": "Review key records before deciding"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "acute",
+            "phase": "workup"
+          },
+          {
+            "read": "context",
+            "phase": "workup"
+          },
+          {
+            "read": "initial-plan",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "diagnosis",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "选择证据最支持的解释",
+        "en": "Choose the interpretation best supported by the evidence"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "interpretation"
+      }
+    },
+    {
+      "id": "safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "长期胰岛素依赖支持重估分型，但缺失C肽原表且IAA在用胰岛素后测得，需专科复核",
+        "en": "Persistent insulin dependence warrants reclassification, but missing C-peptide tables and post-insulin IAA require specialist review"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "safety"
+      }
+    },
+    {
+      "id": "outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "核对原报告结局并保留未知",
+        "en": "Review the reported outcome without filling gaps"
+      },
+      "weight": 1,
+      "met": {
+        "read": "outcome",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "safe-plan",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次选择符合证据的处理路径",
+        "en": "Choose an evidence-consistent plan on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "解释证据与不确定性，核对患者或陪同者理解",
+        "en": "Explain evidence and uncertainty and check patient or companion understanding"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "以通俗语言说明主要判断、下一步及至少一项具体未知，询问理解和顾虑；不得声称未载明的疗效或预后。",
+        "en": "Use plain language for the interpretation, next step and at least one case-specific uncertainty; check understanding and concerns, without asserting undocumented benefit or prognosis."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "先区分病史、检查和推论；指出不确定性。后续经过须在完成当前决策后查阅。",
+        "en": "Distinguish history, findings and inference, and state uncertainty. The subsequent course is reviewed after completing the current decisions."
+      },
+      "interprets": [
+        "acute",
+        "context",
+        "initial-plan",
+        "outcome"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "证据与安全复盘",
+      "en": "Evidence and safety debrief"
+    },
+    "conclusion": {
+      "zh-CN": "皮疹与激素治疗后发生DKA，长期胰岛素依赖促使原作者改称暴发1型。已核对表2，但后续C肽不能代替初发分型标准；药物致病机制未证实。",
+      "en": "DKA after a skin eruption and steroid exposure led to persistent insulin dependence and the source label of fulminant type1 diabetes. Table2 has been checked, but later C-peptide values cannot replace onset classification criteria; drug causality remains unproven."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "先识别DKA，不因激素暴露忽略酸中毒。",
+        "en": "Recognise DKA despite steroid exposure."
+      },
+      {
+        "zh-CN": "出院教育必须覆盖监测及避免自行中断必要胰岛素。",
+        "en": "Discharge education covers monitoring and avoiding interruption of essential insulin."
+      },
+      {
+        "zh-CN": "时间关联不等于药物免疫致病证据。",
+        "en": "Temporal association does not establish drug-mediated immune causality."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例回顾不能证明因果或比较疗效。数字仅为原报告时点记录，不是实时监测；没有参考区间的数据不自行补区间。",
+      "en": "A single retrospective report cannot establish causality or comparative efficacy. Numbers are source time-point records, not live monitoring; missing reference intervals are not invented."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "初发时C肽、尿C肽、病毒和遗传检测缺失；已有随访表2数值不能倒推初发指标。",
+        "en": "Onset serum/urinary C-peptide, viral and genetic studies are unavailable; the supplied follow-upTable2 cannot reconstruct onset values."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "先识别DKA，不因激素暴露忽略酸中毒。",
+        "en": "Recognise DKA despite steroid exposure."
+      },
+      {
+        "zh-CN": "出院教育必须覆盖监测及避免自行中断必要胰岛素。",
+        "en": "Discharge education covers monitoring and avoiding interruption of essential insulin."
+      },
+      {
+        "zh-CN": "时间关联不等于药物免疫致病证据。",
+        "en": "Temporal association does not establish drug-mediated immune causality."
+      }
+    ],
+    "references": [
+      "杨洋,  孙丽荣. 严重药物过敏反应后暴发1型糖尿病误诊为类固醇糖尿病一例报道. 中华糖尿病杂志. 2013;05(01):53-54. doi:10.3760/cma.j.issn.1674-5809.2013.01.013",
+      "https://rs.yiigle.com/cmaid/638901",
+      "ADA/EASD et al. Hyperglycemic Crises in Adults With Diabetes: A Consensus Report.2024. doi:10.2337/dci24-0032. https://diabetesjournals.org/care/article/47/8/1257/156811/Hyperglycemic-Crises-in-Adults-With-Diabetes-A",
+      "Japan Diabetes Society. New diagnostic criteria of fulminant type1 diabetes mellitus(2012). doi:10.1111/jdi.12024. https://pmc.ncbi.nlm.nih.gov/articles/PMC4015434/"
+    ],
+    "notice": {
+      "zh-CN": "本评分为教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "初发时C肽、尿C肽、病毒和遗传检测缺失；已有随访表2数值不能倒推初发指标。",
+      "en": "Onset serum/urinary C-peptide, viral and genetic studies are unavailable; the supplied follow-upTable2 cannot reconstruct onset values."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "progression"
+    },
+    {
+      "type": "ask",
+      "itemId": "associated"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "operations"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "redflags"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior"
+    },
+    {
+      "type": "ask",
+      "itemId": "concerns"
+    },
+    {
+      "type": "ask",
+      "itemId": "baseline"
+    },
+    {
+      "type": "examine",
+      "findingId": "exam-1"
+    },
+    {
+      "type": "examine",
+      "findingId": "exam-2"
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "acute"
+    },
+    {
+      "type": "read",
+      "investigationId": "acute",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "context"
+    },
+    {
+      "type": "read",
+      "investigationId": "context",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "initial-plan"
+    },
+    {
+      "type": "read",
+      "investigationId": "initial-plan",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "interpretation",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "outcome"
+    },
+    {
+      "type": "read",
+      "investigationId": "outcome",
+      "phase": "followup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "safety",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "638901",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/638901",
+    "sourceTextSha256": "20c65eff68f37b0f00358984861baa66cd62c9d9b4d453f5bbcfe5fb9b67bb5c",
+    "historicalReview": true,
+    "supplementReviews": [
+      "表1.csv: historical inpatient glucose values; doses not converted to recommendations.",
+      "表2.csv: both follow-up C-peptide/glucose profiles checked; not onset values."
+    ],
+    "authorChecks": {
+      "individuallyRead": true,
+      "sourceValuesRetained": true,
+      "noUnrecordedPhysiology": true,
+      "mediaAwaitingPrivacyReview": true,
+      "doiWebVerified": true,
+      "publisherVerificationFile": "publisher-verification.json"
+    },
+    "testUtterances": [
+      {
+        "text": "说说来院原因。",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Tell me your main complaint.",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "症状持续多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Describe the symptom onset.",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "病情变化过程是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "Describe the symptom progression.",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "还有哪些伴随症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "Tell me about associated symptoms.",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "讲讲既往疾病。",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Tell me your past medical history.",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "讲讲既往手术。",
+        "locale": "zh-CN",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "Tell me your surgical history.",
+        "locale": "en",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "核对一下用药清单。",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Could we review your medication list?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "请说说药物过敏史。",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Tell me about drug allergies.",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "介绍一下家族病史。",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "What is your family history?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "了解一下环境接触。",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Describe relevant environmental exposure.",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "现在的活动能力怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Describe your daily activities.",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "有没有危险症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "redflags"
+        ]
+      },
+      {
+        "text": "Were there any warning symptoms?",
+        "locale": "en",
+        "expect": [
+          "redflags"
+        ]
+      },
+      {
+        "text": "讲讲之前就诊经过。",
+        "locale": "zh-CN",
+        "expect": [
+          "prior"
+        ]
+      },
+      {
+        "text": "Describe the earlier assessment.",
+        "locale": "en",
+        "expect": [
+          "prior"
+        ]
+      },
+      {
+        "text": "想了解您的个人担心。",
+        "locale": "zh-CN",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "Tell me your personal concerns.",
+        "locale": "en",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "介绍一下平时情况。",
+        "locale": "zh-CN",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "Describe your baseline health.",
+        "locale": "en",
+        "expect": [
+          "baseline"
+        ]
+      },
+      {
+        "text": "主要不适具体是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Could you clarify main complaint?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "起病时间具体是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Could you clarify symptom onset?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "病情变化具体是什么情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "Could you clarify symptom progression?",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      }
+    ]
+  }
+}

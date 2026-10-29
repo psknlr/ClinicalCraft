@@ -1,0 +1,1979 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-598191",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "发热、广泛皮疹与黄疸 · 29岁女性",
+    "en": "Fever, widespread rash and jaundice · woman aged 29"
+  },
+  "summary": {
+    "zh-CN": "持续服药后出现皮肤和肝脏损害，时间线及既往同药反应是关键。",
+    "en": "Skin and liver injury after sustained medication exposure requires a precise timeline and prior reaction history."
+  },
+  "specialty": [
+    "dermatology",
+    "hepatology",
+    "allergy"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "朱礼尧, 朱农, 孙信林, 周建, 张鑫. 布洛芬致药物超敏反应综合征一例并文献复习. 中华全科医师杂志. 2013;12(10):849-850. doi:10.3760/cma.j.issn.1671-7368.2013.10.029.",
+    "doi": "10.3760/cma.j.issn.1671-7368.2013.10.029",
+    "authors": [
+      "朱礼尧",
+      "朱农",
+      "孙信林",
+      "周建",
+      "张鑫"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "Brüggen MC, et al. Management of adult patients with DRESS: Delphi-based international consensus. JAMA Dermatol. 2024;160(1):37-44. doi:10.1001/jamadermatol.2023.4450. https://jamanetwork.com/journals/jamadermatology/fullarticle/2812063"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "按暴露先后比较可能致敏药。",
+      "en": "Compare suspected drugs using exposure chronology."
+    },
+    {
+      "zh-CN": "分别跟踪皮肤和肝脏损伤。",
+      "en": "Track skin and hepatic injury separately."
+    },
+    {
+      "zh-CN": "说明诊断评分及肝衰竭定义资料不足。",
+      "en": "Explain missing data for diagnostic scoring and liver-failure definitions."
+    },
+    {
+      "zh-CN": "避免再暴露并监测器官损害，不能用皮肤好转代替系统评估",
+      "en": "Avoid re-exposure and monitor organ injury rather than judging recovery by the skin"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "谢清和（化名）",
+      "en": "Xie Qinghe (pseudonym)"
+    },
+    "age": 29,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "发热7天，皮疹6天，黄疸4天",
+      "en": "Seven days of fever, six of rash and four of jaundice"
+    },
+    "triageNote": {
+      "zh-CN": "高热、全身瘙痒红疹伴眼黄尿黄。",
+      "en": "High fever, widespread itchy rash and yellow eyes/urine."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "先发热，次日皮疹，随后黄疸。",
+        "en": "Fever preceded rash by a day, followed by jaundice."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "sequence"
+          },
+          {
+            "asked": "ibuprofen"
+          },
+          {
+            "asked": "prior-reaction"
+          },
+          {
+            "asked": "penicillin"
+          },
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "systemic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "sequence",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "发热、皮疹和眼黄分别什么时候开始？ 这些症状最先出现的是哪一个？",
+        "en": "When did fever, rash and jaundice each begin? Which symptom came first?"
+      },
+      "answer": {
+        "zh-CN": "先发热，次日皮疹，随后黄疸。",
+        "en": "Fever preceded rash by a day, followed by jaundice."
+      },
+      "keywords": {
+        "zh-CN": [
+          "症状先后",
+          "发热、皮疹和眼黄分别什么时候开始？",
+          "这些症状最先出现的是哪一个？",
+          "症状先后情况"
+        ],
+        "en": [
+          "symptom sequence",
+          "When did fever, rash and jaundice each begin?",
+          "Which symptom came first?",
+          "symptom sequence information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "ibuprofen",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "布洛芬从什么时候开始吃，一直在吃吗？ 出疹前用了多久止痛药？",
+        "en": "When did ibuprofen start, and was it taken continuously? How long had pain medicine been used before the rash?"
+      },
+      "answer": {
+        "zh-CN": "入院前39天因膝痛开始持续服缓释布洛芬。",
+        "en": "Sustained-release ibuprofen was started for knee pain thirty-nine days before admission."
+      },
+      "keywords": {
+        "zh-CN": [
+          "布洛芬暴露",
+          "布洛芬从什么时候开始吃，一直在吃吗？",
+          "出疹前用了多久止痛药？",
+          "布洛芬暴露情况"
+        ],
+        "en": [
+          "ibuprofen exposure",
+          "When did ibuprofen start, and was it taken continuously?",
+          "How long had pain medicine been used before the rash?",
+          "ibuprofen exposure information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-reaction",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃同一种止痛药出过疹吗？ 上次药疹停药后怎样？",
+        "en": "Have you had a rash from the same pain medicine before? What happened when the earlier culprit medicine was stopped?"
+      },
+      "answer": {
+        "zh-CN": "一年前吃含布洛芬药后全身斑丘疹，停药后消退。",
+        "en": "A year earlier an ibuprofen-containing product caused a widespread maculopapular rash that resolved after withdrawal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往同药皮疹",
+          "以前吃同一种止痛药出过疹吗？",
+          "上次药疹停药后怎样？",
+          "既往同药皮疹情况"
+        ],
+        "en": [
+          "previous same-drug rash",
+          "Have you had a rash from the same pain medicine before?",
+          "What happened when the earlier culprit medicine was stopped?",
+          "previous same-drug rash information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "penicillin",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "青霉素是在出疹之前还是之后用的？ 发疹后又新增过什么药？",
+        "en": "Was penicillin started before or after the rash? Which medicines were added after the rash began?"
+      },
+      "answer": {
+        "zh-CN": "发热皮疹已开始后才用青霉素两天，之后两药停用。",
+        "en": "Penicillin was given for two days after fever and rash had begun; both drugs were then stopped."
+      },
+      "keywords": {
+        "zh-CN": [
+          "青霉素时间",
+          "青霉素是在出疹之前还是之后用的？",
+          "发疹后又新增过什么药？",
+          "青霉素时间情况"
+        ],
+        "en": [
+          "penicillin timing",
+          "Was penicillin started before or after the rash?",
+          "Which medicines were added after the rash began?",
+          "penicillin timing information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "spread",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "皮疹从哪里开始，怎样扩散？ 红疹有没有连成大片？",
+        "en": "Where did the rash start, and how did it spread? Have rash areas merged into large patches?"
+      },
+      "answer": {
+        "zh-CN": "面躯干红斑迅速扩至全身融合，伴瘙痒和眼睑肿。",
+        "en": "Facial/truncal erythema spread and merged over the body, with itch and swollen eyelids."
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮疹进展",
+          "皮疹从哪里开始，怎样扩散？",
+          "红疹有没有连成大片？",
+          "皮疹进展情况"
+        ],
+        "en": [
+          "rash progression",
+          "Where did the rash start, and how did it spread?",
+          "Have rash areas merged into large patches?",
+          "rash progression information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "throat",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "喉咙痛不痛？ 吞咽时会觉得喉咙疼吗？",
+        "en": "Is the throat sore? Does swallowing cause throat pain?"
+      },
+      "answer": {
+        "zh-CN": "伴明显咽痛，最高热41℃。",
+        "en": "There was marked sore throat and fever up to 41°C."
+      },
+      "keywords": {
+        "zh-CN": [
+          "咽痛",
+          "喉咙痛不痛？",
+          "吞咽时会觉得喉咙疼吗？",
+          "咽痛情况"
+        ],
+        "en": [
+          "sore throat",
+          "Is the throat sore?",
+          "Does swallowing cause throat pain?",
+          "sore throat information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "initial-response",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "停药后发热皮疹和黄疸怎样变化？ 刚停药时症状有没有立即减轻？",
+        "en": "How did fever, rash and jaundice change after withdrawal? Did symptoms improve immediately when medicines stopped?"
+      },
+      "answer": {
+        "zh-CN": "停药并治疗四天后仍高热，皮损和黄疸加深。",
+        "en": "Four days after withdrawal and treatment, fever persisted and skin injury/jaundice worsened."
+      },
+      "keywords": {
+        "zh-CN": [
+          "初期停药反应",
+          "停药后发热皮疹和黄疸怎样变化？",
+          "刚停药时症状有没有立即减轻？",
+          "初期停药反应情况"
+        ],
+        "en": [
+          "early withdrawal response",
+          "How did fever, rash and jaundice change after withdrawal?",
+          "Did symptoms improve immediately when medicines stopped?",
+          "early withdrawal response information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有居住环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "居住环境暴露",
+          "有关居住环境暴露",
+          "居住环境暴露情况",
+          "居住环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有病前日常活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前日常活动",
+          "有关病前日常活动",
+          "病前日常活动情况",
+          "病前日常活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查皮肤和黏膜",
+        "en": "Review skin and mucosa"
+      },
+      "finding": {
+        "zh-CN": "面部水肿性红斑鳞屑，躯干剥脱、肢体融合斑丘疹，口腔溃疡及唇血痂。",
+        "en": "Facial oedematous erythema/scaling, truncal peeling, confluent limb lesions, oral ulcers and lip crusting."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "systemic",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对系统体征",
+        "en": "Review systemic signs"
+      },
+      "finding": {
+        "zh-CN": "体温39.2℃，血压96/60，巩膜黄染、颌下淋巴结肿痛，轻度下肢水肿。",
+        "en": "Temperature 39.2°C, BP 96/60, scleral jaundice, tender submandibular nodes and mild leg oedema."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "blood",
+      "name": {
+        "zh-CN": "血常规",
+        "en": "Blood count"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血常规"
+        ],
+        "en": [
+          "Blood count"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "WBC11.62×10⁹/L，嗜酸比例0.067，Hb92 g/L。",
+            "en": "WBC 11.62×10⁹/L, eosinophil fraction 0.067 and Hb 92 g/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "liver",
+      "name": {
+        "zh-CN": "初始肝脏及凝血",
+        "en": "Initial liver and coagulation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "初始肝脏及凝血"
+        ],
+        "en": [
+          "Initial liver and coagulation"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "TBIL133.6、DBIL117.5 μmol/L，ALT585、AST878 U/L，白蛋白33.9 g/L，PTA64%。",
+            "en": "Total/direct bilirubin 133.6/117.5 µmol/L, ALT/AST 585/878 U/L, albumin 33.9 g/L and prothrombin activity 64%."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "exclusions",
+      "name": {
+        "zh-CN": "感染及影像排查",
+        "en": "Infection and imaging assessment"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "感染及影像排查"
+        ],
+        "en": [
+          "Infection and imaging assessment"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "所列肝炎病毒、EBV及CMV IgM阴性；胸片和腹部超声起初基本正常。HHV6再激活未提供。",
+            "en": "Listed hepatitis viruses and EBV/CMV IgM were negative; initial chest and abdominal imaging were largely normal. HHV6 reactivation was not provided."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "trend",
+      "name": {
+        "zh-CN": "退热后肝脏恶化",
+        "en": "Liver deterioration despite defervescence"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "退热后肝脏恶化"
+        ],
+        "en": [
+          "Liver deterioration despite defervescence"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "五天后热退疹减而TBIL255.9 μmol/L、白蛋白26.3 g/L、PTA37%，出现腹水。未记录肝性脑病或INR。",
+            "en": "Five days later fever/rash improved but bilirubin rose to 255.9 µmol/L, albumin fell to 26.3 g/L and prothrombin activity to 37%, with ascites. Encephalopathy and INR were not documented."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告激素及多种支持药后改善，但第25天再发热黄疸；后来逐渐恢复，约第38天肝功能正常，停药后一年无复发。单例不能分离各药效果。",
+            "en": "Steroids and multiple supportive drugs were followed by improvement, but fever/jaundice recurred on day 25. Liver tests normalised around day 38 and no recurrence was reported over one year. Individual drug effects cannot be isolated."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "sequence"
+          },
+          {
+            "asked": "ibuprofen"
+          },
+          {
+            "asked": "prior-reaction"
+          },
+          {
+            "asked": "penicillin"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "systemic"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "用药顺序最支持哪种工作判断？",
+        "en": "What interpretation is best supported by the medication sequence?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "liver",
+            "phase": "workup"
+          },
+          {
+            "read": "exclusions",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "疑似布洛芬相关严重药物超敏反应并肝损伤",
+            "en": "Suspected ibuprofen-related severe drug hypersensitivity with liver injury"
+          },
+          "feedback": {
+            "zh-CN": "潜伏期、既往同药皮疹及多系统表现提供支持。",
+            "en": "Latency, prior same-drug rash and multi-system disease support this."
+          },
+          "correct": true
+        },
+        {
+          "id": "penicillin-only",
+          "text": {
+            "zh-CN": "只因后来用了青霉素就确定它是唯一病因",
+            "en": "Later penicillin use establishes it as the only cause"
+          },
+          "feedback": {
+            "zh-CN": "初始皮疹先于青霉素。",
+            "en": "The initial rash preceded penicillin."
+          },
+          "correct": false
+        },
+        {
+          "id": "eczema",
+          "text": {
+            "zh-CN": "只是湿疹，无需关注肝脏",
+            "en": "This is only eczema without liver concern"
+          },
+          "feedback": {
+            "zh-CN": "黄疸和凝血变化提示系统受累。",
+            "en": "Jaundice and coagulation changes indicate systemic injury."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "trend",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "皮疹退热不代表器官恢复；报告称肝衰竭但缺现代定义所需完整资料",
+            "en": "Skin/fever improvement does not equal organ recovery; the source labels liver failure without full contemporary defining data"
+          },
+          "feedback": {
+            "zh-CN": "PTA下降和腹水危险，但不补写未记载的脑病。",
+            "en": "Falling prothrombin activity and ascites are serious, without inventing encephalopathy."
+          },
+          "correct": true
+        },
+        {
+          "id": "skin-cure",
+          "text": {
+            "zh-CN": "皮疹消退已经证明全部治愈",
+            "en": "Resolving rash proves complete cure"
+          },
+          "feedback": {
+            "zh-CN": "肝脏指标同期恶化。",
+            "en": "Liver indices worsened at the same time."
+          },
+          "correct": false
+        },
+        {
+          "id": "certain-score",
+          "text": {
+            "zh-CN": "原文已经提供完整RegiSCAR和HHV6证据",
+            "en": "The report provides complete RegiSCAR and HHV6 evidence"
+          },
+          "feedback": {
+            "zh-CN": "这些资料未完整列出。",
+            "en": "These data are incomplete."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "怎样制定安全处置和避免复发？",
+        "en": "How should safety and recurrence prevention be addressed?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "trend",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "停用并记录疑似致敏药，专科监测肝凝血及其他器官，避免再挑战",
+            "en": "Withdraw and document the suspected drug, monitor liver/coagulation and other organs with specialists, and avoid rechallenge"
+          },
+          "feedback": {
+            "zh-CN": "不将历史保肝药组合视为已证实方案。",
+            "en": "Historical multi-drug liver remedies are not established treatment evidence."
+          },
+          "correct": true
+        },
+        {
+          "id": "rechallenge",
+          "text": {
+            "zh-CN": "再次服布洛芬验证是否真过敏",
+            "en": "Re-expose to ibuprofen to prove allergy"
+          },
+          "feedback": {
+            "zh-CN": "严重迟发超敏反应再暴露可能危险。",
+            "en": "Re-exposure after severe delayed hypersensitivity can be dangerous."
+          },
+          "correct": false
+        },
+        {
+          "id": "home",
+          "text": {
+            "zh-CN": "退热后只在家看皮疹即可",
+            "en": "After fever settles, monitor only the rash at home"
+          },
+          "feedback": {
+            "zh-CN": "凝血及肝功能恶化仍需密切专业照护。",
+            "en": "Worsening hepatic function/coagulation needs close specialist care."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "sequence"
+          },
+          {
+            "asked": "ibuprofen"
+          },
+          {
+            "asked": "prior-reaction"
+          },
+          {
+            "asked": "penicillin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "spread"
+          },
+          {
+            "asked": "throat"
+          },
+          {
+            "asked": "initial-response"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "prior-reaction"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "systemic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "liver",
+            "phase": "workup"
+          },
+          {
+            "read": "exclusions",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "trend",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "避免再暴露并监测器官损害，不能用皮肤好转代替系统评估",
+        "en": "Avoid re-exposure and monitor organ injury rather than judging recovery by the skin"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：按暴露先后比较可能致敏药。同时解释以下信息仍有缺失或疑问：完整RegiSCAR、HHV6、INR、脑病记录和过敏专科复核。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Compare suspected drugs using exposure chronology. Identify the following as missing or uncertain: Complete RegiSCAR, HHV6, INR, encephalopathy documentation and allergy specialist review. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "blood",
+        "liver",
+        "exclusions",
+        "trend",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告为布洛芬相关DIHS/DRESS谱系，需以时间线、再暴露风险和器官趋势教学。",
+      "en": "The report describes ibuprofen-associated DIHS/DRESS-spectrum disease, teaching chronology, re-exposure risk and organ trends."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "按暴露先后比较可能致敏药。",
+        "en": "Compare suspected drugs using exposure chronology."
+      },
+      {
+        "zh-CN": "分别跟踪皮肤和肝脏损伤。",
+        "en": "Track skin and hepatic injury separately."
+      },
+      {
+        "zh-CN": "说明诊断评分及肝衰竭定义资料不足。",
+        "en": "Explain missing data for diagnostic scoring and liver-failure definitions."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "按暴露先后比较可能致敏药。",
+        "en": "Compare suspected drugs using exposure chronology."
+      },
+      {
+        "zh-CN": "分别跟踪皮肤和肝脏损伤。",
+        "en": "Track skin and hepatic injury separately."
+      },
+      {
+        "zh-CN": "说明诊断评分及肝衰竭定义资料不足。",
+        "en": "Explain missing data for diagnostic scoring and liver-failure definitions."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整RegiSCAR、HHV6、INR、脑病记录和过敏专科复核。",
+        "en": "Complete RegiSCAR, HHV6, INR, encephalopathy documentation and allergy specialist review."
+      }
+    ],
+    "references": [
+      "朱礼尧, 朱农, 孙信林, 周建, 张鑫. 布洛芬致药物超敏反应综合征一例并文献复习. 中华全科医师杂志. 2013;12(10):849-850. doi:10.3760/cma.j.issn.1671-7368.2013.10.029.",
+      "https://rs.yiigle.com/cmaid/598191",
+      "Brüggen MC, et al. Management of adult patients with DRESS: Delphi-based international consensus. JAMA Dermatol. 2024;160(1):37-44. doi:10.1001/jamadermatol.2023.4450. https://jamanetwork.com/journals/jamadermatology/fullarticle/2812063"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整RegiSCAR、HHV6、INR、脑病记录和过敏专科复核。",
+      "en": "Complete RegiSCAR, HHV6, INR, encephalopathy documentation and allergy specialist review."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "sequence"
+    },
+    {
+      "type": "ask",
+      "itemId": "ibuprofen"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-reaction"
+    },
+    {
+      "type": "ask",
+      "itemId": "penicillin"
+    },
+    {
+      "type": "ask",
+      "itemId": "spread"
+    },
+    {
+      "type": "ask",
+      "itemId": "throat"
+    },
+    {
+      "type": "ask",
+      "itemId": "initial-response"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "examine",
+      "findingId": "systemic"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "liver"
+    },
+    {
+      "type": "read",
+      "investigationId": "liver",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "exclusions"
+    },
+    {
+      "type": "read",
+      "investigationId": "exclusions",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "trend"
+    },
+    {
+      "type": "read",
+      "investigationId": "trend",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "598191",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/598191",
+    "sourceDoi": "10.3760/cma.j.issn.1671-7368.2013.10.029",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "发热、皮疹和眼黄分别什么时候开始？",
+        "locale": "zh-CN",
+        "expect": [
+          "sequence"
+        ]
+      },
+      {
+        "text": "When did fever, rash and jaundice each begin?",
+        "locale": "en",
+        "expect": [
+          "sequence"
+        ]
+      },
+      {
+        "text": "这些症状最先出现的是哪一个？",
+        "locale": "zh-CN",
+        "expect": [
+          "sequence"
+        ]
+      },
+      {
+        "text": "Which symptom came first?",
+        "locale": "en",
+        "expect": [
+          "sequence"
+        ]
+      },
+      {
+        "text": "布洛芬从什么时候开始吃，一直在吃吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "ibuprofen"
+        ]
+      },
+      {
+        "text": "When did ibuprofen start, and was it taken continuously?",
+        "locale": "en",
+        "expect": [
+          "ibuprofen"
+        ]
+      },
+      {
+        "text": "出疹前用了多久止痛药？",
+        "locale": "zh-CN",
+        "expect": [
+          "ibuprofen"
+        ]
+      },
+      {
+        "text": "How long had pain medicine been used before the rash?",
+        "locale": "en",
+        "expect": [
+          "ibuprofen"
+        ]
+      },
+      {
+        "text": "以前吃同一种止痛药出过疹吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-reaction"
+        ]
+      },
+      {
+        "text": "Have you had a rash from the same pain medicine before?",
+        "locale": "en",
+        "expect": [
+          "prior-reaction"
+        ]
+      },
+      {
+        "text": "上次药疹停药后怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-reaction"
+        ]
+      },
+      {
+        "text": "What happened when the earlier culprit medicine was stopped?",
+        "locale": "en",
+        "expect": [
+          "prior-reaction"
+        ]
+      },
+      {
+        "text": "青霉素是在出疹之前还是之后用的？",
+        "locale": "zh-CN",
+        "expect": [
+          "penicillin"
+        ]
+      },
+      {
+        "text": "Was penicillin started before or after the rash?",
+        "locale": "en",
+        "expect": [
+          "penicillin"
+        ]
+      },
+      {
+        "text": "发疹后又新增过什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "penicillin"
+        ]
+      },
+      {
+        "text": "Which medicines were added after the rash began?",
+        "locale": "en",
+        "expect": [
+          "penicillin"
+        ]
+      },
+      {
+        "text": "皮疹从哪里开始，怎样扩散？",
+        "locale": "zh-CN",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "Where did the rash start, and how did it spread?",
+        "locale": "en",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "红疹有没有连成大片？",
+        "locale": "zh-CN",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "Have rash areas merged into large patches?",
+        "locale": "en",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "喉咙痛不痛？",
+        "locale": "zh-CN",
+        "expect": [
+          "throat"
+        ]
+      },
+      {
+        "text": "Is the throat sore?",
+        "locale": "en",
+        "expect": [
+          "throat"
+        ]
+      },
+      {
+        "text": "吞咽时会觉得喉咙疼吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "throat"
+        ]
+      },
+      {
+        "text": "Does swallowing cause throat pain?",
+        "locale": "en",
+        "expect": [
+          "throat"
+        ]
+      },
+      {
+        "text": "停药后发热皮疹和黄疸怎样变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "initial-response"
+        ]
+      },
+      {
+        "text": "How did fever, rash and jaundice change after withdrawal?",
+        "locale": "en",
+        "expect": [
+          "initial-response"
+        ]
+      },
+      {
+        "text": "刚停药时症状有没有立即减轻？",
+        "locale": "zh-CN",
+        "expect": [
+          "initial-response"
+        ]
+      },
+      {
+        "text": "Did symptoms improve immediately when medicines stopped?",
+        "locale": "en",
+        "expect": [
+          "initial-response"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

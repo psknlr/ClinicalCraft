@@ -1,0 +1,1999 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-861055",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "发热、头痛与抽搐 · 7岁4月男孩",
+    "en": "Fever, headache and seizure · boy aged 7 years 4 months"
+  },
+  "summary": {
+    "zh-CN": "儿童脑膜炎表现且脑脊液糖极低，阴性初筛不能终止病原和颅压风险评估。",
+    "en": "A child has meningitis with extremely low CSF glucose; negative initial tests do not end pathogen or intracranial-risk assessment."
+  },
+  "specialty": [
+    "paediatric-infectious-diseases",
+    "critical-care",
+    "neurology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "康琳敏, 高珊, 罗蓉, 胡正强, 钟沁. 儿童罗伦隐球菌脓毒症并脑膜炎1例. 中华实用儿科临床杂志. 2013;28(18):1437-1437. doi:10.3760/cma.j.issn.2095-428X.2013.18.022.",
+    "doi": "10.3760/cma.j.issn.2095-428X.2013.18.022",
+    "authors": [
+      "康琳敏",
+      "高珊",
+      "罗蓉",
+      "胡正强",
+      "钟沁"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "Chang CC, et al. Global guideline for diagnosis and management of cryptococcosis. Lancet Infect Dis. 2024. doi:10.1016/S1473-3099(23)00731-4. https://www.idsociety.org/practice-guideline/Diagnosis-and-Management-of-Cryptococcosis/"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别低糖脑膜炎中阴性初筛的局限。",
+      "en": "Identify limitations of negative screening in low-glucose meningitis."
+    },
+    {
+      "zh-CN": "将呼吸和瞳孔恶化作为独立急救信号。",
+      "en": "Treat respiratory and pupillary deterioration as separate emergency signals."
+    },
+    {
+      "zh-CN": "严格区分当时可得信息与事后培养结果。",
+      "en": "Distinguish contemporaneous information from later culture results."
+    },
+    {
+      "zh-CN": "出现脑疝警讯时优先气道和重症救治，避免不安全重复腰穿",
+      "en": "Prioritise airway and critical care for herniation warnings and avoid unsafe repeat lumbar puncture"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "白予宁（化名）",
+      "en": "Bai Yuning (pseudonym)"
+    },
+    "age": 88,
+    "ageUnit": "months",
+    "sex": "male",
+    "weightKg": 25,
+    "chiefComplaint": {
+      "zh-CN": "发热15天、头痛7天、抽搐一次",
+      "en": "Fifteen days of fever, seven days of headache and one seizure"
+    },
+    "triageNote": {
+      "zh-CN": "发热头痛后抽搐，入院清醒但精神萎靡。",
+      "en": "A seizure followed fever and headache; alert but listless on admission."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "发热已经15天。",
+        "en": "Fever has lasted fifteen days."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "phase": "confirmation"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "后续记录存在意识障碍或插管，改由病历和陪同者叙述。",
+      "en": "Subsequent records include impaired consciousness or intubation; use records and a companion."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "headache"
+          },
+          {
+            "asked": "seizure"
+          },
+          {
+            "asked": "exposure"
+          },
+          {
+            "examined": "meningeal"
+          },
+          {
+            "examined": "general"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "fever",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "发烧持续多少天了？ 这次发热是不是已经两周左右？",
+        "en": "How many days has the fever lasted? Has this fever continued for about two weeks?"
+      },
+      "answer": {
+        "zh-CN": "发热已经15天。",
+        "en": "Fever has lasted fifteen days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热时间",
+          "发烧持续多少天了？",
+          "这次发热是不是已经两周左右？",
+          "发热时间情况"
+        ],
+        "en": [
+          "fever duration",
+          "How many days has the fever lasted?",
+          "Has this fever continued for about two weeks?",
+          "fever duration information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "headache",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "头痛从哪一天开始？ 头痛比发热晚多久出现？",
+        "en": "When did the headache begin? How long after the fever did the headache start?"
+      },
+      "answer": {
+        "zh-CN": "头痛七天。",
+        "en": "Headache has lasted seven days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "头痛病程",
+          "头痛从哪一天开始？",
+          "头痛比发热晚多久出现？",
+          "头痛病程情况"
+        ],
+        "en": [
+          "headache course",
+          "When did the headache begin?",
+          "How long after the fever did the headache start?",
+          "headache course information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "seizure",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "来院前抽了几次？ 第一次抽搐的经过有记录吗？",
+        "en": "How many seizures occurred before admission? Are details of the first seizure recorded?"
+      },
+      "answer": {
+        "zh-CN": "入院前抽搐一次，细节未详。",
+        "en": "One seizure occurred before admission; details are unspecified."
+      },
+      "keywords": {
+        "zh-CN": [
+          "首次抽搐",
+          "来院前抽了几次？",
+          "第一次抽搐的经过有记录吗？",
+          "首次抽搐情况"
+        ],
+        "en": [
+          "first seizure",
+          "How many seizures occurred before admission?",
+          "Are details of the first seizure recorded?",
+          "first seizure information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "接触过结核病人或鸽子吗？ 有没有特殊居住地或鸟类接触？",
+        "en": "Has he been around someone with TB or pigeons? Were there unusual residence or bird exposures?"
+      },
+      "answer": {
+        "zh-CN": "否认结核接触、疫区居住和鸽类接触。",
+        "en": "TB contact, residence in an epidemic area and pigeon contact were denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "结核鸽类接触",
+          "接触过结核病人或鸽子吗？",
+          "有没有特殊居住地或鸟类接触？",
+          "结核鸽类接触情况"
+        ],
+        "en": [
+          "TB and pigeon exposure",
+          "Has he been around someone with TB or pigeons?",
+          "Were there unusual residence or bird exposures?",
+          "TB and pigeon exposure information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前身体怎样，有哪些病？ 既往有没有需要治疗的疾病？",
+        "en": "What was health like before this illness? Were any earlier illnesses treated?"
+      },
+      "answer": {
+        "zh-CN": "既往健康，无既往住院病史。",
+        "en": "Previously healthy without earlier admissions."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康",
+          "以前身体怎样，有哪些病？",
+          "既往有没有需要治疗的疾病？",
+          "既往健康情况"
+        ],
+        "en": [
+          "previous health",
+          "What was health like before this illness?",
+          "Were any earlier illnesses treated?",
+          "previous health information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "疫苗按时接种了吗？ 能查到预防接种记录吗？",
+        "en": "Were vaccinations given on schedule? Are vaccination records available?"
+      },
+      "answer": {
+        "zh-CN": "接种史不详，未见卡介苗瘢痕。",
+        "en": "Vaccination history was uncertain and no BCG scar was seen."
+      },
+      "keywords": {
+        "zh-CN": [
+          "疫苗记录",
+          "疫苗按时接种了吗？",
+          "能查到预防接种记录吗？",
+          "疫苗记录情况"
+        ],
+        "en": [
+          "vaccination records",
+          "Were vaccinations given on schedule?",
+          "Are vaccination records available?",
+          "vaccination records information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人有类似疾病或遗传病吗？ 父母和兄弟姐妹健康情况怎样？",
+        "en": "Does anyone in the family have similar or inherited illness? How is the health of parents and siblings?"
+      },
+      "answer": {
+        "zh-CN": "否认家族疾病史。",
+        "en": "Family disease history was denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "家里有人有类似疾病或遗传病吗？",
+          "父母和兄弟姐妹健康情况怎样？",
+          "家族病史情况"
+        ],
+        "en": [
+          "family illnesses",
+          "Does anyone in the family have similar or inherited illness?",
+          "How is the health of parents and siblings?",
+          "family illnesses information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有近期体重记录吗？",
+        "en": "Is recent weight documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期体重记录",
+          "有关近期体重记录",
+          "近期体重记录情况",
+          "近期体重记录记录"
+        ],
+        "en": [
+          "recent weight",
+          "details of recent weight",
+          "recent weight information",
+          "recent weight record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "communication-needs",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有沟通辅助需求吗？",
+        "en": "Is communication support needs documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "沟通辅助需求",
+          "有关沟通辅助需求",
+          "沟通辅助需求情况",
+          "沟通辅助需求记录"
+        ],
+        "en": [
+          "communication support needs",
+          "details of communication support needs",
+          "communication support needs information",
+          "communication support needs record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "meningeal",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "核对脑膜刺激征",
+        "en": "Review meningeal signs"
+      },
+      "finding": {
+        "zh-CN": "颈强直、双Kernig阳性，入院瞳孔等大且光反射灵敏。",
+        "en": "Neck stiffness and bilateral Kernig signs; pupils initially equal with brisk light responses."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对一般及心肺体征",
+        "en": "Review general and cardiopulmonary signs"
+      },
+      "finding": {
+        "zh-CN": "精神萎靡，脉搏60次/分、呼吸25次/分，心律不齐；肺腹未见异常。",
+        "en": "Listless, pulse 60/min and respiratory rate 25/min, with irregular rhythm; lungs and abdomen unremarkable."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "csf",
+      "name": {
+        "zh-CN": "首次脑脊液",
+        "en": "Initial CSF"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "首次脑脊液"
+        ],
+        "en": [
+          "Initial CSF"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "细胞580×10⁶/L，N40%、L52%，蛋白542.7 mg/L，糖0.15 mmol/L；涂片及墨汁染色未见异常。",
+            "en": "Cells 580×10⁶/L, 40% neutrophils and 52% lymphocytes, protein 542.7 mg/L and glucose 0.15 mmol/L; smear and India ink negative."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "blood",
+      "name": {
+        "zh-CN": "血液和免疫检查",
+        "en": "Blood and immune investigations"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血液和免疫检查"
+        ],
+        "en": [
+          "Blood and immune investigations"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "WBC13.5×10⁹/L，CRP51 mg/L；所测细胞、体液、补体免疫未见异常，不能穷尽全部免疫缺陷。",
+            "en": "WBC 13.5×10⁹/L and CRP 51 mg/L; tested cellular, humoral and complement indices were unremarkable, without excluding every immune defect."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "初始头颅CT",
+        "en": "Initial cranial CT"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "初始头颅CT"
+        ],
+        "en": [
+          "Initial cranial CT"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "平扫未见异常。正常CT不能保证后续无颅压风险。",
+            "en": "Non-contrast CT was unremarkable; this does not guarantee absence of later intracranial-pressure risk."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "deterioration",
+      "name": {
+        "zh-CN": "治疗后快速恶化记录",
+        "en": "Rapid deterioration record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "治疗后快速恶化记录"
+        ],
+        "en": [
+          "Rapid deterioration record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "抗菌治疗后反复抽搐；约30小时出现不规则呼吸、呼吸暂停、瞳孔不等大及光反射迟钝，临床考虑脑疝并插管。培养当时尚未返回。",
+            "en": "Despite antibacterial treatment, seizures recurred; around thirty hours, irregular breathing, apnoea, unequal pupils and sluggish responses prompted concern for herniation and intubation. Cultures were still pending."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "患者继续出现脓毒性休克并于入院约50小时死亡。数天后血及脑脊液培养报告罗伦隐球菌；报告未提供现代分子复核或药敏。",
+            "en": "Septic shock progressed and the child died about fifty hours after admission. Blood and CSF cultures reported Cryptococcus laurentii several days later; modern molecular confirmation and susceptibility were not provided."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "headache"
+          },
+          {
+            "asked": "seizure"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "meningeal"
+          },
+          {
+            "examined": "general"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "低糖脑膜炎伴阴性初筛应如何鉴别？",
+        "en": "How should low-glucose meningitis with negative initial tests be assessed?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "csf",
+            "phase": "workup"
+          },
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "继续细菌、结核与真菌等病原评估并紧密观察神经恶化",
+            "en": "Continue bacterial, TB and fungal evaluation with close neurological reassessment"
+          },
+          "feedback": {
+            "zh-CN": "一次阴性墨汁染色不能排除真菌病。",
+            "en": "One negative India ink test does not exclude fungal disease."
+          },
+          "correct": true
+        },
+        {
+          "id": "ink",
+          "text": {
+            "zh-CN": "墨汁阴性就排除隐球菌",
+            "en": "Negative India ink excludes Cryptococcus"
+          },
+          "feedback": {
+            "zh-CN": "初筛敏感性与非典型菌种需要考虑。",
+            "en": "Test sensitivity and atypical species matter."
+          },
+          "correct": false
+        },
+        {
+          "id": "immune",
+          "text": {
+            "zh-CN": "常规免疫正常即可排除侵袭性真菌感染",
+            "en": "Normal routine immunity excludes invasive fungal disease"
+          },
+          "feedback": {
+            "zh-CN": "原记录不支持这种绝对排除。",
+            "en": "The evidence does not support that absolute exclusion."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "deterioration",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "新瞳孔和呼吸异常是紧急升级信号，病原仍待定",
+            "en": "New pupillary and respiratory abnormalities demand emergency escalation while the pathogen remains unresolved"
+          },
+          "feedback": {
+            "zh-CN": "先处理危及生命的神经生理风险，不能等待培养。",
+            "en": "Life-threatening neurological risk cannot wait for culture."
+          },
+          "correct": true
+        },
+        {
+          "id": "ct",
+          "text": {
+            "zh-CN": "先前CT正常使脑疝不可能",
+            "en": "Previous normal CT makes herniation impossible"
+          },
+          "feedback": {
+            "zh-CN": "病情和颅内状态可随后改变。",
+            "en": "Clinical and intracranial conditions can change."
+          },
+          "correct": false
+        },
+        {
+          "id": "species",
+          "text": {
+            "zh-CN": "此时已经能确定具体隐球菌菌种",
+            "en": "The exact cryptococcal species is already known at this point"
+          },
+          "feedback": {
+            "zh-CN": "原报告培养是之后才返回，不能提前揭晓。",
+            "en": "Cultures returned later and cannot be anticipated."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "出现呼吸暂停与瞳孔变化时，怎样安全推进？",
+        "en": "How should care proceed with apnoea and pupillary change?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "deterioration",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "立即重症气道及神经急救，感染团队拓宽检测；腰穿需先重评安全性",
+            "en": "Immediate critical-care airway and neurological management with broader infection testing; reassess lumbar puncture safety"
+          },
+          "feedback": {
+            "zh-CN": "不能因希望重复脑脊液检查而忽略脑疝风险。",
+            "en": "The desire for repeat CSF testing must not override herniation risk."
+          },
+          "correct": true
+        },
+        {
+          "id": "lp",
+          "text": {
+            "zh-CN": "马上反复腰穿直到培养阳性",
+            "en": "Repeat lumbar puncture immediately until culture becomes positive"
+          },
+          "feedback": {
+            "zh-CN": "不稳定及疑似脑疝时需先安全评估。",
+            "en": "Instability and suspected herniation require prior safety assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "wait",
+          "text": {
+            "zh-CN": "等待培养确认才升级呼吸支持",
+            "en": "Wait for cultures before escalating respiratory support"
+          },
+          "feedback": {
+            "zh-CN": "呼吸暂停属于立即处理的风险。",
+            "en": "Apnoea requires immediate response."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "headache"
+          },
+          {
+            "asked": "seizure"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "vaccines"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "meningeal"
+          },
+          {
+            "examined": "general"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "csf",
+            "phase": "workup"
+          },
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "deterioration",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "出现脑疝警讯时优先气道和重症救治，避免不安全重复腰穿",
+        "en": "Prioritise airway and critical care for herniation warnings and avoid unsafe repeat lumbar puncture"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：识别低糖脑膜炎中阴性初筛的局限。同时解释以下信息仍有缺失或疑问：开放压力、完整真菌鉴定及药敏、潜在免疫缺陷和可改变结局的干预证据。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Identify limitations of negative screening in low-glucose meningitis. Identify the following as missing or uncertain: Opening pressure, full fungal identification/susceptibility, hidden immune defects and evidence for outcome-altering interventions. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "csf",
+        "blood",
+        "ct",
+        "deterioration",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告为罗伦隐球菌血流及中枢感染，病原结果在死亡后才返回。",
+      "en": "The report describes C. laurentii bloodstream and CNS infection, identified after death."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "识别低糖脑膜炎中阴性初筛的局限。",
+        "en": "Identify limitations of negative screening in low-glucose meningitis."
+      },
+      {
+        "zh-CN": "将呼吸和瞳孔恶化作为独立急救信号。",
+        "en": "Treat respiratory and pupillary deterioration as separate emergency signals."
+      },
+      {
+        "zh-CN": "严格区分当时可得信息与事后培养结果。",
+        "en": "Distinguish contemporaneous information from later culture results."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "识别低糖脑膜炎中阴性初筛的局限。",
+        "en": "Identify limitations of negative screening in low-glucose meningitis."
+      },
+      {
+        "zh-CN": "将呼吸和瞳孔恶化作为独立急救信号。",
+        "en": "Treat respiratory and pupillary deterioration as separate emergency signals."
+      },
+      {
+        "zh-CN": "严格区分当时可得信息与事后培养结果。",
+        "en": "Distinguish contemporaneous information from later culture results."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "开放压力、完整真菌鉴定及药敏、潜在免疫缺陷和可改变结局的干预证据。",
+        "en": "Opening pressure, full fungal identification/susceptibility, hidden immune defects and evidence for outcome-altering interventions."
+      }
+    ],
+    "references": [
+      "康琳敏, 高珊, 罗蓉, 胡正强, 钟沁. 儿童罗伦隐球菌脓毒症并脑膜炎1例. 中华实用儿科临床杂志. 2013;28(18):1437-1437. doi:10.3760/cma.j.issn.2095-428X.2013.18.022.",
+      "https://rs.yiigle.com/cmaid/861055",
+      "Chang CC, et al. Global guideline for diagnosis and management of cryptococcosis. Lancet Infect Dis. 2024. doi:10.1016/S1473-3099(23)00731-4. https://www.idsociety.org/practice-guideline/Diagnosis-and-Management-of-Cryptococcosis/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "开放压力、完整真菌鉴定及药敏、潜在免疫缺陷和可改变结局的干预证据。",
+      "en": "Opening pressure, full fungal identification/susceptibility, hidden immune defects and evidence for outcome-altering interventions."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever"
+    },
+    {
+      "type": "ask",
+      "itemId": "headache"
+    },
+    {
+      "type": "ask",
+      "itemId": "seizure"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "communication-needs"
+    },
+    {
+      "type": "examine",
+      "findingId": "meningeal"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "order",
+      "investigationId": "csf"
+    },
+    {
+      "type": "read",
+      "investigationId": "csf",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "deterioration"
+    },
+    {
+      "type": "read",
+      "investigationId": "deterioration",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "861055",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/861055",
+    "sourceDoi": "10.3760/cma.j.issn.2095-428X.2013.18.022",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "发烧持续多少天了？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "How many days has the fever lasted?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "这次发热是不是已经两周左右？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Has this fever continued for about two weeks?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "头痛从哪一天开始？",
+        "locale": "zh-CN",
+        "expect": [
+          "headache"
+        ]
+      },
+      {
+        "text": "When did the headache begin?",
+        "locale": "en",
+        "expect": [
+          "headache"
+        ]
+      },
+      {
+        "text": "头痛比发热晚多久出现？",
+        "locale": "zh-CN",
+        "expect": [
+          "headache"
+        ]
+      },
+      {
+        "text": "How long after the fever did the headache start?",
+        "locale": "en",
+        "expect": [
+          "headache"
+        ]
+      },
+      {
+        "text": "来院前抽了几次？",
+        "locale": "zh-CN",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "How many seizures occurred before admission?",
+        "locale": "en",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "第一次抽搐的经过有记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "Are details of the first seizure recorded?",
+        "locale": "en",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "接触过结核病人或鸽子吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Has he been around someone with TB or pigeons?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "有没有特殊居住地或鸟类接触？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Were there unusual residence or bird exposures?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "以前身体怎样，有哪些病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "What was health like before this illness?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "既往有没有需要治疗的疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Were any earlier illnesses treated?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "疫苗按时接种了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Were vaccinations given on schedule?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "能查到预防接种记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Are vaccination records available?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "家里有人有类似疾病或遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anyone in the family have similar or inherited illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "父母和兄弟姐妹健康情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How is the health of parents and siblings?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有首次抽搐方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "Could you describe any first seizure?",
+        "locale": "en",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

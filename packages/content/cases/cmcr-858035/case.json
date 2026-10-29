@@ -1,0 +1,1981 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-858035",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "呼吸困难、血痰与双腿胀痛 · 30岁女性",
+    "en": "Dyspnoea, blood-streaked sputum and painful legs · woman aged 30"
+  },
+  "summary": {
+    "zh-CN": "多部位血栓与血小板减少及延长APTT并存，需要区分实验室抗凝现象和体内血栓风险。",
+    "en": "Multiple thromboses coexist with thrombocytopenia and prolonged APTT, requiring distinction between laboratory anticoagulant effects and clinical thrombosis."
+  },
+  "specialty": [
+    "respiratory-medicine",
+    "hematology",
+    "rheumatology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "王芮琦, 董春玲, 吴艳峰, 徐伟, 张捷. 以肺动静脉栓塞为首发表现的原发性抗磷脂抗体综合征一例. 中华结核和呼吸杂志. 2013;36(12):988-989. doi:10.3760/cma.j.issn.1001-0939.2013.12.035.",
+    "doi": "10.3760/cma.j.issn.1001-0939.2013.12.035",
+    "authors": [
+      "王芮琦",
+      "董春玲",
+      "吴艳峰",
+      "徐伟",
+      "张捷"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "ACR/EULAR. Antiphospholipid syndrome classification criteria. 2023; classification is not a substitute for clinical diagnosis. https://ard.bmj.com/content/82/10/1258",
+        "EULAR. Recommendations for management of antiphospholipid syndrome in adults. 2019. https://pubmed.ncbi.nlm.nih.gov/31092409/"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "区分APTT体外延长与体内血栓风险。",
+      "en": "Distinguish prolonged in-vitro APTT from in-vivo thrombosis risk."
+    },
+    {
+      "zh-CN": "用产科史补全获得性血栓倾向线索。",
+      "en": "Use obstetric history to extend acquired-thrombophilia assessment."
+    },
+    {
+      "zh-CN": "说明单次aCL和完整APS证据的差异。",
+      "en": "Explain the gap between one aCL result and complete APS evidence."
+    },
+    {
+      "zh-CN": "在血栓与出血双重风险下个体化抗凝并复核持续抗体",
+      "en": "Individualise anticoagulation across thrombotic/bleeding risks and verify persistent antibodies"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "谢予宁（化名）",
+      "en": "Xie Yuning (pseudonym)"
+    },
+    "age": 30,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "咳嗽气短胸痛半个月，加重3天",
+      "en": "Two weeks of cough, breathlessness and chest pain, worse for three days"
+    },
+    "triageNote": {
+      "zh-CN": "活动后气短、偶有血痰，伴双下肢胀痛水肿。",
+      "en": "Exertional dyspnoea and occasional blood-streaked sputum with painful swollen legs."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "半个月咳少量白痰偶带血，活动气短、休息缓解，三天前加重。",
+        "en": "Two weeks of scant white sputum occasionally streaked with blood and exertional dyspnoea relieved by rest, worsening three days earlier."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "resp"
+          },
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "legs"
+          },
+          {
+            "asked": "obstetric"
+          },
+          {
+            "examined": "breathing"
+          },
+          {
+            "examined": "legs-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "resp",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "气短多久了，活动和休息时有什么不同？ 咳嗽时有没有血痰，最近加重吗？",
+        "en": "How long has breathlessness lasted, and how do activity and rest affect it? Is there blood in sputum, and has it worsened recently?"
+      },
+      "answer": {
+        "zh-CN": "半个月咳少量白痰偶带血，活动气短、休息缓解，三天前加重。",
+        "en": "Two weeks of scant white sputum occasionally streaked with blood and exertional dyspnoea relieved by rest, worsening three days earlier."
+      },
+      "keywords": {
+        "zh-CN": [
+          "呼吸症状过程",
+          "气短多久了，活动和休息时有什么不同？",
+          "咳嗽时有没有血痰，最近加重吗？",
+          "呼吸症状过程情况"
+        ],
+        "en": [
+          "respiratory course",
+          "How long has breathlessness lasted, and how do activity and rest affect it?",
+          "Is there blood in sputum, and has it worsened recently?",
+          "respiratory course information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "pain",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "胸痛是什么感觉，和呼吸有关系吗？ 咳嗽或活动会让胸痛加重吗？",
+        "en": "What does chest pain feel like, and does breathing affect it? Does coughing or activity worsen the pain?"
+      },
+      "answer": {
+        "zh-CN": "偶阵发钝胸痛，与呼吸咳嗽劳累无明确关系。",
+        "en": "Intermittent dull chest pain without a clear relation to breathing, coughing or exertion."
+      },
+      "keywords": {
+        "zh-CN": [
+          "胸痛性质",
+          "胸痛是什么感觉，和呼吸有关系吗？",
+          "咳嗽或活动会让胸痛加重吗？",
+          "胸痛性质情况"
+        ],
+        "en": [
+          "chest pain character",
+          "What does chest pain feel like, and does breathing affect it?",
+          "Does coughing or activity worsen the pain?",
+          "chest pain character information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "legs",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "腿痛和肿胀什么时候出现？ 两条腿都有胀痛吗？",
+        "en": "When did leg pain and swelling start? Are both legs aching?"
+      },
+      "answer": {
+        "zh-CN": "双腿轻度胀痛，后来出现可凹性水肿。",
+        "en": "Mild aching in both legs was followed by pitting oedema."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腿痛水肿",
+          "腿痛和肿胀什么时候出现？",
+          "两条腿都有胀痛吗？",
+          "腿痛水肿情况"
+        ],
+        "en": [
+          "leg pain and swelling",
+          "When did leg pain and swelling start?",
+          "Are both legs aching?",
+          "leg pain and swelling information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "obstetric",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "以前怀孕有过死胎或流产吗？ 那次妊娠的孕周有记录吗？",
+        "en": "Have previous pregnancies involved stillbirth or miscarriage? Is the gestation of that pregnancy recorded?"
+      },
+      "answer": {
+        "zh-CN": "曾有一次死胎，无流产史；孕周细节未提供。",
+        "en": "One stillbirth and no miscarriage were reported; gestational details were not provided."
+      },
+      "keywords": {
+        "zh-CN": [
+          "妊娠结局",
+          "以前怀孕有过死胎或流产吗？",
+          "那次妊娠的孕周有记录吗？",
+          "妊娠结局情况"
+        ],
+        "en": [
+          "pregnancy outcome",
+          "Have previous pregnancies involved stillbirth or miscarriage?",
+          "Is the gestation of that pregnancy recorded?",
+          "pregnancy outcome information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "platelets",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前血小板低是何时发现的？ 过去血小板减少怎么诊断的？",
+        "en": "When was low platelet count previously found? What diagnosis was given for earlier thrombocytopenia?"
+      },
+      "answer": {
+        "zh-CN": "数年前被诊断特发性血小板减少，细节不详。",
+        "en": "Idiopathic thrombocytopenia had been diagnosed years earlier without details."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往血小板减少",
+          "以前血小板低是何时发现的？",
+          "过去血小板减少怎么诊断的？",
+          "既往血小板减少情况"
+        ],
+        "en": [
+          "previous thrombocytopenia",
+          "When was low platelet count previously found?",
+          "What diagnosis was given for earlier thrombocytopenia?",
+          "previous thrombocytopenia information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过什么手术？ 过去有没有手术住院经历？",
+        "en": "What operations were performed previously? Have there been previous surgical admissions?"
+      },
+      "answer": {
+        "zh-CN": "曾做胆囊切除。",
+        "en": "Previous cholecystectomy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "以前做过什么手术？",
+          "过去有没有手术住院经历？",
+          "既往手术情况"
+        ],
+        "en": [
+          "earlier surgery",
+          "What operations were performed previously?",
+          "Have there been previous surgical admissions?",
+          "earlier surgery information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "social",
+      "topic": "social",
+      "question": {
+        "zh-CN": "有没有吸烟或饮酒？ 烟酒的用量和时间有记录吗？",
+        "en": "Is there smoking or alcohol use? Are amounts and duration of smoking or alcohol recorded?"
+      },
+      "answer": {
+        "zh-CN": "无烟酒嗜好。",
+        "en": "No smoking or alcohol habit."
+      },
+      "keywords": {
+        "zh-CN": [
+          "烟酒情况",
+          "有没有吸烟或饮酒？",
+          "烟酒的用量和时间有记录吗？",
+          "烟酒情况情况"
+        ],
+        "en": [
+          "smoking and alcohol",
+          "Is there smoking or alcohol use?",
+          "Are amounts and duration of smoking or alcohol recorded?",
+          "smoking and alcohol information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有居住环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "居住环境暴露",
+          "有关居住环境暴露",
+          "居住环境暴露情况",
+          "居住环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有病前日常活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前日常活动",
+          "有关病前日常活动",
+          "病前日常活动情况",
+          "病前日常活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "breathing",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "检查肺部和颜色",
+        "en": "Review lungs and colour"
+      },
+      "finding": {
+        "zh-CN": "无明显发绀，双肺呼吸音清、无啰音。",
+        "en": "No obvious cyanosis; clear breath sounds without crackles."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "legs-exam",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查双下肢和血压",
+        "en": "Review legs and BP"
+      },
+      "finding": {
+        "zh-CN": "双腿轻度凹陷水肿，血压130/80 mmHg。",
+        "en": "Mild bilateral pitting oedema; BP 130/80 mmHg."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "clots",
+      "name": {
+        "zh-CN": "肺及下肢血管记录",
+        "en": "Pulmonary and leg vascular records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肺及下肢血管记录"
+        ],
+        "en": [
+          "Pulmonary and leg vascular records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "CT报告双肺动脉及右下肺静脉充盈缺损；超声左股浅静脉和右腘静脉血栓。肺静脉影像未另行独立复核。",
+            "en": "CT reported bilateral pulmonary arterial and right lower pulmonary venous filling defects; ultrasound found left femoral and right popliteal venous thrombosis. Pulmonary venous imaging was not independently revalidated."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "coag",
+      "name": {
+        "zh-CN": "血小板与凝血",
+        "en": "Platelets and coagulation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血小板与凝血"
+        ],
+        "en": [
+          "Platelets and coagulation"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "血小板58×10⁹/L，APTT71.6 s，INR正常，D二聚体902 μg/L。",
+            "en": "Platelets 58×10⁹/L, APTT 71.6 s, normal INR and D-dimer 902 µg/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "background",
+      "name": {
+        "zh-CN": "相关排除检查",
+        "en": "Related exclusion studies"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "相关排除检查"
+        ],
+        "en": [
+          "Related exclusion studies"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "ANA谱、ANCA、补体等未见异常，凝血因子VIII、IX、XI无异常。",
+            "en": "ANA panel, ANCA and complement were unremarkable; factors VIII, IX and XI were normal."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "antibody",
+      "name": {
+        "zh-CN": "抗磷脂抗体记录",
+        "en": "Antiphospholipid antibody record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "抗磷脂抗体记录"
+        ],
+        "en": [
+          "Antiphospholipid antibody record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "抗心磷脂104 U/mL（参考0–12）。未给出同型、至少12周复测、狼疮抗凝物或抗β2GPI。",
+            "en": "Anticardiolipin 104 U/mL (reference 0–12). Isotype, repeat testing at least twelve weeks later, lupus anticoagulant and anti-beta2GPI were not provided."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告低分子肝素后转华法林，同时使用后逐渐停用激素；三个月CT示血栓消失，血小板改善，无报告复发，后续时长未明。",
+            "en": "The report used heparin followed by warfarin plus subsequently tapered steroids; CT at three months showed resolution and platelets improved, with no reported recurrence over an unclear total follow-up."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "resp"
+          },
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "legs"
+          },
+          {
+            "asked": "obstetric"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "breathing"
+          },
+          {
+            "examined": "legs-exam"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "延长APTT和血小板减少应怎样放回血栓证据中？",
+        "en": "How should prolonged APTT and thrombocytopenia be interpreted alongside thrombosis?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "clots",
+            "phase": "workup"
+          },
+          {
+            "read": "coag",
+            "phase": "workup"
+          },
+          {
+            "read": "background",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "考虑APS等获得性血栓倾向，不能因APTT长排除血栓",
+            "en": "Consider acquired thrombophilia such as APS; prolonged APTT does not exclude thrombosis"
+          },
+          "feedback": {
+            "zh-CN": "已存在影像血栓和妊娠线索。",
+            "en": "Imaging-confirmed clots and obstetric clues are present."
+          },
+          "correct": true
+        },
+        {
+          "id": "bleed-only",
+          "text": {
+            "zh-CN": "APTT长说明只能出血、不可能血栓",
+            "en": "Long APTT means only bleeding, never thrombosis"
+          },
+          "feedback": {
+            "zh-CN": "实验室现象与体内风险并非简单相同。",
+            "en": "Laboratory effects and in-vivo risk are not identical."
+          },
+          "correct": false
+        },
+        {
+          "id": "lungs-clear",
+          "text": {
+            "zh-CN": "肺听诊清就排除肺栓塞",
+            "en": "Clear lungs exclude pulmonary embolism"
+          },
+          "feedback": {
+            "zh-CN": "听诊正常不能推翻血管影像。",
+            "en": "Normal auscultation does not negate vascular imaging."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "antibody",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "高度怀疑APS，但需确认持续抗体及临床细节",
+            "en": "APS is strongly suspected but persistence and clinical details need verification"
+          },
+          "feedback": {
+            "zh-CN": "单次阳性不能冒充完整分类资料。",
+            "en": "One positive result is not complete classification evidence."
+          },
+          "correct": true
+        },
+        {
+          "id": "definite",
+          "text": {
+            "zh-CN": "一个aCL结果已满足所有现代分类要求",
+            "en": "One aCL result satisfies every contemporary classification requirement"
+          },
+          "feedback": {
+            "zh-CN": "缺同型、持续性和完整评分资料。",
+            "en": "Isotype, persistence and complete scoring data are absent."
+          },
+          "correct": false
+        },
+        {
+          "id": "negative-ana",
+          "text": {
+            "zh-CN": "ANA阴性可排除原发APS",
+            "en": "Negative ANA excludes primary APS"
+          },
+          "feedback": {
+            "zh-CN": "原发APS不要求ANA阳性。",
+            "en": "Primary APS does not require ANA positivity."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何安排抗凝与后续评估？",
+        "en": "How should anticoagulation and follow-up be organised?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "antibody",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "血液及相关团队个体化抗凝，结合血小板出血风险、抗体复测和妊娠计划",
+            "en": "Specialists should individualise anticoagulation with platelet/bleeding review, repeat antibodies and pregnancy planning"
+          },
+          "feedback": {
+            "zh-CN": "不能由本例推出所有APS需要激素或相同抗凝药。",
+            "en": "This report does not establish steroids or one anticoagulant for every APS patient."
+          },
+          "correct": true
+        },
+        {
+          "id": "stop",
+          "text": {
+            "zh-CN": "血小板低就一律不给抗凝",
+            "en": "Low platelets always prohibit anticoagulation"
+          },
+          "feedback": {
+            "zh-CN": "需权衡实际血栓和出血风险。",
+            "en": "Actual thrombotic and bleeding risks require balancing."
+          },
+          "correct": false
+        },
+        {
+          "id": "steroid-only",
+          "text": {
+            "zh-CN": "只用激素即可替代血栓治疗",
+            "en": "Steroids alone replace thrombosis treatment"
+          },
+          "feedback": {
+            "zh-CN": "免疫相关标签不能取代抗栓评估。",
+            "en": "An immune label does not replace antithrombotic assessment."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "resp"
+          },
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "legs"
+          },
+          {
+            "asked": "obstetric"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "platelets"
+          },
+          {
+            "asked": "surgery"
+          },
+          {
+            "asked": "social"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "breathing"
+          },
+          {
+            "examined": "legs-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "clots",
+            "phase": "workup"
+          },
+          {
+            "read": "coag",
+            "phase": "workup"
+          },
+          {
+            "read": "background",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "antibody",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "在血栓与出血双重风险下个体化抗凝并复核持续抗体",
+        "en": "Individualise anticoagulation across thrombotic/bleeding risks and verify persistent antibodies"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：区分APTT体外延长与体内血栓风险。同时解释以下信息仍有缺失或疑问：抗体同型和持续性、LA/抗β2GPI、死胎孕周及完整肺静脉影像复核。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Distinguish prolonged in-vitro APTT from in-vivo thrombosis risk. Identify the following as missing or uncertain: Antibody isotype/persistence, LA/anti-beta2GPI, stillbirth gestation and independent pulmonary venous imaging review. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "clots",
+        "coag",
+        "background",
+        "antibody",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告原发APS伴多部位血栓，但持续抗体与产科分类资料不足。",
+      "en": "Reported primary APS with multi-site thrombosis has incomplete persistent-antibody and obstetric classification data."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "区分APTT体外延长与体内血栓风险。",
+        "en": "Distinguish prolonged in-vitro APTT from in-vivo thrombosis risk."
+      },
+      {
+        "zh-CN": "用产科史补全获得性血栓倾向线索。",
+        "en": "Use obstetric history to extend acquired-thrombophilia assessment."
+      },
+      {
+        "zh-CN": "说明单次aCL和完整APS证据的差异。",
+        "en": "Explain the gap between one aCL result and complete APS evidence."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "区分APTT体外延长与体内血栓风险。",
+        "en": "Distinguish prolonged in-vitro APTT from in-vivo thrombosis risk."
+      },
+      {
+        "zh-CN": "用产科史补全获得性血栓倾向线索。",
+        "en": "Use obstetric history to extend acquired-thrombophilia assessment."
+      },
+      {
+        "zh-CN": "说明单次aCL和完整APS证据的差异。",
+        "en": "Explain the gap between one aCL result and complete APS evidence."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "抗体同型和持续性、LA/抗β2GPI、死胎孕周及完整肺静脉影像复核。",
+        "en": "Antibody isotype/persistence, LA/anti-beta2GPI, stillbirth gestation and independent pulmonary venous imaging review."
+      }
+    ],
+    "references": [
+      "王芮琦, 董春玲, 吴艳峰, 徐伟, 张捷. 以肺动静脉栓塞为首发表现的原发性抗磷脂抗体综合征一例. 中华结核和呼吸杂志. 2013;36(12):988-989. doi:10.3760/cma.j.issn.1001-0939.2013.12.035.",
+      "https://rs.yiigle.com/cmaid/858035",
+      "ACR/EULAR. Antiphospholipid syndrome classification criteria. 2023; classification is not a substitute for clinical diagnosis. https://ard.bmj.com/content/82/10/1258",
+      "EULAR. Recommendations for management of antiphospholipid syndrome in adults. 2019. https://pubmed.ncbi.nlm.nih.gov/31092409/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "抗体同型和持续性、LA/抗β2GPI、死胎孕周及完整肺静脉影像复核。",
+      "en": "Antibody isotype/persistence, LA/anti-beta2GPI, stillbirth gestation and independent pulmonary venous imaging review."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "resp"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "legs"
+    },
+    {
+      "type": "ask",
+      "itemId": "obstetric"
+    },
+    {
+      "type": "ask",
+      "itemId": "platelets"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "social"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "breathing"
+    },
+    {
+      "type": "examine",
+      "findingId": "legs-exam"
+    },
+    {
+      "type": "order",
+      "investigationId": "clots"
+    },
+    {
+      "type": "read",
+      "investigationId": "clots",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "coag"
+    },
+    {
+      "type": "read",
+      "investigationId": "coag",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "background"
+    },
+    {
+      "type": "read",
+      "investigationId": "background",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "antibody"
+    },
+    {
+      "type": "read",
+      "investigationId": "antibody",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "858035",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/858035",
+    "sourceDoi": "10.3760/cma.j.issn.1001-0939.2013.12.035",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "气短多久了，活动和休息时有什么不同？",
+        "locale": "zh-CN",
+        "expect": [
+          "resp"
+        ]
+      },
+      {
+        "text": "How long has breathlessness lasted, and how do activity and rest affect it?",
+        "locale": "en",
+        "expect": [
+          "resp"
+        ]
+      },
+      {
+        "text": "咳嗽时有没有血痰，最近加重吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "resp"
+        ]
+      },
+      {
+        "text": "Is there blood in sputum, and has it worsened recently?",
+        "locale": "en",
+        "expect": [
+          "resp"
+        ]
+      },
+      {
+        "text": "胸痛是什么感觉，和呼吸有关系吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "What does chest pain feel like, and does breathing affect it?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "咳嗽或活动会让胸痛加重吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Does coughing or activity worsen the pain?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "腿痛和肿胀什么时候出现？",
+        "locale": "zh-CN",
+        "expect": [
+          "legs"
+        ]
+      },
+      {
+        "text": "When did leg pain and swelling start?",
+        "locale": "en",
+        "expect": [
+          "legs"
+        ]
+      },
+      {
+        "text": "两条腿都有胀痛吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "legs"
+        ]
+      },
+      {
+        "text": "Are both legs aching?",
+        "locale": "en",
+        "expect": [
+          "legs"
+        ]
+      },
+      {
+        "text": "以前怀孕有过死胎或流产吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "Have previous pregnancies involved stillbirth or miscarriage?",
+        "locale": "en",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "那次妊娠的孕周有记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "Is the gestation of that pregnancy recorded?",
+        "locale": "en",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "以前血小板低是何时发现的？",
+        "locale": "zh-CN",
+        "expect": [
+          "platelets"
+        ]
+      },
+      {
+        "text": "When was low platelet count previously found?",
+        "locale": "en",
+        "expect": [
+          "platelets"
+        ]
+      },
+      {
+        "text": "过去血小板减少怎么诊断的？",
+        "locale": "zh-CN",
+        "expect": [
+          "platelets"
+        ]
+      },
+      {
+        "text": "What diagnosis was given for earlier thrombocytopenia?",
+        "locale": "en",
+        "expect": [
+          "platelets"
+        ]
+      },
+      {
+        "text": "以前做过什么手术？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "What operations were performed previously?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "过去有没有手术住院经历？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Have there been previous surgical admissions?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "有没有吸烟或饮酒？",
+        "locale": "zh-CN",
+        "expect": [
+          "social"
+        ]
+      },
+      {
+        "text": "Is there smoking or alcohol use?",
+        "locale": "en",
+        "expect": [
+          "social"
+        ]
+      },
+      {
+        "text": "烟酒的用量和时间有记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "social"
+        ]
+      },
+      {
+        "text": "Are amounts and duration of smoking or alcohol recorded?",
+        "locale": "en",
+        "expect": [
+          "social"
+        ]
+      },
+      {
+        "text": "以前有没有妊娠结局方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "Could you describe any pregnancy outcome?",
+        "locale": "en",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

@@ -6,7 +6,10 @@ import { fileURLToPath } from "node:url";
 
 const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "..");
 const source = process.argv[2];
-if (!source) throw new Error('Usage: node scripts/install-cmcr-assets.mjs "<selected-20 directory>"');
+const collection = process.argv[3] ?? "cmcr-20";
+if (!source || !["cmcr-20", "cmcr-105"].includes(collection) || process.argv.length > 4) {
+  throw new Error('Usage: node scripts/install-cmcr-assets.mjs "<source directory>" [cmcr-20|cmcr-105]');
+}
 const content = path.join(root, "packages/content/cases");
 /** Media that identify a patient: never installed (docs/CMCR_CASES.md, Privacy). */
 const { withdrawn } = JSON.parse(await readFile(path.join(root, "scripts/cmcr-withdrawn-assets.json"), "utf8"));
@@ -14,7 +17,7 @@ const withdrawal = (caseId, file) => withdrawn.find((w) => w.case === caseId && 
 const installed = [];
 for (const folder of (await readdir(content)).filter((f) => /^cmcr-\d+$/.test(f)).sort()) {
   const c = JSON.parse(await readFile(path.join(content, folder, "case.json"), "utf8"));
-  if (c.id !== folder || !c.tags.includes("cmcr-20")) continue;
+  if (c.id !== folder || !c.tags.includes(collection)) continue;
   const articleId = folder.slice(5);
   const mediaDir = path.resolve(source, "media", articleId);
   const media = await readdir(mediaDir).catch(() => []);
@@ -55,5 +58,5 @@ for (const w of withdrawn) {
     console.log(`Removed a withdrawn asset installed earlier: ${w.case}/${w.file} (${w.reason})`);
   } else console.warn(`Not removed (unexpected content); inspect and delete it yourself: ${dest} — ${w.reason}`);
 }
-await writeFile(path.join(root, "assets/local/cmcr-20-manifest.json"), JSON.stringify(installed, null, 2) + "\n");
+await writeFile(path.join(root, `assets/local/${collection}-manifest.json`), JSON.stringify(installed, null, 2) + "\n");
 console.log(`Installed/verified ${installed.length} local assets for ${new Set(installed.map((x) => x.caseId)).size} cases. Original files stay outside Git.`);

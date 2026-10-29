@@ -1,0 +1,2022 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1171301",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "先天眼病与运动发育落后 · 11月龄男婴",
+    "en": "Congenital eye disease and motor delay · boy aged eleven months"
+  },
+  "summary": {
+    "zh-CN": "眼部病史、低张力和肾小管异常提示跨系统遗传病，不能只按单纯运动落后解释。",
+    "en": "Eye history, hypotonia and tubular abnormalities suggest a multisystem genetic disorder beyond isolated motor delay."
+  },
+  "specialty": [
+    "paediatric-neurology",
+    "nephrology",
+    "genetics",
+    "ophthalmology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "江芳, 高岩, 欧志英. Lowe综合征OCRL1基因突变一例. 中华儿科杂志. 2012;50(09):708-709. doi:10.3760/cma.j.issn.0578-1310.2012.09.016.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2012.09.016",
+    "authors": [
+      "江芳",
+      "高岩",
+      "欧志英"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别眼脑肾跨系统组合。",
+      "en": "Recognise the ocular, cerebral and renal combination."
+    },
+    {
+      "zh-CN": "用氨基酸及低分子蛋白尿定位小管。",
+      "en": "Use aminoaciduria and low-molecular-weight protein to localise tubular disease."
+    },
+    {
+      "zh-CN": "说明母血阴性与家系风险的边界。",
+      "en": "Explain limits of negative maternal blood testing for family risk."
+    },
+    {
+      "zh-CN": "协调酸中毒和多器官支持，诚实沟通遗传及发育预后",
+      "en": "Coordinate acidosis/multi-organ support and communicate genetic/developmental uncertainty"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "魏知远（化名）",
+      "en": "Wei Zhiyuan (pseudonym)"
+    },
+    "age": 11,
+    "ageUnit": "months",
+    "sex": "male",
+    "weightKg": 8.7,
+    "chiefComplaint": {
+      "zh-CN": "抬头不稳，不能独坐",
+      "en": "Unsteady head control and inability to sit independently"
+    },
+    "triageNote": {
+      "zh-CN": "曾因先天白内障和青光眼手术，现仍不能独坐。",
+      "en": "Previous surgery for congenital cataracts and glaucoma; still unable to sit independently."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "11个月仍抬头不稳，不能独坐。",
+        "en": "At eleven months, head control remained unsteady and independent sitting absent."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "infant",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "any": [
+        {
+          "phase": "initial"
+        },
+        {
+          "phase": "workup"
+        },
+        {
+          "phase": "confirmation"
+        },
+        {
+          "phase": "followup"
+        }
+      ]
+    },
+    "nonVerbalReason": {
+      "zh-CN": "11月龄且发育落后，病史由陪同者和记录提供。",
+      "en": "At eleven months with developmental delay, history comes from the companion and records."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "motor"
+          },
+          {
+            "asked": "earlier"
+          },
+          {
+            "asked": "eyes"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "examined": "neuro"
+          },
+          {
+            "examined": "eyes-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "motor",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "现在能稳稳抬头或自己坐吗？ 孩子目前能完成哪些动作？",
+        "en": "Can he hold his head steady or sit independently? What movements can the baby currently manage?"
+      },
+      "answer": {
+        "zh-CN": "11个月仍抬头不稳，不能独坐。",
+        "en": "At eleven months, head control remained unsteady and independent sitting absent."
+      },
+      "keywords": {
+        "zh-CN": [
+          "当前运动能力",
+          "现在能稳稳抬头或自己坐吗？",
+          "孩子目前能完成哪些动作？",
+          "当前运动能力情况"
+        ],
+        "en": [
+          "current motor abilities",
+          "Can he hold his head steady or sit independently?",
+          "What movements can the baby currently manage?",
+          "current motor abilities information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "earlier",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "八个月时会翻身了吗？ 以前的大运动发育什么时候开始落后？",
+        "en": "Could he roll at eight months? When did earlier motor milestones start to lag?"
+      },
+      "answer": {
+        "zh-CN": "八个月仍不会翻身。",
+        "en": "He still could not roll at eight months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "翻身时间",
+          "八个月时会翻身了吗？",
+          "以前的大运动发育什么时候开始落后？",
+          "翻身时间情况"
+        ],
+        "en": [
+          "rolling milestones",
+          "Could he roll at eight months?",
+          "When did earlier motor milestones start to lag?",
+          "rolling milestones information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "eyes",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "什么时候发现眼睛不追东西？ 眼科诊断过什么病，做过手术吗？",
+        "en": "When was the failure to track objects noticed? What eye conditions were diagnosed, and was surgery done?"
+      },
+      "answer": {
+        "zh-CN": "三个月眼睛不追光物，诊断先天白内障和青光眼并手术。",
+        "en": "At three months he did not track light/objects; congenital cataracts and glaucoma were diagnosed and operated on."
+      },
+      "keywords": {
+        "zh-CN": [
+          "眼部起病",
+          "什么时候发现眼睛不追东西？",
+          "眼科诊断过什么病，做过手术吗？",
+          "眼部起病情况"
+        ],
+        "en": [
+          "eye history",
+          "When was the failure to track objects noticed?",
+          "What eye conditions were diagnosed, and was surgery done?",
+          "eye history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "出生时有没有窒息或抢救？ 多少周出生，分娩顺利吗？",
+        "en": "Was there asphyxia or resuscitation at birth? At what gestation was he born, and was delivery uncomplicated?"
+      },
+      "answer": {
+        "zh-CN": "第二胎第二产，41周顺产，无窒息产伤抢救史。",
+        "en": "Second pregnancy/birth, vaginal delivery at 41 weeks without asphyxia, birth trauma or resuscitation."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生经过",
+          "出生时有没有窒息或抢救？",
+          "多少周出生，分娩顺利吗？",
+          "出生经过情况"
+        ],
+        "en": [
+          "birth course",
+          "Was there asphyxia or resuscitation at birth?",
+          "At what gestation was he born, and was delivery uncomplicated?",
+          "birth course information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人有类似疾病或遗传病吗？ 父母和兄弟姐妹健康情况怎样？",
+        "en": "Does anyone in the family have similar or inherited illness? How is the health of parents and siblings?"
+      },
+      "answer": {
+        "zh-CN": "十岁哥哥健康。",
+        "en": "His ten-year-old brother was healthy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "同胞健康",
+          "家里有人有类似疾病或遗传病吗？",
+          "父母和兄弟姐妹健康情况怎样？",
+          "同胞健康情况"
+        ],
+        "en": [
+          "sibling health",
+          "Does anyone in the family have similar or inherited illness?",
+          "How is the health of parents and siblings?",
+          "sibling health information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "feeding",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "平时怎么喂养，吃得怎样？ 喂奶情况有详细记录吗？",
+        "en": "How is the baby fed, and how well? Is feeding described in detail?"
+      },
+      "answer": {
+        "zh-CN": "原文未详细提供喂养经过。",
+        "en": "A detailed feeding history was not provided."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喂养资料",
+          "平时怎么喂养，吃得怎样？",
+          "喂奶情况有详细记录吗？",
+          "喂养资料情况"
+        ],
+        "en": [
+          "feeding information",
+          "How is the baby fed, and how well?",
+          "Is feeding described in detail?",
+          "feeding information information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对哪些药物过敏？ 用药后出现过什么过敏反应？",
+        "en": "Which medicines have caused allergy? What allergic reactions have occurred after medicines?"
+      },
+      "answer": {
+        "zh-CN": "过敏史未记录。",
+        "en": "Allergies were not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏记录",
+          "对哪些药物过敏？",
+          "用药后出现过什么过敏反应？",
+          "过敏记录情况"
+        ],
+        "en": [
+          "allergy record",
+          "Which medicines have caused allergy?",
+          "What allergic reactions have occurred after medicines?",
+          "allergy record information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "neuro",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "核对肌张力与功能",
+        "en": "Review tone and function"
+      },
+      "finding": {
+        "zh-CN": "反应迟钝，不能扶站或抓握交换物体，四肢松弛低张力、腱反射未引出。",
+        "en": "Slow responses, unable to stand supported or grasp/transfer objects, with hypotonia and absent elicitable reflexes."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "eyes-exam",
+      "system": "heent",
+      "maneuver": {
+        "zh-CN": "核对既有眼部体征",
+        "en": "Review recorded eye findings"
+      },
+      "finding": {
+        "zh-CN": "左瞳孔外侧少许白斑，双瞳孔上方裂缝样术后所见；原文未量化视力。",
+        "en": "A small white area lateral to the left pupil and slit-like superior pupillary findings after surgery; visual acuity was not quantified."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "acid",
+      "name": {
+        "zh-CN": "血气和血液",
+        "en": "Blood gas and haematology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血气和血液"
+        ],
+        "en": [
+          "Blood gas and haematology"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "pH7.271、HCO₃17.9 mmol/L、BE−8.4 mmol/L，Hb70 g/L。",
+            "en": "pH 7.271, bicarbonate 17.9 mmol/L, base excess −8.4 mmol/L and Hb 70 g/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "tubular",
+      "name": {
+        "zh-CN": "尿液小管证据",
+        "en": "Urinary tubular evidence"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "尿液小管证据"
+        ],
+        "en": [
+          "Urinary tubular evidence"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "尿pH7.0、蛋白0.86 g/24h，β2微球蛋白>500 μg/L，广泛氨基酸尿；原比重1.0需实验室核对。",
+            "en": "Urine pH 7.0, protein 0.86 g/day, beta2-microglobulin >500 µg/L and generalised aminoaciduria; the printed specific gravity of 1.0 needs laboratory verification."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "differential",
+      "name": {
+        "zh-CN": "神经及相关筛查",
+        "en": "Neurological and related screening"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "神经及相关筛查"
+        ],
+        "en": [
+          "Neurological and related screening"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "SMN1未见异常，脑电正常；听觉诱发电位潜伏期延长，部分听阈异常。",
+            "en": "SMN1 testing and EEG were unremarkable; auditory evoked latencies were prolonged with abnormal hearing thresholds."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "gene",
+      "name": {
+        "zh-CN": "OCRL1检测",
+        "en": "OCRL1 analysis"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "OCRL1检测"
+        ],
+        "en": [
+          "OCRL1 analysis"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "第15外显子c.1528C>T无义变异，母亲外周血及20条对照染色体未检出。原报告未评估生殖腺嵌合。",
+            "en": "Exon 15 c.1528C>T nonsense variant, absent in maternal blood and twenty control chromosomes. Germline mosaicism was not assessed."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告以OCRL1检测完成诊断描述，未提供治疗和长期功能随访。",
+            "en": "The report ends with molecular diagnostic findings and does not provide treatment or long-term functional follow-up."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "motor"
+          },
+          {
+            "asked": "earlier"
+          },
+          {
+            "asked": "eyes"
+          },
+          {
+            "asked": "birth"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "neuro"
+          },
+          {
+            "examined": "eyes-exam"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "怎样统一眼、神经与尿液表现？",
+        "en": "How can ocular, neurological and urinary findings be unified?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "acid",
+            "phase": "workup"
+          },
+          {
+            "read": "tubular",
+            "phase": "workup"
+          },
+          {
+            "read": "differential",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "考虑眼脑肾综合征如Lowe，评估近端小管功能",
+            "en": "Consider an oculocerebrorenal syndrome such as Lowe and proximal tubular dysfunction"
+          },
+          "feedback": {
+            "zh-CN": "先天眼病与小管性尿异常比孤立运动落后解释更完整。",
+            "en": "Congenital eye disease and tubular findings provide a fuller explanation than isolated motor delay."
+          },
+          "correct": true
+        },
+        {
+          "id": "motor-only",
+          "text": {
+            "zh-CN": "仅脑性运动落后即可解释氨基酸尿",
+            "en": "Isolated cerebral motor delay explains aminoaciduria"
+          },
+          "feedback": {
+            "zh-CN": "肾小管证据需要独立整合。",
+            "en": "Tubular findings require integration."
+          },
+          "correct": false
+        },
+        {
+          "id": "sma",
+          "text": {
+            "zh-CN": "低张力和无反射即确诊SMA",
+            "en": "Hypotonia and absent reflexes prove SMA"
+          },
+          "feedback": {
+            "zh-CN": "该组合并非特异且还有眼肾线索。",
+            "en": "This combination is non-specific and ocular/renal clues remain."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "gene",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "OCRL1变异和三系统表型支持Lowe，母血阴性不使再发风险绝对为零",
+            "en": "OCRL1 plus the three-system phenotype supports Lowe; negative maternal blood does not make recurrence risk zero"
+          },
+          "feedback": {
+            "zh-CN": "需遗传咨询解释嵌合等剩余不确定性。",
+            "en": "Genetic counselling should explain residual uncertainty such as mosaicism."
+          },
+          "correct": true
+        },
+        {
+          "id": "mother",
+          "text": {
+            "zh-CN": "母亲检测阴性证明家庭绝无再发风险",
+            "en": "Negative maternal testing proves no family recurrence risk"
+          },
+          "feedback": {
+            "zh-CN": "检测组织和灵敏度存在边界。",
+            "en": "Tested tissue and sensitivity have limits."
+          },
+          "correct": false
+        },
+        {
+          "id": "kidney",
+          "text": {
+            "zh-CN": "蛋白尿自动等于肾小球性肾病综合征",
+            "en": "Proteinuria automatically means glomerular nephrotic syndrome"
+          },
+          "feedback": {
+            "zh-CN": "氨基酸尿和低分子蛋白提示小管功能异常。",
+            "en": "Aminoaciduria and low-molecular-weight protein suggest tubular dysfunction."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何开展持续支持？",
+        "en": "What ongoing support is appropriate?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "gene",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "肾脏、眼科、发育康复及遗传团队协调酸碱营养、视觉听觉和家庭支持",
+            "en": "Renal, eye, developmental and genetic teams should coordinate acid-base/nutritional care, vision/hearing and family support"
+          },
+          "feedback": {
+            "zh-CN": "不以遗传诊断替代实际功能照护。",
+            "en": "Genetic diagnosis does not replace functional care."
+          },
+          "correct": true
+        },
+        {
+          "id": "stop",
+          "text": {
+            "zh-CN": "基因确诊后无需重复肾功能和眼压评估",
+            "en": "Genetic confirmation removes renal/ocular follow-up needs"
+          },
+          "feedback": {
+            "zh-CN": "器官问题需要长期监测。",
+            "en": "Organ complications require longitudinal monitoring."
+          },
+          "correct": false
+        },
+        {
+          "id": "promise",
+          "text": {
+            "zh-CN": "可以保证完成正常发育里程碑",
+            "en": "Normal future milestones can be guaranteed"
+          },
+          "feedback": {
+            "zh-CN": "原报告没有长期转归可支持保证。",
+            "en": "No long-term outcome supports that guarantee."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "motor"
+          },
+          {
+            "asked": "earlier"
+          },
+          {
+            "asked": "eyes"
+          },
+          {
+            "asked": "birth"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "family"
+          },
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "neuro"
+          },
+          {
+            "examined": "eyes-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "acid",
+            "phase": "workup"
+          },
+          {
+            "read": "tubular",
+            "phase": "workup"
+          },
+          {
+            "read": "differential",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "gene",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "协调酸中毒和多器官支持，诚实沟通遗传及发育预后",
+        "en": "Coordinate acidosis/multi-organ support and communicate genetic/developmental uncertainty"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：识别眼脑肾跨系统组合。同时解释以下信息仍有缺失或疑问：长期肾、视听及发育结局、母体嵌合和原尿比重核实。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Recognise the ocular, cerebral and renal combination. Identify the following as missing or uncertain: Long-term renal, sensory and developmental outcomes, maternal mosaicism and source specific-gravity verification. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "acid",
+        "tubular",
+        "differential",
+        "gene",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "先天白内障青光眼、低张力发育落后和近端小管异常结合OCRL1支持Lowe综合征。",
+      "en": "Congenital cataracts/glaucoma, hypotonia/delay, proximal tubular findings and OCRL1 support Lowe syndrome."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "识别眼脑肾跨系统组合。",
+        "en": "Recognise the ocular, cerebral and renal combination."
+      },
+      {
+        "zh-CN": "用氨基酸及低分子蛋白尿定位小管。",
+        "en": "Use aminoaciduria and low-molecular-weight protein to localise tubular disease."
+      },
+      {
+        "zh-CN": "说明母血阴性与家系风险的边界。",
+        "en": "Explain limits of negative maternal blood testing for family risk."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "识别眼脑肾跨系统组合。",
+        "en": "Recognise the ocular, cerebral and renal combination."
+      },
+      {
+        "zh-CN": "用氨基酸及低分子蛋白尿定位小管。",
+        "en": "Use aminoaciduria and low-molecular-weight protein to localise tubular disease."
+      },
+      {
+        "zh-CN": "说明母血阴性与家系风险的边界。",
+        "en": "Explain limits of negative maternal blood testing for family risk."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "长期肾、视听及发育结局、母体嵌合和原尿比重核实。",
+        "en": "Long-term renal, sensory and developmental outcomes, maternal mosaicism and source specific-gravity verification."
+      }
+    ],
+    "references": [
+      "江芳, 高岩, 欧志英. Lowe综合征OCRL1基因突变一例. 中华儿科杂志. 2012;50(09):708-709. doi:10.3760/cma.j.issn.0578-1310.2012.09.016.",
+      "https://rs.yiigle.com/cmaid/1171301"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "长期肾、视听及发育结局、母体嵌合和原尿比重核实。",
+      "en": "Long-term renal, sensory and developmental outcomes, maternal mosaicism and source specific-gravity verification."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1171301/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "5edb8df18a4f3a61754c5eda35d9ab699f419f5624936b30b47ac43a3dcb860e"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "motor"
+    },
+    {
+      "type": "ask",
+      "itemId": "earlier"
+    },
+    {
+      "type": "ask",
+      "itemId": "eyes"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "feeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "neuro"
+    },
+    {
+      "type": "examine",
+      "findingId": "eyes-exam"
+    },
+    {
+      "type": "order",
+      "investigationId": "acid"
+    },
+    {
+      "type": "read",
+      "investigationId": "acid",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "tubular"
+    },
+    {
+      "type": "read",
+      "investigationId": "tubular",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "differential"
+    },
+    {
+      "type": "read",
+      "investigationId": "differential",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "gene"
+    },
+    {
+      "type": "read",
+      "investigationId": "gene",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1171301",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1171301",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2012.09.016",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "现在能稳稳抬头或自己坐吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "motor"
+        ]
+      },
+      {
+        "text": "Can he hold his head steady or sit independently?",
+        "locale": "en",
+        "expect": [
+          "motor"
+        ]
+      },
+      {
+        "text": "孩子目前能完成哪些动作？",
+        "locale": "zh-CN",
+        "expect": [
+          "motor"
+        ]
+      },
+      {
+        "text": "What movements can the baby currently manage?",
+        "locale": "en",
+        "expect": [
+          "motor"
+        ]
+      },
+      {
+        "text": "八个月时会翻身了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "earlier"
+        ]
+      },
+      {
+        "text": "Could he roll at eight months?",
+        "locale": "en",
+        "expect": [
+          "earlier"
+        ]
+      },
+      {
+        "text": "以前的大运动发育什么时候开始落后？",
+        "locale": "zh-CN",
+        "expect": [
+          "earlier"
+        ]
+      },
+      {
+        "text": "When did earlier motor milestones start to lag?",
+        "locale": "en",
+        "expect": [
+          "earlier"
+        ]
+      },
+      {
+        "text": "什么时候发现眼睛不追东西？",
+        "locale": "zh-CN",
+        "expect": [
+          "eyes"
+        ]
+      },
+      {
+        "text": "When was the failure to track objects noticed?",
+        "locale": "en",
+        "expect": [
+          "eyes"
+        ]
+      },
+      {
+        "text": "眼科诊断过什么病，做过手术吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "eyes"
+        ]
+      },
+      {
+        "text": "What eye conditions were diagnosed, and was surgery done?",
+        "locale": "en",
+        "expect": [
+          "eyes"
+        ]
+      },
+      {
+        "text": "出生时有没有窒息或抢救？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Was there asphyxia or resuscitation at birth?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "多少周出生，分娩顺利吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "At what gestation was he born, and was delivery uncomplicated?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "家里有人有类似疾病或遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anyone in the family have similar or inherited illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "父母和兄弟姐妹健康情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How is the health of parents and siblings?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "平时怎么喂养，吃得怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "How is the baby fed, and how well?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "喂奶情况有详细记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Is feeding described in detail?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "对哪些药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Which medicines have caused allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "用药后出现过什么过敏反应？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What allergic reactions have occurred after medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有喂养资料方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Could you describe any feeding information?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "以前有没有过敏记录方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any allergy record?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

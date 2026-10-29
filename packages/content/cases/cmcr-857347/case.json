@@ -1,0 +1,1869 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-857347",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "口渴消瘦后出现呕吐与深大呼吸",
+    "en": "Vomiting and deep breathing after thirst and weight loss"
+  },
+  "summary": {
+    "zh-CN": "青年近期明显消瘦，呕吐后出现急促深呼吸及皮下异常触感，需要同时处理代谢与胸部问题。",
+    "en": "A young adult loses substantial weight, then develops vomiting, deep rapid breathing and abnormal subcutaneous texture."
+  },
+  "specialty": [
+    "emergency-medicine",
+    "endocrinology",
+    "respiratory"
+  ],
+  "setting": "emergency",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "邢西迁, 王晋, 杨志坚, 肖谊, 魏星, 李志东, 吴绪伟. 糖尿病酮症酸中毒并发纵隔气肿一例. 中华结核和呼吸杂志. 2011;34(11):859-860. doi: 10.3760/cma.j.issn.1001-0939.2011.11.021.",
+    "authors": [
+      "邢西迁",
+      "王晋",
+      "杨志坚",
+      "肖谊",
+      "魏星",
+      "李志东",
+      "吴绪伟"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "2024 adult hyperglycaemic crises consensus, checked 2026-10-28; scope monitored DKA care and avoidance of routine bicarbonate; no specific air-leak drainage recommendation inferred."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.1001-0939.2011.11.021"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别DKA证据。",
+      "en": "Recognise DKA evidence."
+    },
+    {
+      "zh-CN": "区分代偿呼吸与漏气体征。",
+      "en": "Distinguish compensatory breathing from air leakage."
+    },
+    {
+      "zh-CN": "解释穿孔排查结果。",
+      "en": "Interpret perforation assessment."
+    },
+    {
+      "zh-CN": "讨论个体化介入和代谢监测。",
+      "en": "Discuss individualised intervention and metabolic monitoring."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "孔予宁（化名）",
+      "en": "Kong Yuning (pseudonym)"
+    },
+    "age": 25,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "口干多饮一个月，乏力三天，呼吸困难一天",
+      "en": "Thirst for one month, weakness for three days and breathlessness for one day"
+    },
+    "triageNote": {
+      "zh-CN": "同步核对代谢危象和胸部气体来源。",
+      "en": "Assess the metabolic crisis alongside the source of thoracic air."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "一个多月口干、多饮。",
+        "en": "Dry mouth and excessive drinking had lasted over one month."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "thirst"
+          },
+          {
+            "asked": "vomiting"
+          },
+          {
+            "asked": "breathlessness"
+          },
+          {
+            "asked": "weight-loss"
+          },
+          {
+            "examined": "breathing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "thirst",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "口干喝水多持续多久？",
+        "en": "How long have thirst and increased drinking lasted?"
+      },
+      "answer": {
+        "zh-CN": "一个多月口干、多饮。",
+        "en": "Dry mouth and excessive drinking had lasted over one month."
+      },
+      "keywords": {
+        "zh-CN": [
+          "口渴病程",
+          "多饮起始",
+          "饮水变化",
+          "月余口干"
+        ],
+        "en": [
+          "thirst course",
+          "drinking onset",
+          "fluid intake change",
+          "month of dry mouth"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vomiting",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近三天有哪些不适？",
+        "en": "What happened over the last three days?"
+      },
+      "answer": {
+        "zh-CN": "食欲下降、乏力、恶心，呕吐咖啡渣样物。",
+        "en": "Poor appetite, weakness, nausea and coffee-ground vomiting developed."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期呕吐",
+          "咖啡渣呕吐",
+          "三天胃肠症状",
+          "恶心乏力"
+        ],
+        "en": [
+          "recent vomiting",
+          "coffee ground emesis",
+          "three day GI symptoms",
+          "nausea weakness"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "breathlessness",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "呼吸困难什么时候开始？",
+        "en": "When did breathlessness begin?"
+      },
+      "answer": {
+        "zh-CN": "入院前一天明显呼吸困难。",
+        "en": "Marked breathlessness began one day before admission."
+      },
+      "keywords": {
+        "zh-CN": [
+          "气促起始",
+          "一天呼吸困难",
+          "胸部新症状",
+          "喘息经过"
+        ],
+        "en": [
+          "breathlessness onset",
+          "one day dyspnoea",
+          "new chest symptoms",
+          "breathing course"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "weight-loss",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "体重最近变了多少？",
+        "en": "How much weight was lost?"
+      },
+      "answer": {
+        "zh-CN": "近一个月约减重10 kg。",
+        "en": "About 10 kg was lost over the previous month."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期减重",
+          "十公斤变化",
+          "消瘦速度",
+          "体重下降"
+        ],
+        "en": [
+          "recent weight loss",
+          "ten kilogram change",
+          "wasting speed",
+          "weight reduction"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "past-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有糖尿病或肺病吗？",
+        "en": "Was there previous diabetes or lung disease?"
+      },
+      "answer": {
+        "zh-CN": "既往没有糖尿病、高血压或慢性肺病史。",
+        "en": "There was no reported diabetes, hypertension or chronic lung disease."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往代谢肺病",
+          "旧糖尿病",
+          "慢性肺病史",
+          "基础病情况"
+        ],
+        "en": [
+          "previous metabolic lung disease",
+          "prior diabetes",
+          "chronic lung history",
+          "baseline illness"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "breathing",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "核对呼吸与皮下触感记录",
+        "en": "Review breathing and documented subcutaneous findings"
+      },
+      "finding": {
+        "zh-CN": "心率120次/分、呼吸40次/分，深大急促；颈、前胸和腹壁可触及握雪感，双肺呼吸音低。",
+        "en": "Heart rate 120/min and respiratory rate 40/min with deep rapid breathing; crepitus at the neck, anterior chest and abdominal wall with reduced breath sounds."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "dka",
+      "name": {
+        "zh-CN": "代谢检查",
+        "en": "Metabolic studies"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "代谢检查"
+        ],
+        "en": [
+          "Metabolic studies"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "血糖26.3 mmol/L，尿酮14.4 mmol/L，pH 7.10，HCO3 3.1 mmol/L、PaCO2 10 mmHg；钠112、钾3.8 mmol/L，肌酐217 µmol/L。",
+            "en": "Glucose 26.3 mmol/L, urinary ketones 14.4 mmol/L, pH 7.10, bicarbonate 3.1 mmol/L and PaCO2 10 mmHg; sodium 112, potassium 3.8 mmol/L and creatinine 217 µmol/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "chest",
+      "name": {
+        "zh-CN": "胸CT及后续内镜",
+        "en": "Chest CT and subsequent endoscopy"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胸CT及后续内镜"
+        ],
+        "en": [
+          "Chest CT and subsequent endoscopy"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "CT显示纵隔和皮下积气，食管扩张，未见明确食管气管撕裂；后续胃镜见咖啡渣样物和十二指肠充血，未发现明显食管胃壁穿孔。",
+            "en": "CT showed mediastinal and subcutaneous air with oesophageal dilatation but no definite oesophageal/tracheal tear; subsequent endoscopy showed coffee-ground material and duodenal congestion without obvious oesophageal/gastric perforation."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告补液胰岛素、胃肠减压及颈部引流后改善，一周左右积气基本吸收，后续化验恢复，住院约两周出院，随访两年未复发。",
+            "en": "The report described improvement after fluids, insulin, gastric decompression and cervical drainage; air largely resolved within about a week, laboratory abnormalities recovered, and discharge followed about two weeks with no recurrence over two years."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "thirst"
+          },
+          {
+            "asked": "vomiting"
+          },
+          {
+            "asked": "breathlessness"
+          },
+          {
+            "asked": "weight-loss"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "breathing"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "深大呼吸和握雪感应怎样整合？",
+        "en": "How should deep breathing and crepitus be integrated?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "dka",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "dual",
+          "text": {
+            "zh-CN": "DKA同时存在胸部漏气征象，不能将所有呼吸困难归于酸中毒",
+            "en": "DKA coexists with evidence of thoracic air leakage; acidosis cannot explain all respiratory findings"
+          },
+          "feedback": {
+            "zh-CN": "皮下握雪感要求独立影像评估。",
+            "en": "Subcutaneous crepitus requires separate imaging assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "only-dka",
+          "text": {
+            "zh-CN": "DKA能解释握雪感，无需胸部评估",
+            "en": "DKA explains crepitus without chest assessment"
+          },
+          "feedback": {
+            "zh-CN": "酸中毒本身不能替代漏气定位。",
+            "en": "Acidosis does not replace localisation of air leakage."
+          },
+          "correct": false
+        },
+        {
+          "id": "no-dka",
+          "text": {
+            "zh-CN": "有胸部体征就排除代谢危象",
+            "en": "Chest signs exclude a metabolic emergency"
+          },
+          "feedback": {
+            "zh-CN": "高糖、酮症和酸中毒均已存在。",
+            "en": "Hyperglycaemia, ketosis and acidosis are all present."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "chest",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "bounded",
+          "text": {
+            "zh-CN": "已见纵隔气肿且检查未见明显破裂，但仍需按症状评估危险漏气原因",
+            "en": "Pneumomediastinum is documented without an obvious tear, while dangerous causes still require symptom-based assessment"
+          },
+          "feedback": {
+            "zh-CN": "阴性报告降低某些可能，不可宣称任何时点绝对无穿孔。",
+            "en": "Negative reports reduce some possibilities without proving absolute absence at every time."
+          },
+          "correct": true
+        },
+        {
+          "id": "rupture",
+          "text": {
+            "zh-CN": "咖啡渣呕吐本身已确证食管破裂",
+            "en": "Coffee-ground emesis alone proves oesophageal rupture"
+          },
+          "feedback": {
+            "zh-CN": "它提示出血而非特异穿孔证据。",
+            "en": "It indicates bleeding rather than specific proof of perforation."
+          },
+          "correct": false
+        },
+        {
+          "id": "type",
+          "text": {
+            "zh-CN": "仅靠此次DKA可确定终身糖尿病分型",
+            "en": "This DKA episode alone determines lifelong diabetes type"
+          },
+          "feedback": {
+            "zh-CN": "分型需后续内分泌证据，原文具体数值不全。",
+            "en": "Classification requires later endocrine evidence whose detailed values are incomplete."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何安全处理这一组合？",
+        "en": "How should this combination be managed safely?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "chest",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "coordinated",
+          "text": {
+            "zh-CN": "按成人DKA规范监测补液、胰岛素和电解质，并专科评估漏气严重度与是否需介入",
+            "en": "Use monitored adult DKA care and specialist assessment of air-leak severity and intervention need"
+          },
+          "feedback": {
+            "zh-CN": "不能将单例颈部引流或纠酸措施推广为所有病例必需。",
+            "en": "One report’s cervical drainage or acid correction cannot become mandatory for every case."
+          },
+          "correct": true
+        },
+        {
+          "id": "routine-incision",
+          "text": {
+            "zh-CN": "所有DKA纵隔气肿都必须颈部切开",
+            "en": "Every DKA-related pneumomediastinum requires cervical incision"
+          },
+          "feedback": {
+            "zh-CN": "侵入处置取决于实际严重度和并发症。",
+            "en": "Invasive management depends on actual severity and complications."
+          },
+          "correct": false
+        },
+        {
+          "id": "bicarbonate",
+          "text": {
+            "zh-CN": "pH7.10就一律常规大剂量碳酸氢钠",
+            "en": "pH 7.10 mandates routine high-dose bicarbonate"
+          },
+          "feedback": {
+            "zh-CN": "2024成人共识不支持常规使用，需明确适应证。",
+            "en": "The 2024 adult consensus does not support routine use without an indication."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "thirst"
+          },
+          {
+            "asked": "vomiting"
+          },
+          {
+            "asked": "breathlessness"
+          },
+          {
+            "asked": "weight-loss"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "past-health"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "breathing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "dka",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "chest",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "同步处理DKA与危险漏气鉴别，避免一例一方泛化",
+        "en": "Treat DKA while assessing dangerous air-leak causes without generalising one historical regimen"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明呼吸表现同时包含代偿和漏气线索。；承认未提供完整糖尿病分型数值、漏气压力和介入必要性评估。，用复述确认理解。",
+        "en": "Explain that Respiratory findings include both compensation and air-leak clues.; acknowledge Detailed diabetes-classification values, air-leak pressure and intervention-necessity assessment are unavailable. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "dka",
+        "chest",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告诊断DKA合并自发性纵隔及皮下气肿。",
+      "en": "The source diagnosed DKA with spontaneous pneumomediastinum and subcutaneous emphysema."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "呼吸表现同时包含代偿和漏气线索。",
+        "en": "Respiratory findings include both compensation and air-leak clues."
+      },
+      {
+        "zh-CN": "阴性破裂检查应保留边界。",
+        "en": "Negative rupture studies require bounded interpretation."
+      },
+      {
+        "zh-CN": "处置强度须由病情而非标题决定。",
+        "en": "Management intensity depends on severity rather than a label."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "不能因DKA而忽略呕吐后胸部风险。",
+        "en": "Do not overlook post-vomiting thoracic risk because DKA is present."
+      },
+      {
+        "zh-CN": "旧纠酸方案不等于现行推荐。",
+        "en": "Historical acid correction is not current routine advice."
+      },
+      {
+        "zh-CN": "不从未报告C肽数值补造分型。",
+        "en": "Do not invent classification from unreported C-peptide values."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "未提供完整糖尿病分型数值、漏气压力和介入必要性评估。",
+        "en": "Detailed diabetes-classification values, air-leak pressure and intervention-necessity assessment are unavailable."
+      }
+    ],
+    "references": [
+      "邢西迁, 王晋, 杨志坚, 肖谊, 魏星, 李志东, 吴绪伟. 糖尿病酮症酸中毒并发纵隔气肿一例. 中华结核和呼吸杂志. 2011;34(11):859-860. doi: 10.3760/cma.j.issn.1001-0939.2011.11.021.",
+      "https://rs.yiigle.com/cmaid/857347",
+      "https://doi.org/10.3760/cma.j.issn.1001-0939.2011.11.021",
+      "ADA/EASD and partner societies. Hyperglycemic crises in adults: 2024 consensus. https://doi.org/10.2337/dci24-0032"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "未提供完整糖尿病分型数值、漏气压力和介入必要性评估。",
+      "en": "Detailed diabetes-classification values, air-leak pressure and intervention-necessity assessment are unavailable."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-857347/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "8a88f78d3e35372a97d5233829f05ebb453fe91165893b64fce6e0e7d1f4f4b1"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "thirst"
+    },
+    {
+      "type": "ask",
+      "itemId": "vomiting"
+    },
+    {
+      "type": "ask",
+      "itemId": "breathlessness"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight-loss"
+    },
+    {
+      "type": "ask",
+      "itemId": "past-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "breathing"
+    },
+    {
+      "type": "order",
+      "investigationId": "dka"
+    },
+    {
+      "type": "read",
+      "investigationId": "dka",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "dual"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "chest"
+    },
+    {
+      "type": "read",
+      "investigationId": "chest",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "bounded"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "coordinated"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "857347",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/857347",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于口渴病程，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "Could you tell me about thirst course?",
+        "locale": "en",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "我想了解多饮起始。",
+        "locale": "zh-CN",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "Please explain drinking onset in more detail.",
+        "locale": "en",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "关于近期呕吐，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vomiting"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent vomiting?",
+        "locale": "en",
+        "expect": [
+          "vomiting"
+        ]
+      },
+      {
+        "text": "我想了解咖啡渣呕吐。",
+        "locale": "zh-CN",
+        "expect": [
+          "vomiting"
+        ]
+      },
+      {
+        "text": "Please explain coffee ground emesis in more detail.",
+        "locale": "en",
+        "expect": [
+          "vomiting"
+        ]
+      },
+      {
+        "text": "关于气促起始，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathlessness"
+        ]
+      },
+      {
+        "text": "Could you tell me about breathlessness onset?",
+        "locale": "en",
+        "expect": [
+          "breathlessness"
+        ]
+      },
+      {
+        "text": "我想了解一天呼吸困难。",
+        "locale": "zh-CN",
+        "expect": [
+          "breathlessness"
+        ]
+      },
+      {
+        "text": "Please explain one day dyspnoea in more detail.",
+        "locale": "en",
+        "expect": [
+          "breathlessness"
+        ]
+      },
+      {
+        "text": "关于近期减重，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent weight loss?",
+        "locale": "en",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "我想了解十公斤变化。",
+        "locale": "zh-CN",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "Please explain ten kilogram change in more detail.",
+        "locale": "en",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "关于既往代谢肺病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "past-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous metabolic lung disease?",
+        "locale": "en",
+        "expect": [
+          "past-health"
+        ]
+      },
+      {
+        "text": "我想了解旧糖尿病。",
+        "locale": "zh-CN",
+        "expect": [
+          "past-health"
+        ]
+      },
+      {
+        "text": "Please explain prior diabetes in more detail.",
+        "locale": "en",
+        "expect": [
+          "past-health"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/857347"
+    }
+  }
+}

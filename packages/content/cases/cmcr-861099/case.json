@@ -1,0 +1,1990 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-861099",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "膝关节痛与尚未来月经 · 16岁女孩",
+    "en": "Knee pain and no menarche · girl aged 16"
+  },
+  "summary": {
+    "zh-CN": "青春期关节与月经问题合并异常肝脏和免疫证据，需要跨系统评估。",
+    "en": "Adolescent joint and menstrual concerns coexist with hepatic and immune abnormalities requiring cross-system assessment."
+  },
+  "specialty": [
+    "paediatric-hepatology",
+    "endocrinology",
+    "rheumatology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "张俊, 张爱青, 甘卫华. 儿童自身免疫性肝炎并原发性闭经1例. 中华实用儿科临床杂志. 2013;28(19):1517-1518. doi:10.3760/cma.j.issn.2095-428X.2013.19.022.",
+    "doi": "10.3760/cma.j.issn.2095-428X.2013.19.022",
+    "authors": [
+      "张俊",
+      "张爱青",
+      "甘卫华"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "EASL. Clinical Practice Guidelines on management of autoimmune hepatitis. 2025. https://easlcampus.eu/sites/default/files/2025-05/EASL_CPGs_on_the_management_of_AIH.pdf"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "整合IgG、肝酶、排除检查和活检。",
+      "en": "Integrate IgG, liver enzymes, exclusions and histology."
+    },
+    {
+      "zh-CN": "指出有限标本和闭经鉴别的证据缺口。",
+      "en": "Identify limited sampling and gaps in the amenorrhoea differential."
+    },
+    {
+      "zh-CN": "区分症状好转、生化缓解和规律排卵。",
+      "en": "Distinguish symptomatic improvement, biochemical remission and regular ovulation."
+    },
+    {
+      "zh-CN": "区分撤退性出血与自然周期，持续复核肝病和激素风险",
+      "en": "Distinguish withdrawal bleeding from natural cycles and continue liver/hormonal risk review"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "宋予宁（化名）",
+      "en": "Song Yuning (pseudonym)"
+    },
+    "age": 16,
+    "ageUnit": "years",
+    "sex": "female",
+    "weightKg": 40,
+    "chiefComplaint": {
+      "zh-CN": "双膝肿痛半年，至今无初潮",
+      "en": "Six months of painful swollen knees and no menarche"
+    },
+    "triageNote": {
+      "zh-CN": "非游走性膝痛僵硬，伴乏力。",
+      "en": "Non-migratory knee pain and stiffness with fatigue."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "双膝肿痛僵硬半年，走路小腿酸痛。",
+        "en": "Both knees have been painful and stiff for six months, with calf aching on walking."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "teen",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "joints"
+          },
+          {
+            "asked": "menarche"
+          },
+          {
+            "asked": "puberty"
+          },
+          {
+            "asked": "medication"
+          },
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "joints-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "joints",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "膝盖痛了多久，会换地方吗？ 走路时小腿也会酸痛吗？",
+        "en": "How long have the knees hurt, and does pain migrate? Do the calves ache when walking?"
+      },
+      "answer": {
+        "zh-CN": "双膝肿痛僵硬半年，走路小腿酸痛。",
+        "en": "Both knees have been painful and stiff for six months, with calf aching on walking."
+      },
+      "keywords": {
+        "zh-CN": [
+          "膝痛病程",
+          "膝盖痛了多久，会换地方吗？",
+          "走路时小腿也会酸痛吗？",
+          "膝痛病程情况"
+        ],
+        "en": [
+          "knee pain course",
+          "How long have the knees hurt, and does pain migrate?",
+          "Do the calves ache when walking?",
+          "knee pain course information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "menarche",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "到现在有没有来过月经？ 这是从未来月经，还是来过又停了？",
+        "en": "Have you ever had a menstrual period? Have periods never begun, or did they start and stop?"
+      },
+      "answer": {
+        "zh-CN": "至今从未来过月经。",
+        "en": "Menstruation has never started."
+      },
+      "keywords": {
+        "zh-CN": [
+          "初潮情况",
+          "到现在有没有来过月经？",
+          "这是从未来月经，还是来过又停了？",
+          "初潮情况情况"
+        ],
+        "en": [
+          "menarche history",
+          "Have you ever had a menstrual period?",
+          "Have periods never begun, or did they start and stop?",
+          "menarche history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "puberty",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "乳房和毛发是什么时候开始发育的？ 青春期变化大约持续几年了？",
+        "en": "When did breast and body-hair development start? How long have pubertal changes been progressing?"
+      },
+      "answer": {
+        "zh-CN": "三年前起痤疮、乳房和阴腋毛发育，身高加速。",
+        "en": "Acne, breast and pubic/axillary hair development began three years earlier with faster growth."
+      },
+      "keywords": {
+        "zh-CN": [
+          "青春期进展",
+          "乳房和毛发是什么时候开始发育的？",
+          "青春期变化大约持续几年了？",
+          "青春期进展情况"
+        ],
+        "en": [
+          "pubertal development",
+          "When did breast and body-hair development start?",
+          "How long have pubertal changes been progressing?",
+          "pubertal development information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "以前用过避孕药或其他激素吗？ 有没有吃药调整月经？",
+        "en": "Have you taken contraceptive pills or other hormones? Have you used medicine to bring on periods?"
+      },
+      "answer": {
+        "zh-CN": "否认口服避孕药。",
+        "en": "Oral contraceptive use was denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "激素药物史",
+          "以前用过避孕药或其他激素吗？",
+          "有没有吃药调整月经？",
+          "激素药物史情况"
+        ],
+        "en": [
+          "hormonal medicine history",
+          "Have you taken contraceptive pills or other hormones?",
+          "Have you used medicine to bring on periods?",
+          "hormonal medicine history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "systemic",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有乏力、发热或记忆变化？ 除了关节症状还有什么不舒服？",
+        "en": "Is there fatigue, fever or change in memory? What symptoms accompany the joint problems?"
+      },
+      "answer": {
+        "zh-CN": "乏力，轻微记忆减退但未加重，无发热、腹痛腹胀。",
+        "en": "Fatigue and mild non-progressive memory complaints without fever, abdominal pain or distension."
+      },
+      "keywords": {
+        "zh-CN": [
+          "全身伴随症状",
+          "有没有乏力、发热或记忆变化？",
+          "除了关节症状还有什么不舒服？",
+          "全身伴随症状情况"
+        ],
+        "en": [
+          "systemic symptoms",
+          "Is there fatigue, fever or change in memory?",
+          "What symptoms accompany the joint problems?",
+          "systemic symptoms information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "bowel",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "吃饭、大便和小便有什么变化？ 有没有脓血便或特别多尿？",
+        "en": "Have appetite, stools or urination changed? Is there bloody/purulent stool or unusually frequent urination?"
+      },
+      "answer": {
+        "zh-CN": "食欲可，无脓血便、多饮多尿，尿外观无异常。",
+        "en": "Appetite was maintained without bloody/purulent stools, polydipsia, polyuria or visibly abnormal urine."
+      },
+      "keywords": {
+        "zh-CN": [
+          "消化与尿症状",
+          "吃饭、大便和小便有什么变化？",
+          "有没有脓血便或特别多尿？",
+          "消化与尿症状情况"
+        ],
+        "en": [
+          "bowel and urinary symptoms",
+          "Have appetite, stools or urination changed?",
+          "Is there bloody/purulent stool or unusually frequent urination?",
+          "bowel and urinary symptoms information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人有类似疾病或遗传病吗？ 父母和兄弟姐妹健康情况怎样？",
+        "en": "Does anyone in the family have similar or inherited illness? How is the health of parents and siblings?"
+      },
+      "answer": {
+        "zh-CN": "否认家族遗传病史。",
+        "en": "Inherited family disease was denied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "遗传家族史",
+          "家里有人有类似疾病或遗传病吗？",
+          "父母和兄弟姐妹健康情况怎样？",
+          "遗传家族史情况"
+        ],
+        "en": [
+          "inherited family history",
+          "Does anyone in the family have similar or inherited illness?",
+          "How is the health of parents and siblings?",
+          "inherited family history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "观察皮肤和巩膜",
+        "en": "Review skin and sclerae"
+      },
+      "finding": {
+        "zh-CN": "面部暗色痤疮样疹，足背不褪色紫红瘀点；无巩膜黄染。",
+        "en": "Dark acneiform facial lesions and non-blanching purpuric foot spots; no scleral jaundice."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "joints-exam",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "检查膝和腓肠肌",
+        "en": "Review knees and calf muscles"
+      },
+      "finding": {
+        "zh-CN": "膝及腓肠肌轻压痛，无皮肤红肿和肌萎缩。",
+        "en": "Mild knee/calf tenderness without overlying erythema or muscle wasting."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "liver",
+      "name": {
+        "zh-CN": "表1初始肝功能及IgG",
+        "en": "Table 1 initial liver and IgG results"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "表1初始肝功能及IgG"
+        ],
+        "en": [
+          "Table 1 initial liver and IgG results"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "ALT384、AST504 U/L，白蛋白28.8 g/L、IgG>42 g/L，ESR105 mm/h。数值取原表1治疗0天。",
+            "en": "ALT 384 and AST 504 U/L, albumin 28.8 g/L, IgG >42 g/L and ESR 105 mm/h, from source Table 1 day zero."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "serology",
+      "name": {
+        "zh-CN": "自身抗体与病毒排查",
+        "en": "Autoantibodies and viral assessment"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "自身抗体与病毒排查"
+        ],
+        "en": [
+          "Autoantibodies and viral assessment"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "ANA1:100、Ro52阳性；AMA-M2、dsDNA等阴性，乙肝丙肝及所列病毒检查阴性。",
+            "en": "ANA 1:100 and Ro52 positive; AMA-M2, dsDNA and other listed antibodies negative, with negative HBV/HCV and listed viral tests."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "endocrine",
+      "name": {
+        "zh-CN": "生殖内分泌及影像",
+        "en": "Reproductive endocrine and imaging data"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "生殖内分泌及影像"
+        ],
+        "en": [
+          "Reproductive endocrine and imaging data"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "FSH0.06、LH0.04 U/L；子宫较小、卵巢有卵泡，骨龄落后；肝回声不均、脾稍大。",
+            "en": "FSH 0.06 and LH 0.04 U/L, small uterus, follicles in both ovaries and delayed bone age; heterogeneous liver and mild splenomegaly."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "肝活检",
+        "en": "Liver biopsy"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肝活检"
+        ],
+        "en": [
+          "Liver biopsy"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "仅见3个汇管区，其中1个扩大并碎屑样坏死、炎细胞浸润，少量点状坏死，无明显淤胆。",
+            "en": "Only three portal tracts were sampled; one was enlarged with interface-type necrosis/inflammation, scattered focal necrosis and no prominent cholestasis."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "激素后关节痛消失，表1显示120天ALT140、IgG11.6，肝酶并未完全恢复；三个月后GnRH试验有反应，孕激素撤药后出血，但尚无规律月经。",
+            "en": "Joint pain resolved with steroids. At day 120 ALT remained 140 U/L while IgG was 11.6 g/L. Three months later GnRH testing showed a response and progestin withdrawal caused bleeding, but regular menstruation had not developed."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "joints"
+          },
+          {
+            "asked": "menarche"
+          },
+          {
+            "asked": "puberty"
+          },
+          {
+            "asked": "medication"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "joints-exam"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "关节痛与月经问题之外，应重点整合什么？",
+        "en": "What should be integrated beyond joint and menstrual complaints?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "liver",
+            "phase": "workup"
+          },
+          {
+            "read": "serology",
+            "phase": "workup"
+          },
+          {
+            "read": "endocrine",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "免疫相关肝炎证据及慢性病对性腺轴的可能影响",
+            "en": "Immune-mediated hepatitis evidence and possible chronic-illness effects on the gonadal axis"
+          },
+          "feedback": {
+            "zh-CN": "显著肝酶、IgG及自身抗体异常不能被局部症状掩盖。",
+            "en": "Marked liver enzymes, IgG and autoantibody findings require integration."
+          },
+          "correct": true
+        },
+        {
+          "id": "joint-only",
+          "text": {
+            "zh-CN": "单纯膝关节病可解释全部检验",
+            "en": "An isolated knee disorder explains all tests"
+          },
+          "feedback": {
+            "zh-CN": "不能解释肝脏和免疫异常。",
+            "en": "It does not explain liver and immune abnormalities."
+          },
+          "correct": false
+        },
+        {
+          "id": "permanent",
+          "text": {
+            "zh-CN": "一次低LH就证明永久卵巢衰竭",
+            "en": "One low LH proves permanent ovarian failure"
+          },
+          "feedback": {
+            "zh-CN": "需区分轴水平、慢性病影响和后续动态。",
+            "en": "Axis level, illness effects and longitudinal data matter."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "免疫、排除检查和活检共同支持AIH，但标本有限",
+            "en": "Immune tests, exclusions and histology jointly support AIH, with limited tissue sampling"
+          },
+          "feedback": {
+            "zh-CN": "不能将单项ANA或少量组织视为全部诊断标准。",
+            "en": "Neither ANA alone nor limited tissue completes all diagnostic assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "ana",
+          "text": {
+            "zh-CN": "ANA阳性自动等于狼疮性肝炎",
+            "en": "Positive ANA automatically means lupus hepatitis"
+          },
+          "feedback": {
+            "zh-CN": "需符合完整系统性疾病证据。",
+            "en": "Full systemic evidence is required."
+          },
+          "correct": false
+        },
+        {
+          "id": "amenorrhoea",
+          "text": {
+            "zh-CN": "已经证明闭经只由AIH导致",
+            "en": "AIH is proven to be the sole cause of amenorrhoea"
+          },
+          "feedback": {
+            "zh-CN": "完整闭经鉴别未提供。",
+            "en": "A complete amenorrhoea differential is unavailable."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何安排治疗和青春期随访？",
+        "en": "How should treatment and puberty follow-up be coordinated?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "肝病及内分泌团队复核诊断、免疫治疗安全及月经轴，保护青春期隐私",
+            "en": "Hepatology/endocrinology should review diagnosis, immunotherapy safety and reproductive axis while protecting adolescent privacy"
+          },
+          "feedback": {
+            "zh-CN": "不照搬历史激素冲击剂量，并持续观察功能。",
+            "en": "Do not copy historical steroid pulses; follow function longitudinally."
+          },
+          "correct": true
+        },
+        {
+          "id": "withdrawal",
+          "text": {
+            "zh-CN": "撤退性出血即证明自然排卵恢复",
+            "en": "Withdrawal bleeding proves spontaneous ovulation"
+          },
+          "feedback": {
+            "zh-CN": "药物撤退出血不同于自然规律周期。",
+            "en": "Withdrawal bleeding differs from spontaneous regular cycles."
+          },
+          "correct": false
+        },
+        {
+          "id": "stop",
+          "text": {
+            "zh-CN": "关节痛消失即可停所有肝病随访",
+            "en": "Resolved joint pain permits ending liver follow-up"
+          },
+          "feedback": {
+            "zh-CN": "肝炎活动与症状可不一致。",
+            "en": "Hepatic activity and symptoms may differ."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "joints"
+          },
+          {
+            "asked": "menarche"
+          },
+          {
+            "asked": "puberty"
+          },
+          {
+            "asked": "medication"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "systemic"
+          },
+          {
+            "asked": "bowel"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "joints-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "liver",
+            "phase": "workup"
+          },
+          {
+            "read": "serology",
+            "phase": "workup"
+          },
+          {
+            "read": "endocrine",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "区分撤退性出血与自然周期，持续复核肝病和激素风险",
+        "en": "Distinguish withdrawal bleeding from natural cycles and continue liver/hormonal risk review"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：整合IgG、肝酶、排除检查和活检。同时解释以下信息仍有缺失或疑问：AIH完整评分、其他闭经病因、长期肝病及自然月经转归。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Integrate IgG, liver enzymes, exclusions and histology. Identify the following as missing or uncertain: Complete AIH scoring, other amenorrhoea causes, long-term hepatic and spontaneous menstrual outcomes. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "liver",
+        "serology",
+        "endocrine",
+        "biopsy",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告AIH并原发性闭经，肝病改善与生殖轴恢复应分别衡量。",
+      "en": "Reported AIH with primary amenorrhoea requires separate assessment of liver improvement and reproductive recovery."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "整合IgG、肝酶、排除检查和活检。",
+        "en": "Integrate IgG, liver enzymes, exclusions and histology."
+      },
+      {
+        "zh-CN": "指出有限标本和闭经鉴别的证据缺口。",
+        "en": "Identify limited sampling and gaps in the amenorrhoea differential."
+      },
+      {
+        "zh-CN": "区分症状好转、生化缓解和规律排卵。",
+        "en": "Distinguish symptomatic improvement, biochemical remission and regular ovulation."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "整合IgG、肝酶、排除检查和活检。",
+        "en": "Integrate IgG, liver enzymes, exclusions and histology."
+      },
+      {
+        "zh-CN": "指出有限标本和闭经鉴别的证据缺口。",
+        "en": "Identify limited sampling and gaps in the amenorrhoea differential."
+      },
+      {
+        "zh-CN": "区分症状好转、生化缓解和规律排卵。",
+        "en": "Distinguish symptomatic improvement, biochemical remission and regular ovulation."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "AIH完整评分、其他闭经病因、长期肝病及自然月经转归。",
+        "en": "Complete AIH scoring, other amenorrhoea causes, long-term hepatic and spontaneous menstrual outcomes."
+      }
+    ],
+    "references": [
+      "张俊, 张爱青, 甘卫华. 儿童自身免疫性肝炎并原发性闭经1例. 中华实用儿科临床杂志. 2013;28(19):1517-1518. doi:10.3760/cma.j.issn.2095-428X.2013.19.022.",
+      "https://rs.yiigle.com/cmaid/861099",
+      "EASL. Clinical Practice Guidelines on management of autoimmune hepatitis. 2025. https://easlcampus.eu/sites/default/files/2025-05/EASL_CPGs_on_the_management_of_AIH.pdf"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "AIH完整评分、其他闭经病因、长期肝病及自然月经转归。",
+      "en": "Complete AIH scoring, other amenorrhoea causes, long-term hepatic and spontaneous menstrual outcomes."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "joints"
+    },
+    {
+      "type": "ask",
+      "itemId": "menarche"
+    },
+    {
+      "type": "ask",
+      "itemId": "puberty"
+    },
+    {
+      "type": "ask",
+      "itemId": "medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "systemic"
+    },
+    {
+      "type": "ask",
+      "itemId": "bowel"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "examine",
+      "findingId": "joints-exam"
+    },
+    {
+      "type": "order",
+      "investigationId": "liver"
+    },
+    {
+      "type": "read",
+      "investigationId": "liver",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "serology"
+    },
+    {
+      "type": "read",
+      "investigationId": "serology",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "endocrine"
+    },
+    {
+      "type": "read",
+      "investigationId": "endocrine",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "861099",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/861099",
+    "sourceDoi": "10.3760/cma.j.issn.2095-428X.2013.19.022",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "膝盖痛了多久，会换地方吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "joints"
+        ]
+      },
+      {
+        "text": "How long have the knees hurt, and does pain migrate?",
+        "locale": "en",
+        "expect": [
+          "joints"
+        ]
+      },
+      {
+        "text": "走路时小腿也会酸痛吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "joints"
+        ]
+      },
+      {
+        "text": "Do the calves ache when walking?",
+        "locale": "en",
+        "expect": [
+          "joints"
+        ]
+      },
+      {
+        "text": "到现在有没有来过月经？",
+        "locale": "zh-CN",
+        "expect": [
+          "menarche"
+        ]
+      },
+      {
+        "text": "Have you ever had a menstrual period?",
+        "locale": "en",
+        "expect": [
+          "menarche"
+        ]
+      },
+      {
+        "text": "这是从未来月经，还是来过又停了？",
+        "locale": "zh-CN",
+        "expect": [
+          "menarche"
+        ]
+      },
+      {
+        "text": "Have periods never begun, or did they start and stop?",
+        "locale": "en",
+        "expect": [
+          "menarche"
+        ]
+      },
+      {
+        "text": "乳房和毛发是什么时候开始发育的？",
+        "locale": "zh-CN",
+        "expect": [
+          "puberty"
+        ]
+      },
+      {
+        "text": "When did breast and body-hair development start?",
+        "locale": "en",
+        "expect": [
+          "puberty"
+        ]
+      },
+      {
+        "text": "青春期变化大约持续几年了？",
+        "locale": "zh-CN",
+        "expect": [
+          "puberty"
+        ]
+      },
+      {
+        "text": "How long have pubertal changes been progressing?",
+        "locale": "en",
+        "expect": [
+          "puberty"
+        ]
+      },
+      {
+        "text": "以前用过避孕药或其他激素吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medication"
+        ]
+      },
+      {
+        "text": "Have you taken contraceptive pills or other hormones?",
+        "locale": "en",
+        "expect": [
+          "medication"
+        ]
+      },
+      {
+        "text": "有没有吃药调整月经？",
+        "locale": "zh-CN",
+        "expect": [
+          "medication"
+        ]
+      },
+      {
+        "text": "Have you used medicine to bring on periods?",
+        "locale": "en",
+        "expect": [
+          "medication"
+        ]
+      },
+      {
+        "text": "有没有乏力、发热或记忆变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "systemic"
+        ]
+      },
+      {
+        "text": "Is there fatigue, fever or change in memory?",
+        "locale": "en",
+        "expect": [
+          "systemic"
+        ]
+      },
+      {
+        "text": "除了关节症状还有什么不舒服？",
+        "locale": "zh-CN",
+        "expect": [
+          "systemic"
+        ]
+      },
+      {
+        "text": "What symptoms accompany the joint problems?",
+        "locale": "en",
+        "expect": [
+          "systemic"
+        ]
+      },
+      {
+        "text": "吃饭、大便和小便有什么变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "Have appetite, stools or urination changed?",
+        "locale": "en",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "有没有脓血便或特别多尿？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "Is there bloody/purulent stool or unusually frequent urination?",
+        "locale": "en",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "家里有人有类似疾病或遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anyone in the family have similar or inherited illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "父母和兄弟姐妹健康情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How is the health of parents and siblings?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有既往健康情况方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you describe any previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      }
+    ]
+  }
+}

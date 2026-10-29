@@ -1,0 +1,1983 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33666",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "腹痛与显著血小板增多 · 5岁女孩",
+    "en": "Abdominal pain and marked thrombocytosis · girl aged 5"
+  },
+  "summary": {
+    "zh-CN": "血小板极高且抗感染后持续，需区分反应性和克隆性病因并兼顾出血风险。",
+    "en": "Extreme thrombocytosis persists after antibiotics; distinguish reactive and clonal causes while considering bleeding risk."
+  },
+  "specialty": [
+    "paediatric-haematology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "凌晨, 朱光华, 金玲, 吴润晖, 马晓珍. 学龄前期发病的儿童原发性血小板增多症一例. 中华儿科杂志. 2013;51(07):541-542. doi:10.3760/cma.j.issn.0578-1310.2013.07.016.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2013.07.016",
+    "authors": [
+      "凌晨",
+      "朱光华",
+      "金玲",
+      "吴润晖",
+      "马晓珍"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "比较反应性与克隆性血小板增多的证据。",
+      "en": "Compare evidence for reactive and clonal thrombocytosis."
+    },
+    {
+      "zh-CN": "说明骨髓及分子证据的增量价值。",
+      "en": "Explain the incremental value of marrow and molecular evidence."
+    },
+    {
+      "zh-CN": "指出极高血小板时出血仍可能重要。",
+      "en": "Identify why bleeding remains relevant with extreme counts."
+    },
+    {
+      "zh-CN": "评估血栓和出血双重风险，不照搬历史儿童药物剂量",
+      "en": "Assess both thrombosis and bleeding without copying historical paediatric doses"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "赵清和（化名）",
+      "en": "Zhao Qinghe (pseudonym)"
+    },
+    "age": 5,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "间断腹痛伴发现血小板增高10天",
+      "en": "Ten days of intermittent abdominal pain and raised platelets"
+    },
+    "triageNote": {
+      "zh-CN": "脐周阵发痛，血小板曾1905×10⁹/L。",
+      "en": "Intermittent periumbilical pain with a recorded platelet count of 1905×10⁹/L."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "十天来间断脐周痛，无明显诱因。",
+        "en": "Intermittent periumbilical pain for ten days without an obvious trigger."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "infection"
+          },
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "pain",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "肚子哪里痛，痛了多久？ 腹痛是持续的还是一阵阵的？",
+        "en": "Where does the abdomen hurt, and for how long? Is the pain constant or episodic?"
+      },
+      "answer": {
+        "zh-CN": "十天来间断脐周痛，无明显诱因。",
+        "en": "Intermittent periumbilical pain for ten days without an obvious trigger."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹痛特点",
+          "肚子哪里痛，痛了多久？",
+          "腹痛是持续的还是一阵阵的？",
+          "腹痛特点情况"
+        ],
+        "en": [
+          "pain pattern",
+          "Where does the abdomen hurt, and for how long?",
+          "Is the pain constant or episodic?",
+          "pain pattern information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "infection",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "这段时间发烧或流鼻涕吗？ 肚子痛之前有没有感冒发热？",
+        "en": "Has she had fever or a runny nose? Was there a cold or fever before the pain?"
+      },
+      "answer": {
+        "zh-CN": "没有发热流涕。",
+        "en": "There was no fever or rhinorrhoea."
+      },
+      "keywords": {
+        "zh-CN": [
+          "感染症状",
+          "这段时间发烧或流鼻涕吗？",
+          "肚子痛之前有没有感冒发热？",
+          "感染症状情况"
+        ],
+        "en": [
+          "infective symptoms",
+          "Has she had fever or a runny nose?",
+          "Was there a cold or fever before the pain?",
+          "infective symptoms information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "bleeding",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有牙龈或鼻子出血？ 最近有没有不容易止住的出血？",
+        "en": "Has she had gum or nose bleeding? Has she had unusual or persistent bleeding?"
+      },
+      "answer": {
+        "zh-CN": "没有明显黏膜出血。",
+        "en": "There was no apparent mucosal bleeding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出血倾向",
+          "有没有牙龈或鼻子出血？",
+          "最近有没有不容易止住的出血？",
+          "出血倾向情况"
+        ],
+        "en": [
+          "bleeding tendency",
+          "Has she had gum or nose bleeding?",
+          "Has she had unusual or persistent bleeding?",
+          "bleeding tendency information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "treatment",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前用了药以后腹痛和血小板怎样？ 抗感染治疗后化验降下来了吗？",
+        "en": "What changed in the pain and platelet count after treatment? Did the blood count fall after antibiotics?"
+      },
+      "answer": {
+        "zh-CN": "输抗感染药后腹痛稍好，血常规没有明显变化。",
+        "en": "Pain improved slightly with antibiotics but blood counts did not change materially."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抗感染后变化",
+          "之前用了药以后腹痛和血小板怎样？",
+          "抗感染治疗后化验降下来了吗？",
+          "抗感染后变化情况"
+        ],
+        "en": [
+          "antibiotic response",
+          "What changed in the pain and platelet count after treatment?",
+          "Did the blood count fall after antibiotics?",
+          "antibiotic response information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "bowel",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有恶心、呕吐或大便变化？ 肠胃还有哪些不舒服？",
+        "en": "Is there nausea, vomiting or altered stool? What other gastrointestinal symptoms are present?"
+      },
+      "answer": {
+        "zh-CN": "无恶心呕吐、腹泻或便秘。",
+        "en": "No nausea, vomiting, diarrhoea or constipation."
+      },
+      "keywords": {
+        "zh-CN": [
+          "消化道伴随症状",
+          "有没有恶心、呕吐或大便变化？",
+          "肠胃还有哪些不舒服？",
+          "消化道伴随症状情况"
+        ],
+        "en": [
+          "gastrointestinal symptoms",
+          "Is there nausea, vomiting or altered stool?",
+          "What other gastrointestinal symptoms are present?",
+          "gastrointestinal symptoms information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前身体怎样，有哪些病？ 既往有没有需要治疗的疾病？",
+        "en": "What was health like before this illness? Were any earlier illnesses treated?"
+      },
+      "answer": {
+        "zh-CN": "以前健康，生长和智力同同龄儿。",
+        "en": "Previously healthy with age-appropriate growth and cognition."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康",
+          "以前身体怎样，有哪些病？",
+          "既往有没有需要治疗的疾病？",
+          "既往健康情况"
+        ],
+        "en": [
+          "previous health",
+          "What was health like before this illness?",
+          "Were any earlier illnesses treated?",
+          "previous health information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人有类似疾病或遗传病吗？ 父母和兄弟姐妹健康情况怎样？",
+        "en": "Does anyone in the family have similar or inherited illness? How is the health of parents and siblings?"
+      },
+      "answer": {
+        "zh-CN": "未报告家族遗传病史。",
+        "en": "No family history of inherited disease was reported."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族遗传病",
+          "家里有人有类似疾病或遗传病吗？",
+          "父母和兄弟姐妹健康情况怎样？",
+          "家族遗传病情况"
+        ],
+        "en": [
+          "inherited family conditions",
+          "Does anyone in the family have similar or inherited illness?",
+          "How is the health of parents and siblings?",
+          "inherited family conditions information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查皮肤黏膜",
+        "en": "Inspect skin and mucosa"
+      },
+      "finding": {
+        "zh-CN": "无瘀点瘀斑或出血点，神志清楚、一般情况好。",
+        "en": "No petechiae, bruises or bleeding spots; alert and generally well."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查腹部与脾脏",
+        "en": "Examine abdomen and spleen"
+      },
+      "finding": {
+        "zh-CN": "腹软、脐周压痛无反跳痛，脾肋下2 cm。",
+        "en": "Soft abdomen with periumbilical tenderness but no rebound; spleen palpable 2 cm below the costal margin."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "counts",
+      "name": {
+        "zh-CN": "连续血常规和炎症",
+        "en": "Serial counts and inflammation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "连续血常规和炎症"
+        ],
+        "en": [
+          "Serial counts and inflammation"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "血小板1905后1497×10⁹/L，WBC27.29后20.27×10⁹/L；CRP<8 mg/L。",
+            "en": "Platelets 1905 then 1497×10⁹/L, WBC 27.29 then 20.27×10⁹/L; CRP <8 mg/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "coagulation",
+      "name": {
+        "zh-CN": "凝血记录",
+        "en": "Coagulation record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "凝血记录"
+        ],
+        "en": [
+          "Coagulation record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "PT14.2 s，APTT52.3 s，纤维蛋白原1.84 g/L。未提供血管性血友病因子功能。",
+            "en": "PT 14.2 s, APTT 52.3 s, fibrinogen 1.84 g/L. Von Willebrand factor function was not provided."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "marrow",
+      "name": {
+        "zh-CN": "骨髓形态与活检",
+        "en": "Marrow morphology and biopsy"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "骨髓形态与活检"
+        ],
+        "en": [
+          "Marrow morphology and biopsy"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "巨核细胞172个，产板巨核100个；活检为骨髓增生性改变，网状纤维±。",
+            "en": "172 megakaryocytes including 100 platelet-producing forms; biopsy showed myeloproliferative changes with reticulin ±."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "molecular",
+      "name": {
+        "zh-CN": "分子与染色体结果",
+        "en": "Molecular and cytogenetic findings"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "分子与染色体结果"
+        ],
+        "en": [
+          "Molecular and cytogenetic findings"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "JAK2 V617位点检测为G/T杂合，BCR–ABL P210及报告所列融合检测阴性；核型46,XX。",
+            "en": "JAK2 testing at V617 showed a G/T heterozygous result; BCR–ABL P210 and the other reported fusion test were negative; karyotype 46,XX."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告治疗中第2天短暂无热惊厥，增强MRI未见异常；给予羟基脲、干扰素和阿司匹林等，15天血小板559×10⁹/L，5个月220–390×10⁹/L且无再腹痛。单例不能确证惊厥机制或长期疗效。",
+            "en": "A brief afebrile seizure occurred on day 2 with unremarkable contrast MRI. Hydroxyurea, interferon and aspirin were reported; platelets fell to 559×10⁹/L by day 15 and 220–390×10⁹/L over five months without recurrent pain. Seizure mechanism and long-term efficacy remain uncertain."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "infection"
+          },
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "treatment"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "持续极高血小板应怎样鉴别？",
+        "en": "How should persistent extreme thrombocytosis be assessed?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "counts",
+            "phase": "workup"
+          },
+          {
+            "read": "coagulation",
+            "phase": "workup"
+          },
+          {
+            "read": "marrow",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "同时评估反应性原因和骨髓增殖性疾病",
+            "en": "Assess reactive causes and a myeloproliferative disorder"
+          },
+          "feedback": {
+            "zh-CN": "持续血象和巨核增殖使克隆性原因需要进一步证据。",
+            "en": "Persistent counts and megakaryocytic proliferation warrant clonal assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "infection",
+          "text": {
+            "zh-CN": "腹痛即可证明全部为感染反应",
+            "en": "Abdominal pain proves an infectious reactive process"
+          },
+          "feedback": {
+            "zh-CN": "症状和低CRP均不能独立定因。",
+            "en": "Neither symptoms nor low CRP independently establish causation."
+          },
+          "correct": false
+        },
+        {
+          "id": "count-only",
+          "text": {
+            "zh-CN": "仅凭血小板数即可确定具体肿瘤亚型",
+            "en": "Platelet count alone identifies the neoplasm subtype"
+          },
+          "feedback": {
+            "zh-CN": "需要骨髓、分子及排除性证据。",
+            "en": "Marrow, molecular and exclusion evidence are needed."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "molecular",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "骨髓与JAK2结果支持报告的原发性血小板增多，但儿童分类仍需专科复核",
+            "en": "Marrow and JAK2 support reported essential thrombocythaemia, with specialist review of childhood classification"
+          },
+          "feedback": {
+            "zh-CN": "不能把成人风险模型未经验证直接套用儿童。",
+            "en": "Adult risk models should not automatically be applied to children."
+          },
+          "correct": true
+        },
+        {
+          "id": "mutation",
+          "text": {
+            "zh-CN": "JAK2阳性等于已经发生血栓",
+            "en": "JAK2 positivity proves an existing thrombosis"
+          },
+          "feedback": {
+            "zh-CN": "变异支持克隆性，不替代血栓影像。",
+            "en": "A clonal marker is not thrombosis imaging."
+          },
+          "correct": false
+        },
+        {
+          "id": "negative",
+          "text": {
+            "zh-CN": "BCR–ABL阴性排除所有髓系肿瘤",
+            "en": "Negative BCR–ABL excludes all myeloid neoplasms"
+          },
+          "feedback": {
+            "zh-CN": "它只涉及特定鉴别。",
+            "en": "It addresses a specific differential."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何权衡预防血栓与治疗出血风险？",
+        "en": "How should thrombotic and bleeding risks be balanced?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "molecular",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "儿血液团队评估出血、获得性VWF异常及神经症状后个体化治疗",
+            "en": "Paediatric haematology should assess bleeding, acquired VWF dysfunction and neurological symptoms before individualised care"
+          },
+          "feedback": {
+            "zh-CN": "极高血小板不能直接等同于任何儿童都应立即自行用阿司匹林。",
+            "en": "Extreme counts do not justify unsupervised aspirin in every child."
+          },
+          "correct": true
+        },
+        {
+          "id": "aspirin",
+          "text": {
+            "zh-CN": "按报告剂量自行长期阿司匹林即可",
+            "en": "Self-administer the report’s aspirin dose indefinitely"
+          },
+          "feedback": {
+            "zh-CN": "出血及年龄相关风险需专科评估。",
+            "en": "Bleeding and age-specific risks need specialist assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "seizure",
+          "text": {
+            "zh-CN": "短暂抽搐无需进一步评估",
+            "en": "A brief seizure needs no reassessment"
+          },
+          "feedback": {
+            "zh-CN": "新神经症状需及时评估，正常MRI不能解释一切。",
+            "en": "New neurological symptoms require prompt assessment despite normal MRI."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "infection"
+          },
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "treatment"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "bowel"
+          },
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "counts",
+            "phase": "workup"
+          },
+          {
+            "read": "coagulation",
+            "phase": "workup"
+          },
+          {
+            "read": "marrow",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "molecular",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "评估血栓和出血双重风险，不照搬历史儿童药物剂量",
+        "en": "Assess both thrombosis and bleeding without copying historical paediatric doses"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：比较反应性与克隆性血小板增多的证据。同时解释以下信息仍有缺失或疑问：VWF功能、儿童专科现行诊断复核、惊厥机制及长期转归。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Compare evidence for reactive and clonal thrombocytosis. Identify the following as missing or uncertain: VWF function, contemporary paediatric diagnostic review, seizure mechanism and long-term outcome. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "counts",
+        "coagulation",
+        "marrow",
+        "molecular",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告诊断儿童原发性血小板增多症，需避免将血小板数或单一变异当作全部风险判断。",
+      "en": "The report diagnoses childhood essential thrombocythaemia; count or mutation alone does not define all risks."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "比较反应性与克隆性血小板增多的证据。",
+        "en": "Compare evidence for reactive and clonal thrombocytosis."
+      },
+      {
+        "zh-CN": "说明骨髓及分子证据的增量价值。",
+        "en": "Explain the incremental value of marrow and molecular evidence."
+      },
+      {
+        "zh-CN": "指出极高血小板时出血仍可能重要。",
+        "en": "Identify why bleeding remains relevant with extreme counts."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "比较反应性与克隆性血小板增多的证据。",
+        "en": "Compare evidence for reactive and clonal thrombocytosis."
+      },
+      {
+        "zh-CN": "说明骨髓及分子证据的增量价值。",
+        "en": "Explain the incremental value of marrow and molecular evidence."
+      },
+      {
+        "zh-CN": "指出极高血小板时出血仍可能重要。",
+        "en": "Identify why bleeding remains relevant with extreme counts."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "VWF功能、儿童专科现行诊断复核、惊厥机制及长期转归。",
+        "en": "VWF function, contemporary paediatric diagnostic review, seizure mechanism and long-term outcome."
+      }
+    ],
+    "references": [
+      "凌晨, 朱光华, 金玲, 吴润晖, 马晓珍. 学龄前期发病的儿童原发性血小板增多症一例. 中华儿科杂志. 2013;51(07):541-542. doi:10.3760/cma.j.issn.0578-1310.2013.07.016.",
+      "https://rs.yiigle.com/cmaid/33666"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "VWF功能、儿童专科现行诊断复核、惊厥机制及长期转归。",
+      "en": "VWF function, contemporary paediatric diagnostic review, seizure mechanism and long-term outcome."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "infection"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "bowel"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "order",
+      "investigationId": "counts"
+    },
+    {
+      "type": "read",
+      "investigationId": "counts",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "marrow"
+    },
+    {
+      "type": "read",
+      "investigationId": "marrow",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "molecular"
+    },
+    {
+      "type": "read",
+      "investigationId": "molecular",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "33666",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33666",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2013.07.016",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "肚子哪里痛，痛了多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Where does the abdomen hurt, and for how long?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "腹痛是持续的还是一阵阵的？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Is the pain constant or episodic?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "这段时间发烧或流鼻涕吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "infection"
+        ]
+      },
+      {
+        "text": "Has she had fever or a runny nose?",
+        "locale": "en",
+        "expect": [
+          "infection"
+        ]
+      },
+      {
+        "text": "肚子痛之前有没有感冒发热？",
+        "locale": "zh-CN",
+        "expect": [
+          "infection"
+        ]
+      },
+      {
+        "text": "Was there a cold or fever before the pain?",
+        "locale": "en",
+        "expect": [
+          "infection"
+        ]
+      },
+      {
+        "text": "有没有牙龈或鼻子出血？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "Has she had gum or nose bleeding?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "最近有没有不容易止住的出血？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "Has she had unusual or persistent bleeding?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "之前用了药以后腹痛和血小板怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "What changed in the pain and platelet count after treatment?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "抗感染治疗后化验降下来了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "Did the blood count fall after antibiotics?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "有没有恶心、呕吐或大便变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "Is there nausea, vomiting or altered stool?",
+        "locale": "en",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "肠胃还有哪些不舒服？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "What other gastrointestinal symptoms are present?",
+        "locale": "en",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "以前身体怎样，有哪些病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "What was health like before this illness?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "既往有没有需要治疗的疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Were any earlier illnesses treated?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "家里有人有类似疾病或遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anyone in the family have similar or inherited illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "父母和兄弟姐妹健康情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How is the health of parents and siblings?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有预防接种方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you describe any vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      }
+    ]
+  }
+}

@@ -14,7 +14,12 @@ const catalogs = readdirSync(new URL("../catalogs/", import.meta.url)).filter((f
 
 describe("CMCR published-case collection", () => {
   it("contains exactly the 20 selected, distinct source reports", () => {
-    expect(readdirSync(new URL("../cases/", import.meta.url)).filter((id) => id.startsWith("cmcr-")).sort()).toEqual(ids);
+    const collection = readdirSync(new URL("../cases/", import.meta.url)).filter((id) => {
+      if (!id.startsWith("cmcr-")) return false;
+      const c = JSON.parse(readFileSync(new URL(`../cases/${id}/case.json`, import.meta.url), "utf8")) as { tags: string[] };
+      return c.tags.includes("cmcr-20");
+    });
+    expect(collection.sort()).toEqual(ids);
   });
 
   it("never references media withdrawn because they identify a patient", () => {
@@ -133,8 +138,16 @@ describe("CMCR teaching depth and governance (docs/CASE_AUTHORING.md §9)", () =
   });
 
   it("gives every patient a distinct pseudonym in both languages", () => {
+    // The case contracts above already validate the full definitions. This
+    // cross-case metadata check only needs each display name, read once.
+    const displayNames = ids.map((id) => {
+      const c = JSON.parse(readFileSync(new URL(`../cases/${id}/case.json`, import.meta.url), "utf8")) as {
+        patient: { displayName: Record<"zh-CN" | "en", string> };
+      };
+      return c.patient.displayName;
+    });
     for (const locale of ["zh-CN", "en"] as const) {
-      const names = ids.map((id) => load(id).patient.displayName[locale]);
+      const names = displayNames.map((name) => name[locale]);
       expect(new Set(names).size, locale).toBe(names.length);
     }
   });

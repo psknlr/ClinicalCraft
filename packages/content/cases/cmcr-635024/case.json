@@ -1,0 +1,2009 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-635024",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "高血糖难以控制与视力下降 · 21岁女性",
+    "en": "Difficult glycaemic control and visual loss · woman aged 21"
+  },
+  "summary": {
+    "zh-CN": "消瘦青年患者长期高血糖，常规治疗反应异常并出现视力变化，需要重新评估分型与用药安全。",
+    "en": "A lean young adult has longstanding hyperglycaemia, an unusual treatment response and visual deterioration; reconsider classification and medication safety."
+  },
+  "specialty": [
+    "endocrinology",
+    "genetics",
+    "ophthalmology",
+    "nephrology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "杨国庆, 陆菊明, 肖建中, 韩学尧, 孙杰. 一例极度胰岛素抵抗综合征患者的临床和遗传学分析. 中华糖尿病杂志. 2011;03(01):81-84. doi: 10.3760/cma.j.issn.1674-5809.2011.01.017.",
+    "authors": [
+      "杨国庆",
+      "陆菊明",
+      "肖建中",
+      "韩学尧",
+      "孙杰"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "ADA Standards of Care 2026, section 2: atypical/monogenic classification features"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.1674-5809.2011.01.017"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "辨认需要重新分型的非典型糖尿病特征",
+      "en": "Identify atypical diabetes features warranting reclassification"
+    },
+    {
+      "zh-CN": "将高雄激素、消瘦与严重抵抗联系",
+      "en": "Relate hyperandrogenism, leanness and severe resistance"
+    },
+    {
+      "zh-CN": "区分候选基因发现与功能证实",
+      "en": "Distinguish candidate genetic findings from functional proof"
+    },
+    {
+      "zh-CN": "提出覆盖夜间低血糖的安全评估",
+      "en": "Propose safety assessment covering nocturnal hypoglycaemia"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "唐清和（化名）",
+      "en": "Tang Qinghe (pseudonym)"
+    },
+    "age": 21,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "多饮多尿6年余，视力下降1年",
+      "en": "Thirst and polyuria for over six years, visual loss for one year"
+    },
+    "triageNote": {
+      "zh-CN": "因双眼视力进行性下降就诊，既往使用胰岛素及口服降糖药仍控制不佳。",
+      "en": "Progressive bilateral visual loss prompts admission; insulin and oral agents have not provided satisfactory glycaemic control."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "六年多前突然很渴、尿多、吃得多，当时没有明显变瘦。",
+        "en": "Over six years ago I suddenly became thirsty, passed more urine and ate more, without obvious weight loss."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "vision"
+          },
+          {
+            "asked": "medication"
+          },
+          {
+            "asked": "menses"
+          },
+          {
+            "examined": "body"
+          },
+          {
+            "examined": "thyroid"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "口渴和多尿从什么时候开始？",
+        "en": "When did thirst and frequent urination begin?"
+      },
+      "answer": {
+        "zh-CN": "六年多前突然很渴、尿多、吃得多，当时没有明显变瘦。",
+        "en": "Over six years ago I suddenly became thirsty, passed more urine and ate more, without obvious weight loss."
+      },
+      "keywords": {
+        "zh-CN": [
+          "多饮起病",
+          "最初口渴",
+          "多尿开始",
+          "三多症状"
+        ],
+        "en": [
+          "thirst onset",
+          "initial thirst",
+          "polyuria onset",
+          "initial diabetic symptoms"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vision",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "视力是什么时候变差的？",
+        "en": "When did your sight deteriorate?"
+      },
+      "answer": {
+        "zh-CN": "一年前开始看不清，之后越来越差，这次是想进一步处理眼睛。",
+        "en": "My sight blurred a year ago and has progressively worsened; I came for further eye care."
+      },
+      "keywords": {
+        "zh-CN": [
+          "视力下降",
+          "看不清楚",
+          "视物模糊",
+          "眼睛变化"
+        ],
+        "en": [
+          "visual loss",
+          "blurred vision",
+          "sight deterioration",
+          "eye symptoms"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前怎样用药，效果怎么样？",
+        "en": "What treatment was used and how did it work?"
+      },
+      "answer": {
+        "zh-CN": "先打预混胰岛素，后来加过二甲双胍；住院后换了强化方案、加了剂量，血糖还是高。",
+        "en": "I first used premixed insulin and later metformin; in hospital a more intensive regimen and higher doses still left glucose high."
+      },
+      "keywords": {
+        "zh-CN": [
+          "降糖疗程",
+          "胰岛素反应",
+          "加量经过",
+          "之前降糖药"
+        ],
+        "en": [
+          "diabetes treatment",
+          "insulin response",
+          "dose escalation",
+          "earlier glucose medicines"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "menses",
+      "topic": "other",
+      "question": {
+        "zh-CN": "月经规律吗？",
+        "en": "Are your periods regular?"
+      },
+      "answer": {
+        "zh-CN": "16岁来月经，间隔大约一个月到两个月，经期三到六天。",
+        "en": "Periods began at 16; cycles are about one to two months apart and bleeding lasts three to six days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "月经周期",
+          "初潮年龄",
+          "经期规律",
+          "生理期"
+        ],
+        "en": [
+          "menstrual cycles",
+          "menarche",
+          "period regularity",
+          "menstrual history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人年轻时就得糖尿病吗？",
+        "en": "Did any relatives develop diabetes while young?"
+      },
+      "answer": {
+        "zh-CN": "一位姨妈有糖尿病，30岁时因糖尿病去世；父母和妹妹身体健康。",
+        "en": "An aunt had diabetes and died from it at 30; my parents and younger sister are healthy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族糖尿病",
+          "姨妈患病",
+          "亲属早发病",
+          "家人血糖"
+        ],
+        "en": [
+          "family diabetes",
+          "affected aunt",
+          "early familial disease",
+          "relatives glucose"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "这次发病以前，身体有什么疾病？",
+        "en": "What illnesses were present before this episode?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最近有测过体重吗？",
+        "en": "Has weight been measured recently?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期体重",
+          "称过体重",
+          "体重记录",
+          "最近多重"
+        ],
+        "en": [
+          "recent weight",
+          "weight measurement",
+          "weighed recently",
+          "recorded weight"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "body",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对体型与皮肤",
+        "en": "Review body habitus and skin"
+      },
+      "finding": {
+        "zh-CN": "身高150 cm、体重43.5 kg、BMI 19.3 kg/m²；皮肤干燥、毳毛增多、下肢斑点色素沉着，未见黑棘皮。",
+        "en": "Height 150 cm, weight 43.5 kg and BMI 19.3 kg/m²; dry skin, increased fine hair and leg pigmentation without acanthosis nigricans."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "thyroid",
+      "system": "neck",
+      "maneuver": {
+        "zh-CN": "检查甲状腺",
+        "en": "Examine the thyroid"
+      },
+      "finding": {
+        "zh-CN": "甲状腺Ⅱ度肿大，质韧，可触及约2 cm结节。",
+        "en": "Grade II thyroid enlargement, firm, with an approximately 2 cm nodule."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "metabolic",
+      "name": {
+        "zh-CN": "代谢、抗体与并发症评估",
+        "en": "Metabolic, antibody and complication assessment"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "代谢、抗体与并发症评估"
+        ],
+        "en": [
+          "Metabolic, antibody and complication assessment"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "血糖控制不佳、低蛋白血症、大量蛋白尿及血脂异常；IAA、ICA、GADA均阴性。后续肾活检为糖尿病肾病，眼部检查示严重增殖性视网膜病变。",
+            "en": "Poor glycaemic control, hypoalbuminaemia, heavy proteinuria and dyslipidaemia; IAA, ICA and GADA were negative. Subsequent renal biopsy showed diabetic nephropathy and ocular assessment severe proliferative retinopathy."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "response",
+      "name": {
+        "zh-CN": "监测与胰岛素反应记录",
+        "en": "Monitoring and insulin-response record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "监测与胰岛素反应记录"
+        ],
+        "en": [
+          "Monitoring and insulin-response record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "逐渐增加胰岛素后日间血糖仍高，夜间却出现低血糖。停用胰岛素及口服药的观察期血糖未进一步明显升高。",
+            "en": "Daytime glucose remained high despite escalating insulin, whereas nocturnal hypoglycaemia occurred. During observed withdrawal of insulin and oral agents glucose did not rise markedly further."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "classification",
+      "name": {
+        "zh-CN": "抵抗原因与遗传检查",
+        "en": "Resistance work-up and genetic testing"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "抵抗原因与遗传检查"
+        ],
+        "en": [
+          "Resistance work-up and genetic testing"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "胰岛素及受体抗体阴性，甲状腺、肾上腺功能及IGF-1概述正常；睾酮和LH/FSH升高，卵巢稍大。INSR测序有多个改变，外显子21终止改变被认为可能相关，功能意义仍需研究。",
+            "en": "Insulin and receptor antibodies were negative; thyroid/adrenal function and IGF-1 were described as normal. Testosterone and LH/FSH were elevated with mildly enlarged ovaries. INSR sequencing found several changes; an exon 21 stop change was considered potentially relevant, with functional significance requiring investigation."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告最终归为A型胰岛素抵抗综合征，并列糖尿病肾病、增殖性视网膜病变、白内障、多囊卵巢、高血压及血脂异常；未给出可信的长期治疗结局。",
+            "en": "The report classified type A insulin resistance with diabetic nephropathy, proliferative retinopathy, cataracts, polycystic ovaries, hypertension and dyslipidaemia; reliable long-term treatment outcome was not supplied."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "vision"
+          },
+          {
+            "asked": "medication"
+          },
+          {
+            "asked": "menses"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "body"
+          },
+          {
+            "examined": "thyroid"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "消瘦、早发病和异常胰岛素反应应怎样影响分型？",
+        "en": "How should leanness, early onset and an unusual insulin response affect classification?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          },
+          {
+            "read": "response",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "重新评估严重胰岛素抵抗及特殊类型糖尿病",
+            "en": "Reassess severe insulin resistance and specific diabetes subtypes"
+          },
+          "feedback": {
+            "zh-CN": "表型、家族线索和治疗反应不适合只沿用最初标签。",
+            "en": "Phenotype, family clues and treatment response warrant revisiting the original label."
+          },
+          "correct": true
+        },
+        {
+          "id": "nonadherence",
+          "text": {
+            "zh-CN": "仅凭高血糖认定患者从未用药",
+            "en": "Conclude non-adherence from hyperglycaemia alone"
+          },
+          "feedback": {
+            "zh-CN": "住院监测和日夜差异提示需检验生物学解释。",
+            "en": "Observed inpatient treatment and day-night differences require biological assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "type1",
+          "text": {
+            "zh-CN": "年轻且曾有酮尿即可排除所有其他类型",
+            "en": "Young age and earlier ketonuria exclude all other subtypes"
+          },
+          "feedback": {
+            "zh-CN": "这些线索并不具有绝对分型特异性。",
+            "en": "Neither feature has absolute subtype specificity."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "classification",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "表型支持报告的A型抵抗判断，但测序改变的因果仍未完全证实",
+            "en": "The phenotype supports the reported type A resistance assessment, but variant causality remains incompletely established"
+          },
+          "feedback": {
+            "zh-CN": "候选序列变化与功能验证是不同层次的证据。",
+            "en": "Candidate sequence findings and functional validation are different evidence levels."
+          },
+          "correct": true
+        },
+        {
+          "id": "variant-proof",
+          "text": {
+            "zh-CN": "发现任何变异便证明唯一病因",
+            "en": "Any detected variant proves the sole cause"
+          },
+          "feedback": {
+            "zh-CN": "原报告明确提出需要功能研究。",
+            "en": "The report explicitly called for functional work."
+          },
+          "correct": false
+        },
+        {
+          "id": "pcos-only",
+          "text": {
+            "zh-CN": "卵巢改变足以解释全部极度抵抗和并发症",
+            "en": "Ovarian changes alone explain all extreme resistance and complications"
+          },
+          "feedback": {
+            "zh-CN": "高雄激素表现可为综合征的一部分，不应终止全身分型评估。",
+            "en": "Hyperandrogenism can form part of a broader syndrome and should not end classification."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "怎样处理高血糖与夜间低血糖并存的风险？",
+        "en": "How should simultaneous hyperglycaemia and nocturnal hypoglycaemia be addressed?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "classification",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "专科重新核对注射、时序和分型，关注夜间低血糖并个体化调整",
+            "en": "Specialist review of administration, timing and classification, with attention to nocturnal hypoglycaemia and individual adjustment"
+          },
+          "feedback": {
+            "zh-CN": "不能只按日间数值持续加量，需结合完整监测。",
+            "en": "Dose escalation based only on daytime values ignores the full monitored pattern."
+          },
+          "correct": true
+        },
+        {
+          "id": "copy-dose",
+          "text": {
+            "zh-CN": "照抄原报告极大输注剂量作为常规方案",
+            "en": "Copy the report’s extreme infusion doses as routine care"
+          },
+          "feedback": {
+            "zh-CN": "这是特殊历史试验经过，不能推广为可执行处方。",
+            "en": "These historical exceptional interventions are not a transferable prescription."
+          },
+          "correct": false
+        },
+        {
+          "id": "stop-care",
+          "text": {
+            "zh-CN": "有夜间低值便永远停止所有糖尿病随访",
+            "en": "Stop all diabetes follow-up permanently after nocturnal lows"
+          },
+          "feedback": {
+            "zh-CN": "仍有高血糖和严重器官并发症需要专科管理。",
+            "en": "Hyperglycaemia and serious organ complications still require specialist care."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "vision"
+          },
+          {
+            "asked": "medication"
+          },
+          {
+            "asked": "menses"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "body"
+          },
+          {
+            "examined": "thyroid"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          },
+          {
+            "read": "response",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "classification",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "首次选择完整血糖时序与低血糖风险评估，拒绝照搬极端历史剂量",
+        "en": "Choose review of the complete glucose pattern and hypoglycaemia risk without copying extreme historical doses"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明病程与治疗反应可促使重新分型。；承认规范化INSR变异命名、功能实验、完整HbA1c/肾功能数值及长期结局。，用复述确认理解。",
+        "en": "Explain that Course and treatment response can justify reclassification.; acknowledge Standardised INSR nomenclature, functional experiments, complete HbA1c/renal values and long-term outcome. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "metabolic",
+        "response",
+        "classification",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "早发、消瘦、高雄激素表型和严重胰岛素抵抗支持特殊类型糖尿病评估，候选INSR变异功能仍不确定。",
+      "en": "Early onset, leanness, hyperandrogenic features and severe resistance support evaluation of a specific diabetes subtype, while candidate INSR variant function remains uncertain."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "病程与治疗反应可促使重新分型。",
+        "en": "Course and treatment response can justify reclassification."
+      },
+      {
+        "zh-CN": "基因候选改变不等于已验证致病。",
+        "en": "A candidate genetic change is not validated pathogenicity."
+      },
+      {
+        "zh-CN": "低血糖风险需要覆盖夜间。",
+        "en": "Hypoglycaemia assessment must cover the night."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "结合表型、家族史和抗体而非年龄单独分型。",
+        "en": "Classify using phenotype, family history and antibodies rather than age alone."
+      },
+      {
+        "zh-CN": "对旧论文基因命名和功能解释保留边界。",
+        "en": "Retain uncertainty around historical variant naming and function."
+      },
+      {
+        "zh-CN": "不将极端历史剂量转成当前治疗推荐。",
+        "en": "Do not convert extreme historical doses into current treatment recommendations."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "规范化INSR变异命名、功能实验、完整HbA1c/肾功能数值及长期结局。",
+        "en": "Standardised INSR nomenclature, functional experiments, complete HbA1c/renal values and long-term outcome."
+      }
+    ],
+    "references": [
+      "杨国庆, 陆菊明, 肖建中, 韩学尧, 孙杰. 一例极度胰岛素抵抗综合征患者的临床和遗传学分析. 中华糖尿病杂志. 2011;03(01):81-84. doi: 10.3760/cma.j.issn.1674-5809.2011.01.017.",
+      "https://rs.yiigle.com/cmaid/635024",
+      "https://doi.org/10.3760/cma.j.issn.1674-5809.2011.01.017",
+      "American Diabetes Association Professional Practice Committee. Diagnosis and Classification of Diabetes: Standards of Care in Diabetes—2026. Diabetes Care. 2026;49(Suppl 1). doi:10.2337/dc26-s002."
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "规范化INSR变异命名、功能实验、完整HbA1c/肾功能数值及长期结局。",
+      "en": "Standardised INSR nomenclature, functional experiments, complete HbA1c/renal values and long-term outcome."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig03",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-635024/fig03.png",
+      "title": {
+        "zh-CN": "原文图组 3（含后续病程，仅供复盘）",
+        "en": "Source image group 3 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "93bdb4116b9fa87e3fcab85c2d7f88102ef2c05a6c1168c825669f741beacc81"
+    },
+    {
+      "id": "fig04",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-635024/fig04.png",
+      "title": {
+        "zh-CN": "原文图组 4（含后续病程，仅供复盘）",
+        "en": "Source image group 4 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "e32d8fa5572407a0f3d1560b6a0109fa0caa2d48d9e1306c463de8be2970776a"
+    },
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-635024/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "566fb9c419994e4f3d2e8b2f126189441f74d11bc2672920386a8d1ffe71077f"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-635024/fig02.png",
+      "title": {
+        "zh-CN": "原文图组 2（含后续病程，仅供复盘）",
+        "en": "Source image group 2 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "4e9a7a9b73191966bcf05e327a05cf928bf7493a09f658fc0c37ccc6fa4f11ee"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "vision"
+    },
+    {
+      "type": "ask",
+      "itemId": "medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "menses"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "examine",
+      "findingId": "body"
+    },
+    {
+      "type": "examine",
+      "findingId": "thyroid"
+    },
+    {
+      "type": "order",
+      "investigationId": "metabolic"
+    },
+    {
+      "type": "read",
+      "investigationId": "metabolic",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "response"
+    },
+    {
+      "type": "read",
+      "investigationId": "response",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "classification"
+    },
+    {
+      "type": "read",
+      "investigationId": "classification",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "635024",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/635024",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于多饮起病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Could you tell me about thirst onset?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "我想了解最初口渴。",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Please explain initial thirst in more detail.",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "关于视力下降，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "Could you tell me about visual loss?",
+        "locale": "en",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "我想了解看不清楚。",
+        "locale": "zh-CN",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "Please explain blurred vision in more detail.",
+        "locale": "en",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "关于降糖疗程，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about diabetes treatment?",
+        "locale": "en",
+        "expect": [
+          "medication"
+        ]
+      },
+      {
+        "text": "我想了解胰岛素反应。",
+        "locale": "zh-CN",
+        "expect": [
+          "medication"
+        ]
+      },
+      {
+        "text": "Please explain insulin response in more detail.",
+        "locale": "en",
+        "expect": [
+          "medication"
+        ]
+      },
+      {
+        "text": "关于月经周期，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "menses"
+        ]
+      },
+      {
+        "text": "Could you tell me about menstrual cycles?",
+        "locale": "en",
+        "expect": [
+          "menses"
+        ]
+      },
+      {
+        "text": "我想了解初潮年龄。",
+        "locale": "zh-CN",
+        "expect": [
+          "menses"
+        ]
+      },
+      {
+        "text": "Please explain menarche in more detail.",
+        "locale": "en",
+        "expect": [
+          "menses"
+        ]
+      },
+      {
+        "text": "关于家族糖尿病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family diabetes?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "我想了解姨妈患病。",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Please explain affected aunt in more detail.",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "关于近期体重，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent weight?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/635024"
+    }
+  }
+}

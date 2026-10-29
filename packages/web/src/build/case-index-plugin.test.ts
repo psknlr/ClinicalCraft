@@ -5,7 +5,8 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { libraryOrder, type CaseIndexEntry } from "@clinicalcraft/agent";
 import { buildCaseIndex } from "@clinicalcraft/agent/node";
-import { afterAll, describe, expect, it } from "vitest";
+import { createServer, type ViteDevServer } from "vite";
+import { afterAll, describe, expect, it, vi } from "vitest";
 import { CASE_FOLDERS, CASE_INDEX, CASE_INDEX_ISSUES } from "virtual:clinicalcraft/case-index";
 import { CASE_INDEX_MODULE, caseIndexModule, caseIndexPlugin } from "./case-index-plugin.js";
 
@@ -63,4 +64,49 @@ describe("virtual:clinicalcraft/case-index", () => {
     expect((await evaluate(code)).CASE_INDEX).toEqual(CASE_INDEX);
     expect(watched.length).toBe(CASE_INDEX.length); // `vite build --watch` rebuilds when a case changes
   });
+
+  it("invalidates case changes with either path separator and ignores unrelated files", () => {
+    const plugin = caseIndexPlugin({ contentDir });
+    const callbacks = new Map<string, (file: string) => void>();
+    const module = { id: `\0${CASE_INDEX_MODULE}` };
+    const watcher = { add: vi.fn(), on: vi.fn((event: string, callback: (file: string) => void) => callbacks.set(event, callback)) };
+    const invalidateModule = vi.fn();
+    const send = vi.fn();
+    const configure = plugin.configureServer as (server: ViteDevServer) => void;
+    configure({ watcher, moduleGraph: { getModuleById: () => module, invalidateModule }, ws: { send } } as unknown as ViteDevServer);
+    expect(watcher.add).toHaveBeenCalledWith(join(contentDir, "cases"));
+    const file = join(contentDir, "cases", "new-case", "case.json");
+    callbacks.get("add")!(file.replace(/\\/g, "/"));
+    callbacks.get("change")!(file.replace(/\//g, "\\"));
+    callbacks.get("unlink")!(file);
+    expect(invalidateModule).toHaveBeenCalledTimes(3);
+    expect(send).toHaveBeenCalledTimes(3);
+    callbacks.get("change")!(join(contentDir, "cases", "new-case", "README.md"));
+    callbacks.get("change")!(join(contentDir, "cases-other", "new-case", "case.json"));
+    callbacks.get("change")!(join(contentDir, "cases", "new-case", "other-case.json"));
+    expect(invalidateModule).toHaveBeenCalledTimes(3);
+  });
+
+  it("discovers a newly added sibling case directory in the running dev server", async () => {
+    const dir = join(root, "live-content");
+    const webRoot = join(root, "live-web");
+    mkdirSync(join(dir, "cases", "first"), { recursive: true });
+    mkdirSync(webRoot, { recursive: true });
+    writeFileSync(join(dir, "cases", "first", "case.json"), JSON.stringify({ id: "first", title: "First" }));
+    const server = await createServer({ configFile: false, root: webRoot, logLevel: "silent", plugins: [caseIndexPlugin({ contentDir: dir })], server: { middlewareMode: true, hmr: false }, optimizeDeps: { noDiscovery: true, include: [] } });
+    const url = CASE_INDEX_MODULE;
+    try {
+      await new Promise<void>((resolve) => server.watcher.once("ready", () => resolve()));
+      const first = await server.transformRequest(url);
+      expect(first!.code).toContain('"id":"first"');
+      expect(first!.code).not.toContain('"id":"second"');
+      mkdirSync(join(dir, "cases", "second"));
+      writeFileSync(join(dir, "cases", "second", "case.json"), JSON.stringify({ id: "second", title: "Second" }));
+      await vi.waitFor(async () => {
+        expect((await server.transformRequest(url))!.code).toContain('"id":"second"');
+      }, { timeout: 20_000 });
+    } finally {
+      await server.close();
+    }
+  }, 30_000);
 });

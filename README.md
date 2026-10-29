@@ -11,7 +11,7 @@
 > （技术名称为具身模式，网页世界默认开启）下，医院是一个无界面、确定性的世界模型：临床操作必须在正确的位置完成——走到床旁、把设备推过来、把病人
 > 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
 > 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹；
-> 临床医生智能体还能做示范接诊。内置 30 个中英双语教学病例（含新增的中华病例说 20 例）、3 个场馆（含两层的教学医院）、
+> 临床医生智能体还能做示范接诊。内置 135 个中英双语教学病例（中华病例说原 20 例及新增 105 例）、3 个场馆（含两层的教学医院）、
 > 97 种体素设备，以及 41 个具身智能体基准场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
@@ -37,6 +37,7 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
 [Grounding benchmark](docs/GROUNDING.md) ·
 [Case authoring](docs/CASE_AUTHORING.md) ·
 [中华病例说 20 例 / CMCR collection](docs/CMCR_CASES.md) ·
+[新增 105 例 / Additional CMCR cases](docs/CMCR_105_CASES.md) ·
 [Facilities & equipment](docs/FACILITIES.md) ·
 [Local assets](docs/ASSETS.md) ·
 [Design lineage](docs/DESIGN_PRINCIPLES.md) ·
