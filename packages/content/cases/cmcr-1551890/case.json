@@ -1,0 +1,4234 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1551890",
+  "version": "1.1.0",
+  "title": {
+    "zh-CN": "胸痛后心功能恶化 · 65岁女性",
+    "en": "Worsening cardiac function after chest pain · 65-year-old woman"
+  },
+  "summary": {
+    "zh-CN": "外院转入、正在机械通气的患者：通过家属和转院资料重建病程，床旁评估后决定下一步治疗。",
+    "en": "A ventilated patient transferred in from another hospital: rebuild her course from her relative and the transfer records, assess her at the bedside and decide what happens next."
+  },
+  "specialty": [
+    "cardiology",
+    "critical-care"
+  ],
+  "difficulty": 4,
+  "setting": "icu",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别心肌梗死后新发收缩期杂音伴心衰为机械并发症（区分室间隔破裂、乳头肌断裂和游离壁破裂），并立即行床旁超声心动图确认。",
+      "en": "Recognise a new systolic murmur with heart failure after a myocardial infarction as a mechanical complication — telling septal rupture from papillary-muscle and free-wall rupture — and confirm it at once with bedside echocardiography."
+    },
+    {
+      "zh-CN": "解释室间隔破裂的血流动力学（左向右分流、肺血流过多、双心室衰竭），并据此说明为何避免快速补液、血管扩张剂要以血压为前提。",
+      "en": "Explain the haemodynamics of septal rupture (left-to-right shunt, pulmonary over-circulation, biventricular failure) and use them to justify avoiding fluid boluses and reserving vasodilators for patients whose blood pressure allows it."
+    },
+    {
+      "zh-CN": "按ACC/AHA 2025和ESC 2023 ACS指南制定血管活性药加机械循环支持（IABP、VA-ECMO）的过渡方案，并在具备心外科能力的中心由心脏团队管理。",
+      "en": "Plan vasoactive support with mechanical circulatory support (IABP, VA-ECMO) as a bridge, managed by the Heart Team at a centre with cardiac surgery, in line with ACC/AHA 2025 and ESC 2023 ACS guidance."
+    },
+    {
+      "zh-CN": "在VA-ECMO期间通过超声监测主动脉瓣开放和左心室大小，识别左心室负荷过重并说出至少两种减负措施。",
+      "en": "Monitor aortic-valve opening and LV size by echo during VA-ECMO, recognise LV overload and name at least two ways to unload the ventricle."
+    },
+    {
+      "zh-CN": "用不修补、早期修补和延期修补的死亡率数据（含幸存者偏倚）权衡修补时机，并解释为何现行指南要求个体化而非固定间隔。",
+      "en": "Weigh the timing of repair with the mortality data for no, early and delayed repair — including survivor bias — and explain why current guidance individualises the timing rather than fixing an interval."
+    },
+    {
+      "zh-CN": "复述ESC 2023 ACS的再灌注时间窗（直接PCI 120 分钟、溶栓 12 小时、溶栓后转运、补救性PCI、2–24 小时常规造影），并识别本例记录中缺失的关键时间点。",
+      "en": "State the ESC 2023 reperfusion windows (primary PCI within 120 min, fibrinolysis within 12 h, transfer after lysis, rescue PCI, routine angiography at 2–24 h) and identify the time points this record leaves out."
+    }
+  ],
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "李文俊, 蕭鳳儀, 何澄邦. 急性心肌梗死併發室間隔破裂ECMO支持1例. 鏡湖醫學. 2025;25(1):62-63. doi:10.12408/j.issn2223-4462.2025.01.017",
+    "doi": "10.12408/j.issn2223-4462.2025.01.017",
+    "authors": [
+      "李文俊",
+      "蕭鳳儀",
+      "何澄邦"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写（原文为繁体中文）。年龄、性别、病程、检查数值、各团队意见和报告结局取自原文；患者为化名，医院、日历日期和身份细节已去除，时间以相对时间表示。陪同家属、对话、决策、干预选项、评分和教学要点为教学设计；原文未记录的内容（生命体征、设备参数、修补与存活）保持未知。三张原图（心电图、床旁超声、ECMO血流示意）无直接身份标识，保留原有标注；PDF第3页为期刊封底，含其他文章的临床图片。2026-10-28按ESC 2023 ACS、ACC/AHA 2025 ACS、AHA 2021机械并发症科学声明和ELSO 2021 VA-ECMO指南做了编辑审校（版本1.1.0）。",
+      "en": "Adapted from a published case report (written in traditional Chinese). Age, sex, the course, test values, each team's opinion and the reported outcome come from the report; the patient has a pseudonym, and hospitals, calendar dates and identifying details are removed, with times given relative to the presentation. The accompanying relative, the dialogue, decisions, intervention options, scoring and teaching points are educational design; what the report does not record (vital signs, device settings, repair and survival) stays unknown. The three published figures (ECG, bedside echo, ECMO flow schematic) carry no direct identifier and keep their original annotations; page 3 of the PDF is the journal's back cover, with other articles' clinical images. Editorial review against ESC 2023 ACS, ACC/AHA 2025 ACS, the AHA 2021 statement on mechanical complications and the ELSO 2021 VA-ECMO guideline on 2026-10-28 (version 1.1.0)."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ESC 2023 ACS",
+        "ACC/AHA/ACEP/NAEMSP/SCAI 2025 ACS",
+        "AHA 2021 scientific statement: mechanical complications of acute myocardial infarction",
+        "ELSO 2021 interim guidelines: VA-ECMO in adult cardiac patients"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗。病程和结局取自原报告；你的选择不会改变已发表的病程，也不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care. The course and outcome come from the published report; your choices do not change it, and unrecorded physiology is not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "欧阳女士（化名）",
+      "en": "Ms Ouyang (pseudonym)"
+    },
+    "age": 65,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "胸痛1天，外院治疗后病情加重",
+      "en": "Chest pain for a day, worse despite treatment at another hospital"
+    },
+    "triageNote": {
+      "zh-CN": "65岁女性，因胸痛在外院诊治后病情加重，转入本院ICU。转运全程机械通气，一位家属随行；外院的转院资料已在ICU护士站。",
+      "en": "65-year-old woman transferred to our ICU after worsening during treatment for chest pain at another hospital. Mechanically ventilated throughout the transfer; a relative came with her. The first hospital's transfer records are at the ICU station."
+    },
+    "tags": [
+      {
+        "zh-CN": "外院转入",
+        "en": "Inter-hospital transfer"
+      },
+      {
+        "zh-CN": "机械通气",
+        "en": "Mechanical ventilation"
+      },
+      {
+        "zh-CN": "胸痛后加重",
+        "en": "Worse after chest pain"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "扮演一位接着呼吸机、不能说话的65岁女性；她病前的性格无从得知，不要另加设定。",
+        "en": "Play a 65-year-old woman on a ventilator who cannot speak; nothing is known of her personality before the illness, so add none."
+      },
+      "speechStyle": {
+        "zh-CN": "不说话、不回答问题；所有病史由陪同的家属回答。",
+        "en": "Does not speak or answer questions; her relative answers all history questions."
+      },
+      "healthLiteracy": "medium",
+      "affect": "drowsy",
+      "openingLine": {
+        "zh-CN": "（她接着呼吸机，不能说话；家属守在床旁。）",
+        "en": "(She is on a ventilator and cannot speak; her relative is at the bedside.)"
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个她的病历里没有记录，我也说不上来。",
+        "en": "That isn't in her notes, and I really can't say."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "扮演者：她平躺在ICU床上接受机械通气，始终不说话；不要表演任何睁眼、点头、手势或痛苦表情——原报告没有描述她的意识状态。问题一律交给家属回答。",
+        "en": "For the actor: she lies flat in the ICU bed on the ventilator and never speaks; do not act out eye opening, nodding, gestures or distress — the report does not describe her level of consciousness. Every question goes to the relative."
+      },
+      "companion": {
+        "role": "carer",
+        "name": {
+          "zh-CN": "家属（教学设定）",
+          "en": "Relative (teaching role)"
+        },
+        "persona": {
+          "zh-CN": "她的近亲属（教学设定，原报告未提及家属），一路陪她转院过来。焦虑、疲惫，说话直白，用日常说法；只知道外院医生告诉家里的情况，记不住医学名词，具体结果让医生看转院资料；不知道的就直说不知道，绝不替她猜。最担心她能不能挺过来，也想知道为什么不能马上做手术。开场时会说：“医生，她在那边越来越重，我们就转过来了。”",
+          "en": "Her close relative (a teaching role; the report mentions no family), who came with her on the transfer. Anxious and tired, speaks plainly in everyday words; knows only what the first hospital's doctors told the family, does not remember the medical terms and points the doctor to the transfer papers for results; says plainly when they don't know and never guesses on her behalf. Most worried about whether she will pull through, and wants to know why she cannot have an operation straight away. Opens with: “Doctor, she kept getting worse over there, so they sent us here.”"
+        },
+        "answersHistory": true,
+        "appearance": {
+          "hair": "#2b2420",
+          "hairStyle": "short",
+          "shirt": "#5f6f7a",
+          "pants": "#2f3b4a",
+          "build": "average",
+          "stature": "adult"
+        }
+      }
+    },
+    "nonVerbalWhen": {
+      "always": true
+    },
+    "nonVerbalReason": {
+      "zh-CN": "正在机械通气（接着呼吸机），无法说话",
+      "en": "on a ventilator (mechanical ventilation) and cannot speak"
+    },
+    "appearance": {
+      "skin": "#d8b597",
+      "hair": "#8d877f",
+      "hairStyle": "short",
+      "shirt": "#9fb7c9",
+      "pants": "#55606b",
+      "build": "average",
+      "stature": "adult",
+      "gown": true,
+      "accessory": "none"
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "转入交接",
+        "en": "Arrival and handover"
+      },
+      "description": {
+        "zh-CN": "刚转入ICU：向家属了解病程，查看患者，调阅外院转院资料。",
+        "en": "Just arrived in the ICU: take the history from her relative, examine her and review the first hospital's transfer records."
+      },
+      "learnerSwitchable": false
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "床旁评估与支持",
+        "en": "Bedside assessment and support"
+      },
+      "description": {
+        "zh-CN": "床旁检查明确病变，决定循环支持并与心脏团队商定修补策略。",
+        "en": "Define the lesion at the bedside, decide on circulatory support and agree the repair strategy with the Heart Team."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "attempted": "diagnosis"
+      }
+    },
+    {
+      "id": "bridge",
+      "label": {
+        "zh-CN": "机械支持过渡期",
+        "en": "Bridge on mechanical support"
+      },
+      "description": {
+        "zh-CN": "原报告记录的ICU过渡治疗：机械支持下每日评估。",
+        "en": "The ICU bridge as the report records it: daily review on mechanical support."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "support"
+          },
+          {
+            "decided": "management"
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告结局",
+        "en": "Reported outcome"
+      },
+      "description": {
+        "zh-CN": "原报告记录的转出与结局；之后的病程未报告。",
+        "en": "The transfer out and outcome the report records; what followed is not reported."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "lv-unloading"
+          },
+          {
+            "read": "bridge-record",
+            "phase": "bridge"
+          },
+          {
+            "objective": "obj-handover"
+          },
+          {
+            "objective": "obj-first-look"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0,
+    "actionCosts": {
+      "ask": 0,
+      "examine": 0,
+      "order": 0,
+      "read": 0,
+      "intervene": 0,
+      "answer": 0
+    }
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "她这次是因为什么去医院的？",
+        "en": "What made her go to hospital this time?"
+      },
+      "answer": {
+        "zh-CN": "她胸口疼了差不多一天才去医院看，那边的医生说是心梗。",
+        "en": "She'd had chest pain for about a day before she went to hospital. The doctors there said it was a heart attack."
+      },
+      "keywords": {
+        "zh-CN": [
+          "为什么去医院",
+          "怎么不舒服",
+          "哪里不舒服",
+          "胸口疼",
+          "胸痛",
+          "怎么回事",
+          "因为什么来的",
+          "发病经过",
+          "怎么发病",
+          "一开始",
+          "主诉"
+        ],
+        "en": [
+          "brought her into hospital",
+          "brought in",
+          "chest pain",
+          "presenting complaint",
+          "went to hospital",
+          "heart attack",
+          "start of the illness",
+          "illness began",
+          "reason for admission",
+          "first symptoms"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "溶栓",
+          "几点",
+          "压着",
+          "刺痛",
+          "性质",
+          "放射",
+          "怎么个疼",
+          "什么样的疼",
+          "那边医院",
+          "外院"
+        ],
+        "en": [
+          "thromboly",
+          "lysis",
+          "like",
+          "radiat",
+          "spread",
+          "arm",
+          "first hospital",
+          "give her"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "source": {
+        "zh-CN": "原报告病例部分；家属口吻为教学改写",
+        "en": "Case section of the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "lysis-timing",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "胸痛开始多久以后打的溶栓针？",
+        "en": "How long after the pain started was she given the clot-busting drug?"
+      },
+      "answer": {
+        "zh-CN": "她是疼了大概一天才去的医院。到那边以后过了多久打的溶栓针、具体几点开始疼的，我说不清楚，病历里也没写。",
+        "en": "She'd had the pain for about a day before going in. How long after that they gave the clot-busting drug, or exactly when the pain started, I can't say — and it isn't in her notes."
+      },
+      "keywords": {
+        "zh-CN": [
+          "什么时候开始疼",
+          "几点开始疼",
+          "溶栓时间",
+          "多久打的溶栓",
+          "发病到溶栓",
+          "起病时间",
+          "疼了多久才溶栓",
+          "从发病到用药"
+        ],
+        "en": [
+          "when did the pain start",
+          "onset time",
+          "time to thrombolysis",
+          "symptom onset",
+          "how long before the lysis",
+          "door to needle time",
+          "when exactly did it start"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "source": {
+        "zh-CN": "原报告未记录；家属口吻为教学改写",
+        "en": "Not recorded in the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "pain-detail",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "胸痛是什么样的？有没有往别处放射？",
+        "en": "What was the chest pain like, and did it spread anywhere?"
+      },
+      "answer": {
+        "zh-CN": "她当时怎么个疼法、有没有疼到别的地方，她没跟我细说，病历里也没写。",
+        "en": "She never told me exactly what the pain felt like or whether it went anywhere else, and it isn't in her notes."
+      },
+      "keywords": {
+        "zh-CN": [
+          "怎么个疼法",
+          "疼痛性质",
+          "放射",
+          "压榨样",
+          "疼到哪里",
+          "什么样的疼",
+          "胸痛的性质",
+          "向哪里放射",
+          "压着疼",
+          "刺痛"
+        ],
+        "en": [
+          "kind of pain",
+          "character of the pain",
+          "radiate",
+          "crushing",
+          "spread anywhere",
+          "tightness",
+          "describe the pain",
+          "stabbing",
+          "arm",
+          "jaw"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "多久",
+          "什么时候",
+          "几点"
+        ],
+        "en": [
+          "how long",
+          "when"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；家属口吻为教学改写",
+        "en": "Not recorded in the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "first-tests",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "在那边医院做了哪些检查？",
+        "en": "Which tests did they do at the first hospital?"
+      },
+      "answer": {
+        "zh-CN": "去了先做了心电图、拍了胸片，还抽了血，医生说心肌酶高，是心梗。具体结果都在转院资料里。",
+        "en": "They did a heart tracing, a chest X-ray and blood tests first, and the doctor said her heart enzymes were up and it was a heart attack. The actual results are in the transfer papers."
+      },
+      "keywords": {
+        "zh-CN": [
+          "做了哪些检查",
+          "做了什么检查",
+          "心电图",
+          "拍片",
+          "胸片",
+          "抽血",
+          "化验",
+          "心肌酶"
+        ],
+        "en": [
+          "which tests",
+          "what tests",
+          "ecg",
+          "chest x-ray",
+          "blood tests",
+          "investigations there",
+          "heart tracing"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "彩超",
+          "造影",
+          "查出了什么",
+          "用药",
+          "用了什么药",
+          "治疗"
+        ],
+        "en": [
+          "scan show",
+          "angiogram",
+          "echo",
+          "give",
+          "treat",
+          "medicine",
+          "drug",
+          "first place"
+        ]
+      },
+      "source": {
+        "zh-CN": "原报告病例部分；家属口吻为教学改写",
+        "en": "Case section of the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "在那边医院用了什么药、做了什么治疗？",
+        "en": "What treatment did she get at the first hospital?"
+      },
+      "answer": {
+        "zh-CN": "那边说是心梗，给她打了溶栓的针，还用了扩张心脏血管和抗凝的药。具体是什么药、用了多少，我说不上来。",
+        "en": "They said it was a heart attack and gave her a clot-busting injection, plus medicines to open up the heart's blood vessels and to thin the blood. I couldn't tell you the names or the doses."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用了什么药",
+          "用了哪些药",
+          "给她用了",
+          "外院用药",
+          "怎么治的",
+          "治疗经过",
+          "溶栓",
+          "打了什么针",
+          "抗凝",
+          "扩冠"
+        ],
+        "en": [
+          "what treatment",
+          "thrombolysis",
+          "clot buster",
+          "what medicines did they give",
+          "first hospital give",
+          "blood thinner",
+          "treated at the first hospital",
+          "lysis"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "平时",
+          "长期",
+          "过敏",
+          "在家",
+          "多久",
+          "病重时",
+          "意愿",
+          "交代",
+          "以后",
+          "之后"
+        ],
+        "en": [
+          "usually",
+          "regular",
+          "allerg",
+          "at home",
+          "how long",
+          "wishes",
+          "after",
+          "first place"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "原报告病例部分；家属口吻为教学改写",
+        "en": "Case section of the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "progression",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "用药以后病情怎么变化的？",
+        "en": "How did things change after that treatment?"
+      },
+      "answer": {
+        "zh-CN": "后来她反而更重了。那边医生听心脏，说多了一个新的杂音，接着给她做了心脏彩超，又急着做了冠脉造影。之后心脏越来越不行，那边就让转到你们这里的重症监护室，好进一步治疗。",
+        "en": "Then she got worse instead. The doctors listened to her heart and said there was a new murmur, so they did a heart scan and then an urgent angiogram. After that her heart kept getting weaker, so they sent her to your intensive care unit for further treatment."
+      },
+      "keywords": {
+        "zh-CN": [
+          "后来怎么样",
+          "病情变化",
+          "加重",
+          "越来越重",
+          "杂音",
+          "为什么转院",
+          "怎么转过来的",
+          "转到我们这里",
+          "转过来",
+          "用了药以后",
+          "用药以后",
+          "之后怎么样"
+        ],
+        "en": [
+          "what happened next",
+          "got worse",
+          "deteriorate",
+          "murmur",
+          "reason for the transfer",
+          "after the treatment",
+          "condition worsened",
+          "transferred here"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "原报告病例部分；家属口吻为教学改写",
+        "en": "Case section of the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "tests-told",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "医生有没有告诉你心脏彩超和造影查出了什么？",
+        "en": "Did the doctors tell you what the heart scan and angiogram showed?"
+      },
+      "answer": {
+        "zh-CN": "说了不少，那些医学名词我没记住，只记得说情况很重，需要转过来进一步治疗。结果应该都在转院资料里。",
+        "en": "They explained a lot, but I didn't take in the medical words — only that it was very serious and she needed to come here for further treatment. The results should all be in the transfer papers."
+      },
+      "keywords": {
+        "zh-CN": [
+          "查出了什么",
+          "查出什么",
+          "彩超查出",
+          "彩超结果",
+          "造影结果",
+          "检查结果",
+          "医生怎么说",
+          "跟你说了什么",
+          "诊断是什么"
+        ],
+        "en": [
+          "what did the scan show",
+          "scan results",
+          "angiogram result",
+          "what did the doctors say",
+          "echo result",
+          "scan findings",
+          "find out",
+          "what did they tell you"
+        ]
+      },
+      "source": {
+        "zh-CN": "原报告病例部分；家属口吻为教学改写",
+        "en": "Case section of the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "ventilation",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "她什么时候上的呼吸机？",
+        "en": "When was she put on the ventilator?"
+      },
+      "answer": {
+        "zh-CN": "来之前在那边就已经接上呼吸机了。具体什么时候接的、为什么接，我说不清楚。",
+        "en": "She was already on the breathing machine before she came here. Exactly when and why they started it, I can't say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "呼吸机",
+          "插管",
+          "上呼吸机",
+          "机械通气",
+          "什么时候插管",
+          "气管插管",
+          "管子"
+        ],
+        "en": [
+          "ventilator",
+          "breathing machine",
+          "intubated",
+          "breathing tube",
+          "put on the ventilator",
+          "mechanical ventilation",
+          "life support machine"
+        ]
+      },
+      "source": {
+        "zh-CN": "原报告病例部分；家属口吻为教学改写",
+        "en": "Case section of the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "她以前有什么慢性病？",
+        "en": "Does she have any long-term illnesses?"
+      },
+      "answer": {
+        "zh-CN": "她有高血压，还有血脂高。",
+        "en": "She has high blood pressure and high cholesterol."
+      },
+      "keywords": {
+        "zh-CN": [
+          "慢性病",
+          "以前有什么病",
+          "高血压",
+          "血脂",
+          "既往史",
+          "老毛病",
+          "基础病",
+          "以前身体"
+        ],
+        "en": [
+          "past medical history",
+          "long-term illnesses",
+          "high blood pressure",
+          "cholesterol",
+          "medical conditions",
+          "hypertension",
+          "pmh"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里人",
+          "家族",
+          "糖尿病",
+          "中风"
+        ],
+        "en": [
+          "family",
+          "diabetes",
+          "stroke"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "原报告病例部分；家属口吻为教学改写",
+        "en": "Case section of the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "other-pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "她有没有糖尿病，或者以前得过心脏病、中风？",
+        "en": "Has she had diabetes, an earlier heart problem or a stroke?"
+      },
+      "answer": {
+        "zh-CN": "除了高血压、血脂高，别的病病历里没写，我也说不准。",
+        "en": "Apart from the blood pressure and cholesterol, nothing else is written in her notes, and I can't say for sure."
+      },
+      "keywords": {
+        "zh-CN": [
+          "糖尿病",
+          "以前心脏病",
+          "中风",
+          "脑梗",
+          "以前心梗过",
+          "肾病",
+          "冠心病"
+        ],
+        "en": [
+          "diabetes",
+          "previous heart attack",
+          "stroke",
+          "kidney disease",
+          "heart problems before",
+          "angina",
+          "earlier heart trouble"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；家属口吻为教学改写",
+        "en": "Not recorded in the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "home-meds",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "她平时在家吃哪些药？",
+        "en": "What medicines does she usually take at home?"
+      },
+      "answer": {
+        "zh-CN": "她平时吃什么药，转院资料里没写，我也说不全，不敢乱说。",
+        "en": "What she normally takes isn't in the transfer notes, and I can't list it all, so I'd rather not guess."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时吃什么药",
+          "长期用药",
+          "降压药",
+          "在家吃的药",
+          "常用药",
+          "阿司匹林",
+          "降脂药"
+        ],
+        "en": [
+          "usual medicines",
+          "regular medication",
+          "regular tablets",
+          "tablets at home",
+          "blood pressure tablets",
+          "aspirin",
+          "statin",
+          "normally take"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "那边",
+          "外院",
+          "溶栓"
+        ],
+        "en": [
+          "allerg",
+          "first hospital",
+          "thromboly",
+          "clot"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；家属口吻为教学改写",
+        "en": "Not recorded in the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "她对什么药过敏吗？",
+        "en": "Is she allergic to any medicines?"
+      },
+      "answer": {
+        "zh-CN": "她对什么药过敏，病历里没写，我也不敢肯定。",
+        "en": "Whether she's allergic to anything isn't in her notes, and I can't be sure."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "对什么过敏",
+          "青霉素",
+          "造影剂过敏"
+        ],
+        "en": [
+          "allergy",
+          "allergies",
+          "allergic",
+          "drug allergy",
+          "penicillin",
+          "reaction to medicines"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；家属口吻为教学改写",
+        "en": "Not recorded in the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "她抽烟吗？",
+        "en": "Does she smoke?"
+      },
+      "answer": {
+        "zh-CN": "抽不抽烟，病历里没写，我说不准，不好替她乱说。",
+        "en": "Whether she smokes isn't in her notes, and I'd rather not guess for her."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟瘾",
+          "香烟",
+          "烟龄",
+          "吸不吸烟"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "smoker",
+          "cigarettes",
+          "tobacco",
+          "ex-smoker"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；家属口吻为教学改写",
+        "en": "Not recorded in the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人得过心脏病吗？",
+        "en": "Has anyone in the family had heart disease?"
+      },
+      "answer": {
+        "zh-CN": "家里人有没有这类病，病历里没写，我说不清。",
+        "en": "Whether anyone in the family has had this kind of thing isn't in her notes, and I can't say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族史",
+          "家里人",
+          "遗传",
+          "父母",
+          "兄弟姐妹",
+          "家里有人"
+        ],
+        "en": [
+          "family history",
+          "relatives",
+          "runs in the family",
+          "parents",
+          "siblings",
+          "inherited"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；家属口吻为教学改写",
+        "en": "Not recorded in the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "baseline-function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "这次生病前她生活能自理吗？",
+        "en": "Before this illness, how was she managing day to day?"
+      },
+      "answer": {
+        "zh-CN": "她平时的生活情况，病历里没写，我说不好，不想替她乱说。",
+        "en": "How she managed day to day isn't in her notes; I can't really say and don't want to guess for her."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生活自理",
+          "平时生活",
+          "活动能力",
+          "能走路吗",
+          "自己照顾自己",
+          "平时身体怎么样",
+          "生病前"
+        ],
+        "en": [
+          "day to day",
+          "independent",
+          "manage at home",
+          "mobility",
+          "walk",
+          "look after herself",
+          "before this illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；家属口吻为教学改写",
+        "en": "Not recorded in the report; the relative's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "wishes",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "她以前有没有说过，病重时希望怎样治疗？",
+        "en": "Has she ever said what treatment she'd want if she became this ill?"
+      },
+      "answer": {
+        "zh-CN": "这个病历里没写，我也不清楚她有没有说过。",
+        "en": "That isn't in her notes, and I don't know whether she ever said."
+      },
+      "keywords": {
+        "zh-CN": [
+          "她的意愿",
+          "治疗意愿",
+          "生前预嘱",
+          "不想抢救",
+          "希望怎么治",
+          "放弃治疗",
+          "病重时"
+        ],
+        "en": [
+          "her wishes",
+          "advance directive",
+          "resuscitation wishes",
+          "goals of care",
+          "treatment preferences",
+          "would want",
+          "want if things got bad",
+          "dnacpr",
+          "end of life"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；家属口吻为教学改写",
+        "en": "Not recorded in the report; the relative's wording is a teaching adaptation"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "全身视诊（呼吸机、管路与一般状况）",
+        "en": "General inspection (ventilator, lines and general state)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "视诊",
+          "一般情况",
+          "看看病人",
+          "全身检查",
+          "观察",
+          "一般状态"
+        ],
+        "en": [
+          "general inspection",
+          "end of the bed",
+          "general appearance",
+          "inspect",
+          "observe",
+          "overall state"
+        ]
+      },
+      "finding": {
+        "zh-CN": "经人工气道行有创机械通气（外院开始，转运途中持续），不能说话。",
+        "en": "On invasive mechanical ventilation through an artificial airway (started at the first hospital and continued during the transfer); she cannot speak."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例部分（“继续机械通气”）",
+        "en": "Case section of the report (“mechanical ventilation continued”)"
+      }
+    },
+    {
+      "id": "cardiac",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "心脏听诊",
+        "en": "Auscultate the heart"
+      },
+      "keywords": {
+        "zh-CN": [
+          "听心脏",
+          "心脏听诊",
+          "杂音",
+          "心音",
+          "听诊心脏",
+          "心前区"
+        ],
+        "en": [
+          "listen to the heart",
+          "heart sounds",
+          "murmur",
+          "auscultate",
+          "cardiac auscultation",
+          "precordium"
+        ]
+      },
+      "finding": {
+        "zh-CN": "收缩期杂音：外院在溶栓后病情进展时查体发现的新发收缩期杂音（转院记录）。",
+        "en": "Systolic murmur: the new systolic murmur the referring team found when she deteriorated after thrombolysis (transfer record)."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例部分（外院查体）",
+        "en": "Case section of the report (examination at the first hospital)"
+      }
+    },
+    {
+      "id": "general-bridge",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "全身视诊（支持装置）",
+        "en": "General inspection (support devices)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "视诊",
+          "一般情况",
+          "看看病人",
+          "支持装置",
+          "管路",
+          "设备"
+        ],
+        "en": [
+          "general inspection",
+          "her appearance",
+          "general appearance",
+          "devices",
+          "support lines",
+          "inspect"
+        ]
+      },
+      "finding": {
+        "zh-CN": "机械通气中，IABP联合VA-ECMO循环支持，同时行CRRT。",
+        "en": "Mechanically ventilated, on circulatory support with an IABP plus VA-ECMO, with CRRT running."
+      },
+      "abnormal": true,
+      "phases": [
+        "bridge",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "原报告病例部分（转入后支持）",
+        "en": "Case section of the report (support after transfer)"
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有记录这项检查的结果；请把它当作未知，既不当作正常，也不当作异常。",
+    "en": "The published report does not record this examination; treat it as unknown — neither normal nor abnormal."
+  },
+  "investigations": [
+    {
+      "id": "ecg-referral",
+      "name": {
+        "zh-CN": "外院初诊心电图（转院资料）",
+        "en": "First hospital's presenting ECG (transfer records)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院心电图",
+          "转院心电图",
+          "首诊心电图",
+          "之前的心电图",
+          "那边的心电图"
+        ],
+        "en": [
+          "referral ecg",
+          "outside ecg",
+          "first hospital ecg",
+          "presenting ecg",
+          "previous ecg",
+          "old ecg"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院就诊期间",
+            "en": "At the first hospital"
+          },
+          "text": {
+            "zh-CN": "外院初诊心电图：V2–V5导联ST段抬高。原报告没有附这份心电图，也没有描述心率、节律或其他导联。",
+            "en": "Presenting ECG at the first hospital: ST elevation in V2–V5. The report does not reproduce this tracing or describe the rate, rhythm or other leads."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院就诊期间",
+            "en": "At the first hospital"
+          },
+          "text": {
+            "zh-CN": "外院初诊心电图：V2–V5导联ST段抬高。原报告没有附这份心电图，也没有描述心率、节律或其他导联。",
+            "en": "Presenting ECG at the first hospital: ST elevation in V2–V5. The report does not reproduce this tracing or describe the rate, rhythm or other leads."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        }
+      }
+    },
+    {
+      "id": "xray",
+      "name": {
+        "zh-CN": "外院胸片（转院资料）",
+        "en": "First hospital's chest radiograph (transfer records)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胸片",
+          "外院胸片",
+          "胸部X线",
+          "胸部平片",
+          "X线胸片",
+          "拍的片子"
+        ],
+        "en": [
+          "chest x-ray",
+          "cxr",
+          "chest radiograph",
+          "chest film",
+          "referral chest x-ray",
+          "outside cxr"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院就诊期间",
+            "en": "At the first hospital"
+          },
+          "text": {
+            "zh-CN": "外院胸片：肺水肿。原报告没有附图像，也没有进一步描述。",
+            "en": "Chest radiograph at the first hospital: pulmonary oedema. The report includes no image and no further description."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院就诊期间",
+            "en": "At the first hospital"
+          },
+          "text": {
+            "zh-CN": "外院胸片：肺水肿。原报告没有附图像，也没有进一步描述。",
+            "en": "Chest radiograph at the first hospital: pulmonary oedema. The report includes no image and no further description."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        }
+      }
+    },
+    {
+      "id": "enzymes-referral",
+      "name": {
+        "zh-CN": "外院心肌酶谱（转院资料）",
+        "en": "First hospital's cardiac enzymes (transfer records)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院心肌酶",
+          "外院化验",
+          "心肌酶谱",
+          "转院化验",
+          "那边的化验"
+        ],
+        "en": [
+          "referral enzymes",
+          "outside cardiac enzymes",
+          "first hospital bloods",
+          "previous enzymes",
+          "cardiac enzymes"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院就诊期间",
+            "en": "At the first hospital"
+          },
+          "text": {
+            "zh-CN": "外院心肌酶谱：升高。原报告没有给出具体项目、数值或参考范围。",
+            "en": "Cardiac enzymes at the first hospital: raised. The report gives no analytes, values or reference ranges."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院就诊期间",
+            "en": "At the first hospital"
+          },
+          "text": {
+            "zh-CN": "外院心肌酶谱：升高。原报告没有给出具体项目、数值或参考范围。",
+            "en": "Cardiac enzymes at the first hospital: raised. The report gives no analytes, values or reference ranges."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        }
+      }
+    },
+    {
+      "id": "angiography",
+      "name": {
+        "zh-CN": "外院急诊冠状动脉造影报告（转院资料）",
+        "en": "First hospital's emergency coronary angiogram report (transfer records)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "冠脉造影",
+          "冠状动脉造影",
+          "造影报告",
+          "外院造影",
+          "造影",
+          "CAG"
+        ],
+        "en": [
+          "coronary angiogram",
+          "angiography",
+          "cag",
+          "cath report",
+          "outside angiogram",
+          "angiogram report"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院就诊期间",
+            "en": "At the first hospital"
+          },
+          "text": {
+            "zh-CN": "外院急诊冠状动脉造影：三支病变。原报告没有给出各支病变程度、罪犯血管、TIMI血流，也没有说明是否行PCI。",
+            "en": "Emergency coronary angiogram at the first hospital: three-vessel disease. The report gives no lesion-by-lesion detail, culprit vessel or TIMI flow, and does not say whether PCI was attempted."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院就诊期间",
+            "en": "At the first hospital"
+          },
+          "text": {
+            "zh-CN": "外院急诊冠状动脉造影：三支病变。原报告没有给出各支病变程度、罪犯血管、TIMI血流，也没有说明是否行PCI。",
+            "en": "Emergency coronary angiogram at the first hospital: three-vessel disease. The report gives no lesion-by-lesion detail, culprit vessel or TIMI flow, and does not say whether PCI was attempted."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        }
+      }
+    },
+    {
+      "id": "referral-echo",
+      "name": {
+        "zh-CN": "外院超声心动图报告（转院资料）",
+        "en": "First hospital's echocardiogram report (transfer records)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院超声",
+          "外院彩超",
+          "转院超声",
+          "外院心超",
+          "那边的彩超"
+        ],
+        "en": [
+          "referral echo",
+          "outside echo",
+          "first hospital echo",
+          "previous echo",
+          "referral echocardiogram"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院，新发杂音之后",
+            "en": "At the first hospital, after the new murmur"
+          },
+          "text": {
+            "zh-CN": "外院超声心动图：室间隔瘤形成并破裂穿孔。原报告没有给出这次检查的缺损大小、部位、分流情况或心室功能。",
+            "en": "Echocardiogram at the first hospital: ventricular septal aneurysm with rupture (perforation). The report gives no defect size or site, shunt or ventricular function for this study."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        },
+        "bridge": {
+          "available": true,
+          "date": {
+            "zh-CN": "外院，新发杂音之后",
+            "en": "At the first hospital, after the new murmur"
+          },
+          "text": {
+            "zh-CN": "外院超声心动图：室间隔瘤形成并破裂穿孔。原报告没有给出这次检查的缺损大小、部位、分流情况或心室功能。",
+            "en": "Echocardiogram at the first hospital: ventricular septal aneurysm with rupture (perforation). The report gives no defect size or site, shunt or ventricular function for this study."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（外院诊治经过，转院资料）",
+            "en": "Case section of the report (the first hospital's course, transfer records)"
+          }
+        }
+      }
+    },
+    {
+      "id": "ecg",
+      "name": {
+        "zh-CN": "床旁12导联心电图（转入后）",
+        "en": "Bedside 12-lead ECG (after transfer)"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "心电图",
+          "12导联",
+          "床旁心电图",
+          "做个心电图",
+          "复查心电图"
+        ],
+        "en": [
+          "ecg",
+          "ekg",
+          "12-lead",
+          "12 lead ecg",
+          "electrocardiogram",
+          "repeat ecg"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "turnaroundMinutes": 5,
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "转入后12导联心电图（图1）：急性广泛前壁心肌梗死，完全性右束支传导阻滞。图1上打印的机器测量值：心率 93 次/分，PR间期 154 ms，QRS时限 128 ms，QT/QTc 364/422 ms，P/QRS/T电轴 59°/43°/65°。",
+            "en": "12-lead ECG after transfer (figure 1): acute extensive anterior myocardial infarction with complete right bundle branch block. Machine measurements printed on figure 1: heart rate 93/min, PR 154 ms, QRS 128 ms, QT/QTc 364/422 ms, P/QRS/T axes 59°/43°/65°."
+          },
+          "values": [],
+          "figures": [
+            "fig01"
+          ],
+          "note": {
+            "zh-CN": "机器测量值摘自图1的打印表头，正文未引用。",
+            "en": "The machine measurements come from the printed header of figure 1; the text of the report does not quote them."
+          },
+          "source": {
+            "zh-CN": "原报告病例部分及图1",
+            "en": "Case section of the report and figure 1"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "转入后12导联心电图（图1）：急性广泛前壁心肌梗死，完全性右束支传导阻滞。图1上打印的机器测量值：心率 93 次/分，PR间期 154 ms，QRS时限 128 ms，QT/QTc 364/422 ms，P/QRS/T电轴 59°/43°/65°。",
+            "en": "12-lead ECG after transfer (figure 1): acute extensive anterior myocardial infarction with complete right bundle branch block. Machine measurements printed on figure 1: heart rate 93/min, PR 154 ms, QRS 128 ms, QT/QTc 364/422 ms, P/QRS/T axes 59°/43°/65°."
+          },
+          "values": [],
+          "figures": [
+            "fig01"
+          ],
+          "note": {
+            "zh-CN": "机器测量值摘自图1的打印表头，正文未引用。",
+            "en": "The machine measurements come from the printed header of figure 1; the text of the report does not quote them."
+          },
+          "source": {
+            "zh-CN": "原报告病例部分及图1",
+            "en": "Case section of the report and figure 1"
+          }
+        }
+      }
+    },
+    {
+      "id": "markers",
+      "name": {
+        "zh-CN": "心肌损伤标志物（CK-MB、高敏肌钙蛋白T）",
+        "en": "Cardiac injury markers (CK-MB, high-sensitivity troponin T)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "心肌标志物",
+          "肌钙蛋白",
+          "心肌损伤标志物",
+          "CK-MB",
+          "心梗三项"
+        ],
+        "en": [
+          "troponin",
+          "cardiac markers",
+          "ck-mb",
+          "ckmb",
+          "hs-tnt",
+          "cardiac enzymes now"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 45,
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": true,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "转入后：肌酸激酶同工酶（CK-MB）247 ng/mL↑，高敏肌钙蛋白T 16016 ng/L↑（原文未给参考范围）。",
+            "en": "After transfer: CK-MB 247 ng/mL (raised) and high-sensitivity troponin T 16,016 ng/L (raised); the report gives no reference ranges."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "肌酸激酶同工酶（CK-MB）",
+                "en": "Creatine kinase MB (CK-MB)"
+              },
+              "value": 247,
+              "unit": "ng/mL",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              },
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "高敏肌钙蛋白T",
+                "en": "High-sensitivity troponin T"
+              },
+              "value": 16016,
+              "unit": "ng/L",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              },
+              "flag": "H"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文以“↑”标示两项升高，未给出参考范围。",
+            "en": "The report marks both values as raised (↑) without reference ranges."
+          },
+          "source": {
+            "zh-CN": "原报告病例部分（转入后检查）",
+            "en": "Case section of the report (tests after transfer)"
+          }
+        },
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "转入后：肌酸激酶同工酶（CK-MB）247 ng/mL↑，高敏肌钙蛋白T 16016 ng/L↑（原文未给参考范围）。",
+            "en": "After transfer: CK-MB 247 ng/mL (raised) and high-sensitivity troponin T 16,016 ng/L (raised); the report gives no reference ranges."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "肌酸激酶同工酶（CK-MB）",
+                "en": "Creatine kinase MB (CK-MB)"
+              },
+              "value": 247,
+              "unit": "ng/mL",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              },
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "高敏肌钙蛋白T",
+                "en": "High-sensitivity troponin T"
+              },
+              "value": 16016,
+              "unit": "ng/L",
+              "refText": {
+                "zh-CN": "原文未给参考范围",
+                "en": "reference range not reported"
+              },
+              "flag": "H"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文以“↑”标示两项升高，未给出参考范围。",
+            "en": "The report marks both values as raised (↑) without reference ranges."
+          },
+          "source": {
+            "zh-CN": "原报告病例部分（转入后检查）",
+            "en": "Case section of the report (tests after transfer)"
+          }
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "床旁超声心动图（转入后）",
+        "en": "Bedside echocardiogram (after transfer)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "超声心动图",
+          "心脏彩超",
+          "床旁超声",
+          "心超",
+          "彩超",
+          "心脏超声"
+        ],
+        "en": [
+          "echo",
+          "echocardiogram",
+          "bedside echo",
+          "tte",
+          "cardiac ultrasound",
+          "heart scan"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "turnaroundMinutes": 20,
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "转入后床旁超声心动图（图2）：室间隔瘤形成并破裂，缺损直径 1.52 cm，经破口左向右分流。原报告没有给出心室功能、瓣膜情况或心包积液。",
+            "en": "Bedside echocardiogram after transfer (figure 2): ventricular septal aneurysm with rupture; the defect measures 1.52 cm across, with left-to-right shunting through it. The report gives no ventricular function, valve findings or pericardial findings."
+          },
+          "values": [],
+          "figures": [
+            "fig02"
+          ],
+          "source": {
+            "zh-CN": "原报告病例部分及图2",
+            "en": "Case section of the report and figure 2"
+          },
+          "critical": true
+        },
+        "bridge": {
+          "available": true,
+          "date": {
+            "zh-CN": "ECMO过渡期间",
+            "en": "During the ECMO bridge"
+          },
+          "text": {
+            "zh-CN": "ECMO过渡期间每日床旁超声：ICU团队每天监测心室收缩和室间隔缺损。原报告没有给出逐日的测量结果。",
+            "en": "Daily bedside echo during the ECMO bridge: the ICU team checked ventricular contraction and the septal defect every day. The report gives no daily measurements."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（过渡期监测）",
+            "en": "Case section of the report (monitoring during the bridge)"
+          }
+        }
+      }
+    },
+    {
+      "id": "abg-lactate",
+      "name": {
+        "zh-CN": "血气分析与乳酸",
+        "en": "Blood gas and lactate"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血气",
+          "动脉血气",
+          "乳酸",
+          "血气分析",
+          "ScvO2"
+        ],
+        "en": [
+          "blood gas",
+          "abg",
+          "lactate",
+          "arterial blood gas",
+          "scvo2",
+          "gas"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "turnaroundMinutes": 5,
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": false,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "原报告没有给出任何血气、乳酸或ScvO₂数值。",
+            "en": "The report gives no blood gas, lactate or ScvO₂ values."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        },
+        "workup": {
+          "available": false,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "原报告没有给出任何血气、乳酸或ScvO₂数值。",
+            "en": "The report gives no blood gas, lactate or ScvO₂ values."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        },
+        "bridge": {
+          "available": false,
+          "date": {
+            "zh-CN": "ECMO过渡期间",
+            "en": "During the ECMO bridge"
+          },
+          "text": {
+            "zh-CN": "原报告说明ICU团队依据乳酸和ScvO₂调整ECMO，但没有给出任何数值。",
+            "en": "The report says the ICU team used lactate and ScvO₂ to adjust ECMO but gives no values."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（过渡期监测）",
+            "en": "Case section of the report (monitoring during the bridge)"
+          }
+        }
+      }
+    },
+    {
+      "id": "renal-panel",
+      "name": {
+        "zh-CN": "肾功能与电解质",
+        "en": "Renal function and electrolytes"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肾功能",
+          "电解质",
+          "肌酐",
+          "尿素氮",
+          "血钾"
+        ],
+        "en": [
+          "renal function",
+          "electrolytes",
+          "creatinine",
+          "urea",
+          "potassium",
+          "u and e"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 45,
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": false,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "原报告没有给出肾功能或电解质结果，也没有说明开始CRRT的理由。",
+            "en": "The report gives no renal function or electrolyte results and does not say why CRRT was started."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        },
+        "workup": {
+          "available": false,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "原报告没有给出肾功能或电解质结果，也没有说明开始CRRT的理由。",
+            "en": "The report gives no renal function or electrolyte results and does not say why CRRT was started."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "ct-chest",
+      "name": {
+        "zh-CN": "胸部CT（外出检查）",
+        "en": "Chest CT (off the unit)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸部CT",
+          "CT",
+          "CTA",
+          "肺动脉CTA",
+          "做个CT"
+        ],
+        "en": [
+          "ct",
+          "chest ct",
+          "ct scan",
+          "ctpa",
+          "ct angiogram"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "turnaroundMinutes": 30,
+      "risk": "moderate",
+      "value": "low-value",
+      "results": {
+        "initial": {
+          "available": false,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "原报告没有做这项检查。对机械通气、心功能持续恶化的患者，外出做CT增加转运风险；新发杂音的原因应先由床旁超声回答。",
+            "en": "Not done in the report. For a ventilated patient whose cardiac function is failing, a trip to CT adds transport risk, and the cause of a new murmur is answered first by bedside echo."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        },
+        "workup": {
+          "available": false,
+          "date": {
+            "zh-CN": "转入本院ICU后",
+            "en": "After transfer to this ICU"
+          },
+          "text": {
+            "zh-CN": "原报告没有做这项检查。对机械通气、心功能持续恶化的患者，外出做CT增加转运风险；新发杂音的原因应先由床旁超声回答。",
+            "en": "Not done in the report. For a ventilated patient whose cardiac function is failing, a trip to CT adds transport risk, and the cause of a new murmur is answered first by bedside echo."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告未记录",
+            "en": "Not recorded in the report"
+          }
+        }
+      }
+    },
+    {
+      "id": "bridge-record",
+      "name": {
+        "zh-CN": "ICU病程与多学科讨论记录",
+        "en": "ICU course and multidisciplinary discussion record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "病程记录",
+          "ICU病程",
+          "多学科讨论",
+          "会诊记录",
+          "MDT记录"
+        ],
+        "en": [
+          "icu course",
+          "progress notes",
+          "mdt record",
+          "multidisciplinary discussion",
+          "team notes",
+          "icu record"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "essential",
+      "results": {
+        "bridge": {
+          "available": true,
+          "date": {
+            "zh-CN": "ECMO过渡期间",
+            "en": "During the ECMO bridge"
+          },
+          "text": {
+            "zh-CN": "转入ICU后的处理（原报告）：继续机械通气，并予CRRT、IABP联合VA-ECMO循环支持，迅速组织多学科讨论。心血管外科：早期VSR修补手术死亡率高，建议待穿孔边缘稳定及瘢痕化后（4–6 周）再择期修补，期间持续ECMO过渡。心内科：目前暂无PCI指征，也不具备介入封堵VSR的条件。过渡期间，ICU团队每日以床旁超声监测心室收缩及室间隔缺损，并根据ScvO₂、乳酸、前后负荷、心脏收缩力、主动脉瓣开放及上、下半身血流供应等情况动态调整ECMO参数；作者称其血流动力学变化复杂（图3）。原报告没有给出任何具体参数、流量或监测数值。",
+            "en": "ICU course after transfer (as reported): mechanical ventilation continued; CRRT and circulatory support with an IABP plus VA-ECMO were started, and a multidisciplinary discussion was convened at once. Cardiovascular surgery: early VSR repair carries a high operative mortality, so they advised elective repair once the margins of the perforation had stabilised and scarred (4–6 weeks), with ECMO bridging meanwhile. Cardiology: no indication for PCI at present, and no conditions for percutaneous closure of the VSR. During the bridge the ICU team checked ventricular contraction and the septal defect by bedside echo every day and adjusted the ECMO settings to ScvO₂, lactate, preload and afterload, contractility, aortic-valve opening and the blood supply to the upper and lower body; the authors describe the haemodynamics as complex (figure 3). The report gives no settings, flows or monitoring values."
+          },
+          "values": [],
+          "figures": [
+            "fig03"
+          ],
+          "note": {
+            "zh-CN": "图3是原报告讨论中的血流示意图，不是患者的检查图像：标出VA-ECMO支持下主动脉瓣关闭、三尖瓣反流，收缩期经穿孔左向右分流、舒张期右向左分流，以及上、下半身两路体循环。",
+            "en": "Figure 3 is the report's schematic of blood flow, not an image of the patient: on VA-ECMO it marks a closed aortic valve and tricuspid regurgitation, systolic left-to-right and diastolic right-to-left flow through the defect, and separate upper- and lower-body circulations."
+          },
+          "source": {
+            "zh-CN": "原报告病例部分及图3",
+            "en": "Case section of the report and figure 3"
+          }
+        },
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "ECMO过渡期间",
+            "en": "During the ECMO bridge"
+          },
+          "text": {
+            "zh-CN": "转入ICU后的处理（原报告）：继续机械通气，并予CRRT、IABP联合VA-ECMO循环支持，迅速组织多学科讨论。心血管外科：早期VSR修补手术死亡率高，建议待穿孔边缘稳定及瘢痕化后（4–6 周）再择期修补，期间持续ECMO过渡。心内科：目前暂无PCI指征，也不具备介入封堵VSR的条件。过渡期间，ICU团队每日以床旁超声监测心室收缩及室间隔缺损，并根据ScvO₂、乳酸、前后负荷、心脏收缩力、主动脉瓣开放及上、下半身血流供应等情况动态调整ECMO参数；作者称其血流动力学变化复杂（图3）。原报告没有给出任何具体参数、流量或监测数值。",
+            "en": "ICU course after transfer (as reported): mechanical ventilation continued; CRRT and circulatory support with an IABP plus VA-ECMO were started, and a multidisciplinary discussion was convened at once. Cardiovascular surgery: early VSR repair carries a high operative mortality, so they advised elective repair once the margins of the perforation had stabilised and scarred (4–6 weeks), with ECMO bridging meanwhile. Cardiology: no indication for PCI at present, and no conditions for percutaneous closure of the VSR. During the bridge the ICU team checked ventricular contraction and the septal defect by bedside echo every day and adjusted the ECMO settings to ScvO₂, lactate, preload and afterload, contractility, aortic-valve opening and the blood supply to the upper and lower body; the authors describe the haemodynamics as complex (figure 3). The report gives no settings, flows or monitoring values."
+          },
+          "values": [],
+          "figures": [
+            "fig03"
+          ],
+          "note": {
+            "zh-CN": "图3是原报告讨论中的血流示意图，不是患者的检查图像：标出VA-ECMO支持下主动脉瓣关闭、三尖瓣反流，收缩期经穿孔左向右分流、舒张期右向左分流，以及上、下半身两路体循环。",
+            "en": "Figure 3 is the report's schematic of blood flow, not an image of the patient: on VA-ECMO it marks a closed aortic valve and tricuspid regurgitation, systolic left-to-right and diastolic right-to-left flow through the defect, and separate upper- and lower-body circulations."
+          },
+          "source": {
+            "zh-CN": "原报告病例部分及图3",
+            "en": "Case section of the report and figure 3"
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅转出与结局记录",
+        "en": "Review the transfer-out and outcome record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "结局",
+          "随访",
+          "转出记录",
+          "转归",
+          "最后怎么样"
+        ],
+        "en": [
+          "outcome",
+          "follow-up",
+          "followup",
+          "transfer out",
+          "what happened to her"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "病情较前稳定后",
+            "en": "Once more stable"
+          },
+          "text": {
+            "zh-CN": "原报告结局：经本院ICU及心脏科团队积极治疗后，病情较前稳定，为下一步手术修补创造了机会，最终顺利转回原就诊医院继续下一阶段治疗。报告没有说明转回时是否仍在ECMO或IABP支持下、原医院的心外科及ECMO条件、室间隔缺损是否以及何时修补、ECMO持续多久，也没有说明之后的存活情况。",
+            "en": "Reported outcome: after intensive treatment by the ICU and cardiac teams her condition became more stable than before, creating an opportunity for later surgical repair, and she was transferred back to the referring hospital for the next stage of treatment. The report does not say whether she was still on ECMO or the IABP at transfer, what cardiac surgery or ECMO service the referring hospital offers, whether or when the septal defect was repaired, how long ECMO ran, or how she fared afterwards."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原报告病例部分（结局）",
+            "en": "Case section of the report (outcome)"
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "ecg",
+        "ifMatches": "外院|转院|首诊|那边|之前|referral|outside|firsthospital|referring|previous|transfer",
+        "remove": [
+          "ecg"
+        ],
+        "add": [
+          "ecg-referral"
+        ]
+      },
+      {
+        "ifHas": "echo",
+        "ifMatches": "外院|转院|首诊|那边|之前|referral|outside|firsthospital|referring|previous|transfer",
+        "remove": [
+          "echo"
+        ],
+        "add": [
+          "referral-echo"
+        ]
+      }
+    ],
+    "exact": {},
+    "warnings": [
+      {
+        "investigation": "echo",
+        "ifMatches": ".*",
+        "message": {
+          "zh-CN": "床旁超声心动图在下一阶段开放：请先在会诊板上就她病情恶化的机制作出判断（决策1）。",
+          "en": "The bedside echocardiogram opens in the next stage: first commit on the case board to what explains her deterioration (decision 1)."
+        },
+        "unless": {
+          "attempted": "diagnosis"
+        }
+      },
+      {
+        "investigation": "referral-echo",
+        "ifMatches": ".*",
+        "message": {
+          "zh-CN": "外院超声报告在下一阶段开放：请先在会诊板上就她病情恶化的机制作出判断（决策1）。",
+          "en": "The first hospital's echo report opens in the next stage: first commit on the case board to what explains her deterioration (decision 1)."
+        },
+        "unless": {
+          "attempted": "diagnosis"
+        }
+      },
+      {
+        "investigation": "xray",
+        "ifMatches": "床旁|复查|新拍|portable|repeat|new|bedside",
+        "message": {
+          "zh-CN": "病历中只有外院的胸片；原报告没有记录转入后的胸片。",
+          "en": "Only the first hospital's chest film is on record; the report describes no chest film after transfer."
+        }
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "ventilation",
+      "name": {
+        "zh-CN": "继续有创机械通气",
+        "en": "Continue invasive mechanical ventilation"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "呼吸机",
+          "机械通气",
+          "继续通气",
+          "通气支持",
+          "呼吸支持",
+          "有创通气"
+        ],
+        "en": [
+          "ventilator",
+          "mechanical ventilation",
+          "continue ventilation",
+          "ventilatory support",
+          "keep her ventilated",
+          "invasive ventilation"
+        ]
+      },
+      "dose": {
+        "zh-CN": "经人工气道继续有创机械通气；参数按ICU常规设定，并根据血气和氧合调整。",
+        "en": "Continue invasive ventilation through her artificial airway; settings per the ICU protocol, adjusted to blood gases and oxygenation."
+      },
+      "requires": [
+        "ventilator"
+      ],
+      "risk": "low",
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "呼吸机继续工作。原报告只记录转入后“继续机械通气”，没有给出呼吸机参数或血气结果。",
+        "en": "Ventilation continues. The report records only that mechanical ventilation was continued after transfer; it gives no ventilator settings or blood gases."
+      }
+    },
+    {
+      "id": "vasoactive",
+      "name": {
+        "zh-CN": "血管活性药物泵入（升压药 ± 正性肌力药）",
+        "en": "Vasoactive infusion (vasopressor ± inotrope)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "血管活性药",
+          "升压药",
+          "去甲肾上腺素",
+          "正性肌力药",
+          "多巴酚丁胺",
+          "强心药"
+        ],
+        "en": [
+          "vasoactive",
+          "vasopressor",
+          "noradrenaline",
+          "norepinephrine",
+          "inotrope",
+          "dobutamine",
+          "pressors"
+        ]
+      },
+      "dose": {
+        "zh-CN": "去甲肾上腺素经输液泵持续泵入（首选中心静脉），按灌注目标滴定（平均动脉压 ≥ 65 mmHg、乳酸、尿量）；心排血量仍低时加用正性肌力药（如多巴酚丁胺）。",
+        "en": "Noradrenaline by continuous infusion pump (central line preferred), titrated to perfusion targets (MAP ≥ 65 mmHg, lactate, urine output); add an inotrope such as dobutamine if cardiac output stays low."
+      },
+      "requires": [
+        "infusion-pump",
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "泵入已开始。原报告没有写明她用了哪些血管活性药及剂量；其讨论部分建议尽早使用血管活性药，并及早评估机械循环支持。",
+        "en": "The infusion is running. The report does not name the vasoactive drugs or doses she received; its discussion advises starting vasoactive drugs early and assessing mechanical support early."
+      }
+    },
+    {
+      "id": "iabp",
+      "name": {
+        "zh-CN": "主动脉内球囊反搏（IABP）",
+        "en": "Intra-aortic balloon pump (IABP)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "IABP",
+          "球囊反搏",
+          "主动脉球囊",
+          "主动脉内球囊反搏",
+          "反搏"
+        ],
+        "en": [
+          "iabp",
+          "balloon pump",
+          "intra-aortic balloon",
+          "counterpulsation",
+          "aortic balloon pump"
+        ]
+      },
+      "dose": {
+        "zh-CN": "经股动脉置入，1:1反搏；置入后确认球囊位置，监测下肢灌注和出血。",
+        "en": "Femoral insertion, 1:1 counterpulsation; confirm the balloon position after insertion and watch leg perfusion and bleeding."
+      },
+      "requires": [],
+      "risk": "moderate",
+      "indicatedWhen": {
+        "any": [
+          {
+            "read": "echo"
+          },
+          {
+            "read": "referral-echo"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "IABP开始反搏。原报告记录转入后予IABP联合ECMO循环支持，没有给出置入时间、参数或并发症。",
+        "en": "The balloon pump is counterpulsing. The report records an IABP together with ECMO after transfer, without timing, settings or complications."
+      }
+    },
+    {
+      "id": "va-ecmo",
+      "name": {
+        "zh-CN": "静脉-动脉体外膜肺氧合（VA-ECMO）",
+        "en": "Venoarterial ECMO (VA-ECMO)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "ECMO",
+          "VA-ECMO",
+          "体外膜肺",
+          "体外膜肺氧合",
+          "体外循环支持",
+          "膜肺"
+        ],
+        "en": [
+          "ecmo",
+          "va-ecmo",
+          "va ecmo",
+          "extracorporeal membrane oxygenation",
+          "venoarterial ecmo",
+          "ecls"
+        ]
+      },
+      "dose": {
+        "zh-CN": "由ECMO团队置管并启动；初始流量 50–70 mL/kg/min，以平均动脉压 > 65 mmHg、SvO₂ > 60% 为目标，避免流量过高加重左心室后负荷；按方案抗凝，每日床旁超声复查。",
+        "en": "Cannulation and start by the ECMO team; initial flow 50–70 mL/kg/min aiming for MAP > 65 mmHg and SvO₂ > 60 %, avoiding flows high enough to raise LV afterload; anticoagulation per protocol and a daily bedside echo."
+      },
+      "requires": [],
+      "risk": "high",
+      "indicatedWhen": {
+        "any": [
+          {
+            "read": "echo"
+          },
+          {
+            "read": "referral-echo"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "ECMO开始运转。原报告记录转入后予VA-ECMO（联合IABP）循环支持，没有给出置管方式、流量、抗凝方案或并发症；作者强调ECMO只是过渡，不是根治。",
+        "en": "ECMO is running. The report records VA-ECMO with an IABP after transfer, without cannulation, flows, anticoagulation or complications; the authors stress that ECMO is a bridge, not the definitive treatment."
+      }
+    },
+    {
+      "id": "crrt",
+      "name": {
+        "zh-CN": "连续性肾脏替代治疗（CRRT）",
+        "en": "Continuous renal replacement therapy (CRRT)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "CRRT",
+          "床旁血滤",
+          "血液滤过",
+          "连续性血液净化",
+          "肾脏替代"
+        ],
+        "en": [
+          "crrt",
+          "haemofiltration",
+          "hemofiltration",
+          "renal replacement",
+          "cvvh",
+          "filter"
+        ]
+      },
+      "dose": {
+        "zh-CN": "经透析导管行CRRT，超滤量与治疗剂量按液体平衡和电解质目标设定（ICU常规）。",
+        "en": "CRRT through a dialysis catheter, with ultrafiltration and dose set to fluid-balance and electrolyte targets (ICU protocol)."
+      },
+      "requires": [
+        "dialysis"
+      ],
+      "risk": "moderate",
+      "response": {
+        "zh-CN": "CRRT开始运转。原报告记录转入后予CRRT，但没有给出肾功能、尿量或液体平衡等开始的理由。",
+        "en": "CRRT is running. The report records CRRT after transfer but gives no reason for it — no renal function, urine output or fluid balance."
+      }
+    },
+    {
+      "id": "consult-cardiac-surgery",
+      "name": {
+        "zh-CN": "请心外科紧急会诊（心脏团队）",
+        "en": "Urgent cardiac surgery consultation (Heart Team)"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "心外科",
+          "心脏外科",
+          "心外会诊",
+          "外科会诊",
+          "心脏团队",
+          "请心外"
+        ],
+        "en": [
+          "cardiac surgery",
+          "cardiothoracic surgery",
+          "surgical consult",
+          "heart team",
+          "call the surgeons",
+          "cardiac surgeon"
+        ]
+      },
+      "dose": {
+        "zh-CN": "电话请心外科紧急会诊，到床旁评估并参加多学科讨论。",
+        "en": "Phone cardiac surgery for an urgent bedside review and the multidisciplinary discussion."
+      },
+      "requires": [],
+      "risk": "none",
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "心外科医生到床旁，与你一起复核转院资料和床旁检查，参加多学科讨论。",
+        "en": "The cardiac surgeon comes to the bedside, goes through the transfer records and the bedside findings with you and joins the multidisciplinary discussion."
+      }
+    },
+    {
+      "id": "consult-cardiology",
+      "name": {
+        "zh-CN": "请心内科（介入）会诊",
+        "en": "Interventional cardiology consultation"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "心内科",
+          "心内会诊",
+          "介入科",
+          "心血管内科",
+          "请心内",
+          "介入医生"
+        ],
+        "en": [
+          "cardiology",
+          "cardiologist",
+          "interventional cardiology",
+          "cardiology consult",
+          "call cardiology"
+        ]
+      },
+      "dose": {
+        "zh-CN": "电话请心内科介入医生会诊，复核造影并参加多学科讨论。",
+        "en": "Phone the interventional cardiologist to review the angiogram and join the multidisciplinary discussion."
+      },
+      "requires": [],
+      "risk": "none",
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "心内科医生会诊，与你一起复核外院造影和床旁检查，参加多学科讨论。",
+        "en": "The cardiologist reviews the outside angiogram and the bedside findings with you and joins the multidisciplinary discussion."
+      }
+    },
+    {
+      "id": "transfer-back",
+      "name": {
+        "zh-CN": "转回原就诊医院继续治疗",
+        "en": "Transfer back to the referring hospital"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "转回原医院",
+          "转回外院",
+          "回原医院",
+          "转出",
+          "转院回去"
+        ],
+        "en": [
+          "transfer back",
+          "transfer to the referring hospital",
+          "send her back",
+          "repatriate",
+          "transfer out"
+        ]
+      },
+      "dose": {
+        "zh-CN": "病情较前稳定后，与原医院确认接收团队、心外科及ECMO条件后再转回。",
+        "en": "Once she is more stable, transfer back after confirming the receiving team, cardiac surgery and ECMO capability with the referring hospital."
+      },
+      "requires": [],
+      "risk": "moderate",
+      "contraindicatedWhen": {
+        "any": [
+          {
+            "phase": "initial"
+          },
+          {
+            "phase": "workup"
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "病变尚未明确、循环尚未稳定就转出，途中恶化的风险极高；指南要求机械并发症患者在具备心外科能力的中心处理（ACC/AHA 2025 ACS，Ⅰ类）。",
+        "en": "Moving her before the lesion is defined and her circulation is supported risks deterioration in transit; guidance keeps patients with a mechanical complication at a centre with cardiac surgical expertise (ACC/AHA 2025 ACS, Class 1)."
+      },
+      "response": {
+        "zh-CN": "已提出转院申请：转出前需与原医院确认接收团队、心外科及ECMO条件。",
+        "en": "Transfer request made: the receiving team, cardiac surgery and ECMO capability at the referring hospital must be confirmed before she moves."
+      }
+    },
+    {
+      "id": "fluid-bolus",
+      "name": {
+        "zh-CN": "晶体液快速补液 500 mL",
+        "en": "Crystalloid bolus 500 mL"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "补液",
+          "快速补液",
+          "扩容",
+          "生理盐水",
+          "液体复苏",
+          "冲击补液"
+        ],
+        "en": [
+          "fluid bolus",
+          "fluids",
+          "saline bolus",
+          "fluid challenge",
+          "crystalloid",
+          "volume"
+        ]
+      },
+      "dose": {
+        "zh-CN": "0.9% 氯化钠 500 mL 静脉快速输注（15 分钟）。",
+        "en": "0.9 % sodium chloride 500 mL IV over 15 min."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "外院胸片已有肺水肿，心功能还在恶化：快速补液只会加重肺淤血和心衰，并不能纠正低心排。",
+        "en": "The first hospital's chest film already showed pulmonary oedema and her heart is failing: a bolus deepens the congestion without fixing the low output."
+      },
+      "response": {
+        "zh-CN": "补液已经输上。",
+        "en": "The bolus is running."
+      }
+    },
+    {
+      "id": "repeat-lysis",
+      "name": {
+        "zh-CN": "再次替奈普酶溶栓",
+        "en": "Repeat tenecteplase (second fibrinolytic dose)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "再次溶栓",
+          "重复溶栓",
+          "替奈普酶",
+          "TNK",
+          "第二次溶栓",
+          "再溶一次"
+        ],
+        "en": [
+          "repeat lysis",
+          "tenecteplase",
+          "tnk",
+          "repeat thrombolysis",
+          "second lytic",
+          "lyse again"
+        ]
+      },
+      "dose": {
+        "zh-CN": "替奈普酶按体重单次静脉推注（第二次）。",
+        "en": "Tenecteplase single weight-based IV bolus (a second dose)."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "再次溶栓不是处理溶栓失败的方法——ESC 2023 ACS指南对溶栓失败的处理是补救性PCI——而且会在任何有创操作或手术前增加出血风险。新出现的杂音伴心衰，首先需要明确原因。",
+        "en": "A second fibrinolytic dose is not how failed reperfusion is treated — ESC 2023 uses rescue PCI — and it adds bleeding risk before any invasive procedure or surgery. A new murmur with worsening heart failure needs a diagnosis first."
+      },
+      "response": {
+        "zh-CN": "药已推注。",
+        "en": "Given."
+      }
+    },
+    {
+      "id": "request-multivessel-pci",
+      "name": {
+        "zh-CN": "申请急诊多支血管PCI",
+        "en": "Request emergency multivessel PCI"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "多支PCI",
+          "急诊PCI",
+          "放支架",
+          "三支都放支架",
+          "冠脉介入治疗",
+          "血运重建"
+        ],
+        "en": [
+          "multivessel pci",
+          "emergency pci",
+          "stent all three",
+          "angioplasty now",
+          "revascularise now",
+          "pci"
+        ]
+      },
+      "dose": {
+        "zh-CN": "请心内科立即对所有病变血管行PCI。",
+        "en": "Ask cardiology to stent every diseased vessel now."
+      },
+      "requires": [],
+      "risk": "moderate",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "心肌梗死合并心源性休克时，即刻多支血管PCI的结局不如只处理罪犯血管（CULPRIT-SHOCK试验）；本例心内科判断当时没有PCI指征。需要血运重建时，通常与根治性治疗一并计划。",
+        "en": "In infarct-related cardiogenic shock immediate multivessel PCI has done worse than culprit-only PCI (the CULPRIT-SHOCK trial), and here cardiology judged there was no PCI indication; when revascularisation is needed it is planned with the definitive treatment."
+      },
+      "response": {
+        "zh-CN": "心内科医生复核造影后表示：目前没有PCI指征。",
+        "en": "The cardiologist reviews the angiogram and says there is no indication for PCI at present."
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-handover",
+      "title": {
+        "zh-CN": "向家属了解病程",
+        "en": "Take the history from her relative"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
+      },
+      "hint": {
+        "zh-CN": "她不能说话：问陪同的家属她怎么开始不舒服、外院给了什么治疗、之后发生了什么变化；也要问清从发病到溶栓隔了多久，问不到的就记为未知。",
+        "en": "She cannot talk, so ask her relative how it started, what the first hospital gave her and what changed afterwards — and how long passed between the start of the pain and the clot-busting drug; whatever cannot be answered stays unknown."
+      },
+      "guidance": {
+        "zh-CN": "到床旁和家属交谈，重建外院的病程时间线。",
+        "en": "Talk to the relative at the bedside and rebuild the timeline of the first hospital's course."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "lysis-timing"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-first-look",
+      "title": {
+        "zh-CN": "查看患者并调阅外院资料",
+        "en": "Examine her and review the transfer records"
+      },
+      "short": {
+        "zh-CN": "查体与资料",
+        "en": "Exam and records"
+      },
+      "hint": {
+        "zh-CN": "先看她身上的支持设备、听心脏；再到护士站调阅外院的心电图、胸片和心肌酶，想想它们怎样与病程对得上。",
+        "en": "Look at the support she is on and listen to her heart, then read the first hospital's ECG, chest film and enzymes at the nurses' station and see how they fit the story."
+      },
+      "guidance": {
+        "zh-CN": "床旁查体，然后在ICU护士站电脑上调阅转院资料。",
+        "en": "Examine her at the bedside, then open the transfer records on the ICU station computer."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "cardiac"
+          },
+          {
+            "read": "ecg-referral",
+            "phase": "initial"
+          },
+          {
+            "read": "xray",
+            "phase": "initial"
+          },
+          {
+            "read": "enzymes-referral"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "all": [
+              {
+                "examined": "general"
+              },
+              {
+                "examined": "cardiac"
+              }
+            ]
+          },
+          "target": "patient"
+        },
+        {
+          "target": "records"
+        }
+      ]
+    },
+    {
+      "id": "obj-mechanism",
+      "title": {
+        "zh-CN": "解释病情为什么恶化",
+        "en": "Explain why she deteriorated"
+      },
+      "short": {
+        "zh-CN": "机制",
+        "en": "Mechanism"
+      },
+      "hint": {
+        "zh-CN": "心肌梗死后几天内，哪些情况会让人新出现收缩期杂音并很快心衰？前壁和下壁梗死各自更容易出现哪一种？哪项床旁检查能把它们分开？",
+        "en": "In the days after an infarct, what can produce a new systolic murmur with rapid heart failure? Which is more typical after an anterior and which after an inferior infarct — and which bedside test separates them?"
+      },
+      "guidance": {
+        "zh-CN": "到会诊板作答第1项决策。",
+        "en": "Answer decision 1 on the case board."
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-support",
+      "title": {
+        "zh-CN": "明确病因并稳定病情",
+        "en": "Confirm the cause and stabilise her"
+      },
+      "short": {
+        "zh-CN": "确认与稳定",
+        "en": "Confirm and stabilise"
+      },
+      "hint": {
+        "zh-CN": "做床旁心电图、查心肌损伤标志物、床旁超声看清病变；再想清楚分流对她的循环意味着什么，各种支持手段能做到什么、做不到什么。",
+        "en": "Record an ECG, send the cardiac markers and get a bedside echo of the lesion. Then think through what the shunt does to her circulation, and what each kind of support can and cannot do."
+      },
+      "guidance": {
+        "zh-CN": "床旁检查后，在会诊板作答第2项决策，并开始相应支持治疗。",
+        "en": "After the bedside tests, answer decision 2 on the case board and start the support you choose."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "ecg"
+          },
+          {
+            "read": "markers"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          },
+          {
+            "decided": "support"
+          },
+          {
+            "intervened": "ventilation"
+          },
+          {
+            "intervened": "vasoactive"
+          },
+          {
+            "any": [
+              {
+                "intervened": "iabp"
+              },
+              {
+                "intervened": "va-ecmo"
+              }
+            ]
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "ecg"
+          },
+          "target": "ecg-12lead"
+        },
+        {
+          "unless": {
+            "read": "echo",
+            "phase": "workup"
+          },
+          "target": "echocardiography"
+        },
+        {
+          "unless": {
+            "decided": "support"
+          },
+          "target": "board"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-heart-team",
+      "title": {
+        "zh-CN": "与心脏团队商定后续方案",
+        "en": "Agree the definitive plan with the Heart Team"
+      },
+      "short": {
+        "zh-CN": "心脏团队",
+        "en": "Heart Team"
+      },
+      "hint": {
+        "zh-CN": "请心外科和心内科会诊，复核外院造影。想一想：早手术和等待各有什么风险？哪些情况会改变你的时间表？",
+        "en": "Call cardiac surgery and cardiology and review the outside angiogram. What are the risks of operating early, and of waiting — and what would make you change the timetable?"
+      },
+      "guidance": {
+        "zh-CN": "会诊后在会诊板作答第3项决策。",
+        "en": "After the consultations, answer decision 3 on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "intervened": "consult-cardiac-surgery"
+          },
+          {
+            "intervened": "consult-cardiology"
+          },
+          {
+            "read": "angiography"
+          },
+          {
+            "decided": "management"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "angiography"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-bridge",
+      "title": {
+        "zh-CN": "跟进ICU病程并复盘原报告结局",
+        "en": "Follow her ICU course and review the reported outcome"
+      },
+      "short": {
+        "zh-CN": "病程与结局",
+        "en": "Course and outcome"
+      },
+      "hint": {
+        "zh-CN": "想想VA-ECMO的回血对左心室意味着什么，每天的超声该看哪些表现；然后调阅ICU病程记录和转出记录，对照报告团队实际怎么做的。",
+        "en": "Think about what the ECMO return does to the left ventricle and what the daily echo should look for; then read the ICU course record and the transfer-out record to see what the report's team actually did."
+      },
+      "guidance": {
+        "zh-CN": "作答第4项决策，再在护士站调阅病程记录和结局记录。",
+        "en": "Answer decision 4, then read the course and outcome records at the station."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "lv-unloading"
+          },
+          {
+            "read": "bridge-record",
+            "phase": "bridge"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "decided": "lv-unloading"
+          },
+          "target": "board"
+        },
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "转院资料显示：前壁STEMI溶栓后病情加重，外院查体发现新的收缩期杂音，胸片肺水肿。在看任何超声之前：最可能的机制是什么？应怎样确认？",
+        "en": "The transfer records describe an anterior STEMI treated with thrombolysis, then deterioration with a new systolic murmur and pulmonary oedema on the chest film. Before you look at any echo: what is the most likely mechanism, and how do you confirm it?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "examined": "cardiac"
+          },
+          {
+            "read": "ecg-referral",
+            "phase": "initial"
+          },
+          {
+            "read": "xray",
+            "phase": "initial"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先向家属问清溶栓后的变化、听心脏，并调阅外院心电图和胸片。",
+        "en": "First ask the relative what changed after the thrombolysis, listen to the heart and read the first hospital's ECG and chest film."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "心肌梗死后机械并发症——前壁梗死后最可能是室间隔破裂，乳头肌断裂是主要的鉴别——立即床旁超声心动图确认",
+            "en": "A mechanical complication — after this anterior infarct most likely a ventricular septal rupture, with papillary-muscle rupture the main alternative — to be confirmed now by bedside echocardiography"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。心肌梗死后出现新的收缩期杂音并伴心衰，就要按机械并发症处理，直到超声排除（原报告讨论；ESC 2023 ACS：疑有机械并发症或心源性休克时行急诊经胸超声）。前壁梗死的室间隔破裂多位于心尖部；乳头肌断裂多累及只有单支供血的后内侧乳头肌，常见于下壁或后壁梗死。超声能直接看到缺损和跨隔分流，或连枷样瓣叶和重度二尖瓣反流。",
+            "en": "Correct. A new systolic murmur with heart failure after an infarct is a mechanical complication until echo proves otherwise (the report's discussion; ESC 2023 ACS: emergency transthoracic echo when a mechanical complication or cardiogenic shock is suspected). Septal rupture after an anterior infarct is usually apical; papillary-muscle rupture usually involves the posteromedial muscle, which has a single blood supply, and so follows inferior or posterior infarcts. Echo shows the defect and the flow across the septum — or a flail leaflet with severe mitral regurgitation."
+          }
+        },
+        {
+          "id": "reocclusion",
+          "text": {
+            "zh-CN": "溶栓失败、梗死相关血管再闭塞——再给一次溶栓药并复查心电图",
+            "en": "Failed reperfusion with re-occlusion — give a second dose of the fibrinolytic and repeat the ECG"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。再闭塞会加重缺血，缺血性二尖瓣反流也可带来杂音，但梗死后新出现的收缩期杂音伴急性心衰，在超声排除之前都要按结构性破裂处理。即使确实溶栓失败，ESC 2023 ACS指南的处理也是补救性PCI，而不是再次溶栓；第二次溶栓还会在置管和手术前增加出血风险。",
+            "en": "No. Re-occlusion worsens ischaemia, and ischaemic mitral regurgitation can add a murmur, but a new systolic murmur with acute heart failure after an infarct must be treated as a structural rupture until echo excludes it. Even when fibrinolysis has failed, ESC 2023 treats it with rescue PCI, not a second lytic — which would also add bleeding risk before cannulation and surgery."
+          }
+        },
+        {
+          "id": "papillary",
+          "text": {
+            "zh-CN": "乳头肌断裂最可能，因为它典型地见于前壁梗死",
+            "en": "Papillary-muscle rupture is the likeliest cause, because it typically follows an anterior infarct"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "鉴别方向对，理由错了。乳头肌断裂多累及后内侧乳头肌（单支供血），通常发生在下壁或后壁梗死；本例是V2–V5导联ST段抬高的前壁梗死，室间隔破裂可能性更大。两者都表现为新发收缩期杂音和急性肺水肿，只有超声能区分。",
+            "en": "Right differential, wrong reason. Papillary-muscle rupture usually involves the posteromedial muscle, which has a single blood supply, and follows inferior or posterior infarcts. This is an anterior infarct (ST elevation in V2–V5), which makes a septal rupture more likely. Both give a new systolic murmur and acute pulmonary oedema; only echo tells them apart."
+          }
+        },
+        {
+          "id": "free-wall",
+          "text": {
+            "zh-CN": "心室游离壁破裂并心包填塞——先行心包穿刺，不必等影像",
+            "en": "Free-wall rupture with tamponade — needle pericardiocentesis before any imaging"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。游离壁破裂通常表现为突发心包填塞、低血压和无脉电活动，而不是新出现的响亮收缩期杂音和肺水肿。在没有影像证据时盲目心包穿刺有风险；床旁超声能在几分钟内看清有无心包积液、室间隔缺损或瓣膜损伤。",
+            "en": "No. Free-wall rupture usually presents as sudden tamponade with hypotension and pulseless electrical activity, not a new loud systolic murmur with pulmonary oedema. A blind pericardiocentesis without imaging is hazardous; a bedside echo shows within minutes whether there is an effusion, a septal defect or valve damage."
+          }
+        }
+      ]
+    },
+    {
+      "id": "support",
+      "prompt": {
+        "zh-CN": "床旁超声证实室间隔破裂（缺损 1.52 cm，左向右分流）。她仍在机械通气，外院治疗后心功能持续恶化。此刻的循环支持方案是什么？",
+        "en": "The bedside echo confirms a septal rupture (a 1.52 cm defect with left-to-right shunting). She is still ventilated and her cardiac function has kept deteriorating since the first hospital. What is your circulatory support plan now?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          },
+          {
+            "read": "markers"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先看床旁超声和心肌损伤标志物结果。",
+        "en": "First read the bedside echo and the cardiac markers."
+      },
+      "options": [
+        {
+          "id": "mcs-bridge",
+          "text": {
+            "zh-CN": "立即用血管活性药，并早期机械循环支持作为过渡——IABP，灌注仍不能恢复时加用VA-ECMO——继续机械通气，每日超声评估，在有心外科的中心由心脏团队讨论",
+            "en": "Vasoactive drugs now with early mechanical circulatory support as a bridge — an IABP, adding VA-ECMO if perfusion is not restored — continuing ventilation, with a daily echo and Heart-Team review at a centre with cardiac surgery"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确，这也是原报告团队的做法（继续机械通气，予CRRT、IABP联合VA-ECMO，并迅速多学科讨论）。ACC/AHA 2025 ACS指南：机械并发症应在具备心外科能力的中心处理（Ⅰ类），短期机械循环支持作为手术过渡是合理的（2a类）。ESC 2023 ACS：机械并发症致血流动力学不稳定或休克时应考虑IABP（Ⅱa类）。IABP降低后负荷、减少左向右分流；VA-ECMO同时支持循环和氧合。",
+            "en": "Correct, and it is what the report's team did (ventilation continued; CRRT, an IABP plus VA-ECMO; an immediate multidisciplinary discussion). ACC/AHA 2025: manage a mechanical complication at a centre with cardiac surgical expertise (Class 1); short-term mechanical support is reasonable as a bridge to surgery (Class 2a). ESC 2023: consider an IABP when a mechanical complication causes instability or shock (Class IIa). The IABP lowers afterload and the left-to-right shunt; VA-ECMO supports both circulation and oxygenation."
+          }
+        },
+        {
+          "id": "fluids-first",
+          "text": {
+            "zh-CN": "先快速补液纠正低血压，再决定是否需要其他支持",
+            "en": "Fluid boluses first to correct the low blood pressure, then decide on further support"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。她的胸片已有肺水肿；左向右分流让肺循环和双心室都已负荷过重。补液只会加重肺淤血，不能提高有效心排血量。低灌注要靠血管活性药和机械循环支持来纠正。",
+            "en": "No. Her chest film already shows pulmonary oedema, and the left-to-right shunt has overloaded the lungs and both ventricles. Fluid deepens the congestion without raising effective output; low perfusion is treated with vasoactive drugs and mechanical support."
+          }
+        },
+        {
+          "id": "pci-first",
+          "text": {
+            "zh-CN": "先对三支病变血管行急诊PCI，再评估是否需要支持",
+            "en": "Emergency PCI of all three diseased vessels first, then reassess the need for support"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。开通血管不能关闭室间隔破口。心肌梗死合并心源性休克时，即刻多支血管PCI的结局不如只处理罪犯血管（CULPRIT-SHOCK试验）；本例心内科也判断当时没有PCI指征。需要血运重建时，通常与外科修补一并考虑。",
+            "en": "No. Opening arteries does not close the septal defect. In infarct-related cardiogenic shock immediate multivessel PCI has done worse than culprit-only PCI (the CULPRIT-SHOCK trial), and here cardiology judged there was no PCI indication. When revascularisation is needed it is usually planned with the surgical repair."
+          }
+        },
+        {
+          "id": "vasodilator",
+          "text": {
+            "zh-CN": "用血管扩张剂（如硝普钠）泵入减少分流，暂不需要机械支持",
+            "en": "A vasodilator infusion (such as nitroprusside) to reduce the shunt, with no mechanical support for now"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。降低后负荷确实能减少左向右分流，但前提是血压能够耐受；她外院治疗后心功能仍在恶化，单用血管扩张剂会进一步降低灌注压。IABP能在不降低血压的前提下降低后负荷，这正是机械支持优先的原因。",
+            "en": "No. Lowering afterload does reduce left-to-right shunting, but only when the blood pressure can take it; her cardiac function has kept failing, and a vasodilator alone would drop her perfusion pressure further. An IABP lowers afterload without lowering the pressure — which is why mechanical support comes first."
+          }
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "prompt": {
+        "zh-CN": "心外科和心内科都已会诊，外院造影为三支病变。关于修补的时机和方式，哪项最符合现行指南？",
+        "en": "Cardiac surgery and cardiology have seen her, and the outside angiogram showed three-vessel disease. Which plan for the timing and route of repair best fits current guidance?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "support"
+          },
+          {
+            "intervened": "consult-cardiac-surgery"
+          },
+          {
+            "intervened": "consult-cardiology"
+          },
+          {
+            "read": "angiography"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先请心外科和心内科会诊，并调阅外院造影报告。",
+        "en": "First call cardiac surgery and cardiology and read the outside angiogram report."
+      },
+      "options": [
+        {
+          "id": "heart-team-individualised",
+          "text": {
+            "zh-CN": "由心脏团队个体化决定：在机械循环支持下先稳定，每日重新评估；稳定时可延期修补，支持下仍恶化则提前手术；只有解剖合适时才考虑经皮封堵",
+            "en": "A Heart-Team decision made for her: stabilise on mechanical support and reassess every day — delay the repair while she is stable, operate sooner if she deteriorates on support — and consider percutaneous closure only if the anatomy suits"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。修补时机没有固定答案：原报告引用的数据显示，不修补者死亡率 91.5%，修补者 52.3%；STS数据库中 7 天内修补的死亡率 54.1%，延期修补 18.4%——但延期组本身就是“熬过等待期”的幸存者。ACC/AHA 2025：在有心外科能力的中心处理（Ⅰ类），短期机械支持作为手术过渡（2a类）；AHA 2021科学声明强调多学科个体化决策。",
+            "en": "Correct. There is no fixed answer on timing. The report cites 91.5 % mortality without repair versus 52.3 % with repair, and in the STS database 54.1 % mortality for repair within 7 days versus 18.4 % for later repair — but the later group are, by definition, survivors of the wait. ACC/AHA 2025: care at a centre with cardiac surgical expertise (Class 1) and short-term mechanical support as a bridge to surgery (Class 2a); the AHA 2021 statement stresses an individualised, multidisciplinary decision."
+          }
+        },
+        {
+          "id": "always-immediate",
+          "text": {
+            "zh-CN": "立即手术修补永远最好，因为不修补约 90% 的人会死亡",
+            "en": "Immediate surgical repair is always best, because about 90 % die without repair"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "过度概括。不修补的死亡率确实很高（原报告引用 91.5%），但梗死后头几天坏死心肌脆弱、缝合易撕脱，7 天内修补的死亡率高（STS：54.1%）。机械支持可以先稳定病情，为计划手术争取时间；急诊手术留给支持下仍持续恶化的患者。",
+            "en": "Over-generalised. Mortality without repair is indeed high (the report cites 91.5 %), but in the first days after an infarct the necrotic muscle is friable and sutures tear out, so repair within 7 days carries a high mortality (STS: 54.1 %). Mechanical support can stabilise her and buy time for a planned operation; emergency surgery is for patients who keep deteriorating on support."
+          }
+        },
+        {
+          "id": "always-delay",
+          "text": {
+            "zh-CN": "延期到 4–6 周后再修补永远更安全，现在就把手术日期定下来",
+            "en": "Repair after 4–6 weeks is always safer, so fix the date now"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "过度概括。原报告的外科建议正是等穿孔边缘稳定、瘢痕化后（4–6 周）择期修补，期间ECMO过渡；但“延期更安全”来自幸存者数据，长期VA-ECMO会累积出血、血栓、肢体缺血、溶血和感染等并发症，原报告也承认盲目延迟会因心衰恶化、MODS或脓毒症而失去手术机会。现行指南不设固定间隔：每日评估，恶化时提前手术。",
+            "en": "Over-generalised. This was in fact the report's surgical advice — elective repair once the margins had stabilised and scarred (4–6 weeks), with ECMO bridging. But “later is safer” comes from survivor data: prolonged VA-ECMO accumulates bleeding, thrombosis, limb ischaemia, haemolysis and infection, and the report itself warns that blind delay can lose the chance of surgery to worsening heart failure, multi-organ failure or sepsis. Current guidance sets no fixed interval: reassess daily and operate sooner if she deteriorates."
+          }
+        },
+        {
+          "id": "no-repair",
+          "text": {
+            "zh-CN": "只要ECMO能把她稳定住，缺损就不必修补",
+            "en": "If ECMO keeps her stable, the defect need not be repaired"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。ECMO只是过渡桥梁，不能修补缺损；原报告强调“手术修复缺损才是根治关键”，并引用不修补者死亡率 91.5%。支持的目标是为修补（或在合适时经皮封堵）争取条件，而不是替代它。",
+            "en": "No. ECMO is a bridge and cannot close the defect; the report stresses that surgical repair is the definitive treatment and cites 91.5 % mortality without repair. Support exists to make repair (or, where suitable, percutaneous closure) possible, not to replace it."
+          }
+        },
+        {
+          "id": "device-now",
+          "text": {
+            "zh-CN": "立即经皮封堵作为根治，避免开胸手术",
+            "en": "Immediate percutaneous device closure as the definitive treatment, avoiding surgery"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。急性期破口边缘是坏死组织，封堵器难以稳固，经皮封堵只适合经心脏团队评估、解剖合适的部分患者。本例心内科判断当时不具备介入封堵条件。",
+            "en": "No. In the acute phase the edges of the defect are necrotic and hold a device poorly; percutaneous closure suits only selected patients whose anatomy the Heart Team judges suitable. Here cardiology judged closure was not feasible at the time."
+          }
+        }
+      ]
+    },
+    {
+      "id": "lv-unloading",
+      "prompt": {
+        "zh-CN": "她已在IABP联合VA-ECMO支持下过渡。每日床旁超声时，哪种表现说明ECMO正在加重左心室负荷？首先怎么处理？",
+        "en": "She is now bridged on an IABP plus VA-ECMO. On the daily bedside echo, which finding shows that ECMO is overloading her left ventricle, and what do you do first?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "support"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "phase": "bridge"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先完成循环支持和修补策略两项决策。",
+        "en": "First answer the support and repair-strategy decisions."
+      },
+      "options": [
+        {
+          "id": "closed-av-unload",
+          "text": {
+            "zh-CN": "主动脉瓣持续不开、左心室进行性扩大（伴肺淤血加重）：把ECMO流量降到仍能维持灌注的最低水平，支持左心室射血（正性肌力药、IABP），持续存在时加用主动减负（如Impella或左心引流）",
+            "en": "An aortic valve that stays shut with a dilating left ventricle (and worsening lung congestion): lower the ECMO flow to the least that keeps her perfused, support LV ejection (inotrope, IABP) and add active unloading (such as an Impella or a vent) if it persists"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。VA-ECMO的动脉回血逆向进入主动脉，增加左心室后负荷；左心室射不出血时主动脉瓣不开、心腔扩大，可致肺水肿和心腔内血栓。原报告讨论：流量不宜过高，要保留部分左心功能和搏动性血流、保持主动脉瓣开放，必要时联合IABP或Impella为左心室减负；原报告团队每天据主动脉瓣开放等指标调整ECMO（ELSO 2021 VA-ECMO指南也要求监测左心室扩张）。",
+            "en": "Correct. The ECMO return enters the aorta against the ventricle and raises LV afterload; when the LV cannot eject, the aortic valve stays shut and the cavity dilates, risking pulmonary oedema and intracardiac thrombus. The report's discussion: avoid excessive flow, preserve some LV function and pulsatility, keep the aortic valve opening and add an IABP or Impella to unload the LV when needed — its team adjusted ECMO daily to aortic-valve opening among other markers (ELSO 2021 VA-ECMO guidance also calls for watching for LV distension)."
+          }
+        },
+        {
+          "id": "more-flow",
+          "text": {
+            "zh-CN": "VA-ECMO下主动脉瓣关闭是正常现象，继续提高流量保障器官灌注",
+            "en": "A closed aortic valve is expected on VA-ECMO, so raise the flow further to protect organ perfusion"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。提高流量会进一步升高左心室后负荷，使瓣膜更打不开、左心室更扩张、肺水肿加重。原报告明确提醒：流量设定过高会加重左心室后负荷，应保持主动脉瓣开放。",
+            "en": "No. More flow raises LV afterload further, keeping the valve shut, dilating the ventricle and worsening pulmonary oedema. The report warns explicitly that too high a flow increases LV afterload and that the aortic valve should be kept opening."
+          }
+        },
+        {
+          "id": "stop-iabp",
+          "text": {
+            "zh-CN": "撤掉IABP，有了ECMO就不需要两套装置",
+            "en": "Remove the IABP — with ECMO running, two devices are unnecessary"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。IABP降低左心室后负荷、帮助主动脉瓣开放，正是原报告讨论中列出的左心室减负手段之一（IABP或Impella）。左心室扩张时撤掉它只会让问题更重。",
+            "en": "No. The IABP lowers LV afterload and helps the aortic valve open — it is one of the unloading options the report lists (IABP or Impella). Removing it while the ventricle is distending makes the problem worse."
+          }
+        },
+        {
+          "id": "fluid-fill",
+          "text": {
+            "zh-CN": "快速补液让左心室充盈，主动脉瓣自然就会打开",
+            "en": "Give a fluid bolus to fill the left ventricle so that the valve opens"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。左心室扩张是因为后负荷过高、射不出去，而不是充盈不足；再补液只会加重左心室扩张和肺淤血，而且室间隔破口还会把多余容量分流到右心和肺循环。",
+            "en": "No. The ventricle is distending because it cannot eject against the afterload, not because it is underfilled; more fluid adds to the distension and the lung congestion, and the septal defect shunts the extra volume into the right heart and lungs."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "从家属处重建病程：起病、外院治疗（溶栓）、溶栓后变化、既往史，并追问发病到溶栓的时间",
+        "en": "Rebuilt the course from the relative: onset, the first hospital's treatment (thrombolysis), what changed after it, past history, and the onset-to-lysis interval"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "pmh"
+          },
+          {
+            "asked": "lysis-timing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-first-look",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "床旁查看支持状态并听诊心脏，调阅外院心电图和胸片",
+        "en": "Examined her support and heart at the bedside and read the first hospital's ECG and chest film"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "cardiac"
+          },
+          {
+            "read": "ecg-referral"
+          },
+          {
+            "read": "xray"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-dx",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即判断为心肌梗死后机械并发症（最可能为室间隔破裂）并要求床旁超声确认",
+        "en": "Identified a post-infarction mechanical complication (most likely septal rupture) needing bedside echo, at the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirm",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "转入后完成床旁心电图、心肌损伤标志物和床旁超声心动图",
+        "en": "Completed the bedside ECG, cardiac markers and bedside echocardiogram after transfer"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "ecg"
+          },
+          {
+            "read": "markers"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-support",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即选择血管活性药加机械循环支持过渡，并继续通气、启动IABP和VA-ECMO",
+        "en": "Chose vasoactive drugs with mechanical support as a bridge at the first attempt, and continued ventilation and started the IABP and VA-ECMO"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "support"
+          },
+          {
+            "intervened": "ventilation"
+          },
+          {
+            "intervened": "vasoactive"
+          },
+          {
+            "intervened": "iabp"
+          },
+          {
+            "intervened": "va-ecmo"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "没有给予加重病情的处理：快速补液、再次溶栓或急诊多支血管PCI",
+        "en": "Gave none of the harmful options: a fluid bolus, repeat thrombolysis or emergency multivessel PCI"
+      },
+      "weight": 3,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "fluid-bolus"
+            },
+            {
+              "intervened": "repeat-lysis"
+            },
+            {
+              "intervened": "request-multivessel-pci"
+            }
+          ]
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "support"
+          },
+          {
+            "intervened": "vasoactive"
+          },
+          {
+            "intervened": "iabp"
+          },
+          {
+            "intervened": "va-ecmo"
+          },
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "intervened": "repeat-lysis"
+          },
+          {
+            "intervened": "request-multivessel-pci"
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-heart-team",
+      "domain": "management",
+      "text": {
+        "zh-CN": "请心外科和心内科会诊，并首次作答即选择心脏团队个体化决定修补时机",
+        "en": "Called cardiac surgery and cardiology and chose an individualised Heart-Team timing of repair at the first attempt"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "intervened": "consult-cardiac-surgery"
+          },
+          {
+            "intervened": "consult-cardiology"
+          },
+          {
+            "decidedFirstTry": "management"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-lv-unloading",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即识别VA-ECMO下左心室负荷过重的超声表现并给出减负处理",
+        "en": "Recognised the echo signs of LV overload on VA-ECMO and how to unload it, at the first attempt"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "lv-unloading"
+      }
+    },
+    {
+      "id": "rb-review",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅ICU病程记录和结局记录，对照原报告的实际处理",
+        "en": "Read the ICU course and outcome records to compare the report's actual management with the plan"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "read": "bridge-record"
+          },
+          {
+            "read": "followup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "向家属说明病情、支持治疗和不确定的预后",
+        "en": "Explained the condition, the support and the uncertain outlook to her relative"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "良好表现：先了解家属已经知道什么；用通俗语言解释心肌梗死后心脏中间的隔膜破了一个口、为什么要用呼吸机和机器帮心脏工作（这些机器是过渡，不能修补破口）、为什么手术时机需要权衡；坦率说明风险很高（原报告引用的住院死亡率约 71%）、结局不确定，不作虚假保证；询问她本人以前表达过的意愿；确认家属听懂并留出提问时间。",
+        "en": "Good performance: finds out what the relative already knows; explains in plain words that the wall between the heart's pumping chambers has torn after the heart attack, why a ventilator and machines are supporting her heart (they are a bridge and cannot close the tear) and why the timing of surgery has to be weighed; is honest that the risk is very high (the report cites about 71 % in-hospital mortality) and the outcome uncertain, without false reassurance; asks about any wishes she has expressed; checks understanding and leaves time for questions."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "彭护士（ICU）",
+        "en": "Nurse Peng (ICU)"
+      },
+      "knowledge": {
+        "zh-CN": "ICU交班：外院转入，转运全程机械通气，呼吸机已接在本床；一位家属在床旁。转院资料在ICU护士站电脑上，可调阅外院的心电图、胸片、心肌酶和检查报告。床旁有监护仪、呼吸机和输液泵，ICU内有CRRT机和心电图机；床旁超声机需要从影像科推来。复述医嘱，只报告已出结果的数值，不解读、不作诊断；被问到没有记录的内容（如转入时的血压、用药剂量）时如实说病历里没有。",
+        "en": "ICU handover: transferred in from another hospital, ventilated throughout the transfer and now on this bed's ventilator; a relative is at the bedside. The transfer records are on the ICU station computer — the first hospital's ECG, chest film, enzymes and test reports. At the bed: a monitor, a ventilator and infusion pumps; the unit has a CRRT machine and an ECG cart; a bedside echo machine has to be brought from imaging. Reads orders back, reports values only for results that are back, never interprets or diagnoses, and says plainly when something is not in the record (her transfer blood pressure, drug doses)."
+      }
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "邓医生（ICU主治医师）",
+        "en": "Dr Deng (ICU attending)"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教，只围绕学员已获得的资料提问，例如：“心肌梗死后出现新的收缩期杂音，你首先想到哪几种机械并发症？怎样区分？”“左向右分流会怎样影响肺循环和两个心室？”“为什么这里不补液？”“VA-ECMO的回血对左心室后负荷有什么影响？每天超声要看什么？”“早修补和晚修补各有什么风险？延期修补的数据里有什么偏倚？”“胸痛一天才就诊，溶栓的时间窗你怎么评价？”。可以讲ESC 2023 ACS、ACC/AHA 2025 ACS指南和AHA 2021机械并发症科学声明的相关原则。不提前说出诊断或任何决策的正确选项；不补充病例中没有的数据（转入时生命体征、ECMO参数、是否完成修补均无记录）。",
+        "en": "Socratic teacher who asks only about information the learner already has, e.g. “After an infarct, which mechanical complications cause a new systolic murmur, and how do you tell them apart?”, “What does a left-to-right shunt do to the lungs and the two ventricles?”, “Why no fluid here?”, “What does the ECMO return do to LV afterload, and what should the daily echo look for?”, “What are the risks of early and of late repair, and what bias hides in the late-repair data?”, “She came in after a day of pain — how do you judge the fibrinolysis window?”. May explain the relevant principles of ESC 2023 ACS, ACC/AHA 2025 ACS and the AHA 2021 statement on mechanical complications. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (transfer vital signs, ECMO settings and whether the defect was repaired are not recorded)."
+      },
+      "interprets": [
+        "ecg-referral",
+        "xray",
+        "enzymes-referral",
+        "angiography",
+        "referral-echo",
+        "ecg",
+        "markers",
+        "echo",
+        "bridge-record",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "复盘：心肌梗死后机械并发症与机械循环支持过渡",
+      "en": "Debrief: a mechanical complication after myocardial infarction, bridged on mechanical support"
+    },
+    "conclusion": {
+      "zh-CN": "急性广泛前壁心肌梗死溶栓后并发室间隔破裂（缺损 1.52 cm，左向右分流），心功能进行性恶化；转入后在机械通气基础上予CRRT、IABP联合VA-ECMO过渡，多学科讨论后外科建议 4–6 周后择期修补，心内科认为暂无PCI及介入封堵条件。报告的终点是病情较前稳定后转回原医院；修补是否完成及远期结局未报告。",
+      "en": "A ventricular septal rupture (1.52 cm defect, left-to-right shunt) after thrombolysis for an acute extensive anterior infarction, with progressive cardiac failure. After transfer she was bridged with ventilation, CRRT, an IABP and VA-ECMO; the multidisciplinary discussion produced surgical advice for elective repair after 4–6 weeks, and cardiology found no case for PCI or percutaneous closure. The report ends with her transfer back to the referring hospital once more stable; whether the defect was repaired, and how she fared, is not reported."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "前壁梗死后新发收缩期杂音、肺水肿和心衰，指向机械并发症；超声直接显示缺损与跨隔分流，确定为室间隔破裂。",
+        "en": "A new systolic murmur with pulmonary oedema and heart failure after an anterior infarct points to a mechanical complication; echo shows the defect and the flow across the septum, confirming septal rupture."
+      },
+      {
+        "zh-CN": "左向右分流解释了肺水肿和双心室衰竭，因此稳定循环靠血管活性药和机械支持，而不是补液。",
+        "en": "The left-to-right shunt explains the pulmonary oedema and biventricular failure, so stabilisation relies on vasoactive drugs and mechanical support, not fluid."
+      },
+      {
+        "zh-CN": "ECMO为修补争取时间但不能修补缺损，而且会增加左心室后负荷——每天要看主动脉瓣是否开放、左心室是否扩大。",
+        "en": "ECMO buys time for repair but cannot close the defect, and it raises LV afterload — so the daily echo checks that the aortic valve opens and the LV is not dilating."
+      },
+      {
+        "zh-CN": "修补时机要在早期手术的高死亡率与等待期间的恶化风险之间权衡；延期修补的数据来自熬过等待的幸存者。",
+        "en": "Repair timing balances the high mortality of early surgery against deterioration while waiting; delayed-repair data come from survivors of the wait."
+      },
+      {
+        "zh-CN": "心内科认为当时既无PCI指征，也不具备经皮封堵条件：开通血管不能关闭破口。",
+        "en": "Cardiology found neither a PCI indication nor conditions for percutaneous closure at the time: opening arteries does not close the defect."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是一例单中心的历史个案，不能证明任何一种支持或修补策略的独立疗效。报告没有给出生命体征、设备参数或监测数值，也没有报告转回原医院后的修补和存活情况；本病例中的决策、干预选项和评分是教学设计，不改变已发表的病程。",
+      "en": "This is a single historical case from one centre and cannot show the independent effect of any support or repair strategy. The report gives no vital signs, device settings or monitoring values and does not report repair or survival after the transfer back; the decisions, intervention options and scoring here are teaching design and do not change the published course."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "发病到溶栓的时间、杂音出现及转院发生在梗死后第几天。",
+        "en": "The time from onset to lysis, and the day after the infarct on which the murmur appeared and the transfer happened."
+      },
+      {
+        "zh-CN": "转入时及之后的生命体征、血管活性药剂量、ECMO和IABP参数、乳酸与ScvO₂数值。",
+        "en": "Vital signs at and after transfer, vasoactive doses, ECMO and IABP settings, lactate and ScvO₂ values."
+      },
+      {
+        "zh-CN": "缺损部位、心室功能及冠状动脉病变细节。",
+        "en": "The defect's site, ventricular function and coronary detail."
+      },
+      {
+        "zh-CN": "是否及何时完成修补、ECMO持续多久、最终存活情况。",
+        "en": "Whether and when the defect was repaired, how long ECMO ran, and survival."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "新杂音＋恶化，先想机械并发症。心肌梗死后出现新的收缩期杂音并伴心衰或低灌注，应高度怀疑室间隔破裂或乳头肌断裂，立即床旁超声明确（原报告讨论；ESC 2023 ACS：疑有机械并发症或心源性休克时急诊经胸超声）。前壁梗死的室间隔破裂多位于心尖部；乳头肌断裂多累及单支供血的后内侧乳头肌（下壁、后壁梗死）；游离壁破裂多表现为心包填塞。",
+        "en": "A new murmur with deterioration means a mechanical complication first. After an infarct, a new systolic murmur with heart failure or hypoperfusion should raise septal or papillary-muscle rupture and prompt an immediate bedside echo (the report's discussion; ESC 2023 ACS: emergency transthoracic echo when a mechanical complication or shock is suspected). Septal rupture after an anterior infarct is usually apical; papillary-muscle rupture usually involves the posteromedial muscle with its single blood supply (inferior or posterior infarcts); free-wall rupture usually presents as tamponade."
+      },
+      {
+        "zh-CN": "室间隔破裂的血流动力学决定处理。左向右分流造成肺血流过多和双心室衰竭，表现为严重心衰和心源性休克，程度取决于缺损的部位和大小（原报告）。确诊后尽快用血管活性药，并及早评估机械循环支持；不要快速补液。ESC 2023 ACS：机械并发症致血流动力学不稳定或休克时应考虑IABP，但不推荐在无机械并发症的心源性休克中常规使用IABP；ACC/AHA 2025的正文指出IABP可减少左向右分流。",
+        "en": "The haemodynamics of septal rupture drive the treatment. A left-to-right shunt floods the lungs and overloads both ventricles, causing severe heart failure and cardiogenic shock whose severity depends on the defect's site and size (the report). Start vasoactive drugs as soon as it is diagnosed and assess mechanical support early; do not give fluid boluses. ESC 2023 ACS: consider an IABP when a mechanical complication causes instability or shock, but do not use it routinely in shock without a mechanical complication; the ACC/AHA 2025 text notes that an IABP reduces left-to-right shunting."
+      },
+      {
+        "zh-CN": "VA-ECMO是过渡，不是修补，而且会加重左心室负荷。逆向的动脉回血增加左心室后负荷；左心室射不出血时主动脉瓣不开、心腔扩大（图3的示意中标出主动脉瓣关闭）。原报告：初始流量 50–70 mL/kg/min，以平均动脉压 > 65 mmHg、SvO₂ > 60% 为目标，避免流量过高，保持主动脉瓣开放，必要时联合IABP或Impella减负；警惕出血、血栓、肢体缺血、溶血和感染（ELSO 2021 VA-ECMO指南）。",
+        "en": "VA-ECMO is a bridge, not a repair — and it loads the left ventricle. Retrograde arterial return raises LV afterload; if the LV cannot eject, the aortic valve stays shut and the cavity dilates (figure 3 marks a closed aortic valve). The report: initial flow 50–70 mL/kg/min aiming for MAP > 65 mmHg and SvO₂ > 60 %, no higher flow than needed, keep the aortic valve opening and add an IABP or Impella to unload when needed; watch for bleeding, thrombosis, limb ischaemia, haemolysis and infection (ELSO 2021 VA-ECMO guidance)."
+      },
+      {
+        "zh-CN": "修补时机是权衡，由心脏团队个体化决定。原报告引用：不修补死亡率 91.5%，修补 52.3%；STS数据中 7 天内修补的死亡率 54.1%，延期 18.4%——延期组已经过“幸存者”筛选，盲目等待会因心衰、MODS或脓毒症失去手术机会。ACC/AHA 2025 ACS：机械并发症应在具备心外科能力的中心处理（Ⅰ类），短期机械支持作为手术过渡合理（2a类）。历史与现行：原报告的外科意见是固定等待 4–6 周、期间ECMO过渡；现行指南不设固定间隔，强调每日重新评估、恶化时提前手术。",
+        "en": "Repair timing is a trade-off decided by the Heart Team for the individual. The report cites 91.5 % mortality without repair versus 52.3 % with it, and in STS data 54.1 % mortality for repair within 7 days versus 18.4 % later — the later group are survivors of the wait, and blind delay loses patients to heart failure, multi-organ failure or sepsis. ACC/AHA 2025 ACS: manage a mechanical complication at a centre with cardiac surgical expertise (Class 1); short-term mechanical support is reasonable as a bridge to surgery (Class 2a). Then and now: the report's surgeons advised a fixed 4–6-week wait on ECMO; current guidance sets no fixed interval and asks for a daily review, with earlier surgery if she deteriorates."
+      },
+      {
+        "zh-CN": "血运重建不能修补破口。本例心内科判断当时既无PCI指征，也不具备经皮封堵条件。心肌梗死合并心源性休克时，即刻多支血管PCI的结局不如只处理罪犯血管（CULPRIT-SHOCK）；需要时血运重建通常与外科修补一并考虑。经皮封堵仅适合经心脏团队评估、解剖合适的部分患者（AHA 2021科学声明）。",
+        "en": "Revascularisation does not close the defect. Here cardiology found neither a PCI indication nor conditions for percutaneous closure. In infarct-related cardiogenic shock, immediate multivessel PCI has done worse than culprit-only PCI (CULPRIT-SHOCK); when revascularisation is needed it is usually planned with the surgical repair. Percutaneous closure suits only selected patients whose anatomy the Heart Team judges suitable (AHA 2021 scientific statement)."
+      },
+      {
+        "zh-CN": "再灌注时间窗要追问。她“胸痛1天”才就诊，但病历没有写发病到溶栓隔了多久，所以不能断定溶栓是否超出时间窗。ESC 2023 ACS：预计 120 分钟内不能完成直接PCI时，症状出现 12 小时内无禁忌者推荐溶栓（Ⅰ类）；溶栓后立即转往PCI中心，出现心衰或休克时急诊造影，溶栓失败行补救性PCI，成功者 2–24 小时内常规造影。外院在病情恶化后做了急诊造影。",
+        "en": "Always pin down the reperfusion window. She came in after “chest pain for 1 day”, but the record does not say how long after the onset she received the lytic, so whether it fell outside the window cannot be judged. ESC 2023 ACS: when primary PCI cannot be done within 120 min, fibrinolysis is recommended within 12 h of symptom onset in patients without contraindications (Class I); then transfer to a PCI centre, emergency angiography for heart failure or shock, rescue PCI if it fails, and routine angiography within 2–24 h if it succeeds. The first hospital did an emergency angiogram once she deteriorated."
+      }
+    ],
+    "references": [
+      "李文俊, 蕭鳳儀, 何澄邦. 急性心肌梗死併發室間隔破裂ECMO支持1例. 鏡湖醫學. 2025;25(1):62-63. doi:10.12408/j.issn2223-4462.2025.01.017. Available from: https://rs.yiigle.com/cmaid/1551890",
+      "Byrne RA, Rossello X, Coughlan JJ, et al. 2023 ESC Guidelines for the management of acute coronary syndromes. Eur Heart J. 2023;44(38):3720-3826. doi:10.1093/eurheartj/ehad191",
+      "Rao SV, O'Donoghue ML, Ruel M, et al. 2025 ACC/AHA/ACEP/NAEMSP/SCAI guideline for the management of patients with acute coronary syndromes: a report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines. Circulation. 2025;151(13):e771-e862. doi:10.1161/CIR.0000000000001309",
+      "Damluji AA, van Diepen S, Katz JN, Menon V, Tamis-Holland JE, Bakitas M, et al. Mechanical complications of acute myocardial infarction: a scientific statement from the American Heart Association. Circulation. 2021;144(2):e16-e35. doi:10.1161/CIR.0000000000000985",
+      "Lorusso R, Shekar K, MacLaren G, et al. ELSO interim guidelines for venoarterial extracorporeal membrane oxygenation in adult cardiac patients. ASAIO J. 2021;67(8):827-844. doi:10.1097/MAT.0000000000001510",
+      "Arnaoutakis GJ, Zhao Y, George TJ, et al. Surgical repair of ventricular septal defect after myocardial infarction: outcomes from the Society of Thoracic Surgeons National Database. Ann Thorac Surg. 2012;94(2):436-443. doi:10.1016/j.athoracsur.2012.04.020",
+      "Sánchez Vega JD, Alonso Salinas GL, Viéitez Florez JM, et al. Optimal surgical timing after post-infarction ventricular septal rupture. Cardiol J. 2022;29(5):773-781. doi:10.5603/CJ.a2022.0035",
+      "中华医学会心血管病学分会, 中华心血管病杂志编辑委员会. 急性ST段抬高型心肌梗死诊断和治疗指南(2019). 中华心血管病杂志. 2019;47(10):766-783."
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "确切的发病时间、发病到首次医疗接触及到替奈普酶溶栓的间隔、溶栓剂量，以及外院能否行直接PCI。",
+      "en": "The exact onset time, the intervals from onset to first medical contact and to tenecteplase, the dose, and whether primary PCI was available at the first hospital."
+    },
+    {
+      "zh-CN": "新发杂音、外院超声和急诊造影分别发生在梗死后第几天，以及何时转院。",
+      "en": "On which day after the infarct the new murmur, the first echo and the emergency angiogram occurred, and when she was transferred."
+    },
+    {
+      "zh-CN": "何时、因何开始机械通气，呼吸机参数和血气。",
+      "en": "When and why ventilation was started, the ventilator settings and blood gases."
+    },
+    {
+      "zh-CN": "转入时及之后的生命体征、血管活性药种类和剂量、乳酸和ScvO₂数值。",
+      "en": "Vital signs at transfer and afterwards, the vasoactive drugs and doses, and the lactate and ScvO₂ values."
+    },
+    {
+      "zh-CN": "肾功能、尿量、液体平衡及开始CRRT的理由。",
+      "en": "Renal function, urine output, fluid balance and the reason for CRRT."
+    },
+    {
+      "zh-CN": "杂音的部位、响度、传导和震颤；两家医院的其他查体发现。",
+      "en": "The murmur's site, grade, radiation and any thrill; any other examination findings at either hospital."
+    },
+    {
+      "zh-CN": "缺损大小和分流以外的超声细节：缺损部位、左右心室功能、射血分数、二尖瓣、心包积液及分流量。",
+      "en": "Echo details beyond the defect size and shunt: the defect's site, left and right ventricular function, ejection fraction, mitral valve, pericardial findings and shunt size."
+    },
+    {
+      "zh-CN": "冠状动脉病变细节（受累血管、狭窄程度、罪犯血管、TIMI血流），以及外院是否做过PCI。",
+      "en": "Coronary detail (vessels involved, severity, culprit, TIMI flow) and whether PCI was done at the first hospital."
+    },
+    {
+      "zh-CN": "IABP与ECMO的置入时间、置管方式、流量、抗凝、并发症、支持时长，以及是否需要IABP以外的左心室减负。",
+      "en": "IABP and ECMO timing, cannulation, flows, anticoagulation, complications and duration, and whether unloading beyond the IABP was needed."
+    },
+    {
+      "zh-CN": "抗血小板和抗凝药物的具体方案及出血情况。",
+      "en": "The antiplatelet and anticoagulant regimens and any bleeding."
+    },
+    {
+      "zh-CN": "转回原医院时是否仍在ECMO/IABP支持下、室间隔缺损是否及何时修补、最终存活情况。",
+      "en": "Whether she left on ECMO or the IABP, whether and when the defect was repaired, and her survival."
+    },
+    {
+      "zh-CN": "平时生活能力、吸烟、家族史、长期用药、过敏史，以及患者本人的治疗意愿。",
+      "en": "Her usual function, smoking, family history, regular medicines, allergies and her own wishes about treatment."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551890/fig01.png",
+      "title": {
+        "zh-CN": "原报告图1：转入后12导联心电图",
+        "en": "Source figure 1: 12-lead ECG after transfer"
+      },
+      "credit": {
+        "zh-CN": "原报告图，李文俊、蕭鳳儀、何澄邦，2025。版权归原权利人。",
+        "en": "Original report figure (李文俊, 蕭鳳儀, 何澄邦, 2025). Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "f46816e3d9388e5e3d41a5210b373e8d55809b0248a5c44efea4b0ced0a41e88"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551890/fig02.png",
+      "title": {
+        "zh-CN": "原报告图2：转入后床旁超声心动图",
+        "en": "Source figure 2: bedside echocardiogram after transfer"
+      },
+      "credit": {
+        "zh-CN": "原报告图，李文俊、蕭鳳儀、何澄邦，2025。版权归原权利人。",
+        "en": "Original report figure (李文俊, 蕭鳳儀, 何澄邦, 2025). Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "afb1e7634fd3f001c7d93120181ee1f2701ff289bacb0070101c94455a00915d"
+    },
+    {
+      "id": "fig03",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551890/fig03.png",
+      "title": {
+        "zh-CN": "原报告图3：VA-ECMO支持下的血流示意图（非患者检查图像）",
+        "en": "Source figure 3: schematic of blood flow on VA-ECMO (not an image of the patient)"
+      },
+      "credit": {
+        "zh-CN": "原报告图，李文俊、蕭鳳儀、何澄邦，2025。版权归原权利人。",
+        "en": "Original report figure (李文俊, 蕭鳳儀, 何澄邦, 2025). Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "ff98ade11d25721017d7dda79fa4d6b75814e72d5159788100e22bb1d4b05af3"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1551890/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘；第3页为期刊封底，含其他文章的临床图片）",
+        "en": "Source PDF (contains the outcome; for debrief review; page 3 is the journal’s back cover, with other articles’ clinical images)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "8fd259dc5e80c056994cc64622e3c928f43f0e8806adb7214dee655827e1b71b"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "lysis-timing"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain-detail"
+    },
+    {
+      "type": "ask",
+      "itemId": "first-tests"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "progression"
+    },
+    {
+      "type": "ask",
+      "itemId": "tests-told"
+    },
+    {
+      "type": "ask",
+      "itemId": "ventilation"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "home-meds"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "baseline-function"
+    },
+    {
+      "type": "ask",
+      "itemId": "wishes"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "cardiac"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg-referral"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg-referral",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "xray"
+    },
+    {
+      "type": "read",
+      "investigationId": "xray",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "enzymes-referral"
+    },
+    {
+      "type": "read",
+      "investigationId": "enzymes-referral",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "markers",
+      "phase": "initial"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "referral-echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "referral-echo",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "angiography"
+    },
+    {
+      "type": "read",
+      "investigationId": "angiography",
+      "phase": "workup"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "ventilation"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "vasoactive"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iabp"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "va-ecmo"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "crrt"
+    },
+    {
+      "type": "answer",
+      "decisionId": "support",
+      "optionIds": [
+        "mcs-bridge"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "consult-cardiac-surgery"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "consult-cardiology"
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "heart-team-individualised"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "lv-unloading",
+      "optionIds": [
+        "closed-av-unload"
+      ]
+    },
+    {
+      "type": "examine",
+      "findingId": "general-bridge"
+    },
+    {
+      "type": "order",
+      "investigationId": "bridge-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "bridge-record",
+      "phase": "bridge"
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1551890",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1551890",
+    "historicalReview": true,
+    "embodied": {
+      "ivAccessInSitu": true
+    },
+    "testUtterances": [
+      {
+        "text": "她哪里不舒服才去的医院？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "一开始是怎么发病的",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "what brought her into hospital in the first place?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "how did her illness start?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "胸口疼了多久才打的溶栓针？",
+        "locale": "zh-CN",
+        "expect": [
+          "lysis-timing"
+        ]
+      },
+      {
+        "text": "具体几点开始疼的你知道吗",
+        "locale": "zh-CN",
+        "expect": [
+          "lysis-timing"
+        ]
+      },
+      {
+        "text": "do you know exactly when the pain started?",
+        "locale": "en",
+        "expect": [
+          "lysis-timing"
+        ]
+      },
+      {
+        "text": "how long was it from the start of the pain to the thrombolysis?",
+        "locale": "en",
+        "expect": [
+          "lysis-timing"
+        ]
+      },
+      {
+        "text": "那边医院给她用了哪些药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "外院是怎么治的",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "what did the first hospital give her?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "did they give her a clot buster?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "用了药以后她怎么样了",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "怎么就转到我们这里来了？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "what happened after the treatment?",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "why did they transfer her here",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "她以前有高血压吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "平时有什么老毛病",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "does she have high blood pressure?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "any medical problems in the past?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "她有糖尿病吗",
+        "locale": "zh-CN",
+        "expect": [
+          "other-pmh"
+        ]
+      },
+      {
+        "text": "has she ever had a stroke?",
+        "locale": "en",
+        "expect": [
+          "other-pmh"
+        ]
+      },
+      {
+        "text": "在那边做了心电图和胸片吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "first-tests"
+        ]
+      },
+      {
+        "text": "did they do blood tests there?",
+        "locale": "en",
+        "expect": [
+          "first-tests"
+        ]
+      },
+      {
+        "text": "医生说彩超查出什么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "tests-told"
+        ]
+      },
+      {
+        "text": "what did they tell you the heart scan showed?",
+        "locale": "en",
+        "expect": [
+          "tests-told"
+        ]
+      },
+      {
+        "text": "她是什么时候插的管？",
+        "locale": "zh-CN",
+        "expect": [
+          "ventilation"
+        ]
+      },
+      {
+        "text": "how long has she been on the breathing machine?",
+        "locale": "en",
+        "expect": [
+          "ventilation"
+        ]
+      },
+      {
+        "text": "胸痛是压着疼还是刺痛？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-detail"
+        ]
+      },
+      {
+        "text": "did the pain go down her arm?",
+        "locale": "en",
+        "expect": [
+          "pain-detail"
+        ]
+      },
+      {
+        "text": "她平常吃什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "home-meds"
+        ]
+      },
+      {
+        "text": "is she on any regular tablets?",
+        "locale": "en",
+        "expect": [
+          "home-meds"
+        ]
+      },
+      {
+        "text": "她有没有药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "any allergies we should know about?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "她抽不抽烟",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "is she a smoker?",
+        "locale": "en",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "家里人有心脏病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "before all this, could she look after herself?",
+        "locale": "en",
+        "expect": [
+          "baseline-function"
+        ]
+      },
+      {
+        "text": "她有没有交代过病重时想怎么治？",
+        "locale": "zh-CN",
+        "expect": [
+          "wishes"
+        ]
+      },
+      {
+        "text": "has she ever talked about what she'd want if things got this bad?",
+        "locale": "en",
+        "expect": [
+          "wishes"
+        ]
+      }
+    ]
+  }
+}

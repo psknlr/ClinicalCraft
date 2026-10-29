@@ -8,6 +8,17 @@ through the core Condition DSL, the world snapshot, the recorded refusals and
 the audits — never the agent's text) and reports Wilson 95 % intervals.
 Node only; run it through `clinicalcraft bench`.
 
+`embodied-v1` has a fixed scope: 41 scenarios over the original ten cases
+(`acute-appendicitis`, `acute-ischemic-stroke`, `anaphylaxis-garden`,
+`dka-adult`, `new-onset-t2dm`, `pediatric-asthma`,
+`pulmonary-embolism-postop`, `septic-shock-cap`, `smzl-lung-adeno`,
+`stemi-inferior-rv`). Every one of those cases has a clinical workflow.
+Adding cases to the catalogue does not add benchmark scenarios or extend
+the published results. The 20 CMCR adaptations are checked separately by
+`cases verify --all` and the CMCR content tests; they are not represented by
+the v1 benchmark success rate. `grounding-v1` uses the same ten-case cohort
+and retains its frozen test digest (see [scope and freezing](../../docs/GROUNDING.md#3-splits-freezing-and-honesty)).
+
 ```bash
 npm run -s cc -- bench list                                         # 41 scenarios of embodied-v1, by category
 npm run -s cc -- bench run --suite embodied-v1 --agent reference    # → bench-results/bench-report.{json,md}

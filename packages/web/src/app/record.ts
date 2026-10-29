@@ -5,10 +5,10 @@
  * conversation. Derived from the session state and the store's event log —
  * never from a second history.
  */
-import { citesSource } from "@clinicalcraft/agent";
-import { assess, progress, t, type CaseDefinition } from "@clinicalcraft/core";
+import { assess, t, type CaseDefinition } from "@clinicalcraft/core";
 import type { Game } from "./context.js";
 import type { RuntimeChoice } from "./llm.js";
+import { sourceMaterialUnlocked } from "./source-access.js";
 
 export const LEARNING_RECORD_FORMAT = "clinicalcraft-learning-record@1";
 
@@ -19,8 +19,7 @@ export function buildLearningRecord(game: Game, locale: string, choice: RuntimeC
   const state = session.state;
   const snapshot = session.snapshot();
   const report = store.assessment?.report ?? assess(c, state);
-  // A published case's citation usually names the diagnosis: in the record once the case is complete (as the debrief).
-  const source = !citesSource(c) || state.finished || progress(c, state).complete;
+  const sourceUnlocked = sourceMaterialUnlocked(c, state);
   return {
     format: LEARNING_RECORD_FORMAT,
     exportedAt: new Date().toISOString(),
@@ -30,8 +29,8 @@ export function buildLearningRecord(game: Game, locale: string, choice: RuntimeC
       version: c.version,
       title: t(c.title, locale),
       provenance: c.provenance.kind,
-      citation: source ? (c.provenance.citation ?? null) : null,
-      doi: source ? (c.provenance.doi ?? null) : null,
+      citation: sourceUnlocked ? c.provenance.citation ?? null : null,
+      doi: sourceUnlocked ? c.provenance.doi ?? null : null,
     },
     facility: game.facility.id,
     sessionId: session.id,

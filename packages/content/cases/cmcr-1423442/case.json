@@ -1,0 +1,5462 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1423442",
+  "version": "1.1.0",
+  "title": {
+    "zh-CN": "胸背痛与渐进性无力 · 46岁男性",
+    "en": "Chest and back pain with progressive weakness · 46-year-old man"
+  },
+  "summary": {
+    "zh-CN": "胸背痛3年、四肢无力1年并逐渐不能行走，曾按骨质疏松补钙无效。",
+    "en": "Three years of chest and back pain and a year of weakness, now unable to walk, despite calcium for presumed osteoporosis."
+  },
+  "specialty": [
+    "endocrinology",
+    "nephrology",
+    "clinical-pharmacology",
+    "hepatology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 40,
+  "learningOutcomes": [
+    {
+      "zh-CN": "根据同期配对的血、尿结果识别获得性近端肾小管病（血糖正常时的尿糖、α1微球蛋白尿、低尿酸血症、肾性失钾、高氯性代谢性酸中毒），并在血磷0.53 mmol/L时把24小时尿磷13 mmol判定为肾性失磷。",
+      "en": "Identify an acquired proximal tubulopathy from paired blood and urine results (glycosuria with a normal blood glucose, α1-microglobulinuria, hypouricaemia, renal potassium loss, hyperchloraemic metabolic acidosis), and judge a urine phosphate of 13 mmol/24 h as renal phosphate wasting when the serum phosphate is 0.53 mmol/L."
+    },
+    {
+      "zh-CN": "把骨痛、多发肋骨骨折、身高下降、ALP升高和持续低血磷解释为可与骨质疏松并存的骨软化，并说明为什么单纯补钙无效。",
+      "en": "Explain bone pain, multiple rib fractures, height loss, a raised ALP and persistent hypophosphataemia as osteomalacia that can coexist with osteoporosis, and explain why calcium alone failed."
+    },
+    {
+      "zh-CN": "用结构化的药物因果评估（用药时间线、停药反应、排除其他原因）把肾小管病归因于阿德福韦酯，并用已记录的检查排除骨髓瘤/轻链病、原发性甲状旁腺功能亢进、单纯维生素D缺乏和远端肾小管酸中毒。",
+      "en": "Attribute the tubulopathy to adefovir with a structured causality assessment (drug timeline, dechallenge, alternatives) and use the recorded tests to exclude myeloma or light-chain disease, primary hyperparathyroidism, vitamin D deficiency alone and distal renal tubular acidosis."
+    },
+    {
+      "zh-CN": "依据《慢性乙型肝炎防治指南（2022年版）》和EASL乙肝指南安全换药：停用阿德福韦酯，当天改用恩替卡韦或丙酚替诺福韦，不用TDF、不中断抗病毒；并制定补磷、活性维生素D加钙、补钾和纠正酸中毒的方案及监测。",
+      "en": "Switch antiviral therapy safely according to the Chinese 2022 and EASL hepatitis B guidance — stop adefovir and start entecavir or tenofovir alafenamide the same day, never TDF and never a gap — and plan phosphate, active vitamin D with calcium, potassium and alkali, with monitoring."
+    },
+    {
+      "zh-CN": "说明为什么在消瘦、长期卧床的患者中“肌酐正常”会掩盖肾损害，并列出长期服用核苷酸类似物者除肌酐外应监测的指标（作者建议：GFR、ALP、血气、24小时尿蛋白及尿钾、钙、磷，血磷）。",
+      "en": "Explain why a 'normal' creatinine hid kidney damage in a thin, bed-bound man, and list what long-term nucleotide-analogue users need monitored beyond creatinine (the authors' list: GFR, ALP, blood gas, 24-hour urine protein, urine potassium, calcium and phosphate, and serum phosphate)."
+    }
+  ],
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "孙旦萍, 刘国萍, 赵敏. 阿德福韦酯致范科尼综合征合并骨软化. 药物不良反应杂志. 2014;16(1):50-51. doi:10.3760/cma.j.issn.1008-5734.2014.01.017",
+    "doi": "10.3760/cma.j.issn.1008-5734.2014.01.017",
+    "authors": [
+      "孙旦萍 (Sun Danping)",
+      "刘国萍 (Liu Guoping)",
+      "赵敏 (Zhao Min)"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别、临床经过、检查数值及原文参考值、用药和结局；姓名为化名，医院和日历日期已去除，时间改为相对时间（入院当天为第0天）。原文自相矛盾或存疑之处按原文保留并标注：25-羟维生素D单位印作mmol/L；骨质疏松程度摘要称“重度”、正文未分级；病史称曾服止痛药、外敷膏药，讨论却称近10年未用其他药物。问诊措辞、决策、干预选项、评分和复盘为教学设计；原文未记录的数据保持未知。2026-10-28编辑修订（1.1.0）。",
+      "en": "Adapted from a published case. Age, sex, clinical course, test values with the source's reference ranges, medicines and outcome are retained; the name is a pseudonym, the hospital and calendar dates are removed and times are relative (admission = day 0). Points where the source contradicts itself or is doubtful stay as printed and are labelled: the 25-hydroxyvitamin D unit is printed as mmol/L; the abstract calls the osteoporosis 'severe' while the main text does not grade it; the history mentions painkillers and plasters while the discussion says no other drug was taken for ten years. Question wording, decisions, intervention options, scoring and debrief are teaching design; data the source does not record stay unknown. Editorial revision 2026-10-28 (1.1.0)."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "慢性乙型肝炎防治指南（2022年版）",
+        "EASL HBV CPG 2025 (citation) and 2017 (entecavir/TAF criteria for renal and bone risk)",
+        "HEPSERA (adefovir dipivoxil) US prescribing information (DailyMed)",
+        "Imel & Econs 2012, approach to the hypophosphataemic patient (JCEM)",
+        "CKD-EPI 2021 creatinine equation"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果来自原报告，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Results come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "沈先生（化名）",
+      "en": "Mr Shen (pseudonym)"
+    },
+    "age": 46,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "胸背部疼痛3年，进行性四肢乏力1年",
+      "en": "Chest and back pain for 3 years; progressive weakness of the limbs for 1 year"
+    },
+    "triageNote": {
+      "zh-CN": "内分泌科新入院：46岁男性，不能自己下地行走，翻身需要协助。病史、查体和入院化验待完成。",
+      "en": "New admission to the endocrine ward: a 46-year-old man who cannot get up and walk by himself and needs help to turn. History, examination and admission bloods still to do."
+    },
+    "tags": [
+      {
+        "zh-CN": "胸背痛",
+        "en": "Chest and back pain"
+      },
+      {
+        "zh-CN": "四肢无力",
+        "en": "Weak limbs"
+      },
+      {
+        "zh-CN": "不能行走",
+        "en": "Cannot walk"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "46岁男性，被疼痛和无力折腾了三年，跑过好几家医院，有些疲惫和无奈，但愿意配合，回答直接。",
+        "en": "A 46-year-old man worn down by three years of pain and weakness and several hospitals; tired and a little resigned, but cooperative and straightforward."
+      },
+      "speechStyle": {
+        "zh-CN": "朴实的口语，句子短；按自己的理解讲症状、看过的医生和吃过的药，不用医学术语；记不清的直接说记不清。",
+        "en": "Plain, everyday speech in short sentences; describes symptoms, doctors and tablets in his own words without medical terms, and says so when he can't remember."
+      },
+      "healthLiteracy": "medium",
+      "affect": "in-pain",
+      "openingLine": {
+        "zh-CN": "医生，我这胸口后背疼了三年了，这一年腿也越来越没劲，现在连路都走不了。",
+        "en": "Doctor, my chest and back have hurt for three years, and over this last year my legs have got weaker and weaker — now I can't even walk."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "入院时躺在病床上，翻身、坐起都慢而吃力，动的时候会皱眉；换药后的住院后期和随访时疼痛已明显减轻，按当时的情况回答。只讲已经问到的病史事实，用自己的话说，不增减数字、时间和药名；不解释化验，不谈诊断。",
+        "en": "On admission he lies in bed; turning and sitting up are slow and effortful and he winces when he moves. Later in the admission and at follow-up the pain is much better — answer for that time. Only state history facts that have been asked about, in your own words, without adding or changing numbers, times or drug names; do not interpret tests or talk about a diagnosis."
+      }
+    },
+    "appearance": {
+      "build": "slim",
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "admission",
+      "label": {
+        "zh-CN": "入院评估（入院第0–8天）",
+        "en": "Admission assessment (hospital days 0–8)"
+      },
+      "description": {
+        "zh-CN": "内分泌科入院当天至换药前：问诊、查体、入院检查和调阅既往记录。",
+        "en": "From admission to the endocrine ward until the drug change: history, examination, admission tests and earlier records."
+      },
+      "learnerSwitchable": false
+    },
+    {
+      "id": "course",
+      "label": {
+        "zh-CN": "换药后的住院经过（入院第9–18天）",
+        "en": "Hospital course after the drug change (days 9–18)"
+      },
+      "description": {
+        "zh-CN": "原报告的住院经过：第9天停用阿德福韦酯，第18天出院。此阶段的记录是原报告的事实，不随学员的选择而改变。",
+        "en": "The report's hospital course: adefovir stopped on day 9, discharge on day 18. This phase's records are the report's facts and do not change with the learner's choices."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "objective": "obj-history"
+          },
+          {
+            "objective": "obj-exam"
+          },
+          {
+            "objective": "obj-tubule"
+          },
+          {
+            "objective": "obj-diagnosis"
+          },
+          {
+            "objective": "obj-plan"
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "出院后约6个月随访",
+        "en": "Follow-up about 6 months after discharge"
+      },
+      "description": {
+        "zh-CN": "原报告的随访记录（出院后约6个月）。",
+        "en": "The report's follow-up record (about 6 months after discharge)."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "read": "inpatient-course",
+            "phase": "course"
+          },
+          {
+            "read": "blood",
+            "phase": "course"
+          },
+          {
+            "read": "urine",
+            "phase": "course"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "admission",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次主要是哪里不舒服？",
+        "en": "What's the main problem that brought you in?"
+      },
+      "answer": {
+        "zh-CN": "胸口和后背疼了三年了，这一年手脚越来越没劲，现在连路都走不了了。",
+        "en": "My chest and back have been hurting for three years, and this past year my arms and legs have got weaker and weaker — now I can't walk at all."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里不舒服",
+          "怎么不舒服",
+          "主要症状",
+          "为什么住院",
+          "这次来看什么",
+          "主诉",
+          "什么问题",
+          "怎么回事"
+        ],
+        "en": [
+          "whatbringsyou",
+          "whatsbroughtyouin",
+          "main problem",
+          "whatswrong",
+          "whyareyouinhospital",
+          "chief complaint",
+          "whatseemstobetheproblem"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这些症状最早是什么时候开始的，一开始是什么样？",
+        "en": "When did it all start, and what was it like at first?"
+      },
+      "answer": {
+        "zh-CN": "三年前开始的。一开始是胸口后背疼，一活动就更明显，还腰酸腰疼。吃点止痛药、贴膏药能好一点。",
+        "en": "It started three years ago. At first it was my chest and back, worse whenever I moved about, and my lower back ached too. Painkillers and plasters helped a bit."
+      },
+      "keywords": {
+        "zh-CN": [
+          "什么时候开始",
+          "多久了",
+          "疼了多久",
+          "最早",
+          "刚开始",
+          "一开始",
+          "起病",
+          "开始的时候"
+        ],
+        "en": [
+          "whendiditstart",
+          "howlong",
+          "first start",
+          "atfirst",
+          "beginning",
+          "began",
+          "onset",
+          "first symptoms"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "pain-location",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "现在主要哪里疼？止痛药还管用吗？",
+        "en": "Where does it hurt most now, and do painkillers still help?"
+      },
+      "answer": {
+        "zh-CN": "后来越来越重，现在主要是肋骨边上和肩胛骨那儿疼，吃止痛药也不管用了。有时候后背和腿像过电一样，一阵一阵地疼。",
+        "en": "It got steadily worse. Now it's mostly round the edges of my ribs and my shoulder blades, and painkillers don't touch it. Sometimes I get shooting pains in my back and legs, like an electric shock."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里疼",
+          "哪里最疼",
+          "哪儿疼",
+          "最疼",
+          "疼得最厉害",
+          "疼在哪",
+          "肋骨",
+          "肩胛",
+          "怎么个疼法",
+          "止痛药管用",
+          "过电",
+          "电击",
+          "闪电样"
+        ],
+        "en": [
+          "wheredoesithurt",
+          "whereisthepain",
+          "worst pain",
+          "ribs",
+          "shoulder blade",
+          "whatisthepainlike",
+          "shooting pain",
+          "electric shock",
+          "painkillers help"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "吃过什么止痛",
+          "什么止痛药",
+          "止痛药叫什么"
+        ],
+        "en": [
+          "which painkillers",
+          "what painkillers"
+        ]
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "现在还能走路吗？对日常活动影响有多大？",
+        "en": "Can you still walk? How much has it affected getting about?"
+      },
+      "answer": {
+        "zh-CN": "去年开始腿没劲，先是左腿，后来右腿也不行了。一开始是上楼梯费劲，后来平地都走不动，现在翻身、坐起来、站起来都很难。",
+        "en": "Last year my legs went weak — the left one first, then the right. At first it was just stairs, then I couldn't walk on the flat, and now even turning over, sitting up and standing are hard."
+      },
+      "keywords": {
+        "zh-CN": [
+          "能走路吗",
+          "走路",
+          "下地",
+          "走不动",
+          "走不了",
+          "上楼",
+          "站起来",
+          "翻身",
+          "没劲",
+          "无力",
+          "腿软",
+          "乏力"
+        ],
+        "en": [
+          "walk",
+          "walking",
+          "stairs",
+          "standup",
+          "weakness",
+          "weak legs",
+          "getabout",
+          "mobility",
+          "turningover"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "earlier-care",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "之前去医院看过吗？当时做了什么检查？",
+        "en": "Did you see anyone about it before? What tests did they do?"
+      },
+      "answer": {
+        "zh-CN": "疼了以后跑了好几家医院，拍过胸片，都说没看出什么问题。",
+        "en": "Once the pain started I went to several hospitals and had chest X-rays, and they all said nothing showed up."
+      },
+      "keywords": {
+        "zh-CN": [
+          "看过医生",
+          "去过医院",
+          "别的医院",
+          "其他医院",
+          "医院查过",
+          "医院看过",
+          "哪些医院",
+          "以前检查",
+          "拍过片",
+          "胸片",
+          "以前就诊"
+        ],
+        "en": [
+          "seenadoctor",
+          "seen anyone",
+          "anywhere else",
+          "other hospitals",
+          "earlier tests",
+          "x-ray before",
+          "chest x-ray",
+          "beeninvestigated"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "ortho-visit",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近一次在骨科看的时候，医生是怎么说的？",
+        "en": "When you last saw the orthopaedic doctors, what did they tell you?"
+      },
+      "answer": {
+        "zh-CN": "大概五个月前在骨科看过，做了好多检查，说我两边肋骨有好几处骨折，还有骨质疏松，就让我吃钙片。",
+        "en": "About five months ago I saw the orthopaedic team. They did lots of tests, said I'd got several broken ribs on both sides and thinning bones, and put me on calcium tablets."
+      },
+      "keywords": {
+        "zh-CN": [
+          "骨科",
+          "骨科医生",
+          "骨折",
+          "肋骨骨折",
+          "骨质疏松",
+          "骨密度",
+          "五个月前",
+          "骨科怎么说"
+        ],
+        "en": [
+          "orthopaedic",
+          "orthopedic",
+          "bone doctor",
+          "fractures",
+          "broken ribs",
+          "osteoporosis",
+          "bone density",
+          "five months ago"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "calcium",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "补钙以后症状有好转吗？",
+        "en": "Did the calcium tablets make any difference?"
+      },
+      "answer": {
+        "zh-CN": "钙片吃了，没见什么好转。",
+        "en": "I took them, but they didn't make any real difference."
+      },
+      "keywords": {
+        "zh-CN": [
+          "补钙",
+          "钙片",
+          "吃钙",
+          "钙有效",
+          "补钙有用",
+          "补钙好转",
+          "钙剂"
+        ],
+        "en": [
+          "calcium",
+          "calcium tablets",
+          "did the calcium help",
+          "calcium supplements",
+          "didithelp"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "hepatitis",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有什么长期的病吗？",
+        "en": "Have you got any long-term illnesses?"
+      },
+      "answer": {
+        "zh-CN": "我有乙肝，十多年了。",
+        "en": "I've had hepatitis B for more than ten years."
+      },
+      "keywords": {
+        "zh-CN": [
+          "乙肝",
+          "肝炎",
+          "肝病",
+          "慢性病",
+          "长期的病",
+          "以前得过什么病",
+          "既往史",
+          "基础病",
+          "肝不好"
+        ],
+        "en": [
+          "hepatitis",
+          "hep b",
+          "liver disease",
+          "long-term illness",
+          "long-standing",
+          "chronic illness",
+          "past medical history",
+          "medical problems",
+          "health problems",
+          "other conditions"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "吃什么药",
+          "吃的什么药",
+          "什么药",
+          "吃了多久",
+          "药吃"
+        ],
+        "en": [
+          "medicine",
+          "medication",
+          "tablet",
+          "pill",
+          "drug"
+        ]
+      },
+      "source": {
+        "zh-CN": "正文·既往史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · past history; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时在吃什么药？吃了多久了？",
+        "en": "What medicines do you take, and for how long?"
+      },
+      "answer": {
+        "zh-CN": "乙肝一直在吃阿德福韦酯，一天一片，10毫克，差不多吃了10年了。",
+        "en": "For the hepatitis B I take adefovir — one 10 mg tablet a day. I've been on it for nearly ten years."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃什么药",
+          "在吃的药",
+          "长期吃药",
+          "乙肝药",
+          "抗病毒药",
+          "阿德福韦",
+          "吃了多久",
+          "药吃了几年",
+          "用药",
+          "服药"
+        ],
+        "en": [
+          "medication",
+          "medicines",
+          "tablets",
+          "pills",
+          "whatdoyoutake",
+          "regular medication",
+          "antiviral",
+          "adefovir",
+          "hepatitis tablets",
+          "liver medicine"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "激素",
+          "止痛",
+          "钙",
+          "别的",
+          "其他药",
+          "医院"
+        ],
+        "en": [
+          "allerg",
+          "steroid",
+          "painkiller",
+          "calcium",
+          "anythingelse",
+          "apartfrom",
+          "otherdrug",
+          "othermedic"
+        ]
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·既往史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · past history; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "analgesics",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了乙肝的药，还用过别的药吗，比如止痛药？",
+        "en": "Apart from the hepatitis tablets, have you taken anything else — painkillers, say?"
+      },
+      "answer": {
+        "zh-CN": "疼得厉害的时候吃过止痛药、贴过膏药，叫什么名字记不清了。",
+        "en": "When it was bad I took painkillers and used plasters, but I can't remember what they were called."
+      },
+      "keywords": {
+        "zh-CN": [
+          "止痛药",
+          "别的药",
+          "其他药",
+          "膏药",
+          "吃过什么止痛",
+          "什么止痛药",
+          "止痛片",
+          "还吃过什么药"
+        ],
+        "en": [
+          "painkillers",
+          "other medicines",
+          "anythingelse",
+          "apartfrom",
+          "plasters",
+          "pain relief",
+          "overthecounter",
+          "other drugs"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · history of present illness; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "steroid",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "有没有长期用过激素类的药？",
+        "en": "Have you ever been on steroids for a long time?"
+      },
+      "answer": {
+        "zh-CN": "激素没有长期用过。",
+        "en": "No, I've never been on steroids for any length of time."
+      },
+      "keywords": {
+        "zh-CN": [
+          "激素",
+          "糖皮质激素",
+          "强的松",
+          "泼尼松",
+          "地塞米松",
+          "长期用激素"
+        ],
+        "en": [
+          "steroids",
+          "prednisolone",
+          "prednisone",
+          "corticosteroid",
+          "dexamethasone",
+          "glucocorticoid"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·既往史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · past history; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "bed-rest",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前有没有长时间卧床过？",
+        "en": "Before all this, were you ever laid up in bed for a long time?"
+      },
+      "answer": {
+        "zh-CN": "生病以前没有长时间躺在床上过。",
+        "en": "No, before this I'd never been laid up in bed for long."
+      },
+      "keywords": {
+        "zh-CN": [
+          "卧床",
+          "躺床上",
+          "长期卧床",
+          "卧床史",
+          "躺了很久",
+          "卧床休息"
+        ],
+        "en": [
+          "bed rest",
+          "bedbound",
+          "laid up",
+          "in bed for long",
+          "immobile",
+          "bedridden"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·既往史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · past history; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "体重和身高有变化吗？",
+        "en": "Has your weight or height changed?"
+      },
+      "answer": {
+        "zh-CN": "腰背开始疼以后瘦了3公斤左右，个子也矮了3厘米。",
+        "en": "Since my back started hurting I've lost about 3 kilos, and I'm 3 centimetres shorter."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "瘦了",
+          "变瘦",
+          "身高",
+          "变矮",
+          "矮了",
+          "个子"
+        ],
+        "en": [
+          "weight",
+          "lost weight",
+          "weight loss",
+          "height",
+          "shorter",
+          "lost height",
+          "shrunk"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·既往史；患者口语回答为依据原文的教学改写",
+        "en": "Main text · past history; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "urine-symptoms",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "小便多不多？平时口渴吗？",
+        "en": "Are you passing more urine than usual, or feeling thirsty?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "小便多",
+          "尿多",
+          "口渴",
+          "夜尿",
+          "尿量",
+          "喝水多"
+        ],
+        "en": [
+          "passing urine",
+          "urinating more",
+          "thirsty",
+          "thirst",
+          "night-time urine",
+          "polyuria"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "kidney-stones",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前得过肾结石吗？",
+        "en": "Have you ever had kidney stones?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肾结石",
+          "结石",
+          "尿路结石",
+          "排过石头"
+        ],
+        "en": [
+          "kidney stones",
+          "renal stones",
+          "stones",
+          "renal colic"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对什么药物或食物过敏吗？",
+        "en": "Are you allergic to any medicines or foods?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "食物过敏",
+          "过敏史",
+          "对什么过敏"
+        ],
+        "en": [
+          "allergies",
+          "allergic",
+          "drug allergy",
+          "food allergy",
+          "reactions to medicines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人得过类似的骨头病或肾病吗？",
+        "en": "Has anyone in your family had bone or kidney trouble like this?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里人",
+          "家族史",
+          "家人",
+          "遗传",
+          "父母",
+          "兄弟姐妹"
+        ],
+        "en": [
+          "family history",
+          "runs in the family",
+          "relatives",
+          "parents",
+          "inherited",
+          "anyone in your family"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "抽烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟",
+          "香烟"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时喝酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喝酒",
+          "饮酒",
+          "酒量",
+          "白酒",
+          "啤酒"
+        ],
+        "en": [
+          "alcohol",
+          "drink",
+          "drinking",
+          "beer",
+          "spirits"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您是做什么工作的？",
+        "en": "What do you do for a living?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "做什么工作",
+          "工作",
+          "职业",
+          "上班",
+          "干什么的"
+        ],
+        "en": [
+          "job",
+          "occupation",
+          "foraliving",
+          "whatdoyoudoforwork",
+          "line of work",
+          "employment"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "diet-sun",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时吃饭怎么样？晒太阳多吗？",
+        "en": "What's your diet like, and do you get out in the sun much?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "饮食",
+          "吃饭",
+          "晒太阳",
+          "日晒",
+          "喝牛奶",
+          "吃得怎么样"
+        ],
+        "en": [
+          "diet",
+          "eating",
+          "sunlight",
+          "sun exposure",
+          "milk",
+          "outdoors"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "这次住院您最担心什么？",
+        "en": "What worries you most about all this?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "担心",
+          "顾虑",
+          "最怕",
+          "希望",
+          "期望"
+        ],
+        "en": [
+          "worries",
+          "worried",
+          "concerns",
+          "hoping for",
+          "expect"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "原文未记录：保持未知，不补写回答",
+        "en": "Not recorded in the source: kept unknown, no answer invented"
+      }
+    },
+    {
+      "id": "status-course",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这几天感觉怎么样？",
+        "en": "How have you been feeling these last few days?"
+      },
+      "answer": {
+        "zh-CN": "胸口后背疼轻多了。下地走路腿还是没劲，不过比刚来的时候强。",
+        "en": "The chest and back pain is a lot better. My legs are still weak when I walk, but I'm better than when I came in."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在感觉",
+          "这几天",
+          "好点了吗",
+          "好些了",
+          "好一点",
+          "好转",
+          "现在还疼吗",
+          "现在能走吗",
+          "感觉怎么样"
+        ],
+        "en": [
+          "feeling now",
+          "howareyounow",
+          "anybetter",
+          "feeling better",
+          "still hurting",
+          "walking now",
+          "these last few days"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "course"
+      ],
+      "supersedes": [
+        "presentation",
+        "pain-location",
+        "function"
+      ],
+      "source": {
+        "zh-CN": "正文·治疗经过；患者口语回答为依据原文的教学改写",
+        "en": "Main text · treatment and course; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "meds-course",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "现在用的是什么药？",
+        "en": "What medicines are you on now?"
+      },
+      "answer": {
+        "zh-CN": "阿德福韦酯已经停了，乙肝的药换成了恩替卡韦，每天一片。还吃钙片、一种维生素D的胶丸、补钾的口服液、两种保肝的药，每天挂一瓶保肝的水；后来又加了补磷的药。",
+        "en": "The adefovir's been stopped and the hepatitis tablet changed to entecavir, one a day. I'm also on calcium tablets, a vitamin D capsule, a potassium drink, two liver tablets and a daily drip for the liver, and later they added something for the phosphate."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在吃什么药",
+          "现在用的药",
+          "换药",
+          "换了什么药",
+          "恩替卡韦",
+          "补磷",
+          "停药了吗",
+          "用什么药"
+        ],
+        "en": [
+          "medicines now",
+          "whatareyouonnow",
+          "changed tablets",
+          "changedyourtablets",
+          "entecavir",
+          "phosphate",
+          "stopped the adefovir",
+          "current medication"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "phases": [
+        "course"
+      ],
+      "supersedes": [
+        "medications"
+      ],
+      "source": {
+        "zh-CN": "正文·治疗经过；患者口语回答为依据原文的教学改写",
+        "en": "Main text · treatment and course; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "status-followup",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在恢复得怎么样？",
+        "en": "How are you getting on now?"
+      },
+      "answer": {
+        "zh-CN": "现在能迈开大步走路了，疼也轻多了。",
+        "en": "I can walk with proper long strides now, and the pain is much less."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在怎么样",
+          "恢复",
+          "能走路了吗",
+          "还疼吗",
+          "现在感觉",
+          "好了吗"
+        ],
+        "en": [
+          "howareyounow",
+          "recovery",
+          "walking now",
+          "still in pain",
+          "feeling now",
+          "gettingon"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "followup"
+      ],
+      "supersedes": [
+        "presentation",
+        "pain-location",
+        "function",
+        "status-course"
+      ],
+      "source": {
+        "zh-CN": "正文·治疗经过；患者口语回答为依据原文的教学改写",
+        "en": "Main text · treatment and course; the patient's lay wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "meds-followup",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "出院以后在吃哪些药？",
+        "en": "What have you been taking since you went home?"
+      },
+      "answer": {
+        "zh-CN": "一直吃恩替卡韦，每天一片，还在补磷、补钙。",
+        "en": "Entecavir, one a day, and I've kept on with the phosphate and the calcium."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出院后吃什么药",
+          "回家以后",
+          "现在吃的药",
+          "恩替卡韦",
+          "补磷",
+          "在吃什么药"
+        ],
+        "en": [
+          "since you went home",
+          "medicines now",
+          "whatareyoutaking",
+          "nowadays",
+          "entecavir",
+          "current medication"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "phases": [
+        "followup"
+      ],
+      "supersedes": [
+        "medications",
+        "meds-course"
+      ],
+      "source": {
+        "zh-CN": "正文·治疗经过；患者口语回答为依据原文的教学改写",
+        "en": "Main text · treatment and course; the patient's lay wording is a teaching adaptation"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "测生命体征",
+        "en": "Check his vital signs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "生命体征",
+          "体温",
+          "脉搏",
+          "呼吸",
+          "血压",
+          "心率",
+          "量血压",
+          "测体温"
+        ],
+        "en": [
+          "vital signs",
+          "observations",
+          "obs",
+          "temperature",
+          "pulse",
+          "respiratory rate",
+          "blood pressure",
+          "heart rate"
+        ]
+      },
+      "finding": {
+        "zh-CN": "体温36.5 ℃，脉搏80次/分，呼吸25次/分，血压120/80 mmHg。",
+        "en": "Temperature 36.5 °C, pulse 80/min, respiratory rate 25/min, blood pressure 120/80 mmHg."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体格检查",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察一般情况和体型",
+        "en": "Look at his general appearance and build"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "体型",
+          "消瘦",
+          "外观",
+          "精神",
+          "营养"
+        ],
+        "en": [
+          "general appearance",
+          "build",
+          "thin",
+          "looks",
+          "nutrition",
+          "general inspection"
+        ]
+      },
+      "finding": {
+        "zh-CN": "体型消瘦，不能行走。",
+        "en": "Thin build; unable to walk."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体格检查",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "spine",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "按压颈椎和胸椎",
+        "en": "Palpate the cervical and thoracic spine"
+      },
+      "keywords": {
+        "zh-CN": [
+          "脊柱",
+          "颈椎",
+          "胸椎",
+          "椎体压痛",
+          "按压脊柱",
+          "背部压痛",
+          "腰椎"
+        ],
+        "en": [
+          "spine",
+          "cervical spine",
+          "thoracic spine",
+          "vertebral tenderness",
+          "palpate the back",
+          "spinal tenderness"
+        ]
+      },
+      "finding": {
+        "zh-CN": "颈椎及上胸椎水平椎体压痛。",
+        "en": "Tenderness over the vertebrae of the cervical and upper thoracic spine."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体格检查",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "chest-wall",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "检查肋骨和肩胛骨",
+        "en": "Examine the ribs and scapulae"
+      },
+      "keywords": {
+        "zh-CN": [
+          "肋骨",
+          "肩胛骨",
+          "肋弓",
+          "胸廓",
+          "胸壁",
+          "按压肋骨",
+          "肋骨压痛"
+        ],
+        "en": [
+          "ribs",
+          "scapula",
+          "shoulder blades",
+          "costal margin",
+          "chest wall",
+          "rib tenderness",
+          "thorax"
+        ]
+      },
+      "finding": {
+        "zh-CN": "肩胛骨和肋骨处压痛；肋弓外翻，局部增粗。",
+        "en": "Tenderness over the scapulae and ribs; the costal margins are everted and locally thickened."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体格检查",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "power",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "检查四肢肌力",
+        "en": "Test limb muscle power"
+      },
+      "keywords": {
+        "zh-CN": [
+          "肌力",
+          "力量",
+          "四肢肌力",
+          "下肢肌力",
+          "握力",
+          "查肌力"
+        ],
+        "en": [
+          "power",
+          "muscle strength",
+          "strength",
+          "limb power",
+          "weakness testing",
+          "mrc grade"
+        ]
+      },
+      "finding": {
+        "zh-CN": "肌力4级。",
+        "en": "Muscle power grade 4."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体格检查",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "slr",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "做直腿抬高试验",
+        "en": "Do a straight-leg raise"
+      },
+      "keywords": {
+        "zh-CN": [
+          "直腿抬高",
+          "抬腿试验",
+          "直腿抬高试验",
+          "拉塞格"
+        ],
+        "en": [
+          "straight leg raise",
+          "straight-leg raise",
+          "slr",
+          "lasegue"
+        ]
+      },
+      "finding": {
+        "zh-CN": "直腿抬高试验阳性。",
+        "en": "Straight-leg raise positive."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体格检查",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "gait",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "观察站立和步态",
+        "en": "Assess standing and gait"
+      },
+      "keywords": {
+        "zh-CN": [
+          "步态",
+          "走几步",
+          "走路",
+          "站立",
+          "行走",
+          "下地走",
+          "站起来"
+        ],
+        "en": [
+          "gait",
+          "walk a few steps",
+          "standing",
+          "watch him walk",
+          "getupandwalk"
+        ]
+      },
+      "finding": {
+        "zh-CN": "不能行走。",
+        "en": "Unable to walk."
+      },
+      "abnormal": true,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体格检查",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "heart-lungs",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "心肺听诊",
+        "en": "Listen to the heart and lungs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏",
+          "肺部",
+          "听诊",
+          "心肺",
+          "心音",
+          "呼吸音",
+          "听心肺"
+        ],
+        "en": [
+          "heart",
+          "lungs",
+          "auscultate",
+          "chest sounds",
+          "heart sounds",
+          "breath sounds",
+          "listen to the chest"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心肺未见异常（原文对其余查体概括为“余未见异常”）。",
+        "en": "No abnormality of the heart or lungs (the report sums up the rest of the examination as 'otherwise unremarkable')."
+      },
+      "abnormal": false,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体格检查（“余未见异常”的概括记录）",
+        "en": "Main text · admission examination (the summary 'otherwise unremarkable')"
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "腹部检查",
+        "en": "Examine the abdomen"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部",
+          "肚子",
+          "肝脏",
+          "脾脏",
+          "肝大",
+          "腹部触诊",
+          "摸肚子"
+        ],
+        "en": [
+          "abdomen",
+          "tummy",
+          "liver",
+          "spleen",
+          "palpate the abdomen",
+          "abdominal examination",
+          "hepatomegaly"
+        ]
+      },
+      "finding": {
+        "zh-CN": "腹部未见异常（原文对其余查体概括为“余未见异常”）。",
+        "en": "No abdominal abnormality (the report sums up the rest of the examination as 'otherwise unremarkable')."
+      },
+      "abnormal": false,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院体格检查（“余未见异常”的概括记录）",
+        "en": "Main text · admission examination (the summary 'otherwise unremarkable')"
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有单独记录这一项查体：入院查体只列出了上面的阳性发现，其余概括为“余未见异常”；换药后的阶段没有再记录查体。",
+    "en": "The report does not record this manoeuvre separately: the admission examination lists only the findings above and sums up the rest as 'otherwise unremarkable', and no examination is recorded after the drug change."
+  },
+  "investigations": [
+    {
+      "id": "blood",
+      "name": {
+        "zh-CN": "血生化（电解质、肾功能、尿酸、血糖、碱性磷酸酶）",
+        "en": "Blood chemistry (electrolytes, renal function, urate, glucose, ALP)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血生化",
+          "生化",
+          "电解质",
+          "血钾",
+          "血磷",
+          "血钙",
+          "肌酐",
+          "肾功能",
+          "尿酸",
+          "血糖",
+          "碱性磷酸酶",
+          "alp"
+        ],
+        "en": [
+          "blood chemistry",
+          "chemistry",
+          "electrolytes",
+          "u&e",
+          "potassium",
+          "phosphate",
+          "calcium",
+          "creatinine",
+          "renal function",
+          "urate",
+          "glucose",
+          "alkaline phosphatase",
+          "alp",
+          "bone profile"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院当天（第0天）",
+            "en": "Admission (day 0)"
+          },
+          "text": {
+            "zh-CN": "钾3.1 mmol/L，氯111 mmol/L，钙2.2 mmol/L，磷0.53 mmol/L，肌酐103 μmol/L，尿酸117 μmol/L（参考值160–430 μmol/L），空腹血糖4.1 mmol/L，碱性磷酸酶（ALP）201 U/L（参考值32–121 U/L）。",
+            "en": "Potassium 3.1 mmol/L, chloride 111 mmol/L, calcium 2.2 mmol/L, phosphate 0.53 mmol/L, creatinine 103 μmol/L, urate 117 μmol/L (reference 160–430 μmol/L), fasting glucose 4.1 mmol/L, alkaline phosphatase (ALP) 201 U/L (reference 32–121 U/L)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "钾",
+                "en": "Potassium"
+              },
+              "value": 3.1,
+              "unit": "mmol/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "氯",
+                "en": "Chloride"
+              },
+              "value": 111,
+              "unit": "mmol/L",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "钙",
+                "en": "Calcium"
+              },
+              "value": 2.2,
+              "unit": "mmol/L",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "磷",
+                "en": "Phosphate"
+              },
+              "value": 0.53,
+              "unit": "mmol/L",
+              "refLow": 0.8,
+              "refHigh": 1.65,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肌酐",
+                "en": "Creatinine"
+              },
+              "value": 103,
+              "unit": "μmol/L",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿酸",
+                "en": "Urate"
+              },
+              "value": 117,
+              "unit": "μmol/L",
+              "refLow": 160,
+              "refHigh": 430,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "空腹血糖",
+                "en": "Fasting glucose"
+              },
+              "value": 4.1,
+              "unit": "mmol/L",
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "碱性磷酸酶",
+                "en": "Alkaline phosphatase"
+              },
+              "value": 201,
+              "unit": "U/L",
+              "refLow": 32,
+              "refHigh": 121,
+              "flag": "H"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文只给出尿酸、ALP的参考值；磷的参考值（0.80–1.65 mmol/L）印在入院前5个月同院的血磷结果旁。其余“高/低/正常”标记按作者讨论中的判断。血钠和碳酸氢根（生化）未报告。",
+            "en": "The report prints reference ranges only for urate and ALP; the phosphate range (0.80–1.65 mmol/L) is printed with the same hospital's result 5 months earlier. The other high/low/normal flags follow the authors' discussion. Sodium and chemistry bicarbonate were not reported."
+          },
+          "source": {
+            "zh-CN": "正文·入院实验室检查（数值及参考值按原文）",
+            "en": "Main text · admission laboratory tests (values and reference ranges as printed)"
+          }
+        },
+        "course": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院第11天、第14天",
+            "en": "Hospital days 11 and 14"
+          },
+          "text": {
+            "zh-CN": "入院第11天（停药后第2天）血磷0.57 mmol/L；第14天（停药后第5天）0.71 mmol/L。原报告未记录同期其他血液指标。",
+            "en": "Hospital day 11 (2 days after stopping adefovir): phosphate 0.57 mmol/L; day 14 (5 days after): 0.71 mmol/L. No other blood results from this period are recorded."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "磷（第11天）",
+                "en": "Phosphate (day 11)"
+              },
+              "value": 0.57,
+              "unit": "mmol/L",
+              "refLow": 0.8,
+              "refHigh": 1.65,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "磷（第14天）",
+                "en": "Phosphate (day 14)"
+              },
+              "value": 0.71,
+              "unit": "mmol/L",
+              "refLow": 0.8,
+              "refHigh": 1.65,
+              "flag": "L"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "摘要写作“6 d后复查，血磷升至0.71 mmol/L”，正文日期算来为停药后第5天。",
+            "en": "The abstract says phosphate rose to 0.71 mmol/L '6 days later'; the main-text dates make it 5 days after stopping."
+          },
+          "source": {
+            "zh-CN": "正文·治疗经过",
+            "en": "Main text · treatment and course"
+          }
+        },
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "出院后约6个月",
+            "en": "About 6 months after discharge"
+          },
+          "text": {
+            "zh-CN": "出院后约6个月：血磷0.81 mmol/L，血钾3.6 mmol/L，血尿酸153 μmol/L。",
+            "en": "About 6 months after discharge: phosphate 0.81 mmol/L, potassium 3.6 mmol/L, urate 153 μmol/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "磷",
+                "en": "Phosphate"
+              },
+              "value": 0.81,
+              "unit": "mmol/L",
+              "refLow": 0.8,
+              "refHigh": 1.65,
+              "flag": "N"
+            },
+            {
+              "analyte": {
+                "zh-CN": "钾",
+                "en": "Potassium"
+              },
+              "value": 3.6,
+              "unit": "mmol/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿酸",
+                "en": "Urate"
+              },
+              "value": 153,
+              "unit": "μmol/L",
+              "refLow": 160,
+              "refHigh": 430,
+              "flag": "L"
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "正文·随访；摘要",
+            "en": "Main text · follow-up; abstract"
+          }
+        }
+      }
+    },
+    {
+      "id": "urinalysis",
+      "name": {
+        "zh-CN": "尿常规",
+        "en": "Urinalysis"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "尿常规",
+          "尿检",
+          "尿糖",
+          "尿蛋白",
+          "小便化验",
+          "验尿"
+        ],
+        "en": [
+          "urinalysis",
+          "urine dipstick",
+          "dipstick",
+          "urine glucose",
+          "urine test",
+          "urine protein"
+        ]
+      },
+      "requires": [
+        "lab-urinalysis"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院当天（第0天）",
+            "en": "Admission (day 0)"
+          },
+          "text": {
+            "zh-CN": "尿葡萄糖++，尿蛋白+。",
+            "en": "Urine glucose ++, protein +."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "尿葡萄糖",
+                "en": "Urine glucose"
+              },
+              "value": "++",
+              "unit": "",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿蛋白",
+                "en": "Urine protein"
+              },
+              "value": "+",
+              "unit": "",
+              "flag": "A"
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "正文·入院实验室检查（数值及参考值按原文）",
+            "en": "Main text · admission laboratory tests (values and reference ranges as printed)"
+          }
+        },
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "出院后约6个月",
+            "en": "About 6 months after discharge"
+          },
+          "text": {
+            "zh-CN": "出院后约6个月：尿蛋白±，尿葡萄糖阴性。",
+            "en": "About 6 months after discharge: urine protein ±, urine glucose negative."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "尿蛋白",
+                "en": "Urine protein"
+              },
+              "value": "±",
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿葡萄糖",
+                "en": "Urine glucose"
+              },
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
+              "unit": "",
+              "flag": "N"
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "正文·随访；摘要",
+            "en": "Main text · follow-up; abstract"
+          }
+        }
+      }
+    },
+    {
+      "id": "urine",
+      "name": {
+        "zh-CN": "24小时尿和肾小管蛋白（尿磷、尿钾、尿蛋白定量、α1微球蛋白、微量白蛋白）",
+        "en": "24-hour urine and tubular proteins (phosphate, potassium, protein, α1-microglobulin, microalbumin)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "24小时尿",
+          "尿磷",
+          "尿钾",
+          "尿蛋白定量",
+          "α1微球蛋白",
+          "a1微球蛋白",
+          "微量白蛋白",
+          "肾小管蛋白",
+          "尿电解质"
+        ],
+        "en": [
+          "24-hour urine",
+          "24 hour urine",
+          "urine phosphate",
+          "urine potassium",
+          "urine protein quantification",
+          "alpha-1 microglobulin",
+          "microalbumin",
+          "tubular proteins",
+          "urine electrolytes"
+        ]
+      },
+      "requires": [
+        "lab-urinalysis",
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院当天（第0天）",
+            "en": "Admission (day 0)"
+          },
+          "text": {
+            "zh-CN": "微量白蛋白70.9 mg/L（参考值0–19.1 mg/L），α1微球蛋白168.0 mg/L（参考值0–12.5 mg/L），尿蛋白定量0.93 g/24 h（参考值0–0.14 g/24 h），尿磷13 mmol/24 h（参考值16–48 mmol/24 h），尿钾79 mmol/24 h（参考值25–100 mmol/24 h）。",
+            "en": "Microalbumin 70.9 mg/L (reference 0–19.1 mg/L), α1-microglobulin 168.0 mg/L (reference 0–12.5 mg/L), protein 0.93 g/24 h (reference 0–0.14 g/24 h), phosphate 13 mmol/24 h (reference 16–48 mmol/24 h), potassium 79 mmol/24 h (reference 25–100 mmol/24 h)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "微量白蛋白",
+                "en": "Microalbumin"
+              },
+              "value": 70.9,
+              "unit": "mg/L",
+              "refLow": 0,
+              "refHigh": 19.1,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "α1微球蛋白",
+                "en": "α1-microglobulin"
+              },
+              "value": 168,
+              "unit": "mg/L",
+              "refLow": 0,
+              "refHigh": 12.5,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿蛋白定量",
+                "en": "Urine protein"
+              },
+              "value": 0.93,
+              "unit": "g/24 h",
+              "refLow": 0,
+              "refHigh": 0.14,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿磷",
+                "en": "Urine phosphate"
+              },
+              "value": 13,
+              "unit": "mmol/24 h",
+              "refLow": 16,
+              "refHigh": 48,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿钾",
+                "en": "Urine potassium"
+              },
+              "value": 79,
+              "unit": "mmol/24 h",
+              "refLow": 25,
+              "refHigh": 100
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文未报告尿肌酐、尿pH、尿钙或尿氨基酸，无法计算磷排泄分数（FEPO₄）或TmP/GFR；解读尿磷、尿钾时请对照同一时间的血磷、血钾。",
+            "en": "Urine creatinine, pH, calcium and amino acids were not reported, so FEPO₄ and TmP/GFR cannot be calculated; read the urine phosphate and potassium against the serum values taken at the same time."
+          },
+          "source": {
+            "zh-CN": "正文·入院实验室检查（数值及参考值按原文）",
+            "en": "Main text · admission laboratory tests (values and reference ranges as printed)"
+          }
+        },
+        "course": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院第18天",
+            "en": "Hospital day 18"
+          },
+          "text": {
+            "zh-CN": "出院当天（入院第18天）：尿磷16 mmol/24 h，尿钾37 mmol/24 h，尿蛋白0.31 g/24 h；原报告称均较前好转。",
+            "en": "Day of discharge (hospital day 18): urine phosphate 16 mmol/24 h, urine potassium 37 mmol/24 h, urine protein 0.31 g/24 h; the report calls all of these improved."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "尿磷",
+                "en": "Urine phosphate"
+              },
+              "value": 16,
+              "unit": "mmol/24 h",
+              "refLow": 16,
+              "refHigh": 48
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿钾",
+                "en": "Urine potassium"
+              },
+              "value": 37,
+              "unit": "mmol/24 h",
+              "refLow": 25,
+              "refHigh": 100
+            },
+            {
+              "analyte": {
+                "zh-CN": "尿蛋白定量",
+                "en": "Urine protein"
+              },
+              "value": 0.31,
+              "unit": "g/24 h",
+              "refLow": 0,
+              "refHigh": 0.14,
+              "flag": "H"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "此时已在补磷：尿磷很大程度上反映摄入的磷，不能单凭它判断肾小管已恢复。",
+            "en": "By now he was taking phosphate supplements, so the urine phosphate largely reflects the phosphate given and cannot on its own show tubular recovery."
+          },
+          "source": {
+            "zh-CN": "正文·治疗经过",
+            "en": "Main text · treatment and course"
+          }
+        }
+      }
+    },
+    {
+      "id": "abg",
+      "name": {
+        "zh-CN": "动脉血气分析",
+        "en": "Arterial blood gas"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血气",
+          "血气分析",
+          "动脉血气",
+          "酸碱",
+          "碳酸氢根"
+        ],
+        "en": [
+          "abg",
+          "blood gas",
+          "arterial blood gas",
+          "acid-base",
+          "bicarbonate"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院当天（第0天）",
+            "en": "Admission (day 0)"
+          },
+          "text": {
+            "zh-CN": "pH 7.24，PaCO₂ 31 mmHg，HCO₃⁻ 13 mmol/L：代谢性酸中毒。",
+            "en": "pH 7.24, PaCO₂ 31 mmHg, HCO₃⁻ 13 mmol/L: metabolic acidosis."
+          },
+          "values": [
+            {
+              "analyte": "pH",
+              "value": 7.24,
+              "unit": "",
+              "flag": "L"
+            },
+            {
+              "analyte": "PaCO₂",
+              "value": 31,
+              "unit": "mmHg"
+            },
+            {
+              "analyte": "HCO₃⁻",
+              "value": 13,
+              "unit": "mmol/L",
+              "flag": "L"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文未报告血钠，无法计算阴离子间隙；血氯111 mmol/L见血生化。",
+            "en": "Sodium was not reported, so the anion gap cannot be calculated; chloride (111 mmol/L) is in the blood chemistry."
+          },
+          "source": {
+            "zh-CN": "正文·入院实验室检查（数值及参考值按原文）",
+            "en": "Main text · admission laboratory tests (values and reference ranges as printed)"
+          }
+        }
+      }
+    },
+    {
+      "id": "vitd",
+      "name": {
+        "zh-CN": "25-羟维生素D",
+        "en": "25-hydroxyvitamin D"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "维生素d",
+          "25羟维生素d",
+          "25-羟维生素d",
+          "25ohd",
+          "维d"
+        ],
+        "en": [
+          "vitamin d",
+          "25-hydroxyvitamin d",
+          "25-oh d",
+          "25ohd",
+          "calcidiol"
+        ]
+      },
+      "requires": [
+        "lab-endocrine"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院当天（第0天）",
+            "en": "Admission (day 0)"
+          },
+          "text": {
+            "zh-CN": "25-羟维生素D₃ 36.97（原文单位印作mmol/L）。",
+            "en": "25-hydroxyvitamin D₃ 36.97 (unit printed as mmol/L)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "25-羟维生素D₃",
+                "en": "25-hydroxyvitamin D₃"
+              },
+              "value": 36.97,
+              "unit": "mmol/L",
+              "flag": "L"
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文单位印作mmol/L；这一数量级只可能是nmol/L（约合14.8 ng/mL），作者在讨论中视为降低。病例保留原文印刷，不改单位。",
+            "en": "The unit is printed as mmol/L; at this magnitude it can only be nmol/L (about 14.8 ng/mL), and the authors treat it as low. The case keeps the printed value and does not change the unit."
+          },
+          "source": {
+            "zh-CN": "正文·入院实验室检查（数值及参考值按原文）",
+            "en": "Main text · admission laboratory tests (values and reference ranges as printed)"
+          }
+        }
+      }
+    },
+    {
+      "id": "hbv-serology",
+      "name": {
+        "zh-CN": "乙肝血清学和HBV DNA",
+        "en": "Hepatitis B serology and HBV DNA"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "乙肝",
+          "乙肝五项",
+          "两对半",
+          "hbv",
+          "hbv dna",
+          "乙肝病毒",
+          "病毒载量",
+          "hbsag"
+        ],
+        "en": [
+          "hepatitis b serology",
+          "hbv",
+          "hbv dna",
+          "viral load",
+          "hbsag",
+          "hepatitis serology"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院当天（第0天）",
+            "en": "Admission (day 0)"
+          },
+          "text": {
+            "zh-CN": "HBsAg阳性，抗-HBe阳性，抗-HBc阳性；HBV DNA < 4.2 × 10² copies/mL（参考值(0–5) × 10² copies/mL）。",
+            "en": "HBsAg positive, anti-HBe positive, anti-HBc positive; HBV DNA < 4.2 × 10² copies/mL (reference (0–5) × 10² copies/mL)."
+          },
+          "values": [
+            {
+              "analyte": "HBsAg",
+              "value": {
+                "zh-CN": "阳性",
+                "en": "positive"
+              },
+              "unit": "",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "抗-HBe",
+                "en": "Anti-HBe"
+              },
+              "value": {
+                "zh-CN": "阳性",
+                "en": "positive"
+              },
+              "unit": "",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "抗-HBc",
+                "en": "Anti-HBc"
+              },
+              "value": {
+                "zh-CN": "阳性",
+                "en": "positive"
+              },
+              "unit": "",
+              "flag": "A"
+            },
+            {
+              "analyte": "HBV DNA",
+              "value": "< 4.2 × 10²",
+              "unit": "copies/mL",
+              "refText": {
+                "zh-CN": "(0–5) × 10²",
+                "en": "(0–5) × 10²"
+              }
+            }
+          ],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文未报告HBeAg、治疗前HBV DNA和入院时的肝酶。",
+            "en": "HBeAg, the pre-treatment HBV DNA and admission liver enzymes were not reported."
+          },
+          "source": {
+            "zh-CN": "正文·入院实验室检查（数值及参考值按原文）",
+            "en": "Main text · admission laboratory tests (values and reference ranges as printed)"
+          }
+        }
+      }
+    },
+    {
+      "id": "marrow",
+      "name": {
+        "zh-CN": "骨髓穿刺和血液肿瘤指标",
+        "en": "Bone marrow aspirate and haematological tumour markers"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "骨髓穿刺",
+          "骨穿",
+          "骨髓",
+          "骨髓象",
+          "血液肿瘤指标",
+          "骨髓瘤筛查",
+          "免疫固定电泳",
+          "轻链"
+        ],
+        "en": [
+          "bone marrow",
+          "marrow aspirate",
+          "bone marrow aspirate",
+          "myeloma screen",
+          "tumour markers",
+          "haematological markers",
+          "light chains",
+          "protein electrophoresis"
+        ]
+      },
+      "requires": [
+        "cytology"
+      ],
+      "risk": "moderate",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院第0–8天",
+            "en": "Hospital days 0–8"
+          },
+          "text": {
+            "zh-CN": "骨髓象基本正常；血液肿瘤指标无异常。",
+            "en": "Marrow essentially normal; haematological tumour markers normal."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文未列出“血液肿瘤指标”的具体项目（如血清蛋白电泳、免疫固定电泳、游离轻链）。",
+            "en": "The report does not say which 'haematological tumour markers' were measured (for example serum protein electrophoresis, immunofixation or free light chains)."
+          },
+          "source": {
+            "zh-CN": "正文·入院实验室检查（数值及参考值按原文）",
+            "en": "Main text · admission laboratory tests (values and reference ranges as printed)"
+          }
+        }
+      }
+    },
+    {
+      "id": "renal-scintigraphy",
+      "name": {
+        "zh-CN": "肾动态显像报告（核医学科）",
+        "en": "Renal scintigraphy report (nuclear medicine)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肾动态显像",
+          "肾图",
+          "核医学",
+          "gfr测定",
+          "肾小球滤过率",
+          "肾显像"
+        ],
+        "en": [
+          "renal scintigraphy",
+          "renogram",
+          "nuclear medicine",
+          "measured gfr",
+          "gfr scan",
+          "renal scan",
+          "dtpa"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院第0–8天",
+            "en": "Hospital days 0–8"
+          },
+          "text": {
+            "zh-CN": "双肾肾小球滤过功能中度受损，GFR低于正常（报告未给出具体数值）。",
+            "en": "Moderately impaired glomerular filtration in both kidneys; GFR below normal (no figure given)."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "正文·入院实验室检查（数值及参考值按原文）",
+            "en": "Main text · admission laboratory tests (values and reference ranges as printed)"
+          }
+        }
+      }
+    },
+    {
+      "id": "prior-labs",
+      "name": {
+        "zh-CN": "入院前约5个月骨科化验记录",
+        "en": "Orthopaedic blood results from about 5 months before admission"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "骨科化验",
+          "以前的化验",
+          "既往化验",
+          "之前的血磷",
+          "骨科记录",
+          "旧化验",
+          "以往检查结果",
+          "甲状旁腺",
+          "pth"
+        ],
+        "en": [
+          "orthopaedic bloods",
+          "previous bloods",
+          "earlier results",
+          "old results",
+          "prior labs",
+          "previous phosphate",
+          "orthopaedic records",
+          "pth",
+          "parathyroid hormone"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院前约5个月（骨科就诊）",
+            "en": "About 5 months before admission (orthopaedic visit)"
+          },
+          "text": {
+            "zh-CN": "肝功能、肾功能、血钙、甲状旁腺激素（PTH）正常（未给出数值）；血磷0.45–0.65 mmol/L（参考值0.80–1.65 mmol/L）。当时给予口服补钙，无明显好转。",
+            "en": "Liver and renal function, serum calcium and parathyroid hormone (PTH) normal (values not given); serum phosphate 0.45–0.65 mmol/L (reference 0.80–1.65 mmol/L). Oral calcium was given, without clear improvement."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血磷（多次）",
+                "en": "Phosphate (several results)"
+              },
+              "value": "0.45–0.65",
+              "unit": "mmol/L",
+              "refLow": 0.8,
+              "refHigh": 1.65,
+              "flag": "L"
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "正文·现病史（入院前约5个月骨科就诊）",
+            "en": "Main text · history (orthopaedic visit about 5 months before admission)"
+          }
+        }
+      }
+    },
+    {
+      "id": "bone",
+      "name": {
+        "zh-CN": "既往骨骼影像和肌电图记录",
+        "en": "Earlier bone imaging and EMG records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "骨密度",
+          "骨扫描",
+          "胸片",
+          "x线",
+          "磁共振",
+          "mri",
+          "肌电图",
+          "骨科影像",
+          "既往影像",
+          "dxa"
+        ],
+        "en": [
+          "bone density",
+          "dxa",
+          "dexa",
+          "bone scan",
+          "chest x-ray",
+          "x-ray",
+          "mri",
+          "emg",
+          "previous imaging",
+          "orthopaedic imaging"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": true,
+          "date": {
+            "zh-CN": "起病后至入院前约5个月",
+            "en": "From onset to about 5 months before admission"
+          },
+          "text": {
+            "zh-CN": "起病后在多家医院拍胸片，未见明显异常。入院前约5个月骨科：肌电图未见明显异常；胸腰椎磁共振示退行性变、部分椎体信号异常；骨密度示骨质疏松；骨扫描示全身多发骨代谢活跃灶；胸片示两侧多发肋骨骨折。",
+            "en": "After the pain began, chest X-rays at several hospitals showed nothing obvious. About 5 months before admission (orthopaedics): EMG without clear abnormality; thoracolumbar MRI with degenerative change and abnormal signal in some vertebral bodies; bone densitometry showing osteoporosis; bone scan with multiple foci of increased bone metabolism throughout the skeleton; chest X-ray with multiple rib fractures on both sides."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "摘要称“重度骨质疏松”，正文只写“骨质疏松”，均未给出T值；骨扫描和MRI的具体部位原文未记录。",
+            "en": "The abstract calls it 'severe osteoporosis' while the main text says only 'osteoporosis'; neither gives a T-score, and the report does not say where the bone-scan or MRI changes were."
+          },
+          "source": {
+            "zh-CN": "正文·现病史（入院前约5个月骨科就诊）",
+            "en": "Main text · history (orthopaedic visit about 5 months before admission)"
+          }
+        }
+      }
+    },
+    {
+      "id": "pth",
+      "name": {
+        "zh-CN": "甲状旁腺激素（本次入院）",
+        "en": "Parathyroid hormone (this admission)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "甲状旁腺激素",
+          "甲状旁腺素",
+          "pth",
+          "ipth"
+        ],
+        "en": [
+          "parathyroid hormone",
+          "pth",
+          "ipth",
+          "parathyroid"
+        ]
+      },
+      "requires": [
+        "lab-endocrine"
+      ],
+      "risk": "none",
+      "value": "neutral",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "本次住院原报告没有甲状旁腺激素结果。入院前约5个月骨科记录为“正常”（见既往化验记录）。",
+            "en": "The report gives no parathyroid hormone result for this admission. The orthopaedic record about 5 months earlier calls it 'normal' (see the earlier blood results)."
+          },
+          "values": [],
+          "figures": []
+        }
+      }
+    },
+    {
+      "id": "inpatient-course",
+      "name": {
+        "zh-CN": "住院治疗记录（原报告）",
+        "en": "Inpatient treatment record (as reported)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "住院经过",
+          "治疗记录",
+          "病程记录",
+          "住院记录",
+          "治疗经过",
+          "医嘱记录"
+        ],
+        "en": [
+          "inpatient course",
+          "treatment record",
+          "hospital course",
+          "progress notes",
+          "drug chart",
+          "ward notes"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "course": {
+          "available": true,
+          "date": {
+            "zh-CN": "入院第9–18天",
+            "en": "Hospital days 9–18"
+          },
+          "text": {
+            "zh-CN": "入院第9天停用阿德福韦酯，给予恩替卡韦0.5 mg每日1次口服，碳酸钙D3 0.6 g每日1次，骨化三醇胶丸1 μg每日1次，氯化钾口服溶液补钾；另给甘草酸二铵100 mg每日3次口服、还原型谷胱甘肽1.8 g每日1次静脉滴注、护肝宁片4片每日3次。第11天血磷0.57 mmol/L，作者认为肾小管损伤所致的尿磷丢失短期内不能恢复，加用补磷（制剂和剂量未记录）。第14天血磷0.71 mmol/L。第18天胸背疼痛明显好转，行走时四肢仍乏力但较前好转，出院；出院后继续恩替卡韦0.5 mg每日1次，并继续补磷、补钙。",
+            "en": "On hospital day 9 adefovir was stopped and entecavir 0.5 mg orally once daily started, with calcium carbonate–vitamin D₃ 0.6 g once daily, calcitriol capsules 1 μg once daily and oral potassium chloride solution; diammonium glycyrrhizinate 100 mg orally three times daily, reduced glutathione 1.8 g IV once daily and Huganning tablets 4 three times daily were also given. On day 11 the phosphate was 0.57 mmol/L; judging that the tubular phosphate leak would not recover quickly, the team added phosphate supplements (preparation and dose not recorded). Day 14: phosphate 0.71 mmol/L. On day 18 the chest and back pain was much better and his limbs, though still weak when walking, were improving; he went home on entecavir 0.5 mg once daily with continued phosphate and calcium."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "原文把甘草酸二铵写作“甘草酸二胺”。原报告没有记录碱剂。",
+            "en": "The report spells diammonium glycyrrhizinate '甘草酸二胺'. No alkali is recorded."
+          },
+          "source": {
+            "zh-CN": "正文·治疗经过",
+            "en": "Main text · treatment and course"
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅随访记录",
+        "en": "Review the follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "随访",
+          "随访记录",
+          "复查记录",
+          "出院后",
+          "门诊复查",
+          "转归"
+        ],
+        "en": [
+          "follow-up",
+          "follow up record",
+          "outcome",
+          "after discharge",
+          "clinic review",
+          "followup"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "出院后约6个月",
+            "en": "About 6 months after discharge"
+          },
+          "text": {
+            "zh-CN": "出院后继续恩替卡韦0.5 mg每日1次及补磷、补钙。约6个月后复查：血磷0.81 mmol/L，血钾3.6 mmol/L，血尿酸153 μmol/L，尿蛋白±，尿葡萄糖阴性；可大步行走，疼痛明显减轻。原报告没有记录骨密度复查、骨折愈合或乙肝随访结果。",
+            "en": "After discharge he continued entecavir 0.5 mg once daily with phosphate and calcium. About 6 months later: phosphate 0.81 mmol/L, potassium 3.6 mmol/L, urate 153 μmol/L, urine protein ±, urine glucose negative; he could walk with long strides and the pain was much reduced. The report does not record repeat bone densitometry, fracture healing or hepatitis B follow-up."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "正文·随访；摘要",
+            "en": "Main text · follow-up; abstract"
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "urine",
+        "ifMatches": "urine|尿",
+        "remove": [
+          "blood"
+        ]
+      },
+      {
+        "ifHas": "urinalysis",
+        "ifMatches": "urine|尿",
+        "remove": [
+          "blood"
+        ]
+      }
+    ],
+    "exact": {},
+    "warnings": []
+  },
+  "interventions": [
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "建立外周静脉通路",
+        "en": "Insert a peripheral IV cannula"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "留置针",
+          "打留置针",
+          "开放静脉",
+          "静脉穿刺"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "cannulate",
+          "iv line",
+          "venflon"
+        ]
+      },
+      "dose": {
+        "zh-CN": "外周静脉留置针，同时可抽血送检。",
+        "en": "Peripheral IV cannula; bloods can be drawn at the same time."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "外周静脉留置针已置入，并已抽血送检。",
+        "en": "A peripheral cannula is in place and bloods have been drawn."
+      }
+    },
+    {
+      "id": "stop-adefovir",
+      "name": {
+        "zh-CN": "停用阿德福韦酯",
+        "en": "Stop adefovir dipivoxil"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "停用阿德福韦",
+          "停阿德福韦",
+          "停掉阿德福韦",
+          "停止阿德福韦酯",
+          "停药"
+        ],
+        "en": [
+          "stop adefovir",
+          "discontinue adefovir",
+          "withdraw adefovir",
+          "stop the hepsera",
+          "cease adefovir"
+        ]
+      },
+      "dose": {
+        "zh-CN": "立即停用，并在同一天换用其他抗乙肝病毒药物。",
+        "en": "Stop now, and start another hepatitis B antiviral the same day."
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "low",
+      "effects": [],
+      "setFlags": [
+        "adefovir-stopped"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "all": [
+              {
+                "read": "urine"
+              },
+              {
+                "asked": "medications"
+              }
+            ]
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "已停用阿德福韦酯并通知病房药师。护士问：“乙肝的药换成什么？今天就要开上。”",
+        "en": "Adefovir is stopped and the ward pharmacist informed. The nurse asks: “What's replacing it for the hepatitis B? It needs prescribing today.”"
+      }
+    },
+    {
+      "id": "entecavir",
+      "name": {
+        "zh-CN": "恩替卡韦0.5 mg每日1次口服",
+        "en": "Entecavir 0.5 mg orally once daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "恩替卡韦",
+          "博路定",
+          "etv",
+          "换恩替卡韦"
+        ],
+        "en": [
+          "entecavir",
+          "baraclude",
+          "etv",
+          "switch to entecavir"
+        ]
+      },
+      "dose": {
+        "zh-CN": "恩替卡韦0.5 mg口服，每日1次，空腹（餐前或餐后至少2小时）；肌酐清除率< 50 mL/min时按说明书减量或延长间隔。",
+        "en": "Entecavir 0.5 mg orally once daily on an empty stomach (at least 2 hours from food); reduce the dose or lengthen the interval as labelled if creatinine clearance is < 50 mL/min."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [
+        "hbv-covered"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "decided": "antiviral"
+          },
+          {
+            "intervened": "stop-adefovir"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "恩替卡韦已开始（与原报告相同）。药师提醒：空腹服用；每3–6个月复查HBV DNA和肝肾功能。",
+        "en": "Entecavir started (as in the report). The pharmacist reminds him to take it on an empty stomach and plans HBV DNA and liver and kidney tests every 3–6 months."
+      }
+    },
+    {
+      "id": "taf",
+      "name": {
+        "zh-CN": "丙酚替诺福韦（TAF）25 mg每日1次口服",
+        "en": "Tenofovir alafenamide (TAF) 25 mg orally once daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "丙酚替诺福韦",
+          "taf",
+          "韦立得",
+          "富马酸丙酚替诺福韦"
+        ],
+        "en": [
+          "tenofovir alafenamide",
+          "taf",
+          "vemlidy"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "二吡呋酯",
+          "tdf"
+        ],
+        "en": [
+          "disoproxil",
+          "tdf"
+        ]
+      },
+      "dose": {
+        "zh-CN": "丙酚替诺福韦25 mg口服，每日1次，随餐；治疗期间监测肾功能、血磷和尿蛋白、尿糖。",
+        "en": "Tenofovir alafenamide 25 mg orally once daily with food; monitor kidney function, serum phosphate and urine protein and glucose during treatment."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [
+        "hbv-covered"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "decided": "antiviral"
+          },
+          {
+            "intervened": "stop-adefovir"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "TAF已开始。药师提醒：TAF的血浆替诺福韦浓度远低于TDF，肾和骨安全性更好，但仍属替诺福韦前药，需按计划复查肾小管指标。原报告用的是恩替卡韦。",
+        "en": "TAF started. The pharmacist notes that TAF gives far lower plasma tenofovir than TDF with better kidney and bone safety, but it is still a tenofovir prodrug, so tubular markers must be rechecked as planned. The report used entecavir."
+      }
+    },
+    {
+      "id": "tdf",
+      "name": {
+        "zh-CN": "富马酸替诺福韦二吡呋酯（TDF）300 mg每日1次口服",
+        "en": "Tenofovir disoproxil fumarate (TDF) 300 mg orally once daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "替诺福韦酯",
+          "替诺福韦二吡呋酯",
+          "tdf",
+          "韦瑞德",
+          "替诺福韦"
+        ],
+        "en": [
+          "tenofovir disoproxil",
+          "tdf",
+          "viread",
+          "tenofovir"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "丙酚"
+        ],
+        "en": [
+          "alafenamide",
+          "taf"
+        ]
+      },
+      "dose": {
+        "zh-CN": "TDF 300 mg口服，每日1次。",
+        "en": "TDF 300 mg orally once daily."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "TDF与阿德福韦酯同属核苷酸类似物，同样经近端小管有机阴离子转运体摄取，可引起范科尼综合征、低磷和骨量丢失；已出现药物性范科尼综合征和骨软化时应改用恩替卡韦或TAF（《慢性乙型肝炎防治指南（2022年版）》）。药师已拦截并建议更换。",
+        "en": "TDF, like adefovir, is a nucleotide analogue taken up by proximal-tubular organic anion transporters and can cause Fanconi syndrome, hypophosphataemia and bone loss; with drug-induced Fanconi syndrome and osteomalacia already present, switch to entecavir or TAF instead (Chinese 2022 hepatitis B guideline). The pharmacist has queried the order and suggests a change."
+      },
+      "response": {
+        "zh-CN": "医嘱已录入，药师来电质疑。",
+        "en": "The order is entered; the pharmacist phones to query it."
+      }
+    },
+    {
+      "id": "stop-all-antivirals",
+      "name": {
+        "zh-CN": "停用全部抗乙肝病毒药物，等肾小管恢复后再说",
+        "en": "Stop all hepatitis B treatment until the tubule recovers"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "停用所有抗病毒",
+          "停掉乙肝药",
+          "不吃乙肝药",
+          "暂停抗病毒",
+          "停抗病毒治疗"
+        ],
+        "en": [
+          "stop all antivirals",
+          "stop hepatitis b treatment",
+          "hold antivirals",
+          "no antiviral",
+          "stop hbv treatment"
+        ]
+      },
+      "dose": {
+        "zh-CN": "停用所有核苷（酸）类似物。",
+        "en": "Stop every nucleos(t)ide analogue."
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "停用核苷（酸）类似物可导致乙肝病毒反弹和肝炎急性加重，严重时肝衰竭；阿德福韦酯说明书黑框警告包括停药后肝炎严重急性加重。应在停用致病药的同一天换用恩替卡韦或TAF。",
+        "en": "Stopping nucleos(t)ide therapy can cause viral rebound and an acute hepatitis flare, in severe cases liver failure; the adefovir label carries a boxed warning of severe acute exacerbations of hepatitis after discontinuation. Replace the culprit with entecavir or TAF the same day."
+      },
+      "response": {
+        "zh-CN": "所有抗病毒药已停。护士问：“他的乙肝谁来管？”",
+        "en": "All antivirals are stopped. The nurse asks: “Who's looking after his hepatitis B now?”"
+      }
+    },
+    {
+      "id": "adefovir-reduced",
+      "name": {
+        "zh-CN": "继续阿德福韦酯，改为10 mg隔日1次",
+        "en": "Continue adefovir at 10 mg every other day"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "阿德福韦减量",
+          "阿德福韦隔日",
+          "延长阿德福韦间隔",
+          "继续阿德福韦"
+        ],
+        "en": [
+          "continue adefovir",
+          "reduce adefovir",
+          "adefovir every other day",
+          "adefovir alternate days",
+          "lengthen adefovir interval"
+        ]
+      },
+      "dose": {
+        "zh-CN": "阿德福韦酯10 mg口服，每48小时1次。",
+        "en": "Adefovir dipivoxil 10 mg orally every 48 hours."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "延长给药间隔是针对肌酐清除率下降时的药物蓄积，并不能消除已引起范科尼综合征的肾小管毒性；继续用药会让肾小管损伤和失磷持续。",
+        "en": "A longer interval addresses accumulation when creatinine clearance falls; it does not remove a tubular toxicity that has already caused Fanconi syndrome, so the tubular injury and phosphate loss go on."
+      },
+      "response": {
+        "zh-CN": "医嘱已改为隔日服用。",
+        "en": "The prescription is changed to every other day."
+      }
+    },
+    {
+      "id": "phosphate",
+      "name": {
+        "zh-CN": "口服补磷",
+        "en": "Oral phosphate supplements"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "补磷",
+          "磷制剂",
+          "磷酸盐",
+          "口服磷",
+          "补充磷"
+        ],
+        "en": [
+          "phosphate",
+          "phosphate supplement",
+          "oral phosphate",
+          "phosphate replacement",
+          "sandoz phosphate"
+        ]
+      },
+      "dose": {
+        "zh-CN": "口服磷制剂，分次服用，按血磷调整剂量（原报告未记录制剂和剂量）；可有腹泻，监测血磷、血钙。",
+        "en": "Oral phosphate in divided doses, titrated to serum phosphate (the report does not record the preparation or dose); can cause diarrhoea; monitor serum phosphate and calcium."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [
+        "phosphate-started"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "blood"
+      },
+      "response": {
+        "zh-CN": "已开始口服补磷。原报告在入院第11天血磷仍为0.57 mmol/L时才加用补磷。",
+        "en": "Oral phosphate started. In the report it was added on hospital day 11, when the phosphate was still 0.57 mmol/L."
+      }
+    },
+    {
+      "id": "calcitriol",
+      "name": {
+        "zh-CN": "骨化三醇1 μg每日1次口服",
+        "en": "Calcitriol 1 μg orally once daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "骨化三醇",
+          "活性维生素d",
+          "罗盖全",
+          "1,25维生素d"
+        ],
+        "en": [
+          "calcitriol",
+          "active vitamin d",
+          "rocaltrol",
+          "1,25-dihydroxyvitamin d"
+        ]
+      },
+      "dose": {
+        "zh-CN": "骨化三醇胶丸1 μg口服，每日1次（原报告剂量）；监测血钙，避免高钙血症。",
+        "en": "Calcitriol capsules 1 μg orally once daily (the report's dose); monitor serum calcium to avoid hypercalcaemia."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "blood"
+      },
+      "response": {
+        "zh-CN": "骨化三醇已开始（与原报告相同）。",
+        "en": "Calcitriol started (as in the report)."
+      }
+    },
+    {
+      "id": "calcium-d3",
+      "name": {
+        "zh-CN": "碳酸钙D3 0.6 g每日1次口服",
+        "en": "Calcium carbonate–vitamin D₃ 0.6 g orally once daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "碳酸钙",
+          "钙片",
+          "钙尔奇",
+          "碳酸钙d3",
+          "补钙"
+        ],
+        "en": [
+          "calcium carbonate",
+          "calcium",
+          "calcium and vitamin d",
+          "calcichew",
+          "calcium tablets"
+        ]
+      },
+      "dose": {
+        "zh-CN": "碳酸钙D3 0.6 g口服，每日1次（原报告剂量）。",
+        "en": "Calcium carbonate–vitamin D₃ 0.6 g orally once daily (the report's dose)."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "blood"
+      },
+      "response": {
+        "zh-CN": "钙剂已开始（与原报告相同）。单用钙剂在骨科时并未见效，需要与补磷和骨化三醇一起用。",
+        "en": "Calcium started (as in the report). On its own it did not help in orthopaedics; it belongs with phosphate and calcitriol."
+      }
+    },
+    {
+      "id": "kcl",
+      "name": {
+        "zh-CN": "氯化钾口服溶液",
+        "en": "Oral potassium chloride solution"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "氯化钾",
+          "补钾",
+          "kcl",
+          "氯化钾口服液",
+          "口服补钾"
+        ],
+        "en": [
+          "potassium chloride",
+          "kcl",
+          "oral potassium",
+          "potassium supplement",
+          "sando-k"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "枸橼酸"
+        ],
+        "en": [
+          "citrate"
+        ]
+      },
+      "dose": {
+        "zh-CN": "氯化钾口服溶液，按血钾调整剂量（原报告未记录剂量）。",
+        "en": "Oral potassium chloride solution, titrated to serum potassium (the report does not record the dose)."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "blood"
+      },
+      "response": {
+        "zh-CN": "已开始口服氯化钾（与原报告相同）。注意：氯化钾补钾但不纠正高氯性酸中毒。",
+        "en": "Oral potassium chloride started (as in the report). Note that it replaces potassium but does nothing for the hyperchloraemic acidosis."
+      }
+    },
+    {
+      "id": "potassium-citrate",
+      "name": {
+        "zh-CN": "枸橼酸钾口服（补钾并纠正酸中毒）",
+        "en": "Oral potassium citrate (potassium and alkali)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "枸橼酸钾",
+          "碱剂",
+          "纠酸",
+          "纠正酸中毒",
+          "碳酸氢钠",
+          "补碱"
+        ],
+        "en": [
+          "potassium citrate",
+          "alkali",
+          "correct the acidosis",
+          "sodium bicarbonate",
+          "bicarbonate supplement"
+        ]
+      },
+      "dose": {
+        "zh-CN": "枸橼酸钾口服，分次服用，按血钾和碳酸氢根调整；碱剂会增加尿钾排出，不能只补碱不补钾。",
+        "en": "Oral potassium citrate in divided doses, titrated to serum potassium and bicarbonate; alkali increases urinary potassium loss, so never give alkali without potassium."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [
+        "alkali-started"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "abg"
+      },
+      "response": {
+        "zh-CN": "已开始枸橼酸钾，计划复查血钾和血气。原报告没有记录碱剂。",
+        "en": "Potassium citrate started, with potassium and a blood gas to be rechecked. The report records no alkali."
+      }
+    },
+    {
+      "id": "glycyrrhizinate",
+      "name": {
+        "zh-CN": "甘草酸二铵100 mg每日3次口服",
+        "en": "Diammonium glycyrrhizinate 100 mg orally three times daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "甘草酸二铵",
+          "甘草酸",
+          "天晴甘平",
+          "保肝药"
+        ],
+        "en": [
+          "diammonium glycyrrhizinate",
+          "glycyrrhizin",
+          "liver protection",
+          "hepatoprotective"
+        ]
+      },
+      "dose": {
+        "zh-CN": "甘草酸二铵100 mg口服，每日3次（原报告用药）。",
+        "en": "Diammonium glycyrrhizinate 100 mg orally three times daily (as in the report)."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已开（原报告也用了）。原报告没有记录入院时的肝酶，入院前5个月肝功能正常，HBV DNA已被抑制：这类保肝药在本例没有记录到明确指征，还可能加重水钠潴留和低钾。",
+        "en": "Prescribed (the report used it too). The report gives no admission liver enzymes, liver function was normal 5 months earlier and HBV DNA is suppressed: no clear indication for this liver drug is recorded here, and glycyrrhizin preparations can worsen sodium retention and hypokalaemia."
+      }
+    },
+    {
+      "id": "glutathione-iv",
+      "name": {
+        "zh-CN": "还原型谷胱甘肽1.8 g每日1次静脉滴注",
+        "en": "Reduced glutathione 1.8 g IV once daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "还原型谷胱甘肽",
+          "谷胱甘肽",
+          "阿拓莫兰",
+          "保肝针"
+        ],
+        "en": [
+          "reduced glutathione",
+          "glutathione",
+          "liver drip",
+          "iv glutathione"
+        ]
+      },
+      "dose": {
+        "zh-CN": "还原型谷胱甘肽1.8 g静脉滴注，每日1次（原报告用药）。",
+        "en": "Reduced glutathione 1.8 g by IV infusion once daily (as in the report)."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已开（原报告也用了）。本例没有记录到使用指征，却多了一条静脉通路和每日输液。",
+        "en": "Prescribed (the report used it too). No indication is recorded here, and it adds an IV line and a daily infusion."
+      }
+    },
+    {
+      "id": "huganning",
+      "name": {
+        "zh-CN": "护肝宁片4片每日3次口服",
+        "en": "Huganning tablets 4 three times daily"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "护肝宁",
+          "护肝宁片",
+          "护肝片"
+        ],
+        "en": [
+          "huganning",
+          "huganning tablets",
+          "chinese liver tablets"
+        ]
+      },
+      "dose": {
+        "zh-CN": "护肝宁片4片口服，每日3次（原报告用药，中成药）。",
+        "en": "Huganning tablets (a Chinese patent liver preparation) 4 three times daily (as in the report)."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已开（原报告也用了）。本例没有记录到明确的保肝指征。",
+        "en": "Prescribed (the report used it too). No clear liver indication is recorded here."
+      }
+    },
+    {
+      "id": "bisphosphonate",
+      "name": {
+        "zh-CN": "阿仑膦酸钠70 mg每周1次口服",
+        "en": "Alendronate 70 mg orally once weekly"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "阿仑膦酸钠",
+          "双膦酸盐",
+          "福善美",
+          "唑来膦酸",
+          "抗骨质疏松药"
+        ],
+        "en": [
+          "alendronate",
+          "bisphosphonate",
+          "fosamax",
+          "zoledronic acid",
+          "osteoporosis treatment"
+        ]
+      },
+      "dose": {
+        "zh-CN": "阿仑膦酸钠70 mg，每周1次，晨起空腹整片吞服。",
+        "en": "Alendronate 70 mg once weekly, swallowed whole on waking, fasting."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "他的骨病主要是失磷导致的矿化障碍（骨软化）。双膦酸盐不能纠正矿化缺陷：应先补磷、活性维生素D，纠正骨软化后再评估骨密度和是否需要抗骨质疏松治疗。",
+        "en": "His bone disease is mainly a mineralisation defect from phosphate loss (osteomalacia). A bisphosphonate does not correct a mineralisation defect: replace phosphate and active vitamin D first, and reassess bone density and any need for osteoporosis treatment once the osteomalacia has healed."
+      },
+      "response": {
+        "zh-CN": "医嘱已录入。",
+        "en": "The order is entered."
+      }
+    },
+    {
+      "id": "adr-report",
+      "name": {
+        "zh-CN": "上报疑似药品不良反应",
+        "en": "Report the suspected adverse drug reaction"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "上报不良反应",
+          "不良反应报告",
+          "adr上报",
+          "药物不良反应",
+          "填报不良反应"
+        ],
+        "en": [
+          "report adverse drug reaction",
+          "adr report",
+          "yellow card",
+          "pharmacovigilance",
+          "report the reaction"
+        ]
+      },
+      "dose": {
+        "zh-CN": "填写《药品不良反应/事件报告表》，按规定上报（药品不良反应报告和监测管理办法）。",
+        "en": "Complete the adverse drug reaction/event report form and submit it as the national reporting rules require."
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "diagnosis"
+      },
+      "response": {
+        "zh-CN": "报告已提交，药师协助填写了用药时间线和停药后的变化。",
+        "en": "The report is submitted; the pharmacist helps record the drug timeline and the response to stopping."
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-history",
+      "title": {
+        "zh-CN": "梳理病程与用药史",
+        "en": "Take the history: the course and the medicines"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
+      },
+      "hint": {
+        "zh-CN": "从三年前起病往后问：哪里疼、还能不能走、看过哪些医生、做过什么、补过什么、效果如何；再问长期的病和长期吃的药——药名、剂量、吃了多久。",
+        "en": "Work forward from the first symptoms three years ago: where it hurts, whether he can walk, who he saw, what was done and what he was given, and whether it helped; then ask about long-term illnesses and long-term tablets — name, dose and how long."
+      },
+      "guidance": {
+        "zh-CN": "到病床旁问诊：病程、行走能力、既往就诊和补钙效果，以及乙肝和长期用药。",
+        "en": "At the bedside, take the history: the course, his walking, earlier visits and the calcium, then his hepatitis B and long-term medicines."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "pain-location"
+          },
+          {
+            "asked": "function"
+          },
+          {
+            "asked": "ortho-visit"
+          },
+          {
+            "asked": "calcium"
+          },
+          {
+            "asked": "hepatitis"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-exam",
+      "title": {
+        "zh-CN": "床旁查体",
+        "en": "Examine him at the bedside"
+      },
+      "short": {
+        "zh-CN": "查体",
+        "en": "Exam"
+      },
+      "hint": {
+        "zh-CN": "先看生命体征和体型；再按压脊柱、肩胛骨和肋骨，最后查肌力。",
+        "en": "Start with his observations and build; then press over the spine, scapulae and ribs, and test his power."
+      },
+      "guidance": {
+        "zh-CN": "在床旁完成生命体征、一般情况、骨骼压痛和肌力检查。",
+        "en": "At the bedside, check his observations, general appearance, bony tenderness and power."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "spine"
+          },
+          {
+            "examined": "chest-wall"
+          },
+          {
+            "examined": "power"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-tubule",
+      "title": {
+        "zh-CN": "成对解读血液和尿液结果",
+        "en": "Read the blood and urine results as pairs"
+      },
+      "short": {
+        "zh-CN": "血尿配对",
+        "en": "Blood and urine"
+      },
+      "hint": {
+        "zh-CN": "同一时间的血糖正常时，尿糖说明什么？血里缺磷的时候，健康的肾脏会怎样处理尿里的磷？血气和血氯放在一起看说明什么？",
+        "en": "What does glycosuria mean when the blood glucose taken at the same time is normal? When the body is short of phosphate, what does a healthy kidney do with it? What do the blood gas and the chloride say when you read them together?"
+      },
+      "guidance": {
+        "zh-CN": "在床旁留取血、尿标本（血生化、尿常规、24小时尿、血气），在病历终端调阅结果，然后在会诊板作答。",
+        "en": "Take blood and urine at the bedside (chemistry, urinalysis, 24-hour urine, blood gas), read the results at a records terminal, then answer on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "admission"
+          },
+          {
+            "read": "urinalysis",
+            "phase": "admission"
+          },
+          {
+            "read": "urine",
+            "phase": "admission"
+          },
+          {
+            "read": "abg",
+            "phase": "admission"
+          },
+          {
+            "decided": "phosphate-wasting"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "urine",
+            "phase": "admission"
+          },
+          "target": "patient"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-diagnosis",
+      "title": {
+        "zh-CN": "排除相似疾病，作出统一诊断",
+        "en": "Rule out the look-alikes and make one diagnosis"
+      },
+      "short": {
+        "zh-CN": "诊断",
+        "en": "Diagnosis"
+      },
+      "hint": {
+        "zh-CN": "五个月前的化验其实已经提示过什么？哪些结果能排除骨髓瘤和甲状旁腺功能亢进？他的维生素D能解释全部异常吗？",
+        "en": "What had the tests five months ago already shown? Which results rule out myeloma and hyperparathyroidism? Can his vitamin D explain everything?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅入院前的化验和影像记录；申请骨髓检查和维生素D；然后在会诊板作出诊断。",
+        "en": "Read the earlier blood results and imaging at a records terminal, request the marrow and vitamin D, then make the diagnosis on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "prior-labs",
+            "phase": "admission"
+          },
+          {
+            "read": "marrow",
+            "phase": "admission"
+          },
+          {
+            "read": "vitd",
+            "phase": "admission"
+          },
+          {
+            "decided": "diagnosis"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "prior-labs",
+            "phase": "admission"
+          },
+          "target": "records"
+        },
+        {
+          "unless": {
+            "read": "marrow",
+            "phase": "admission"
+          },
+          "target": "cytology"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-plan",
+      "title": {
+        "zh-CN": "安全换药并开始代谢治疗",
+        "en": "Change the antiviral safely and start metabolic treatment"
+      },
+      "short": {
+        "zh-CN": "处置",
+        "en": "Plan"
+      },
+      "hint": {
+        "zh-CN": "可疑药物停掉以后，谁来继续压住乙肝病毒？血里缺的磷、碱和钾分别怎么补，怎样监测？",
+        "en": "Once the suspect drug stops, what keeps the hepatitis B suppressed? How will you make up what his blood is short of — phosphate, base and potassium — and how will you monitor it?"
+      },
+      "guidance": {
+        "zh-CN": "在会诊板完成换药和代谢治疗两项决策，然后开出医嘱：停药、换用的抗病毒药、补磷和骨化三醇。",
+        "en": "Answer the antiviral and metabolic decisions on the case board, then prescribe: stop the drug, start the replacement antiviral, phosphate and calcitriol."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "antiviral"
+          },
+          {
+            "decided": "metabolic"
+          },
+          {
+            "intervened": "stop-adefovir"
+          },
+          {
+            "any": [
+              {
+                "intervened": "entecavir"
+              },
+              {
+                "intervened": "taf"
+              }
+            ]
+          },
+          {
+            "intervened": "phosphate"
+          },
+          {
+            "intervened": "calcitriol"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "all": [
+              {
+                "decided": "antiviral"
+              },
+              {
+                "decided": "metabolic"
+              }
+            ]
+          },
+          "target": "board"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-outcome",
+      "title": {
+        "zh-CN": "复盘住院经过和随访",
+        "en": "Review the hospital course and the follow-up"
+      },
+      "short": {
+        "zh-CN": "转归",
+        "en": "Outcome"
+      },
+      "hint": {
+        "zh-CN": "换药以后血磷恢复得有多快？出院时和出院半年后他分别怎样？",
+        "en": "How fast did his phosphate recover once the drug was changed? How was he at discharge, and six months later?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅原报告的住院治疗记录、复查的血磷和出院时的24小时尿；随访阶段开放后调阅随访记录。",
+        "en": "At a records terminal, read the report's inpatient record, the repeat phosphate and the discharge 24-hour urine; once follow-up opens, read the follow-up record."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "inpatient-course",
+            "phase": "course"
+          },
+          {
+            "read": "blood",
+            "phase": "course"
+          },
+          {
+            "read": "urine",
+            "phase": "course"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "phosphate-wasting",
+      "prompt": {
+        "zh-CN": "入院时血磷0.53 mmol/L，24小时尿磷13 mmol（实验室参考值16–48 mmol/24 h）。这个尿磷应如何解读？",
+        "en": "On admission his serum phosphate is 0.53 mmol/L and his 24-hour urine phosphate 13 mmol (laboratory range 16–48 mmol/24 h). How should you read the urine phosphate?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "admission"
+          },
+          {
+            "read": "urine",
+            "phase": "admission"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先查看入院血生化和24小时尿检查。",
+        "en": "Read the admission blood chemistry and the 24-hour urine first."
+      },
+      "options": [
+        {
+          "id": "inappropriate",
+          "text": {
+            "zh-CN": "不适当地高：血磷这么低时肾脏应几乎不排磷，每天约400 mg的尿磷说明肾脏在漏磷",
+            "en": "Inappropriately high: with a serum phosphate this low the kidney should excrete almost none, so about 400 mg a day means the kidney is leaking phosphate"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。13 mmol/24 h约等于400 mg/日（13 × 31 mg）。低磷血症时，肾小管应几乎全部重吸收滤过的磷，尿磷应接近零；实验室参考值（16–48 mmol/24 h）描述的是血磷正常、按饮食排磷的人，不能用来判断低磷时肾脏的反应。作者也把低血磷归因于“尿磷排泄增多”。磷排泄分数或TmP/GFR更精确，但本例未报告尿肌酐，无法计算。",
+            "en": "Correct. 13 mmol/24 h is about 400 mg a day (13 × 31 mg). In hypophosphataemia the tubule should reabsorb nearly all the filtered phosphate, so urinary phosphate should fall towards zero; the laboratory range (16–48 mmol/24 h) describes people with a normal serum phosphate excreting what they eat and cannot judge the kidney's response to a low level. The authors also put the low phosphate down to 'increased urinary phosphate excretion'. FEPO₄ or TmP/GFR would be more precise, but no urine creatinine was reported, so neither can be calculated."
+          }
+        },
+        {
+          "id": "low",
+          "text": {
+            "zh-CN": "偏低：低于参考值下限，说明肾脏在保磷，应找摄入不足或肠道丢失",
+            "en": "Low: it is below the reference range, so the kidney is conserving phosphate — look for poor intake or gut loss"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。这是用血磷正常人群的参考值去衡量低磷状态。肾脏真正在保磷时（如摄入不足、肠道丢失），尿磷会降到很低；每天约400 mg远高于此。加上血糖正常时的尿糖、α1微球蛋白尿和尿钾丢失，问题出在近端肾小管。",
+            "en": "No. This measures a low-phosphate state against a range for people with a normal phosphate. A kidney that is truly conserving phosphate — after poor intake or gut loss — drives urinary phosphate very low; about 400 mg a day is far above that. Add the glycosuria with a normal blood glucose, the α1-microglobulinuria and the urinary potassium loss, and the problem is in the proximal tubule."
+          }
+        },
+        {
+          "id": "uninterpretable",
+          "text": {
+            "zh-CN": "无法解读：没有磷排泄分数就不能判断是否存在肾性失磷",
+            "en": "Uninterpretable: without the fractional excretion you cannot tell whether he is wasting phosphate"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "前半句对，结论错。FEPO₄或TmP/GFR确实更精确，本例也无法计算；但在低磷血症时，绝对尿磷已经很有信息量：每天约400 mg不可能是肾脏在保磷。缺少更好的指标，不是放弃已有证据的理由。",
+            "en": "Half right, wrong conclusion. FEPO₄ or TmP/GFR are more precise and cannot be calculated here, but in hypophosphataemia the absolute urinary phosphate already says a lot: about 400 mg a day cannot be a kidney conserving phosphate. Lacking a better index is no reason to discard the evidence you have."
+          }
+        },
+        {
+          "id": "shift",
+          "text": {
+            "zh-CN": "提示磷向细胞内转移（如再喂养、呼吸性碱中毒），与肾脏无关",
+            "en": "It points to phosphate shifting into cells (refeeding, respiratory alkalosis), not to the kidney"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。磷向细胞内转移时，尿磷会随血磷一起下降，而不会每天排出约400 mg；本例也没有再喂养的情境。低血磷同时伴有不适当的高尿磷，说明问题在肾小管。",
+            "en": "No. When phosphate shifts into cells, the urinary phosphate falls with the serum level rather than running at about 400 mg a day, and there is no refeeding here. A low serum phosphate with an inappropriately high urinary phosphate puts the problem in the tubule."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "哪一个诊断能同时解释他的骨病和这些血、尿异常？",
+        "en": "Which diagnosis explains both his bone disease and these blood and urine abnormalities?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "asked": "medications"
+          },
+          {
+            "read": "blood",
+            "phase": "admission"
+          },
+          {
+            "read": "urinalysis",
+            "phase": "admission"
+          },
+          {
+            "read": "urine",
+            "phase": "admission"
+          },
+          {
+            "read": "abg",
+            "phase": "admission"
+          },
+          {
+            "read": "prior-labs",
+            "phase": "admission"
+          },
+          {
+            "read": "marrow",
+            "phase": "admission"
+          },
+          {
+            "read": "vitd",
+            "phase": "admission"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先问清长期用药；查看血生化、尿常规、24小时尿、血气、维生素D、骨髓检查和入院前骨科化验。",
+        "en": "Take the long-term medication history and read the blood chemistry, urinalysis, 24-hour urine, blood gas, vitamin D, marrow and the earlier orthopaedic blood results first."
+      },
+      "options": [
+        {
+          "id": "adefovir-fanconi",
+          "text": {
+            "zh-CN": "阿德福韦酯引起的获得性近端肾小管病（范科尼综合征），伴低磷性骨软化",
+            "en": "Adefovir-induced acquired proximal tubulopathy (Fanconi syndrome) with hypophosphataemic osteomalacia"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。血糖4.1 mmol/L时尿糖++，α1微球蛋白168 mg/L（低分子量蛋白尿），尿酸117 μmol/L，血钾3.1 mmol/L而尿钾79 mmol/24 h，高氯性代谢性酸中毒（Cl⁻ 111 mmol/L，HCO₃⁻ 13 mmol/L），加上不适当的尿磷，构成近端小管多项转运缺陷。骨痛、多发肋骨骨折、身高下降、ALP 201 U/L和至少5个月的低血磷指向骨软化，并可与骨质疏松并存。他服用核苷酸类似物阿德福韦酯近10年；骨髓正常、既往血钙和PTH正常，使骨髓瘤和甲旁亢不太可能。接下来停药后的变化（停药反应）是因果判断的下一项证据。",
+            "en": "Correct. Glycosuria ++ with a blood glucose of 4.1 mmol/L, α1-microglobulin 168 mg/L (low-molecular-weight proteinuria), urate 117 μmol/L, potassium 3.1 mmol/L with 79 mmol a day in the urine, a hyperchloraemic metabolic acidosis (Cl⁻ 111, HCO₃⁻ 13 mmol/L) and inappropriate phosphaturia add up to a generalised proximal tubular transport defect. Bone pain, multiple rib fractures, height loss, ALP 201 U/L and at least five months of hypophosphataemia point to osteomalacia, which can coexist with osteoporosis. He has taken the nucleotide analogue adefovir for nearly ten years; a normal marrow and the earlier normal calcium and PTH make myeloma and hyperparathyroidism unlikely. What happens after the drug is stopped (dechallenge) is the next piece of causal evidence."
+          }
+        },
+        {
+          "id": "myeloma",
+          "text": {
+            "zh-CN": "多发性骨髓瘤（轻链近端肾小管病）伴病理性骨折",
+            "en": "Multiple myeloma (light-chain proximal tubulopathy) with pathological fractures"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "合理的鉴别，但证据不支持。成人起病的范科尼综合征伴骨痛、骨折必须想到骨髓瘤或轻链病；本例骨髓象基本正常，血液肿瘤指标无异常。原文没有列出具体项目（如血清蛋白电泳、免疫固定电泳、游离轻链），这是记录的局限。",
+            "en": "A sensible differential that the evidence does not support. Adult-onset Fanconi syndrome with bone pain and fractures must raise myeloma or light-chain disease; here the marrow was essentially normal and the haematological tumour markers were normal. The report does not list which markers were measured (such as serum protein electrophoresis, immunofixation or free light chains) — a limit of the record."
+          }
+        },
+        {
+          "id": "vitd-osteomalacia",
+          "text": {
+            "zh-CN": "单纯维生素D缺乏引起的骨软化",
+            "en": "Osteomalacia from vitamin D deficiency alone"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不完整。25-羟维生素D偏低（原文36.97，单位印作mmol/L，数量级相当于nmol/L）可能加重骨软化；但单纯维生素D缺乏不会造成血糖正常时的尿糖、α1微球蛋白尿、低尿酸、尿钾丢失和高氯性酸中毒，而且通常伴PTH升高——入院前5个月PTH正常。",
+            "en": "Incomplete. A low 25-hydroxyvitamin D (printed as 36.97 'mmol/L', a magnitude that fits nmol/L) may add to the osteomalacia, but vitamin D deficiency alone does not cause glycosuria with a normal blood glucose, α1-microglobulinuria, hypouricaemia, urinary potassium loss or a hyperchloraemic acidosis, and it usually raises the PTH — which was normal five months earlier."
+          }
+        },
+        {
+          "id": "distal-rta",
+          "text": {
+            "zh-CN": "远端（Ⅰ型）肾小管酸中毒",
+            "en": "Distal (type 1) renal tubular acidosis"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "只符合一部分。高氯性酸中毒和低钾两者都有，但远端肾小管酸中毒不会出现血糖正常时的尿糖、低分子量蛋白尿和低尿酸，低磷性骨软化也指向近端小管漏磷。原文未报告尿pH，无法据此进一步区分。",
+            "en": "It fits only part of the picture. Distal RTA shares the hyperchloraemic acidosis and hypokalaemia, but not glycosuria with a normal blood glucose, low-molecular-weight proteinuria or hypouricaemia, and hypophosphataemic osteomalacia points to a proximal phosphate leak. Urine pH was not reported, so it cannot help here."
+          }
+        },
+        {
+          "id": "osteoporosis",
+          "text": {
+            "zh-CN": "原发性骨质疏松（肌酐正常，可以排除肾脏问题）",
+            "en": "Primary osteoporosis (a normal creatinine rules out a kidney problem)"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "这正是过去三年的误诊。骨质疏松不会引起低血磷、ALP升高、尿糖或酸中毒，补钙也没有效果。肌酐103 μmol/L看似正常（按CKD-EPI 2021估算eGFR约78 mL/min/1.73 m²），但他消瘦、长期不能行走，肌肉量少会让肌酐掩盖肾损害；而且肾小管功能可以在肌酐正常时严重受损。",
+            "en": "This is the misdiagnosis of the past three years. Osteoporosis does not cause hypophosphataemia, a raised ALP, glycosuria or acidosis, and calcium did not help. A creatinine of 103 μmol/L looks normal (CKD-EPI 2021 eGFR about 78 mL/min/1.73 m²), but he is thin and has not walked for months, and low muscle mass lets the creatinine hide kidney damage; tubular function can also be badly damaged while the creatinine is normal."
+          }
+        }
+      ]
+    },
+    {
+      "id": "antiviral",
+      "prompt": {
+        "zh-CN": "已经判断与阿德福韦酯有关。他的乙肝抗病毒治疗应如何调整？",
+        "en": "You have linked the problem to adefovir. How should his hepatitis B treatment change?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "hbv-serology",
+            "phase": "admission"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先作出诊断，并查看乙肝血清学和HBV DNA。",
+        "en": "Make the diagnosis and read the hepatitis B serology and HBV DNA first."
+      },
+      "options": [
+        {
+          "id": "switch",
+          "text": {
+            "zh-CN": "停用阿德福韦酯，当天改用恩替卡韦（原报告做法）或丙酚替诺福韦，不中断抑制病毒，并监测HBV DNA",
+            "en": "Stop adefovir and switch the same day to entecavir (as reported) or tenofovir alafenamide, with no gap in viral suppression, and monitor HBV DNA"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。他HBsAg阳性，HBV DNA低于检测下限（< 4.2 × 10² copies/mL），说明病毒被抑制，治疗必须继续。《慢性乙型肝炎防治指南（2022年版）》建议：用阿德福韦酯或TDF的患者出现肾脏或骨骼疾病（或高风险）时改用恩替卡韦或TAF；EASL乙肝指南自2017年版起也对有肾、骨风险者首选这两种药。恩替卡韦是核苷类似物，没有近端小管毒性（肌酐清除率< 50 mL/min时调整剂量）；TAF的血浆替诺福韦浓度低，肾和骨安全性优于TDF，但仍需监测肾小管指标。",
+            "en": "Correct. He is HBsAg-positive with HBV DNA below the limit of detection (< 4.2 × 10² copies/mL): suppression is working and must continue. The Chinese 2022 hepatitis B guideline advises switching patients on adefovir or TDF who develop kidney or bone disease (or are at high risk of them) to entecavir or TAF, and EASL hepatitis B guidance has preferred the same two drugs for kidney or bone risk since its 2017 edition. Entecavir is a nucleoside analogue without proximal tubular toxicity (its dose is adjusted when creatinine clearance is < 50 mL/min); TAF gives low plasma tenofovir and safer kidney and bone profiles than TDF, though tubular markers still need watching."
+          }
+        },
+        {
+          "id": "tdf",
+          "text": {
+            "zh-CN": "改用富马酸替诺福韦二吡呋酯（TDF）：抗病毒更强、耐药少",
+            "en": "Switch to tenofovir disoproxil fumarate (TDF): more potent, with little resistance"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对，而且有害。TDF与阿德福韦酯同属无环核苷酸类似物，同样经近端小管有机阴离子转运体摄取，可引起范科尼综合征、低磷和骨量丢失；作者在讨论中也指出这类药物在近曲小管蓄积。指南建议肾损害或骨病患者用恩替卡韦或TAF，而不是ADV或TDF。",
+            "en": "No — and harmful. TDF, like adefovir, is an acyclic nucleotide analogue taken up by proximal-tubular organic anion transporters and can cause Fanconi syndrome, hypophosphataemia and bone loss; the authors also describe these drugs concentrating in the proximal tubule. The guidelines advise entecavir or TAF, not ADV or TDF, for patients with kidney or bone disease."
+          }
+        },
+        {
+          "id": "stop-all",
+          "text": {
+            "zh-CN": "停用所有抗乙肝病毒药，等肾小管恢复后再决定",
+            "en": "Stop all hepatitis B treatment until the tubule has recovered, then decide"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对，而且危险。停用核苷（酸）类似物可导致病毒反弹和肝炎急性加重，严重时肝衰竭；阿德福韦酯说明书的黑框警告就包括停药后肝炎严重急性加重。应在停用致病药的同一天换用没有肾小管毒性的药物，让病毒持续受抑制。",
+            "en": "No — and dangerous. Stopping nucleos(t)ide therapy can cause viral rebound and an acute hepatitis flare, in severe cases liver failure; the adefovir label's boxed warning includes severe acute exacerbations of hepatitis after discontinuation. Replace the culprit the same day with a drug free of tubular toxicity so that suppression continues."
+          }
+        },
+        {
+          "id": "reduce",
+          "text": {
+            "zh-CN": "继续阿德福韦酯，按肾功能延长给药间隔，同时加大补钙",
+            "en": "Continue adefovir with a longer dosing interval for his kidney function, and give more calcium"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。延长给药间隔针对的是肌酐清除率下降时的药物蓄积，并不能消除已经造成范科尼综合征的肾小管毒性。作者讨论中提到“调整剂量或改用其他药物”，但已经出现范科尼综合征和骨软化时应停药换药。多补钙也纠正不了失磷——骨科给的钙剂并没有见效。",
+            "en": "No. A longer interval addresses accumulation when creatinine clearance falls; it does not remove a tubular toxicity that has already caused Fanconi syndrome. The authors' discussion mentions 'adjusting the dose or changing the drug', but once Fanconi syndrome and osteomalacia are present the drug must be changed. More calcium does not correct phosphate wasting — the calcium given in orthopaedics did not help."
+          }
+        }
+      ]
+    },
+    {
+      "id": "metabolic",
+      "prompt": {
+        "zh-CN": "停药换药的同时，哪些代谢治疗应该现在就开始？（选出所有正确项）",
+        "en": "Alongside the drug change, which metabolic treatments should start now? (Select all that apply.)"
+      },
+      "kind": "multiple",
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "abg",
+            "phase": "admission"
+          },
+          {
+            "read": "vitd",
+            "phase": "admission"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先作出诊断，并查看血气和25-羟维生素D结果。",
+        "en": "Make the diagnosis and read the blood gas and 25-hydroxyvitamin D first."
+      },
+      "options": [
+        {
+          "id": "phosphate",
+          "text": {
+            "zh-CN": "口服补磷，分次服用，按血磷调整：停药后肾小管漏磷还会持续数周到数月",
+            "en": "Oral phosphate in divided doses, titrated to serum phosphate: the tubular leak goes on for weeks to months after the drug is stopped"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "应选。低血磷是骨软化的直接原因，诊断时就应补磷；作者在讨论中也建议“一旦出现低血磷，应及时补磷”。原报告起初只给了钙剂和骨化三醇，住院后期才加用补磷——今天应从诊断时开始。",
+            "en": "Yes. Hypophosphataemia drives the osteomalacia, so phosphate should start at diagnosis; the authors themselves advise prompt phosphate replacement once hypophosphataemia appears. The report first gave calcium and calcitriol only and added phosphate later in the admission — today you would start it at diagnosis."
+          }
+        },
+        {
+          "id": "calcitriol",
+          "text": {
+            "zh-CN": "活性维生素D（骨化三醇）加钙剂（原报告：骨化三醇1 μg/日、碳酸钙D3 0.6 g/日），监测血钙",
+            "en": "Active vitamin D (calcitriol) with calcium (the report: calcitriol 1 μg a day and calcium carbonate–vitamin D₃ 0.6 g a day), monitoring serum calcium"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "应选。活性维生素D增加肠道钙、磷吸收，帮助骨矿化，与补磷合用是低磷性骨软化的常规做法；作者也建议已有骨质疏松或骨折者同时用活性维生素D和钙剂。注意监测血钙，避免高钙血症。",
+            "en": "Yes. Active vitamin D increases gut calcium and phosphate absorption and helps mineralisation; with phosphate it is the usual treatment for hypophosphataemic osteomalacia, and the authors recommend active vitamin D with calcium for patients who already have osteoporosis or fractures. Monitor the serum calcium for hypercalcaemia."
+          }
+        },
+        {
+          "id": "alkali",
+          "text": {
+            "zh-CN": "补钾并纠正代谢性酸中毒：用枸橼酸钾这类含碱的钾盐，监测血钾和碳酸氢根",
+            "en": "Replace the potassium and correct the metabolic acidosis with an alkali potassium salt such as potassium citrate, monitoring K⁺ and HCO₃⁻"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "应选。血钾3.1 mmol/L伴尿钾丢失，HCO₃⁻ 13 mmol/L、pH 7.24的酸中毒会加重骨病和乏力。近端小管性酸中毒需要碱剂；枸橼酸钾同时补钾和碱，而碱剂会增加尿钾排出，所以不能只补碱不补钾。原报告用的是氯化钾口服溶液，没有记录碱剂——氯离子对高氯性酸中毒没有帮助。药物性范科尼综合征没有专门指南，这是肾内科的常规做法，宜与肾内科共同管理。",
+            "en": "Yes. Potassium 3.1 mmol/L with urinary potassium loss, and an acidosis with HCO₃⁻ 13 mmol/L and pH 7.24, worsen the bone disease and the weakness. Proximal tubular acidosis needs an alkali; potassium citrate gives potassium and alkali together, and because alkali increases urinary potassium loss it should never be given without potassium. The report used oral potassium chloride and records no alkali — chloride does nothing for a hyperchloraemic acidosis. There is no specific guideline for drug-induced Fanconi syndrome; this is standard nephrology practice, best agreed with the renal team."
+          }
+        },
+        {
+          "id": "bisphosphonate",
+          "text": {
+            "zh-CN": "现在加用双膦酸盐（如阿仑膦酸钠），治疗“重度骨质疏松”和骨折",
+            "en": "Start a bisphosphonate (such as alendronate) now for the 'severe osteoporosis' and the fractures"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不应选。他的骨病主要是失磷导致的矿化障碍（骨软化），抗骨吸收药不能纠正矿化缺陷。应先补磷、补充活性维生素D，待骨软化纠正后再评估骨密度和是否需要抗骨质疏松治疗。",
+            "en": "No. His bone disease is mainly a mineralisation defect caused by phosphate loss (osteomalacia), and antiresorptive drugs do not correct a mineralisation defect. Replace phosphate and active vitamin D first, then reassess bone density and any need for osteoporosis treatment once the osteomalacia has healed."
+          }
+        },
+        {
+          "id": "wait",
+          "text": {
+            "zh-CN": "停用阿德福韦酯后肾小管会很快恢复，继续补钙即可，暂不补磷",
+            "en": "The tubule recovers quickly once adefovir is stopped, so continue calcium and hold off on phosphate"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不应选。药物性近端小管损伤恢复慢，往往需要数周到数月，部分患者恢复不完全；继续低磷会让骨软化和乏力持续。单纯补钙在骨科已经试过，并没有效果。",
+            "en": "No. Drug-induced proximal tubular injury recovers slowly — often over weeks to months, and incompletely in some patients — and continued hypophosphataemia keeps the osteomalacia and weakness going. Calcium on its own has already been tried in orthopaedics without effect."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "r-hx-timeline",
+      "domain": "history",
+      "text": {
+        "zh-CN": "重建病程：起病和进展、行走能力、骨科诊治和补钙效果",
+        "en": "Reconstructed the course: onset and progression, walking, the orthopaedic work-up and the response to calcium"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "function"
+          },
+          {
+            "asked": "ortho-visit"
+          },
+          {
+            "asked": "calcium"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-hx-drugs",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问清乙肝及抗病毒药的名称、剂量和疗程，并问了止痛药和激素",
+        "en": "Established the hepatitis B and the antiviral's name, dose and duration, and asked about painkillers and steroids"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "hepatitis"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "analgesics"
+          },
+          {
+            "asked": "steroid"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-exam",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "查了生命体征、体型、脊柱和胸廓骨骼压痛及肌力",
+        "en": "Checked the observations, build, spinal and chest-wall bony tenderness and power"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "spine"
+          },
+          {
+            "examined": "chest-wall"
+          },
+          {
+            "examined": "power"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-inv-paired",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "同时查看入院血生化、尿常规、24小时尿和血气，成对解读",
+        "en": "Read the admission blood chemistry, urinalysis, 24-hour urine and blood gas together, as pairs"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "admission"
+          },
+          {
+            "read": "urinalysis",
+            "phase": "admission"
+          },
+          {
+            "read": "urine",
+            "phase": "admission"
+          },
+          {
+            "read": "abg",
+            "phase": "admission"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-inv-records",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅入院前的骨科化验和影像记录，发现5个月前已有低血磷",
+        "en": "Reviewed the earlier orthopaedic blood results and imaging and found the hypophosphataemia documented five months before"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "prior-labs",
+            "phase": "admission"
+          },
+          {
+            "read": "bone",
+            "phase": "admission"
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "r-dx-phosphate",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即判断尿磷为不适当的肾性失磷",
+        "en": "Judged the urine phosphate as inappropriate renal phosphate wasting at the first attempt"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "phosphate-wasting"
+      }
+    },
+    {
+      "id": "r-dx",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即作出统一诊断，并排除了骨髓瘤、维生素D缺乏、远端肾小管酸中毒和原发性骨质疏松",
+        "en": "Made the unifying diagnosis at the first attempt, having excluded myeloma, vitamin D deficiency, distal RTA and primary osteoporosis"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "r-mgmt-switch",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即选对换药方案，并停用了阿德福韦酯",
+        "en": "Chose the antiviral switch correctly at the first attempt and stopped adefovir"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "antiviral"
+          },
+          {
+            "intervened": "stop-adefovir"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-mgmt-metabolic",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即选对代谢治疗，并开始补磷、骨化三醇和补钾",
+        "en": "Chose the metabolic treatment correctly at the first attempt and started phosphate, calcitriol and potassium"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "metabolic"
+          },
+          {
+            "intervened": "phosphate"
+          },
+          {
+            "intervened": "calcitriol"
+          },
+          {
+            "any": [
+              {
+                "intervened": "potassium-citrate"
+              },
+              {
+                "intervened": "kcl"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-safety-hbv",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "乙肝抑制不中断：停用阿德福韦酯并换用恩替卡韦或TAF，没有改用TDF、没有停用全部抗病毒药、没有继续阿德福韦酯",
+        "en": "Kept hepatitis B suppressed without a gap: stopped adefovir and started entecavir or TAF, with no TDF, no stopping of all antivirals and no continued adefovir"
+      },
+      "weight": 3,
+      "met": {
+        "all": [
+          {
+            "intervened": "stop-adefovir"
+          },
+          {
+            "any": [
+              {
+                "intervened": "entecavir"
+              },
+              {
+                "intervened": "taf"
+              }
+            ]
+          },
+          {
+            "not": {
+              "any": [
+                {
+                  "intervened": "tdf"
+                },
+                {
+                  "intervened": "stop-all-antivirals"
+                },
+                {
+                  "intervened": "adefovir-reduced"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "r-safety-bone",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "骨软化纠正前没有使用双膦酸盐",
+        "en": "Gave no bisphosphonate before the osteomalacia was treated"
+      },
+      "weight": 2,
+      "met": {
+        "not": {
+          "intervened": "bisphosphonate"
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "metabolic"
+          },
+          {
+            "intervened": "phosphate"
+          },
+          {
+            "intervened": "calcitriol"
+          },
+          {
+            "intervened": "calcium-d3"
+          },
+          {
+            "intervened": "bisphosphonate"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "向患者解释病因和换药，并交代补磷和随访",
+        "en": "Explained the cause and the drug change to him, and the phosphate and follow-up"
+      },
+      "weight": 2,
+      "judgeGuidance": {
+        "zh-CN": "良好表现：用通俗语言说明他三年的骨痛和无力与长期吃的乙肝药损伤肾脏、导致磷从尿里丢失有关，而不是单纯骨质疏松；说明换药不是停药——乙肝药必须继续吃，自己停药可能让肝炎突然加重；解释补磷、维生素D和补钾的目的及常见副作用（如补磷可能腹泻）；坦率告知恢复需要数周到数月，需要定期抽血、查尿；告诉他会上报药物不良反应；用复述确认他理解，不责备之前的医生，也不夸大预后。",
+        "en": "Good performance: explains in plain words that three years of bone pain and weakness come from his long-term hepatitis B tablet damaging the kidneys and letting phosphate leak into the urine, not simply from thin bones; makes clear the tablet is being changed, not stopped — the hepatitis B treatment must continue and stopping it himself could make the hepatitis flare; explains what the phosphate, vitamin D and potassium are for and their common side effects (phosphate can cause diarrhoea); says honestly that recovery takes weeks to months with regular blood and urine tests; tells him the reaction will be reported; checks understanding with teach-back, without blaming earlier doctors or overpromising."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "病房护士",
+        "en": "Ward nurse"
+      },
+      "knowledge": {
+        "zh-CN": "内分泌科病房护士。交班：新入院，卧床，不能自己下地，翻身需要协助。可以协助留取血、尿标本并送检，执行医嘱。不解读化验结果。",
+        "en": "Endocrine ward nurse. Handover: new admission, in bed, cannot get up by himself and needs help to turn. Can help take and send blood and urine samples and carry out orders. Does not interpret results."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "上级医师",
+        "en": "Attending"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教，不直接给出诊断。引导学员：每个尿液结果都要和同一时间的血液结果配对看；低磷时要问肾脏是在保磷还是在漏磷；骨质疏松和骨软化可以并存，补钙无效本身就是线索；成人获得性近端小管病要查用药史，并排除骨髓瘤；肌酐正常不等于肾小管正常；换药时抗乙肝治疗不能中断。原报告的处理是历史事实，不自动等于今天的推荐。",
+        "en": "Socratic preceptor who does not give the diagnosis away. Steers the learner to: pair every urine result with the blood result taken at the same time; ask, when phosphate is low, whether the kidney is conserving it or leaking it; remember that osteoporosis and osteomalacia can coexist and that failure of calcium is itself a clue; check the drug history and exclude myeloma in acquired adult proximal tubulopathy; remember that a normal creatinine does not mean a normal tubule; never let hepatitis B treatment lapse during a switch. The report's management is a historical fact, not automatically today's recommendation."
+      },
+      "interprets": [
+        "blood",
+        "urinalysis",
+        "urine",
+        "abg",
+        "vitd",
+        "marrow",
+        "prior-labs",
+        "bone",
+        "renal-scintigraphy",
+        "hbv-serology"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pharmacist",
+      "name": {
+        "zh-CN": "临床药师",
+        "en": "Clinical pharmacist"
+      },
+      "knowledge": {
+        "zh-CN": "可以讲解核苷（酸）类似物的肾脏安全性：阿德福韦酯和TDF属核苷酸类似物，可有近端小管毒性；恩替卡韦需按肌酐清除率调整剂量；TAF的肾、骨安全性优于TDF；停用抗乙肝药可致肝炎急性加重。也可以讲解补磷、骨化三醇、枸橼酸钾和氯化钾的用法和监测，以及按规定上报药品不良反应。不提供本例的检查结果。",
+        "en": "Can explain the kidney safety of nucleos(t)ide analogues: adefovir and TDF are nucleotide analogues with possible proximal tubular toxicity; entecavir is dosed by creatinine clearance; TAF has better kidney and bone safety than TDF; stopping hepatitis B treatment can cause an acute flare. Can also explain how to give and monitor phosphate, calcitriol, potassium citrate and potassium chloride, and how to report an adverse drug reaction. Does not supply this patient's results."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "复盘：骨痛、骨折与“正常”肌酐背后的肾小管",
+      "en": "Debrief: the tubule behind the bone pain, the fractures and the 'normal' creatinine"
+    },
+    "conclusion": {
+      "zh-CN": "长期服用阿德福韦酯（10 mg/日，近10年）引起获得性范科尼综合征——血糖正常时的尿糖、低分子量蛋白尿、肾性失磷和失钾、低尿酸、高氯性代谢性酸中毒——导致低磷性骨软化，并与骨质疏松并存。入院前5个月已经记录过低血磷，却只按骨质疏松补钙。停用阿德福韦酯、改用恩替卡韦，并补磷、骨化三醇、钙剂和补钾后逐步恢复：停药后第5天血磷0.71 mmol/L，出院后约6个月0.81 mmol/L，尿糖转阴，能大步行走。",
+      "en": "Nearly ten years of adefovir (10 mg a day) caused an acquired Fanconi syndrome — glycosuria with a normal blood glucose, low-molecular-weight proteinuria, renal phosphate and potassium wasting, hypouricaemia and a hyperchloraemic metabolic acidosis — leading to hypophosphataemic osteomalacia alongside osteoporosis. Hypophosphataemia had been documented five months before admission but was treated as osteoporosis with calcium alone. After adefovir was replaced by entecavir, with phosphate, calcitriol, calcium and potassium, he recovered gradually: phosphate 0.71 mmol/L five days after stopping and 0.81 mmol/L about six months after discharge, urine glucose negative, walking with long strides."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "低血磷早在入院前5个月就被记录（0.45–0.65 mmol/L），当时肝肾功能、血钙和PTH正常，却只按骨质疏松补钙：这是本例错过的关键线索。",
+        "en": "Hypophosphataemia was documented five months before admission (0.45–0.65 mmol/L) with normal liver and renal function, calcium and PTH, yet it was treated as osteoporosis with calcium alone: the clue this case missed."
+      },
+      {
+        "zh-CN": "配对解读：血糖4.1 mmol/L时尿糖++；α1微球蛋白168 mg/L；尿酸117 μmol/L；血钾3.1 mmol/L而尿钾79 mmol/24 h；Cl⁻ 111 mmol/L、HCO₃⁻ 13 mmol/L——近端小管多项转运缺陷。",
+        "en": "Read as pairs: glycosuria ++ with a blood glucose of 4.1 mmol/L; α1-microglobulin 168 mg/L; urate 117 μmol/L; potassium 3.1 mmol/L with 79 mmol/24 h in the urine; Cl⁻ 111 mmol/L with HCO₃⁻ 13 mmol/L — a generalised proximal tubular defect."
+      },
+      {
+        "zh-CN": "血磷0.53 mmol/L时尿磷13 mmol/24 h（约400 mg/日）是不适当的肾性失磷，虽然低于实验室参考值——那个参考值适用于血磷正常的人。",
+        "en": "A urine phosphate of 13 mmol/24 h (about 400 mg a day) with a serum phosphate of 0.53 mmol/L is inappropriate renal phosphate wasting even though it is below the laboratory range — a range for people with a normal serum phosphate."
+      },
+      {
+        "zh-CN": "肌酐103 μmol/L（CKD-EPI 2021估算eGFR约78 mL/min/1.73 m²）在消瘦、卧床的患者中高估肾功能；肾动态显像示滤过功能中度受损。作者也把“肌酐一直正常”列为误诊原因之一。",
+        "en": "A creatinine of 103 μmol/L (CKD-EPI 2021 eGFR about 78 mL/min/1.73 m²) overstates kidney function in a thin, bed-bound man; renal scintigraphy showed moderately impaired filtration. The authors name the 'always normal' creatinine as one reason for the misdiagnosis."
+      },
+      {
+        "zh-CN": "鉴别诊断依据已记录的检查：骨髓象正常、血液肿瘤指标无异常（骨髓瘤/轻链病不支持），既往血钙和PTH正常（甲旁亢不支持），维生素D偏低不能解释肾小管缺陷，远端RTA不解释尿糖和低分子量蛋白尿。",
+        "en": "The differential rests on the recorded tests: a normal marrow and normal haematological tumour markers (against myeloma or light-chain disease), earlier normal calcium and PTH (against hyperparathyroidism), a low vitamin D that cannot explain the tubular defects, and distal RTA that does not explain the glycosuria or the low-molecular-weight proteinuria."
+      },
+      {
+        "zh-CN": "恢复是缓慢的：停药后第2天血磷0.57、第5天0.71 mmol/L，出院后约6个月0.81 mmol/L；所以补磷不应等肾小管“自行恢复”。",
+        "en": "Recovery is slow: phosphate 0.57 mmol/L two days and 0.71 mmol/L five days after stopping, 0.81 mmol/L about six months after discharge — so phosphate replacement should not wait for the tubule to 'recover by itself'."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单个病例：因果判断为“很可能”而非证实——有合理的用药时间线、停药后改善和已排除的替代原因，但没有（也不应有）再激发；作者关于近10年未用其他药物的说法与病史中的止痛药相矛盾，止痛药种类不明。病例的决策和干预是教学设计；住院经过和随访是原报告的事实，不随学员的选择改变。",
+      "en": "A single case: causality is 'probable', not proven — a plausible drug timeline, improvement after stopping and alternatives excluded, but no (and no justifiable) rechallenge; the authors' statement that no other drug was taken for ten years conflicts with the painkillers in the history, whose type is unknown. The case's decisions and interventions are teaching design; the hospital course and follow-up are the report's facts and do not change with the learner's choices."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "尿肌酐、尿pH、尿钙和尿氨基酸未报告，无法计算磷排泄分数或TmP/GFR。",
+        "en": "Urine creatinine, pH, calcium and amino acids were not reported, so FEPO₄ and TmP/GFR cannot be calculated."
+      },
+      {
+        "zh-CN": "血钠未报告，无法计算阴离子间隙。",
+        "en": "Sodium was not reported, so the anion gap cannot be calculated."
+      },
+      {
+        "zh-CN": "入院时的肝酶、白蛋白、HBeAg、治疗前HBV DNA、本次PTH、1,25-二羟维生素D和FGF23未报告。",
+        "en": "Admission liver enzymes, albumin, HBeAg, pre-treatment HBV DNA, a PTH at this admission, 1,25-dihydroxyvitamin D and FGF23 were not reported."
+      },
+      {
+        "zh-CN": "25-羟维生素D单位印作mmol/L（按数量级应为nmol/L）。",
+        "en": "The 25-hydroxyvitamin D unit is printed as mmol/L (the magnitude implies nmol/L)."
+      },
+      {
+        "zh-CN": "骨密度T值、骨扫描和MRI异常的部位、肾动态显像的GFR数值未报告；摘要称“重度骨质疏松”，正文未分级。",
+        "en": "Bone-density T-scores, where the bone-scan and MRI changes were, and the scintigraphic GFR were not reported; the abstract says 'severe osteoporosis' while the main text does not grade it."
+      },
+      {
+        "zh-CN": "“血液肿瘤指标”包括哪些项目未说明。",
+        "en": "Which 'haematological tumour markers' were measured is not stated."
+      },
+      {
+        "zh-CN": "止痛药的名称、剂量和疗程（是否为非甾体抗炎药）未记录。",
+        "en": "The name, dose and duration of the painkillers (whether NSAIDs) are not recorded."
+      },
+      {
+        "zh-CN": "补磷制剂和剂量、氯化钾剂量、补磷疗程，以及更远期的骨密度、骨折愈合和乙肝随访未报告。",
+        "en": "The phosphate preparation and dose, the potassium chloride dose, how long phosphate was given, and later bone density, fracture healing and hepatitis B follow-up were not reported."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "近端小管病要成对读血、尿：血糖正常时的尿糖、低分子量蛋白尿、低尿酸、低钾伴尿钾丢失、高氯性酸中毒，以及低血磷时不适当的尿磷。低磷血症时肾脏本应几乎不排磷，所以不能用血磷正常人群的24小时尿磷参考值判断（Imel & Econs 2012；原报告讨论）。",
+        "en": "Read blood and urine as pairs to find a proximal tubulopathy: glycosuria with a normal blood glucose, low-molecular-weight proteinuria, hypouricaemia, hypokalaemia with urinary potassium loss, a hyperchloraemic acidosis, and inappropriate phosphaturia in hypophosphataemia. A hypophosphataemic kidney should excrete almost no phosphate, so a 24-hour urine range for people with a normal serum phosphate cannot be used to judge it (Imel & Econs 2012; the report's discussion)."
+      },
+      {
+        "zh-CN": "换药不停药：《慢性乙型肝炎防治指南（2022年版）》建议用阿德福韦酯或TDF出现肾或骨疾病时改用恩替卡韦或TAF，EASL乙肝指南自2017年版起同样对肾、骨风险者首选这两种药；不要换成TDF，也不要停用全部抗病毒药——阿德福韦酯说明书黑框警告停药后肝炎可严重急性加重。原报告当天换用恩替卡韦，与今天的做法一致。",
+        "en": "Change the drug, never stop the treatment: the Chinese 2022 hepatitis B guideline advises switching from adefovir or TDF to entecavir or TAF when kidney or bone disease appears, and EASL hepatitis B guidance has preferred the same two drugs for kidney or bone risk since its 2017 edition; do not switch to TDF and do not stop all antivirals — the adefovir label's boxed warning describes severe acute hepatitis flares after stopping. The report's same-day switch to entecavir matches today's practice."
+      },
+      {
+        "zh-CN": "骨软化可与骨质疏松并存：骨痛、骨折、身高下降、ALP升高加持续低血磷时，补钙无效本身就是线索。治疗是补磷加活性维生素D和钙，纠正骨软化前不用双膦酸盐。作者建议“一旦出现低血磷，应及时补磷”；原报告直到停药后血磷仍不升才加用补磷——今天应从诊断时开始。",
+        "en": "Osteomalacia can coexist with osteoporosis: with bone pain, fractures, height loss, a raised ALP and persistent hypophosphataemia, the failure of calcium is itself a clue. Treat with phosphate plus active vitamin D and calcium, and give no bisphosphonate until the osteomalacia is corrected. The authors advise prompt phosphate replacement once hypophosphataemia appears; the report added phosphate only when the level failed to rise after stopping the drug — today you would start it at diagnosis."
+      },
+      {
+        "zh-CN": "纠正酸中毒和低钾：近端小管性酸中毒需要碱剂，枸橼酸钾可同时补钾和碱；碱剂会增加尿钾丢失，因此必须同时补钾。原报告只给了氯化钾口服溶液，没有记录碱剂。药物性范科尼综合征没有专门指南，这是肾内科常规做法（如StatPearls“范科尼综合征”所述的电解质替代和碱剂治疗）。",
+        "en": "Correct the acidosis and the potassium: proximal tubular acidosis needs an alkali, and potassium citrate replaces potassium and alkali together; alkali increases urinary potassium loss, so potassium must go with it. The report gave only oral potassium chloride and records no alkali. There is no specific guideline for drug-induced Fanconi syndrome; this is standard nephrology practice (electrolyte replacement and alkali therapy, as summarised in StatPearls 'Fanconi syndrome')."
+      },
+      {
+        "zh-CN": "监测不能只看肌酐：在消瘦、卧床者中肌酐会高估肾功能（本例CKD-EPI 2021估算eGFR约78，而肾显像示中度受损）。作者建议长期服用阿德福韦酯者除肌酐外监测GFR、ALP、血气、24小时尿蛋白和尿钾、钙、磷，并监测血磷；阿德福韦酯说明书同样要求监测肾功能。",
+        "en": "Monitor more than the creatinine: in a thin, bed-bound patient creatinine overstates kidney function (here a CKD-EPI 2021 eGFR of about 78 against moderately impaired filtration on scintigraphy). The authors advise that long-term adefovir users have GFR, ALP, blood gas, 24-hour urine protein and urine potassium, calcium and phosphate monitored as well as the creatinine, plus serum phosphate; the adefovir label also requires renal monitoring."
+      },
+      {
+        "zh-CN": "药物因果评估与上报：用药时间线、停药后改善、替代原因已排除，按Naranjo量表属“很可能”；不应再激发。应按《药品不良反应报告和监测管理办法》上报。",
+        "en": "Assess and report the reaction: a plausible drug timeline, improvement after stopping and alternatives excluded make it 'probable' on the Naranjo scale; rechallenge is not justified. Report it under the national adverse drug reaction reporting rules."
+      }
+    ],
+    "references": [
+      "孙旦萍, 刘国萍, 赵敏. 阿德福韦酯致范科尼综合征合并骨软化. 药物不良反应杂志. 2014;16(1):50-51. doi:10.3760/cma.j.issn.1008-5734.2014.01.017. Available from: https://rs.yiigle.com/cmaid/1423442",
+      "European Association for the Study of the Liver. EASL Clinical Practice Guidelines on the management of hepatitis B virus infection. J Hepatol. 2025;83(2):502-583. doi:10.1016/j.jhep.2025.03.018",
+      "中华医学会肝病学分会, 中华医学会感染病学分会. 慢性乙型肝炎防治指南（2022年版）. 中华传染病杂志. 2023;41(1):3-28.",
+      "Imel EA, Econs MJ. Approach to the hypophosphatemic patient. J Clin Endocrinol Metab. 2012;97(3):696-706. doi:10.1210/jc.2011-1319",
+      "HEPSERA (adefovir dipivoxil) tablets: US prescribing information. DailyMed setid 80595d45-2224-47d1-bd5c-4b11a824e5bd. https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=80595d45-2224-47d1-bd5c-4b11a824e5bd",
+      "Keefe P, Bokhari SRA. Fanconi syndrome. In: StatPearls. Treasure Island (FL): StatPearls Publishing. https://www.ncbi.nlm.nih.gov/books/NBK534872/",
+      "Inker LA, Eneanya ND, Coresh J, et al. New creatinine- and cystatin C-based equations to estimate GFR without race. N Engl J Med. 2021;385(19):1737-1749.",
+      "Naranjo CA, Busto U, Sellers EM, et al. A method for estimating the probability of adverse drug reactions. Clin Pharmacol Ther. 1981;30(2):239-245. doi:10.1038/clpt.1981.154",
+      "中华人民共和国卫生部. 药品不良反应报告和监测管理办法（卫生部令第81号）. 2011."
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，是教学脚本评估，并非经过验证的能力评分。",
+      "en": "Scores measure completion of this teaching pathway — a teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "尿肌酐、尿pH、尿钙和尿氨基酸未报告，无法计算磷排泄分数或TmP/GFR。",
+      "en": "Urine creatinine, pH, calcium and amino acids were not reported, so FEPO₄ and TmP/GFR cannot be calculated."
+    },
+    {
+      "zh-CN": "血钠未报告，无法计算阴离子间隙。",
+      "en": "Sodium was not reported, so the anion gap cannot be calculated."
+    },
+    {
+      "zh-CN": "入院时的肝酶、白蛋白、HBeAg、治疗前HBV DNA、本次PTH、1,25-二羟维生素D和FGF23未报告。",
+      "en": "Admission liver enzymes, albumin, HBeAg, pre-treatment HBV DNA, a PTH at this admission, 1,25-dihydroxyvitamin D and FGF23 were not reported."
+    },
+    {
+      "zh-CN": "25-羟维生素D单位印作mmol/L（按数量级应为nmol/L）。",
+      "en": "The 25-hydroxyvitamin D unit is printed as mmol/L (the magnitude implies nmol/L)."
+    },
+    {
+      "zh-CN": "骨密度T值、骨扫描和MRI异常的部位、肾动态显像的GFR数值未报告；摘要称“重度骨质疏松”，正文未分级。",
+      "en": "Bone-density T-scores, where the bone-scan and MRI changes were, and the scintigraphic GFR were not reported; the abstract says 'severe osteoporosis' while the main text does not grade it."
+    },
+    {
+      "zh-CN": "“血液肿瘤指标”包括哪些项目未说明。",
+      "en": "Which 'haematological tumour markers' were measured is not stated."
+    },
+    {
+      "zh-CN": "止痛药的名称、剂量和疗程（是否为非甾体抗炎药）未记录。",
+      "en": "The name, dose and duration of the painkillers (whether NSAIDs) are not recorded."
+    },
+    {
+      "zh-CN": "补磷制剂和剂量、氯化钾剂量、补磷疗程，以及更远期的骨密度、骨折愈合和乙肝随访未报告。",
+      "en": "The phosphate preparation and dose, the potassium chloride dose, how long phosphate was given, and later bone density, fracture healing and hepatitis B follow-up were not reported."
+    },
+    {
+      "zh-CN": "现在的身高和体重、吸烟、饮酒、职业、饮食和日照、家族史、过敏史未记录。",
+      "en": "Current height and weight, smoking, alcohol, occupation, diet and sunlight, family history and allergies are not recorded."
+    },
+    {
+      "zh-CN": "原文矛盾：病史称疼痛时服用止痛药和外敷膏药，讨论称近10年除阿德福韦酯外未服用其他药物。",
+      "en": "Source contradiction: the history mentions painkillers and plasters, while the discussion says no drug other than adefovir was taken for ten years."
+    }
+  ],
+  "assets": [
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1423442/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘）",
+        "en": "Source PDF (contains the outcome; for debrief review)"
+      },
+      "credit": {
+        "zh-CN": "孙旦萍、刘国萍、赵敏，药物不良反应杂志，2014。原作者及出版方保留版权。",
+        "en": "Sun Danping, Liu Guoping, Zhao Min, Adverse Drug Reactions Journal, 2014. Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "f06c37dfd06c37f662c7f08406c491c7cb71a888e6043c271d32fc7e34ba1dc1"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain-location"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "earlier-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "ortho-visit"
+    },
+    {
+      "type": "ask",
+      "itemId": "calcium"
+    },
+    {
+      "type": "ask",
+      "itemId": "hepatitis"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "analgesics"
+    },
+    {
+      "type": "ask",
+      "itemId": "steroid"
+    },
+    {
+      "type": "ask",
+      "itemId": "bed-rest"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "urine-symptoms"
+    },
+    {
+      "type": "ask",
+      "itemId": "kidney-stones"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "diet-sun"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "spine"
+    },
+    {
+      "type": "examine",
+      "findingId": "chest-wall"
+    },
+    {
+      "type": "examine",
+      "findingId": "power"
+    },
+    {
+      "type": "examine",
+      "findingId": "slr"
+    },
+    {
+      "type": "examine",
+      "findingId": "gait"
+    },
+    {
+      "type": "examine",
+      "findingId": "heart-lungs"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "urinalysis"
+    },
+    {
+      "type": "read",
+      "investigationId": "urinalysis",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "urine"
+    },
+    {
+      "type": "read",
+      "investigationId": "urine",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "abg"
+    },
+    {
+      "type": "read",
+      "investigationId": "abg",
+      "phase": "admission"
+    },
+    {
+      "type": "answer",
+      "decisionId": "phosphate-wasting",
+      "optionIds": [
+        "inappropriate"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "vitd"
+    },
+    {
+      "type": "read",
+      "investigationId": "vitd",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "hbv-serology"
+    },
+    {
+      "type": "read",
+      "investigationId": "hbv-serology",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "marrow"
+    },
+    {
+      "type": "read",
+      "investigationId": "marrow",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "renal-scintigraphy"
+    },
+    {
+      "type": "read",
+      "investigationId": "renal-scintigraphy",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "prior-labs"
+    },
+    {
+      "type": "read",
+      "investigationId": "prior-labs",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "bone"
+    },
+    {
+      "type": "read",
+      "investigationId": "bone",
+      "phase": "admission"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "adefovir-fanconi"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "antiviral",
+      "optionIds": [
+        "switch"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "metabolic",
+      "optionIds": [
+        "phosphate",
+        "calcitriol",
+        "alkali"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "stop-adefovir"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "entecavir"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "phosphate"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "calcitriol"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "calcium-d3"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "potassium-citrate"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "adr-report"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-course"
+    },
+    {
+      "type": "ask",
+      "itemId": "meds-course"
+    },
+    {
+      "type": "order",
+      "investigationId": "inpatient-course"
+    },
+    {
+      "type": "read",
+      "investigationId": "inpatient-course",
+      "phase": "course"
+    },
+    {
+      "type": "order",
+      "investigationId": "urine"
+    },
+    {
+      "type": "read",
+      "investigationId": "urine",
+      "phase": "course"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "course"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-followup"
+    },
+    {
+      "type": "ask",
+      "itemId": "meds-followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "urinalysis"
+    },
+    {
+      "type": "read",
+      "investigationId": "urinalysis",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1423442",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1423442",
+    "historicalReview": true,
+    "clinicalScores": {
+      "urinePhosphateMgPerDay": {
+        "value": 403,
+        "formula": "13 mmol/24 h × 30.97 mg/mmol ≈ 403 mg/day (≈ 400)"
+      },
+      "egfrCkdEpi2021": {
+        "value": 78,
+        "formula": "creatinine 103 μmol/L = 1.165 mg/dL; male, 46 y: 142 × (1.165/0.9)^-1.200 × 0.9938^46 ≈ 78 mL/min/1.73 m²"
+      },
+      "wintersExpectedPaCO2": {
+        "value": "27.5 ± 2",
+        "formula": "1.5 × HCO₃⁻ 13 + 8 = 27.5 ± 2 mmHg; measured 31 mmHg (slightly above)"
+      },
+      "phosphateMgPerDl": {
+        "value": 1.64,
+        "formula": "0.53 mmol/L × 3.097 ≈ 1.64 mg/dL (0.45–0.65 → 1.39–2.01; 0.81 → 2.51)"
+      },
+      "vitaminDNgPerMl": {
+        "value": 14.8,
+        "formula": "36.97 nmol/L ÷ 2.496 ≈ 14.8 ng/mL, if the printed 'mmol/L' is read as nmol/L"
+      },
+      "alpTimesUln": {
+        "value": 1.7,
+        "formula": "201 / 121 ≈ 1.66 × ULN"
+      }
+    },
+    "testUtterances": [
+      {
+        "text": "你哪里不舒服？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "怎么了，为什么住进来？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What brings you in today?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "这病是什么时候开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "When did all this begin?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "哪儿疼得最厉害？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-location"
+        ]
+      },
+      {
+        "text": "Where's the pain worst?",
+        "locale": "en",
+        "expect": [
+          "pain-location"
+        ]
+      },
+      {
+        "text": "吃止痛药还管用吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-location"
+        ]
+      },
+      {
+        "text": "现在还能下地走吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Are you able to walk at all?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Can you manage stairs?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "之前在别的医院查过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "earlier-care"
+        ]
+      },
+      {
+        "text": "Have you been seen anywhere else for this?",
+        "locale": "en",
+        "expect": [
+          "earlier-care"
+        ]
+      },
+      {
+        "text": "骨科医生当时怎么说？",
+        "locale": "zh-CN",
+        "expect": [
+          "ortho-visit"
+        ]
+      },
+      {
+        "text": "What did the orthopaedic team find?",
+        "locale": "en",
+        "expect": [
+          "ortho-visit"
+        ]
+      },
+      {
+        "text": "吃钙片有用吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "calcium"
+        ]
+      },
+      {
+        "text": "Did taking calcium help at all?",
+        "locale": "en",
+        "expect": [
+          "calcium"
+        ]
+      },
+      {
+        "text": "以前得过什么病？",
+        "locale": "zh-CN",
+        "expect": [
+          "hepatitis"
+        ]
+      },
+      {
+        "text": "Any long-standing health problems?",
+        "locale": "en",
+        "expect": [
+          "hepatitis"
+        ]
+      },
+      {
+        "text": "平时吃些什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "乙肝的药吃了几年了？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Are you on any regular medication?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What tablets do you take for your liver?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "还吃过别的什么药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "analgesics"
+        ]
+      },
+      {
+        "text": "Have you been taking any painkillers?",
+        "locale": "en",
+        "expect": [
+          "analgesics"
+        ]
+      },
+      {
+        "text": "用过激素吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "steroid"
+        ]
+      },
+      {
+        "text": "Any steroid tablets in the past?",
+        "locale": "en",
+        "expect": [
+          "steroid"
+        ]
+      },
+      {
+        "text": "最近人瘦了吗，个子有没有变矮？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Have you got any shorter?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "有药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Are you allergic to anything?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "平时吸烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "How much alcohol do you drink?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "你是干什么工作的？",
+        "locale": "zh-CN",
+        "expect": [
+          "occupation"
+        ]
+      },
+      {
+        "text": "现在好些了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-course"
+        ]
+      },
+      {
+        "text": "Are you feeling any better?",
+        "locale": "en",
+        "expect": [
+          "status-course"
+        ]
+      },
+      {
+        "text": "换药了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "meds-course"
+        ]
+      },
+      {
+        "text": "现在能走路了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-followup"
+        ]
+      },
+      {
+        "text": "What are you taking these days?",
+        "locale": "en",
+        "expect": [
+          "meds-followup"
+        ]
+      }
+    ]
+  }
+}

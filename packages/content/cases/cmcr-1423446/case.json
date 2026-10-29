@@ -1,0 +1,4229 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1423446",
+  "version": "1.1.0",
+  "title": {
+    "zh-CN": "恶心呕吐与腹泻 · 78岁女性",
+    "en": "Nausea, vomiting and diarrhoea · 78-year-old woman"
+  },
+  "summary": {
+    "zh-CN": "78岁糖尿病患者，呕吐、反酸、腹泻3天，今天没有进食：在急诊接诊、评估并处理。",
+    "en": "A 78-year-old woman with diabetes, three days of vomiting, reflux and diarrhoea, and nothing to eat today: assess and manage her in the emergency department."
+  },
+  "specialty": [
+    "emergency-medicine",
+    "clinical-pharmacology",
+    "endocrinology"
+  ],
+  "difficulty": 3,
+  "setting": "emergency",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 30,
+  "learningOutcomes": [
+    {
+      "zh-CN": "糖尿病患者输液中出现出汗、心慌或反应迟钝时，在按过敏反应或血管迷走反应处理之前立即测指尖血糖。",
+      "en": "Check a fingerprick glucose at once when a patient with diabetes develops sweating, palpitations or slowed responses during an infusion, before treating for anaphylaxis or a vasovagal episode."
+    },
+    {
+      "zh-CN": "按ADA 2026第6章处理意识受损的低血糖：不经口进食，静脉给葡萄糖（无静脉通路时肌注胰高血糖素），约15分钟复测并重复至恢复，然后进食并继续监测。",
+      "en": "Treat hypoglycaemia with impaired consciousness per ADA 2026 Section 6: nothing by mouth, IV glucose (IM glucagon without IV access), recheck at about 15 minutes and repeat until recovered, then food and continued monitoring."
+    },
+    {
+      "zh-CN": "依据IDSA 2017判断无发热、无痢疾的急性腹泻不需要常规经验性抗菌药，并识别氟喹诺酮相关低血糖的危险因素（FDA 2018）。",
+      "en": "Decide against a routine empirical antibiotic for acute diarrhoea without fever or dysentery (IDSA 2017), recognising the risk factors for fluoroquinolone-associated hypoglycaemia (FDA 2018)."
+    },
+    {
+      "zh-CN": "用结构化方法（时间关系、已知警示、去激发、其他原因；Naranjo）评估疑似药物不良反应，说明为何不能推定“最后输完的药”是原因，以及为何绝不用再暴露来验证。",
+      "en": "Assess a suspected adverse drug reaction systematically (timing, known warnings, dechallenge, alternative causes; Naranjo), and explain why the drug that finished last is not presumed the cause and why re-exposure is never used as a test."
+    },
+    {
+      "zh-CN": "制订好转后的安全计划：复测并监测血糖防复发，不进食期间暂停促泌剂，记录并上报不良反应，并向患者解释。",
+      "en": "Write the after-care plan: recheck and monitor glucose for recurrence, hold the secretagogue while she is not eating, record and report the reaction, and explain it to the patient."
+    }
+  ],
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "宋智慧, 赵环宇. 乳酸左氧氟沙星氯化钠注射液致严重低血糖. 药物不良反应杂志. 2014;16(1):54-55. doi:10.3760/cma.j.issn.1008-5734.2014.01.019. Available from: https://rs.yiigle.com/cmaid/1423446",
+    "doi": "10.3760/cma.j.issn.1008-5734.2014.01.019",
+    "authors": [
+      "宋智慧",
+      "赵环宇"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例（药物不良反应杂志，2014）改写。保留年龄、性别、病史、剂量、检验值和报告中的处置与结局；姓名为化名，医院、日历日期已去除，时间以就诊当日的相对时间表示。改写为教学的部分：分阶段的接诊（发作前评估、床旁呼叫、首次处理后、原报告后续经过）、对话措辞、人物设定、决策选项、干预条目和评分；“已留置外周静脉针”是为在实景模式中给药而作的流程设定。原报告未记录的数据保持未知。源PDF第2页下半页为期刊的稿约说明。",
+      "en": "Adapted from a published case report (Chinese Journal of Adverse Drug Reactions, 2014). Age, sex, history, doses, laboratory values and the reported management and outcome are kept; the name is a pseudonym, and the hospital and calendar dates are removed (times are relative to the day she came in). Adapted for teaching: the staged encounter (assessment before the infusions, the bedside call, after the first treatment, the reported course), dialogue wording, personas, decision options, interventions and scoring; the cannula already in place is a workflow device so that IV treatment can be given in in-world mode. Data the report does not record stay unknown. The lower half of page 2 of the source PDF carries a journal notice to authors."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ADA Standards of Care in Diabetes 2026 (Section 6: glycaemic goals, hypoglycaemia and hyperglycaemic crises)",
+        "JBDS-IP 01 hospital management of hypoglycaemia in adults with diabetes (revised January 2023)",
+        "IDSA 2017 infectious diarrhoea guideline",
+        "FDA Drug Safety Communication on fluoroquinolones (10 July 2018)",
+        "Naranjo adverse drug reaction probability scale (1981)"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "高女士（化名）",
+      "en": "Ms Gao (pseudonym)"
+    },
+    "age": 78,
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "恶心、呕吐、反酸、腹泻3天",
+      "en": "Nausea, vomiting, acid reflux and diarrhoea for 3 days"
+    },
+    "triageNote": {
+      "zh-CN": "分诊：78岁女性，恶心、呕吐、反酸、腹泻3天。体温36.5 ℃，脉搏70次/分，呼吸20次/分，血压130/80 mmHg。已留置外周静脉针。",
+      "en": "Triage: 78-year-old woman with three days of nausea, vomiting, acid reflux and diarrhoea. Temperature 36.5 °C, pulse 70/min, respiratory rate 20/min, BP 130/80 mmHg. A peripheral cannula is in place."
+    },
+    "tags": [
+      {
+        "zh-CN": "2型糖尿病",
+        "en": "Type 2 diabetes"
+      },
+      {
+        "zh-CN": "老年",
+        "en": "Older adult"
+      },
+      {
+        "zh-CN": "急性胃肠道症状",
+        "en": "Acute gastrointestinal illness"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "78岁的老太太，性子温和、配合，怕给人添麻烦；这几天又吐又拉，心里有点着急。",
+        "en": "A gentle, cooperative 78-year-old who does not like to be a bother; after three days of vomiting and diarrhoea she is a little anxious."
+      },
+      "speechStyle": {
+        "zh-CN": "说话慢，用家常话；记得的药名就说（瑞格列奈、阿卡波糖），自己吃的止泻药叫“黄连素”；不用医学术语，不解释化验结果。",
+        "en": "Speaks slowly in everyday words; names the medicines she knows (repaglinide, acarbose) and the berberine she took herself; avoids medical terms and does not interpret results."
+      },
+      "healthLiteracy": "medium",
+      "affect": "anxious",
+      "openingLine": {
+        "zh-CN": "医生，我这三天老是恶心、吐，胃里往上反酸，还拉肚子。",
+        "en": "Doctor, for three days I've been feeling sick and throwing up, acid keeps coming up, and I've had diarrhoea."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "只讲已经问到的事实，用自己的话说，不增减剂量、天数或药名。床旁呼叫阶段：声音低、说得慢，只能说几个字，不能完整回答问题。首次处理后：说话恢复正常。不谈检查结果、体格检查发现或诊断。",
+        "en": "Only state facts that have been asked about, in your own words, without changing doses, days or drug names. At the bedside call: speak quietly and slowly, a few words at a time, and do not give a full history. After the first treatment: speak normally again. Do not discuss results, examination findings or diagnoses."
+      }
+    },
+    "nonVerbalWhen": {
+      "phase": "reaction"
+    },
+    "nonVerbalReason": {
+      "zh-CN": "她大汗、意识淡漠，说话含糊，此刻不能可靠地回答问题。",
+      "en": "She is sweating and apathetic, her speech is unclear, and she cannot answer questions reliably right now."
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true,
+      "hair": "#b5b0a8",
+      "hairStyle": "bun",
+      "build": "slim"
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "急诊接诊",
+        "en": "Emergency assessment"
+      },
+      "description": {
+        "zh-CN": "急诊诊室，就诊当日。高女士因恶心、呕吐、反酸、腹泻3天来诊：接诊、评估，并决定处理方案。",
+        "en": "Emergency department, the day she comes in. Ms Gao has had three days of nausea, vomiting, acid reflux and diarrhoea: assess her and decide how to manage her."
+      },
+      "learnerSwitchable": false
+    },
+    {
+      "id": "reaction",
+      "label": {
+        "zh-CN": "输液中的床旁呼叫",
+        "en": "Called to the bedside during the infusion"
+      },
+      "description": {
+        "zh-CN": "原报告记录：急诊先给予注射用奥美拉唑钠20 mg（溶于0.9%氯化钠注射液100 ml）静滴，滴完后接续乳酸左氧氟沙星氯化钠注射液0.3 g静滴。左氧氟沙星滴注约10分钟时，护士叫你到床旁：高女士大汗、面色苍白，说心慌，反应淡漠。",
+        "en": "As the report records, the ED gave omeprazole sodium 20 mg (in 100 mL of 0.9% sodium chloride) by IV infusion and, once it had finished, levofloxacin lactate and sodium chloride injection 0.3 g by IV infusion. About 10 minutes into the levofloxacin the nurse calls you to the bedside: Ms Gao is sweating heavily and pale, says her heart is racing, and is slow to respond."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "attempted": "abx-indication"
+          },
+          {
+            "objective": "obj-history"
+          },
+          {
+            "objective": "obj-assess"
+          }
+        ]
+      }
+    },
+    {
+      "id": "recovered",
+      "label": {
+        "zh-CN": "首次处理后",
+        "en": "After the first treatment"
+      },
+      "description": {
+        "zh-CN": "首次处理后约5分钟（原报告的首次处理：暂停左氧氟沙星，静滴葡萄糖氯化钠注射液500 ml，并让她吃了糖块和面包），高女士面色转红润，说话清楚，症状好转。当时的急诊医师在想：刚滴完的奥美拉唑会不会才是原因？",
+        "en": "About 5 minutes after the first treatment (in the report: the levofloxacin paused, glucose–saline 500 mL by IV infusion, and sweets and bread by mouth), Ms Gao's colour has returned, she is speaking clearly and her symptoms are better. The ED physician at the time is wondering whether the omeprazole, which had just finished, was the real cause."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "phase": "reaction"
+          },
+          {
+            "intervened": "stop-levofloxacin"
+          },
+          {
+            "attempted": "hypo-treatment"
+          },
+          {
+            "any": [
+              {
+                "intervened": "iv-dextrose"
+              },
+              {
+                "intervened": "glucose-infusion"
+              },
+              {
+                "intervened": "glucagon-im"
+              },
+              {
+                "intervened": "oral-sugar"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告的后续经过",
+        "en": "The reported course"
+      },
+      "description": {
+        "zh-CN": "复盘阶段：调阅原报告记录的后续经过，与你的处理对照。",
+        "en": "Debrief phase: read the course the report records and compare it with your management."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "abx-indication"
+          },
+          {
+            "decided": "first-step"
+          },
+          {
+            "decided": "hypo-treatment"
+          },
+          {
+            "decided": "after-recovery"
+          },
+          {
+            "objective": "obj-aftercare"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次哪里不舒服？",
+        "en": "What's been troubling you?"
+      },
+      "answer": {
+        "zh-CN": "这三天老是恶心、吐，胃里往上反酸，还拉肚子。",
+        "en": "For three days I've been feeling sick and throwing up, acid keeps coming up, and I've had diarrhoea."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里不舒服",
+          "怎么不舒服",
+          "为什么来急诊",
+          "来看什么病",
+          "恶心呕吐",
+          "拉肚子",
+          "腹泻",
+          "反酸",
+          "吐了几天",
+          "不舒服几天"
+        ],
+        "en": [
+          "brought",
+          "going on",
+          "vomiting",
+          "diarrhoea",
+          "nausea",
+          "acid coming up",
+          "being sick",
+          "throwing up",
+          "feeling unwell"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "自己吃",
+          "吃过什么药",
+          "黄连素",
+          "带血",
+          "几次",
+          "什么样"
+        ],
+        "en": [
+          "taken anything",
+          "medicine for",
+          "blood in",
+          "stools like",
+          "berberine"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "recovered",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "正文·病史（主诉：恶心、呕吐、反酸、腹泻3天）；依据原文整理的模拟回答",
+        "en": "Main text · history (presenting complaint: nausea, vomiting, acid reflux and diarrhoea for 3 days); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "diabetes",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "糖尿病多久了？平时怎么治？",
+        "en": "How long have you had diabetes, and how is it treated?"
+      },
+      "answer": {
+        "zh-CN": "糖尿病两年了。每天吃瑞格列奈，一次1毫克，一天三次；阿卡波糖吃得不规律，有时吃有时不吃。",
+        "en": "I've had diabetes for two years. I take repaglinide every day — 1 mg, three times a day — and acarbose only on and off."
+      },
+      "keywords": {
+        "zh-CN": [
+          "糖尿病",
+          "降糖药",
+          "瑞格列奈",
+          "阿卡波糖",
+          "血糖高",
+          "吃什么降糖",
+          "糖尿病几年"
+        ],
+        "en": [
+          "diabetes",
+          "diabetic",
+          "diabetes tablets",
+          "repaglinide",
+          "acarbose",
+          "sugar tablets",
+          "blood sugar medicine"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "今天",
+          "今早",
+          "最后一次",
+          "上一次",
+          "低血糖",
+          "血糖低",
+          "在家测",
+          "拉肚子",
+          "止泻"
+        ],
+        "en": [
+          "today",
+          "this morning",
+          "last dose",
+          "last took",
+          "hypo",
+          "low blood sugar",
+          "at home",
+          "diarrhoea",
+          "check your"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·既往史（2型糖尿病2年，瑞格列奈1 mg每日3次，不规律服用阿卡波糖）；依据原文整理的模拟回答",
+        "en": "Main text · past history (type 2 diabetes for 2 years; repaglinide 1 mg three times daily; acarbose taken irregularly); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "intake",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "今天吃过东西吗？",
+        "en": "Have you eaten anything today?"
+      },
+      "answer": {
+        "zh-CN": "今天什么都没吃。",
+        "en": "I haven't eaten anything today."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃东西",
+          "没吃东西",
+          "没吃",
+          "吃饭",
+          "进食",
+          "吃过饭",
+          "饭吃了",
+          "早饭",
+          "今天吃了什么",
+          "吃得下"
+        ],
+        "en": [
+          "eaten",
+          "eat today",
+          "food today",
+          "meals",
+          "breakfast",
+          "appetite"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "药",
+          "片"
+        ],
+        "en": [
+          "tablet",
+          "medicine",
+          "medication",
+          "pill",
+          "repaglinide",
+          "drink",
+          "fluids",
+          "travel",
+          "dodgy",
+          "anywhere"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·病史（就诊当日未进食）；依据原文整理的模拟回答",
+        "en": "Main text · history (nothing eaten on the day she came in); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "meds-today",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "今天的降糖药吃了吗？",
+        "en": "Did you take your diabetes tablets today?"
+      },
+      "answer": {
+        "zh-CN": "今天降糖药没吃，黄连素今天也停了。",
+        "en": "I haven't taken my diabetes tablets today, and I've stopped the berberine today as well."
+      },
+      "keywords": {
+        "zh-CN": [
+          "今天吃药",
+          "今天的药",
+          "药吃了吗",
+          "降糖药吃了",
+          "今天吃瑞格列奈",
+          "今早吃药",
+          "停了药"
+        ],
+        "en": [
+          "tablets today",
+          "taken your medication",
+          "taken your tablets",
+          "repaglinide this morning",
+          "medicine today",
+          "stopped your tablets"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "最后一次",
+          "上一次",
+          "吃饭",
+          "饭",
+          "东西",
+          "进食"
+        ],
+        "en": [
+          "allerg",
+          "last dose",
+          "last took",
+          "food",
+          "eaten",
+          "meal"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·病史（就诊当日停用降糖药及盐酸小檗碱）；依据原文整理的模拟回答",
+        "en": "Main text · history (glucose-lowering drugs and berberine stopped on the day she came in); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "berberine",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "拉肚子以后自己吃过什么药？",
+        "en": "Have you taken anything yourself for the diarrhoea?"
+      },
+      "answer": {
+        "zh-CN": "拉肚子以后我自己吃了两天黄连素，一天两次，一次0.2克。",
+        "en": "After the diarrhoea started I took berberine myself for two days — 0.2 g twice a day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "自己吃过什么药",
+          "自己吃药",
+          "止泻药",
+          "黄连素",
+          "小檗碱",
+          "拉肚子吃药",
+          "自己买药",
+          "吃过药没有"
+        ],
+        "en": [
+          "berberine",
+          "medicine for the diarrhoea",
+          "counter",
+          "self-medicated",
+          "bought from the chemist",
+          "anti-diarrhoea tablets"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "糖尿病",
+          "降糖",
+          "过敏"
+        ],
+        "en": [
+          "diabetes",
+          "sugar tablets",
+          "allerg"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·病史（自行服用盐酸小檗碱2天，0.2 g每日2次）；依据原文整理的模拟回答",
+        "en": "Main text · history (self-medicated berberine for 2 days, 0.2 g twice daily); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "other-meds",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了这些，还吃别的药吗？",
+        "en": "Do you take any other medicines?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "别的药",
+          "其他药",
+          "还吃什么药",
+          "长期吃的药",
+          "保健品"
+        ],
+        "en": [
+          "other medicines",
+          "any other tablets",
+          "regular medication",
+          "supplements",
+          "anything else you take"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "last-repaglinide",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "最后一次吃瑞格列奈是什么时候？",
+        "en": "When did you last take your repaglinide?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最后一次吃",
+          "上一次吃药",
+          "最后一次瑞格列奈",
+          "昨天吃药",
+          "最后一顿药"
+        ],
+        "en": [
+          "last dose",
+          "last tablet",
+          "most recent dose",
+          "last took your",
+          "yesterday's tablets"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "pmh-gi",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前胃有过什么毛病吗？",
+        "en": "Have you had stomach problems before?"
+      },
+      "answer": {
+        "zh-CN": "以前得过胃溃疡，还有反流性食管炎，现在都好了。",
+        "en": "I've had a stomach ulcer before, and reflux oesophagitis, but both have cleared up."
+      },
+      "keywords": {
+        "zh-CN": [
+          "胃病",
+          "胃溃疡",
+          "胃不好",
+          "食管炎",
+          "以前胃",
+          "老胃病",
+          "胃的毛病"
+        ],
+        "en": [
+          "stomach ulcer",
+          "stomach problems",
+          "ulcer",
+          "reflux before",
+          "oesophagitis",
+          "gastric history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·既往史（胃溃疡、反流性食管炎，患者自述已治愈）；依据原文整理的模拟回答",
+        "en": "Main text · past history (gastric ulcer and reflux oesophagitis, which she says have healed); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "other-pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了糖尿病和胃病，还有别的病吗，比如高血压、心脏病、肾病？",
+        "en": "Any other conditions — high blood pressure, heart or kidney problems?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "别的病",
+          "高血压",
+          "心脏病",
+          "肾病",
+          "肾不好",
+          "以前有什么病",
+          "其他疾病"
+        ],
+        "en": [
+          "other conditions",
+          "medical problems",
+          "blood pressure",
+          "heart problems",
+          "kidney problems",
+          "medical history"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "父母"
+        ],
+        "en": [
+          "family",
+          "parents",
+          "relatives"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "prior-hypo",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前出现过低血糖吗？",
+        "en": "Have you ever had a hypo — a low blood sugar — before?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "低血糖",
+          "血糖低",
+          "以前低血糖",
+          "犯过低血糖",
+          "血糖掉下来"
+        ],
+        "en": [
+          "hypo",
+          "low blood sugar",
+          "hypoglycaemia",
+          "sugar dropped",
+          "sugars too low"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "home-glucose",
+      "topic": "other",
+      "question": {
+        "zh-CN": "平时在家测血糖吗？一般多少？",
+        "en": "Do you check your sugar at home — what does it usually run at?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "在家测血糖",
+          "平时血糖",
+          "血糖多少",
+          "测过血糖",
+          "血糖仪",
+          "空腹血糖"
+        ],
+        "en": [
+          "check your sugar",
+          "sugar levels",
+          "glucose meter",
+          "home monitoring",
+          "blood sugar readings",
+          "sugar at home"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "低血糖",
+          "血糖低"
+        ],
+        "en": [
+          "hypo",
+          "too low"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "stool",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "一天拉几次？大便什么样，有没有血或黏液？",
+        "en": "How many times a day are you opening your bowels, and is there any blood or mucus?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "拉几次",
+          "大便什么样",
+          "便血",
+          "大便带血",
+          "黏液",
+          "水样便",
+          "稀便"
+        ],
+        "en": [
+          "stools",
+          "blood in the stool",
+          "mucus",
+          "watery",
+          "bowel movements",
+          "times a day",
+          "toilet",
+          "opening your bowels"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "药",
+          "片"
+        ],
+        "en": [
+          "tablet",
+          "repaglinide",
+          "medicine",
+          "dose"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "fever-home",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "这几天在家发过烧吗？",
+        "en": "Have you had a fever at home these last few days?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发烧",
+          "发热",
+          "体温高",
+          "烧不烧",
+          "冷战",
+          "打寒战"
+        ],
+        "en": [
+          "fever",
+          "temperature",
+          "feverish",
+          "shivering",
+          "chills"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "abdo-pain",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "肚子疼吗？",
+        "en": "Have you had any abdominal pain?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肚子疼",
+          "腹痛",
+          "肚子痛",
+          "胃疼",
+          "绞痛"
+        ],
+        "en": [
+          "abdominal pain",
+          "tummy",
+          "stomach pain",
+          "cramps",
+          "belly ache"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近吃过不干净的东西、出过远门，或者身边有人也拉肚子吗？",
+        "en": "Any suspect food, recent travel, or anyone around you with the same illness?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "不干净",
+          "吃坏",
+          "出远门",
+          "旅行",
+          "别人也拉肚子",
+          "家里人也",
+          "聚餐"
+        ],
+        "en": [
+          "food poisoning",
+          "travel",
+          "travelled",
+          "dodgy food",
+          "anyone else ill",
+          "same illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "fluids",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "水能喝得下吗？",
+        "en": "Have you been able to keep fluids down?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喝水",
+          "喝得下",
+          "能喝",
+          "喝汤",
+          "口渴"
+        ],
+        "en": [
+          "fluids",
+          "keep fluids down",
+          "drinking water",
+          "thirsty",
+          "water down"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对什么药过敏吗？",
+        "en": "Are you allergic to any medicines?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "对药过敏",
+          "青霉素"
+        ],
+        "en": [
+          "allergies",
+          "allergic",
+          "drug allergy",
+          "allergy",
+          "penicillin"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "你现在多重？最近瘦了吗？",
+        "en": "What do you weigh, and have you lost weight recently?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "多重",
+          "几斤",
+          "瘦了",
+          "公斤"
+        ],
+        "en": [
+          "weight",
+          "weigh",
+          "lost weight",
+          "kilos",
+          "how heavy"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您抽烟吗？",
+        "en": "Have you ever smoked?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟",
+          "香烟"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时喝酒吗？",
+        "en": "How much alcohol do you drink?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喝酒",
+          "饮酒",
+          "酒",
+          "白酒"
+        ],
+        "en": [
+          "alcohol",
+          "beer",
+          "wine",
+          "spirits",
+          "booze"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "living",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时跟谁一起住？生活能自理吗？",
+        "en": "Who is at home with you, and do you manage on your own?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "跟谁住",
+          "一个人住",
+          "家里有谁",
+          "谁照顾",
+          "自理",
+          "老伴"
+        ],
+        "en": [
+          "household",
+          "home alone",
+          "carer",
+          "look after you",
+          "on your own",
+          "living arrangements"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家族",
+          "遗传"
+        ],
+        "en": [
+          "family history",
+          "runs in"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人有什么病吗？",
+        "en": "Does anything run in your family?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里人",
+          "家族史",
+          "父母",
+          "兄弟姐妹",
+          "遗传"
+        ],
+        "en": [
+          "family history",
+          "parents",
+          "relatives",
+          "runs in the family",
+          "siblings"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "ice",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心的是什么？",
+        "en": "What worries you most about all this?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "担心",
+          "害怕",
+          "顾虑",
+          "最怕",
+          "希望"
+        ],
+        "en": [
+          "worried",
+          "worry",
+          "concerns",
+          "scared",
+          "hoping"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "status-reaction",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在哪里难受？",
+        "en": "What's the matter now?"
+      },
+      "answer": {
+        "zh-CN": "（声音很低，说得很慢）……出了一身汗……心里慌……",
+        "en": "(very quietly, slowly) …I'm all sweaty… my heart's racing…"
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在怎么样",
+          "现在感觉",
+          "哪里不舒服",
+          "怎么了",
+          "难受吗",
+          "心慌",
+          "出汗"
+        ],
+        "en": [
+          "feeling now",
+          "what's wrong",
+          "sweaty",
+          "palpitations",
+          "heart racing",
+          "shaky",
+          "feeling faint"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "reaction"
+      ],
+      "source": {
+        "zh-CN": "正文·病程（左氧氟沙星滴注约10分钟时出现大汗、心慌）；依据原文整理的模拟回答",
+        "en": "Main text · course (sweating and palpitations about 10 minutes into the levofloxacin infusion); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "status-recovered",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在感觉怎么样？",
+        "en": "How do you feel now?"
+      },
+      "answer": {
+        "zh-CN": "好多了，心不那么慌了，也不怎么出汗了。",
+        "en": "Much better — my heart isn't racing like before and I've stopped sweating so much."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在怎么样",
+          "好点了吗",
+          "好些了吗",
+          "现在感觉",
+          "好多了吗",
+          "缓过来"
+        ],
+        "en": [
+          "feeling now",
+          "any better",
+          "feeling better",
+          "improved",
+          "recovered"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "recovered"
+      ],
+      "source": {
+        "zh-CN": "正文·病程（首次处理约5分钟后症状好转、言语清楚）；依据原文整理的模拟回答",
+        "en": "Main text · course (symptoms better and speech clear about 5 minutes after the first treatment); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "status-followup",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在怎么样了？",
+        "en": "How are you doing now?"
+      },
+      "answer": {
+        "zh-CN": "现在好了，不慌也不出汗了，脑子也清楚了。",
+        "en": "I'm all right now — no racing heart, no sweating, and my head's clear."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在怎么样",
+          "好了吗",
+          "现在感觉",
+          "还难受吗",
+          "清醒了吗"
+        ],
+        "en": [
+          "feeling now",
+          "doing now",
+          "feeling better",
+          "back to normal",
+          "still unwell"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "正文·病程（第二次处理约10分钟后低血糖症状消失、意识恢复）；依据原文整理的模拟回答",
+        "en": "Main text · course (hypoglycaemic symptoms gone and consciousness recovered about 10 minutes after the second treatment); simulated answer compiled from the source"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "测量生命体征",
+        "en": "Take her vital signs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "生命体征",
+          "量血压",
+          "测体温",
+          "脉搏",
+          "心率",
+          "呼吸频率",
+          "测一下血压"
+        ],
+        "en": [
+          "vital signs",
+          "blood pressure",
+          "pulse",
+          "temperature",
+          "observations",
+          "heart rate"
+        ]
+      },
+      "finding": {
+        "zh-CN": "体温36.5 ℃，脉搏70次/分，呼吸20次/分，血压130/80 mmHg。",
+        "en": "Temperature 36.5 °C, pulse 70/min, respiratory rate 20/min, blood pressure 130/80 mmHg."
+      },
+      "abnormal": false,
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "正文·体格检查",
+        "en": "Main text · physical examination"
+      }
+    },
+    {
+      "id": "reaction-signs",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "察看她的神志、面色和皮肤",
+        "en": "Look at her conscious level, colour and skin"
+      },
+      "keywords": {
+        "zh-CN": [
+          "神志",
+          "意识",
+          "看看她",
+          "面色",
+          "皮肤",
+          "出汗",
+          "反应",
+          "一般情况"
+        ],
+        "en": [
+          "conscious level",
+          "consciousness",
+          "inspect her",
+          "colour",
+          "sweating",
+          "responsiveness",
+          "general appearance",
+          "gcs"
+        ]
+      },
+      "finding": {
+        "zh-CN": "大汗，面色苍白，意识淡漠、反应迟钝。",
+        "en": "Profuse sweating and pallor; she is apathetic and slow to respond."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "reaction"
+      ],
+      "source": {
+        "zh-CN": "正文·病程（左氧氟沙星滴注约10分钟时）",
+        "en": "Main text · course (about 10 minutes into the levofloxacin infusion)"
+      }
+    },
+    {
+      "id": "recovered-signs",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "察看她的神志、面色和皮肤",
+        "en": "Look at her conscious level, colour and skin"
+      },
+      "keywords": {
+        "zh-CN": [
+          "神志",
+          "意识",
+          "看看她",
+          "面色",
+          "皮肤",
+          "出汗",
+          "反应",
+          "一般情况"
+        ],
+        "en": [
+          "conscious level",
+          "consciousness",
+          "inspect her",
+          "colour",
+          "sweating",
+          "responsiveness",
+          "general appearance",
+          "gcs"
+        ]
+      },
+      "finding": {
+        "zh-CN": "面色转红润，言语清楚。",
+        "en": "Her colour has come back and she is speaking clearly."
+      },
+      "abnormal": false,
+      "required": true,
+      "phases": [
+        "recovered"
+      ],
+      "source": {
+        "zh-CN": "正文·病程（首次处理约5分钟后）",
+        "en": "Main text · course (about 5 minutes after the first treatment)"
+      }
+    },
+    {
+      "id": "followup-signs",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "察看她的神志、面色和皮肤",
+        "en": "Look at her conscious level, colour and skin"
+      },
+      "keywords": {
+        "zh-CN": [
+          "神志",
+          "意识",
+          "看看她",
+          "面色",
+          "皮肤",
+          "出汗",
+          "反应",
+          "一般情况"
+        ],
+        "en": [
+          "conscious level",
+          "consciousness",
+          "inspect her",
+          "colour",
+          "sweating",
+          "responsiveness",
+          "general appearance",
+          "gcs"
+        ]
+      },
+      "finding": {
+        "zh-CN": "低血糖症状消失，意识恢复。",
+        "en": "The hypoglycaemic symptoms have gone and her consciousness has recovered."
+      },
+      "abnormal": false,
+      "phases": [
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "正文·病程（第二次处理约10分钟后）",
+        "en": "Main text · course (about 10 minutes after the second treatment)"
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有记录这项检查的结果；不能把它当作正常或阴性。",
+    "en": "The report does not record this examination; do not take it as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "glucose-poc",
+      "name": {
+        "zh-CN": "床旁指尖血糖",
+        "en": "Bedside capillary glucose"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "指尖血糖",
+          "床旁血糖",
+          "测血糖",
+          "快速血糖",
+          "血糖仪",
+          "手指血糖",
+          "末梢血糖",
+          "测个血糖"
+        ],
+        "en": [
+          "capillary glucose",
+          "fingerprick glucose",
+          "glucose meter",
+          "bedside glucose",
+          "cbg",
+          "bm",
+          "poc glucose",
+          "blood sugar check",
+          "check her sugar"
+        ]
+      },
+      "requires": [
+        "point-of-care"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未记录就诊时的床旁血糖。",
+            "en": "The report records no bedside glucose at presentation."
+          },
+          "source": {
+            "zh-CN": "正文·实验室检查",
+            "en": "Main text · laboratory tests"
+          }
+        },
+        "reaction": {
+          "date": {
+            "zh-CN": "就诊当日，左氧氟沙星滴注约10分钟时",
+            "en": "Day of presentation, about 10 minutes into the levofloxacin infusion"
+          },
+          "text": {
+            "zh-CN": "指尖血糖3.0 mmol/L（症状发作时）。",
+            "en": "Capillary glucose 3.0 mmol/L (at the onset of symptoms)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血糖",
+                "en": "Glucose"
+              },
+              "value": 3,
+              "unit": "mmol/L",
+              "flag": "L"
+            }
+          ],
+          "critical": true,
+          "source": {
+            "zh-CN": "正文·病程（即测血糖3.0 mmol/L）",
+            "en": "Main text · course (glucose measured at once: 3.0 mmol/L)"
+          }
+        },
+        "recovered": {
+          "available": false,
+          "date": {
+            "zh-CN": "就诊当日，首次处理约5分钟后",
+            "en": "Day of presentation, about 5 minutes after the first treatment"
+          },
+          "text": {
+            "zh-CN": "原报告记载她此时症状好转，但没有复测血糖，这一时点没有数值。",
+            "en": "The report says her symptoms had improved by now but the glucose was not rechecked, so there is no value at this point."
+          },
+          "source": {
+            "zh-CN": "正文·病程（“症状好转，但未复测血糖”）",
+            "en": "Main text · course (symptoms improved, glucose not rechecked)"
+          }
+        }
+      }
+    },
+    {
+      "id": "chemistry",
+      "name": {
+        "zh-CN": "生化：电解质、肾功能、血糖、CRP",
+        "en": "Chemistry: electrolytes, renal function, glucose, CRP"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "生化",
+          "电解质",
+          "肾功能",
+          "血钾",
+          "肌酐",
+          "crp",
+          "c反应蛋白",
+          "血生化",
+          "静脉血糖"
+        ],
+        "en": [
+          "chemistry",
+          "electrolytes",
+          "renal function",
+          "u&e",
+          "potassium level",
+          "creatinine",
+          "crp",
+          "biochemistry"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "date": {
+            "zh-CN": "就诊当日，输液前（空腹）",
+            "en": "Day of presentation, before the infusions (fasting)"
+          },
+          "text": {
+            "zh-CN": "空腹：血钾3.2 mmol/L，钠134 mmol/L，肌酐65 μmol/L，葡萄糖6.0 mmol/L，C反应蛋白5.4 mg/L；其余项目报告未见异常。原报告未给出参考范围。",
+            "en": "Fasting: potassium 3.2 mmol/L, sodium 134 mmol/L, creatinine 65 μmol/L, glucose 6.0 mmol/L, C-reactive protein 5.4 mg/L; the other results were reported as unremarkable. The report gives no reference ranges."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "钾",
+                "en": "Potassium"
+              },
+              "value": 3.2,
+              "unit": "mmol/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "钠",
+                "en": "Sodium"
+              },
+              "value": 134,
+              "unit": "mmol/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肌酐",
+                "en": "Creatinine"
+              },
+              "value": 65,
+              "unit": "μmol/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "葡萄糖（空腹）",
+                "en": "Glucose (fasting)"
+              },
+              "value": 6,
+              "unit": "mmol/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "C反应蛋白",
+                "en": "C-reactive protein"
+              },
+              "value": 5.4,
+              "unit": "mg/L"
+            }
+          ],
+          "note": {
+            "zh-CN": "教学计算（非原文）：按CKD-EPI 2021公式，78岁女性、肌酐65 μmol/L的eGFR约83 mL/min/1.73 m²；体重未记录，无法计算肌酐清除率。",
+            "en": "Teaching calculation (not in the report): by CKD-EPI 2021, a creatinine of 65 μmol/L in a 78-year-old woman gives an eGFR of about 83 mL/min/1.73 m²; her weight is not recorded, so creatinine clearance cannot be calculated."
+          },
+          "source": {
+            "zh-CN": "正文·实验室检查",
+            "en": "Main text · laboratory tests"
+          }
+        }
+      }
+    },
+    {
+      "id": "blood-count",
+      "name": {
+        "zh-CN": "血常规",
+        "en": "Full blood count"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "血象",
+          "白细胞",
+          "血红蛋白",
+          "血小板"
+        ],
+        "en": [
+          "full blood count",
+          "fbc",
+          "cbc",
+          "blood count",
+          "white cells",
+          "haemoglobin"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "date": {
+            "zh-CN": "就诊当日，输液前",
+            "en": "Day of presentation, before the infusions"
+          },
+          "text": {
+            "zh-CN": "报告为未见异常（原报告未给出具体数值）。",
+            "en": "Reported as unremarkable (the report gives no values)."
+          },
+          "source": {
+            "zh-CN": "正文·实验室检查",
+            "en": "Main text · laboratory tests"
+          }
+        }
+      }
+    },
+    {
+      "id": "ecg",
+      "name": {
+        "zh-CN": "12导联心电图",
+        "en": "12-lead ECG"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "心电图",
+          "ecg",
+          "ekg",
+          "做个心电图",
+          "十二导联"
+        ],
+        "en": [
+          "ecg",
+          "ekg",
+          "12-lead",
+          "electrocardiogram"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "date": {
+            "zh-CN": "就诊当日，输液前",
+            "en": "Day of presentation, before the infusions"
+          },
+          "text": {
+            "zh-CN": "心电图正常（原报告未给出心率、QTc等数值）。",
+            "en": "Normal ECG (the report gives no rate, QTc or other measurements)."
+          },
+          "source": {
+            "zh-CN": "正文·辅助检查",
+            "en": "Main text · investigations"
+          }
+        },
+        "reaction": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有低血糖发作时的心电图。",
+            "en": "The report has no ECG from the hypoglycaemic episode."
+          },
+          "source": {
+            "zh-CN": "缺失信息：原文未记录，保持未知",
+            "en": "Missing information: not recorded in the source; kept unknown"
+          }
+        }
+      }
+    },
+    {
+      "id": "cxr",
+      "name": {
+        "zh-CN": "胸部X线片",
+        "en": "Chest X-ray"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸片",
+          "胸部x线",
+          "x光",
+          "胸部平片"
+        ],
+        "en": [
+          "chest x-ray",
+          "cxr",
+          "chest film",
+          "chest radiograph"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "risk": "none",
+      "value": "neutral",
+      "results": {
+        "initial": {
+          "date": {
+            "zh-CN": "就诊当日，输液前",
+            "en": "Day of presentation, before the infusions"
+          },
+          "text": {
+            "zh-CN": "未见明显异常。",
+            "en": "No obvious abnormality."
+          },
+          "source": {
+            "zh-CN": "正文·辅助检查",
+            "en": "Main text · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "stool-tests",
+      "name": {
+        "zh-CN": "粪便常规、隐血与病原学检查",
+        "en": "Stool microscopy, occult blood and microbiology"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "大便常规",
+          "粪便常规",
+          "大便培养",
+          "粪便培养",
+          "隐血",
+          "便常规"
+        ],
+        "en": [
+          "stool culture",
+          "stool test",
+          "stool microscopy",
+          "faecal occult blood",
+          "stool sample",
+          "c difficile"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "initial": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未记录粪便检查。",
+            "en": "No stool tests are recorded in the report."
+          },
+          "source": {
+            "zh-CN": "缺失信息：原文未记录，保持未知",
+            "en": "Missing information: not recorded in the source; kept unknown"
+          }
+        }
+      }
+    },
+    {
+      "id": "medication-chart",
+      "name": {
+        "zh-CN": "调阅输液记录",
+        "en": "Review the infusion record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "输液记录",
+          "用药记录",
+          "医嘱单",
+          "输液单",
+          "给药记录"
+        ],
+        "en": [
+          "infusion record",
+          "drug chart",
+          "medication chart",
+          "infusion chart",
+          "what was given"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "reaction": {
+          "date": {
+            "zh-CN": "就诊当日",
+            "en": "Day of presentation"
+          },
+          "text": {
+            "zh-CN": "① 注射用奥美拉唑钠20 mg溶于0.9%氯化钠注射液100 ml静脉滴注（为缓解恶心、呕吐、反酸），已滴完；② 随后接续乳酸左氧氟沙星氯化钠注射液0.3 g静脉滴注（考虑腹泻可能为细菌感染所致）；左氧氟沙星滴注约10分钟时出现大汗、心慌、面色苍白、意识淡漠。",
+            "en": "1. Omeprazole sodium 20 mg in 100 mL of 0.9% sodium chloride by IV infusion (for the nausea, vomiting and reflux), finished; 2. then levofloxacin lactate and sodium chloride injection 0.3 g by IV infusion (the diarrhoea was thought possibly bacterial); about 10 minutes into the levofloxacin she developed sweating, palpitations, pallor and apathy."
+          },
+          "source": {
+            "zh-CN": "正文·治疗经过",
+            "en": "Main text · treatment"
+          }
+        },
+        "recovered": {
+          "date": {
+            "zh-CN": "就诊当日",
+            "en": "Day of presentation"
+          },
+          "text": {
+            "zh-CN": "① 奥美拉唑钠20 mg（溶于0.9%氯化钠100 ml）静滴，已滴完；② 接续乳酸左氧氟沙星氯化钠注射液0.3 g静滴，约10分钟时出现大汗、心慌、面色苍白、意识淡漠，血糖3.0 mmol/L；③ 原报告的首次处理：暂停左氧氟沙星，葡萄糖氯化钠注射液500 ml静滴，并进食糖块、面包。",
+            "en": "1. Omeprazole sodium 20 mg (in 100 mL of 0.9% sodium chloride) IV, finished; 2. then levofloxacin lactate and sodium chloride injection 0.3 g IV — about 10 minutes in, sweating, palpitations, pallor and apathy, glucose 3.0 mmol/L; 3. the report's first treatment: levofloxacin paused, glucose–saline 500 mL by IV infusion, and sugar sweets and bread by mouth."
+          },
+          "source": {
+            "zh-CN": "正文·治疗经过",
+            "en": "Main text · treatment"
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅原报告的后续经过",
+        "en": "Review the reported course"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "随访记录",
+          "后续经过",
+          "原报告结局",
+          "治疗经过",
+          "转归"
+        ],
+        "en": [
+          "follow-up record",
+          "reported course",
+          "outcome",
+          "what happened next",
+          "case report outcome"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "date": {
+            "zh-CN": "就诊当日",
+            "en": "Day of presentation"
+          },
+          "text": {
+            "zh-CN": "原报告：首次处理约5分钟后，她面色转红润、言语清楚、症状好转，但未复测血糖。急诊医师考虑奥美拉唑滴完后接续左氧氟沙星仅10分钟，认为奥美拉唑引起低血糖的可能性更大，于是恢复左氧氟沙星静滴。约5分钟后再次出现大汗、心慌、意识淡漠，复测血糖1.9 mmol/L。随即停用左氧氟沙星，静脉注射50%葡萄糖注射液20 ml，继以5%葡萄糖注射液500 ml静滴；约10分钟后低血糖症状消失、意识恢复；输液结束后复测血糖9.6 mmol/L。作者讨论：首次发作经补糖好转，符合Whipple三联征；再次输注后复发、补糖后恢复，提示低血糖由左氧氟沙星引起；该药说明书提示与口服降糖药合用可致低血糖，用药中应监测血糖，发生低血糖应立即停药并对症处理；盐酸小檗碱可降低2型糖尿病患者的空腹血糖，但作者认为本例由它引起的可能性不大；喹诺酮类可能通过胰岛细胞膜ATP依赖性钾通道促进胰岛素释放；老年糖尿病和肾功能不全者风险较高，多发生在用药初期，也有用药7天后才出现的报道。原报告没有记录观察时长、去向、是否改用其他抗菌药、是否上报不良反应及后续随访。",
+            "en": "The report: about 5 minutes after the first treatment her colour returned, she spoke clearly and her symptoms improved, but the glucose was not rechecked. Because the omeprazole had been followed by the levofloxacin only 10 minutes before the symptoms, the ED physician judged the omeprazole the likelier cause of the hypoglycaemia and restarted the levofloxacin. About 5 minutes later the sweating, palpitations and apathy returned, with a glucose of 1.9 mmol/L. The levofloxacin was stopped, 50% glucose 20 mL was given IV, followed by 5% glucose 500 mL by infusion; about 10 minutes later the hypoglycaemic symptoms had gone and her consciousness had recovered; after the infusion the glucose was 9.6 mmol/L. The authors' discussion: the first episode improved with glucose, meeting Whipple's triad; recurrence on re-infusion and recovery with glucose point to levofloxacin as the cause; the label warns that it can cause hypoglycaemia with oral glucose-lowering drugs, that glucose should be monitored, and that the drug should be stopped at once if hypoglycaemia occurs; berberine can lower fasting glucose in type 2 diabetes, but the authors judge it an unlikely cause here; quinolones may promote insulin release through ATP-dependent potassium channels of islet cells; older people with diabetes or renal impairment are at higher risk, usually early in treatment, although onset after 7 days has been reported. The report does not record how long she was observed, where she went, whether another antibiotic was used, whether the reaction was reported, or any follow-up."
+          },
+          "source": {
+            "zh-CN": "正文·治疗经过与讨论",
+            "en": "Main text · treatment and discussion"
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "warnings": [
+      {
+        "investigation": "glucose-poc",
+        "ifMatches": ".",
+        "unless": {
+          "any": [
+            {
+              "phase": "reaction"
+            },
+            {
+              "phase": "recovered"
+            },
+            {
+              "phase": "followup"
+            }
+          ]
+        },
+        "message": {
+          "zh-CN": "原报告没有记录就诊时的床旁血糖；输液前的空腹血糖在生化结果中。",
+          "en": "The report has no bedside glucose at presentation; the fasting glucose before the infusions is in the chemistry."
+        }
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "potassium-replacement",
+      "name": {
+        "zh-CN": "补钾（氯化钾）",
+        "en": "Potassium replacement (potassium chloride)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "补钾",
+          "氯化钾",
+          "口服补钾",
+          "静脉补钾",
+          "补充钾"
+        ],
+        "en": [
+          "potassium replacement",
+          "potassium chloride",
+          "kcl",
+          "replace potassium",
+          "oral potassium"
+        ]
+      },
+      "dose": {
+        "zh-CN": "能耐受时口服氯化钾；呕吐不能口服时加入补液静脉滴注（外周静脉浓度一般不超过40 mmol/L，见尿补钾），按复查血钾调整。",
+        "en": "Oral potassium chloride if she can keep it down; if vomiting prevents that, IV potassium chloride in the rehydration fluid (peripheral concentration usually no more than 40 mmol/L, once urine output is confirmed), adjusted to the repeat potassium."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "read": "chemistry",
+        "phase": "initial"
+      },
+      "response": {
+        "zh-CN": "已开具补钾，并安排复查血钾。补钾也降低了日后使用延长QT间期药物时的风险。",
+        "en": "Potassium replacement is prescribed with a repeat potassium arranged; correcting it also lowers the risk if a QT-prolonging drug is ever needed."
+      }
+    },
+    {
+      "id": "iv-rehydration",
+      "name": {
+        "zh-CN": "静脉补液（0.9%氯化钠注射液）",
+        "en": "IV rehydration (0.9% sodium chloride)"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "补液",
+          "静脉补液",
+          "生理盐水",
+          "输液补水",
+          "0.9%氯化钠"
+        ],
+        "en": [
+          "iv fluids",
+          "rehydration",
+          "normal saline",
+          "0.9% saline",
+          "sodium chloride infusion"
+        ]
+      },
+      "dose": {
+        "zh-CN": "0.9%氯化钠注射液静脉滴注，按液体丢失、尿量和复查电解质调整；期间监测指尖血糖。",
+        "en": "0.9% sodium chloride by IV infusion, guided by her losses, urine output and repeat electrolytes; check capillary glucose meanwhile."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "phase": "initial"
+      },
+      "response": {
+        "zh-CN": "补液开始。",
+        "en": "The rehydration fluid is running."
+      }
+    },
+    {
+      "id": "withhold-repaglinide",
+      "name": {
+        "zh-CN": "暂停瑞格列奈（不进食时不服）",
+        "en": "Hold repaglinide while she is not eating"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "暂停瑞格列奈",
+          "停瑞格列奈",
+          "暂停降糖药",
+          "先别吃降糖药",
+          "瑞格列奈先停"
+        ],
+        "en": [
+          "hold repaglinide",
+          "withhold repaglinide",
+          "hold her diabetes tablets",
+          "suspend repaglinide",
+          "skip repaglinide"
+        ]
+      },
+      "dose": {
+        "zh-CN": "瑞格列奈是餐时服用的胰岛素促泌剂：不进餐就不服该次；恢复正常进食后再按餐服用，期间监测血糖。",
+        "en": "Repaglinide is a mealtime insulin secretagogue: no meal, no dose; restart with meals once she is eating normally, monitoring glucose meanwhile."
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "医嘱：暂停瑞格列奈，恢复进食后再按餐服用。",
+        "en": "Ordered: repaglinide on hold until she is eating, then with meals."
+      }
+    },
+    {
+      "id": "glucose-monitoring",
+      "name": {
+        "zh-CN": "床旁血糖监测计划",
+        "en": "Capillary glucose monitoring plan"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "监测血糖",
+          "血糖监测",
+          "定时测血糖",
+          "复测计划",
+          "血糖观察"
+        ],
+        "en": [
+          "monitor glucose",
+          "glucose monitoring",
+          "regular sugar checks",
+          "monitor her sugars",
+          "glucose observations"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按本院流程定时测指尖血糖，进食差、用药或补液期间加密；任何低血糖处理后约15分钟复测；出现出汗、心慌或意识改变时立即测。",
+        "en": "Regular capillary glucose checks per local protocol, more often while she is eating poorly or on treatment; recheck about 15 minutes after any hypoglycaemia treatment; check at once if she sweats, has palpitations or changes in consciousness."
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "血糖监测计划已交给护士执行。",
+        "en": "The nurse has the glucose monitoring plan."
+      }
+    },
+    {
+      "id": "omeprazole-iv",
+      "name": {
+        "zh-CN": "注射用奥美拉唑钠静脉滴注",
+        "en": "IV omeprazole"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "奥美拉唑",
+          "护胃",
+          "抑酸",
+          "质子泵抑制剂"
+        ],
+        "en": [
+          "omeprazole",
+          "ppi",
+          "proton pump inhibitor",
+          "acid suppression"
+        ]
+      },
+      "dose": {
+        "zh-CN": "注射用奥美拉唑钠20 mg溶于0.9%氯化钠注射液100 ml静脉滴注（原报告用于恶心、呕吐、反酸）。",
+        "en": "Omeprazole sodium 20 mg in 100 mL of 0.9% sodium chloride by IV infusion (the report's choice for the nausea, vomiting and reflux)."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "low",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "奥美拉唑开始静滴。",
+        "en": "The omeprazole infusion is running."
+      }
+    },
+    {
+      "id": "levofloxacin-iv",
+      "name": {
+        "zh-CN": "乳酸左氧氟沙星氯化钠注射液静脉滴注",
+        "en": "IV levofloxacin"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "左氧氟沙星",
+          "左氧",
+          "喹诺酮",
+          "抗生素",
+          "抗菌药",
+          "消炎药"
+        ],
+        "en": [
+          "levofloxacin",
+          "fluoroquinolone",
+          "quinolone",
+          "antibiotic",
+          "antibiotics"
+        ]
+      },
+      "dose": {
+        "zh-CN": "乳酸左氧氟沙星氯化钠注射液0.3 g静脉滴注（原报告的经验性抗菌治疗）。",
+        "en": "Levofloxacin lactate and sodium chloride injection 0.3 g by IV infusion (the report's empirical antibiotic)."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "恢复",
+          "继续",
+          "重新",
+          "接着"
+        ],
+        "en": [
+          "restart",
+          "resume",
+          "continue",
+          "finish the"
+        ]
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "她无发热、血常规正常、CRP 5.4 mg/L，没有记录痢疾或脓毒症表现：这类急性腹泻不常规使用经验性抗菌药（IDSA 2017）。氟喹诺酮可致严重低血糖甚至昏迷，老年、糖尿病、合用降糖药和进食差都是危险因素（FDA 2018），她的血钾3.2 mmol/L还增加QT延长风险。如果她已经在这次输注中发生过低血糖，再给就是再暴露。",
+        "en": "She is afebrile with a normal blood count and a CRP of 5.4 mg/L, and no dysentery or sepsis is recorded: empirical antibiotics are not routine for acute diarrhoea like this (IDSA 2017). Fluoroquinolones can cause severe hypoglycaemia, even coma, and older age, diabetes, glucose-lowering drugs and poor intake are all risk factors (FDA 2018); her potassium of 3.2 mmol/L adds QT risk. If she has already had hypoglycaemia during this infusion, giving it again is re-exposure."
+      },
+      "response": {
+        "zh-CN": "左氧氟沙星开始静滴。",
+        "en": "The levofloxacin infusion is running."
+      }
+    },
+    {
+      "id": "stop-levofloxacin",
+      "name": {
+        "zh-CN": "停止左氧氟沙星输注（保留静脉通路）",
+        "en": "Stop the levofloxacin infusion (keep the line)"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "停止输液",
+          "停左氧",
+          "停掉左氧氟沙星",
+          "关掉输液",
+          "暂停输液",
+          "停止左氧氟沙星"
+        ],
+        "en": [
+          "stop the infusion",
+          "stop levofloxacin",
+          "stop the drip",
+          "pause the infusion",
+          "turn off the drip",
+          "stop the antibiotic"
+        ]
+      },
+      "dose": {
+        "zh-CN": "立即关闭左氧氟沙星输注，保留静脉通路以便静脉给药。",
+        "en": "Turn the levofloxacin off now and keep the cannula for IV treatment."
+      },
+      "requires": [],
+      "scope": "nursing",
+      "risk": "none",
+      "indicatedWhen": {
+        "phase": "reaction"
+      },
+      "response": {
+        "zh-CN": "护士停止了左氧氟沙星输注，静脉通路保留。",
+        "en": "The nurse stops the levofloxacin infusion; the line stays in."
+      }
+    },
+    {
+      "id": "iv-dextrose",
+      "name": {
+        "zh-CN": "静脉注射葡萄糖",
+        "en": "IV glucose (dextrose)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "静推葡萄糖",
+          "推葡萄糖",
+          "50%葡萄糖",
+          "高糖",
+          "静脉推注葡萄糖",
+          "10%葡萄糖",
+          "20%葡萄糖",
+          "推高糖"
+        ],
+        "en": [
+          "iv dextrose",
+          "iv glucose",
+          "dextrose bolus",
+          "glucose bolus",
+          "50% dextrose",
+          "20% glucose",
+          "10% glucose",
+          "d50"
+        ]
+      },
+      "dose": {
+        "zh-CN": "静脉给葡萄糖，按本院低血糖流程：例如50%葡萄糖20 ml（含葡萄糖10 g，原报告第二次处理所用）；许多医院流程首选10%或20%葡萄糖，因为浓葡萄糖高渗、易致外渗损伤（JBDS）。随后葡萄糖液维持，约15分钟复测血糖，未恢复就重复。",
+        "en": "IV glucose per the local hypoglycaemia protocol: for example 50% glucose 20 mL (10 g of glucose, as in the report's second treatment); many protocols prefer 10% or 20% glucose because concentrated glucose is hypertonic and harms tissue if it extravasates (JBDS). Follow with a glucose-containing infusion, recheck the glucose after about 15 minutes and repeat if it is still low."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "low",
+      "maxDoses": 3,
+      "indicatedWhen": {
+        "read": "glucose-poc",
+        "phase": "reaction"
+      },
+      "response": {
+        "zh-CN": "葡萄糖已静脉给入。",
+        "en": "The IV glucose is in."
+      }
+    },
+    {
+      "id": "glucose-infusion",
+      "name": {
+        "zh-CN": "葡萄糖液静脉滴注维持",
+        "en": "Glucose-containing infusion"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "葡萄糖液",
+          "糖盐水",
+          "葡萄糖氯化钠",
+          "5%葡萄糖",
+          "葡萄糖维持",
+          "静滴葡萄糖",
+          "葡萄糖点滴"
+        ],
+        "en": [
+          "glucose infusion",
+          "dextrose infusion",
+          "glucose saline",
+          "5% glucose",
+          "dextrose drip",
+          "glucose drip"
+        ]
+      },
+      "dose": {
+        "zh-CN": "如5%葡萄糖注射液或葡萄糖氯化钠注射液500 ml静滴（原报告两次处理分别使用），用于静脉推注后的维持；单靠滴注升糖较慢。",
+        "en": "For example 5% glucose or glucose–saline 500 mL by IV infusion (the report used each in turn), to maintain the glucose after an IV bolus; an infusion alone raises it slowly."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "intervened": "iv-dextrose"
+      },
+      "response": {
+        "zh-CN": "葡萄糖液开始静滴。",
+        "en": "The glucose infusion is running."
+      }
+    },
+    {
+      "id": "oral-sugar",
+      "name": {
+        "zh-CN": "经口给糖块和面包",
+        "en": "Sugar sweets and bread by mouth"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "吃糖",
+          "糖块",
+          "喂糖",
+          "吃面包",
+          "口服糖",
+          "喝糖水",
+          "给她吃糖"
+        ],
+        "en": [
+          "sugar by mouth",
+          "oral glucose",
+          "sweets",
+          "give her sugar",
+          "glucose tablets",
+          "sugary drink"
+        ]
+      },
+      "dose": {
+        "zh-CN": "糖块和面包经口（原报告首次处理的做法）。",
+        "en": "Sugar sweets and bread by mouth (the report's first treatment)."
+      },
+      "requires": [],
+      "scope": "nursing",
+      "risk": "moderate",
+      "contraindicatedWhen": {
+        "phase": "reaction"
+      },
+      "harm": {
+        "zh-CN": "她意识淡漠，经口进食有误吸风险，也不可靠；有静脉通路时应静脉给葡萄糖（ADA 2026第6章）。等她完全清醒、能安全吞咽后再进食。",
+        "en": "She is apathetic: food by mouth risks aspiration and is unreliable, and with IV access in place she should have IV glucose (ADA 2026, Section 6). Feed her once she is fully alert and swallowing safely."
+      },
+      "response": {
+        "zh-CN": "她吃了几块糖和一点面包。",
+        "en": "She takes a few sweets and a little bread."
+      }
+    },
+    {
+      "id": "oral-meal",
+      "name": {
+        "zh-CN": "清醒后进食",
+        "en": "A meal or snack once she is alert"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "进食",
+          "吃点东西",
+          "吃点心",
+          "正餐",
+          "让她吃饭",
+          "吃饭"
+        ],
+        "en": [
+          "meal",
+          "snack",
+          "food",
+          "eat",
+          "starchy snack",
+          "breakfast"
+        ]
+      },
+      "dose": {
+        "zh-CN": "完全清醒、能安全吞咽后，进食正餐或含淀粉的点心，防止血糖再次下降。",
+        "en": "Once she is fully alert and swallowing safely, a meal or starchy snack to stop the glucose falling again."
+      },
+      "requires": [],
+      "scope": "nursing",
+      "risk": "none",
+      "indicatedWhen": {
+        "phase": "recovered"
+      },
+      "contraindicatedWhen": {
+        "phase": "reaction"
+      },
+      "harm": {
+        "zh-CN": "她仍意识淡漠，这时经口进食有误吸风险；先静脉给葡萄糖，清醒后再进食。",
+        "en": "She is still apathetic, so eating now risks aspiration; give IV glucose first and feed her once she is alert."
+      },
+      "response": {
+        "zh-CN": "她吃了些东西。",
+        "en": "She eats something."
+      }
+    },
+    {
+      "id": "glucagon-im",
+      "name": {
+        "zh-CN": "胰高血糖素1 mg肌内注射",
+        "en": "Glucagon 1 mg IM"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "胰高血糖素",
+          "胰高糖素",
+          "肌注胰高血糖素"
+        ],
+        "en": [
+          "glucagon",
+          "im glucagon",
+          "glucagon injection"
+        ]
+      },
+      "dose": {
+        "zh-CN": "胰高血糖素1 mg肌内注射（用于无静脉通路的严重低血糖）。",
+        "en": "Glucagon 1 mg IM (for severe hypoglycaemia without IV access)."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已肌注胰高血糖素1 mg。她有静脉通路时，静脉葡萄糖起效更快、更可靠；胰高血糖素依靠肝糖原，几天进食差时作用可能减弱。",
+        "en": "Glucagon 1 mg is given IM. With a cannula in place IV glucose is faster and more reliable; glucagon works through liver glycogen and may do less after days of poor intake."
+      }
+    },
+    {
+      "id": "adrenaline-im",
+      "name": {
+        "zh-CN": "肾上腺素0.5 mg肌内注射（按过敏反应处理）",
+        "en": "IM adrenaline 0.5 mg (treat as anaphylaxis)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "肾上腺素",
+          "过敏性休克处理",
+          "抗过敏",
+          "肌注肾上腺素"
+        ],
+        "en": [
+          "adrenaline",
+          "epinephrine",
+          "anaphylaxis treatment",
+          "im adrenaline",
+          "epipen"
+        ]
+      },
+      "dose": {
+        "zh-CN": "肾上腺素（1 mg/ml）0.5 mg肌内注射。",
+        "en": "Adrenaline (1 mg/mL) 0.5 mg IM."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 2,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "原报告没有记录任何过敏反应表现（气道、呼吸、循环或皮肤）。在禁食、服用促泌剂的糖尿病患者，出汗、心慌和意识淡漠首先要想到低血糖，几秒钟的指尖血糖就能确认；无指征使用肾上腺素会让78岁患者心动过速、增加心律失常风险，也耽误纠正低血糖。",
+        "en": "The report records no features of anaphylaxis (airway, breathing, circulation or skin). In a fasting woman with diabetes on a secretagogue, sweating, palpitations and apathy mean hypoglycaemia first, which a fingerprick glucose confirms in seconds; adrenaline without an indication drives tachycardia and arrhythmia risk at 78 and delays the glucose."
+      },
+      "response": {
+        "zh-CN": "已肌注肾上腺素0.5 mg。",
+        "en": "Adrenaline 0.5 mg is given IM."
+      }
+    },
+    {
+      "id": "restart-levofloxacin",
+      "name": {
+        "zh-CN": "恢复左氧氟沙星输注",
+        "en": "Restart the levofloxacin infusion"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "恢复左氧氟沙星",
+          "继续左氧氟沙星",
+          "恢复左氧",
+          "继续左氧",
+          "重新开左氧",
+          "接着输左氧氟沙星"
+        ],
+        "en": [
+          "restart levofloxacin",
+          "resume levofloxacin",
+          "restart the levofloxacin",
+          "resume the antibiotic",
+          "continue the levofloxacin",
+          "finish the levofloxacin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "恢复乳酸左氧氟沙星氯化钠注射液0.3 g的剩余输注（原报告的做法）。",
+        "en": "Resume the rest of the levofloxacin 0.3 g infusion (as the report did)."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "这是再暴露于发作时正在输注的药物。原报告中，医生认为先输的奥美拉唑更可能引起低血糖而恢复了左氧氟沙星，约5分钟后大汗、心慌、意识淡漠再次出现，血糖1.9 mmol/L。",
+        "en": "This re-exposes her to the drug that was running when the hypoglycaemia began. In the report the physician blamed the earlier omeprazole and restarted the levofloxacin; about 5 minutes later the sweating, palpitations and apathy returned with a glucose of 1.9 mmol/L."
+      },
+      "response": {
+        "zh-CN": "约5分钟后她再次大汗、心慌、意识淡漠，复测血糖1.9 mmol/L。按原报告，随即停用左氧氟沙星，静脉注射50%葡萄糖20 ml后静滴5%葡萄糖500 ml，约10分钟后症状消失、意识恢复。",
+        "en": "About 5 minutes later she is sweating, palpitating and apathetic again, with a glucose of 1.9 mmol/L. As in the report, the levofloxacin is stopped and she is given 50% glucose 20 mL IV and then 5% glucose 500 mL; about 10 minutes later her symptoms have gone and her consciousness has recovered."
+      }
+    },
+    {
+      "id": "adr-report",
+      "name": {
+        "zh-CN": "记录并上报可疑药品不良反应",
+        "en": "Record and report a suspected adverse drug reaction"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "上报不良反应",
+          "药物不良反应",
+          "不良反应报告",
+          "记入不良反应史",
+          "填不良反应表"
+        ],
+        "en": [
+          "report the reaction",
+          "adverse drug reaction",
+          "drug reaction report",
+          "adr report",
+          "record the reaction"
+        ]
+      },
+      "dose": {
+        "zh-CN": "在病历和药物过敏/不良反应栏注明“左氧氟沙星：严重低血糖（疑似不良反应）”，向国家药品不良反应监测系统报告，并告诉患者。",
+        "en": "Record \"levofloxacin: severe hypoglycaemia (suspected adverse reaction)\" in her notes and allergy/ADR list, report it to the national adverse drug reaction monitoring system, and tell her."
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "已在病历和不良反应栏记录，并填写不良反应报告。",
+        "en": "It is recorded in her notes and ADR list, and the report is filed."
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-history",
+      "title": {
+        "zh-CN": "了解这次胃肠道不适和她的用药",
+        "en": "Find out about the stomach upset and her medicines"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
+      },
+      "hint": {
+        "zh-CN": "她有糖尿病，这几天又吐又拉：问清今天吃了什么、降糖药怎么吃、今天吃没吃，以及她自己吃过什么药；别忘了问过敏史。",
+        "en": "She has diabetes and has been vomiting and having diarrhoea for days: find out what she has eaten today, how she takes her diabetes medicines and whether she took them today, what she has taken herself, and ask about allergies."
+      },
+      "guidance": {
+        "zh-CN": "和高女士交谈：症状经过、进食、糖尿病和用药。",
+        "en": "Talk to Ms Gao: her symptoms, what she has eaten, her diabetes and her medicines."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "intake"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "meds-today"
+          },
+          {
+            "asked": "berberine"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-assess",
+      "title": {
+        "zh-CN": "用药之前先评估基线",
+        "en": "Assess her before any treatment"
+      },
+      "short": {
+        "zh-CN": "评估",
+        "en": "Assess"
+      },
+      "hint": {
+        "zh-CN": "在给任何药之前，把基线弄清楚：生命体征、电解质和肾功能、血常规，以及心电图。",
+        "en": "Before any drug goes in, know her baseline: vital signs, electrolytes and renal function, blood count and an ECG."
+      },
+      "guidance": {
+        "zh-CN": "测生命体征，送血常规和生化，做心电图。",
+        "en": "Check her vital signs, send a blood count and chemistry, and record an ECG."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "read": "chemistry",
+            "phase": "initial"
+          },
+          {
+            "read": "blood-count",
+            "phase": "initial"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "examined": "vitals"
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "read": "chemistry",
+            "phase": "initial"
+          },
+          "target": "lab-chemistry"
+        },
+        {
+          "target": "records"
+        }
+      ]
+    },
+    {
+      "id": "obj-abx",
+      "title": {
+        "zh-CN": "决定腹泻的处理方案",
+        "en": "Decide how to manage the diarrhoea"
+      },
+      "short": {
+        "zh-CN": "方案",
+        "en": "Plan"
+      },
+      "hint": {
+        "zh-CN": "权衡一下：对这样的急性腹泻，经验性抗菌药能给她带来什么，又可能让她付出什么？她不吃东西时，降糖药怎么办？",
+        "en": "Weigh it up: for diarrhoea like this, what would an empirical antibiotic gain her, and what could it cost her? And what about her diabetes tablets while she is not eating?"
+      },
+      "guidance": {
+        "zh-CN": "在会诊板上作出决策，并开具支持治疗。",
+        "en": "Make the decision on the case board and order supportive care."
+      },
+      "completeWhen": {
+        "decided": "abx-indication"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-reaction",
+      "title": {
+        "zh-CN": "处理输液中的突发情况",
+        "en": "Respond to the bedside call"
+      },
+      "short": {
+        "zh-CN": "床旁",
+        "en": "Bedside"
+      },
+      "hint": {
+        "zh-CN": "症状在输液中突然出现：哪个床旁数值几秒钟就能告诉你原因？正在滴的药怎么办？她现在能安全吞咽吗？",
+        "en": "The symptoms came on during an infusion: which bedside number can tell you the cause in seconds? What do you do with the drug that is running? Can she swallow safely right now?"
+      },
+      "guidance": {
+        "zh-CN": "到床旁评估她，查明原因并处理。",
+        "en": "Go to the bedside, find the cause and treat it."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "first-step"
+          },
+          {
+            "decided": "hypo-treatment"
+          },
+          {
+            "read": "glucose-poc",
+            "phase": "reaction"
+          },
+          {
+            "intervened": "stop-levofloxacin"
+          },
+          {
+            "any": [
+              {
+                "intervened": "iv-dextrose"
+              },
+              {
+                "intervened": "glucose-infusion"
+              },
+              {
+                "intervened": "glucagon-im"
+              },
+              {
+                "intervened": "oral-sugar"
+              }
+            ]
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "glucose-poc",
+            "phase": "reaction"
+          },
+          "target": "point-of-care"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-aftercare",
+      "title": {
+        "zh-CN": "她好转之后",
+        "en": "Once she has improved"
+      },
+      "short": {
+        "zh-CN": "好转后",
+        "en": "After"
+      },
+      "hint": {
+        "zh-CN": "好转不等于血糖已经安全：还需要证实什么？刚才在滴的那种药接下来怎么处理？",
+        "en": "Feeling better is not the same as a safe glucose: what do you still need to confirm, and what happens to the drug that was running?"
+      },
+      "guidance": {
+        "zh-CN": "重新评估她，并决定接下来的处理。",
+        "en": "Reassess her and decide what happens next."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "ordered": "glucose-poc",
+            "phase": "recovered"
+          },
+          {
+            "decided": "after-recovery"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "ordered": "glucose-poc",
+            "phase": "recovered"
+          },
+          "target": "point-of-care"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-review",
+      "title": {
+        "zh-CN": "对照原报告的后续经过",
+        "en": "Compare with the reported course"
+      },
+      "short": {
+        "zh-CN": "复盘",
+        "en": "Review"
+      },
+      "hint": {
+        "zh-CN": "调阅原报告记录的后续经过，对照你的处理：哪些步骤不同，后果是什么？",
+        "en": "Read the course the report records and compare it with yours: where did the steps differ, and what followed?"
+      },
+      "guidance": {
+        "zh-CN": "在电子病历终端调阅原报告的后续经过。",
+        "en": "Read the reported course at a records terminal."
+      },
+      "completeWhen": {
+        "read": "followup",
+        "phase": "followup"
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "abx-indication",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "高女士78岁，2型糖尿病（瑞格列奈1 mg每日3次），恶心、呕吐、反酸、腹泻3天，今天没有进食。体温36.5 ℃、脉搏70次/分、血压130/80 mmHg；血常规未见异常，CRP 5.4 mg/L，血钾3.2 mmol/L。原报告没有记录便血、黏液便或粪便检查。她的腹泻需要经验性抗菌药吗？",
+        "en": "Ms Gao, 78, has type 2 diabetes (repaglinide 1 mg three times a day) and three days of nausea, vomiting, reflux and diarrhoea, and has eaten nothing today. Temperature 36.5 °C, pulse 70/min, BP 130/80 mmHg; normal blood count, CRP 5.4 mg/L, potassium 3.2 mmol/L. The report records no blood or mucus in the stool and no stool tests. Does her diarrhoea need an empirical antibiotic?"
+      },
+      "requires": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "intake"
+          },
+          {
+            "examined": "vitals"
+          },
+          {
+            "read": "blood-count",
+            "phase": "initial"
+          },
+          {
+            "read": "chemistry",
+            "phase": "initial"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先问清病史、测生命体征，并看过血常规和生化结果。",
+        "en": "Take the history, check her vital signs and read the blood count and chemistry first."
+      },
+      "options": [
+        {
+          "id": "abx-no",
+          "correct": true,
+          "text": {
+            "zh-CN": "不需要：无发热、血常规正常、没有痢疾或脓毒症表现，不常规用经验性抗菌药；补液、补钾，监测血糖，不进食期间暂停瑞格列奈；出现发热、便血、病情加重或腹泻迁延时再做粪便检查并重新评估。",
+            "en": "No: she is afebrile with a normal blood count and no dysentery or sepsis, so no routine empirical antibiotic; rehydrate, replace potassium, monitor glucose and hold repaglinide while she is not eating; send stool tests and reassess if fever, blood, worsening illness or persistent diarrhoea develop."
+          },
+          "feedback": {
+            "zh-CN": "正确。IDSA 2017：多数无近期出国旅行、免疫功能正常的急性水样腹泻不推荐经验性抗菌药；粪便病原学检查留给发热、血便、重症或迁延腹泻等情形（本例腹泻性状未记录）。她真正的风险在另一边：FDA 2018警示氟喹诺酮可致严重低血糖甚至昏迷，老年、糖尿病、合用降糖药和进食差都是危险因素；低钾还增加QT延长风险。处理重点是补液、补钾、调整降糖药和监测血糖。",
+            "en": "Correct. IDSA 2017: empirical antibiotics are not recommended for most immunocompetent people with acute watery diarrhoea and no recent international travel; stool microbiology is for fever, bloody stools, severe illness or persistent diarrhoea (the character of her stools is not recorded). Her real danger lies elsewhere: FDA 2018 warns that fluoroquinolones can cause severe hypoglycaemia, even coma, with older age, diabetes, glucose-lowering drugs and poor intake as risk factors, and her low potassium adds QT risk. The priorities are fluids, potassium, her diabetes medicines and glucose monitoring."
+          }
+        },
+        {
+          "id": "abx-levofloxacin",
+          "correct": false,
+          "text": {
+            "zh-CN": "需要：腹泻可能是细菌感染，静滴乳酸左氧氟沙星0.3 g。",
+            "en": "Yes: the diarrhoea may be bacterial, so give levofloxacin 0.3 g IV."
+          },
+          "feedback": {
+            "zh-CN": "这是原报告的选择，但缺乏指征：无发热、血常规正常、CRP仅5.4 mg/L，也没有记录便血或脓毒症表现（IDSA 2017不推荐对此类急性腹泻常规经验性用药）。对禁食、服用瑞格列奈的78岁糖尿病患者，氟喹诺酮带来的严重低血糖风险（FDA 2018）超过可能的获益；低钾还增加QT延长风险。",
+            "en": "This is what the report's team did, but there is no indication: no fever, a normal blood count, a CRP of only 5.4 mg/L and no recorded blood in the stool or sepsis (IDSA 2017 advises against routine empirical treatment of acute diarrhoea like this). In a fasting 78-year-old with diabetes on repaglinide, the fluoroquinolone's risk of severe hypoglycaemia (FDA 2018) outweighs any likely benefit, and her low potassium adds QT risk."
+          }
+        },
+        {
+          "id": "abx-oral-fq",
+          "correct": false,
+          "text": {
+            "zh-CN": "需要：改口服环丙沙星3天，口服给药不必监测血糖。",
+            "en": "Yes: oral ciprofloxacin for 3 days — being oral, it needs no glucose monitoring."
+          },
+          "feedback": {
+            "zh-CN": "同样没有指征。而且血糖紊乱是全身用氟喹诺酮的类效应，口服同样可能发生——FDA 2018的说明书修订针对所有口服和注射用氟喹诺酮。确有指征时也要权衡低血糖风险并监测血糖，而不是省掉监测。",
+            "en": "There is still no indication, and blood glucose disturbance is a class effect of systemic fluoroquinolones, oral as well as IV — the FDA 2018 label changes cover every oral and injectable fluoroquinolone. Even with a real indication you would weigh the hypoglycaemia risk and monitor glucose, not drop the monitoring."
+          }
+        },
+        {
+          "id": "abx-no-continue",
+          "correct": false,
+          "text": {
+            "zh-CN": "不需要抗菌药；瑞格列奈照常每餐前服，免得血糖升高。",
+            "en": "No antibiotic; keep repaglinide going before each meal as usual so her sugar doesn't rise."
+          },
+          "feedback": {
+            "zh-CN": "不用抗菌药是对的，但瑞格列奈是餐时服用的胰岛素促泌剂：她不进食还照常服用，会增加低血糖风险。不进食期间暂停，恢复进食后再按餐服用，并监测血糖。",
+            "en": "Right about the antibiotic, but repaglinide is a mealtime insulin secretagogue: taken while she is not eating it raises the risk of hypoglycaemia. Hold it until she is eating, then give it with meals, and monitor her glucose."
+          }
+        }
+      ]
+    },
+    {
+      "id": "first-step",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "左氧氟沙星滴注约10分钟时，护士叫你：高女士大汗、面色苍白，说心慌，反应淡漠。你首先怎么做？",
+        "en": "About 10 minutes into the levofloxacin infusion the nurse calls you: Ms Gao is sweating heavily and pale, says her heart is racing, and is slow to respond. What do you do first?"
+      },
+      "requires": {
+        "examined": "reaction-signs"
+      },
+      "need": {
+        "zh-CN": "先到床旁看看她现在的情况。",
+        "en": "Go and look at her at the bedside first."
+      },
+      "options": [
+        {
+          "id": "fs-glucose",
+          "correct": true,
+          "text": {
+            "zh-CN": "立即停掉正在滴的左氧氟沙星（保留静脉通路），评估气道、呼吸和循环，同时马上测指尖血糖。",
+            "en": "Turn off the running levofloxacin at once (keep the line), assess airway, breathing and circulation, and check a fingerprick glucose straight away."
+          },
+          "feedback": {
+            "zh-CN": "正确。用胰岛素促泌剂、当天未进食的糖尿病患者出现出汗、心慌、面色苍白和意识改变，首先要排除低血糖——指尖血糖几秒钟就有结果（ADA 2026第6章）。症状在左氧氟沙星滴注中出现，先停这个药、保留通路；同时评估ABC，看有无过敏反应的表现。",
+            "en": "Correct. In a person with diabetes on an insulin secretagogue who has not eaten, sweating, palpitations, pallor and altered consciousness mean hypoglycaemia until proven otherwise — a fingerprick glucose answers in seconds (ADA 2026, Section 6). The symptoms began during the levofloxacin, so stop it and keep the line; assess ABC at the same time and look for signs of anaphylaxis."
+          }
+        },
+        {
+          "id": "fs-adrenaline",
+          "correct": false,
+          "text": {
+            "zh-CN": "按过敏反应处理：立即肌注肾上腺素0.5 mg。",
+            "en": "Treat it as anaphylaxis: IM adrenaline 0.5 mg now."
+          },
+          "feedback": {
+            "zh-CN": "原报告没有记录喉头水肿、喘鸣、低血压或荨麻疹等过敏表现。在禁食、服用促泌剂的糖尿病患者，这组症状首先要想到低血糖，先测血糖；无指征使用肾上腺素会让78岁患者心动过速、增加心律失常风险，也耽误纠正低血糖。真有过敏表现时，肾上腺素仍是一线。",
+            "en": "No stridor, wheeze, hypotension or urticaria is recorded. In a fasting woman with diabetes on a secretagogue this picture means hypoglycaemia first, so check the glucose; adrenaline without an indication drives tachycardia and arrhythmia at 78 and delays treating the low glucose. If there were features of anaphylaxis, adrenaline would still come first."
+          }
+        },
+        {
+          "id": "fs-vasovagal",
+          "correct": false,
+          "text": {
+            "zh-CN": "多半是血管迷走反应：把滴速调慢，让她平卧观察。",
+            "en": "Probably a vasovagal reaction: slow the drip, lie her flat and watch."
+          },
+          "feedback": {
+            "zh-CN": "出汗、苍白可见于血管迷走反应，但心慌加意识淡漠，出现在禁食、服用促泌剂的糖尿病患者身上，必须先排除低血糖。继续输注可疑药物、只观察，会让低血糖加重。",
+            "en": "Sweating and pallor fit a vasovagal reaction, but palpitations with apathy in a fasting woman with diabetes on a secretagogue demand that hypoglycaemia is excluded first. Carrying on with the suspect infusion and watching lets the hypoglycaemia deepen."
+          }
+        },
+        {
+          "id": "fs-oral-blind",
+          "correct": false,
+          "text": {
+            "zh-CN": "不用测，直接喂她糖块和面包。",
+            "en": "Don't wait for a reading — give her sweets and bread by mouth."
+          },
+          "feedback": {
+            "zh-CN": "没有血糖仪时，先按低血糖处理比等待安全；但这里有血糖仪，几秒钟就能确认。而且她意识淡漠，经口进食有误吸风险——原报告首次处理正是这样做的。先测血糖、停药，再静脉给葡萄糖。",
+            "en": "Without a meter, treating as hypoglycaemia beats waiting; but a meter is here and answers in seconds. She is also apathetic, so food by mouth risks aspiration — which is how the report's first treatment went. Check the glucose, stop the drug, then give IV glucose."
+          }
+        },
+        {
+          "id": "fs-ecg",
+          "correct": false,
+          "text": {
+            "zh-CN": "先做12导联心电图、查肌钙蛋白，心慌要先排除心律失常和心肌缺血。",
+            "en": "Get a 12-lead ECG and a troponin first — palpitations mean arrhythmia or ischaemia must be excluded."
+          },
+          "feedback": {
+            "zh-CN": "心电图可以随后做，但第一步应是几秒钟就能完成、又能立即纠正的指尖血糖。这里的心慌和出汗最可能来自低血糖引起的交感反应；先查血糖、停药。",
+            "en": "An ECG can follow, but the first step is the fingerprick glucose, which takes seconds and points to something you can correct at once. Here the palpitations and sweating are most likely the adrenergic response to hypoglycaemia: check the glucose and stop the drug first."
+          }
+        }
+      ]
+    },
+    {
+      "id": "hypo-treatment",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "床旁指尖血糖3.0 mmol/L。她仍大汗、意识淡漠，外周静脉针在位。怎样处理最合适？",
+        "en": "The bedside glucose is 3.0 mmol/L. She is still sweating and apathetic, with a peripheral cannula in place. What is the best treatment?"
+      },
+      "requires": {
+        "read": "glucose-poc",
+        "phase": "reaction"
+      },
+      "need": {
+        "zh-CN": "先看到床旁血糖结果。",
+        "en": "Read the bedside glucose first."
+      },
+      "options": [
+        {
+          "id": "ht-iv",
+          "correct": true,
+          "text": {
+            "zh-CN": "意识受损期间不经口进食；立即静脉给葡萄糖（有条件时用10%或20%葡萄糖），随后葡萄糖液维持；约15分钟复测指尖血糖，仍低于3.9 mmol/L或仍有症状就重复处理；完全清醒、能安全吞咽后再进食。",
+            "en": "Nothing by mouth while her consciousness is impaired; IV glucose now (10% or 20% glucose where available), then a glucose infusion; recheck the fingerprick glucose about 15 minutes later and repeat treatment if it is still below 3.9 mmol/L or she is still symptomatic; food once she is fully alert and swallowing safely."
+          },
+          "feedback": {
+            "zh-CN": "正确。血糖3.0 mmol/L并有意识改变、需要他人帮助，属严重（3级）低血糖——ADA 2026第6章按临床状态而不只按数值界定严重程度。有静脉通路时静脉葡萄糖最快、最可靠；JBDS 01（2023修订）优先用10%或20%葡萄糖，因为高渗的50%葡萄糖易致外渗损伤（原报告第二次处理用的是50%葡萄糖20 ml，即10 g）。约15分钟复测、直到恢复，再进食，并持续监测——促泌剂和左氧氟沙星的作用都还在。",
+            "en": "Correct. A glucose of 3.0 mmol/L with altered consciousness that needs someone else's help is severe (level 3) hypoglycaemia — ADA 2026, Section 6, grades severity by the clinical state, not only the number. With IV access, IV glucose is fastest and most reliable; JBDS 01 (revised 2023) prefers 10% or 20% glucose because hypertonic 50% glucose injures tissue if it extravasates (the report's second treatment used 50% glucose 20 mL, i.e. 10 g). Recheck at about 15 minutes until she has recovered, then feed her, and keep monitoring — the secretagogue and the levofloxacin are still acting."
+          }
+        },
+        {
+          "id": "ht-report-first",
+          "correct": false,
+          "text": {
+            "zh-CN": "静滴葡萄糖氯化钠注射液500 ml，同时让她吃糖块和面包；症状好转就行，不必复测。",
+            "en": "Glucose–saline 500 mL by drip and sweets and bread by mouth; once her symptoms settle, no recheck is needed."
+          },
+          "feedback": {
+            "zh-CN": "这接近原报告的首次处理，有三个问题：意识淡漠时经口进食有误吸风险；单靠滴注升糖慢；症状好转不能代替复测——原报告没有复测血糖，随后在血糖情况不明时又恢复了左氧氟沙星。她还在不规律服用阿卡波糖，糖块里的蔗糖吸收可能被延缓；服用阿卡波糖者纠正低血糖应使用葡萄糖。",
+            "en": "This is close to the report's first treatment, with three problems: food by mouth while she is apathetic risks aspiration; a drip alone raises the glucose slowly; and feeling better is no substitute for a recheck — the report never rechecked, and then restarted the levofloxacin without knowing her glucose. She also takes acarbose on and off, which can slow the absorption of the sucrose in sweets; people taking acarbose should have glucose itself for a hypo."
+          }
+        },
+        {
+          "id": "ht-glucagon",
+          "correct": false,
+          "text": {
+            "zh-CN": "肌注胰高血糖素1 mg后观察，不必静脉给糖。",
+            "en": "IM glucagon 1 mg and observe; no IV glucose needed."
+          },
+          "feedback": {
+            "zh-CN": "胰高血糖素用于没有静脉通路的严重低血糖；她已有静脉针，静脉葡萄糖起效更快、更可靠。胰高血糖素靠动员肝糖原，几天进食差时效果可能打折扣，也不能免去复测。",
+            "en": "Glucagon is for severe hypoglycaemia without IV access; she has a cannula, and IV glucose is faster and more reliable. Glucagon works by releasing liver glycogen and may do less after days of poor intake, and it does not remove the need to recheck."
+          }
+        },
+        {
+          "id": "ht-no-recheck",
+          "correct": false,
+          "text": {
+            "zh-CN": "静脉推注葡萄糖；她说好些了就不再测血糖，接着输原来的液体。",
+            "en": "IV glucose; once she says she feels better, no more checks, and carry on with the original infusion."
+          },
+          "feedback": {
+            "zh-CN": "静脉葡萄糖是对的，但症状好转不等于血糖已安全：约15分钟要复测，未恢复就重复处理（ADA 2026第6章）。“接着输原来的液体”如果是左氧氟沙星，就是再暴露。",
+            "en": "IV glucose is right, but feeling better does not mean the glucose is safe: recheck at about 15 minutes and repeat treatment if it is still low (ADA 2026, Section 6). And if \"the original infusion\" is the levofloxacin, carrying on is re-exposure."
+          }
+        }
+      ]
+    },
+    {
+      "id": "after-recovery",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "首次处理约5分钟后，她面色转红润、说话清楚。输液记录显示：奥美拉唑滴完后接续左氧氟沙星，约10分钟时出现症状。当时的急诊医师认为刚滴完的奥美拉唑更可能是原因。接下来怎么做？",
+        "en": "About 5 minutes after the first treatment her colour has returned and she is speaking clearly. The infusion record shows the levofloxacin followed the omeprazole and the symptoms began about 10 minutes into it. The ED physician at the time thought the omeprazole, which had just finished, the likelier cause. What now?"
+      },
+      "requires": {
+        "all": [
+          {
+            "any": [
+              {
+                "examined": "recovered-signs"
+              },
+              {
+                "asked": "status-recovered"
+              }
+            ]
+          },
+          {
+            "any": [
+              {
+                "read": "medication-chart",
+                "phase": "reaction"
+              },
+              {
+                "read": "medication-chart",
+                "phase": "recovered"
+              }
+            ]
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先在床旁重新评估她，并核对输液记录。",
+        "en": "Reassess her at the bedside and check the infusion record first."
+      },
+      "options": [
+        {
+          "id": "ar-no-restart",
+          "correct": true,
+          "text": {
+            "zh-CN": "把左氧氟沙星作为最可能的原因：不再恢复输注；马上复测血糖，未恢复就重复处理；能安全进食后吃东西；继续监测血糖数小时防复发；不进食期间暂停瑞格列奈；记录为可疑药品不良反应并上报。",
+            "en": "Treat levofloxacin as the likely cause: do not restart it; recheck the glucose now and treat again if it is still low; feed her once she can eat safely; keep monitoring her glucose for some hours for recurrence; hold repaglinide while she is not eating; record and report a suspected adverse drug reaction."
+          },
+          "feedback": {
+            "zh-CN": "正确。症状在左氧氟沙星滴注约10分钟时出现，停药、补糖后好转，而说明书和FDA 2018都警示氟喹诺酮可致严重低血糖——时间顺序和已知风险都指向它。“刚输完的药”不等于原因。检验这个判断的办法是不再暴露、继续测血糖，而不是重新输注。用Naranjo等结构化方法评估因果，并上报不良反应。",
+            "en": "Correct. The symptoms began about 10 minutes into the levofloxacin and settled when it was stopped and glucose given, and the label and FDA 2018 both warn of severe fluoroquinolone hypoglycaemia — the timing and the known risk point the same way. The drug that finished last is not thereby the cause. You test that judgement by not re-exposing her and by checking her glucose, never by restarting the infusion. Assess causality with a structured method such as Naranjo, and report the reaction."
+          }
+        },
+        {
+          "id": "ar-omeprazole",
+          "correct": false,
+          "text": {
+            "zh-CN": "奥美拉唑刚滴完，它更可能是原因；恢复左氧氟沙星输注。",
+            "en": "The omeprazole has only just finished, so it is the likelier cause; restart the levofloxacin."
+          },
+          "feedback": {
+            "zh-CN": "这正是原报告中急诊医师的推理：锚定于“刚刚用过的药”的误归因。症状是在左氧氟沙星滴注中出现的，而且该药有明确的低血糖警示；在没有复测血糖的情况下恢复输注，约5分钟后她再次发作，血糖降到1.9 mmol/L。",
+            "en": "This is exactly the report's ED physician's reasoning: a misattribution anchored on the drug given just before. The symptoms began during the levofloxacin, which carries a clear hypoglycaemia warning; restarting it without even rechecking the glucose brought the episode back within about 5 minutes, at 1.9 mmol/L."
+          }
+        },
+        {
+          "id": "ar-rechallenge",
+          "correct": false,
+          "text": {
+            "zh-CN": "在葡萄糖液维持下慢速恢复左氧氟沙星：如果低血糖复发，就能确认因果。",
+            "en": "Restart the levofloxacin slowly with glucose running: if the hypoglycaemia recurs, that confirms the cause."
+          },
+          "feedback": {
+            "zh-CN": "这是有意的再激发——把可能危及生命的不良反应当作诊断试验，不可接受。复发确实能“确认”因果，代价是一次更深的低血糖（原报告恢复输注后血糖降到1.9 mmol/L）。确有抗菌指征时换用其他类别，并监测血糖。",
+            "en": "That is a deliberate rechallenge — using a potentially life-threatening reaction as a diagnostic test, which is unacceptable. A recurrence would \"confirm\" the cause at the price of a deeper hypo (after the restart in the report the glucose fell to 1.9 mmol/L). If an antibiotic is truly needed, use another class and monitor her glucose."
+          }
+        },
+        {
+          "id": "ar-switch-fq",
+          "correct": false,
+          "text": {
+            "zh-CN": "不用左氧氟沙星了，改口服莫西沙星完成疗程。",
+            "en": "Drop the levofloxacin and finish the course with oral moxifloxacin."
+          },
+          "feedback": {
+            "zh-CN": "莫西沙星同属氟喹诺酮，血糖紊乱是类效应（FDA 2018的警示针对所有全身用氟喹诺酮）。何况她的腹泻本来就没有经验性抗菌指征。",
+            "en": "Moxifloxacin is another fluoroquinolone, and dysglycaemia is a class effect (the FDA 2018 warning covers every systemic fluoroquinolone). Besides, her diarrhoea never had an indication for an empirical antibiotic."
+          }
+        },
+        {
+          "id": "ar-discharge",
+          "correct": false,
+          "text": {
+            "zh-CN": "她已经好了，不必再测血糖，回家后照常服用瑞格列奈。",
+            "en": "She is fine now: no more glucose checks, and home on her usual repaglinide."
+          },
+          "feedback": {
+            "zh-CN": "严重低血糖后不能只凭症状好转就离开：促泌剂和左氧氟沙星的作用还在，可能再发，她也还没进食。应复测血糖、进食后继续观察，不进食期间暂停瑞格列奈，并交代低血糖的识别和处理。",
+            "en": "After severe hypoglycaemia, feeling better is not enough to leave: the secretagogue and the levofloxacin are still acting, it can recur, and she has not eaten. Recheck her glucose, feed and observe her, hold repaglinide while she is not eating, and teach her how to recognise and treat a hypo."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "r-hx",
+      "domain": "history",
+      "weight": 2,
+      "text": {
+        "zh-CN": "问清胃肠道症状、当天进食、糖尿病用药（含今天是否服用）、自行用药和过敏史",
+        "en": "Took the gastrointestinal history, today's intake, her diabetes medicines (including today's doses), self-medication and allergies"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "intake"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "meds-today"
+          },
+          {
+            "asked": "berberine"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-exam",
+      "domain": "examination",
+      "weight": 1,
+      "text": {
+        "zh-CN": "测量基线生命体征，并在发作时和首次处理后在床旁重新评估",
+        "en": "Measured baseline vital signs and reassessed her at the bedside during the episode and after the first treatment"
+      },
+      "met": {
+        "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "examined": "reaction-signs"
+          },
+          {
+            "examined": "recovered-signs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-baseline",
+      "domain": "investigations",
+      "weight": 1,
+      "text": {
+        "zh-CN": "用药前查看生化、血常规和心电图",
+        "en": "Read the chemistry, blood count and ECG before any treatment"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "chemistry",
+            "phase": "initial"
+          },
+          {
+            "read": "blood-count",
+            "phase": "initial"
+          },
+          {
+            "read": "ecg",
+            "phase": "initial"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-abx",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即判断无需经验性抗菌药，并开具补钾和暂停瑞格列奈",
+        "en": "Judged at the first attempt that no empirical antibiotic was needed, and ordered potassium and held repaglinide"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "abx-indication"
+          },
+          {
+            "intervened": "potassium-replacement"
+          },
+          {
+            "intervened": "withhold-repaglinide"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-abx-safety",
+      "domain": "safety",
+      "weight": 2,
+      "text": {
+        "zh-CN": "没有在无指征时给予氟喹诺酮",
+        "en": "Did not give a fluoroquinolone without an indication"
+      },
+      "met": {
+        "not": {
+          "intervened": "levofloxacin-iv"
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "abx-indication"
+          },
+          {
+            "intervened": "levofloxacin-iv"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-glucose-first",
+      "domain": "safety",
+      "weight": 3,
+      "text": {
+        "zh-CN": "发作时立即测床旁血糖、停止左氧氟沙星输注，没有在无过敏表现时给肾上腺素",
+        "en": "At the episode, checked a bedside glucose at once and stopped the levofloxacin infusion, and gave no adrenaline without signs of anaphylaxis"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "glucose-poc",
+            "phase": "reaction"
+          },
+          {
+            "intervened": "stop-levofloxacin"
+          },
+          {
+            "not": {
+              "intervened": "adrenaline-im"
+            }
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "r-dx",
+      "domain": "diagnosis",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即把输液中出现的症状首先当作低血糖来排查",
+        "en": "At the first attempt, worked up the infusion-time symptoms as hypoglycaemia first"
+      },
+      "met": {
+        "decidedFirstTry": "first-step"
+      }
+    },
+    {
+      "id": "r-treat",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即选对意识受损时的低血糖处理，并静脉给予葡萄糖",
+        "en": "Chose the treatment for hypoglycaemia with impaired consciousness at the first attempt and gave IV glucose"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "hypo-treatment"
+          },
+          {
+            "intervened": "iv-dextrose"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-no-oral",
+      "domain": "safety",
+      "weight": 2,
+      "text": {
+        "zh-CN": "意识淡漠时没有经口喂糖块和面包",
+        "en": "Did not feed her sweets and bread while she was apathetic"
+      },
+      "met": {
+        "not": {
+          "intervened": "oral-sugar"
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "intervened": "iv-dextrose"
+          },
+          {
+            "intervened": "glucose-infusion"
+          },
+          {
+            "intervened": "glucagon-im"
+          },
+          {
+            "intervened": "oral-sugar"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-aftercare",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "好转后复测血糖、安排血糖监测和不良反应上报，并首次作答即选对后续方案",
+        "en": "After she improved, rechecked her glucose, set up glucose monitoring and reported the reaction, and chose the follow-on plan at the first attempt"
+      },
+      "met": {
+        "all": [
+          {
+            "ordered": "glucose-poc",
+            "phase": "recovered"
+          },
+          {
+            "intervened": "glucose-monitoring"
+          },
+          {
+            "intervened": "adr-report"
+          },
+          {
+            "decidedFirstTry": "after-recovery"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-no-reexposure",
+      "domain": "safety",
+      "weight": 3,
+      "text": {
+        "zh-CN": "没有恢复左氧氟沙星（不再暴露于可疑药物）",
+        "en": "Did not restart the levofloxacin (no re-exposure to the suspected drug)"
+      },
+      "met": {
+        "not": {
+          "intervened": "restart-levofloxacin"
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "after-recovery"
+          },
+          {
+            "intervened": "restart-levofloxacin"
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "weight": 1,
+      "text": {
+        "zh-CN": "向患者解释发生了什么、今后如何预防，并请她复述",
+        "en": "Explained to her what happened and how to prevent it, and checked her understanding"
+      },
+      "judgeGuidance": {
+        "zh-CN": "良好表现：用她听得懂的话解释刚才发生的事（血糖突然降低，很可能与当时输的左氧氟沙星有关，已经纠正）；说明为什么不再用这种药、这类药以后要告诉医生；交代不吃饭时不服瑞格列奈，以及低血糖的表现和处理（出汗、心慌、手抖时测血糖并吃含葡萄糖的食物）；如果恢复输注已经发生，坦诚说明；最后请她用自己的话复述要点，而不是只问“听懂了吗”。",
+        "en": "Good performance: explains in plain words what just happened (her sugar fell suddenly, most likely because of the levofloxacin she was being given, and it has been corrected); why that drug will not be used again and that she should tell doctors about it in future; that she skips repaglinide when she is not eating, and how to recognise and treat a hypo (check her sugar and take glucose when sweaty, shaky or palpitating); is candid if the infusion was restarted; and asks her to say the key points back in her own words rather than asking \"Do you understand?\"."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "急诊护士 孟洁（化名）",
+        "en": "Nurse Meng Jie, ED (pseudonym)"
+      },
+      "knowledge": {
+        "zh-CN": "急诊护士。分诊交班：78岁女性，恶心、呕吐、反酸、腹泻3天，今天没有进食；分诊测得体温36.5 ℃、脉搏70次/分、呼吸20次/分、血压130/80 mmHg；已留置外周静脉针。物品与流程：床旁血糖仪在治疗车上；血常规和生化送检验科；心电图机可以推到床旁；输液记录在电子病历终端；药房可送葡萄糖注射液、葡萄糖氯化钠注射液、氯化钾和胰高血糖素。会复述医嘱，只报告看到的情况和测得的数值，不解读、不下诊断。",
+        "en": "ED nurse. Triage handover: 78-year-old woman, three days of nausea, vomiting, reflux and diarrhoea, nothing eaten today; at triage temperature 36.5 °C, pulse 70/min, respiratory rate 20/min, BP 130/80 mmHg; a peripheral cannula is in. Kit and logistics: the glucose meter is on the treatment trolley; the blood count and chemistry go to the laboratory; the ECG machine can be wheeled to the bedside; the infusion record is on the electronic record terminal; pharmacy can send glucose injections, glucose–saline, potassium chloride and glucagon. Reads orders back, reports only what she sees and the numbers she measures, and does not interpret or diagnose."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pharmacist",
+      "name": {
+        "zh-CN": "临床药师 俞航（化名）",
+        "en": "Clinical pharmacist Yu Hang (pseudonym)"
+      },
+      "knowledge": {
+        "zh-CN": "临床药师，只讲药物资料，不替学员下结论。瑞格列奈是短效的餐时胰岛素促泌剂，不进餐就不服该次。阿卡波糖延缓蔗糖吸收，服用者发生低血糖时应使用葡萄糖纠正。氟喹诺酮类可致血糖紊乱（低血糖和高血糖），老年人、糖尿病患者、合用口服降糖药或胰岛素者风险较高，FDA于2018年要求在所有全身用氟喹诺酮说明书中写明可致低血糖昏迷；这类药还可延长QT间期，低钾时风险更高。盐酸小檗碱（黄连素）有一定降糖作用。疑似不良反应应记录在病历和不良反应栏中，并上报国家药品不良反应监测系统。只有在学员调阅输液记录后，才结合记录讨论用药顺序。",
+        "en": "Clinical pharmacist: gives drug information only and leaves the conclusions to the learner. Repaglinide is a short-acting mealtime insulin secretagogue — no meal, no dose. Acarbose slows the absorption of sucrose, so people taking it should treat a hypo with glucose. Fluoroquinolones can disturb blood glucose (hypo- and hyperglycaemia), especially in older people and people with diabetes taking oral glucose-lowering drugs or insulin; in 2018 the FDA required every systemic fluoroquinolone label to state that hypoglycaemia can cause coma; the class also prolongs the QT interval, more so with low potassium. Berberine has some glucose-lowering effect. Suspected adverse reactions are recorded in the notes and ADR list and reported to the national ADR monitoring system. Discusses the order of the infusions only once the learner has read the infusion record."
+      },
+      "interprets": [
+        "medication-chart"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "急诊主治医师 尚医生（化名）",
+        "en": "Dr Shang, ED attending (pseudonym)"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教，只追问学员已经掌握的资料：“她的血糖是多少？”“按她的意识状态，这次低血糖有多严重？”“为什么现在不能经口进食？”“症状出现时在滴的是哪种药？”“刚滴完的药就一定是原因吗？”“重新输注能证明什么，又要付出什么代价？”“无发热的急性腹泻需要抗菌药吗？”可以提示ADA 2026第6章、JBDS 01（2023修订）、IDSA 2017、FDA 2018警示和Naranjo评分。不提前说出诊断，不补充病例中没有的数据；原报告的处置不自动等于今天的推荐。",
+        "en": "Socratic teacher who asks only about what the learner already has: \"What is her glucose?\", \"Given her conscious level, how severe is this hypo?\", \"Why not by mouth now?\", \"Which drug was running when it started?\", \"Does the drug that finished last have to be the cause?\", \"What would restarting the infusion prove, and at what cost?\", \"Does afebrile acute diarrhoea need an antibiotic?\". May point to ADA 2026 Section 6, JBDS 01 (revised 2023), IDSA 2017, the FDA 2018 warning and the Naranjo scale. Does not announce the diagnosis early or add data the case does not contain; what the report's team did is not automatically today's recommendation."
+      },
+      "interprets": [
+        "glucose-poc",
+        "chemistry",
+        "blood-count",
+        "ecg",
+        "medication-chart",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "复盘：输液中的严重低血糖与药物安全",
+      "en": "Debrief: severe hypoglycaemia during an infusion, and drug safety"
+    },
+    "conclusion": {
+      "zh-CN": "78岁2型糖尿病患者（瑞格列奈1 mg每日3次），呕吐、腹泻3天、当天未进食，静滴乳酸左氧氟沙星约10分钟后发生严重低血糖（3.0 mmol/L，伴意识淡漠）；恢复输注后复发（1.9 mmol/L），静脉葡萄糖后恢复（9.6 mmol/L）。按Naranjo评分，左氧氟沙星“很可能”是原因（6–7分），禁食和促泌剂是同时存在的危险因素。原报告恢复输注不是有意的再激发，而是把低血糖误归因于先前输注的奥美拉唑。按现行指南，本例本无经验性抗菌指征；发作时应先测血糖、停药，意识受损时不经口进食而静脉给葡萄糖，约15分钟复测，绝不再暴露。",
+      "en": "A 78-year-old woman with type 2 diabetes on repaglinide 1 mg three times a day, after three days of vomiting and diarrhoea and nothing to eat that day, developed severe hypoglycaemia (3.0 mmol/L with apathy) about 10 minutes into IV levofloxacin; it recurred when the infusion was restarted (1.9 mmol/L) and resolved with IV glucose (9.6 mmol/L). On the Naranjo scale levofloxacin is a probable cause (6–7 points), with fasting and a secretagogue as concurrent risk factors. The restart in the report was not a deliberate rechallenge but a misattribution of the hypoglycaemia to the omeprazole infused before it. By current guidance she had no indication for an empirical antibiotic; at the episode, check the glucose and stop the drug first, give IV glucose with nothing by mouth while consciousness is impaired, recheck at about 15 minutes, and never re-expose."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "输液中出现出汗、心慌、面色苍白和意识改变，在禁食、服用促泌剂的糖尿病患者首先是低血糖：先测指尖血糖，再考虑过敏、血管迷走或心律失常。",
+        "en": "Sweating, palpitations, pallor and altered consciousness during an infusion, in a fasting patient with diabetes on a secretagogue, mean hypoglycaemia first: check a fingerprick glucose before thinking of anaphylaxis, a vasovagal episode or an arrhythmia."
+      },
+      {
+        "zh-CN": "严重程度看临床状态：3.0 mmol/L伴意识淡漠、需要他人帮助，就是严重（3级）低血糖，应静脉给葡萄糖、不经口进食。",
+        "en": "Severity is the clinical state: 3.0 mmol/L with apathy and the need for help is severe (level 3) hypoglycaemia, treated with IV glucose and nothing by mouth."
+      },
+      {
+        "zh-CN": "症状在左氧氟沙星滴注约10分钟时出现，而不是在奥美拉唑输注时；该药有已知的低血糖警示。停药后好转是去激发证据，“刚输完的药”不是证据。",
+        "en": "The symptoms started about 10 minutes into the levofloxacin, not during the omeprazole, and levofloxacin carries a known hypoglycaemia warning. Improvement after stopping it is dechallenge evidence; \"the drug that finished last\" is not evidence."
+      },
+      {
+        "zh-CN": "症状好转不能代替复测：原报告首次处理后没有复测血糖，随后在血糖不明时恢复了左氧氟沙星，再次发作更深（1.9 mmol/L）。",
+        "en": "Feeling better is no substitute for a recheck: the report did not recheck the glucose after the first treatment and then restarted the levofloxacin without knowing it, and the second episode was deeper (1.9 mmol/L)."
+      },
+      {
+        "zh-CN": "这次左氧氟沙星本来就没有指征：无发热、血常规正常、CRP 5.4 mg/L，没有记录痢疾表现。",
+        "en": "The levofloxacin had no indication in the first place: no fever, a normal blood count, a CRP of 5.4 mg/L and no recorded dysentery."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例观察：时间关系和再暴露后复发提供了较强的因果证据，但禁食、瑞格列奈的残余作用和高龄同时存在，无法单独量化；首次处理后没有血糖值，两次发作时的生命体征和心电图也没有记录。Naranjo评分由编辑依据原文计算，不是原作者的评估。教学决策反映现行指南，不代表原报告团队当时的做法。",
+      "en": "A single case: the timing and the recurrence on re-exposure give strong causal evidence, but fasting, residual repaglinide and age were all present and cannot be separated; there is no glucose value after the first treatment, and no vital signs or ECG from either episode. The Naranjo score was calculated by the editors from the report; it is not the authors' assessment. The teaching decisions reflect current guidance, not what the report's team did."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "糖化血红蛋白、体重（因此无法计算肌酐清除率）和最后一次服用瑞格列奈的时间。",
+        "en": "HbA1c, her weight (so creatinine clearance cannot be calculated) and when she last took repaglinide."
+      },
+      {
+        "zh-CN": "腹泻次数与性状、有无便血或黏液、粪便检查。",
+        "en": "Stool frequency and character, blood or mucus, and stool tests."
+      },
+      {
+        "zh-CN": "首次处理后的血糖、两次发作时的血压、心率和心电图（包括QTc）。",
+        "en": "The glucose after the first treatment, and blood pressure, heart rate and ECG (including the QTc) during either episode."
+      },
+      {
+        "zh-CN": "观察时长、去向、是否改用其他抗菌药、是否上报不良反应及后续随访。",
+        "en": "How long she was observed, where she went, whether another antibiotic was used, whether the reaction was reported, and any follow-up."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "意识受损的低血糖（ADA 2026第6章；JBDS 01，2023修订）：低于3.9 mmol/L就处理；严重程度按是否需要他人帮助界定；能安全吞咽者口服葡萄糖15–20 g，意识受损者不经口进食、静脉给葡萄糖（无静脉通路时肌注胰高血糖素）；约15分钟复测，未恢复就重复，恢复后进食并继续监测。原报告首次处理在她意识淡漠时喂糖块和面包、之后没有复测——今天应当静脉给糖并复测。",
+        "en": "Hypoglycaemia with impaired consciousness (ADA 2026, Section 6; JBDS 01, revised 2023): treat below 3.9 mmol/L; grade severity by whether she needs someone else's help; oral glucose 15–20 g only if she can swallow safely, otherwise nothing by mouth and IV glucose (IM glucagon if there is no IV access); recheck at about 15 minutes and repeat until she has recovered, then feed her and keep monitoring. The report's first treatment fed her sweets and bread while she was apathetic and never rechecked; today she would have IV glucose and a recheck."
+      },
+      {
+        "zh-CN": "先问指征，再选抗菌药（IDSA 2017；FDA 2018）：无发热、免疫功能正常、无痢疾或脓毒症表现的急性腹泻不常规用经验性抗菌药，粪便检查留给发热、血便、重症或迁延病例。氟喹诺酮可致严重低血糖乃至昏迷，老年、糖尿病、口服降糖药或胰岛素、进食差都会增加风险，且为类效应。原报告因“腹泻可能为细菌感染”而静滴左氧氟沙星。",
+        "en": "Ask about the indication before the antibiotic (IDSA 2017; FDA 2018): acute diarrhoea without fever, immunocompromise, dysentery or sepsis does not need a routine empirical antibiotic, and stool tests are for fever, blood, severe or persistent illness. Fluoroquinolones can cause severe hypoglycaemia and coma, more so in older people, in diabetes, with oral glucose-lowering drugs or insulin and with poor intake — a class effect. The report's team gave levofloxacin because the diarrhoea was \"possibly bacterial\"."
+      },
+      {
+        "zh-CN": "因果评估与“锚定”（Naranjo 1981）：按时间关系、已知警示、去激发和其他原因逐项评估，不要把“最后输完的药”当作原因；验证判断靠停药和监测，绝不靠再暴露。本例Naranjo约6–7分（很可能）——其中“再给药后复发”加2分，正是那次不该发生的恢复输注换来的，代价是血糖1.9 mmol/L。疑似不良反应要记入病历和不良反应栏并上报。",
+        "en": "Causality and anchoring (Naranjo 1981): weigh timing, known warnings, dechallenge and alternative causes item by item, and do not take the drug that finished last as the culprit; test the judgement by stopping and monitoring, never by re-exposure. Here the Naranjo score is about 6–7 (probable) — and the 2 points for recurrence on re-administration were bought by the restart that should never have happened, at the price of a glucose of 1.9 mmol/L. Record suspected reactions in the notes and ADR list and report them."
+      },
+      {
+        "zh-CN": "促泌剂与“病日”（ADA 2026第6章）：发生严重低血糖后要重新评估降糖方案，并对使用促泌剂的患者进行低血糖识别与处理教育；瑞格列奈随餐服用，不进餐就不服；进食差、合用可能致低血糖的药物时加密监测血糖。",
+        "en": "Secretagogues on sick days (ADA 2026, Section 6): after severe hypoglycaemia, review the glucose-lowering plan and teach patients on secretagogues to recognise and treat hypos; repaglinide goes with meals, so no meal means no dose; monitor glucose more closely while intake is poor or a drug that can cause hypoglycaemia is being given."
+      }
+    ],
+    "references": [
+      "宋智慧, 赵环宇. 乳酸左氧氟沙星氯化钠注射液致严重低血糖. 药物不良反应杂志. 2014;16(1):54-55. doi:10.3760/cma.j.issn.1008-5734.2014.01.019. Available from: https://rs.yiigle.com/cmaid/1423446",
+      "American Diabetes Association Professional Practice Committee. 6. Glycemic goals, hypoglycemia, and hyperglycemic crises: Standards of Care in Diabetes—2026. Diabetes Care. 2026;49(Suppl 1):S132-S149. doi:10.2337/dc26-S006",
+      "Joint British Diabetes Societies for Inpatient Care. The hospital management of hypoglycaemia in adults with diabetes mellitus (JBDS 01). Revised January 2023. JBDS-IP; 2023.",
+      "中华医学会糖尿病学分会. 中国糖尿病防治指南（2024版）. 中华糖尿病杂志. 2025;17(1):16-139.",
+      "Shane AL, Mody RK, Crump JA, et al. 2017 Infectious Diseases Society of America clinical practice guidelines for the diagnosis and management of infectious diarrhea. Clin Infect Dis. 2017;65(12):e45-e80. doi:10.1093/cid/cix669",
+      "U.S. Food and Drug Administration. FDA reinforces safety information about serious low blood sugar levels and mental health side effects with fluoroquinolone antibiotics; requires label changes. FDA Drug Safety Communication. 2018 Jul 10. Available from: https://www.fda.gov/drugs/drugsafety/ucm611032.htm",
+      "Naranjo CA, Busto U, Sellers EM, et al. A method for estimating the probability of adverse drug reactions. Clin Pharmacol Ther. 1981;30(2):239-245. doi:10.1038/clpt.1981.154"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "糖化血红蛋白和体重未记录，因此无法计算肌酐清除率。",
+      "en": "HbA1c and weight are not recorded, so creatinine clearance cannot be calculated."
+    },
+    {
+      "zh-CN": "最后一次服用瑞格列奈和阿卡波糖的时间未记录。",
+      "en": "When she last took repaglinide and acarbose is not recorded."
+    },
+    {
+      "zh-CN": "腹泻次数和性状、有无便血或黏液、粪便检查、在家是否发热、腹痛、旅行或不洁饮食史、能否饮水均未记录。",
+      "en": "Stool frequency and character, blood or mucus, stool tests, fever at home, abdominal pain, travel or food exposures and whether she could drink are not recorded."
+    },
+    {
+      "zh-CN": "两次发作时的血压、心率、心电图和气道情况未记录；输液前心电图报告“正常”，但没有给出QTc。",
+      "en": "Blood pressure, heart rate, ECG and airway during the two episodes are not recorded; the pre-infusion ECG was reported normal, with no QTc given."
+    },
+    {
+      "zh-CN": "首次处理后的血糖未测。",
+      "en": "The glucose after the first treatment was not measured."
+    },
+    {
+      "zh-CN": "观察时长、去向、是否改用其他抗菌药、是否上报不良反应及后续随访均未记录。",
+      "en": "How long she was observed, where she went, whether another antibiotic was used, whether the reaction was reported and any follow-up are not recorded."
+    },
+    {
+      "zh-CN": "过敏史、其他用药、既往低血糖、居家血糖监测、家族史和社会史未记录。",
+      "en": "Allergies, other medicines, previous hypoglycaemia, home glucose monitoring, family history and social history are not recorded."
+    }
+  ],
+  "assets": [
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1423446/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘；第2页下半页为期刊的稿约说明）",
+        "en": "Source PDF (contains the outcome; for debrief review; the lower half of page 2 carries a journal notice to authors)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "c9f931040cdc30b9a7515995c0a33110c22271e3104c0745b3e01f318ef5b80e"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "diabetes"
+    },
+    {
+      "type": "ask",
+      "itemId": "intake"
+    },
+    {
+      "type": "ask",
+      "itemId": "meds-today"
+    },
+    {
+      "type": "ask",
+      "itemId": "berberine"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-hypo"
+    },
+    {
+      "type": "ask",
+      "itemId": "last-repaglinide"
+    },
+    {
+      "type": "ask",
+      "itemId": "stool"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh-gi"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-meds"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "order",
+      "investigationId": "chemistry"
+    },
+    {
+      "type": "read",
+      "investigationId": "chemistry",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood-count"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood-count",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg",
+      "phase": "initial"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "potassium-replacement"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "withhold-repaglinide"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "glucose-monitoring"
+    },
+    {
+      "type": "answer",
+      "decisionId": "abx-indication",
+      "optionIds": [
+        "abx-no"
+      ]
+    },
+    {
+      "type": "examine",
+      "findingId": "reaction-signs"
+    },
+    {
+      "type": "answer",
+      "decisionId": "first-step",
+      "optionIds": [
+        "fs-glucose"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "stop-levofloxacin"
+    },
+    {
+      "type": "order",
+      "investigationId": "glucose-poc"
+    },
+    {
+      "type": "read",
+      "investigationId": "glucose-poc",
+      "phase": "reaction"
+    },
+    {
+      "type": "order",
+      "investigationId": "medication-chart"
+    },
+    {
+      "type": "read",
+      "investigationId": "medication-chart",
+      "phase": "reaction"
+    },
+    {
+      "type": "answer",
+      "decisionId": "hypo-treatment",
+      "optionIds": [
+        "ht-iv"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-dextrose"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "glucose-infusion"
+    },
+    {
+      "type": "examine",
+      "findingId": "recovered-signs"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-recovered"
+    },
+    {
+      "type": "order",
+      "investigationId": "glucose-poc"
+    },
+    {
+      "type": "read",
+      "investigationId": "glucose-poc",
+      "phase": "recovered"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "oral-meal"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "adr-report"
+    },
+    {
+      "type": "answer",
+      "decisionId": "after-recovery",
+      "optionIds": [
+        "ar-no-restart"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "examine",
+      "findingId": "followup-signs"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1423446",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1423446",
+    "historicalReview": true,
+    "embodied": {
+      "ivAccessInSitu": true
+    },
+    "authorChecks": {
+      "egfr_ckd_epi_2021": "creatinine 65 umol/L = 0.735 mg/dL; female, 78 y: 142 x (0.735/0.7)^-1.200 x 0.9938^78 x 1.012 = 83 mL/min/1.73 m2 (teaching calculation; not in the report)",
+      "glucose_mg_dl": "3.0 mmol/L = 54 mg/dL (ADA level 1/2 boundary; level 3 by the clinical state); 1.9 mmol/L = 34 mg/dL; 9.6 mmol/L = 173 mg/dL",
+      "naranjo": "previous reports +1; after the drug +2; improved on stopping/glucose +1; reappeared on re-administration +2; alternative causes (fasting, repaglinide) 0 if unknown, -1 if judged sufficient; placebo 0; drug level 0; dose relation 0; previous exposure 0; objective evidence (measured glucose) +1 -> 7 (or 6) = probable",
+      "iv_glucose": "50% glucose 20 mL = 10 g glucose"
+    },
+    "testUtterances": [
+      {
+        "text": "您好，今天是哪儿不舒服过来的？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "吐了几天了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "得糖尿病几年了？",
+        "locale": "zh-CN",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "平时降糖药都怎么吃？",
+        "locale": "zh-CN",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "今天吃饭了没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "intake"
+        ]
+      },
+      {
+        "text": "今天一点东西都没吃吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "intake"
+        ]
+      },
+      {
+        "text": "今天早上的瑞格列奈吃了没？",
+        "locale": "zh-CN",
+        "expect": [
+          "meds-today"
+        ]
+      },
+      {
+        "text": "拉肚子以后自己吃药了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "berberine"
+        ]
+      },
+      {
+        "text": "吃过黄连素吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "berberine"
+        ]
+      },
+      {
+        "text": "以前有没有胃病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh-gi"
+        ]
+      },
+      {
+        "text": "对青霉素或者别的药过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前血糖低过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-hypo"
+        ]
+      },
+      {
+        "text": "大便是稀水样的吗，有没有带血？",
+        "locale": "zh-CN",
+        "expect": [
+          "stool"
+        ]
+      },
+      {
+        "text": "最后一次吃降糖药是什么时候？",
+        "locale": "zh-CN",
+        "expect": [
+          "last-repaglinide"
+        ]
+      },
+      {
+        "text": "在家发烧没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever-home"
+        ]
+      },
+      {
+        "text": "您抽不抽烟？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "现在感觉怎么样，哪里难受？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-reaction"
+        ]
+      },
+      {
+        "text": "现在好点了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-recovered"
+        ]
+      },
+      {
+        "text": "您一个人住吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "living"
+        ]
+      },
+      {
+        "text": "还在吃别的什么药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-meds"
+        ]
+      },
+      {
+        "text": "What's brought you in today?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How many days have you been vomiting?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long have you been diabetic?",
+        "locale": "en",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "Which tablets do you take for your sugar?",
+        "locale": "en",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "Did you manage any food today?",
+        "locale": "en",
+        "expect": [
+          "intake"
+        ]
+      },
+      {
+        "text": "Did you take your repaglinide this morning?",
+        "locale": "en",
+        "expect": [
+          "meds-today"
+        ]
+      },
+      {
+        "text": "Have you taken anything over the counter for the runs?",
+        "locale": "en",
+        "expect": [
+          "berberine"
+        ]
+      },
+      {
+        "text": "Any history of stomach ulcers?",
+        "locale": "en",
+        "expect": [
+          "pmh-gi"
+        ]
+      },
+      {
+        "text": "Are you allergic to anything?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Have your sugars ever gone too low before?",
+        "locale": "en",
+        "expect": [
+          "prior-hypo"
+        ]
+      },
+      {
+        "text": "Is there any blood in your stools?",
+        "locale": "en",
+        "expect": [
+          "stool"
+        ]
+      },
+      {
+        "text": "Do you check your blood sugar at home?",
+        "locale": "en",
+        "expect": [
+          "home-glucose"
+        ]
+      },
+      {
+        "text": "Have you had a temperature?",
+        "locale": "en",
+        "expect": [
+          "fever-home"
+        ]
+      },
+      {
+        "text": "Is your tummy sore?",
+        "locale": "en",
+        "expect": [
+          "abdo-pain"
+        ]
+      },
+      {
+        "text": "Have you travelled anywhere or eaten anything dodgy?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Are you feeling any better now?",
+        "locale": "en",
+        "expect": [
+          "status-recovered"
+        ]
+      },
+      {
+        "text": "Do you drink any alcohol?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "Does anyone at home look after you?",
+        "locale": "en",
+        "expect": [
+          "living"
+        ]
+      },
+      {
+        "text": "What do you weigh?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Are you still feeling sweaty and shaky?",
+        "locale": "en",
+        "expect": [
+          "status-reaction"
+        ]
+      }
+    ]
+  }
+}

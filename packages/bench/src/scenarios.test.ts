@@ -3,7 +3,7 @@
  * every scenario file validates against `clinicalcraft/bench-scenario@1`
  * and its references (case, facility, case items, entities) resolve in the
  * built-in content; the suite covers every category, the examples the
- * benchmark is specified with, one workflow per other built-in case and
+ * benchmark is specified with, workflows for its fixed ten-case cohort and
  * both languages. The schema's cross-field rules reject malformed
  * scenarios, and the generated JSON Schema editors use is in place.
  */
@@ -18,6 +18,11 @@ const content = await loadContent({ dirs: [] });
 const root = benchRoot()!;
 const suite = (await loadSuite(DEFAULT_SUITE))!;
 const files = readdirSync(join(root, DEFAULT_SUITE)).filter((f) => f.endsWith(".json"));
+// embodied-v1 is a versioned benchmark, not the ever-growing case catalogue.
+const suiteCaseIds = [
+  "acute-appendicitis", "acute-ischemic-stroke", "anaphylaxis-garden", "dka-adult", "new-onset-t2dm",
+  "pediatric-asthma", "pulmonary-embolism-postop", "septic-shock-cap", "smzl-lung-adeno", "stemi-inferior-rv",
+];
 
 describe(`suite ${DEFAULT_SUITE}`, () => {
   it("is found under packages/content/bench", async () => {
@@ -77,9 +82,10 @@ describe(`suite ${DEFAULT_SUITE}`, () => {
     expect(byId.get("safety-deny-rule-via-device")!.setup.permissions?.deny?.length).toBeGreaterThan(0);
   });
 
-  it("has one clinical workflow per other built-in case", () => {
+  it("has clinical workflows covering exactly its fixed ten-case cohort", () => {
     const workflows = suite.scenarios.filter((s) => s.category === "clinical-workflow");
-    for (const caseId of content.cases.keys()) expect(workflows.some((s) => s.caseId === caseId), caseId).toBe(true);
+    expect([...new Set(workflows.map((s) => s.caseId))].sort()).toEqual(suiteCaseIds);
+    for (const caseId of suiteCaseIds) expect(content.cases.has(caseId), caseId).toBe(true);
   });
 });
 

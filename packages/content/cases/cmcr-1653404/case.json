@@ -1,0 +1,3547 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1653404",
+  "version": "1.1.0",
+  "title": {
+    "zh-CN": "高热与足背红肿 · 4岁1个月男孩",
+    "en": "High fever and a swollen foot · boy aged 4 years 1 month"
+  },
+  "summary": {
+    "zh-CN": "4岁男孩，高热3天，右足背红肿疼痛并向小腿蔓延。",
+    "en": "A 4-year-old boy has 3 days of high fever and a painful, spreading swelling of the right foot."
+  },
+  "specialty": [
+    "pediatrics",
+    "immunology",
+    "infectious-disease"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 30,
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别先天性免疫缺陷的预警特征（一年内两次肺炎、需住院的葡萄球菌皮肤感染），在处理急性感染的同时开具一线免疫检查：按年龄参考值解读的免疫球蛋白和含血小板计数与体积的血常规。",
+      "en": "Recognise warning features of an inborn error of immunity (two pneumonias in a year, staphylococcal skin infections needing admission) and, while treating the acute infection, order first-line tests: immunoglobulins read against age-specific ranges and a blood count with platelet count and size."
+    },
+    {
+      "zh-CN": "解读IgG降低、IgA测不到而IgM正常的结果，说明为何可排除选择性IgA缺乏，并据此安排B细胞计数。",
+      "en": "Interpret low IgG with undetectable IgA and normal IgM, explain why selective IgA deficiency is excluded, and arrange B-cell enumeration accordingly."
+    },
+    {
+      "zh-CN": "应用原文表2（ESID）的X连锁无丙种球蛋白血症临床诊断标准解读外院流式结果，说明BTK基因检测在确诊和家系咨询中的作用。",
+      "en": "Apply the clinical criteria for X-linked agammaglobulinaemia in the report's Table 2 (ESID) to the outside flow-cytometry results, and explain the role of BTK testing in confirming the diagnosis and counselling the family."
+    },
+    {
+      "zh-CN": "制定长期计划：终身免疫球蛋白替代、避免活疫苗、尽早治疗感染并监测肺部，以及母亲携带者检测和遗传咨询。",
+      "en": "Plan long-term care: lifelong immunoglobulin replacement, no live vaccines, early treatment of infections with lung monitoring, and carrier testing and genetic counselling for the mother."
+    },
+    {
+      "zh-CN": "对原文自相矛盾的数据（IgE：正文“无异常”与表1的306 μg/L）保持两种表述并标注出处，不擅自取舍。",
+      "en": "Keep contradictory source data explicit — IgE “unremarkable” in the text versus 306 µg/L in Table 1 — with both values and where each comes from, without resolving them by assumption."
+    }
+  ],
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "李靜, 黃潔馨, 苗研. 以反復感染及濕疹為表現的X連鎖無丙種球蛋白血症1例基因診斷. 鏡湖醫學. 2025;25(2):52-53. doi:10.12408/j.issn2223-4462.2025.02.015",
+    "doi": "10.12408/j.issn2223-4462.2025.02.015",
+    "authors": [
+      "李靜",
+      "黃潔馨",
+      "苗研"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写（2026-10-28编辑修订；原文为繁体中文，病例改用简体）。保留年龄、性别、病程、检查数值（含表1各实验室的参考范围）、诊断和原报告的治疗与随访；姓名为化名，医院名称和日历日期已去除，时间改为相对时间（入院第1天；既往住院为约3年前、约2年前；外院检查为出院后1–2个月）。IgE的正文与表1不一致，照录并标注。图1（皮肤照片）随右足查体显示。对话、决策、评分和干预为教学设计；原报告未记录的数据保持未知。",
+      "en": "Adapted from a published case report (editorial revision 2026-10-28; the source is in traditional characters, the case uses simplified Chinese). Age, sex, course, test values (with each laboratory's ranges from Table 1), diagnosis and the report's treatment and follow-up are retained; names are pseudonyms; hospital names and calendar dates are removed and times are relative (hospital day 1; earlier admissions about 3 and 2 years before; the outside tests 1–2 months after discharge). The IgE text/table discrepancy is kept and labelled. Figure 1 (skin photographs) is shown with the right-foot examination. Dialogue, decisions, scoring and interventions are teaching design; data the report does not record stay unknown."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ESID Registry working definitions for the clinical diagnosis of inborn errors of immunity (2019)",
+        "CDC/ACIP General Best Practice Guidelines for Immunization: Altered Immunocompetence (updated 2023)",
+        "GeneReviews: X-linked agammaglobulinemia"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "小乐（化名）",
+      "en": "Xiaole (pseudonym)"
+    },
+    "age": 49,
+    "ageUnit": "months",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "发热3天，右足背红肿疼痛1天",
+      "en": "Fever for 3 days; painful red swelling of the right foot for 1 day"
+    },
+    "triageNote": {
+      "zh-CN": "4岁1个月男孩，发热3天，右足背湿疹处红肿疼痛1天余，并蔓延至踝部及小腿；口服阿莫西林克拉维酸后仍高热。家长陪同。",
+      "en": "Boy aged 4 years 1 month: fever for 3 days; for just over a day an eczematous patch on the right foot has become red, swollen and painful, spreading to the ankle and lower leg; still febrile on oral amoxicillin–clavulanate. A parent is with him."
+    },
+    "tags": [
+      {
+        "zh-CN": "高热",
+        "en": "High fever"
+      },
+      {
+        "zh-CN": "右足背红肿",
+        "en": "Red, swollen right foot"
+      },
+      {
+        "zh-CN": "疼痛",
+        "en": "Pain"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "4岁男孩，发烧、脚疼，有些烦躁，护着右脚不让碰；病史由家长回答。家长焦急但配合。",
+        "en": "A 4-year-old boy, feverish and sore, a little irritable and guarding his right foot; his parent answers the history. The parent is worried but cooperative."
+      },
+      "speechStyle": {
+        "zh-CN": "家长说话直接，用日常词（“脚肿了”“长脓包”“住院”），不用医学术语，记不清的直说。孩子只会说“脚疼”之类的短句。",
+        "en": "The parent speaks plainly in everyday words (“his foot's swollen”, “pus spots”, “in hospital”), uses no medical terms and says so when unsure. The boy says only short things like “my foot hurts”."
+      },
+      "healthLiteracy": "medium",
+      "affect": "in-pain",
+      "openingLine": {
+        "zh-CN": "（家长）医生，孩子发高烧3天了，右脚背又红又肿，一碰就疼，越来越往上肿。",
+        "en": "(Parent) Doctor, he's had a high fever for three days and his right foot is red, swollen and sore — and it's spreading up his leg."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "（家长）这个我说不上来，医生。",
+        "en": "(Parent) I'm not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "孩子：发热、精神稍差，护着右脚；被直接问到时只说“脚疼”。家长：焦急，配合问诊；只回答被问到的内容，不主动说出未问到的既往史；被问到检查结果或诊断时，说这要听医生的。",
+        "en": "Boy: feverish, a little flat, guarding his right foot; asked directly, says only “my foot hurts”. Parent: worried and cooperative; answers only what is asked and does not volunteer past history; asked about results or the diagnosis, says that is for the doctors to say."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "小乐的家长（化名）",
+          "en": "Xiaole's parent (pseudonym)"
+        },
+        "persona": {
+          "zh-CN": "患儿家长（原报告未说明是父亲还是母亲）。焦急、配合，用日常口语回答，记不清的直说。",
+          "en": "The boy's parent (the report does not say which parent). Worried and cooperative; answers in everyday words and says so when unsure."
+        },
+        "answersHistory": true,
+        "appearance": {
+          "stature": "adult"
+        }
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "入院第1天",
+        "en": "Hospital day 1"
+      },
+      "description": {
+        "zh-CN": "4岁男孩入院：发热3天，右足背红肿疼痛1天余。由家长提供病史，进行床旁查体。",
+        "en": "A 4-year-old boy is admitted with 3 days of fever and just over a day of a painful, swollen right foot. Take the history from his parent and examine him."
+      },
+      "learnerSwitchable": false
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "住院第1–9天：感染处理与免疫筛查",
+        "en": "Hospital days 1–9: infection care and immune screening"
+      },
+      "description": {
+        "zh-CN": "住院期间的检查结果按原报告呈现；处理急性感染，并判断是否需要免疫学评估。",
+        "en": "In-hospital results as the report gives them; treat the acute infection and decide whether he needs immunological evaluation."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "objective": "obj-history"
+          },
+          {
+            "objective": "obj-exam"
+          }
+        ]
+      }
+    },
+    {
+      "id": "immunology",
+      "label": {
+        "zh-CN": "出院后1–2个月：外院免疫评估",
+        "en": "1–2 months after discharge: immunology work-up at another hospital"
+      },
+      "description": {
+        "zh-CN": "外院免疫球蛋白复查、淋巴细胞流式和BTK基因报告（同一次外院评估，调阅既有报告）。患儿仍在本院病床上，便于输注。",
+        "en": "The other hospital's repeat immunoglobulins, lymphocyte flow cytometry and BTK report (one outside work-up, existing reports to review). He stays in this hospital's bed, which also serves for infusions."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "objective": "obj-acute"
+          },
+          {
+            "objective": "obj-immune-screen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "外院基因报告与原报告随访",
+        "en": "Outside genetic report and the report's follow-up"
+      },
+      "description": {
+        "zh-CN": "原报告的治疗经过与随访（BTK基因报告在上一阶段已随外院评估开放）。",
+        "en": "The report's treatment course and follow-up (the BTK report opened in the previous phase with the outside work-up)."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "objective": "obj-immune-dx"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "孩子这次哪里不舒服？发烧几天了？",
+        "en": "What's brought him in, and how long has he had the fever?"
+      },
+      "answer": {
+        "zh-CN": "（家长）发高烧3天了；昨天开始右脚背又红又肿，疼得碰都不让碰。",
+        "en": "(Parent) He's had a high fever for three days, and since yesterday his right foot has been red, swollen and sore — he won't let anyone touch it."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里不舒服",
+          "发烧几天",
+          "烧了几天",
+          "发高烧",
+          "发烧",
+          "发热",
+          "高烧",
+          "怎么了"
+        ],
+        "en": [
+          "fever",
+          "temperature",
+          "broughthimin",
+          "what's wrong",
+          "high fever",
+          "feverish",
+          "unwell"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史（发热3天、高热；右足背红肿疼痛1天余）；家长口吻为教学改写",
+        "en": "Main text · present illness (3 days of high fever; just over a day of a painful, swollen right foot); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "spread",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "脚上的红肿是怎么开始的？后来怎么发展的？",
+        "en": "How did the swelling on his foot start, and how has it changed?"
+      },
+      "answer": {
+        "zh-CN": "（家长）是从脚背上一块湿疹那里开始红肿的，后来越肿越厉害，一直肿到脚踝和小腿。",
+        "en": "(Parent) It started at a patch of eczema on top of his foot, then it got worse and spread up to his ankle and lower leg."
+      },
+      "keywords": {
+        "zh-CN": [
+          "怎么开始",
+          "从哪里开始",
+          "红肿蔓延",
+          "越来越肿",
+          "肿到哪里",
+          "扩散",
+          "蔓延",
+          "小腿"
+        ],
+        "en": [
+          "foot swelling",
+          "swelling spread",
+          "spread",
+          "spreading",
+          "getting worse",
+          "ankle",
+          "lower leg",
+          "howdiditbegin",
+          "wherediditbegin"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史（右足背湿疹皮损处红肿疼痛，加重并蔓延至踝部及小腿）；家长口吻为教学改写",
+        "en": "Main text · present illness (redness and pain at an eczema lesion on the right foot, worsening and spreading to the ankle and lower leg); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "来之前给他用过什么药？效果怎么样？",
+        "en": "What has he had for this before coming in, and did it help?"
+      },
+      "answer": {
+        "zh-CN": "（家长）吃了阿莫西林克拉维酸（安灭菌），还是高烧，脚肿得更厉害了。",
+        "en": "(Parent) He was on amoxicillin–clavulanate (Augmentin), but the fever stayed high and the swelling got worse."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用过什么药",
+          "吃过什么药",
+          "抗生素",
+          "阿莫西林",
+          "安灭菌",
+          "消炎药",
+          "吃药",
+          "用药"
+        ],
+        "en": [
+          "medicine",
+          "medication",
+          "antibiotics",
+          "augmentin",
+          "amoxicillin",
+          "co-amoxiclav",
+          "treatment so far",
+          "takenforthis",
+          "tablets"
+        ]
+      },
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "以前住院"
+        ],
+        "en": [
+          "allerg",
+          "in hospital"
+        ]
+      },
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史（予阿莫西林/克拉维酸后仍高热，皮损加重）；家长口吻为教学改写",
+        "en": "Main text · present illness (still febrile on amoxicillin/clavulanate, lesion worse); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "recurrent-infections",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "他以前住过院吗？经常生病吗？",
+        "en": "Has he been in hospital before? Does he get a lot of infections?"
+      },
+      "answer": {
+        "zh-CN": "（家长）住过好几次。3年前那一年因为肺炎住了两次院；2年前又住了两次，一次是肺炎，一次是发高烧、两条大腿长了好多脓包。",
+        "en": "(Parent) Several times. Three years ago he was admitted twice in one year with pneumonia, and two years ago twice more — once with pneumonia and once with a high fever and lots of pus spots on both thighs."
+      },
+      "keywords": {
+        "zh-CN": [
+          "住过院",
+          "以前住院",
+          "住院史",
+          "经常生病",
+          "反复感染",
+          "老生病",
+          "肺炎",
+          "既往史",
+          "以前得过什么病"
+        ],
+        "en": [
+          "hospital before",
+          "admitted before",
+          "previous admissions",
+          "infections",
+          "pneumonia",
+          "past medical history",
+          "often ill",
+          "recurrent infections"
+        ]
+      },
+      "disclosure": "on-ask",
+      "excludeKeywords": {
+        "zh-CN": [
+          "妈妈那边",
+          "家族",
+          "家里",
+          "舅舅"
+        ],
+        "en": [
+          "family",
+          "mother",
+          "relatives"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "正文·既往史（较早一年2次因肺炎住院；次年分别因肺炎及“脓疱疮”住院；原文年份已换算为相对时间）；家长口吻为教学改写",
+        "en": "Main text · past history (two pneumonia admissions in one earlier year; the next year, admissions for pneumonia and “impetigo”; the source's years are expressed as relative time); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "eczema",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "他的湿疹是从什么时候开始的？",
+        "en": "When did his eczema start?"
+      },
+      "answer": {
+        "zh-CN": "（家长）生下来没多久就开始了，全身反反复复地长。",
+        "en": "(Parent) Not long after he was born — it keeps coming back all over his body."
+      },
+      "keywords": {
+        "zh-CN": [
+          "湿疹",
+          "皮肤病",
+          "特应性皮炎",
+          "皮炎",
+          "皮肤痒",
+          "皮肤一直不好"
+        ],
+        "en": [
+          "eczema",
+          "skin problems",
+          "dermatitis",
+          "atopic",
+          "itchy skin",
+          "skin for long"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·既往史（生后反复全身湿疹）；家长口吻为教学改写",
+        "en": "Main text · past history (recurrent generalised eczema since birth); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "prior-organism",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前长脓包那次，查出来是什么细菌？",
+        "en": "When he had the pus spots before, did they find out which germ it was?"
+      },
+      "answer": {
+        "zh-CN": "（家长）那次化验说是金黄色葡萄球菌。",
+        "en": "(Parent) The test said it was Staphylococcus aureus — “staph”."
+      },
+      "keywords": {
+        "zh-CN": [
+          "什么细菌",
+          "什么菌",
+          "长脓包",
+          "脓包查出",
+          "化验结果",
+          "培养",
+          "葡萄球菌",
+          "金葡菌"
+        ],
+        "en": [
+          "what germ",
+          "what bacteria",
+          "grew from the pus",
+          "pus culture",
+          "staph",
+          "staphylococcus",
+          "organism grown"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·既往史（双大腿脓疱，皮损部位培养金黄色葡萄球菌，MSSA）；家长口吻为教学改写",
+        "en": "Main text · past history (thigh pustules; lesion culture grew Staphylococcus aureus, MSSA); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "cough",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "住院以后有没有咳嗽？",
+        "en": "Since he came in, has he had any cough?"
+      },
+      "answer": {
+        "zh-CN": "（家长）住院第二天开始咳嗽了。",
+        "en": "(Parent) He started coughing on his second day here."
+      },
+      "keywords": {
+        "zh-CN": [
+          "咳嗽",
+          "咳",
+          "有痰",
+          "咳不咳"
+        ],
+        "en": [
+          "cough",
+          "coughing",
+          "chesty",
+          "phlegm"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·诊疗经过（入院第2天咳嗽）；家长口吻为教学改写",
+        "en": "Main text · course (cough from hospital day 2); the parent's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "ear-infections",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "他耳朵经常发炎吗？",
+        "en": "Does he get ear infections?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "耳朵",
+          "中耳炎",
+          "耳朵发炎",
+          "流脓"
+        ],
+        "en": [
+          "ear",
+          "ear infections",
+          "otitis",
+          "sore ears"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "diarrhoea",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "他经常拉肚子吗？",
+        "en": "Does he often have diarrhoea?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "拉肚子",
+          "腹泻",
+          "大便稀",
+          "肚子"
+        ],
+        "en": [
+          "diarrhoea",
+          "loose stools",
+          "runny poo",
+          "bowels"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "bleeding",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "他容易流鼻血、身上容易起瘀青吗？",
+        "en": "Does he get nosebleeds or bruise easily?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "流鼻血",
+          "瘀青",
+          "出血",
+          "紫癜",
+          "出血点"
+        ],
+        "en": [
+          "nosebleeds",
+          "bruise",
+          "bruising",
+          "bleeding",
+          "petechiae"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "immunisation",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "他打过哪些疫苗？卡介苗、口服的脊灰糖丸吃过吗？",
+        "en": "Which vaccines has he had — BCG, the oral polio drops?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "疫苗",
+          "打预防针",
+          "预防针",
+          "接种",
+          "卡介苗",
+          "糖丸",
+          "脊灰"
+        ],
+        "en": [
+          "vaccines",
+          "vaccination",
+          "jabs",
+          "immunisations",
+          "bcg",
+          "polio"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里，特别是妈妈那边的男孩子（舅舅、表兄弟），有没有人也老是感染、很小就夭折？",
+        "en": "In the family — especially boys on his mother's side, uncles or cousins — has anyone had repeated infections or died young?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里人",
+          "家族",
+          "舅舅",
+          "表兄弟",
+          "妈妈那边",
+          "遗传",
+          "夭折"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "uncles",
+          "cousins",
+          "mother's side",
+          "runs in the family"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "siblings",
+      "topic": "family",
+      "question": {
+        "zh-CN": "他有兄弟姐妹吗？身体怎么样？",
+        "en": "Does he have brothers or sisters, and are they well?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "兄弟姐妹",
+          "哥哥",
+          "弟弟",
+          "姐姐",
+          "妹妹"
+        ],
+        "en": [
+          "brothers",
+          "sisters",
+          "siblings",
+          "brother"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "growth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "他长个子、体重和同龄孩子比怎么样？",
+        "en": "How is his growth and weight compared with other children his age?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "长个子",
+          "生长发育",
+          "身高",
+          "长得好",
+          "长得怎么样"
+        ],
+        "en": [
+          "growth",
+          "growing",
+          "height",
+          "growing well",
+          "thriving"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "他现在多重？",
+        "en": "How much does he weigh now?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "多重",
+          "几公斤",
+          "称过"
+        ],
+        "en": [
+          "weight",
+          "weigh",
+          "kilos",
+          "how heavy"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "他对什么药过敏吗？",
+        "en": "Is he allergic to any medicines?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "对什么药过敏"
+        ],
+        "en": [
+          "allergy",
+          "allergies",
+          "allergic",
+          "drug allergy"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "psh",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "他以前做过手术吗？",
+        "en": "Has he had any operations?"
+      },
+      "answer": {
+        "zh-CN": "（家长）这个他的病历里没有记录，我说不上来。",
+        "en": "(Parent) That isn't recorded in his notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术",
+          "开刀",
+          "动过手术",
+          "做手术"
+        ],
+        "en": [
+          "operation",
+          "surgery",
+          "operated",
+          "procedures"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+        "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您现在最担心的是什么？",
+        "en": "What worries you most at the moment?"
+      },
+      "answer": {
+        "zh-CN": "（家长）脚肿得这么厉害，还发着高烧，我就怕越来越重。",
+        "en": "(Parent) His foot's so swollen and the fever's so high — I'm scared it's getting worse."
+      },
+      "keywords": {
+        "zh-CN": [
+          "担心",
+          "害怕",
+          "顾虑",
+          "最怕",
+          "着急"
+        ],
+        "en": [
+          "worried",
+          "worries",
+          "concerns",
+          "scared",
+          "afraid"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "教学改写：原报告未记录家长的想法与担忧，此为通用表述，不含病历事实",
+        "en": "Teaching adaptation: the report does not record the parent's ideas or concerns; a generic statement with no clinical facts"
+      }
+    },
+    {
+      "id": "status-followup",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在他身体怎么样？",
+        "en": "How is he doing now?"
+      },
+      "answer": {
+        "zh-CN": "（家长）现在每个月去另一家医院输一次丙种球蛋白，到现在没有再因为严重感染住过院。",
+        "en": "(Parent) He goes to another hospital every month for an immunoglobulin drip, and he hasn't been admitted with a serious infection since."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在怎么样",
+          "身体怎么样",
+          "最近怎样",
+          "还住院吗",
+          "后来怎么样"
+        ],
+        "en": [
+          "doing now",
+          "howishenow",
+          "since then",
+          "lately",
+          "admitted since"
+        ]
+      },
+      "disclosure": "on-ask",
+      "phases": [
+        "followup"
+      ],
+      "supersedes": [
+        "presentation"
+      ],
+      "source": {
+        "zh-CN": "正文·诊疗经过（此后每月输注丙种球蛋白，至今暂无严重感染住院记录）；家长口吻为教学改写",
+        "en": "Main text · course (monthly immunoglobulin since; no admission for severe infection so far); the parent's wording is a teaching adaptation"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "foot",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查右足及小腿",
+        "en": "Examine the right foot and lower leg"
+      },
+      "keywords": {
+        "zh-CN": [
+          "右脚",
+          "足背",
+          "脚",
+          "小腿",
+          "红肿",
+          "皮损",
+          "波动感",
+          "蜂窝织炎"
+        ],
+        "en": [
+          "right foot",
+          "foot",
+          "lower leg",
+          "swelling",
+          "lesion",
+          "fluctuance",
+          "cellulitis",
+          "toe"
+        ]
+      },
+      "finding": {
+        "zh-CN": "右足第五趾关节表面皮肤一处约0.5 cm×0.5 cm的紫黑色（焦痂样）皮损；右足及小腿肿胀、疼痛，无波动感。",
+        "en": "A 0.5 × 0.5 cm dusky-black, eschar-like lesion over the right fifth toe joint; the right foot and lower leg are swollen and tender, without fluctuance."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "media": "fig01",
+      "source": {
+        "zh-CN": "正文·查体：右足第五趾关节表面皮肤淤黑，约0.5 cm×0.5 cm，右足及小腿肿痛，无波动感（“焦痂”一词见诊疗经过第5天）",
+        "en": "Main text · examination: dusky-black skin over the right fifth toe joint, about 0.5 × 0.5 cm, right foot and lower leg swollen and painful, no fluctuance (“eschar” is the course's word on day 5)"
+      }
+    },
+    {
+      "id": "other-lesions",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查其余皮肤（会阴、臀部等）",
+        "en": "Examine the rest of the skin (pubic area, buttocks)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他皮肤",
+          "全身皮肤",
+          "臀部",
+          "屁股",
+          "会阴",
+          "溃疡",
+          "身上"
+        ],
+        "en": [
+          "rest of the skin",
+          "skin elsewhere",
+          "buttocks",
+          "bottom",
+          "groin",
+          "ulcers",
+          "whole body"
+        ]
+      },
+      "finding": {
+        "zh-CN": "耻骨联合处及臀部皮肤见数个溃疡。",
+        "en": "Several ulcers on the skin over the pubic symphysis and the buttocks."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·查体：耻骨联合、臀部皮肤见数个溃疡（图1）",
+        "en": "Main text · examination: several ulcers over the pubic symphysis and buttocks (Figure 1)"
+      }
+    },
+    {
+      "id": "lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "肺部听诊",
+        "en": "Listen to his chest"
+      },
+      "keywords": {
+        "zh-CN": [
+          "听肺",
+          "肺部",
+          "听诊",
+          "呼吸音",
+          "啰音",
+          "胸部"
+        ],
+        "en": [
+          "chest",
+          "lungs",
+          "auscultate",
+          "breath sounds",
+          "crackles",
+          "listen"
+        ]
+      },
+      "finding": {
+        "zh-CN": "住院第2天出现咳嗽后，肺部可闻及细湿啰音。",
+        "en": "From hospital day 2, after the cough began: fine crackles on auscultation."
+      },
+      "abnormal": true,
+      "requires": [
+        "stethoscope"
+      ],
+      "phases": [
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·诊疗经过：入院第2天咳嗽，肺部听诊闻及细湿啰音",
+        "en": "Main text · course: cough from day 2, fine crackles on auscultation"
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告未记录这项检查。",
+    "en": "The source report does not record this examination."
+  },
+  "investigations": [
+    {
+      "id": "inflammatory",
+      "name": {
+        "zh-CN": "炎症指标：C反应蛋白及降钙素原",
+        "en": "Inflammatory markers: CRP and procalcitonin"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "c反应蛋白",
+          "crp",
+          "降钙素原",
+          "pct",
+          "炎症指标",
+          "感染指标"
+        ],
+        "en": [
+          "crp",
+          "c-reactive protein",
+          "procalcitonin",
+          "pct",
+          "inflammatory markers"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "住院期间（原报告未注明日期）",
+            "en": "During the admission (date not stated)"
+          },
+          "text": {
+            "zh-CN": "CRP 328 mg/L，PCT 16.6 ng/mL。",
+            "en": "CRP 328 mg/L, PCT 16.6 ng/mL."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "C反应蛋白",
+                "en": "CRP"
+              },
+              "value": 328,
+              "unit": "mg/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "降钙素原",
+                "en": "Procalcitonin"
+              },
+              "value": 16.6,
+              "unit": "ng/mL"
+            }
+          ],
+          "note": {
+            "zh-CN": "原报告未给出参考范围。",
+            "en": "The report gives no reference ranges."
+          },
+          "source": {
+            "zh-CN": "正文·检验",
+            "en": "Main text · laboratory tests"
+          }
+        }
+      }
+    },
+    {
+      "id": "fbc",
+      "name": {
+        "zh-CN": "血常规：白细胞分类、血小板计数及平均血小板体积",
+        "en": "Full blood count with differential, platelet count and mean platelet volume"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "血象",
+          "白细胞",
+          "中性粒细胞",
+          "血小板",
+          "血小板体积",
+          "mpv"
+        ],
+        "en": [
+          "blood count",
+          "fbc",
+          "cbc",
+          "full blood count",
+          "white cells",
+          "neutrophils",
+          "platelets",
+          "mpv"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告未记录本次住院的血常规（包括白细胞分类、血小板计数和平均血小板体积）。",
+            "en": "The report records no blood count for this admission (no differential, platelet count or mean platelet volume)."
+          },
+          "source": {
+            "zh-CN": "原报告未记录；如实作答，不补写正常或阴性",
+            "en": "Not recorded in the report; answered honestly, with no normal or negative value added"
+          }
+        }
+      }
+    },
+    {
+      "id": "cultures",
+      "name": {
+        "zh-CN": "皮损分泌物培养及血培养",
+        "en": "Lesion swab culture and blood culture"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "培养",
+          "细菌培养",
+          "分泌物培养",
+          "血培养",
+          "拭子",
+          "药敏"
+        ],
+        "en": [
+          "culture",
+          "swab",
+          "blood culture",
+          "wound culture",
+          "sensitivities"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "住院第3天报告",
+            "en": "Reported on hospital day 3"
+          },
+          "text": {
+            "zh-CN": "皮损分泌物：金黄色葡萄球菌（甲氧西林敏感，MSSA），凝固酶试验阳性。血培养阴性。",
+            "en": "Lesion swab: Staphylococcus aureus (methicillin-sensitive, MSSA), coagulase test positive. Blood culture: no growth."
+          },
+          "source": {
+            "zh-CN": "正文·诊疗经过：第三天皮损分泌物细菌培养",
+            "en": "Main text · course: lesion culture reported on day 3"
+          }
+        }
+      }
+    },
+    {
+      "id": "foot-ultrasound",
+      "name": {
+        "zh-CN": "右足背软组织超声",
+        "en": "Ultrasound of the right foot soft tissues"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "足背超声",
+          "脚超声",
+          "软组织超声",
+          "b超",
+          "超声",
+          "脓肿"
+        ],
+        "en": [
+          "foot ultrasound",
+          "soft tissue ultrasound",
+          "ultrasound",
+          "abscess scan",
+          "us foot"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "住院期间（原报告未注明日期）",
+            "en": "During the admission (date not stated)"
+          },
+          "text": {
+            "zh-CN": "右足背皮下软组织广泛水肿，未见脓腔。",
+            "en": "Extensive subcutaneous soft-tissue oedema over the right foot; no abscess cavity."
+          },
+          "source": {
+            "zh-CN": "正文·诊疗经过：右足背超声",
+            "en": "Main text · course: right-foot ultrasound"
+          }
+        }
+      }
+    },
+    {
+      "id": "chest",
+      "name": {
+        "zh-CN": "胸部X线片",
+        "en": "Chest radiograph"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸片",
+          "胸部x线",
+          "x光",
+          "拍片",
+          "胸部平片"
+        ],
+        "en": [
+          "chest x-ray",
+          "cxr",
+          "chest radiograph",
+          "chest film"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "住院第2天（出现咳嗽后）",
+            "en": "Hospital day 2 (after the cough began)"
+          },
+          "text": {
+            "zh-CN": "双肺支气管肺炎。",
+            "en": "Bilateral bronchopneumonia."
+          },
+          "source": {
+            "zh-CN": "正文·诊疗经过：胸部X光片",
+            "en": "Main text · course: chest radiograph"
+          }
+        }
+      }
+    },
+    {
+      "id": "immunoglobulins",
+      "name": {
+        "zh-CN": "血清免疫球蛋白IgG、IgA、IgM及IgE",
+        "en": "Serum immunoglobulins IgG, IgA, IgM and IgE"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "免疫球蛋白",
+          "igg",
+          "iga",
+          "igm",
+          "ige",
+          "体液免疫",
+          "抗体水平"
+        ],
+        "en": [
+          "immunoglobulins",
+          "igg",
+          "iga",
+          "igm",
+          "ige",
+          "antibody levels",
+          "humoral immunity"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "date": {
+            "zh-CN": "住院期间，两次相隔3天",
+            "en": "During the admission, two samples 3 days apart"
+          },
+          "text": {
+            "zh-CN": "本院两次，相隔3天（表1）。第1次：IgG 3.15 g/L（参考7.0–16.0），IgA <0.1 g/L（0.7–4.0），IgM 1.29 g/L（0.4–2.3），IgE 306 μg/L（<144）。第2次：IgG 3.14 g/L（7.0–16.0），IgA <0.1 g/L（0.7–4.0）；未复查IgM和IgE。",
+            "en": "Two samples in this hospital, 3 days apart (Table 1). First: IgG 3.15 g/L (reference 7.0–16.0), IgA <0.1 g/L (0.7–4.0), IgM 1.29 g/L (0.4–2.3), IgE 306 µg/L (<144). Second: IgG 3.14 g/L (7.0–16.0), IgA <0.1 g/L (0.7–4.0); IgM and IgE not repeated."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "IgG（第1次）",
+                "en": "IgG (1st)"
+              },
+              "value": 3.15,
+              "unit": "g/L",
+              "refLow": 7,
+              "refHigh": 16,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "IgA（第1次）",
+                "en": "IgA (1st)"
+              },
+              "value": "<0.1",
+              "unit": "g/L",
+              "refLow": 0.7,
+              "refHigh": 4,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "IgM（第1次）",
+                "en": "IgM (1st)"
+              },
+              "value": 1.29,
+              "unit": "g/L",
+              "refLow": 0.4,
+              "refHigh": 2.3
+            },
+            {
+              "analyte": {
+                "zh-CN": "IgE（第1次）",
+                "en": "IgE (1st)"
+              },
+              "value": 306,
+              "unit": "µg/L",
+              "refText": "<144",
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "IgG（第2次）",
+                "en": "IgG (2nd)"
+              },
+              "value": 3.14,
+              "unit": "g/L",
+              "refLow": 7,
+              "refHigh": 16,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "IgA（第2次）",
+                "en": "IgA (2nd)"
+              },
+              "value": "<0.1",
+              "unit": "g/L",
+              "refLow": 0.7,
+              "refHigh": 4,
+              "flag": "L"
+            }
+          ],
+          "note": {
+            "zh-CN": "原文矛盾，照录：正文写“IgM、IgE无异常”，而表1的IgE为306 μg/L，高于其参考上限<144。两种表述都来自原文，本病例不擅自取舍。",
+            "en": "A discrepancy in the source, kept as published: the text says “IgM and IgE unremarkable”, but Table 1 gives IgE 306 µg/L, above its own limit of <144. Both statements are the report's; the case does not choose between them."
+          },
+          "source": {
+            "zh-CN": "正文·检验及表1（本院2次）",
+            "en": "Main text · laboratory tests and Table 1 (this hospital, 2 samples)"
+          }
+        }
+      }
+    },
+    {
+      "id": "ig-outside",
+      "name": {
+        "zh-CN": "调阅外院免疫球蛋白复查报告",
+        "en": "Review the outside repeat immunoglobulin report"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院免疫球蛋白",
+          "外院igg",
+          "复查免疫球蛋白",
+          "外院报告"
+        ],
+        "en": [
+          "outside immunoglobulins",
+          "repeat immunoglobulins",
+          "outside igg",
+          "other hospital report"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "immunology": {
+          "available": true,
+          "date": {
+            "zh-CN": "出院后1–2个月，外院（原文：同一次外院评估）",
+            "en": "1–2 months after discharge, another hospital (the source's single outside work-up)"
+          },
+          "text": {
+            "zh-CN": "外院：IgG 2.73 g/L（参考5.90–14.30），IgA <0.10 g/L（0.38–2.22），IgM 0.75 g/L（0.45–2.08）。",
+            "en": "Other hospital: IgG 2.73 g/L (reference 5.90–14.30), IgA <0.10 g/L (0.38–2.22), IgM 0.75 g/L (0.45–2.08)."
+          },
+          "values": [
+            {
+              "analyte": "IgG",
+              "value": 2.73,
+              "unit": "g/L",
+              "refLow": 5.9,
+              "refHigh": 14.3,
+              "flag": "L"
+            },
+            {
+              "analyte": "IgA",
+              "value": "<0.10",
+              "unit": "g/L",
+              "refLow": 0.38,
+              "refHigh": 2.22,
+              "flag": "L"
+            },
+            {
+              "analyte": "IgM",
+              "value": 0.75,
+              "unit": "g/L",
+              "refLow": 0.45,
+              "refHigh": 2.08
+            }
+          ],
+          "note": {
+            "zh-CN": "参考范围为外院实验室的范围，与本院不同。",
+            "en": "Reference ranges are the other laboratory's, not this hospital's."
+          },
+          "source": {
+            "zh-CN": "正文·表1（外院）及正文",
+            "en": "Main text · Table 1 (other hospital) and main text"
+          }
+        }
+      }
+    },
+    {
+      "id": "lymphocytes",
+      "name": {
+        "zh-CN": "调阅外院淋巴细胞亚群流式检测报告",
+        "en": "Review the outside lymphocyte-subset flow-cytometry report"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "流式",
+          "淋巴细胞亚群",
+          "b细胞",
+          "t细胞",
+          "cd19",
+          "nk细胞",
+          "外院流式"
+        ],
+        "en": [
+          "flow cytometry",
+          "lymphocyte subsets",
+          "b cells",
+          "t cells",
+          "cd19",
+          "nk cells",
+          "outside flow"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "immunology": {
+          "available": true,
+          "date": {
+            "zh-CN": "出院后1–2个月，外院（原文：同一次外院评估）",
+            "en": "1–2 months after discharge, another hospital (the source's single outside work-up)"
+          },
+          "text": {
+            "zh-CN": "T细胞、CD4⁺T细胞、CD8⁺T细胞及NK细胞计数正常；B细胞绝对计数6.0 cells/μL（参考90–660）。B细胞百分比未报告。",
+            "en": "T-cell, CD4⁺ T-cell, CD8⁺ T-cell and NK-cell counts normal; B-cell absolute count 6.0 cells/µL (reference 90–660). The B-cell percentage is not reported."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "B细胞绝对计数",
+                "en": "B cells (absolute)"
+              },
+              "value": 6,
+              "unit": "cells/µL",
+              "refLow": 90,
+              "refHigh": 660,
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "T细胞",
+                "en": "T cells"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "CD4⁺T细胞",
+                "en": "CD4⁺ T cells"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "CD8⁺T细胞",
+                "en": "CD8⁺ T cells"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "NK细胞",
+                "en": "NK cells"
+              },
+              "value": {
+                "zh-CN": "正常",
+                "en": "normal"
+              },
+              "unit": ""
+            }
+          ],
+          "source": {
+            "zh-CN": "正文·外院流式细胞分析",
+            "en": "Main text · outside flow cytometry"
+          }
+        }
+      }
+    },
+    {
+      "id": "genetics",
+      "name": {
+        "zh-CN": "调阅外院BTK基因检测报告",
+        "en": "Review the outside BTK genetic report"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "基因",
+          "基因检测",
+          "btk",
+          "基因报告",
+          "测序"
+        ],
+        "en": [
+          "genetic",
+          "gene test",
+          "btk",
+          "genetic report",
+          "sequencing"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "immunology": {
+          "available": true,
+          "date": {
+            "zh-CN": "出院后1–2个月，外院（原文：同一次外院评估）",
+            "en": "1–2 months after discharge, another hospital (the source's single outside work-up)"
+          },
+          "text": {
+            "zh-CN": "BTK基因半合子变异：NM_000061.3:c.1632-2A>G。原报告未提供母亲或其他家属的检测结果。",
+            "en": "Hemizygous BTK variant: NM_000061.3:c.1632-2A>G. The report gives no result for the mother or other relatives."
+          },
+          "note": {
+            "zh-CN": "该变异位于内含子剪接受体位点（-2位）；原报告未给出变异致病性分级。",
+            "en": "The variant lies at an intronic splice-acceptor position (−2); the report gives no pathogenicity classification."
+          },
+          "source": {
+            "zh-CN": "正文·基因报告",
+            "en": "Main text · genetic report"
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅治疗与随访记录",
+        "en": "Review the treatment and follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "随访记录",
+          "治疗经过",
+          "出院记录",
+          "随访",
+          "结局"
+        ],
+        "en": [
+          "follow-up record",
+          "treatment course",
+          "discharge record",
+          "follow up",
+          "outcome"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "住院第1–9天；出院后至报告发表",
+            "en": "Hospital days 1–9; discharge to publication"
+          },
+          "text": {
+            "zh-CN": "急性期（原报告）：入院后予万古霉素静脉抗感染；第2天热峰下降，出现咳嗽，肺部闻及细湿啰音，胸片示双肺支气管肺炎；右足背超声示皮下软组织广泛水肿、未见脓腔；第3天皮损分泌物培养为MSSA（凝固酶阳性）、血培养阴性，改为克林霉素联合头孢曲松；第5天热退，右足肿痛消退，焦痂脱落；第9天无发热、咳嗽，全身皮肤无破溃、红肿及焦痂，足部少许脱屑。各药剂量和疗程未记录。最终诊断：X连锁无丙种球蛋白血症；特应性皮炎（中重度）。本院给予静脉丙种球蛋白（剂量未记录），此后在另一家医院随访，每月输注丙种球蛋白，至报告时暂无因严重感染住院的记录（随访时长未注明）。",
+            "en": "Acute admission (the report): IV vancomycin on admission; on day 2 the fever peak fell, a cough began with fine crackles, and the chest radiograph showed bilateral bronchopneumonia; the foot ultrasound showed extensive subcutaneous oedema without an abscess; on day 3 the lesion grew MSSA (coagulase positive) with a negative blood culture, and treatment changed to clindamycin plus ceftriaxone; by day 5 he was afebrile, the foot swelling and pain had settled and the eschar had separated; by day 9 there was no fever or cough and no ulceration, redness or eschar anywhere, with slight peeling on the foot. No doses or durations are recorded. Final diagnosis: X-linked agammaglobulinaemia; atopic dermatitis (moderate to severe). This hospital gave IV immunoglobulin (dose not recorded); he was then followed at another hospital with monthly immunoglobulin infusions and, by the time of the report, no admission for a severe infection (follow-up length not stated)."
+          },
+          "note": {
+            "zh-CN": "原报告的抗生素选择与后来的替代治疗作为历史事实记录。",
+            "en": "The report's antibiotic choices and later replacement therapy are recorded as historical fact."
+          },
+          "source": {
+            "zh-CN": "正文·诊疗经过及最终诊断",
+            "en": "Main text · course and final diagnosis"
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "rules": [],
+    "exact": {},
+    "warnings": []
+  },
+  "interventions": [
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "外周静脉置管",
+        "en": "Peripheral IV cannula"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "置管",
+          "留置针",
+          "开通静脉",
+          "建立静脉通道",
+          "打留置针"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "cannulate",
+          "iv line",
+          "venflon",
+          "peripheral line"
+        ]
+      },
+      "dose": {
+        "zh-CN": "外周静脉留置针，妥善固定；置管时可同时采血送检。",
+        "en": "Peripheral IV cannula, well secured; blood samples can be taken at insertion."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 3,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "静脉通路已建立，采血已送检。",
+        "en": "IV access is in place and the blood samples have gone to the laboratory."
+      }
+    },
+    {
+      "id": "vancomycin",
+      "name": {
+        "zh-CN": "经验性静脉抗生素（覆盖耐甲氧西林金黄色葡萄球菌，如万古霉素）",
+        "en": "Empirical IV antibiotic covering MRSA (for example vancomycin)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "万古霉素",
+          "经验性抗生素",
+          "静脉抗生素",
+          "覆盖mrsa",
+          "抗感染",
+          "广谱抗生素"
+        ],
+        "en": [
+          "vancomycin",
+          "empirical antibiotics",
+          "iv antibiotics",
+          "mrsa cover",
+          "broad spectrum"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按体重和肾功能给药并监测血药浓度；覆盖包括MRSA在内的金黄色葡萄球菌，待培养和药敏回报后降阶梯。",
+        "en": "Dosed by weight and renal function with level monitoring; covers Staphylococcus aureus including MRSA, to be de-escalated once the culture and sensitivities return."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [
+        "empirical-abx"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "已开始。原报告入院即用万古霉素；蜂窝织炎在培养回报前先经验性覆盖MRSA是合理的。",
+        "en": "Started. The report began vancomycin on admission; empirical MRSA cover before the culture returns is reasonable for cellulitis."
+      }
+    },
+    {
+      "id": "directed-abx",
+      "name": {
+        "zh-CN": "按药敏调整抗生素（如克林霉素联合头孢曲松）",
+        "en": "Culture-directed antibiotics (for example clindamycin plus ceftriaxone)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "克林霉素",
+          "头孢曲松",
+          "按药敏",
+          "降阶梯",
+          "调整抗生素",
+          "目标性抗生素"
+        ],
+        "en": [
+          "clindamycin",
+          "ceftriaxone",
+          "culture-directed",
+          "de-escalate",
+          "targeted antibiotics",
+          "narrow"
+        ]
+      },
+      "dose": {
+        "zh-CN": "MSSA（凝固酶阳性）回报后，按药敏改为针对性方案（原报告为克林霉素联合头孢曲松）；疗程按临床反应决定。",
+        "en": "Once MSSA (coagulase positive) is reported, switch to a directed regimen by sensitivities (the report used clindamycin plus ceftriaxone); duration by clinical response."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "cultures"
+      },
+      "response": {
+        "zh-CN": "已调整。合并双肺支气管肺炎时，覆盖呼吸道病原的方案是合理的；原报告第3天改用此方案，第5天热退。",
+        "en": "Switched. With concurrent bronchopneumonia a regimen that also covers respiratory pathogens is reasonable; the report changed on day 3 and he was afebrile by day 5."
+      }
+    },
+    {
+      "id": "immunology-referral",
+      "name": {
+        "zh-CN": "请免疫专科会诊",
+        "en": "Immunology referral"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "免疫科",
+          "免疫专科",
+          "请免疫科",
+          "免疫评估",
+          "免疫会诊"
+        ],
+        "en": [
+          "immunology",
+          "immunology referral",
+          "refer to immunology",
+          "immune assessment"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "read": "immunoglobulins"
+      },
+      "response": {
+        "zh-CN": "免疫科医生：“反复肺炎加上需要住院的葡萄球菌皮肤感染，要查体液免疫和淋巴细胞亚群。IgG低就不符合选择性IgA缺乏；湿疹加反复感染的男孩还要想到Wiskott–Aldrich综合征，查一下血小板计数和体积。”",
+        "en": "Immunologist: “Recurrent pneumonia plus staphylococcal skin infection needing admission calls for humoral immunity and lymphocyte subsets. A low IgG does not fit selective IgA deficiency; in a boy with eczema and recurrent infection, think too of Wiskott–Aldrich syndrome, so check the platelet count and size.”"
+      }
+    },
+    {
+      "id": "ivig-replacement",
+      "name": {
+        "zh-CN": "免疫球蛋白替代治疗",
+        "en": "Immunoglobulin replacement therapy"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "丙种球蛋白",
+          "免疫球蛋白替代",
+          "静脉丙球",
+          "ivig",
+          "皮下丙球",
+          "替代治疗"
+        ],
+        "en": [
+          "immunoglobulin replacement",
+          "ivig",
+          "scig",
+          "igg replacement",
+          "gamma globulin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "确诊抗体缺陷后开始替代：静脉每3–4周或皮下注射（按产品），按谷浓度和临床感染情况调整；由免疫专科个体化制定。即便规律替代，患者每年仍可能有数次感染。",
+        "en": "After an antibody deficiency is confirmed: IV every 3–4 weeks or subcutaneous (by product), adjusted to trough levels and clinical infections; individualised by immunology. Even on regular replacement, infections of a few per year still occur."
+      },
+      "requires": [
+        "medications",
+        "infusion-pump",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "effects": [],
+      "setFlags": [
+        "ig-replacement"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "lymphocytes"
+      },
+      "response": {
+        "zh-CN": "已开始。原报告本院先给予静脉丙种球蛋白（剂量未记录），此后在另一家医院每月输注。",
+        "en": "Started. The report gave IV immunoglobulin here first (dose not recorded), then monthly infusions at another hospital."
+      }
+    },
+    {
+      "id": "genetic-counselling",
+      "name": {
+        "zh-CN": "遗传咨询与母亲携带者检测",
+        "en": "Genetic counselling and maternal carrier testing"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "遗传咨询",
+          "携带者检测",
+          "母亲检测",
+          "家系",
+          "基因咨询"
+        ],
+        "en": [
+          "genetic counselling",
+          "carrier testing",
+          "maternal testing",
+          "family screening",
+          "genetic counseling"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "genetics"
+      },
+      "response": {
+        "zh-CN": "向家庭说明X连锁隐性遗传：携带变异的男孩发病，母亲多为健康携带者。建议母亲进行携带者检测，并向有风险的女性亲属提供咨询。原报告未提供母亲的检测结果。",
+        "en": "Explain X-linked recessive inheritance to the family: affected boys carry the variant, and the mother is usually a healthy carrier. Offer the mother carrier testing and counselling to at-risk female relatives. The report gives no maternal result."
+      }
+    },
+    {
+      "id": "vaccine-plan",
+      "name": {
+        "zh-CN": "疫苗安全计划（避免活疫苗）",
+        "en": "Vaccine-safety plan (avoid live vaccines)"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "疫苗",
+          "活疫苗",
+          "疫苗安排",
+          "卡介苗",
+          "脊灰糖丸",
+          "预防接种"
+        ],
+        "en": [
+          "vaccines",
+          "live vaccines",
+          "vaccine plan",
+          "bcg",
+          "oral polio",
+          "immunisation plan"
+        ]
+      },
+      "dose": {
+        "zh-CN": "严重抗体缺陷者避免活疫苗（如口服脊灰减毒活疫苗、卡介苗、减毒活疫苗等）；核对已接种史，并告知家庭和其他接种者。灭活疫苗免疫应答可能不足，但在替代治疗背景下无特殊危害。",
+        "en": "In severe antibody deficiency avoid live vaccines (for example oral polio, BCG, live attenuated vaccines); review what he has already had and advise the family and other vaccinators. Responses to inactivated vaccines may be inadequate, but they carry no special harm on replacement therapy."
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "lymphocytes"
+      },
+      "response": {
+        "zh-CN": "已制定计划。原报告未记录疫苗接种史——这很重要，因为国家免疫规划中含有卡介苗和脊灰减毒活疫苗。",
+        "en": "A plan is made. The report records no vaccination history — which matters because the national schedule includes BCG and live attenuated polio."
+      }
+    },
+    {
+      "id": "steroid-eczema",
+      "name": {
+        "zh-CN": "特应性皮炎的皮肤护理（润肤剂、局部治疗）",
+        "en": "Skin care for atopic dermatitis (emollients, topical therapy)"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "湿疹护理",
+          "润肤",
+          "外用药",
+          "皮肤护理",
+          "特应性皮炎治疗",
+          "保湿"
+        ],
+        "en": [
+          "eczema care",
+          "emollient",
+          "topical",
+          "skin care",
+          "moisturiser",
+          "dermatitis treatment"
+        ]
+      },
+      "dose": {
+        "zh-CN": "规律使用润肤剂，按皮肤科意见外用治疗；完整的湿疹皮肤屏障有助于减少葡萄球菌定植和感染入口。",
+        "en": "Regular emollients and topical treatment as dermatology advises; an intact eczema barrier reduces staphylococcal colonisation and portals of entry."
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "asked": "eczema"
+      },
+      "response": {
+        "zh-CN": "已安排皮肤护理和皮肤科随访。原报告诊断为中重度特应性皮炎。",
+        "en": "Skin care and dermatology follow-up arranged. The report's diagnosis is moderate-to-severe atopic dermatitis."
+      }
+    },
+    {
+      "id": "hsct-now",
+      "name": {
+        "zh-CN": "立即安排造血干细胞移植替代替代治疗",
+        "en": "Arrange haematopoietic stem-cell transplant now instead of replacement"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "造血干细胞移植",
+          "骨髓移植",
+          "移植",
+          "干细胞移植",
+          "hsct"
+        ],
+        "en": [
+          "stem cell transplant",
+          "bone marrow transplant",
+          "hsct",
+          "transplant"
+        ]
+      },
+      "dose": {
+        "zh-CN": "转血液/移植中心行造血干细胞移植。",
+        "en": "Refer to a haematology/transplant centre for stem-cell transplantation."
+      },
+      "requires": [],
+      "risk": "high",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "超出本例证据。少数中心对XLA尝试造血干细胞移植并认为可改善预后，但这是研究性的、非标准治疗；标准治疗是免疫球蛋白替代。急性感染期不是作此决定的时机。",
+        "en": "Beyond this case's evidence. A few centres try stem-cell transplantation in XLA and report improved outcomes, but it is investigational, not standard care; the standard is immunoglobulin replacement. An acute infection is not the time to decide this."
+      }
+    },
+    {
+      "id": "live-vaccine",
+      "name": {
+        "zh-CN": "补种国家免疫规划中漏种的减毒活疫苗",
+        "en": "Catch up the missed live attenuated vaccines on the national schedule"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "补种疫苗",
+          "补打活疫苗",
+          "减毒活疫苗",
+          "口服脊灰",
+          "卡介苗补种"
+        ],
+        "en": [
+          "catch up live vaccines",
+          "give live vaccine",
+          "oral polio",
+          "bcg catch-up",
+          "live attenuated"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按免疫规划补种减毒活疫苗。",
+        "en": "Give the missed live attenuated vaccines per the schedule."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "read": "immunoglobulins"
+      },
+      "harm": {
+        "zh-CN": "他是严重抗体缺陷：减毒活疫苗（口服脊灰减毒活疫苗、卡介苗等）禁用，可引起疫苗相关的脊髓灰质炎或播散性卡介苗病（CDC/ACIP免疫功能改变者接种指南）。",
+        "en": "He has a severe antibody deficiency: live attenuated vaccines (oral polio, BCG) are contraindicated and can cause vaccine-associated poliomyelitis or disseminated BCG (CDC/ACIP altered-immunocompetence guidance)."
+      },
+      "response": {
+        "zh-CN": "护士暂缓并请你复核。严重抗体缺陷者禁用减毒活疫苗——口服脊灰减毒活疫苗、卡介苗等可致疫苗相关感染。",
+        "en": "The nurse holds this and asks you to review. Live attenuated vaccines are contraindicated in severe antibody deficiency — oral polio and BCG can cause vaccine-associated infection."
+      }
+    },
+    {
+      "id": "stop-at-discharge",
+      "name": {
+        "zh-CN": "皮损愈合即结束评估，不安排长期免疫随访",
+        "en": "Discharge once the skin heals, with no long-term immune follow-up"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "结束评估",
+          "不随访",
+          "皮损愈合就出院",
+          "不用再查"
+        ],
+        "en": [
+          "stop evaluation",
+          "no follow-up",
+          "discharge when healed",
+          "no further workup"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "不妥。局部感染消退不等于抗体缺陷消失；没有替代治疗，反复感染会继续并累及肺部。确诊后需要终身随访和替代治疗。",
+        "en": "Wrong. Resolution of the local infection does not remove the antibody defect; without replacement, infections recur and damage the lungs. Once confirmed, he needs lifelong follow-up and replacement."
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-history",
+      "title": {
+        "zh-CN": "向家长采集病史",
+        "en": "Take the history from his parent"
+      },
+      "hint": {
+        "zh-CN": "这次脚是怎么红肿、怎么蔓延的，之前用了什么药？他是不是老生病——以前住过几次院、为什么住？湿疹多久了？",
+        "en": "How did the foot swell and spread, and what was tried? Does he get ill a lot — how many admissions, and why? How long has the eczema been there?"
+      },
+      "guidance": {
+        "zh-CN": "家长在床旁。问清这次发病经过、用药、反复感染和住院史、湿疹。",
+        "en": "The parent is at the bedside. Ask about this illness, the medicine tried, the recurrent infections and admissions, and the eczema."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "spread"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "recurrent-infections"
+          },
+          {
+            "asked": "eczema"
+          }
+        ]
+      }
+    },
+    {
+      "id": "obj-exam",
+      "title": {
+        "zh-CN": "床旁查体",
+        "en": "Examine him"
+      },
+      "hint": {
+        "zh-CN": "右足和小腿的皮损、红肿范围、有没有波动感？身上别处的皮肤呢？住院后肺部听诊怎样？",
+        "en": "The lesion, extent of swelling and any fluctuance on the foot and leg? What about skin elsewhere? And the chest once he is admitted?"
+      },
+      "guidance": {
+        "zh-CN": "检查右足及小腿、其余皮肤；住院后复核肺部听诊。",
+        "en": "Examine the right foot and lower leg and the rest of the skin; review the chest after admission."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "foot"
+          },
+          {
+            "examined": "other-lesions"
+          }
+        ]
+      }
+    },
+    {
+      "id": "obj-acute",
+      "title": {
+        "zh-CN": "处理急性感染",
+        "en": "Treat the acute infection"
+      },
+      "hint": {
+        "zh-CN": "蔓延的蜂窝织炎在培养回报前应先经验性覆盖哪些病原？拿到MSSA和胸片结果后怎么调整？",
+        "en": "What should spreading cellulitis be covered for empirically before the culture? How do you adjust once MSSA and the chest film are back?"
+      },
+      "guidance": {
+        "zh-CN": "先经验性抗感染并建立静脉通路，读取培养、超声和胸片后按药敏调整。",
+        "en": "Start empirical antibiotics with IV access, read the culture, ultrasound and chest film, then adjust by sensitivities."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "intervened": "vancomycin"
+          },
+          {
+            "read": "cultures",
+            "phase": "workup"
+          },
+          {
+            "intervened": "directed-abx"
+          }
+        ]
+      }
+    },
+    {
+      "id": "obj-immune-screen",
+      "title": {
+        "zh-CN": "启动免疫学筛查",
+        "en": "Start the immune screen"
+      },
+      "hint": {
+        "zh-CN": "哪些特征提示应查免疫？第一步查哪些？解读IgG降低、IgA缺如、IgM正常后，下一步查什么？",
+        "en": "Which features prompt an immune work-up? What goes first? Having read a low IgG with absent IgA and normal IgM, what next?"
+      },
+      "guidance": {
+        "zh-CN": "在会诊板决定筛查方案，开具并读取免疫球蛋白，然后决定如何解读。",
+        "en": "Decide the screen on the case board, order and read the immunoglobulins, then decide how to interpret them."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "immune-screen"
+          },
+          {
+            "read": "immunoglobulins",
+            "phase": "workup"
+          },
+          {
+            "decided": "interpret-ig"
+          }
+        ]
+      }
+    },
+    {
+      "id": "obj-immune-dx",
+      "title": {
+        "zh-CN": "确认诊断",
+        "en": "Confirm the diagnosis"
+      },
+      "hint": {
+        "zh-CN": "B细胞计数和BTK基因检测说明了什么？用原文表2（临床标准）对照这些结果。",
+        "en": "What do the B-cell count and BTK test show? Check the results against the report's Table 2 (clinical criteria)."
+      },
+      "guidance": {
+        "zh-CN": "调阅外院免疫球蛋白复查和淋巴细胞流式，决定确诊步骤，再读取基因报告。",
+        "en": "Read the outside repeat immunoglobulins and lymphocyte flow, decide the confirmatory step, then read the genetic report."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "lymphocytes",
+            "phase": "immunology"
+          },
+          {
+            "decided": "confirm"
+          },
+          {
+            "read": "genetics",
+            "phase": "immunology"
+          }
+        ]
+      }
+    },
+    {
+      "id": "obj-long-term",
+      "title": {
+        "zh-CN": "制定长期计划并复盘转归",
+        "en": "Plan long-term care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "确诊抗体缺陷后，替代治疗、疫苗和家系遗传咨询怎么安排？",
+        "en": "With an antibody deficiency confirmed, how do you arrange replacement, vaccines and family genetic counselling?"
+      },
+      "guidance": {
+        "zh-CN": "在会诊板决定长期方案，并调阅治疗与随访记录。",
+        "en": "Decide the long-term plan on the case board and read the treatment and follow-up record."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "long-term"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "immune-screen",
+      "prompt": {
+        "zh-CN": "4岁男孩，生后反复湿疹，一年两次肺炎、又因葡萄球菌脓疱住院，这次是从湿疹处发展的蔓延性蜂窝织炎。除处理感染外，下一步最合适的是？",
+        "en": "A 4-year-old with eczema since birth, two pneumonias in a year and an admission for staphylococcal pustules now has a spreading cellulitis from an eczema lesion. Besides treating the infection, what is the best next step?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "asked": "recurrent-infections"
+          },
+          {
+            "asked": "eczema"
+          },
+          {
+            "examined": "foot"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先问清反复感染和住院史、湿疹史，并检查足部皮损。",
+        "en": "First take the recurrent-infection and admission history and the eczema history, and examine the foot lesion."
+      },
+      "options": [
+        {
+          "id": "screen-pid",
+          "text": {
+            "zh-CN": "在抗感染的同时启动免疫缺陷筛查：血清免疫球蛋白（按年龄参考值），含血小板计数和体积的血常规，以及淋巴细胞亚群",
+            "en": "Alongside antibiotics, start an immunodeficiency screen: serum immunoglobulins (against age-specific ranges), a blood count with platelet count and size, and lymphocyte subsets"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。预警特征已经足够：一年内≥2次肺炎、反复需住院的葡萄球菌皮肤感染。一线检查是免疫球蛋白和淋巴细胞亚群；湿疹加反复感染的男孩还要用血小板计数和体积排查Wiskott–Aldrich综合征——而本次住院原报告没有血常规。",
+            "en": "Correct. The warning features are already enough: two or more pneumonias in a year and recurrent staphylococcal skin infection needing admission. The first-line tests are immunoglobulins and lymphocyte subsets; in a boy with eczema and recurrent infection, a platelet count and size also screen for Wiskott–Aldrich syndrome — and the report has no blood count for this admission."
+          }
+        },
+        {
+          "id": "eczema-explains",
+          "text": {
+            "zh-CN": "湿疹本身就能解释反复皮肤感染，只需处理这次蜂窝织炎，不必查免疫",
+            "en": "The eczema explains the recurrent skin infections; just treat this cellulitis, no immune work-up"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。湿疹会增加皮肤感染，但不能解释反复肺炎；一年两次肺炎加需住院的葡萄球菌感染是先天性免疫缺陷的预警信号，应当筛查。",
+            "en": "No. Eczema increases skin infection but does not explain recurrent pneumonia; two pneumonias in a year with staphylococcal infection needing admission is a warning sign of an inborn error of immunity and should be screened."
+          }
+        },
+        {
+          "id": "hiv-only",
+          "text": {
+            "zh-CN": "只查HIV，先排除获得性免疫缺陷，结果阴性再说",
+            "en": "Test for HIV only, to exclude acquired immunodeficiency first, and reconsider if it is negative"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不全面。HIV可以查，但一个有反复细菌感染和湿疹的男孩，表型指向先天性抗体缺陷；只查HIV会漏掉免疫球蛋白和B细胞这些关键一线检查。",
+            "en": "Incomplete. HIV can be checked, but the phenotype in a boy with recurrent bacterial infection and eczema points to an inborn antibody defect; testing HIV alone misses the key first-line immunoglobulin and B-cell tests."
+          }
+        },
+        {
+          "id": "mri-foot",
+          "text": {
+            "zh-CN": "先做足部MRI排除骨髓炎，免疫问题等感染好了再说",
+            "en": "Get a foot MRI to exclude osteomyelitis first; look at immunity once the infection has settled"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。超声已排除脓腔，治疗反应会提示是否需要进一步影像；把免疫评估推到“以后”，正是本例反复漏诊的原因。免疫筛查和感染处理可以同时进行。",
+            "en": "No. The ultrasound already excludes an abscess and the response to treatment will show whether more imaging is needed; deferring the immune evaluation to “later” is exactly how this child was repeatedly missed. The screen and the infection care run together."
+          }
+        }
+      ]
+    },
+    {
+      "id": "interpret-ig",
+      "prompt": {
+        "zh-CN": "免疫球蛋白回报（本院两次）：IgG约3.1 g/L（低），IgA <0.1 g/L（测不到），IgM 1.29 g/L（正常）；IgE在正文与表1之间不一致。最符合这组结果的解读是？",
+        "en": "The immunoglobulins are back (two samples here): IgG about 3.1 g/L (low), IgA <0.1 g/L (undetectable), IgM 1.29 g/L (normal); IgE is inconsistent between the text and Table 1. Which reading fits best?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "immunoglobulins",
+        "phase": "workup"
+      },
+      "need": {
+        "zh-CN": "先调阅免疫球蛋白结果。",
+        "en": "First read the immunoglobulin results."
+      },
+      "options": [
+        {
+          "id": "agamma-count-b",
+          "text": {
+            "zh-CN": "符合抗体缺陷（IgG降低、IgA测不到）：下一步查B细胞计数并考虑BTK基因检测",
+            "en": "An antibody deficiency (low IgG, undetectable IgA): count B cells next and consider BTK testing"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。IgG低加IgA缺如提示抗体生成缺陷，B细胞计数能区分无丙种球蛋白血症（B细胞显著减少）与其他类型。两次结果加外院复查一致，不是一过性。IgM不低并不排除本例表型（原文讨论亦述及异质性）。",
+            "en": "Correct. Low IgG with absent IgA points to defective antibody production, and a B-cell count distinguishes agammaglobulinaemia (markedly reduced B cells) from other defects. Two results here plus the outside repeat agree, so this is not transient. A non-low IgM does not exclude this phenotype (the source discussion notes the heterogeneity)."
+          }
+        },
+        {
+          "id": "selective-iga",
+          "text": {
+            "zh-CN": "选择性IgA缺乏症：IgA测不到即可诊断，其他无需追查",
+            "en": "Selective IgA deficiency: undetectable IgA is enough, nothing more to pursue"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。选择性IgA缺乏要求IgG和IgM正常——这里IgG明显降低，不符合该诊断；低IgG把诊断推向更广泛的抗体缺陷，须查B细胞。",
+            "en": "No. Selective IgA deficiency requires normal IgG and IgM — here the IgG is clearly low, which does not fit that diagnosis; the low IgG moves this to a broader antibody deficiency, and B cells must be counted."
+          }
+        },
+        {
+          "id": "transient-infection",
+          "text": {
+            "zh-CN": "只是这次严重感染引起的一过性低球蛋白血症，感染好了会恢复，不必深究",
+            "en": "Just transient hypogammaglobulinaemia from this severe infection; it will recover, no need to pursue"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。急性炎症一般不会把IgG压到正常下限的一半、也不会让IgA测不到；本院两次与外院复查结果一致，加上反复感染的背景，指向真正的抗体缺陷。",
+            "en": "No. Acute inflammation does not usually halve the IgG or leave IgA undetectable; two samples here and the outside repeat agree, and with the recurrent-infection background this points to a genuine antibody deficiency."
+          }
+        },
+        {
+          "id": "normal-for-age",
+          "text": {
+            "zh-CN": "幼儿免疫球蛋白本来就偏低，属正常范围，不用处理",
+            "en": "Immunoglobulins are naturally low in young children; these are within normal limits and need no action"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。结果是对照实验室年龄参考值报告的（IgG参考7.0–16.0，IgA 0.7–4.0）：IgG约3.1、IgA测不到都明显低于下限，不是年龄正常变异。",
+            "en": "No. The results are reported against the laboratory's age-specific ranges (IgG 7.0–16.0, IgA 0.7–4.0): an IgG of about 3.1 and undetectable IgA are both well below the lower limit, not normal variation for age."
+          }
+        }
+      ]
+    },
+    {
+      "id": "confirm",
+      "prompt": {
+        "zh-CN": "外院复查确认IgG、IgA降低；流式示T、CD4、CD8、NK细胞正常，B细胞绝对计数6.0 cells/μL（参考90–660）。怎样确诊？",
+        "en": "The outside work-up confirms low IgG and IgA; flow cytometry shows normal T, CD4, CD8 and NK cells with a B-cell absolute count of 6.0 cells/µL (reference 90–660). How is the diagnosis confirmed?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "lymphocytes",
+        "phase": "immunology"
+      },
+      "need": {
+        "zh-CN": "先调阅外院流式细胞检测结果。",
+        "en": "First read the outside flow-cytometry results."
+      },
+      "options": [
+        {
+          "id": "btk-gene",
+          "text": {
+            "zh-CN": "B细胞几乎缺失而T细胞正常，符合无丙种球蛋白血症；查BTK基因明确X连锁无丙种球蛋白血症（临床标准＋BTK变异即确诊）",
+            "en": "B cells almost absent with normal T cells fits agammaglobulinaemia; test the BTK gene to confirm X-linked agammaglobulinaemia (clinical criteria plus a BTK variant are diagnostic)"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。T细胞正常、B细胞显著减少，符合原文表2的临床标准（外周血B细胞<2%、IgG降低、5岁前反复感染）；加上BTK基因突变或BTK蛋白表达异常即可确诊。6.0 cells/μL远低于参考下限90。",
+            "en": "Correct. Normal T cells with markedly reduced B cells meet the clinical criteria in the report's Table 2 (peripheral B cells <2%, low IgG, recurrent infection before age 5); a BTK mutation or abnormal BTK protein expression then confirms it. 6.0 cells/µL is far below the lower limit of 90."
+          }
+        },
+        {
+          "id": "scid",
+          "text": {
+            "zh-CN": "T、B细胞都要补充评估，先按重症联合免疫缺陷处理",
+            "en": "Reassess both T and B cells and manage as severe combined immunodeficiency for now"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。T细胞、CD4、CD8和NK细胞计数都正常，不符合SCID（典型为T细胞缺陷）；缺陷局限于B细胞系。",
+            "en": "No. T, CD4, CD8 and NK counts are all normal, which is not SCID (typically a T-cell defect); the defect is confined to the B-cell lineage."
+          }
+        },
+        {
+          "id": "no-gene-needed",
+          "text": {
+            "zh-CN": "湿疹、反复肺炎加B细胞减少已经够了，不必做基因检测",
+            "en": "Eczema, recurrent pneumonia and low B cells are enough; no genetic test is needed"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。临床和免疫表型支持无丙种球蛋白血症，但确诊和家系遗传咨询需要BTK基因结果（原文表2：临床标准＋BTK变异）；基因型也指导对母亲及亲属的检测。",
+            "en": "No. The clinical and immunological phenotype support agammaglobulinaemia, but confirmation and family counselling need the BTK result (Table 2: clinical criteria plus a BTK variant); the genotype also guides testing the mother and relatives."
+          }
+        }
+      ]
+    },
+    {
+      "id": "long-term",
+      "prompt": {
+        "zh-CN": "确诊X连锁无丙种球蛋白血症（合并中重度特应性皮炎）。急性感染已控制。长期计划哪项最合适？",
+        "en": "The diagnosis is X-linked agammaglobulinaemia (with moderate-to-severe atopic dermatitis). The acute infection is controlled. Which long-term plan is best?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "genetics",
+        "phase": "immunology"
+      },
+      "need": {
+        "zh-CN": "先调阅BTK基因报告。",
+        "en": "First read the BTK genetic report."
+      },
+      "options": [
+        {
+          "id": "replacement-plan",
+          "text": {
+            "zh-CN": "终身免疫球蛋白替代（按谷浓度调整），避免减毒活疫苗，感染尽早治疗并监测肺部，向家庭提供遗传咨询和母亲携带者检测",
+            "en": "Lifelong immunoglobulin replacement (trough-guided), avoid live vaccines, treat infections early with lung monitoring, and offer the family genetic counselling and maternal carrier testing"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。替代治疗是主要手段（静脉每3–4周或皮下，按谷浓度），即便规律替代每年仍可能有数次感染（原文讨论）；严重抗体缺陷者禁用减毒活疫苗（CDC/ACIP）；X连锁遗传需对母亲和女性亲属咨询。感染和慢性肺病是主要并发症，需长期随访。",
+            "en": "Correct. Replacement is the mainstay (IV every 3–4 weeks or subcutaneous, trough-guided), with a few infections a year still expected even on regular treatment (the source discussion); live vaccines are contraindicated in severe antibody deficiency (CDC/ACIP); X-linked inheritance calls for counselling the mother and female relatives. Infection and chronic lung disease are the main complications, so follow-up is lifelong."
+          }
+        },
+        {
+          "id": "transplant-now",
+          "text": {
+            "zh-CN": "立即安排造血干细胞移植替代免疫球蛋白替代治疗",
+            "en": "Arrange haematopoietic stem-cell transplant now instead of immunoglobulin replacement"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。XLA的标准治疗是免疫球蛋白替代；造血干细胞移植在个别中心用于XLA并报告可能改善预后，但仍属研究性、非一线，不应在急性感染后立即取代替代治疗。",
+            "en": "No. The standard of care in XLA is immunoglobulin replacement; stem-cell transplantation is used in a few centres and reported to possibly improve outcomes, but it is investigational and not first-line, and should not replace replacement therapy straight after an acute infection."
+          }
+        },
+        {
+          "id": "antibiotic-prophylaxis-only",
+          "text": {
+            "zh-CN": "只长期口服预防性抗生素，不用免疫球蛋白替代",
+            "en": "Long-term prophylactic antibiotics alone, without immunoglobulin replacement"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。预防性抗生素可作为辅助，但不能纠正根本的抗体缺陷；不替代免疫球蛋白，反复感染和慢性肺病会继续进展。",
+            "en": "No. Prophylactic antibiotics may be an adjunct but do not correct the underlying antibody defect; without immunoglobulin replacement, recurrent infection and chronic lung disease progress."
+          }
+        },
+        {
+          "id": "discharge-no-followup",
+          "text": {
+            "zh-CN": "皮损愈合即结束评估，不安排长期免疫随访和疫苗调整",
+            "en": "Discharge once the skin heals, with no long-term immune follow-up or vaccine review"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。局部感染消退不代表免疫缺陷消失；没有替代治疗和随访，患者会继续反复感染并累及肺部，疫苗安全问题也会被忽略。",
+            "en": "No. Resolution of the local infection does not remove the immunodeficiency; without replacement and follow-up he keeps getting infections that damage the lungs, and the vaccine-safety issue is missed."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-hx",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问清本次发病、用药、反复感染/住院史和湿疹",
+        "en": "This illness, the medicine tried, the recurrent-infection/admission history and the eczema asked"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "spread"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "recurrent-infections"
+          },
+          {
+            "asked": "eczema"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-hx-organism",
+      "domain": "history",
+      "text": {
+        "zh-CN": "问出既往皮肤感染的病原（金黄色葡萄球菌）",
+        "en": "The organism from the earlier skin infection (Staphylococcus aureus) elicited"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "prior-organism"
+      }
+    },
+    {
+      "id": "rb-exam",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "检查右足皮损、其余皮肤和肺部",
+        "en": "The right-foot lesion, the rest of the skin and the chest examined"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "foot"
+          },
+          {
+            "examined": "other-lesions"
+          },
+          {
+            "examined": "lungs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-acute",
+      "domain": "management",
+      "text": {
+        "zh-CN": "经验性抗感染后按MSSA药敏调整",
+        "en": "Empirical antibiotics given, then adjusted to the MSSA sensitivities"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "intervened": "vancomycin"
+          },
+          {
+            "intervened": "directed-abx"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-inv",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅培养、超声、胸片和免疫球蛋白",
+        "en": "Cultures, ultrasound, chest film and immunoglobulins read"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "cultures",
+            "phase": "workup"
+          },
+          {
+            "read": "foot-ultrasound",
+            "phase": "workup"
+          },
+          {
+            "read": "chest",
+            "phase": "workup"
+          },
+          {
+            "read": "immunoglobulins",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-screen",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "首次即选择在抗感染同时启动免疫缺陷筛查（含血小板）",
+        "en": "The immunodeficiency screen (with platelets) started alongside antibiotics, chosen first time"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "immune-screen"
+      }
+    },
+    {
+      "id": "rb-interpret",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次即正确解读免疫球蛋白并排除选择性IgA缺乏",
+        "en": "Immunoglobulins interpreted correctly first time and selective IgA deficiency excluded"
+      },
+      "weight": 2,
+      "met": {
+        "decidedFirstTry": "interpret-ig"
+      }
+    },
+    {
+      "id": "rb-confirm",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次即以B细胞计数和BTK基因确诊XLA",
+        "en": "XLA confirmed first time by B-cell count and BTK testing"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "confirm"
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-safety-longterm",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "首次即选择替代治疗、避免活疫苗、遗传咨询的长期方案",
+        "en": "The long-term plan — replacement, no live vaccines, genetic counselling — chosen first time"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "long-term"
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-safety-vaccine",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "未给严重抗体缺陷患儿补种减毒活疫苗",
+        "en": "No live attenuated vaccine given to a child with severe antibody deficiency"
+      },
+      "weight": 2,
+      "met": {
+        "not": {
+          "intervened": "live-vaccine"
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "long-term"
+          },
+          {
+            "intervened": "live-vaccine"
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "对照原报告的治疗与随访记录复盘",
+        "en": "Reported treatment and follow-up reviewed"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-comm",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "与家长沟通：解释诊断、替代治疗、疫苗安全和遗传咨询",
+        "en": "Communication with the parent: diagnosis, replacement, vaccine safety and genetic counselling explained"
+      },
+      "weight": 2,
+      "judgeGuidance": {
+        "zh-CN": "用家长听得懂的话说明：为什么从一次脚部感染查到了免疫问题、这是什么病、为什么要终身规律输丙种球蛋白、为什么不能打某些减毒活疫苗、为什么要给妈妈和家里人做检查；承认不确定性，回应担忧，用复述确认理解；不使用未解释的术语，不作超出病历的承诺。",
+        "en": "In words the parent understands, explains why one foot infection led to an immune diagnosis, what the condition is, why he needs lifelong regular immunoglobulin infusions, why certain live vaccines must be avoided, and why the mother and relatives should be tested; acknowledges uncertainty, responds to the parent's worry, checks understanding by teach-back; uses no unexplained jargon and promises nothing beyond the record."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "责任护士",
+        "en": "Ward nurse"
+      },
+      "knowledge": {
+        "zh-CN": "入院交接：4岁1个月男孩，发热3天，右足背红肿疼痛1天余并向小腿蔓延，口服阿莫西林克拉维酸无效，家长陪护。建立静脉通路时可一并采血、取皮损分泌物送培养；丙种球蛋白输注需输液泵。外院的免疫球蛋白复查、流式和基因报告在病历系统里可以调阅。",
+        "en": "Admission handover: boy aged 4 years 1 month, 3 days of fever, just over a day of a painful, swollen right foot spreading up the leg, no response to oral amoxicillin–clavulanate, a parent staying. Bloods and a lesion swab can be taken when the cannula goes in; immunoglobulin infusions run on a pump. The outside repeat immunoglobulins, flow cytometry and genetic report are available to review in the record system."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "免疫科医生",
+        "en": "Immunologist"
+      },
+      "knowledge": {
+        "zh-CN": "先天性免疫缺陷的预警特征包括一年内≥2次肺炎、反复需住院的深部或葡萄球菌感染。一线检查是免疫球蛋白（按年龄参考值）和淋巴细胞亚群。IgG降低即不符合选择性IgA缺乏。湿疹加反复感染的男孩要想到Wiskott–Aldrich综合征，须查血小板计数和体积。无丙种球蛋白血症表现为B细胞显著减少而T细胞正常（原文表2：B细胞<2%）。严重抗体缺陷者禁用减毒活疫苗。",
+        "en": "Warning features of an inborn error of immunity include two or more pneumonias in a year and recurrent deep or staphylococcal infection needing admission. First-line tests are immunoglobulins (against age-specific ranges) and lymphocyte subsets. A low IgG does not fit selective IgA deficiency. A boy with eczema and recurrent infection should prompt thought of Wiskott–Aldrich syndrome, so check the platelet count and size. Agammaglobulinaemia shows markedly reduced B cells with normal T cells (Table 2: B cells <2%). Live attenuated vaccines are contraindicated in severe antibody deficiency."
+      },
+      "interprets": [
+        "immunoglobulins",
+        "ig-outside",
+        "lymphocytes",
+        "genetics"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "上级医师",
+        "en": "Attending"
+      },
+      "knowledge": {
+        "zh-CN": "这是历史病例教学。先让学员陈述证据再追问：哪些特征提示免疫缺陷；为什么低IgG排除选择性IgA缺乏；湿疹加反复感染的男孩还要考虑什么（Wiskott–Aldrich，本例未查血小板）；一个适度升高的IgE（306 μg/L）有多大意义，注意正文与表1的矛盾；XLA的临床与基因诊断标准；替代治疗、疫苗安全和遗传咨询。不替学员作答。",
+        "en": "This is a historical teaching case. Let the learner state the evidence first, then ask: which features prompt an immune work-up; why a low IgG excludes selective IgA deficiency; what else to consider in a boy with eczema and recurrent infection (Wiskott–Aldrich; no platelet count here); how much weight a modestly raised IgE (306 µg/L) carries, noting the text/table discrepancy; the clinical and genetic criteria for XLA; and replacement, vaccine safety and genetic counselling. Do not answer for the learner."
+      },
+      "interprets": [
+        "inflammatory",
+        "cultures",
+        "foot-ultrasound",
+        "chest",
+        "immunoglobulins",
+        "ig-outside",
+        "lymphocytes",
+        "genetics",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "复盘：反复感染与湿疹的男孩",
+      "en": "Debrief: a boy with recurrent infection and eczema"
+    },
+    "conclusion": {
+      "zh-CN": "原报告诊断为X连锁无丙种球蛋白血症（XLA），合并中重度特应性皮炎。本次因从湿疹处发展的蔓延性蜂窝织炎（金黄色葡萄球菌，MSSA）和双肺支气管肺炎入院；反复细菌感染、IgG与IgA降低而B细胞显著减少、以及BTK半合子变异相互印证。治疗为急性期针对性抗感染，继以免疫球蛋白替代（本院先静脉给予，此后每月输注）。",
+      "en": "The report diagnosed X-linked agammaglobulinaemia (XLA) with moderate-to-severe atopic dermatitis. He presented with a spreading cellulitis from an eczema lesion (Staphylococcus aureus, MSSA) and bilateral bronchopneumonia; recurrent bacterial infection, low IgG and IgA with markedly reduced B cells, and a hemizygous BTK variant are concordant. Treatment was directed antibiotics acutely, then immunoglobulin replacement (IV here first, then monthly)."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "先天性免疫缺陷的预警特征：一年内≥2次肺炎、反复需住院的葡萄球菌皮肤感染——即便湿疹能解释部分皮肤问题，也不能解释反复肺炎，应及早筛查免疫。",
+        "en": "Warning features of an inborn error of immunity: two or more pneumonias in a year and recurrent staphylococcal skin infection needing admission — eczema may explain some skin problems but not the recurrent pneumonia, so screen immunity early."
+      },
+      {
+        "zh-CN": "IgG降低即不符合选择性IgA缺乏（后者要求IgG、IgM正常）；下一步是查B细胞计数，区分无丙种球蛋白血症与其他抗体缺陷。IgM不低不排除本例表型。",
+        "en": "A low IgG excludes selective IgA deficiency (which requires normal IgG and IgM); the next step is a B-cell count, separating agammaglobulinaemia from other antibody defects. A non-low IgM does not exclude this phenotype."
+      },
+      {
+        "zh-CN": "湿疹加反复感染的男孩还须考虑Wiskott–Aldrich综合征——本次住院原报告没有血常规，也就没有血小板计数和体积，这正是本例应补的检查。",
+        "en": "A boy with eczema and recurrent infection must also prompt thought of Wiskott–Aldrich syndrome — the report has no blood count for this admission, so no platelet count or size, which is the test this case would add."
+      },
+      {
+        "zh-CN": "确诊依据原文表2：外周血B细胞<2%、T细胞正常、IgG降低、5岁前反复感染，加上BTK基因变异或BTK蛋白表达异常。本例B细胞6.0 cells/μL、c.1632-2A>G半合子变异符合。",
+        "en": "Confirmation follows the report's Table 2: peripheral B cells <2%, normal T cells, low IgG, recurrent infection before age 5, plus a BTK variant or abnormal BTK protein expression. Here B cells of 6.0 cells/µL and a hemizygous c.1632-2A>G variant fit."
+      },
+      {
+        "zh-CN": "原文自相矛盾的IgE照录：正文称“IgM、IgE无异常”，表1为306 μg/L（高于<144）。保持两种表述并标注出处，不擅自取舍——一个适度升高的IgE权重有限，不改变诊断。",
+        "en": "The contradictory IgE is kept as published: the text says “IgM and IgE unremarkable”, Table 1 gives 306 µg/L (above <144). Keep both with their sources and do not choose between them — a modestly raised IgE carries limited weight and does not change the diagnosis."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单个历史病例：不能据此证明某种治疗的独立疗效或普遍适用性。原报告未记录各药的剂量和疗程、免疫球蛋白替代剂量和谷浓度、随访时长、患儿体重、本次住院的血常规（含血小板）、疫苗接种史，以及母亲的携带者状态。B细胞只给出绝对计数，未给百分比。本场景不模拟治疗反应，所有结局来自原报告。",
+      "en": "This is a single historical case: it cannot establish the independent efficacy or general applicability of any treatment. The report does not record drug doses or durations, the immunoglobulin replacement dose or troughs, the follow-up length, the child's weight, a blood count with platelets for this admission, the vaccination history, or the mother's carrier status. Only the absolute B-cell count is given, not a percentage. Treatment responses are not simulated; every outcome comes from the report."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "患儿体重；本次住院的血常规及血小板计数和体积；免疫球蛋白替代的剂量和谷浓度。",
+        "en": "The child's weight; a blood count with platelet count and size for this admission; the immunoglobulin replacement dose and troughs."
+      },
+      {
+        "zh-CN": "疫苗接种史（含卡介苗和口服脊灰减毒活疫苗）；家族史和母亲携带者状态。",
+        "en": "Vaccination history (including BCG and oral polio); family history and maternal carrier status."
+      },
+      {
+        "zh-CN": "B细胞百分比（仅给出绝对计数）；各药剂量和疗程；随访时长；IgE矛盾的原因。",
+        "en": "The B-cell percentage (only the absolute count is given); drug doses and durations; the follow-up length; the reason for the IgE discrepancy."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "反复感染的预警：一年内≥2次肺炎、反复需住院的深部或葡萄球菌感染，应筛查先天性免疫缺陷；一线查免疫球蛋白（按年龄参考值）和淋巴细胞亚群，湿疹加反复感染的男孩加查血小板计数和体积（Wiskott–Aldrich）。",
+        "en": "Warning signs of recurrent infection: two or more pneumonias in a year and recurrent deep or staphylococcal infection needing admission should prompt screening for an inborn error of immunity; first-line immunoglobulins (against age-specific ranges) and lymphocyte subsets, with a platelet count and size in a boy with eczema and recurrent infection (Wiskott–Aldrich)."
+      },
+      {
+        "zh-CN": "解读抗体：IgG低加IgA缺如不符合选择性IgA缺乏，须查B细胞；B细胞显著减少（<2%）而T细胞正常提示无丙种球蛋白血症。",
+        "en": "Reading antibodies: low IgG with absent IgA does not fit selective IgA deficiency, so count B cells; markedly reduced B cells (<2%) with normal T cells indicate agammaglobulinaemia."
+      },
+      {
+        "zh-CN": "XLA的诊断（原文表2，ESID临床标准）：外周血B细胞（CD19⁺/CD20⁺）<2%、T细胞正常；IgG降低（婴儿期<200 mg/dl、1岁以上<500 mg/dl，或IgG正常但IgA及IgM<−2SD）；5岁前反复感染或母系亲属有XLA家族史；加上BTK基因变异或BTK蛋白表达异常即确诊。",
+        "en": "Diagnosing XLA (the report's Table 2, ESID clinical criteria): peripheral B cells (CD19⁺/CD20⁺) <2% with normal T cells; low IgG (infancy <200 mg/dl, over 1 year <500 mg/dl, or normal IgG with IgA and IgM below −2 SD); recurrent infection before age 5 or a maternal family history of XLA; plus a BTK variant or abnormal BTK protein expression to confirm."
+      },
+      {
+        "zh-CN": "长期管理：免疫球蛋白替代为主（静脉每3–4周或皮下，按谷浓度），即便规律替代每年仍可能有数次感染；感染尽早治疗并监测肺部（感染和慢性肺病是主要死因）。",
+        "en": "Long-term management: immunoglobulin replacement is the mainstay (IV every 3–4 weeks or subcutaneous, trough-guided), with a few infections a year still expected on regular treatment; treat infections early and monitor the lungs (infection and chronic lung disease are the leading causes of death)."
+      },
+      {
+        "zh-CN": "疫苗安全：严重抗体缺陷者禁用减毒活疫苗（口服脊灰减毒活疫苗、卡介苗等；CDC/ACIP免疫功能改变者接种指南）。这在本例尤为重要，因为国家免疫规划含这些活疫苗，而患儿接种史未记录。",
+        "en": "Vaccine safety: live attenuated vaccines are contraindicated in severe antibody deficiency (oral polio, BCG; CDC/ACIP altered-immunocompetence guidance). This matters here because the national schedule includes these live vaccines and his immunisation history is not recorded."
+      },
+      {
+        "zh-CN": "遗传：XLA为X连锁隐性遗传，携带BTK变异的男孩发病，母亲多为健康携带者；应向母亲提供携带者检测，向有风险的女性亲属提供遗传咨询（GeneReviews）。",
+        "en": "Genetics: XLA is X-linked recessive — boys who carry the BTK variant are affected and the mother is usually a healthy carrier; offer the mother carrier testing and at-risk female relatives genetic counselling (GeneReviews)."
+      }
+    ],
+    "references": [
+      "李靜, 黃潔馨, 苗研. 以反復感染及濕疹為表現的X連鎖無丙種球蛋白血症1例基因診斷. 鏡湖醫學. 2025;25(2):52-53. doi:10.12408/j.issn2223-4462.2025.02.015. Available from: https://rs.yiigle.com/cmaid/1653404",
+      "Smith CIE, Berglöf A. X-linked agammaglobulinemia. In: Adam MP, Feldman J, Mirzaa GM, et al., editors. GeneReviews. Seattle (WA): University of Washington, Seattle; 1993-2024. Available from: https://www.ncbi.nlm.nih.gov/books/NBK1453/",
+      "Seidel MG, Kindle G, Gathmann B, et al. The European Society for Immunodeficiencies (ESID) Registry working definitions for the clinical diagnosis of inborn errors of immunity. J Allergy Clin Immunol Pract. 2019;7(6):1763-1770. doi:10.1016/j.jaip.2019.02.004",
+      "Centers for Disease Control and Prevention. Altered immunocompetence. General Best Practice Guidelines for Immunization. Atlanta: CDC; updated 2023."
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，是教学脚本评估，并非经过验证的能力评分。",
+      "en": "Scores measure completion of this teaching pathway — a teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "患儿体重；本次住院的血常规及血小板计数和体积；免疫球蛋白替代的剂量和谷浓度。",
+      "en": "The child's weight; a blood count with platelet count and size for this admission; the immunoglobulin replacement dose and troughs."
+    },
+    {
+      "zh-CN": "疫苗接种史（含卡介苗和口服脊灰减毒活疫苗）；家族史和母亲携带者状态。",
+      "en": "Vaccination history (including BCG and oral polio); family history and maternal carrier status."
+    },
+    {
+      "zh-CN": "B细胞百分比（仅给出绝对计数）；各药剂量和疗程；随访时长；IgE矛盾的原因。",
+      "en": "The B-cell percentage (only the absolute count is given); drug doses and durations; the follow-up length; the reason for the IgE discrepancy."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1653404/fig01.png",
+      "title": {
+        "zh-CN": "原报告图1：皮肤病灶照片（右足背、足侧及臀部）",
+        "en": "Source Figure 1: clinical photographs of the skin lesions (dorsum and side of the right foot, and the buttocks)"
+      },
+      "credit": {
+        "zh-CN": "原报告图，李靜、黃潔馨、苗研，2025。版权归原权利人。",
+        "en": "Original report figure, Li Jing, Huang Jiexin, Miao Yan, 2025. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "3d5374a5ae3d5c0af600d4b07098ba383032840058e8a096fd5595831aaa7f68"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1653404/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘；第2页下部及第3页为同期其他文章及其配图）",
+        "en": "Source PDF (contains the outcome; for debrief review; the lower half of page 2 and page 3 carry other articles and their figures)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "71d6db5391699190f0063baf7ac6bd132ca2dd6f1c3eba18782722020333873d"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "spread"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "recurrent-infections"
+    },
+    {
+      "type": "ask",
+      "itemId": "eczema"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-organism"
+    },
+    {
+      "type": "ask",
+      "itemId": "ear-infections"
+    },
+    {
+      "type": "ask",
+      "itemId": "diarrhoea"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "immunisation"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "siblings"
+    },
+    {
+      "type": "ask",
+      "itemId": "growth"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "psh"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "foot"
+    },
+    {
+      "type": "examine",
+      "findingId": "other-lesions"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "vancomycin"
+    },
+    {
+      "type": "ask",
+      "itemId": "cough"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs"
+    },
+    {
+      "type": "order",
+      "investigationId": "inflammatory"
+    },
+    {
+      "type": "read",
+      "investigationId": "inflammatory",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "cultures"
+    },
+    {
+      "type": "read",
+      "investigationId": "cultures",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "foot-ultrasound"
+    },
+    {
+      "type": "read",
+      "investigationId": "foot-ultrasound",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "chest"
+    },
+    {
+      "type": "read",
+      "investigationId": "chest",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "immunoglobulins"
+    },
+    {
+      "type": "read",
+      "investigationId": "immunoglobulins",
+      "phase": "workup"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "directed-abx"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "immunology-referral"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "steroid-eczema"
+    },
+    {
+      "type": "answer",
+      "decisionId": "immune-screen",
+      "optionIds": [
+        "screen-pid"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "interpret-ig",
+      "optionIds": [
+        "agamma-count-b"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "ig-outside"
+    },
+    {
+      "type": "read",
+      "investigationId": "ig-outside",
+      "phase": "immunology"
+    },
+    {
+      "type": "order",
+      "investigationId": "lymphocytes"
+    },
+    {
+      "type": "read",
+      "investigationId": "lymphocytes",
+      "phase": "immunology"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "ivig-replacement"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "vaccine-plan"
+    },
+    {
+      "type": "answer",
+      "decisionId": "confirm",
+      "optionIds": [
+        "btk-gene"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "genetics"
+    },
+    {
+      "type": "read",
+      "investigationId": "genetics",
+      "phase": "immunology"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "genetic-counselling"
+    },
+    {
+      "type": "answer",
+      "decisionId": "long-term",
+      "optionIds": [
+        "replacement-plan"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1653404",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1653404",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "孩子这次是怎么了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "烧了几天了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What's brought him in?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long has he had a fever?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "脚上的肿是怎么开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "红肿是不是越来越往上？",
+        "locale": "zh-CN",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "How did the foot swelling begin?",
+        "locale": "en",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "Is the redness spreading up his leg?",
+        "locale": "en",
+        "expect": [
+          "spread"
+        ]
+      },
+      {
+        "text": "来之前给他吃了什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "用过抗生素吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What has he taken for this so far?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Has he had any antibiotics?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "他以前住过几次院？",
+        "locale": "zh-CN",
+        "expect": [
+          "recurrent-infections"
+        ]
+      },
+      {
+        "text": "孩子是不是老生病？",
+        "locale": "zh-CN",
+        "expect": [
+          "recurrent-infections"
+        ]
+      },
+      {
+        "text": "Has he been in hospital before?",
+        "locale": "en",
+        "expect": [
+          "recurrent-infections"
+        ]
+      },
+      {
+        "text": "Does he get a lot of infections?",
+        "locale": "en",
+        "expect": [
+          "recurrent-infections"
+        ]
+      },
+      {
+        "text": "湿疹是什么时候开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "eczema"
+        ]
+      },
+      {
+        "text": "他皮肤一直不好吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "eczema"
+        ]
+      },
+      {
+        "text": "Did the eczema begin when he was little?",
+        "locale": "en",
+        "expect": [
+          "eczema"
+        ]
+      },
+      {
+        "text": "Has he had skin problems for long?",
+        "locale": "en",
+        "expect": [
+          "eczema"
+        ]
+      },
+      {
+        "text": "以前长脓包查出来是什么菌？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-organism"
+        ]
+      },
+      {
+        "text": "What grew from the pus last time?",
+        "locale": "en",
+        "expect": [
+          "prior-organism"
+        ]
+      },
+      {
+        "text": "住院后他咳嗽吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "cough"
+        ]
+      },
+      {
+        "text": "Has he developed a cough?",
+        "locale": "en",
+        "expect": [
+          "cough"
+        ]
+      },
+      {
+        "text": "他常拉肚子吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "diarrhoea"
+        ]
+      },
+      {
+        "text": "Does he get diarrhoea often?",
+        "locale": "en",
+        "expect": [
+          "diarrhoea"
+        ]
+      },
+      {
+        "text": "他耳朵老发炎吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "ear-infections"
+        ]
+      },
+      {
+        "text": "打过卡介苗和脊灰糖丸吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "immunisation"
+        ]
+      },
+      {
+        "text": "What vaccines has he had?",
+        "locale": "en",
+        "expect": [
+          "immunisation"
+        ]
+      },
+      {
+        "text": "妈妈那边有男孩子也老生病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Any family history on the mother's side?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "他有兄弟姐妹吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "siblings"
+        ]
+      },
+      {
+        "text": "他长得好不好？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "有没有药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Any drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "你们最担心什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "What are you most worried about?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "他做过手术吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "psh"
+        ]
+      }
+    ]
+  }
+}

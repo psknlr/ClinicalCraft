@@ -42,6 +42,7 @@ export class Intro {
   private query = "";
   private specialty = "";
   private setting = "";
+  private collection = "";
   private listEl: HTMLElement | null = null;
   private countEl: HTMLElement | null = null;
   /** The case whose learning-outcomes disclosure the learner opened (kept across re-renders). */
@@ -357,13 +358,24 @@ export class Intro {
       h("option", { value: "" }, tr("library.allSettings")),
       settings.map((s) => h("option", { value: s, selected: s === this.setting }, trMaybe(`setting.${s}`, s))),
     );
+    const cmcrCount = cards.filter((c) => c.tags.includes("cmcr-20")).length;
+    const collection = cmcrCount ? h("select", {
+      id: "filter-collection",
+      "aria-label": tr("library.allCollections"),
+      onchange: (e: Event) => {
+        this.collection = (e.target as HTMLSelectElement).value;
+        this.renderList(selected);
+      },
+    },
+    h("option", { value: "", selected: !this.collection }, tr("library.allCollections")),
+    h("option", { value: "cmcr-20", selected: this.collection === "cmcr-20" }, tr("library.cmcrCollection", { n: cmcrCount }))) : null;
     this.countEl = h("span", { class: "count" });
     this.listEl = h("div", { class: "case-list", id: "case-list", role: "listbox", "aria-label": tr("library.title") });
     const lib = h(
       "section",
       { class: "library", "aria-labelledby": "library-title" },
       h("header", { class: "library-head" }, h("div", null, h("div", { class: "eyebrow" }, tr("library.kicker")), h("h2", { id: "library-title" }, tr("library.title"))), this.countEl),
-      h("div", { class: "library-filters" }, search, h("div", { class: "row" }, spec, sett)),
+      h("div", { class: "library-filters" }, search, h("div", { class: "row wrap" }, collection, spec, sett)),
       this.listEl,
       selected ? this.selectedSummary(selected) : null,
     );
@@ -372,6 +384,7 @@ export class Intro {
   }
 
   private matches(c: CaseCard): boolean {
+    if (this.collection && !c.tags.includes(this.collection)) return false;
     if (this.specialty && !c.specialty.some((id) => specialtyLabel(id) === this.specialty)) return false;
     if (this.setting && c.setting !== this.setting) return false;
     const q = this.query.trim().toLowerCase();

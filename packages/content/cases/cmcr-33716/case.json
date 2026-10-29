@@ -1,0 +1,4074 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33716",
+  "version": "1.1.0",
+  "title": {
+    "zh-CN": "反复发热与咯血 · 29岁男性",
+    "en": "Recurrent fever and haemoptysis · 29-year-old man"
+  },
+  "summary": {
+    "zh-CN": "29岁男性，断续发热4个月，辗转多家医院未能明确，近1周咳嗽、咯血、喘息：收入呼吸科后重新梳理病程。",
+    "en": "A 29-year-old man with four months of intermittent fever and no answer from several hospitals, now with a week of cough, haemoptysis and wheeze: review his course after admission to the respiratory ward."
+  },
+  "specialty": [
+    "cardiology",
+    "infectious-disease",
+    "cardiac-surgery"
+  ],
+  "difficulty": 3,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "当长期发热伴新出现的杂音或血管事件（颅内出血、动脉瘤）时，识别感染性心内膜炎为统一诊断，并在抗菌药之前采集血培养、安排超声心动图（ESC 2023）。",
+      "en": "Recognise infective endocarditis as the unifying diagnosis when prolonged fever comes with a new murmur or a vascular event (intracranial haemorrhage, aneurysm), and take blood cultures before antibiotics and arrange echocardiography (ESC 2023)."
+    },
+    {
+      "zh-CN": "运用ESC 2023改良Duke标准，说明屎肠球菌为何不是“典型”致病菌，以及1项主要标准加3项次要标准如何使诊断“确定”。",
+      "en": "Apply the ESC 2023 modified Duke criteria, including why E. faecium is not a 'typical' organism and how 1 major plus 3 minor criteria make the diagnosis definite."
+    },
+    {
+      "zh-CN": "说明左心感染性心内膜炎合并心衰时ESC 2023的手术指征和时机，以及既往脑出血或缺血性卒中如何影响手术时机。",
+      "en": "State the ESC 2023 indication for and timing of surgery in left-sided endocarditis with heart failure, and how a previous intracranial haemorrhage or ischaemic stroke affects the timing."
+    },
+    {
+      "zh-CN": "解释为什么几个月前正常的超声心动图和首诊时没有杂音，都不能排除感染性心内膜炎。",
+      "en": "Explain why normal echocardiograms months earlier and no murmur at a first visit do not exclude infective endocarditis."
+    },
+    {
+      "zh-CN": "指出本例延误诊断的“锚定”（发热被标为败血症、癔症，注意力集中在脑部），并说明发热患者出现颅内动脉瘤时应如何评估。",
+      "en": "Identify the anchoring that delayed this diagnosis (fever labelled sepsis and hysteria, attention fixed on the brain) and describe how a febrile patient with an intracranial aneurysm should be worked up."
+    }
+  ],
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "郭彩霞, 付强, 陈步星. 屎肠球菌致感染性心内膜炎一例. 中华心血管病杂志. 2014;42(2):172-173. doi:10.3760/cma.j.issn.0253-3758.2014.02.016. Available from: https://rs.yiigle.com/cmaid/33716",
+    "doi": "10.3760/cma.j.issn.0253-3758.2014.02.016",
+    "authors": [
+      "郭彩霞",
+      "付强",
+      "陈步星"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例（中华心血管病杂志，2014）改写。保留年龄、性别、病程、查体、检验和影像结果、报告中的诊断、手术、病理和作者讨论；姓名为化名，医院、城市和日历日期已去除，时间以入院日为第0天的相对时间表示。改写为教学的部分：分阶段的接诊（呼吸科入院、转心内科后的检查、原报告的治疗与转归）、对话措辞、人物设定、决策选项、干预条目和评分。原报告未记录的数据保持未知。导出记录中的DOI含一个长破折号；本病例采用PDF页脚印刷的连字符形式。原报告图1保留原有标注。源PDF第2页下半页起为另一篇病例报告。",
+      "en": "Adapted from a published case report (Chinese Journal of Cardiology, 2014). Age, sex, course, examination, laboratory and imaging results, and the report's diagnoses, operation, pathology and discussion are kept; the name is a pseudonym, and hospitals, the city and calendar dates are removed (times are relative to admission, day 0). Adapted for teaching: the staged encounter (respiratory-ward admission, the work-up after transfer to cardiology, the reported treatment and outcome), dialogue wording, persona, decision options, interventions and scoring. Data the report does not record stay unknown. The export record's DOI contains an en dash; this case uses the hyphenated form printed in the PDF footer. Report figure 1 keeps its original annotations. From the lower half of page 2 the source PDF carries another case report."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ESC 2023 endocarditis guideline",
+        "Duke-ISCVID 2023 criteria for infective endocarditis"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "周先生（化名）",
+      "en": "Mr Zhou (pseudonym)"
+    },
+    "age": 29,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "间断发热4个月，咳嗽、咳痰、咯血伴喘息1周",
+      "en": "Intermittent fever for four months; cough, sputum, haemoptysis and wheeze for one week"
+    },
+    "triageNote": {
+      "zh-CN": "病房交班：29岁男性，昨天经急诊收入呼吸科。入院测得体温38.6 ℃，脉搏120次/分，呼吸20次/分，血压120/70 mmHg。",
+      "en": "Ward handover: 29-year-old man admitted to the respiratory ward from the ED yesterday. On admission: temperature 38.6 °C, pulse 120/min, respiratory rate 20/min, BP 120/70 mmHg."
+    },
+    "tags": [
+      {
+        "zh-CN": "长期发热",
+        "en": "Prolonged fever"
+      },
+      {
+        "zh-CN": "多次就医",
+        "en": "Seen at several hospitals"
+      },
+      {
+        "zh-CN": "既往外伤手术",
+        "en": "Previous trauma surgery"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "29岁男性，四个月来辗转好几家医院，烧一直没退，又累又着急，盼着查清到底是什么病；配合问诊。",
+        "en": "A 29-year-old man passed between several hospitals for four months with fevers that never settle; tired and worried, keen to find out what is wrong; cooperative."
+      },
+      "speechStyle": {
+        "zh-CN": "说话带喘，句子短，用家常话；记得几家医院说过的话，但说不出药名和检查数值；不用医学术语。",
+        "en": "Short, slightly breathless sentences in everyday words; remembers what the hospitals told him but not drug names or test values; avoids medical terms."
+      },
+      "healthLiteracy": "medium",
+      "affect": "breathless",
+      "openingLine": {
+        "zh-CN": "医生，我这烧断断续续四个月了，这礼拜又咳嗽、咳血，喘得厉害。",
+        "en": "Doctor, I've had fevers on and off for four months, and this week I've been coughing up blood and I'm really wheezy."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "只讲已经问到的事实，用自己的话说，不增减天数、体温或检查结果；说几句就要喘口气；不谈检查结果的意义，不说诊断。",
+        "en": "Only state facts that have been asked about, in your own words, without changing days, temperatures or results; pause for breath every few sentences; do not interpret results or name a diagnosis."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "sitting"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "入院：呼吸科病房",
+        "en": "Admission: respiratory ward"
+      },
+      "description": {
+        "zh-CN": "入院第0天，呼吸内科病房。周先生昨天经急诊收入。接诊：采集病史、查体，调阅急诊和外院记录，并决定下一步。",
+        "en": "Day 0, the respiratory ward. Mr Zhou was admitted from the ED yesterday. See him: take the history, examine him, review the ED and earlier records, and decide the next step."
+      },
+      "learnerSwitchable": false
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "入院后检查（心内科）",
+        "en": "Work-up after admission (cardiology)"
+      },
+      "description": {
+        "zh-CN": "转入心内科后：超声心动图、血培养、血液检查和神经系统记录陆续回报。",
+        "en": "After his transfer to cardiology the echocardiogram, the blood cultures, the blood tests and the neurological record come back."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "first-steps"
+          },
+          {
+            "intervened": "transfer-cardiology"
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告的治疗与转归",
+        "en": "The reported treatment and outcome"
+      },
+      "description": {
+        "zh-CN": "复盘阶段：调阅原报告记录的手术、病理和作者讨论，与你的处理对照。",
+        "en": "Debrief phase: read the operation, the pathology and the authors' discussion as the report records them, and compare them with your management."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "surgery"
+          },
+          {
+            "objective": "obj-history"
+          },
+          {
+            "objective": "obj-exam"
+          },
+          {
+            "objective": "obj-surgery"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "这次主要是哪里不舒服？",
+        "en": "What's been the main problem this time?"
+      },
+      "answer": {
+        "zh-CN": "发烧断断续续四个月了。这一个礼拜又咳嗽、咳血，还喘得厉害。",
+        "en": "I've had fevers on and off for four months, and this past week I've been coughing up blood and I'm really wheezy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里不舒服",
+          "怎么不舒服",
+          "主要问题",
+          "为什么住院",
+          "这次来",
+          "什么情况",
+          "发烧几个月",
+          "现在感觉"
+        ],
+        "en": [
+          "main problem",
+          "brought",
+          "unwell",
+          "trouble",
+          "admitted",
+          "going on",
+          "feeling now"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·主诉（间断发热4个月，咳嗽、咳痰、咯血伴喘息1周）；依据原文整理的模拟回答",
+        "en": "Main text · presenting complaint (intermittent fever for 4 months; cough, sputum, haemoptysis and wheeze for 1 week); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "fever-onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "发烧最开始是什么样的？",
+        "en": "How did the fevers start?"
+      },
+      "answer": {
+        "zh-CN": "四个月前没什么原因就发起烧来，最高39度，打寒战、头疼，胳膊腿都没劲，也吃不下饭。头三天一直在38到40度。",
+        "en": "Four months ago the fevers started out of the blue — up to 39, with shivering fits and headaches, no strength in my arms and legs and no appetite. For the first three days it stayed between 38 and 40."
+      },
+      "keywords": {
+        "zh-CN": [
+          "开始发烧",
+          "怎么开始",
+          "最早",
+          "第一次发烧",
+          "寒战",
+          "最高多少度",
+          "发烧多久了",
+          "烧到多少"
+        ],
+        "en": [
+          "fevers start",
+          "fever began",
+          "first fever",
+          "highest temperature",
+          "temperatures",
+          "rigors",
+          "shivering",
+          "how high"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "后来",
+          "出院",
+          "手术以后"
+        ],
+        "en": [
+          "afterwards",
+          "since",
+          "after the"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史（4个月前起病，体温达39 ℃，寒战、头痛、四肢乏力、纳差，持续3天38～40 ℃）；依据原文整理的模拟回答",
+        "en": "Main text · present illness (onset 4 months earlier, up to 39 °C, rigors, headache, limb weakness, poor appetite; 38–40 °C for 3 days); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "neuro-event",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "发烧以后，脑子方面出过什么事吗？",
+        "en": "Did anything happen with your head or brain after the fevers began?"
+      },
+      "answer": {
+        "zh-CN": "刚发烧那几天，有一天我突然烦躁、说胡话，两个钟头后送到医院，查出来脑出血，说脑子里有个动脉瘤。后来转到另一家大医院，做了介入手术把动脉瘤堵上了。",
+        "en": "In those first days of fever I suddenly got agitated and started talking nonsense; two hours later I was in hospital, and they found a bleed in my brain from an aneurysm. Then I was moved to another big hospital, where they blocked the aneurysm off with a procedure through the blood vessels."
+      },
+      "keywords": {
+        "zh-CN": [
+          "脑出血",
+          "动脉瘤",
+          "说胡话",
+          "烦躁",
+          "脑子",
+          "栓塞",
+          "神经系统",
+          "头部"
+        ],
+        "en": [
+          "brain",
+          "bleed",
+          "aneurysm",
+          "agitated",
+          "talking nonsense",
+          "stroke",
+          "coiled",
+          "head scan"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "做完",
+          "术后",
+          "手术后"
+        ],
+        "en": [
+          "after the procedure",
+          "since the procedure"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史（突发烦躁、谵妄2小时后就诊；头颅CT脑出血，CTA颅内动脉瘤；3天后转外院行左大脑中动脉瘤介入栓塞术）；依据原文整理的模拟回答",
+        "en": "Main text · present illness (sudden agitation and delirium, seen 2 h later; CT haemorrhage, CTA aneurysm; 3 days later left MCA aneurysm coiled elsewhere); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "first-hospital",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "第一次去医院时，医生怎么说？",
+        "en": "What did the doctors say the first time you went to hospital?"
+      },
+      "answer": {
+        "zh-CN": "当时说是败血症，还说我是癔症，住进了感染科。后来因为我一直烦躁，才拍了脑CT，发现出血。",
+        "en": "They said it was blood poisoning, and that I was hysterical, and put me on the infectious diseases ward. Only because I stayed agitated did they do a head scan and find the bleed."
+      },
+      "keywords": {
+        "zh-CN": [
+          "医生怎么说",
+          "第一次去医院",
+          "头一回去医院",
+          "当时诊断",
+          "下的什么诊断",
+          "当时说是什么病",
+          "败血症",
+          "癔症",
+          "第一家医院"
+        ],
+        "en": [
+          "first time",
+          "first hospital",
+          "told you",
+          "blood poisoning",
+          "hysteria",
+          "hysterical",
+          "first diagnosis"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "杂音",
+          "心脏"
+        ],
+        "en": [
+          "murmur",
+          "heart"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史（以“败血症、癔症”收入感染科，入院后因烦躁明显行头颅CT）；依据原文整理的模拟回答",
+        "en": "Main text · present illness (admitted to infectious diseases as 'sepsis, hysteria'; head CT done because of marked agitation); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "after-coiling",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "做完动脉瘤手术以后呢？",
+        "en": "What happened after the aneurysm procedure?"
+      },
+      "answer": {
+        "zh-CN": "做完还是发烧，37、38度，打了一个礼拜抗生素就出院了，用的什么药我不知道。出院以后还是断断续续烧，37到39度，又跑了好几次医院，脑CT复查了好几次，消炎、退烧都不管用，人越来越难受。",
+        "en": "I still had temperatures of 37 to 38 afterwards. They gave me antibiotics for a week and sent me home — I don't know which ones. At home the fevers kept coming and going, 37 to 39; I went back several times and had my head scanned again and again, but the anti-inflammatory treatment and the fever medicine didn't help, and I felt worse and worse."
+      },
+      "keywords": {
+        "zh-CN": [
+          "手术以后",
+          "做完以后",
+          "术后还烧",
+          "栓塞以后",
+          "出院以后",
+          "出院后",
+          "后来怎么样",
+          "后来还烧",
+          "复查CT",
+          "做完手术"
+        ],
+        "en": [
+          "afterwards",
+          "after the procedure",
+          "after discharge",
+          "since then",
+          "kept having fevers",
+          "months since"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "用过哪些药",
+          "什么药",
+          "过敏"
+        ],
+        "en": [
+          "which medicines",
+          "what medicines",
+          "allerg"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·现病史（术后体温37～38 ℃，抗生素治疗具体不详，1周后出院；此后间断发热37～39 ℃，多次复查头颅CT）；依据原文整理的模拟回答",
+        "en": "Main text · present illness (37–38 °C after the procedure, antibiotics unspecified, home after a week; then intermittent fever 37–39 °C, repeated head CTs); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "county-hospital",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近还在别的医院看过吗？",
+        "en": "Have you been seen anywhere else recently?"
+      },
+      "answer": {
+        "zh-CN": "半个月前在我们县医院看过，抽血说有一项指标高一点，其他正常；拍了肺CT、做了肚子B超，都说没大问题，心电图说心跳快，给了消炎、退烧的治疗就让我回家了。",
+        "en": "Two weeks ago I went to our county hospital. One number in the blood test was a bit high and the rest were normal; a CT of my lungs and an ultrasound of my tummy were fine, the heart tracing said my heart was fast, and they gave me treatment for infection and the fever and sent me home."
+      },
+      "keywords": {
+        "zh-CN": [
+          "县医院",
+          "半个月前",
+          "当地医院",
+          "别的医院",
+          "最近看过",
+          "肺CT"
+        ],
+        "en": [
+          "county hospital",
+          "local hospital",
+          "two weeks ago",
+          "anywhere else",
+          "lung scan",
+          "seen recently"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·现病史（半月前县医院：中性粒细胞85%，肺部CT及腹部超声未见明显异常，心电图窦性心动过速）；依据原文整理的模拟回答",
+        "en": "Main text · present illness (county hospital 2 weeks earlier: neutrophils 85%; lung CT and abdominal ultrasound unremarkable; sinus tachycardia); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "breathing",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "这一个礼拜喘气、咳嗽怎么样？",
+        "en": "How have your breathing and cough been this past week?"
+      },
+      "answer": {
+        "zh-CN": "这个礼拜咳嗽、有痰，还咳出血来，喘，心里发慌；晚上一躺平就喘不上气，躺不下去。",
+        "en": "All this week I've been coughing up phlegm and blood, I'm wheezy and my heart races; at night, as soon as I lie flat I can't get my breath, so I can't lie down."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喘",
+          "咳嗽",
+          "咳血",
+          "咯血",
+          "心慌",
+          "躺不平",
+          "平躺",
+          "躺平",
+          "能躺下",
+          "呼吸",
+          "憋气"
+        ],
+        "en": [
+          "breathing",
+          "breathless",
+          "cough",
+          "haemoptysis",
+          "palpitations",
+          "lie flat",
+          "wheezy",
+          "short of breath"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "多少血",
+          "血量",
+          "血多不多",
+          "咳的血多"
+        ],
+        "en": [
+          "amount of blood",
+          "each time"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史（1周前出现咳嗽、咳痰、咯血，伴喘息、心悸，夜间不能平卧）；依据原文整理的模拟回答",
+        "en": "Main text · present illness (1 week of cough, sputum, haemoptysis, wheeze, palpitations and orthopnoea); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "haemoptysis-amount",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "咳出来的血有多少？",
+        "en": "How much blood comes up each time?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "咳了多少血",
+          "咳的血多",
+          "咳血多不多",
+          "咯血多少",
+          "血量",
+          "满口血"
+        ],
+        "en": [
+          "amount of blood",
+          "cupful",
+          "streaks of blood",
+          "volume of blood",
+          "quantity of blood"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "chest-pain",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "胸口疼吗？",
+        "en": "Have you had any chest pain?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "胸痛",
+          "胸口疼",
+          "胸闷",
+          "胸口痛"
+        ],
+        "en": [
+          "chest pain",
+          "chest tightness",
+          "pain in your chest",
+          "chest discomfort"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "ed-visit",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "来我们医院之前，去过哪些地方？",
+        "en": "Where did you go before you came to us?"
+      },
+      "answer": {
+        "zh-CN": "到这边以后跑了好几家大医院。昨天来你们急诊，抽了血、拍了胸片，说是右边肺有感染，就把我收进呼吸科了。",
+        "en": "Since coming here I've been to several big hospitals. Yesterday I came to your emergency department — they took blood and did a chest X-ray, said there was an infection in my right lung, and admitted me to the chest ward."
+      },
+      "keywords": {
+        "zh-CN": [
+          "急诊",
+          "昨天",
+          "来之前",
+          "胸片",
+          "哪几家医院",
+          "去过哪些医院"
+        ],
+        "en": [
+          "emergency department",
+          "yesterday",
+          "before you came",
+          "chest x-ray",
+          "other hospitals",
+          "a&e"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·现病史（辗转多家医院，入院前1天来我院急诊，胸片提示右侧肺部感染，收入呼吸内科）；依据原文整理的模拟回答",
+        "en": "Main text · present illness (several hospitals; our ED the day before admission, chest film reported right-sided lung infection; admitted to respiratory medicine); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "operations",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过什么手术？",
+        "en": "Have you had any operations?"
+      },
+      "answer": {
+        "zh-CN": "大概一年前出了车祸，在急救中心住了四个多月，前后做了5次手术：开腹探查，缝了肚子里撕裂的地方，还有好几处骨折的手术。右腿现在还上着外固定架。",
+        "en": "About a year ago I was in a road accident and spent over four months in the trauma centre. I had five operations — they opened up my tummy and stitched up tears inside it, and operated on several broken bones. My right leg is still in an external frame."
+      },
+      "keywords": {
+        "zh-CN": [
+          "做过手术",
+          "开过刀",
+          "手术史",
+          "车祸",
+          "受伤",
+          "骨折",
+          "外伤"
+        ],
+        "en": [
+          "operations",
+          "surgery",
+          "operated on",
+          "accident",
+          "injury",
+          "fractures",
+          "trauma"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "心脏",
+          "杂音",
+          "彩超",
+          "动脉瘤",
+          "栓塞"
+        ],
+        "en": [
+          "heart",
+          "murmur",
+          "aneurysm"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·既往史（1年前交通事故，急救中心住院4月余，手术5次，含剖腹探查、肠系膜撕裂伤及后腹膜破裂修补）；入院诊断“多发骨折术后”；入院查体右下肢外固定器；依据原文整理的模拟回答",
+        "en": "Main text · past history (road accident a year earlier, over 4 months in a trauma centre, 5 operations incl. laparotomy and mesenteric and retroperitoneal repairs); admission diagnosis 'after surgery for multiple fractures'; right-leg fixator on examination; simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "prior-heart",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前查过心脏吗？",
+        "en": "Has your heart ever been checked before?"
+      },
+      "answer": {
+        "zh-CN": "车祸住院那会儿，医生听过心脏，说没有杂音；受伤后两个月里做过4次心脏彩超，都说正常，脑CT也正常。",
+        "en": "When I was in hospital after the accident the doctors listened to my heart and said there was no murmur, and I had four heart scans in the two months after the injury — all normal. My head scan was normal then too."
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏",
+          "心脏彩超",
+          "杂音",
+          "以前查过",
+          "心超",
+          "心脏病"
+        ],
+        "en": [
+          "heart checked",
+          "heart scan",
+          "heart scanned",
+          "echo",
+          "murmur",
+          "heart problems",
+          "echocardiogram"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·既往史（外伤住院期间心界不大、各瓣膜区未闻及病理性杂音，4次超声心动图未见异常，头CT未见异常）；讨论（外伤后2个月内）；依据原文整理的模拟回答",
+        "en": "Main text · past history (heart not enlarged, no pathological murmur, four normal echocardiograms and a normal head CT during the trauma admission); discussion (within 2 months of the injury); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "fixator-site",
+      "topic": "other",
+      "question": {
+        "zh-CN": "腿上固定架那儿有没有红肿、流脓？",
+        "en": "Is there any redness or discharge where the frame goes into your leg?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "固定架",
+          "钉道",
+          "红肿",
+          "流脓",
+          "腿上伤口",
+          "固定器"
+        ],
+        "en": [
+          "frame",
+          "pin sites",
+          "fixator",
+          "discharge",
+          "redness",
+          "leg wound"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "meds",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "这几个月用过哪些药？",
+        "en": "What medicines have you had these past months?"
+      },
+      "answer": {
+        "zh-CN": "几家医院都给我用过消炎药和退烧药，具体是什么药我说不清。",
+        "en": "Every hospital gave me something for infection and something for the fever, but I couldn't tell you which ones."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用过什么药",
+          "用过哪些药",
+          "吃什么药",
+          "输液",
+          "消炎药",
+          "退烧药"
+        ],
+        "en": [
+          "medicines",
+          "medication",
+          "antibiotics",
+          "drips",
+          "tablets",
+          "fever medicine"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "正文·现病史（抗生素治疗具体不详；多次给予抗炎、降温治疗）；依据原文整理的模拟回答",
+        "en": "Main text · present illness (antibiotics unspecified; repeated anti-inflammatory and antipyretic treatment); simulated answer compiled from the source"
+      }
+    },
+    {
+      "id": "dental",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最近看过牙、拔过牙吗？",
+        "en": "Have you seen a dentist or had a tooth out recently?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "看牙",
+          "拔牙",
+          "牙科",
+          "补牙",
+          "牙齿"
+        ],
+        "en": [
+          "dental",
+          "dentist",
+          "teeth",
+          "tooth",
+          "gums"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "ivdu",
+      "topic": "social",
+      "question": {
+        "zh-CN": "有没有用过毒品，比如静脉注射？",
+        "en": "Have you ever injected drugs?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吸毒",
+          "毒品",
+          "注射毒品",
+          "静脉吸毒",
+          "海洛因"
+        ],
+        "en": [
+          "injected drugs",
+          "inject",
+          "heroin",
+          "needles",
+          "recreational drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对什么药过敏吗？",
+        "en": "Are you allergic to any medicines?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "青霉素"
+        ],
+        "en": [
+          "allergies",
+          "allergic",
+          "drug allergy",
+          "allergy",
+          "penicillin"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "weight-loss",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "这几个月瘦了吗？",
+        "en": "Have you lost weight over these months?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "瘦了",
+          "掉秤",
+          "多重"
+        ],
+        "en": [
+          "weight",
+          "lost weight",
+          "weigh",
+          "thinner"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您抽烟吗？",
+        "en": "Have you ever smoked?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟",
+          "香烟"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时喝酒吗？",
+        "en": "How much alcohol do you drink?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喝酒",
+          "饮酒",
+          "酒",
+          "白酒"
+        ],
+        "en": [
+          "alcohol",
+          "beer",
+          "wine",
+          "spirits",
+          "booze"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "work-home",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时做什么工作？和谁一起住？",
+        "en": "What do you do for a living, and who is at home with you?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作",
+          "职业",
+          "做什么的",
+          "跟谁住",
+          "一起住",
+          "上班"
+        ],
+        "en": [
+          "job",
+          "occupation",
+          "employment",
+          "household",
+          "home alone",
+          "lives at home"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家族",
+          "遗传"
+        ],
+        "en": [
+          "family history",
+          "runs in"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人有什么病吗？",
+        "en": "Does anything run in your family?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里人",
+          "家族史",
+          "父母",
+          "遗传",
+          "兄弟姐妹"
+        ],
+        "en": [
+          "family history",
+          "parents",
+          "runs in the family",
+          "relatives",
+          "siblings"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    },
+    {
+      "id": "ice",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心的是什么？",
+        "en": "What worries you most about all this?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "担心",
+          "害怕",
+          "顾虑",
+          "最怕",
+          "希望"
+        ],
+        "en": [
+          "worried",
+          "worry",
+          "concerns",
+          "scared",
+          "hoping"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "source": {
+        "zh-CN": "缺失信息：原文未记录，保持未知",
+        "en": "Missing information: not recorded in the source; kept unknown"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "测量生命体征",
+        "en": "Take his vital signs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "生命体征",
+          "量血压",
+          "测体温",
+          "脉搏",
+          "心率",
+          "呼吸频率"
+        ],
+        "en": [
+          "vital signs",
+          "blood pressure",
+          "pulse",
+          "temperature",
+          "observations",
+          "heart rate"
+        ]
+      },
+      "finding": {
+        "zh-CN": "体温38.6 ℃，脉搏120次/分，呼吸20次/分，血压120/70 mmHg。",
+        "en": "Temperature 38.6 °C, pulse 120/min, respiratory rate 20/min, blood pressure 120/70 mmHg."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · examination on admission"
+      }
+    },
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察一般情况和神志",
+        "en": "Look at his general state and conscious level"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "神志",
+          "精神状态",
+          "意识",
+          "看看他"
+        ],
+        "en": [
+          "general appearance",
+          "conscious level",
+          "alert",
+          "general state",
+          "consciousness"
+        ]
+      },
+      "finding": {
+        "zh-CN": "神志清楚，精神弱。",
+        "en": "Alert, but listless and weak."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · examination on admission"
+      }
+    },
+    {
+      "id": "chest",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "听诊双肺",
+        "en": "Listen to his chest"
+      },
+      "keywords": {
+        "zh-CN": [
+          "听肺",
+          "肺部听诊",
+          "呼吸音",
+          "啰音",
+          "听诊双肺",
+          "肺部检查"
+        ],
+        "en": [
+          "listen to the chest",
+          "lungs",
+          "breath sounds",
+          "crackles",
+          "chest examination",
+          "auscultate the lungs"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双肺呼吸音清，未闻及干、湿啰音。",
+        "en": "Breath sounds are clear on both sides, with no wheeze or crackles."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · examination on admission"
+      }
+    },
+    {
+      "id": "cardiac",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "听诊心脏各瓣膜区",
+        "en": "Auscultate the heart at each valve area"
+      },
+      "keywords": {
+        "zh-CN": [
+          "听心脏",
+          "心脏听诊",
+          "杂音",
+          "瓣膜区",
+          "心音",
+          "心脏检查"
+        ],
+        "en": [
+          "listen to the heart",
+          "heart sounds",
+          "murmur",
+          "auscultate the heart",
+          "cardiac examination",
+          "valve areas"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心律齐，二尖瓣听诊区闻及3～4级粗糙收缩期杂音。",
+        "en": "Regular rhythm; a harsh grade 3–4 systolic murmur at the mitral area."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · examination on admission"
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查腹部和肾区",
+        "en": "Examine the abdomen and renal angles"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部",
+          "肚子",
+          "肝脾",
+          "压痛",
+          "肾区",
+          "腹部检查"
+        ],
+        "en": [
+          "abdomen",
+          "tummy",
+          "liver and spleen",
+          "tenderness",
+          "renal angles",
+          "abdominal examination"
+        ]
+      },
+      "finding": {
+        "zh-CN": "腹平软，无压痛及反跳痛，肝脾肋下未触及，双肾区无叩痛。",
+        "en": "Soft, flat abdomen without tenderness or rebound; liver and spleen not palpable; no renal-angle tenderness."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · examination on admission"
+      }
+    },
+    {
+      "id": "legs",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "检查双下肢",
+        "en": "Examine both legs"
+      },
+      "keywords": {
+        "zh-CN": [
+          "下肢",
+          "双腿",
+          "腿",
+          "水肿",
+          "固定架",
+          "外固定"
+        ],
+        "en": [
+          "legs",
+          "leg oedema",
+          "ankles",
+          "swelling",
+          "fixator",
+          "external frame"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双下肢无水肿；右下肢有金属外固定器。",
+        "en": "No leg oedema; a metal external fixator on the right leg."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · examination on admission"
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有记录这项检查的结果；不能把它当作正常或阴性。",
+    "en": "The report does not record this examination; do not take it as normal or negative."
+  },
+  "investigations": [
+    {
+      "id": "ed-record",
+      "name": {
+        "zh-CN": "调阅急诊记录（入院前1天）",
+        "en": "Review the emergency department record (the day before admission)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "急诊记录",
+          "急诊病历",
+          "急诊胸片",
+          "急诊化验",
+          "急诊资料"
+        ],
+        "en": [
+          "ed record",
+          "emergency record",
+          "ed notes",
+          "ed bloods",
+          "ed chest x-ray"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "date": {
+            "zh-CN": "入院前1天（急诊）",
+            "en": "The day before admission (emergency department)"
+          },
+          "text": {
+            "zh-CN": "急诊：体温38.6 ℃；白细胞10.4×10⁹/L，中性粒细胞88.1%，红细胞3.98×10¹²/L，血红蛋白98 g/L，血小板112×10⁹/L；心电图窦性心动过速；胸片提示右侧肺部感染。收入呼吸内科。原报告未给出参考范围。",
+            "en": "Emergency department: temperature 38.6 °C; WBC 10.4×10⁹/L, neutrophils 88.1 %, RBC 3.98×10¹²/L, haemoglobin 98 g/L, platelets 112×10⁹/L; ECG sinus tachycardia; chest X-ray reported as right-sided lung infection. Admitted to respiratory medicine. The report gives no reference ranges."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "WBC"
+              },
+              "value": 10.4,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例",
+                "en": "Neutrophils"
+              },
+              "value": 88.1,
+              "unit": "%"
+            },
+            {
+              "analyte": {
+                "zh-CN": "红细胞",
+                "en": "RBC"
+              },
+              "value": 3.98,
+              "unit": "×10¹²/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 98,
+              "unit": "g/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 112,
+              "unit": "×10⁹/L"
+            }
+          ],
+          "source": {
+            "zh-CN": "正文·现病史（入院前1天我院急诊）",
+            "en": "Main text · present illness (our ED the day before admission)"
+          }
+        }
+      }
+    },
+    {
+      "id": "prior-records",
+      "name": {
+        "zh-CN": "调阅外院与既往记录",
+        "en": "Review the earlier hospital records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院记录",
+          "既往病历",
+          "以前的病历",
+          "外院资料",
+          "首诊记录",
+          "之前的记录"
+        ],
+        "en": [
+          "previous records",
+          "old notes",
+          "outside records",
+          "earlier hospital records",
+          "first presentation notes",
+          "prior records"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "date": {
+            "zh-CN": "约1年前至入院前半个月",
+            "en": "From about a year to two weeks before admission"
+          },
+          "text": {
+            "zh-CN": "外院与既往记录。约1年前：交通事故外伤，急救中心住院4月余，手术5次（剖腹探查、肠系膜撕裂伤缝合修补、后腹膜破裂缝合修补等）；其间心界不大，各瓣膜听诊区未闻及病理性杂音，外伤后2个月内4次超声心动图未见异常，头颅CT未见异常。约4个月前：无明显诱因发热，体温达39 ℃，伴寒战、头痛、四肢乏力、纳差，持续3天，体温38～40 ℃；其间突发烦躁、谵妄，2小时后就诊：体温37.7 ℃，双肺呼吸音清，心率104次/分、律齐，各瓣膜区未闻及杂音；白细胞8.17×10⁹/L，中性粒细胞91.8%，余未见异常；以“败血症、癔症”收入感染科。头颅CT示脑出血，头颈CTA示颅内动脉瘤合并脑出血。3天后转另一医院神经外科，以“脑动脉瘤”收入（入院时情况不详），行左大脑中动脉瘤介入栓塞术；术后体温37～38 ℃，予抗生素（具体不详），1周后出院。此后间断发热37～39 ℃，多次就诊，多次复查头颅CT（结果未给出），予抗炎、降温治疗，症状逐渐加重。约半个月前县医院：中性粒细胞85%，余未见异常；肺部CT及腹部超声未见明显异常；心电图窦性心动过速；对症治疗后出院。",
+            "en": "Records from earlier care. About a year ago: road-traffic injury, over 4 months in a trauma centre, 5 operations (laparotomy, repair of a mesenteric tear, repair of a retroperitoneal tear, and others); at that time the heart was not enlarged, no pathological murmur was heard, four echocardiograms in the 2 months after the injury were normal, and a head CT was normal. About 4 months ago: fever without obvious cause, up to 39 °C, with rigors, headache, limb weakness and poor appetite, 38–40 °C for 3 days; during this, sudden agitation and delirium, seen 2 hours later: temperature 37.7 °C, lungs clear, heart rate 104/min and regular, no murmur at any valve area; WBC 8.17×10⁹/L, neutrophils 91.8 %, otherwise normal; admitted to infectious diseases as 'sepsis, hysteria'. Head CT showed intracranial haemorrhage; head and neck CTA showed an intracranial aneurysm with haemorrhage. Three days later transferred to neurosurgery at another hospital as 'cerebral aneurysm' (condition on arrival not recorded); endovascular embolisation of a left middle cerebral artery aneurysm; 37–38 °C afterwards; antibiotics (not specified); home after a week. Thereafter intermittent fever 37–39 °C, repeated visits, repeated head CTs (results not given), anti-inflammatory and antipyretic treatment, symptoms gradually worse. About 2 weeks ago, county hospital: neutrophils 85 %, otherwise normal; lung CT and abdominal ultrasound unremarkable; ECG sinus tachycardia; symptomatic treatment and discharge."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞（约4个月前）",
+                "en": "WBC (about 4 months ago)"
+              },
+              "value": 8.17,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例（约4个月前）",
+                "en": "Neutrophils (about 4 months ago)"
+              },
+              "value": 91.8,
+              "unit": "%"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例（约半个月前）",
+                "en": "Neutrophils (about 2 weeks ago)"
+              },
+              "value": 85,
+              "unit": "%"
+            }
+          ],
+          "note": {
+            "zh-CN": "原报告未给出参考范围。",
+            "en": "The report gives no reference ranges."
+          },
+          "source": {
+            "zh-CN": "正文·现病史与既往史",
+            "en": "Main text · present illness and past history"
+          }
+        },
+        "workup": {
+          "date": {
+            "zh-CN": "约1年前至入院前半个月",
+            "en": "From about a year to two weeks before admission"
+          },
+          "text": {
+            "zh-CN": "外院与既往记录。约1年前：交通事故外伤，急救中心住院4月余，手术5次（剖腹探查、肠系膜撕裂伤缝合修补、后腹膜破裂缝合修补等）；其间心界不大，各瓣膜听诊区未闻及病理性杂音，外伤后2个月内4次超声心动图未见异常，头颅CT未见异常。约4个月前：无明显诱因发热，体温达39 ℃，伴寒战、头痛、四肢乏力、纳差，持续3天，体温38～40 ℃；其间突发烦躁、谵妄，2小时后就诊：体温37.7 ℃，双肺呼吸音清，心率104次/分、律齐，各瓣膜区未闻及杂音；白细胞8.17×10⁹/L，中性粒细胞91.8%，余未见异常；以“败血症、癔症”收入感染科。头颅CT示脑出血，头颈CTA示颅内动脉瘤合并脑出血。3天后转另一医院神经外科，以“脑动脉瘤”收入（入院时情况不详），行左大脑中动脉瘤介入栓塞术；术后体温37～38 ℃，予抗生素（具体不详），1周后出院。此后间断发热37～39 ℃，多次就诊，多次复查头颅CT（结果未给出），予抗炎、降温治疗，症状逐渐加重。约半个月前县医院：中性粒细胞85%，余未见异常；肺部CT及腹部超声未见明显异常；心电图窦性心动过速；对症治疗后出院。",
+            "en": "Records from earlier care. About a year ago: road-traffic injury, over 4 months in a trauma centre, 5 operations (laparotomy, repair of a mesenteric tear, repair of a retroperitoneal tear, and others); at that time the heart was not enlarged, no pathological murmur was heard, four echocardiograms in the 2 months after the injury were normal, and a head CT was normal. About 4 months ago: fever without obvious cause, up to 39 °C, with rigors, headache, limb weakness and poor appetite, 38–40 °C for 3 days; during this, sudden agitation and delirium, seen 2 hours later: temperature 37.7 °C, lungs clear, heart rate 104/min and regular, no murmur at any valve area; WBC 8.17×10⁹/L, neutrophils 91.8 %, otherwise normal; admitted to infectious diseases as 'sepsis, hysteria'. Head CT showed intracranial haemorrhage; head and neck CTA showed an intracranial aneurysm with haemorrhage. Three days later transferred to neurosurgery at another hospital as 'cerebral aneurysm' (condition on arrival not recorded); endovascular embolisation of a left middle cerebral artery aneurysm; 37–38 °C afterwards; antibiotics (not specified); home after a week. Thereafter intermittent fever 37–39 °C, repeated visits, repeated head CTs (results not given), anti-inflammatory and antipyretic treatment, symptoms gradually worse. About 2 weeks ago, county hospital: neutrophils 85 %, otherwise normal; lung CT and abdominal ultrasound unremarkable; ECG sinus tachycardia; symptomatic treatment and discharge."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞（约4个月前）",
+                "en": "WBC (about 4 months ago)"
+              },
+              "value": 8.17,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例（约4个月前）",
+                "en": "Neutrophils (about 4 months ago)"
+              },
+              "value": 91.8,
+              "unit": "%"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例（约半个月前）",
+                "en": "Neutrophils (about 2 weeks ago)"
+              },
+              "value": 85,
+              "unit": "%"
+            }
+          ],
+          "note": {
+            "zh-CN": "原报告未给出参考范围。",
+            "en": "The report gives no reference ranges."
+          },
+          "source": {
+            "zh-CN": "正文·现病史与既往史",
+            "en": "Main text · present illness and past history"
+          }
+        }
+      }
+    },
+    {
+      "id": "culture",
+      "name": {
+        "zh-CN": "血培养",
+        "en": "Blood cultures"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "血培养",
+          "抽血培养",
+          "培养",
+          "血培"
+        ],
+        "en": [
+          "blood cultures",
+          "blood culture",
+          "cultures",
+          "bcs"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "initial": {
+          "date": {
+            "zh-CN": "入院当天",
+            "en": "Day of admission"
+          },
+          "text": {
+            "zh-CN": "血培养已送检，培养结果见入院后检查阶段（原报告未记录采集的套数和采血间隔）。",
+            "en": "Blood cultures sent; the results are in the work-up phase (the report does not record how many sets were taken or how far apart)."
+          },
+          "source": {
+            "zh-CN": "正文·辅助检查",
+            "en": "Main text · investigations"
+          }
+        },
+        "workup": {
+          "date": {
+            "zh-CN": "入院后",
+            "en": "After admission"
+          },
+          "text": {
+            "zh-CN": "连续2次血培养均培养出屎肠球菌。药敏结果、采血套数和两次采血的间隔原报告未给出。",
+            "en": "Two consecutive blood cultures grew Enterococcus faecium. Susceptibilities, the number of sets and the interval between the two samples are not given in the report."
+          },
+          "critical": true,
+          "source": {
+            "zh-CN": "正文·辅助检查",
+            "en": "Main text · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "超声心动图",
+        "en": "Echocardiography"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "超声心动图",
+          "心脏彩超",
+          "心超",
+          "心脏超声",
+          "经胸超声"
+        ],
+        "en": [
+          "echocardiogram",
+          "echo",
+          "tte",
+          "transthoracic echo",
+          "heart ultrasound",
+          "cardiac ultrasound"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "入院后",
+            "en": "After admission"
+          },
+          "text": {
+            "zh-CN": "二尖瓣前叶赘生物形成（2个，为陈旧性），前叶脱垂伴重度关闭不全，前叶部分小腱索断裂可能性大；左心房明显增大，左心室增大；心包少量积液。",
+            "en": "Vegetations on the anterior mitral leaflet (two, described as old); anterior leaflet prolapse with severe regurgitation, probable rupture of some small chordae of the anterior leaflet; markedly enlarged left atrium, enlarged left ventricle; a small pericardial effusion."
+          },
+          "figures": [
+            "fig01"
+          ],
+          "source": {
+            "zh-CN": "正文·辅助检查与图1",
+            "en": "Main text · investigations and figure 1"
+          }
+        }
+      }
+    },
+    {
+      "id": "toe",
+      "name": {
+        "zh-CN": "经食管超声心动图",
+        "en": "Transoesophageal echocardiography"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "经食管超声",
+          "食管超声",
+          "tee",
+          "toe"
+        ],
+        "en": [
+          "transoesophageal echo",
+          "toe",
+          "tee",
+          "transesophageal"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有记录经食管超声心动图。",
+            "en": "No transoesophageal echocardiogram is recorded in the report."
+          },
+          "source": {
+            "zh-CN": "缺失信息：原文未记录，保持未知",
+            "en": "Missing information: not recorded in the source; kept unknown"
+          }
+        }
+      }
+    },
+    {
+      "id": "labs",
+      "name": {
+        "zh-CN": "血常规、D-二聚体、心肌酶、BNP、CRP、血沉",
+        "en": "Blood count, D-dimer, cardiac enzymes, BNP, CRP and ESR"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "bnp",
+          "脑钠肽",
+          "crp",
+          "c反应蛋白",
+          "血沉",
+          "d二聚体",
+          "心肌酶",
+          "抽血化验"
+        ],
+        "en": [
+          "blood count",
+          "fbc",
+          "bnp",
+          "crp",
+          "esr",
+          "d-dimer",
+          "cardiac enzymes",
+          "bloods"
+        ]
+      },
+      "requires": [
+        "lab-hematology",
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "入院后",
+            "en": "After admission"
+          },
+          "text": {
+            "zh-CN": "白细胞10.8×10⁹/L，中性粒细胞85%，红细胞3.88×10¹²/L，血红蛋白95 g/L，血小板145×10⁹/L；D-二聚体4.3 μg/ml（正常值0～1.5）；心肌酶学未见异常；B型利钠肽377 ng/L（正常值0～100）；C反应蛋白105 mg/L（正常值0～3）；红细胞沉降率38 mm/1 h。",
+            "en": "WBC 10.8×10⁹/L, neutrophils 85 %, RBC 3.88×10¹²/L, haemoglobin 95 g/L, platelets 145×10⁹/L; D-dimer 4.3 μg/mL (normal 0–1.5); cardiac enzymes normal; B-type natriuretic peptide 377 ng/L (normal 0–100); C-reactive protein 105 mg/L (normal 0–3); ESR 38 mm in the first hour."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "WBC"
+              },
+              "value": 10.8,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例",
+                "en": "Neutrophils"
+              },
+              "value": 85,
+              "unit": "%"
+            },
+            {
+              "analyte": {
+                "zh-CN": "红细胞",
+                "en": "RBC"
+              },
+              "value": 3.88,
+              "unit": "×10¹²/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 95,
+              "unit": "g/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 145,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "D-二聚体",
+                "en": "D-dimer"
+              },
+              "value": 4.3,
+              "unit": "μg/mL",
+              "refLow": 0,
+              "refHigh": 1.5,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "心肌酶",
+                "en": "Cardiac enzymes"
+              },
+              "value": {
+                "zh-CN": "未见异常",
+                "en": "normal"
+              },
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "B型利钠肽",
+                "en": "BNP"
+              },
+              "value": 377,
+              "unit": "ng/L",
+              "refLow": 0,
+              "refHigh": 100,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "C反应蛋白",
+                "en": "CRP"
+              },
+              "value": 105,
+              "unit": "mg/L",
+              "refLow": 0,
+              "refHigh": 3,
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "红细胞沉降率",
+                "en": "ESR"
+              },
+              "value": 38,
+              "unit": "mm/h"
+            }
+          ],
+          "note": {
+            "zh-CN": "参考范围为原报告所给（D-二聚体、BNP、CRP）；其余项目原报告未给出参考范围。作者讨论指出患者合并贫血。",
+            "en": "Reference ranges are those printed in the report (D-dimer, BNP, CRP); it gives none for the other values. The authors' discussion notes anaemia."
+          },
+          "source": {
+            "zh-CN": "正文·辅助检查",
+            "en": "Main text · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "ecg",
+      "name": {
+        "zh-CN": "12导联心电图",
+        "en": "12-lead ECG"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "心电图",
+          "ecg",
+          "ekg",
+          "十二导联"
+        ],
+        "en": [
+          "ecg",
+          "ekg",
+          "12-lead",
+          "electrocardiogram"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "入院后",
+            "en": "After admission"
+          },
+          "text": {
+            "zh-CN": "窦性心动过速（原报告未给出心率和间期）。",
+            "en": "Sinus tachycardia (the report gives no rate or intervals)."
+          },
+          "source": {
+            "zh-CN": "正文·辅助检查",
+            "en": "Main text · investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "neuro-record",
+      "name": {
+        "zh-CN": "调阅神经系统记录与入院诊断",
+        "en": "Review the neurological record and the admission diagnoses"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "神经系统记录",
+          "入院诊断",
+          "神经外科记录",
+          "脑部记录",
+          "栓塞术记录"
+        ],
+        "en": [
+          "neurology record",
+          "neurosurgical record",
+          "admission diagnoses",
+          "problem list",
+          "aneurysm record"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "入院后",
+            "en": "After admission"
+          },
+          "text": {
+            "zh-CN": "入院诊断中与神经系统有关的：左大脑中动脉瘤介入栓塞术后（约4个月前）；脑出血（恢复期）；右侧颞顶叶梗死可能性大（未给出影像细节）。外院曾多次复查头颅CT（结果未给出）。作者讨论认为患者合并脑栓塞。本次住院的头颅影像未给出。",
+            "en": "Neurological items among the admission diagnoses: after endovascular embolisation of a left middle cerebral artery aneurysm (about 4 months ago); intracranial haemorrhage (recovery phase); probable right temporoparietal infarct (no imaging details given). Repeated head CTs were done elsewhere (results not given). The authors' discussion describes cerebral embolism. No brain imaging from this admission is given."
+          },
+          "source": {
+            "zh-CN": "正文·入院诊断与讨论",
+            "en": "Main text · admission diagnoses and discussion"
+          }
+        }
+      }
+    },
+    {
+      "id": "head-ct",
+      "name": {
+        "zh-CN": "头颅CT",
+        "en": "CT head"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "头颅ct",
+          "头ct",
+          "脑ct",
+          "头颅mri",
+          "脑部影像",
+          "头颅影像"
+        ],
+        "en": [
+          "ct head",
+          "head ct",
+          "brain ct",
+          "mri brain",
+          "brain imaging",
+          "head scan"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有给出本次住院的头颅CT或MRI结果。",
+            "en": "The report gives no head CT or MRI from this admission."
+          },
+          "source": {
+            "zh-CN": "缺失信息：原文未记录，保持未知",
+            "en": "Missing information: not recorded in the source; kept unknown"
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅原报告的治疗与转归",
+        "en": "Review the reported treatment and outcome"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "随访记录",
+          "治疗经过",
+          "手术记录",
+          "病理结果",
+          "原报告结局",
+          "转归"
+        ],
+        "en": [
+          "follow-up record",
+          "reported outcome",
+          "operation note",
+          "pathology",
+          "what happened next",
+          "case report outcome"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "date": {
+            "zh-CN": "确诊后（手术日期未给出）",
+            "en": "After the diagnosis (date of surgery not given)"
+          },
+          "text": {
+            "zh-CN": "原报告：转心外科，行赘生物清除并二尖瓣生物瓣置换术（手术时间及距确诊的间隔未给出）。病理：二尖瓣膜组织表面赘生物，其内为大量炎性坏死及纤维素性渗出物，中心钙化，基底部纤维增生及肉芽形成，符合感染性心内膜炎。作者讨论：依据Duke标准诊断明确；致病菌为屎肠球菌，肠球菌属为肠道正常菌群、耐药率高；外伤后2个月内4次超声心动图正常，与外伤关系不大；介入前已发热，与介入关系不大；更可能与腹部手术后内源性屎肠球菌感染有关（作者推测）。首诊医院对反复发热未认真查体，也未做超声心动图和血培养，注意力集中于中枢神经系统，致发热4个月延误诊治；作者提出，无论当时仅有发热还是已合并感染性心内膜炎，脑动脉瘤介入手术的时机都值得反思。抗菌方案与疗程、药敏、术后经过、神经系统结局和远期随访原报告均未记录。",
+            "en": "The report: transferred to cardiac surgery for removal of the vegetations and mitral bioprosthetic valve replacement (the date of surgery and the interval from diagnosis are not given). Pathology: vegetation on the surface of the mitral valve tissue, containing extensive inflammatory necrosis and fibrinous exudate, with central calcification and fibrous proliferation and granulation tissue at its base — consistent with infective endocarditis. The authors' discussion: definite by the Duke criteria; the organism was E. faecium, and enterococci are normal gut flora with high resistance rates; four normal echocardiograms within 2 months of the injury make the trauma an unlikely cause; the fever preceded the aneurysm procedure, so that is unlikely too; endogenous E. faecium infection after the abdominal surgery is the likelier source (the authors' hypothesis). The first hospital did not examine him carefully or perform echocardiography or blood cultures for the recurrent fever, and its attention went to the central nervous system — a 4-month delay; the authors add that, whether he then had fever alone or already had endocarditis, the timing of the aneurysm procedure deserves reflection. The antibiotic regimen and duration, susceptibilities, the post-operative course, the neurological outcome and long-term follow-up are not recorded."
+          },
+          "source": {
+            "zh-CN": "正文·治疗、病理与讨论",
+            "en": "Main text · treatment, pathology and discussion"
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "warnings": [
+      {
+        "investigation": "echo",
+        "ifMatches": ".",
+        "unless": {
+          "any": [
+            {
+              "phase": "workup"
+            },
+            {
+              "phase": "followup"
+            }
+          ]
+        },
+        "message": {
+          "zh-CN": "这项检查是转入心内科后做的，结果在入院后检查阶段。",
+          "en": "This was done after his transfer to cardiology; its result is in the work-up phase."
+        }
+      },
+      {
+        "investigation": "toe",
+        "ifMatches": ".",
+        "unless": {
+          "any": [
+            {
+              "phase": "workup"
+            },
+            {
+              "phase": "followup"
+            }
+          ]
+        },
+        "message": {
+          "zh-CN": "这项检查是转入心内科后做的，结果在入院后检查阶段。",
+          "en": "This was done after his transfer to cardiology; its result is in the work-up phase."
+        }
+      },
+      {
+        "investigation": "labs",
+        "ifMatches": ".",
+        "unless": {
+          "any": [
+            {
+              "phase": "workup"
+            },
+            {
+              "phase": "followup"
+            }
+          ]
+        },
+        "message": {
+          "zh-CN": "这项检查是转入心内科后做的，结果在入院后检查阶段。",
+          "en": "This was done after his transfer to cardiology; its result is in the work-up phase."
+        }
+      },
+      {
+        "investigation": "ecg",
+        "ifMatches": ".",
+        "unless": {
+          "any": [
+            {
+              "phase": "workup"
+            },
+            {
+              "phase": "followup"
+            }
+          ]
+        },
+        "message": {
+          "zh-CN": "这项检查是转入心内科后做的，结果在入院后检查阶段。",
+          "en": "This was done after his transfer to cardiology; its result is in the work-up phase."
+        }
+      },
+      {
+        "investigation": "neuro-record",
+        "ifMatches": ".",
+        "unless": {
+          "any": [
+            {
+              "phase": "workup"
+            },
+            {
+              "phase": "followup"
+            }
+          ]
+        },
+        "message": {
+          "zh-CN": "这项检查是转入心内科后做的，结果在入院后检查阶段。",
+          "en": "This was done after his transfer to cardiology; its result is in the work-up phase."
+        }
+      },
+      {
+        "investigation": "head-ct",
+        "ifMatches": ".",
+        "unless": {
+          "any": [
+            {
+              "phase": "workup"
+            },
+            {
+              "phase": "followup"
+            }
+          ]
+        },
+        "message": {
+          "zh-CN": "这项检查是转入心内科后做的，结果在入院后检查阶段。",
+          "en": "This was done after his transfer to cardiology; its result is in the work-up phase."
+        }
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "建立外周静脉通路",
+        "en": "Insert a peripheral IV cannula"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "留置针",
+          "打留置针",
+          "开放静脉",
+          "静脉穿刺"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "cannulate",
+          "venflon",
+          "iv line"
+        ]
+      },
+      "dose": {
+        "zh-CN": "外周静脉留置针。",
+        "en": "Peripheral IV cannula."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "静脉通路已建立。",
+        "en": "IV access is in."
+      }
+    },
+    {
+      "id": "transfer-cardiology",
+      "name": {
+        "zh-CN": "转心内科",
+        "en": "Transfer to cardiology"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "转心内科",
+          "转科",
+          "心内科接手",
+          "请心内科",
+          "转到心内科"
+        ],
+        "en": [
+          "transfer to cardiology",
+          "cardiology transfer",
+          "refer to cardiology",
+          "move to cardiology",
+          "cardiology to take over"
+        ]
+      },
+      "dose": {
+        "zh-CN": "疑诊感染性心内膜炎，转心内科进一步诊治。",
+        "en": "Suspected infective endocarditis: transfer to cardiology for further care."
+      },
+      "requires": [],
+      "risk": "low",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "examined": "cardiac"
+      },
+      "response": {
+        "zh-CN": "心内科同意接收，他转入心内科继续诊治。",
+        "en": "Cardiology accepts him and he moves to the cardiology ward."
+      }
+    },
+    {
+      "id": "iv-antibiotics",
+      "name": {
+        "zh-CN": "静脉抗菌治疗（感染性心内膜炎，血培养后）",
+        "en": "IV antibiotics for endocarditis (after blood cultures)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "抗生素",
+          "抗菌药",
+          "抗感染",
+          "静脉抗生素",
+          "经验性抗菌",
+          "上抗生素"
+        ],
+        "en": [
+          "antibiotics",
+          "iv antibiotics",
+          "empirical antibiotics",
+          "start antibiotics",
+          "antimicrobials"
+        ]
+      },
+      "dose": {
+        "zh-CN": "留取血培养后开始；经验方案和最终方案由心内膜炎团队/感染科依据血培养和药敏确定（原报告未记录方案、剂量和疗程）。",
+        "en": "Start after the blood cultures; the empirical and definitive regimens are set by the Endocarditis Team or infectious diseases from the cultures and susceptibilities (the report does not record the regimen, doses or duration)."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "肺炎",
+          "广谱",
+          "不留",
+          "先用"
+        ],
+        "en": [
+          "pneumonia",
+          "broad-spectrum",
+          "without cultures",
+          "before cultures"
+        ]
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "ordered": "culture"
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "ordered": "culture"
+        }
+      },
+      "harm": {
+        "zh-CN": "血培养还没送检就用抗菌药，会降低培养阳性率——他几个月来已多次用过抗菌药，先在抗菌药之前采集血培养（ESC 2023）。",
+        "en": "Antibiotics before any blood culture has been sent lower the chance of growing the organism — he has already had repeated antibiotics over these months; take the cultures before the antibiotics (ESC 2023)."
+      },
+      "response": {
+        "zh-CN": "抗菌药开始静脉输注。原报告讨论指出肠球菌耐药率高，最终方案要依据药敏。",
+        "en": "The IV antibiotics are running. The report's discussion notes that enterococci are often resistant, so the definitive regimen follows the susceptibilities."
+      }
+    },
+    {
+      "id": "hap-antibiotics",
+      "name": {
+        "zh-CN": "按肺炎立即开始广谱抗生素（不先留血培养）",
+        "en": "Broad-spectrum antibiotics for pneumonia now (no blood cultures first)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "按肺炎治疗",
+          "广谱抗生素",
+          "肺炎抗生素",
+          "抗肺部感染",
+          "先用抗生素"
+        ],
+        "en": [
+          "treat as pneumonia",
+          "broad-spectrum antibiotics",
+          "pneumonia antibiotics",
+          "antibiotics for the pneumonia",
+          "hospital-acquired pneumonia treatment"
+        ]
+      },
+      "dose": {
+        "zh-CN": "按医院获得性肺炎经验性静脉使用广谱抗生素，不先采集血培养。",
+        "en": "Empirical IV broad-spectrum antibiotics for hospital-acquired pneumonia, without taking blood cultures first."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "肺炎解释不了4个月的发热、颅内出血和新出现的二尖瓣杂音。在血培养之前用广谱抗生素，会让培养更难长出致病菌、延误感染性心内膜炎的诊断（ESC 2023：抗菌药之前先采集血培养）。",
+        "en": "Pneumonia does not explain four months of fever, an intracranial haemorrhage and a new mitral murmur. Broad-spectrum antibiotics before blood cultures make it harder to grow the organism and delay the diagnosis of endocarditis (ESC 2023: blood cultures before antibiotics)."
+      },
+      "response": {
+        "zh-CN": "抗生素开始静滴。",
+        "en": "The antibiotics are running."
+      }
+    },
+    {
+      "id": "endocarditis-team",
+      "name": {
+        "zh-CN": "请心内膜炎团队会诊",
+        "en": "Refer to the Endocarditis Team"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "心内膜炎团队",
+          "多学科会诊",
+          "心脏团队",
+          "请心外科会诊",
+          "mdt",
+          "团队讨论"
+        ],
+        "en": [
+          "endocarditis team",
+          "heart team",
+          "multidisciplinary team",
+          "mdt",
+          "cardiac surgical opinion",
+          "team discussion"
+        ]
+      },
+      "dose": {
+        "zh-CN": "心内科、心外科、感染科/临床微生物、影像和神经科共同评估：手术指征与时机、神经系统情况和抗菌方案。",
+        "en": "Cardiology, cardiac surgery, infectious diseases/microbiology, imaging and neurology together: the indication for and timing of surgery, the neurological picture and the antibiotics."
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "echo",
+        "phase": "workup"
+      },
+      "response": {
+        "zh-CN": "团队会诊已安排，将讨论手术指征与时机、当前神经系统情况和抗菌方案。",
+        "en": "The Endocarditis Team will meet to discuss surgery and its timing, his current neurological state and the antibiotics."
+      }
+    },
+    {
+      "id": "book-surgery",
+      "name": {
+        "zh-CN": "联系心外科，安排限期瓣膜手术",
+        "en": "Arrange urgent valve surgery with cardiac surgery"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "安排手术",
+          "瓣膜手术",
+          "转心外科",
+          "限期手术",
+          "二尖瓣置换",
+          "心外科手术"
+        ],
+        "en": [
+          "arrange surgery",
+          "valve surgery",
+          "cardiac surgery",
+          "urgent surgery",
+          "mitral valve replacement",
+          "book theatre"
+        ]
+      },
+      "dose": {
+        "zh-CN": "由心外科在数天内实施瓣膜手术（限期手术），术前团队复核神经影像。",
+        "en": "Valve surgery by the cardiac surgeons within days (urgent surgery), with the team reviewing neuroimaging beforehand."
+      },
+      "requires": [],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "decided": "surgery"
+      },
+      "response": {
+        "zh-CN": "心外科接收，他转入心外科准备手术。",
+        "en": "Cardiac surgery accepts him and he moves across for surgery."
+      }
+    },
+    {
+      "id": "defer-surgery",
+      "name": {
+        "zh-CN": "暂缓手术，先完成全程抗菌治疗",
+        "en": "Defer surgery until the antibiotic course is complete"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "暂缓手术",
+          "推迟手术",
+          "先不手术",
+          "抗菌疗程后再手术",
+          "保守治疗"
+        ],
+        "en": [
+          "defer surgery",
+          "delay surgery",
+          "postpone surgery",
+          "medical treatment only",
+          "operate after antibiotics"
+        ]
+      },
+      "dose": {
+        "zh-CN": "先抗菌治疗4～6周，再评估是否手术。",
+        "en": "Antibiotics for 4–6 weeks first, then reconsider surgery."
+      },
+      "requires": [],
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "重度二尖瓣反流伴腱索断裂已引起心衰症状（端坐呼吸、BNP 377 ng/L），这是限期手术指征（ESC 2023）；脑出血已约4个月，超过大量脑出血后可考虑推迟的≥4周，可能的脑梗死也不是推迟理由。拖延会让心衰加重、瓣膜继续毁损。",
+        "en": "Severe mitral regurgitation with probable chordal rupture is already causing heart failure (orthopnoea, BNP 377 ng/L): an indication for urgent surgery (ESC 2023). The haemorrhage was about 4 months ago — beyond the ≥ 4-week delay considered after a significant bleed — and a probable infarct is no reason to wait. Delay lets the heart failure worsen and the valve keep breaking down."
+      },
+      "response": {
+        "zh-CN": "医嘱：暂缓手术。",
+        "en": "Ordered: surgery deferred."
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-history",
+      "title": {
+        "zh-CN": "重建发热与神经系统的病程",
+        "en": "Reconstruct the fever and neurological timeline"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
+      },
+      "hint": {
+        "zh-CN": "把四个月串起来：发热怎么开始、哪次出了脑部问题、各家医院怎么说、这一周有什么新症状；再问一年前的外伤手术，以及那时心脏查得怎么样。",
+        "en": "Piece the four months together: how the fevers began, when the brain event happened, what each hospital said, what is new this week — then the operations after his injury a year ago and how his heart was checked at the time."
+      },
+      "guidance": {
+        "zh-CN": "和周先生交谈，理清时间线。",
+        "en": "Talk to Mr Zhou and build the timeline."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "fever-onset"
+          },
+          {
+            "asked": "neuro-event"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "operations"
+          },
+          {
+            "asked": "prior-heart"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-exam",
+      "title": {
+        "zh-CN": "全面查体，仔细听心脏",
+        "en": "Examine him fully and listen carefully to the heart"
+      },
+      "short": {
+        "zh-CN": "查体",
+        "en": "Exam"
+      },
+      "hint": {
+        "zh-CN": "逐个瓣膜区听诊，并和外伤住院时的记录比较；别漏了胸部和双下肢。",
+        "en": "Listen at each valve area and compare with what was recorded during his trauma admission; don't skip the chest or the legs."
+      },
+      "guidance": {
+        "zh-CN": "测生命体征，听心肺，检查双下肢。",
+        "en": "Take his vital signs, listen to his heart and chest, and examine his legs."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "examined": "cardiac"
+          },
+          {
+            "examined": "chest"
+          },
+          {
+            "examined": "legs"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-plan",
+      "title": {
+        "zh-CN": "调阅记录，决定下一步",
+        "en": "Review the records and decide the next step"
+      },
+      "short": {
+        "zh-CN": "下一步",
+        "en": "Next step"
+      },
+      "hint": {
+        "zh-CN": "急诊和外院记录里有哪些线索？在任何新的抗菌药之前，你需要哪些标本和检查？谁最适合接手？",
+        "en": "What do the ED and earlier records tell you? Before any new antibiotic, which samples and tests do you need — and which team should take him on?"
+      },
+      "guidance": {
+        "zh-CN": "在电子病历终端调阅记录，在会诊板上决策。",
+        "en": "Read the records at a records terminal and decide on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "ed-record",
+            "phase": "initial"
+          },
+          {
+            "read": "prior-records",
+            "phase": "initial"
+          },
+          {
+            "decided": "first-steps"
+          },
+          {
+            "intervened": "transfer-cardiology"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "prior-records",
+            "phase": "initial"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-diagnosis",
+      "title": {
+        "zh-CN": "超声心动图、血培养和诊断",
+        "en": "Echocardiography, cultures and the diagnosis"
+      },
+      "short": {
+        "zh-CN": "诊断",
+        "en": "Diagnosis"
+      },
+      "hint": {
+        "zh-CN": "把超声心动图、血培养和临床表现放进诊断标准逐条核对：哪些算主要标准，哪些只能算次要标准？",
+        "en": "Run the echo, the cultures and the clinical picture through the diagnostic criteria one by one: which count as major criteria, and which only as minor?"
+      },
+      "guidance": {
+        "zh-CN": "查看超声心动图、血培养和血液检查，然后作出诊断。",
+        "en": "Read the echocardiogram, the cultures and the blood tests, then make the diagnosis."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "echo",
+            "phase": "workup"
+          },
+          {
+            "read": "culture",
+            "phase": "workup"
+          },
+          {
+            "read": "labs",
+            "phase": "workup"
+          },
+          {
+            "decided": "diagnosis"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "echo",
+            "phase": "workup"
+          },
+          "target": "echocardiography"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-surgery",
+      "title": {
+        "zh-CN": "决定手术指征和时机",
+        "en": "Decide whether and when to operate"
+      },
+      "short": {
+        "zh-CN": "手术",
+        "en": "Surgery"
+      },
+      "hint": {
+        "zh-CN": "瓣膜损害造成了什么后果？他以前的脑部事件对手术时机意味着什么？这个决定该由谁一起作出？",
+        "en": "What has the valve damage done to him? What do his earlier brain events mean for the timing of surgery? Who should make that decision together?"
+      },
+      "guidance": {
+        "zh-CN": "调阅神经系统记录，请团队会诊，决定手术。",
+        "en": "Read the neurological record, involve the team and decide on surgery."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "neuro-record",
+            "phase": "workup"
+          },
+          {
+            "intervened": "endocarditis-team"
+          },
+          {
+            "decided": "surgery"
+          },
+          {
+            "intervened": "book-surgery"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "neuro-record",
+            "phase": "workup"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-review",
+      "title": {
+        "zh-CN": "复盘：手术、病理和延误",
+        "en": "Review the operation, the pathology and the delay"
+      },
+      "short": {
+        "zh-CN": "复盘",
+        "en": "Review"
+      },
+      "hint": {
+        "zh-CN": "调阅原报告的治疗与转归；再回头看4个月前的首诊——当时缺了哪一步？",
+        "en": "Read the reported treatment and outcome, and look back at the first presentation four months ago: which step was missing then?"
+      },
+      "guidance": {
+        "zh-CN": "在电子病历终端调阅原报告的结局，并完成回顾性决策。",
+        "en": "Read the reported outcome at a records terminal and answer the look-back decision."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "followup",
+            "phase": "followup"
+          },
+          {
+            "decided": "first-presentation"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "first-steps",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "周先生29岁，断续发热4个月，近1周咳嗽、咯血、喘息、夜间不能平卧；4个月前有脑出血，做了动脉瘤栓塞；昨天急诊胸片提示右侧肺部感染。今天你在二尖瓣听诊区听到3～4级粗糙收缩期杂音。下一步最重要的是什么？",
+        "en": "Mr Zhou, 29, has had intermittent fever for 4 months and, for a week, cough, haemoptysis, wheeze and orthopnoea; 4 months ago he had an intracranial haemorrhage and an aneurysm was coiled; yesterday's ED chest X-ray was reported as right-sided lung infection. Today you hear a harsh grade 3–4 systolic murmur at the mitral area. What matters most next?"
+      },
+      "requires": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "neuro-event"
+          },
+          {
+            "asked": "prior-heart"
+          },
+          {
+            "examined": "cardiac"
+          },
+          {
+            "read": "ed-record",
+            "phase": "initial"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先问清病史（包括这一周的症状、脑部事件和以前的心脏检查）、听诊心脏，并调阅急诊记录。",
+        "en": "Take the history (this week's symptoms, the brain event and earlier cardiac checks), listen to his heart and read the ED record first."
+      },
+      "options": [
+        {
+          "id": "fs-ie",
+          "correct": true,
+          "text": {
+            "zh-CN": "按可能的感染性心内膜炎评估：在用新的抗菌药之前，从不同部位分次采集多套血培养；尽快做超声心动图（需要时经食管）；请心内科接手。",
+            "en": "Work him up for possible infective endocarditis: take several sets of blood cultures from separate venepunctures before any new antibiotic, get an echocardiogram promptly (transoesophageal if needed), and hand him over to cardiology."
+          },
+          "feedback": {
+            "zh-CN": "正确。发热4个月加新出现的二尖瓣杂音，又有颅内出血和动脉瘤这样的血管事件，首先要想到感染性心内膜炎（ESC 2023）。他几个月里反复用过抗菌药，先在抗菌药之前采集多套血培养，才有机会培养出致病菌；超声心动图找赘生物和瓣膜损害。原报告的呼吸科正是在入院查体听到杂音后疑诊感染性心内膜炎、转入心内科。",
+            "en": "Correct. Four months of fever with a new mitral murmur, plus vascular events such as an intracranial haemorrhage and an aneurysm, should make you think of infective endocarditis first (ESC 2023). He has had repeated antibiotics for months, so cultures taken before any new antibiotic are his best chance of growing the organism; echocardiography looks for vegetations and valve damage. This is what the report's respiratory team did: they heard the murmur on admission, suspected endocarditis and transferred him to cardiology."
+          }
+        },
+        {
+          "id": "fs-hap",
+          "correct": false,
+          "text": {
+            "zh-CN": "按医院获得性肺炎处理：马上开始广谱抗生素，超声心动图以后再做。",
+            "en": "Treat it as hospital-acquired pneumonia: start broad-spectrum antibiotics now and arrange an echo later."
+          },
+          "feedback": {
+            "zh-CN": "胸片提示右肺感染，但肺炎解释不了4个月的发热、颅内出血和新出现的杂音。先上抗生素会让血培养更难阳性、错过病原学诊断——他几个月来已经多次用过抗生素。先采集血培养，尽快做超声心动图。",
+            "en": "The chest film suggests a right-lung infection, but pneumonia cannot explain 4 months of fever, an intracranial haemorrhage and a new murmur. Antibiotics first make the cultures less likely to grow anything and lose the microbiological diagnosis — and he has already had several courses. Take cultures, then get the echo promptly."
+          }
+        },
+        {
+          "id": "fs-flow",
+          "correct": false,
+          "text": {
+            "zh-CN": "杂音是发热和贫血引起的血流杂音：先退热，热退了再复听。",
+            "en": "It is a flow murmur from fever and anaemia: bring the fever down and listen again once he is afebrile."
+          },
+          "feedback": {
+            "zh-CN": "发热和贫血可以引起柔和的收缩期血流杂音；但这是3～4级、粗糙的二尖瓣区杂音，而一年前多次检查都没有杂音——这是新出现的器质性杂音。当作血流杂音会重演前4个月的漏诊。",
+            "en": "Fever and anaemia can cause a soft systolic flow murmur, but this one is grade 3–4, harsh and at the mitral area, and repeated examinations a year ago found no murmur at all: a new structural murmur. Calling it a flow murmur repeats the four-month miss."
+          }
+        },
+        {
+          "id": "fs-neuro",
+          "correct": false,
+          "text": {
+            "zh-CN": "多半是再发颅内出血：先复查头颅CT，按神经系统问题处理。",
+            "en": "Probably another intracranial bleed: repeat the head CT and manage it as a neurological problem."
+          },
+          "feedback": {
+            "zh-CN": "这正是首诊医院的思路——注意力全放在脑子上，没有认真查心脏，也没做超声心动图和血培养，诊断因此延误了4个月（原报告讨论）。他现在神志清楚；发热、新杂音和心衰症状要求先按感染性心内膜炎评估，神经影像留给团队评估手术时机时复核。",
+            "en": "This is the first hospital's line of thought — all attention on the brain, no careful cardiac examination, no echocardiogram or blood cultures — and it delayed the diagnosis by four months (the report's discussion). He is alert now; the fever, the new murmur and the heart-failure symptoms call for an endocarditis work-up first, with neuroimaging reviewed when the team considers the timing of surgery."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "超声心动图：二尖瓣前叶两个陈旧性赘生物，前叶脱垂伴重度关闭不全，部分小腱索断裂可能性大。连续2次血培养均为屎肠球菌（两次采血的间隔原报告未给出）。按ESC 2023改良Duke标准，怎样归类？",
+        "en": "Echocardiography: two old vegetations on the anterior mitral leaflet, prolapse with severe regurgitation and probable rupture of some small chordae. Two consecutive blood cultures grew Enterococcus faecium (the interval between them is not reported). How do you classify this by the ESC 2023 modified Duke criteria?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "echo",
+            "phase": "workup"
+          },
+          {
+            "read": "culture",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先看超声心动图和血培养结果。",
+        "en": "Read the echocardiogram and the blood cultures first."
+      },
+      "options": [
+        {
+          "id": "dx-definite",
+          "correct": true,
+          "text": {
+            "zh-CN": "确定的感染性心内膜炎：超声心动图赘生物是一项主要标准，再加发热≥38 ℃、血管现象（颅内出血、颅内动脉瘤）和阳性血培养三项次要标准；屎肠球菌不是“典型”致病菌、两次培养间隔未报告，可能达不到微生物主要标准，但无论哪种情况都已“确定”。",
+            "en": "Definite infective endocarditis: the vegetations on echo are one major criterion, plus three minor ones — fever ≥ 38 °C, vascular phenomena (intracranial haemorrhage, intracranial aneurysm) and positive blood cultures. E. faecium is not a 'typical' organism and the interval between the cultures is not reported, so the major microbiological criterion may not be met — but it is definite either way."
+          },
+          "feedback": {
+            "zh-CN": "正确。ESC 2023改良Duke标准（与Duke-ISCVID 2023相同）中的“典型”致病菌是口腔链球菌、解没食子酸链球菌、HACEK、金黄色葡萄球菌和粪肠球菌，屎肠球菌不在其中；非典型致病菌要达到微生物主要标准，需要血培养持续阳性（如两次阳性采血间隔超过12小时）。即使不计这一项，1项主要标准加3项次要标准也已是“确定”。术后瓣膜病理又满足了病理学标准。",
+            "en": "Correct. In the ESC 2023 modified Duke criteria (as in Duke-ISCVID 2023) the 'typical' organisms are oral streptococci, Streptococcus gallolyticus, the HACEK group, Staphylococcus aureus and Enterococcus faecalis — not E. faecium; a non-typical organism meets the major microbiological criterion only with persistently positive cultures (for example two positive samples drawn more than 12 hours apart). Without that criterion, 1 major plus 3 minor criteria are still definite. The valve pathology after surgery then met the pathological criterion too."
+          }
+        },
+        {
+          "id": "dx-possible",
+          "correct": false,
+          "text": {
+            "zh-CN": "只能算“可能的”感染性心内膜炎：屎肠球菌不是典型致病菌，血培养不能计入，要等经食管超声。",
+            "en": "Only 'possible' endocarditis: E. faecium is not a typical organism, so the cultures don't count; wait for a transoesophageal echo."
+          },
+          "feedback": {
+            "zh-CN": "屎肠球菌不是典型致病菌、培养间隔不明，确实可能达不到微生物主要标准——但阳性培养仍是一项次要标准。赘生物（主要）加发热、血管现象和阳性培养（次要）已经是1项主要加3项次要，满足“确定”。经食管超声能更好地评估并发症，但不是确诊的前提。",
+            "en": "E. faecium is not typical and the interval is unknown, so the major microbiological criterion may well not be met — but positive cultures still count as a minor criterion. Vegetations (major) plus fever, vascular phenomena and positive cultures (minor) make 1 major and 3 minor: definite. A transoesophageal echo assesses complications better, but the diagnosis does not wait for it."
+          }
+        },
+        {
+          "id": "dx-typical",
+          "correct": false,
+          "text": {
+            "zh-CN": "确定的感染性心内膜炎：两次血培养长出屎肠球菌，本身就是一项主要标准。",
+            "en": "Definite endocarditis: two cultures growing E. faecium are a major criterion in themselves."
+          },
+          "feedback": {
+            "zh-CN": "结论对，理由错。屎肠球菌不在ESC 2023和Duke-ISCVID 2023的“典型”致病菌之列（粪肠球菌才是）；非典型致病菌需要血培养持续阳性才算主要标准，而本例两次采血的间隔没有报告。确诊靠的是赘生物加三项次要标准，以及术后病理。",
+            "en": "The right conclusion for the wrong reason. E. faecium is not among the 'typical' organisms in ESC 2023 or Duke-ISCVID 2023 (E. faecalis is); a non-typical organism needs persistently positive cultures to be a major criterion, and the interval between his samples is not reported. The diagnosis rests on the vegetations plus three minor criteria, and on the pathology after surgery."
+          }
+        },
+        {
+          "id": "dx-rejected",
+          "correct": false,
+          "text": {
+            "zh-CN": "排除感染性心内膜炎：外伤后4次超声心动图都正常。",
+            "en": "Endocarditis is rejected: four echocardiograms after his injury were normal."
+          },
+          "feedback": {
+            "zh-CN": "几个月前正常的超声心动图不能排除后来发生的感染性心内膜炎——原报告作者正是据此认为它与外伤关系不大，瓣膜是在那之后才受累的。现在的超声心动图已经看到了赘生物。",
+            "en": "Normal echocardiograms months ago cannot exclude endocarditis acquired since — the authors used exactly those scans to argue that the trauma was not the cause; the valve was infected later. Today's echo shows the vegetations."
+          }
+        },
+        {
+          "id": "dx-pneumonia",
+          "correct": false,
+          "text": {
+            "zh-CN": "右肺感染合并败血症，杂音是血流杂音。",
+            "en": "Right-lung infection with sepsis; the murmur is a flow murmur."
+          },
+          "feedback": {
+            "zh-CN": "超声心动图已经看到赘生物和重度二尖瓣反流，血流杂音解释不了；右肺的胸片改变也解释不了4个月的发热和颅内出血。",
+            "en": "The echo shows vegetations and severe mitral regurgitation, which no flow murmur explains; nor does the right-lung shadow explain four months of fever and an intracranial haemorrhage."
+          }
+        }
+      ]
+    },
+    {
+      "id": "surgery",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "他夜间不能平卧、心悸，BNP 377 ng/L（正常值0～100），重度二尖瓣反流、腱索断裂可能，左心房明显增大；血压120/70 mmHg。约4个月前脑出血、左大脑中动脉瘤已栓塞，入院诊断还列有“右侧颞顶叶梗死可能性大”。手术怎么定？",
+        "en": "He has orthopnoea and palpitations, a BNP of 377 ng/L (normal 0–100), severe mitral regurgitation with probable chordal rupture and a markedly enlarged left atrium; BP 120/70 mmHg. About 4 months ago he had an intracranial haemorrhage and the left MCA aneurysm was coiled, and the admission diagnoses also list a probable right temporoparietal infarct. What is the surgical plan?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "labs",
+            "phase": "workup"
+          },
+          {
+            "read": "neuro-record",
+            "phase": "workup"
+          },
+          {
+            "asked": "breathing"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先完成诊断决策，并看过血液检查和神经系统记录。",
+        "en": "Make the diagnosis decision and read the blood tests and the neurological record first."
+      },
+      "options": [
+        {
+          "id": "sx-urgent",
+          "correct": true,
+          "text": {
+            "zh-CN": "限期手术（数天内）：重度二尖瓣反流伴心衰症状是手术指征；脑出血已约4个月，超过ESC 2023建议的大量脑出血后可考虑推迟≥4周的期限，可能的缺血性梗死本身不是推迟的理由；由心内膜炎团队复核当前头颅影像（排查感染性动脉瘤），并按药敏调整抗菌方案。",
+            "en": "Urgent surgery, within days: severe mitral regurgitation with heart-failure symptoms is an indication; the haemorrhage was about 4 months ago — beyond the ≥ 4-week delay ESC 2023 suggests considering after a significant haemorrhage — and a probable ischaemic infarct is not in itself a reason to wait; the Endocarditis Team reviews current brain imaging (looking for an infective aneurysm) and tailors the antibiotics to susceptibilities."
+          },
+          "feedback": {
+            "zh-CN": "正确。ESC 2023：心衰是感染性心内膜炎最主要的急诊或限期手术指征——难治性肺水肿或心源性休克要急诊手术（24小时内），有心衰症状或血流动力学耐受差的重度反流要限期手术（3～5天）。他有端坐呼吸、BNP升高和腱索断裂，但血压平稳，属限期。神经系统并发症后：短暂性脑缺血发作或缺血性卒中后不应推迟有指征的手术；大量脑出血后可考虑推迟至少4周——他的出血已过去约4个月。原报告的团队同样选择了手术（时间未报告）。",
+            "en": "Correct. ESC 2023: heart failure is the main indication for emergency or urgent surgery in endocarditis — emergency (within 24 hours) for refractory pulmonary oedema or cardiogenic shock, urgent (3–5 days) for severe regurgitation with heart-failure symptoms or poor haemodynamic tolerance. He has orthopnoea, a raised BNP and chordal rupture but a stable blood pressure: urgent. After neurological complications, indicated surgery should not be delayed after a TIA or ischaemic stroke, and a delay of at least 4 weeks may be considered after a significant haemorrhage — his was about 4 months ago. The report's team also operated (timing not reported)."
+          }
+        },
+        {
+          "id": "sx-defer",
+          "correct": false,
+          "text": {
+            "zh-CN": "因为脑出血过，先完成6周抗菌疗程，再考虑手术。",
+            "en": "Because of the brain haemorrhage, finish a 6-week antibiotic course before considering surgery."
+          },
+          "feedback": {
+            "zh-CN": "推迟只会让心衰加重、瓣膜继续毁损；他的脑出血已约4个月，ESC 2023所说的出血后推迟（≥4周）早已过去。等疗程结束不是重度反流伴心衰患者的选项。",
+            "en": "Waiting lets the heart failure worsen and the valve keep breaking down; his haemorrhage was about 4 months ago, long past the ≥ 4-week delay ESC 2023 mentions after a bleed. Waiting for the end of the course is not an option with severe regurgitation and heart failure."
+          }
+        },
+        {
+          "id": "sx-medical",
+          "correct": false,
+          "text": {
+            "zh-CN": "只用抗生素，再发栓塞时再手术。",
+            "en": "Antibiotics alone; operate only if there is another embolic event."
+          },
+          "feedback": {
+            "zh-CN": "心衰本身就是手术指征，等待再次栓塞是把预防变成补救。他已经有脑出血、动脉瘤和可能的脑梗死，赘生物也还在。",
+            "en": "Heart failure is an indication in itself, and waiting for another embolus turns prevention into salvage. He has already had a haemorrhage, an aneurysm and a probable infarct, and the vegetations are still there."
+          }
+        },
+        {
+          "id": "sx-emergency",
+          "correct": false,
+          "text": {
+            "zh-CN": "动脉瘤已经栓塞，今晚就急诊手术，不必复核神经影像，也不必团队讨论。",
+            "en": "The aneurysm is coiled: operate as an emergency tonight, without reviewing neuroimaging or a team discussion."
+          },
+          "feedback": {
+            "zh-CN": "急诊（24小时内）手术留给难治性肺水肿或心源性休克；他血压120/70 mmHg，没有休克，属限期手术。有神经系统并发症的患者，术前要由团队复核当前影像、权衡风险——这正是ESC 2023强调心内膜炎团队的原因。",
+            "en": "Emergency surgery (within 24 hours) is for refractory pulmonary oedema or cardiogenic shock; with a BP of 120/70 mmHg and no shock, he needs urgent surgery. With neurological complications the team reviews current imaging and weighs the risks before operating — which is why ESC 2023 puts the Endocarditis Team at the centre."
+          }
+        }
+      ]
+    },
+    {
+      "id": "first-presentation",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "回看4个月前的首诊：发热3天、最高40 ℃，突发烦躁、谵妄；体温37.7 ℃，心率104次/分，各瓣膜区未闻及杂音；中性粒细胞91.8%；以“败血症、癔症”收入；CT示脑出血，CTA示颅内动脉瘤，3天后转院栓塞。哪种做法最可能缩短他4个月的延误？",
+        "en": "Look back at the first presentation 4 months ago: 3 days of fever up to 40 °C, then sudden agitation and delirium; temperature 37.7 °C, heart rate 104/min, no murmur; neutrophils 91.8 %; admitted as 'sepsis, hysteria'; CT showed a haemorrhage and CTA an intracranial aneurysm, coiled elsewhere 3 days later. What would most likely have shortened his four-month delay?"
+      },
+      "requires": {
+        "any": [
+          {
+            "read": "prior-records",
+            "phase": "initial"
+          },
+          {
+            "read": "prior-records",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅外院与既往记录。",
+        "en": "Read the earlier hospital records first."
+      },
+      "options": [
+        {
+          "id": "fp-ie",
+          "correct": true,
+          "text": {
+            "zh-CN": "把“发热+颅内出血/动脉瘤”当作可能的感染性心内膜炎：反复仔细听诊心脏，在抗菌药之前采集血培养，做超声心动图；并在决定动脉瘤处理的时机和方式之前，考虑感染性动脉瘤的可能。",
+            "en": "Treat 'fever plus intracranial haemorrhage or aneurysm' as possible infective endocarditis: examine the heart carefully and repeatedly, take blood cultures before antibiotics, get an echocardiogram — and consider an infective aneurysm before deciding when and how to treat it."
+          },
+          "feedback": {
+            "zh-CN": "正确。发热患者出现颅内出血或动脉瘤，是感染性心内膜炎的血管现象（ESC 2023改良Duke标准的次要标准），应主动寻找心脏来源。首诊时没有杂音不能排除——杂音可以后来才出现，要复查；血培养和超声心动图才是关键。原报告作者认为，正是没有认真查体、没做超声心动图和血培养、注意力全在中枢神经系统，造成了4个月的误诊，并提出动脉瘤介入的时机值得反思。",
+            "en": "Correct. In a febrile patient an intracranial haemorrhage or aneurysm is a vascular phenomenon of endocarditis (a minor criterion in the ESC 2023 modified Duke criteria), so look actively for a cardiac source. No murmur at a first visit does not exclude it — murmurs can appear later, so re-examine; blood cultures and echocardiography are what decide. The authors blame the four-month delay on the lack of careful examination, echocardiography and cultures and on attention fixed on the central nervous system, and they question the timing of the aneurysm procedure."
+          }
+        },
+        {
+          "id": "fp-no-murmur",
+          "correct": false,
+          "text": {
+            "zh-CN": "当时心脏没有杂音，已经可以排除心内膜炎。",
+            "en": "There was no murmur then, so endocarditis was already excluded."
+          },
+          "feedback": {
+            "zh-CN": "一次没听到杂音不能排除感染性心内膜炎，尤其在病程早期；要反复听诊，并做血培养和超声心动图。",
+            "en": "A single examination without a murmur does not exclude endocarditis, especially early on; re-examine, and do the blood cultures and the echocardiogram."
+          }
+        },
+        {
+          "id": "fp-hysteria",
+          "correct": false,
+          "text": {
+            "zh-CN": "烦躁、谵妄符合癔症；发热按败血症经验性抗感染就行。",
+            "en": "The agitation and delirium fit hysteria; empirical antibiotics for 'sepsis' cover the fever."
+          },
+          "feedback": {
+            "zh-CN": "发热伴急性谵妄首先要找器质性原因，何况CT随即发现了脑出血。不留血培养就经验性用抗生素，会让以后的培养更难阳性，也掩盖了感染性心内膜炎。",
+            "en": "Fever with acute delirium needs an organic cause first — and the CT soon showed a haemorrhage. Empirical antibiotics without cultures make later cultures less likely to grow anything and mask endocarditis."
+          }
+        },
+        {
+          "id": "fp-coil-first",
+          "correct": false,
+          "text": {
+            "zh-CN": "先处理动脉瘤，发热等出院后门诊随访。",
+            "en": "Deal with the aneurysm first and follow up the fever in clinic after discharge."
+          },
+          "feedback": {
+            "zh-CN": "这基本就是当时发生的事：动脉瘤处理了，发热却又持续了4个月。发热患者的颅内动脉瘤要先考虑感染来源，再决定处理的时机和方式。",
+            "en": "That is roughly what happened: the aneurysm was treated and the fever went on for another four months. In a febrile patient, look for an infective source of an intracranial aneurysm before deciding when and how to treat it."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "r-hx-timeline",
+      "domain": "history",
+      "weight": 2,
+      "text": {
+        "zh-CN": "理清发热、神经系统事件、首诊诊断和本周症状的时间线",
+        "en": "Built the timeline of the fever, the neurological event, the first hospital's labels and this week's symptoms"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "fever-onset"
+          },
+          {
+            "asked": "neuro-event"
+          },
+          {
+            "asked": "first-hospital"
+          },
+          {
+            "asked": "breathing"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-hx-risk",
+      "domain": "history",
+      "weight": 1,
+      "text": {
+        "zh-CN": "询问外伤手术、既往心脏检查、牙科操作和静脉药物使用",
+        "en": "Asked about the trauma operations, earlier cardiac checks, dental procedures and injecting drug use"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "operations"
+          },
+          {
+            "asked": "prior-heart"
+          },
+          {
+            "asked": "dental"
+          },
+          {
+            "asked": "ivdu"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-exam-heart",
+      "domain": "examination",
+      "weight": 2,
+      "text": {
+        "zh-CN": "测量生命体征并逐个瓣膜区听诊心脏",
+        "en": "Took the vital signs and auscultated each valve area"
+      },
+      "met": {
+        "all": [
+          {
+            "examined": "vitals"
+          },
+          {
+            "examined": "cardiac"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-exam-systems",
+      "domain": "examination",
+      "weight": 1,
+      "text": {
+        "zh-CN": "检查一般情况、胸部、腹部和双下肢（含外固定器）",
+        "en": "Examined his general state, chest, abdomen and legs (including the fixator)"
+      },
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "chest"
+          },
+          {
+            "examined": "abdomen"
+          },
+          {
+            "examined": "legs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-records",
+      "domain": "investigations",
+      "weight": 1,
+      "text": {
+        "zh-CN": "调阅急诊记录和外院既往记录",
+        "en": "Read the ED record and the earlier hospital records"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "ed-record",
+            "phase": "initial"
+          },
+          {
+            "read": "prior-records",
+            "phase": "initial"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-cultures",
+      "domain": "safety",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即决定在抗菌药之前采集血培养并做超声心动图，送检血培养，且没有按肺炎先上广谱抗生素",
+        "en": "Decided at the first attempt on blood cultures before antibiotics and echocardiography, sent the cultures, and did not start pneumonia antibiotics first"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "first-steps"
+          },
+          {
+            "ordered": "culture"
+          },
+          {
+            "not": {
+              "intervened": "hap-antibiotics"
+            }
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "r-workup",
+      "domain": "investigations",
+      "weight": 1,
+      "text": {
+        "zh-CN": "查看超声心动图、血培养和血液检查，并在血培养后开始抗菌治疗",
+        "en": "Read the echocardiogram, the cultures and the blood tests, and started antibiotics after the cultures"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "echo",
+            "phase": "workup"
+          },
+          {
+            "read": "culture",
+            "phase": "workup"
+          },
+          {
+            "read": "labs",
+            "phase": "workup"
+          },
+          {
+            "intervened": "iv-antibiotics"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-dx",
+      "domain": "diagnosis",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即按改良Duke标准正确归类",
+        "en": "Classified the case correctly by the modified Duke criteria at the first attempt"
+      },
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "r-surgery",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即选对手术指征与时机，并请心内膜炎团队、安排手术",
+        "en": "Chose the indication and timing of surgery at the first attempt, involved the Endocarditis Team and arranged surgery"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "surgery"
+          },
+          {
+            "intervened": "endocarditis-team"
+          },
+          {
+            "intervened": "book-surgery"
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "r-no-deferral",
+      "domain": "safety",
+      "weight": 2,
+      "text": {
+        "zh-CN": "没有因为陈旧性脑出血而推迟有指征的手术",
+        "en": "Did not defer indicated surgery because of the old haemorrhage"
+      },
+      "met": {
+        "not": {
+          "intervened": "defer-surgery"
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "surgery"
+          },
+          {
+            "intervened": "defer-surgery"
+          },
+          {
+            "intervened": "book-surgery"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-lesson",
+      "domain": "diagnosis",
+      "weight": 1,
+      "text": {
+        "zh-CN": "首次作答即指出首诊时应做的检查（血培养、超声心动图，考虑感染性动脉瘤）",
+        "en": "Identified at the first attempt what the first presentation needed (cultures, echocardiography, an infective aneurysm considered)"
+      },
+      "met": {
+        "decidedFirstTry": "first-presentation"
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "weight": 1,
+      "text": {
+        "zh-CN": "向患者解释诊断、手术的必要性和时机，并回应他四个月来的经历",
+        "en": "Explained the diagnosis and the need for and timing of surgery, and acknowledged his four-month ordeal"
+      },
+      "judgeGuidance": {
+        "zh-CN": "良好表现：用通俗的话解释心脏瓣膜感染是什么、为什么能解释四个月的发烧和脑子里的出血；说明瓣膜已经损坏、造成心衰，需要在几天内手术，以及为什么脑出血已经过去足够久；说明术前术后还要用较长时间的抗菌药；承认他辗转多家医院、诊断来得晚，不推诿、不指责其他医生；回答他的疑问，并请他复述要点。",
+        "en": "Good performance: explains in plain words what a heart-valve infection is and how it accounts for four months of fever and the bleed in his brain; that the valve is damaged and causing heart failure, so surgery is needed within days, and why the brain bleed is now long enough ago; that a long course of antibiotics comes before and after; acknowledges that he was passed between hospitals and diagnosed late, without blaming other doctors; answers his questions and asks him to say the key points back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "呼吸科护士 邬敏（化名）",
+        "en": "Nurse Wu Min, respiratory ward (pseudonym)"
+      },
+      "knowledge": {
+        "zh-CN": "病房护士。交班：29岁男性，昨天经急诊收入呼吸科，入院测体温38.6 ℃、脉搏120次/分、呼吸20次/分、血压120/70 mmHg。物品与流程：血培养瓶在治疗室，需从不同部位分次采血；超声科可来床旁做超声心动图；电子病历终端能调阅急诊记录和外院资料；心内科、心外科可电话会诊。只报告看到的情况和测得的数值，不解读、不下诊断。",
+        "en": "Ward nurse. Handover: 29-year-old man admitted to the respiratory ward from the ED yesterday; on admission temperature 38.6 °C, pulse 120/min, respiratory rate 20/min, BP 120/70 mmHg. Kit and logistics: blood culture bottles are in the treatment room, for separate venepunctures; the echo service can come to the bedside; the electronic record terminal has the ED record and the outside hospital records; cardiology and cardiac surgery can be phoned. Reports only what she sees and measures, and does not interpret or diagnose."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "上级医师 祁医生（化名）",
+        "en": "Dr Qi, attending physician (pseudonym)"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教，只追问学员已经掌握的资料：“四个月发热加新出现的杂音，你最担心什么？”“用抗生素之前要先做什么？”“发热病人出现颅内出血或动脉瘤意味着什么？”“屎肠球菌在Duke标准里算不算‘典型’致病菌？”“他有没有手术指征，什么时候做？”“四个月前的脑出血对手术时机有什么影响？”“首诊时漏掉了什么？”可以提示ESC 2023心内膜炎指南和Duke-ISCVID 2023标准。不提前说出诊断，不补充病例中没有的数据；原报告的处置不自动等于今天的推荐。",
+        "en": "Socratic teacher who asks only about what the learner already has: \"Four months of fever and a new murmur — what worries you most?\", \"What must happen before any antibiotic?\", \"What does an intracranial haemorrhage or aneurysm mean in a febrile patient?\", \"Is E. faecium a 'typical' organism in the Duke criteria?\", \"Does he need surgery, and when?\", \"What does a haemorrhage 4 months ago mean for the timing?\", \"What was missed at the first presentation?\". May point to the ESC 2023 endocarditis guideline and the Duke-ISCVID 2023 criteria. Does not announce the diagnosis early or add data the case does not contain; what the report's team did is not automatically today's recommendation."
+      },
+      "interprets": [
+        "ed-record",
+        "prior-records",
+        "culture",
+        "labs",
+        "neuro-record",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "心外科会诊医生 闻医生（化名）",
+        "en": "Dr Wen, cardiac surgery (pseudonym)"
+      },
+      "knowledge": {
+        "zh-CN": "心外科会诊医生，只在学员看过超声心动图后才解读；可讲解重度二尖瓣反流、腱索断裂与心衰的关系，急诊手术（难治性肺水肿、心源性休克）与限期手术（心衰症状或血流动力学耐受差）的区别，以及ESC 2023关于神经系统并发症后手术时机的建议（短暂性脑缺血发作或缺血性卒中后不推迟有指征的手术，大量脑出血后可考虑推迟至少4周）；强调由心内膜炎团队共同决定。不补充报告以外的发现，不预告手术结果。",
+        "en": "Cardiac surgical consultant who interprets only once the learner has read the echocardiogram: can explain how severe mitral regurgitation and chordal rupture cause heart failure, the difference between emergency surgery (refractory pulmonary oedema, cardiogenic shock) and urgent surgery (heart-failure symptoms or poor haemodynamic tolerance), and the ESC 2023 advice on timing after neurological complications (do not delay indicated surgery after a TIA or ischaemic stroke; consider waiting at least 4 weeks after a significant haemorrhage); stresses that the Endocarditis Team decides together. Adds no findings beyond the reports and does not foretell the operation."
+      },
+      "interprets": [
+        "echo",
+        "labs",
+        "neuro-record"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "复盘：屎肠球菌感染性心内膜炎与四个月的延误",
+      "en": "Debrief: Enterococcus faecium endocarditis and a four-month delay"
+    },
+    "conclusion": {
+      "zh-CN": "29岁男性，一年前外伤后多次手术（含剖腹探查），4个月前起间断发热，早期出现脑出血和左大脑中动脉瘤并行栓塞，首诊被诊为“败血症、癔症”；此后发热持续，近1周出现咯血、喘息和端坐呼吸。入院查体闻及二尖瓣区3～4级收缩期杂音，超声心动图见二尖瓣前叶陈旧性赘生物、重度关闭不全和腱索断裂可能，连续2次血培养为屎肠球菌：按ESC 2023改良Duke标准为确定的感染性心内膜炎（1项主要标准加3项次要标准，无论培养是否达到微生物主要标准），术后瓣膜病理确诊。心衰是限期手术指征，脑出血已约4个月，不构成推迟理由；原报告团队行赘生物清除并二尖瓣生物瓣置换。作者认为感染可能源于腹部手术后的内源性屎肠球菌，并把误诊归因于首诊时未查心脏、未做超声心动图和血培养。",
+      "en": "A 29-year-old man had several operations, including a laparotomy, after an injury a year earlier. Four months ago he developed intermittent fever, early on with an intracranial haemorrhage and a left MCA aneurysm that was coiled, and the first hospital labelled him 'sepsis, hysteria'; the fever persisted and this week he developed haemoptysis, wheeze and orthopnoea. On admission a grade 3–4 mitral systolic murmur was heard; echocardiography showed old anterior-leaflet vegetations, severe regurgitation and probable chordal rupture, and two consecutive cultures grew E. faecium: definite infective endocarditis by the ESC 2023 modified Duke criteria (1 major plus 3 minor criteria, whether or not the cultures meet the major microbiological criterion), confirmed by valve pathology. Heart failure is an indication for urgent surgery, and a haemorrhage about 4 months old is no reason to wait; the report's team removed the vegetations and replaced the mitral valve with a bioprosthesis. The authors suspect endogenous E. faecium after the abdominal surgery, and blame the missed diagnosis on the first hospital's failure to examine the heart or do echocardiography and blood cultures."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "长期发热加新出现的心脏杂音，首先要想到感染性心内膜炎；入院时仔细听诊，正是转折点。",
+        "en": "Prolonged fever with a new murmur means endocarditis until proven otherwise; careful auscultation on admission was the turning point."
+      },
+      {
+        "zh-CN": "发热患者的颅内出血或动脉瘤是血管现象，提示要寻找心脏来源，而不只盯着脑子。",
+        "en": "An intracranial haemorrhage or aneurysm in a febrile patient is a vascular phenomenon that sends you looking for a cardiac source, not only at the brain."
+      },
+      {
+        "zh-CN": "几个月前正常的超声心动图和首诊时没有杂音，都不能排除后来发生的感染性心内膜炎。",
+        "en": "Normal echocardiograms months earlier and no murmur at the first visit do not exclude endocarditis that develops later."
+      },
+      {
+        "zh-CN": "屎肠球菌不是“典型”致病菌，两次培养间隔未知时可能只算次要标准；但赘生物加发热、血管现象和阳性培养已是“确定”。",
+        "en": "E. faecium is not a 'typical' organism, and with the interval unknown the cultures may count only as a minor criterion; vegetations plus fever, vascular phenomena and positive cultures are still definite."
+      },
+      {
+        "zh-CN": "重度反流引起的心衰决定了手术，脑出血的时间（约4个月前）决定了现在可以手术。",
+        "en": "Heart failure from severe regurgitation is what makes surgery necessary; the age of the haemorrhage (about 4 months) is what makes it possible now."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告。感染来源（腹部手术后内源性屎肠球菌）是作者的推测；脑梗死在入院诊断中为“可能性大”，讨论中却写作“合并脑栓塞”，均未给出影像。血培养的采集方式、药敏、抗菌方案、手术时间、术后经过和神经系统结局都没有报告。教学决策反映现行指南（ESC 2023、Duke-ISCVID 2023），不代表原报告团队当时的推理。",
+      "en": "A single case report. The source of infection (endogenous E. faecium after the abdominal surgery) is the authors' hypothesis; the infarct is 'probable' in the admission diagnoses but stated as 'cerebral embolism' in the discussion, with no imaging given for either. How the cultures were taken, the susceptibilities, the antibiotic regimen, the timing of surgery, the post-operative course and the neurological outcome are not reported. The teaching decisions reflect current guidance (ESC 2023, Duke-ISCVID 2023), not the report team's reasoning at the time."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "药敏结果、抗菌方案、剂量和疗程。",
+        "en": "Susceptibilities, the antibiotic regimen, doses and duration."
+      },
+      {
+        "zh-CN": "血培养的套数和采血间隔；是否做过经食管超声心动图。",
+        "en": "How many culture sets were taken and how far apart; whether a transoesophageal echo was done."
+      },
+      {
+        "zh-CN": "本次住院的头颅影像和神经系统查体；手术时间、术后经过和神经系统结局。",
+        "en": "Brain imaging and the neurological examination during this admission; the timing of surgery, the post-operative course and the neurological outcome."
+      },
+      {
+        "zh-CN": "首诊时的颅内动脉瘤是否为感染性动脉瘤。",
+        "en": "Whether the intracranial aneurysm at the first presentation was infective."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "识别感染性心内膜炎（ESC 2023；Duke-ISCVID 2023）：长期发热伴新杂音，或伴颅内出血、动脉瘤、栓塞等血管事件，应在抗菌药之前分次采集多套血培养，并尽快做超声心动图；早先正常的超声不能排除。原报告首诊医院以“败血症、癔症”收治，未查心脏、未做超声心动图和血培养，诊断延误了4个月。",
+        "en": "Recognising infective endocarditis (ESC 2023; Duke-ISCVID 2023): prolonged fever with a new murmur, or with a vascular event such as an intracranial haemorrhage, an aneurysm or an embolus, calls for several sets of blood cultures before antibiotics and prompt echocardiography; earlier normal scans do not exclude it. In the report the first hospital admitted him as 'sepsis, hysteria' without a cardiac examination, echocardiography or cultures, and the diagnosis came four months late."
+      },
+      {
+        "zh-CN": "用改良Duke标准归类（ESC 2023；Duke-ISCVID 2023）：“典型”致病菌为口腔链球菌、解没食子酸链球菌、HACEK、金黄色葡萄球菌和粪肠球菌；屎肠球菌等非典型致病菌需要血培养持续阳性才算主要标准。确定=2项主要，或1项主要加3项次要，或5项次要，或病理学标准。本例无论培养是否达到主要标准都为“确定”，术后病理再次确认。",
+        "en": "Classifying with the modified Duke criteria (ESC 2023; Duke-ISCVID 2023): the 'typical' organisms are oral streptococci, S. gallolyticus, HACEK, S. aureus and E. faecalis; a non-typical organism such as E. faecium needs persistently positive cultures to count as a major criterion. Definite = 2 major, or 1 major plus 3 minor, or 5 minor criteria, or the pathological criterion. This case is definite whether or not the cultures meet the major criterion, and the valve pathology confirmed it."
+      },
+      {
+        "zh-CN": "手术指征与时机（ESC 2023）：心衰是最主要的手术指征——难治性肺水肿或心源性休克急诊手术（24小时内），心衰症状或血流动力学耐受差的重度反流限期手术（3～5天）；短暂性脑缺血发作或缺血性卒中后不推迟有指征的手术，大量脑出血后可考虑推迟至少4周；由心内膜炎团队共同决定。本例脑出血已约4个月，原报告团队同样选择了手术（时间未报告）。",
+        "en": "Indication for and timing of surgery (ESC 2023): heart failure is the main indication — emergency surgery (within 24 hours) for refractory pulmonary oedema or cardiogenic shock, urgent surgery (3–5 days) for severe regurgitation with heart-failure symptoms or poor haemodynamic tolerance; indicated surgery is not delayed after a TIA or ischaemic stroke, and a delay of at least 4 weeks may be considered after a significant haemorrhage; the Endocarditis Team decides. His haemorrhage was about 4 months old, and the report's team also operated (timing not reported)."
+      },
+      {
+        "zh-CN": "发热患者的颅内动脉瘤（ESC 2023改良Duke标准：颅内出血和感染性动脉瘤属血管现象）：先想到感染性心内膜炎和感染性动脉瘤，完成血培养和超声心动图，再由团队决定动脉瘤处理的时机和方式。原报告作者也提出，本例动脉瘤介入的时机值得反思。",
+        "en": "An intracranial aneurysm in a febrile patient (ESC 2023 modified Duke criteria: intracranial haemorrhage and infective aneurysm are vascular phenomena): think of endocarditis and an infective aneurysm, complete the cultures and echocardiography, and let the team decide when and how to treat the aneurysm. The authors themselves question the timing of the aneurysm procedure here."
+      }
+    ],
+    "references": [
+      "郭彩霞, 付强, 陈步星. 屎肠球菌致感染性心内膜炎一例. 中华心血管病杂志. 2014;42(2):172-173. doi:10.3760/cma.j.issn.0253-3758.2014.02.016. Available from: https://rs.yiigle.com/cmaid/33716",
+      "Delgado V, Ajmone Marsan N, de Waha S, et al. 2023 ESC Guidelines for the management of endocarditis. Eur Heart J. 2023;44(39):3948-4042. doi:10.1093/eurheartj/ehad193",
+      "Fowler VG Jr, Durack DT, Selton-Suty C, et al. The 2023 Duke-International Society for Cardiovascular Infectious Diseases criteria for infective endocarditis: updating the modified Duke criteria. Clin Infect Dis. 2023;77(4):518-526. doi:10.1093/cid/ciad271",
+      "中华医学会心血管病学分会, 中华心血管病杂志编辑委员会. 成人感染性心内膜炎预防、诊断和治疗专家共识. 中华心血管病杂志. 2014;42(10):806-816."
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "药敏结果、抗菌方案、剂量和疗程未记录。",
+      "en": "Susceptibilities, the antibiotic regimen, doses and duration are not recorded."
+    },
+    {
+      "zh-CN": "血培养的采集套数和采血间隔、是否做过经食管超声心动图未记录。",
+      "en": "The number of culture sets, the interval between samples and any transoesophageal echo are not recorded."
+    },
+    {
+      "zh-CN": "本次住院的头颅影像、神经系统查体和最终神经系统结局未记录。",
+      "en": "Brain imaging and the neurological examination during this admission, and the final neurological outcome, are not recorded."
+    },
+    {
+      "zh-CN": "手术日期（距确诊的时间）、术后经过和远期随访未记录。",
+      "en": "The date of surgery (time from diagnosis), the post-operative course and long-term follow-up are not recorded."
+    },
+    {
+      "zh-CN": "外周体征（Osler结节、Janeway损害、甲下线状出血、结膜出血、眼底）未记录。",
+      "en": "Peripheral signs (Osler nodes, Janeway lesions, splinter haemorrhages, conjunctival haemorrhages, fundi) are not recorded."
+    },
+    {
+      "zh-CN": "牙科操作史、静脉药物使用史、外固定架钉道情况、过敏史、吸烟饮酒、职业、居住情况和家族史未记录。",
+      "en": "Dental history, injecting drug use, the fixator pin sites, allergies, smoking, alcohol, occupation, home situation and family history are not recorded."
+    },
+    {
+      "zh-CN": "首诊时颅内动脉瘤的影像细节（是否为感染性动脉瘤）未记录。",
+      "en": "Imaging details of the intracranial aneurysm at the first presentation (whether it was infective) are not recorded."
+    },
+    {
+      "zh-CN": "血氧饱和度和急诊胸片以外的胸部影像未记录；咯血量未记录。",
+      "en": "Oxygen saturation, chest imaging beyond the ED film and the amount of haemoptysis are not recorded."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-33716/fig01.png",
+      "title": {
+        "zh-CN": "原报告图1：超声心动图心尖四腔切面（a）和左心室长轴切面（b），箭头示二尖瓣前叶赘生物",
+        "en": "Report figure 1: apical four-chamber (a) and left-ventricular long-axis (b) echocardiographic views; the arrows mark the anterior mitral leaflet vegetation"
+      },
+      "credit": {
+        "zh-CN": "原报告图1（郭彩霞、付强、陈步星，2014）。版权归原权利人。",
+        "en": "Original report figure 1 (Guo C, Fu Q, Chen B, 2014). Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "9f41f436e412b982e7f408d95c7299f29beb54fa652e1c57b6f579daf84452ff"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-33716/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘；第2页含另一篇病例报告的开头）",
+        "en": "Source PDF (contains the outcome; for debrief review; page 2 includes the start of another case report)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "53ed523d16ddbabe8276d45cba03540be751bac1f15fe12751da27b4b0edf1d1"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever-onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "neuro-event"
+    },
+    {
+      "type": "ask",
+      "itemId": "first-hospital"
+    },
+    {
+      "type": "ask",
+      "itemId": "after-coiling"
+    },
+    {
+      "type": "ask",
+      "itemId": "county-hospital"
+    },
+    {
+      "type": "ask",
+      "itemId": "breathing"
+    },
+    {
+      "type": "ask",
+      "itemId": "ed-visit"
+    },
+    {
+      "type": "ask",
+      "itemId": "operations"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-heart"
+    },
+    {
+      "type": "ask",
+      "itemId": "meds"
+    },
+    {
+      "type": "ask",
+      "itemId": "dental"
+    },
+    {
+      "type": "ask",
+      "itemId": "ivdu"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "fixator-site"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "chest"
+    },
+    {
+      "type": "examine",
+      "findingId": "cardiac"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "examine",
+      "findingId": "legs"
+    },
+    {
+      "type": "order",
+      "investigationId": "ed-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "ed-record",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "prior-records"
+    },
+    {
+      "type": "read",
+      "investigationId": "prior-records",
+      "phase": "initial"
+    },
+    {
+      "type": "order",
+      "investigationId": "culture"
+    },
+    {
+      "type": "read",
+      "investigationId": "culture",
+      "phase": "initial"
+    },
+    {
+      "type": "answer",
+      "decisionId": "first-steps",
+      "optionIds": [
+        "fs-ie"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "first-presentation",
+      "optionIds": [
+        "fp-ie"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "transfer-cardiology"
+    },
+    {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "culture"
+    },
+    {
+      "type": "read",
+      "investigationId": "culture",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "labs"
+    },
+    {
+      "type": "read",
+      "investigationId": "labs",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "neuro-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "neuro-record",
+      "phase": "workup"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-antibiotics"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "dx-definite"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "endocarditis-team"
+    },
+    {
+      "type": "answer",
+      "decisionId": "surgery",
+      "optionIds": [
+        "sx-urgent"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "book-surgery"
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "33716",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33716",
+    "historicalReview": true,
+    "authorChecks": {
+      "duke_esc_2023": "major: vegetations on echo (imaging). Microbiological major criterion uncertain: E. faecium is not 'typical' (typical: oral streptococci, S. gallolyticus, HACEK, S. aureus, E. faecalis); non-typical needs persistently positive cultures (e.g. 2 positive > 12 h apart) and the interval is not reported. Minor: fever 38.6 C (>= 38); vascular phenomena (intracranial haemorrhage, aneurysm; probable infarct); positive cultures not meeting a major criterion. -> 1 major + 3 minor = definite (2 major if the cultures count). Pathological criterion met after surgery.",
+      "surgery_timing_esc_2023": "HF from severe MR (orthopnoea, BNP 377 ng/L, chordal rupture) with BP 120/70 -> urgent (3-5 days), not emergency (<24 h: refractory pulmonary oedema / cardiogenic shock). ICH about 4 months earlier > the >= 4-week delay considered after significant haemorrhage; ischaemic stroke/TIA: do not delay.",
+      "timeline": "trauma ~1 year earlier (4+ months in hospital, 5 operations, 4 normal echos within 2 months); fever onset month -4 (ICH, aneurysm, coiled on day +3 of the first admission, home a week later); county hospital ~2 weeks before admission; cough/haemoptysis/orthopnoea 1 week before; ED day -1; admission day 0"
+    },
+    "testUtterances": [
+      {
+        "text": "您好，这次是哪儿不舒服住进来的？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "发烧最早是什么时候开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever-onset"
+        ]
+      },
+      {
+        "text": "最高烧到多少度？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever-onset"
+        ]
+      },
+      {
+        "text": "脑出血是怎么回事？",
+        "locale": "zh-CN",
+        "expect": [
+          "neuro-event"
+        ]
+      },
+      {
+        "text": "头一回去医院，医生给你下的什么诊断？",
+        "locale": "zh-CN",
+        "expect": [
+          "first-hospital"
+        ]
+      },
+      {
+        "text": "动脉瘤手术做完以后还烧吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "after-coiling"
+        ]
+      },
+      {
+        "text": "半个月前在哪儿看过病？",
+        "locale": "zh-CN",
+        "expect": [
+          "county-hospital"
+        ]
+      },
+      {
+        "text": "这礼拜咳嗽咯血、喘得厉害吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "晚上能平躺吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "咳的血多不多？",
+        "locale": "zh-CN",
+        "expect": [
+          "haemoptysis-amount"
+        ]
+      },
+      {
+        "text": "昨天急诊做了哪些检查？",
+        "locale": "zh-CN",
+        "expect": [
+          "ed-visit"
+        ]
+      },
+      {
+        "text": "以前开过刀吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "车祸以后心脏检查过没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-heart"
+        ]
+      },
+      {
+        "text": "最近拔过牙没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "dental"
+        ]
+      },
+      {
+        "text": "吸过毒吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "ivdu"
+        ]
+      },
+      {
+        "text": "腿上的固定架有没有化脓？",
+        "locale": "zh-CN",
+        "expect": [
+          "fixator-site"
+        ]
+      },
+      {
+        "text": "这几个月都用过什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "meds"
+        ]
+      },
+      {
+        "text": "有没有药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "你是做什么工作的？",
+        "locale": "zh-CN",
+        "expect": [
+          "work-home"
+        ]
+      },
+      {
+        "text": "胸口疼不疼？",
+        "locale": "zh-CN",
+        "expect": [
+          "chest-pain"
+        ]
+      },
+      {
+        "text": "What brought you into hospital this time?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "When did the fevers first start?",
+        "locale": "en",
+        "expect": [
+          "fever-onset"
+        ]
+      },
+      {
+        "text": "Did you get shivering fits with the fevers?",
+        "locale": "en",
+        "expect": [
+          "fever-onset"
+        ]
+      },
+      {
+        "text": "Tell me about the bleed in your brain.",
+        "locale": "en",
+        "expect": [
+          "neuro-event"
+        ]
+      },
+      {
+        "text": "What did the first hospital think was wrong?",
+        "locale": "en",
+        "expect": [
+          "first-hospital"
+        ]
+      },
+      {
+        "text": "Have the fevers carried on since the procedure?",
+        "locale": "en",
+        "expect": [
+          "after-coiling"
+        ]
+      },
+      {
+        "text": "Did you go to your local hospital recently?",
+        "locale": "en",
+        "expect": [
+          "county-hospital"
+        ]
+      },
+      {
+        "text": "Are you short of breath when you lie down?",
+        "locale": "en",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "Have you been coughing up blood?",
+        "locale": "en",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "Have you had any surgery in the past?",
+        "locale": "en",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "Has anyone ever scanned your heart?",
+        "locale": "en",
+        "expect": [
+          "prior-heart"
+        ]
+      },
+      {
+        "text": "Any recent dental work?",
+        "locale": "en",
+        "expect": [
+          "dental"
+        ]
+      },
+      {
+        "text": "Have you ever used needles for drugs?",
+        "locale": "en",
+        "expect": [
+          "ivdu"
+        ]
+      },
+      {
+        "text": "Any allergies to medication?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Has there been any discharge from the pin sites?",
+        "locale": "en",
+        "expect": [
+          "fixator-site"
+        ]
+      },
+      {
+        "text": "Have you lost any weight?",
+        "locale": "en",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "Do you smoke at all?",
+        "locale": "en",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "Does any illness run in your family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Which antibiotics have you been given?",
+        "locale": "en",
+        "expect": [
+          "meds"
+        ]
+      },
+      {
+        "text": "What are you most worried about?",
+        "locale": "en",
+        "expect": [
+          "ice"
+        ]
+      }
+    ]
+  }
+}

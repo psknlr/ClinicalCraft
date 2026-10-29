@@ -1,0 +1,4718 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1551894",
+  "version": "1.1.0",
+  "title": {
+    "zh-CN": "反复下肢水肿与腹胀 · 35岁女性",
+    "en": "Recurrent leg swelling and abdominal fullness · 35-year-old woman"
+  },
+  "summary": {
+    "zh-CN": "35岁女性，十多年来双腿反复浮肿，近一年又出现胸腹壁静脉显露、上腹胀满、皮肤瘙痒和小腿皮肤改变。依据一篇已发表病例的历史记录分阶段回看，缺失的资料保持未知。",
+    "en": "A 35-year-old woman whose legs have swelled on and off for more than ten years has, over the past year, developed visible chest and abdominal veins, upper abdominal fullness, itching and skin changes on her lower legs. A staged review of the historical record of a published case; missing data stay unknown."
+  },
+  "specialty": [
+    "hepatology",
+    "vascular-medicine",
+    "integrative-medicine"
+  ],
+  "difficulty": 4,
+  "setting": "outpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 35,
+  "learningOutcomes": [
+    {
+      "zh-CN": "根据胸腹壁静脉血流方向（由下向上）把梗阻定位在下腔静脉，并把下肢水肿、足靴区色素沉着、溃疡和肝脾大与之联系起来。",
+      "en": "Localise the obstruction to the inferior vena cava from the upward flow in the chest and abdominal wall veins, and link the leg oedema, gaiter pigmentation, ulcers and the enlarged liver and spleen to it."
+    },
+    {
+      "zh-CN": "结合多普勒超声和MRI识别下腔静脉型布-加综合征，并与肝硬化、心源性淤血（缩窄性心包炎、右心衰竭）、肝窦阻塞综合征和继发性压迫相鉴别。",
+      "en": "Recognise IVC-type Budd–Chiari syndrome on Doppler ultrasound and MRI and distinguish it from cirrhosis, cardiac congestion (constrictive pericarditis, right heart failure), sinusoidal obstruction syndrome and secondary compression."
+    },
+    {
+      "zh-CN": "把巨脾伴全血细胞减少解释为最可能的脾功能亢进，并指出肝功能和甲亢用药缺失时的证据边界。",
+      "en": "Interpret the low counts with a massive spleen as most likely hypersplenism, and state the evidence limits while liver tests and her thyroid treatment are unknown."
+    },
+    {
+      "zh-CN": "按EASL 2025概述现行处理——尽早抗凝、病因筛查、阶梯式的血管成形、TIPS和肝移植，多学科管理——并指出原报告没有报告的内容（抗凝、病因、静脉曲张评估）。",
+      "en": "Outline current management with EASL 2025 — early anticoagulation, a cause work-up, stepwise angioplasty, TIPS and transplantation, multidisciplinary care — and identify what the report does not report (anticoagulation, the cause, variceal assessment)."
+    },
+    {
+      "zh-CN": "评估活血类中药（如丹参、水蛭）与抗凝、血小板减少同用的出血风险并请药师评估，同时说明为什么单个病例不能证明中药的独立疗效。",
+      "en": "Assess the bleeding risk of blood-activating herbs such as danshen and leech combined with anticoagulation and thrombocytopenia, involve the pharmacist, and explain why a single case cannot show an independent effect of the herbs."
+    }
+  ],
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "王立恒, 庄聰. 中西醫結合治療巴德-吉亞利綜合征1例. 鏡湖醫學. 2025;25(1):68. doi:10.12408/j.issn2223-4462.2025.01.021",
+    "doi": "10.12408/j.issn2223-4462.2025.01.021",
+    "authors": [
+      "王立恒",
+      "庄聰"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写（原文为中医专栏）。年龄、性别、病史、查体、检查结果、介入治疗、中药处方和结局按原文；姓名为化名，医院和日历日期已去除，时间以就诊为第0天的相对时间表示。对话、问题、决策、处置选项和评分为教学设计；抗凝、病因筛查、静脉曲张评估和药师评估是按现行指南加入的教学内容，原报告未记录。原文的“肝区无移动性浊音”照录并标注。治疗前后对比图只在出院阶段显示。未记录的数据保持未知。",
+      "en": "Adapted from a published case (the journal's Chinese-medicine column). Age, sex, history, examination, results, the procedure, the herbal prescription and the outcome follow the source; names are pseudonyms, and the hospital and calendar dates are removed — times are relative to the presentation as day 0. Dialogue, questions, decisions, management options and scoring are teaching design; anticoagulation, the cause work-up, variceal assessment and the pharmacist's review are added from current guidance and are not recorded in the report. The source's phrase “肝区无移动性浊音” is kept as printed and labelled. The before-and-after figures appear only in the discharge phase. Unrecorded data stay unknown."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "EASL Clinical Practice Guidelines on vascular diseases of the liver 2025 (J Hepatol 2026)",
+        "EASL Clinical Practice Guidelines: vascular diseases of the liver 2016",
+        "AASLD 2020 practice guidance on vascular liver disorders (Hepatology 2021)",
+        "APASL 2021 Budd-Chiari syndrome consensus guidance",
+        "Chua 2015 review of warfarin and Chinese herbal medicine interactions"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "姚女士（化名）",
+      "en": "Ms Yao (pseudonym)"
+    },
+    "age": 35,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "双下肢反复浮肿10余年",
+      "en": "Recurrent swelling of both legs for more than 10 years"
+    },
+    "triageNote": {
+      "zh-CN": "35岁女性，门诊就诊：双腿反复肿了十多年，近一年又多了些新的不适。病史待询问。",
+      "en": "35-year-old woman at the outpatient clinic: both legs have swelled on and off for more than ten years, and new problems have appeared over the past year. History still to be taken."
+    },
+    "tags": [
+      {
+        "zh-CN": "双腿浮肿",
+        "en": "Swollen legs"
+      },
+      {
+        "zh-CN": "上腹胀满",
+        "en": "Upper abdominal fullness"
+      },
+      {
+        "zh-CN": "病史待询问",
+        "en": "History to be taken"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "35岁，说话直爽、配合；腿肿了这么多年一直没当回事，对自己的病了解不多。",
+        "en": "A frank, cooperative 35-year-old; she put up with the swelling for years and knows little about her illness."
+      },
+      "speechStyle": {
+        "zh-CN": "日常口语，句子短；说“青筋”“腿肿”“利尿的药”，不用医学术语。",
+        "en": "Everyday speech in short sentences; says “veins showing”, “swollen legs”, “water tablets” — no medical terms."
+      },
+      "healthLiteracy": "medium",
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "医生您好，我这两条腿肿了十多年了，这一年越来越不对劲。",
+        "en": "Hello, doctor. My legs have been swelling for more than ten years, and this past year things have got worse."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "只讲当前阶段已经揭示的病史，用自己的话说，不增减数字、时间或药名；不解释检查结果，不谈诊断。被问到没有记录的事，就说病例里没有记录。",
+        "en": "Say only the history revealed in the current phase, in your own words, without adding or changing numbers, times or drug names; do not interpret results or discuss diagnoses. When asked about something unrecorded, say it isn't in your case notes."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "build": "slim",
+      "gown": false
+    },
+    "posture": "sitting"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "就诊（门诊）",
+        "en": "Presentation (outpatient)"
+      },
+      "description": {
+        "zh-CN": "第0天：门诊就诊，采集病史并查体。原报告没有记录生命体征。",
+        "en": "Day 0: the outpatient visit — history and examination. The report records no vital signs."
+      },
+      "learnerSwitchable": true,
+      "location": {
+        "setting": "outpatient"
+      }
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "住院检查",
+        "en": "Admission work-up"
+      },
+      "description": {
+        "zh-CN": "就诊后住院：化验、血管影像和治疗决策（原报告未写明具体日期）。",
+        "en": "Admitted after the visit: blood tests, vascular imaging and treatment decisions (no exact days are given)."
+      },
+      "learnerSwitchable": true,
+      "location": {
+        "setting": "inpatient"
+      }
+    },
+    {
+      "id": "treatment",
+      "label": {
+        "zh-CN": "介入治疗后（住院期间）",
+        "en": "After angioplasty and stenting (in hospital)"
+      },
+      "description": {
+        "zh-CN": "球囊扩张和支架植入之后：术后用药，包括原报告的中药处方。",
+        "en": "After balloon angioplasty and stenting: the post-procedure medicines, including the report's herbal prescription."
+      },
+      "learnerSwitchable": false,
+      "location": {
+        "setting": "inpatient"
+      },
+      "enterWhen": {
+        "all": [
+          {
+            "intervened": "transfer-ir"
+          },
+          {
+            "intervened": "angioplasty-stent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "出院时（中西医结合治疗13天后）",
+        "en": "At discharge (after 13 days of combined treatment)"
+      },
+      "description": {
+        "zh-CN": "原报告记录的出院结局和治疗前后对比照片：这是对历史记录的回看，不推进患者的实时病情。",
+        "en": "The outcome at discharge and the before-and-after photographs as the report records them: a review of the historical record, not the patient's live course."
+      },
+      "learnerSwitchable": false,
+      "location": {
+        "setting": "inpatient"
+      },
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "dec-localise"
+          },
+          {
+            "decided": "dec-dx"
+          },
+          {
+            "decided": "dec-management"
+          },
+          {
+            "decided": "dec-herbs"
+          },
+          {
+            "intervened": "angioplasty-stent"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "两条腿肿是从什么时候开始的？",
+        "en": "When did the swelling in your legs start?"
+      },
+      "answer": {
+        "zh-CN": "十多年前开始的，两边脚踝老是反复肿。那时候别的地方没什么不舒服。",
+        "en": "More than ten years ago — both ankles kept swelling up. Back then nothing else bothered me."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腿肿",
+          "脚肿",
+          "脚踝肿",
+          "浮肿",
+          "水肿",
+          "肿了多久",
+          "什么时候开始",
+          "哪里不舒服",
+          "怎么不舒服",
+          "来看什么",
+          "看什么病",
+          "怎么了"
+        ],
+        "en": [
+          "swelling",
+          "swollen",
+          "swollen legs",
+          "ankles",
+          "oedema",
+          "edema",
+          "how long",
+          "whendiditstart",
+          "whatbringsyou",
+          "bothering"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "加重",
+          "减轻",
+          "利尿",
+          "消下去",
+          "溃疡",
+          "破皮",
+          "肚子",
+          "腹"
+        ],
+        "en": [
+          "worse",
+          "better",
+          "water tablets",
+          "go down",
+          "godown",
+          "ulcer",
+          "sores",
+          "belly",
+          "tummy",
+          "abdomen",
+          "bloat"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·病史（患者就诊时所述）；问答措辞为教学改写",
+        "en": "Source: history at presentation; wording adapted for teaching"
+      }
+    },
+    {
+      "id": "modifiers",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "什么情况下肿得厉害？怎样能消下去？",
+        "en": "What makes the swelling worse, and what makes it go down?"
+      },
+      "answer": {
+        "zh-CN": "坐久了就更肿。以前我自己吃过利尿的药，吃了能消下去，药名我说不上来。",
+        "en": "It gets worse if I sit for a long time. I used to take some water tablets on my own and the swelling went down — I couldn't tell you what they were."
+      },
+      "keywords": {
+        "zh-CN": [
+          "加重",
+          "更肿",
+          "减轻",
+          "消下去",
+          "消肿",
+          "久坐",
+          "坐久",
+          "利尿",
+          "利尿药",
+          "排尿药",
+          "什么时候肿得厉害"
+        ],
+        "en": [
+          "worse",
+          "better",
+          "go down",
+          "sitting",
+          "water tablets",
+          "diuretic",
+          "diuretics",
+          "relieve"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·病史（患者就诊时所述）；问答措辞为教学改写",
+        "en": "Source: history at presentation; wording adapted for teaching"
+      }
+    },
+    {
+      "id": "no-care",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这些年看过医生、做过检查吗？",
+        "en": "Have you seen a doctor or had any tests for this over the years?"
+      },
+      "answer": {
+        "zh-CN": "没有好好看过，肿了就自己吃点利尿的药。",
+        "en": "Not properly — when it swelled I'd just take some water tablets."
+      },
+      "keywords": {
+        "zh-CN": [
+          "看过医生",
+          "看过病",
+          "检查过",
+          "查过",
+          "就诊过",
+          "治疗过",
+          "去过医院",
+          "去医院",
+          "医院查",
+          "没看过"
+        ],
+        "en": [
+          "seenadoctor",
+          "seenanyone",
+          "any tests",
+          "investigated",
+          "looked into",
+          "lookedinto",
+          "treatment before",
+          "beentohospital",
+          "checked before"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "甲亢",
+          "甲状腺"
+        ],
+        "en": [
+          "thyroid"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·病史（“未行系统诊治”）；问答措辞为教学改写",
+        "en": "Source: history (never properly assessed or treated); wording adapted for teaching"
+      }
+    },
+    {
+      "id": "changes",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "最近一年有什么新的变化？",
+        "en": "What has changed over the past year?"
+      },
+      "answer": {
+        "zh-CN": "这一年胸口和肚子上的青筋越来越明显，上腹老是胀，小腿下面的皮肤变黑了、还破过皮，全身痒、起疹子，腿也还是反复肿。",
+        "en": "This past year the veins on my chest and belly have been showing more and more, my upper belly keeps feeling bloated, the skin low down on my shins has gone dark and broken down in places, I itch all over with a rash, and my legs still keep swelling."
+      },
+      "keywords": {
+        "zh-CN": [
+          "新的变化",
+          "最近一年",
+          "这一年",
+          "近一年",
+          "还有什么不舒服",
+          "别的症状",
+          "其他症状",
+          "新的症状"
+        ],
+        "en": [
+          "changed",
+          "past year",
+          "this year",
+          "last year",
+          "new symptoms",
+          "anything new",
+          "anything else",
+          "other symptoms"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "皮肤",
+          "颜色"
+        ],
+        "en": [
+          "skin",
+          "colour",
+          "color"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·病史（患者就诊时所述）；问答措辞为教学改写",
+        "en": "Source: history at presentation; wording adapted for teaching"
+      }
+    },
+    {
+      "id": "visible-veins",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "胸口、肚子上的青筋是什么时候出现的？",
+        "en": "When did the veins on your chest and belly appear?"
+      },
+      "answer": {
+        "zh-CN": "就这一年慢慢出来的，胸口和肚子上的青筋越来越明显。",
+        "en": "Over this past year — they've been showing more and more on my chest and belly."
+      },
+      "keywords": {
+        "zh-CN": [
+          "青筋",
+          "静脉",
+          "血管",
+          "暴筋",
+          "静脉曲张",
+          "肚子上的筋",
+          "胸口的筋"
+        ],
+        "en": [
+          "veins",
+          "varicose",
+          "blood vessels",
+          "prominent veins",
+          "visible veins",
+          "chest veins",
+          "belly veins"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·病史（患者就诊时所述）；问答措辞为教学改写",
+        "en": "Source: history at presentation; wording adapted for teaching"
+      }
+    },
+    {
+      "id": "abdominal",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "肚子胀不胀？",
+        "en": "Does your belly feel bloated?"
+      },
+      "answer": {
+        "zh-CN": "这一年上腹老觉得胀满。",
+        "en": "This past year my upper belly has felt full and bloated."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肚子胀",
+          "腹胀",
+          "胀",
+          "上腹",
+          "肚子大",
+          "饱胀",
+          "胀满"
+        ],
+        "en": [
+          "bloated",
+          "bloating",
+          "belly",
+          "tummy",
+          "abdomen",
+          "full",
+          "distended"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "青筋",
+          "静脉",
+          "痒"
+        ],
+        "en": [
+          "veins",
+          "itch"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·病史（患者就诊时所述）；问答措辞为教学改写",
+        "en": "Source: history at presentation; wording adapted for teaching"
+      }
+    },
+    {
+      "id": "skin-legs",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "小腿的皮肤有什么变化？",
+        "en": "Has the skin on your lower legs changed?"
+      },
+      "answer": {
+        "zh-CN": "小腿下面那块皮肤变黑了，还破过皮，后来长好了。",
+        "en": "The skin low down on my shins has gone dark, and it broke down in places — it's healed since."
+      },
+      "keywords": {
+        "zh-CN": [
+          "小腿皮肤",
+          "腿上的皮肤",
+          "皮肤变黑",
+          "发黑",
+          "色素",
+          "破皮",
+          "皮肤破",
+          "溃疡",
+          "伤口",
+          "皮肤颜色"
+        ],
+        "en": [
+          "skin on your legs",
+          "darker",
+          "dark skin",
+          "discoloured",
+          "ulcer",
+          "sores",
+          "broken skin"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·病史（患者就诊时所述）；问答措辞为教学改写",
+        "en": "Source: history at presentation; wording adapted for teaching"
+      }
+    },
+    {
+      "id": "itch-rash",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "皮肤痒吗？有没有起疹子？",
+        "en": "Is your skin itchy? Any rash?"
+      },
+      "answer": {
+        "zh-CN": "全身都痒，还起疹子，背上最多。",
+        "en": "I itch all over and I've come out in a rash — worst on my back."
+      },
+      "keywords": {
+        "zh-CN": [
+          "痒",
+          "瘙痒",
+          "疹子",
+          "皮疹",
+          "起疙瘩",
+          "红点"
+        ],
+        "en": [
+          "itch",
+          "itchy",
+          "itching",
+          "rash",
+          "spots",
+          "skin rash"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·病史（全身皮肤瘙痒及皮疹）与查体（后背明显）；问答措辞为教学改写",
+        "en": "Source: history (generalised itch and rash) and examination (worst on the back); wording adapted for teaching"
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前得过什么病？",
+        "en": "Have you had any illnesses before?"
+      },
+      "answer": {
+        "zh-CN": "以前得过甲亢。",
+        "en": "I've had an overactive thyroid."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前得过什么病",
+          "既往史",
+          "既往病史",
+          "以前有什么病",
+          "大病",
+          "生过病",
+          "病史",
+          "慢性病",
+          "基础病",
+          "甲亢",
+          "甲状腺"
+        ],
+        "en": [
+          "past medical history",
+          "previous illnesses",
+          "medical history",
+          "medical problems",
+          "chronic illness",
+          "thyroid",
+          "overactive thyroid",
+          "hyperthyroidism"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "怎么治",
+          "吃什么药",
+          "血栓",
+          "手术",
+          "家族",
+          "家里"
+        ],
+        "en": [
+          "treated",
+          "treatment",
+          "clot",
+          "operation",
+          "family"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "source": {
+        "zh-CN": "原文·既往史（“既往有甲亢病史”）",
+        "en": "Source: past history (a history of hyperthyroidism)"
+      }
+    },
+    {
+      "id": "thyroid-treatment",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "甲亢是怎么治的？吃过什么药？",
+        "en": "How was your thyroid treated? Which medicines did you take?"
+      },
+      "answer": {
+        "zh-CN": "甲亢怎么治的、吃过什么药，我的病例里没有记录，我说不上来。",
+        "en": "How my thyroid was treated isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "甲亢怎么治",
+          "甲亢是怎么治",
+          "甲亢吃什么药",
+          "甲亢吃过什么药",
+          "甲巯咪唑",
+          "丙硫氧嘧啶",
+          "碘131",
+          "甲亢治疗"
+        ],
+        "en": [
+          "thyroid treated",
+          "thyroid treatment",
+          "carbimazole",
+          "methimazole",
+          "propylthiouracil",
+          "radioiodine"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "现在平时吃什么药？",
+        "en": "Are you taking any medicines at the moment?"
+      },
+      "answer": {
+        "zh-CN": "除了以前肿的时候自己吃过利尿的药，别的药我的病例里没有记录，我说不上来。",
+        "en": "Apart from the water tablets I used to take when I swelled up, nothing else is recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃什么药",
+          "用药",
+          "吃药",
+          "服药",
+          "药物",
+          "平时吃的药",
+          "长期吃药"
+        ],
+        "en": [
+          "medicines",
+          "medication",
+          "tablets",
+          "pills",
+          "drugs",
+          "regular medicines"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "甲亢",
+          "避孕"
+        ],
+        "en": [
+          "allerg",
+          "thyroid",
+          "contracept",
+          "the pill",
+          "thepill"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "source": {
+        "zh-CN": "原文·病史（自服利尿剂，药物不详）；其余用药未记录",
+        "en": "Source: history (self-taken diuretic, unnamed); no other medicines recorded"
+      }
+    },
+    {
+      "id": "thrombosis",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前长过血栓吗？",
+        "en": "Have you ever had a blood clot?"
+      },
+      "answer": {
+        "zh-CN": "长没长过血栓，我的病例里没有记录，我说不上来。",
+        "en": "Whether I've had a clot isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "血栓",
+          "血块",
+          "栓塞",
+          "血栓史",
+          "深静脉"
+        ],
+        "en": [
+          "blood clot",
+          "clot",
+          "thrombosis",
+          "dvt",
+          "embolism"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "家人"
+        ],
+        "en": [
+          "family",
+          "relatives"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "bleeding",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有吐过血，或者拉过黑便？",
+        "en": "Have you ever vomited blood or passed black stools?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吐血",
+          "呕血",
+          "黑便",
+          "便血",
+          "出血",
+          "柏油样"
+        ],
+        "en": [
+          "vomited blood",
+          "black stools",
+          "bleeding",
+          "blood in your stool",
+          "haematemesis",
+          "melaena"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "obstetric",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "怀过孕吗？现在用避孕药或者激素吗？",
+        "en": "Have you been pregnant? Are you on the pill or any hormones?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "怀孕",
+          "怀过孕",
+          "生过孩子",
+          "避孕药",
+          "避孕",
+          "激素",
+          "月经",
+          "例假"
+        ],
+        "en": [
+          "pregnant",
+          "pregnancy",
+          "children",
+          "the pill",
+          "contraceptive",
+          "hormones",
+          "periods"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "weight",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "体重有没有变化？",
+        "en": "Has your weight changed?"
+      },
+      "answer": {
+        "zh-CN": "体重变没变，我的病例里没有记录，我说不上来。",
+        "en": "Whether my weight has changed isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "瘦了",
+          "变瘦",
+          "胖了",
+          "掉秤"
+        ],
+        "en": [
+          "weight",
+          "lost weight",
+          "weight loss",
+          "thinner",
+          "kilos"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对什么药物或食物过敏吗？",
+        "en": "Are you allergic to any medicines or foods?"
+      },
+      "answer": {
+        "zh-CN": "过不过敏，我的病例里没有记录，我说不上来。",
+        "en": "Whether I've any allergies isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "allergy",
+          "allergies",
+          "allergic",
+          "drug allergy",
+          "food allergy"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人有没有得过类似的病，或者长过血栓？",
+        "en": "Has anyone in your family had anything similar, or blood clots?"
+      },
+      "answer": {
+        "zh-CN": "家里人的情况，我的病例里没有记录，我说不上来。",
+        "en": "My family's health isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里人",
+          "家族史",
+          "家族",
+          "亲戚",
+          "遗传",
+          "父母"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "family history",
+          "runs in the family",
+          "parents"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您抽烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "抽不抽烟，我的病例里没有记录，我说不上来。",
+        "en": "Smoking isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟",
+          "香烟"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "smoker",
+          "cigarettes"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "平时喝酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "喝不喝酒，我的病例里没有记录，我说不上来。",
+        "en": "Drinking isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喝酒",
+          "饮酒",
+          "酒",
+          "啤酒",
+          "白酒"
+        ],
+        "en": [
+          "alcohol",
+          "drink",
+          "drinking",
+          "beer",
+          "wine"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "occupation",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您做什么工作？",
+        "en": "What do you do for work?"
+      },
+      "answer": {
+        "zh-CN": "工作和生活上的情况，我的病例里没有记录，我说不上来。",
+        "en": "My work and home life aren't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "工作",
+          "职业",
+          "上班",
+          "做什么的",
+          "站着",
+          "坐着工作"
+        ],
+        "en": [
+          "work",
+          "job",
+          "occupation",
+          "workforaliving",
+          "desk job"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "坐久",
+          "久坐"
+        ],
+        "en": [
+          "sitting for long"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "self-care",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "平时生活、干活受影响吗？",
+        "en": "Does this affect your daily life or work?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病例里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生活受影响",
+          "影响生活",
+          "日常生活",
+          "干活",
+          "自理"
+        ],
+        "en": [
+          "daily life",
+          "affect your life",
+          "day to day",
+          "manage at home",
+          "self-care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心的是什么？",
+        "en": "What worries you most about all this?"
+      },
+      "answer": {
+        "zh-CN": "我最担心什么，我的病例里没有记录，我说不上来。",
+        "en": "What worries me most isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "担心",
+          "顾虑",
+          "害怕什么",
+          "希望",
+          "期望",
+          "想法"
+        ],
+        "en": [
+          "worries",
+          "worried",
+          "concerns",
+          "hoping",
+          "expect",
+          "ideas"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false
+    },
+    {
+      "id": "status-treatment",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "做完介入治疗以后感觉怎么样？",
+        "en": "How have you felt since the procedure?"
+      },
+      "answer": {
+        "zh-CN": "做完以后到出院前那几天怎么样，我的病例里没有记录，我说不上来。",
+        "en": "How I felt between the procedure and going home isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "感觉怎么样",
+          "现在怎么样",
+          "做完手术",
+          "术后",
+          "做完以后",
+          "放完支架",
+          "好点了吗",
+          "好些了",
+          "好多了",
+          "还肿吗"
+        ],
+        "en": [
+          "howareyoufeeling",
+          "feeling now",
+          "since the procedure",
+          "since the stent",
+          "stent",
+          "after the operation",
+          "any better",
+          "still swollen"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "treatment"
+      ]
+    },
+    {
+      "id": "status-discharge",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在感觉怎么样？",
+        "en": "How are you feeling now?"
+      },
+      "answer": {
+        "zh-CN": "腿不肿了，肚子上的青筋也看不出来了，背上的疹子基本消了，之前那些不舒服都好多了。",
+        "en": "My legs aren't swollen any more, the veins on my belly have gone, the rash on my back has mostly cleared, and the other things that were bothering me are much better."
+      },
+      "keywords": {
+        "zh-CN": [
+          "感觉怎么样",
+          "现在怎么样",
+          "好点了吗",
+          "好些了",
+          "好多了",
+          "还肿吗",
+          "还痒吗",
+          "出院"
+        ],
+        "en": [
+          "howareyoufeeling",
+          "feeling now",
+          "feeling better",
+          "any better",
+          "still swollen",
+          "still itchy",
+          "going home"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "followup"
+      ],
+      "supersedes": [
+        "status-treatment"
+      ],
+      "source": {
+        "zh-CN": "原文·治疗结果（“上述症状缓解”）及图1–3说明（静脉曲张消失、皮疹基本消退、水肿消退）",
+        "en": "Source: outcome (“the above symptoms were relieved”) and the captions of Figs 1–3 (varices gone, rash largely cleared, oedema resolved)"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察一般情况、面容和体型",
+        "en": "Observe her general appearance, face and build"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "面容",
+          "体型",
+          "精神状态",
+          "贫血貌",
+          "消瘦",
+          "看看病人",
+          "望诊"
+        ],
+        "en": [
+          "general appearance",
+          "appearance",
+          "face",
+          "build",
+          "looks pale",
+          "thin",
+          "inspection"
+        ]
+      },
+      "finding": {
+        "zh-CN": "甲亢面容，贫血貌，形体消瘦。",
+        "en": "Hyperthyroid facies, a pale (anaemic) appearance and a thin, wasted build."
+      },
+      "abnormal": true,
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·查体",
+        "en": "Source: physical examination"
+      }
+    },
+    {
+      "id": "tcm-tongue",
+      "system": "heent",
+      "maneuver": {
+        "zh-CN": "望舌（中医舌诊）",
+        "en": "Inspect the tongue (TCM tongue inspection)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "舌",
+          "舌头",
+          "舌苔",
+          "舌诊",
+          "看舌头",
+          "伸舌"
+        ],
+        "en": [
+          "tongue",
+          "tongue coating",
+          "look at the tongue",
+          "tcm tongue"
+        ]
+      },
+      "finding": {
+        "zh-CN": "舌红，苔少（中医舌诊描述）。",
+        "en": "Red tongue with a scant coating (as a TCM tongue description)."
+      },
+      "abnormal": true,
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·查体",
+        "en": "Source: physical examination"
+      }
+    },
+    {
+      "id": "tcm-pulse",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "诊脉（中医脉诊）",
+        "en": "Feel the pulse (TCM pulse diagnosis)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "脉搏",
+          "脉象",
+          "诊脉",
+          "号脉",
+          "摸脉",
+          "把脉",
+          "心率"
+        ],
+        "en": [
+          "pulse",
+          "radial pulse",
+          "heart rate",
+          "take her pulse",
+          "tcm pulse"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "静脉"
+        ],
+        "en": [
+          "veins"
+        ]
+      },
+      "finding": {
+        "zh-CN": "脉细数（中医脉诊描述）。",
+        "en": "Thready, rapid pulse (as a TCM pulse description)."
+      },
+      "abnormal": true,
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·查体（中医脉诊“脉细数”；原文未给出心率数值）",
+        "en": "Source: examination (TCM pulse “thready and rapid”; no heart rate is given)"
+      }
+    },
+    {
+      "id": "skin-rash",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查全身皮肤（皮疹）",
+        "en": "Examine the skin all over (rash)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮肤",
+          "皮疹",
+          "疹子",
+          "后背",
+          "背部",
+          "全身皮肤"
+        ],
+        "en": [
+          "skin",
+          "rash",
+          "back",
+          "skinallover",
+          "spots"
+        ]
+      },
+      "finding": {
+        "zh-CN": "全身散在皮疹，后背明显，无渗液。",
+        "en": "A scattered rash all over the body, most marked on the back, not weeping."
+      },
+      "abnormal": true,
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·查体",
+        "en": "Source: physical examination"
+      }
+    },
+    {
+      "id": "veins",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查胸腹壁静脉及血流方向",
+        "en": "Examine the chest and abdominal wall veins and their direction of flow"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹壁静脉",
+          "胸壁静脉",
+          "胸腹壁",
+          "静脉曲张",
+          "血流方向",
+          "青筋",
+          "侧支循环",
+          "看胸腹壁"
+        ],
+        "en": [
+          "abdominal wall veins",
+          "chest wall veins",
+          "direction of flow",
+          "flow direction",
+          "veins",
+          "collaterals",
+          "varicose veins",
+          "caput medusae"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "颈静脉",
+          "下肢静脉"
+        ],
+        "en": [
+          "jugular",
+          "jvp",
+          "leg veins"
+        ]
+      },
+      "finding": {
+        "zh-CN": "胸前、两侧胸壁和腹壁静脉明显暴露、曲张，血流方向由下向上。",
+        "en": "The veins of the front and both sides of the chest and of the abdominal wall are prominent and varicose; blood flows from below upwards."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·查体",
+        "en": "Source: physical examination"
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "腹部触诊（压痛、肝脾）",
+        "en": "Palpate the abdomen (tenderness, liver and spleen)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部",
+          "触诊",
+          "肚子",
+          "摸肚子",
+          "肝",
+          "脾",
+          "肝脾",
+          "压痛",
+          "反跳痛"
+        ],
+        "en": [
+          "abdomen",
+          "palpate",
+          "abdominal examination",
+          "tummy",
+          "liver",
+          "spleen",
+          "tenderness",
+          "hepatosplenomegaly"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "移动性浊音",
+          "腹水",
+          "静脉",
+          "血流"
+        ],
+        "en": [
+          "shifting dullness",
+          "ascites",
+          "veins",
+          "flow"
+        ]
+      },
+      "finding": {
+        "zh-CN": "腹部饱满，腹软，全腹无压痛、反跳痛。肝脏肋下可触及；巨脾，质硬，无触痛。",
+        "en": "The abdomen is full and soft, with no tenderness or rebound anywhere. The liver is palpable below the costal margin; the spleen is massive and firm, not tender."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·查体",
+        "en": "Source: physical examination"
+      }
+    },
+    {
+      "id": "ascites",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "叩诊移动性浊音（腹水）",
+        "en": "Percuss for shifting dullness (ascites)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "移动性浊音",
+          "腹水",
+          "叩诊",
+          "浊音",
+          "腹部叩诊"
+        ],
+        "en": [
+          "shifting dullness",
+          "ascites",
+          "percuss",
+          "percussion",
+          "fluid in the abdomen"
+        ]
+      },
+      "finding": {
+        "zh-CN": "原文记载为“肝区无移动性浊音”。移动性浊音本是腹水的体征而非肝区体征，此句很可能指未叩及移动性浊音（无明显腹水），但需向作者核实。",
+        "en": "As printed: “no shifting dullness in the liver region”. Shifting dullness is a sign of ascites, not of the liver region; the phrase most likely means no shifting dullness was found (no clinically evident ascites), but this needs checking with the authors."
+      },
+      "abnormal": false,
+      "required": false,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·查体（“肝区无移动性浊音”，照录并标注）",
+        "en": "Source: examination (“肝区无移动性浊音”, kept as printed and labelled)"
+      }
+    },
+    {
+      "id": "legs",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查双下肢（水肿和皮肤）",
+        "en": "Examine both legs (oedema and skin)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "下肢",
+          "双腿",
+          "腿",
+          "小腿",
+          "水肿",
+          "凹陷性水肿",
+          "按压",
+          "色素沉着",
+          "足靴区"
+        ],
+        "en": [
+          "legs",
+          "lower limbs",
+          "oedema",
+          "edema",
+          "pitting",
+          "shins",
+          "pigmentation",
+          "gaiter area"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双小腿足靴区色素沉着，可见散在创面，已愈合；双下肢Ⅱ度凹陷性水肿。",
+        "en": "Pigmentation of the gaiter area of both lower legs with scattered, healed wounds; grade II pitting oedema of both legs."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "initial",
+        "workup"
+      ],
+      "source": {
+        "zh-CN": "原文·查体",
+        "en": "Source: physical examination"
+      }
+    },
+    {
+      "id": "veins-after",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "复查胸腹壁静脉（出院时）",
+        "en": "Re-examine the chest and abdominal wall veins (at discharge)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹壁静脉",
+          "胸壁静脉",
+          "胸腹壁",
+          "静脉曲张",
+          "青筋"
+        ],
+        "en": [
+          "abdominal wall veins",
+          "chest wall veins",
+          "veins",
+          "varicose veins"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "颈静脉"
+        ],
+        "en": [
+          "jugular",
+          "jvp"
+        ]
+      },
+      "finding": {
+        "zh-CN": "原报告图1：治疗后胸腹壁静脉曲张消失（治疗前后对比照片）。",
+        "en": "Source Fig. 1: after treatment the chest and abdominal wall varices are gone (before-and-after photographs)."
+      },
+      "abnormal": false,
+      "required": false,
+      "phases": [
+        "followup"
+      ],
+      "media": "fig01",
+      "source": {
+        "zh-CN": "原文·图1说明",
+        "en": "Source: caption of Fig. 1"
+      }
+    },
+    {
+      "id": "rash-after",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "复查背部皮疹（出院时）",
+        "en": "Re-examine the rash on her back (at discharge)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮疹",
+          "疹子",
+          "后背",
+          "背部",
+          "皮肤"
+        ],
+        "en": [
+          "rash",
+          "back",
+          "skin",
+          "spots"
+        ]
+      },
+      "finding": {
+        "zh-CN": "原报告图2：治疗前背部满布皮疹，治疗后皮疹基本消退。",
+        "en": "Source Fig. 2: before treatment the back was covered in rash; afterwards it has largely cleared."
+      },
+      "abnormal": false,
+      "required": false,
+      "phases": [
+        "followup"
+      ],
+      "media": "fig02",
+      "source": {
+        "zh-CN": "原文·图2说明",
+        "en": "Source: caption of Fig. 2"
+      }
+    },
+    {
+      "id": "legs-after",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "复查双下肢（出院时）",
+        "en": "Re-examine both legs (at discharge)"
+      },
+      "keywords": {
+        "zh-CN": [
+          "下肢",
+          "双腿",
+          "腿",
+          "小腿",
+          "水肿",
+          "色素沉着"
+        ],
+        "en": [
+          "legs",
+          "lower limbs",
+          "oedema",
+          "edema",
+          "swelling",
+          "pigmentation"
+        ]
+      },
+      "finding": {
+        "zh-CN": "原报告图3：治疗前双下肢Ⅱ度水肿，治疗后双下肢水肿消退（双下肢水肿和足靴区色素沉着治疗前后对比照片）。",
+        "en": "Source Fig. 3: before treatment grade II oedema of both legs; afterwards the oedema has resolved (before-and-after photographs of the leg oedema and gaiter pigmentation)."
+      },
+      "abnormal": false,
+      "required": false,
+      "phases": [
+        "followup"
+      ],
+      "media": "fig03",
+      "source": {
+        "zh-CN": "原文·图3说明",
+        "en": "Source: caption of Fig. 3"
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有记录这项检查的结果，不能据此认为正常。",
+    "en": "The report does not record this examination, so it cannot be taken as normal."
+  },
+  "investigations": [
+    {
+      "id": "cbc",
+      "name": {
+        "zh-CN": "血常规",
+        "en": "Full blood count"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "血细胞",
+          "全血细胞计数",
+          "血象",
+          "cbc"
+        ],
+        "en": [
+          "cbc",
+          "fbc",
+          "full blood count",
+          "complete blood count",
+          "blood count",
+          "platelets",
+          "haemoglobin"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "就诊后住院期间（原文未写明具体日期）",
+            "en": "During the admission after presentation (no exact day given)"
+          },
+          "text": {
+            "zh-CN": "白细胞2.5×10⁹/L↓，红细胞3.72×10¹²/L，血红蛋白97 g/L↓，血小板60×10⁹/L↓（箭头为原文标注；原文未给出参考范围）。",
+            "en": "WBC 2.5 ×10⁹/L ↓, RBC 3.72 ×10¹²/L, haemoglobin 97 g/L ↓, platelets 60 ×10⁹/L ↓ (arrows as in the source; no reference ranges are given)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "WBC"
+              },
+              "value": 2.5,
+              "unit": "×10⁹/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "红细胞",
+                "en": "RBC"
+              },
+              "value": 3.72,
+              "unit": "×10¹²/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 97,
+              "unit": "g/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 60,
+              "unit": "×10⁹/L",
+              "flag": "L"
+            }
+          ],
+          "source": {
+            "zh-CN": "原文·辅助检查",
+            "en": "Source: investigations"
+          }
+        },
+        "followup": {
+          "date": {
+            "zh-CN": "出院前复查",
+            "en": "Repeated before discharge"
+          },
+          "text": {
+            "zh-CN": "原文只写复查血常规“较前明显改善”，没有给出数值。",
+            "en": "The source says only that the repeat blood count was “clearly better than before”; no values are given."
+          },
+          "source": {
+            "zh-CN": "原文·治疗结果",
+            "en": "Source: outcome"
+          }
+        }
+      }
+    },
+    {
+      "id": "esr",
+      "name": {
+        "zh-CN": "红细胞沉降率（血沉）",
+        "en": "Erythrocyte sedimentation rate (ESR)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血沉",
+          "红细胞沉降率",
+          "esr"
+        ],
+        "en": [
+          "esr",
+          "sed rate",
+          "sedimentation rate"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "neutral",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "就诊后住院期间（原文未写明具体日期）",
+            "en": "During the admission after presentation (no exact day given)"
+          },
+          "text": {
+            "zh-CN": "血沉14 mm/h（原文未给出参考范围）。",
+            "en": "ESR 14 mm/h (no reference range given)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血沉",
+                "en": "ESR"
+              },
+              "value": 14,
+              "unit": "mm/h"
+            }
+          ],
+          "source": {
+            "zh-CN": "原文·辅助检查",
+            "en": "Source: investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "thyroid",
+      "name": {
+        "zh-CN": "甲状腺功能及其他常规检验",
+        "en": "Thyroid function and other routine tests"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "甲功",
+          "甲状腺功能",
+          "甲功五项",
+          "凝血",
+          "凝血四项",
+          "肾功能",
+          "电解质",
+          "血糖",
+          "糖化血红蛋白",
+          "肿瘤标志物",
+          "肿瘤七项",
+          "性激素",
+          "风湿三项",
+          "大便常规",
+          "常规检验"
+        ],
+        "en": [
+          "thyroid function",
+          "tfts",
+          "thyroid tests",
+          "coagulation",
+          "clotting",
+          "renal function",
+          "electrolytes",
+          "glucose",
+          "hba1c",
+          "tumour markers",
+          "sex hormones",
+          "routine bloods"
+        ]
+      },
+      "requires": [
+        "lab-endocrine",
+        "lab-chemistry",
+        "lab-hematology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "就诊后住院期间（原文未写明具体日期）",
+            "en": "During the admission after presentation (no exact day given)"
+          },
+          "text": {
+            "zh-CN": "甲功五项在正常范围。凝血四项、风湿三项、血糖、糖化血红蛋白、肿瘤七项、肾功能、电解质、性激素六项和大便常规“大致正常”。原文没有列出逐项数值。",
+            "en": "Thyroid function (five-test panel) within the normal range. Coagulation (four tests), a three-test rheumatology panel, glucose, HbA1c, a seven-marker tumour panel, renal function, electrolytes, six sex hormones and a stool test “broadly normal”. No individual values are given."
+          },
+          "note": {
+            "zh-CN": "原文没有报告肝功能（胆红素、白蛋白、转氨酶）。",
+            "en": "The source reports no liver function tests (bilirubin, albumin, transaminases)."
+          },
+          "source": {
+            "zh-CN": "原文·辅助检查",
+            "en": "Source: investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "lft",
+      "name": {
+        "zh-CN": "肝功能（胆红素、白蛋白、转氨酶）",
+        "en": "Liver function tests (bilirubin, albumin, transaminases)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肝功能",
+          "肝功",
+          "胆红素",
+          "白蛋白",
+          "转氨酶",
+          "lft"
+        ],
+        "en": [
+          "lft",
+          "lfts",
+          "liver function",
+          "liver tests",
+          "bilirubin",
+          "albumin",
+          "transaminases",
+          "alt"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有报告肝功能检查，无法评估肝功能储备或计算预后评分。",
+            "en": "The report gives no liver function tests, so liver reserve cannot be assessed and no prognostic score can be calculated."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        }
+      }
+    },
+    {
+      "id": "doppler",
+      "name": {
+        "zh-CN": "腹部超声及肝静脉、下腔静脉多普勒",
+        "en": "Abdominal ultrasound with hepatic vein and IVC Doppler"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "b超",
+          "腹部超声",
+          "彩超",
+          "多普勒",
+          "超声",
+          "肝静脉超声",
+          "下腔静脉超声",
+          "血管超声"
+        ],
+        "en": [
+          "ultrasound",
+          "doppler",
+          "abdominal ultrasound",
+          "liver ultrasound",
+          "duplex",
+          "us abdomen"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "就诊后住院期间（原文未写明具体日期）",
+            "en": "During the admission after presentation (no exact day given)"
+          },
+          "text": {
+            "zh-CN": "1. 肝脏增大，形态正常，包膜光滑，实质回声细密、欠均匀，未见明显肿块回声；肝内血管走行清晰，肝内胆管无扩张。脾肿大，厚约74 mm。2. 门静脉主干内径12 mm，走行通畅，向肝血流，流速21 cm/s；肝静脉明显增宽（13–15 mm）；门静脉及肝静脉内未见异常回声。3. 下腔静脉近端回流通道狭窄，峰值流速（PS）269 cm/s；远端呈瘤样扩张，内径达33 mm。",
+            "en": "1. Enlarged liver of normal shape with a smooth capsule; fine, dense but somewhat uneven parenchymal echoes, no obvious mass; intrahepatic vessels clearly seen, no intrahepatic bile duct dilatation. Spleen enlarged, about 74 mm thick. 2. Main portal vein 12 mm, patent, flow towards the liver at 21 cm/s; hepatic veins markedly widened (13–15 mm); no abnormal echoes inside the portal or hepatic veins. 3. The proximal outflow channel of the IVC is narrowed, peak systolic velocity 269 cm/s; distally the IVC is aneurysmally dilated, up to 33 mm across."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "脾脏厚度",
+                "en": "Spleen thickness"
+              },
+              "value": 74,
+              "unit": "mm"
+            },
+            {
+              "analyte": {
+                "zh-CN": "门静脉主干内径",
+                "en": "Main portal vein diameter"
+              },
+              "value": 12,
+              "unit": "mm"
+            },
+            {
+              "analyte": {
+                "zh-CN": "门静脉流速（向肝）",
+                "en": "Portal vein velocity (hepatopetal)"
+              },
+              "value": 21,
+              "unit": "cm/s"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肝静脉内径",
+                "en": "Hepatic vein diameter"
+              },
+              "value": "13–15",
+              "unit": "mm"
+            },
+            {
+              "analyte": {
+                "zh-CN": "下腔静脉狭窄处峰值流速",
+                "en": "IVC peak systolic velocity at the narrowing"
+              },
+              "value": 269,
+              "unit": "cm/s",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "下腔静脉远端内径",
+                "en": "Distal IVC diameter"
+              },
+              "value": 33,
+              "unit": "mm",
+              "flag": "A"
+            }
+          ],
+          "source": {
+            "zh-CN": "原文·辅助检查",
+            "en": "Source: investigations"
+          }
+        },
+        "followup": {
+          "date": {
+            "zh-CN": "出院前复查",
+            "en": "Repeated before discharge"
+          },
+          "text": {
+            "zh-CN": "原文只写复查B超“各项异常指标均较前明显改善”，没有给出测量值。",
+            "en": "The source says only that on the repeat ultrasound “all the abnormal measurements were clearly better than before”; no measurements are given."
+          },
+          "source": {
+            "zh-CN": "原文·治疗结果",
+            "en": "Source: outcome"
+          }
+        }
+      }
+    },
+    {
+      "id": "mri",
+      "name": {
+        "zh-CN": "上腹部MRI",
+        "en": "Upper abdominal MRI"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "mri",
+          "核磁",
+          "磁共振",
+          "上腹部mri",
+          "腹部核磁",
+          "腹部mri"
+        ],
+        "en": [
+          "mri",
+          "abdominal mri",
+          "upper abdominal mri",
+          "magnetic resonance",
+          "mr venography"
+        ]
+      },
+      "requires": [
+        "mri"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "date": {
+            "zh-CN": "就诊后住院期间（原文未写明具体日期）",
+            "en": "During the admission after presentation (no exact day given)"
+          },
+          "text": {
+            "zh-CN": "1. 肝脏体积明显增大，各叶比例失调，边缘饱满，肝内信号欠均匀。2. 肝内静脉增粗、扩张、迂曲；下腔静脉明显增粗，局部呈纺锤状，宽径达4.3 cm，相当于肝内段下腔静脉局部狭窄至1.3 cm。3. 脾脏明显增大，脾静脉及腹壁静脉明显扩张、迂曲，腹壁可见大量侧支循环静脉。",
+            "en": "1. The liver is markedly enlarged with disproportionate lobes, full margins and uneven signal. 2. The intrahepatic veins are thickened, dilated and tortuous; the IVC is markedly widened, fusiform in places, up to 4.3 cm across, with a local narrowing of the intrahepatic segment to 1.3 cm. 3. The spleen is markedly enlarged; the splenic vein and the abdominal wall veins are markedly dilated and tortuous, with numerous collateral veins in the abdominal wall."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "下腔静脉最宽径",
+                "en": "IVC maximum width"
+              },
+              "value": 4.3,
+              "unit": "cm",
+              "flag": "A"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肝内段下腔静脉最窄处",
+                "en": "Narrowest intrahepatic IVC"
+              },
+              "value": 1.3,
+              "unit": "cm",
+              "flag": "A"
+            }
+          ],
+          "source": {
+            "zh-CN": "原文·辅助检查",
+            "en": "Source: investigations"
+          }
+        }
+      }
+    },
+    {
+      "id": "thrombophilia",
+      "name": {
+        "zh-CN": "病因筛查：骨髓增殖性肿瘤（JAK2 V617F等）、PNH流式、抗磷脂抗体、遗传性易栓症",
+        "en": "Cause work-up: myeloproliferative neoplasm (JAK2 V617F and others), PNH flow cytometry, antiphospholipid antibodies, inherited thrombophilia"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "病因筛查",
+          "易栓症",
+          "jak2",
+          "骨髓增殖",
+          "pnh",
+          "抗磷脂",
+          "狼疮抗凝物",
+          "蛋白c",
+          "蛋白s"
+        ],
+        "en": [
+          "thrombophilia",
+          "jak2",
+          "myeloproliferative",
+          "pnh",
+          "antiphospholipid",
+          "lupus anticoagulant",
+          "protein c",
+          "cause work-up"
+        ]
+      },
+      "requires": [
+        "lab-hematology",
+        "flow-cytometry",
+        "lab-serology"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有报告任何病因筛查；“凝血四项大致正常”不能代替易栓症和骨髓增殖性肿瘤的检查。",
+            "en": "The report gives no cause work-up; a “broadly normal” four-test coagulation screen does not replace testing for thrombophilia and myeloproliferative neoplasms."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        },
+        "treatment": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有报告任何病因筛查。",
+            "en": "The report gives no cause work-up."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "超声心动图",
+        "en": "Echocardiogram"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "心超",
+          "超声心动图",
+          "心脏彩超",
+          "心脏超声",
+          "echo"
+        ],
+        "en": [
+          "echo",
+          "echocardiogram",
+          "echocardiography",
+          "heart scan",
+          "cardiac ultrasound"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有做或没有报告超声心动图；颈静脉压也未记录。",
+            "en": "No echocardiogram is reported, and the jugular venous pressure is not recorded."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        }
+      }
+    },
+    {
+      "id": "gastroscopy",
+      "name": {
+        "zh-CN": "胃镜（食管胃底静脉曲张评估）",
+        "en": "Gastroscopy (assessment for oesophageal and gastric varices)"
+      },
+      "category": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "胃镜",
+          "内镜",
+          "食管静脉曲张",
+          "静脉曲张筛查"
+        ],
+        "en": [
+          "gastroscopy",
+          "endoscopy",
+          "ogd",
+          "varices",
+          "variceal screening"
+        ]
+      },
+      "requires": [
+        "endoscopy"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "results": {
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有报告胃镜或静脉曲张评估。",
+            "en": "No gastroscopy or variceal assessment is reported."
+          },
+          "source": {
+            "zh-CN": "原文未报告此项",
+            "en": "Not reported in the source"
+          }
+        }
+      }
+    },
+    {
+      "id": "procedure-note",
+      "name": {
+        "zh-CN": "调阅介入治疗记录",
+        "en": "Review the interventional procedure record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "手术记录",
+          "介入记录",
+          "支架记录",
+          "操作记录"
+        ],
+        "en": [
+          "procedure note",
+          "procedure record",
+          "operation note",
+          "stent record"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "treatment": {
+          "date": {
+            "zh-CN": "住院期间（原文未写明日期）",
+            "en": "During the admission (no date given)"
+          },
+          "text": {
+            "zh-CN": "住院期间经介入治疗，行球囊扩张及支架植入术。原文没有写明具体的狭窄段处理、支架类型、术中和术后用药（包括抗凝或抗血小板治疗）。",
+            "en": "During the admission she had interventional treatment: balloon dilatation and stent placement. The source does not describe how the narrowing was treated, the stent type, or any drugs given during or after the procedure (including anticoagulant or antiplatelet treatment)."
+          },
+          "source": {
+            "zh-CN": "原文·治疗经过",
+            "en": "Source: treatment"
+          }
+        }
+      }
+    },
+    {
+      "id": "decoction",
+      "name": {
+        "zh-CN": "调阅中药处方（活血通脉汤加减）",
+        "en": "Review the herbal prescription (modified Huoxue Tongmai decoction)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "中药处方",
+          "中药",
+          "汤药",
+          "活血通脉汤",
+          "处方"
+        ],
+        "en": [
+          "herbal prescription",
+          "herbs",
+          "decoction",
+          "huoxue tongmai",
+          "tcm prescription"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "treatment": {
+          "date": {
+            "zh-CN": "支架术后开始（原文未写明日期）",
+            "en": "Started after the stenting (no date given)"
+          },
+          "text": {
+            "zh-CN": "活血通脉汤加减：川芎10 g、当归10 g、牡丹皮10 g、赤芍10 g、甘草10 g、桃仁10 g、红花10 g、枳壳10 g、延胡索10 g、香附10 g、乌药10 g、五灵脂10 g、白术15 g、茯苓20 g、猪苓20 g。水煎服，每日1剂，分2次服，每次150 ml。此后随症加减，加入丹参10 g、水蛭10 g、川牛膝10 g及柴胡、车前子等（后两味剂量原文未写）。",
+            "en": "Modified Huoxue Tongmai decoction: chuanxiong (Ligusticum rhizome) 10 g, danggui (Angelica sinensis root) 10 g, mudanpi (moutan bark) 10 g, chishao (red peony root) 10 g, gancao (liquorice root) 10 g, taoren (peach kernel) 10 g, honghua (safflower) 10 g, zhiqiao (bitter orange) 10 g, yanhusuo (corydalis) 10 g, xiangfu (cyperus) 10 g, wuyao (lindera root) 10 g, wulingzhi (trogopterus dung) 10 g, baizhu (Atractylodes rhizome) 15 g, fuling (poria) 20 g, zhuling (polyporus) 20 g. Decocted in water, one dose a day taken in two portions of 150 ml. Later adjusted to her symptoms, adding danshen (Salvia miltiorrhiza root) 10 g, shuizhi (leech) 10 g, chuanniuxi (Cyathula root) 10 g, plus chaihu (bupleurum), cheqianzi (plantago seed) and others (doses of the last two not given)."
+          },
+          "note": {
+            "zh-CN": "原文没有报告抗凝或抗血小板治疗，也没有报告出血监测。",
+            "en": "The source reports no anticoagulant or antiplatelet treatment and no bleeding monitoring."
+          },
+          "source": {
+            "zh-CN": "原文·治疗经过（处方照录）",
+            "en": "Source: treatment (prescription as printed)"
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "调阅出院记录",
+        "en": "Review the discharge record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "出院记录",
+          "随访",
+          "结局",
+          "转归",
+          "治疗结果"
+        ],
+        "en": [
+          "discharge record",
+          "discharge summary",
+          "follow-up",
+          "followup",
+          "outcome"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "date": {
+            "zh-CN": "中西医结合治疗13天后出院",
+            "en": "Discharged after 13 days of combined treatment"
+          },
+          "text": {
+            "zh-CN": "支架术后联合中药，中西医结合治疗13天。上述症状缓解后复查血常规和B超，“各项异常指标均较前明显改善”，予以出院。图1–3为治疗前后对比：胸腹壁静脉曲张消失，背部皮疹基本消退，双下肢水肿消退。原文没有报告复查数值、抗凝方案、支架远期通畅情况和出院后的随访。",
+            "en": "Stenting followed by the herbal decoction: 13 days of combined Western and Chinese treatment. Once the symptoms had settled, the repeat blood count and ultrasound showed “all the abnormal measurements clearly better than before”, and she was discharged. Figs 1–3 compare before and after: the chest and abdominal wall varices are gone, the rash on the back has largely cleared and the leg oedema has resolved. The source gives no repeat values, no anticoagulation plan, no long-term stent patency and no follow-up after discharge."
+          },
+          "figures": [
+            "fig01",
+            "fig02",
+            "fig03"
+          ],
+          "note": {
+            "zh-CN": "单个病例中支架开通与中药同时使用，无法分离中药的独立作用；作者把疗效归于中西医结合。",
+            "en": "In a single case the stenting and the herbs were given together, so no independent effect of the herbs can be separated; the authors credit the combination."
+          },
+          "source": {
+            "zh-CN": "原文·治疗结果及图1–3说明",
+            "en": "Source: outcome and the captions of Figs 1–3"
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifMatches": "心脏|心超|超声心动|echo",
+        "remove": [
+          "doppler"
+        ]
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "mdt",
+      "name": {
+        "zh-CN": "肝病、介入放射和血液科多学科会诊",
+        "en": "Hepatology, interventional radiology and haematology MDT review"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "多学科会诊",
+          "mdt",
+          "肝病科会诊",
+          "介入科会诊",
+          "血液科会诊",
+          "会诊"
+        ],
+        "en": [
+          "mdt",
+          "multidisciplinary",
+          "hepatology review",
+          "interventional radiology",
+          "haematology review",
+          "refer to hepatology"
+        ]
+      },
+      "dose": {
+        "zh-CN": "请有血管性肝病经验的肝病、介入放射和血液科团队共同评估：梗阻部位与开通方案、抗凝、病因筛查和静脉曲张评估。",
+        "en": "Ask hepatology, interventional radiology and haematology teams with experience of vascular liver disease to plan together: the site of obstruction and how to open it, anticoagulation, the cause work-up and assessment for varices."
+      },
+      "risk": "none",
+      "maxDoses": 1,
+      "setFlags": [
+        "mdt"
+      ],
+      "indicatedWhen": {
+        "any": [
+          {
+            "read": "doppler"
+          },
+          {
+            "read": "mri"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "多学科讨论：肝段下腔静脉局限性狭窄，适合球囊扩张和支架；同时启动抗凝，送检病因筛查，安排静脉曲张评估。",
+        "en": "MDT: a focal narrowing of the intrahepatic IVC, suitable for balloon angioplasty and stenting; start anticoagulation alongside, send the cause work-up and arrange assessment for varices."
+      }
+    },
+    {
+      "id": "transfer-ir",
+      "name": {
+        "zh-CN": "送介入导管室",
+        "en": "Transfer to the interventional radiology suite"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "送导管室",
+          "转介入室",
+          "去导管室",
+          "送介入",
+          "转导管室"
+        ],
+        "en": [
+          "transfer to ir",
+          "interventional suite",
+          "cath lab",
+          "angiography suite",
+          "take her to ir"
+        ]
+      },
+      "dose": {
+        "zh-CN": "由病房转运至介入导管室（血管造影台）。",
+        "en": "Transfer from the ward to the interventional radiology suite (angiography table)."
+      },
+      "risk": "low",
+      "maxDoses": 1,
+      "posture": "lying",
+      "destination": {
+        "capability": "fluoroscopy"
+      },
+      "setFlags": [
+        "in-ir-suite"
+      ],
+      "indicatedWhen": {
+        "decided": "dec-management"
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "any": [
+            {
+              "read": "doppler"
+            },
+            {
+              "read": "mri"
+            }
+          ]
+        }
+      },
+      "harm": {
+        "zh-CN": "还没有血管影像就送介入：梗阻的部位、长度和性质都不清楚，不能决定是否以及如何开通。",
+        "en": "Sent for intervention before any vascular imaging: the site, length and nature of the obstruction are unknown, so whether and how to open it cannot be decided."
+      },
+      "response": {
+        "zh-CN": "她躺在推床上被送到介入导管室的造影台上。",
+        "en": "She is taken on a trolley to the angiography table in the interventional radiology suite."
+      }
+    },
+    {
+      "id": "angioplasty-stent",
+      "name": {
+        "zh-CN": "下腔静脉球囊扩张及支架植入（介入治疗）",
+        "en": "IVC balloon angioplasty and stenting (interventional radiology)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "球囊扩张",
+          "支架",
+          "支架植入",
+          "介入治疗",
+          "血管成形",
+          "下腔静脉支架",
+          "开通"
+        ],
+        "en": [
+          "angioplasty",
+          "balloon",
+          "stent",
+          "stenting",
+          "ivc stent",
+          "venoplasty",
+          "recanalisation"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "tips",
+          "分流"
+        ],
+        "en": [
+          "tips",
+          "shunt"
+        ]
+      },
+      "dose": {
+        "zh-CN": "在血管造影引导下对下腔静脉狭窄段行球囊扩张并植入支架。",
+        "en": "Balloon dilatation of the IVC narrowing with stent placement under angiographic guidance."
+      },
+      "requires": [
+        "fluoroscopy"
+      ],
+      "scope": "medical",
+      "risk": "high",
+      "maxDoses": 1,
+      "posture": "lying",
+      "setFlags": [
+        "stented"
+      ],
+      "indicatedWhen": {
+        "all": [
+          {
+            "read": "doppler"
+          },
+          {
+            "read": "mri"
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "any": [
+            {
+              "read": "doppler"
+            },
+            {
+              "read": "mri"
+            }
+          ]
+        }
+      },
+      "harm": {
+        "zh-CN": "还没有血管影像就做介入：梗阻的部位、长度和性质都不清楚，不能决定是否以及如何开通。",
+        "en": "An intervention before any vascular imaging: the site, length and nature of the obstruction are unknown, so whether and how to open it cannot be decided."
+      },
+      "response": {
+        "zh-CN": "介入团队完成下腔静脉狭窄段的球囊扩张和支架植入，她被送回病房。原报告记录了这一步，但没有写明手术细节、支架类型以及术中和术后抗凝。",
+        "en": "The interventional team dilates and stents the IVC narrowing, and she returns to the ward. The report records this step but not the technical details, the stent type or any peri-procedural anticoagulation."
+      }
+    },
+    {
+      "id": "anticoagulation",
+      "name": {
+        "zh-CN": "抗凝：低分子肝素，序贯维生素K拮抗剂（华法林）",
+        "en": "Anticoagulation: low-molecular-weight heparin, then a vitamin K antagonist (warfarin)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "抗凝",
+          "低分子肝素",
+          "依诺肝素",
+          "华法林",
+          "肝素"
+        ],
+        "en": [
+          "anticoagulation",
+          "anticoagulant",
+          "lmwh",
+          "low molecular weight heparin",
+          "enoxaparin",
+          "warfarin",
+          "heparin"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "药师",
+          "相互作用"
+        ],
+        "en": [
+          "pharmacist",
+          "interaction"
+        ]
+      },
+      "dose": {
+        "zh-CN": "低分子肝素治疗剂量皮下注射（按体重和肾功能计算），随后过渡到维生素K拮抗剂（华法林），目标INR 2–3；监测血小板、INR和出血征象。",
+        "en": "Treatment-dose low-molecular-weight heparin subcutaneously (by weight and renal function), then transition to a vitamin K antagonist (warfarin), target INR 2–3; monitor platelets, INR and signs of bleeding."
+      },
+      "risk": "moderate",
+      "maxDoses": 1,
+      "setFlags": [
+        "anticoagulated"
+      ],
+      "indicatedWhen": {
+        "decided": "dec-dx"
+      },
+      "contraindicatedWhen": {
+        "all": [
+          {
+            "intervened": "decoction"
+          },
+          {
+            "not": {
+              "intervened": "pharmacist-review"
+            }
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "她正在服用含丹参、水蛭等活血类药物的中药汤剂，入院时血小板60×10⁹/L：在没有药师评估相互作用和出血风险的情况下叠加抗凝，出血风险难以估计。",
+        "en": "She is taking a decoction containing blood-activating herbs such as danshen and leech, and her admission platelet count was 60 ×10⁹/L: adding anticoagulation without a pharmacist's review of interactions and bleeding risk leaves that risk unassessed."
+      },
+      "response": {
+        "zh-CN": "开始低分子肝素抗凝，计划过渡到华法林，并安排监测血小板和INR。原报告没有记录任何抗凝或抗血小板治疗——这是按现行指南（EASL 2025）加入的处置。",
+        "en": "Low-molecular-weight heparin is started, with a plan to move to warfarin and to monitor platelets and INR. The report records no anticoagulant or antiplatelet treatment — this step is added from current guidance (EASL 2025)."
+      }
+    },
+    {
+      "id": "decoction",
+      "name": {
+        "zh-CN": "活血通脉汤加减（原报告的中药处方）",
+        "en": "Modified Huoxue Tongmai decoction (the report's herbal prescription)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "活血通脉汤",
+          "中药汤剂",
+          "中药",
+          "汤药",
+          "活血化瘀"
+        ],
+        "en": [
+          "huoxue tongmai",
+          "herbal decoction",
+          "herbs",
+          "decoction",
+          "chinese medicine",
+          "tcm"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "药师",
+          "相互作用",
+          "评估"
+        ],
+        "en": [
+          "pharmacist",
+          "interaction",
+          "review"
+        ]
+      },
+      "dose": {
+        "zh-CN": "原报告处方：川芎、当归、牡丹皮、赤芍、甘草、桃仁、红花、枳壳、延胡索、香附、乌药、五灵脂各10 g，白术15 g，茯苓、猪苓各20 g；水煎服，每日1剂，分2次，每次150 ml；后加丹参10 g、水蛭10 g、川牛膝10 g及柴胡、车前子等。",
+        "en": "The report's prescription: chuanxiong, danggui, mudanpi, chishao, gancao, taoren, honghua, zhiqiao, yanhusuo, xiangfu, wuyao and wulingzhi 10 g each, baizhu 15 g, fuling and zhuling 20 g each; decocted, one dose a day in two portions of 150 ml; later danshen 10 g, shuizhi (leech) 10 g, chuanniuxi 10 g, chaihu, cheqianzi and others added."
+      },
+      "risk": "moderate",
+      "maxDoses": 1,
+      "setFlags": [
+        "decoction"
+      ],
+      "contraindicatedWhen": {
+        "all": [
+          {
+            "intervened": "anticoagulation"
+          },
+          {
+            "not": {
+              "intervened": "pharmacist-review"
+            }
+          }
+        ]
+      },
+      "harm": {
+        "zh-CN": "她已在抗凝，入院时血小板60×10⁹/L：处方中的活血、破血类药物（如丹参、水蛭）可能增加出血风险，丹参还有增强华法林作用的报道；在药师评估之前不应叠加。",
+        "en": "She is already anticoagulated and her admission platelet count was 60 ×10⁹/L: the blood-activating and blood-breaking herbs in the prescription (such as danshen and leech) may add to the bleeding risk, and danshen is reported to potentiate warfarin; they should not be added before a pharmacist's review."
+      },
+      "response": {
+        "zh-CN": "中药房按处方煎药，每日1剂。这是原报告支架术后的做法；原报告没有记录抗凝、出血监测或药师评估。",
+        "en": "The herbal pharmacy prepares the decoction, one dose a day. This is what the report did after the stenting; it records no anticoagulation, bleeding monitoring or pharmacist review."
+      }
+    },
+    {
+      "id": "pharmacist-review",
+      "name": {
+        "zh-CN": "临床药师评估：中药与抗凝的出血风险和相互作用",
+        "en": "Clinical pharmacist review: bleeding risk and interactions of the herbs with anticoagulation"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "药师",
+          "临床药师",
+          "药物相互作用",
+          "中药相互作用",
+          "用药评估",
+          "药学会诊"
+        ],
+        "en": [
+          "pharmacist",
+          "clinical pharmacist",
+          "drug interactions",
+          "herb interactions",
+          "medication review",
+          "pharmacy review"
+        ]
+      },
+      "dose": {
+        "zh-CN": "与中医科一起逐味核对处方，评估与抗凝药和血小板减少叠加时的出血风险和相互作用，给出停用、调整或监测的建议。",
+        "en": "Go through the prescription herb by herb with the TCM team, assess bleeding risk and interactions with anticoagulation and thrombocytopenia, and advise on stopping, adjusting or monitoring."
+      },
+      "risk": "none",
+      "maxDoses": 1,
+      "setFlags": [
+        "herb-review"
+      ],
+      "response": {
+        "zh-CN": "药师与中医科逐味核对：桃仁、红花、赤芍、丹参、川牛膝、水蛭等属活血化瘀药（水蛭为破血药），丹参有增强华法林作用的报道。建议在血小板减少、刚放支架并开始抗凝期间停用或调整这些药物，监测血小板、INR和出血征象，任何处方变更都告知医疗团队。原报告没有记录这一步。",
+        "en": "The pharmacist and the TCM team go through it herb by herb: taoren, honghua, chishao, danshen, chuanniuxi and shuizhi (leech) are blood-activating herbs (leech a 'blood-breaking' one), and danshen is reported to potentiate warfarin. Advice: stop or adjust these while she is thrombocytopenic, newly stented and starting anticoagulation; monitor platelets, INR and bleeding; tell the medical team about any change to the prescription. The report does not record this step."
+      }
+    },
+    {
+      "id": "diuretic-only",
+      "name": {
+        "zh-CN": "只用利尿剂消肿（如呋塞米），不处理梗阻",
+        "en": "Diuretics alone for the swelling (e.g. furosemide), leaving the obstruction untreated"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "利尿剂",
+          "呋塞米",
+          "速尿",
+          "螺内酯",
+          "利尿"
+        ],
+        "en": [
+          "diuretic",
+          "furosemide",
+          "frusemide",
+          "spironolactone",
+          "water tablets"
+        ]
+      },
+      "dose": {
+        "zh-CN": "口服利尿剂，按水肿和电解质调整。",
+        "en": "An oral diuretic, adjusted to the oedema and electrolytes."
+      },
+      "risk": "low",
+      "maxDoses": 2,
+      "response": {
+        "zh-CN": "腿肿也许会暂时减轻，但下腔静脉梗阻依旧——她10年来就是这样自行用药，直到出现侧支循环、皮肤改变和巨脾。利尿剂可以作为支持治疗，但不能代替病因治疗。",
+        "en": "The swelling may settle for a while, but the IVC obstruction remains — exactly what ten years of self-medication did until collaterals, skin changes and a massive spleen appeared. A diuretic can support treatment; it cannot replace treating the cause."
+      }
+    },
+    {
+      "id": "tips",
+      "name": {
+        "zh-CN": "经颈静脉肝内门体分流术（TIPS）",
+        "en": "Transjugular intrahepatic portosystemic shunt (TIPS)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "tips",
+          "门体分流",
+          "经颈静脉肝内门体分流",
+          "分流术"
+        ],
+        "en": [
+          "tips",
+          "transjugular",
+          "portosystemic shunt",
+          "shunt"
+        ]
+      },
+      "dose": {
+        "zh-CN": "经颈静脉途径建立肝内门体分流。",
+        "en": "A transjugular intrahepatic portosystemic shunt."
+      },
+      "requires": [
+        "fluoroscopy"
+      ],
+      "scope": "medical",
+      "risk": "high",
+      "maxDoses": 1,
+      "posture": "lying",
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "顺序不对：她的梗阻是肝段下腔静脉的局限性狭窄，阶梯治疗应先抗凝并尝试血管成形和支架开通；TIPS用于开通失败或不适合开通的患者（EASL 2025）。",
+        "en": "Out of sequence: her obstruction is a focal narrowing of the intrahepatic IVC, so the stepwise approach is anticoagulation and an attempt at angioplasty and stenting first; TIPS is for patients in whom recanalisation fails or is not feasible (EASL 2025)."
+      },
+      "response": {
+        "zh-CN": "介入团队拒绝在此时做TIPS，建议先完成血管成形和支架开通。",
+        "en": "The interventional team declines TIPS at this stage and advises angioplasty and stenting first."
+      }
+    },
+    {
+      "id": "transplant-referral",
+      "name": {
+        "zh-CN": "转诊肝移植评估",
+        "en": "Refer for liver transplant assessment"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "肝移植",
+          "移植评估",
+          "转移植"
+        ],
+        "en": [
+          "liver transplant",
+          "transplant",
+          "transplant assessment"
+        ]
+      },
+      "dose": {
+        "zh-CN": "转诊肝移植中心评估。",
+        "en": "Referral to a liver transplant centre for assessment."
+      },
+      "risk": "none",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "移植团队回复：她目前不是急性肝衰竭，按阶梯治疗应先抗凝、处理病因并开通下腔静脉，无效时再考虑TIPS，最后才是肝移植（EASL 2025）。",
+        "en": "The transplant team replies that she is not in acute liver failure: the stepwise approach is anticoagulation, treating the cause and opening the IVC first, then TIPS if that fails, with transplantation last (EASL 2025)."
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-history",
+      "title": {
+        "zh-CN": "问清水肿的来龙去脉",
+        "en": "Take the history of the swelling"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
+      },
+      "hint": {
+        "zh-CN": "问清腿肿从什么时候开始、什么情况下加重、以前怎么处理的；这一年又出现了哪些新变化；以前得过什么病。",
+        "en": "Find out when the leg swelling began, what makes it worse, how it has been handled, what has changed over the past year and what illnesses she has had."
+      },
+      "guidance": {
+        "zh-CN": "和患者交谈：水肿的时间线、自行用药、近一年的变化和既往史。",
+        "en": "Talk to the patient: the timeline of the swelling, her self-medication, the past year's changes and her past history."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "modifiers"
+          },
+          {
+            "any": [
+              {
+                "asked": "changes"
+              },
+              {
+                "asked": "visible-veins"
+              }
+            ]
+          },
+          {
+            "asked": "pmh"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-exam",
+      "title": {
+        "zh-CN": "查体并定位梗阻",
+        "en": "Examine her and localise the obstruction"
+      },
+      "short": {
+        "zh-CN": "查体定位",
+        "en": "Examination"
+      },
+      "hint": {
+        "zh-CN": "腹壁静脉的血流往哪个方向？这提示梗阻在哪里？再摸肝脾、看双腿。",
+        "en": "Which way does blood flow in the abdominal wall veins, and where does that put the block? Then feel for the liver and spleen and look at both legs."
+      },
+      "guidance": {
+        "zh-CN": "为患者查体，再到会诊板判断梗阻部位。",
+        "en": "Examine the patient, then decide on the case board where the obstruction is."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "veins"
+          },
+          {
+            "examined": "abdomen"
+          },
+          {
+            "examined": "legs"
+          },
+          {
+            "decided": "dec-localise"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "all": [
+              {
+                "examined": "veins"
+              },
+              {
+                "examined": "abdomen"
+              },
+              {
+                "examined": "legs"
+              }
+            ]
+          },
+          "target": "patient"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-imaging",
+      "title": {
+        "zh-CN": "血管影像与诊断",
+        "en": "Vascular imaging and the diagnosis"
+      },
+      "short": {
+        "zh-CN": "影像诊断",
+        "en": "Imaging"
+      },
+      "hint": {
+        "zh-CN": "切换到住院检查阶段。多普勒超声和MRI分别告诉你梗阻的部位、程度和肝静脉、门静脉的情况；它们与查体是否吻合？",
+        "en": "Switch to the admission work-up. What do the Doppler ultrasound and the MRI each tell you about the site and severity of the obstruction and about the hepatic and portal veins — and do they agree with the examination?"
+      },
+      "guidance": {
+        "zh-CN": "安排多普勒超声和上腹部MRI，再到会诊板作出诊断。",
+        "en": "Arrange the Doppler ultrasound and the upper abdominal MRI, then make the diagnosis on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "doppler",
+            "phase": "workup"
+          },
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
+            "decided": "dec-dx"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "doppler",
+            "phase": "workup"
+          },
+          "target": "ultrasound"
+        },
+        {
+          "unless": {
+            "read": "mri",
+            "phase": "workup"
+          },
+          "target": "mri"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-plan",
+      "title": {
+        "zh-CN": "制定治疗计划并开通梗阻",
+        "en": "Plan treatment and open the obstruction"
+      },
+      "short": {
+        "zh-CN": "治疗计划",
+        "en": "Plan"
+      },
+      "hint": {
+        "zh-CN": "看看血常规：全血细胞减少意味着什么？按现行指南，抗凝、病因和血管开通分别怎么安排？谁应该参与决策？",
+        "en": "Look at the blood count: what do the low counts mean? Under current guidance, how do anticoagulation, the cause work-up and recanalisation fit together — and who should be in the decision?"
+      },
+      "guidance": {
+        "zh-CN": "查看血常规，回答处理方案的决策，请多学科会诊并安排介入治疗。",
+        "en": "Read the blood count, answer the management decision, ask for the multidisciplinary review and arrange the procedure."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "dec-management"
+          },
+          {
+            "intervened": "mdt"
+          },
+          {
+            "intervened": "transfer-ir"
+          },
+          {
+            "intervened": "angioplasty-stent"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "decided": "dec-management"
+          },
+          "target": "board"
+        },
+        {
+          "target": "fluoroscopy"
+        }
+      ]
+    },
+    {
+      "id": "obj-safety",
+      "title": {
+        "zh-CN": "支架术后：抗凝与中药的安全",
+        "en": "After the stent: anticoagulation and the herbs"
+      },
+      "short": {
+        "zh-CN": "用药安全",
+        "en": "Medicines"
+      },
+      "hint": {
+        "zh-CN": "术后处方里有哪些活血类药物？她的血小板是多少？中药和抗凝同用之前，谁应该看一看这张处方？",
+        "en": "Which blood-activating herbs are in the post-procedure prescription? What is her platelet count? Who should look at that prescription before the herbs are combined with her anticoagulation?"
+      },
+      "guidance": {
+        "zh-CN": "调阅术后中药处方，请药师评估，开始抗凝，并在会诊板回答用药安全问题。",
+        "en": "Read the post-procedure herbal prescription, ask the pharmacist to review it, start anticoagulation and answer the medicines-safety question on the case board."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "decoction",
+            "phase": "treatment"
+          },
+          {
+            "decided": "dec-herbs"
+          },
+          {
+            "intervened": "pharmacist-review"
+          },
+          {
+            "intervened": "anticoagulation"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "decoction",
+            "phase": "treatment"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-review",
+      "title": {
+        "zh-CN": "回顾出院结局",
+        "en": "Review the outcome at discharge"
+      },
+      "short": {
+        "zh-CN": "结局",
+        "en": "Outcome"
+      },
+      "hint": {
+        "zh-CN": "出院记录和治疗前后对比照片说明了什么、没说明什么？哪些随访原报告没有交代？",
+        "en": "What do the discharge record and the before-and-after photographs show — and not show? What follow-up does the report leave out?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅出院记录。",
+        "en": "Read the discharge record at a records terminal."
+      },
+      "completeWhen": {
+        "read": "followup",
+        "phase": "followup"
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "dec-localise",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "胸腹壁静脉曲张，血流方向由下向上，伴双下肢水肿、足靴区色素沉着和巨脾。梗阻最可能在哪里？",
+        "en": "Chest and abdominal wall varices with upward flow, leg oedema, gaiter-area pigmentation and a massive spleen. Where is the obstruction most likely to be?"
+      },
+      "requires": {
+        "all": [
+          {
+            "examined": "veins"
+          },
+          {
+            "examined": "legs"
+          },
+          {
+            "examined": "abdomen"
+          },
+          {
+            "any": [
+              {
+                "asked": "changes"
+              },
+              {
+                "asked": "visible-veins"
+              }
+            ]
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先问清近一年的变化，再检查胸腹壁静脉的血流方向、腹部和双下肢。",
+        "en": "First find out what has changed over the past year, then examine the direction of flow in the chest and abdominal wall veins, the abdomen and both legs."
+      },
+      "options": [
+        {
+          "id": "loc-ivc",
+          "correct": true,
+          "text": {
+            "zh-CN": "下腔静脉（肝段或其以上）梗阻：下半身血液经胸腹壁侧支向上回流",
+            "en": "Obstruction of the inferior vena cava (at or above its hepatic segment): blood from the lower body returns upwards through chest and abdominal wall collaterals"
+          },
+          "feedback": {
+            "zh-CN": "正确。胸腹壁静脉血流一律由下向上，说明下半身的回流绕过了受阻的下腔静脉；再加上双下肢水肿、足靴区色素沉着和溃疡（下肢静脉高压）以及肝脾大，指向肝后性梗阻——原文讨论所说的“一黑二大三曲张”。门静脉高压的腹壁侧支则以脐为中心放射，脐以下的血流向下。",
+            "en": "Correct. Flow that runs upwards in every chest and abdominal wall vein means the lower body is draining round an obstructed IVC; with leg oedema, gaiter pigmentation and ulcers (venous hypertension in the legs) and an enlarged liver and spleen, it points to a post-hepatic obstruction — the source's “one dark, two large, three varicose” triad. Portal-hypertensive collaterals radiate from the umbilicus, with downward flow below it."
+          }
+        },
+        {
+          "id": "loc-portal",
+          "correct": false,
+          "text": {
+            "zh-CN": "门静脉高压（肝硬化）引起的脐周静脉曲张",
+            "en": "Periumbilical varices of portal hypertension (cirrhosis)"
+          },
+          "feedback": {
+            "zh-CN": "不正确。门静脉高压的腹壁侧支以脐为中心向四周放射，脐以下的血流向下；本例全部由下向上，还有下肢静脉高压的表现。肝功能原文没有报告，不能拿来支持肝硬化。",
+            "en": "Incorrect. Portal-hypertensive wall collaterals radiate out from the umbilicus, with downward flow below it; here every vein flows upwards and the legs show venous hypertension. No liver tests are reported, so nothing supports cirrhosis."
+          }
+        },
+        {
+          "id": "loc-svc",
+          "correct": false,
+          "text": {
+            "zh-CN": "上腔静脉梗阻",
+            "en": "Superior vena cava obstruction"
+          },
+          "feedback": {
+            "zh-CN": "不正确。上腔静脉梗阻时胸壁静脉血流由上向下，伴面颈部和上肢肿胀；本例血流由下向上，肿在双下肢。",
+            "en": "Incorrect. In SVC obstruction the chest wall veins flow downwards, with swelling of the face, neck and arms; here the flow is upwards and the swelling is in the legs."
+          }
+        },
+        {
+          "id": "loc-legs",
+          "correct": false,
+          "text": {
+            "zh-CN": "下肢深静脉血栓或慢性静脉功能不全",
+            "en": "Deep-vein thrombosis of the legs or chronic venous insufficiency"
+          },
+          "feedback": {
+            "zh-CN": "不完整。下肢静脉高压能解释水肿、色素沉着和溃疡，却解释不了由下向上的胸腹壁侧支、肝大和巨脾。",
+            "en": "Incomplete. Venous hypertension in the legs explains the oedema, pigmentation and ulcers, but not upward-flowing chest and abdominal wall collaterals, the enlarged liver or the massive spleen."
+          }
+        },
+        {
+          "id": "loc-cardiac",
+          "correct": false,
+          "text": {
+            "zh-CN": "右心衰竭或缩窄性心包炎",
+            "en": "Right heart failure or constrictive pericarditis"
+          },
+          "feedback": {
+            "zh-CN": "可能性不大，但需要排除。心源性淤血会引起肝大和下肢水肿，却不会产生由下向上的胸腹壁侧支循环；颈静脉压和超声心动图原报告都没有记录，诊断前应补查。",
+            "en": "Unlikely, but it needs excluding. Cardiac congestion causes an enlarged liver and leg oedema, but not upward-flowing chest and abdominal wall collaterals; the jugular venous pressure and an echocardiogram are not recorded and should be checked before the diagnosis is made."
+          }
+        }
+      ]
+    },
+    {
+      "id": "dec-dx",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "结合多普勒超声和上腹部MRI，最可能的诊断是？",
+        "en": "Putting the Doppler ultrasound and the upper abdominal MRI together, what is the most likely diagnosis?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "doppler",
+            "phase": "workup"
+          },
+          {
+            "read": "mri",
+            "phase": "workup"
+          },
+          {
+            "examined": "veins"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先查看多普勒超声和上腹部MRI结果，并检查过胸腹壁静脉。",
+        "en": "First read the Doppler ultrasound and the upper abdominal MRI, having examined the chest and abdominal wall veins."
+      },
+      "options": [
+        {
+          "id": "dx-bcs",
+          "correct": true,
+          "text": {
+            "zh-CN": "下腔静脉型布-加综合征（Budd-Chiari综合征）：肝段下腔静脉狭窄，肝静脉增宽",
+            "en": "IVC-type Budd–Chiari syndrome: narrowing of the intrahepatic IVC with widened hepatic veins"
+          },
+          "feedback": {
+            "zh-CN": "正确。MRI示肝段下腔静脉局部狭窄至1.3 cm，超声示狭窄处峰值流速269 cm/s、其远端瘤样扩张；肝静脉增宽（13–15 mm），肝脾增大，腹壁大量侧支——符合下腔静脉梗阻所致的布-加综合征。按定义，布-加综合征是肝静脉流出道梗阻，需排除心源性病因——本例没有超声心动图，正式诊断前应补做。门静脉通畅、向肝血流，门静脉和肝静脉内未见异常回声。确诊后还要查找病因（EASL 2025）。",
+            "en": "Correct. MRI shows the intrahepatic IVC narrowed to 1.3 cm and ultrasound a peak velocity of 269 cm/s at the narrowing with aneurysmal dilatation beyond it; the hepatic veins are widened (13–15 mm), the liver and spleen enlarged and the abdominal wall full of collaterals — Budd–Chiari syndrome from IVC obstruction. By definition Budd–Chiari syndrome is hepatic venous outflow obstruction with cardiac causes excluded — no echocardiogram is reported here, and one should be done before the diagnosis is final. The portal vein is patent with hepatopetal flow, and there are no abnormal echoes in the portal or hepatic veins. The cause still has to be sought (EASL 2025)."
+          }
+        },
+        {
+          "id": "dx-cirrhosis",
+          "correct": false,
+          "text": {
+            "zh-CN": "肝硬化门静脉高压",
+            "en": "Portal hypertension from cirrhosis"
+          },
+          "feedback": {
+            "zh-CN": "不正确。梗阻在肝后的下腔静脉：门静脉通畅、向肝血流，下腔静脉有局限性狭窄和高速血流。肝硬化的证据（肝功能、肝脏组织学）原报告没有，不能把脾大和全血细胞减少直接等同于肝硬化。",
+            "en": "Incorrect. The obstruction is in the IVC behind the liver: the portal vein is patent with hepatopetal flow and the IVC shows a focal narrowing with high-velocity flow. There is no evidence of cirrhosis (no liver tests or histology), and an enlarged spleen with low counts is not cirrhosis in itself."
+          }
+        },
+        {
+          "id": "dx-sos",
+          "correct": false,
+          "text": {
+            "zh-CN": "肝窦阻塞综合征（肝小静脉闭塞病）",
+            "en": "Sinusoidal obstruction syndrome (hepatic veno-occlusive disease)"
+          },
+          "feedback": {
+            "zh-CN": "不正确。肝窦阻塞综合征的肝静脉和下腔静脉是通畅的；本例有明确的下腔静脉狭窄和高速血流。原报告也没有记录可引起肝窦阻塞的药物或草药接触史。",
+            "en": "Incorrect. In sinusoidal obstruction syndrome the hepatic veins and IVC are patent; here there is a clear IVC narrowing with high-velocity flow. The report also records no exposure to drugs or herbs that cause sinusoidal obstruction."
+          }
+        },
+        {
+          "id": "dx-cardiac",
+          "correct": false,
+          "text": {
+            "zh-CN": "缩窄性心包炎引起的心源性肝淤血",
+            "en": "Cardiac hepatic congestion from constrictive pericarditis"
+          },
+          "feedback": {
+            "zh-CN": "不正确。心源性淤血时下腔静脉和肝静脉均扩张，没有局限性狭窄；本例是下腔静脉局部狭窄伴高速血流，属于梗阻。超声心动图原报告没有，正式诊断前仍应补做。",
+            "en": "Incorrect. In cardiac congestion the IVC and hepatic veins are uniformly dilated without a focal narrowing; here a focal IVC narrowing with high-velocity flow means obstruction. No echocardiogram is reported, and one should still be done before the diagnosis is final."
+          }
+        },
+        {
+          "id": "dx-compression",
+          "correct": false,
+          "text": {
+            "zh-CN": "肿瘤侵犯或外压导致的下腔静脉狭窄",
+            "en": "IVC narrowing from tumour invasion or external compression"
+          },
+          "feedback": {
+            "zh-CN": "可能性小。超声未见肝内肿块回声，MRI描述的是下腔静脉本身的局限性狭窄和侧支循环，没有占位；但继发性布-加综合征（肿瘤、囊肿、脓肿压迫）确实需要在影像上排除。",
+            "en": "Unlikely. The ultrasound shows no liver mass and the MRI describes a focal narrowing of the IVC itself with collaterals, not a mass; secondary Budd–Chiari syndrome from a tumour, cyst or abscess does, though, have to be excluded on imaging."
+          }
+        }
+      ]
+    },
+    {
+      "id": "dec-management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "下腔静脉型布-加综合征，入院时白细胞2.5×10⁹/L、血红蛋白97 g/L、血小板60×10⁹/L。按现行指南，最恰当的处理是？",
+        "en": "IVC-type Budd–Chiari syndrome; on admission WBC 2.5 ×10⁹/L, haemoglobin 97 g/L, platelets 60 ×10⁹/L. Following current guidance, what is the best management?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "dec-dx"
+          },
+          {
+            "read": "cbc",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先作出诊断，并查看血常规。",
+        "en": "First make the diagnosis and read the blood count."
+      },
+      "options": [
+        {
+          "id": "mgmt-stepwise",
+          "correct": true,
+          "text": {
+            "zh-CN": "抗凝（权衡血小板减少并密切监测）、病因筛查和多学科评估，同时对局限性下腔静脉狭窄行血管成形和支架开通；无效再考虑TIPS，最后才是肝移植",
+            "en": "Anticoagulation (weighing and monitoring the thrombocytopenia), a cause work-up and multidisciplinary review, with angioplasty and stenting of the focal IVC narrowing; TIPS if that fails, transplantation last"
+          },
+          "feedback": {
+            "zh-CN": "正确。EASL 2025：诊断后尽早开始治疗性抗凝并通常长期维持（首选低分子肝素序贯维生素K拮抗剂），同时处理病因；按阶梯策略依次为血管成形、TIPS、肝移植，并在有血管性肝病和移植经验的中心多学科管理。APASL 2021也以抗凝为一线，并指出在亚太地区，下腔静脉狭窄或膜性梗阻的血管开通是重要选择。血小板60×10⁹/L增加出血风险，需要与血液科权衡并监测。原报告做了球囊扩张和支架，但没有报告抗凝或病因筛查。",
+            "en": "Correct. EASL 2025: start therapeutic anticoagulation as soon as possible after diagnosis and usually continue it long term (low-molecular-weight heparin then a vitamin K antagonist preferred) while treating the cause; escalate stepwise through angioplasty, TIPS and transplantation, managed by a multidisciplinary team in a centre experienced in vascular liver disease and transplantation. APASL 2021 also makes anticoagulation first-line and notes that recanalising IVC narrowing or membranous obstruction is a key option in the Asia-Pacific. A platelet count of 60 ×10⁹/L raises the bleeding risk and needs weighing with haematology and monitoring. The report did angioplasty and stenting but reports neither anticoagulation nor a cause work-up."
+          }
+        },
+        {
+          "id": "mgmt-report",
+          "correct": false,
+          "text": {
+            "zh-CN": "球囊扩张和支架后以活血中药维持，不用抗凝",
+            "en": "Angioplasty and stenting, then blood-activating herbs instead of anticoagulation"
+          },
+          "feedback": {
+            "zh-CN": "这是原报告的做法：支架开通后用活血通脉汤维持，没有报告抗凝或病因筛查。现行指南（EASL 2025、APASL 2021）都以抗凝为一线，并要求查找病因；活血中药不能代替抗凝，与血小板减少同用时出血风险还需要评估。",
+            "en": "This is what the report did: stenting followed by the Huoxue Tongmai decoction, with no anticoagulation or cause work-up reported. Current guidance (EASL 2025, APASL 2021) makes anticoagulation first-line and asks for a search for the cause; blood-activating herbs do not replace anticoagulation, and with thrombocytopenia their bleeding risk needs assessing."
+          }
+        },
+        {
+          "id": "mgmt-diuretic",
+          "correct": false,
+          "text": {
+            "zh-CN": "继续用利尿剂消肿，门诊随访",
+            "en": "Carry on with diuretics for the swelling and follow up in clinic"
+          },
+          "feedback": {
+            "zh-CN": "不正确。这正是她过去10年的做法：水肿能暂时消退，梗阻和门静脉高压却在进展（侧支循环、巨脾、皮肤改变）。利尿剂只能作为辅助。",
+            "en": "Incorrect. That is what she has done for ten years: the swelling settles for a while while the obstruction and portal hypertension progress (collaterals, a massive spleen, skin changes). Diuretics can only support treatment."
+          }
+        },
+        {
+          "id": "mgmt-transplant",
+          "correct": false,
+          "text": {
+            "zh-CN": "立即转诊肝移植",
+            "en": "Refer for liver transplantation straight away"
+          },
+          "feedback": {
+            "zh-CN": "过早。她不是急性肝衰竭——EASL 2025只在急性肝衰竭时从一开始就考虑移植；阶梯治疗中，移植是抗凝、血管开通和TIPS都无效以后的最后一步。",
+            "en": "Premature. She is not in acute liver failure — EASL 2025 considers transplantation from the outset only then; in the stepwise approach it is the last step, after anticoagulation, recanalisation and TIPS have failed."
+          }
+        },
+        {
+          "id": "mgmt-tips",
+          "correct": false,
+          "text": {
+            "zh-CN": "先做TIPS降低门静脉压力",
+            "en": "TIPS first to lower the portal pressure"
+          },
+          "feedback": {
+            "zh-CN": "顺序不对。局限性下腔静脉狭窄应先尝试血管成形和支架；TIPS用于开通失败或不适合开通的患者（EASL 2025的阶梯策略）。",
+            "en": "Wrong order. A focal IVC narrowing should first be treated by angioplasty and stenting; TIPS is for patients in whom recanalisation fails or is not feasible (the EASL 2025 stepwise approach)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "dec-herbs",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "支架术后，处方开始服用活血通脉汤加减（后来又加了丹参、水蛭等），而她需要抗凝（或已经开始抗凝）。她入院时血小板60×10⁹/L。最恰当的做法是？",
+        "en": "After the stenting she is prescribed the modified Huoxue Tongmai decoction (later adding danshen, leech and others), and she needs anticoagulation (or has already started it). Her admission platelet count was 60 ×10⁹/L. What is the right approach?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "decoction",
+            "phase": "treatment"
+          },
+          {
+            "read": "cbc",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先查看支架术后的中药处方和入院时的血常规。",
+        "en": "First read the post-stenting herbal prescription and the admission blood count."
+      },
+      "options": [
+        {
+          "id": "herb-review",
+          "correct": true,
+          "text": {
+            "zh-CN": "在中药与抗凝同用之前，请临床药师和中医科逐味评估活血、破血类药物（如丹参、水蛭）与抗凝、血小板减少叠加的出血风险和相互作用，决定停用或调整，并监测血小板、INR和出血征象",
+            "en": "Before the herbs and anticoagulation are given together, ask the clinical pharmacist and the TCM team to review, herb by herb, the bleeding risk and interactions of the blood-activating and blood-breaking herbs (such as danshen and leech) with anticoagulation and thrombocytopenia; decide whether to stop or adjust them, and monitor platelets, INR and bleeding"
+          },
+          "feedback": {
+            "zh-CN": "正确。丹参有增强华法林作用的报道（Chua 2015），水蛭在中医属破血药；血小板减少、刚放支架又需要抗凝时叠加这些药物，出血风险需要专业评估。原报告既没有报告抗凝，也没有报告出血监测；单个病例也无法分离中药的独立疗效。",
+            "en": "Correct. Danshen is reported to potentiate warfarin (Chua 2015), and leech is classed in TCM as a 'blood-breaking' herb; adding these to anticoagulation in a thrombocytopenic, newly stented patient needs expert assessment of the bleeding risk. The report records neither anticoagulation nor bleeding monitoring, and one case cannot separate any effect of the herbs."
+          }
+        },
+        {
+          "id": "herb-both",
+          "correct": false,
+          "text": {
+            "zh-CN": "两者照常同时使用：中药是天然的，不会增加出血",
+            "en": "Give both as planned: herbs are natural and add no bleeding risk"
+          },
+          "feedback": {
+            "zh-CN": "不正确。“天然”不等于安全：活血类中药有抗血小板或增强抗凝作用的报道，与抗凝药和血小板减少叠加会增加出血风险，必须先评估。",
+            "en": "Incorrect. Natural is not the same as safe: blood-activating herbs are reported to have antiplatelet effects or to potentiate anticoagulants, and on top of anticoagulation and thrombocytopenia they add to the bleeding risk — assess first."
+          }
+        },
+        {
+          "id": "herb-instead",
+          "correct": false,
+          "text": {
+            "zh-CN": "既然中药能“活血”，就用它代替抗凝",
+            "en": "Since the decoction “activates the blood”, use it instead of anticoagulation"
+          },
+          "feedback": {
+            "zh-CN": "不正确。中药的抗栓作用没有经过验证，不能代替指南推荐的抗凝；这样做既得不到可靠的抗栓保护，又保留了出血风险。",
+            "en": "Incorrect. The herbs' antithrombotic effect is unproven and cannot replace the anticoagulation guidance recommends; it gives no reliable protection against thrombosis and keeps the bleeding risk."
+          }
+        },
+        {
+          "id": "herb-no-anticoag",
+          "correct": false,
+          "text": {
+            "zh-CN": "血小板只有60×10⁹/L，所以永远不抗凝",
+            "en": "Her platelets are only 60 ×10⁹/L, so never anticoagulate"
+          },
+          "feedback": {
+            "zh-CN": "不恰当。血小板减少增加出血风险，需要与血液科权衡、监测并评估静脉曲张，而不是自动放弃指南推荐的抗凝；刚放的支架和布-加综合征本身都有血栓风险。",
+            "en": "Not appropriate. Thrombocytopenia raises the bleeding risk and calls for weighing it with haematology, monitoring and a variceal assessment — not for automatically abandoning the anticoagulation guidance recommends; a new stent and the Budd–Chiari syndrome itself both carry a thrombotic risk."
+          }
+        },
+        {
+          "id": "herb-unrecorded",
+          "correct": false,
+          "text": {
+            "zh-CN": "中药不必写进用药记录，也不用告诉医疗团队",
+            "en": "The decoction need not go on the medication record or be mentioned to the team"
+          },
+          "feedback": {
+            "zh-CN": "不正确。所有中药都要写进用药清单并告知医疗团队和药师，否则无法评估相互作用和出血风险。",
+            "en": "Incorrect. Every herbal medicine belongs on the medication list and must be known to the medical team and pharmacist; otherwise interactions and bleeding risk cannot be assessed."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "r-hx",
+      "domain": "history",
+      "weight": 2,
+      "text": {
+        "zh-CN": "问清水肿的起病、加重和缓解因素、自行用药、近一年的新变化和既往甲亢史",
+        "en": "Established the onset of the swelling, what worsens and relieves it, the self-medication, the past year's changes and the history of hyperthyroidism"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "modifiers"
+          },
+          {
+            "any": [
+              {
+                "asked": "changes"
+              },
+              {
+                "asked": "visible-veins"
+              }
+            ]
+          },
+          {
+            "asked": "pmh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-hx-risk",
+      "domain": "history",
+      "weight": 1,
+      "text": {
+        "zh-CN": "询问血栓史、出血史和妊娠或激素使用（本例原报告都没有记录）",
+        "en": "Asked about previous clots, bleeding and pregnancy or hormone use (none recorded in this report)"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "thrombosis"
+          },
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "obstetric"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-exam",
+      "domain": "examination",
+      "weight": 3,
+      "text": {
+        "zh-CN": "检查胸腹壁静脉的血流方向、腹部（肝脾）和双下肢",
+        "en": "Examined the direction of flow in the chest and abdominal wall veins, the abdomen (liver and spleen) and both legs"
+      },
+      "met": {
+        "all": [
+          {
+            "examined": "veins"
+          },
+          {
+            "examined": "abdomen"
+          },
+          {
+            "examined": "legs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-localise",
+      "domain": "diagnosis",
+      "weight": 2,
+      "text": {
+        "zh-CN": "首次作答即依据血流方向把梗阻定位在下腔静脉",
+        "en": "Localised the obstruction to the IVC from the direction of flow at the first attempt"
+      },
+      "met": {
+        "decidedFirstTry": "dec-localise"
+      }
+    },
+    {
+      "id": "r-imaging",
+      "domain": "investigations",
+      "weight": 2,
+      "text": {
+        "zh-CN": "查看多普勒超声和上腹部MRI",
+        "en": "Read the Doppler ultrasound and the upper abdominal MRI"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "doppler",
+            "phase": "workup"
+          },
+          {
+            "read": "mri",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-labs",
+      "domain": "investigations",
+      "weight": 1,
+      "text": {
+        "zh-CN": "查看血常规和甲状腺功能及常规检验，并申请肝功能（原报告没有）",
+        "en": "Read the blood count, thyroid function and routine tests, and asked for liver tests (not in the report)"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "cbc",
+            "phase": "workup"
+          },
+          {
+            "read": "thyroid",
+            "phase": "workup"
+          },
+          {
+            "ordered": "lft"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-dx",
+      "domain": "diagnosis",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即诊断下腔静脉型布-加综合征",
+        "en": "Diagnosed IVC-type Budd–Chiari syndrome at the first attempt"
+      },
+      "met": {
+        "decidedFirstTry": "dec-dx"
+      }
+    },
+    {
+      "id": "r-mgmt",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即选对阶梯处理，请多学科会诊并完成血管开通",
+        "en": "Chose the stepwise management at the first attempt, asked for the multidisciplinary review and had the obstruction opened"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "dec-management"
+          },
+          {
+            "intervened": "mdt"
+          },
+          {
+            "intervened": "angioplasty-stent"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-anticoag",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "开始抗凝，并送检病因筛查（骨髓增殖性肿瘤、PNH、抗磷脂抗体、易栓症）",
+        "en": "Started anticoagulation and sent the cause work-up (myeloproliferative neoplasm, PNH, antiphospholipid antibodies, thrombophilia)"
+      },
+      "met": {
+        "all": [
+          {
+            "intervened": "anticoagulation"
+          },
+          {
+            "ordered": "thrombophilia"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-safety-herbs",
+      "domain": "safety",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即选对中药与抗凝的安全做法，并请临床药师评估处方",
+        "en": "Chose the safe approach to the herbs and anticoagulation at the first attempt and had the prescription reviewed by a clinical pharmacist"
+      },
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "dec-herbs"
+          },
+          {
+            "intervened": "pharmacist-review"
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "r-safety-stepwise",
+      "domain": "safety",
+      "weight": 1,
+      "text": {
+        "zh-CN": "确定处理方案后，没有跳过血管开通直接做TIPS",
+        "en": "Once the management was decided, did not skip recanalisation and go straight to TIPS"
+      },
+      "met": {
+        "all": [
+          {
+            "attempted": "dec-management"
+          },
+          {
+            "not": {
+              "intervened": "tips"
+            }
+          }
+        ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "dec-management"
+          },
+          {
+            "intervened": "tips"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "weight": 2,
+      "text": {
+        "zh-CN": "向患者解释诊断、介入治疗、长期抗凝和中药的风险",
+        "en": "Explained the diagnosis, the procedure, long-term anticoagulation and the risks of the herbs to her"
+      },
+      "judgeGuidance": {
+        "zh-CN": "良好表现：用通俗语言解释腿肿多年、肚子上的青筋和脾大都来自同一处静脉梗阻，以及为什么利尿药只能暂时消肿；说明介入开通的目的和风险；解释为什么需要长期抗凝、血小板低意味着什么、需要哪些监测和出血警示信号；尊重她使用中药的意愿，同时坦诚说明相互作用和疗效证据的局限，请她把所有中药都告诉医疗团队；询问并讨论妊娠计划和避孕；说明病因筛查和随访的安排，并用回授法确认理解。",
+        "en": "Good practice: explain in plain words that the years of leg swelling, the veins on her belly and the big spleen all come from one blocked vein, and why water tablets only ever helped for a while; explain the aim and risks of opening the vein; explain why long-term anticoagulation is needed, what a low platelet count means, what monitoring follows and which bleeding warning signs matter; respect her wish to use Chinese medicine while being honest about interactions and the limited evidence, and ask her to tell the team about every herbal medicine; ask about and discuss pregnancy plans and contraception; set out the cause work-up and follow-up, and check understanding by teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "带教上级医师",
+        "en": "Attending"
+      },
+      "knowledge": {
+        "zh-CN": "这是一篇已发表病例的分阶段回看。用苏格拉底式提问带教：先请学员根据查体推断梗阻部位（血流方向的意义），再看影像；请学员把全血细胞减少和巨脾联系起来，并注意肝功能和甲亢用药都没有记录；讨论处理时请学员说出现行指南的阶梯策略、抗凝和病因筛查，以及原报告没有报告的内容；讨论中药时请学员说明出血风险和相互作用的评估。原报告的处置不自动成为今天的推荐；不替学员下诊断结论，也不提前说出检查结果。",
+        "en": "This is a staged review of a published case. Teach Socratically: ask the learner to infer the site of obstruction from the examination (what the direction of flow means) before the imaging; to link the low counts with the massive spleen, noting that liver tests and her thyroid treatment are not recorded; on management, to set out the current stepwise approach, anticoagulation and the cause work-up, and what the report leaves out; on the herbs, to explain how the bleeding risk and interactions should be assessed. What the report's team did is not automatically today's recommendation; do not make the diagnosis for the learner or reveal results in advance."
+      },
+      "interprets": [
+        "doppler",
+        "mri",
+        "cbc",
+        "thyroid",
+        "procedure-note",
+        "decoction",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "radiologist",
+      "name": {
+        "zh-CN": "放射科医生",
+        "en": "Radiologist"
+      },
+      "knowledge": {
+        "zh-CN": "只解读学员已经查看的超声和MRI报告文字，不补充报告以外的发现。超声和MRI测得的扩张下腔静脉直径不同（33 mm与4.3 cm），可能是不同方法和层面，照原文保留。原文引用“B超灵敏度和特异度约85%”只是作者转述文献的说法，不作为本例的事实。",
+        "en": "Interprets only the ultrasound and MRI report text the learner has already read and adds no findings. The dilated IVC measures 33 mm on ultrasound and 4.3 cm on MRI — possibly different methods and levels; both are kept as printed. The authors' statement that ultrasound has a sensitivity and specificity of about 85% is their citation of the literature, not a fact of this case."
+      },
+      "interprets": [
+        "doppler",
+        "mri"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pharmacist",
+      "name": {
+        "zh-CN": "临床药师",
+        "en": "Clinical pharmacist"
+      },
+      "knowledge": {
+        "zh-CN": "可以说明：处方中桃仁、红花、赤芍、丹参、川牛膝、水蛭等属中医所称的活血化瘀药（水蛭为破血药）；丹参有增强华法林作用的报道；中药应写进用药清单。不知道病例记录以外的信息，不评估诊断。",
+        "en": "May explain that taoren, honghua, chishao, danshen, chuanniuxi and shuizhi (leech) in the prescription are what TCM calls blood-activating herbs (leech a 'blood-breaking' one); that danshen is reported to potentiate warfarin; and that herbal medicines belong on the medication list. Knows nothing beyond the case record and does not assess the diagnosis."
+      },
+      "interprets": [
+        "decoction"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "复盘：从多年腿肿到下腔静脉梗阻",
+      "en": "Debrief: from years of leg swelling to an obstructed vena cava"
+    },
+    "conclusion": {
+      "zh-CN": "下腔静脉型布-加综合征（Budd-Chiari综合征）：35岁女性十余年反复下肢水肿、自服利尿剂而未系统诊治，近一年出现由下向上回流的胸腹壁静脉曲张、上腹胀满、足靴区色素沉着和溃疡、巨脾和全血细胞减少；超声和MRI示肝段下腔静脉狭窄（1.3 cm，峰值流速269 cm/s）伴肝静脉增宽。原报告行球囊扩张和支架植入，并联合活血通脉汤加减，13天后症状、血常规和超声“明显改善”出院；没有报告抗凝、病因筛查或出血监测，中药的独立作用无法从单个病例中分离。",
+      "en": "IVC-type Budd–Chiari syndrome: a 35-year-old woman with more than ten years of recurrent leg oedema, self-treated with diuretics and never properly assessed, developed over the past year upward-flowing chest and abdominal wall varices, upper abdominal fullness, gaiter pigmentation and ulcers, a massive spleen and low blood counts; ultrasound and MRI showed a narrowed intrahepatic IVC (1.3 cm, peak velocity 269 cm/s) with widened hepatic veins. The report's team performed balloon angioplasty and stenting with a modified Huoxue Tongmai decoction, and after 13 days her symptoms, blood count and ultrasound were “clearly better” at discharge; no anticoagulation, cause work-up or bleeding monitoring is reported, and one case cannot separate any effect of the herbs."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "血流方向是定位线索：由下向上的胸腹壁侧支说明下半身的血绕过了受阻的下腔静脉。",
+        "en": "The direction of flow localises: upward chest and abdominal wall collaterals mean the lower body's blood is bypassing an obstructed IVC."
+      },
+      {
+        "zh-CN": "十年来自行服用利尿药能让水肿暂时消退，却掩盖了梗阻，直到出现侧支循环、皮肤改变和巨脾——“未行系统诊治”是本例最重要的教训之一。",
+        "en": "Ten years of self-taken diuretics settled the swelling for a while but hid the obstruction until collaterals, skin changes and a massive spleen appeared — “never properly assessed or treated” is one of the case's main lessons."
+      },
+      {
+        "zh-CN": "影像与查体相互印证：肝段下腔静脉狭窄（MRI 1.3 cm；超声峰值流速269 cm/s）、其远端扩张、肝静脉增宽、肝脾大和大量侧支，而门静脉通畅、向肝血流。",
+        "en": "Imaging and examination agree: a narrowed intrahepatic IVC (1.3 cm on MRI; peak velocity 269 cm/s on ultrasound), dilatation beyond it, widened hepatic veins, an enlarged liver and spleen and abundant collaterals, with a patent portal vein flowing towards the liver."
+      },
+      {
+        "zh-CN": "全血细胞减少最可能来自巨脾所致的脾功能亢进，但肝功能没有报告、甲亢用过什么药也不知道（抗甲状腺药物可引起白细胞减少），这两点要写进证据边界；血小板60×10⁹/L影响抗凝和介入的出血风险，应与血液科一起权衡。",
+        "en": "The low counts most likely reflect hypersplenism from the massive spleen, but no liver tests are reported and her thyroid treatment is unknown (antithyroid drugs can lower the white count) — both belong in the evidence boundaries; a platelet count of 60 ×10⁹/L bears on the bleeding risk of anticoagulation and intervention and should be weighed with haematology."
+      },
+      {
+        "zh-CN": "原报告的处置（支架加活血中药、未报告抗凝和病因筛查）与现行指南的差距，正是本例的安全讨论点：抗凝、病因、静脉曲张评估，以及中药与抗凝和血小板减少叠加的出血风险。",
+        "en": "The gap between the report's management (stenting plus blood-activating herbs, with no reported anticoagulation or cause work-up) and current guidance is the case's safety discussion: anticoagulation, the cause, variceal assessment and the bleeding risk of herbs on top of anticoagulation and thrombocytopenia."
+      },
+      {
+        "zh-CN": "13天的改善不能拆分：支架开通与中药同时使用，原文的“满意疗效”无法归因于中药。",
+        "en": "The improvement over 13 days cannot be split: stenting and herbs were given together, so the authors' “satisfactory effect” cannot be credited to the herbs."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是一篇单个病例报告的回看：生命体征、肝功能、病因筛查、超声心动图、胃镜、手术细节和复查数值都没有报告；抗凝、病因筛查、静脉曲张评估和药师评估是按现行指南加入的教学内容，原报告没有记录。单个病例中支架与中药同时使用，不能证明中药的独立疗效。病例中的处置选项不代表报告团队当时的做法。",
+      "en": "This reviews a single case report: vital signs, liver tests, a cause work-up, an echocardiogram, gastroscopy, procedural details and repeat values are not reported; anticoagulation, the cause work-up, variceal assessment and the pharmacist's review are teaching content added from current guidance and are not recorded in the report. With stenting and herbs given together, one case cannot show an independent effect of the herbs. The management options in the case do not represent what the report's team did."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "生命体征（心率、血压等）、体重和身高。",
+        "en": "Vital signs (heart rate, blood pressure and others), weight and height."
+      },
+      {
+        "zh-CN": "肝功能（胆红素、白蛋白、转氨酶）；因此无法计算Child-Pugh或布-加综合征相关预后评分。",
+        "en": "Liver function tests (bilirubin, albumin, transaminases), so no Child–Pugh or Budd–Chiari prognostic score can be calculated."
+      },
+      {
+        "zh-CN": "甲状腺功能、凝血、风湿、肿瘤标志物、肾功能、电解质、性激素和大便常规的逐项数值；血常规的参考范围。",
+        "en": "The individual values of the thyroid, coagulation, rheumatology, tumour-marker, renal, electrolyte, sex-hormone and stool tests; the blood-count reference ranges."
+      },
+      {
+        "zh-CN": "甲亢的治疗经过和用药；自服利尿剂的药名。",
+        "en": "How her hyperthyroidism was treated and with which drugs; the name of the diuretic she took."
+      },
+      {
+        "zh-CN": "血栓史、出血史、妊娠和激素使用、家族史、过敏史、吸烟饮酒和职业。",
+        "en": "Previous thrombosis or bleeding, pregnancy and hormone use, family history, allergies, smoking, alcohol and occupation."
+      },
+      {
+        "zh-CN": "病因筛查（骨髓增殖性肿瘤/JAK2、PNH、抗磷脂抗体、遗传性易栓症）、超声心动图和颈静脉压、胃镜和静脉曲张评估。",
+        "en": "A cause work-up (myeloproliferative neoplasm/JAK2, PNH, antiphospholipid antibodies, inherited thrombophilia), an echocardiogram and the jugular venous pressure, gastroscopy and variceal assessment."
+      },
+      {
+        "zh-CN": "介入治疗的日期、细节、支架类型，以及任何抗凝或抗血小板治疗和出血监测；复查血常规和超声的数值；支架远期通畅和出院后随访。",
+        "en": "The date, technique and stent type of the procedure, any anticoagulant or antiplatelet treatment and bleeding monitoring; the repeat blood count and ultrasound values; long-term stent patency and follow-up after discharge."
+      },
+      {
+        "zh-CN": "原文“肝区无移动性浊音”的确切含义（照录并标注）。",
+        "en": "What the source means by “肝区无移动性浊音” (no shifting dullness in the liver region) — kept as printed and labelled."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "先用手和眼定位：胸腹壁静脉血流由下向上，加上双下肢水肿、足靴区色素沉着和肝脾大，指向下腔静脉（肝后性）梗阻——原文讨论的“一黑二大三曲张”。门静脉高压的侧支以脐为中心放射，上腔静脉梗阻的血流由上向下。",
+        "en": "Localise with your hands and eyes first: upward flow in the chest and abdominal wall veins with leg oedema, gaiter pigmentation and an enlarged liver and spleen points to an IVC (post-hepatic) obstruction — the source's “one dark, two large, three varicose” triad. Portal-hypertensive collaterals radiate from the umbilicus; in SVC obstruction the flow runs downwards."
+      },
+      {
+        "zh-CN": "影像确认部位和性质：多普勒超声显示梗阻处的血流速度和方向，MRI补充解剖；本例为肝段下腔静脉局限性狭窄（1.3 cm，峰值流速269 cm/s）伴肝静脉增宽。AASLD 2020提醒，原因不明的肝病都应考虑布-加综合征。鉴别包括肝硬化、肝窦阻塞综合征、心源性淤血和继发性压迫；本例没有超声心动图和肝功能，应写进证据边界。",
+        "en": "Imaging confirms the site and nature: Doppler ultrasound shows the flow velocity and direction at the obstruction and MRI adds the anatomy; here a focal narrowing of the intrahepatic IVC (1.3 cm, peak velocity 269 cm/s) with widened hepatic veins. AASLD 2020 reminds us to consider Budd–Chiari syndrome in any liver disease of unknown cause. The differential includes cirrhosis, sinusoidal obstruction syndrome, cardiac congestion and secondary compression; the missing echocardiogram and liver tests belong in the evidence boundaries."
+      },
+      {
+        "zh-CN": "现行处理是阶梯式的：EASL 2025——诊断后尽早抗凝并通常长期维持（首选低分子肝素序贯维生素K拮抗剂；肝功能保留时可考虑DOAC），同时处理病因；对无反应者依次行血管成形/支架、TIPS和肝移植（急性肝衰竭除外），并在有经验的中心多学科管理（EASL 2016同样推荐无禁忌者抗凝；APASL 2021指出亚太地区下腔静脉开通是重要选择）。原报告做了球囊扩张和支架，但没有报告抗凝——今天这是一个缺口。",
+        "en": "Current management is stepwise: EASL 2025 — anticoagulate as soon as possible and usually long term (low-molecular-weight heparin then a vitamin K antagonist preferred; a DOAC may be considered when liver function is preserved) while treating the cause; for non-responders escalate through angioplasty/stenting, TIPS and transplantation (acute liver failure aside), managed by a multidisciplinary team in an experienced centre (EASL 2016 likewise recommends anticoagulation unless contraindicated; APASL 2021 notes that IVC recanalisation is a key option in the Asia-Pacific). The report did balloon angioplasty and stenting but reports no anticoagulation — a gap by today's standard."
+      },
+      {
+        "zh-CN": "每个布-加综合征都要查病因：骨髓增殖性肿瘤（JAK2 V617F等）、阵发性睡眠性血红蛋白尿、抗磷脂综合征、遗传性易栓症和激素因素（EASL 2025“治疗基础病”；APASL 2021推荐检测骨髓增殖性疾病和易栓症）。“凝血四项大致正常”不能代替病因筛查；原报告没有做。",
+        "en": "Every Budd–Chiari syndrome needs a cause work-up: myeloproliferative neoplasms (JAK2 V617F and others), paroxysmal nocturnal haemoglobinuria, antiphospholipid syndrome, inherited thrombophilia and hormonal factors (EASL 2025: treat the underlying condition; APASL 2021 recommends testing for myeloproliferative disorders and thrombophilia). A “broadly normal” coagulation screen does not replace it, and the report did none."
+      },
+      {
+        "zh-CN": "中药与抗凝同用要先评估：处方中的活血、破血类药物（如丹参、水蛭）叠加抗凝和血小板减少，出血风险需要临床药师和中医科共同评估；丹参有增强华法林作用的报道（Chua 2015）。所有中药都要写进用药清单。单个病例中支架与中药同时使用，无法证明中药的独立疗效。",
+        "en": "Assess herbs before combining them with anticoagulation: blood-activating and blood-breaking herbs such as danshen and leech on top of anticoagulation and thrombocytopenia need a joint review by the clinical pharmacist and the TCM team, and danshen is reported to potentiate warfarin (Chua 2015). Every herbal medicine belongs on the medication list. In a single case where stenting and herbs were given together, no independent effect of the herbs can be shown."
+      }
+    ],
+    "references": [
+      "王立恒, 庄聰. 中西醫結合治療巴德-吉亞利綜合征1例. 鏡湖醫學. 2025;25(1):68 (references continued on p. 61). doi:10.12408/j.issn2223-4462.2025.01.021. Available from: https://rs.yiigle.com/cmaid/1551894",
+      "European Association for the Study of the Liver. EASL Clinical Practice Guidelines on vascular diseases of the liver. J Hepatol. 2026;84(2):399-456. doi:10.1016/j.jhep.2025.08.001",
+      "European Association for the Study of the Liver. EASL Clinical Practice Guidelines: vascular diseases of the liver. J Hepatol. 2016;64(1):179-202. doi:10.1016/j.jhep.2015.07.040",
+      "Northup PG, Garcia-Pagan JC, Garcia-Tsao G, Intagliata NM, Superina RA, Roberts LN, et al. Vascular liver disorders, portal vein thrombosis, and procedural bleeding in patients with liver disease: 2020 practice guidance by the American Association for the Study of Liver Diseases. Hepatology. 2021;73(1):366-413. doi:10.1002/hep.31646",
+      "Shukla A, et al. Budd-Chiari syndrome: consensus guidance of the Asian Pacific Association for the study of the liver (APASL). Hepatol Int. 2021;15(3):531-567.",
+      "Chua YT, Ang XL, Zhong XM, Khoo KS. Interaction between warfarin and Chinese herbal medicines. Singapore Med J. 2015;56(1):11-18. doi:10.11622/smedj.2015004"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，未经临床能力评价验证。",
+      "en": "Scores measure completion of this teaching pathway and are not validated measures of clinical competence."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "生命体征（心率、血压等）、体重和身高。",
+      "en": "Vital signs (heart rate, blood pressure and others), weight and height."
+    },
+    {
+      "zh-CN": "肝功能（胆红素、白蛋白、转氨酶）；因此无法计算Child-Pugh或布-加综合征相关预后评分。",
+      "en": "Liver function tests (bilirubin, albumin, transaminases), so no Child–Pugh or Budd–Chiari prognostic score can be calculated."
+    },
+    {
+      "zh-CN": "甲状腺功能、凝血、风湿、肿瘤标志物、肾功能、电解质、性激素和大便常规的逐项数值；血常规的参考范围。",
+      "en": "The individual values of the thyroid, coagulation, rheumatology, tumour-marker, renal, electrolyte, sex-hormone and stool tests; the blood-count reference ranges."
+    },
+    {
+      "zh-CN": "甲亢的治疗经过和用药；自服利尿剂的药名。",
+      "en": "How her hyperthyroidism was treated and with which drugs; the name of the diuretic she took."
+    },
+    {
+      "zh-CN": "血栓史、出血史、妊娠和激素使用、家族史、过敏史、吸烟饮酒和职业。",
+      "en": "Previous thrombosis or bleeding, pregnancy and hormone use, family history, allergies, smoking, alcohol and occupation."
+    },
+    {
+      "zh-CN": "病因筛查（骨髓增殖性肿瘤/JAK2、PNH、抗磷脂抗体、遗传性易栓症）、超声心动图和颈静脉压、胃镜和静脉曲张评估。",
+      "en": "A cause work-up (myeloproliferative neoplasm/JAK2, PNH, antiphospholipid antibodies, inherited thrombophilia), an echocardiogram and the jugular venous pressure, gastroscopy and variceal assessment."
+    },
+    {
+      "zh-CN": "介入治疗的日期、细节、支架类型，以及任何抗凝或抗血小板治疗和出血监测；复查血常规和超声的数值；支架远期通畅和出院后随访。",
+      "en": "The date, technique and stent type of the procedure, any anticoagulant or antiplatelet treatment and bleeding monitoring; the repeat blood count and ultrasound values; long-term stent patency and follow-up after discharge."
+    },
+    {
+      "zh-CN": "原文“肝区无移动性浊音”的确切含义（照录并标注）。",
+      "en": "What the source means by “肝区无移动性浊音” (no shifting dullness in the liver region) — kept as printed and labelled."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551894/fig01.png",
+      "title": {
+        "zh-CN": "原报告图1：胸腹壁静脉曲张治疗前后对比（出院阶段）",
+        "en": "Source Fig. 1: chest and abdominal wall varices before and after treatment (discharge phase)"
+      },
+      "credit": {
+        "zh-CN": "王立恒、庄聰，2025，原报告图。原作者及出版方保留版权。",
+        "en": "王立恒, 庄聰 (authors' names as printed), 2025 — figure from the source report. Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "8c8073feb47780f22305dfb0536469a9056a683f1fb7b80e40edb1621bae91ea"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551894/fig02.png",
+      "title": {
+        "zh-CN": "原报告图2：背部皮疹治疗前后对比（出院阶段）",
+        "en": "Source Fig. 2: rash on the back before and after treatment (discharge phase)"
+      },
+      "credit": {
+        "zh-CN": "王立恒、庄聰，2025，原报告图。原作者及出版方保留版权。",
+        "en": "王立恒, 庄聰 (authors' names as printed), 2025 — figure from the source report. Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "b1f149115cdca4767d58e4002e84443941557bdff377c015ca4b85705e1ced06"
+    },
+    {
+      "id": "fig03",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1551894/fig03.png",
+      "title": {
+        "zh-CN": "原报告图3：双下肢水肿和足靴区色素沉着治疗前后对比（出院阶段）",
+        "en": "Source Fig. 3: leg oedema and gaiter pigmentation before and after treatment (discharge phase)"
+      },
+      "credit": {
+        "zh-CN": "王立恒、庄聰，2025，原报告图。原作者及出版方保留版权。",
+        "en": "王立恒, 庄聰 (authors' names as printed), 2025 — figure from the source report. Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "e118b48fb0c65c17eadf4408327ca51326e36b62e96dc37de2f9ea4d55bd28cc"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1551894/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘；第2页即原刊第61页，为另一篇文章的结尾和本文参考文献续页；第3页为期刊封底，含本文图1–3及其他文章的临床图片）",
+        "en": "Source PDF (contains the outcome; for debrief review; page 2, journal p. 61, is the end of another article with this report's continued references; page 3 is the journal's back cover, with this report's Figs 1–3 and other articles' clinical images)"
+      },
+      "credit": {
+        "zh-CN": "王立恒、庄聰，2025。原作者及出版方保留版权。",
+        "en": "王立恒, 庄聰 (authors' names as printed), 2025. Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "057edd84a2bb7bd11d6f35f9fcd70132b1cbf9a4c6e74e1b819ef0daf62bc4e0"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "modifiers"
+    },
+    {
+      "type": "ask",
+      "itemId": "no-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "changes"
+    },
+    {
+      "type": "ask",
+      "itemId": "visible-veins"
+    },
+    {
+      "type": "ask",
+      "itemId": "abdominal"
+    },
+    {
+      "type": "ask",
+      "itemId": "skin-legs"
+    },
+    {
+      "type": "ask",
+      "itemId": "itch-rash"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "thyroid-treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "thrombosis"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "obstetric"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "ask",
+      "itemId": "occupation"
+    },
+    {
+      "type": "ask",
+      "itemId": "self-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "tcm-tongue"
+    },
+    {
+      "type": "examine",
+      "findingId": "tcm-pulse"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin-rash"
+    },
+    {
+      "type": "examine",
+      "findingId": "veins"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "examine",
+      "findingId": "ascites"
+    },
+    {
+      "type": "examine",
+      "findingId": "legs"
+    },
+    {
+      "type": "answer",
+      "decisionId": "dec-localise",
+      "optionIds": [
+        "loc-ivc"
+      ]
+    },
+    {
+      "type": "set-phase",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "cbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "cbc",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "esr"
+    },
+    {
+      "type": "read",
+      "investigationId": "esr",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "thyroid"
+    },
+    {
+      "type": "read",
+      "investigationId": "thyroid",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "lft"
+    },
+    {
+      "type": "read",
+      "investigationId": "lft",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "doppler"
+    },
+    {
+      "type": "read",
+      "investigationId": "doppler",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "mri"
+    },
+    {
+      "type": "read",
+      "investigationId": "mri",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "thrombophilia"
+    },
+    {
+      "type": "read",
+      "investigationId": "thrombophilia",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "dec-dx",
+      "optionIds": [
+        "dx-bcs"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "dec-management",
+      "optionIds": [
+        "mgmt-stepwise"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "mdt"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "anticoagulation"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "transfer-ir"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "angioplasty-stent"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-treatment"
+    },
+    {
+      "type": "order",
+      "investigationId": "procedure-note"
+    },
+    {
+      "type": "read",
+      "investigationId": "procedure-note",
+      "phase": "treatment"
+    },
+    {
+      "type": "order",
+      "investigationId": "decoction"
+    },
+    {
+      "type": "read",
+      "investigationId": "decoction",
+      "phase": "treatment"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "pharmacist-review"
+    },
+    {
+      "type": "answer",
+      "decisionId": "dec-herbs",
+      "optionIds": [
+        "herb-review"
+      ]
+    },
+    {
+      "type": "ask",
+      "itemId": "status-discharge"
+    },
+    {
+      "type": "examine",
+      "findingId": "veins-after"
+    },
+    {
+      "type": "examine",
+      "findingId": "rash-after"
+    },
+    {
+      "type": "examine",
+      "findingId": "legs-after"
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "cbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "cbc",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "doppler"
+    },
+    {
+      "type": "read",
+      "investigationId": "doppler",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1551894",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1551894",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "腿肿多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "你今天来看什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "How long have your legs been swollen?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "什么时候肿得厉害？",
+        "locale": "zh-CN",
+        "expect": [
+          "modifiers"
+        ]
+      },
+      {
+        "text": "吃过利尿药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "modifiers"
+        ]
+      },
+      {
+        "text": "What makes it worse?",
+        "locale": "en",
+        "expect": [
+          "modifiers"
+        ]
+      },
+      {
+        "text": "Does anything help the swelling go down?",
+        "locale": "en",
+        "expect": [
+          "modifiers"
+        ]
+      },
+      {
+        "text": "以前去医院查过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "no-care"
+        ]
+      },
+      {
+        "text": "Have you had this looked into before?",
+        "locale": "en",
+        "expect": [
+          "no-care"
+        ]
+      },
+      {
+        "text": "最近有什么新的变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "changes"
+        ]
+      },
+      {
+        "text": "Anything new in the last year?",
+        "locale": "en",
+        "expect": [
+          "changes"
+        ]
+      },
+      {
+        "text": "肚子上的青筋什么时候有的？",
+        "locale": "zh-CN",
+        "expect": [
+          "visible-veins"
+        ]
+      },
+      {
+        "text": "Have you noticed veins on your tummy?",
+        "locale": "en",
+        "expect": [
+          "visible-veins"
+        ]
+      },
+      {
+        "text": "肚子胀吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "abdominal"
+        ]
+      },
+      {
+        "text": "Is your tummy bloated?",
+        "locale": "en",
+        "expect": [
+          "abdominal"
+        ]
+      },
+      {
+        "text": "小腿皮肤是不是变黑了？",
+        "locale": "zh-CN",
+        "expect": [
+          "skin-legs"
+        ]
+      },
+      {
+        "text": "Any ulcers on your legs?",
+        "locale": "en",
+        "expect": [
+          "skin-legs"
+        ]
+      },
+      {
+        "text": "皮肤痒吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "itch-rash"
+        ]
+      },
+      {
+        "text": "Is your skin itchy?",
+        "locale": "en",
+        "expect": [
+          "itch-rash"
+        ]
+      },
+      {
+        "text": "以前有过什么大病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Any other medical problems?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "甲亢吃过什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "thyroid-treatment"
+        ]
+      },
+      {
+        "text": "平时吃什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "What medicines are you on?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "得过血栓没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "thrombosis"
+        ]
+      },
+      {
+        "text": "Any history of clots?",
+        "locale": "en",
+        "expect": [
+          "thrombosis"
+        ]
+      },
+      {
+        "text": "Have you lost any weight?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "抽烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "有没有拉过黑便？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "吃过避孕药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "Are you on the pill?",
+        "locale": "en",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "有药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Any allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "家里人有没有这种病？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anything run in your family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Do you drink?",
+        "locale": "en",
+        "expect": [
+          "alcohol"
+        ]
+      },
+      {
+        "text": "做完手术好点了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-treatment"
+        ]
+      },
+      {
+        "text": "How have you been since the stent?",
+        "locale": "en",
+        "expect": [
+          "status-treatment"
+        ]
+      },
+      {
+        "text": "出院前感觉怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-discharge"
+        ]
+      },
+      {
+        "text": "Are you feeling better now?",
+        "locale": "en",
+        "expect": [
+          "status-discharge"
+        ]
+      }
+    ]
+  }
+}

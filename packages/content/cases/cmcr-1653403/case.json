@@ -1,0 +1,3810 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1653403",
+  "version": "1.1.0",
+  "title": {
+    "zh-CN": "孕晚期胎动减少 · 29岁女性",
+    "en": "Reduced fetal movements late in pregnancy · 29-year-old woman"
+  },
+  "summary": {
+    "zh-CN": "孕晚期的一次常规产检中，29岁孕妇说起最近的一个变化。评估母胎情况，决定何时、怎样分娩，并和新生儿团队一起跟进宝宝出生后的头几天。基于已发表病例的历史资料回看，缺失资料保持未知。",
+    "en": "At a routine late-pregnancy check-up, a 29-year-old mentions a recent change. Assess mother and baby, decide when and how she should give birth, and follow the baby's first days with the neonatal team. A review of a published case; missing data stay unknown."
+  },
+  "specialty": [
+    "obstetrics",
+    "neonatology"
+  ],
+  "difficulty": 3,
+  "setting": "outpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 30,
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别足月胎动减少伴可疑正弦波形胎心监护提示胎儿可能贫血或缺氧，需要尽快分娩，并提前安排新生儿团队和紧急用血（RCOG GTG 57）。",
+      "en": "Recognise reduced fetal movements at term with a suspected sinusoidal CTG as a sign of possible fetal anaemia or hypoxia that needs prompt delivery, with the neonatal team and emergency blood arranged in advance (RCOG GTG 57)."
+    },
+    {
+      "zh-CN": "为苍白、休克、Hb 38 g/L的新生儿安排呼吸支持和紧急红细胞输注，不因等待配血或溶血检查而延误（BSH 2016）。",
+      "en": "Plan respiratory support and an emergency red-cell transfusion for a pale, shocked newborn with an Hb of 38 g/L, without waiting for a crossmatch or haemolysis tests (BSH 2016)."
+    },
+    {
+      "zh-CN": "运用母血红细胞酸洗脱（KB）试验和母血甲胎蛋白确认胎母输血，并在说明公式假设的前提下估算失血量。",
+      "en": "Use the maternal Kleihauer–Betke test and maternal AFP to confirm fetomaternal haemorrhage, and estimate its size while stating the formula's assumptions."
+    },
+    {
+      "zh-CN": "依据记录排除新生儿贫血的其他原因：ABO或Rh溶血、地中海贫血、双胎输血和分娩时急性失血。",
+      "en": "Exclude the other causes of neonatal anaemia from the record: ABO or Rh haemolysis, thalassaemia, twin-to-twin transfusion and acute blood loss at delivery."
+    },
+    {
+      "zh-CN": "说明胎母输血后何时需要抗D免疫球蛋白，以及本例为何不需要。",
+      "en": "State when anti-D immunoglobulin is needed after fetomaternal haemorrhage, and why it is not needed here."
+    }
+  ],
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "梁建明, 黃芳芳, 吳思敏, 余善恩. 胎母輸血綜合症1例. 鏡湖醫學. 2025;25(2):50-51. doi:10.12408/j.issn2223-4462.2025.02.014",
+    "doi": "10.12408/j.issn2223-4462.2025.02.014",
+    "authors": [
+      "梁建明",
+      "黃芳芳",
+      "吳思敏",
+      "余善恩"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表的病例报告改写（见引文）。患者使用化名；医院、日历日期和作者单位不出现在病例文字中，时间以相对时间表示（就诊前7天、出生次日、出生后第7天）。病史、检查、原报告的处理和结局均按原文；未记录的数据保持未知，不补写正常值。本平台每个病例只模拟一位患者（母亲），新生儿的查体、检验和治疗因此以“记录”的形式由团队查阅，学员不能直接检查或治疗婴儿。原文“抗炎药物”和“术后常规予以药物预防感染”未写药名，后者也未说明对象，均照原文标注。决策、选项、评分、对话和人物性格为教学设计；正确选项依据所引的现行指南。原报告图1（母血KB染色）已查看，无身份信息，用于KB结果；原报告PDF第2页下半为另一篇文章的结尾，第3页为期刊封三图页（其他文章的临床图片），只在完成病例后开放。",
+      "en": "Adapted from a published case report (see the citation). The patient has a pseudonym; hospitals, calendar dates and the authors' institution do not appear in the case text, and times are relative (7 days before presentation, the day after birth, 7 days after birth). History, results, the report's management and the outcome follow the source; unrecorded data stay unknown, with no normal values filled in. The platform models one patient per case (the mother), so the newborn's examination, tests and treatment appear as records read by the team: the learner cannot examine or treat the baby directly. The report's 'anti-inflammatory drugs' and 'routine post-operative infection prophylaxis' name no drug, and the latter does not say whether it was for the baby or the mother; both are labelled as published. Decisions, options, scoring, dialogue and personality are educational design; the correct options follow the cited current guidance. The report's Figure 1 (maternal KB stain) was checked, carries no identifier, and is shown with the KB result; the lower half of page 2 of the source PDF is the end of another article and page 3 is the journal's inside-back-cover figure page (other articles' clinical images); the PDF opens only after the case is complete."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "RCOG Green-top Guideline No. 57: reduced fetal movements (2nd edition; publication year to verify)",
+        "BSH 2016: guidelines on transfusion for fetuses, neonates and older children (New et al.)"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。结果由原报告提供，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not individual care or self-medication. Outcomes come from the report; undocumented physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "邝女士（化名）",
+      "en": "Ms Kuang (pseudonym)"
+    },
+    "age": 29,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "孕37周加2天，近1周胎动减少",
+      "en": "Reduced fetal movements for a week at 37 weeks and 2 days"
+    },
+    "triageNote": {
+      "zh-CN": "29岁，孕3产2，孕37+2周。常规产检时诉近1周自觉胎动较前减少（未计数）。助产士已为她做了急诊胎心监护。",
+      "en": "29-year-old, gravida 3 para 2, at 37+2 weeks. At her routine antenatal visit she reports that the baby has moved less for a week (not counted). The midwife has run an emergency CTG."
+    },
+    "tags": [
+      {
+        "zh-CN": "孕晚期",
+        "en": "Late pregnancy"
+      },
+      {
+        "zh-CN": "第三次妊娠",
+        "en": "Third pregnancy"
+      },
+      {
+        "zh-CN": "常规产检",
+        "en": "Routine antenatal visit"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "29岁，第三次怀孕，之前生过两次；性格平和、说话实在，信任医生。听说宝宝可能有危险时明显紧张，但仍然配合。",
+        "en": "29, in her third pregnancy, having given birth twice before; even-tempered and down-to-earth, and trusts her doctors. Clearly frightened when told the baby may be in danger, but still cooperative."
+      },
+      "speechStyle": {
+        "zh-CN": "普通话口语，简短直接；用孕妇常说的词（“动得少”“B超”“唐筛”“糖耐”），不用医学术语。",
+        "en": "Everyday speech, short and direct; uses the words pregnant women use ('moving less', 'the scan', 'the Down's test', 'the sugar test'), no medical jargon."
+      },
+      "healthLiteracy": "medium",
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "医生，这一周我感觉宝宝动得比以前少了，我也没专门数过。",
+        "en": "Doctor, the baby's been moving less than usual this past week — I haven't been counting, though."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "concerns": [
+        {
+          "zh-CN": "宝宝会不会有事？",
+          "en": "Is the baby going to be all right?"
+        }
+      ],
+      "actingNotes": {
+        "zh-CN": "在门诊产检时平静地说起胎动减少；得知胎心监护异常、需要马上手术时紧张，会问宝宝会不会有事。术后平静，惦记宝宝。只讲已问到的病史，用自己的话说，不增减数字、孕周或检查名称；病历没有记录的就直说没有记录，不猜测。",
+        "en": "Mentions the reduced movements calmly at the routine visit; becomes frightened when told the CTG is abnormal and she needs an operation now, and asks whether the baby will be all right. After the operation she is calm and thinking of the baby. State only the history that has been asked about, in your own words, without adding or changing numbers, weeks or test names; say plainly when something is not recorded, and do not guess."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": false,
+      "hairStyle": "ponytail",
+      "build": "average"
+    },
+    "posture": "sitting"
+  },
+  "phases": [
+    {
+      "id": "antenatal",
+      "label": {
+        "zh-CN": "产前门诊（就诊当天）",
+        "en": "Antenatal clinic (day of presentation)"
+      },
+      "description": {
+        "zh-CN": "产科门诊常规产检。助产士已为她做了急诊胎心监护，图形已上传到病历系统。",
+        "en": "A routine visit to the antenatal clinic. The midwife has run an emergency CTG and uploaded the trace to the record system."
+      },
+      "learnerSwitchable": false
+    },
+    {
+      "id": "delivery",
+      "label": {
+        "zh-CN": "剖宫产与新生儿出生",
+        "en": "Caesarean and birth"
+      },
+      "description": {
+        "zh-CN": "急诊剖宫产，娩出一名活女婴，由新生儿团队接手处理。",
+        "en": "Emergency caesarean: a live baby girl is delivered and the neonatal team takes over her care."
+      },
+      "learnerSwitchable": false,
+      "location": {
+        "setting": "operating-room"
+      },
+      "enterWhen": {
+        "all": [
+          {
+            "phase": "antenatal"
+          },
+          {
+            "objective": "obj-history"
+          },
+          {
+            "objective": "obj-deliver"
+          }
+        ]
+      }
+    },
+    {
+      "id": "postnatal",
+      "label": {
+        "zh-CN": "产后（出生当天至次日）",
+        "en": "After the birth (day 0 to day 1)"
+      },
+      "description": {
+        "zh-CN": "术后产妇回到病房；宝宝在接受新生儿治疗。",
+        "en": "After the operation the mother is back on the ward; the baby is being treated by the neonatal team."
+      },
+      "learnerSwitchable": false,
+      "location": {
+        "setting": "ward"
+      },
+      "enterWhen": {
+        "all": [
+          {
+            "phase": "delivery"
+          },
+          {
+            "objective": "obj-newborn"
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告转归（出生后第7天）",
+        "en": "Reported outcome (7 days after birth)"
+      },
+      "description": {
+        "zh-CN": "宝宝出生后第7天。",
+        "en": "Seven days after the birth."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "phase": "postnatal"
+          },
+          {
+            "objective": "obj-cause"
+          },
+          {
+            "objective": "obj-mother"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "antenatal",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "宝宝最近动得怎么样？",
+        "en": "How has the baby been moving lately?"
+      },
+      "answer": {
+        "zh-CN": "这一周我觉得宝宝动得比以前少了，我没有专门数过。",
+        "en": "This past week the baby's been moving less than before — I haven't actually counted."
+      },
+      "keywords": {
+        "zh-CN": [
+          "胎动",
+          "动得",
+          "宝宝动",
+          "动得少",
+          "胎动减少",
+          "踢",
+          "动静",
+          "哪里不放心",
+          "什么情况",
+          "今天来"
+        ],
+        "en": [
+          "movements",
+          "moving",
+          "kicks",
+          "kicking",
+          "baby moving",
+          "reduced movements",
+          "fetal movement",
+          "whatbringsyouin"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "今天宝宝",
+          "今天有没有动",
+          "今天动",
+          "刚才",
+          "最后一次"
+        ],
+        "en": [
+          "today",
+          "this morning",
+          "last move",
+          "last moved"
+        ]
+      }
+    },
+    {
+      "id": "movement-today",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "今天宝宝动过吗？",
+        "en": "Has the baby moved at all today?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "今天动",
+          "今天有没有动",
+          "今天胎动",
+          "最后一次动",
+          "刚才动",
+          "今天宝宝"
+        ],
+        "en": [
+          "moved today",
+          "today",
+          "last moved",
+          "last move",
+          "this morning",
+          "since this morning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文未记录；为教学补充的问题。",
+        "en": "Not recorded in the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "gestation",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "现在怀孕多少周了？这是第几胎？",
+        "en": "How many weeks pregnant are you, and how many pregnancies have you had?"
+      },
+      "answer": {
+        "zh-CN": "现在37周加2天。这是第三次怀孕，前面生过两次。",
+        "en": "I'm 37 weeks and 2 days. This is my third pregnancy — I've given birth twice before."
+      },
+      "keywords": {
+        "zh-CN": [
+          "几周",
+          "孕周",
+          "多少周",
+          "第几胎",
+          "怀过几次",
+          "生过几个",
+          "几个孩子",
+          "预产期",
+          "几个月",
+          "怀孕多久"
+        ],
+        "en": [
+          "howmanyweeks",
+          "gestation",
+          "how far along",
+          "pregnancies",
+          "howmanychildren",
+          "due date",
+          "weeks pregnant"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "怎么生",
+          "顺产",
+          "剖"
+        ],
+        "en": [
+          "born",
+          "caesarean",
+          "delivery"
+        ]
+      }
+    },
+    {
+      "id": "antenatal",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "之前的产检都按时做了吗？",
+        "en": "Have you been going to all your antenatal check-ups?"
+      },
+      "answer": {
+        "zh-CN": "都按时在这边做的。",
+        "en": "Yes, I've had them all here, on time."
+      },
+      "keywords": {
+        "zh-CN": [
+          "产检",
+          "按时检查",
+          "定期检查",
+          "产前检查",
+          "按时来",
+          "检查都做了"
+        ],
+        "en": [
+          "antenatal",
+          "check-ups",
+          "checkups",
+          "appointments",
+          "midwife visits",
+          "regular checks"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "结果",
+          "唐筛",
+          "B超",
+          "正常",
+          "什么情况"
+        ],
+        "en": [
+          "result",
+          "scan",
+          "screening",
+          "normal"
+        ]
+      }
+    },
+    {
+      "id": "screening",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "之前的筛查和B超结果怎么样？",
+        "en": "How did your earlier screening tests and scans go?"
+      },
+      "answer": {
+        "zh-CN": "唐筛是低风险，22周那次B超说没什么问题，糖耐量也正常。",
+        "en": "The Down's screening was low risk, the scan at 22 weeks was fine, and the sugar test was normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "唐筛",
+          "筛查",
+          "糖耐量",
+          "糖耐",
+          "排畸",
+          "之前的B超",
+          "检查结果",
+          "都正常吗"
+        ],
+        "en": [
+          "screening",
+          "down syndrome",
+          "downs",
+          "anomaly scan",
+          "glucose test",
+          "test results",
+          "earlier scans",
+          "been normal"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "最近",
+          "上次",
+          "一周前",
+          "传染",
+          "乙肝",
+          "地贫",
+          "地中海"
+        ],
+        "en": [
+          "last scan",
+          "recent",
+          "hepatitis",
+          "thalass",
+          "infection"
+        ]
+      }
+    },
+    {
+      "id": "infection-thal",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "乙肝、梅毒这些传染病，还有地中海贫血，都查过吗？",
+        "en": "Were you tested for infections such as hepatitis B, and for thalassaemia?"
+      },
+      "answer": {
+        "zh-CN": "都查过，乙肝、丙肝、梅毒、艾滋病都是阴性，地中海贫血基因也没问题。",
+        "en": "Yes — hepatitis B and C, syphilis and HIV were all negative, and the thalassaemia gene test was fine."
+      },
+      "keywords": {
+        "zh-CN": [
+          "乙肝",
+          "梅毒",
+          "艾滋",
+          "传染病",
+          "地贫",
+          "地中海贫血",
+          "丙肝"
+        ],
+        "en": [
+          "hepatitis",
+          "syphilis",
+          "hiv",
+          "infections",
+          "thalassaemia",
+          "thalassemia",
+          "infection screen"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      }
+    },
+    {
+      "id": "blood-group",
+      "topic": "other",
+      "question": {
+        "zh-CN": "您是什么血型？",
+        "en": "What's your blood group?"
+      },
+      "answer": {
+        "zh-CN": "我是B型，Rh阳性。",
+        "en": "I'm group B, Rh positive."
+      },
+      "keywords": {
+        "zh-CN": [
+          "血型",
+          "什么血型",
+          "Rh",
+          "熊猫血",
+          "阴性血"
+        ],
+        "en": [
+          "blood group",
+          "blood type",
+          "rhesus",
+          "rh",
+          "rh negative"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      }
+    },
+    {
+      "id": "recent-scan",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "最近一次B超是什么时候做的？说了什么？",
+        "en": "When was your last scan, and what did it show?"
+      },
+      "answer": {
+        "zh-CN": "一周前做过，说宝宝是臀位，屁股朝下。别的数字我记不住，报告单上都有。",
+        "en": "A week ago — they said the baby was breech, bottom down. I can't remember the numbers; they're on the report."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最近一次B超",
+          "上次B超",
+          "最近的B超",
+          "胎位",
+          "超声",
+          "一周前",
+          "最近做B超",
+          "头朝下"
+        ],
+        "en": [
+          "last scan",
+          "recent scan",
+          "ultrasound",
+          "position of the baby",
+          "presentation",
+          "whichwayup",
+          "baby lying",
+          "head down"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      }
+    },
+    {
+      "id": "version",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "最近有没有做过转胎位，或者羊水穿刺之类的操作？",
+        "en": "Have you had any procedure recently — turning the baby, an amniocentesis or anything like that?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "转胎位",
+          "外倒转",
+          "穿刺",
+          "羊水穿刺",
+          "做过什么操作",
+          "转过来"
+        ],
+        "en": [
+          "turn the baby",
+          "version",
+          "ecv",
+          "amniocentesis",
+          "procedure",
+          "turning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文未记录；为教学补充的问题。",
+        "en": "Not recorded in the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "bleeding",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "这段时间有没有阴道出血或者肚子痛？",
+        "en": "Have you had any bleeding from down below, or tummy pain?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出血",
+          "见红",
+          "流血",
+          "肚子痛",
+          "腹痛",
+          "宫缩",
+          "肚子疼"
+        ],
+        "en": [
+          "bleeding",
+          "bleed",
+          "tummy pain",
+          "abdominal pain",
+          "contractions",
+          "pain"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文未记录；为教学补充的问题。",
+        "en": "Not recorded in the source; a question added for teaching."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "胃",
+          "肠",
+          "消化道"
+        ],
+        "en": [
+          "stomach",
+          "bowel"
+        ]
+      }
+    },
+    {
+      "id": "trauma",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最近肚子有没有被撞到，或者摔过跤？",
+        "en": "Have you had a knock or a fall onto your tummy recently?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "撞",
+          "摔",
+          "外伤",
+          "跌倒",
+          "车祸",
+          "碰到肚子"
+        ],
+        "en": [
+          "fall",
+          "fell",
+          "knock",
+          "injury",
+          "accident",
+          "trauma",
+          "bump"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文未记录；为教学补充的问题。",
+        "en": "Not recorded in the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "您平时身体怎么样？有没有高血压、糖尿病、心脏病或者肝肾方面的病？",
+        "en": "How's your health in general — any high blood pressure, diabetes, heart, liver or kidney problems?"
+      },
+      "answer": {
+        "zh-CN": "我身体一直挺好的，这些病都没有，也没有过胃出血、肠子出血这些。",
+        "en": "I've always been healthy — none of those, and I've never had bleeding from my stomach or bowel."
+      },
+      "keywords": {
+        "zh-CN": [
+          "身体怎么样",
+          "以前有什么病",
+          "高血压",
+          "糖尿病",
+          "心脏病",
+          "肝病",
+          "肾病",
+          "慢性病"
+        ],
+        "en": [
+          "medical history",
+          "health problems",
+          "medical problems",
+          "medical conditions",
+          "blood pressure",
+          "diabetes",
+          "heart",
+          "kidney",
+          "liver"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "家人",
+          "糖耐"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "glucose test",
+          "sugar test"
+        ]
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人有没有什么遗传病或者血液方面的病？",
+        "en": "Does anything run in your family — any blood disorders?"
+      },
+      "answer": {
+        "zh-CN": "家里人没有这方面的病。",
+        "en": "No, nothing like that in my family."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里人",
+          "家族",
+          "遗传",
+          "家人",
+          "亲属",
+          "父母"
+        ],
+        "en": [
+          "family",
+          "runs in the family",
+          "relatives",
+          "inherited",
+          "parents",
+          "genetic"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      }
+    },
+    {
+      "id": "psh",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "前两胎是怎么生的？以前做过手术吗？",
+        "en": "How were your first two babies born, and have you had any operations?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "怎么生的",
+          "顺产",
+          "剖过",
+          "前两胎",
+          "手术史",
+          "做过手术"
+        ],
+        "en": [
+          "howweretheyborn",
+          "children born",
+          "babies born",
+          "caesarean before",
+          "operations",
+          "surgery",
+          "normal delivery",
+          "previous births"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文未记录；为教学补充的问题。",
+        "en": "Not recorded in the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "怀孕期间吃过什么药吗？",
+        "en": "Have you taken any medicines in this pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "吃药",
+          "用药",
+          "药物",
+          "吃过什么药",
+          "补品",
+          "叶酸"
+        ],
+        "en": [
+          "medicines",
+          "medication",
+          "tablets",
+          "taking anything",
+          "vitamins",
+          "supplements"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文未记录；为教学补充的问题。",
+        "en": "Not recorded in the source; a question added for teaching."
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "有对什么药过敏吗？",
+        "en": "Are you allergic to any medicines?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "对什么过敏",
+          "皮疹"
+        ],
+        "en": [
+          "allergy",
+          "allergies",
+          "allergic",
+          "drug reaction",
+          "reaction"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文未记录；为教学补充的问题。",
+        "en": "Not recorded in the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您抽烟吗？",
+        "en": "Do you smoke?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟",
+          "香烟"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "cigarettes",
+          "tobacco"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文未记录；为教学补充的问题。",
+        "en": "Not recorded in the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "alcohol",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您喝酒吗？",
+        "en": "Do you drink alcohol?"
+      },
+      "answer": {
+        "zh-CN": "这个我的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in my case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喝酒",
+          "饮酒",
+          "酒",
+          "啤酒"
+        ],
+        "en": [
+          "alcohol",
+          "wine",
+          "beer",
+          "drink",
+          "drinking"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "antenatal"
+      ],
+      "source": {
+        "zh-CN": "原文未记录；为教学补充的问题。",
+        "en": "Not recorded in the source; a question added for teaching."
+      }
+    },
+    {
+      "id": "postnatal-status",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "手术后您自己感觉怎么样？",
+        "en": "How have you been feeling since the operation?"
+      },
+      "answer": {
+        "zh-CN": "我自己恢复得挺好的。",
+        "en": "I've been recovering well myself."
+      },
+      "keywords": {
+        "zh-CN": [
+          "术后",
+          "手术后",
+          "恢复",
+          "感觉怎么样",
+          "伤口",
+          "好些了吗"
+        ],
+        "en": [
+          "since the operation",
+          "recovering",
+          "how are you",
+          "feeling",
+          "wound",
+          "after the operation"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "postnatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "maternal-postop",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "术后查看产妇一般情况",
+        "en": "Check the mother's general condition after the operation"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "术后查看",
+          "产妇情况",
+          "看看她"
+        ],
+        "en": [
+          "general condition",
+          "howshelooks",
+          "post-op check",
+          "examine the mother"
+        ]
+      },
+      "finding": {
+        "zh-CN": "产妇术后一般情况良好。",
+        "en": "The mother is in good condition after the operation."
+      },
+      "abnormal": false,
+      "requires": [],
+      "required": false,
+      "phases": [
+        "postnatal"
+      ],
+      "source": {
+        "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+        "en": "Source: the case presentation; dialogue wording adapted for teaching."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原病例未记录这一项检查结果。",
+    "en": "The source case does not record this examination finding."
+  },
+  "investigations": [
+    {
+      "id": "antenatal-record",
+      "name": {
+        "zh-CN": "产前检查记录（孕13–26周）",
+        "en": "Antenatal record (13–26 weeks)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "产检记录",
+          "产前记录",
+          "孕期记录",
+          "产检档案",
+          "既往产检"
+        ],
+        "en": [
+          "antenatal record",
+          "antenatal notes",
+          "pregnancy notes",
+          "booking bloods",
+          "maternity notes"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "alternativeTo": [],
+      "results": {
+        "antenatal": {
+          "available": true,
+          "text": {
+            "zh-CN": "孕13周超声：颈项透明层（NT）0.17 cm，胎心154次/分；唐氏筛查低风险。孕14周心电图：窦性心律不齐。孕22周彩色多普勒超声：胎心152次/分，未见明显异常。孕26周口服葡萄糖耐量试验（OGTT）正常。血型B型、Rh阳性；乙肝、丙肝、梅毒和艾滋病筛查均阴性；地中海贫血基因检查无异常。",
+            "en": "13-week scan: nuchal translucency 0.17 cm, fetal heart 154/min; Down's screening low risk. 14-week ECG: sinus arrhythmia. 22-week colour Doppler scan: fetal heart 152/min, no obvious abnormality. 26-week oral glucose tolerance test (OGTT) normal. Blood group B, Rh-positive; hepatitis B, hepatitis C, syphilis and HIV screens negative; thalassaemia gene test normal."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": false,
+          "note": {
+            "zh-CN": "OGTT数值、唐筛风险值和孕期血常规原文未报告。",
+            "en": "The OGTT values, the screening risk figure and any blood count in pregnancy are not reported."
+          },
+          "date": {
+            "zh-CN": "孕13–26周",
+            "en": "13–26 weeks of pregnancy"
+          }
+        }
+      }
+    },
+    {
+      "id": "antenatal-imaging",
+      "name": {
+        "zh-CN": "就诊前1周的超声报告",
+        "en": "Ultrasound report from a week earlier"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "近期超声",
+          "最近的B超",
+          "上周B超",
+          "一周前的B超",
+          "超声报告"
+        ],
+        "en": [
+          "recent ultrasound",
+          "last scan report",
+          "ultrasound report",
+          "growth scan",
+          "last week's scan"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "alternativeTo": [],
+      "results": {
+        "antenatal": {
+          "available": true,
+          "text": {
+            "zh-CN": "胎儿双顶径9.0 cm，腹围31.39 cm，股骨长7.01 cm；羊水指数12.25 cm；胎盘成熟度Ⅱ级；胎心141次/分，可见胎动；脐动脉S/D 2.03；估计胎儿体重2754 g。提示单胎臀位妊娠。",
+            "en": "Biparietal diameter 9.0 cm, abdominal circumference 31.39 cm, femur length 7.01 cm; amniotic fluid index 12.25 cm; placenta grade II; fetal heart 141/min with movements seen; umbilical artery S/D ratio 2.03; estimated fetal weight 2754 g. Singleton pregnancy, breech presentation."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "双顶径",
+                "en": "Biparietal diameter"
+              },
+              "value": 9,
+              "unit": "cm"
+            },
+            {
+              "analyte": {
+                "zh-CN": "腹围",
+                "en": "Abdominal circumference"
+              },
+              "value": 31.39,
+              "unit": "cm"
+            },
+            {
+              "analyte": {
+                "zh-CN": "股骨长",
+                "en": "Femur length"
+              },
+              "value": 7.01,
+              "unit": "cm"
+            },
+            {
+              "analyte": {
+                "zh-CN": "羊水指数",
+                "en": "Amniotic fluid index"
+              },
+              "value": 12.25,
+              "unit": "cm"
+            },
+            {
+              "analyte": {
+                "zh-CN": "胎心率",
+                "en": "Fetal heart rate"
+              },
+              "value": 141,
+              "unit": "/min"
+            },
+            {
+              "analyte": {
+                "zh-CN": "脐动脉S/D",
+                "en": "Umbilical artery S/D"
+              },
+              "value": 2.03,
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "估计胎儿体重",
+                "en": "Estimated fetal weight"
+              },
+              "value": 2754,
+              "unit": "g"
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": false,
+          "note": {
+            "zh-CN": "原文未给参考范围。一周前的超声不能代表就诊时的胎儿状况；原文没有大脑中动脉收缩期峰值流速（MCA-PSV）。",
+            "en": "No reference ranges are given. A scan from a week earlier says nothing about the baby on the day of presentation; there is no middle cerebral artery peak systolic velocity (MCA-PSV)."
+          },
+          "date": {
+            "zh-CN": "就诊前7天",
+            "en": "7 days before presentation"
+          }
+        }
+      }
+    },
+    {
+      "id": "ctg",
+      "name": {
+        "zh-CN": "急诊胎心监护（CTG）",
+        "en": "Emergency cardiotocograph (CTG)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胎心监护",
+          "胎监",
+          "CTG",
+          "胎心",
+          "监护图"
+        ],
+        "en": [
+          "ctg",
+          "cardiotocograph",
+          "fetal monitoring",
+          "trace",
+          "nst",
+          "fetal heart trace"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "alternativeTo": [],
+      "results": {
+        "antenatal": {
+          "available": true,
+          "text": {
+            "zh-CN": "胎心监护见可疑正弦波形，不能排除胎儿宫内状况不良。",
+            "en": "The CTG shows a suspected sinusoidal pattern; fetal compromise cannot be excluded."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": true,
+          "note": {
+            "zh-CN": "原文未提供胎心监护图形、基线、变异、持续时间或宫缩情况。",
+            "en": "The report gives no trace, baseline, variability, duration or contraction pattern."
+          },
+          "date": {
+            "zh-CN": "就诊当天",
+            "en": "Day of presentation"
+          }
+        }
+      }
+    },
+    {
+      "id": "mca-doppler",
+      "name": {
+        "zh-CN": "大脑中动脉收缩期峰值流速（MCA-PSV）多普勒",
+        "en": "Middle cerebral artery peak systolic velocity (MCA-PSV) Doppler"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "大脑中动脉",
+          "MCA",
+          "多普勒",
+          "峰值流速"
+        ],
+        "en": [
+          "mca doppler",
+          "mca-psv",
+          "middle cerebral artery",
+          "doppler",
+          "peak systolic velocity"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "alternativeTo": [],
+      "results": {
+        "antenatal": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有做大脑中动脉收缩期峰值流速检查。",
+            "en": "No middle cerebral artery peak systolic velocity was measured in the report."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文未记录；为教学补充的问题。",
+            "en": "Not recorded in the source; a question added for teaching."
+          },
+          "critical": false
+        }
+      }
+    },
+    {
+      "id": "neonatal-birth",
+      "name": {
+        "zh-CN": "新生儿出生时记录",
+        "en": "Newborn record at birth"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "新生儿记录",
+          "宝宝情况",
+          "婴儿记录",
+          "出生记录",
+          "新生儿查体",
+          "新生儿复苏"
+        ],
+        "en": [
+          "newborn record",
+          "baby's record",
+          "neonatal record",
+          "birth record",
+          "baby's condition",
+          "neonatal notes"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "alternativeTo": [],
+      "results": {
+        "delivery": {
+          "available": true,
+          "text": {
+            "zh-CN": "活女婴，出生体重2.38 kg，Apgar评分8分（评分时间未注明）。出生后肤色苍白，心率200次/分，口吐泡沫，血压49/25 mmHg，出现呼吸困难。血红蛋白38 g/L。胸腹联合X线片提示肺炎。诊断：新生儿重度贫血、新生儿肺炎、新生儿休克。",
+            "en": "Live baby girl, birth weight 2.38 kg, Apgar 8 (time not stated). After birth she was pale, with a heart rate of 200/min, frothing at the mouth, a blood pressure of 49/25 mmHg and laboured breathing. Haemoglobin 38 g/L. A combined chest and abdominal X-ray suggested pneumonia. Diagnoses: severe neonatal anaemia, neonatal pneumonia, neonatal shock."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "新生儿血红蛋白",
+                "en": "Newborn haemoglobin"
+              },
+              "value": 38,
+              "unit": "g/L",
+              "flag": "LL"
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": true,
+          "note": {
+            "zh-CN": "这是新生儿的记录：本平台每个病例只模拟一位患者（母亲），新生儿的查体、检验和治疗以记录形式由团队查阅。",
+            "en": "This is the newborn's record: the platform models one patient per case (the mother), so the team reads the baby's examination, tests and treatment as records."
+          },
+          "date": {
+            "zh-CN": "出生时",
+            "en": "At birth"
+          }
+        }
+      }
+    },
+    {
+      "id": "neonate-blood",
+      "name": {
+        "zh-CN": "新生儿复苏后检验与输血记录",
+        "en": "Newborn tests and transfusions after resuscitation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "新生儿检验",
+          "宝宝验血",
+          "婴儿血型",
+          "Coombs",
+          "新生儿血常规",
+          "输血记录"
+        ],
+        "en": [
+          "newborn bloods",
+          "baby's blood tests",
+          "coombs",
+          "baby's blood group",
+          "neonatal bloods",
+          "transfusion record"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "alternativeTo": [],
+      "results": {
+        "postnatal": {
+          "available": true,
+          "text": {
+            "zh-CN": "给予无创呼吸机通气、紧急输注O型浓缩红细胞45 mL及“抗炎药物”后，肤色转红润，血压平稳；复查血红蛋白74 g/L；血型O型、Rh阳性，Coombs试验阴性。出生次日再输O型浓缩红细胞30 mL，呼吸困难改善，复查血红蛋白121 g/L。",
+            "en": "After non-invasive ventilation, an emergency transfusion of 45 mL of group O packed red cells and 'anti-inflammatory drugs', her colour became pink and her blood pressure stable; repeat haemoglobin 74 g/L; blood group O, Rh-positive, Coombs test negative. The next day she was given another 30 mL of group O packed red cells; her breathing improved and the haemoglobin was 121 g/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白（第一次输血后）",
+                "en": "Haemoglobin (after the first transfusion)"
+              },
+              "value": 74,
+              "unit": "g/L",
+              "flag": "L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白（第二次输血后）",
+                "en": "Haemoglobin (after the second transfusion)"
+              },
+              "value": 121,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血型",
+                "en": "Blood group"
+              },
+              "value": {
+                "zh-CN": "O型，Rh阳性",
+                "en": "O, Rh-positive"
+              },
+              "unit": ""
+            },
+            {
+              "analyte": {
+                "zh-CN": "Coombs试验",
+                "en": "Coombs test"
+              },
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              },
+              "unit": ""
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": false,
+          "note": {
+            "zh-CN": "新生儿的记录（本平台只模拟母亲一位患者）。血型和Coombs试验是在第一次输血之后检测的，可能受输入的O型红细胞影响；“抗炎药物”原文未写药名。两次输血约合19 mL/kg和13 mL/kg（按出生体重2.38 kg推算，原文未计算）。",
+            "en": "The newborn's record (the platform models only the mother). The blood group and Coombs test were done after the first transfusion and may be affected by the transfused group O cells; the 'anti-inflammatory drugs' are not named. The two transfusions come to about 19 and 13 mL/kg (derived from the 2.38 kg birth weight; not calculated in the report)."
+          },
+          "date": {
+            "zh-CN": "出生当天至次日",
+            "en": "Day of birth to the next day"
+          }
+        }
+      }
+    },
+    {
+      "id": "maternal-kb",
+      "name": {
+        "zh-CN": "母血红细胞酸洗脱试验（Kleihauer–Betke试验）",
+        "en": "Maternal Kleihauer–Betke (acid-elution) test"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "KB试验",
+          "酸洗脱",
+          "胎儿血红蛋白",
+          "HbF",
+          "红细胞酸洗脱",
+          "母血胎儿细胞"
+        ],
+        "en": [
+          "kleihauer",
+          "kleihauer-betke",
+          "kb test",
+          "acid elution",
+          "fetal cells",
+          "hbf"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "alternativeTo": [],
+      "results": {
+        "postnatal": {
+          "available": true,
+          "text": {
+            "zh-CN": "母亲外周血KB试验：含HbF的（胎儿）红细胞占9.2%（原文表述为“HbF含量9.2%”）。镜下可见深染红色的HbF红细胞（原报告图1）。",
+            "en": "Maternal peripheral-blood KB test: HbF-containing (fetal) red cells 9.2% (reported as 'HbF content 9.2%'). Deep-red-staining HbF cells are seen under the microscope (the report's Figure 1)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "胎儿红细胞比例（KB）",
+                "en": "Fetal red cells (KB)"
+              },
+              "value": 9.2,
+              "unit": "%",
+              "refHigh": 3,
+              "refText": {
+                "zh-CN": "原文所称正常值 ≤3%",
+                "en": "≤ 3 % (the report's stated normal)"
+              },
+              "flag": "H"
+            }
+          ],
+          "figures": [
+            "fig01"
+          ],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": true,
+          "note": {
+            "zh-CN": "原文称KB正常值为≤3%（引自其参考文献Kim与Makar，2012）。KB试验计数的是红细胞比例，不能区分胎儿细胞与母亲自身含HbF的细胞；本次采样在剖宫产术后。",
+            "en": "The report gives ≤ 3 % as the normal KB value (citing Kim and Makar, 2012). The KB test counts the proportion of red cells and cannot tell fetal cells from the mother's own HbF-containing cells; this sample was taken after the caesarean."
+          },
+          "date": {
+            "zh-CN": "剖宫产术后",
+            "en": "After the caesarean"
+          }
+        }
+      }
+    },
+    {
+      "id": "maternal-afp",
+      "name": {
+        "zh-CN": "母血甲胎蛋白（AFP）",
+        "en": "Maternal serum alpha-fetoprotein (AFP)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "甲胎蛋白",
+          "AFP",
+          "母血AFP"
+        ],
+        "en": [
+          "afp",
+          "alpha-fetoprotein",
+          "alpha fetoprotein",
+          "maternal afp"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "alternativeTo": [],
+      "results": {
+        "postnatal": {
+          "available": true,
+          "text": {
+            "zh-CN": "母血AFP 11582 µg/L。",
+            "en": "Maternal AFP 11582 µg/L."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "甲胎蛋白",
+                "en": "Alpha-fetoprotein"
+              },
+              "value": 11582,
+              "unit": "µg/L",
+              "refText": {
+                "zh-CN": "原文引用的提示界值 >1000 ng/mL（= µg/L）",
+                "en": "threshold quoted by the report: > 1000 ng/mL (= µg/L)"
+              },
+              "flag": "H"
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": false,
+          "note": {
+            "zh-CN": "原文讨论引用的研究以 >1000 ng/mL 为界预测胎母输血，敏感度73.91%、特异度90.97%、准确度88.76%；须先排除其他原因导致的AFP升高。",
+            "en": "The study the report's discussion cites used > 1000 ng/mL to predict fetomaternal haemorrhage (sensitivity 73.91 %, specificity 90.97 %, accuracy 88.76 %); other causes of a raised AFP must be excluded first."
+          },
+          "date": {
+            "zh-CN": "剖宫产术后",
+            "en": "After the caesarean"
+          }
+        }
+      }
+    },
+    {
+      "id": "maternal-fbc",
+      "name": {
+        "zh-CN": "母亲血常规（血红蛋白）",
+        "en": "Maternal full blood count (haemoglobin)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "母亲血常规",
+          "产妇血红蛋白",
+          "血常规",
+          "母亲Hb"
+        ],
+        "en": [
+          "maternal fbc",
+          "mother's haemoglobin",
+          "full blood count",
+          "fbc",
+          "maternal hb"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "risk": "low",
+      "value": "useful",
+      "alternativeTo": [],
+      "results": {
+        "postnatal": {
+          "available": true,
+          "text": {
+            "zh-CN": "母亲血红蛋白149 g/L（其他血常规指标原文未报告）。",
+            "en": "Maternal haemoglobin 149 g/L (no other blood-count values are reported)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 149,
+              "unit": "g/L"
+            }
+          ],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": false,
+          "date": {
+            "zh-CN": "剖宫产术后",
+            "en": "After the caesarean"
+          }
+        }
+      }
+    },
+    {
+      "id": "flow-cytometry",
+      "name": {
+        "zh-CN": "流式细胞术检测母血胎儿红细胞",
+        "en": "Flow cytometry for fetal red cells in maternal blood"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "流式细胞",
+          "流式",
+          "抗HbF"
+        ],
+        "en": [
+          "flow cytometry",
+          "flow",
+          "anti-hbf"
+        ]
+      },
+      "requires": [
+        "flow-cytometry"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "alternativeTo": [
+        "maternal-kb"
+      ],
+      "results": {
+        "postnatal": {
+          "available": false,
+          "text": {
+            "zh-CN": "本报告没有做流式细胞术检测（检验科采用的是KB试验）。",
+            "en": "No flow cytometry was done in this report (the laboratory used the KB test)."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·讨论部分。",
+            "en": "Source: the discussion section."
+          },
+          "critical": false
+        }
+      }
+    },
+    {
+      "id": "placenta",
+      "name": {
+        "zh-CN": "胎盘病理",
+        "en": "Placental pathology"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "胎盘病理",
+          "胎盘",
+          "送病理",
+          "胎盘检查"
+        ],
+        "en": [
+          "placental pathology",
+          "placenta",
+          "placental histology",
+          "send the placenta"
+        ]
+      },
+      "requires": [
+        "histopathology"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "alternativeTo": [],
+      "results": {
+        "postnatal": {
+          "available": true,
+          "text": {
+            "zh-CN": "胎盘组织部分羊膜上皮呈退行性变，绒毛未见明显炎症细胞浸润；局灶胎盘组织可见梗死，梗死灶占胎盘总面积少于5%；胎膜绒毛板可见个别中性粒细胞浸润；脐带为两条动脉、一条静脉，未见肿瘤。",
+            "en": "Degenerative change in part of the amniotic epithelium, with no obvious inflammatory infiltrate in the villi; focal infarction involving less than 5% of the placental area; occasional neutrophils in the membranes and chorionic plate; a three-vessel cord (two arteries, one vein); no tumour."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": false,
+          "note": {
+            "zh-CN": "原文未报告胎盘重量；报告日期未注明。",
+            "en": "The placental weight and the report date are not given."
+          },
+          "date": {
+            "zh-CN": "产后（具体日期未注明）",
+            "en": "After delivery (date not stated)"
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "随访记录",
+        "en": "Follow-up record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "随访记录",
+          "出院记录",
+          "转归",
+          "结局"
+        ],
+        "en": [
+          "follow-up record",
+          "discharge summary",
+          "outcome",
+          "follow up"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "useful",
+      "alternativeTo": [],
+      "results": {
+        "followup": {
+          "available": true,
+          "text": {
+            "zh-CN": "新生儿经积极处理后生命体征平稳，出生后第7天出院。产妇术后情况良好。作者诊断：胎母输血综合征。",
+            "en": "With active treatment the baby's vital signs stabilised and she went home 7 days after birth. The mother recovered well after the operation. The authors' diagnosis: fetomaternal haemorrhage."
+          },
+          "values": [],
+          "figures": [],
+          "source": {
+            "zh-CN": "原文·病例（患者）部分；对话措辞为教学改写。",
+            "en": "Source: the case presentation; dialogue wording adapted for teaching."
+          },
+          "critical": false,
+          "note": {
+            "zh-CN": "原文写“术后常规予以药物预防感染”，未说明对象是新生儿还是产妇，也未写药名。新生儿的长期神经发育原文未报告。",
+            "en": "The report says 'routine drug prophylaxis of infection after the operation' without saying whether it was for the baby or the mother, or naming the drug. The baby's long-term development is not reported."
+          },
+          "date": {
+            "zh-CN": "出生后第7天",
+            "en": "7 days after birth"
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [
+    {
+      "id": "obstetric-senior",
+      "name": {
+        "zh-CN": "请上级产科医生立即来看",
+        "en": "Ask the senior obstetrician to come now"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "上级医生",
+          "叫上级",
+          "主任",
+          "产科上级",
+          "请示"
+        ],
+        "en": [
+          "senior obstetrician",
+          "call the consultant",
+          "registrar",
+          "senior review",
+          "get help"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "indicatedWhen": {
+        "read": "ctg",
+        "phase": "antenatal"
+      },
+      "response": {
+        "zh-CN": "上级产科医生马上过来，看了胎心监护后同意立即处理。",
+        "en": "The senior obstetrician comes straight away and, having seen the CTG, agrees to act now."
+      }
+    },
+    {
+      "id": "neonatal-team",
+      "name": {
+        "zh-CN": "通知新生儿团队到场，说明可能存在胎儿贫血",
+        "en": "Ask the neonatal team to attend the birth, warning of possible fetal anaemia"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "新生儿科",
+          "儿科医生",
+          "新生儿团队",
+          "叫儿科",
+          "复苏团队"
+        ],
+        "en": [
+          "neonatal team",
+          "paediatrician",
+          "neonatologist",
+          "call the paeds",
+          "resus team"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "indicatedWhen": {
+        "read": "ctg",
+        "phase": "antenatal"
+      },
+      "response": {
+        "zh-CN": "新生儿团队准备好复苏设备，赶到手术室等候。（原报告没有写明出生时由谁在场。）",
+        "en": "The neonatal team sets up for resuscitation and comes to theatre to wait. (The report does not say who attended the birth.)"
+      }
+    },
+    {
+      "id": "emergency-blood",
+      "name": {
+        "zh-CN": "请血库为新生儿备好紧急用O型红细胞",
+        "en": "Ask the blood bank to have emergency group O red cells ready for the baby"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "备血",
+          "紧急用血",
+          "O型血",
+          "血库",
+          "新生儿用血"
+        ],
+        "en": [
+          "emergency blood",
+          "o negative",
+          "group o blood",
+          "blood bank",
+          "blood for the baby"
+        ]
+      },
+      "requires": [],
+      "risk": "none",
+      "effects": [],
+      "setFlags": [],
+      "indicatedWhen": {
+        "read": "ctg",
+        "phase": "antenatal"
+      },
+      "response": {
+        "zh-CN": "血库按新生儿紧急用血流程准备O型浓缩红细胞，送到手术室。（原报告记录出生后紧急输注了O型浓缩红细胞45 mL。）",
+        "en": "The blood bank prepares group O packed red cells under its emergency neonatal procedure and sends them to theatre. (The report records an emergency transfusion of 45 mL of group O packed red cells after birth.)"
+      }
+    },
+    {
+      "id": "emergency-cs",
+      "name": {
+        "zh-CN": "急诊剖宫产（立即送手术室）",
+        "en": "Emergency caesarean section (to theatre now)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "剖宫产",
+          "急诊剖宫产",
+          "马上手术",
+          "终止妊娠",
+          "剖腹产",
+          "送手术室"
+        ],
+        "en": [
+          "caesarean",
+          "c-section",
+          "emergency section",
+          "deliver now",
+          "to theatre",
+          "category 1"
+        ]
+      },
+      "requires": [],
+      "scope": "medical",
+      "posture": "lying",
+      "destination": {
+        "setting": "operating-room"
+      },
+      "risk": "high",
+      "effects": [],
+      "setFlags": [],
+      "indicatedWhen": {
+        "read": "ctg",
+        "phase": "antenatal"
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "read": "ctg",
+          "phase": "antenatal"
+        }
+      },
+      "harm": {
+        "zh-CN": "还没看胎心监护就决定手术：分娩的决定要建立在对胎儿状况的评估上。",
+        "en": "Deciding to operate before the CTG has been seen: the decision to deliver must rest on an assessment of the baby."
+      },
+      "response": {
+        "zh-CN": "她被送往手术室行急诊剖宫产。（麻醉方式原文未记录。）",
+        "en": "She is taken to theatre for an emergency caesarean. (The anaesthetic used is not recorded.)"
+      }
+    },
+    {
+      "id": "reassure-home",
+      "name": {
+        "zh-CN": "安慰后回家，一周后复查胎心监护",
+        "en": "Reassure her and send her home, with a repeat CTG in a week"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "回家",
+          "安慰",
+          "一周后复查",
+          "常规复诊",
+          "回家观察",
+          "下周再来"
+        ],
+        "en": [
+          "send her home",
+          "reassure",
+          "review in a week",
+          "routine follow-up",
+          "home and recheck",
+          "come back next week"
+        ]
+      },
+      "requires": [],
+      "risk": "moderate",
+      "effects": [],
+      "setFlags": [],
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "足月胎动减少需要及时评估（RCOG GTG 57），而这份胎监已经异常；让她回家等待可能导致胎死宫内。",
+        "en": "Reduced movements at term need prompt assessment (RCOG GTG 57), and this CTG is already abnormal; sending her home to wait risks a stillbirth."
+      },
+      "response": {
+        "zh-CN": "她准备离开诊室。",
+        "en": "She gets ready to leave the clinic."
+      }
+    },
+    {
+      "id": "ecv",
+      "name": {
+        "zh-CN": "外倒转术（把臀位转成头位）",
+        "en": "External cephalic version (turn the breech baby)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "外倒转",
+          "转胎位",
+          "转成头位",
+          "倒转术"
+        ],
+        "en": [
+          "external cephalic version",
+          "ecv",
+          "turn the baby",
+          "version"
+        ]
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "high",
+      "effects": [],
+      "setFlags": [],
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "胎心监护已异常，此时操作胎儿可能加重危险，而她需要的是尽快分娩；原报告讨论所列的胎母输血诱因也包括产科创伤和产科干预。",
+        "en": "The CTG is already abnormal, so manipulating the baby could make things worse, and what she needs is prompt delivery; the causes of fetomaternal haemorrhage listed in the report's discussion include obstetric trauma and obstetric procedures."
+      },
+      "response": {
+        "zh-CN": "准备外倒转。",
+        "en": "Preparing for a version."
+      }
+    },
+    {
+      "id": "induction",
+      "name": {
+        "zh-CN": "引产，产程中持续胎心监护",
+        "en": "Induction of labour with continuous CTG monitoring"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "引产",
+          "催产",
+          "缩宫素",
+          "人工破膜",
+          "阴道分娩"
+        ],
+        "en": [
+          "induction",
+          "induce labour",
+          "oxytocin",
+          "syntocinon",
+          "vaginal birth"
+        ]
+      },
+      "requires": [],
+      "scope": "medical",
+      "risk": "moderate",
+      "effects": [],
+      "setFlags": [],
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "胎监提示胎儿可能已严重贫血或缺氧，难以耐受宫缩，产程还会拖延娩出；一周前胎位为臀位（现在的胎位原文未记录）。",
+        "en": "The CTG suggests the baby may already be severely anaemic or hypoxic and unable to tolerate contractions, and labour delays delivery; the baby was breech a week ago (its position now is not recorded)."
+      },
+      "response": {
+        "zh-CN": "准备引产。",
+        "en": "Preparing for induction."
+      }
+    },
+    {
+      "id": "anti-d",
+      "name": {
+        "zh-CN": "肌内注射抗D免疫球蛋白",
+        "en": "Anti-D immunoglobulin IM"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "抗D",
+          "抗D免疫球蛋白",
+          "抗D球蛋白",
+          "RhoGAM"
+        ],
+        "en": [
+          "anti-d",
+          "anti d",
+          "rhogam",
+          "anti-d immunoglobulin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "肌内注射（剂量按血型和胎母输血量决定）。",
+        "en": "Intramuscular (dose set by blood group and the size of the bleed)."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "effects": [],
+      "setFlags": [],
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "她是Rh阳性：抗D免疫球蛋白用于预防RhD阴性母亲产生抗D抗体，对她没有作用，只会多用一次血液制品。",
+        "en": "She is Rh-positive: anti-D prevents an RhD-negative mother from forming anti-D antibodies, so it does nothing for her and is simply an unnecessary blood product."
+      },
+      "response": {
+        "zh-CN": "抗D已注射。",
+        "en": "Anti-D given."
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-history",
+      "title": {
+        "zh-CN": "胎动减少与本次妊娠",
+        "en": "Reduced movements and this pregnancy"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
+      },
+      "hint": {
+        "zh-CN": "胎动是什么时候、怎样变少的？现在多少周、第几胎？产检、筛查和最近一次B超怎么说？她的血型和平时的健康状况呢？",
+        "en": "When and how did the movements change? How many weeks is she, and which pregnancy is this? What did her check-ups, screening and last scan show? And her blood group and general health?"
+      },
+      "guidance": {
+        "zh-CN": "在诊室问清胎动的变化和本次妊娠的情况。",
+        "en": "In the clinic, find out about the change in movements and this pregnancy."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "gestation"
+          },
+          {
+            "asked": "antenatal"
+          },
+          {
+            "asked": "screening"
+          },
+          {
+            "asked": "blood-group"
+          },
+          {
+            "asked": "recent-scan"
+          },
+          {
+            "asked": "pmh"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-deliver",
+      "title": {
+        "zh-CN": "评估胎儿并决定分娩",
+        "en": "Assess the baby and decide on delivery"
+      },
+      "short": {
+        "zh-CN": "分娩",
+        "en": "Delivery"
+      },
+      "hint": {
+        "zh-CN": "胎心监护显示了什么？它和胎动减少放在一起意味着什么？出生时需要谁在场，要提前准备什么？",
+        "en": "What does the CTG show, and what does it mean alongside the reduced movements? Who needs to be at the birth, and what should be ready?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端查看胎心监护和近期超声，作出决策，并安排好分娩。",
+        "en": "Review the CTG and the recent scan at a records terminal, make your decision, and arrange the birth."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "ctg",
+            "phase": "antenatal"
+          },
+          {
+            "read": "antenatal-imaging",
+            "phase": "antenatal"
+          },
+          {
+            "decided": "management"
+          },
+          {
+            "intervened": "neonatal-team"
+          },
+          {
+            "intervened": "emergency-cs"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "ctg"
+          },
+          "target": "records"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-newborn",
+      "title": {
+        "zh-CN": "新生儿出生时",
+        "en": "The baby at birth"
+      },
+      "short": {
+        "zh-CN": "新生儿",
+        "en": "Newborn"
+      },
+      "hint": {
+        "zh-CN": "宝宝出生时情况怎样？哪些表现说明她需要马上处理？",
+        "en": "How was the baby at birth? Which signs say she needs treatment immediately?"
+      },
+      "guidance": {
+        "zh-CN": "查看新生儿出生时的记录，和新生儿团队一起决定处理。",
+        "en": "Read the newborn's record at birth and decide her management with the neonatal team."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "neonatal-birth",
+            "phase": "delivery"
+          },
+          {
+            "decided": "neonatal-resus"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    },
+    {
+      "id": "obj-cause",
+      "title": {
+        "zh-CN": "查明贫血原因",
+        "en": "Find the cause of the anaemia"
+      },
+      "short": {
+        "zh-CN": "原因",
+        "en": "Cause"
+      },
+      "hint": {
+        "zh-CN": "宝宝复苏后的检验排除了什么？什么母血检查能看到胎儿的血？母亲的AFP和胎盘病理又补充了什么？",
+        "en": "What do the baby's tests after resuscitation rule out? Which maternal blood test can show the baby's blood? What do the maternal AFP and the placental pathology add?"
+      },
+      "guidance": {
+        "zh-CN": "查看新生儿复苏后的检验，作出判断，为母亲送检相应的血液检查和胎盘病理。",
+        "en": "Read the baby's tests after resuscitation, make your judgement, and send the mother's blood tests and the placenta."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "neonate-blood",
+            "phase": "postnatal"
+          },
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "maternal-kb",
+            "phase": "postnatal"
+          },
+          {
+            "read": "maternal-afp",
+            "phase": "postnatal"
+          },
+          {
+            "read": "placenta",
+            "phase": "postnatal"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "neonate-blood"
+          },
+          "target": "records"
+        },
+        {
+          "unless": {
+            "read": "maternal-kb"
+          },
+          "target": "patient"
+        },
+        {
+          "target": "records"
+        }
+      ]
+    },
+    {
+      "id": "obj-mother",
+      "title": {
+        "zh-CN": "母亲的后续处理",
+        "en": "Care of the mother"
+      },
+      "short": {
+        "zh-CN": "母亲",
+        "en": "Mother"
+      },
+      "hint": {
+        "zh-CN": "她术后怎样？她的血型对后续处理意味着什么？",
+        "en": "How is she after the operation? What does her blood group mean for what comes next?"
+      },
+      "guidance": {
+        "zh-CN": "在病房看看她，问问她的感受，再作决策。",
+        "en": "See her on the ward, ask how she feels, then decide."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "maternal-postop"
+          },
+          {
+            "asked": "postnatal-status"
+          },
+          {
+            "decided": "anti-d"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-outcome",
+      "title": {
+        "zh-CN": "复盘结局",
+        "en": "Review the outcome"
+      },
+      "short": {
+        "zh-CN": "结局",
+        "en": "Outcome"
+      },
+      "hint": {
+        "zh-CN": "宝宝和母亲最后怎样？原报告还有哪些问题没有回答？",
+        "en": "How did baby and mother do in the end? What questions does the report leave open?"
+      },
+      "guidance": {
+        "zh-CN": "阅读随访记录。",
+        "en": "Read the follow-up record."
+      },
+      "completeWhen": {
+        "read": "followup",
+        "phase": "followup"
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "孕37+2周，近1周胎动减少，急诊胎心监护见可疑正弦波形。下一步怎么做？",
+        "en": "At 37+2 weeks, with a week of reduced movements and a suspected sinusoidal pattern on the emergency CTG, what do you do next?"
+      },
+      "requires": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "read": "ctg",
+            "phase": "antenatal"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先问清胎动的变化，并查看胎心监护。",
+        "en": "First ask about the baby's movements and review the CTG."
+      },
+      "options": [
+        {
+          "id": "deliver-now",
+          "text": {
+            "zh-CN": "尽快剖宫产：立即请上级产科医生，通知新生儿团队到场，并让血库为新生儿备好紧急用红细胞",
+            "en": "Deliver promptly by caesarean: get the senior obstetrician now, ask the neonatal team to attend, and have the blood bank prepare emergency red cells for the baby"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。足月胎动减少需要及时评估（RCOG GTG 57）；正弦波形提示胎儿可能严重贫血或缺氧，而37周已足月，此时的治疗就是尽快娩出。宝宝可能一出生就需要复苏和输血，所以要提前叫人、备血。原报告团队行剖宫产终止妊娠。",
+            "en": "Correct. Reduced movements at term need prompt assessment (RCOG GTG 57); a sinusoidal pattern suggests the baby may be severely anaemic or hypoxic, and at 37 weeks the treatment is prompt delivery. The baby may need resuscitation and blood from the first minute, so call the team and get blood ready in advance. The report's team delivered by caesarean."
+          }
+        },
+        {
+          "id": "routine-review",
+          "text": {
+            "zh-CN": "一周前B超正常，先安慰她，按常规一周后复查胎心监护",
+            "en": "Reassure her — last week's scan was normal — and repeat the CTG in a week as routine"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。一周前的检查说明不了现在胎儿是否安全；胎动减少伴异常胎监是急症，回家等待可能导致胎死宫内。",
+            "en": "Wrong. Last week's scan says nothing about the baby now; reduced movements with an abnormal trace are an emergency, and waiting at home risks a stillbirth."
+          }
+        },
+        {
+          "id": "investigate-first",
+          "text": {
+            "zh-CN": "收入院，先做大脑中动脉多普勒和母血KB试验，有结果后再决定是否分娩",
+            "en": "Admit her, get an MCA Doppler and a maternal KB test first, and decide about delivery once the results are back"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不妥。大脑中动脉收缩期峰值流速和KB试验能帮助判断胎儿贫血和胎母输血（原报告讨论中也提到），但对已足月、胎监异常的胎儿，不能为了等结果而推迟分娩；母血可以在分娩后尽快送检。",
+            "en": "Not right. An MCA Doppler and a KB test help to show fetal anaemia and fetomaternal haemorrhage (the report's discussion mentions both), but in a term baby with an abnormal trace, delivery must not wait for results; the mother's blood can be sent soon after the birth."
+          }
+        },
+        {
+          "id": "induce",
+          "text": {
+            "zh-CN": "引产，产程中持续胎心监护",
+            "en": "Induce labour with continuous CTG monitoring"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不妥。胎儿可能已严重贫血，难以耐受宫缩，产程还会拖延娩出；一周前胎位为臀位（现在的胎位原文未记录）。",
+            "en": "Not right. An anaemic baby may not tolerate contractions, labour delays delivery, and the baby was breech a week ago (its position now is not recorded)."
+          }
+        },
+        {
+          "id": "ecv",
+          "text": {
+            "zh-CN": "先做外倒转把臀位转过来，再计划阴道分娩",
+            "en": "Turn the breech baby first (external cephalic version), then plan a vaginal birth"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。胎监已经异常，这时操作胎儿可能加重危险，而她需要的是尽快分娩；产科干预本身也是原报告讨论所列的胎母输血诱因之一。",
+            "en": "Wrong. The trace is already abnormal, so manipulating the baby could make things worse, and what she needs is prompt delivery; obstetric procedures are themselves among the causes of fetomaternal haemorrhage listed in the report's discussion."
+          }
+        }
+      ]
+    },
+    {
+      "id": "neonatal-resus",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "出生的女婴苍白，心率200次/分，血压49/25 mmHg，呼吸困难，血红蛋白38 g/L。新生儿团队应怎样处理？",
+        "en": "The baby girl is pale, with a heart rate of 200/min, a blood pressure of 49/25 mmHg and laboured breathing, and her haemoglobin is 38 g/L. What should the neonatal team do?"
+      },
+      "requires": {
+        "read": "neonatal-birth",
+        "phase": "delivery"
+      },
+      "need": {
+        "zh-CN": "先查看新生儿出生时的记录。",
+        "en": "First read the newborn's record at birth."
+      },
+      "options": [
+        {
+          "id": "support-transfuse",
+          "text": {
+            "zh-CN": "给予呼吸支持，并立即输注紧急发放的O型红细胞，不等交叉配血或溶血检查结果；分次给予，边输边评估",
+            "en": "Support her breathing and transfuse emergency-issue group O red cells straight away — without waiting for a crossmatch or haemolysis tests — in aliquots, reassessing as you go"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。苍白、心动过速、低血压加血红蛋白38 g/L，说明严重贫血已导致休克，需要尽快补充红细胞以恢复携氧能力和循环。原报告给予无创通气，并紧急输注O型浓缩红细胞45 mL（按2.38 kg约19 mL/kg），之后肤色转红润、血压平稳。新生儿红细胞的选择和剂量按BSH 2016指南及本院紧急发血流程。",
+            "en": "Correct. Pallor, tachycardia and hypotension with a haemoglobin of 38 g/L mean severe anaemia has caused shock: she needs red cells quickly to restore oxygen delivery and the circulation. The report's team gave non-invasive ventilation and an emergency transfusion of 45 mL of group O packed red cells (about 19 mL/kg at 2.38 kg); her colour and blood pressure then improved. Choose and dose neonatal red cells by the BSH 2016 guideline and your local emergency-issue procedure."
+          }
+        },
+        {
+          "id": "crystalloid-only",
+          "text": {
+            "zh-CN": "先快速推注生理盐水扩容，血红蛋白不升再考虑输血",
+            "en": "Give saline boluses first, and transfuse only if the haemoglobin does not rise"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不妥。晶体液最多能暂时扩容，却不能携氧，还会进一步稀释血红蛋白；血红蛋白38 g/L伴休克需要的是红细胞。",
+            "en": "Not right. Crystalloid can at most expand the volume for a while; it carries no oxygen and dilutes the haemoglobin further — a haemoglobin of 38 g/L with shock needs red cells."
+          }
+        },
+        {
+          "id": "wait-tests",
+          "text": {
+            "zh-CN": "先等宝宝的血型、Coombs试验和交叉配血结果，再输血",
+            "en": "Wait for the baby's blood group, Coombs test and crossmatch before transfusing"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。休克中的严重贫血新生儿等不起配血；紧急发放的O型红细胞正是为这种情况准备的。原报告中宝宝的血型和Coombs试验是在第一次输血之后才检测的。",
+            "en": "Wrong. A shocked, severely anaemic newborn cannot wait for crossmatching — emergency-issue group O red cells exist for exactly this. In the report, the baby's group and Coombs test were done after the first transfusion."
+          }
+        },
+        {
+          "id": "exchange",
+          "text": {
+            "zh-CN": "按新生儿溶血病行双倍量换血",
+            "en": "Do a double-volume exchange transfusion as for haemolytic disease"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不符合。目前没有溶血的证据（换血主要用于严重高胆红素血症或溶血病），而她处于休克状态，需要的是尽快补充红细胞和血容量。",
+            "en": "Does not fit. There is no evidence of haemolysis (exchange transfusion is mainly for severe hyperbilirubinaemia or haemolytic disease), and she is in shock: she needs red cells and volume now."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "宝宝出生时已重度贫血；复苏后检查为O型、Rh阳性、Coombs试验阴性；母亲B型、Rh阳性。最可能的原因是什么？应该送哪项检查来证实？",
+        "en": "The baby was severely anaemic at birth; after resuscitation she is group O, Rh-positive and Coombs-negative; the mother is group B, Rh-positive. What is the most likely cause, and which test should be sent to confirm it?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "neonatal-birth",
+            "phase": "delivery"
+          },
+          {
+            "read": "neonate-blood",
+            "phase": "postnatal"
+          },
+          {
+            "asked": "blood-group"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先查看宝宝出生时和复苏后的记录，并问清母亲的血型。",
+        "en": "First read the baby's records at birth and after resuscitation, and ask the mother's blood group."
+      },
+      "options": [
+        {
+          "id": "fmh",
+          "text": {
+            "zh-CN": "胎母输血：胎儿的血逐渐进入了母亲的循环；送母血红细胞酸洗脱（KB）试验（或流式细胞术），并查母血甲胎蛋白",
+            "en": "Fetomaternal haemorrhage — the baby's blood has been leaking into the mother's circulation; send a maternal Kleihauer–Betke test (or flow cytometry) and a maternal AFP"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。出生时已重度贫血，说明失血发生在分娩前；胎动减少一周和正弦波形支持缓慢、持续的失血；Coombs阴性、也不存在血型不合溶血的条件，说明不是溶血。KB试验能在母血中找到胎儿红细胞（原报告检验科采用KB试验），母血AFP升高支持胎盘屏障破损（原报告讨论）。",
+            "en": "Correct. Severe anaemia already present at birth means the blood was lost before delivery; a week of reduced movements and a sinusoidal trace fit a slow, continuing bleed; a negative Coombs test, with no blood-group set-up for haemolysis, argues against haemolysis. The KB test finds fetal red cells in the mother's blood (the report's laboratory used it), and a raised maternal AFP supports a breach of the placental barrier (the report's discussion)."
+          }
+        },
+        {
+          "id": "abo",
+          "text": {
+            "zh-CN": "ABO溶血病：母亲B型，与宝宝血型不同",
+            "en": "ABO haemolytic disease, because mother and baby have different groups"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。宝宝是O型，红细胞上没有A、B抗原，母亲（B型）的抗A抗体无从作用，不会发生ABO溶血；Coombs试验也是阴性。",
+            "en": "Wrong. The baby is group O, so her red cells carry no A or B antigen for the mother's (group B) anti-A to act on — ABO haemolysis cannot happen; the Coombs test is negative too."
+          }
+        },
+        {
+          "id": "rh",
+          "text": {
+            "zh-CN": "Rh溶血病",
+            "en": "Rhesus haemolytic disease"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。母亲和宝宝都是Rh阳性，Coombs试验阴性。",
+            "en": "Wrong. Mother and baby are both Rh-positive, and the Coombs test is negative."
+          }
+        },
+        {
+          "id": "intrapartum",
+          "text": {
+            "zh-CN": "剖宫产时的急性失血（如切到胎盘或脐带出血）",
+            "en": "Acute blood loss at the caesarean (for example a cut placenta or a bleeding cord)"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不符合。分娩当时的急性失血通常不会让出生时的血红蛋白就降到38 g/L（急性失血后血红蛋白需要时间才下降）；一周的胎动减少和术前的正弦波形也说明问题在分娩前就已存在。原文也没有记录术中胎盘或脐带出血。",
+            "en": "Does not fit. Blood lost at the moment of birth would not usually bring the haemoglobin down to 38 g/L straight away (it takes time to fall after acute loss), and a week of reduced movements with a sinusoidal trace before surgery show the problem began before delivery. No placental or cord bleeding is recorded either."
+          }
+        },
+        {
+          "id": "thal",
+          "text": {
+            "zh-CN": "重型α地中海贫血",
+            "en": "Severe alpha-thalassaemia"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "可能性很小。母亲的地中海贫血基因检查无异常，宝宝至少从母亲那里得到了一套正常的α珠蛋白基因，不可能是重型α地中海贫血。",
+            "en": "Very unlikely. The mother's thalassaemia gene test was normal, so the baby inherited a normal set of alpha-globin genes from her — severe alpha-thalassaemia is not possible."
+          }
+        }
+      ]
+    },
+    {
+      "id": "anti-d",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "母亲KB试验胎儿红细胞占9.2%。她需要抗D免疫球蛋白吗？",
+        "en": "The mother's KB test shows 9.2% fetal red cells. Does she need anti-D immunoglobulin?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "maternal-kb",
+            "phase": "postnatal"
+          },
+          {
+            "asked": "blood-group"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先查看母血KB结果，并确认母亲的血型。",
+        "en": "First read the maternal KB result and confirm her blood group."
+      },
+      "options": [
+        {
+          "id": "no-anti-d",
+          "text": {
+            "zh-CN": "不需要：她是Rh阳性。如果母亲是RhD阴性，KB等定量结果会用来计算抗D免疫球蛋白的剂量",
+            "en": "No — she is Rh-positive. In an RhD-negative mother, a quantitative test such as the KB would be used to calculate the anti-D dose"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。抗D免疫球蛋白用于预防RhD阴性母亲产生抗D抗体；Rh阳性的母亲不会因此致敏，给药对她没有作用。RhD阴性母亲发生胎母输血后，要用KB试验或流式细胞术估算出血量，再按量补足抗D的剂量。",
+            "en": "Correct. Anti-D prevents an RhD-negative mother from forming anti-D antibodies; an Rh-positive mother cannot be sensitised this way, so it would do nothing for her. After fetomaternal haemorrhage in an RhD-negative mother, the bleed is quantified (KB test or flow cytometry) and the anti-D dose topped up to match."
+          }
+        },
+        {
+          "id": "standard-dose",
+          "text": {
+            "zh-CN": "需要：发生了大量胎母输血，应给标准剂量抗D",
+            "en": "Yes — there has been a large fetomaternal haemorrhage, so give a standard dose of anti-D"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。决定是否需要抗D的是母亲的RhD血型，而不是出血量；她是Rh阳性。",
+            "en": "Wrong. What decides anti-D is the mother's RhD type, not the size of the bleed — and she is Rh-positive."
+          }
+        },
+        {
+          "id": "calculated",
+          "text": {
+            "zh-CN": "需要：按KB估算的出血量计算抗D剂量",
+            "en": "Yes — calculate the anti-D dose from the bleed estimated by the KB test"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。按出血量计算剂量只适用于RhD阴性的母亲；她是Rh阳性。",
+            "en": "Wrong. Dosing anti-D by the estimated bleed applies only to RhD-negative mothers; she is Rh-positive."
+          }
+        },
+        {
+          "id": "never",
+          "text": {
+            "zh-CN": "胎母输血与抗D无关，任何情况下都不用考虑",
+            "en": "Fetomaternal haemorrhage has nothing to do with anti-D, whatever the mother's blood group"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "错误。RhD阴性的母亲发生胎母输血时，抗D预防非常重要，剂量还要按出血量增加。",
+            "en": "Wrong. In an RhD-negative mother, fetomaternal haemorrhage makes anti-D prophylaxis essential, and the dose must be increased to match the bleed."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "r-hx",
+      "domain": "history",
+      "weight": 2,
+      "text": {
+        "zh-CN": "问清胎动减少、孕周和孕产次、产检与筛查、最近一次B超、血型和既往健康状况",
+        "en": "Took the history of the reduced movements, gestation and parity, antenatal care and screening, the last scan, blood group and general health"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "gestation"
+          },
+          {
+            "asked": "antenatal"
+          },
+          {
+            "asked": "screening"
+          },
+          {
+            "asked": "blood-group"
+          },
+          {
+            "asked": "recent-scan"
+          },
+          {
+            "asked": "pmh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-hx-triggers",
+      "domain": "history",
+      "weight": 1,
+      "text": {
+        "zh-CN": "询问胎母输血的常见诱因：出血或腹痛、腹部外伤、近期的产科操作",
+        "en": "Asked about recognised triggers of fetomaternal haemorrhage: bleeding or pain, abdominal trauma, recent obstetric procedures"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "trauma"
+          },
+          {
+            "asked": "version"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-ctg",
+      "domain": "investigations",
+      "weight": 2,
+      "text": {
+        "zh-CN": "就诊当天查看胎心监护、近期超声和产前检查记录",
+        "en": "On the day of presentation, reviewed the CTG, the recent scan and the antenatal record"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "ctg",
+            "phase": "antenatal"
+          },
+          {
+            "read": "antenatal-imaging",
+            "phase": "antenatal"
+          },
+          {
+            "read": "antenatal-record",
+            "phase": "antenatal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-deliver",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即正确：尽快剖宫产，并提前安排新生儿团队和紧急用血",
+        "en": "Chose prompt caesarean delivery, with the neonatal team and emergency blood arranged, at the first attempt"
+      },
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "r-team",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "通知上级产科医生和新生儿团队，并为新生儿准备紧急用血",
+        "en": "Called the senior obstetrician and the neonatal team, and had emergency blood prepared for the baby"
+      },
+      "met": {
+        "all": [
+          {
+            "intervened": "obstetric-senior"
+          },
+          {
+            "intervened": "neonatal-team"
+          },
+          {
+            "intervened": "emergency-blood"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-newborn",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即正确：呼吸支持并立即输注紧急发放的O型红细胞",
+        "en": "Chose respiratory support and an immediate emergency transfusion of group O red cells at the first attempt"
+      },
+      "met": {
+        "decidedFirstTry": "neonatal-resus"
+      }
+    },
+    {
+      "id": "r-dx",
+      "domain": "diagnosis",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首次作答即判断为胎母输血，并选对证实它的检查",
+        "en": "Identified fetomaternal haemorrhage and the test that confirms it at the first attempt"
+      },
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "r-fmh-tests",
+      "domain": "investigations",
+      "weight": 2,
+      "text": {
+        "zh-CN": "查看母血KB试验、AFP和胎盘病理",
+        "en": "Read the maternal KB test, the AFP and the placental pathology"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "maternal-kb",
+            "phase": "postnatal"
+          },
+          {
+            "read": "maternal-afp",
+            "phase": "postnatal"
+          },
+          {
+            "read": "placenta",
+            "phase": "postnatal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-safety-delay",
+      "domain": "safety",
+      "weight": 3,
+      "text": {
+        "zh-CN": "没有让她回家等待，也没有做外倒转或引产来推迟分娩",
+        "en": "Did not send her home to wait, or delay the birth with a version or an induction"
+      },
+      "met": {
+        "all": [
+          {
+            "any": [
+              {
+                "attempted": "management"
+              },
+              {
+                "intervened": "emergency-cs"
+              }
+            ]
+          },
+          {
+            "not": {
+              "any": [
+                {
+                  "intervened": "reassure-home"
+                },
+                {
+                  "intervened": "ecv"
+                },
+                {
+                  "intervened": "induction"
+                }
+              ]
+            }
+          }
+        ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "management"
+          },
+          {
+            "intervened": "emergency-cs"
+          },
+          {
+            "intervened": "reassure-home"
+          },
+          {
+            "intervened": "ecv"
+          },
+          {
+            "intervened": "induction"
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "r-antid",
+      "domain": "management",
+      "weight": 1,
+      "text": {
+        "zh-CN": "首次作答即正确判断抗D的指征",
+        "en": "Judged the indication for anti-D correctly at the first attempt"
+      },
+      "met": {
+        "decidedFirstTry": "anti-d"
+      }
+    },
+    {
+      "id": "r-safety-antid",
+      "domain": "safety",
+      "weight": 1,
+      "text": {
+        "zh-CN": "没有给Rh阳性的母亲注射抗D",
+        "en": "Did not give anti-D to an Rh-positive mother"
+      },
+      "met": {
+        "all": [
+          {
+            "attempted": "anti-d"
+          },
+          {
+            "not": {
+              "intervened": "anti-d"
+            }
+          }
+        ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "anti-d"
+          },
+          {
+            "intervened": "anti-d"
+          }
+        ]
+      }
+    },
+    {
+      "id": "r-comm",
+      "domain": "communication",
+      "weight": 2,
+      "text": {
+        "zh-CN": "向她解释紧急剖宫产并取得同意，之后如实说明宝宝的情况和可能的原因",
+        "en": "Explained the emergency caesarean to her and gained consent, and later explained the baby's condition and its likely cause honestly"
+      },
+      "judgeGuidance": {
+        "zh-CN": "良好表现：用通俗的话说明胎心监护异常、宝宝可能有危险、为什么现在就要剖宫产；回应她“宝宝会不会有事”的担心，但不做无法保证的承诺；简短而完整地取得知情同意，确认她听懂了；告诉她新生儿团队会在场。术后如实解释：宝宝出生时贫血很重，已经输血；最可能的原因是宝宝的血在分娩前慢慢流进了她的血液里（胎母输血），这不是她做错了什么；还不知道的事情（长期发育）也要说清楚，并邀请她提问。不说病例中没有的数据。",
+        "en": "Good performance: explains in plain words that the CTG is abnormal, that the baby may be in danger and why the caesarean must happen now; responds to her fear ('Is the baby going to be all right?') without promising what cannot be promised; gains brief but complete consent and checks she has understood; tells her the neonatal team will be there. Afterwards, explains honestly that the baby was very anaemic at birth and has been transfused; that the most likely cause is the baby's blood slowly passing into hers before the birth (fetomaternal haemorrhage), which is not something she did wrong; says what is still unknown (long-term development) and invites questions. Uses no data the case does not contain."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "邱助产士",
+        "en": "Midwife Qiu"
+      },
+      "knowledge": {
+        "zh-CN": "交班：29岁，孕3产2，孕37+2周，常规产检时诉近1周胎动减少（未计数）；已为她做了急诊胎心监护，图形已上传病历系统（在护士站或病房的病历终端查看）。门诊诊室没有病历终端；手术室在住院区，血库在检验科，新生儿团队可电话呼叫。会复述医嘱（闭环沟通），只报告观察到的情况，不解读图形，不下诊断。",
+        "en": "Handover: 29, gravida 3 para 2, 37+2 weeks, reports a week of reduced movements (not counted) at her routine visit; an emergency CTG has been run and the trace uploaded to the record system (viewed at a nurses' station or ward records terminal). The clinic rooms have no records terminal; the theatre is in the inpatient block, the blood bank is in the laboratory, and the neonatal team can be called by phone. Reads orders back (closed loop), reports only what she observes, does not interpret the trace or diagnose."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "夏医生（产科主治医师）",
+        "en": "Dr Xia (obstetric attending)"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教：只追问学员已获得的资料，例如“一周前B超正常，能说明今天宝宝安全吗？”“正弦波形提示什么？”“足月时最有效的处理是什么？”“出生时血红蛋白已经38 g/L，说明失血是什么时候发生的？”“为什么O型的宝宝不会发生ABO溶血？”“KB结果怎样换算成出血量，有哪些前提？”“她需要抗D吗？”。学员作出病因决策之前，不点名诊断；不补充病例中没有的数据。",
+        "en": "Socratic teacher: asks only about information the learner already has — 'Last week's scan was normal; does that mean the baby is safe today?', 'What does a sinusoidal pattern suggest?', 'What works best at term?', 'If the haemoglobin is already 38 g/L at birth, when did the bleeding happen?', 'Why can't a group O baby have ABO haemolysis?', 'How do you turn a KB result into a volume, and on what assumptions?', 'Does she need anti-D?'. Names no diagnosis before the learner has made the cause decision; adds no data the case does not contain."
+      },
+      "interprets": [
+        "ctg",
+        "antenatal-imaging",
+        "neonatal-birth",
+        "neonate-blood",
+        "maternal-kb",
+        "maternal-afp"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "白医生（新生儿科医生）",
+        "en": "Dr Bai (neonatologist)"
+      },
+      "knowledge": {
+        "zh-CN": "只解读学员已查阅的新生儿记录：可讲解休克与重度贫血的表现、紧急输红细胞的做法（紧急发放的O型红细胞、分次给予、边输边评估），以及为什么出生时血红蛋白已低说明失血发生在产前；输血产品的选择与剂量按BSH 2016和本院流程。不补充记录以外的发现，不提前说出贫血原因。",
+        "en": "Interprets only newborn records the learner has read: can explain the signs of shock and severe anaemia, how an emergency transfusion is given (emergency-issue group O red cells, in aliquots, reassessing as you go) and why a low haemoglobin at birth means the bleeding happened before delivery; product choice and dose follow BSH 2016 and the local procedure. Adds no findings beyond the record and does not name the cause of the anaemia in advance."
+      },
+      "interprets": [
+        "neonatal-birth",
+        "neonate-blood"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "lab-tech",
+      "name": {
+        "zh-CN": "杜老师（检验科）",
+        "en": "Mr Du (laboratory)"
+      },
+      "knowledge": {
+        "zh-CN": "解释KB试验的原理（胎儿血红蛋白耐酸，母体成人血红蛋白被洗脱）、计数方法和局限（结果是细胞比例，需换算才能估计出血量；不能区分母亲自身含HbF的细胞）、流式细胞术的优势，以及母血AFP的意义。只解释学员已拿到的结果，以报告原文为准。",
+        "en": "Explains how the KB test works (fetal haemoglobin resists acid while the mother's adult haemoglobin is eluted), how it is counted and its limits (it gives a proportion of cells, which must be converted to estimate a volume, and cannot tell the mother's own HbF-containing cells apart), the advantages of flow cytometry, and what a maternal AFP adds. Explains only results the learner already has, in the report's words."
+      },
+      "interprets": [
+        "maternal-kb",
+        "maternal-afp",
+        "maternal-fbc"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "pathologist",
+      "name": {
+        "zh-CN": "邵医生（病理科）",
+        "en": "Dr Shao (pathology)"
+      },
+      "knowledge": {
+        "zh-CN": "只解读学员已查阅的胎盘病理报告：说明报告所见（局灶梗死不足5%、部分羊膜上皮退行性变、个别中性粒细胞浸润、两动脉一静脉、无肿瘤）及报告没有提供的内容（胎盘重量）；不补充报告以外的所见。",
+        "en": "Interprets only a placental report the learner has read: explains what it shows (focal infarction under 5%, degenerative change in part of the amnion, occasional neutrophils, a three-vessel cord, no tumour) and what it does not give (the placental weight); adds nothing beyond the report."
+      },
+      "interprets": [
+        "placenta"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "复盘：胎动减少、正弦波形与新生儿重度贫血",
+      "en": "Debrief: reduced movements, a sinusoidal trace and a severely anaemic newborn"
+    },
+    "conclusion": {
+      "zh-CN": "作者诊断为胎母输血综合征：足月胎动减少一周、急诊胎监见可疑正弦波形，急诊剖宫产娩出的女婴出生时重度贫血（血红蛋白38 g/L）并休克；母血KB试验胎儿红细胞9.2%、AFP 11582 µg/L，而母亲血红蛋白149 g/L。宝宝经呼吸支持和两次紧急输注O型红细胞后好转，出生后第7天出院；母亲恢复良好。",
+      "en": "The authors diagnosed fetomaternal haemorrhage: a week of reduced movements at term and a suspected sinusoidal emergency CTG, then a baby girl delivered by emergency caesarean who was severely anaemic (haemoglobin 38 g/L) and shocked at birth; the maternal KB test showed 9.2% fetal cells and an AFP of 11582 µg/L, with a maternal haemoglobin of 149 g/L. The baby recovered with respiratory support and two emergency transfusions of group O red cells and went home 7 days after birth; the mother recovered well."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "出生时血红蛋白已是38 g/L：急性失血后血红蛋白要过一段时间才下降，出生即重度贫血说明失血发生在分娩前；一周的胎动减少和正弦波形也指向缓慢、持续的失血。",
+        "en": "A haemoglobin of 38 g/L at birth: after acute blood loss the haemoglobin takes time to fall, so severe anaemia at birth means the loss happened before delivery; a week of reduced movements and the sinusoidal trace also point to a slow, continuing bleed."
+      },
+      {
+        "zh-CN": "排除其他原因：宝宝是O型（红细胞没有A、B抗原，母亲的抗A不起作用）、Coombs阴性、母婴都是Rh阳性、母亲地中海贫血基因正常、单胎——这些记录排除了ABO或Rh溶血、遗传性血红蛋白病和双胎输血。",
+        "en": "Excluding the alternatives: the baby is group O (no A or B antigen for the mother's anti-A to act on), Coombs-negative, both mother and baby are Rh-positive, the mother's thalassaemia genotype is normal and the pregnancy was a singleton — together these exclude ABO or Rh haemolysis, an inherited haemoglobin disorder and twin-to-twin transfusion."
+      },
+      {
+        "zh-CN": "估算失血量（推算值，原文未计算）：按常用近似公式（胎儿失血量 mL ≈ KB% × 50，假设母亲血容量约5000 mL），9.2%约相当于460 mL胎儿血——比一个2.38 kg新生儿全身的血量还多，提示失血是在数天内反复发生、胎儿在代偿。采样在分娩后，公式也只是粗略估计。",
+        "en": "Estimating the bleed (derived; not calculated in the report): with the common approximation (fetal blood loss in mL ≈ KB % × 50, assuming a maternal blood volume of about 5000 mL), 9.2 % comes to roughly 460 mL of fetal blood — more than the entire blood volume of a 2.38 kg newborn, which suggests bleeding over several days while the baby compensated. The sample was taken after delivery and the formula is only a rough guide."
+      },
+      {
+        "zh-CN": "原文所称KB正常值“≤3%”引自其参考文献；按同一近似，3%已约相当于150 mL胎儿血，解读时应以本实验室的参考范围为准。",
+        "en": "The report's 'normal' KB value of ≤ 3 % comes from its reference; by the same approximation 3 % already corresponds to about 150 mL of fetal blood, so interpret the result against your own laboratory's reference range."
+      },
+      {
+        "zh-CN": "抗D：母亲Rh阳性，不需要；若母亲为RhD阴性，就要用KB试验或流式细胞术的定量结果计算抗D剂量。",
+        "en": "Anti-D: the mother is Rh-positive, so none is needed; in an RhD-negative mother the KB or flow-cytometry result would be used to calculate the anti-D dose."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告。本平台每个病例只模拟一位患者（母亲）：新生儿的检查、检验和治疗以记录形式出现，学员不能直接检查或治疗宝宝。原文缺少母亲的生命体征和产科检查、胎心监护图形、MCA多普勒和长期随访；决策和评分是教学设计，正确选项依据所引的现行指南。",
+      "en": "A single case report. The platform models one patient per case (the mother): the newborn's examination, tests and treatment appear as records, and the learner cannot examine or treat the baby directly. The report lacks the mother's vital signs and obstetric examination, the CTG trace, an MCA Doppler and long-term follow-up; the decisions and scoring are educational design, and the correct options follow the cited current guidance."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "母亲就诊时的生命体征、腹部和产科检查，以及剖宫产的麻醉方式。",
+        "en": "The mother's vital signs and abdominal and obstetric examination at presentation, and the anaesthetic used for the caesarean."
+      },
+      {
+        "zh-CN": "胎心监护图形、基线、变异和持续时间；大脑中动脉多普勒（未做）。",
+        "en": "The CTG trace, baseline, variability and duration; an MCA Doppler (not done)."
+      },
+      {
+        "zh-CN": "当天是否还有胎动；有无阴道出血、腹痛、腹部外伤或近期产科操作（如外倒转、羊水穿刺）；前两次分娩的方式；用药、过敏、吸烟和饮酒。",
+        "en": "Whether the baby moved at all that day; any vaginal bleeding, abdominal pain, abdominal trauma or recent obstetric procedure (such as a version or an amniocentesis); how the first two babies were born; medicines, allergies, smoking and alcohol."
+      },
+      {
+        "zh-CN": "Apgar评分的时间点；宝宝输血前的血型；“抗炎药物”和术后预防感染所用的药物及对象。",
+        "en": "The time of the Apgar score; the baby's blood group before transfusion; the 'anti-inflammatory drugs' and the drug — and patient — of the post-operative infection prophylaxis."
+      },
+      {
+        "zh-CN": "胎盘重量；父亲的地中海贫血基因；分娩时的胎位；宝宝的长期神经发育。",
+        "en": "The placental weight; the father's thalassaemia genotype; the baby's presentation at delivery; the baby's long-term development."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "足月胎动减少需要及时评估，包括胎心监护（RCOG Green-top Guideline No. 57，第2版）；一周前正常的超声不能代表当下。正弦波形提示胎儿可能严重贫血或缺氧，在足月时的处理就是尽快娩出，并提前安排新生儿团队和紧急用血。",
+        "en": "Reduced fetal movements at term need prompt assessment, including a CTG (RCOG Green-top Guideline No. 57, 2nd edition); a normal scan a week earlier says nothing about now. A sinusoidal pattern suggests the baby may be severely anaemic or hypoxic; at term the response is prompt delivery, with the neonatal team and emergency blood arranged in advance."
+      },
+      {
+        "zh-CN": "确认胎母输血：母血KB试验快速、便宜，但结果是细胞比例，也不能区分母亲自身含HbF的细胞；流式细胞术更准确。母血AFP升高支持胎盘屏障破损——原报告引用的研究以 >1000 ng/mL 为界，敏感度73.91%、特异度90.97%（原报告及其参考文献：Kim与Makar 2012；刘莹 2017）。",
+        "en": "Confirming fetomaternal haemorrhage: the maternal KB test is quick and cheap but gives a proportion of cells and cannot tell the mother's own HbF-containing cells apart; flow cytometry is more accurate. A raised maternal AFP supports a breach of the placental barrier — the study the report cites used > 1000 ng/mL (sensitivity 73.91 %, specificity 90.97 %) (the report and its references: Kim and Makar 2012; Liu 2017)."
+      },
+      {
+        "zh-CN": "苍白、休克的重度贫血新生儿：先保证呼吸，立即输注紧急发放的O型红细胞，不等配血或溶血检查；分次给予、边输边评估。产品选择和剂量按BSH 2016新生儿输血指南和本院流程。本例两次输血约19和13 mL/kg（推算），血红蛋白由38升至74、再到121 g/L。",
+        "en": "A pale, shocked, severely anaemic newborn: secure breathing and transfuse emergency-issue group O red cells at once, without waiting for crossmatching or haemolysis tests; give it in aliquots and reassess. Product choice and dose follow the BSH 2016 neonatal transfusion guideline and the local procedure. Here the two transfusions were about 19 and 13 mL/kg (derived), and the haemoglobin rose from 38 to 74 and then 121 g/L."
+      },
+      {
+        "zh-CN": "胎母输血的严重程度取决于失血量和失血速度（原报告讨论）。本例估算的失血量很大而宝宝存活，符合数天内的慢性失血。原报告讨论所列的病因包括胎儿因素、胎盘异常、产科创伤和产科干预，但没有指出本例的具体诱因（胎盘病理仅见不足5%的小灶梗死）。",
+        "en": "How severe fetomaternal haemorrhage is depends on the volume lost and how fast (the report's discussion). Here the estimated loss is large yet the baby survived, which fits chronic bleeding over days. The report's discussion lists fetal factors, placental abnormalities, obstetric trauma and obstetric procedures as causes but names no specific trigger for this case (the placenta showed only a small infarct, under 5 %)."
+      }
+    ],
+    "references": [
+      "梁建明, 黃芳芳, 吳思敏, 余善恩. 胎母輸血綜合症1例. 鏡湖醫學. 2025;25(2):50-51. doi:10.12408/j.issn2223-4462.2025.02.014. Available from: https://rs.yiigle.com/cmaid/1653403",
+      "Royal College of Obstetricians and Gynaecologists. Reduced fetal movements (Green-top Guideline No. 57). 2nd ed. London: RCOG [cited 2026 Oct 28]. Available from: https://www.rcog.org.uk/guidance/browse-all-guidance/green-top-guidelines/reduced-fetal-movements-green-top-guideline-no-57/",
+      "New HV, Berryman J, Bolton-Maggs PHB, et al. Guidelines on transfusion for fetuses, neonates and older children. Br J Haematol. 2016;175(5):784-828. doi:10.1111/bjh.14233",
+      "Kim YA, Makar RS. Detection of fetomaternal hemorrhage. Am J Hematol. 2012;87(4):417-423. doi:10.1002/ajh.22255",
+      "劉瑩. 聯合檢測母血HbF、AFP值在預測胎母輸血綜合征中的應用價值. 中國醫學創新. 2017;14(13):44-48. doi:10.3969/j.issn.1674-4985.2017.13.013"
+    ],
+    "notice": {
+      "zh-CN": "评分衡量完成本教学路径的程度，是教学脚本评估，并非经过验证的能力评分。",
+      "en": "Scores measure how far this teaching pathway was completed — a teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "母亲就诊时的生命体征、腹部和产科检查，以及剖宫产的麻醉方式。",
+      "en": "The mother's vital signs and abdominal and obstetric examination at presentation, and the anaesthetic used for the caesarean."
+    },
+    {
+      "zh-CN": "胎心监护图形、基线、变异和持续时间；大脑中动脉多普勒（未做）。",
+      "en": "The CTG trace, baseline, variability and duration; an MCA Doppler (not done)."
+    },
+    {
+      "zh-CN": "当天是否还有胎动；有无阴道出血、腹痛、腹部外伤或近期产科操作（如外倒转、羊水穿刺）；前两次分娩的方式；用药、过敏、吸烟和饮酒。",
+      "en": "Whether the baby moved at all that day; any vaginal bleeding, abdominal pain, abdominal trauma or recent obstetric procedure (such as a version or an amniocentesis); how the first two babies were born; medicines, allergies, smoking and alcohol."
+    },
+    {
+      "zh-CN": "Apgar评分的时间点；宝宝输血前的血型；“抗炎药物”和术后预防感染所用的药物及对象。",
+      "en": "The time of the Apgar score; the baby's blood group before transfusion; the 'anti-inflammatory drugs' and the drug — and patient — of the post-operative infection prophylaxis."
+    },
+    {
+      "zh-CN": "胎盘重量；父亲的地中海贫血基因；分娩时的胎位；宝宝的长期神经发育。",
+      "en": "The placental weight; the father's thalassaemia genotype; the baby's presentation at delivery; the baby's long-term development."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1653403/fig01.png",
+      "title": {
+        "zh-CN": "原报告图1：母血KB染色中深染红色的HbF红细胞",
+        "en": "Source Figure 1: deep-red HbF-containing cells on the maternal KB stain"
+      },
+      "credit": {
+        "zh-CN": "原报告图，梁建明、黃芳芳、吳思敏、余善恩，2025。版权归原权利人。",
+        "en": "Original report figure (Liang, Huang, Wu, Yu, 2025). Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "bee0eccfa3d1ac029b59629e3cc0436b45890642b009a7a3af0311b8632e80ca"
+    },
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-1653403/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（含完整结局，仅供复盘；第2页下半为另一篇文章的结尾，第3页为期刊封三图页，含其他文章的临床图片）",
+        "en": "Source PDF (contains the outcome; for debrief review; the lower half of page 2 is the end of another article, and page 3 is the journal's inside-back-cover figure page with other articles' clinical images)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "fe494bafa2039f925224f227a14a26d96e04938b2075a9a6c401233c7f6f65df"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "gestation"
+    },
+    {
+      "type": "ask",
+      "itemId": "antenatal"
+    },
+    {
+      "type": "ask",
+      "itemId": "screening"
+    },
+    {
+      "type": "ask",
+      "itemId": "infection-thal"
+    },
+    {
+      "type": "ask",
+      "itemId": "blood-group"
+    },
+    {
+      "type": "ask",
+      "itemId": "recent-scan"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "movement-today"
+    },
+    {
+      "type": "ask",
+      "itemId": "version"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "trauma"
+    },
+    {
+      "type": "ask",
+      "itemId": "psh"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
+      "itemId": "alcohol"
+    },
+    {
+      "type": "order",
+      "investigationId": "antenatal-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "antenatal-record",
+      "phase": "antenatal"
+    },
+    {
+      "type": "order",
+      "investigationId": "antenatal-imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "antenatal-imaging",
+      "phase": "antenatal"
+    },
+    {
+      "type": "order",
+      "investigationId": "ctg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ctg",
+      "phase": "antenatal"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "obstetric-senior"
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "deliver-now"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "neonatal-team"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "emergency-blood"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "emergency-cs"
+    },
+    {
+      "type": "order",
+      "investigationId": "neonatal-birth"
+    },
+    {
+      "type": "read",
+      "investigationId": "neonatal-birth",
+      "phase": "delivery"
+    },
+    {
+      "type": "answer",
+      "decisionId": "neonatal-resus",
+      "optionIds": [
+        "support-transfuse"
+      ]
+    },
+    {
+      "type": "examine",
+      "findingId": "maternal-postop"
+    },
+    {
+      "type": "ask",
+      "itemId": "postnatal-status"
+    },
+    {
+      "type": "order",
+      "investigationId": "neonate-blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "neonate-blood",
+      "phase": "postnatal"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "fmh"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "maternal-kb"
+    },
+    {
+      "type": "read",
+      "investigationId": "maternal-kb",
+      "phase": "postnatal"
+    },
+    {
+      "type": "order",
+      "investigationId": "maternal-afp"
+    },
+    {
+      "type": "read",
+      "investigationId": "maternal-afp",
+      "phase": "postnatal"
+    },
+    {
+      "type": "order",
+      "investigationId": "maternal-fbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "maternal-fbc",
+      "phase": "postnatal"
+    },
+    {
+      "type": "order",
+      "investigationId": "placenta"
+    },
+    {
+      "type": "read",
+      "investigationId": "placenta",
+      "phase": "postnatal"
+    },
+    {
+      "type": "answer",
+      "decisionId": "anti-d",
+      "optionIds": [
+        "no-anti-d"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "1653403",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1653403",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "宝宝这几天动得多吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "胎动是不是少了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Is the baby moving as much as usual?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Have you noticed the baby moving less?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "今天宝宝动过没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "movement-today"
+        ]
+      },
+      {
+        "text": "怀孕多少周了？",
+        "locale": "zh-CN",
+        "expect": [
+          "gestation"
+        ]
+      },
+      {
+        "text": "这是第几个孩子？",
+        "locale": "zh-CN",
+        "expect": [
+          "gestation"
+        ]
+      },
+      {
+        "text": "How many weeks are you now?",
+        "locale": "en",
+        "expect": [
+          "gestation"
+        ]
+      },
+      {
+        "text": "How many times have you been pregnant?",
+        "locale": "en",
+        "expect": [
+          "gestation"
+        ]
+      },
+      {
+        "text": "产检都有按时来吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "antenatal"
+        ]
+      },
+      {
+        "text": "Have you been to all your antenatal appointments?",
+        "locale": "en",
+        "expect": [
+          "antenatal"
+        ]
+      },
+      {
+        "text": "唐筛做了吗？结果怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "screening"
+        ]
+      },
+      {
+        "text": "Did you have the Down's screening?",
+        "locale": "en",
+        "expect": [
+          "screening"
+        ]
+      },
+      {
+        "text": "地贫筛查做过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "infection-thal"
+        ]
+      },
+      {
+        "text": "Have you been tested for hepatitis B?",
+        "locale": "en",
+        "expect": [
+          "infection-thal"
+        ]
+      },
+      {
+        "text": "你什么血型？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood-group"
+        ]
+      },
+      {
+        "text": "是Rh阴性血吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood-group"
+        ]
+      },
+      {
+        "text": "Do you know your blood type?",
+        "locale": "en",
+        "expect": [
+          "blood-group"
+        ]
+      },
+      {
+        "text": "最近做B超了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "recent-scan"
+        ]
+      },
+      {
+        "text": "胎位正不正？",
+        "locale": "zh-CN",
+        "expect": [
+          "recent-scan"
+        ]
+      },
+      {
+        "text": "Have you had a scan recently?",
+        "locale": "en",
+        "expect": [
+          "recent-scan"
+        ]
+      },
+      {
+        "text": "有没有人帮你转过胎位？",
+        "locale": "zh-CN",
+        "expect": [
+          "version"
+        ]
+      },
+      {
+        "text": "有没有见红？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "Any bleeding?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "最近有没有摔倒过？",
+        "locale": "zh-CN",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "Have you had any falls?",
+        "locale": "en",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "以前有什么病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "有没有高血压糖尿病？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Any medical problems?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "家里有人得过血液病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "前两个孩子是顺产吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "psh"
+        ]
+      },
+      {
+        "text": "怀孕期间吃过药吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Any allergies to medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "手术后感觉怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "postnatal-status"
+        ]
+      },
+      {
+        "text": "How are you feeling after the operation?",
+        "locale": "en",
+        "expect": [
+          "postnatal-status"
+        ]
+      }
+    ]
+  }
+}

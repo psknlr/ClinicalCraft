@@ -1,0 +1,3712 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-70044",
+  "version": "1.1.0",
+  "title": {
+    "zh-CN": "咳嗽、发热 · 10岁男孩",
+    "en": "Cough and fever · 10-year-old boy"
+  },
+  "summary": {
+    "zh-CN": "10岁男孩咳嗽10天、发热5天，诊所输液治疗4天无好转，收住儿科病房。",
+    "en": "A 10-year-old boy is admitted to the children's ward after 10 days of cough and 5 days of fever that four days of clinic treatment did not improve."
+  },
+  "specialty": [
+    "pediatrics",
+    "emergency-medicine",
+    "clinical-pharmacology"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 30,
+  "learningOutcomes": [
+    {
+      "zh-CN": "使用β-内酰胺类前澄清青霉素过敏标签（药物、反应、时间、处理），并解释青霉素皮试阴性为何不能预测头孢菌素反应。",
+      "en": "Clarify a reported penicillin allergy (drug, reaction, timing, treatment) before prescribing a β-lactam, and explain why a negative penicillin skin test does not predict a cephalosporin reaction."
+    },
+    {
+      "zh-CN": "依据用药后数分钟内的皮肤、呼吸与循环受累，在床旁诊断严重过敏反应，不等监护数值和检查。",
+      "en": "Diagnose anaphylaxis at the bedside from acute skin, breathing and circulatory involvement minutes after a drug, without waiting for monitor values or tests."
+    },
+    {
+      "zh-CN": "对体重未知的6–12岁儿童，于大腿前外侧肌注1 mg/mL肾上腺素0.3 mL（300 µg），必要时5分钟后重复，并完成体位、高流量吸氧和晶体液10 mL/kg推注（RCUK 2021）。",
+      "en": "Give IM adrenaline 1 mg/mL 0.3 mL (300 micrograms) into the anterolateral thigh of a 6–12-year-old of unknown weight, repeat it after 5 minutes if needed, and position him, give high-flow oxygen and a 10 mL/kg crystalloid bolus (RCUK 2021)."
+    },
+    {
+      "zh-CN": "对比原报告“先激素、静推肾上腺素”的顺序与现行指南（RCUK 2021、EAACI 2021），并说出两种10倍浓度错误。",
+      "en": "Contrast the report's steroid-first, IV-push sequence with current guidance (RCUK 2021, EAACI 2021), and name the two tenfold concentration errors."
+    },
+    {
+      "zh-CN": "制定反应后的处理：类胰蛋白酶采样、按严重程度观察、记录致敏药物、避免再暴露和转诊变态反应科。",
+      "en": "Plan care after the reaction: tryptase sampling, observation by severity, recording the culprit drug, avoiding re-exposure and referral to an allergy service."
+    }
+  ],
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "张睿, 裴亮, 王佳, 张晗, 韩晓华. 头孢噻肟钠/舒巴坦钠致过敏性休克一例. 中国小儿急救医学. 2014;21(1):63. doi:10.3760/cma.j.issn.1673-4912.2014.01.026",
+    "doi": "10.3760/cma.j.issn.1673-4912.2014.01.026",
+    "authors": [
+      "张睿",
+      "裴亮",
+      "王佳",
+      "张晗",
+      "韩晓华"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别、病程、全部剂量和监测数值；姓名为化名，医院、日历日期和身份细节已去除。对话、人物性格、问题、决策、处置选项和评分为教学设计；原报告未记录的数据保持未知。原报告的处理（先地塞米松、后静脉推注1:10 000肾上腺素2.5 mL，再次地塞米松）作为历史事实完整记录，教学答案依据现行指南。原文PDF为单页（第63页），只含本文，在病例完成后开放。",
+      "en": "Adapted from a published case. Age, sex, course and every dose and monitored value are kept; names are pseudonyms, and hospitals, calendar dates and identifying details are removed. Dialogue, personalities, questions, decisions, management options and scoring are educational design; data the report does not record stay unknown. The report's management (dexamethasone first, then an IV push of 2.5 mL of 1 in 10 000 adrenaline, then dexamethasone again) is recorded in full as historical fact; the teaching answers follow current guidance. The source PDF is a single page (page 63) carrying only this article and opens after the case is complete."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "Resuscitation Council UK: Emergency treatment of anaphylaxis 2021",
+        "EAACI guidelines: anaphylaxis (2021 update)",
+        "AAAAI/ACAAI drug allergy practice parameter 2022",
+        "国家卫生健康委员会 β内酰胺类抗菌药物皮肤试验指导原则（2021年版）"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。病程和结果均来自原报告，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not for individual care or self-medication. The course and results come from the report; unrecorded physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "小川（化名）",
+      "en": "Xiaochuan (pseudonym)"
+    },
+    "age": 10,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "咳嗽10天、发热5天",
+      "en": "Ten days of cough and five days of fever"
+    },
+    "triageNote": {
+      "zh-CN": "10岁男孩，由家长陪同。咳嗽10天、发热5天，在诊所静脉输注头孢呋辛等4天无好转；胸片示左肺炎症，拟“急性支气管肺炎”收入儿科病房，入院查体未见异常。",
+      "en": "10-year-old boy with his parent. Cough for 10 days and fever for 5, no better after 4 days of IV cefuroxime and other drugs at a clinic; the chest X-ray shows left-sided inflammation. Admitted to the children's ward with acute bronchopneumonia; the admission examination is unremarkable."
+    },
+    "tags": [
+      {
+        "zh-CN": "咳嗽",
+        "en": "Cough"
+      },
+      {
+        "zh-CN": "发热",
+        "en": "Fever"
+      },
+      {
+        "zh-CN": "门诊治疗无效",
+        "en": "No better after clinic treatment"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "10岁男孩，咳了十来天、烧了几天，有点蔫，但能清楚回答问题；输液出事时非常害怕。",
+        "en": "A 10-year-old who has been coughing for about ten days and feverish for several; a bit flat but answers clearly; terrified when the reaction starts."
+      },
+      "speechStyle": {
+        "zh-CN": "孩子说话简短、口语化；家长讲经过，不用医学术语，药名照诊所的单子说。",
+        "en": "The boy speaks in short, everyday sentences; his parent tells the story without medical terms and reads the drug names off the clinic's papers."
+      },
+      "healthLiteracy": "medium",
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "（孩子）我咳嗽有10天了，这5天还一直发烧。",
+        "en": "(The boy) I've been coughing for ten days, and I've had a fever for the last five."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个他的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in his case notes, so I can't really say."
+      },
+      "concerns": [
+        {
+          "zh-CN": "打了4天针都不好，他这个肺炎要紧吗？",
+          "en": "Four days of drips and his chest is no better — is it serious?"
+        },
+        {
+          "zh-CN": "他以前对青霉素过敏，这次用的药没问题吧？",
+          "en": "He's been allergic to penicillin before — will this new medicine be all right?"
+        }
+      ],
+      "actingNotes": {
+        "zh-CN": "家长回答病史；直接问孩子的问题由孩子回答。输液开始约15秒后，孩子突然喘不上气、嘴巴和嗓子发麻、全身发痒，人有些迷糊，每次只能说几个字；平稳后说话恢复正常。家长紧张，想知道是不是药的问题。病历里没有的事（上次青霉素过敏的具体表现、体重）如实说不知道，不要编。",
+        "en": "The parent gives the history; questions put to the boy he answers himself. About 15 seconds into the infusion he suddenly cannot breathe, his mouth and throat go numb and he itches all over; he is dazed and manages only a few words at a time, and speaks normally again once he has settled. The parent is frightened and wants to know whether it is the medicine. Details the notes do not record (what the earlier penicillin reaction was like, his weight) are honestly not known — never invent them."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "小川的家长（化名）",
+          "en": "Xiaochuan's parent (pseudonym)"
+        },
+        "persona": {
+          "zh-CN": "陪孩子住院的家长：着急孩子的肺炎一直不好，记得诊所输过哪些药；关于孩子的“青霉素过敏”，只知道当年说是那一批青霉素过敏，细节说不上来。",
+          "en": "The parent staying with him: worried that his chest is not getting better, and remembers which drips the clinic gave; about his “penicillin allergy” knows only that it was said to be that batch of penicillin, and cannot give details."
+        },
+        "answersHistory": true,
+        "appearance": {
+          "stature": "adult",
+          "build": "average",
+          "shirt": "#7a6a5a",
+          "pants": "#3b3f4a",
+          "hairStyle": "short"
+        }
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "sitting"
+  },
+  "phases": [
+    {
+      "id": "admission",
+      "label": {
+        "zh-CN": "入院：首剂用药前",
+        "en": "Admission: before the first dose"
+      },
+      "description": {
+        "zh-CN": "入院当天，诊断急性支气管肺炎，医嘱首剂头孢噻肟钠/舒巴坦钠静脉滴注。",
+        "en": "Day of admission: acute bronchopneumonia; the first dose of IV cefotaxime/sulbactam is prescribed."
+      },
+      "learnerSwitchable": false
+    },
+    {
+      "id": "reaction",
+      "label": {
+        "zh-CN": "首剂输注约15秒后",
+        "en": "About 15 seconds into the first dose"
+      },
+      "description": {
+        "zh-CN": "按原报告，入院青霉素皮试阴性后开始首剂头孢噻肟钠/舒巴坦钠1.25 g加5%葡萄糖100 mL静脉滴注（30滴/分）。约15秒后，他突然喘不上气。",
+        "en": "As in the report, after a negative penicillin skin test the first dose of cefotaxime/sulbactam 1.25 g in 5% glucose 100 mL was started by IV infusion (30 drops/min). About 15 seconds later he suddenly cannot breathe."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "attempted": "pre-dose"
+      }
+    },
+    {
+      "id": "recovery",
+      "label": {
+        "zh-CN": "急救之后",
+        "en": "After the emergency treatment"
+      },
+      "description": {
+        "zh-CN": "他平稳下来了。本阶段的数值是原报告按其处理后的记录。",
+        "en": "He has settled. The values in this phase are the report's, after its own treatment."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "attempted": "adrenaline"
+          },
+          {
+            "any": [
+              {
+                "intervened": "adrenaline-im"
+              },
+              {
+                "intervened": "adrenaline-iv-bolus"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告的处理经过与结局",
+        "en": "Reported treatment and outcome"
+      },
+      "description": {
+        "zh-CN": "原报告记录的处理顺序、剂量、反应和出院。",
+        "en": "The treatment sequence, doses, responses and discharge as the report records them."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "pre-dose"
+          },
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "decided": "adrenaline"
+          },
+          {
+            "decided": "aftercare"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "admission",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "孩子这次哪里不舒服？多久了？",
+        "en": "What's brought him in, and for how long?"
+      },
+      "answer": {
+        "zh-CN": "咳嗽有10天了，这5天还一直发烧。",
+        "en": "He's been coughing for ten days, and he's had a fever for the last five."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里不舒服",
+          "怎么不舒服",
+          "咳了多久",
+          "咳嗽几天",
+          "发烧几天",
+          "烧了几天",
+          "多长时间",
+          "什么时候开始",
+          "主诉",
+          "因为什么来",
+          "为什么来医院",
+          "发烧",
+          "发热",
+          "咳嗽"
+        ],
+        "en": [
+          "whatsbroughthimin",
+          "whatbringshim",
+          "how long coughing",
+          "how long cough",
+          "fever start",
+          "cough start",
+          "how long fever",
+          "whatswrong",
+          "what's wrong",
+          "presenting complaint",
+          "temperature",
+          "fever",
+          "cough"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏"
+        ],
+        "en": [
+          "allerg"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·主诉（咳嗽10 d，发热5 d）；依据原文改写的家长回答",
+        "en": "Main text · chief complaint (cough 10 days, fever 5 days); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "来医院之前用过什么药？",
+        "en": "What treatment has he had before coming in?"
+      },
+      "answer": {
+        "zh-CN": "在我们那儿的诊所输了4天液，有头孢呋辛、氨溴索，还有炎琥宁，一直不见好。",
+        "en": "He had drips at our local clinic for four days — cefuroxime, ambroxol and Yanhuning (炎琥宁, an andrographolide-derived injection) — and he didn't get better."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用过什么药",
+          "用过哪些药",
+          "打过什么针",
+          "输过什么液",
+          "输液",
+          "诊所用药",
+          "抗生素",
+          "消炎药",
+          "头孢呋辛"
+        ],
+        "en": [
+          "medicines",
+          "antibiotics",
+          "whatdidtheygive",
+          "clinic",
+          "drips",
+          "treatment before",
+          "cefuroxime",
+          "drugs",
+          "beengiven",
+          "given so far"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "反应",
+          "不舒服"
+        ],
+        "en": [
+          "allerg",
+          "react",
+          "problem"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史（入院前在当地诊所静脉滴注头孢呋辛、氨溴索、炎琥宁4 d未见好转；原文作“头孢呋辛纳”，即头孢呋辛钠；剂量未记录）；依据原文改写的家长回答",
+        "en": "Main text · present illness (4 days of IV cefuroxime, ambroxol and Yanhuning at a local clinic without improvement; written “头孢呋辛纳” in the report, i.e. cefuroxime sodium; doses not recorded); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "cefuroxime-reaction",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "诊所输头孢呋辛那几天，他有没有过敏或者不舒服？",
+        "en": "Did he have any reaction during those days of cefuroxime?"
+      },
+      "answer": {
+        "zh-CN": "那几天输液有没有不舒服，他的病历里没有记录，我说不上来。",
+        "en": "Whether he had any reaction during those drips isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "输头孢呋辛",
+          "头孢呋辛过敏",
+          "那几天输液",
+          "输液时有没有反应",
+          "诊所输液反应",
+          "以前用头孢"
+        ],
+        "en": [
+          "reaction to cefuroxime",
+          "react to the cefuroxime",
+          "cefuroxime reaction",
+          "problems with the drips",
+          "tolerate cefuroxime"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "他以前对什么药过敏过吗？",
+        "en": "Has he ever been allergic to any medicine?"
+      },
+      "answer": {
+        "zh-CN": "他以前对青霉素过敏过——说是那一批青霉素过敏。",
+        "en": "He's been allergic to penicillin before — they said it was that batch of penicillin."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "过敏史",
+          "对什么过敏",
+          "青霉素过敏",
+          "对药过敏"
+        ],
+        "en": [
+          "allergies",
+          "allergic",
+          "allergy",
+          "drug allergy",
+          "penicillin allergy",
+          "allergicto",
+          "drug reaction"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "家人",
+          "过敏体质",
+          "什么表现",
+          "什么样子",
+          "头孢呋辛"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "eczema",
+          "asthma",
+          "what happened",
+          "cefuroxime"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "正文·既往史（“既往青霉素批次过敏”；病例经过中又写作“批号过敏”）；依据原文改写的家长回答",
+        "en": "Main text · past history (“penicillin batch allergy”; the case course calls it a “lot-number allergy”); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "allergy-detail",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "上次青霉素过敏是什么样子？多大的时候？怎么处理的？",
+        "en": "That penicillin reaction — what did it look like, how old was he and how was it treated?"
+      },
+      "answer": {
+        "zh-CN": "上次过敏具体是什么样子、什么时候、怎么处理的，他的病历里没有记录，我说不上来。",
+        "en": "What that reaction looked like, when it was and how it was treated aren't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "什么表现",
+          "什么样子",
+          "过敏的表现",
+          "多大的时候",
+          "上次过敏",
+          "怎么处理的",
+          "起疹子",
+          "严不严重",
+          "那次过敏",
+          "过敏是怎么回事"
+        ],
+        "en": [
+          "whatdiditlooklike",
+          "howoldwashe",
+          "howwasittreated",
+          "reaction to penicillin",
+          "how bad",
+          "penicillin reaction",
+          "last time",
+          "previous reaction",
+          "what happened penicillin",
+          "rash penicillin"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "atopy",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "他平时是过敏体质吗？比如湿疹、鼻炎、哮喘？",
+        "en": "Is he an allergic sort of child — eczema, hay fever or asthma?"
+      },
+      "answer": {
+        "zh-CN": "不是，我们一直不觉得他是过敏体质。",
+        "en": "No — we've never thought of him as an allergic child."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏体质",
+          "湿疹",
+          "鼻炎",
+          "哮喘",
+          "特应性"
+        ],
+        "en": [
+          "eczema",
+          "hay fever",
+          "asthma",
+          "atopic",
+          "allergic child",
+          "atopy"
+        ]
+      },
+      "source": {
+        "zh-CN": "正文·既往史（否认过敏体质）；依据原文改写的家长回答",
+        "en": "Main text · past history (an atopic constitution was denied); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人有对药物过敏的吗？",
+        "en": "Is anyone in the family allergic to medicines?"
+      },
+      "answer": {
+        "zh-CN": "家里人没有对药物过敏的。",
+        "en": "No one in the family is allergic to any medicine."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里人",
+          "家族",
+          "家人过敏",
+          "家里有人过敏",
+          "父母过敏",
+          "遗传"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "anyone in the family",
+          "runs in the family",
+          "parents allergic"
+        ]
+      },
+      "source": {
+        "zh-CN": "正文·既往史（否认家属药物过敏史）；依据原文改写的家长回答",
+        "en": "Main text · past history (no drug allergy in the family); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "他多重？",
+        "en": "How much does he weigh?"
+      },
+      "answer": {
+        "zh-CN": "他多重，他的病历里没有记录，我说不上来。",
+        "en": "His weight isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "多重",
+          "多少斤",
+          "多少公斤",
+          "称过体重"
+        ],
+        "en": [
+          "weight",
+          "weigh",
+          "how heavy",
+          "kilos",
+          "kilograms"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "immunisation",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "他的疫苗都打了吗？",
+        "en": "Is he up to date with his vaccinations?"
+      },
+      "answer": {
+        "zh-CN": "疫苗打得怎么样，他的病历里没有记录，我说不上来。",
+        "en": "His vaccinations aren't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "疫苗",
+          "预防针",
+          "预防接种",
+          "接种",
+          "打针本"
+        ],
+        "en": [
+          "vaccinations",
+          "vaccines",
+          "immunisations",
+          "jabs",
+          "uptodate"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "他以前得过什么病、住过院吗？",
+        "en": "Has he had any illnesses or hospital stays before?"
+      },
+      "answer": {
+        "zh-CN": "以前得过什么病、住没住过院，他的病历里没有记录，我说不上来。",
+        "en": "His earlier illnesses and any hospital stays aren't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前得过什么病",
+          "既往史",
+          "住过院",
+          "住院史",
+          "做过手术",
+          "以前身体",
+          "平时身体",
+          "生过什么病",
+          "大病"
+        ],
+        "en": [
+          "past medical history",
+          "previous illnesses",
+          "beeninhospital",
+          "hospital before",
+          "operations",
+          "surgery",
+          "usually well",
+          "usually healthy"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "household",
+      "topic": "social",
+      "question": {
+        "zh-CN": "家里有人抽烟吗？平时谁照顾他？",
+        "en": "Does anyone smoke at home, and who looks after him?"
+      },
+      "answer": {
+        "zh-CN": "家里的情况，他的病历里没有记录，我说不上来。",
+        "en": "His home situation isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里有人抽烟",
+          "抽烟",
+          "吸烟",
+          "二手烟",
+          "谁照顾",
+          "谁带他",
+          "家里情况",
+          "上学"
+        ],
+        "en": [
+          "smoke at home",
+          "smoking",
+          "second-hand smoke",
+          "who looks after him",
+          "home",
+          "school"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您有什么担心的吗？",
+        "en": "Is there anything worrying you?"
+      },
+      "answer": {
+        "zh-CN": "打了4天针都不好，我就怕他肺炎越来越重。他以前对青霉素过敏，这次用的药没问题吧？",
+        "en": "Four days of drips and he's no better — I'm afraid the pneumonia is getting worse. He's been allergic to penicillin before; this new medicine will be all right, won't it?"
+      },
+      "keywords": {
+        "zh-CN": [
+          "担心",
+          "最担心",
+          "顾虑",
+          "害怕",
+          "有什么想问"
+        ],
+        "en": [
+          "worries",
+          "worried",
+          "worrying",
+          "concerns",
+          "afraid",
+          "anyquestions"
+        ]
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "教学改写：家长的担忧为角色设定，原报告未记录",
+        "en": "Teaching adaptation: the parent's worries are part of the role and are not in the report"
+      }
+    },
+    {
+      "id": "reaction",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "小朋友，你现在哪里不舒服？",
+        "en": "What's wrong, buddy — how do you feel?"
+      },
+      "answer": {
+        "zh-CN": "喘……喘不上气……嘴巴周围和嗓子发麻……身上好痒……",
+        "en": "Can't… breathe… my mouth and throat are numb… I'm itchy all over…"
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里不舒服",
+          "哪里难受",
+          "怎么了",
+          "什么感觉",
+          "喘不上气",
+          "发麻",
+          "痒不痒",
+          "小朋友",
+          "喘气",
+          "身上痒",
+          "呼吸困难"
+        ],
+        "en": [
+          "howdoyoufeel",
+          "whatswrong",
+          "canyoubreathe",
+          "itchy",
+          "numb",
+          "buddy",
+          "whatsthematter"
+        ]
+      },
+      "speaker": "patient",
+      "phases": [
+        "reaction"
+      ],
+      "supersedes": [
+        "presentation"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "正文：“患儿突然呼吸困难，自述口周、咽部有麻木感，同时出现周身皮肤瘙痒感”；孩子的话为教学改写",
+        "en": "Main text: “sudden breathing difficulty; he reported perioral and pharyngeal numbness and itching all over”; the boy's words are a teaching adaptation"
+      }
+    },
+    {
+      "id": "reaction-onset",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "刚才发生了什么？",
+        "en": "What just happened?"
+      },
+      "answer": {
+        "zh-CN": "新的药刚输上，也就十五秒左右，他就喊喘不上气，身上一下子起了一片一片的红疙瘩！",
+        "en": "The new drip had only been running about fifteen seconds when he cried out that he couldn't breathe, and red blotches came up all over him!"
+      },
+      "keywords": {
+        "zh-CN": [
+          "刚才发生了什么",
+          "刚才怎么回事",
+          "怎么回事",
+          "什么时候开始的",
+          "输上多久",
+          "出什么事了"
+        ],
+        "en": [
+          "whatjusthappened",
+          "whathappened",
+          "whendiditstart",
+          "whendidthisstart",
+          "how long after the drip",
+          "how soon",
+          "reaction to the drip"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "青霉素",
+          "上次",
+          "以前",
+          "头孢呋辛"
+        ],
+        "en": [
+          "penicillin",
+          "last time",
+          "cefuroxime",
+          "previous"
+        ]
+      },
+      "phases": [
+        "reaction",
+        "recovery",
+        "followup"
+      ],
+      "source": {
+        "zh-CN": "教学改写：依据原报告（开始输注约15 s后呼吸困难，周身散在片状红色皮疹）写成家长所见",
+        "en": "Teaching adaptation: the parent's account follows the report (breathing difficulty about 15 s after the infusion began; patchy red rash all over)"
+      }
+    },
+    {
+      "id": "status-recovery",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在感觉怎么样了？",
+        "en": "How are you feeling now?"
+      },
+      "answer": {
+        "zh-CN": "好多了……嘴巴不麻了，也不喘了。",
+        "en": "Much better… my mouth isn't numb any more and I can breathe."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在感觉",
+          "好点了吗",
+          "好多了吗",
+          "还喘吗",
+          "还麻吗",
+          "现在怎么样",
+          "哪里不舒服",
+          "哪里难受",
+          "还痒吗",
+          "喘气"
+        ],
+        "en": [
+          "feeling better",
+          "howareyounow",
+          "still numb",
+          "breathing now",
+          "better now",
+          "howareyoufeelingnow",
+          "howdoyoufeel",
+          "canyoubreathe",
+          "still itchy",
+          "whatswrong"
+        ]
+      },
+      "speaker": "patient",
+      "phases": [
+        "recovery"
+      ],
+      "source": {
+        "zh-CN": "正文：再次地塞米松约3 min后呼吸平稳、口咽部麻木消失，1 h后神志清醒（原报告处理后的状态）；孩子的话为教学改写",
+        "en": "Main text: about 3 min after the second dexamethasone his breathing settled and the numbness went, and at 1 h he was alert (the state after the report's treatment); the boy's words are a teaching adaptation"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "admission-exam",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "入院体格检查",
+        "en": "Admission examination"
+      },
+      "keywords": {
+        "zh-CN": [
+          "查体",
+          "体格检查",
+          "检查一下",
+          "听诊",
+          "听肺",
+          "心肺",
+          "肺部",
+          "腹部",
+          "咽部"
+        ],
+        "en": [
+          "examine",
+          "examination",
+          "listen to his chest",
+          "chest",
+          "lungs",
+          "heart",
+          "abdomen",
+          "throat"
+        ]
+      },
+      "finding": {
+        "zh-CN": "原报告概括：入院查体各项指标未见异常。",
+        "en": "The report summarises the admission examination as “all parameters unremarkable”."
+      },
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文：“入院查体各指标未见异常”",
+        "en": "Main text: “admission examination: all parameters unremarkable”"
+      }
+    },
+    {
+      "id": "consciousness",
+      "system": "mental-status",
+      "maneuver": {
+        "zh-CN": "看神志和面色",
+        "en": "Check his conscious level and colour"
+      },
+      "keywords": {
+        "zh-CN": [
+          "神志",
+          "意识",
+          "面色",
+          "精神",
+          "叫得醒",
+          "清醒吗"
+        ],
+        "en": [
+          "conscious",
+          "consciousness",
+          "colour",
+          "alert",
+          "responsive",
+          "drowsy",
+          "gcs"
+        ]
+      },
+      "finding": {
+        "zh-CN": "神志恍惚，面色苍白。",
+        "en": "Clouded consciousness (dazed); pale."
+      },
+      "abnormal": true,
+      "phases": [
+        "reaction"
+      ],
+      "source": {
+        "zh-CN": "正文·首剂输注后的病情与查体",
+        "en": "Main text · the reaction to the first dose and the examination"
+      }
+    },
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "看全身皮肤",
+        "en": "Look at his skin all over"
+      },
+      "keywords": {
+        "zh-CN": [
+          "皮肤",
+          "皮疹",
+          "疹子",
+          "红疙瘩",
+          "风团",
+          "出汗",
+          "瘙痒"
+        ],
+        "en": [
+          "skin",
+          "rash",
+          "hives",
+          "wheals",
+          "urticaria",
+          "sweating",
+          "blotches"
+        ]
+      },
+      "finding": {
+        "zh-CN": "周身散在片状红色充血性皮疹，突出体表，部分融合；大汗。",
+        "en": "Patchy, red, raised rash scattered over the whole body, partly confluent; profuse sweating."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "reaction"
+      ],
+      "source": {
+        "zh-CN": "正文·首剂输注后的病情与查体",
+        "en": "Main text · the reaction to the first dose and the examination"
+      }
+    },
+    {
+      "id": "airway",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "评估气道和呼吸",
+        "en": "Assess his airway and breathing"
+      },
+      "keywords": {
+        "zh-CN": [
+          "气道",
+          "呼吸",
+          "呼吸频率",
+          "发绀",
+          "口唇",
+          "喘",
+          "听肺",
+          "呼吸困难",
+          "双肺",
+          "肺部"
+        ],
+        "en": [
+          "airway",
+          "breathing",
+          "respiratory rate",
+          "cyanosis",
+          "lips",
+          "wheeze",
+          "listen to his chest",
+          "work of breathing"
+        ]
+      },
+      "finding": {
+        "zh-CN": "口周发绀，口吐白沫，呼吸急促，约50次/分。（首次查体未单独描述喘憋；原文在用药后记录“呼吸费力及喘憋较前缓解”，说明当时有呼吸费力和喘憋。）",
+        "en": "Perioral cyanosis, frothing at the mouth, rapid breathing at about 50/min. (The first examination does not describe wheeze separately; after treatment the report records that “the laboured breathing and wheeze eased”, so both were present.)"
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "reaction"
+      ],
+      "source": {
+        "zh-CN": "正文·首剂输注后的病情与查体",
+        "en": "Main text · the reaction to the first dose and the examination"
+      }
+    },
+    {
+      "id": "heart",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "心脏听诊",
+        "en": "Listen to his heart"
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏",
+          "心音",
+          "心率",
+          "听心脏",
+          "心律"
+        ],
+        "en": [
+          "heart",
+          "heart sounds",
+          "heart rate",
+          "listen to his heart",
+          "rhythm"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心音有力，律齐，心率140次/分。",
+        "en": "Strong, regular heart sounds; heart rate 140/min."
+      },
+      "abnormal": true,
+      "phases": [
+        "reaction"
+      ],
+      "source": {
+        "zh-CN": "正文·首剂输注后的病情与查体",
+        "en": "Main text · the reaction to the first dose and the examination"
+      }
+    },
+    {
+      "id": "perfusion",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "摸脉搏、看末梢灌注",
+        "en": "Feel his pulse and check peripheral perfusion"
+      },
+      "keywords": {
+        "zh-CN": [
+          "脉搏",
+          "摸脉",
+          "末梢",
+          "手脚凉",
+          "四肢凉",
+          "毛细血管再充盈",
+          "crt",
+          "灌注",
+          "手脚"
+        ],
+        "en": [
+          "pulse",
+          "feel his pulse",
+          "capillary refill",
+          "crt",
+          "cold hands",
+          "peripheries",
+          "perfusion",
+          "circulation",
+          "hands and feet"
+        ]
+      },
+      "finding": {
+        "zh-CN": "脉弱，四肢末梢凉，毛细血管再充盈时间>5秒。",
+        "en": "Weak pulse; cold hands and feet; capillary refill > 5 s."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "reaction"
+      ],
+      "source": {
+        "zh-CN": "正文·首剂输注后的病情与查体",
+        "en": "Main text · the reaction to the first dose and the examination"
+      }
+    },
+    {
+      "id": "vitals",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "看监护仪：血压和经皮氧饱和度",
+        "en": "Read the monitor: blood pressure and SpO₂"
+      },
+      "keywords": {
+        "zh-CN": [
+          "血压",
+          "测血压",
+          "血氧",
+          "氧饱和度",
+          "生命体征",
+          "监护读数",
+          "监护仪"
+        ],
+        "en": [
+          "blood pressure",
+          "bp",
+          "sats",
+          "oxygen saturation",
+          "vital signs",
+          "obs",
+          "monitor readings"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心电、血压、经皮氧饱和度监测：血压60/30 mmHg，经皮氧饱和度85%。",
+        "en": "ECG, blood pressure and pulse-oximetry monitoring: blood pressure 60/30 mmHg, SpO₂ 85%."
+      },
+      "abnormal": true,
+      "requires": [
+        "cardiac-monitor"
+      ],
+      "phases": [
+        "reaction"
+      ],
+      "source": {
+        "zh-CN": "正文·首剂输注后的病情与查体",
+        "en": "Main text · the reaction to the first dose and the examination"
+      }
+    },
+    {
+      "id": "recovery-status",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "复查全身情况",
+        "en": "Reassess him"
+      },
+      "keywords": {
+        "zh-CN": [
+          "复查",
+          "重新评估",
+          "现在怎么样",
+          "一般情况",
+          "神志",
+          "精神",
+          "血压",
+          "血氧",
+          "生命体征",
+          "心率"
+        ],
+        "en": [
+          "reassess",
+          "re-examine",
+          "howishenow",
+          "general state",
+          "alert",
+          "blood pressure",
+          "sats",
+          "vital signs",
+          "heart rate"
+        ]
+      },
+      "finding": {
+        "zh-CN": "（原报告，按其处理后1小时）神志转清醒，一般状态良好，心率95次/分，经皮氧饱和度95%以上，呼吸25次/分，生命体征稳定。",
+        "en": "(The report, 1 hour after its treatment) Alert again and generally well; heart rate 95/min, SpO₂ above 95%, respiratory rate 25/min; vital signs stable."
+      },
+      "phases": [
+        "recovery"
+      ],
+      "source": {
+        "zh-CN": "正文·1 h后查体",
+        "en": "Main text · examination 1 hour later"
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有记录这项检查。",
+    "en": "The report does not record this examination."
+  },
+  "investigations": [
+    {
+      "id": "xray",
+      "name": {
+        "zh-CN": "胸片报告（入院时）",
+        "en": "Chest X-ray report (on admission)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸片",
+          "胸部x线",
+          "x线",
+          "胸部平片",
+          "胸片报告"
+        ],
+        "en": [
+          "chest x-ray",
+          "cxr",
+          "chest film",
+          "x-ray",
+          "chest radiograph"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院时",
+            "en": "On admission"
+          },
+          "text": {
+            "zh-CN": "X线胸片提示左肺炎症（原报告未描述更多影像细节）。",
+            "en": "The chest X-ray indicates inflammation of the left lung (no further detail is given)."
+          },
+          "source": {
+            "zh-CN": "正文·现病史",
+            "en": "Main text · present illness"
+          }
+        }
+      }
+    },
+    {
+      "id": "skin-test",
+      "name": {
+        "zh-CN": "青霉素皮试记录",
+        "en": "Penicillin skin test record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "皮试",
+          "青霉素皮试",
+          "皮试结果",
+          "皮试记录",
+          "过敏试验"
+        ],
+        "en": [
+          "skin test",
+          "penicillin skin test",
+          "skin test result",
+          "allergy test"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院时",
+            "en": "On admission"
+          },
+          "text": {
+            "zh-CN": "入院青霉素皮试：阴性（试剂、方法和判读标准未记录）。",
+            "en": "Penicillin skin test on admission: negative (reagent, method and reading criteria not recorded)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "青霉素皮试",
+                "en": "Penicillin skin test"
+              },
+              "value": {
+                "zh-CN": "阴性",
+                "en": "negative"
+              }
+            }
+          ],
+          "source": {
+            "zh-CN": "正文：“患儿入院青霉素皮试阴性后……”",
+            "en": "Main text: “after a negative penicillin skin test on admission…”"
+          }
+        }
+      }
+    },
+    {
+      "id": "admission-labs",
+      "name": {
+        "zh-CN": "入院血常规及炎症指标",
+        "en": "Admission blood count and inflammatory markers"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "血象",
+          "crp",
+          "炎症指标",
+          "抽血化验",
+          "降钙素原"
+        ],
+        "en": [
+          "blood count",
+          "fbc",
+          "crp",
+          "bloods",
+          "inflammatory markers",
+          "procalcitonin"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "value": "neutral",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有入院时的血液检查结果。",
+            "en": "The report gives no admission blood results."
+          },
+          "source": {
+            "zh-CN": "原报告未记录：保持未知，不补写",
+            "en": "Not in the report: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "infusion-chart",
+      "name": {
+        "zh-CN": "输液记录（头孢噻肟钠/舒巴坦钠）",
+        "en": "Infusion record (cefotaxime/sulbactam)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "输液记录",
+          "用药记录",
+          "医嘱单",
+          "输液单",
+          "滴速",
+          "用药情况",
+          "处方",
+          "医嘱"
+        ],
+        "en": [
+          "infusion record",
+          "drug chart",
+          "medication chart",
+          "infusion chart",
+          "drip rate",
+          "prescription"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院当天，首剂前",
+            "en": "Day of admission, before the first dose"
+          },
+          "text": {
+            "zh-CN": "首剂医嘱：头孢噻肟钠/舒巴坦钠1.25 g（头孢噻肟与舒巴坦标示量比2∶1）加5%葡萄糖100 mL静脉滴注，尚未开始。入院前在诊所静脉滴注头孢呋辛、氨溴索、炎琥宁4天（剂量未记录）。",
+            "en": "First-dose prescription: cefotaxime/sulbactam 1.25 g (labelled cefotaxime to sulbactam 2:1) in 5% glucose 100 mL by IV infusion — not yet started. Before admission: 4 days of IV cefuroxime, ambroxol and Yanhuning at a clinic (doses not recorded)."
+          },
+          "source": {
+            "zh-CN": "正文·病例经过（首剂剂量和溶媒）；讨论（2∶1比例）；以医嘱形式呈现为教学改写",
+            "en": "Main text · case course (first-dose amount and diluent); discussion (the 2:1 ratio); shown as a prescription for teaching"
+          }
+        },
+        "reaction": {
+          "date": {
+            "zh-CN": "入院当天，首剂",
+            "en": "Day of admission, first dose"
+          },
+          "text": {
+            "zh-CN": "入院青霉素皮试阴性后，头孢噻肟钠/舒巴坦钠1.25 g（头孢噻肟与舒巴坦标示量比2∶1）加5%葡萄糖100 mL，以30滴/分静脉滴注；开始约15秒后发病。输液器滴系数未记录。入院前在诊所静脉滴注头孢呋辛、氨溴索、炎琥宁4天（剂量未记录）。",
+            "en": "After a negative penicillin skin test: cefotaxime/sulbactam 1.25 g (labelled cefotaxime to sulbactam 2:1) in 5% glucose 100 mL by IV infusion at 30 drops/min; the reaction began about 15 seconds after the start. The giving set's drop factor is not recorded. Before admission: 4 days of IV cefuroxime, ambroxol and Yanhuning at a clinic (doses not recorded)."
+          },
+          "source": {
+            "zh-CN": "正文·病例经过；讨论（2∶1比例）",
+            "en": "Main text · case course; discussion (the 2:1 ratio)"
+          }
+        }
+      }
+    },
+    {
+      "id": "blood-gas",
+      "name": {
+        "zh-CN": "血气分析",
+        "en": "Blood gas"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血气",
+          "血气分析",
+          "动脉血气",
+          "静脉血气",
+          "乳酸"
+        ],
+        "en": [
+          "blood gas",
+          "abg",
+          "vbg",
+          "arterial gas",
+          "lactate"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "value": "neutral",
+      "results": {
+        "reaction": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有血气分析结果。",
+            "en": "The report has no blood gas result."
+          },
+          "source": {
+            "zh-CN": "原报告未记录：保持未知，不补写",
+            "en": "Not in the report: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "tryptase",
+      "name": {
+        "zh-CN": "血清类胰蛋白酶",
+        "en": "Serum mast-cell tryptase"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "类胰蛋白酶",
+          "胰蛋白酶",
+          "肥大细胞类胰蛋白酶",
+          "tryptase"
+        ],
+        "en": [
+          "tryptase",
+          "mast cell tryptase",
+          "serum tryptase"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "value": "useful",
+      "results": {
+        "reaction": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有类胰蛋白酶的检测结果。",
+            "en": "The report has no tryptase result."
+          },
+          "source": {
+            "zh-CN": "原报告未记录：保持未知，不补写",
+            "en": "Not in the report: kept unknown, nothing added"
+          }
+        },
+        "recovery": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有类胰蛋白酶的检测结果。",
+            "en": "The report has no tryptase result."
+          },
+          "source": {
+            "zh-CN": "原报告未记录：保持未知，不补写",
+            "en": "Not in the report: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告：处理经过与结局",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "随访",
+          "结局",
+          "原报告怎么处理",
+          "处理经过",
+          "后来怎么样",
+          "转归"
+        ],
+        "en": [
+          "follow-up",
+          "followup",
+          "outcome",
+          "reported treatment",
+          "what the team did"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "date": {
+            "zh-CN": "首剂当天至出院",
+            "en": "From the first dose to discharge"
+          },
+          "text": {
+            "zh-CN": "原报告的处理顺序：结合既往青霉素“批号过敏”史，考虑头孢噻肟钠/舒巴坦钠过敏可能性大，立即停止输注，生理盐水保持静脉通路；地塞米松5 mg静注“减轻过敏反应”；心电、血压、经皮氧饱和度监测示血压60/30 mmHg、SpO₂ 85%；鼻导管吸氧3 L/min；考虑过敏性休克，给予1/10 000（0.1 mg/mL）肾上腺素2.5 mL静脉推注（即0.25 mg，编者换算）。5分钟后血压逐渐升至116/60 mmHg，SpO₂ 95%以上，脉搏较前有力，监护心率100次/分左右，意识较前清晰，呼吸费力及喘憋缓解。因仍有口周、咽部麻木，再次给予地塞米松5 mg，约3分钟后呼吸平稳，喘憋和口咽部麻木消失；继续心电监护和鼻导管吸氧。1小时后神志清醒，一般状态良好，心率95次/分，SpO₂ 95%以上，呼吸25次/分。治疗10天后治愈出院。这一“先激素、后静脉推注肾上腺素”的顺序是历史记录，不是教学答案。讨论中作者指出：该复方的不良反应资料主要列皮疹、胸闷、气急、恶心和腹泻等，未提及过敏性休克；文献中头孢菌素引起的过敏性休克以第三代为主，其中头孢噻肟钠居首，头孢噻肟钠/舒巴坦钠的报道少见；机制主要为IgE介导的Ⅰ型超敏反应。作者推测的原因：①药物批次不同，可能含杂质；②结合青霉素批次过敏史，可能对头孢噻肟成分过敏；③可能对舒巴坦过敏（尚无报道）——均未证实。作者的建议：对有青霉素过敏史的患儿，用药前要预见严重过敏反应的可能，在专业人员严密监护下用药，安抚患儿情绪，注意滴速，尤其前10分钟一定要慢。原报告没有记录类胰蛋白酶、观察时长、反应后改用的抗菌药物、过敏标注和变态反应科随访，也没有记录此后是否再用过β-内酰胺类药物。",
+            "en": "The report's sequence: given the earlier penicillin “lot-number allergy”, a reaction to cefotaxime/sulbactam was thought most likely; the infusion was stopped at once and the line kept open with saline; dexamethasone 5 mg IV “to lessen the allergic reaction”; ECG, blood pressure and pulse-oximetry monitoring showed BP 60/30 mmHg and SpO₂ 85%; nasal-cannula oxygen 3 L/min; anaphylactic shock was considered and 2.5 mL of 1 in 10 000 (0.1 mg/mL) adrenaline was given as an IV push (0.25 mg, derived by the editors). Five minutes later his blood pressure had risen gradually to 116/60 mmHg, SpO₂ was above 95%, his pulse was stronger, the monitor showed a heart rate of about 100/min, he was more alert, and the laboured breathing and wheeze had eased. Because the perioral and throat numbness persisted, a second dexamethasone 5 mg was given; about 3 minutes later his breathing was calm and the wheeze and numbness had gone; monitoring and nasal oxygen continued. At 1 hour he was alert and generally well: heart rate 95/min, SpO₂ above 95%, respiratory rate 25/min. He was discharged cured after 10 days of treatment. This “steroid first, then an IV adrenaline push” sequence is the historical record, not the teaching answer. In their discussion the authors note that the product's adverse-effect information lists mainly rash, chest tightness, breathlessness, nausea and diarrhoea and does not mention anaphylactic shock; that in the literature cephalosporin anaphylactic shock is mostly due to third-generation agents, with cefotaxime the most often reported, while reports for cefotaxime/sulbactam are few; and that the mechanism is mainly IgE-mediated type I hypersensitivity. The authors' possible explanations — (1) a different batch, perhaps with an impurity; (2) allergy to the cefotaxime component, given the penicillin batch allergy; (3) allergy to sulbactam (not previously reported) — were not confirmed. Their advice: for a child with a penicillin allergy history, anticipate a severe reaction, give the drug under close professional observation, calm the child, and mind the infusion rate — slow, especially in the first 10 minutes. The report records no tryptase, observation period, antibiotic used afterwards, allergy record or allergy follow-up, nor whether he later received any β-lactam."
+          },
+          "source": {
+            "zh-CN": "正文·病例经过；讨论",
+            "en": "Main text · case course; discussion"
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "rules": [],
+    "warnings": [
+      {
+        "investigation": "skin-test",
+        "ifMatches": "头孢|cef|ceph|舒巴坦|sulbactam",
+        "message": {
+          "zh-CN": "原报告只做了青霉素皮试，没有做头孢噻肟钠/舒巴坦钠皮试。",
+          "en": "The report has only a penicillin skin test; no cefotaxime/sulbactam skin test was done."
+        }
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "stop-infusion",
+      "name": {
+        "zh-CN": "立即停止输注头孢噻肟钠/舒巴坦钠，保留静脉通路",
+        "en": "Stop the cefotaxime/sulbactam infusion now; keep the IV line open"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "停药",
+          "停止输液",
+          "停输液",
+          "关掉输液",
+          "停止输注",
+          "停掉头孢"
+        ],
+        "en": [
+          "stop the infusion",
+          "stop the drip",
+          "stop the antibiotic",
+          "turn off the drip",
+          "stop the drug"
+        ]
+      },
+      "dose": {
+        "zh-CN": "停止输注可疑药物；用生理盐水保持静脉通路。",
+        "en": "Stop the suspect drug; keep the cannula open with saline."
+      },
+      "requires": [],
+      "scope": "nursing",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "reaction"
+      },
+      "response": {
+        "zh-CN": "已停止输注。原报告的第一步也是停药，并用生理盐水保持静脉通路。",
+        "en": "Infusion stopped. The report's first step was also to stop the drug and keep the line open with saline."
+      }
+    },
+    {
+      "id": "call-help",
+      "name": {
+        "zh-CN": "呼救：呼叫上级医师和急救团队",
+        "en": "Call for help: senior doctor and resuscitation team"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "呼救",
+          "叫人",
+          "呼叫上级",
+          "叫急救团队",
+          "叫抢救",
+          "喊人帮忙"
+        ],
+        "en": [
+          "call for help",
+          "get help",
+          "call the team",
+          "crash call",
+          "senior help",
+          "resus team"
+        ]
+      },
+      "dose": {
+        "zh-CN": "呼叫上级医师和儿科急救团队到床旁。",
+        "en": "Call the senior doctor and the paediatric resuscitation team to the bedside."
+      },
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "reaction"
+      },
+      "response": {
+        "zh-CN": "已呼救。原报告没有写是否呼救。",
+        "en": "Help called. The report does not say whether help was called."
+      }
+    },
+    {
+      "id": "adrenaline-im",
+      "name": {
+        "zh-CN": "肾上腺素肌内注射（1 mg/mL，0.3 mL = 300 µg）",
+        "en": "IM adrenaline (1 mg/mL, 0.3 mL = 300 micrograms)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "肌注肾上腺素",
+          "肾上腺素肌注",
+          "肾上腺素肌内注射",
+          "肌内注射肾上腺素",
+          "大腿肌注肾上腺素",
+          "肾上腺素300微克"
+        ],
+        "en": [
+          "im adrenaline",
+          "intramuscular adrenaline",
+          "adrenaline im",
+          "epinephrine im",
+          "im epinephrine",
+          "adrenaline 300 micrograms",
+          "adrenaline into the thigh",
+          "epipen",
+          "auto-injector"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "静推",
+          "静注",
+          "静脉",
+          "万分之一"
+        ],
+        "en": [
+          "intraven",
+          "ivpush",
+          "ivbolus",
+          "ivadren",
+          "ivepi",
+          "iv adrenaline",
+          "iv epinephrine"
+        ]
+      },
+      "dose": {
+        "zh-CN": "肾上腺素1 mg/mL（1:1000）0.3 mL（300 µg），大腿前外侧肌内注射（6–12岁、体重不详时按年龄给药）；5分钟后无改善可重复。",
+        "en": "Adrenaline 1 mg/mL (1 in 1000) 0.3 mL (300 micrograms) IM into the anterolateral thigh (age 6–12 with the weight unknown: dose by age); repeat after 5 minutes if no better."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "phase": "reaction"
+      },
+      "response": {
+        "zh-CN": "已在大腿前外侧肌注肾上腺素300 µg。原报告没有用肌注，所以本例对肌注的反应没有记录。按RCUK 2021：5分钟后无改善可重复；两次肌注后仍无改善，按难治性过敏反应请专家处理。",
+        "en": "300 micrograms of adrenaline given IM into the anterolateral thigh. The report did not use IM adrenaline, so this child's response to it is not documented. Per RCUK 2021: repeat after 5 minutes if there is no improvement; if two IM doses fail, treat as refractory anaphylaxis with expert help."
+      }
+    },
+    {
+      "id": "position-flat",
+      "name": {
+        "zh-CN": "平卧（呼吸更舒服时可半卧），避免突然改变体位",
+        "en": "Lie him flat (semi-recumbent if that eases his breathing); no sudden change of posture"
+      },
+      "kind": "positioning",
+      "aliases": {
+        "zh-CN": [
+          "平卧",
+          "躺平",
+          "抬高双腿",
+          "抬腿",
+          "半卧位",
+          "体位"
+        ],
+        "en": [
+          "lie him flat",
+          "lie flat",
+          "raise his legs",
+          "legs up",
+          "semi-recumbent",
+          "position him"
+        ]
+      },
+      "dose": {
+        "zh-CN": "平卧；如果半卧位让他呼吸更舒服，可取半卧位；不要让他突然坐起或站立。",
+        "en": "Lying flat, or semi-recumbent if that makes his breathing easier; do not let him sit or stand up suddenly."
+      },
+      "posture": "lying",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "reaction"
+      },
+      "response": {
+        "zh-CN": "已让他平卧。原报告没有记录体位。",
+        "en": "He is lying flat. The report does not record his position."
+      }
+    },
+    {
+      "id": "oxygen-high",
+      "name": {
+        "zh-CN": "储氧面罩高流量吸氧（15 L/min）",
+        "en": "High-flow oxygen via a non-rebreather mask (15 L/min)"
+      },
+      "kind": "oxygen",
+      "aliases": {
+        "zh-CN": [
+          "高流量吸氧",
+          "储氧面罩",
+          "面罩吸氧",
+          "吸氧",
+          "给氧"
+        ],
+        "en": [
+          "high-flow oxygen",
+          "non-rebreather",
+          "oxygen mask",
+          "oxygen",
+          "o2"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "鼻导管",
+          "鼻氧管"
+        ],
+        "en": [
+          "nasal",
+          "cannula",
+          "prongs"
+        ]
+      },
+      "dose": {
+        "zh-CN": "储氧面罩15 L/min。",
+        "en": "15 L/min via a non-rebreather mask."
+      },
+      "requires": [
+        "oxygen"
+      ],
+      "device": "non-rebreather-mask",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "reaction"
+      },
+      "response": {
+        "zh-CN": "已用储氧面罩高流量吸氧。原报告用的是鼻导管3 L/min。",
+        "en": "High-flow oxygen on by non-rebreather mask. The report used nasal cannulae at 3 L/min."
+      }
+    },
+    {
+      "id": "oxygen-nasal",
+      "name": {
+        "zh-CN": "鼻导管吸氧3 L/min（原报告做法）",
+        "en": "Nasal cannula oxygen 3 L/min (as in the report)"
+      },
+      "kind": "oxygen",
+      "aliases": {
+        "zh-CN": [
+          "鼻导管",
+          "鼻导管吸氧",
+          "鼻氧管",
+          "低流量吸氧"
+        ],
+        "en": [
+          "nasal cannula",
+          "nasal prongs",
+          "nasal oxygen",
+          "low-flow oxygen"
+        ]
+      },
+      "dose": {
+        "zh-CN": "鼻导管3 L/min。",
+        "en": "3 L/min by nasal cannula."
+      },
+      "requires": [
+        "oxygen"
+      ],
+      "device": "nasal-cannula",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已给鼻导管吸氧3 L/min。在缺氧和休克时，鼻导管能给的氧浓度有限，应改为储氧面罩高流量吸氧。",
+        "en": "Nasal cannula oxygen at 3 L/min. With hypoxia and shock, nasal cannulae deliver limited oxygen — change to high-flow oxygen by non-rebreather mask."
+      }
+    },
+    {
+      "id": "fluid-bolus",
+      "name": {
+        "zh-CN": "晶体液快速静脉推注（10 mL/kg）",
+        "en": "Rapid IV crystalloid bolus (10 mL/kg)"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "补液",
+          "扩容",
+          "快速补液",
+          "晶体液",
+          "生理盐水推注",
+          "林格液",
+          "液体复苏"
+        ],
+        "en": [
+          "fluid bolus",
+          "fluids",
+          "crystalloid",
+          "saline bolus",
+          "hartmann's",
+          "fluid resuscitation"
+        ]
+      },
+      "dose": {
+        "zh-CN": "晶体液10 mL/kg快速静脉推注（RCUK 2021儿童剂量；体重未记录，需估算），按反应重复。",
+        "en": "Crystalloid 10 mL/kg as a rapid IV bolus (the RCUK 2021 child dose; weight not recorded — estimate it), repeated according to the response."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "maxDoses": 3,
+      "indicatedWhen": {
+        "phase": "reaction"
+      },
+      "response": {
+        "zh-CN": "补液已经通过原有的静脉通路开始。原报告没有记录补液。",
+        "en": "The bolus is running through his existing cannula. The report does not record any fluid bolus."
+      }
+    },
+    {
+      "id": "monitoring",
+      "name": {
+        "zh-CN": "心电、血压、经皮氧饱和度连续监护",
+        "en": "Continuous ECG, blood pressure and SpO₂ monitoring"
+      },
+      "kind": "monitoring",
+      "aliases": {
+        "zh-CN": [
+          "心电监护",
+          "监护",
+          "上监护",
+          "接监护仪",
+          "测血压",
+          "测血氧"
+        ],
+        "en": [
+          "monitor",
+          "monitoring",
+          "attach the monitor",
+          "cardiac monitor",
+          "check his blood pressure",
+          "sats probe"
+        ]
+      },
+      "dose": {
+        "zh-CN": "床旁监护仪连续监测心电、血压和经皮氧饱和度。",
+        "en": "Bedside monitor: continuous ECG, blood pressure and SpO₂."
+      },
+      "requires": [
+        "cardiac-monitor"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "phase": "reaction"
+          },
+          {
+            "phase": "recovery"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "监护仪已连接，可以读出血压和经皮氧饱和度。",
+        "en": "Monitor attached: his blood pressure and SpO₂ can now be read."
+      }
+    },
+    {
+      "id": "dexamethasone",
+      "name": {
+        "zh-CN": "静脉注射糖皮质激素（原报告：地塞米松5 mg）",
+        "en": "IV corticosteroid (the report: dexamethasone 5 mg)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "地塞米松",
+          "激素",
+          "糖皮质激素",
+          "氢化可的松",
+          "甲泼尼龙"
+        ],
+        "en": [
+          "dexamethasone",
+          "steroid",
+          "steroids",
+          "hydrocortisone",
+          "methylprednisolone"
+        ]
+      },
+      "dose": {
+        "zh-CN": "糖皮质激素静脉注射；原报告用地塞米松5 mg静脉推注，共2次。",
+        "en": "An IV corticosteroid; the report gave dexamethasone 5 mg as an IV push, twice."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "maxDoses": 2,
+      "contraindicatedWhen": {
+        "not": {
+          "any": [
+            {
+              "intervened": "adrenaline-im"
+            },
+            {
+              "intervened": "adrenaline-iv-bolus"
+            },
+            {
+              "intervened": "adrenaline-iv-1mg"
+            }
+          ]
+        }
+      },
+      "harm": {
+        "zh-CN": "在肾上腺素之前先给激素会延误一线治疗。激素不能逆转急性过敏反应的气道和循环问题；RCUK 2021已不再建议在过敏反应急救中常规使用糖皮质激素，只在初始复苏后用于难治性反应时考虑。",
+        "en": "A steroid before adrenaline delays first-line treatment. Steroids do not reverse the airway and circulation problems of acute anaphylaxis; RCUK 2021 no longer advises routine corticosteroids in the emergency treatment of anaphylaxis, considering them only after initial resuscitation for refractory reactions."
+      },
+      "response": {
+        "zh-CN": "已给糖皮质激素。原报告在肾上腺素前后各给了一次地塞米松5 mg；第二次后约3分钟呼吸平稳、麻木消失——这发生在静推肾上腺素几分钟之后，不能据此认为是激素起了作用。",
+        "en": "Corticosteroid given. The report gave dexamethasone 5 mg once before and once after the adrenaline; about 3 minutes after the second his breathing settled and the numbness went — minutes after the IV adrenaline, so this does not show that the steroid worked."
+      }
+    },
+    {
+      "id": "adrenaline-iv-bolus",
+      "name": {
+        "zh-CN": "1:10 000肾上腺素2.5 mL静脉推注（0.25 mg，原报告做法）",
+        "en": "IV push of 2.5 mL of 1 in 10 000 adrenaline (0.25 mg, as in the report)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "静推肾上腺素",
+          "肾上腺素静推",
+          "肾上腺素静脉推注",
+          "1:10000肾上腺素",
+          "万分之一肾上腺素",
+          "静注肾上腺素"
+        ],
+        "en": [
+          "iv adrenaline",
+          "adrenaline iv push",
+          "iv epinephrine",
+          "adrenaline bolus",
+          "1 in 10000 adrenaline",
+          "1:10000 adrenaline"
+        ]
+      },
+      "dose": {
+        "zh-CN": "0.1 mg/mL（1:10 000）肾上腺素2.5 mL静脉推注。",
+        "en": "Adrenaline 0.1 mg/mL (1 in 10 000) 2.5 mL as an IV push."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "在病房静脉推注肾上腺素可引起严重高血压、心律失常和心肌缺血。RCUK 2021把静脉肾上腺素留给难治性过敏反应（两次肌注无效后），由有经验的专科医生在充分监护下以小剂量持续输注给药。原报告推注后病情好转，但这个结果不能让它成为安全的首选。",
+        "en": "An IV push of adrenaline on a ward can cause severe hypertension, arrhythmias and myocardial ischaemia. RCUK 2021 keeps IV adrenaline for refractory anaphylaxis (no improvement after two IM doses), given by experienced specialists as a low-dose infusion with full monitoring. He improved after this push in the report, but that outcome does not make it the safe first choice."
+      },
+      "response": {
+        "zh-CN": "已静推。原报告：5分钟后血压逐渐升至116/60 mmHg，SpO₂ 95%以上，心率100次/分左右，意识较前清晰。",
+        "en": "Given. In the report, 5 minutes later his blood pressure had risen gradually to 116/60 mmHg, SpO₂ was above 95% and his heart rate about 100/min, and he was more alert."
+      }
+    },
+    {
+      "id": "adrenaline-iv-1mg",
+      "name": {
+        "zh-CN": "1 mg/mL（1:1000）肾上腺素2.5 mL静脉推注",
+        "en": "IV push of 2.5 mL of 1 mg/mL (1 in 1000) adrenaline"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "1:1000肾上腺素静推",
+          "千分之一肾上腺素静推",
+          "1mg/ml肾上腺素静推",
+          "肾上腺素原液静推"
+        ],
+        "en": [
+          "1 in 1000 adrenaline iv",
+          "1:1000 adrenaline iv",
+          "1 mg/ml adrenaline iv",
+          "undiluted adrenaline iv"
+        ]
+      },
+      "dose": {
+        "zh-CN": "1 mg/mL（1:1000）肾上腺素2.5 mL静脉推注（= 2.5 mg）。",
+        "en": "Adrenaline 1 mg/mL (1 in 1000) 2.5 mL as an IV push (= 2.5 mg)."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "浓度错误：静脉推注2.5 mg，是原报告剂量的10倍，可能致命。1 mg/mL只用于肌注；静脉用肾上腺素只能在专科医生指导下稀释后持续输注。用mg/mL书写和核对浓度，不要只写比例。",
+        "en": "Concentration error: an IV push of 2.5 mg — ten times the report's dose — can be fatal. 1 mg/mL is for IM use only; IV adrenaline is given only diluted, as an infusion under specialist direction. Write and check the concentration in mg/mL, not as a ratio."
+      },
+      "response": {
+        "zh-CN": "这是一次严重的给药错误（见安全提示）。本病例不模拟它的后果，病情记录也不会因此推进；原报告没有发生这种情况。",
+        "en": "This is a serious medication error (see the safety note). The case does not simulate its consequences and the record does not move on because of it; nothing like it happened in the report."
+      }
+    },
+    {
+      "id": "adrenaline-im-dilute",
+      "name": {
+        "zh-CN": "0.1 mg/mL（1:10 000）肾上腺素0.3 mL肌注",
+        "en": "IM injection of 0.3 mL of 0.1 mg/mL (1 in 10 000) adrenaline"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "肌注万分之一肾上腺素",
+          "万分之一肾上腺素肌注",
+          "1:10000肾上腺素肌注",
+          "肌注1:10000肾上腺素",
+          "0.1mg/ml肾上腺素肌注"
+        ],
+        "en": [
+          "im 1 in 10000 adrenaline",
+          "1 in 10000 adrenaline im",
+          "1:10000 adrenaline im",
+          "im 1:10000 adrenaline",
+          "0.1 mg/ml adrenaline im"
+        ]
+      },
+      "dose": {
+        "zh-CN": "0.1 mg/mL（1:10 000）肾上腺素0.3 mL肌注（= 30 µg）。",
+        "en": "Adrenaline 0.1 mg/mL (1 in 10 000) 0.3 mL IM (= 30 micrograms)."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "浓度错误：0.3 mL的0.1 mg/mL只有30 µg，是应给剂量的十分之一，过敏性休克得不到治疗。肌注用1 mg/mL：0.3 mL = 300 µg。用mg/mL和微克核对，不要只看比例。",
+        "en": "Concentration error: 0.3 mL of 0.1 mg/mL is only 30 micrograms — a tenth of the dose — and leaves the anaphylactic shock untreated. IM adrenaline uses 1 mg/mL: 0.3 mL = 300 micrograms. Check in mg/mL and micrograms, not ratios."
+      },
+      "response": {
+        "zh-CN": "这是十倍剂量不足的给药错误（见安全提示），不算作有效的肾上腺素治疗，病情记录不会因此推进；原报告没有发生这种情况。",
+        "en": "This is a tenfold underdose (see the safety note); it does not count as effective adrenaline treatment and the record does not move on because of it. Nothing like it happened in the report."
+      }
+    },
+    {
+      "id": "antihistamine",
+      "name": {
+        "zh-CN": "静脉注射H1抗组胺药",
+        "en": "IV H1 antihistamine"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "抗组胺药",
+          "苯海拉明",
+          "氯苯那敏",
+          "扑尔敏",
+          "异丙嗪",
+          "抗过敏药"
+        ],
+        "en": [
+          "antihistamine",
+          "chlorphenamine",
+          "piriton",
+          "diphenhydramine",
+          "promethazine",
+          "anti-allergy drug"
+        ]
+      },
+      "dose": {
+        "zh-CN": "H1抗组胺药静脉注射，剂量按年龄和体重。",
+        "en": "IV H1 antihistamine, dose by age and weight."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "not": {
+          "any": [
+            {
+              "intervened": "adrenaline-im"
+            },
+            {
+              "intervened": "adrenaline-iv-bolus"
+            },
+            {
+              "intervened": "adrenaline-iv-1mg"
+            }
+          ]
+        }
+      },
+      "harm": {
+        "zh-CN": "抗组胺药不是过敏反应的急救用药，不能代替或延误肾上腺素；RCUK 2021的证据更新（Dodd等，2021）不建议在急性期使用抗组胺药。",
+        "en": "Antihistamines are not emergency treatment for anaphylaxis and must not replace or delay adrenaline; the RCUK 2021 evidence update (Dodd et al., 2021) recommends against them in the acute phase."
+      },
+      "response": {
+        "zh-CN": "已给抗组胺药。原报告没有使用抗组胺药。",
+        "en": "Given. The report did not use an antihistamine."
+      }
+    },
+    {
+      "id": "aftercare-plan",
+      "name": {
+        "zh-CN": "反应后处理：监护观察、记录致敏药物、告知家属、变态反应科随访",
+        "en": "After the reaction: monitored observation, record the culprit drug, inform the family, allergy referral"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "延长观察",
+          "继续观察",
+          "记录过敏",
+          "过敏标签",
+          "变态反应科",
+          "过敏科随访",
+          "过敏警示"
+        ],
+        "en": [
+          "observe him",
+          "observation",
+          "allergy label",
+          "document the allergy",
+          "allergy referral",
+          "allergy clinic",
+          "alert card"
+        ]
+      },
+      "dose": {
+        "zh-CN": "在监护下观察（时长按反应严重程度分层，他出现过休克）；在病历、医嘱系统和腕带上标注“头孢噻肟钠/舒巴坦钠严重过敏反应”；书面告知家属；转诊变态反应科评估。",
+        "en": "Monitored observation (its length stratified by severity — he was shocked); record “anaphylaxis to cefotaxime/sulbactam” in the notes, the prescribing system and on a wristband; tell the family in writing; refer to an allergy service."
+      },
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "recovery"
+      },
+      "response": {
+        "zh-CN": "已安排。原报告没有记录观察时长、过敏标注或随访。",
+        "en": "Arranged. The report records no observation period, allergy record or follow-up."
+      }
+    },
+    {
+      "id": "restart-infusion",
+      "name": {
+        "zh-CN": "重新开始头孢噻肟钠/舒巴坦钠，减慢滴速",
+        "en": "Restart the cefotaxime/sulbactam infusion at a slower rate"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "重新输注",
+          "再输头孢",
+          "减慢滴速继续",
+          "换一批再输",
+          "继续输头孢噻肟"
+        ],
+        "en": [
+          "restart the infusion",
+          "restart the antibiotic",
+          "rechallenge",
+          "slower infusion",
+          "restart cefotaxime"
+        ]
+      },
+      "dose": {
+        "zh-CN": "同一药物重新静脉滴注，减慢滴速。",
+        "en": "The same drug restarted by IV infusion at a slower rate."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "再次暴露于引起过敏性休克的药物可能再次引发、甚至更重的反应。作者提出的“批次杂质”只是推测，没有证实。",
+        "en": "Re-exposure to the drug that caused anaphylactic shock can trigger another, possibly worse, reaction. The authors' “batch impurity” idea is a hypothesis, not a finding."
+      },
+      "response": {
+        "zh-CN": "这是再激发（见安全提示）；原报告没有再用这种药物的记录。",
+        "en": "This is a rechallenge (see the safety note); the report records no further use of the drug."
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-history",
+      "title": {
+        "zh-CN": "问清病史和过敏史",
+        "en": "Take the history, including the allergy label"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
+      },
+      "hint": {
+        "zh-CN": "问咳嗽和发热的经过、来医院前用过的药，以及过敏史——标签背后到底发生过什么。",
+        "en": "Ask about the cough and fever, the drugs he had before admission and his allergies — what actually happened behind the label."
+      },
+      "guidance": {
+        "zh-CN": "家长回答病史；问孩子本人时，他会自己回答。",
+        "en": "His parent gives the history; questions put to the boy himself he answers."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-predose",
+      "title": {
+        "zh-CN": "首剂用药之前",
+        "en": "Before the first dose"
+      },
+      "short": {
+        "zh-CN": "首剂前",
+        "en": "First dose"
+      },
+      "hint": {
+        "zh-CN": "调阅胸片和皮试记录，想一想：这个过敏标签和这张皮试单能告诉你什么、不能告诉你什么？",
+        "en": "Check the chest X-ray and the skin-test record, and ask what this label and this skin test can and cannot tell you."
+      },
+      "guidance": {
+        "zh-CN": "入院当天：急性支气管肺炎，医嘱首剂头孢噻肟钠/舒巴坦钠。",
+        "en": "Day of admission: acute bronchopneumonia; the first dose of cefotaxime/sulbactam is prescribed."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "skin-test",
+            "phase": "admission"
+          },
+          {
+            "decided": "pre-dose"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "skin-test",
+            "phase": "admission"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-recognise",
+      "title": {
+        "zh-CN": "识别正在发生的事",
+        "en": "Recognise what is happening"
+      },
+      "short": {
+        "zh-CN": "识别",
+        "en": "Recognise"
+      },
+      "hint": {
+        "zh-CN": "到床旁：看皮肤，看呼吸，摸脉搏和手脚。",
+        "en": "Go to the bedside: look at his skin and his breathing, and feel his pulse and his hands and feet."
+      },
+      "guidance": {
+        "zh-CN": "首剂输注约15秒后，他突然喘不上气。",
+        "en": "About 15 seconds into the first dose he suddenly cannot breathe."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "airway"
+          },
+          {
+            "examined": "perfusion"
+          },
+          {
+            "decided": "diagnosis"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-treat",
+      "title": {
+        "zh-CN": "立即处理",
+        "en": "Treat now"
+      },
+      "short": {
+        "zh-CN": "处理",
+        "en": "Treat"
+      },
+      "hint": {
+        "zh-CN": "先让可疑药物别再进入他体内，并找人帮忙；然后决定那一针——药名、浓度、剂量、途径和部位都要说清楚；再想想体位、氧气和补液。",
+        "en": "First keep any more of the suspect drug from reaching him and get help; then decide on the injection — name the drug, strength, dose, route and site; then think about position, oxygen and fluids."
+      },
+      "guidance": {
+        "zh-CN": "每一分钟都要紧。",
+        "en": "Every minute counts."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "adrenaline"
+          },
+          {
+            "intervened": "stop-infusion"
+          },
+          {
+            "any": [
+              {
+                "intervened": "adrenaline-im"
+              },
+              {
+                "intervened": "adrenaline-iv-bolus"
+              }
+            ]
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-after",
+      "title": {
+        "zh-CN": "反应之后",
+        "en": "After the reaction"
+      },
+      "short": {
+        "zh-CN": "反应后",
+        "en": "Aftercare"
+      },
+      "hint": {
+        "zh-CN": "想一想：哪项化验有时间窗？他需要观察多久？怎样让这件事不再发生？",
+        "en": "Which test has a time window? How long does he need watching? How do you stop this happening again?"
+      },
+      "guidance": {
+        "zh-CN": "他已经平稳下来。",
+        "en": "He has settled."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "aftercare"
+          },
+          {
+            "ordered": "tryptase"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "ordered": "tryptase"
+          },
+          "target": "patient"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-outcome",
+      "title": {
+        "zh-CN": "核对原报告的处理与结局",
+        "en": "Review the report's treatment and outcome"
+      },
+      "short": {
+        "zh-CN": "结局",
+        "en": "Outcome"
+      },
+      "hint": {
+        "zh-CN": "决策都完成后，会打开原报告的处理经过；把它和你的处理比一比。",
+        "en": "Once the decisions are done, the report's treatment record opens; compare it with what you did."
+      },
+      "completeWhen": {
+        "read": "followup",
+        "phase": "followup"
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "pre-dose",
+      "prompt": {
+        "zh-CN": "入院诊断急性支气管肺炎，医嘱首剂头孢噻肟钠/舒巴坦钠1.25 g静脉滴注。他有“青霉素批次过敏”史，入院青霉素皮试阴性。开始输注前你怎么做？",
+        "en": "He is admitted with acute bronchopneumonia and the first dose of cefotaxime/sulbactam 1.25 g IV is prescribed. He has a “penicillin batch allergy” label, and the penicillin skin test on admission was negative. What do you do before the infusion starts?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "asked": "allergies"
+          },
+          {
+            "read": "skin-test",
+            "phase": "admission"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先问清过敏史，并调阅入院皮试记录。",
+        "en": "Take the allergy history and check the admission skin-test record first."
+      },
+      "options": [
+        {
+          "id": "clarify-observe",
+          "text": {
+            "zh-CN": "先把过敏标签问清楚（哪种药、什么反应、多快出现、怎么处理的）并记录；如果仍选用头孢菌素，首剂要慢（作者强调前10分钟尤其要慢），由专业人员看护并接上监护，床旁备好1 mg/mL肾上腺素和抢救用品。若追问到明确的速发型反应，按2021年版指导原则先做所用头孢菌素的皮试，或换用结构不同的药物。",
+            "en": "Clarify the label first (which drug, what reaction, how fast, how it was treated) and record it; if a cephalosporin is still the choice, give the first dose slowly (the authors stress the first 10 minutes) with a professional watching and the monitor on, and adrenaline 1 mg/mL and resuscitation kit at the bedside. If the history turns out to be a clear immediate reaction, skin-test the intended cephalosporin as the 2021 Chinese guidance advises, or choose a structurally different drug."
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。“批次过敏”这样的标签需要澄清，青霉素皮试阴性预测不了对头孢菌素的反应。2021年版《β内酰胺类抗菌药物皮肤试验指导原则》不推荐头孢菌素用药前常规皮试，只在有明确的青霉素或头孢菌素速发型过敏史（或说明书要求）时做；AAAAI/ACAAI 2022认为即使有青霉素严重过敏史，结构不同的头孢菌素也可以不经试验使用。所以关键的安全措施是：慢速首剂、有人看护、肾上腺素在手边。",
+            "en": "Right. A “batch allergy” label needs clarifying, and a negative penicillin skin test does not predict a reaction to a cephalosporin. The 2021 Chinese guidance on β-lactam skin testing does not recommend routine skin tests before cephalosporins, keeping them for a clear immediate penicillin or cephalosporin history (or a label requirement); the AAAAI/ACAAI 2022 practice parameter allows a structurally different cephalosporin without testing even after penicillin anaphylaxis. So the decisive safety steps are a slow first dose, someone watching and adrenaline to hand."
+          }
+        },
+        {
+          "id": "skin-test-clears",
+          "text": {
+            "zh-CN": "青霉素皮试阴性，说明对所有β-内酰胺类都安全，按常规速度输注即可",
+            "en": "The penicillin skin test is negative, so every β-lactam is safe — run the infusion at the usual rate"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "青霉素皮试只针对青霉素，阴性不能排除对头孢菌素（或复方中的舒巴坦）的反应，也不能代替首剂的观察。",
+            "en": "A penicillin skin test is about penicillin only; a negative result cannot exclude a reaction to a cephalosporin (or the sulbactam in the combination), and it does not replace watching the first dose."
+          }
+        },
+        {
+          "id": "ceph-skin-test",
+          "text": {
+            "zh-CN": "先做头孢噻肟钠/舒巴坦钠皮试，阴性就按常规速度输注，不用特别看护",
+            "en": "Skin-test the cefotaxime/sulbactam first and, if negative, run it at the usual rate without special observation"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "2021年版指导原则不推荐头孢菌素用药前常规皮试，其预测价值缺乏证据；它只适用于追问后确有速发型过敏史的情况。即使皮试阴性，首剂也要慢速并有人看护。",
+            "en": "The 2021 Chinese guidance does not recommend routine skin tests before cephalosporins — their predictive value lacks evidence — and keeps them for a confirmed immediate-type history. Even after a negative test the first dose should be slow and watched."
+          }
+        },
+        {
+          "id": "avoid-all",
+          "text": {
+            "zh-CN": "有青霉素过敏标签，就永远不用任何β-内酰胺类，不必再问细节",
+            "en": "A penicillin label means no β-lactam ever — no need to ask for details"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不问清楚就一律回避，会让孩子以后失去有效的药物；AAAAI/ACAAI 2022建议先评估过敏标签，结构不同的头孢菌素通常可以使用。真正需要的是问清楚、慎重选药、首剂严密观察。",
+            "en": "Avoiding every β-lactam without asking takes effective drugs away from him for life; the AAAAI/ACAAI 2022 parameter asks for the label to be assessed, and structurally different cephalosporins can usually be used. What is needed is to clarify, choose deliberately and watch the first dose closely."
+          }
+        }
+      ]
+    },
+    {
+      "id": "diagnosis",
+      "prompt": {
+        "zh-CN": "首剂输注约15秒后，他突然喘不上气。根据你在床旁看到的情况，你的判断是？",
+        "en": "About 15 seconds into the first dose he suddenly cannot breathe. From what you have found at the bedside, what is happening?"
+      },
+      "kind": "single",
+      "requires": {
+        "any": [
+          {
+            "asked": "reaction"
+          },
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "airway"
+          },
+          {
+            "examined": "perfusion"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "到床旁看一眼就能判断：问他哪里不舒服，或者看皮肤、呼吸和循环。",
+        "en": "One look at the bedside is enough: ask him how he feels, or check his skin, breathing and circulation."
+      },
+      "options": [
+        {
+          "id": "anaphylaxis",
+          "text": {
+            "zh-CN": "头孢噻肟钠/舒巴坦钠引起的严重过敏反应（过敏性休克），立即按急症处理",
+            "en": "Anaphylaxis (anaphylactic shock) caused by the cefotaxime/sulbactam — treat it as an emergency now"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。用药后数秒到数分钟内同时出现皮肤（隆起的红色皮疹、瘙痒）、呼吸（呼吸困难、口周发绀）和循环（脉弱、四肢凉、毛细血管再充盈>5秒、神志恍惚）受累，就是严重过敏反应伴休克。EAACI 2021：按临床标准诊断，不需要等检查；监护数值只用来确认，不能拖延治疗。",
+            "en": "Right. Skin (raised red rash, itch), breathing (dyspnoea, perioral cyanosis) and circulation (weak pulse, cold peripheries, capillary refill > 5 s, clouded consciousness) all involved seconds to minutes after a drug is anaphylaxis with shock. EAACI 2021: diagnose on clinical criteria without waiting for tests; monitor numbers confirm it but must not delay treatment."
+          }
+        },
+        {
+          "id": "vasovagal",
+          "text": {
+            "zh-CN": "血管迷走性反应（害怕输液），让他躺下安慰即可",
+            "en": "A vasovagal faint from fear of the drip — lie him down and reassure him"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "血管迷走性晕厥通常心率慢、皮肤湿冷，但没有皮疹、瘙痒和发绀；他心率快，有皮疹、呼吸困难和低灌注，这是过敏反应。",
+            "en": "A vasovagal episode usually brings a slow pulse and clammy skin without rash, itch or cyanosis; he has a fast heart rate, a rash, breathing difficulty and poor perfusion — this is anaphylaxis."
+          }
+        },
+        {
+          "id": "asthma",
+          "text": {
+            "zh-CN": "肺炎诱发的急性哮喘发作，先雾化沙丁胺醇",
+            "en": "An acute asthma attack triggered by the pneumonia — start with nebulised salbutamol"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "病历里没有哮喘史，症状在新药开始输注后数秒内出现，同时有皮疹、瘙痒、口咽麻木和循环衰竭——这是过敏反应。支气管舒张剂只是辅助，不能代替肾上腺素。",
+            "en": "No asthma is recorded, the symptoms began seconds after a new drug started, and he has rash, itch, oral numbness and circulatory failure — this is anaphylaxis. A bronchodilator is only an adjunct and never replaces adrenaline."
+          }
+        },
+        {
+          "id": "skin-only",
+          "text": {
+            "zh-CN": "只是药物引起的皮疹（荨麻疹），口服抗组胺药后观察",
+            "en": "Just a drug rash (urticaria) — an oral antihistamine and observe"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "皮疹只是一部分：他同时有呼吸困难、发绀和低灌注，属于累及多个系统的严重过敏反应，需要立即肌注肾上腺素，抗组胺药代替不了。",
+            "en": "The rash is only part of it: breathing difficulty, cyanosis and poor perfusion make this multi-system anaphylaxis that needs IM adrenaline now; an antihistamine cannot replace it."
+          }
+        }
+      ]
+    },
+    {
+      "id": "adrenaline",
+      "prompt": {
+        "zh-CN": "他10岁，体重没有记录，静脉通路在位。第一时间给什么、怎么给？",
+        "en": "He is 10, his weight is not recorded and the IV cannula is in place. What do you give first, and how?"
+      },
+      "kind": "single",
+      "requires": {
+        "decided": "diagnosis"
+      },
+      "need": {
+        "zh-CN": "先作出诊断。",
+        "en": "Make the diagnosis first."
+      },
+      "options": [
+        {
+          "id": "im-adrenaline",
+          "text": {
+            "zh-CN": "停药、呼救；大腿前外侧肌注1 mg/mL肾上腺素0.3 mL（300 µg，6–12岁体重不详时按年龄），5分钟无改善重复；平卧（呼吸更舒服时可半卧），储氧面罩高流量吸氧，晶体液10 mL/kg快速静推，连续监护。",
+            "en": "Stop the drug and call for help; IM adrenaline 1 mg/mL 0.3 mL (300 micrograms — age 6–12 with the weight unknown) into the anterolateral thigh, repeated after 5 minutes if no better; lie him flat (semi-recumbent if that eases his breathing), high-flow oxygen by non-rebreather mask, a rapid IV crystalloid bolus of 10 mL/kg, continuous monitoring."
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确（RCUK 2021；EAACI 2021推荐及时肌注肾上腺素作为一线治疗）。肌注安全、起效快，按年龄给药不用等体重；两次肌注仍无效才按难治性过敏反应处理，由专科医生小剂量静脉输注。",
+            "en": "Right (RCUK 2021; EAACI 2021 recommends prompt IM adrenaline as first-line treatment). IM adrenaline is safe and fast, and dosing by age means not waiting for a weight; only if two IM doses fail is it refractory anaphylaxis, treated by specialists with a low-dose IV infusion."
+          }
+        },
+        {
+          "id": "iv-bolus-report",
+          "text": {
+            "zh-CN": "1:10 000肾上腺素2.5 mL静脉推注（0.25 mg，原报告做法）",
+            "en": "IV push of 2.5 mL of 1 in 10 000 adrenaline (0.25 mg — the report's practice)"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "静脉推注肾上腺素可引起严重高血压和心律失常。RCUK 2021把静脉肾上腺素留给难治性过敏反应，由有经验的专科医生在监护下小剂量持续输注；在病房，首选肌注。原报告推注后好转，但这不能证明它比肌注更好或更安全。",
+            "en": "An IV push of adrenaline can cause severe hypertension and arrhythmias. RCUK 2021 keeps IV adrenaline for refractory anaphylaxis, as a monitored low-dose infusion by experienced specialists; on a ward the first choice is IM. He improved after the push in the report, but that does not show it is better or safer than IM."
+          }
+        },
+        {
+          "id": "steroid-first",
+          "text": {
+            "zh-CN": "先静注地塞米松，看效果再决定用不用肾上腺素",
+            "en": "IV dexamethasone first, and decide on adrenaline once you see the effect"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "这是原报告的第一步，但激素不是一线用药：起效慢，不能逆转气道和循环问题，RCUK 2021也不再建议常规使用。任何事情都不能延误肌注肾上腺素。",
+            "en": "This was the report's first step, but steroids are not first-line: they act slowly and do not reverse the airway and circulation problems, and RCUK 2021 no longer advises them routinely. Nothing should delay IM adrenaline."
+          }
+        },
+        {
+          "id": "iv-1mg-error",
+          "text": {
+            "zh-CN": "1 mg/mL（1:1000）肾上腺素2.5 mL静脉推注",
+            "en": "IV push of 2.5 mL of 1 mg/mL (1 in 1000) adrenaline"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "这是浓度混淆造成的10倍剂量错误：静脉推注2.5 mg，可能致命。1 mg/mL是肌注用的浓度；用mg/mL和微克核对剂量，不要只看比例。",
+            "en": "This is the tenfold error of confusing concentrations: 2.5 mg as an IV push, which can be fatal. 1 mg/mL is the IM strength; check doses in mg/mL and micrograms, not ratios."
+          }
+        },
+        {
+          "id": "im-dilute-error",
+          "text": {
+            "zh-CN": "大腿肌注0.1 mg/mL（1:10 000）肾上腺素0.3 mL",
+            "en": "IM injection of 0.3 mL of 0.1 mg/mL (1 in 10 000) adrenaline into the thigh"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "这是反方向的浓度错误：0.3 mL的0.1 mg/mL只有30 µg，只有应给剂量的十分之一。肌注用1 mg/mL：0.3 mL = 300 µg。",
+            "en": "This is the opposite concentration error: 0.3 mL of 0.1 mg/mL is only 30 micrograms, a tenth of the dose. IM adrenaline uses 1 mg/mL: 0.3 mL = 300 micrograms."
+          }
+        }
+      ]
+    },
+    {
+      "id": "aftercare",
+      "prompt": {
+        "zh-CN": "他已经平稳下来。接下来的观察、检查和出院前的安排应包括什么？",
+        "en": "He has settled. What should the observation, tests and plans before discharge include?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "adrenaline"
+          },
+          {
+            "any": [
+              {
+                "intervened": "adrenaline-im"
+              },
+              {
+                "intervened": "adrenaline-iv-bolus"
+              }
+            ]
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先完成急救处理：作出肾上腺素的决策，并给他用上肾上腺素。",
+        "en": "Finish the emergency treatment first: make the adrenaline decision and give him the adrenaline."
+      },
+      "options": [
+        {
+          "id": "aftercare-bundle",
+          "text": {
+            "zh-CN": "留取记录了采血时间的类胰蛋白酶血样（采样时间点按指南和本院流程）；因为出现过休克，延长监护观察时间；在病历、医嘱系统和腕带上标注对头孢噻肟钠/舒巴坦钠的严重过敏反应，并书面告知家属；不再使用该药，肺炎改用其他药物；转诊变态反应科评估。",
+            "en": "Take mast-cell tryptase samples with their times recorded (time points per the guideline and local protocol); keep him monitored for longer because he was shocked; record anaphylaxis to cefotaxime/sulbactam in the notes, the prescribing system and on a wristband, and tell the family in writing; do not use the drug again and treat the pneumonia with another agent; refer him to an allergy service."
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。EAACI 2021建议留血以便之后检测类胰蛋白酶；RCUK 2021按严重程度分层决定观察时间。记录可疑药物、避免再暴露、转诊变态反应科明确致敏成分，是反应后处理的基本要求。原报告没有记录类胰蛋白酶、观察时长、过敏标注或随访。",
+            "en": "Right. EAACI 2021 advises blood samples for later tryptase measurement, and RCUK 2021 stratifies the observation period by severity. Recording the suspected drug, avoiding re-exposure and referring to an allergy service to identify the culprit are the basics of aftercare. The report records no tryptase, observation period, allergy record or follow-up."
+          }
+        },
+        {
+          "id": "rechallenge",
+          "text": {
+            "zh-CN": "平稳后把同一种药换个批次、减慢滴速继续用——作者推测可能是批次杂质",
+            "en": "Once he is stable, restart the same drug from another batch at a slower rate — the authors suggest a batch impurity"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "作者的三种推测（批次杂质、头孢噻肟、舒巴坦）都没有证实；对引起过敏性休克的药物再激发可能引起更重的反应，药物激发试验只能在变态反应专科评估后、在有条件的场所进行。",
+            "en": "None of the authors' three hypotheses (impurity, cefotaxime, sulbactam) was confirmed; rechallenging a drug that caused anaphylactic shock can provoke a worse reaction, and a drug challenge belongs only to an allergy specialist's assessment in a suitable setting."
+          }
+        },
+        {
+          "id": "steroids-home",
+          "text": {
+            "zh-CN": "口服激素和抗组胺药3天预防再次反应，回到普通病房，不需要再特别观察",
+            "en": "Three days of oral steroids and antihistamines to prevent another reaction, back to routine ward care with no special observation"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "RCUK 2021不再建议常规使用激素，其证据更新也不建议急性期使用抗组胺药；它们都不能代替有监护的观察和反应后的随访安排。",
+            "en": "RCUK 2021 no longer advises routine steroids, and its evidence update recommends against antihistamines in the acute phase; neither replaces monitored observation and follow-up."
+          }
+        },
+        {
+          "id": "not-allergy",
+          "text": {
+            "zh-CN": "告诉家长：青霉素皮试是阴性的，所以这不是真正的过敏，以后不用随访",
+            "en": "Tell the parents the penicillin skin test was negative, so this was not a true allergy and needs no follow-up"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "青霉素皮试阴性与这次头孢噻肟钠/舒巴坦钠的反应无关；这是一次严重过敏反应，必须记录、告知并随访。",
+            "en": "The negative penicillin skin test says nothing about this reaction to cefotaxime/sulbactam; this was anaphylaxis, and it must be recorded, explained and followed up."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-allergy-history",
+      "domain": "history",
+      "weight": 2,
+      "text": {
+        "zh-CN": "问清过敏标签的细节和来院前用过的头孢菌素",
+        "en": "Clarified the allergy label and the cephalosporin he had already received"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "allergies"
+          },
+          {
+            "asked": "allergy-detail"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-records",
+      "domain": "investigations",
+      "weight": 1,
+      "text": {
+        "zh-CN": "用药前调阅皮试记录和胸片",
+        "en": "Checked the skin-test record and the chest X-ray before the dose"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "skin-test",
+            "phase": "admission"
+          },
+          {
+            "read": "xray",
+            "phase": "admission"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-pre-dose",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "首剂前：澄清标签、慎重选药、慢速首剂并备好肾上腺素（第一次即答对）",
+        "en": "Before the dose: clarify the label, choose deliberately, slow first dose with adrenaline ready (first attempt)"
+      },
+      "met": {
+        "decidedFirstTry": "pre-dose"
+      }
+    },
+    {
+      "id": "rb-bedside",
+      "domain": "examination",
+      "weight": 2,
+      "text": {
+        "zh-CN": "在床旁评估皮肤、气道/呼吸和循环",
+        "en": "Assessed skin, airway and breathing, and circulation at the bedside"
+      },
+      "met": {
+        "all": [
+          {
+            "examined": "skin"
+          },
+          {
+            "examined": "airway"
+          },
+          {
+            "examined": "perfusion"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-diagnosis",
+      "domain": "diagnosis",
+      "weight": 4,
+      "text": {
+        "zh-CN": "在床旁识别药物引起的过敏性休克（第一次即答对）",
+        "en": "Recognised drug-induced anaphylactic shock at the bedside (first attempt)"
+      },
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-adrenaline-choice",
+      "domain": "safety",
+      "weight": 4,
+      "text": {
+        "zh-CN": "选对肾上腺素的浓度、剂量、途径和部位（第一次即答对）",
+        "en": "Chose the right adrenaline strength, dose, route and site (first attempt)"
+      },
+      "met": {
+        "decidedFirstTry": "adrenaline"
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-first-line",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "停药并肌注肾上腺素",
+        "en": "Stopped the drug and gave IM adrenaline"
+      },
+      "met": {
+        "all": [
+          {
+            "intervened": "stop-infusion"
+          },
+          {
+            "intervened": "adrenaline-im"
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-support",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "呼救、平卧、高流量吸氧、晶体液推注和连续监护",
+        "en": "Called for help, laid him flat, gave high-flow oxygen and a crystalloid bolus, and monitored him"
+      },
+      "met": {
+        "all": [
+          {
+            "intervened": "call-help"
+          },
+          {
+            "intervened": "position-flat"
+          },
+          {
+            "intervened": "oxygen-high"
+          },
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "intervened": "monitoring"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-no-unsafe-adrenaline",
+      "domain": "safety",
+      "weight": 2,
+      "text": {
+        "zh-CN": "用对浓度的肌注肾上腺素：没有在病房静脉推注，也没有用错浓度",
+        "en": "Gave IM adrenaline at the right strength: no IV push on the ward and no wrong-strength dose"
+      },
+      "met": {
+        "all": [
+          {
+            "intervened": "adrenaline-im"
+          },
+          {
+            "not": {
+              "intervened": "adrenaline-iv-bolus"
+            }
+          },
+          {
+            "not": {
+              "intervened": "adrenaline-iv-1mg"
+            }
+          },
+          {
+            "not": {
+              "intervened": "adrenaline-im-dilute"
+            }
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-aftercare",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "反应后：类胰蛋白酶、观察、记录致敏药物、随访（第一次即答对）",
+        "en": "Aftercare: tryptase, observation, recording the culprit drug, follow-up (first attempt)"
+      },
+      "met": {
+        "decidedFirstTry": "aftercare"
+      }
+    },
+    {
+      "id": "rb-tryptase",
+      "domain": "investigations",
+      "weight": 1,
+      "text": {
+        "zh-CN": "申请类胰蛋白酶检测",
+        "en": "Requested mast-cell tryptase"
+      },
+      "met": {
+        "ordered": "tryptase"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "weight": 1,
+      "text": {
+        "zh-CN": "向孩子和家长解释发生了什么、是哪种药、以后怎样避免，并核实理解",
+        "en": "Explained to the boy and his parent what happened, which drug, and how to avoid it in future, and checked understanding"
+      },
+      "judgeGuidance": {
+        "zh-CN": "优秀表现：急救时用简短、镇定的话安抚孩子（“我们马上给你打一针，会好起来”），给家长清楚的指令；平稳后用通俗的话解释“这是对新换的抗生素的严重过敏反应”，说明青霉素皮试为什么没能预测；明确告知以后要避免的药物，提供书面过敏记录；回应家长对肺炎治疗的担心（会换用其他药物）；用回授法确认理解；不把作者的推测（批次杂质）当成结论。作者本人也建议用药时安抚患儿情绪。原报告没有记录与家属的沟通。",
+        "en": "Good performance: during the emergency, short calm words to the boy (“we're giving you an injection now that will help”) and clear instructions to the parent; once he is settled, a plain explanation that “this was a severe allergic reaction to the new antibiotic” and why the penicillin skin test did not predict it; the drug to avoid in future stated clearly, with a written allergy record; the parent's worry about the pneumonia answered (another drug will be used); understanding checked by teach-back; the authors' hypotheses (batch impurity) not presented as fact. The authors themselves advise calming the child during treatment. The report records no conversation with the family."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "带教老师",
+        "en": "Attending"
+      },
+      "knowledge": {
+        "zh-CN": "这是历史病例教学，按时间推进：首剂前讨论过敏标签和用药安全，床旁识别和处理急性反应，最后讨论反应后的处理。用苏格拉底式提问引导学员说出肾上腺素的浓度、剂量、途径和部位，指出比例标示带来的10倍错误风险；说明原报告“先激素、静推肾上腺素”是历史做法。不提前透露原报告的处理细节和结局。体重、上次过敏的细节和类胰蛋白酶都没有记录，不要替它补上。",
+        "en": "This is a historical teaching case that moves through time: the allergy label and safe prescribing before the first dose, recognising and treating the reaction at the bedside, then care after the reaction. Use Socratic questions to get the learner to state adrenaline's strength, dose, route and site, and point out the tenfold risk of ratio labels; explain that the report's steroid-first, IV-push sequence is historical practice. Do not reveal the report's management or outcome early. His weight, the details of the earlier reaction and any tryptase are not recorded — do not supply them."
+      },
+      "interprets": [
+        "xray",
+        "skin-test",
+        "infusion-chart"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "病房护士",
+        "en": "Ward nurse"
+      },
+      "knowledge": {
+        "zh-CN": "儿科病房护士，负责这组输液。可以协助停药、吸氧、连接监护、补液和抽血；会和学员核对肾上腺素的浓度（1 mg/mL还是0.1 mg/mL）、剂量和途径，提醒他的体重没有记录。",
+        "en": "Children's ward nurse looking after this infusion. Can help stop the drug, give oxygen, attach the monitor, run fluids and take blood; checks adrenaline's strength (1 mg/mL or 0.1 mg/mL), dose and route with the learner, and points out that his weight is not recorded."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "复盘：头孢噻肟钠/舒巴坦钠致过敏性休克",
+      "en": "Debrief: anaphylactic shock from cefotaxime/sulbactam"
+    },
+    "conclusion": {
+      "zh-CN": "10岁男孩以急性支气管肺炎住院，有“青霉素批次过敏”史，青霉素皮试阴性；首剂头孢噻肟钠/舒巴坦钠输注约15秒后出现过敏性休克（皮疹、口咽麻木、呼吸困难、发绀，血压60/30 mmHg，SpO₂ 85%，毛细血管再充盈>5秒）。原报告停药后先给地塞米松，再静脉推注1:10 000肾上腺素2.5 mL（0.25 mg），再次地塞米松，数分钟内好转，治疗10天后出院。现行指南的答案是：床旁识别，立即大腿肌注1 mg/mL肾上腺素0.3 mL（300 µg）并给予支持治疗，激素和抗组胺药不是急救用药。",
+      "en": "A 10-year-old admitted with acute bronchopneumonia, with a “penicillin batch allergy” label and a negative penicillin skin test, developed anaphylactic shock about 15 seconds into his first dose of cefotaxime/sulbactam (rash, oral numbness, dyspnoea, cyanosis, BP 60/30 mmHg, SpO₂ 85%, capillary refill > 5 s). The report stopped the drug, gave dexamethasone, then an IV push of 2.5 mL of 1 in 10 000 adrenaline (0.25 mg) and dexamethasone again; he improved within minutes and went home after 10 days. The current-guidance answer: recognise it at the bedside, give IM adrenaline 1 mg/mL 0.3 mL (300 micrograms) into the thigh at once with supportive care; steroids and antihistamines are not emergency treatment."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "识别和急救不等机制或具体成分确证：皮肤、呼吸和循环同时受累，就是严重过敏反应。",
+        "en": "Recognition and emergency treatment do not wait for the mechanism or the culprit component: skin, breathing and circulation together are anaphylaxis."
+      },
+      {
+        "zh-CN": "青霉素皮试阴性只说明青霉素，不能预测头孢菌素或舒巴坦的反应；“批次过敏”这类标签必须澄清。",
+        "en": "A negative penicillin skin test speaks only about penicillin, not about a cephalosporin or sulbactam; labels such as “batch allergy” must be clarified."
+      },
+      {
+        "zh-CN": "肌注、1 mg/mL、0.3 mL、大腿前外侧：药名、浓度、剂量、途径和部位一起核对，避免10倍错误。",
+        "en": "IM, 1 mg/mL, 0.3 mL, anterolateral thigh: check the drug, strength, dose, route and site together to avoid a tenfold error."
+      },
+      {
+        "zh-CN": "原报告的好转发生在静推肾上腺素之后；单个病例不能证明静脉推注或激素的效果，也不能说明肌注会更差。",
+        "en": "The report's improvement followed the IV adrenaline push; one case cannot show the effect of the push or of the steroid, nor that IM would have done worse."
+      },
+      {
+        "zh-CN": "反应之后要留类胰蛋白酶、延长观察、记录致敏药物并随访——原报告没有记录这些。",
+        "en": "After the reaction: tryptase, longer observation, recording the culprit drug and follow-up — none of which the report records."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单个病例报告：不能据此比较不同给药途径或激素的效果，也不能确定致敏成分。原报告的处理作为历史事实记录；决策和评分依据现行指南设计，是教学设计。原报告没有体重、入院生命体征和类胰蛋白酶，剂量只能按年龄核对。",
+      "en": "This is a single case report: it cannot compare routes of adrenaline or the effect of steroids, and it cannot identify the culprit component. The report's management is recorded as historical fact; the decisions and scoring follow current guidance and are teaching design. The report gives no weight, admission vital signs or tryptase, so doses can be checked only by age."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "体重（无法按体重核对剂量）；入院时的生命体征和血液检查。",
+        "en": "His weight (so no dose can be checked by weight); admission vital signs and blood tests."
+      },
+      {
+        "zh-CN": "上次青霉素过敏的药物、表现、发生时间和处理；在诊所输头孢呋辛期间有无反应。",
+        "en": "The drug, features, timing and treatment of the earlier penicillin reaction; whether he reacted during the clinic's cefuroxime."
+      },
+      {
+        "zh-CN": "输液器的滴系数；反应时有无测体温、血气或其他化验。",
+        "en": "The giving set's drop factor; any temperature, blood gas or other test at the time of the reaction."
+      },
+      {
+        "zh-CN": "类胰蛋白酶结果；致敏成分（头孢噻肟、舒巴坦或杂质）未经证实。",
+        "en": "Any tryptase result; the culprit component (cefotaxime, sulbactam or an impurity) was never confirmed."
+      },
+      {
+        "zh-CN": "反应后改用的抗菌药物、观察时长、过敏标注、变态反应科随访，以及此后是否再用过β-内酰胺类药物。",
+        "en": "The antibiotic used afterwards, the observation period, any allergy record, allergy follow-up, and whether he later received any β-lactam."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "识别：用药后数秒到数分钟内出现皮肤（隆起的红色皮疹、瘙痒、口咽麻木）、呼吸（呼吸困难、口周发绀、呼吸约50次/分）和循环（脉弱、四肢凉、毛细血管再充盈>5秒、神志恍惚）受累，就是严重过敏反应伴休克。EAACI 2021：按临床标准诊断；血压60/30 mmHg和SpO₂ 85%只是确认，治疗不等监护、不等检查。",
+        "en": "Recognition: skin (raised red rash, itch, oral numbness), breathing (dyspnoea, perioral cyanosis, respiratory rate about 50/min) and circulation (weak pulse, cold peripheries, capillary refill > 5 s, clouded consciousness) involved seconds to minutes after a drug is anaphylaxis with shock. EAACI 2021: diagnose on clinical criteria; the BP of 60/30 mmHg and SpO₂ of 85% only confirm it — treatment waits for neither the monitor nor tests."
+      },
+      {
+        "zh-CN": "一线治疗（RCUK 2021；EAACI 2021）：大腿前外侧肌注1 mg/mL肾上腺素，按年龄给药——6–12岁300 µg（0.3 mL），5分钟无改善可重复；两次肌注无效才是难治性过敏反应，由专科医生小剂量静脉输注。原报告用的是0.1 mg/mL肾上腺素2.5 mL（0.25 mg）静脉推注——这是历史做法。比例标示（1:1000、1:10 000）容易造成10倍剂量错误：用mg/mL和微克书写、核对。",
+        "en": "First line (RCUK 2021; EAACI 2021): IM adrenaline 1 mg/mL into the anterolateral thigh, dosed by age — 300 micrograms (0.3 mL) at 6–12 years, repeated after 5 minutes if no better; only failure of two IM doses makes it refractory anaphylaxis, treated by specialists with a low-dose IV infusion. The report gave 2.5 mL of 0.1 mg/mL adrenaline (0.25 mg) as an IV push — historical practice. Ratio labels (1 in 1000, 1 in 10 000) invite tenfold errors: write and check doses in mg/mL and micrograms."
+      },
+      {
+        "zh-CN": "支持治疗与不该依赖的药物：平卧（呼吸更舒服时可半卧），不要突然坐起或站立；高流量吸氧；有低血压或休克、或首剂肾上腺素反应差时，晶体液10 mL/kg快速推注（RCUK 2021）；连续监护。RCUK 2021不再建议在急救中常规使用糖皮质激素，其证据更新（Dodd等，2021）也不建议急性期使用抗组胺药。原报告在肾上腺素前后各给一次地塞米松——同样是历史做法，它与好转的时间关系不能说明激素有效。",
+        "en": "Support, and what not to rely on: lie him flat (semi-recumbent if that eases his breathing) and never sit or stand him up suddenly; high-flow oxygen; a rapid crystalloid bolus of 10 mL/kg for hypotension or shock or a poor response to the first adrenaline (RCUK 2021); continuous monitoring. RCUK 2021 no longer advises routine corticosteroids in the emergency, and its evidence update (Dodd et al., 2021) recommends against antihistamines in the acute phase. The report gave dexamethasone before and after the adrenaline — also historical practice, and its timing relative to his recovery does not show it worked."
+      },
+      {
+        "zh-CN": "过敏标签与β-内酰胺类：“青霉素批次过敏”是未经澄清的标签（哪种药、什么反应、何时、怎么处理）；青霉素皮试阴性不能预测头孢菌素反应。2021年版《β内酰胺类抗菌药物皮肤试验指导原则》不推荐头孢菌素用药前常规皮试，只在有明确速发型过敏史或说明书要求时做；AAAAI/ACAAI 2022认为结构不同的头孢菌素即使在青霉素严重过敏后也可不经试验使用。因此最可靠的保护是作者自己的建议：首剂慢速（尤其前10分钟）、专人看护、肾上腺素在手边。他此前在诊所用过4天头孢呋辛，原报告没有记录当时有反应；致敏成分（头孢噻肟、舒巴坦或杂质）未经证实。",
+        "en": "Allergy labels and β-lactams: a “penicillin batch allergy” is an unclarified label (which drug, what reaction, when, how treated), and a negative penicillin skin test does not predict a cephalosporin reaction. The 2021 Chinese guidance on β-lactam skin testing does not recommend routine skin tests before cephalosporins, keeping them for a clear immediate-type history or a label requirement; the AAAAI/ACAAI 2022 practice parameter allows a structurally different cephalosporin without testing even after penicillin anaphylaxis. So the most reliable protection is the authors' own advice: a slow first dose (especially the first 10 minutes), someone watching and adrenaline to hand. He had 4 days of cefuroxime at the clinic with no reaction recorded; the culprit component (cefotaxime, sulbactam or an impurity) was never confirmed."
+      },
+      {
+        "zh-CN": "反应之后：留取时间点明确的类胰蛋白酶血样（EAACI 2021）；按严重程度分层决定观察时间（RCUK 2021），出现过休克的孩子要观察更久；在病历、医嘱系统和腕带上记录致敏药物并书面告知家属；不再激发；转诊变态反应科明确致敏成分。原报告没有记录这些内容。",
+        "en": "After the reaction: timed tryptase samples (EAACI 2021); an observation period stratified by severity (RCUK 2021), longer for a child who was shocked; the culprit drug recorded in the notes, the prescribing system and on a wristband, and the family told in writing; no rechallenge; referral to an allergy service to identify the culprit. The report records none of these."
+      }
+    ],
+    "references": [
+      "张睿, 裴亮, 王佳, 张晗, 韩晓华. 头孢噻肟钠/舒巴坦钠致过敏性休克一例. 中国小儿急救医学. 2014;21(1):63. doi:10.3760/cma.j.issn.1673-4912.2014.01.026. Available from: https://rs.yiigle.com/cmaid/70044",
+      "Resuscitation Council UK. Emergency treatment of anaphylaxis: guidelines for healthcare providers. London: Resuscitation Council UK; 2021.",
+      "Dodd A, Hughes A, Sargant N, Whyte AF, Soar J, Turner PJ. Evidence update for the treatment of anaphylaxis. Resuscitation. 2021;163:86-96. doi:10.1016/j.resuscitation.2021.04.010",
+      "Muraro A, Worm M, Alviani C, et al. EAACI guidelines: anaphylaxis (2021 update). Allergy. 2022;77(2):357-377. doi:10.1111/all.15032",
+      "Khan DA, Banerji A, Blumenthal KG, et al. Drug allergy: a 2022 practice parameter update. J Allergy Clin Immunol. 2022;150(6):1333-1393. doi:10.1016/j.jaci.2022.08.028",
+      "国家卫生健康委员会办公厅. β内酰胺类抗菌药物皮肤试验指导原则（2021年版）. 2021."
+    ],
+    "notice": {
+      "zh-CN": "评分为教学脚本评估，并非经过验证的能力评分。",
+      "en": "Scores are a teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "体重（无法按体重核对剂量）；入院时的生命体征和血液检查。",
+      "en": "His weight (so no dose can be checked by weight); admission vital signs and blood tests."
+    },
+    {
+      "zh-CN": "上次青霉素过敏的药物、表现、发生时间和处理；在诊所输头孢呋辛期间有无反应。",
+      "en": "The drug, features, timing and treatment of the earlier penicillin reaction; whether he reacted during the clinic's cefuroxime."
+    },
+    {
+      "zh-CN": "输液器的滴系数；反应时有无测体温、血气或其他化验。",
+      "en": "The giving set's drop factor; any temperature, blood gas or other test at the time of the reaction."
+    },
+    {
+      "zh-CN": "类胰蛋白酶结果；致敏成分（头孢噻肟、舒巴坦或杂质）未经证实。",
+      "en": "Any tryptase result; the culprit component (cefotaxime, sulbactam or an impurity) was never confirmed."
+    },
+    {
+      "zh-CN": "反应后改用的抗菌药物、观察时长、过敏标注、变态反应科随访，以及此后是否再用过β-内酰胺类药物。",
+      "en": "The antibiotic used afterwards, the observation period, any allergy record, allergy follow-up, and whether he later received any β-lactam."
+    }
+  ],
+  "assets": [
+    {
+      "id": "source-pdf",
+      "kind": "pdf",
+      "path": "/local-assets/cases/cmcr-70044/source.pdf",
+      "title": {
+        "zh-CN": "原报告PDF（第63页，只含本文；含处理经过，仅供复盘）",
+        "en": "Source PDF (page 63, this article only; contains the treatment course — for the debrief)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权。",
+        "en": "Copyright retained by the original authors and publisher."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "994fc6a32c9762b6931129c5cc13cfa16d2af0f5f0c8d87f87b831525490238a"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "cefuroxime-reaction"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergy-detail"
+    },
+    {
+      "type": "ask",
+      "itemId": "atopy"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "immunisation"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "household"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "admission-exam"
+    },
+    {
+      "type": "order",
+      "investigationId": "xray"
+    },
+    {
+      "type": "read",
+      "investigationId": "xray",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "skin-test"
+    },
+    {
+      "type": "read",
+      "investigationId": "skin-test",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "infusion-chart"
+    },
+    {
+      "type": "read",
+      "investigationId": "infusion-chart",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "admission-labs"
+    },
+    {
+      "type": "answer",
+      "decisionId": "pre-dose",
+      "optionIds": [
+        "clarify-observe"
+      ]
+    },
+    {
+      "type": "ask",
+      "itemId": "reaction"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "examine",
+      "findingId": "airway"
+    },
+    {
+      "type": "examine",
+      "findingId": "perfusion"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "anaphylaxis"
+      ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "stop-infusion"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "call-help"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "adrenaline-im"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "position-flat"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "oxygen-high"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "monitoring"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "fluid-bolus"
+    },
+    {
+      "type": "ask",
+      "itemId": "reaction-onset"
+    },
+    {
+      "type": "examine",
+      "findingId": "consciousness"
+    },
+    {
+      "type": "examine",
+      "findingId": "heart"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals"
+    },
+    {
+      "type": "order",
+      "investigationId": "tryptase"
+    },
+    {
+      "type": "answer",
+      "decisionId": "adrenaline",
+      "optionIds": [
+        "im-adrenaline"
+      ]
+    },
+    {
+      "type": "ask",
+      "itemId": "status-recovery"
+    },
+    {
+      "type": "examine",
+      "findingId": "recovery-status"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "aftercare-plan"
+    },
+    {
+      "type": "answer",
+      "decisionId": "aftercare",
+      "optionIds": [
+        "aftercare-bundle"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "70044",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/70044",
+    "historicalReview": true,
+    "embodied": {
+      "ivAccessInSitu": true
+    },
+    "testUtterances": [
+      {
+        "text": "咳嗽发烧几天了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "咳了多长时间了？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "来之前在诊所打过什么针？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "诊所输的是什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "他对什么药过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "上次青霉素过敏是什么表现？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergy-detail"
+        ]
+      },
+      {
+        "text": "那次过敏是多大的时候，怎么处理的？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergy-detail"
+        ]
+      },
+      {
+        "text": "输头孢呋辛的时候有没有过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "cefuroxime-reaction"
+        ]
+      },
+      {
+        "text": "他是过敏体质吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "atopy"
+        ]
+      },
+      {
+        "text": "有没有湿疹或者哮喘？",
+        "locale": "zh-CN",
+        "expect": [
+          "atopy"
+        ]
+      },
+      {
+        "text": "家里人有药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "孩子体重多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "疫苗打全了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "immunisation"
+        ]
+      },
+      {
+        "text": "以前住过院吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "家里有人抽烟吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "household"
+        ]
+      },
+      {
+        "text": "您最担心什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "小朋友，你哪里难受？",
+        "locale": "zh-CN",
+        "expect": [
+          "reaction"
+        ]
+      },
+      {
+        "text": "刚才是怎么回事？",
+        "locale": "zh-CN",
+        "expect": [
+          "reaction-onset"
+        ]
+      },
+      {
+        "text": "现在好点了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-recovery"
+        ]
+      },
+      {
+        "text": "How long has he been coughing?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "When did the fever start?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "What did the clinic give him?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Has he had any antibiotics already?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Is he allergic to anything?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What happened when he reacted to penicillin?",
+        "locale": "en",
+        "expect": [
+          "allergy-detail"
+        ]
+      },
+      {
+        "text": "How old was he when he had the penicillin reaction?",
+        "locale": "en",
+        "expect": [
+          "allergy-detail"
+        ]
+      },
+      {
+        "text": "What happened the last time he had penicillin?",
+        "locale": "en",
+        "expect": [
+          "allergy-detail"
+        ]
+      },
+      {
+        "text": "Did he react to the cefuroxime at all?",
+        "locale": "en",
+        "expect": [
+          "cefuroxime-reaction"
+        ]
+      },
+      {
+        "text": "Does he have eczema or asthma?",
+        "locale": "en",
+        "expect": [
+          "atopy"
+        ]
+      },
+      {
+        "text": "Any drug allergies in the family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How heavy is he?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Has he had all his vaccines?",
+        "locale": "en",
+        "expect": [
+          "immunisation"
+        ]
+      },
+      {
+        "text": "Has he been in hospital before?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Does anyone smoke at home?",
+        "locale": "en",
+        "expect": [
+          "household"
+        ]
+      },
+      {
+        "text": "Is anything worrying you?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "What's the matter — can you tell me how you feel?",
+        "locale": "en",
+        "expect": [
+          "reaction"
+        ]
+      },
+      {
+        "text": "What just happened to him?",
+        "locale": "en",
+        "expect": [
+          "reaction-onset"
+        ]
+      },
+      {
+        "text": "Are you feeling better now?",
+        "locale": "en",
+        "expect": [
+          "status-recovery"
+        ]
+      }
+    ]
+  }
+}

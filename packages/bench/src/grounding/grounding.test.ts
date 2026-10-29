@@ -29,6 +29,12 @@ import { DEFAULT_GROUNDING_SUITE, GROUNDING_SPLITS, GROUNDING_TRACKS, parseGroun
 
 const content = await loadContent({ dirs: [] });
 const suite = (await loadGroundingSuite(DEFAULT_GROUNDING_SUITE))!;
+// grounding-v1 was authored against this fixed cohort. New catalogue cases
+// need their own regression corpus / a new suite version, not a changed test pin.
+const suiteCaseIds = [
+  "acute-appendicitis", "acute-ischemic-stroke", "anaphylaxis-garden", "dka-adult", "new-onset-t2dm",
+  "pediatric-asthma", "pulmonary-embolism-postop", "septic-shock-cap", "smzl-lung-adeno", "stemi-inferior-rv",
+];
 const appendicitis = content.cases.get("acute-appendicitis")!.def;
 const tmp = mkdtempSync(join(tmpdir(), "cc-grounding-"));
 afterAll(() => rmSync(tmp, { recursive: true, force: true }));
@@ -103,14 +109,20 @@ describe("grounding loader", () => {
 });
 
 describe("the built-in grounding suite", () => {
-  it("is valid and consistent with the cases, with both splits over every case in both languages", () => {
+  it("is valid and covers its fixed ten-case cohort in both splits and languages", () => {
     expect(suite.issues).toEqual([]);
     const refIssues = suite.files.flatMap((f) => groundingRefIssues(f.set, content).map((i) => `${f.path}: ${i}`));
     expect(refIssues).toEqual([]);
     for (const split of GROUNDING_SPLITS) {
       const files = suite.files.filter((f) => f.split === split);
       const cases = new Set(files.map((f) => f.set.caseId).filter(Boolean));
-      expect([...cases].sort(), split).toEqual([...content.cases.keys()].sort());
+      expect([...cases].sort(), split).toEqual(suiteCaseIds);
+      for (const caseId of suiteCaseIds) {
+        expect(content.cases.has(caseId), caseId).toBe(true);
+        const caseLocales = new Set(files.filter((f) => f.set.caseId === caseId)
+          .flatMap((f) => GROUNDING_TRACKS.flatMap((t) => (f.set[t] ?? []).map((i) => i.locale))));
+        expect([...caseLocales].sort(), `${split} ${caseId}`).toEqual(["en", "zh-CN"]);
+      }
       const locales = new Set(files.flatMap((f) => GROUNDING_TRACKS.flatMap((t) => (f.set[t] ?? []).map((i) => i.locale))));
       expect([...locales].sort(), split).toEqual(["en", "zh-CN"]);
       for (const track of GROUNDING_TRACKS) expect(files.some((f) => (f.set[track] ?? []).length > 0), `${split} ${track}`).toBe(true);

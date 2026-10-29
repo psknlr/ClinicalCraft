@@ -255,7 +255,7 @@ does), so it is kept back until the case is complete:
 
 | where | what |
 |---|---|
-| web journal's sources panel, learning record | until then: "Shown in the debrief once the case is complete (a case report’s title may name the diagnosis)." / “病例完成后在复盘中显示（病例报告的标题可能提示诊断）。” |
+| web journal's sources panel, learning record | until then: "Shown in the debrief once the case is complete (a case report’s title may name the diagnosis)." / “病例完成后在复盘中显示（病例报告的标题可能提示诊断）。” The sources panel also leaves out the list of the report's figures and PDF, whose titles follow the report's captions, and says so: "The report's title, authors and citation, with its figures and the source PDF, unlock once the case is complete. …" / “原报告的标题、作者与出处，以及原文配图和 PDF，将在完成病例后开放。……” |
 | CLI `cases show`, `cases list --details` | "The citation, DOI and source references are hidden: they may name the diagnosis (--spoilers shows them)." / “出处、DOI 与来源文献已隐藏：可能提示诊断（加 --spoilers 显示）。”; shown with `--spoilers` (`cases show --json`: left out unless `--spoilers` or `--full`) |
 | MCP `list_cases`, `clinicalcraft://cases`, session resources, a mid-case `get_debrief` | never |
 | server `GET /api/content/cases/:id` | left out unless `?spoilers=1` (the web asks, and gates it as above) |

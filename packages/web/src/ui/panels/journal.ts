@@ -4,7 +4,6 @@
  * the learning-record export. Also the "Sources & scope" credits panel.
  */
 import { assetContentType, assetExists, caseAssetUrl } from "../../app/assets.js";
-import { citesSource } from "@clinicalcraft/agent";
 import { progress } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import { caseDisclaimer, ct, reviewLine, tr } from "../../i18n/index.js";
@@ -12,6 +11,7 @@ import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { evidenceGrid } from "./common.js";
 import { debriefUnlocked } from "./debrief.js";
+import { sourceMaterialUnlocked } from "../../app/source-access.js";
 
 export function journalPanel(app: App): () => PanelView {
   return () => {
@@ -30,19 +30,27 @@ export function journalPanel(app: App): () => PanelView {
     const pdfAsset = c.assets.find((a) => a.kind === "pdf");
     const pdf = pdfAsset ? caseAssetUrl(c, pdfAsset.id) : null;
     const pdfBtn = h("button", { type: "button", id: "download-paper", disabled: true, title: tr("journal.pdfMissing") }, tr("journal.pdf"));
+    let pdfReady = false;
+    const updatePdf = (): void => {
+      const unlocked = sourceMaterialUnlocked(c, store.snapshot?.state ?? game.session.session.state);
+      pdfBtn.disabled = !pdfReady || !unlocked;
+      pdfBtn.title = !unlocked ? tr("journal.pdfLocked") : pdfReady ? "" : tr("journal.pdfMissing");
+    };
     if (pdf?.url) {
       // Opened in a same-origin tab: only a real PDF (never an SVG/HTML file with that name).
       void assetContentType(pdf.url).then((type) => {
-        const ok = type === "application/pdf";
-        pdfBtn.disabled = !ok;
-        pdfBtn.title = ok ? "" : tr("journal.pdfMissing");
-        if (ok) pdfBtn.onclick = () => window.open(pdf.url!, "_blank", "noopener");
+        pdfReady = type === "application/pdf";
+        updatePdf();
+        if (pdfReady) pdfBtn.onclick = () => {
+          if (sourceMaterialUnlocked(c, store.snapshot?.state ?? game.session.session.state)) window.open(pdf.url!, "_blank", "noopener");
+        };
       });
     }
 
     const render = (): void => {
       const snap = store.snapshot;
       const s = snap?.state ?? game.session.session.state;
+      updatePdf();
       const done = new Set(Object.keys(s.objectivesDone));
       clear(tasks);
       // The teaching hint is a scored action (HUD hint button): the journal shows it only for completed
@@ -121,9 +129,11 @@ export function sourcePanel(app: App): () => PanelView {
     if (!game) throw new Error("no game");
     const c = game.caseDef;
     const p = c.provenance;
-    // A published case's source usually names the diagnosis: its citation, DOI, authors and notes wait for the
-    // unlocked debrief (docs/GLOSSARY.md §4 — the CLI, MCP and the server content API keep them back too).
-    const hidden = citesSource(c) && !debriefUnlocked(c, game.session.store.snapshot?.state ?? game.session.session.state);
+    // A published case's source usually names the diagnosis: its citation, DOI, authors and notes, and the list of
+    // its figures and PDF (the titles follow the report's captions), wait for the unlocked debrief (docs/GLOSSARY.md
+    // §4 — the CLI, MCP and the server content API keep the source back too; the source PDF button in the journal
+    // is locked alike).
+    const hidden = !sourceMaterialUnlocked(c, game.session.store.snapshot?.state ?? game.session.session.state);
     const rows: [string, string][] = [];
     if (hidden && (p.citation || p.doi || p.authors.length)) rows.push([tr("source.citation"), tr("source.hidden")]);
     if (p.citation && !hidden) rows.push([tr("source.citation"), p.citation]);
@@ -131,7 +141,7 @@ export function sourcePanel(app: App): () => PanelView {
     if (p.authors.length && !hidden) rows.push([tr("source.authors"), p.authors.join("; ")]);
     if (p.license) rows.push([tr("source.license"), p.license]);
     const assets = h("ul", { class: "asset-list" });
-    for (const a of c.assets) {
+    for (const a of hidden ? [] : c.assets) {
       const { url } = caseAssetUrl(c, a.id);
       const status = h("span", { class: "asset-status" }, "…");
       void assetExists(url).then((ok) => {
@@ -145,6 +155,7 @@ export function sourcePanel(app: App): () => PanelView {
       kicker: tr("source.kicker"),
       title: tr("source.title"),
       body: [
+        hidden ? h("p", { class: "notice", id: "source-locked" }, tr("source.locked")) : null,
         rows.length ? h("dl", { class: "source-dl" }, rows.map(([k, v]) => [h("dt", null, k), h("dd", null, v)])) : null,
         p.kind === "synthetic" ? h("p", { class: "notice" }, tr("source.synthetic")) : null,
         p.notes && !hidden ? h("p", null, h("b", null, tr("source.notes")), " ", ct(p.notes)) : null,
@@ -161,7 +172,7 @@ export function sourcePanel(app: App): () => PanelView {
             )
           : null,
         h("p", { class: "notice", id: "source-disclaimer" }, h("b", null, tr("source.disclaimer")), " ", caseDisclaimer(c.disclaimer)),
-        c.assets.length ? [h("h3", null, tr("source.assets")), assets] : null,
+        c.assets.length && !hidden ? [h("h3", null, tr("source.assets")), assets] : null,
         h("p", null, tr("source.agents")),
         h("p", null, tr("source.engine")),
         h("p", null, tr("source.anatomy")),

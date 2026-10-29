@@ -1,0 +1,5484 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-70005",
+  "version": "1.1.0",
+  "title": {
+    "zh-CN": "发热、腹股沟红肿 · 8岁男孩",
+    "en": "Fever and a swollen groin · 8-year-old boy"
+  },
+  "summary": {
+    "zh-CN": "8岁男孩发热5天，右侧腹股沟红肿疼痛，外院抗感染治疗无效，收住儿科病房。",
+    "en": "An 8-year-old boy is admitted to the children's ward after five days of fever and a painful, swollen right groin that did not settle with treatment elsewhere."
+  },
+  "specialty": [
+    "pediatrics",
+    "infectious-disease",
+    "critical-care"
+  ],
+  "difficulty": 4,
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "estimatedMinutes": 40,
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别进行性软组织脓肿伴全身感染的患儿抗革兰阳性菌治疗失败，并在淡水或泥土接触后、培养回报前扩大经验性覆盖至革兰阴性及环境菌（碳青霉烯类）。",
+      "en": "Recognise failure of anti-Gram-positive therapy in a child with progressive soft-tissue abscesses and systemic infection, and broaden empirical cover to Gram-negative and environmental organisms (a carbapenem) after freshwater or soil exposure, before the cultures return."
+    },
+    {
+      "zh-CN": "依据Phoenix 2024标准，用灌注、乳酸（换算为mmol/L）、凝血和神经系统表现识别脓毒性休克，并说出SSC 2026首小时的处置要点。",
+      "en": "Identify septic shock with the Phoenix 2024 criteria from perfusion, lactate (converted to mmol/L), coagulation and neurological findings, and state the SSC 2026 first-hour priorities."
+    },
+    {
+      "zh-CN": "把感染源控制与按药敏的目标治疗结合起来，并说明多发小脓肿为何需要长疗程。",
+      "en": "Combine source control with susceptibility-guided definitive therapy, and justify a long course for multiple small abscesses."
+    },
+    {
+      "zh-CN": "解释紫色色杆菌侵袭性感染为何需要评估吞噬细胞功能（DHR/NBT）和G6PD，并指出本例记录缺少哪些检查。",
+      "en": "Explain why invasive Chromobacterium violaceum infection calls for phagocyte-function (DHR/NBT) and G6PD testing, and name what this record lacks."
+    },
+    {
+      "zh-CN": "解读病例结局时，区分放弃治疗后的死亡与治疗无效的死亡。",
+      "en": "Distinguish death after withdrawal of care from death despite treatment when appraising a reported outcome."
+    }
+  ],
+  "tags": [
+    "cmcr-20",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "孙静敏, 金丹群, 许愿愿, 郑丽云. 紫色色杆菌脓毒症一例并文献复习. 中国小儿急救医学. 2014;21(1):57-58. doi:10.3760/cma.j.issn.1673-4912.2014.01.023",
+    "doi": "10.3760/cma.j.issn.1673-4912.2014.01.023",
+    "authors": [
+      "孙静敏",
+      "金丹群",
+      "许愿愿",
+      "郑丽云"
+    ],
+    "license": "Authored educational adaptation; original publication and local media retain their copyright.",
+    "notes": {
+      "zh-CN": "依据已发表病例改写。保留年龄、性别、病程和全部临床数据；姓名为化名，医院、日历日期和身份细节已去除，时间以入院第几天表示（发病季节只写“夏季”）。对话、人物性格、问题、决策、处置选项和评分为教学设计；原报告未记录的数据保持未知。原报告的CT图（图1）及原文PDF（转载该图）显示患者身份信息，出于隐私保护未纳入本病例，CT所见以文字保留；图2（培养菌落）保留原图注释。原文内部的差异（游泳时间的两种表述、NK细胞列在血常规后）照原样标注。",
+      "en": "Adapted from a published case. Age, sex, course and every clinical value are kept; names are pseudonyms, and hospitals, calendar dates and identifying details are removed, with times given as hospital days (the season of onset only as “summer”). Dialogue, personalities, questions, decisions, management options and scoring are educational design; data the report does not record stay unknown. The report's CT figure (figure 1) and the source PDF that reprints it show patient identifiers and are withheld for privacy, with the CT findings kept as text; figure 2 (cultured colonies) keeps its original annotations. Discrepancies within the source (two wordings of when he swam; NK cells listed with the blood count) are labelled, not resolved."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "Phoenix criteria for pediatric sepsis and septic shock (SCCM task force, JAMA 2024)",
+        "Surviving Sepsis Campaign international guidelines for sepsis and septic shock in children 2026",
+        "AAAAI/ACAAI practice parameter for the diagnosis and management of primary immunodeficiency 2015"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助编写，并对照所引指南进行了编辑审核；尚未经执业医师审核，用于教学前请由该专科的临床医生审核。",
+        "en": "AI-assisted authoring and editorial review against the cited guidance; not yet reviewed by a licensed clinician — have a clinician of the specialty review it before teaching use."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。病程和结果均来自原报告，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not for individual care or self-medication. The course and results come from the report; unrecorded physiological changes are not simulated."
+  },
+  "patient": {
+    "displayName": {
+      "zh-CN": "小禾（化名）",
+      "en": "Xiaohe (pseudonym)"
+    },
+    "age": 8,
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "发热5天伴右腹股沟红肿",
+      "en": "Five days of fever with a red, swollen right groin"
+    },
+    "triageNote": {
+      "zh-CN": "8岁男孩，由家长陪同。发热5天，右侧腹股沟红肿、有包块；外院用过两种抗菌药物仍高热（最高40 ℃）、畏寒明显，现在疼得不能走路。急诊收入儿科病房。",
+      "en": "8-year-old boy with his parent. Five days of fever and a red, swollen lump in the right groin; still febrile (up to 40 °C) with marked chills despite two antibiotics at another hospital, and now too sore to walk. Admitted from the emergency department to the children's ward."
+    },
+    "tags": [
+      {
+        "zh-CN": "持续高热",
+        "en": "Persistent high fever"
+      },
+      {
+        "zh-CN": "右腹股沟红肿",
+        "en": "Red, swollen right groin"
+      },
+      {
+        "zh-CN": "不能行走",
+        "en": "Unable to walk"
+      }
+    ],
+    "persona": {
+      "personality": {
+        "zh-CN": "8岁男孩，被几天的高烧和疼痛折腾得没精神，话很少；直接问他时会简短回答，一碰右腿就躲、会喊疼。",
+        "en": "An 8-year-old boy worn out by days of fever and pain; he says little, answers simple direct questions briefly, and flinches and cries out when his right leg is touched."
+      },
+      "speechStyle": {
+        "zh-CN": "孩子只说一两句简单的话；家长用口语讲经过，不用医学术语，药名照外院资料上的写法说。",
+        "en": "The boy manages a few simple words; his parent tells the story in everyday language, without medical terms, and reads the drug names as they appear on the other hospital's papers."
+      },
+      "healthLiteracy": "medium",
+      "affect": "in-pain",
+      "openingLine": {
+        "zh-CN": "（家长）医生，孩子烧了5天了，右边大腿根肿起来一个包，越来越大，现在路都走不了。",
+        "en": "(Parent) Doctor, he's had a fever for five days and there's a lump at the top of his right leg that keeps getting bigger — now he can't walk."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这个他的病历里没有记录，我说不上来。",
+        "en": "That isn't recorded in his case notes, so I can't really say."
+      },
+      "concerns": [
+        {
+          "zh-CN": "用了好几天药还是烧，到底是什么病？",
+          "en": "He's had treatment for days and he's still burning up — what is it?"
+        },
+        {
+          "zh-CN": "腿上那个包要开刀吗？",
+          "en": "Will the lump on his leg need an operation?"
+        }
+      ],
+      "actingNotes": {
+        "zh-CN": "家长回答病史；孩子只回答直接问他的疼痛和走路的问题。第4天病情恶化以后，孩子不能说话，只由家长回答。家长焦虑、疲惫，但讲述连贯；病历里没有的细节（在哪里游泳、以前有没有反复感染）如实说不知道，不要编。",
+        "en": "The parent gives the history; the boy answers only questions put to him about the pain and walking. From the deterioration on day 4 onwards the boy cannot speak and only the parent answers. The parent is anxious and tired but tells the story coherently, and says plainly when a detail is not in his notes (where he swam, whether he has had repeated infections) — never invent one."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "小禾的家长（化名）",
+          "en": "Xiaohe's parent (pseudonym)"
+        },
+        "persona": {
+          "zh-CN": "陪孩子从外院转来的家长：担心、睡得少，讲得出发病经过和外院用药；病历上没有写的事如实说不知道。说话直白，会一再追问孩子为什么一直不退烧。",
+          "en": "The parent who came with him from the other hospital: worried and short of sleep, able to tell the story and the earlier treatment, and honest that they don't know what his notes don't record. Speaks directly and keeps asking why the fever will not come down."
+        },
+        "answersHistory": true,
+        "appearance": {
+          "stature": "adult",
+          "build": "average",
+          "shirt": "#5a6f8c",
+          "pants": "#3a3f47",
+          "hairStyle": "short"
+        }
+      }
+    },
+    "nonVerbalWhen": {
+      "any": [
+        {
+          "phase": "shock"
+        },
+        {
+          "phase": "picu"
+        },
+        {
+          "phase": "followup"
+        }
+      ]
+    },
+    "nonVerbalReason": {
+      "zh-CN": "入院第4天起：抽搐、意识丧失，随后在PICU机械通气，不能说话；病史由家长回答。",
+      "en": "From hospital day 4: a seizure with loss of consciousness, then mechanical ventilation in the PICU — he cannot speak, and his parent answers."
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true,
+      "build": "slim"
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "admission",
+      "label": {
+        "zh-CN": "入院第1天：接诊",
+        "en": "Hospital day 1: admission"
+      },
+      "description": {
+        "zh-CN": "发热5天，由外院转来，急诊收入儿科病房。",
+        "en": "After five days of fever he is referred from another hospital and admitted from the emergency department to the children's ward."
+      },
+      "learnerSwitchable": false
+    },
+    {
+      "id": "day3",
+      "label": {
+        "zh-CN": "入院第3天：病情进展",
+        "en": "Hospital day 3: not improving"
+      },
+      "description": {
+        "zh-CN": "原报告：入院后予静脉万古霉素（剂量未记录）及对症支持治疗。到第3天仍畏寒、持续高热、精神反应差，腹股沟包块进行性增大。本阶段的病程为原报告所载，与你入院时选择的方案无关。",
+        "en": "In the report he received IV vancomycin (dose not recorded) and supportive care from admission. By day 3 he still had chills, a persistent high fever and poor responsiveness, and the groin lump was growing. The course in this phase is the report's, whatever regimen you chose on admission."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "objective": "obj-history"
+          },
+          {
+            "objective": "obj-admission"
+          }
+        ]
+      }
+    },
+    {
+      "id": "shock",
+      "label": {
+        "zh-CN": "入院第4天：病情急剧恶化",
+        "en": "Hospital day 4: sudden deterioration"
+      },
+      "description": {
+        "zh-CN": "入院第4天，他在病房突然病情恶化。",
+        "en": "On hospital day 4 he deteriorates suddenly on the ward."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "attempted": "empirical"
+      }
+    },
+    {
+      "id": "picu",
+      "label": {
+        "zh-CN": "入院第4天起：PICU",
+        "en": "Hospital day 4 onwards: PICU"
+      },
+      "description": {
+        "zh-CN": "他已在PICU。",
+        "en": "He is now in the PICU."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "attempted": "shock"
+          },
+          {
+            "intervened": "transfer-picu"
+          }
+        ]
+      },
+      "location": {
+        "setting": "icu"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告的治疗经过与结局",
+        "en": "Reported treatment and outcome"
+      },
+      "description": {
+        "zh-CN": "原报告记录的PICU治疗经过、结局和随访。",
+        "en": "The PICU treatment, outcome and follow-up as the report records them."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "decided": "empirical"
+          },
+          {
+            "decided": "shock"
+          },
+          {
+            "decided": "definitive"
+          },
+          {
+            "decided": "immune"
+          }
+        ]
+      }
+    }
+  ],
+  "initialPhase": "admission",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "孩子哪里不舒服？从什么时候开始的？",
+        "en": "What's been wrong with him, and when did it start?"
+      },
+      "answer": {
+        "zh-CN": "来医院前5天开始发烧的，刚开始38度5。同一天右边大腿根这儿红肿起来，能摸到一个黄豆大的包，一按就疼。",
+        "en": "The fever started five days before we came in — 38.5 at first. The same day the top of his right leg went red and swollen, and you could feel a lump about the size of a soybean that hurt when you pressed it."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里不舒服",
+          "哪儿不舒服",
+          "怎么不舒服",
+          "什么时候开始",
+          "发烧几天",
+          "烧了几天",
+          "什么时候长的",
+          "主诉",
+          "怎么回事",
+          "病了多久"
+        ],
+        "en": [
+          "whatswrong",
+          "what's wrong",
+          "whatstheproblem",
+          "whendiditstart",
+          "fever start",
+          "how long fever",
+          "how long unwell",
+          "how long ill",
+          "lump appear",
+          "presenting complaint",
+          "whatbringsyou",
+          "howdiditbegin"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "source": {
+        "zh-CN": "正文·主诉与现病史（发热5天，起病时38.5 ℃，同时右腹股沟红肿、黄豆大小包块、压痛）；依据原文改写的家长回答",
+        "en": "Main text · chief complaint and present illness (5 days of fever, 38.5 °C at onset, with right groin redness and a tender soybean-sized lump); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "progression",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "后来烧和那个包有什么变化？",
+        "en": "How have the fever and the lump changed since then?"
+      },
+      "answer": {
+        "zh-CN": "在当地医院那几天烧一直不退，最高到40度，冷得直发抖；腿根越肿越厉害，包越来越大，到后来疼得走不了路。",
+        "en": "In those days at the local hospital the fever never went away — it went up to 40 and he was shivering with cold. The swelling got worse and the lump kept growing, until it hurt too much for him to walk."
+      },
+      "keywords": {
+        "zh-CN": [
+          "后来怎么样",
+          "有什么变化",
+          "最高烧到",
+          "烧到多少度",
+          "最高多少度",
+          "越来越大",
+          "变大",
+          "发冷",
+          "发抖",
+          "寒战",
+          "越来越重"
+        ],
+        "en": [
+          "howhasitchanged",
+          "getting worse",
+          "highest temperature",
+          "how high",
+          "lump bigger",
+          "got bigger",
+          "chills",
+          "shivering",
+          "rigors",
+          "worse since"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史（外院治疗后仍持续发热，最高40 ℃，畏寒明显，肿胀加剧、包块增大、不能行走）；依据原文改写的家长回答",
+        "en": "Main text · present illness (fever persisting after treatment elsewhere, up to 40 °C, marked chills, worsening swelling, enlarging lump, unable to walk); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "pain-child",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "小朋友，哪里疼？能走路吗？",
+        "en": "Where does it hurt, buddy? Can you walk?"
+      },
+      "answer": {
+        "zh-CN": "这里……腿根这儿好疼，一动就疼，我走不了路。",
+        "en": "Here… the top of my leg really hurts. It hurts when I move — I can't walk."
+      },
+      "keywords": {
+        "zh-CN": [
+          "哪里疼",
+          "哪儿疼",
+          "疼不疼",
+          "痛不痛",
+          "能走路吗",
+          "能不能走",
+          "走得了路吗",
+          "腿疼",
+          "小朋友"
+        ],
+        "en": [
+          "wheredoesithurt",
+          "doesithurt",
+          "sore",
+          "painful",
+          "canyouwalk",
+          "yourleg",
+          "buddy",
+          "howmuchpain"
+        ]
+      },
+      "speaker": "patient",
+      "phases": [
+        "admission",
+        "day3"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史与入院查体（不能行走、痛苦貌、右下肢活动受限）；孩子自述为教学改写",
+        "en": "Main text · present illness and admission examination (unable to walk, in visible pain, restricted right leg); the boy's words are a teaching adaptation"
+      }
+    },
+    {
+      "id": "medications",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "来之前在当地医院用过什么药？效果怎么样？",
+        "en": "What treatment did he have at the local hospital, and did it help?"
+      },
+      "answer": {
+        "zh-CN": "在当地医院用了头孢哌酮，还有一种单子上写着“氧哌嗪”的药，用了也不见好，还是一直烧。",
+        "en": "At the local hospital they gave him cefoperazone and another drug written on the papers as “yangpaiqin” (氧哌嗪). It didn't help — he kept running a fever."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用过什么药",
+          "用过哪些药",
+          "打过什么针",
+          "吃过什么药",
+          "什么抗生素",
+          "消炎药",
+          "外院用药",
+          "当地医院用",
+          "头孢"
+        ],
+        "en": [
+          "antibiotics",
+          "medicines",
+          "whatdidtheygive",
+          "treatment before",
+          "local hospital",
+          "other hospital",
+          "cefoperazone",
+          "drugs given",
+          "drip"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "过敏",
+          "查血",
+          "查过血",
+          "验血",
+          "化验",
+          "血常规"
+        ],
+        "en": [
+          "allerg",
+          "bloods",
+          "blood test",
+          "blood count"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "正文·现病史（外院予“头孢哌酮、氧哌嗪”抗感染，症状无好转；剂量和疗程未记录）。“氧哌嗪”照原文保留；可能是哌拉西林的旧称“氧哌嗪青霉素”，原文未说明（编者推断，非原报告事实）。",
+        "en": "Main text · present illness (cefoperazone and “氧哌嗪” elsewhere without improvement; doses and duration not recorded). “氧哌嗪” is kept as written; it may be the old Chinese name for piperacillin (氧哌嗪青霉素), which the report does not state (editor's inference, not a reported fact)."
+      }
+    },
+    {
+      "id": "outside-tests",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "当地医院给他查过血吗？",
+        "en": "Did they do any blood tests at the local hospital?"
+      },
+      "answer": {
+        "zh-CN": "查过血常规，说白细胞特别高，具体的数在转院的资料上。",
+        "en": "They did a blood count and said his white cells were very high — the numbers are in the transfer papers."
+      },
+      "keywords": {
+        "zh-CN": [
+          "查过血",
+          "验过血",
+          "化验过",
+          "血常规",
+          "白细胞",
+          "外院检查",
+          "当地查"
+        ],
+        "en": [
+          "blood test",
+          "blood count",
+          "bloods done",
+          "white cells",
+          "white count",
+          "tests at the local hospital",
+          "checkhisbloods"
+        ]
+      },
+      "source": {
+        "zh-CN": "正文·现病史（外院血常规WBC 44.75×10⁹/L，N 83.70%；数值见转诊资料）；依据原文改写的家长回答",
+        "en": "Main text · present illness (outside blood count WBC 44.75×10⁹/L, N 83.70%; values in the referral notes); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "发病前他去游过泳、玩过水吗？",
+        "en": "Did he go swimming or play in water before he fell ill?"
+      },
+      "answer": {
+        "zh-CN": "去过。他发烧前大概一个星期去游过泳。",
+        "en": "Yes — he went swimming about a week before the fever started."
+      },
+      "keywords": {
+        "zh-CN": [
+          "游泳",
+          "游过泳",
+          "去游泳",
+          "玩水",
+          "玩过水",
+          "下过水",
+          "戏水",
+          "接触过水",
+          "接触过脏水",
+          "污水"
+        ],
+        "en": [
+          "swim",
+          "swimming",
+          "swam",
+          "play in water",
+          "water exposure",
+          "beeninwater",
+          "dirty water",
+          "paddling"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "哪里",
+          "哪儿",
+          "什么地方",
+          "一起",
+          "别人",
+          "同伴"
+        ],
+        "en": [
+          "where",
+          "anyone",
+          "others",
+          "friends",
+          "kids",
+          "other children"
+        ]
+      },
+      "required": true,
+      "source": {
+        "zh-CN": "正文：病史部分写“1周前有游泳史”（未说明以入院还是发病为参照），讨论部分写“发病1周前有游泳史”；此处采用讨论部分的表述，两处差异在README中标注。",
+        "en": "Main text: the history says “swimming 1 week ago” (reference point not stated) and the discussion “swimming 1 week before onset”; the answer follows the discussion, and the difference is labelled in the README."
+      }
+    },
+    {
+      "id": "water-source",
+      "topic": "social",
+      "question": {
+        "zh-CN": "他是在哪里游的泳——河里、池塘，还是游泳池？",
+        "en": "Where did he swim — a river, a pond or a pool?"
+      },
+      "answer": {
+        "zh-CN": "在哪儿游的泳，他的病历里没有记录，我说不上来。",
+        "en": "Where he swam isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "在哪里游",
+          "在哪儿游",
+          "哪里游泳",
+          "什么地方游",
+          "河里",
+          "池塘",
+          "水塘",
+          "泳池",
+          "游泳池",
+          "水库"
+        ],
+        "en": [
+          "wheredidheswim",
+          "wheredidhego",
+          "river",
+          "pond",
+          "pool",
+          "swimming pool",
+          "lake",
+          "reservoir"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "contacts",
+      "topic": "social",
+      "question": {
+        "zh-CN": "一起游泳的人有没有也生病的？",
+        "en": "Did anyone who swam with him get ill too?"
+      },
+      "answer": {
+        "zh-CN": "一起去的人有没有生病，他的病历里没有记录，我说不上来。",
+        "en": "Whether anyone with him got ill isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "一起游泳",
+          "一起去的",
+          "别人也病",
+          "别人也发烧",
+          "其他人生病",
+          "同伴",
+          "小伙伴"
+        ],
+        "en": [
+          "anyoneelseill",
+          "anyoneelsesick",
+          "others ill",
+          "swamwithhim",
+          "friends sick",
+          "kids sick",
+          "other children ill"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "trauma",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "腿上或者身上有没有受过伤、擦破过皮？",
+        "en": "Has he hurt himself or grazed his skin anywhere?"
+      },
+      "answer": {
+        "zh-CN": "没有，没摔过，也没擦破皮，也没碰过什么特别的东西。",
+        "en": "No — he hasn't fallen or grazed himself, and he hasn't touched anything unusual."
+      },
+      "keywords": {
+        "zh-CN": [
+          "受伤",
+          "受过伤",
+          "外伤",
+          "摔过",
+          "摔伤",
+          "擦破",
+          "破皮",
+          "伤口",
+          "碰过什么"
+        ],
+        "en": [
+          "injury",
+          "injured",
+          "hurt himself",
+          "graze",
+          "grazed",
+          "cut",
+          "wound",
+          "broken skin",
+          "trauma"
+        ]
+      },
+      "source": {
+        "zh-CN": "正文·现病史（否认外伤及皮肤破损史，无特殊物质接触史）；依据原文改写的家长回答",
+        "en": "Main text · present illness (no trauma or broken skin; no contact with unusual substances); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "cough",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "除了发烧和腿上的包，还有别的不舒服吗？",
+        "en": "Apart from the fever and the lump, has he had anything else?"
+      },
+      "answer": {
+        "zh-CN": "生病以来有点轻轻地咳嗽。别的我就说不上来了。",
+        "en": "He's had a slight cough since he fell ill. Beyond that I couldn't say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "别的不舒服",
+          "其他症状",
+          "其他不舒服",
+          "咳嗽",
+          "咳不咳",
+          "伴随症状",
+          "还有什么症状"
+        ],
+        "en": [
+          "anythingelse",
+          "other symptoms",
+          "cough",
+          "coughing",
+          "other problems",
+          "associated symptoms"
+        ]
+      },
+      "source": {
+        "zh-CN": "正文·现病史（病程中有轻咳；其他伴随症状原文未写）；依据原文改写的家长回答",
+        "en": "Main text · present illness (a slight cough during the illness; no other symptoms are described); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "他是第几个孩子？出生的时候顺利吗？",
+        "en": "Is he your first child, and was his birth straightforward?"
+      },
+      "answer": {
+        "zh-CN": "他是老二，足月顺产的，生下来没有缺氧，也没抢救过。",
+        "en": "He's our second. He was born at full term, a normal delivery — no lack of oxygen, no resuscitation."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生",
+          "出生时",
+          "生的时候",
+          "顺产",
+          "早产",
+          "足月",
+          "第几胎",
+          "老几",
+          "独生子",
+          "第几个孩子"
+        ],
+        "en": [
+          "birth",
+          "born",
+          "delivery",
+          "premature",
+          "full term",
+          "pregnancy",
+          "second child",
+          "only child"
+        ]
+      },
+      "source": {
+        "zh-CN": "正文·个人史（G2P2，足月顺产，无窒息抢救史）；依据原文改写的家长回答",
+        "en": "Main text · personal history (G2P2, term vaginal delivery, no asphyxia or resuscitation); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里人有什么特别的病吗？",
+        "en": "Does anything run in the family?"
+      },
+      "answer": {
+        "zh-CN": "家里没什么特别的病。",
+        "en": "No, nothing in particular runs in the family."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里人",
+          "家族史",
+          "遗传病",
+          "家里有人",
+          "父母身体",
+          "兄弟姐妹",
+          "亲戚"
+        ],
+        "en": [
+          "family history",
+          "runs in the family",
+          "relatives",
+          "inherited",
+          "brothers",
+          "sisters",
+          "parents health"
+        ]
+      },
+      "source": {
+        "zh-CN": "正文·家族史（无特殊家族史）；依据原文改写的家长回答",
+        "en": "Main text · family history (nothing notable); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "pmh",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "他以前身体怎么样？有没有反复感染、长脓包，或者住过院？",
+        "en": "How has his health been before? Any repeated infections, boils or abscesses, or hospital stays?"
+      },
+      "answer": {
+        "zh-CN": "他以前身体怎么样、有没有反复感染过，他的病历里没有记录，我说不上来。",
+        "en": "His earlier health — and whether he's had repeated infections — isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前身体",
+          "平时身体",
+          "既往史",
+          "反复感染",
+          "经常感染",
+          "经常生病",
+          "长脓包",
+          "化脓",
+          "住过院",
+          "以前得过什么病",
+          "做过手术"
+        ],
+        "en": [
+          "past medical history",
+          "previous illnesses",
+          "repeated infections",
+          "recurrent infections",
+          "lots of infections",
+          "boils",
+          "abscesses before",
+          "beeninhospital",
+          "hospital admissions",
+          "admitted before",
+          "operations",
+          "surgery"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "immunisations",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "他的疫苗都按时打了吗？",
+        "en": "Is he up to date with his vaccinations?"
+      },
+      "answer": {
+        "zh-CN": "疫苗打得怎么样，他的病历里没有记录，我说不上来。",
+        "en": "His vaccinations aren't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "疫苗",
+          "打预防针",
+          "预防针",
+          "预防接种",
+          "接种",
+          "疫苗本"
+        ],
+        "en": [
+          "vaccinations",
+          "vaccines",
+          "immunisations",
+          "jabs",
+          "uptodate",
+          "vaccine"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "他对什么药或者食物过敏吗？",
+        "en": "Is he allergic to any medicines or foods?"
+      },
+      "answer": {
+        "zh-CN": "有没有过敏，他的病历里没有记录，我说不上来。",
+        "en": "Whether he has any allergies isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏",
+          "药物过敏",
+          "食物过敏",
+          "过敏史",
+          "对什么过敏",
+          "青霉素过敏"
+        ],
+        "en": [
+          "allergies",
+          "allergic",
+          "allergy",
+          "drug allergy",
+          "penicillin allergy",
+          "reactions to medicines"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "household",
+      "topic": "social",
+      "question": {
+        "zh-CN": "家里的情况怎么样？平时谁照顾他？",
+        "en": "What's home like — who looks after him day to day?"
+      },
+      "answer": {
+        "zh-CN": "家里的情况，他的病历里没有记录，我说不上来。",
+        "en": "His home situation isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家里情况",
+          "住在哪",
+          "谁照顾",
+          "谁带他",
+          "谁带孩子",
+          "上学",
+          "家里几口人",
+          "养宠物"
+        ],
+        "en": [
+          "home",
+          "whoslookingafterhim",
+          "looks after him",
+          "school",
+          "household",
+          "pets",
+          "whocaresforhim"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "travel",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近有没有出过远门？",
+        "en": "Has he travelled anywhere recently?"
+      },
+      "answer": {
+        "zh-CN": "最近有没有出过远门，他的病历里没有记录，我说不上来。",
+        "en": "Recent travel isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出远门",
+          "旅游",
+          "旅行",
+          "去过外地",
+          "出去玩",
+          "外出过"
+        ],
+        "en": [
+          "travel",
+          "travelled",
+          "trip",
+          "holiday",
+          "abroad",
+          "been away"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "他多重？最近称过体重吗？",
+        "en": "How much does he weigh?"
+      },
+      "answer": {
+        "zh-CN": "他多重，他的病历里没有记录，我说不上来。",
+        "en": "His weight isn't recorded in his case notes, so I can't really say."
+      },
+      "keywords": {
+        "zh-CN": [
+          "体重",
+          "多重",
+          "多少斤",
+          "多少公斤",
+          "称过体重",
+          "称体重"
+        ],
+        "en": [
+          "weight",
+          "weigh",
+          "how heavy",
+          "kilos",
+          "kilograms"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "原报告未记录：保持未知，不补写",
+        "en": "Not in the report: kept unknown, nothing added"
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心的是什么？",
+        "en": "What worries you most?"
+      },
+      "answer": {
+        "zh-CN": "用了好几天药还是烧，我就怕耽误了。腿上那个包，是不是得开刀？",
+        "en": "He's had treatment for days and he's still burning up — I'm scared it's been left too long. Will that lump need an operation?"
+      },
+      "keywords": {
+        "zh-CN": [
+          "担心",
+          "最担心",
+          "顾虑",
+          "害怕",
+          "有什么想问",
+          "希望怎么治"
+        ],
+        "en": [
+          "worries",
+          "worried",
+          "concerns",
+          "afraid",
+          "expectations",
+          "anyquestions"
+        ]
+      },
+      "phases": [
+        "admission",
+        "day3"
+      ],
+      "source": {
+        "zh-CN": "教学改写：家长的担忧为角色设定，原报告未记录",
+        "en": "Teaching adaptation: the parent's worries are part of the role and are not in the report"
+      }
+    },
+    {
+      "id": "status-admission",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "他现在怎么样？",
+        "en": "How is he right now?"
+      },
+      "answer": {
+        "zh-CN": "还在烧，腿根疼得厉害，走不了路，人也没什么精神。",
+        "en": "He's still feverish, the top of his leg is very sore so he can't walk, and he's got no energy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "现在怎么样",
+          "现在情况",
+          "目前怎么样",
+          "精神怎么样",
+          "精神好吗",
+          "现在还烧吗"
+        ],
+        "en": [
+          "howishenow",
+          "howishedoing",
+          "howishetoday",
+          "right now",
+          "atthemoment",
+          "still feverish"
+        ]
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·现病史与入院查体（持续发热、不能行走、精神反应一般、痛苦貌）；依据原文改写的家长回答",
+        "en": "Main text · present illness and admission examination (persistent fever, unable to walk, responsiveness only fair, in visible pain); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "status-day3",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这两天他怎么样了？",
+        "en": "How has he been over the last couple of days?"
+      },
+      "answer": {
+        "zh-CN": "还是一直高烧，最高烧到40度5，冷得发抖，人越来越没精神，腿根那个包又大了。",
+        "en": "He's still running a high fever — it got up to 40.5 — he's shivering, he's getting more and more listless, and the lump at the top of his leg is bigger again."
+      },
+      "keywords": {
+        "zh-CN": [
+          "这两天",
+          "这几天怎么样",
+          "住院以后",
+          "好点没有",
+          "好点了吗",
+          "退烧了吗",
+          "有没有好转"
+        ],
+        "en": [
+          "last couple of days",
+          "since he came in",
+          "anybetter",
+          "since admission",
+          "improving",
+          "fever settled"
+        ]
+      },
+      "phases": [
+        "day3"
+      ],
+      "supersedes": [
+        "status-admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院后至第3天病程（畏寒明显、持续高热、最高40.5 ℃、精神反应差、包块进行性增大）；依据原文改写的家长回答",
+        "en": "Main text · course to hospital day 3 (marked chills, persistent fever up to 40.5 °C, poor responsiveness, progressively enlarging lump); the parent's answer adapted from the report"
+      }
+    },
+    {
+      "id": "status-shock",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "他刚才怎么了？",
+        "en": "What just happened to him?"
+      },
+      "answer": {
+        "zh-CN": "医生，他刚才突然烦躁、喘不上气，然后就抽起来了，眼睛发直，叫他也不应！",
+        "en": "Doctor, he suddenly got agitated and couldn't breathe, then he started fitting — his eyes went fixed and he won't answer us!"
+      },
+      "keywords": {
+        "zh-CN": [
+          "刚才怎么了",
+          "发生了什么",
+          "怎么回事",
+          "出什么事了",
+          "抽了",
+          "抽筋"
+        ],
+        "en": [
+          "whatjusthappened",
+          "whathappened",
+          "whatsgoingon",
+          "fitting",
+          "seizure",
+          "fit"
+        ]
+      },
+      "phases": [
+        "shock"
+      ],
+      "supersedes": [
+        "status-day3"
+      ],
+      "source": {
+        "zh-CN": "教学改写：依据原报告第4天的记录（烦躁、呼吸困难、抽搐、双目凝视、意识丧失）写成家长所见",
+        "en": "Teaching adaptation: the parent's account follows the report's day-4 record (agitation, breathing difficulty, seizure, fixed gaze, loss of consciousness)"
+      }
+    },
+    {
+      "id": "status-picu",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "他在PICU里，您这边还好吗？",
+        "en": "He's in the PICU now — how are you holding up?"
+      },
+      "answer": {
+        "zh-CN": "他插着管子、用着呼吸机……医生，他到底能不能好起来？",
+        "en": "He's got a tube in and he's on the breathing machine… Doctor, is he going to get better?"
+      },
+      "keywords": {
+        "zh-CN": [
+          "您还好吗",
+          "家长还好吗",
+          "呼吸机",
+          "现在怎么样了",
+          "有什么担心",
+          "最担心",
+          "担心什么"
+        ],
+        "en": [
+          "howareyouholdingup",
+          "howareyoucoping",
+          "ventilator",
+          "breathing machine",
+          "worriedabouthim",
+          "worries"
+        ]
+      },
+      "phases": [
+        "picu"
+      ],
+      "supersedes": [
+        "status-shock"
+      ],
+      "source": {
+        "zh-CN": "教学改写：家长的话依据PICU中机械通气的记录；担忧为角色设定",
+        "en": "Teaching adaptation: the parent's words follow the record of mechanical ventilation in the PICU; the worry is part of the role"
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "观察一般情况和精神状态",
+        "en": "General appearance and alertness"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "精神状态",
+          "神志",
+          "精神怎么样",
+          "看看孩子",
+          "整体情况"
+        ],
+        "en": [
+          "general appearance",
+          "alertness",
+          "conscious level",
+          "howdoeshelook",
+          "general inspection",
+          "lookathim"
+        ]
+      },
+      "finding": {
+        "zh-CN": "神志清楚，精神反应一般，表情痛苦。",
+        "en": "Conscious; responsiveness only fair; he looks in pain."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "skin",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "检查全身皮肤",
+        "en": "Examine the skin all over"
+      },
+      "keywords": {
+        "zh-CN": [
+          "全身皮肤",
+          "皮肤",
+          "出血点",
+          "皮疹",
+          "瘀点",
+          "皮肤破损"
+        ],
+        "en": [
+          "skin",
+          "rash",
+          "petechiae",
+          "broken skin",
+          "skin breaks",
+          "skinallover"
+        ]
+      },
+      "finding": {
+        "zh-CN": "全身皮肤未见明显破损及出血点。",
+        "en": "No obvious skin breaks or petechiae anywhere."
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "groin",
+      "system": "lymphatic",
+      "maneuver": {
+        "zh-CN": "检查右侧腹股沟包块",
+        "en": "Examine the right groin lump"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹股沟",
+          "大腿根",
+          "包块",
+          "肿块",
+          "摸一下包",
+          "那个包",
+          "局部"
+        ],
+        "en": [
+          "groin",
+          "lump",
+          "mass",
+          "swelling",
+          "inguinal",
+          "feel the lump",
+          "abscess"
+        ]
+      },
+      "finding": {
+        "zh-CN": "右腹股沟可触及一个约10 cm×2 cm的包块，红肿明显，触痛，表面皮温高。",
+        "en": "A mass about 10 cm × 2 cm in the right groin: markedly red and swollen, tender and hot to the touch."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "throat",
+      "system": "heent",
+      "maneuver": {
+        "zh-CN": "检查咽部",
+        "en": "Look at the throat"
+      },
+      "keywords": {
+        "zh-CN": [
+          "咽部",
+          "嗓子",
+          "喉咙",
+          "扁桃体",
+          "看咽"
+        ],
+        "en": [
+          "throat",
+          "pharynx",
+          "tonsils",
+          "look in his mouth"
+        ]
+      },
+      "finding": {
+        "zh-CN": "咽稍红。",
+        "en": "Pharynx slightly red."
+      },
+      "abnormal": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "neck",
+      "system": "neck",
+      "maneuver": {
+        "zh-CN": "检查颈部有无抵抗",
+        "en": "Check the neck for stiffness"
+      },
+      "keywords": {
+        "zh-CN": [
+          "颈部",
+          "颈抵抗",
+          "脖子硬",
+          "脑膜刺激征",
+          "颈强直"
+        ],
+        "en": [
+          "neck",
+          "neck stiffness",
+          "meningism",
+          "stiff neck"
+        ]
+      },
+      "finding": {
+        "zh-CN": "颈软。",
+        "en": "Neck supple."
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "chest",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "听诊双肺",
+        "en": "Listen to the chest"
+      },
+      "keywords": {
+        "zh-CN": [
+          "听肺",
+          "肺部",
+          "呼吸音",
+          "啰音",
+          "听诊双肺",
+          "胸部"
+        ],
+        "en": [
+          "chest",
+          "lungs",
+          "breath sounds",
+          "crackles",
+          "auscultate the chest",
+          "listen to his chest"
+        ]
+      },
+      "finding": {
+        "zh-CN": "双肺呼吸音粗，未闻及干湿性啰音。",
+        "en": "Coarse breath sounds on both sides; no wheeze or crackles."
+      },
+      "abnormal": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "heart",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "心脏听诊",
+        "en": "Listen to the heart"
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏",
+          "听心脏",
+          "心音",
+          "杂音",
+          "心率",
+          "心律"
+        ],
+        "en": [
+          "heart",
+          "heart sounds",
+          "murmur",
+          "heart rate",
+          "listen to his heart"
+        ]
+      },
+      "finding": {
+        "zh-CN": "心律齐，心率100次/分，心音有力，未闻及病理性杂音。",
+        "en": "Regular rhythm, heart rate 100/min, strong heart sounds, no pathological murmur."
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "腹部触诊（肝脾）",
+        "en": "Palpate the abdomen, liver and spleen"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹部",
+          "肚子",
+          "肝脾",
+          "肝脏",
+          "脾脏",
+          "摸肚子",
+          "肝大",
+          "脾大"
+        ],
+        "en": [
+          "abdomen",
+          "tummy",
+          "liver",
+          "spleen",
+          "hepatosplenomegaly",
+          "palpate abdomen",
+          "belly"
+        ]
+      },
+      "finding": {
+        "zh-CN": "腹软；肝肋下2.5 cm，脾肋下3 cm。",
+        "en": "Soft abdomen; liver 2.5 cm and spleen 3 cm below the costal margins."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "legs",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "检查双下肢活动和水肿",
+        "en": "Examine both legs for movement and oedema"
+      },
+      "keywords": {
+        "zh-CN": [
+          "下肢",
+          "腿",
+          "双腿",
+          "活动受限",
+          "水肿",
+          "腿肿"
+        ],
+        "en": [
+          "legs",
+          "leg movement",
+          "oedema",
+          "swollen legs",
+          "range of movement"
+        ]
+      },
+      "finding": {
+        "zh-CN": "右下肢活动受限；双下肢无明显水肿。",
+        "en": "Movement of the right leg is restricted; no obvious oedema of either leg."
+      },
+      "abnormal": true,
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "neuro",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "神经系统检查",
+        "en": "Neurological examination"
+      },
+      "keywords": {
+        "zh-CN": [
+          "神经系统",
+          "神经查体",
+          "反射",
+          "肌力",
+          "病理征"
+        ],
+        "en": [
+          "neurological",
+          "neuro exam",
+          "reflexes",
+          "power",
+          "cranial nerves"
+        ]
+      },
+      "finding": {
+        "zh-CN": "神经系统查体未见异常。",
+        "en": "Neurological examination normal."
+      },
+      "phases": [
+        "admission"
+      ],
+      "source": {
+        "zh-CN": "正文·入院查体",
+        "en": "Main text · admission examination"
+      }
+    },
+    {
+      "id": "day3-general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "重新评估全身情况",
+        "en": "Reassess how he is overall"
+      },
+      "keywords": {
+        "zh-CN": [
+          "一般情况",
+          "精神状态",
+          "现在怎么样",
+          "重新评估",
+          "体温",
+          "发烧"
+        ],
+        "en": [
+          "general appearance",
+          "reassess",
+          "howishenow",
+          "temperature",
+          "alertness"
+        ]
+      },
+      "finding": {
+        "zh-CN": "畏寒明显、持续高热（最高40.5 ℃），精神反应差。",
+        "en": "Marked chills, persistent high fever (up to 40.5 °C), poor responsiveness."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "day3"
+      ],
+      "source": {
+        "zh-CN": "正文·入院第3天病程",
+        "en": "Main text · course on hospital day 3"
+      }
+    },
+    {
+      "id": "groin-day3",
+      "system": "lymphatic",
+      "maneuver": {
+        "zh-CN": "复查右腹股沟包块",
+        "en": "Re-examine the right groin lump"
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹股沟",
+          "大腿根",
+          "包块",
+          "肿块",
+          "那个包",
+          "复查包块"
+        ],
+        "en": [
+          "groin",
+          "lump",
+          "mass",
+          "swelling",
+          "inguinal",
+          "abscess"
+        ]
+      },
+      "finding": {
+        "zh-CN": "包块较入院时进行性增大。",
+        "en": "The lump has grown progressively since admission."
+      },
+      "abnormal": true,
+      "phases": [
+        "day3"
+      ],
+      "source": {
+        "zh-CN": "正文·入院第3天病程",
+        "en": "Main text · course on hospital day 3"
+      }
+    },
+    {
+      "id": "shock-signs",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "评估循环与灌注",
+        "en": "Assess circulation and perfusion"
+      },
+      "keywords": {
+        "zh-CN": [
+          "循环",
+          "灌注",
+          "摸脉搏",
+          "脉搏",
+          "四肢凉",
+          "手脚凉",
+          "末梢",
+          "足背动脉",
+          "心率"
+        ],
+        "en": [
+          "circulation",
+          "perfusion",
+          "pulses",
+          "feel his pulse",
+          "cold peripheries",
+          "cold hands",
+          "heart rate",
+          "foot pulses"
+        ]
+      },
+      "finding": {
+        "zh-CN": "烦躁，呼吸困难，四肢厥冷，足背动脉搏动未触及，心率220次/分。",
+        "en": "Agitated and breathless; cold limbs; dorsalis pedis pulses impalpable; heart rate 220/min."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "shock"
+      ],
+      "source": {
+        "zh-CN": "正文·入院第4天病程",
+        "en": "Main text · course on hospital day 4"
+      }
+    },
+    {
+      "id": "seizure",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "评估意识与抽搐",
+        "en": "Assess his consciousness and the seizure"
+      },
+      "keywords": {
+        "zh-CN": [
+          "意识",
+          "抽搐",
+          "惊厥",
+          "瞳孔",
+          "叫得醒吗",
+          "神志"
+        ],
+        "en": [
+          "consciousness",
+          "seizure",
+          "fitting",
+          "convulsion",
+          "responsive",
+          "pupils",
+          "gcs"
+        ]
+      },
+      "finding": {
+        "zh-CN": "抽搐：双目凝视，口周青紫，口吐泡沫，四肢抽搐，意识丧失。",
+        "en": "Seizure: fixed gaze, perioral cyanosis, frothing at the mouth, convulsing limbs and loss of consciousness."
+      },
+      "abnormal": true,
+      "required": true,
+      "phases": [
+        "shock"
+      ],
+      "source": {
+        "zh-CN": "正文·入院第4天病程",
+        "en": "Main text · course on hospital day 4"
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "原报告没有记录这项检查。",
+    "en": "The report does not record this examination."
+  },
+  "investigations": [
+    {
+      "id": "referral",
+      "name": {
+        "zh-CN": "外院及急诊转诊资料",
+        "en": "Referral notes (other hospital and emergency department)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "外院资料",
+          "转诊资料",
+          "外院血常规",
+          "当地医院化验",
+          "转院资料",
+          "外院病历",
+          "转诊记录"
+        ],
+        "en": [
+          "referral notes",
+          "outside records",
+          "other hospital results",
+          "local hospital blood count",
+          "transfer letter",
+          "referral letter"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院前（外院）及急诊",
+            "en": "Before admission (other hospital) and in the emergency department"
+          },
+          "text": {
+            "zh-CN": "外院血常规：WBC 44.75×10⁹/L，中性粒细胞83.70%。外院用药：头孢哌酮、“氧哌嗪”（剂量和疗程未记录）。急诊拟诊“脓毒症”收入院。原文未给参考范围。",
+            "en": "Other hospital blood count: WBC 44.75×10⁹/L, neutrophils 83.70%. Treatment there: cefoperazone and “氧哌嗪” (doses and duration not recorded). Admitted from the emergency department with a provisional diagnosis of “sepsis”. No reference ranges are given."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞（外院）",
+                "en": "WBC (other hospital)"
+              },
+              "value": 44.75,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例（外院）",
+                "en": "Neutrophils (other hospital)"
+              },
+              "value": 83.7,
+              "unit": "%"
+            }
+          ],
+          "source": {
+            "zh-CN": "正文·现病史",
+            "en": "Main text · present illness"
+          }
+        }
+      }
+    },
+    {
+      "id": "fbc",
+      "name": {
+        "zh-CN": "血常规",
+        "en": "Full blood count"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "血细胞分析",
+          "血象",
+          "全血细胞计数",
+          "复查血常规"
+        ],
+        "en": [
+          "fbc",
+          "full blood count",
+          "cbc",
+          "blood count",
+          "haemoglobin",
+          "white count",
+          "platelet count"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "value": "essential",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院第1天",
+            "en": "Hospital day 1"
+          },
+          "text": {
+            "zh-CN": "WBC 29.26×10⁹/L，中性粒细胞83.5%，Hb 119 g/L，PLT 205×10⁹/L。原文未给参考范围。",
+            "en": "WBC 29.26×10⁹/L, neutrophils 83.5%, Hb 119 g/L, platelets 205×10⁹/L. No reference ranges are given."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "WBC"
+              },
+              "value": 29.26,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例",
+                "en": "Neutrophils"
+              },
+              "value": 83.5,
+              "unit": "%"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 119,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 205,
+              "unit": "×10⁹/L"
+            }
+          ],
+          "source": {
+            "zh-CN": "正文·入院后检查",
+            "en": "Main text · investigations after admission"
+          }
+        },
+        "shock": {
+          "date": {
+            "zh-CN": "入院第4天（转入PICU后复查）",
+            "en": "Hospital day 4 (repeated after transfer to the PICU)"
+          },
+          "text": {
+            "zh-CN": "WBC 21.27×10⁹/L，中性粒细胞96.2%，Hb 57 g/L，PLT 9×10⁹/L。原文未给参考范围。",
+            "en": "WBC 21.27×10⁹/L, neutrophils 96.2%, Hb 57 g/L, platelets 9×10⁹/L. No reference ranges are given."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "白细胞",
+                "en": "WBC"
+              },
+              "value": 21.27,
+              "unit": "×10⁹/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "中性粒细胞比例",
+                "en": "Neutrophils"
+              },
+              "value": 96.2,
+              "unit": "%"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血红蛋白",
+                "en": "Haemoglobin"
+              },
+              "value": 57,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "血小板",
+                "en": "Platelets"
+              },
+              "value": 9,
+              "unit": "×10⁹/L"
+            }
+          ],
+          "critical": true,
+          "source": {
+            "zh-CN": "正文·入院第4天病程",
+            "en": "Main text · course on hospital day 4"
+          }
+        }
+      }
+    },
+    {
+      "id": "inflammation",
+      "name": {
+        "zh-CN": "CRP、降钙素原及内毒素",
+        "en": "CRP, procalcitonin and endotoxin"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "crp",
+          "c反应蛋白",
+          "降钙素原",
+          "pct",
+          "炎症指标",
+          "感染指标",
+          "内毒素",
+          "鲎试验"
+        ],
+        "en": [
+          "crp",
+          "c-reactive protein",
+          "procalcitonin",
+          "pct",
+          "inflammatory markers",
+          "infection markers",
+          "endotoxin"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "value": "essential",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院第1天",
+            "en": "Hospital day 1"
+          },
+          "text": {
+            "zh-CN": "CRP 151.96 mg/L；降钙素原>25 ng/mL；内毒素<5 pg/mL。原文未给参考范围。",
+            "en": "CRP 151.96 mg/L; procalcitonin > 25 ng/mL; endotoxin < 5 pg/mL. No reference ranges are given."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "C反应蛋白",
+                "en": "CRP"
+              },
+              "value": 151.96,
+              "unit": "mg/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "降钙素原",
+                "en": "Procalcitonin"
+              },
+              "value": ">25",
+              "unit": "ng/mL"
+            },
+            {
+              "analyte": {
+                "zh-CN": "内毒素",
+                "en": "Endotoxin"
+              },
+              "value": "<5",
+              "unit": "pg/mL"
+            }
+          ],
+          "source": {
+            "zh-CN": "正文·入院后检查",
+            "en": "Main text · investigations after admission"
+          }
+        }
+      }
+    },
+    {
+      "id": "immunology",
+      "name": {
+        "zh-CN": "免疫功能（免疫球蛋白、淋巴细胞亚群）",
+        "en": "Immune tests (immunoglobulins, lymphocyte subsets)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "免疫功能",
+          "免疫球蛋白",
+          "igg",
+          "淋巴细胞亚群",
+          "t细胞亚群",
+          "cd4",
+          "nk细胞",
+          "体液免疫",
+          "细胞免疫"
+        ],
+        "en": [
+          "immunoglobulins",
+          "igg",
+          "lymphocyte subsets",
+          "t cell subsets",
+          "cd4",
+          "immune function",
+          "nk cells"
+        ]
+      },
+      "requires": [
+        "lab-serology",
+        "flow-cytometry"
+      ],
+      "value": "useful",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院后",
+            "en": "After admission"
+          },
+          "text": {
+            "zh-CN": "体液免疫：IgG 7.88 g/L，IgA 2.33 g/L，IgM 1.28 g/L。T细胞亚群：CD3⁺ 62.3%，CD3⁺CD4⁺ 27%，CD3⁺CD4⁺/CD3⁺CD8⁺ 1.24。NK细胞27.2%（原文把这一项列在血常规之后）。原文未给参考范围；讨论部分称体液免疫及细胞免疫均正常。",
+            "en": "Humoral immunity: IgG 7.88 g/L, IgA 2.33 g/L, IgM 1.28 g/L. T-cell subsets: CD3⁺ 62.3%, CD3⁺CD4⁺ 27%, CD3⁺CD4⁺/CD3⁺CD8⁺ ratio 1.24. NK cells 27.2% (listed after the blood count in the report). No reference ranges are given; the discussion calls humoral and cellular immunity normal."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "IgG",
+                "en": "IgG"
+              },
+              "value": 7.88,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "IgA",
+                "en": "IgA"
+              },
+              "value": 2.33,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "IgM",
+                "en": "IgM"
+              },
+              "value": 1.28,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "CD3⁺",
+                "en": "CD3⁺"
+              },
+              "value": 62.3,
+              "unit": "%"
+            },
+            {
+              "analyte": {
+                "zh-CN": "CD3⁺CD4⁺",
+                "en": "CD3⁺CD4⁺"
+              },
+              "value": 27,
+              "unit": "%"
+            },
+            {
+              "analyte": {
+                "zh-CN": "CD4⁺/CD8⁺比值",
+                "en": "CD4⁺/CD8⁺ ratio"
+              },
+              "value": 1.24
+            },
+            {
+              "analyte": {
+                "zh-CN": "NK细胞",
+                "en": "NK cells"
+              },
+              "value": 27.2,
+              "unit": "%"
+            }
+          ],
+          "source": {
+            "zh-CN": "正文·入院后检查；讨论",
+            "en": "Main text · investigations after admission; discussion"
+          }
+        }
+      }
+    },
+    {
+      "id": "immunology-record",
+      "name": {
+        "zh-CN": "调阅入院时的免疫功能结果",
+        "en": "Admission immune test results (from the chart)"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "调阅免疫功能",
+          "入院时免疫结果",
+          "免疫功能结果",
+          "免疫检查记录"
+        ],
+        "en": [
+          "immune results from admission",
+          "admission immune tests",
+          "chart immune results",
+          "immune test record"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "picu": {
+          "date": {
+            "zh-CN": "入院后（病历调阅）",
+            "en": "After admission (from the chart)"
+          },
+          "text": {
+            "zh-CN": "入院时结果：IgG 7.88 g/L，IgA 2.33 g/L，IgM 1.28 g/L；CD3⁺ 62.3%，CD3⁺CD4⁺ 27%，CD3⁺CD4⁺/CD3⁺CD8⁺ 1.24；NK细胞27.2%。原文未给参考范围；讨论部分称体液免疫及细胞免疫均正常。",
+            "en": "Results from admission: IgG 7.88 g/L, IgA 2.33 g/L, IgM 1.28 g/L; CD3⁺ 62.3%, CD3⁺CD4⁺ 27%, CD3⁺CD4⁺/CD3⁺CD8⁺ ratio 1.24; NK cells 27.2%. No reference ranges are given; the discussion calls humoral and cellular immunity normal."
+          },
+          "source": {
+            "zh-CN": "正文·入院后检查；讨论",
+            "en": "Main text · investigations after admission; discussion"
+          }
+        }
+      }
+    },
+    {
+      "id": "resp-panel",
+      "name": {
+        "zh-CN": "呼吸道病原谱",
+        "en": "Respiratory pathogen panel"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "呼吸道病原",
+          "呼吸道病毒",
+          "病毒谱",
+          "支原体",
+          "mp-igm",
+          "肺炎支原体"
+        ],
+        "en": [
+          "respiratory panel",
+          "respiratory viruses",
+          "mycoplasma",
+          "mp igm",
+          "viral panel"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "value": "neutral",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院后",
+            "en": "After admission"
+          },
+          "text": {
+            "zh-CN": "呼吸道病毒谱：肺炎支原体IgM（MP-IgM）阳性，其余阴性（原文未列出检测项目）。",
+            "en": "Respiratory “virus” panel: Mycoplasma pneumoniae IgM (MP-IgM) positive, the rest negative (the panel's components are not listed)."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "肺炎支原体IgM",
+                "en": "Mycoplasma pneumoniae IgM"
+              },
+              "value": {
+                "zh-CN": "阳性",
+                "en": "positive"
+              }
+            }
+          ],
+          "source": {
+            "zh-CN": "正文·入院后检查",
+            "en": "Main text · investigations after admission"
+          }
+        }
+      }
+    },
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "胸腹部CT（含腹股沟）",
+        "en": "Chest and abdominal CT (including the groin)"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "ct",
+          "胸部ct",
+          "腹部ct",
+          "胸腹部ct",
+          "腹股沟ct",
+          "增强ct",
+          "肺部ct"
+        ],
+        "en": [
+          "ct",
+          "ct scan",
+          "chest ct",
+          "abdominal ct",
+          "groin ct",
+          "ct chest abdomen"
+        ]
+      },
+      "requires": [
+        "ct"
+      ],
+      "risk": "low",
+      "value": "essential",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院后（原文未写具体哪一天）",
+            "en": "After admission (day not stated)"
+          },
+          "text": {
+            "zh-CN": "双肺纹理稍模糊，双肺充气欠均匀。右腹股沟区肿胀，内部可见数个结节状软组织影，明显强化，考虑皮下软组织感染伴小脓肿形成。",
+            "en": "Both lungs: slightly blurred markings and uneven aeration. Right groin: swelling containing several nodular soft-tissue lesions with marked enhancement, interpreted as subcutaneous soft-tissue infection with small abscesses."
+          },
+          "note": {
+            "zh-CN": "原报告的CT配图带有患者身份信息，出于隐私保护未纳入；所见以文字保留。",
+            "en": "The report's CT figure carries patient identifiers and is withheld for privacy; the findings are kept as text."
+          },
+          "source": {
+            "zh-CN": "正文·入院后检查（肺部、腹部CT）",
+            "en": "Main text · investigations after admission (lung and abdominal CT)"
+          }
+        }
+      }
+    },
+    {
+      "id": "abdo-us",
+      "name": {
+        "zh-CN": "腹部超声",
+        "en": "Abdominal ultrasound"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "腹部b超",
+          "腹部超声",
+          "b超",
+          "超声",
+          "彩超",
+          "肝胆脾超声"
+        ],
+        "en": [
+          "abdominal ultrasound",
+          "ultrasound",
+          "us abdomen",
+          "abdominal us",
+          "sonography"
+        ]
+      },
+      "requires": [
+        "ultrasound"
+      ],
+      "value": "useful",
+      "results": {
+        "admission": {
+          "date": {
+            "zh-CN": "入院后",
+            "en": "After admission"
+          },
+          "text": {
+            "zh-CN": "①胆囊壁水肿、增厚；②脾大，肝右叶稍大；③肠间隙积液。",
+            "en": "(1) Oedematous, thickened gallbladder wall; (2) splenomegaly with a slightly enlarged right lobe of the liver; (3) fluid between the bowel loops."
+          },
+          "source": {
+            "zh-CN": "正文·入院后检查",
+            "en": "Main text · investigations after admission"
+          }
+        }
+      }
+    },
+    {
+      "id": "blood-culture",
+      "name": {
+        "zh-CN": "血培养",
+        "en": "Blood cultures"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "血培养",
+          "血培",
+          "抽血培养",
+          "留血培养",
+          "细菌培养",
+          "送培养"
+        ],
+        "en": [
+          "blood culture",
+          "blood cultures",
+          "send cultures",
+          "take cultures",
+          "bcs"
+        ]
+      },
+      "requires": [
+        "lab-microbiology"
+      ],
+      "value": "essential",
+      "results": {
+        "admission": {
+          "text": {
+            "zh-CN": "标本已送检，培养需要时间。原报告没有写明血培养的采集时间和套数；培养结果在入院第4天报告（届时见“微生物报告”）。",
+            "en": "Sample sent; cultures take time. The report does not say when or how many blood cultures were taken; the result was reported on hospital day 4 (see the microbiology report then)."
+          },
+          "source": {
+            "zh-CN": "模拟说明：依据原报告第4天的培养报告",
+            "en": "Simulation note based on the report's day-4 culture result"
+          }
+        },
+        "day3": {
+          "text": {
+            "zh-CN": "标本已送检。原报告提到血培养和两份腹股沟穿刺液培养，但没有写采集时间；结果在入院第4天报告（届时见“微生物报告”）。",
+            "en": "Sample sent. The report mentions blood cultures and two groin-aspirate cultures but not when they were taken; the results were reported on hospital day 4 (see the microbiology report then)."
+          },
+          "source": {
+            "zh-CN": "模拟说明：依据原报告第4天的培养报告",
+            "en": "Simulation note based on the report's day-4 culture result"
+          }
+        },
+        "shock": {
+          "text": {
+            "zh-CN": "标本已送检；原报告在转入PICU、开始机械通气时才报告培养结果。",
+            "en": "Sample sent; the report gives the culture result only after the PICU transfer, when ventilation began."
+          },
+          "source": {
+            "zh-CN": "模拟说明：依据原报告第4天的培养报告",
+            "en": "Simulation note based on the report's day-4 culture result"
+          }
+        }
+      }
+    },
+    {
+      "id": "drainage",
+      "name": {
+        "zh-CN": "切开引流手术记录及病理",
+        "en": "Operation note and pathology (incision and drainage)"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "引流记录",
+          "切开引流",
+          "手术记录",
+          "病理",
+          "病理报告",
+          "穿刺液",
+          "脓液"
+        ],
+        "en": [
+          "drainage",
+          "incision and drainage",
+          "operation note",
+          "pathology",
+          "histology",
+          "pus",
+          "aspirate"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "essential",
+      "results": {
+        "day3": {
+          "date": {
+            "zh-CN": "入院第3天",
+            "en": "Hospital day 3"
+          },
+          "text": {
+            "zh-CN": "腹股沟穿刺液检出脓球。外科急诊行脓肿切开引流，引流出黄色脓液10 mL。病理：送检为纤维脂肪组织，仅局部见少量皮肤及其附件和少量平滑肌，组织充血、淤血，绝大部分已坏死，中等量急慢性炎细胞浸润伴小脓肿形成。术后继续万古霉素，病情无好转：持续高热，精神反应差。",
+            "en": "The groin aspirate contained pus cells. The surgical emergency team incised and drained the abscess, releasing 10 mL of yellow pus. Histology: fibrofatty tissue with only a little skin, adnexa and smooth muscle; congested; mostly necrotic, with a moderate acute and chronic inflammatory infiltrate and microabscesses. After the operation vancomycin was continued and he did not improve: persistent high fever and poor responsiveness."
+          },
+          "source": {
+            "zh-CN": "正文·入院第3天病程",
+            "en": "Main text · course on hospital day 3"
+          }
+        }
+      }
+    },
+    {
+      "id": "organ-function",
+      "name": {
+        "zh-CN": "血生化（肝功能、心肌酶、乳酸）",
+        "en": "Blood chemistry (liver tests, muscle enzymes, lactate)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "生化",
+          "血生化",
+          "肝功能",
+          "转氨酶",
+          "乳酸",
+          "心肌酶",
+          "肌酸激酶",
+          "ldh"
+        ],
+        "en": [
+          "chemistry",
+          "biochemistry",
+          "liver function",
+          "lfts",
+          "lactate",
+          "creatine kinase",
+          "ldh",
+          "muscle enzymes"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "value": "essential",
+      "results": {
+        "shock": {
+          "date": {
+            "zh-CN": "入院第4天（转入PICU后复查）",
+            "en": "Hospital day 4 (repeated after transfer to the PICU)"
+          },
+          "text": {
+            "zh-CN": "球蛋白11.9 g/L，ALT 281 IU/L，AST 990 U/L，LDH 4 270 IU/L，CK-MB 79 U/L，CK 2 065 IU/L，乳酸887 mg/L（原文单位；按乳酸摩尔质量90.08 g/mol换算约9.8 mmol/L，为编者推算）。原文未给参考范围。",
+            "en": "Globulin 11.9 g/L, ALT 281 IU/L, AST 990 U/L, LDH 4 270 IU/L, CK-MB 79 U/L, CK 2 065 IU/L, lactate 887 mg/L (the report's unit; ≈ 9.8 mmol/L, derived by the editors using a molar mass of 90.08 g/mol). No reference ranges are given."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "球蛋白",
+                "en": "Globulin"
+              },
+              "value": 11.9,
+              "unit": "g/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "丙氨酸转氨酶",
+                "en": "ALT"
+              },
+              "value": 281,
+              "unit": "IU/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "天冬氨酸转氨酶",
+                "en": "AST"
+              },
+              "value": 990,
+              "unit": "U/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸脱氢酶",
+                "en": "LDH"
+              },
+              "value": 4270,
+              "unit": "IU/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肌酸激酶同工酶",
+                "en": "CK-MB"
+              },
+              "value": 79,
+              "unit": "U/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肌酸激酶",
+                "en": "CK"
+              },
+              "value": 2065,
+              "unit": "IU/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸（原文单位）",
+                "en": "Lactate (as reported)"
+              },
+              "value": 887,
+              "unit": "mg/L"
+            },
+            {
+              "analyte": {
+                "zh-CN": "乳酸（编者换算）",
+                "en": "Lactate (derived)"
+              },
+              "value": 9.8,
+              "unit": "mmol/L"
+            }
+          ],
+          "critical": true,
+          "source": {
+            "zh-CN": "正文·入院第4天病程",
+            "en": "Main text · course on hospital day 4"
+          }
+        }
+      }
+    },
+    {
+      "id": "coagulation",
+      "name": {
+        "zh-CN": "凝血功能",
+        "en": "Coagulation screen"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "凝血",
+          "凝血功能",
+          "凝血四项",
+          "凝血酶原时间",
+          "inr",
+          "aptt",
+          "dic"
+        ],
+        "en": [
+          "coagulation",
+          "clotting",
+          "coag screen",
+          "inr",
+          "aptt",
+          "prothrombin time",
+          "dic screen"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "value": "essential",
+      "results": {
+        "shock": {
+          "date": {
+            "zh-CN": "入院第4天（转入PICU后复查）",
+            "en": "Hospital day 4 (repeated after transfer to the PICU)"
+          },
+          "text": {
+            "zh-CN": "PT-INR 1.77，凝血酶原时间20.7 s，APTT 47.1 s。纤维蛋白原和D-二聚体未报告；原文未给参考范围。",
+            "en": "PT-INR 1.77, prothrombin time 20.7 s, APTT 47.1 s. Fibrinogen and D-dimer are not reported, and no reference ranges are given."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "国际标准化比值",
+                "en": "PT-INR"
+              },
+              "value": 1.77
+            },
+            {
+              "analyte": {
+                "zh-CN": "凝血酶原时间",
+                "en": "Prothrombin time"
+              },
+              "value": 20.7,
+              "unit": "s"
+            },
+            {
+              "analyte": {
+                "zh-CN": "活化部分凝血活酶时间",
+                "en": "APTT"
+              },
+              "value": 47.1,
+              "unit": "s"
+            }
+          ],
+          "critical": true,
+          "source": {
+            "zh-CN": "正文·入院第4天病程",
+            "en": "Main text · course on hospital day 4"
+          }
+        }
+      }
+    },
+    {
+      "id": "blood-gas",
+      "name": {
+        "zh-CN": "血气分析",
+        "en": "Blood gas"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血气",
+          "血气分析",
+          "动脉血气",
+          "静脉血气",
+          "酸碱"
+        ],
+        "en": [
+          "blood gas",
+          "abg",
+          "vbg",
+          "arterial gas",
+          "venous gas",
+          "acid-base"
+        ]
+      },
+      "requires": [
+        "lab-blood-gas"
+      ],
+      "value": "useful",
+      "results": {
+        "shock": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有血气分析的结果（乳酸见第4天血生化）。",
+            "en": "The report gives no blood gas result (the lactate is in the day-4 chemistry)."
+          },
+          "source": {
+            "zh-CN": "原报告未记录：保持未知，不补写",
+            "en": "Not in the report: kept unknown, nothing added"
+          }
+        },
+        "picu": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有血气分析的结果。",
+            "en": "The report gives no blood gas result."
+          },
+          "source": {
+            "zh-CN": "原报告未记录：保持未知，不补写",
+            "en": "Not in the report: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "phagocyte-tests",
+      "name": {
+        "zh-CN": "吞噬细胞功能（DHR/NBT）及G6PD",
+        "en": "Phagocyte function (DHR/NBT) and G6PD"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "dhr",
+          "nbt",
+          "吞噬细胞功能",
+          "中性粒细胞功能",
+          "呼吸爆发",
+          "g6pd",
+          "蚕豆病"
+        ],
+        "en": [
+          "dhr",
+          "nbt",
+          "phagocyte function",
+          "neutrophil function",
+          "oxidative burst",
+          "g6pd",
+          "dihydrorhodamine"
+        ]
+      },
+      "requires": [
+        "flow-cytometry",
+        "lab-hematology"
+      ],
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有吞噬细胞功能（DHR/NBT）或G6PD的检测结果。",
+            "en": "The report has no phagocyte-function (DHR/NBT) or G6PD result."
+          },
+          "source": {
+            "zh-CN": "原报告未记录：保持未知，不补写",
+            "en": "Not in the report: kept unknown, nothing added"
+          }
+        },
+        "picu": {
+          "available": false,
+          "text": {
+            "zh-CN": "原报告没有吞噬细胞功能（DHR/NBT）或G6PD的检测结果。",
+            "en": "The report has no phagocyte-function (DHR/NBT) or G6PD result."
+          },
+          "source": {
+            "zh-CN": "原报告未记录：保持未知，不补写",
+            "en": "Not in the report: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "respiratory-support",
+      "name": {
+        "zh-CN": "PICU呼吸支持记录",
+        "en": "PICU respiratory support record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "呼吸机记录",
+          "呼吸支持",
+          "机械通气记录",
+          "通气参数",
+          "呼吸机参数",
+          "cpap"
+        ],
+        "en": [
+          "ventilator settings",
+          "ventilation record",
+          "respiratory support",
+          "ventilator chart",
+          "cpap"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "picu": {
+          "date": {
+            "zh-CN": "入院第4天（PICU）",
+            "en": "Hospital day 4 (PICU)"
+          },
+          "text": {
+            "zh-CN": "呼吸困难明显，CPAP供氧不能改善氧合，改为压力控制机械通气：FiO₂ 75%，PEEP 7 cmH₂O，呼吸频率18次/分，PEEP上压力（PC above PEEP）19 cmH₂O。当时的SpO₂和血气原文未记录。",
+            "en": "Breathing was markedly laboured and CPAP did not improve oxygenation, so pressure-control mechanical ventilation was started: FiO₂ 75%, PEEP 7 cmH₂O, rate 18/min, pressure above PEEP 19 cmH₂O. The SpO₂ and blood gas at that time are not recorded."
+          },
+          "source": {
+            "zh-CN": "正文·入院第4天病程",
+            "en": "Main text · course on hospital day 4"
+          }
+        }
+      }
+    },
+    {
+      "id": "culture",
+      "name": {
+        "zh-CN": "微生物报告（血及穿刺液培养、药敏）",
+        "en": "Microbiology report (blood and aspirate cultures, susceptibilities)"
+      },
+      "category": "microbiology",
+      "aliases": {
+        "zh-CN": [
+          "微生物报告",
+          "培养结果",
+          "药敏",
+          "药敏结果",
+          "血培养结果",
+          "细菌培养报告",
+          "穿刺液培养"
+        ],
+        "en": [
+          "microbiology report",
+          "culture results",
+          "culture report",
+          "susceptibilities",
+          "sensitivities",
+          "antibiogram"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "essential",
+      "results": {
+        "picu": {
+          "date": {
+            "zh-CN": "入院第4天（开始机械通气时报告）",
+            "en": "Hospital day 4 (reported when ventilation began)"
+          },
+          "text": {
+            "zh-CN": "两份腹股沟穿刺液和血培养均检出紫色色杆菌（Chromobacterium violaceum），血平板上为暗紫色菌落（原报告图2）。药敏：敏感——阿米卡星、氨曲南、环丙沙星、头孢吡肟、庆大霉素、亚胺培南、美罗培南、左氧氟沙星、复方磺胺甲噁唑（原文作“复方新诺明”）；中介——妥布霉素、替卡西林/克拉维酸、哌拉西林/他唑巴坦；耐药——头孢曲松、头孢他啶、哌拉西林。原文未给MIC和判读标准（讨论部分指出该菌尚无专门的药敏判读标准）。",
+            "en": "Both groin-aspirate samples and the blood culture grew Chromobacterium violaceum, dark purple colonies on blood agar (the report's figure 2). Susceptible: amikacin, aztreonam, ciprofloxacin, cefepime, gentamicin, imipenem, meropenem, levofloxacin, co-trimoxazole. Intermediate: tobramycin, ticarcillin/clavulanate, piperacillin/tazobactam. Resistant: ceftriaxone, ceftazidime, piperacillin. MICs and interpretive criteria are not given (the discussion notes that no dedicated breakpoints exist for this organism)."
+          },
+          "figures": [
+            "fig02"
+          ],
+          "critical": true,
+          "source": {
+            "zh-CN": "正文·入院第4天病程",
+            "en": "Main text · course on hospital day 4"
+          }
+        }
+      }
+    },
+    {
+      "id": "picu-course",
+      "name": {
+        "zh-CN": "原报告：PICU治疗经过",
+        "en": "Reported PICU treatment course"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "picu病程",
+          "治疗经过",
+          "后续治疗",
+          "原报告怎么治",
+          "抢救经过"
+        ],
+        "en": [
+          "picu course",
+          "treatment course",
+          "what the team did",
+          "course in picu",
+          "reported treatment"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "date": {
+            "zh-CN": "入院第4–7天",
+            "en": "Hospital days 4–7"
+          },
+          "text": {
+            "zh-CN": "抗菌治疗：根据药敏结果，同时考虑存在中枢神经系统症状，改用美罗培南（剂量未记录）；讨论部分指出此时已是病程第9天，“用药稍迟”。同时积极纠正休克、扩容、纠酸、纠正弥散性血管内凝血，输注血浆、静脉丙种球蛋白，行血液净化并加强支持治疗。病程：血小板进行性下降至7×10⁹/L，口鼻腔、消化道、皮肤黏膜及气道多处出血不止，休克反复出现，少尿，肺出血明显；呼吸机PEEP逐渐加至12 cmH₂O、PEEP上压力22 cmH₂O、FiO₂ 80%。补充凝血因子，输注血小板、凝血酶原复合物、冷沉淀等后血小板仍升高不明显，气管内不断有鲜红色血液涌出，SpO₂ 70%，尿量120 mL/24 h；继续血液净化及支持、对症治疗。入院第7天休克彻底纠正，出血好转，复查血小板升至35×10⁹/L。",
+            "en": "Antimicrobials: guided by the susceptibilities, and because of his central nervous system signs, the team switched to meropenem (dose not recorded); the discussion notes this was illness day 9 — “a little late”. Alongside: active shock treatment, volume expansion, correction of acidosis and of disseminated intravascular coagulation, plasma, IV immunoglobulin, blood purification and intensive support. Course: platelets fell to 7×10⁹/L, with uncontrolled bleeding from the mouth and nose, gut, skin and mucosae and airway; recurrent shock; oliguria; marked pulmonary haemorrhage; PEEP was raised to 12 cmH₂O, pressure above PEEP to 22 cmH₂O and FiO₂ to 80%. Despite clotting factors, platelets, prothrombin complex concentrate and cryoprecipitate, platelets barely rose, fresh blood kept welling up from the trachea, SpO₂ was 70% and urine output 120 mL in 24 h; blood purification and supportive care continued. By hospital day 7 the shock had fully resolved, bleeding had improved and platelets were 35×10⁹/L."
+          },
+          "source": {
+            "zh-CN": "正文·入院第4–7天病程；讨论",
+            "en": "Main text · course on hospital days 4–7; discussion"
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告：结局与随访",
+        "en": "Reported outcome and follow-up"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "随访",
+          "结局",
+          "转归",
+          "后来怎么样",
+          "最后怎么样",
+          "随访记录"
+        ],
+        "en": [
+          "follow-up",
+          "followup",
+          "outcome",
+          "what happened in the end",
+          "final outcome"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "date": {
+            "zh-CN": "入院第8天及随访",
+            "en": "Hospital day 8 and follow-up"
+          },
+          "text": {
+            "zh-CN": "入院第8天，家长因经济原因放弃治疗；随访获悉患儿死亡。原报告讨论称，用药后感染有所控制、症状好转，“但因家长放弃，最终患儿死亡”——死亡发生在第7天休克纠正、第8天放弃治疗之后，不能视为治疗无效的自然转归。死亡的时间和直接原因未记录。",
+            "en": "On hospital day 8 his parents withdrew treatment for financial reasons; follow-up learned that he had died. The report's discussion says the infection had begun to respond and his symptoms had improved, “but because the parents gave up, the child finally died” — the death followed the resolution of shock on day 7 and the withdrawal of treatment on day 8, and cannot be read as the course of treated disease. The time and cause of death are not recorded."
+          },
+          "source": {
+            "zh-CN": "正文·入院第8天；讨论",
+            "en": "Main text · hospital day 8; discussion"
+          }
+        }
+      }
+    }
+  ],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "referral",
+        "ifMatches": "外院|当地|转诊|转院|outside|otherhospital|referral|local",
+        "remove": [
+          "fbc"
+        ]
+      },
+      {
+        "ifHas": "culture",
+        "ifMatches": "结果|报告|药敏|result|report|suscept|sensitiv",
+        "remove": [
+          "blood-culture"
+        ]
+      },
+      {
+        "ifHas": "immunology-record",
+        "ifMatches": "调阅|记录|结果|record|chart|result",
+        "remove": [
+          "immunology"
+        ]
+      },
+      {
+        "ifHas": "ct",
+        "ifMatches": "[a-z]ct[a-z]",
+        "unlessMatches": "ctscan|chestct|abdominalct|groinct|ctchest|ctabdo|ctof|ct扫描",
+        "remove": [
+          "ct"
+        ]
+      }
+    ],
+    "warnings": [
+      {
+        "investigation": "abdo-us",
+        "ifMatches": "腹股沟|groin|inguinal",
+        "message": {
+          "zh-CN": "原报告没有腹股沟超声，这里只有腹部超声的结果。",
+          "en": "The report has no groin ultrasound; only the abdominal ultrasound result exists."
+        }
+      },
+      {
+        "investigation": "ct",
+        "ifMatches": "头|颅|head|brain",
+        "message": {
+          "zh-CN": "原报告的CT为胸部和腹部（含腹股沟），没有头颅CT。",
+          "en": "The report's CT covers the chest and abdomen (including the groin); there is no head CT."
+        }
+      }
+    ]
+  },
+  "interventions": [
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "建立外周静脉通路",
+        "en": "Insert a peripheral IV cannula"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "留置针",
+          "打留置针",
+          "开通静脉",
+          "扎针",
+          "置管"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "cannulate",
+          "iv line",
+          "venous access",
+          "venflon"
+        ]
+      },
+      "dose": {
+        "zh-CN": "外周静脉留置针，同时留取血标本。",
+        "en": "Peripheral IV cannula; take blood samples at the same time."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "scope": "nursing",
+      "risk": "low",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "留置针已置入，血标本已留取。",
+        "en": "Cannula in; blood samples taken."
+      }
+    },
+    {
+      "id": "vancomycin",
+      "name": {
+        "zh-CN": "万古霉素静脉滴注",
+        "en": "IV vancomycin"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "万古霉素",
+          "稳可信",
+          "抗mrsa",
+          "抗革兰阳性菌"
+        ],
+        "en": [
+          "vancomycin",
+          "vanc",
+          "vanco",
+          "mrsa cover",
+          "anti-mrsa"
+        ]
+      },
+      "dose": {
+        "zh-CN": "万古霉素静脉滴注，按体重计算（本例体重未记录），按本地儿科处方集给药并监测血药浓度。",
+        "en": "IV vancomycin, weight-based (his weight is not recorded), dosed per the local paediatric formulary with drug-level monitoring."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已开始万古霉素。原报告入院时即单用万古霉素，认为金黄色葡萄球菌可能性大；它只覆盖革兰阳性菌。",
+        "en": "Vancomycin started. In the report it was started alone on admission for presumed Staphylococcus aureus; it covers Gram-positive bacteria only."
+      }
+    },
+    {
+      "id": "meropenem",
+      "name": {
+        "zh-CN": "美罗培南静脉滴注",
+        "en": "IV meropenem"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "美罗培南",
+          "美平",
+          "碳青霉烯",
+          "培南类"
+        ],
+        "en": [
+          "meropenem",
+          "carbapenem",
+          "merrem",
+          "mero"
+        ]
+      },
+      "dose": {
+        "zh-CN": "美罗培南静脉滴注，每8小时1次，按体重计算（本例体重未记录）；有中枢神经系统表现时用中枢感染剂量；按本地儿科处方集给药。",
+        "en": "IV meropenem 8-hourly, weight-based (his weight is not recorded), using the CNS-infection dose when there are neurological signs, per the local paediatric formulary."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "asked": "exposure"
+          },
+          {
+            "not": {
+              "phase": "admission"
+            }
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "已开始美罗培南；培养回报前可与万古霉素联用以保留抗MRSA覆盖。原报告直到入院第4天培养和药敏回报后才改用美罗培南（病程第9天，作者称“用药稍迟”）。",
+        "en": "Meropenem started; until the cultures return it can be combined with vancomycin to keep MRSA cover. In the report meropenem was started only on hospital day 4, when the cultures and susceptibilities came back (illness day 9 — “a little late”, in the authors' words)."
+      }
+    },
+    {
+      "id": "ceftriaxone",
+      "name": {
+        "zh-CN": "头孢曲松静脉滴注",
+        "en": "IV ceftriaxone"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "头孢曲松",
+          "罗氏芬",
+          "三代头孢"
+        ],
+        "en": [
+          "ceftriaxone",
+          "rocephin",
+          "third-generation cephalosporin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "头孢曲松静脉滴注，按体重计算（本例体重未记录）。",
+        "en": "IV ceftriaxone, weight-based (his weight is not recorded)."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "read": "culture"
+      },
+      "harm": {
+        "zh-CN": "药敏显示这株紫色色杆菌对头孢曲松耐药：此时用头孢曲松，等于让耐药的菌血症和多发脓肿得不到治疗。",
+        "en": "The susceptibility report shows this Chromobacterium violaceum is resistant to ceftriaxone: giving it now leaves a resistant bacteraemia and multiple abscesses untreated."
+      },
+      "response": {
+        "zh-CN": "已开始头孢曲松。注意：他在外院用三代头孢（头孢哌酮）已无效；原报告讨论指出，紫色色杆菌常对青霉素和窄谱头孢菌素多重耐药，对三代头孢的敏感性不确定。",
+        "en": "Ceftriaxone started. Note: he had already failed a third-generation cephalosporin (cefoperazone) elsewhere, and the report's discussion notes that Chromobacterium violaceum is often resistant to penicillins and narrow-spectrum cephalosporins, with uncertain susceptibility to third-generation agents."
+      }
+    },
+    {
+      "id": "incision-drainage",
+      "name": {
+        "zh-CN": "请外科急会诊：脓肿切开引流",
+        "en": "Urgent surgical referral: incision and drainage of the abscess"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "切开引流",
+          "外科会诊",
+          "请外科",
+          "切排",
+          "引流脓肿",
+          "手术引流",
+          "清创"
+        ],
+        "en": [
+          "incision and drainage",
+          "i&d",
+          "surgical drainage",
+          "drain the abscess",
+          "surgical referral",
+          "call the surgeons"
+        ]
+      },
+      "dose": {
+        "zh-CN": "外科评估后在手术室切开引流；脓液送革兰染色和培养，组织送病理。",
+        "en": "Surgical assessment, then incision and drainage in theatre; pus for Gram stain and culture, tissue for histology."
+      },
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "read": "ct"
+          },
+          {
+            "examined": "groin"
+          },
+          {
+            "examined": "groin-day3"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "外科同意尽快切开引流。原报告在入院后先观察包块变化，第3天行切开引流；尽早控制感染源是现行建议（SSC 2026）。",
+        "en": "The surgeons agree to drain it promptly. In the report the lump was watched after admission and drained on hospital day 3; prompt source control is current advice (SSC 2026)."
+      }
+    },
+    {
+      "id": "monitoring",
+      "name": {
+        "zh-CN": "床旁心电监护",
+        "en": "Continuous bedside monitoring"
+      },
+      "kind": "monitoring",
+      "aliases": {
+        "zh-CN": [
+          "心电监护",
+          "监护",
+          "上监护",
+          "接监护仪",
+          "生命体征监测"
+        ],
+        "en": [
+          "monitor",
+          "monitoring",
+          "cardiac monitor",
+          "attach the monitor",
+          "vital signs monitoring"
+        ]
+      },
+      "dose": {
+        "zh-CN": "连续监测心率、血压、呼吸和SpO₂；同时记录意识和尿量。",
+        "en": "Continuous heart rate, blood pressure, respiration and SpO₂; record conscious level and urine output too."
+      },
+      "requires": [
+        "cardiac-monitor"
+      ],
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "监护仪已连接。原报告没有记录入院时和第4天的血压、呼吸频率、体温及SpO₂数值。",
+        "en": "Monitor attached. The report gives no blood pressure, respiratory rate, temperature or SpO₂ values for admission or day 4."
+      }
+    },
+    {
+      "id": "oxygen",
+      "name": {
+        "zh-CN": "储氧面罩高流量吸氧",
+        "en": "High-flow oxygen via a non-rebreather mask"
+      },
+      "kind": "oxygen",
+      "aliases": {
+        "zh-CN": [
+          "吸氧",
+          "给氧",
+          "面罩吸氧",
+          "储氧面罩",
+          "高流量吸氧"
+        ],
+        "en": [
+          "oxygen",
+          "o2",
+          "non-rebreather",
+          "high-flow oxygen",
+          "face mask oxygen"
+        ]
+      },
+      "dose": {
+        "zh-CN": "储氧面罩15 L/min；复苏后下调，SSC 2026建议复苏后SpO₂目标88–92%。",
+        "en": "15 L/min via a non-rebreather mask; wean after resuscitation — SSC 2026 suggests an SpO₂ target of 88–92% once resuscitated."
+      },
+      "requires": [
+        "oxygen"
+      ],
+      "device": "non-rebreather-mask",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "any": [
+          {
+            "phase": "shock"
+          },
+          {
+            "phase": "picu"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "已给高流量吸氧。原报告记录CPAP供氧未能改善氧合。",
+        "en": "High-flow oxygen on. The report records that CPAP did not improve his oxygenation."
+      }
+    },
+    {
+      "id": "fluid-bolus",
+      "name": {
+        "zh-CN": "平衡晶体液快速静脉补液",
+        "en": "IV balanced crystalloid bolus"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "补液",
+          "扩容",
+          "快速补液",
+          "晶体液",
+          "乳酸林格",
+          "林格液",
+          "液体复苏",
+          "生理盐水推注"
+        ],
+        "en": [
+          "fluid bolus",
+          "fluids",
+          "crystalloid",
+          "hartmann's",
+          "ringer's lactate",
+          "plasma-lyte",
+          "saline bolus",
+          "fluid resuscitation"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "白蛋白"
+        ],
+        "en": [
+          "albumin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "平衡晶体液10–20 mL/kg快速输注（体重未记录，需称重或估算）；每次后复评灌注、肝脏大小和肺部，出现液体过负荷即停止；有ICU条件时第1小时累计可达40–60 mL/kg（SSC 2026）。没有平衡液时可用0.9%氯化钠。",
+        "en": "Balanced crystalloid 10–20 mL/kg rapidly (weight not recorded: weigh or estimate); reassess perfusion, liver size and chest after each, stopping at signs of fluid overload; where intensive care is available, up to 40–60 mL/kg in the first hour (SSC 2026). 0.9% sodium chloride if no balanced solution is available."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "maxDoses": 3,
+      "indicatedWhen": {
+        "any": [
+          {
+            "phase": "shock"
+          },
+          {
+            "phase": "picu"
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "补液已开始，记得每次推注后复评。原报告记录了“扩容”，但没有写液体种类和容量。",
+        "en": "Bolus running — reassess after each one. The report records “volume expansion” but not the fluid or volumes."
+      }
+    },
+    {
+      "id": "albumin",
+      "name": {
+        "zh-CN": "白蛋白作为首选复苏液",
+        "en": "IV albumin as the first resuscitation fluid"
+      },
+      "kind": "fluid",
+      "aliases": {
+        "zh-CN": [
+          "白蛋白",
+          "人血白蛋白",
+          "胶体液"
+        ],
+        "en": [
+          "albumin",
+          "human albumin",
+          "colloid"
+        ]
+      },
+      "dose": {
+        "zh-CN": "5%人血白蛋白按体重快速输注。",
+        "en": "5% human albumin, weight-based, given rapidly."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已输注白蛋白。SSC 2026建议儿童初始复苏用晶体液而不是白蛋白（有条件推荐，中等确定性）。",
+        "en": "Albumin given. SSC 2026 suggests crystalloids rather than albumin for a child's initial resuscitation (conditional recommendation, moderate certainty)."
+      }
+    },
+    {
+      "id": "vasoactive",
+      "name": {
+        "zh-CN": "血管活性药物持续泵入（肾上腺素或去甲肾上腺素）",
+        "en": "Vasoactive infusion (adrenaline or noradrenaline)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "血管活性药",
+          "升压药",
+          "肾上腺素泵入",
+          "去甲肾上腺素",
+          "强心升压"
+        ],
+        "en": [
+          "vasopressor",
+          "inotrope",
+          "adrenaline infusion",
+          "noradrenaline",
+          "norepinephrine",
+          "epinephrine infusion",
+          "vasoactive"
+        ]
+      },
+      "dose": {
+        "zh-CN": "肾上腺素或去甲肾上腺素持续静脉泵入，按PICU方案起始和滴定；可先经外周静脉给药，不必等中心静脉（SSC 2026）。",
+        "en": "Adrenaline or noradrenaline by continuous IV infusion, started and titrated per the PICU protocol; it may start through a peripheral vein rather than waiting for central access (SSC 2026)."
+      },
+      "requires": [
+        "iv-access",
+        "infusion-pump",
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "all": [
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "any": [
+              {
+                "phase": "shock"
+              },
+              {
+                "phase": "picu"
+              }
+            ]
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "已开始泵入。SSC 2026没有就首选肾上腺素还是去甲肾上腺素作出推荐；原报告没有写所用的血管活性药物。",
+        "en": "Infusion started. SSC 2026 makes no recommendation between adrenaline and noradrenaline; the report does not name the vasoactive drugs used."
+      }
+    },
+    {
+      "id": "anticonvulsant",
+      "name": {
+        "zh-CN": "止惊（苯二氮䓬类）",
+        "en": "Stop the seizure (benzodiazepine)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "止惊",
+          "抗惊厥",
+          "咪达唑仑",
+          "地西泮",
+          "安定",
+          "止抽"
+        ],
+        "en": [
+          "anticonvulsant",
+          "benzodiazepine",
+          "midazolam",
+          "diazepam",
+          "lorazepam",
+          "stop the seizure"
+        ]
+      },
+      "dose": {
+        "zh-CN": "苯二氮䓬类（如咪达唑仑或地西泮）按体重给药，经静脉、肌内或经黏膜途径，按本地惊厥处理流程。",
+        "en": "A benzodiazepine (e.g. midazolam or diazepam), weight-based, IV, IM or buccal/intranasal, per the local seizure pathway."
+      },
+      "requires": [
+        "medications"
+      ],
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "phase": "shock"
+      },
+      "response": {
+        "zh-CN": "已给止惊药。原报告没有写抽搐如何处理、持续多久；还要查血糖和电解质。",
+        "en": "Given. The report does not record how the seizure was treated or how long it lasted; check glucose and electrolytes too."
+      }
+    },
+    {
+      "id": "admit-ward",
+      "name": {
+        "zh-CN": "收住儿科病房（下达入院医嘱）",
+        "en": "Admit to the children's ward (admission orders)"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "入院医嘱",
+          "收住院",
+          "收入病房",
+          "住院观察",
+          "入院计划",
+          "收儿科"
+        ],
+        "en": [
+          "admission orders",
+          "admit him",
+          "admit to the ward",
+          "ward admission",
+          "admission plan"
+        ]
+      },
+      "dose": {
+        "zh-CN": "定时监测体温、心率、呼吸、血压和SpO₂；标记包块边缘；每日复评。",
+        "en": "Regular observations (temperature, heart rate, respiration, blood pressure, SpO₂); mark the edge of the swelling; review daily."
+      },
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "入院医嘱已下达：定时监测，标记包块边缘，每日复评。",
+        "en": "Admission orders written: regular observations, the edge of the swelling marked, daily review."
+      }
+    },
+    {
+      "id": "transfer-picu",
+      "name": {
+        "zh-CN": "立即转入PICU",
+        "en": "Transfer to the PICU now"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "转picu",
+          "转入picu",
+          "转重症监护",
+          "转icu",
+          "重症监护室",
+          "请picu"
+        ],
+        "en": [
+          "picu",
+          "transfer to picu",
+          "intensive care",
+          "icu",
+          "paediatric intensive care",
+          "call picu"
+        ]
+      },
+      "dose": {
+        "zh-CN": "儿科重症团队接手，转运途中持续监护。",
+        "en": "Hand over to the paediatric intensive care team; monitored transfer."
+      },
+      "posture": "lying",
+      "destination": {
+        "setting": "icu"
+      },
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "shock"
+      },
+      "response": {
+        "zh-CN": "PICU已接收。原报告在第4天出现休克后“急转入PICU”。",
+        "en": "The PICU has taken him. In the report he was moved “urgently to the PICU” on day 4 when shock developed."
+      }
+    },
+    {
+      "id": "intubation",
+      "name": {
+        "zh-CN": "气管插管、机械通气",
+        "en": "Intubate and ventilate"
+      },
+      "kind": "airway",
+      "aliases": {
+        "zh-CN": [
+          "插管",
+          "气管插管",
+          "上呼吸机",
+          "机械通气",
+          "呼吸机"
+        ],
+        "en": [
+          "intubate",
+          "intubation",
+          "ventilate",
+          "mechanical ventilation",
+          "rsi",
+          "ventilator"
+        ]
+      },
+      "dose": {
+        "zh-CN": "由PICU或麻醉医师快速顺序诱导插管，压力控制通气，参数按PICU方案。",
+        "en": "Rapid sequence intubation by the PICU or anaesthetic team; pressure-control ventilation with settings per the PICU protocol."
+      },
+      "requires": [
+        "airway",
+        "ventilator",
+        "medications"
+      ],
+      "scope": "medical",
+      "risk": "high",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "any": [
+          {
+            "phase": "picu"
+          },
+          {
+            "all": [
+              {
+                "phase": "shock"
+              },
+              {
+                "intervened": "transfer-picu"
+              }
+            ]
+          }
+        ]
+      },
+      "response": {
+        "zh-CN": "已插管上机。原报告：CPAP不能改善氧合后改为压力控制机械通气（参数见PICU呼吸支持记录）。",
+        "en": "Intubated and ventilated. In the report CPAP failed to improve oxygenation and pressure-control ventilation followed (settings in the PICU respiratory support record)."
+      }
+    },
+    {
+      "id": "blood-products",
+      "name": {
+        "zh-CN": "输注血小板、血浆或冷沉淀",
+        "en": "Transfuse platelets, plasma or cryoprecipitate"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "输血小板",
+          "输血浆",
+          "冷沉淀",
+          "血制品",
+          "输血",
+          "凝血酶原复合物"
+        ],
+        "en": [
+          "platelets",
+          "platelet transfusion",
+          "plasma",
+          "ffp",
+          "cryoprecipitate",
+          "blood products",
+          "transfusion"
+        ]
+      },
+      "dose": {
+        "zh-CN": "血小板、新鲜冰冻血浆或冷沉淀按体重输注，依出血情况、拟行的操作和复查结果决定。",
+        "en": "Platelets, fresh frozen plasma or cryoprecipitate by weight, guided by bleeding, planned procedures and repeat results."
+      },
+      "requires": [
+        "iv-access",
+        "blood-bank"
+      ],
+      "maxDoses": 3,
+      "indicatedWhen": {
+        "read": "coagulation"
+      },
+      "response": {
+        "zh-CN": "已输注。原报告先后输注血浆、血小板、凝血酶原复合物和冷沉淀，并“纠正弥散性血管内凝血”。",
+        "en": "Given. In the report plasma, platelets, prothrombin complex concentrate and cryoprecipitate were given to “correct disseminated intravascular coagulation”."
+      }
+    },
+    {
+      "id": "ivig",
+      "name": {
+        "zh-CN": "静脉丙种球蛋白",
+        "en": "IV immunoglobulin (IVIG)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "丙种球蛋白",
+          "丙球",
+          "静注人免疫球蛋白",
+          "ivig"
+        ],
+        "en": [
+          "ivig",
+          "iv immunoglobulin",
+          "intravenous immunoglobulin",
+          "gamma globulin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "静脉丙种球蛋白，剂量按适应证和体重（本例体重未记录）。",
+        "en": "IVIG, dose by indication and weight (his weight is not recorded)."
+      },
+      "requires": [
+        "iv-access",
+        "medications"
+      ],
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已输注。原报告把丙种球蛋白作为支持治疗的一部分；它不是儿童脓毒症的常规治疗，只在有明确适应证时与PICU和免疫科商定使用。输注后再测免疫球蛋白，就反映不了他自己的水平。",
+        "en": "Given. In the report IVIG was part of supportive care; it is not routine treatment for sepsis in children and is used only for a specific indication agreed with the PICU and immunology teams. Once it has been given, immunoglobulin levels no longer reflect his own."
+      }
+    },
+    {
+      "id": "blood-purification",
+      "name": {
+        "zh-CN": "血液净化（连续性肾脏替代治疗）",
+        "en": "Blood purification (continuous renal replacement therapy)"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "血液净化",
+          "床旁血滤",
+          "血滤",
+          "透析",
+          "crrt"
+        ],
+        "en": [
+          "crrt",
+          "haemofiltration",
+          "dialysis",
+          "blood purification",
+          "renal replacement"
+        ]
+      },
+      "dose": {
+        "zh-CN": "由PICU决定指征和模式（如液体过负荷、少尿或严重代谢紊乱）。",
+        "en": "Indication and mode decided by the PICU (for example fluid overload, oliguria or severe metabolic derangement)."
+      },
+      "requires": [
+        "dialysis"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "已开始。原报告转入PICU后即用血液净化，并在整个PICU病程中持续。",
+        "en": "Started. In the report blood purification began soon after PICU admission and continued through the PICU course."
+      }
+    }
+  ],
+  "objectives": [
+    {
+      "id": "obj-history",
+      "title": {
+        "zh-CN": "问清发病经过",
+        "en": "Get the story from his parent"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
+      },
+      "hint": {
+        "zh-CN": "问发热和包块怎样开始、怎样发展，外院用了什么、效果如何，以及发病前去过哪里、接触过什么。",
+        "en": "Ask how the fever and the lump began and progressed, what the other hospital gave and whether it helped, and where he had been and what he had been in contact with before he fell ill."
+      },
+      "guidance": {
+        "zh-CN": "家长回答病史；疼痛和走路的问题可以直接问孩子。",
+        "en": "His parent gives the history; ask the boy himself about the pain and walking."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-admission",
+      "title": {
+        "zh-CN": "入院评估并开始治疗",
+        "en": "Assess him on admission and start treatment"
+      },
+      "short": {
+        "zh-CN": "入院评估",
+        "en": "Admission"
+      },
+      "hint": {
+        "zh-CN": "检查包块和腹部，送血常规、炎症指标和影像；用抗菌药物前先留血培养，开始经验性治疗，最后下达入院医嘱。",
+        "en": "Examine the lump and the abdomen, send a blood count, inflammatory markers and imaging, take blood cultures before the first antibiotic, start empirical treatment, then write the admission orders."
+      },
+      "guidance": {
+        "zh-CN": "入院第1天：他仍高热、腿疼得不能走。评估和治疗都安排好、下达入院医嘱后，病程进入入院第3天。",
+        "en": "Hospital day 1: he is still febrile and his leg is too sore to walk on. Once the work-up and treatment are in place and the admission orders are written, the case moves to hospital day 3."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "groin"
+          },
+          {
+            "examined": "abdomen"
+          },
+          {
+            "read": "fbc",
+            "phase": "admission"
+          },
+          {
+            "read": "inflammation",
+            "phase": "admission"
+          },
+          {
+            "read": "ct",
+            "phase": "admission"
+          },
+          {
+            "any": [
+              {
+                "intervened": "vancomycin"
+              },
+              {
+                "intervened": "meropenem"
+              },
+              {
+                "intervened": "ceftriaxone"
+              }
+            ]
+          },
+          {
+            "intervened": "admit-ward"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "examined": "groin"
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "read": "fbc",
+            "phase": "admission"
+          },
+          "target": "lab-hematology"
+        },
+        {
+          "unless": {
+            "read": "ct",
+            "phase": "admission"
+          },
+          "target": "ct"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-day3",
+      "title": {
+        "zh-CN": "第3天：他没有好转",
+        "en": "Day 3: he is not getting better"
+      },
+      "short": {
+        "zh-CN": "第3天",
+        "en": "Day 3"
+      },
+      "hint": {
+        "zh-CN": "重新评估他，处理脓肿，再想一想：一直不起效的方案漏掉了哪一类病原？",
+        "en": "Reassess him, deal with the abscess, and ask what kind of organism a regimen that is not working might be missing."
+      },
+      "guidance": {
+        "zh-CN": "入院第3天，仍高热、没精神，包块越来越大。",
+        "en": "Hospital day 3: still febrile and listless, and the lump keeps growing."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "day3-general"
+          },
+          {
+            "read": "drainage",
+            "phase": "day3"
+          },
+          {
+            "decided": "empirical"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "examined": "day3-general"
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "read": "drainage",
+            "phase": "day3"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-shock",
+      "title": {
+        "zh-CN": "第4天：识别并处理",
+        "en": "Day 4: recognise and act"
+      },
+      "short": {
+        "zh-CN": "第4天",
+        "en": "Day 4"
+      },
+      "hint": {
+        "zh-CN": "先看灌注和意识，再看乳酸、血小板和凝血——按Phoenix标准他属于哪一类？第1小时内要做哪些事、送到哪里？",
+        "en": "Look at perfusion and consciousness, then lactate, platelets and clotting: where does he sit on the Phoenix criteria, what must happen within the first hour, and where should he be?"
+      },
+      "guidance": {
+        "zh-CN": "入院第4天，他在病房突然恶化。作出判断、转入PICU后，病程进入PICU阶段。",
+        "en": "Hospital day 4: he deteriorates suddenly on the ward. Once you have made your judgement and moved him to the PICU, the case moves to the PICU phase."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "shock"
+          },
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "intervened": "transfer-picu"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "examined": "shock-signs"
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "read": "organ-function",
+            "phase": "shock"
+          },
+          "target": "lab-chemistry"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-picu",
+      "title": {
+        "zh-CN": "PICU：针对性治疗与免疫问题",
+        "en": "PICU: targeted treatment and the immune question"
+      },
+      "short": {
+        "zh-CN": "PICU",
+        "en": "PICU"
+      },
+      "hint": {
+        "zh-CN": "读微生物报告和药敏，定下方案和疗程；再想一想：这种感染提示要查他免疫系统的哪一方面？",
+        "en": "Read the microbiology report and the susceptibilities, settle the regimen and its length, and ask what this infection says about which part of his immune system to test."
+      },
+      "guidance": {
+        "zh-CN": "他已在PICU。",
+        "en": "He is now in the PICU."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "definitive"
+          },
+          {
+            "decided": "immune"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "culture",
+            "phase": "picu"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-outcome",
+      "title": {
+        "zh-CN": "核对原报告的经过与结局",
+        "en": "Review the reported course and outcome"
+      },
+      "short": {
+        "zh-CN": "结局",
+        "en": "Outcome"
+      },
+      "hint": {
+        "zh-CN": "决策都完成后，会打开原报告的PICU治疗经过和结局记录；注意结局是在什么情况下发生的。",
+        "en": "Once the decisions are done, the report's PICU course and outcome open; note the circumstances in which the outcome happened."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "read": "picu-course",
+            "phase": "followup"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "empirical",
+      "prompt": {
+        "zh-CN": "入院第3天：多发小脓肿伴全身感染，入院后用万古霉素仍在进展，切开引流后也没有好转；发病前约一周游过泳，外院用头孢哌酮等也无效。培养结果还没出来——抗菌方案现在怎么调整？",
+        "en": "Hospital day 3: multiple small abscesses with systemic infection, progressing on vancomycin and no better after drainage; he swam about a week before falling ill and had already failed cefoperazone and another drug elsewhere. The cultures are not back — how do you change the antimicrobials now?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "asked": "exposure"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "examined": "day3-general"
+          },
+          {
+            "read": "drainage",
+            "phase": "day3"
+          },
+          {
+            "read": "ct",
+            "phase": "admission"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先在第3天重新评估他，读切开引流记录和病理，并确认外院用药和发病前的接触史。",
+        "en": "Reassess him on day 3, read the drainage and pathology record, and check the earlier antibiotics and what he was exposed to before he fell ill."
+      },
+      "options": [
+        {
+          "id": "broaden",
+          "text": {
+            "zh-CN": "现在就扩大覆盖：加用碳青霉烯类（如美罗培南），覆盖革兰阴性菌及水、土环境中的细菌（如紫色色杆菌、气单胞菌；流行区还有类鼻疽伯克霍尔德菌），培养回报前保留抗MRSA；若不耽误，改药前先复查血培养并送脓液培养，继续控制感染源。",
+            "en": "Broaden now: add a carbapenem (e.g. meropenem) to cover Gram-negative and water- and soil-borne bacteria (Chromobacterium violaceum, Aeromonas; Burkholderia pseudomallei where endemic), keeping MRSA cover until the cultures return; repeat blood cultures and send pus for culture first if that causes no delay, and keep controlling the source."
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。抗革兰阳性菌方案失败、多发脓肿进展、发病前有水体接触，都提示要覆盖革兰阴性菌和环境菌。原报告讨论也说，单一抗革兰阳性菌效果不佳时要考虑紫色色杆菌，儿科经验用药以碳青霉烯类为主。SSC 2026要求经验治疗覆盖所有可能的病原，并在不明显延误时先留培养。",
+            "en": "Right. Failure of anti-Gram-positive therapy, progressing multiple abscesses and recent water exposure all call for Gram-negative and environmental cover. The report's own discussion says to consider C. violaceum when a single anti-Gram-positive agent fails, with carbapenems the main empirical choice in children. SSC 2026 asks for empirical therapy that covers all likely pathogens, with cultures first when that causes no meaningful delay."
+          }
+        },
+        {
+          "id": "continue-vanc",
+          "text": {
+            "zh-CN": "继续单用万古霉素：脓肿已经引流，再观察几天",
+            "en": "Continue vancomycin alone — the abscess has been drained, so give it a few more days"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "这是原报告的做法：引流后继续万古霉素，第4天进展为脓毒性休克。引流不能替代有效的抗菌药物；万古霉素对革兰阴性菌无效，而他的接触史和治疗失败都指向革兰阴性菌的可能。",
+            "en": "This is what the report's team did: vancomycin continued after drainage and he developed septic shock on day 4. Drainage does not replace effective antimicrobials; vancomycin has no Gram-negative activity, and his exposure and treatment failure both point to a Gram-negative possibility."
+          }
+        },
+        {
+          "id": "ceftriaxone",
+          "text": {
+            "zh-CN": "改用头孢曲松覆盖革兰阴性菌",
+            "en": "Switch to ceftriaxone for Gram-negative cover"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "他在外院用三代头孢（头孢哌酮）已无效；原报告讨论指出紫色色杆菌常对青霉素和窄谱头孢菌素多重耐药、对三代头孢的敏感性不确定——本例菌株后来正是对头孢曲松和头孢他啶耐药。停掉抗MRSA的药物也不安全。",
+            "en": "He had already failed a third-generation cephalosporin (cefoperazone) elsewhere; the discussion notes that C. violaceum is often resistant to penicillins and narrow-spectrum cephalosporins, with uncertain susceptibility to third-generation agents — and this isolate later proved resistant to ceftriaxone and ceftazidime. Dropping MRSA cover is not safe either."
+          }
+        },
+        {
+          "id": "wait-culture",
+          "text": {
+            "zh-CN": "维持现方案，等培养和药敏回来再针对性换药",
+            "en": "Keep the current regimen and wait for the culture and susceptibility results before changing"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "等培养会耽误时间：作者也指出培养出结果需要时间，所以临床上治疗失败时就要及时调整经验治疗。SSC 2026要求经验治疗覆盖所有可能的病原，培养回报后再降阶梯。",
+            "en": "Waiting costs time: the authors point out that cultures take time to grow, which is why empirical treatment must change as soon as it is failing clinically. SSC 2026 asks for empirical cover of all likely pathogens, narrowing once the cultures return."
+          }
+        },
+        {
+          "id": "add-clinda",
+          "text": {
+            "zh-CN": "在万古霉素基础上加用克林霉素抑制毒素",
+            "en": "Add clindamycin to vancomycin to suppress toxin production"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "两种药都只针对革兰阳性菌，革兰阴性菌和环境菌仍然没有覆盖——这正是他的感染一直进展的原因。",
+            "en": "Both drugs target Gram-positive bacteria only; Gram-negative and environmental organisms are still uncovered — the very gap that let his infection progress."
+          }
+        }
+      ]
+    },
+    {
+      "id": "shock",
+      "prompt": {
+        "zh-CN": "入院第4天：烦躁、呼吸困难、四肢厥冷、足背动脉搏动摸不到、心率220次/分，随后抽搐、意识丧失。复查：乳酸887 mg/L（约9.8 mmol/L）、血小板9×10⁹/L、INR 1.77。怎样判断？第1小时做什么？",
+        "en": "Hospital day 4: agitated, breathless, cold limbs, impalpable dorsalis pedis pulses, heart rate 220/min, then a seizure with loss of consciousness. Repeat bloods: lactate 887 mg/L (≈ 9.8 mmol/L), platelets 9×10⁹/L, INR 1.77. What is this, and what happens in the first hour?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "examined": "shock-signs"
+          },
+          {
+            "examined": "seizure"
+          },
+          {
+            "read": "organ-function",
+            "phase": "shock"
+          },
+          {
+            "read": "coagulation",
+            "phase": "shock"
+          },
+          {
+            "read": "fbc",
+            "phase": "shock"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先在床旁评估他的循环和意识，再读第4天的血生化（含乳酸）、血常规和凝血结果。",
+        "en": "Assess his circulation and consciousness at the bedside, then read the day-4 chemistry (with lactate), blood count and clotting results."
+      },
+      "options": [
+        {
+          "id": "septic-shock",
+          "text": {
+            "zh-CN": "按Phoenix标准为脓毒性休克（乳酸5–10.9 mmol/L得1个心血管分；血小板<100×10⁹/L和INR>1.3各1分），不必等低血压：1小时内静脉给予覆盖所有可能病原的广谱抗菌药物（不耽误时先留血培养）；高流量吸氧并准备气道支持；平衡晶体液10–20 mL/kg快速推注、每次后复评，出现液体过负荷即停；仍休克时尽早用肾上腺素或去甲肾上腺素（可经外周静脉）；处理抽搐；立即转PICU。",
+            "en": "Septic shock by the Phoenix criteria (lactate 5–10.9 mmol/L scores 1 cardiovascular point; platelets < 100×10⁹/L and INR > 1.3 score 1 each), with no need to wait for hypotension: IV broad-spectrum antimicrobials covering all likely pathogens within 1 hour (blood cultures first if no delay); high-flow oxygen with airway support ready; balanced crystalloid 10–20 mL/kg boluses, reassessing after each and stopping at fluid overload; adrenaline or noradrenaline early if still shocked (a peripheral vein is acceptable); treat the seizure; PICU now."
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。Phoenix 2024：疑似感染且Phoenix评分≥2分为脓毒症，其中至少1个心血管分即为脓毒性休克；他的乳酸约9.8 mmol/L（1分）加上凝血2分，已经达标。SSC 2026：疑似脓毒性休克在识别后1小时内给抗菌药物，初始评估时测乳酸，有ICU条件时首小时可分次给到40–60 mL/kg，用晶体液而不用白蛋白。",
+            "en": "Right. Phoenix 2024: suspected infection with a Phoenix score ≥ 2 is sepsis, and at least one cardiovascular point makes it septic shock; his lactate of ≈ 9.8 mmol/L (1 point) plus clotting (2 points) meets it. SSC 2026: antimicrobials within 1 hour of recognising suspected septic shock, lactate at the first assessment, up to 40–60 mL/kg in boluses over the first hour where intensive care is available, and crystalloid rather than albumin."
+          }
+        },
+        {
+          "id": "needs-hypotension",
+          "text": {
+            "zh-CN": "血压还没有记录，测到低血压之前不能诊断休克，先补测血压再说",
+            "en": "No blood pressure has been recorded, so shock cannot be diagnosed until hypotension is documented — measure it first"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "Phoenix标准的心血管分可以来自乳酸或血管活性药物需求，不要求先有低血压；儿童的低血压往往是晚期表现。他此刻四肢厥冷、脉搏摸不到、心率220次/分，等血压只会延误抢救。",
+            "en": "Phoenix cardiovascular points can come from lactate or the need for vasoactive drugs; hypotension is not required, and in children it is often a late sign. With cold limbs, impalpable pulses and a heart rate of 220/min, waiting for a pressure only delays resuscitation."
+          }
+        },
+        {
+          "id": "febrile-seizure",
+          "text": {
+            "zh-CN": "高热惊厥合并局部脓肿：退热、止惊，留在病房观察，等培养结果",
+            "en": "A febrile seizure with a local abscess: antipyretics and an anticonvulsant, keep him on the ward and wait for the cultures"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "8岁已超出热性惊厥的常见年龄，而且他同时有休克征象和多器官受累（乳酸、血小板、凝血、转氨酶）。这是脓毒性休克，需要PICU。",
+            "en": "At 8 he is beyond the usual age for febrile seizures, and he has signs of shock and multi-organ involvement (lactate, platelets, clotting, transaminases). This is septic shock and needs the PICU."
+          }
+        },
+        {
+          "id": "saline-60",
+          "text": {
+            "zh-CN": "先把60 mL/kg生理盐水尽快推完，再做其他评估",
+            "en": "Push 60 mL/kg of 0.9% saline as fast as possible first, then reassess"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "SSC 2026建议有ICU条件时每次10–20 mL/kg、每次后复评，按心输出量指标滴定，出现液体过负荷就停（首小时累计可达40–60 mL/kg），并首选平衡晶体液；不复评就一次推完60 mL/kg，有液体过负荷的风险，也会推迟抗菌药物和血管活性药物。",
+            "en": "SSC 2026 advises 10–20 mL/kg per bolus with reassessment after each where intensive care is available, titrated to cardiac-output markers and stopped at fluid overload (up to 40–60 mL/kg in the first hour), preferring a balanced crystalloid; 60 mL/kg pushed without reassessment risks fluid overload and delays antimicrobials and vasoactive drugs."
+          }
+        },
+        {
+          "id": "albumin-first",
+          "text": {
+            "zh-CN": "用白蛋白作为首选复苏液，晶体液留到后面",
+            "en": "Use albumin as the first resuscitation fluid and keep crystalloid for later"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "SSC 2026建议儿童初始复苏用晶体液而不是白蛋白（有条件推荐，中等确定性）。",
+            "en": "SSC 2026 suggests crystalloids rather than albumin for a child's initial resuscitation (conditional recommendation, moderate certainty)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "definitive",
+      "prompt": {
+        "zh-CN": "PICU：血和两份腹股沟穿刺液都培养出紫色色杆菌，药敏已出；他有过抽搐和意识丧失。接下来的抗菌治疗是？",
+        "en": "PICU: blood and both groin aspirates grew Chromobacterium violaceum and the susceptibilities are back; he has had a seizure with loss of consciousness. What is the antimicrobial plan now?"
+      },
+      "kind": "single",
+      "requires": {
+        "read": "culture",
+        "phase": "picu"
+      },
+      "need": {
+        "zh-CN": "先读微生物报告和药敏。",
+        "en": "Read the microbiology report and the susceptibilities first."
+      },
+      "options": [
+        {
+          "id": "meropenem-long",
+          "text": {
+            "zh-CN": "按药敏用敏感药物：首选美罗培南（敏感，有神经系统表现时可用中枢剂量）；疗程要长——多发小脓肿时作者建议抗菌6周，并影像复查有无深部脓肿；病情稳定后可按药敏调整（如环丙沙星或复方磺胺甲噁唑），观察脓肿有无复发。",
+            "en": "Use an agent the isolate is susceptible to: meropenem first (susceptible, and usable at CNS doses given his neurological signs); a long course — with multiple small abscesses the authors advise 6 weeks of antimicrobials — with imaging for deep abscesses; once stable, adjust by the susceptibilities (e.g. ciprofloxacin or co-trimoxazole) and watch for recurrent abscesses."
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。原报告即按药敏、并考虑中枢神经系统症状改用美罗培南；作者因多发小脓肿建议疗程6周。Yang和Li（2011）的综述强调早诊断、合适的抗菌药物和足够的疗程。SSC 2026：病原和药敏明确后应调整（降阶梯）经验治疗。",
+            "en": "Right. The report's team switched to meropenem on the susceptibilities and because of his CNS signs; the authors advise 6 weeks because of the multiple small abscesses. Yang and Li's review (2011) stresses early diagnosis, appropriate antimicrobials and an adequate course. SSC 2026: once the pathogen and susceptibilities are known, adjust (narrow) the empirical therapy."
+          }
+        },
+        {
+          "id": "ceftazidime",
+          "text": {
+            "zh-CN": "改用头孢他啶（抗假单胞菌三代头孢）",
+            "en": "Switch to ceftazidime (an antipseudomonal third-generation cephalosporin)"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "药敏报告这株菌对头孢他啶和头孢曲松都耐药。",
+            "en": "The isolate is reported resistant to both ceftazidime and ceftriaxone."
+          }
+        },
+        {
+          "id": "pip-taz",
+          "text": {
+            "zh-CN": "改用哌拉西林/他唑巴坦",
+            "en": "Switch to piperacillin/tazobactam"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "药敏为中介（哌拉西林单药耐药）；对伴菌血症、多发脓肿和神经系统表现的患儿，不应选用中介的药物。",
+            "en": "It is reported intermediate (piperacillin alone is resistant); an intermediate agent is not a choice for a child with bacteraemia, multiple abscesses and neurological signs."
+          }
+        },
+        {
+          "id": "short-course",
+          "text": {
+            "zh-CN": "美罗培南用到休克纠正后再用7天即可停药",
+            "en": "Meropenem until the shock resolves, then 7 more days and stop"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "多发小脓肿（包括可能的深部脓肿）需要长疗程，作者建议抗菌6周；休克纠正不等于脓肿已经清除。",
+            "en": "Multiple small abscesses (and possible deep ones) need a long course — the authors advise 6 weeks; resolution of shock does not mean the abscesses have cleared."
+          }
+        }
+      ]
+    },
+    {
+      "id": "immune",
+      "prompt": {
+        "zh-CN": "他的免疫球蛋白和T细胞亚群已经查过，作者认为体液免疫和细胞免疫都正常。对这名患儿，免疫方面还需要做什么？",
+        "en": "His immunoglobulins and T-cell subsets have been measured, and the authors consider humoral and cellular immunity normal. What else does his immune assessment need?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "read": "culture",
+            "phase": "picu"
+          },
+          {
+            "any": [
+              {
+                "read": "immunology"
+              },
+              {
+                "read": "immunology-record"
+              }
+            ]
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先读微生物报告，并调阅入院后的免疫功能检查。",
+        "en": "Read the microbiology report and the immune tests from admission first."
+      },
+      "options": [
+        {
+          "id": "phagocyte",
+          "text": {
+            "zh-CN": "查吞噬细胞的氧化杀菌功能（DHR流式检测；没有条件时做NBT试验）以筛查慢性肉芽肿病，并测G6PD活性；免疫球蛋白和T细胞亚群反映不了中性粒细胞的杀菌功能。请免疫专科随访，并追问反复感染史和家族中男孩的感染史。",
+            "en": "Test phagocyte oxidative killing (DHR flow cytometry, or an NBT test where DHR is unavailable) to screen for chronic granulomatous disease, and measure G6PD activity; immunoglobulins and T-cell subsets do not test neutrophil killing. Refer to immunology, and ask about repeated infections and about infections in boys in the family."
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。原报告讨论引用的文献指出，紫色色杆菌脓毒症常继发于严重G6PD缺乏、中性粒细胞功能障碍或慢性肉芽肿病——这些患者的吞噬细胞产生不了杀菌所需的氧代谢产物。原报告只查了体液和T细胞免疫，没有吞噬细胞功能和G6PD的结果，所以“免疫正常”的结论并不完整。",
+            "en": "Right. The literature cited in the report's discussion links C. violaceum sepsis to severe G6PD deficiency, neutrophil dysfunction and chronic granulomatous disease, in which phagocytes cannot make the oxygen metabolites needed to kill the organism. The report tested only antibodies and T cells and gives no phagocyte-function or G6PD result, so its “normal immunity” conclusion is incomplete."
+          }
+        },
+        {
+          "id": "complete",
+          "text": {
+            "zh-CN": "免疫评估已经完整：免疫球蛋白和T细胞亚群正常，不需要再查",
+            "en": "The immune work-up is complete: immunoglobulins and T-cell subsets are normal, nothing more is needed"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "这是原报告的结论，但这些检查只评估抗体和T细胞，评估不了中性粒细胞的氧化杀菌功能——而与紫色色杆菌侵袭性感染相关的正是这类缺陷。",
+            "en": "This is the report's conclusion, but these tests assess antibodies and T cells, not neutrophil oxidative killing — the kind of defect linked to invasive C. violaceum infection."
+          }
+        },
+        {
+          "id": "hiv-only",
+          "text": {
+            "zh-CN": "只查HIV和血糖，排除常见的免疫抑制原因",
+            "en": "Test only for HIV and diabetes to exclude the common causes of immunosuppression"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "原报告讨论指出，紫色色杆菌感染与HIV感染、糖尿病、化疗或长期使用免疫抑制剂和激素没有明确关系；要查的是吞噬细胞功能和G6PD。",
+            "en": "The report's discussion notes no clear link between C. violaceum infection and HIV, diabetes, chemotherapy or long-term immunosuppressants or steroids; what needs testing is phagocyte function and G6PD."
+          }
+        },
+        {
+          "id": "repeat-ig",
+          "text": {
+            "zh-CN": "如果用过丙种球蛋白，就等输完后复查免疫球蛋白，正常就可以放心",
+            "en": "If he has had IVIG, re-check immunoglobulins afterwards and be reassured if they are normal"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "输注丙种球蛋白后，IgG水平反映的是输入的抗体而不是他自己的；而且免疫球蛋白本来就查不出吞噬细胞缺陷。",
+            "en": "After IVIG the IgG level reflects the infused antibody, not his own — and immunoglobulins cannot detect a phagocyte defect anyway."
+          }
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "weight": 2,
+      "text": {
+        "zh-CN": "问清发热和包块的经过、外院用药及发病前的水体接触",
+        "en": "Elicited the course of the fever and lump, the earlier antibiotics and the water exposure before onset"
+      },
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "progression"
+          },
+          {
+            "asked": "medications"
+          },
+          {
+            "asked": "exposure"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-host",
+      "domain": "history",
+      "weight": 1,
+      "text": {
+        "zh-CN": "询问以前有无反复或严重感染（筛查宿主免疫缺陷）",
+        "en": "Asked about previous repeated or serious infections (screening for an immune defect)"
+      },
+      "met": {
+        "asked": "pmh"
+      }
+    },
+    {
+      "id": "rb-exam",
+      "domain": "examination",
+      "weight": 2,
+      "text": {
+        "zh-CN": "入院时检查一般情况、包块和肝脾",
+        "en": "Examined his general state, the lump, and the liver and spleen on admission"
+      },
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "groin"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "weight": 2,
+      "text": {
+        "zh-CN": "入院时查血常规、炎症指标和影像，并留血培养",
+        "en": "Sent the admission blood count, inflammatory markers and imaging, and took blood cultures"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "fbc",
+            "phase": "admission"
+          },
+          {
+            "read": "inflammation",
+            "phase": "admission"
+          },
+          {
+            "read": "ct",
+            "phase": "admission"
+          },
+          {
+            "ordered": "blood-culture"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-empirical",
+      "domain": "diagnosis",
+      "weight": 3,
+      "text": {
+        "zh-CN": "第3天培养回报前及时扩大经验性覆盖（第一次即答对）",
+        "en": "Broadened empirical cover on day 3, before the cultures (first attempt)"
+      },
+      "met": {
+        "decidedFirstTry": "empirical"
+      }
+    },
+    {
+      "id": "rb-source",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "请外科切开引流（感染源控制）",
+        "en": "Arranged incision and drainage (source control)"
+      },
+      "met": {
+        "intervened": "incision-drainage"
+      }
+    },
+    {
+      "id": "rb-shock",
+      "domain": "safety",
+      "weight": 4,
+      "text": {
+        "zh-CN": "按Phoenix标准识别脓毒性休克并说出第1小时的处置（第一次即答对）",
+        "en": "Recognised septic shock by the Phoenix criteria and stated the first-hour priorities (first attempt)"
+      },
+      "met": {
+        "decidedFirstTry": "shock"
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-first-hour",
+      "domain": "management",
+      "weight": 3,
+      "text": {
+        "zh-CN": "给予广谱抗菌药物、晶体液复苏和高流量吸氧，并转入PICU",
+        "en": "Gave broad-spectrum antimicrobials, crystalloid resuscitation and high-flow oxygen, and moved him to the PICU"
+      },
+      "met": {
+        "all": [
+          {
+            "intervened": "meropenem"
+          },
+          {
+            "intervened": "fluid-bolus"
+          },
+          {
+            "intervened": "oxygen"
+          },
+          {
+            "intervened": "transfer-picu"
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-definitive",
+      "domain": "management",
+      "weight": 2,
+      "text": {
+        "zh-CN": "按药敏选择目标治疗并定长疗程（第一次即答对）",
+        "en": "Chose definitive therapy by the susceptibilities with a long course (first attempt)"
+      },
+      "met": {
+        "decidedFirstTry": "definitive"
+      }
+    },
+    {
+      "id": "rb-immune",
+      "domain": "diagnosis",
+      "weight": 2,
+      "text": {
+        "zh-CN": "提出吞噬细胞功能（DHR/NBT）和G6PD检测（第一次即答对）",
+        "en": "Asked for phagocyte-function (DHR/NBT) and G6PD testing (first attempt)"
+      },
+      "met": {
+        "decidedFirstTry": "immune"
+      }
+    },
+    {
+      "id": "rb-no-resistant",
+      "domain": "safety",
+      "weight": 2,
+      "text": {
+        "zh-CN": "没有使用头孢曲松（本株耐药）",
+        "en": "Did not use ceftriaxone (the isolate was resistant)"
+      },
+      "met": {
+        "all": [
+          {
+            "read": "culture",
+            "phase": "picu"
+          },
+          {
+            "not": {
+              "intervened": "ceftriaxone"
+            }
+          }
+        ]
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "read": "culture",
+            "phase": "picu"
+          },
+          {
+            "intervened": "ceftriaxone"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "weight": 1,
+      "text": {
+        "zh-CN": "与家长沟通：用通俗的话解释病情加重、转PICU和治疗方向，回应担心，核实理解",
+        "en": "Talked with the parent: explained in plain words that he was getting worse, why the PICU, and the plan; responded to worries; checked understanding"
+      },
+      "judgeGuidance": {
+        "zh-CN": "优秀表现：不堆砌术语地说明“感染扩散到全身、出现休克，需要重症监护和更强的抗生素”；如实说明病情危重、结局不确定；询问并回应家长的担心（为什么之前的药没用、要不要开刀）；用回授法确认理解；不对未知的事情（费用、结局）作保证。原报告没有记录与家长沟通的细节，也没有记录放弃治疗前的讨论。",
+        "en": "Good performance: explains without jargon that “the infection has spread through his body and caused shock, so he needs intensive care and stronger antibiotics”; is honest that he is critically ill and the outcome is uncertain; asks about and answers the parent's worries (why the earlier medicines failed, whether he needs an operation); checks understanding by teach-back; makes no promises about unknowns (costs, outcome). The report records no details of conversations with the family, nor of any discussion before treatment was withdrawn."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "带教老师",
+        "en": "Attending"
+      },
+      "knowledge": {
+        "zh-CN": "这是历史病例教学，按时间推进：入院第1天、第3天、第4天、PICU，每个阶段都先用当时已有的证据作判断。用苏格拉底式提问引导学员：抗革兰阳性菌方案失败时漏掉了哪一类病原；淡水或泥土接触有什么意义；Phoenix标准的心血管分可以来自哪里；第1小时的优先事项；为什么免疫球蛋白和T细胞正常不等于免疫功能正常。不提前透露培养结果、原报告后来的治疗和结局。原报告没有记录血压、呼吸、SpO₂、体重和药物剂量，不要替它补上。",
+        "en": "This is a historical teaching case that moves through time — hospital day 1, day 3, day 4, the PICU — and each phase is judged on the evidence available then. Use Socratic questions: which kind of organism a failing anti-Gram-positive regimen misses; what freshwater or soil exposure means; where Phoenix cardiovascular points can come from; the first-hour priorities; why normal immunoglobulins and T cells are not normal immunity. Do not reveal the culture result, the report's later treatment or the outcome early. The report records no blood pressure, respiratory rate, SpO₂, weight or drug doses — do not supply them."
+      },
+      "interprets": [
+        "ct",
+        "abdo-us",
+        "fbc",
+        "inflammation",
+        "immunology",
+        "organ-function",
+        "coagulation",
+        "culture",
+        "drainage"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "nurse",
+      "name": {
+        "zh-CN": "病房护士",
+        "en": "Ward nurse"
+      },
+      "knowledge": {
+        "zh-CN": "儿科病房护士。孩子由急诊转来，家长陪同。可以协助建立静脉通路、采血、送培养、连接监护、吸氧、补液和转运；会提醒学员：入院时没有测量的数值（血压、呼吸、SpO₂、体重）病历里没有，不能当作正常。",
+        "en": "Children's ward nurse. He came up from the emergency department with his parent. Can help with IV access, blood samples and cultures, the monitor, oxygen, fluids and transfers, and reminds the learner that values never measured on admission (blood pressure, respiratory rate, SpO₂, weight) are not in the notes and cannot be taken as normal."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "复盘：紫色色杆菌脓毒症与脓毒性休克",
+      "en": "Debrief: Chromobacterium violaceum sepsis and septic shock"
+    },
+    "conclusion": {
+      "zh-CN": "8岁男孩，发病前约一周游泳，发热伴右腹股沟多发小脓肿，外院头孢哌酮等及入院后万古霉素均无效，第4天进展为脓毒性休克（Phoenix：乳酸约9.8 mmol/L、血小板9×10⁹/L、INR 1.77），伴抽搐、弥散性血管内凝血和多器官受累；血和腹股沟穿刺液均培养出紫色色杆菌。改用美罗培南并给予器官支持后，第7天休克纠正；第8天家长因经济原因放弃治疗，随访获悉患儿死亡。",
+      "en": "An 8-year-old boy who swam about a week before falling ill developed fever with multiple small abscesses in the right groin that failed cefoperazone and another drug elsewhere and then vancomycin; on day 4 he progressed to septic shock (Phoenix: lactate ≈ 9.8 mmol/L, platelets 9×10⁹/L, INR 1.77) with a seizure, disseminated intravascular coagulation and multi-organ involvement. Blood and groin aspirates grew Chromobacterium violaceum. On meropenem and organ support the shock had resolved by day 7; on day 8 his parents withdrew treatment for financial reasons, and follow-up learned that he had died."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "抗革兰阳性菌治疗中多发脓肿仍在进展、伴全身感染、发病前有水体接触：应及时扩大到革兰阴性菌和环境菌，而不是等培养。",
+        "en": "Multiple abscesses progressing with systemic infection on anti-Gram-positive therapy, after water exposure: broaden to Gram-negative and environmental organisms promptly rather than waiting for the cultures."
+      },
+      {
+        "zh-CN": "第4天已是脓毒性休克：Phoenix标准不要求低血压，乳酸≥5 mmol/L就得心血管分；第1小时的抗菌药物、液体复苏、血管活性药物和PICU都是时间关键的。",
+        "en": "Day 4 was septic shock: Phoenix does not require hypotension — a lactate ≥ 5 mmol/L earns a cardiovascular point — and first-hour antimicrobials, fluids, vasoactive drugs and the PICU are all time-critical."
+      },
+      {
+        "zh-CN": "血和病灶培养一致，确立了侵袭性紫色色杆菌感染；目标治疗按药敏，作者因多发小脓肿建议疗程6周。",
+        "en": "Concordant blood and lesion cultures established invasive C. violaceum infection; definitive therapy follows the susceptibilities, and the authors advise 6 weeks because of the multiple small abscesses."
+      },
+      {
+        "zh-CN": "免疫球蛋白和T细胞亚群正常不能排除吞噬细胞缺陷；这种感染提示要查DHR/NBT和G6PD。",
+        "en": "Normal immunoglobulins and T-cell subsets do not exclude a phagocyte defect; this infection calls for DHR/NBT and G6PD testing."
+      },
+      {
+        "zh-CN": "入院时内毒素<5 pg/mL，并没有排除革兰阴性菌感染——培养最终检出的是革兰阴性杆菌。",
+        "en": "An admission endotoxin below 5 pg/mL did not exclude Gram-negative infection — the cultures grew a Gram-negative bacillus."
+      },
+      {
+        "zh-CN": "结局要按原文解读：死亡发生在第7天休克纠正、第8天家长因经济原因放弃治疗之后，原报告称用药后感染已有所控制。",
+        "en": "Read the outcome as reported: the death followed the resolution of shock on day 7 and the parents' withdrawal of treatment for financial reasons on day 8, and the report says the infection had begun to respond."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "这是单个病例报告：不能据此证明某种抗菌药物或支持治疗的独立疗效，也不能把本株药敏推广到所有菌株。原报告的处置作为历史事实记录；决策和评分依据现行指南设计，是教学设计。原报告没有血压、呼吸、SpO₂、体重和药物剂量，Phoenix评分只能按已有数据计算。",
+      "en": "This is a single case report: it cannot show the independent effect of any antimicrobial or support measure, and this isolate's susceptibilities cannot be generalised. The report's management is recorded as historical fact; the decisions and scoring follow current guidance and are teaching design. The report gives no blood pressure, respiratory rate, SpO₂, weight or drug doses, so the Phoenix score can be calculated only from the data available."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "入院时及第4天的血压、呼吸频率、体温和SpO₂；体重；各药物的剂量和疗程。",
+        "en": "Blood pressure, respiratory rate, temperature and SpO₂ on admission and on day 4; his weight; every drug dose and duration."
+      },
+      {
+        "zh-CN": "游泳地点（河流、池塘还是泳池）、同游者是否发病，以及确切的感染入口。",
+        "en": "Where he swam (river, pond or pool), whether others who swam fell ill, and the exact portal of entry."
+      },
+      {
+        "zh-CN": "既往反复或严重感染史、疫苗接种史、过敏史和家庭情况。",
+        "en": "Previous repeated or serious infections, immunisations, allergies and his home situation."
+      },
+      {
+        "zh-CN": "吞噬细胞功能（DHR/NBT）和G6PD检测；纤维蛋白原和D-二聚体。",
+        "en": "Phagocyte function (DHR/NBT) and G6PD; fibrinogen and D-dimer."
+      },
+      {
+        "zh-CN": "血培养的采集时间和套数；药敏的MIC和判读标准。",
+        "en": "When and how many blood cultures were taken; MICs and interpretive criteria."
+      },
+      {
+        "zh-CN": "液体种类和容量、所用的血管活性药物、抽搐的处理；第3天包块的大小。",
+        "en": "The fluids and volumes, the vasoactive drugs used and the seizure treatment; the size of the lump on day 3."
+      },
+      {
+        "zh-CN": "放弃治疗前与家长的沟通，以及死亡的时间和直接原因。",
+        "en": "Conversations with the family before treatment was withdrawn, and the time and cause of death."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "抗革兰阳性菌治疗中多发脓肿仍在进展、伴全身感染、发病前有淡水或泥土接触时，要想到紫色色杆菌和其他环境革兰阴性菌（流行区还有类鼻疽），及时扩大覆盖，不要等培养。原报告作者的结论正是如此：单一抗革兰阳性菌效果不佳时要考虑该菌，儿科经验用药以碳青霉烯类为主；Yang和Li（2011）及Alisjahbana等（2021）的综述也强调要提高警惕、及早诊断。历史做法：本例入院后单用万古霉素，直到第4天培养回报才换药（病程第9天，作者称“用药稍迟”）。",
+        "en": "When multiple abscesses progress with systemic infection on anti-Gram-positive therapy after freshwater or soil exposure, think of Chromobacterium violaceum and other environmental Gram-negative organisms (and melioidosis where endemic) and broaden early rather than waiting for cultures. That is the report's own conclusion — consider this organism when a single anti-Gram-positive agent fails, with carbapenems the main empirical choice in children — and the reviews by Yang and Li (2011) and Alisjahbana et al. (2021) stress suspicion and early diagnosis. Historical practice: here vancomycin was used alone until the cultures came back on day 4 (illness day 9, “a little late” in the authors' words)."
+      },
+      {
+        "zh-CN": "Phoenix 2024（SCCM儿童脓毒症定义工作组）：疑似感染且Phoenix评分≥2分为脓毒症；在此基础上至少1个心血管分为脓毒性休克。心血管分可来自血管活性药物、乳酸（5–10.9 mmol/L得1分，≥11得2分）或按年龄的平均动脉压，不要求低血压。本例第4天：乳酸887 mg/L≈9.8 mmol/L（1分），血小板9×10⁹/L和INR 1.77（凝血共2分），即达到脓毒性休克；格拉斯哥评分和血压未记录，只能按已有数据计分。原报告用的是当时的“脓毒症”概念（入院即诊断）。",
+        "en": "Phoenix 2024 (SCCM Pediatric Sepsis Definition Task Force): suspected infection with a Phoenix score ≥ 2 is sepsis, and at least one cardiovascular point on top makes it septic shock. Cardiovascular points come from vasoactive drugs, lactate (5–10.9 mmol/L 1 point, ≥ 11 2 points) or mean arterial pressure for age — hypotension is not required. Here on day 4: lactate 887 mg/L ≈ 9.8 mmol/L (1 point) and platelets 9×10⁹/L with an INR of 1.77 (2 coagulation points) make septic shock; his Glasgow score and blood pressure are not recorded, so only the available data can be scored. The report used the older concept of “sepsis” (diagnosed on admission)."
+      },
+      {
+        "zh-CN": "SSC 2026儿童指南的第1小时：疑似脓毒性休克在识别后1小时内给予抗菌药物（无休克的可能脓毒症在快速评估后3小时内）；不明显延误时先留血培养；初始评估时测乳酸；有ICU条件时每次10–20 mL/kg、首小时累计可达40–60 mL/kg，每次后复评、出现液体过负荷即停；用晶体液而非白蛋白，首选平衡液；血管活性药物可经外周静脉起始；首选肾上腺素还是去甲肾上腺素没有推荐；尽早控制感染源。原报告没有记录液体容量、血管活性药物和用药时间，无法逐项核对。",
+        "en": "The first hour in the SSC 2026 children's guidelines: antimicrobials within 1 hour of recognising suspected septic shock (within 3 hours, after rapid assessment, for probable sepsis without shock); blood cultures first when that causes no meaningful delay; lactate at the first assessment; where intensive care is available, 10–20 mL/kg boluses up to 40–60 mL/kg in the first hour, reassessing after each and stopping at fluid overload; crystalloid rather than albumin, preferably balanced; vasoactive drugs may start through a peripheral vein; no recommendation between adrenaline and noradrenaline; source control as early as possible. The report records no fluid volumes, vasoactive drugs or drug timings, so these cannot be checked against it."
+      },
+      {
+        "zh-CN": "目标治疗按药敏：本株对碳青霉烯类、氟喹诺酮类、氨基糖苷类、头孢吡肟、氨曲南和复方磺胺甲噁唑敏感，对头孢曲松、头孢他啶和哌拉西林耐药；该菌没有专门的判读标准，原文也未给MIC，不能把本株药敏推广到所有菌株。作者因多发小脓肿建议抗菌6周；SSC 2026建议病原明确后降阶梯。",
+        "en": "Definitive therapy follows the susceptibilities: this isolate was susceptible to carbapenems, fluoroquinolones, aminoglycosides, cefepime, aztreonam and co-trimoxazole and resistant to ceftriaxone, ceftazidime and piperacillin. There are no dedicated breakpoints for the organism and the report gives no MICs, so this isolate's pattern cannot be generalised. The authors advise 6 weeks of antimicrobials because of the multiple small abscesses; SSC 2026 advises narrowing once the pathogen is known."
+      },
+      {
+        "zh-CN": "宿主评估：紫色色杆菌侵袭性感染与慢性肉芽肿病、中性粒细胞功能障碍和严重G6PD缺乏有关（原报告讨论及其引文；Sirinavin等2005年的儿童病例综述）。筛查要查吞噬细胞的氧化杀菌功能（DHR流式，或NBT），并测G6PD（AAAAI 2015原发性免疫缺陷实践参数）；免疫球蛋白和T细胞亚群正常不能排除这些缺陷。本例只查了体液和T细胞免疫，原报告却据此称“免疫正常”。",
+        "en": "Host work-up: invasive C. violaceum infection is linked to chronic granulomatous disease, neutrophil dysfunction and severe G6PD deficiency (the report's discussion and its sources; Sirinavin et al.'s 2005 paediatric review). Screening tests phagocyte oxidative killing (DHR flow cytometry, or NBT) and G6PD (AAAAI 2015 practice parameter on primary immunodeficiency); normal immunoglobulins and T-cell subsets do not exclude these defects. Here only antibodies and T cells were tested, yet the report calls his immunity normal."
+      },
+      {
+        "zh-CN": "解读结局要按原文：休克在第7天纠正，家长在第8天因经济原因放弃治疗，随访获悉患儿死亡；作者称用药后感染已有所控制。把它当成“治疗无效的死亡”是误读。讨论中25例国内病例的转归（死亡15例、治愈4例、未注明6例）来自病例报告汇总，存在发表偏倚。",
+        "en": "Read the outcome as reported: the shock had resolved by day 7, his parents withdrew treatment for financial reasons on day 8, and follow-up learned that he had died; the authors say the infection had begun to respond. Reading this as “death despite treatment” is a misreading. The outcomes of the 25 Chinese cases in the discussion (15 died, 4 recovered, 6 not stated) come from pooled case reports and carry publication bias."
+      }
+    ],
+    "references": [
+      "孙静敏, 金丹群, 许愿愿, 郑丽云. 紫色色杆菌脓毒症一例并文献复习. 中国小儿急救医学. 2014;21(1):57-58. doi:10.3760/cma.j.issn.1673-4912.2014.01.023. Available from: https://rs.yiigle.com/cmaid/70005",
+      "Weiss SL, Peters MJ, Oczkowski SJW, et al. Surviving Sepsis Campaign international guidelines for the management of sepsis and septic shock in children 2026. Pediatr Crit Care Med. 2026;27(4):379-434. doi:10.1097/PCC.0000000000003927. Also published in: Intensive Care Med. 2026. doi:10.1007/s00134-026-08360-2",
+      "Schlapbach LJ, Watson RS, Sorce LR, et al. International consensus criteria for pediatric sepsis and septic shock. JAMA. 2024;331(8):665-674. doi:10.1001/jama.2024.0179",
+      "Sanchez-Pinto LN, Bennett TD, DeWitt PE, et al. Development and validation of the Phoenix criteria for pediatric sepsis and septic shock. JAMA. 2024;331(8):675-686. doi:10.1001/jama.2024.0196",
+      "Yang CH, Li YH. Chromobacterium violaceum infection: a clinical review of an important but neglected infection. J Chin Med Assoc. 2011;74(10):435-441. doi:10.1016/j.jcma.2011.08.013",
+      "Alisjahbana B, Debora J, Susandi E, Darmawan G. Chromobacterium violaceum: a review of an unexpected scourge. Int J Gen Med. 2021;14:3259-3270. doi:10.2147/IJGM.S272193",
+      "Sirinavin S, Techasaensiri C, Benjaponpitak S, Pornkul R, Vorachit M. Invasive Chromobacterium violaceum infection in children: case report and review. Pediatr Infect Dis J. 2005;24(6):559-561.",
+      "Mamlok RJ, Mamlok V, Mills GC, et al. Glucose-6-phosphate dehydrogenase deficiency, neutrophil dysfunction and Chromobacterium violaceum sepsis. J Pediatr. 1987;111(6):852-854.",
+      "Bonilla FA, Khan DA, Ballas ZK, et al. Practice parameter for the diagnosis and management of primary immunodeficiency. J Allergy Clin Immunol. 2015;136(5):1186-1205. doi:10.1016/j.jaci.2015.04.049"
+    ],
+    "notice": {
+      "zh-CN": "评分为教学脚本评估，并非经过验证的能力评分。",
+      "en": "Scores are a teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "入院时及第4天的血压、呼吸频率、体温和SpO₂；体重；各药物的剂量和疗程。",
+      "en": "Blood pressure, respiratory rate, temperature and SpO₂ on admission and on day 4; his weight; every drug dose and duration."
+    },
+    {
+      "zh-CN": "游泳地点（河流、池塘还是泳池）、同游者是否发病，以及确切的感染入口。",
+      "en": "Where he swam (river, pond or pool), whether others who swam fell ill, and the exact portal of entry."
+    },
+    {
+      "zh-CN": "既往反复或严重感染史、疫苗接种史、过敏史和家庭情况。",
+      "en": "Previous repeated or serious infections, immunisations, allergies and his home situation."
+    },
+    {
+      "zh-CN": "吞噬细胞功能（DHR/NBT）和G6PD检测；纤维蛋白原和D-二聚体。",
+      "en": "Phagocyte function (DHR/NBT) and G6PD; fibrinogen and D-dimer."
+    },
+    {
+      "zh-CN": "血培养的采集时间和套数；药敏的MIC和判读标准。",
+      "en": "When and how many blood cultures were taken; MICs and interpretive criteria."
+    },
+    {
+      "zh-CN": "液体种类和容量、所用的血管活性药物、抽搐的处理；第3天包块的大小。",
+      "en": "The fluids and volumes, the vasoactive drugs used and the seizure treatment; the size of the lump on day 3."
+    },
+    {
+      "zh-CN": "放弃治疗前与家长的沟通，以及死亡的时间和直接原因。",
+      "en": "Conversations with the family before treatment was withdrawn, and the time and cause of death."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-70005/fig02.png",
+      "title": {
+        "zh-CN": "原报告图2：血平板上生长的紫色色杆菌",
+        "en": "Source figure 2: Chromobacterium violaceum growing on blood agar"
+      },
+      "credit": {
+        "zh-CN": "原报告图，孙静敏、金丹群、许愿愿、郑丽云，2014。版权归原权利人。",
+        "en": "Original report figure, 2014. Copyright remains with the original rights holders."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "02c141f37ef5dda7dc831d5be33dea1bac136788d3bccd9c936f6802b6a4a31c"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "progression"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain-child"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "ask",
+      "itemId": "outside-tests"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "water-source"
+    },
+    {
+      "type": "ask",
+      "itemId": "contacts"
+    },
+    {
+      "type": "ask",
+      "itemId": "trauma"
+    },
+    {
+      "type": "ask",
+      "itemId": "cough"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "immunisations"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "household"
+    },
+    {
+      "type": "ask",
+      "itemId": "travel"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-admission"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "skin"
+    },
+    {
+      "type": "examine",
+      "findingId": "groin"
+    },
+    {
+      "type": "examine",
+      "findingId": "throat"
+    },
+    {
+      "type": "examine",
+      "findingId": "neck"
+    },
+    {
+      "type": "examine",
+      "findingId": "chest"
+    },
+    {
+      "type": "examine",
+      "findingId": "heart"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "examine",
+      "findingId": "legs"
+    },
+    {
+      "type": "examine",
+      "findingId": "neuro"
+    },
+    {
+      "type": "order",
+      "investigationId": "referral"
+    },
+    {
+      "type": "read",
+      "investigationId": "referral",
+      "phase": "admission"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "monitoring"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood-culture"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood-culture",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "fbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "fbc",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "inflammation"
+    },
+    {
+      "type": "read",
+      "investigationId": "inflammation",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "immunology"
+    },
+    {
+      "type": "read",
+      "investigationId": "immunology",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "resp-panel"
+    },
+    {
+      "type": "read",
+      "investigationId": "resp-panel",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
+      "investigationId": "abdo-us"
+    },
+    {
+      "type": "read",
+      "investigationId": "abdo-us",
+      "phase": "admission"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "vancomycin"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "meropenem"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "incision-drainage"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "admit-ward"
+    },
+    {
+      "type": "ask",
+      "itemId": "status-day3"
+    },
+    {
+      "type": "examine",
+      "findingId": "day3-general"
+    },
+    {
+      "type": "examine",
+      "findingId": "groin-day3"
+    },
+    {
+      "type": "order",
+      "investigationId": "drainage"
+    },
+    {
+      "type": "read",
+      "investigationId": "drainage",
+      "phase": "day3"
+    },
+    {
+      "type": "answer",
+      "decisionId": "empirical",
+      "optionIds": [
+        "broaden"
+      ]
+    },
+    {
+      "type": "ask",
+      "itemId": "status-shock"
+    },
+    {
+      "type": "examine",
+      "findingId": "shock-signs"
+    },
+    {
+      "type": "examine",
+      "findingId": "seizure"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "oxygen"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "fluid-bolus"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "anticonvulsant"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "transfer-picu"
+    },
+    {
+      "type": "order",
+      "investigationId": "fbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "fbc",
+      "phase": "shock"
+    },
+    {
+      "type": "order",
+      "investigationId": "organ-function"
+    },
+    {
+      "type": "read",
+      "investigationId": "organ-function",
+      "phase": "shock"
+    },
+    {
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
+      "phase": "shock"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "fluid-bolus"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "vasoactive"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "blood-products"
+    },
+    {
+      "type": "answer",
+      "decisionId": "shock",
+      "optionIds": [
+        "septic-shock"
+      ]
+    },
+    {
+      "type": "ask",
+      "itemId": "status-picu"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "intubation"
+    },
+    {
+      "type": "order",
+      "investigationId": "respiratory-support"
+    },
+    {
+      "type": "read",
+      "investigationId": "respiratory-support",
+      "phase": "picu"
+    },
+    {
+      "type": "order",
+      "investigationId": "culture"
+    },
+    {
+      "type": "read",
+      "investigationId": "culture",
+      "phase": "picu"
+    },
+    {
+      "type": "answer",
+      "decisionId": "definitive",
+      "optionIds": [
+        "meropenem-long"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "immune",
+      "optionIds": [
+        "phagocyte"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "picu-course"
+    },
+    {
+      "type": "read",
+      "investigationId": "picu-course",
+      "phase": "followup"
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-20",
+    "sourceArticleId": "70005",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/70005",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "孩子哪儿不舒服啊？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "发烧是什么时候开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "腿根那个包是什么时候长出来的？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "后来最高烧到多少度？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "那个包是不是越来越大了？",
+        "locale": "zh-CN",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "之前在当地打过什么针、用过什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "外院用的是什么抗生素？",
+        "locale": "zh-CN",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "当地医院查过血没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "outside-tests"
+        ]
+      },
+      {
+        "text": "最近有没有去游泳或者玩水？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "他是在哪儿游的泳？",
+        "locale": "zh-CN",
+        "expect": [
+          "water-source"
+        ]
+      },
+      {
+        "text": "一起去游泳的小伙伴有没有生病？",
+        "locale": "zh-CN",
+        "expect": [
+          "contacts"
+        ]
+      },
+      {
+        "text": "腿上有没有摔伤或者蹭破皮？",
+        "locale": "zh-CN",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "这几天咳不咳嗽？",
+        "locale": "zh-CN",
+        "expect": [
+          "cough"
+        ]
+      },
+      {
+        "text": "生他的时候顺利吗，是不是足月？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "家里有人得过什么遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "他以前是不是经常感染、长脓包？",
+        "locale": "zh-CN",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "疫苗都打全了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "immunisations"
+        ]
+      },
+      {
+        "text": "他对药物过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "平时谁带孩子？",
+        "locale": "zh-CN",
+        "expect": [
+          "household"
+        ]
+      },
+      {
+        "text": "最近有没有出去旅游？",
+        "locale": "zh-CN",
+        "expect": [
+          "travel"
+        ]
+      },
+      {
+        "text": "小朋友，腿疼不疼？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain-child"
+        ]
+      },
+      {
+        "text": "您现在最担心什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "What seems to be wrong with him?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "When did the fever start?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Has the lump got bigger since then?",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "How high has his temperature gone?",
+        "locale": "en",
+        "expect": [
+          "progression"
+        ]
+      },
+      {
+        "text": "Which antibiotics did the other hospital give him?",
+        "locale": "en",
+        "expect": [
+          "medications"
+        ]
+      },
+      {
+        "text": "Did they check his bloods at the local hospital?",
+        "locale": "en",
+        "expect": [
+          "outside-tests"
+        ]
+      },
+      {
+        "text": "Has he been swimming recently?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Where did he go swimming?",
+        "locale": "en",
+        "expect": [
+          "water-source"
+        ]
+      },
+      {
+        "text": "Did any of the other kids who swam get sick?",
+        "locale": "en",
+        "expect": [
+          "contacts"
+        ]
+      },
+      {
+        "text": "Any cuts or grazes on his leg?",
+        "locale": "en",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "Has he been coughing?",
+        "locale": "en",
+        "expect": [
+          "cough"
+        ]
+      },
+      {
+        "text": "Was he born at full term?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Do any illnesses run in the family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Has he had lots of infections or boils before?",
+        "locale": "en",
+        "expect": [
+          "pmh"
+        ]
+      },
+      {
+        "text": "Are his jabs up to date?",
+        "locale": "en",
+        "expect": [
+          "immunisations"
+        ]
+      },
+      {
+        "text": "Does he have any allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Does it hurt when you try to walk, buddy?",
+        "locale": "en",
+        "expect": [
+          "pain-child"
+        ]
+      },
+      {
+        "text": "What are you most worried about?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      }
+    ]
+  }
+}
