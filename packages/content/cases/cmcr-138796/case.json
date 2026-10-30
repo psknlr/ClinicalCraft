@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-138796",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "水肿、少尿与反复腹痛 · 36岁女性",
     "en": "Oedema, low urine output and recurrent abdominal pain · 36-year-old woman"
@@ -3462,8 +3462,8 @@
         {
           "id": "atn",
           "text": {
-            "zh-CN": "术后急性肾小管坏死：两次手术、呕吐腹泻造成的脱水和手术打击",
-            "en": "Post-operative acute tubular necrosis from dehydration (vomiting, diarrhoea) and the stress of two operations"
+            "zh-CN": "术后急性肾小管坏死：几周内呕吐、腹泻加上两次手术，外科住院期间肌酐上升、尿量减少",
+            "en": "Post-operative acute tubular necrosis: vomiting, diarrhoea and two operations within weeks, with the creatinine rising and the urine output falling during the surgical stay"
           },
           "correct": false,
           "feedback": {
@@ -3474,8 +3474,8 @@
         {
           "id": "iga",
           "text": {
-            "zh-CN": "IgA血管炎（过敏性紫癜）伴肾炎和肠道受累",
-            "en": "IgA vasculitis (Henoch–Schönlein purpura) with nephritis and gut involvement"
+            "zh-CN": "IgA血管炎（过敏性紫癜）：肾炎合并肠套叠——肠套叠是这种血管炎公认的肠道并发症，紫癜可以不明显",
+            "en": "IgA vasculitis (Henoch–Schönlein purpura): nephritis together with intussusception, a recognised gut complication of this vasculitis, even without obvious purpura"
           },
           "correct": false,
           "feedback": {
@@ -3486,8 +3486,8 @@
         {
           "id": "anti-gbm",
           "text": {
-            "zh-CN": "抗肾小球基底膜病",
-            "en": "Anti-glomerular basement membrane disease"
+            "zh-CN": "抗肾小球基底膜病：约8周内肌酐从261升到700 μmol/L，正是它典型的急进性肾炎病程",
+            "en": "Anti-glomerular basement membrane disease: a creatinine rising from 261 to 700 μmol/L in about eight weeks is the rapidly progressive course it typically causes"
           },
           "correct": false,
           "feedback": {
@@ -3498,8 +3498,8 @@
         {
           "id": "lupus",
           "text": {
-            "zh-CN": "狼疮性肾炎",
-            "en": "Lupus nephritis"
+            "zh-CN": "狼疮性肾炎：36岁女性，大量蛋白尿、血尿伴高血压，符合增殖性狼疮性肾炎",
+            "en": "Lupus nephritis: a woman of 36 with heavy proteinuria, haematuria and hypertension fits proliferative lupus nephritis"
           },
           "correct": false,
           "feedback": {
@@ -3539,8 +3539,8 @@
         {
           "id": "start-now",
           "text": {
-            "zh-CN": "现在开始：甲泼尼龙静脉冲击后改为减量口服激素，联合环磷酰胺或利妥昔单抗；肌酐> 300 μmol/L且需透析，考虑血浆置换；尽快安排肾活检，但不因此推迟治疗",
-            "en": "Start now: IV methylprednisolone pulses then a reduced-dose oral taper, with cyclophosphamide or rituximab; with creatinine > 300 μmol/L and dialysis need, consider plasma exchange; arrange the biopsy soon without delaying treatment"
+            "zh-CN": "现在开始：甲泼尼龙冲击后减量口服激素，加环磷酰胺或利妥昔单抗；肌酐> 300 μmol/L且需透析，考虑血浆置换；尽快活检但不等结果",
+            "en": "Start now: methylprednisolone pulses, then a reduced-dose oral taper, with cyclophosphamide or rituximab; consider plasma exchange (creatinine > 300 μmol/L, dialysis); biopsy soon, without waiting for it"
           },
           "correct": true,
           "feedback": {
@@ -3551,44 +3551,44 @@
         {
           "id": "gc-alone",
           "text": {
-            "zh-CN": "先单用大剂量糖皮质激素，看反应再决定是否加免疫抑制剂",
-            "en": "High-dose glucocorticoids alone first, adding a second agent only if she fails to respond"
+            "zh-CN": "先单用甲泼尼龙冲击加口服激素，观察两周，肌酐仍不降再加用环磷酰胺或利妥昔单抗——她刚做完结肠切除，这样感染和吻合口并发症的风险都更小",
+            "en": "Methylprednisolone pulses and oral glucocorticoids alone at first, adding cyclophosphamide or rituximab only if the creatinine has not fallen after two weeks — fewer infections and anastomotic problems so soon after bowel surgery"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不够。器官受威胁的ANCA相关血管炎应从一开始就联合环磷酰胺或利妥昔单抗（KDIGO 2024）；作者也指出治疗主要是糖皮质激素联合环磷酰胺。单用激素时失败和复发更多，而她的肾功能等不起。",
-            "en": "Not enough. Organ-threatening ANCA-associated vasculitis needs cyclophosphamide or rituximab from the start (KDIGO 2024), and the authors also describe glucocorticoids plus cyclophosphamide as the core treatment. Glucocorticoids alone fail and relapse more often, and her kidneys cannot wait."
+            "zh-CN": "不够。器官受威胁的ANCA相关血管炎应从一开始就联合环磷酰胺或利妥昔单抗（KDIGO 2024）；作者也指出治疗主要是糖皮质激素联合环磷酰胺。单用激素时失败和复发更多，而她的肾功能等不起。术后感染风险要靠预防用药和每日评估来应对，而不是削弱诱导方案。",
+            "en": "Not enough. Organ-threatening ANCA-associated vasculitis needs cyclophosphamide or rituximab from the start (KDIGO 2024), and the authors also describe glucocorticoids plus cyclophosphamide as the core treatment. Glucocorticoids alone fail and relapse more often, and her kidneys cannot wait. The post-operative infection risk is met with prophylaxis and daily review, not with a weaker regimen."
           }
         },
         {
           "id": "wait-bowel",
           "text": {
-            "zh-CN": "等肠吻合口完全愈合、排除感染后再开始免疫抑制",
-            "en": "Wait until the bowel anastomosis has fully healed and infection is excluded before any immunosuppression"
+            "zh-CN": "先靠透析维持，等结肠吻合口愈合、排除感染后再开始免疫抑制，因为大剂量激素会影响吻合口愈合，增加吻合口瘘的风险",
+            "en": "Support her with dialysis and hold all immunosuppression until the colonic anastomosis has healed and infection is excluded, because high-dose glucocorticoids impair anastomotic healing and invite a leak"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。需要透析的急进性肾炎每推迟一天都在丢失肾功能。近期手术意味着要加强感染监测、检查伤口和吻合口，而不是推迟诱导；KDIGO 2024也强调病情迅速恶化时不应因等待而延误治疗。",
-            "en": "No. Dialysis-requiring RPGN loses kidney function with every day of delay. A recent operation means closer infection surveillance and checks of the wound and anastomosis, not postponing induction; KDIGO 2024 also stresses not delaying treatment when the patient is deteriorating quickly."
+            "zh-CN": "不对。需要透析的急进性肾炎每推迟一天都在丢失肾功能；透析只能替代肾功能，不能阻止血管炎继续破坏肾脏。近期手术意味着要加强感染监测、检查伤口和吻合口，而不是推迟诱导；KDIGO 2024也强调病情迅速恶化时不应因等待而延误治疗。",
+            "en": "No. Dialysis-requiring RPGN loses kidney function with every day of delay; dialysis replaces kidney function but does not stop the vasculitis destroying it. A recent operation means closer infection surveillance and checks of the wound and anastomosis, not postponing induction; KDIGO 2024 also stresses not delaying treatment when the patient is deteriorating quickly."
           }
         },
         {
           "id": "azathioprine",
           "text": {
-            "zh-CN": "糖皮质激素联合硫唑嘌呤诱导",
-            "en": "Glucocorticoids with azathioprine for induction"
+            "zh-CN": "糖皮质激素联合口服硫唑嘌呤诱导：她36岁、刚做完肠道手术，这样可以免受环磷酰胺的性腺毒性",
+            "en": "Glucocorticoids with oral azathioprine for induction, sparing a woman of 36 the gonadal toxicity of cyclophosphamide while she recovers from bowel surgery"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。硫唑嘌呤用于维持缓解（EULAR 2022：维持期可用硫唑嘌呤或甲氨蝶呤替代利妥昔单抗），不能作为器官受威胁、需要透析的病例的诱导治疗。",
-            "en": "No. Azathioprine maintains remission (EULAR 2022 lists azathioprine or methotrexate as maintenance alternatives to rituximab); it is not induction for organ-threatening, dialysis-requiring disease."
+            "zh-CN": "不对。硫唑嘌呤用于维持缓解（EULAR 2022：维持期可用硫唑嘌呤或甲氨蝶呤替代利妥昔单抗），不能作为器官受威胁、需要透析的病例的诱导治疗。如果担心生育，对生育影响较小的诱导选择是利妥昔单抗。",
+            "en": "No. Azathioprine maintains remission (EULAR 2022 lists azathioprine or methotrexate as maintenance alternatives to rituximab); it is not induction for organ-threatening, dialysis-requiring disease. If her fertility is the worry, rituximab is the induction choice that spares it."
           }
         },
         {
           "id": "plex-only",
           "text": {
-            "zh-CN": "先做血浆置换，等结果再决定是否用免疫抑制",
-            "en": "Plasma exchange first, deciding about immunosuppression afterwards"
+            "zh-CN": "先做血浆置换，迅速清除抗MPO抗体，等肌酐有反应后再决定是否用激素和环磷酰胺",
+            "en": "Plasma exchange first, to clear the anti-MPO antibody quickly, deciding on glucocorticoids and cyclophosphamide once the creatinine responds"
           },
           "correct": false,
           "feedback": {
@@ -3662,8 +3662,8 @@
         {
           "id": "no-pjp",
           "text": {
-            "zh-CN": "她肺部查体正常，不需要预防肺孢子菌",
-            "en": "Her chest examination is normal, so she needs no Pneumocystis prophylaxis"
+            "zh-CN": "她肺部查体正常，也没有记录到肺部受累，暂不需要预防肺孢子菌，出现呼吸道问题时再说",
+            "en": "Her chest examination is normal and no lung involvement is recorded, so Pneumocystis prophylaxis can wait until a respiratory problem appears"
           },
           "correct": false,
           "feedback": {
@@ -3674,8 +3674,8 @@
         {
           "id": "dialysis-threshold",
           "text": {
-            "zh-CN": "先控制血压和纠正贫血，等肌酐超过某个固定数值再透析",
-            "en": "Control the blood pressure and correct the anaemia first, and dialyse only once the creatinine passes a fixed threshold"
+            "zh-CN": "先控制血压、纠正贫血；诱导治疗可能让肾功能恢复，等肌酐超过某个固定数值再透析",
+            "en": "Control the blood pressure and correct the anaemia first, and dialyse only once the creatinine passes a fixed threshold, since induction may yet bring her kidneys back"
           },
           "correct": false,
           "feedback": {
@@ -3704,8 +3704,8 @@
         {
           "id": "active",
           "text": {
-            "zh-CN": "寡免疫性新月体肾炎，以活动性新月体为主，仍有恢复可能；但只有5个肾小球，分型和预后判断要谨慎，继续积极诱导",
-            "en": "Pauci-immune crescentic glomerulonephritis with mostly active crescents, so recovery is still possible; with only 5 glomeruli, classification and prognosis are uncertain — continue full induction"
+            "zh-CN": "寡免疫性新月体肾炎，以活动性新月体为主，仍可能恢复；仅5个肾小球，分型和预后要谨慎判断，继续积极诱导",
+            "en": "Pauci-immune crescentic glomerulonephritis with mostly active crescents, so recovery is still possible; 5 glomeruli leave the class and prognosis uncertain — continue full induction"
           },
           "correct": true,
           "feedback": {
@@ -3716,8 +3716,8 @@
         {
           "id": "irreversible",
           "text": {
-            "zh-CN": "已有纤维性新月体、肾小管萎缩和间质纤维化，说明不可逆，停止免疫抑制，准备长期透析",
-            "en": "Fibrous crescents, tubular atrophy and fibrosis mean irreversible disease: stop immunosuppression and plan long-term dialysis"
+            "zh-CN": "已有纤维性新月体、肾小管萎缩、间质纤维化和小动脉壁增厚，提示慢性不可逆损害：停用免疫抑制，准备长期透析",
+            "en": "Fibrous crescents, tubular atrophy, interstitial fibrosis and thickened arteriolar walls mean chronic, irreversible damage: stop immunosuppression and plan long-term dialysis"
           },
           "correct": false,
           "feedback": {
@@ -3728,20 +3728,20 @@
         {
           "id": "not-immune",
           "text": {
-            "zh-CN": "免疫荧光阴性，说明不是免疫介导的肾炎，应找其他原因",
-            "en": "A negative immunofluorescence means this is not immune-mediated nephritis; look for another cause"
+            "zh-CN": "免疫荧光各项均阴性，说明不是免疫介导的肾炎；应先找其他原因（如高血压肾损害），再决定是否继续免疫抑制",
+            "en": "Immunofluorescence is negative for every immune deposit, so this is not immune-mediated nephritis; look for another cause, such as hypertensive injury, before giving more immunosuppression"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。“寡免疫”正是指免疫荧光没有或只有很少免疫沉积，这是ANCA相关肾炎的特点（而抗GBM病是线样IgG沉积，免疫复合物性肾炎有颗粒样沉积）。免疫荧光阴性加新月体和MPO-ANCA阳性，恰恰支持诊断。",
-            "en": "No. 'Pauci-immune' means exactly that: little or no immune deposit on immunofluorescence — the hallmark of ANCA-associated nephritis (anti-GBM disease shows linear IgG, immune-complex nephritis granular deposits). A negative immunofluorescence with crescents and a positive MPO-ANCA supports the diagnosis."
+            "zh-CN": "不对。“寡免疫”正是指免疫荧光没有或只有很少免疫沉积，这是ANCA相关肾炎的特点（而抗GBM病是线样IgG沉积，免疫复合物性肾炎有颗粒样沉积）。免疫荧光阴性加新月体和MPO-ANCA阳性，恰恰支持诊断；5个肾小球都有新月体，也不是高血压肾损害的表现。",
+            "en": "No. 'Pauci-immune' means exactly that: little or no immune deposit on immunofluorescence — the hallmark of ANCA-associated nephritis (anti-GBM disease shows linear IgG, immune-complex nephritis granular deposits). A negative immunofluorescence with crescents and a positive MPO-ANCA supports the diagnosis, and crescents in all five glomeruli are not the picture of hypertensive injury."
           }
         },
         {
           "id": "repeat",
           "text": {
-            "zh-CN": "只有5个肾小球，标本不够，治疗前应重复肾活检",
-            "en": "Only 5 glomeruli is inadequate: repeat the biopsy before treating"
+            "zh-CN": "只有5个肾小球，达不到Berden分型所依据的至少10个，标本不足：继续治疗前应先重复肾活检",
+            "en": "Five glomeruli fall short of the 10 the Berden classification was built on, so the sample is inadequate: repeat the biopsy before committing to more treatment"
           },
           "correct": false,
           "feedback": {
@@ -4651,7 +4651,7 @@
         ]
       },
       {
-        "text": "一天尿多少？",
+        "text": "最近小便一天能解多少？",
         "locale": "zh-CN",
         "expect": [
           "urine-output"
@@ -4679,7 +4679,7 @@
         ]
       },
       {
-        "text": "做过什么手术？",
+        "text": "以前开过几次刀？",
         "locale": "zh-CN",
         "expect": [
           "surgery"
@@ -4847,7 +4847,7 @@
         ]
       },
       {
-        "text": "肚子还疼吗？",
+        "text": "现在肚子还痛不痛？",
         "locale": "zh-CN",
         "expect": [
           "status-followup"

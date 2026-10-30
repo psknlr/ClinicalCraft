@@ -14,7 +14,7 @@ advice and does not replace local protocols or current guidelines.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653413` / `1.1.0` |
+| id / version | `cmcr-1653413` / `1.1.1` |
 | setting / facility | `inpatient` (respiratory unit) / `general-hospital` |
 | specialty | respiratory medicine, critical care, traditional Chinese medicine |
 | difficulty / estimated time | 4 / 5 · ~35 min (static clock; historical review) |
@@ -99,7 +99,7 @@ without naming a correct option.
   fungi entirely".
 * **`ventilation`** (single) unlocks after the gases and CT: recognise NIV failure, check the caption air leak before
   positive pressure, and discuss goals of care before invasive escalation — against "the temperature is normal",
-  "turn the oxygen up" and "intubate immediately regardless of the air leak or goals".
+  "turn the oxygen up" and "intubate now and leave the air leak and goals of care until later".
 * **`management`** (single) unlocks after the diagnosis, the blood count and the treatment history: critical-care and
   respiratory review of ventilation, reversible contributors and goals of care, with infection control — herbal
   treatment not replacing respiratory support, and no single-agent attribution. The distractors include the report's
@@ -283,6 +283,22 @@ reachable from the editing session. No DOI is given where none could be verified
   were unreachable); they are well-formed AJRCCM/CID DOIs.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all four single-best decisions the keyed option was the
+  uniquely longest in both languages (1.5–2.1 times the mean option length); now it is in none. The four keys say the
+  same in fewer words (the `diagnosis` key only in English). Each distractor now gives the reason it tempts: yeast and
+  hyphae with a further loss of aeration on CT (invasive fungal pneumonia); nine years of fibrosis with honeycombing
+  (natural progression); afebrile with a blood pressure of 145/89 mmHg (no sepsis, not urgent); hyphae pointing to a
+  mould (aspergillosis); fungi often grow from sputum on broad-spectrum antibiotics (ignore them); afebrile and
+  already on NIV (keep the settings, recheck the gas); a PaO₂ of 20.7 mmHg (turn the oxygen up); NIV failure with a
+  pH of 7.149 (intubate, deal with the air leak and goals of care later); restoring yang in the dyspnoeic collapse
+  (copy the aconite decoction); AE-IPF with the methylprednisolone escalated and credited with any improvement
+  (steroids alone); colonisation without fever (stop all antimicrobials, the meropenem included). The feedback of
+  `pure-progression`, `temp-reassuring`, `ignore-temp` and `steroid-only` now also answers the reason its text gives.
+  Medical meaning, correct flags, scoring and the reference path are unchanged; no new patient fact is introduced.
+- **Option ids neutral:** every id already names its content; none renamed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

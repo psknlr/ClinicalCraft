@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "acute-ischemic-stroke",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "右侧无力伴言语困难 · 67岁男性",
     "en": "Right-sided weakness and difficulty speaking · 67-year-old man"
@@ -6059,8 +6059,8 @@
         {
           "id": "img-wait-creat",
           "text": {
-            "zh-CN": "先急查肾功能，确认肌酐正常后再做CT和CTA",
-            "en": "Send renal function first and do CT/CTA once the creatinine is back"
+            "zh-CN": "先急查肾功能，待肌酐结果回报后再做CT平扫和CTA，以免发生对比剂肾病",
+            "en": "Send urgent renal function first and do the CT and CTA once the creatinine is back, to avoid contrast nephropathy"
           },
           "correct": false,
           "feedback": {
@@ -6071,8 +6071,8 @@
         {
           "id": "img-mri",
           "text": {
-            "zh-CN": "首选头颅MRI（DWI）以确认梗死",
-            "en": "MRI brain (DWI) first to confirm the infarct"
+            "zh-CN": "首选头颅MRI（含DWI），在任何再灌注治疗前先确认梗死",
+            "en": "MRI brain with DWI first, to confirm the infarct before any reperfusion treatment"
           },
           "correct": false,
           "feedback": {
@@ -6083,8 +6083,8 @@
         {
           "id": "img-ctp",
           "text": {
-            "zh-CN": "CT平扫 + CT灌注，根据错配决定是否溶栓",
-            "en": "Plain CT plus CT perfusion, and decide on lysis from the mismatch"
+            "zh-CN": "CT平扫加CT灌注，根据梗死核心与缺血半暗带的错配决定是否溶栓",
+            "en": "Non-contrast CT plus CT perfusion, deciding on lysis from the core–penumbra mismatch"
           },
           "correct": false,
           "feedback": {
@@ -6095,8 +6095,8 @@
         {
           "id": "img-carotid-us",
           "text": {
-            "zh-CN": "先做颈动脉超声和经颅多普勒",
-            "en": "Carotid duplex and transcranial Doppler first"
+            "zh-CN": "先在床旁做颈动脉超声和经颅多普勒，寻找闭塞的血管",
+            "en": "Carotid duplex and transcranial Doppler at the bedside first, to find the occluded artery"
           },
           "correct": false,
           "feedback": {
@@ -6107,8 +6107,8 @@
         {
           "id": "img-lyse-first",
           "text": {
-            "zh-CN": "症状典型，先溶栓再做CT以节省时间",
-            "en": "The picture is typical — lyse first and scan afterwards to save time"
+            "zh-CN": "症状典型、时间就是大脑，先溶栓再做CT",
+            "en": "The picture is typical and time is brain — lyse first and scan afterwards"
           },
           "correct": false,
           "feedback": {
@@ -6153,8 +6153,8 @@
         {
           "id": "dx-left-mca-ce",
           "text": {
-            "zh-CN": "左侧大脑中动脉供血区急性缺血性卒中（皮层受累，提示大血管闭塞），心房颤动所致心源性栓塞可能性大",
-            "en": "Acute ischaemic stroke in the left MCA territory (cortical involvement, suggesting a large-vessel occlusion), most likely cardioembolic from atrial fibrillation"
+            "zh-CN": "左侧大脑中动脉供血区缺血性卒中，皮层征提示大血管闭塞，房颤心源性栓塞可能性大",
+            "en": "Left MCA-territory ischaemic stroke with cortical signs of a large-vessel occlusion, most likely cardioembolic from atrial fibrillation"
           },
           "correct": true,
           "feedback": {
@@ -6165,8 +6165,8 @@
         {
           "id": "dx-ich",
           "text": {
-            "zh-CN": "左侧基底节区脑出血",
-            "en": "Left basal ganglia intracerebral haemorrhage"
+            "zh-CN": "左侧基底节区高血压性脑出血（深部小动脉破裂）",
+            "en": "Hypertensive intracerebral haemorrhage in the left basal ganglia (rupture of a deep small artery)"
           },
           "correct": false,
           "feedback": {
@@ -6177,8 +6177,8 @@
         {
           "id": "dx-lacunar",
           "text": {
-            "zh-CN": "左侧内囊腔隙性梗死（小血管病）",
-            "en": "Left internal capsule lacunar infarct (small-vessel disease)"
+            "zh-CN": "小血管病所致左侧内囊腔隙性梗死（纯运动性卒中）",
+            "en": "Left internal capsule lacunar infarct from small-vessel disease (a pure motor stroke)"
           },
           "correct": false,
           "feedback": {
@@ -6189,8 +6189,8 @@
         {
           "id": "dx-right-mca",
           "text": {
-            "zh-CN": "右侧大脑中动脉供血区梗死",
-            "en": "Right MCA territory infarct"
+            "zh-CN": "右侧大脑中动脉供血区梗死，房颤所致心源性栓塞可能性大",
+            "en": "Right MCA-territory infarct, most likely cardioembolic from atrial fibrillation"
           },
           "correct": false,
           "feedback": {
@@ -6201,8 +6201,8 @@
         {
           "id": "dx-posterior",
           "text": {
-            "zh-CN": "椎-基底动脉系统（后循环）梗死",
-            "en": "Posterior circulation (vertebrobasilar) infarct"
+            "zh-CN": "后循环（椎-基底动脉系统）梗死，可以解释视野缺损，由房颤所致心源性栓塞可能性大",
+            "en": "Posterior-circulation (vertebrobasilar) infarct accounting for the visual field defect, most likely cardioembolic from atrial fibrillation"
           },
           "correct": false,
           "feedback": {
@@ -6213,8 +6213,8 @@
         {
           "id": "dx-todd",
           "text": {
-            "zh-CN": "癫痫发作后Todd麻痹",
-            "en": "Todd's paresis after a seizure"
+            "zh-CN": "未被察觉的癫痫发作后Todd麻痹，而非卒中",
+            "en": "Todd's paresis after an unrecognised seizure, rather than a stroke"
           },
           "correct": false,
           "feedback": {
@@ -6225,8 +6225,8 @@
         {
           "id": "dx-hypo",
           "text": {
-            "zh-CN": "低血糖所致类卒中发作",
-            "en": "Hypoglycaemic stroke mimic"
+            "zh-CN": "低血糖所致的类卒中发作（低血糖引起局灶神经功能缺损）",
+            "en": "Hypoglycaemia mimicking a stroke, with a focal deficit from low glucose"
           },
           "correct": false,
           "feedback": {
@@ -6269,10 +6269,10 @@
       },
       "options": [
         {
-          "id": "lysis-yes",
+          "id": "lysis-after-bp",
           "text": {
-            "zh-CN": "符合溶栓：先用静脉药将血压降至 < 185/110 mmHg，随即给予阿替普酶0.9 mg/kg或替奈普酶0.25 mg/kg，不必等血小板和凝血结果，并同时准备取栓",
-            "en": "Eligible: lower BP to < 185/110 mmHg with an IV agent, then give alteplase 0.9 mg/kg or tenecteplase 0.25 mg/kg straight away without waiting for platelets or coagulation, while preparing for thrombectomy"
+            "zh-CN": "符合溶栓：先用静脉药降压至 < 185/110 mmHg，随即给予阿替普酶0.9 mg/kg或替奈普酶0.25 mg/kg，不等血小板和凝血结果，并准备取栓",
+            "en": "Eligible: lower BP below 185/110 mmHg with an IV agent, then give alteplase 0.9 mg/kg or tenecteplase 0.25 mg/kg at once, without awaiting platelets or clotting; prepare thrombectomy"
           },
           "correct": true,
           "feedback": {
@@ -6283,8 +6283,8 @@
         {
           "id": "lysis-wait-labs",
           "text": {
-            "zh-CN": "有房颤病史，先等INR、APTT和血小板结果再决定",
-            "en": "He has AF — wait for the INR, APTT and platelet count before deciding"
+            "zh-CN": "有房颤病史：先用静脉药降压至 < 185/110 mmHg，但等INR、APTT和血小板结果回报后，再给予阿替普酶0.9 mg/kg或替奈普酶0.25 mg/kg",
+            "en": "He has atrial fibrillation: lower BP below 185/110 mmHg with an IV agent, but hold alteplase 0.9 mg/kg or tenecteplase 0.25 mg/kg until the INR, APTT and platelet count results are back"
           },
           "correct": false,
           "feedback": {
@@ -6295,8 +6295,8 @@
         {
           "id": "lysis-bp-contra",
           "text": {
-            "zh-CN": "血压192/104 mmHg，属于溶栓禁忌，不应溶栓",
-            "en": "BP 192/104 mmHg is a contraindication — do not lyse"
+            "zh-CN": "血压192/104 mmHg，超过185/110 mmHg的上限，属于溶栓禁忌，不能溶栓",
+            "en": "BP 192/104 mmHg is above the 185/110 mmHg limit, so thrombolysis is contraindicated and must not be given"
           },
           "correct": false,
           "feedback": {
@@ -6307,8 +6307,8 @@
         {
           "id": "lysis-skip-evt",
           "text": {
-            "zh-CN": "已怀疑大血管闭塞，直接取栓即可，不需要静脉溶栓",
-            "en": "A large-vessel occlusion is suspected, so go straight to thrombectomy without IV lysis"
+            "zh-CN": "已怀疑大血管闭塞：用静脉药降压至 < 185/110 mmHg后直接取栓，不做静脉溶栓，以免徒增出血风险",
+            "en": "A large-vessel occlusion is suspected: lower BP below 185/110 mmHg with an IV agent and go straight to thrombectomy, without IV lysis, which would only add bleeding risk"
           },
           "correct": false,
           "feedback": {
@@ -6319,8 +6319,8 @@
         {
           "id": "lysis-unwitnessed",
           "text": {
-            "zh-CN": "发病时刻无人目击，起病时间不明，不能溶栓",
-            "en": "Nobody saw the onset, so the onset time is unknown and he cannot be lysed"
+            "zh-CN": "发病时刻无人目击，起病时间不明，已不在可安全溶栓的时间窗内",
+            "en": "Nobody saw the onset, so the time of onset is unknown and he is outside any safe window for lysis"
           },
           "correct": false,
           "feedback": {
@@ -7224,7 +7224,7 @@
       "type": "answer",
       "decisionId": "d-lysis",
       "optionIds": [
-        "lysis-yes"
+        "lysis-after-bp"
       ]
     },
     {

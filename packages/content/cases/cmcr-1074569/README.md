@@ -12,7 +12,7 @@
 
 | | |
 |---|---|
-| id / version | `cmcr-1074569` / `1.1.0` |
+| id / version | `cmcr-1074569` / `1.1.1` |
 | setting / facility | `outpatient` / `general-hospital` (consulting room; she sits throughout) |
 | specialty | oncology, colorectal surgery, hepatobiliary surgery |
 | difficulty | 4 / 5 |
@@ -337,6 +337,22 @@ White Rose repository; PubMed record 36252154 via a library catalogue and Guidel
   continuing cetuximab after resection.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In 3 of the 4 single-best decisions (`mdt-sequence`,
+  `conversion-timing`, `recurrence`) the keyed option was the uniquely longest in both languages (up to about twice
+  the mean option length); now it is in none. The `mdt-sequence` and `conversion-timing` keys say the same in fewer
+  words, and the `recurrence` key now names the restaging and the caudate lesion; the distractors carry the key's
+  detail and say why they tempt — one-stage resection because she is fully active (PS 0), single-agent palliation
+  because the liver disease looks unresectable, chemotherapy first because the liver disease decides her outlook,
+  chemotherapy until a complete response because the regimen is working, stopping to spare toxicity, a
+  "non-cross-resistant" switch, giving up surgery because the recurrence came early, waiting to see whether the new
+  lesion grows, and a normal repeat CEA as reassurance. Medical meaning, correct flags, scoring and the reference path
+  are unchanged; the feedback of `one-stage-now` and `chemo-only` now also answers the reason their text gives.
+  `dx-primary` (its key was already the shortest option) and the select-all `biomarkers` had no cue and are untouched.
+- **Option ids neutral:** every id already names its content; none renamed, so no solution, test, benchmark scenario
+  or e2e spec changes.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

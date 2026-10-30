@@ -15,7 +15,7 @@ taught in the decisions, feedback and debrief. Not medical advice
 
 | | |
 |---|---|
-| id / version | `cmcr-1423442` / `1.1.0` |
+| id / version | `cmcr-1423442` / `1.1.1` |
 | setting / facility | `inpatient` / `general-hospital` (ward bed) |
 | specialty | endocrinology, nephrology, clinical pharmacology, hepatology |
 | difficulty | 4 / 5 |
@@ -408,6 +408,30 @@ DOI is given where none could be checked (3, 5–7, 9).
   checked through a label mirror).
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all three
+  single-best decisions (`phosphate-wasting`, `diagnosis`, `antiviral`) the
+  keyed option was the uniquely longest in both languages; now it is in
+  none. The distractors carry the key's detail and say why they tempt — "low"
+  against the laboratory range of 16–48 mmol/24 h; "uninterpretable" because
+  without a urine creatinine there is no FEPO₄ or TmP/GFR; a shift into
+  cells; myeloma with pathological fractures and proteinuria; vitamin D
+  deficiency with a low 25-hydroxyvitamin D, a raised ALP and a low
+  phosphate that calcium has not corrected; distal RTA with the
+  hyperchloraemic acidosis and potassium loss; primary osteoporosis, the
+  working diagnosis, with normal calcium, PTH and creatinine; TDF as more
+  potent than adefovir; stopping all antivirals because HBV DNA is
+  undetectable; continuing adefovir because it keeps the virus suppressed.
+  The `antiviral` key is a little tighter and the `diagnosis` key names the
+  nearly ten years on adefovir. In the select-all `metabolic` decision the
+  two wrong options now give their reason too. Medical meaning, correct
+  flags, feedback, scoring and the reference path are unchanged.
+- **Option ids neutral:** every id already names its content; none renamed.
+- **Matcher corpus:** one `extensions.testUtterances` that was one of its
+  item's keywords (`cases validate --strict`) is now a paraphrase
+  (平时有没有什么基础疾病？); no history item, answer or keyword changed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

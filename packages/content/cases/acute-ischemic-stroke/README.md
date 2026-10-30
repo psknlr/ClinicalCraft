@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `acute-ischemic-stroke` · v1.1.1 |
+| Case | `acute-ischemic-stroke` · v1.1.2 |
 | Setting | Emergency department, resus bay 1 (`emergency`); later the neuro-angiography suite |
 | Facility | `general-hospital` (also playable in `teaching-hospital`) |
 | Difficulty | 4 / 5 |
@@ -494,6 +494,19 @@ journal, volume and pages); none was added from memory.
   AHA/ASA cites no class or level of evidence; check the wording against ref. 1.
 
 ## Changelog
+
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+* Options rebalanced so the key is not cued by length: in all 3 single-best decisions the keyed option was the uniquely
+  longest in both languages; now it is in none. `d-imaging`: each distractor states its rationale (contrast nephropathy,
+  confirming the infarct on DWI, a core–penumbra mismatch, finding the occluded artery at the bedside, "time is brain").
+  `d-diagnosis`: every option now names a territory and a mechanism, as the key does (hypertensive basal-ganglia
+  haemorrhage, a lacune from small-vessel disease, a right-MCA or posterior-circulation infarct from AF — the posterior
+  option cites the field defect the NIHSS records); the key is tighter. `d-lysis`: the wait-for-labs and skip-IVT
+  options carry the same BP step and lytic doses as the key; the key keeps its content in fewer words. Medical meaning,
+  correct flags, feedback and scoring are unchanged; `d-evt` had no cue and is untouched.
+* Option id `lysis-yes` (it named the answer) is now `lysis-after-bp`; the reference `solution` answers with it. No
+  test, benchmark scenario or e2e spec referred to it.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

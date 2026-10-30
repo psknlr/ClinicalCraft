@@ -12,7 +12,7 @@ the decisions teach current guidance and say where the report's team acted diffe
 
 | | |
 |---|---|
-| id / version | `cmcr-1423446` / `1.1.0` |
+| id / version | `cmcr-1423446` / `1.1.1` |
 | setting / facility | `emergency` (an ED cubicle) / `general-hospital` |
 | specialty | emergency medicine, clinical pharmacology, endocrinology |
 | difficulty / estimated time | 3 / 5 · ~30 min (static clock) |
@@ -318,6 +318,22 @@ ref. 5 — citation, authors and DOI from journal and indexing records; ref. 6 �
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all 4
+  single-best decisions in both languages; now it is in one (`after-recovery`). Each distractor states why it tempts,
+  with the key's register and detail: IV levofloxacin (the report's choice) because a missed bacterial enteritis would
+  be dangerous at 78, given with fluids and potassium; oral ciprofloxacin as needing no glucose monitoring; repaglinide
+  kept on because illness pushes the glucose up; anaphylaxis minutes into the infusion; a vasovagal reaction after a
+  normal blood pressure; sweets without a reading; ECG and troponin first at 78; the report's drip plus sweets as
+  raising the glucose by two routes; glucagon to avoid hypertonic glucose through the cannula; IV glucose without a
+  recheck; the omeprazole misattribution; a monitored rechallenge; oral moxifloxacin once a day; discharge because she
+  is alert. The keys of `abx-indication`, `hypo-treatment` and `after-recovery` are tighter wording of the same plan;
+  the `first-step` key is unchanged. Feedback now credits the correct parts a distractor gained (fluids and potassium;
+  stopping, rechecking and feeding) and answers its new arguments (extravasation; oral fluids while she vomits).
+  Correct flags and scoring are unchanged.
+- **Option ids:** all already name their content; none changed.
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 - **Fix first — the restart is a misattribution, not a rechallenge.** The reported course, the `after-recovery`
@@ -350,7 +366,7 @@ ref. 5 — citation, authors and DOI from journal and indexing records; ref. 6 �
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-1423446/case.json
+npm run -s cc -- cases validate packages/content/cases/cmcr-1423446/case.json --strict
 npm run -s cc -- cases verify cmcr-1423446
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-1423446
 npm run -s cc -- exec --case cmcr-1423446 --autopilot --approval bypass --provider offline --output-format json
@@ -359,7 +375,8 @@ npm run -s cc -- exec --case cmcr-1423446 --autopilot --approval bypass --provid
 
 On 2026-10-28 (1.1.0): validate 0 errors, 0 warnings; verify passes — 44 steps, objectives 6/6, decisions 4/4,
 utterances 40/40; the collection test passes; the offline demonstration scores 22/22 (100 %) with every objective done
-in clinical mode and in in-world mode (zh-CN and en).
+in clinical mode and in in-world mode (zh-CN and en). On 2026-10-30 (1.1.1): validate `--strict` 0 errors, 0
+warnings; verify passes as above (22/22, 100 %).
 
 ## 中文摘要
 

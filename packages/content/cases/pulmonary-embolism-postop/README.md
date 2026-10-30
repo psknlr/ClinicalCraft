@@ -11,7 +11,7 @@ advice and does not replace local protocols or current guidelines.
 
 | | |
 |---|---|
-| id / version | `pulmonary-embolism-postop` / `1.1.1` |
+| id / version | `pulmonary-embolism-postop` / `1.1.2` |
 | setting / facility | `inpatient` (surgical ward bed) / `general-hospital` (ward bed 1) |
 | specialty | acute medicine, respiratory medicine, general surgery |
 | difficulty / estimated time | 4 / 5 · ~40 min (simulated clock from 16:20, 180-min limit) |
@@ -126,8 +126,16 @@ UFH or LMWH given — or, in the haemorrhage branch, a filter) → `obj-confirm`
   ESC 2019 (class I, level A) and AHA/ACC 2026 (class 1) recommend LMWH over UFH for most patients who need parenteral
   anticoagulation, and that UFH is a patient-specific choice for reversibility early after surgery.
 - `risk-strat` (after CTPA and troponin): intermediate-high, as at presentation (the prompt says "not any later
-  change"; the "high" feedback says a later shock reclassifies her).
+  change"; the "high" feedback says a later shock reclassifies her). The "high" option carries its old name, "'massive'
+  PE", the classic trap with bilateral emboli; its feedback says that "massive" describes the haemodynamic effect, not
+  the clot burden.
 - `escalation-plan` (select all): no systemic lysis, monitored bed 48–72 h, rescue reperfusion via the PERT.
+- **No length cue.** In the three single-best decisions the key is not the longest option (it was in all three). The
+  distractors are as specific as the key and state the reason a learner would choose them — a negative D-dimer would
+  spare contrast and radiation; V/Q avoids iodinated contrast; moving a hypoxaemic, tachycardic patient to CT is risky;
+  LMWH is the guideline default for stable PE; a DOAC needs no injections or monitoring; a treatment dose looks too
+  risky on day 3 — and each one's feedback answers that reason. The wrong escalation statements are as specific as the
+  right ones.
 
 **Learner guidance and board gating.**
 
@@ -149,8 +157,8 @@ UFH or LMWH given — or, in the haemorrhage branch, a filter) → `obj-confirm`
   are in their `response`s, and the anticoagulant decision's options do not carry them. The paracetamol dose says "at
   least 4 h after the previous dose; max 4 g in 24 h (check the drug chart)" — the 12:00 dose and the cancelled 18:00
   dose are in its response, since they are MAR facts. The prophylactic enoxaparin option is labelled
-  "Prophylactic-dose enoxaparin SC", not "the missed … dose", and the strategy decision's CTPA option says "'PE likely',
-  Wells score > 4" rather than quoting the Wells total of 10 the learner should compute. The ABG A–a reference text is
+  "Prophylactic-dose enoxaparin SC", not "the missed … dose", and the strategy decision's CTPA option says "PE likely,
+  Wells > 4" rather than quoting the Wells total of 10 the learner should compute. The ABG A–a reference text is
   per-locale.
 * **Feedback does not quote unobtained results.** Decision feedback and intervention harm texts do not cite the echo,
   lactate, perfusion, JVP or chest-film findings, nor the risk class, before the learner has obtained them. The
@@ -356,7 +364,7 @@ with the offline autopilot (`exec --autopilot --embodied --approval bypass`): 10
 `extensions.testUtterances` has 72 bilingual paraphrases (41 zh-CN, 31 en) and serves as the history-matcher
 regression corpus. That is above the 15–40 in CASE_AUTHORING §7 because tricky ones were added over successive
 reviews: colloquial Chinese, text-speak, typos and abbreviations such as "有木有咳血", "疼几分钟了", "腿肚子疼不疼",
-"did u get ur clexane last nite", "any LOC?", "NKDA?" and "any wt loss?".
+"did u get ur clexane last nite", "any LOC?", "any SOB at rest?" and "any wt loss?".
 
 * Every utterance passes the patient pipeline's selection rule (score ≥ 0.55, top hit expected), with no ties and no
   extra facts revealed.
@@ -438,6 +446,20 @@ Refs. 16 and 17 are the PEITHO and PREPIC2 trials.
 - BTS began a new guideline on target oxygen saturations in 2023; the case keeps the 2017 target (94–98 %).
 
 ## Changelog
+
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length; option ids neutral.** The keyed option was the longest
+  option in `dx-strategy` (both languages), `anticoag-choice` (Chinese) and `risk-strat` (English), a length cue the
+  content lints now flag (CASE_AUTHORING §9.8); it is now the longest in none. The `dx-strategy` key is tightened
+  without losing content, and the distractors state, in the key's register and specificity, the reason a learner would
+  choose them (see "Decisions"); in `escalation-plan` the `no-lysis` statement is tightened and two wrong statements
+  gain their reason (a filter "so soon after surgery", discharge "once her oxygen requirement settles"). Feedback
+  gained a sentence where a distractor's new reason needed an answer (`echo-only`, `empirical-lysis`, `prophylactic`,
+  `high`). Medical meaning, correct flags and option ids (already content ids) are unchanged; the reference path still
+  scores 22/22.
+- Matcher corpus: one `extensions.testUtterances` entry that was one of its item's keywords ("NKDA?") is now a
+  paraphrase (`cases validate --strict`); no history item, answer or keyword changed.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

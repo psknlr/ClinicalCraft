@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-1551887` · v1.1.0 · CMCR collection (`cmcr-20`) |
+| Case | `cmcr-1551887` · v1.1.1 · CMCR collection (`cmcr-20`) |
 | Source | 梁建明, 葉婉婷, 鄧紫瑩, 趙凱茵. 家族性致死性失眠症患者1例. 鏡湖醫學. 2025;25(1):57-58 |
 | Setting | Outpatient first visit (`outpatient`) → ward admission → specialist clinic → later course (phase locations) |
 | Facility | `general-hospital` |
@@ -351,6 +351,21 @@ articles, so it is cited without a DOI (see To verify). Guidance documents 4–6
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+* **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all 3
+  single-best decisions in both languages; now it is in one (`dec-family`). Each distractor states its reasoning in the
+  key's register: definite FFI (the report's conclusion) from the clinical features, the uncle and the positive PRNP;
+  prion disease excluded by the normal MRI, MRV and CSF and an EEG without epileptiform discharges; no grade without
+  PSG and PET or SPECT; anxiety-related insomnia from the pill, the benzodiazepine and six months of tension;
+  isolation because the route of spread is uncertain; no special measures because the disease is inherited; no more
+  procedures to protect staff; routine autoclaving under standard precautions; testing every relative, children
+  included, to find carriers early; the uncle's old diagnosis as unrelated; the mother as the certain carrier because
+  the uncle is her brother; withholding the risk while she is so ill. The keys are tighter wording of the same content;
+  in the multiple-answer `dec-workup` the brain-biopsy distractor states its reason. The autoclave feedback now credits
+  its correct half (standard precautions, no isolation). Correct flags and scoring are unchanged.
+* **Option ids:** all already name their content; none changed.
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 * **Diagnosis decision rebuilt on criteria** (audit A2): `dx-criteria` grades the record by the 2018
@@ -404,7 +419,7 @@ articles, so it is cited without a DOI (see To verify). Guidance documents 4–6
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-1551887/case.json   # 0 errors, 0 warnings
+npm run -s cc -- cases validate packages/content/cases/cmcr-1551887/case.json --strict   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-1551887        # solution 56 steps · objectives 6/6 · decisions 4/4 · utterances 40/40
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-1551887
 npm run -s cc -- exec --case cmcr-1551887 --autopilot --approval bypass --provider offline --output-format json             # 24/24

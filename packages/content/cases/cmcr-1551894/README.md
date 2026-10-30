@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-1551894` · v1.1.0 · CMCR collection (`cmcr-20`) |
+| Case | `cmcr-1551894` · v1.1.1 · CMCR collection (`cmcr-20`) |
 | Source | 王立恒, 庄聰. 中西醫結合治療巴德-吉亞利綜合征1例. 鏡湖醫學. 2025;25(1):68 (references continued on p. 61) — the journal's Chinese-medicine column (中醫專欄) |
 | Setting | Outpatient presentation (`outpatient`) → admission work-up → after angioplasty and stenting → discharge (phase locations) |
 | Facility | `general-hospital` |
@@ -372,6 +372,26 @@ editorial check is labelled "EASL 2025" in the case text (the guideline's year; 
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+* **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all 4
+  single-best decisions in both languages; now it is in one (`dec-herbs`). Each distractor states its reasoning in the
+  key's register: portal hypertension from the massive spleen and abdominal wall veins; SVC obstruction from the chest
+  wall veins; leg venous disease from ten years of swelling and gaiter changes; right heart failure from the liver,
+  oedema and veins; cirrhosis from the uneven, disproportionate liver and dilated splenic vein; SOS from blocked small
+  hepatic veins; constriction from the widened IVC and hepatic veins; compression with dilatation beyond the
+  narrowing; herbs instead of anticoagulation (the report's course) because of the platelet count; diuretics with
+  three-monthly review; early transplantation for advanced disease; TIPS first to decompress liver and spleen; herbs
+  and anticoagulant together because the herbs are natural and act differently; herbs to keep the stent open; no
+  anticoagulation with platelets that low; herbs kept off the drug chart. The `dec-dx` key now names the imaging it
+  rests on (the focal narrowing, its high-velocity flow and the dilatation beyond it); the other keys are tighter
+  wording of the same plan. The feedback of the report's course and of the diuretic option also answers the platelet
+  argument. Correct flags and scoring are unchanged.
+* **Option ids:** all already name their content; none changed.
+* **Matcher corpus:** two test utterances were keywords of their items (`cases validate --strict`): 「什么时候肿得厉害？」
+  (`modifiers`) and 「甲亢吃过什么药？」 (`thyroid-treatment`) are now the paraphrases 「一般什么时候会更肿一些？」 and
+  「你甲亢当时是怎么治疗的？」. No history item, answer or keyword changed.
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 * **Current management taught** (audit A1, S2): `dec-management` rebuilt on the EASL 2025 stepwise
@@ -426,7 +446,7 @@ editorial check is labelled "EASL 2025" in the case text (the guideline's year; 
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-1551894/case.json   # 0 errors, 0 warnings
+npm run -s cc -- cases validate packages/content/cases/cmcr-1551894/case.json --strict   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-1551894        # solution 71 steps · objectives 6/6 · decisions 4/4 · utterances 40/40
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-1551894
 npm run -s cc -- exec --case cmcr-1551894 --autopilot --approval bypass --provider offline --output-format json             # 23/23

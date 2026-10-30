@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653404",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "高热与足背红肿 · 4岁1个月男孩",
     "en": "High fever and a swollen foot · boy aged 4 years 1 month"
@@ -2400,8 +2400,8 @@
         {
           "id": "screen-pid",
           "text": {
-            "zh-CN": "在抗感染的同时启动免疫缺陷筛查：血清免疫球蛋白（按年龄参考值），含血小板计数和体积的血常规，以及淋巴细胞亚群",
-            "en": "Alongside antibiotics, start an immunodeficiency screen: serum immunoglobulins (against age-specific ranges), a blood count with platelet count and size, and lymphocyte subsets"
+            "zh-CN": "在抗感染的同时筛查免疫缺陷：血清免疫球蛋白（按年龄参考值）、含血小板计数和体积的血常规，以及淋巴细胞亚群",
+            "en": "Alongside antibiotics, screen for immunodeficiency: serum immunoglobulins against age-specific ranges, a blood count with platelet count and size, and lymphocyte subsets"
           },
           "correct": true,
           "feedback": {
@@ -2412,8 +2412,8 @@
         {
           "id": "eczema-explains",
           "text": {
-            "zh-CN": "湿疹本身就能解释反复皮肤感染，只需处理这次蜂窝织炎，不必查免疫",
-            "en": "The eczema explains the recurrent skin infections; just treat this cellulitis, no immune work-up"
+            "zh-CN": "他自出生起就有湿疹，皮肤屏障破坏、葡萄球菌容易侵入，足以解释反复皮肤感染：治好这次蜂窝织炎、加强护肤，不必查免疫",
+            "en": "His eczema since birth breaks the skin barrier and lets staphylococci in, which explains the skin infections: treat this cellulitis, improve his skin care and skip the immune work-up"
           },
           "correct": false,
           "feedback": {
@@ -2424,20 +2424,20 @@
         {
           "id": "hiv-only",
           "text": {
-            "zh-CN": "只查HIV，先排除获得性免疫缺陷，结果阴性再说",
-            "en": "Test for HIV only, to exclude acquired immunodeficiency first, and reconsider if it is negative"
+            "zh-CN": "只查HIV：获得性免疫缺陷是反复细菌感染中可以治疗、必须先排除的病因，结果阴性再考虑其他检查",
+            "en": "Test for HIV only: acquired immunodeficiency is a treatable cause of recurrent bacterial infection that must be excluded first, and reconsider if it is negative"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不全面。HIV可以查，但一个有反复细菌感染和湿疹的男孩，表型指向先天性抗体缺陷；只查HIV会漏掉免疫球蛋白和B细胞这些关键一线检查。",
-            "en": "Incomplete. HIV can be checked, but the phenotype in a boy with recurrent bacterial infection and eczema points to an inborn antibody defect; testing HIV alone misses the key first-line immunoglobulin and B-cell tests."
+            "zh-CN": "不全面。HIV可以查，但一个有反复细菌感染和湿疹的男孩，表型指向先天性抗体缺陷；这些检查可以同时送，只查HIV会漏掉免疫球蛋白和B细胞这些关键一线检查。",
+            "en": "Incomplete. HIV can be checked, but the phenotype in a boy with recurrent bacterial infection and eczema points to an inborn antibody defect; the tests can go together, and testing HIV alone misses the key first-line immunoglobulin and B-cell tests."
           }
         },
         {
           "id": "mri-foot",
           "text": {
-            "zh-CN": "先做足部MRI排除骨髓炎，免疫问题等感染好了再说",
-            "en": "Get a foot MRI to exclude osteomyelitis first; look at immunity once the infection has settled"
+            "zh-CN": "口服阿莫西林克拉维酸后足部仍在加重：先做足部MRI排除骨髓炎或深部脓肿，免疫问题等感染控制后再说",
+            "en": "The foot is still worsening on amoxicillin–clavulanate, so get a foot MRI first to exclude osteomyelitis or a deep collection, and look at immunity once the infection has settled"
           },
           "correct": false,
           "feedback": {
@@ -2478,8 +2478,8 @@
         {
           "id": "selective-iga",
           "text": {
-            "zh-CN": "选择性IgA缺乏症：IgA测不到即可诊断，其他无需追查",
-            "en": "Selective IgA deficiency: undetectable IgA is enough, nothing more to pursue"
+            "zh-CN": "选择性IgA缺乏症，这是最常见的原发性抗体缺陷：IgA测不到、IgM正常就足以诊断",
+            "en": "Selective IgA deficiency, the commonest primary antibody defect: undetectable IgA with a normal IgM is enough"
           },
           "correct": false,
           "feedback": {
@@ -2490,8 +2490,8 @@
         {
           "id": "transient-infection",
           "text": {
-            "zh-CN": "只是这次严重感染引起的一过性低球蛋白血症，感染好了会恢复，不必深究",
-            "en": "Just transient hypogammaglobulinaemia from this severe infection; it will recover, no need to pursue"
+            "zh-CN": "只是这次严重感染消耗引起的一过性低球蛋白血症：感染好了会自行恢复，不必深究",
+            "en": "Just transient hypogammaglobulinaemia from consumption in this severe infection: it will recover, no need to pursue"
           },
           "correct": false,
           "feedback": {
@@ -2502,8 +2502,8 @@
         {
           "id": "normal-for-age",
           "text": {
-            "zh-CN": "幼儿免疫球蛋白本来就偏低，属正常范围，不用处理",
-            "en": "Immunoglobulins are naturally low in young children; these are within normal limits and need no action"
+            "zh-CN": "幼儿的免疫球蛋白本来就比成人低：这些结果只是对照成人标准才显得偏低，不需要处理",
+            "en": "Immunoglobulins run lower in young children: these only look low against adult values, and need no action"
           },
           "correct": false,
           "feedback": {
@@ -2532,8 +2532,8 @@
         {
           "id": "btk-gene",
           "text": {
-            "zh-CN": "B细胞几乎缺失而T细胞正常，符合无丙种球蛋白血症；查BTK基因明确X连锁无丙种球蛋白血症（临床标准＋BTK变异即确诊）",
-            "en": "B cells almost absent with normal T cells fits agammaglobulinaemia; test the BTK gene to confirm X-linked agammaglobulinaemia (clinical criteria plus a BTK variant are diagnostic)"
+            "zh-CN": "B细胞几乎缺失而T细胞正常，符合无丙种球蛋白血症；查BTK基因确诊X连锁型（临床标准＋BTK变异）",
+            "en": "Almost absent B cells with normal T cells fit agammaglobulinaemia: confirm the X-linked form by BTK gene testing (clinical criteria plus a BTK variant are diagnostic)"
           },
           "correct": true,
           "feedback": {
@@ -2544,25 +2544,25 @@
         {
           "id": "scid",
           "text": {
-            "zh-CN": "T、B细胞都要补充评估，先按重症联合免疫缺陷处理",
-            "en": "Reassess both T and B cells and manage as severe combined immunodeficiency for now"
+            "zh-CN": "反复肺炎加上B细胞几乎缺失：先按重症联合免疫缺陷处理（这是最不能漏诊的），并重新评估T、B细胞功能",
+            "en": "With recurrent pneumonia and almost no B cells, manage as severe combined immunodeficiency for now — the defect not to miss — and reassess both T- and B-cell function"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。T细胞、CD4、CD8和NK细胞计数都正常，不符合SCID（典型为T细胞缺陷）；缺陷局限于B细胞系。",
-            "en": "No. T, CD4, CD8 and NK counts are all normal, which is not SCID (typically a T-cell defect); the defect is confined to the B-cell lineage."
+            "zh-CN": "不对。T细胞、CD4、CD8和NK细胞计数都正常，不符合SCID（典型为T细胞缺陷，通常在出生后几个月内就发病）；缺陷局限于B细胞系。",
+            "en": "No. T, CD4, CD8 and NK counts are all normal, which is not SCID (typically a T-cell defect that declares itself in the first months of life); the defect is confined to the B-cell lineage."
           }
         },
         {
           "id": "no-gene-needed",
           "text": {
-            "zh-CN": "湿疹、反复肺炎加B细胞减少已经够了，不必做基因检测",
-            "en": "Eczema, recurrent pneumonia and low B cells are enough; no genetic test is needed"
+            "zh-CN": "湿疹、反复肺炎加上B细胞仅6.0 cells/μL，已足以诊断；基因检测也不会改变他的治疗，所以不必做",
+            "en": "Eczema, recurrent pneumonia and B cells of 6.0 cells/µL are enough to make the diagnosis; a genetic test would not change his treatment, so none is needed"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。临床和免疫表型支持无丙种球蛋白血症，但确诊和家系遗传咨询需要BTK基因结果（原文表2：临床标准＋BTK变异）；基因型也指导对母亲及亲属的检测。",
-            "en": "No. The clinical and immunological phenotype support agammaglobulinaemia, but confirmation and family counselling need the BTK result (Table 2: clinical criteria plus a BTK variant); the genotype also guides testing the mother and relatives."
+            "zh-CN": "不对。临床和免疫表型支持无丙种球蛋白血症，但确诊和家系遗传咨询需要BTK基因结果（原文表2：临床标准＋BTK变异）；即使他本人的治疗不变，基因型也指导对母亲及亲属的检测。",
+            "en": "No. The clinical and immunological phenotype support agammaglobulinaemia, but confirmation and family counselling need the BTK result (Table 2: clinical criteria plus a BTK variant); even if his own treatment would not change, the genotype guides testing the mother and relatives."
           }
         }
       ]
@@ -2586,8 +2586,8 @@
         {
           "id": "replacement-plan",
           "text": {
-            "zh-CN": "终身免疫球蛋白替代（按谷浓度调整），避免减毒活疫苗，感染尽早治疗并监测肺部，向家庭提供遗传咨询和母亲携带者检测",
-            "en": "Lifelong immunoglobulin replacement (trough-guided), avoid live vaccines, treat infections early with lung monitoring, and offer the family genetic counselling and maternal carrier testing"
+            "zh-CN": "终身免疫球蛋白替代（按谷浓度调整），禁用减毒活疫苗，感染早治、监测肺部，提供遗传咨询和母亲携带者检测",
+            "en": "Lifelong trough-guided immunoglobulin replacement, no live vaccines, early treatment of infections with lung monitoring, and genetic counselling with maternal carrier testing"
           },
           "correct": true,
           "feedback": {
@@ -2598,20 +2598,20 @@
         {
           "id": "transplant-now",
           "text": {
-            "zh-CN": "立即安排造血干细胞移植替代免疫球蛋白替代治疗",
-            "en": "Arrange haematopoietic stem-cell transplant now instead of immunoglobulin replacement"
+            "zh-CN": "立即安排造血干细胞移植，取代免疫球蛋白替代治疗：这是唯一有望纠正缺陷的治疗，也可以免去他终身反复输注",
+            "en": "Arrange a haematopoietic stem-cell transplant now instead of immunoglobulin replacement: it is the only treatment that can correct the defect and spare him lifelong infusions"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。XLA的标准治疗是免疫球蛋白替代；造血干细胞移植在个别中心用于XLA并报告可能改善预后，但仍属研究性、非一线，不应在急性感染后立即取代替代治疗。",
-            "en": "No. The standard of care in XLA is immunoglobulin replacement; stem-cell transplantation is used in a few centres and reported to possibly improve outcomes, but it is investigational and not first-line, and should not replace replacement therapy straight after an acute infection."
+            "zh-CN": "不对。XLA的标准治疗是免疫球蛋白替代；造血干细胞移植在个别中心用于XLA并报告可能改善预后，但仍属研究性、非一线，根治的可能要与移植本身的风险权衡，不应在急性感染后立即取代替代治疗。",
+            "en": "No. The standard of care in XLA is immunoglobulin replacement; stem-cell transplantation is used in a few centres and reported to possibly improve outcomes, but it is investigational and not first-line, its chance of a cure has to be weighed against the risks of transplantation, and it should not replace replacement therapy straight after an acute infection."
           }
         },
         {
           "id": "antibiotic-prophylaxis-only",
           "text": {
-            "zh-CN": "只长期口服预防性抗生素，不用免疫球蛋白替代",
-            "en": "Long-term prophylactic antibiotics alone, without immunoglobulin replacement"
+            "zh-CN": "只长期口服预防性抗生素：能覆盖他反复发生的细菌感染，又免去免疫球蛋白替代治疗的费用和反复输注",
+            "en": "Long-term prophylactic antibiotics alone, which cover the bacterial infections he keeps getting without the cost and repeated infusions of immunoglobulin replacement"
           },
           "correct": false,
           "feedback": {
@@ -2622,8 +2622,8 @@
         {
           "id": "discharge-no-followup",
           "text": {
-            "zh-CN": "皮损愈合即结束评估，不安排长期免疫随访和疫苗调整",
-            "en": "Discharge once the skin heals, with no long-term immune follow-up or vaccine review"
+            "zh-CN": "感染已对抗生素起效：皮损愈合、不再发热就出院，不安排长期免疫随访和疫苗调整",
+            "en": "The infection has responded to antibiotics, so discharge him once the skin heals and the fever settles, with no long-term immune follow-up or vaccine review"
           },
           "correct": false,
           "feedback": {

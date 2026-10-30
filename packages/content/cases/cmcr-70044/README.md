@@ -10,7 +10,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-70044` · v1.1.0 · CMCR collection (`cmcr-20`) |
+| Case | `cmcr-70044` · v1.1.1 · CMCR collection (`cmcr-20`) |
 | Source | 张睿, 裴亮, 王佳, 张晗, 韩晓华. 头孢噻肟钠/舒巴坦钠致过敏性休克一例. 中国小儿急救医学. 2014;21(1):63 |
 | Setting | Children's ward (`inpatient`); the reaction happens at the bedside |
 | Facility | `general-hospital` |
@@ -316,6 +316,28 @@ notices (no DOI exists).
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+* **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all four
+  decisions in both languages (1.3–5.2 times the mean length of the other options); now it is in none
+  (0.85–1.09). The `pre-dose` and `aftercare` keys say the same in fewer words; in `adrenaline` every option now
+  carries the same supportive steps (stop the drug, call for help, lie flat, high-flow oxygen, a 10 mL/kg
+  crystalloid bolus, monitoring), so only the adrenaline strength, dose, route and site — the point of the
+  decision — tell the options apart. Each distractor now says why it tempts: the negative penicillin test plus
+  the clinic's four days of cefuroxime; routine cephalosporin skin tests "as many wards do"; lifelong avoidance
+  recorded as a severe allergy; a frightened child fainting; asthma after ten days of cough; a typical
+  urticarial rash; the IV push because IV acts faster in shock (the report's practice); dexamethasone to damp
+  the reaction; the standard 1 mg/mL ampoule pushed IV; the 1 in 10 000 resuscitation strength given IM; a
+  rechallenge with steroid premedication; steroids against a biphasic reaction; "an infusion that ran too fast,
+  not an allergy". Medical meaning, correct flags, scoring and the reference path are unchanged; the feedback of
+  `skin-test-clears`, `iv-bolus-report`, both concentration errors, `rechallenge`, `steroids-home` and
+  `not-allergy` now also answers the reason its text gives.
+* **Option ids neutral:** `iv-1mg-error` → `iv-push-1-in-1000` and `im-dilute-error` → `im-1-in-10000` (the
+  suffix named the option as wrong). No solution step, rubric item, test, benchmark scenario or e2e spec
+  referred to them.
+* Checked on 2026-10-30: `cases validate --strict` 0 errors, 0 warnings; `cases verify` passes (47 steps,
+  objectives 6/6, decisions 4/4, utterances 39/39, rubric 26/26).
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 * **Treatment no longer waits for the records:** `diagnosis` opens on any one bedside step (1.0.0 required
@@ -360,7 +382,7 @@ notices (no DOI exists).
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-70044/case.json   # 0 errors, 0 warnings
+npm run -s cc -- cases validate packages/content/cases/cmcr-70044/case.json --strict   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-70044        # solution 47 steps · objectives 6/6 · decisions 4/4 · utterances 39/39
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-70044              # 1 passed
 npm run -s cc -- exec --case cmcr-70044 --autopilot --approval bypass --provider offline --output-format json             # 26/26, 6/6

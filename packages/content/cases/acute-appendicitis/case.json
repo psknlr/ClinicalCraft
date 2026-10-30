@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "acute-appendicitis",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "腹痛 · 19岁男性",
     "en": "Abdominal pain · 19-year-old man"
@@ -6928,8 +6928,8 @@
         {
           "id": "img-ct",
           "text": {
-            "zh-CN": "立即行腹盆腔增强 CT",
-            "en": "Immediate contrast-enhanced CT abdomen and pelvis"
+            "zh-CN": "立即行腹盆腔增强 CT——成人阑尾炎诊断准确性最高的检查",
+            "en": "Contrast-enhanced CT of the abdomen and pelvis now — the most accurate test for appendicitis in adults"
           },
           "correct": false,
           "feedback": {
@@ -6940,8 +6940,8 @@
         {
           "id": "img-axr",
           "text": {
-            "zh-CN": "腹部平片",
-            "en": "Plain abdominal X-ray"
+            "zh-CN": "腹部平片，查找粪石、游离气体或肠梗阻",
+            "en": "Plain abdominal X-ray to look for an appendicolith, free gas or bowel obstruction"
           },
           "correct": false,
           "feedback": {
@@ -6952,8 +6952,8 @@
         {
           "id": "img-mri",
           "text": {
-            "zh-CN": "腹部 MRI",
-            "en": "MRI abdomen"
+            "zh-CN": "腹盆腔 MRI——准确，且对年轻患者没有电离辐射",
+            "en": "MRI of the abdomen and pelvis — accurate, and free of ionising radiation for a young patient"
           },
           "correct": false,
           "feedback": {
@@ -6964,8 +6964,8 @@
         {
           "id": "img-none",
           "text": {
-            "zh-CN": "不做影像，回家观察",
-            "en": "No imaging — observe at home"
+            "zh-CN": "今晚不做影像，口服止痛药回家观察，疼痛加重再来",
+            "en": "No imaging tonight — home on oral analgesia, to come back if the pain gets worse"
           },
           "correct": false,
           "feedback": {
@@ -7117,8 +7117,8 @@
         {
           "id": "def-lap",
           "text": {
-            "zh-CN": "经共同决策（包括讨论“抗生素优先”方案）后，在急诊手术台行腹腔镜阑尾切除术，术前单次静脉抗生素",
-            "en": "Laparoscopic appendectomy on the emergency list after shared decision-making (including discussion of antibiotics-first), with a single pre-operative IV antibiotic dose"
+            "zh-CN": "经共同决策（包括讨论“抗生素优先”方案）后急诊行腹腔镜阑尾切除术，术前单次静脉抗生素",
+            "en": "Emergency laparoscopic appendectomy after shared decision-making (antibiotics-first discussed), with a single pre-operative IV antibiotic dose"
           },
           "correct": true,
           "feedback": {
@@ -7129,8 +7129,8 @@
         {
           "id": "def-nom",
           "text": {
-            "zh-CN": "现在就开始“抗生素优先”的非手术治疗，无需进一步影像",
-            "en": "Start antibiotics-first non-operative treatment now, without further imaging"
+            "zh-CN": "现在就开始“抗生素优先”的非手术治疗：静脉抗生素至少 24 小时后改口服，总疗程约 7–10 天，无需进一步影像",
+            "en": "Start antibiotics-first non-operative treatment now — IV antibiotics for at least 24 h, then oral, about 7–10 days in all — without further imaging"
           },
           "correct": false,
           "feedback": {
@@ -7141,8 +7141,8 @@
         {
           "id": "def-open",
           "text": {
-            "zh-CN": "经右下腹切口行开腹阑尾切除术",
-            "en": "Open appendectomy through a right iliac fossa incision"
+            "zh-CN": "急诊经右下腹切口行开腹阑尾切除术，术前单次静脉抗生素",
+            "en": "Emergency open appendectomy through a right iliac fossa incision, with a single pre-operative IV antibiotic dose"
           },
           "correct": false,
           "feedback": {
@@ -7153,8 +7153,8 @@
         {
           "id": "def-observe",
           "text": {
-            "zh-CN": "不用抗生素，留观 24–48 小时，反复查体并复查影像后再决定",
-            "en": "Observe without antibiotics for 24–48 h with serial examination and repeat imaging before deciding"
+            "zh-CN": "收住院，不用抗生素留观 24–48 小时，反复查体并复查影像后再决定是否手术",
+            "en": "Admit and observe without antibiotics for 24–48 h, with serial examination and repeat imaging before deciding on surgery"
           },
           "correct": false,
           "feedback": {
@@ -7165,8 +7165,8 @@
         {
           "id": "def-discharge",
           "text": {
-            "zh-CN": "口服抗生素出院，明天复查",
-            "en": "Discharge on oral antibiotics with review tomorrow"
+            "zh-CN": "带口服抗生素和止痛药出院，明天外科门诊复查",
+            "en": "Discharge home on oral antibiotics and analgesia, with a surgical clinic review tomorrow"
           },
           "correct": false,
           "feedback": {
@@ -8260,21 +8260,21 @@
         ]
       },
       {
-        "text": "When did the pain start?",
+        "text": "How long ago did the pain kick in?",
         "locale": "en",
         "expect": [
           "hx-onset"
         ]
       },
       {
-        "text": "Where was the pain at first?",
+        "text": "Whereabouts did it start hurting first?",
         "locale": "en",
         "expect": [
           "hx-site-initial"
         ]
       },
       {
-        "text": "Has the pain moved?",
+        "text": "Has the pain shifted anywhere since it began?",
         "locale": "en",
         "expect": [
           "hx-migration"
@@ -8485,7 +8485,7 @@
         ]
       },
       {
-        "text": "Where did it start?",
+        "text": "Where in your tummy did the pain start off?",
         "locale": "en",
         "expect": [
           "hx-site-initial"
@@ -8553,7 +8553,7 @@
         ]
       },
       {
-        "text": "NKDA?",
+        "text": "NKDA, or any allergies?",
         "locale": "en",
         "expect": [
           "hx-allergies"

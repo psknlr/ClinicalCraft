@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1423446",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "恶心呕吐与腹泻 · 78岁女性",
     "en": "Nausea, vomiting and diarrhoea · 78-year-old woman"
@@ -2984,8 +2984,8 @@
           "id": "abx-no",
           "correct": true,
           "text": {
-            "zh-CN": "不需要：无发热、血常规正常、没有痢疾或脓毒症表现，不常规用经验性抗菌药；补液、补钾，监测血糖，不进食期间暂停瑞格列奈；出现发热、便血、病情加重或腹泻迁延时再做粪便检查并重新评估。",
-            "en": "No: she is afebrile with a normal blood count and no dysentery or sepsis, so no routine empirical antibiotic; rehydrate, replace potassium, monitor glucose and hold repaglinide while she is not eating; send stool tests and reassess if fever, blood, worsening illness or persistent diarrhoea develop."
+            "zh-CN": "不常规用经验性抗菌药：无发热、血常规正常、无痢疾或脓毒症表现；补液、补钾、监测血糖，不进食期间暂停瑞格列奈；出现发热、便血、病情加重或腹泻迁延时再查粪便、重新评估。",
+            "en": "No: afebrile, normal blood count, no dysentery or sepsis — no routine empirical antibiotic. Rehydrate, replace potassium, monitor glucose and hold repaglinide while she is not eating; stool tests and review if she worsens or fever, blood or persistent diarrhoea appear."
           },
           "feedback": {
             "zh-CN": "正确。IDSA 2017：多数无近期出国旅行、免疫功能正常的急性水样腹泻不推荐经验性抗菌药；粪便病原学检查留给发热、血便、重症或迁延腹泻等情形（本例腹泻性状未记录）。她真正的风险在另一边：FDA 2018警示氟喹诺酮可致严重低血糖甚至昏迷，老年、糖尿病、合用降糖药和进食差都是危险因素；低钾还增加QT延长风险。处理重点是补液、补钾、调整降糖药和监测血糖。",
@@ -2996,36 +2996,36 @@
           "id": "abx-levofloxacin",
           "correct": false,
           "text": {
-            "zh-CN": "需要：腹泻可能是细菌感染，静滴乳酸左氧氟沙星0.3 g。",
-            "en": "Yes: the diarrhoea may be bacterial, so give levofloxacin 0.3 g IV."
+            "zh-CN": "需要：她78岁、有糖尿病，吐泻已3天、血钾偏低，细菌性肠炎不能排除，一旦漏诊后果严重；应立即静滴乳酸左氧氟沙星0.3 g，同时静脉补液、补钾，等她好转以后再评估疗程。",
+            "en": "Yes: at 78, with diabetes, three days of vomiting and diarrhoea and a low potassium, a bacterial enteritis cannot be ruled out and would be dangerous to miss, so start levofloxacin 0.3 g IV now, alongside IV fluids and potassium replacement, and review it once she improves."
           },
           "feedback": {
-            "zh-CN": "这是原报告的选择，但缺乏指征：无发热、血常规正常、CRP仅5.4 mg/L，也没有记录便血或脓毒症表现（IDSA 2017不推荐对此类急性腹泻常规经验性用药）。对禁食、服用瑞格列奈的78岁糖尿病患者，氟喹诺酮带来的严重低血糖风险（FDA 2018）超过可能的获益；低钾还增加QT延长风险。",
-            "en": "This is what the report's team did, but there is no indication: no fever, a normal blood count, a CRP of only 5.4 mg/L and no recorded blood in the stool or sepsis (IDSA 2017 advises against routine empirical treatment of acute diarrhoea like this). In a fasting 78-year-old with diabetes on repaglinide, the fluoroquinolone's risk of severe hypoglycaemia (FDA 2018) outweighs any likely benefit, and her low potassium adds QT risk."
+            "zh-CN": "补液、补钾是对的，左氧氟沙星也正是原报告的选择，但它缺乏指征：无发热、血常规正常、CRP仅5.4 mg/L，也没有记录便血或脓毒症表现（IDSA 2017不推荐对此类急性腹泻常规经验性用药）。对禁食、服用瑞格列奈的78岁糖尿病患者，氟喹诺酮带来的严重低血糖风险（FDA 2018）超过可能的获益；低钾还增加QT延长风险。",
+            "en": "Fluids and potassium are right, and levofloxacin is what the report's team gave, but there is no indication for it: no fever, a normal blood count, a CRP of only 5.4 mg/L and no recorded blood in the stool or sepsis (IDSA 2017 advises against routine empirical treatment of acute diarrhoea like this). In a fasting 78-year-old with diabetes on repaglinide, the fluoroquinolone's risk of severe hypoglycaemia (FDA 2018) outweighs any likely benefit, and her low potassium adds QT risk."
           }
         },
         {
           "id": "abx-oral-fq",
           "correct": false,
           "text": {
-            "zh-CN": "需要：改口服环丙沙星3天，口服给药不必监测血糖。",
-            "en": "Yes: oral ciprofloxacin for 3 days — being oral, it needs no glucose monitoring."
+            "zh-CN": "需要，但改口服：环丙沙星3天疗程即可覆盖常见致病菌，不必再输液；口服而非静脉给药，不必监测血糖；同时补钾，并鼓励她多喝水。",
+            "en": "Yes, but by mouth: a 3-day course of ciprofloxacin covers the likely bacterial causes without another infusion, and being oral rather than IV it needs no glucose monitoring; replace her potassium and encourage oral fluids as well."
           },
           "feedback": {
-            "zh-CN": "同样没有指征。而且血糖紊乱是全身用氟喹诺酮的类效应，口服同样可能发生——FDA 2018的说明书修订针对所有口服和注射用氟喹诺酮。确有指征时也要权衡低血糖风险并监测血糖，而不是省掉监测。",
-            "en": "There is still no indication, and blood glucose disturbance is a class effect of systemic fluoroquinolones, oral as well as IV — the FDA 2018 label changes cover every oral and injectable fluoroquinolone. Even with a real indication you would weigh the hypoglycaemia risk and monitor glucose, not drop the monitoring."
+            "zh-CN": "补钾是对的，但同样没有抗菌指征。而且血糖紊乱是全身用氟喹诺酮的类效应，口服同样可能发生——FDA 2018的说明书修订针对所有口服和注射用氟喹诺酮。确有指征时也要权衡低血糖风险并监测血糖，而不是省掉监测；她仍在呕吐，单靠口服补液也未必够。",
+            "en": "Replacing potassium is right, but there is still no indication for an antibiotic, and blood glucose disturbance is a class effect of systemic fluoroquinolones, oral as well as IV — the FDA 2018 label changes cover every oral and injectable fluoroquinolone. Even with a real indication you would weigh the hypoglycaemia risk and monitor glucose, not drop the monitoring; and while she keeps vomiting, oral fluids alone may not be enough."
           }
         },
         {
           "id": "abx-no-continue",
           "correct": false,
           "text": {
-            "zh-CN": "不需要抗菌药；瑞格列奈照常每餐前服，免得血糖升高。",
-            "en": "No antibiotic; keep repaglinide going before each meal as usual so her sugar doesn't rise."
+            "zh-CN": "不需要抗菌药；补液、补钾，但瑞格列奈仍按1 mg每日3次照常服用，不进食的日子也不停，因为生病时血糖容易升高，停药反而可能出现高血糖。",
+            "en": "No antibiotic; rehydrate and replace potassium, but keep repaglinide 1 mg three times a day going as usual, even on days she is not eating, because illness tends to push her glucose up and stopping it risks hyperglycaemia."
           },
           "feedback": {
-            "zh-CN": "不用抗菌药是对的，但瑞格列奈是餐时服用的胰岛素促泌剂：她不进食还照常服用，会增加低血糖风险。不进食期间暂停，恢复进食后再按餐服用，并监测血糖。",
-            "en": "Right about the antibiotic, but repaglinide is a mealtime insulin secretagogue: taken while she is not eating it raises the risk of hypoglycaemia. Hold it until she is eating, then give it with meals, and monitor her glucose."
+            "zh-CN": "不用抗菌药、补液和补钾都对，但瑞格列奈是餐时服用的胰岛素促泌剂：她不进食还照常服用，会增加低血糖风险。不进食期间暂停，恢复进食后再按餐服用，并监测血糖。",
+            "en": "Right about the antibiotic, the fluids and the potassium, but repaglinide is a mealtime insulin secretagogue: taken while she is not eating it raises the risk of hypoglycaemia. Hold it until she is eating, then give it with meals, and monitor her glucose."
           }
         }
       ]
@@ -3061,8 +3061,8 @@
           "id": "fs-adrenaline",
           "correct": false,
           "text": {
-            "zh-CN": "按过敏反应处理：立即肌注肾上腺素0.5 mg。",
-            "en": "Treat it as anaphylaxis: IM adrenaline 0.5 mg now."
+            "zh-CN": "抗菌药才滴了几分钟就出汗、苍白、心慌，应按过敏反应处理：立即在大腿前外侧肌注肾上腺素0.5 mg，并呼叫支援。",
+            "en": "Sweating, pallor and a racing heart minutes into an IV antibiotic infusion mean anaphylaxis: give IM adrenaline 0.5 mg into the anterolateral thigh now and call for help."
           },
           "feedback": {
             "zh-CN": "原报告没有记录喉头水肿、喘鸣、低血压或荨麻疹等过敏表现。在禁食、服用促泌剂的糖尿病患者，这组症状首先要想到低血糖，先测血糖；无指征使用肾上腺素会让78岁患者心动过速、增加心律失常风险，也耽误纠正低血糖。真有过敏表现时，肾上腺素仍是一线。",
@@ -3073,8 +3073,8 @@
           "id": "fs-vasovagal",
           "correct": false,
           "text": {
-            "zh-CN": "多半是血管迷走反应：把滴速调慢，让她平卧观察。",
-            "en": "Probably a vasovagal reaction: slow the drip, lie her flat and watch."
+            "zh-CN": "出汗、面色苍白，之前血压正常，多半是血管迷走反应：把滴速调慢，让她平卧、抬高双腿，再复测脉搏和血压。",
+            "en": "Sweating and pallor with a blood pressure that was normal earlier suggest a vasovagal reaction: slow the drip, lie her flat with her legs raised and recheck her pulse and pressure."
           },
           "feedback": {
             "zh-CN": "出汗、苍白可见于血管迷走反应，但心慌加意识淡漠，出现在禁食、服用促泌剂的糖尿病患者身上，必须先排除低血糖。继续输注可疑药物、只观察，会让低血糖加重。",
@@ -3085,8 +3085,8 @@
           "id": "fs-oral-blind",
           "correct": false,
           "text": {
-            "zh-CN": "不用测，直接喂她糖块和面包。",
-            "en": "Don't wait for a reading — give her sweets and bread by mouth."
+            "zh-CN": "她没进食、平时又在服瑞格列奈，肯定是低血糖：不用测血糖，马上喂她糖块和面包，吃完再测。",
+            "en": "A fasting woman on repaglinide is surely having a hypo: skip the meter, give her sugar sweets and bread by mouth at once, and check her glucose once she has eaten."
           },
           "feedback": {
             "zh-CN": "没有血糖仪时，先按低血糖处理比等待安全；但这里有血糖仪，几秒钟就能确认。而且她意识淡漠，经口进食有误吸风险——原报告首次处理正是这样做的。先测血糖、停药，再静脉给葡萄糖。",
@@ -3097,8 +3097,8 @@
           "id": "fs-ecg",
           "correct": false,
           "text": {
-            "zh-CN": "先做12导联心电图、查肌钙蛋白，心慌要先排除心律失常和心肌缺血。",
-            "en": "Get a 12-lead ECG and a troponin first — palpitations mean arrhythmia or ischaemia must be excluded."
+            "zh-CN": "78岁出现心慌、出汗、苍白，可能是心律失常或心肌缺血：先接心电监护，做12导联心电图、查肌钙蛋白，再做其他处理。",
+            "en": "Palpitations, sweating and pallor at 78 may be an arrhythmia or myocardial ischaemia: attach the monitor and get a 12-lead ECG and a troponin before anything else."
           },
           "feedback": {
             "zh-CN": "心电图可以随后做，但第一步应是几秒钟就能完成、又能立即纠正的指尖血糖。这里的心慌和出汗最可能来自低血糖引起的交感反应；先查血糖、停药。",
@@ -3127,8 +3127,8 @@
           "id": "ht-iv",
           "correct": true,
           "text": {
-            "zh-CN": "意识受损期间不经口进食；立即静脉给葡萄糖（有条件时用10%或20%葡萄糖），随后葡萄糖液维持；约15分钟复测指尖血糖，仍低于3.9 mmol/L或仍有症状就重复处理；完全清醒、能安全吞咽后再进食。",
-            "en": "Nothing by mouth while her consciousness is impaired; IV glucose now (10% or 20% glucose where available), then a glucose infusion; recheck the fingerprick glucose about 15 minutes later and repeat treatment if it is still below 3.9 mmol/L or she is still symptomatic; food once she is fully alert and swallowing safely."
+            "zh-CN": "意识受损时不经口进食；立即静脉给葡萄糖（有条件用10%或20%），随后葡萄糖液维持；约15分钟复测，仍低于3.9 mmol/L或有症状就重复；清醒、能安全吞咽后再进食。",
+            "en": "Nothing by mouth while her consciousness is impaired; IV glucose now (10% or 20% where available), then a glucose infusion; recheck at about 15 minutes and repeat if still below 3.9 mmol/L or symptomatic; food once she is alert and swallowing safely."
           },
           "feedback": {
             "zh-CN": "正确。血糖3.0 mmol/L并有意识改变、需要他人帮助，属严重（3级）低血糖——ADA 2026第6章按临床状态而不只按数值界定严重程度。有静脉通路时静脉葡萄糖最快、最可靠；JBDS 01（2023修订）优先用10%或20%葡萄糖，因为高渗的50%葡萄糖易致外渗损伤（原报告第二次处理用的是50%葡萄糖20 ml，即10 g）。约15分钟复测、直到恢复，再进食，并持续监测——促泌剂和左氧氟沙星的作用都还在。",
@@ -3139,8 +3139,8 @@
           "id": "ht-report-first",
           "correct": false,
           "text": {
-            "zh-CN": "静滴葡萄糖氯化钠注射液500 ml，同时让她吃糖块和面包；症状好转就行，不必复测。",
-            "en": "Glucose–saline 500 mL by drip and sweets and bread by mouth; once her symptoms settle, no recheck is needed."
+            "zh-CN": "静滴葡萄糖氯化钠注射液500 ml，同时让她吃糖块和面包，静脉和口服两条途径一起升糖，吃下去的东西还能在输完液后维持血糖；出汗、心慌一缓解就说明已经恢复，不必再复测血糖。",
+            "en": "Glucose–saline 500 mL by IV infusion plus sugar sweets and bread by mouth, so that the glucose rises by two routes at once and the food keeps it up after the drip; once her sweating and palpitations have settled she has recovered, and no recheck is needed."
           },
           "feedback": {
             "zh-CN": "这接近原报告的首次处理，有三个问题：意识淡漠时经口进食有误吸风险；单靠滴注升糖慢；症状好转不能代替复测——原报告没有复测血糖，随后在血糖情况不明时又恢复了左氧氟沙星。她还在不规律服用阿卡波糖，糖块里的蔗糖吸收可能被延缓；服用阿卡波糖者纠正低血糖应使用葡萄糖。",
@@ -3151,20 +3151,20 @@
           "id": "ht-glucagon",
           "correct": false,
           "text": {
-            "zh-CN": "肌注胰高血糖素1 mg后观察，不必静脉给糖。",
-            "en": "IM glucagon 1 mg and observe; no IV glucose needed."
+            "zh-CN": "立即肌注胰高血糖素1 mg：几分钟就起效，又免得经外周静脉针推注高渗葡萄糖；之后观察，清醒后再进食，不必静脉给糖。",
+            "en": "IM glucagon 1 mg now, which acts within minutes and avoids pushing hypertonic glucose through a peripheral cannula; then observe her, and give food once she is alert, with no IV glucose needed."
           },
           "feedback": {
-            "zh-CN": "胰高血糖素用于没有静脉通路的严重低血糖；她已有静脉针，静脉葡萄糖起效更快、更可靠。胰高血糖素靠动员肝糖原，几天进食差时效果可能打折扣，也不能免去复测。",
-            "en": "Glucagon is for severe hypoglycaemia without IV access; she has a cannula, and IV glucose is faster and more reliable. Glucagon works by releasing liver glycogen and may do less after days of poor intake, and it does not remove the need to recheck."
+            "zh-CN": "胰高血糖素用于没有静脉通路的严重低血糖；她已有静脉针，静脉葡萄糖起效更快、更可靠，改用10%或20%葡萄糖就能避免高浓度葡萄糖的外渗损伤。胰高血糖素靠动员肝糖原，几天进食差时效果可能打折扣，也不能免去复测。",
+            "en": "Glucagon is for severe hypoglycaemia without IV access; she has a cannula, and IV glucose is faster and more reliable — 10% or 20% glucose avoids the extravasation injury of concentrated glucose. Glucagon works by releasing liver glycogen and may do less after days of poor intake, and it does not remove the need to recheck."
           }
         },
         {
           "id": "ht-no-recheck",
           "correct": false,
           "text": {
-            "zh-CN": "静脉推注葡萄糖；她说好些了就不再测血糖，接着输原来的液体。",
-            "en": "IV glucose; once she says she feels better, no more checks, and carry on with the original infusion."
+            "zh-CN": "立即经静脉针推注葡萄糖，随后葡萄糖液维持；她说好些了、也不再出汗，就不必再测指尖血糖，接着把原来那瓶液体输完。",
+            "en": "IV glucose now through the cannula, then a glucose infusion; once she says she feels better and the sweating has stopped, no further fingerprick checks are needed, and carry on with the original infusion."
           },
           "feedback": {
             "zh-CN": "静脉葡萄糖是对的，但症状好转不等于血糖已安全：约15分钟要复测，未恢复就重复处理（ADA 2026第6章）。“接着输原来的液体”如果是左氧氟沙星，就是再暴露。",
@@ -3215,8 +3215,8 @@
           "id": "ar-no-restart",
           "correct": true,
           "text": {
-            "zh-CN": "把左氧氟沙星作为最可能的原因：不再恢复输注；马上复测血糖，未恢复就重复处理；能安全进食后吃东西；继续监测血糖数小时防复发；不进食期间暂停瑞格列奈；记录为可疑药品不良反应并上报。",
-            "en": "Treat levofloxacin as the likely cause: do not restart it; recheck the glucose now and treat again if it is still low; feed her once she can eat safely; keep monitoring her glucose for some hours for recurrence; hold repaglinide while she is not eating; record and report a suspected adverse drug reaction."
+            "zh-CN": "把左氧氟沙星作为最可能的原因，不再恢复输注；马上复测血糖，仍低就再处理；能安全进食后吃东西，继续监测血糖数小时；不进食期间暂停瑞格列奈；记录为可疑药品不良反应并上报。",
+            "en": "Treat levofloxacin as the likely cause and do not restart it; recheck the glucose now, treating again if low; feed her once it is safe and monitor her glucose for some hours; hold repaglinide while she is not eating; record and report a suspected adverse drug reaction."
           },
           "feedback": {
             "zh-CN": "正确。症状在左氧氟沙星滴注约10分钟时出现，停药、补糖后好转，而说明书和FDA 2018都警示氟喹诺酮可致严重低血糖——时间顺序和已知风险都指向它。“刚输完的药”不等于原因。检验这个判断的办法是不再暴露、继续测血糖，而不是重新输注。用Naranjo等结构化方法评估因果，并上报不良反应。",
@@ -3227,8 +3227,8 @@
           "id": "ar-omeprazole",
           "correct": false,
           "text": {
-            "zh-CN": "奥美拉唑刚滴完，它更可能是原因；恢复左氧氟沙星输注。",
-            "en": "The omeprazole has only just finished, so it is the likelier cause; restart the levofloxacin."
+            "zh-CN": "她发作时奥美拉唑刚刚滴完，它更可能是元凶：在病历中记录为奥美拉唑的可疑不良反应，恢复左氧氟沙星输注、把这一剂输完，并在急诊留观一段时间。",
+            "en": "The omeprazole had only just finished when she became unwell, so it is the likelier culprit: record a suspected reaction to omeprazole on her chart, restart the levofloxacin to complete the dose she needs and keep her under observation in the department."
           },
           "feedback": {
             "zh-CN": "这正是原报告中急诊医师的推理：锚定于“刚刚用过的药”的误归因。症状是在左氧氟沙星滴注中出现的，而且该药有明确的低血糖警示；在没有复测血糖的情况下恢复输注，约5分钟后她再次发作，血糖降到1.9 mmol/L。",
@@ -3239,8 +3239,8 @@
           "id": "ar-rechallenge",
           "correct": false,
           "text": {
-            "zh-CN": "在葡萄糖液维持下慢速恢复左氧氟沙星：如果低血糖复发，就能确认因果。",
-            "en": "Restart the levofloxacin slowly with glucose running: if the hypoglycaemia recurs, that confirms the cause."
+            "zh-CN": "在葡萄糖液维持、每15分钟测一次指尖血糖的情况下，以更慢的滴速恢复左氧氟沙星：再发作就能确认因果，不再发作就把开出的疗程用完。",
+            "en": "Restart the levofloxacin at a slower rate with a glucose infusion running and fingerprick checks every 15 minutes: a recurrence would confirm the cause, and if none comes the course she was prescribed can be finished."
           },
           "feedback": {
             "zh-CN": "这是有意的再激发——把可能危及生命的不良反应当作诊断试验，不可接受。复发确实能“确认”因果，代价是一次更深的低血糖（原报告恢复输注后血糖降到1.9 mmol/L）。确有抗菌指征时换用其他类别，并监测血糖。",
@@ -3251,20 +3251,20 @@
           "id": "ar-switch-fq",
           "correct": false,
           "text": {
-            "zh-CN": "不用左氧氟沙星了，改口服莫西沙星完成疗程。",
-            "en": "Drop the levofloxacin and finish the course with oral moxifloxacin."
+            "zh-CN": "停用左氧氟沙星，复测血糖并让她进食，之后改为口服莫西沙星完成抗菌疗程，每日只需1次，也不必再输液、留置静脉针。",
+            "en": "Stop the levofloxacin, recheck her glucose and feed her, then finish the antibiotic course with oral moxifloxacin instead, which is taken once a day and needs no further infusion or cannula."
           },
           "feedback": {
-            "zh-CN": "莫西沙星同属氟喹诺酮，血糖紊乱是类效应（FDA 2018的警示针对所有全身用氟喹诺酮）。何况她的腹泻本来就没有经验性抗菌指征。",
-            "en": "Moxifloxacin is another fluoroquinolone, and dysglycaemia is a class effect (the FDA 2018 warning covers every systemic fluoroquinolone). Besides, her diarrhoea never had an indication for an empirical antibiotic."
+            "zh-CN": "停药、复测、进食都对，但莫西沙星同属氟喹诺酮，血糖紊乱是类效应（FDA 2018的警示针对所有全身用氟喹诺酮）。何况她的腹泻本来就没有经验性抗菌指征。",
+            "en": "Stopping, rechecking and feeding are right, but moxifloxacin is another fluoroquinolone, and dysglycaemia is a class effect (the FDA 2018 warning covers every systemic fluoroquinolone). Besides, her diarrhoea never had an indication for an empirical antibiotic."
           }
         },
         {
           "id": "ar-discharge",
           "correct": false,
           "text": {
-            "zh-CN": "她已经好了，不必再测血糖，回家后照常服用瑞格列奈。",
-            "en": "She is fine now: no more glucose checks, and home on her usual repaglinide."
+            "zh-CN": "她已清醒、能说话、面色也恢复了，这次发作已经过去：不必再测血糖，今天就可以回家，照常服用瑞格列奈1 mg每日3次。",
+            "en": "She is alert and talking and her colour is back, so the episode is over: no more glucose checks are needed, and she can go home today on her usual repaglinide 1 mg three times a day."
           },
           "feedback": {
             "zh-CN": "严重低血糖后不能只凭症状好转就离开：促泌剂和左氧氟沙星的作用还在，可能再发，她也还没进食。应复测血糖、进食后继续观察，不进食期间暂停瑞格列奈，并交代低血糖的识别和处理。",

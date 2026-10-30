@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-70005",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "发热、腹股沟红肿 · 8岁男孩",
     "en": "Fever and a swollen groin · 8-year-old boy"
@@ -4088,8 +4088,8 @@
         {
           "id": "broaden",
           "text": {
-            "zh-CN": "现在就扩大覆盖：加用碳青霉烯类（如美罗培南），覆盖革兰阴性菌及水、土环境中的细菌（如紫色色杆菌、气单胞菌；流行区还有类鼻疽伯克霍尔德菌），培养回报前保留抗MRSA；若不耽误，改药前先复查血培养并送脓液培养，继续控制感染源。",
-            "en": "Broaden now: add a carbapenem (e.g. meropenem) to cover Gram-negative and water- and soil-borne bacteria (Chromobacterium violaceum, Aeromonas; Burkholderia pseudomallei where endemic), keeping MRSA cover until the cultures return; repeat blood cultures and send pus for culture first if that causes no delay, and keep controlling the source."
+            "zh-CN": "现在就扩大覆盖：加用碳青霉烯类（如美罗培南）覆盖革兰阴性菌和水、土环境菌（如紫色色杆菌、气单胞菌，流行区的类鼻疽伯克霍尔德菌），培养回报前保留抗MRSA；不耽误时先复查血培养、送脓液培养，继续控制感染源。",
+            "en": "Broaden now: add a carbapenem such as meropenem for Gram-negative and water- or soil-borne bacteria (Chromobacterium violaceum, Aeromonas; Burkholderia pseudomallei where endemic), keeping MRSA cover until the cultures return; re-culture blood and pus first if that causes no delay; continue source control."
           },
           "correct": true,
           "feedback": {
@@ -4100,20 +4100,20 @@
         {
           "id": "continue-vanc",
           "text": {
-            "zh-CN": "继续单用万古霉素：脓肿已经引流，再观察几天",
-            "en": "Continue vancomycin alone — the abscess has been drained, so give it a few more days"
+            "zh-CN": "继续单用万古霉素：CT示皮下软组织感染伴多发小脓肿，儿童这类感染最常见的病原是金黄色葡萄球菌（包括耐甲氧西林菌株），脓肿又刚切开引流——引流和万古霉素都需要几天才能见效，暂不换药，先观察体温曲线和局部情况。",
+            "en": "Continue vancomycin alone: the CT showed a subcutaneous soft-tissue infection with small abscesses, which in a child is most often Staphylococcus aureus, MRSA included, and the abscess has only just been drained — drainage and vancomycin both need a few days to work, so change nothing yet and watch the fever curve and the groin."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是原报告的做法：引流后继续万古霉素，第4天进展为脓毒性休克。引流不能替代有效的抗菌药物；万古霉素对革兰阴性菌无效，而他的接触史和治疗失败都指向革兰阴性菌的可能。",
-            "en": "This is what the report's team did: vancomycin continued after drainage and he developed septic shock on day 4. Drainage does not replace effective antimicrobials; vancomycin has no Gram-negative activity, and his exposure and treatment failure both point to a Gram-negative possibility."
+            "zh-CN": "这是原报告的做法：引流后继续万古霉素，第4天进展为脓毒性休克。金黄色葡萄球菌固然是儿童皮肤脓肿最常见的病原，但引流不能替代有效的抗菌药物；万古霉素对革兰阴性菌无效，而他的接触史和治疗失败都指向革兰阴性菌的可能。",
+            "en": "This is what the report's team did: vancomycin continued after drainage and he developed septic shock on day 4. Staphylococcus aureus is the commonest cause of a child's skin abscess, but drainage does not replace effective antimicrobials; vancomycin has no Gram-negative activity, and his exposure and treatment failure both point to a Gram-negative possibility."
           }
         },
         {
           "id": "ceftriaxone",
           "text": {
-            "zh-CN": "改用头孢曲松覆盖革兰阴性菌",
-            "en": "Switch to ceftriaxone for Gram-negative cover"
+            "zh-CN": "改用头孢曲松覆盖革兰阴性菌：发病前一周游泳，提示水源性革兰阴性菌，三代头孢通常能够覆盖，每日1次给药也方便；脓肿已经切开引流，不再需要万古霉素。",
+            "en": "Switch to ceftriaxone for Gram-negative cover: the swim a week before he fell ill suggests a water-borne Gram-negative organism, which a once-daily third-generation cephalosporin usually covers, and the drained abscess no longer needs vancomycin."
           },
           "correct": false,
           "feedback": {
@@ -4124,8 +4124,8 @@
         {
           "id": "wait-culture",
           "text": {
-            "zh-CN": "维持现方案，等培养和药敏回来再针对性换药",
-            "en": "Keep the current regimen and wait for the culture and susceptibility results before changing"
+            "zh-CN": "维持万古霉素，等血和脓液的培养及药敏回来再针对性换药：已经有两套方案无效，再凭经验猜一次，只会增加耐药和不良反应，仍然不知道在治什么菌。",
+            "en": "Keep vancomycin and wait for the blood and pus culture and susceptibility results before changing: two regimens have already failed, and another empirical guess adds resistance and side effects without telling you which organism you are treating."
           },
           "correct": false,
           "feedback": {
@@ -4136,8 +4136,8 @@
         {
           "id": "add-clinda",
           "text": {
-            "zh-CN": "在万古霉素基础上加用克林霉素抑制毒素",
-            "en": "Add clindamycin to vancomycin to suppress toxin production"
+            "zh-CN": "在万古霉素基础上加用克林霉素：产毒素的葡萄球菌或链球菌感染可以解释寒战、40.5 ℃高热和不断增大的脓肿，克林霉素能抑制毒素产生，万古霉素继续覆盖MRSA，两药联用覆盖最可能的病原。",
+            "en": "Add clindamycin to vancomycin: a toxin-producing staphylococcal or streptococcal infection would explain the rigors, the fever of 40.5 °C and the growing abscess, and clindamycin suppresses toxin production while vancomycin keeps MRSA covered, so together they cover the likeliest organisms."
           },
           "correct": false,
           "feedback": {
@@ -4184,44 +4184,44 @@
         {
           "id": "septic-shock",
           "text": {
-            "zh-CN": "按Phoenix标准为脓毒性休克（乳酸5–10.9 mmol/L得1个心血管分；血小板<100×10⁹/L和INR>1.3各1分），不必等低血压：1小时内静脉给予覆盖所有可能病原的广谱抗菌药物（不耽误时先留血培养）；高流量吸氧并准备气道支持；平衡晶体液10–20 mL/kg快速推注、每次后复评，出现液体过负荷即停；仍休克时尽早用肾上腺素或去甲肾上腺素（可经外周静脉）；处理抽搐；立即转PICU。",
-            "en": "Septic shock by the Phoenix criteria (lactate 5–10.9 mmol/L scores 1 cardiovascular point; platelets < 100×10⁹/L and INR > 1.3 score 1 each), with no need to wait for hypotension: IV broad-spectrum antimicrobials covering all likely pathogens within 1 hour (blood cultures first if no delay); high-flow oxygen with airway support ready; balanced crystalloid 10–20 mL/kg boluses, reassessing after each and stopping at fluid overload; adrenaline or noradrenaline early if still shocked (a peripheral vein is acceptable); treat the seizure; PICU now."
+            "zh-CN": "脓毒性休克（Phoenix：乳酸计1个心血管分，血小板、INR各1分），无需等低血压：1小时内静脉给广谱抗菌药（不耽误就先留血培养），高流量吸氧，平衡晶体液10–20 mL/kg推注、逐次复评，尽早用肾上腺素或去甲肾上腺素，止惊，立即转PICU。",
+            "en": "Septic shock (Phoenix: lactate 1 cardiovascular point, platelets and INR 1 each), no hypotension needed: IV broad-spectrum antimicrobials within 1 hour (cultures first if no delay), high-flow oxygen, 10–20 mL/kg balanced crystalloid boluses reassessed after each, early adrenaline or noradrenaline, stop the seizure, PICU now."
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。Phoenix 2024：疑似感染且Phoenix评分≥2分为脓毒症，其中至少1个心血管分即为脓毒性休克；他的乳酸约9.8 mmol/L（1分）加上凝血2分，已经达标。SSC 2026：疑似脓毒性休克在识别后1小时内给抗菌药物，初始评估时测乳酸，有ICU条件时首小时可分次给到40–60 mL/kg，用晶体液而不用白蛋白。",
-            "en": "Right. Phoenix 2024: suspected infection with a Phoenix score ≥ 2 is sepsis, and at least one cardiovascular point makes it septic shock; his lactate of ≈ 9.8 mmol/L (1 point) plus clotting (2 points) meets it. SSC 2026: antimicrobials within 1 hour of recognising suspected septic shock, lactate at the first assessment, up to 40–60 mL/kg in boluses over the first hour where intensive care is available, and crystalloid rather than albumin."
+            "zh-CN": "正确。Phoenix 2024：疑似感染且Phoenix评分≥2分为脓毒症，其中至少1个心血管分即为脓毒性休克；他的乳酸约9.8 mmol/L（1分）加上凝血2分，已经达标。SSC 2026：疑似脓毒性休克在识别后1小时内给抗菌药物，初始评估时测乳酸，有ICU条件时首小时可分次给到40–60 mL/kg，用晶体液而不用白蛋白，出现液体过负荷即停；肾上腺素或去甲肾上腺素可经外周静脉开始，同时备好气道支持。",
+            "en": "Right. Phoenix 2024: suspected infection with a Phoenix score ≥ 2 is sepsis, and at least one cardiovascular point makes it septic shock; his lactate of ≈ 9.8 mmol/L (1 point) plus clotting (2 points) meets it. SSC 2026: antimicrobials within 1 hour of recognising suspected septic shock, lactate at the first assessment, up to 40–60 mL/kg in boluses over the first hour where intensive care is available, and crystalloid rather than albumin, stopping at signs of fluid overload; adrenaline or noradrenaline may start through a peripheral vein, with airway support ready."
           }
         },
         {
           "id": "needs-hypotension",
           "text": {
-            "zh-CN": "血压还没有记录，测到低血压之前不能诊断休克，先补测血压再说",
-            "en": "No blood pressure has been recorded, so shock cannot be diagnosed until hypotension is documented — measure it first"
+            "zh-CN": "还不是休克：血压还没有记录，抽搐本身也会让乳酸一过性升高，儿童在测到低血压之前不能诊断休克，所以先测血压、接上心电监护；同时用一种苯二氮䓬类药物止惊，给高流量吸氧，复查血常规和凝血功能，等血压证实确实偏低以后，再联系PICU，并升级抗菌药物和补液。",
+            "en": "Not shock yet: no blood pressure is recorded and a seizure alone can raise the lactate for a while, so shock in a child needs documented hypotension first; measure it and attach the monitor, stop the seizure with a benzodiazepine, give high-flow oxygen, repeat the blood count and clotting, and call the PICU and escalate antimicrobials and fluids only once the pressure proves low."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "Phoenix标准的心血管分可以来自乳酸或血管活性药物需求，不要求先有低血压；儿童的低血压往往是晚期表现。他此刻四肢厥冷、脉搏摸不到、心率220次/分，等血压只会延误抢救。",
-            "en": "Phoenix cardiovascular points can come from lactate or the need for vasoactive drugs; hypotension is not required, and in children it is often a late sign. With cold limbs, impalpable pulses and a heart rate of 220/min, waiting for a pressure only delays resuscitation."
+            "zh-CN": "Phoenix标准的心血管分可以来自乳酸或血管活性药物需求，不要求先有低血压；儿童的低血压往往是晚期表现。抽搐确实会让乳酸升高，但解释不了四肢厥冷、脉搏摸不到和220次/分的心率——等血压只会延误抢救。",
+            "en": "Phoenix cardiovascular points can come from lactate or the need for vasoactive drugs; hypotension is not required, and in children it is often a late sign. A seizure can raise the lactate, but it does not explain cold limbs, impalpable pulses and a heart rate of 220/min — waiting for a pressure only delays resuscitation."
           }
         },
         {
           "id": "febrile-seizure",
           "text": {
-            "zh-CN": "高热惊厥合并局部脓肿：退热、止惊，留在病房观察，等培养结果",
-            "en": "A febrile seizure with a local abscess: antipyretics and an anticonvulsant, keep him on the ward and wait for the cultures"
+            "zh-CN": "高热惊厥合并局部脓肿：连续几天发热最高达40.5 ℃，心率220次/分和四肢厥冷都来自发热和抽搐，两者都停下来后就会缓解；所以给退热药和一种苯二氮䓬类药物并查血糖，让他留在病房吸氧、监测生命体征，等培养结果回来再调整抗菌药物。",
+            "en": "A febrile seizure with a local abscess: after days of fever up to 40.5 °C, the heart rate of 220/min and the cold limbs come from the fever and the fit and will settle once both stop, so give an antipyretic and a benzodiazepine and check his glucose, keep him on the ward with oxygen and observations, and adjust the antimicrobials when the cultures return."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "8岁已超出热性惊厥的常见年龄，而且他同时有休克征象和多器官受累（乳酸、血小板、凝血、转氨酶）。这是脓毒性休克，需要PICU。",
-            "en": "At 8 he is beyond the usual age for febrile seizures, and he has signs of shock and multi-organ involvement (lactate, platelets, clotting, transaminases). This is septic shock and needs the PICU."
+            "zh-CN": "8岁已超出热性惊厥的常见年龄；发热也解释不了足背动脉摸不到和220次/分的心率——他同时有休克征象和多器官受累（乳酸、血小板、凝血、转氨酶）。这是脓毒性休克，需要PICU。",
+            "en": "At 8 he is beyond the usual age for febrile seizures, and fever does not explain impalpable foot pulses with a heart rate of 220/min: he has signs of shock and multi-organ involvement (lactate, platelets, clotting, transaminases). This is septic shock and needs the PICU."
           }
         },
         {
           "id": "saline-60",
           "text": {
-            "zh-CN": "先把60 mL/kg生理盐水尽快推完，再做其他评估",
-            "en": "Push 60 mL/kg of 0.9% saline as fast as possible first, then reassess"
+            "zh-CN": "脓毒性休克：四肢厥冷、足背动脉摸不到、心率220次/分，扩容优先于一切——先把60 mL/kg生理盐水尽快推完，能开几条通路就开几条，再复评，然后开始抗菌药物、转PICU。",
+            "en": "Septic shock: with cold limbs, impalpable foot pulses and a heart rate of 220/min, volume comes before everything else — push 60 mL/kg of 0.9% saline as fast as possible through every line you can get, then reassess, start the antimicrobials and move him to the PICU."
           },
           "correct": false,
           "feedback": {
@@ -4232,13 +4232,13 @@
         {
           "id": "albumin-first",
           "text": {
-            "zh-CN": "用白蛋白作为首选复苏液，晶体液留到后面",
-            "en": "Use albumin as the first resuscitation fluid and keep crystalloid for later"
+            "zh-CN": "脓毒性休克伴肝损伤（AST 990 U/L），很可能有毛细血管渗漏：首选白蛋白复苏——胶体能留在血管内，晶体液会渗到组织间隙——晶体液留到后面用；随后用抗菌药物、转PICU。",
+            "en": "Septic shock with liver injury (AST 990 U/L) and probable capillary leak: use albumin as the first resuscitation fluid, since a colloid stays in the circulation where crystalloid leaks away, and keep crystalloid for later; then the antimicrobials and the PICU."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "SSC 2026建议儿童初始复苏用晶体液而不是白蛋白（有条件推荐，中等确定性）。",
-            "en": "SSC 2026 suggests crystalloids rather than albumin for a child's initial resuscitation (conditional recommendation, moderate certainty)."
+            "zh-CN": "SSC 2026建议儿童初始复苏用晶体液而不是白蛋白（有条件推荐，中等确定性）；毛细血管渗漏时白蛋白同样会漏出血管。抗菌药物也不应等补液输完再给。",
+            "en": "SSC 2026 suggests crystalloids rather than albumin for a child's initial resuscitation (conditional recommendation, moderate certainty); in capillary leak albumin leaves the circulation too. Nor should the antimicrobials wait until a fluid has run in."
           }
         }
       ]
@@ -4262,8 +4262,8 @@
         {
           "id": "meropenem-long",
           "text": {
-            "zh-CN": "按药敏用敏感药物：首选美罗培南（敏感，有神经系统表现时可用中枢剂量）；疗程要长——多发小脓肿时作者建议抗菌6周，并影像复查有无深部脓肿；病情稳定后可按药敏调整（如环丙沙星或复方磺胺甲噁唑），观察脓肿有无复发。",
-            "en": "Use an agent the isolate is susceptible to: meropenem first (susceptible, and usable at CNS doses given his neurological signs); a long course — with multiple small abscesses the authors advise 6 weeks of antimicrobials — with imaging for deep abscesses; once stable, adjust by the susceptibilities (e.g. ciprofloxacin or co-trimoxazole) and watch for recurrent abscesses."
+            "zh-CN": "用敏感的美罗培南（有神经系统表现，用中枢剂量）；长疗程（多发小脓肿时作者建议6周），影像复查深部脓肿；稳定后按药敏调整（如环丙沙星或复方磺胺甲噁唑），观察有无复发。",
+            "en": "Meropenem (susceptible) at CNS doses for his neurological signs; a long course — 6 weeks for multiple small abscesses, as the authors advise — with imaging for deep abscesses; once stable, adjust by susceptibility (e.g. ciprofloxacin or co-trimoxazole) and watch for recurrence."
           },
           "correct": true,
           "feedback": {
@@ -4274,37 +4274,37 @@
         {
           "id": "ceftazidime",
           "text": {
-            "zh-CN": "改用头孢他啶（抗假单胞菌三代头孢）",
-            "en": "Switch to ceftazidime (an antipseudomonal third-generation cephalosporin)"
+            "zh-CN": "改用大剂量头孢他啶：这种抗假单胞菌的三代头孢菌素是治疗类鼻疽等水、土环境革兰阴性菌感染的常用药，用它可以把碳青霉烯类留给耐药菌；疗程同样要长，并影像复查有无深部脓肿。",
+            "en": "Switch to high-dose ceftazidime, the antipseudomonal third-generation cephalosporin used for melioidosis and other water- and soil-borne Gram-negative infections, keeping the carbapenems in reserve for resistant organisms; the same long course, with imaging for any deep abscesses."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "药敏报告这株菌对头孢他啶和头孢曲松都耐药。",
-            "en": "The isolate is reported resistant to both ceftazidime and ceftriaxone."
+            "zh-CN": "药敏报告这株菌对头孢他啶和头孢曲松都耐药。节约碳青霉烯类固然重要，但只能在细菌敏感的药物中选择；类鼻疽的方案也不能照搬到紫色色杆菌。",
+            "en": "The isolate is reported resistant to both ceftazidime and ceftriaxone. Sparing carbapenems matters, but only among agents the organism is susceptible to, and a melioidosis regimen does not transfer to Chromobacterium violaceum."
           }
         },
         {
           "id": "pip-taz",
           "text": {
-            "zh-CN": "改用哌拉西林/他唑巴坦",
-            "en": "Switch to piperacillin/tazobactam"
+            "zh-CN": "改用哌拉西林/他唑巴坦：广谱β-内酰胺类，覆盖革兰阴性菌和厌氧菌，又能节省碳青霉烯类；药敏只是中介而不是耐药，用大剂量、延长输注应该可以克服，疗程同样要长。",
+            "en": "Switch to piperacillin/tazobactam, a broad-spectrum β-lactam with Gram-negative and anaerobic cover that spares the carbapenems: the isolate is intermediate rather than resistant, so a high dose by extended infusion should overcome it, over the same long course."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "药敏为中介（哌拉西林单药耐药）；对伴菌血症、多发脓肿和神经系统表现的患儿，不应选用中介的药物。",
-            "en": "It is reported intermediate (piperacillin alone is resistant); an intermediate agent is not a choice for a child with bacteraemia, multiple abscesses and neurological signs."
+            "zh-CN": "药敏为中介（哌拉西林单药耐药），而且这种细菌没有专门的折点，不能指望加大剂量来克服；对伴菌血症、多发脓肿和神经系统表现的患儿，不应选用中介的药物。",
+            "en": "It is reported intermediate (piperacillin alone is resistant), and with no dedicated breakpoints for this organism a higher dose cannot be relied on to overcome it; an intermediate agent is not a choice for a child with bacteraemia, multiple abscesses and neurological signs."
           }
         },
         {
           "id": "short-course",
           "text": {
-            "zh-CN": "美罗培南用到休克纠正后再用7天即可停药",
-            "en": "Meropenem until the shock resolves, then 7 more days and stop"
+            "zh-CN": "美罗培南（中枢剂量）用到休克纠正后再用7天即停：腹股沟脓肿已经引流，细菌对它敏感，短疗程可以减少耐药、导管并发症、药物毒性和住院时间。",
+            "en": "Meropenem at CNS doses until the shock has resolved, then 7 more days and stop: the groin abscess has been drained and the isolate is susceptible, and a shorter course limits resistance, line complications, drug toxicity and his time in hospital."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "多发小脓肿（包括可能的深部脓肿）需要长疗程，作者建议抗菌6周；休克纠正不等于脓肿已经清除。",
-            "en": "Multiple small abscesses (and possible deep ones) need a long course — the authors advise 6 weeks; resolution of shock does not mean the abscesses have cleared."
+            "zh-CN": "多发小脓肿（包括可能的深部脓肿）需要长疗程，作者建议抗菌6周；腹股沟一处引流清除不了其他脓肿，休克纠正也不等于脓肿已经清除。",
+            "en": "Multiple small abscesses (and possible deep ones) need a long course — the authors advise 6 weeks; draining one groin collection does not clear the others, and resolution of shock does not mean the abscesses have cleared."
           }
         }
       ]
@@ -4342,8 +4342,8 @@
         {
           "id": "phagocyte",
           "text": {
-            "zh-CN": "查吞噬细胞的氧化杀菌功能（DHR流式检测；没有条件时做NBT试验）以筛查慢性肉芽肿病，并测G6PD活性；免疫球蛋白和T细胞亚群反映不了中性粒细胞的杀菌功能。请免疫专科随访，并追问反复感染史和家族中男孩的感染史。",
-            "en": "Test phagocyte oxidative killing (DHR flow cytometry, or an NBT test where DHR is unavailable) to screen for chronic granulomatous disease, and measure G6PD activity; immunoglobulins and T-cell subsets do not test neutrophil killing. Refer to immunology, and ask about repeated infections and about infections in boys in the family."
+            "zh-CN": "查吞噬细胞氧化杀菌功能（DHR，无条件时NBT）筛查慢性肉芽肿病，并测G6PD——抗体和T细胞反映不了中性粒细胞杀菌；请免疫科随访，追问他和家中男孩的反复感染史。",
+            "en": "Screen for chronic granulomatous disease with a phagocyte oxidative-burst test (DHR, or NBT if unavailable) and measure G6PD — antibodies and T cells do not test neutrophil killing; refer to immunology and ask about repeated infections in him and in boys in the family."
           },
           "correct": true,
           "feedback": {
@@ -4354,37 +4354,37 @@
         {
           "id": "complete",
           "text": {
-            "zh-CN": "免疫评估已经完整：免疫球蛋白和T细胞亚群正常，不需要再查",
-            "en": "The immune work-up is complete: immunoglobulins and T-cell subsets are normal, nothing more is needed"
+            "zh-CN": "免疫评估已经完整：IgG、IgA、IgM和T细胞亚群都报告正常，作者也认为体液和细胞免疫正常；发病前一周游泳时的水体暴露足以解释这次感染，不需要再用免疫缺陷来解释，不必再查，可以让家长放心。",
+            "en": "The immune work-up is complete: IgG, IgA, IgM and T-cell subsets were reported normal, as the authors note, and exposure in the water he swam in a week before he fell ill explains the infection without an immune defect, so no further tests are needed and the family can be reassured."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是原报告的结论，但这些检查只评估抗体和T细胞，评估不了中性粒细胞的氧化杀菌功能——而与紫色色杆菌侵袭性感染相关的正是这类缺陷。",
-            "en": "This is the report's conclusion, but these tests assess antibodies and T cells, not neutrophil oxidative killing — the kind of defect linked to invasive C. violaceum infection."
+            "zh-CN": "这是原报告的结论，但这些检查只评估抗体和T细胞，评估不了中性粒细胞的氧化杀菌功能——而与紫色色杆菌侵袭性感染相关的正是这类缺陷。接触水、土中的这种细菌很常见，接触后发生严重侵袭性感染，才提示要查宿主缺陷。",
+            "en": "This is the report's conclusion, but these tests assess antibodies and T cells, not neutrophil oxidative killing — the kind of defect linked to invasive C. violaceum infection. Exposure to the organism in water and soil is common; a severe invasive infection after it is what raises the question of a host defect."
           }
         },
         {
           "id": "hiv-only",
           "text": {
-            "zh-CN": "只查HIV和血糖，排除常见的免疫抑制原因",
-            "en": "Test only for HIV and diabetes to exclude the common causes of immunosuppression"
+            "zh-CN": "只查HIV和血糖，这是筛查获得性免疫抑制的常规项目：免疫球蛋白和T细胞亚群都报告正常，罕见的先天缺陷可能性不大，剩下要排除的是获得性原因。",
+            "en": "Test only for HIV and diabetes, the usual screen for an acquired cause of immunosuppression: with immunoglobulins and T-cell subsets reported normal, a rare congenital defect is unlikely and an acquired cause is what is left to exclude."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "原报告讨论指出，紫色色杆菌感染与HIV感染、糖尿病、化疗或长期使用免疫抑制剂和激素没有明确关系；要查的是吞噬细胞功能和G6PD。",
-            "en": "The report's discussion notes no clear link between C. violaceum infection and HIV, diabetes, chemotherapy or long-term immunosuppressants or steroids; what needs testing is phagocyte function and G6PD."
+            "zh-CN": "原报告讨论指出，紫色色杆菌感染与HIV感染、糖尿病、化疗或长期使用免疫抑制剂和激素没有明确关系；抗体和T细胞正常也不能说明吞噬细胞没有缺陷。要查的是吞噬细胞功能和G6PD。",
+            "en": "The report's discussion notes no clear link between C. violaceum infection and HIV, diabetes, chemotherapy or long-term immunosuppressants or steroids, and normal antibodies and T cells do not make a phagocyte defect unlikely; what needs testing is phagocyte function and G6PD."
           }
         },
         {
           "id": "repeat-ig",
           "text": {
-            "zh-CN": "如果用过丙种球蛋白，就等输完后复查免疫球蛋白，正常就可以放心",
-            "en": "If he has had IVIG, re-check immunoglobulins afterwards and be reassured if they are normal"
+            "zh-CN": "如果用过丙种球蛋白，输完几周后复查免疫球蛋白，确认病程中他的抗体水平维持得住，正常就可以放心——抗体缺陷是最常见的原发性免疫缺陷。",
+            "en": "If he has had IVIG, re-check his immunoglobulins a few weeks afterwards to be sure his antibody levels hold up through the illness, and be reassured if they are normal — antibody deficiency is the commonest primary immunodeficiency."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "输注丙种球蛋白后，IgG水平反映的是输入的抗体而不是他自己的；而且免疫球蛋白本来就查不出吞噬细胞缺陷。",
-            "en": "After IVIG the IgG level reflects the infused antibody, not his own — and immunoglobulins cannot detect a phagocyte defect anyway."
+            "zh-CN": "输注丙种球蛋白后，IgG水平反映的是输入的抗体而不是他自己的。抗体缺陷固然是最常见的原发性免疫缺陷，但免疫球蛋白查不出紫色色杆菌侵袭性感染所提示的吞噬细胞缺陷。",
+            "en": "After IVIG the IgG level reflects the infused antibody, not his own. Antibody deficiency is the commonest primary immunodeficiency, but immunoglobulins cannot detect the phagocyte defect that invasive C. violaceum infection points to."
           }
         }
       ]

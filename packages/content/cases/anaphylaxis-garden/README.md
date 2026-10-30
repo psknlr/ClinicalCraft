@@ -13,7 +13,7 @@
 
 | | |
 |---|---|
-| Case | `anaphylaxis-garden` · v1.1.1 |
+| Case | `anaphylaxis-garden` · v1.1.2 |
 | Setting | `community` — the hospital's healing garden (garden-bench patient slot), then the ED resus bay |
 | Facility | `general-hospital` (not playable embodied in `teaching-hospital`: no slot for a `community` patient) |
 | Difficulty | 3 / 5 |
@@ -561,6 +561,21 @@ T/CADERM 3008—2019 have no DOI.
   wording follows RCUK 2021 and was not compared with the NG258 text.
 
 ## Changelog
+
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+* Options rebalanced so the key is not cued by length: in both single-best decisions the keyed option was the uniquely
+  longest in both languages; now it is in neither. `first-line`: every adrenaline option gives dose, volume and
+  concentration, route or site and the 5-minute repeat, as the key does (IV bolus "for the fastest effect", subcutaneous
+  into the upper arm, 1:10 000 into the thigh), so the choice turns on route and strength, not on detail; the
+  antihistamine + steroid and salbutamol options name their rationale. `disposition`: the key is tighter; the one-pen
+  option now includes the overnight stay (a near miss that differs in pens and referral); the others give their
+  rationale. Medical meaning, correct flags, feedback and scoring are unchanged; `dx-criteria` had no cue and is
+  untouched.
+* Option id `wrong-strength` (it named its role) is now `im-1-in-10000`; nothing else referred to it.
+* Matcher corpus: four `extensions.testUtterances` that were one of their item's keywords ("Could you be pregnant?",
+  "LOC?", "N/V?", "DHx?") are now paraphrases (`cases validate --strict`); no history question, answer or keyword
+  changed.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

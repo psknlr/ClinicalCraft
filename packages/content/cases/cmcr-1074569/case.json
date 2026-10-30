@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1074569",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "体检发现肝多发占位 · 55岁女性",
     "en": "Multiple liver lesions found at a health check · 55-year-old woman"
@@ -3318,8 +3318,8 @@
         {
           "id": "mdt-primary-first",
           "text": {
-            "zh-CN": "提交多学科团队（MDT）讨论：先处理有梗阻风险的原发灶，随后进行以转化为目标的高效全身治疗，并在治疗中反复复评肝转移灶能否切除",
-            "en": "Take her to the multidisciplinary team (MDT): deal first with the primary that threatens to obstruct, then give high-response systemic therapy aimed at conversion, re-reviewing whether the liver metastases can be removed as treatment goes on"
+            "zh-CN": "提交多学科团队（MDT）讨论：先处理有梗阻风险的原发灶，再给予以转化为目标的高效全身治疗，治疗中反复评估肝转移灶能否切除",
+            "en": "Take her to the multidisciplinary team (MDT): deal first with the primary that threatens to obstruct, then give high-response conversion therapy, re-reviewing liver resectability as treatment goes on"
           },
           "correct": true,
           "feedback": {
@@ -3330,20 +3330,20 @@
         {
           "id": "one-stage-now",
           "text": {
-            "zh-CN": "立即一期同时切除原发灶和全部肝转移灶",
-            "en": "Resect the primary and all the liver metastases now, in one operation"
+            "zh-CN": "她体能状态0分，应趁早手术：现在就一期同时切除原发灶和全部肝转移灶，不让化疗推迟手术时机，也免去第二次麻醉和手术",
+            "en": "She is fully active (PS 0), so operate early: remove the primary and all the liver metastases now in a single procedure, before chemotherapy can delay surgery, sparing her a second operation and anaesthetic"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不合适。肝内多发转移伴巨大融合病灶，MDT评估为“潜在可切除”——也就是目前还不能可靠地做到R0切除并保留足够的肝脏。现在就切，可能切不干净或剩余肝脏不足；应先转化治疗再复评。",
-            "en": "Not appropriate. Multiple liver metastases with a large confluent lesion were judged “potentially resectable” — that is, not yet reliably removable with clear margins and enough liver left. Operating now risks an incomplete resection or too little remaining liver; convert first, then re-review."
+            "zh-CN": "不合适。体能状态0分说明她能耐受治疗，并不说明肝转移灶可以切除。肝内多发转移伴巨大融合病灶，MDT评估为“潜在可切除”——也就是目前还不能可靠地做到R0切除并保留足够的肝脏。现在就切，可能切不干净或剩余肝脏不足；应先转化治疗再复评。",
+            "en": "Not appropriate. Being fully active makes her fit for treatment; it does not make the liver disease resectable. Multiple liver metastases with a large confluent lesion were judged “potentially resectable” — that is, not yet reliably removable with clear margins and enough liver left. Operating now risks an incomplete resection or too little remaining liver; convert first, then re-review."
           }
         },
         {
           "id": "palliative-single",
           "text": {
-            "zh-CN": "不经MDT，直接按不可切除处理，给予单药姑息化疗",
-            "en": "Treat it as unresectable without an MDT, with single-agent palliative chemotherapy"
+            "zh-CN": "肝内多发转移，其中1枚为巨大融合病灶，按不可切除处理：不必提交MDT讨论，直接给予单药姑息化疗，尽量减轻治疗负担和不良反应",
+            "en": "With multiple liver metastases, one of them large and confluent, treat the disease as unresectable: skip the MDT and give single-agent palliative chemotherapy to keep the treatment burden low"
           },
           "correct": false,
           "feedback": {
@@ -3354,8 +3354,8 @@
         {
           "id": "chemo-first-leave-primary",
           "text": {
-            "zh-CN": "先全身化疗，暂不处理原发灶，等肝转移灶缩小后再一并手术",
-            "en": "Start systemic therapy now and leave the primary alone until the liver metastases shrink, then operate on both"
+            "zh-CN": "先开始全身化疗，暂不处理原发灶，因为决定她预后的是肝转移；等肝转移灶缩小后，再把原发灶和肝转移灶一并手术切除",
+            "en": "Start systemic therapy now and leave the primary alone, because it is the liver disease that decides her outlook; once the liver metastases shrink, operate on both together"
           },
           "correct": false,
           "feedback": {
@@ -3478,7 +3478,7 @@
           "id": "resect-now",
           "text": {
             "zh-CN": "经MDT确认可以切除后，尽快切除肝转移灶（术中超声定位病灶），术后继续全身治疗",
-            "en": "Once the MDT confirms the disease is resectable, remove the liver metastases promptly (locating them with intra-operative ultrasound), with systemic therapy continuing after surgery"
+            "en": "Once the MDT confirms resectability, resect the liver metastases promptly with intra-operative ultrasound guidance, then continue systemic therapy"
           },
           "correct": true,
           "feedback": {
@@ -3489,8 +3489,8 @@
         {
           "id": "continue-until-gone",
           "text": {
-            "zh-CN": "继续原方案，直到肝转移灶在影像上完全消失再手术",
-            "en": "Continue the same regimen until the liver metastases disappear on imaging, then operate"
+            "zh-CN": "方案明显有效，就继续原方案，直到肝转移灶在影像上完全消失、达到完全缓解后再手术",
+            "en": "The regimen is clearly working, so continue it until the liver metastases have disappeared on imaging, aiming for a complete response before any operation"
           },
           "correct": false,
           "feedback": {
@@ -3501,8 +3501,8 @@
         {
           "id": "stop-observe",
           "text": {
-            "zh-CN": "已经部分缓解，停止治疗观察，等进展再处理",
-            "en": "She has responded — stop treatment and watch, acting only if it progresses"
+            "zh-CN": "已经部分缓解：停用化疗以免继续累积毒性，定期复查CEA和MRI，等病情进展时再处理",
+            "en": "She has responded — stop chemotherapy to spare her further toxicity, follow the CEA and MRI regularly, and act only if the disease progresses"
           },
           "correct": false,
           "feedback": {
@@ -3513,8 +3513,8 @@
         {
           "id": "switch-second-line",
           "text": {
-            "zh-CN": "改用二线方案（FOLFIRI联合西妥昔单抗）“巩固”疗效后再评估",
-            "en": "Switch to a second-line regimen (FOLFIRI plus cetuximab) to “consolidate” the response, then reassess"
+            "zh-CN": "改用二线方案（FOLFIRI联合西妥昔单抗），以没有交叉耐药的方案“巩固”疗效，再用几个周期后评估能否切除",
+            "en": "Switch to a second-line regimen (FOLFIRI plus cetuximab) to “consolidate” the response without cross-resistance, then reassess resectability after a few more cycles"
           },
           "correct": false,
           "feedback": {
@@ -3559,8 +3559,8 @@
         {
           "id": "mdt-re-resect",
           "text": {
-            "zh-CN": "提交MDT：确认没有其他部位转移后，再次手术切除这个孤立病灶，术后继续全身治疗",
-            "en": "Take it to the MDT: once disease elsewhere is excluded, resect this isolated lesion, with systemic therapy afterwards"
+            "zh-CN": "提交MDT：再分期排除其他转移后，再次切除这个孤立的尾状叶病灶，术后继续全身治疗",
+            "en": "Take it to the MDT: once restaging excludes disease elsewhere, resect this isolated caudate lesion, with systemic therapy afterwards"
           },
           "correct": true,
           "feedback": {
@@ -3571,20 +3571,20 @@
         {
           "id": "chemo-only",
           "text": {
-            "zh-CN": "不再考虑手术，改为二线姑息化疗",
-            "en": "No more surgery — switch to second-line palliative chemotherapy"
+            "zh-CN": "肝切除后不到两年就复发，提示肿瘤生物学行为差：不再考虑手术，改为二线姑息化疗",
+            "en": "Recurrence within two years of the hepatectomy signals aggressive disease, so no more surgery — switch to second-line palliative chemotherapy"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不合适。孤立、可切除的肝内复发，再次切除才有长期控制的机会；单纯姑息化疗放弃了这个机会。",
-            "en": "Not appropriate. For an isolated, resectable liver recurrence, repeat resection offers the chance of long-term control; palliative chemotherapy alone gives that up."
+            "zh-CN": "不合适。复发较早是全面再分期的理由，而不是放弃手术的理由。孤立、可切除的肝内复发，再次切除才有长期控制的机会；单纯姑息化疗放弃了这个机会。",
+            "en": "Not appropriate. An early recurrence is a reason for careful restaging, not for giving up surgery. For an isolated, resectable liver recurrence, repeat resection offers the chance of long-term control; palliative chemotherapy alone gives that up."
           }
         },
         {
           "id": "continue-maintenance",
           "text": {
-            "zh-CN": "继续口服卡培他滨维持，3个月后复查再决定",
-            "en": "Carry on with capecitabine maintenance and recheck in 3 months"
+            "zh-CN": "继续口服卡培他滨维持，3个月后复查CEA和影像，新病灶确实在继续增大时再处理",
+            "en": "Carry on with capecitabine maintenance and repeat the CEA and imaging in 3 months, treating the new lesion only if it is clearly growing"
           },
           "correct": false,
           "feedback": {
@@ -3595,8 +3595,8 @@
         {
           "id": "repeat-cea-first",
           "text": {
-            "zh-CN": "CEA可能是假阳性，先复查CEA，正常了就不用处理",
-            "en": "The CEA may be a false positive — repeat it, and if it comes back normal no action is needed"
+            "zh-CN": "CEA可能是假阳性，先复查CEA；如果回到正常，影像上的发现就按非特异性改变继续观察",
+            "en": "The CEA may be a false positive — repeat it first, and if it comes back normal, treat the imaging finding as non-specific and keep watching"
           },
           "correct": false,
           "feedback": {

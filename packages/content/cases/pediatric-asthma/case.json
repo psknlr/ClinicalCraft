@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "pediatric-asthma",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "夜间喘息加重 · 6岁男孩",
     "en": "Worsening wheeze overnight · 6-year-old boy"
@@ -8593,25 +8593,25 @@
         {
           "id": "sev-mild",
           "text": {
-            "zh-CN": "轻度：回家按需用沙丁胺醇即可",
-            "en": "Mild: home with as-needed salbutamol"
+            "zh-CN": "轻度：神志清楚，回家按需用沙丁胺醇即可",
+            "en": "Mild: he is alert, so home with as-needed salbutamol"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。他只能说短语，RR 38、HR 140、吸空气SpO₂ 90%，有三凹征，PRAM 8分——远超轻度。",
-            "en": "No. He speaks in phrases with RR 38, HR 140, room-air SpO₂ 90%, recession and a PRAM of 8 — far beyond mild."
+            "zh-CN": "不对。他只能说短语，RR 38、HR 140、吸空气SpO₂ 90%，有三凹征，PRAM 8分——远超轻度。神志清楚只说明目前没有危及生命征象，并不代表发作轻。",
+            "en": "No. He speaks in phrases with RR 38, HR 140, room-air SpO₂ 90%, recession and a PRAM of 8 — far beyond mild. Being alert only means there are no life-threatening features yet; it does not make the attack mild."
           }
         },
         {
           "id": "sev-moderate",
           "text": {
-            "zh-CN": "中度（PRAM 4–7）：先单用沙丁胺醇观察",
-            "en": "Moderate (PRAM 4–7): salbutamol alone and observe"
+            "zh-CN": "中度：还能说短语，先单用沙丁胺醇再观察",
+            "en": "Moderate: he can still talk in phrases, so salbutamol alone and observe"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "低估了。按BTS/SIGN，>5岁儿童出现SpO₂<92%、HR>125、RR>30或不能一口气说完句子中任一项即属重度；PRAM 8分也在重度区间。重度发作需加用异丙托溴铵并尽早给全身激素（中度发作也应考虑；家中急救药已无效的患儿更应使用）——不能单用沙丁胺醇。",
-            "en": "An underestimate. By BTS/SIGN, in children > 5 years any of SpO₂ < 92%, HR > 125, RR > 30 or inability to complete sentences in one breath means severe; PRAM 8 is also in the severe band. Severe attacks need ipratropium and an early systemic steroid (considered even in moderate attacks, and clearly indicated when the home reliever has failed) — salbutamol alone is not enough."
+            "zh-CN": "低估了。只能说短语，就是不能一口气说完句子：按BTS/SIGN，>5岁儿童出现SpO₂<92%、HR>125、RR>30或不能一口气说完句子中任一项即属重度；PRAM 8分也在重度区间。重度发作需加用异丙托溴铵并尽早给全身激素（中度发作也应考虑；家中急救药已无效的患儿更应使用）——不能单用沙丁胺醇。",
+            "en": "An underestimate. Talking only in phrases means he cannot complete a sentence in one breath: by BTS/SIGN, in children > 5 years any of SpO₂ < 92%, HR > 125, RR > 30 or inability to complete sentences in one breath means severe; PRAM 8 is also in the severe band. Severe attacks need ipratropium and an early systemic steroid (considered even in moderate attacks, and clearly indicated when the home reliever has failed) — salbutamol alone is not enough."
           }
         },
         {
@@ -8629,8 +8629,8 @@
         {
           "id": "sev-life",
           "text": {
-            "zh-CN": "危及生命的发作：立即准备插管、转PICU",
-            "en": "Life-threatening: prepare for intubation and PICU now"
+            "zh-CN": "危及生命：SpO₂已低于92%，立即准备插管并转PICU",
+            "en": "Life-threatening: SpO₂ is below 92%, so prepare for intubation and PICU now"
           },
           "correct": false,
           "feedback": {
@@ -8641,8 +8641,8 @@
         {
           "id": "sev-tests",
           "text": {
-            "zh-CN": "先做血气和胸片才能判断",
-            "en": "Cannot grade it without a blood gas and chest X-ray"
+            "zh-CN": "先做血气和胸片，才能判断严重程度",
+            "en": "Cannot grade it until a blood gas and chest X-ray are back"
           },
           "correct": false,
           "feedback": {
@@ -8727,8 +8727,8 @@
         {
           "id": "fl-mg",
           "text": {
-            "zh-CN": "现在就静脉给硫酸镁40 mg/kg",
-            "en": "IV magnesium sulfate 40 mg/kg now"
+            "zh-CN": "现在就静脉输注硫酸镁40 mg/kg（最大2 g），20分钟以上输完",
+            "en": "IV magnesium sulfate 40 mg/kg (max 2 g) over 20 min, started now"
           },
           "correct": false,
           "feedback": {
@@ -8739,8 +8739,8 @@
         {
           "id": "fl-cxr",
           "text": {
-            "zh-CN": "先拍胸片再决定治疗",
-            "en": "Chest X-ray before deciding on treatment"
+            "zh-CN": "先拍胸片排查肺炎或气胸，再决定治疗",
+            "en": "Chest X-ray first to look for pneumonia or an air leak, then decide on treatment"
           },
           "correct": false,
           "feedback": {
@@ -8751,8 +8751,8 @@
         {
           "id": "fl-abx",
           "text": {
-            "zh-CN": "加用阿莫西林，因为他有低热",
-            "en": "Add amoxicillin because he has a low-grade fever"
+            "zh-CN": "他有低热，加用口服阿莫西林治疗可能的肺部感染",
+            "en": "Add oral amoxicillin for a possible chest infection, as he has a low-grade fever"
           },
           "correct": false,
           "feedback": {
@@ -8763,8 +8763,8 @@
         {
           "id": "fl-sedation",
           "text": {
-            "zh-CN": "给小剂量镇静剂让他安静下来",
-            "en": "A small dose of sedative to settle him"
+            "zh-CN": "给小剂量镇静剂让他安静下来，好配合雾化面罩",
+            "en": "A small dose of sedative to settle him, so that he tolerates the nebuliser mask"
           },
           "correct": false,
           "feedback": {
@@ -8800,32 +8800,32 @@
         {
           "id": "resp-continue",
           "text": {
-            "zh-CN": "反应良好：继续滴定吸氧（94–98%）并逐步停氧，沙丁胺醇按需延长至1–4小时一次，停用异丙托溴铵，完成激素疗程，观察至能维持3–4小时一次用药",
-            "en": "Good response: keep titrating oxygen (94–98%) and wean it, space salbutamol to 1–4-hourly as needed, stop ipratropium, continue the steroid course and observe until stable on 3–4-hourly doses"
+            "zh-CN": "反应良好：逐步停氧，沙丁胺醇延长至1–4小时一次，停用异丙托溴铵，继续激素并留观",
+            "en": "Good response: wean the oxygen, space salbutamol to 1–4-hourly, stop ipratropium, continue the steroid and observe"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。PRAM从8降到3、能说完整句子，说明对第一小时治疗反应良好；继续观察是否能维持较长的用药间隔，并逐步停氧。",
-            "en": "Correct. PRAM 8 → 3 and full sentences show a good response to first-hour treatment; now see whether he holds on longer dosing intervals and wean the oxygen."
+            "zh-CN": "正确。PRAM从8降到3、能说完整句子，说明对第一小时治疗反应良好；在维持SpO₂ 94–98%的前提下逐步停氧，并观察到能稳定维持3–4小时一次的沙丁胺醇。",
+            "en": "Correct. PRAM 8 → 3 and full sentences show a good response to first-hour treatment; wean the oxygen while keeping SpO₂ at 94–98%, and observe until he is stable on 3–4-hourly salbutamol."
           }
         },
         {
           "id": "resp-mg",
           "text": {
-            "zh-CN": "加用静脉硫酸镁",
-            "en": "Add IV magnesium sulfate"
+            "zh-CN": "吸空气SpO₂仍只有93%：加用静脉硫酸镁40 mg/kg，沙丁胺醇继续每20分钟1次",
+            "en": "Room-air SpO₂ is still only 93%: add IV magnesium sulfate 40 mg/kg and keep salbutamol 20-minutely"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不需要：他反应良好（PRAM 8→3）。硫酸镁用于反应差者，静脉操作本身也会增加痛苦。",
-            "en": "Not needed: he is responding well (PRAM 8 → 3). Magnesium is for poor responders, and the IV itself adds distress."
+            "zh-CN": "不需要：他反应良好（PRAM 8→3）。1小时时吸空气SpO₂ 93%只需继续吸氧，并不是升级治疗的指征。硫酸镁用于反应差者，静脉操作本身也会增加痛苦。",
+            "en": "Not needed: he is responding well (PRAM 8 → 3). A room-air SpO₂ of 93% at one hour calls for continued oxygen, not escalation. Magnesium is for poor responders, and the IV itself adds distress."
           }
         },
         {
           "id": "resp-stop-saba",
           "text": {
-            "zh-CN": "因为心率150次/分和手抖，停用沙丁胺醇",
-            "en": "Stop salbutamol because of the heart rate of 150 and the tremor"
+            "zh-CN": "心率已达150次/分并出现手抖：停用沙丁胺醇，只吸氧观察",
+            "en": "His heart rate is now 150/min with a tremor: stop salbutamol and observe on oxygen alone"
           },
           "correct": false,
           "feedback": {
@@ -8836,25 +8836,25 @@
         {
           "id": "resp-discharge-now",
           "text": {
-            "zh-CN": "他已经明显好转，现在就可以回家",
-            "en": "He's much better — send him home now"
+            "zh-CN": "PRAM从8分降到3分，已明显好转：现在就带行动计划和急救药回家",
+            "en": "PRAM is down from 8 to 3 and he is much better: discharge now with an action plan and his reliever"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "过早。他吸空气SpO₂仍约93%、仍需吸氧，刚完成强化治疗——需观察到能稳定维持3–4小时一次的沙丁胺醇。",
-            "en": "Too early. His room-air SpO₂ is about 93%, he still needs oxygen and has just finished intensive treatment — he must be stable on 3–4-hourly salbutamol first."
+            "zh-CN": "过早。他吸空气SpO₂仍约93%、仍需吸氧，刚完成强化治疗——需观察到能稳定维持3–4小时一次的沙丁胺醇；行动计划不能代替达到出院标准。",
+            "en": "Too early. His room-air SpO₂ is about 93%, he still needs oxygen and has just finished intensive treatment — he must be stable on 3–4-hourly salbutamol first; an action plan does not replace meeting the discharge criteria."
           }
         },
         {
           "id": "resp-picu",
           "text": {
-            "zh-CN": "转入PICU行持续沙丁胺醇雾化",
-            "en": "Transfer to PICU for continuous salbutamol"
+            "zh-CN": "第1小时已需连续3轮沙丁胺醇：转入PICU行持续沙丁胺醇雾化",
+            "en": "He needed three back-to-back salbutamol rounds in the first hour: transfer to PICU for continuous nebulised salbutamol"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不需要：反应良好，没有危及生命征象。",
-            "en": "Not needed: he is responding well and has no life-threatening features."
+            "zh-CN": "不需要：反应良好，没有危及生命征象。第1小时连续3轮沙丁胺醇是重度发作的标准方案，并不说明治疗失败。",
+            "en": "Not needed: he is responding well and has no life-threatening features. Three back-to-back salbutamol rounds in the first hour is the standard regimen for a severe attack, not a sign of failure."
           }
         }
       ]
@@ -8946,8 +8946,8 @@
         {
           "id": "dc-cxr",
           "text": {
-            "zh-CN": "胸片必须正常",
-            "en": "A normal chest X-ray"
+            "zh-CN": "胸片正常，以排除重度发作后的肺炎或气胸",
+            "en": "A normal chest X-ray, to exclude pneumonia or an air leak after a severe attack"
           },
           "correct": false,
           "feedback": {
@@ -8958,8 +8958,8 @@
         {
           "id": "dc-no-wheeze",
           "text": {
-            "zh-CN": "听诊必须完全没有哮鸣音",
-            "en": "Completely wheeze-free on auscultation"
+            "zh-CN": "出院前双肺听诊必须完全没有哮鸣音",
+            "en": "Completely wheeze-free on auscultation of both lungs before he leaves"
           },
           "correct": false,
           "feedback": {
@@ -8970,8 +8970,8 @@
         {
           "id": "dc-hr",
           "text": {
-            "zh-CN": "心率必须 <100次/分",
-            "en": "Heart rate below 100/min"
+            "zh-CN": "心率降至100次/分以下，因为心动过速可能说明发作尚未缓解",
+            "en": "Heart rate below 100/min, as a persisting tachycardia may mean the attack is not over"
           },
           "correct": false,
           "feedback": {
@@ -8982,8 +8982,8 @@
         {
           "id": "dc-24h",
           "text": {
-            "zh-CN": "所有重度发作都必须住院观察24小时",
-            "en": "Every severe attack needs 24 hours of inpatient observation"
+            "zh-CN": "所有重度发作无论治疗反应如何，都必须住院观察24小时",
+            "en": "Every severe attack needs 24 hours of inpatient observation, whatever the response"
           },
           "correct": false,
           "feedback": {
@@ -10351,7 +10351,7 @@
         ]
       },
       {
-        "text": "NKDA?",
+        "text": "Is he allergic to any medicines or foods that you know of?",
         "locale": "en",
         "expect": [
           "hx-allergies"
@@ -10513,7 +10513,7 @@
         ]
       },
       {
-        "text": "预防药是不是停了？",
+        "text": "他的预防药最近是不是停用了？",
         "locale": "zh-CN",
         "expect": [
           "hx-adherence"

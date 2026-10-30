@@ -15,7 +15,7 @@ traditional characters; the case uses simplified Chinese.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653404` / `1.1.0` |
+| id / version | `cmcr-1653404` / `1.1.1` |
 | setting / facility | `inpatient` / `general-hospital` (paediatric ward bed `ward-1`) |
 | specialty | paediatrics, immunology, infectious disease |
 | difficulty | 4 / 5 |
@@ -405,6 +405,29 @@ entry (NBK1453, no DOI); the CDC chapter carries no DOI.
   discussion but are not carried into the case.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** The keyed option
+  was the uniquely longest in all four single-best decisions in Chinese and in
+  three of them in English (up to 1.8 times the mean option length); now it
+  is in none. The `immune-screen`, `confirm` and `long-term` keys say the same
+  in fewer words (the `interpret-ig` key is unchanged). Each distractor now
+  gives the reason it tempts: eczema since birth breaking the skin barrier to
+  staphylococci; HIV as a treatable acquired cause to exclude first; a foot
+  still worsening on amoxicillin–clavulanate, so an MRI for osteomyelitis or
+  a deep collection first; selective IgA deficiency as the commonest primary
+  antibody defect, with a normal IgM; consumption in a severe infection;
+  values that only look low against adult ranges; SCID as the defect not to
+  miss; a gene test that would not change his own treatment; transplantation
+  as the only treatment that can correct the defect and spare him lifelong
+  infusions; prophylactic antibiotics to avoid the cost and infusions of
+  replacement; discharge once the infection has responded and the fever has
+  settled. The feedback of `hiv-only`, `scid`, `no-gene-needed` and
+  `transplant-now` now also answers the reason its text gives. Medical
+  meaning, correct flags, scoring and the reference path are unchanged; no
+  new patient fact is introduced.
+- **Option ids neutral:** every id already names its content; none renamed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

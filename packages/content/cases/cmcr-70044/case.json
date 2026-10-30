@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-70044",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "咳嗽、发热 · 10岁男孩",
     "en": "Cough and fever · 10-year-old boy"
@@ -2553,8 +2553,8 @@
         {
           "id": "clarify-observe",
           "text": {
-            "zh-CN": "先把过敏标签问清楚（哪种药、什么反应、多快出现、怎么处理的）并记录；如果仍选用头孢菌素，首剂要慢（作者强调前10分钟尤其要慢），由专业人员看护并接上监护，床旁备好1 mg/mL肾上腺素和抢救用品。若追问到明确的速发型反应，按2021年版指导原则先做所用头孢菌素的皮试，或换用结构不同的药物。",
-            "en": "Clarify the label first (which drug, what reaction, how fast, how it was treated) and record it; if a cephalosporin is still the choice, give the first dose slowly (the authors stress the first 10 minutes) with a professional watching and the monitor on, and adrenaline 1 mg/mL and resuscitation kit at the bedside. If the history turns out to be a clear immediate reaction, skin-test the intended cephalosporin as the 2021 Chinese guidance advises, or choose a structurally different drug."
+            "zh-CN": "先问清并记录过敏标签（药名、反应、时间、处理）；仍用头孢菌素时首剂慢滴（前10分钟最慢），专人看护、接上监护，床旁备好1 mg/mL肾上腺素；若病史确为速发型反应，按2021年版指导原则做该头孢菌素皮试，或换用结构不同的药物。",
+            "en": "Clarify and record the label (drug, reaction, timing, treatment); if a cephalosporin is still used, a slow first dose (slowest in the first 10 minutes), watched and monitored, adrenaline 1 mg/mL at the bedside; if the history shows an immediate reaction, skin-test that cephalosporin (2021 Chinese guidance) or use a structurally different drug."
           },
           "correct": true,
           "feedback": {
@@ -2565,20 +2565,20 @@
         {
           "id": "skin-test-clears",
           "text": {
-            "zh-CN": "青霉素皮试阴性，说明对所有β-内酰胺类都安全，按常规速度输注即可",
-            "en": "The penicillin skin test is negative, so every β-lactam is safe — run the infusion at the usual rate"
+            "zh-CN": "青霉素皮试阴性，他在诊所又刚静脉用了4天同为头孢菌素的头孢呋辛，说明所有β-内酰胺类对他都安全：头孢噻肟钠/舒巴坦钠按常规速度输注，在病历中把青霉素过敏标签记为已排除，告诉家长过敏已经排除，按常规巡视即可。",
+            "en": "The penicillin skin test is negative and he has just had four days of IV cefuroxime, another cephalosporin, at the clinic, so every β-lactam is safe for him: run the cefotaxime/sulbactam at the usual rate, record the penicillin label as disproved, tell the parent the allergy has been ruled out and keep to routine ward checks."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "青霉素皮试只针对青霉素，阴性不能排除对头孢菌素（或复方中的舒巴坦）的反应，也不能代替首剂的观察。",
-            "en": "A penicillin skin test is about penicillin only; a negative result cannot exclude a reaction to a cephalosporin (or the sulbactam in the combination), and it does not replace watching the first dose."
+            "zh-CN": "青霉素皮试只针对青霉素，阴性不能排除对头孢菌素（或复方中的舒巴坦）的反应，也不能代替首剂的观察。诊所用过的头孢呋辛也说明不了问题：他当时有没有反应没有记录，耐受一种β-内酰胺类也不等于其他都安全。",
+            "en": "A penicillin skin test is about penicillin only; a negative result cannot exclude a reaction to a cephalosporin (or the sulbactam in the combination), and it does not replace watching the first dose. Nor does the clinic's cefuroxime course clear him: whether he reacted to it is not recorded, and tolerating one β-lactam does not make every other one safe."
           }
         },
         {
           "id": "ceph-skin-test",
           "text": {
-            "zh-CN": "先做头孢噻肟钠/舒巴坦钠皮试，阴性就按常规速度输注，不用特别看护",
-            "en": "Skin-test the cefotaxime/sulbactam first and, if negative, run it at the usual rate without special observation"
+            "zh-CN": "因为有青霉素过敏标签，首剂前先做头孢噻肟钠/舒巴坦钠本身的皮试，很多病房对头孢菌素都常规这样做；皮试阴性，标签的问题就解决了，把结果记在青霉素过敏标签旁边，按常规速度输注，不必特别看护。",
+            "en": "Because of the penicillin label, skin-test the cefotaxime/sulbactam itself before the first dose, as many wards routinely do for every cephalosporin; if the test is negative the label has been answered, so record the result next to the penicillin label and run the infusion at the usual rate without special observation."
           },
           "correct": false,
           "feedback": {
@@ -2589,8 +2589,8 @@
         {
           "id": "avoid-all",
           "text": {
-            "zh-CN": "有青霉素过敏标签，就永远不用任何β-内酰胺类，不必再问细节",
-            "en": "A penicillin label means no β-lactam ever — no need to ask for details"
+            "zh-CN": "有青霉素过敏标签，就永远不用任何β-内酰胺类，细节问了也改变不了：取消头孢噻肟钠/舒巴坦钠，支气管肺炎改用非β-内酰胺类抗菌药，免得冒发生反应的风险，并告诉家属以后终身避免所有青霉素类和头孢菌素类，在病历中按严重过敏标注并记录。",
+            "en": "A penicillin label means no β-lactam ever, and the details cannot change that: cancel the cefotaxime/sulbactam and treat the bronchopneumonia with a non-β-lactam antibiotic instead, so that he never has to risk a reaction, and tell the family to avoid all penicillins and cephalosporins for life, recording the label in his notes as a severe allergy."
           },
           "correct": false,
           "feedback": {
@@ -2631,8 +2631,8 @@
         {
           "id": "anaphylaxis",
           "text": {
-            "zh-CN": "头孢噻肟钠/舒巴坦钠引起的严重过敏反应（过敏性休克），立即按急症处理",
-            "en": "Anaphylaxis (anaphylactic shock) caused by the cefotaxime/sulbactam — treat it as an emergency now"
+            "zh-CN": "头孢噻肟钠/舒巴坦钠引起的严重过敏反应（过敏性休克），首剂开始数秒内发生，立即按急症处理",
+            "en": "Anaphylaxis (anaphylactic shock) caused by the cefotaxime/sulbactam, seconds into the first dose — treat it as an emergency now"
           },
           "correct": true,
           "feedback": {
@@ -2643,8 +2643,8 @@
         {
           "id": "vasovagal",
           "text": {
-            "zh-CN": "血管迷走性反应（害怕输液），让他躺下安慰即可",
-            "en": "A vasovagal faint from fear of the drip — lie him down and reassure him"
+            "zh-CN": "血管迷走性反应：孩子害怕输液，输液一开始几秒钟就面色苍白、出汗、神志恍惚，这是晕厥——让他躺下、安慰他即可",
+            "en": "A vasovagal reaction: a frightened child who turns pale, sweaty and dazed within seconds of the drip starting has fainted — lie him down and reassure him"
           },
           "correct": false,
           "feedback": {
@@ -2655,8 +2655,8 @@
         {
           "id": "asthma",
           "text": {
-            "zh-CN": "肺炎诱发的急性哮喘发作，先雾化沙丁胺醇",
-            "en": "An acute asthma attack triggered by the pneumonia — start with nebulised salbutamol"
+            "zh-CN": "肺炎诱发的急性哮喘发作：咳嗽了10天的孩子突然气促、呼吸急促——先雾化吸入沙丁胺醇并吸氧",
+            "en": "An acute asthma attack triggered by the pneumonia: sudden breathlessness and rapid breathing after ten days of cough — start with nebulised salbutamol and oxygen"
           },
           "correct": false,
           "feedback": {
@@ -2667,8 +2667,8 @@
         {
           "id": "skin-only",
           "text": {
-            "zh-CN": "只是药物引起的皮疹（荨麻疹），口服抗组胺药后观察",
-            "en": "Just a drug rash (urticaria) — an oral antihistamine and observe"
+            "zh-CN": "只是新抗菌药引起的药疹（荨麻疹）——瘙痒、隆起的红色皮疹很典型——口服抗组胺药后观察",
+            "en": "Just a drug rash (urticaria) from the new antibiotic — the itchy, raised red blotches are typical — so an oral antihistamine and observe"
           },
           "correct": false,
           "feedback": {
@@ -2696,8 +2696,8 @@
         {
           "id": "im-adrenaline",
           "text": {
-            "zh-CN": "停药、呼救；大腿前外侧肌注1 mg/mL肾上腺素0.3 mL（300 µg，6–12岁体重不详时按年龄），5分钟无改善重复；平卧（呼吸更舒服时可半卧），储氧面罩高流量吸氧，晶体液10 mL/kg快速静推，连续监护。",
-            "en": "Stop the drug and call for help; IM adrenaline 1 mg/mL 0.3 mL (300 micrograms — age 6–12 with the weight unknown) into the anterolateral thigh, repeated after 5 minutes if no better; lie him flat (semi-recumbent if that eases his breathing), high-flow oxygen by non-rebreather mask, a rapid IV crystalloid bolus of 10 mL/kg, continuous monitoring."
+            "zh-CN": "停药、呼救；大腿前外侧肌注1 mg/mL肾上腺素0.3 mL（300 µg，体重不详按年龄给药），5分钟无改善重复；平卧（呼吸更舒服时可半卧），储氧面罩高流量吸氧，晶体液10 mL/kg快速静推，连续监护。",
+            "en": "Stop the drug, call for help; IM adrenaline 1 mg/mL 0.3 mL (300 micrograms, dosed by age as his weight is unknown) into the anterolateral thigh, repeated after 5 minutes if no better; lie him flat (semi-recumbent if that eases his breathing), high-flow oxygen by non-rebreather mask, a rapid IV crystalloid bolus of 10 mL/kg, continuous monitoring."
           },
           "correct": true,
           "feedback": {
@@ -2708,20 +2708,20 @@
         {
           "id": "iv-bolus-report",
           "text": {
-            "zh-CN": "1:10 000肾上腺素2.5 mL静脉推注（0.25 mg，原报告做法）",
-            "en": "IV push of 2.5 mL of 1 in 10 000 adrenaline (0.25 mg — the report's practice)"
+            "zh-CN": "停药、呼救；经已有的静脉通路推注1:10 000肾上腺素2.5 mL（0.25 mg，原报告做法），休克时静脉比肌注起效快；平卧（呼吸更舒服时可半卧），储氧面罩高流量吸氧，晶体液10 mL/kg快速静推，连续监护。",
+            "en": "Stop the drug, call for help; through the cannula already in place, an IV push of 2.5 mL of 1 in 10 000 adrenaline (0.25 mg — the report's practice), as IV acts faster than IM in shock; lie him flat (semi-recumbent if that eases his breathing), high-flow oxygen by non-rebreather mask, a rapid IV crystalloid bolus of 10 mL/kg, continuous monitoring."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "静脉推注肾上腺素可引起严重高血压和心律失常。RCUK 2021把静脉肾上腺素留给难治性过敏反应，由有经验的专科医生在监护下小剂量持续输注；在病房，首选肌注。原报告推注后好转，但这不能证明它比肌注更好或更安全。",
-            "en": "An IV push of adrenaline can cause severe hypertension and arrhythmias. RCUK 2021 keeps IV adrenaline for refractory anaphylaxis, as a monitored low-dose infusion by experienced specialists; on a ward the first choice is IM. He improved after the push in the report, but that does not show it is better or safer than IM."
+            "zh-CN": "静脉推注起效虽快，却可引起严重高血压和心律失常。RCUK 2021把静脉肾上腺素留给难治性过敏反应，由有经验的专科医生在监护下小剂量持续输注；在病房，首选肌注。原报告推注后好转，但这不能证明它比肌注更好或更安全。",
+            "en": "An IV push acts faster but can cause severe hypertension and arrhythmias. RCUK 2021 keeps IV adrenaline for refractory anaphylaxis, as a monitored low-dose infusion by experienced specialists; on a ward the first choice is IM. He improved after the push in the report, but that does not show it is better or safer than IM."
           }
         },
         {
           "id": "steroid-first",
           "text": {
-            "zh-CN": "先静注地塞米松，看效果再决定用不用肾上腺素",
-            "en": "IV dexamethasone first, and decide on adrenaline once you see the effect"
+            "zh-CN": "停药、呼救；先经已有的静脉通路静注地塞米松压住反应，看效果再决定用不用肾上腺素；平卧（呼吸更舒服时可半卧），储氧面罩高流量吸氧，晶体液10 mL/kg快速静推，连续监护。",
+            "en": "Stop the drug, call for help; IV dexamethasone first through the cannula already in place to damp the reaction, deciding on adrenaline once you see its effect; lie him flat (semi-recumbent if that eases his breathing), high-flow oxygen by non-rebreather mask, a rapid IV crystalloid bolus of 10 mL/kg, continuous monitoring."
           },
           "correct": false,
           "feedback": {
@@ -2730,27 +2730,27 @@
           }
         },
         {
-          "id": "iv-1mg-error",
+          "id": "iv-push-1-in-1000",
           "text": {
-            "zh-CN": "1 mg/mL（1:1000）肾上腺素2.5 mL静脉推注",
-            "en": "IV push of 2.5 mL of 1 mg/mL (1 in 1000) adrenaline"
+            "zh-CN": "停药、呼救；经已有的静脉通路推注1 mg/mL（1:1000）肾上腺素2.5 mL，即标准安瓿的浓度；平卧（呼吸更舒服时可半卧），储氧面罩高流量吸氧，晶体液10 mL/kg快速静推，连续监护。",
+            "en": "Stop the drug, call for help; an IV push of 2.5 mL of 1 mg/mL (1 in 1000) adrenaline, the strength of the standard ampoule, through the cannula already in place; lie him flat (semi-recumbent if that eases his breathing), high-flow oxygen by non-rebreather mask, a rapid IV crystalloid bolus of 10 mL/kg, continuous monitoring."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是浓度混淆造成的10倍剂量错误：静脉推注2.5 mg，可能致命。1 mg/mL是肌注用的浓度；用mg/mL和微克核对剂量，不要只看比例。",
-            "en": "This is the tenfold error of confusing concentrations: 2.5 mg as an IV push, which can be fatal. 1 mg/mL is the IM strength; check doses in mg/mL and micrograms, not ratios."
+            "zh-CN": "这是浓度混淆造成的10倍剂量错误：静脉推注2.5 mg，可能致命。标准安瓿的1 mg/mL是肌注用的浓度；用mg/mL和微克核对剂量，不要只看比例。",
+            "en": "This is the tenfold error of confusing concentrations: 2.5 mg as an IV push, which can be fatal. The 1 mg/mL ampoule is the IM strength; check doses in mg/mL and micrograms, not ratios."
           }
         },
         {
-          "id": "im-dilute-error",
+          "id": "im-1-in-10000",
           "text": {
-            "zh-CN": "大腿肌注0.1 mg/mL（1:10 000）肾上腺素0.3 mL",
-            "en": "IM injection of 0.3 mL of 0.1 mg/mL (1 in 10 000) adrenaline into the thigh"
+            "zh-CN": "停药、呼救；大腿肌注0.1 mg/mL（1:10 000）肾上腺素0.3 mL，即抢救时备好的浓度；平卧（呼吸更舒服时可半卧），储氧面罩高流量吸氧，晶体液10 mL/kg快速静推，连续监护。",
+            "en": "Stop the drug, call for help; an IM injection of 0.3 mL of 0.1 mg/mL (1 in 10 000) adrenaline into the thigh, the strength drawn up for resuscitation; lie him flat (semi-recumbent if that eases his breathing), high-flow oxygen by non-rebreather mask, a rapid IV crystalloid bolus of 10 mL/kg, continuous monitoring."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是反方向的浓度错误：0.3 mL的0.1 mg/mL只有30 µg，只有应给剂量的十分之一。肌注用1 mg/mL：0.3 mL = 300 µg。",
-            "en": "This is the opposite concentration error: 0.3 mL of 0.1 mg/mL is only 30 micrograms, a tenth of the dose. IM adrenaline uses 1 mg/mL: 0.3 mL = 300 micrograms."
+            "zh-CN": "这是反方向的浓度错误：0.3 mL的0.1 mg/mL只有30 µg，只有应给剂量的十分之一——1:10 000是心搏骤停时静脉用的浓度。肌注用1 mg/mL：0.3 mL = 300 µg。",
+            "en": "This is the opposite concentration error: 0.3 mL of 0.1 mg/mL is only 30 micrograms, a tenth of the dose — 1 in 10 000 is the IV strength for cardiac arrest. IM adrenaline uses 1 mg/mL: 0.3 mL = 300 micrograms."
           }
         }
       ]
@@ -2787,8 +2787,8 @@
         {
           "id": "aftercare-bundle",
           "text": {
-            "zh-CN": "留取记录了采血时间的类胰蛋白酶血样（采样时间点按指南和本院流程）；因为出现过休克，延长监护观察时间；在病历、医嘱系统和腕带上标注对头孢噻肟钠/舒巴坦钠的严重过敏反应，并书面告知家属；不再使用该药，肺炎改用其他药物；转诊变态反应科评估。",
-            "en": "Take mast-cell tryptase samples with their times recorded (time points per the guideline and local protocol); keep him monitored for longer because he was shocked; record anaphylaxis to cefotaxime/sulbactam in the notes, the prescribing system and on a wristband, and tell the family in writing; do not use the drug again and treat the pneumonia with another agent; refer him to an allergy service."
+            "zh-CN": "定时留取类胰蛋白酶血样；出现过休克，延长监护观察；在病历、医嘱系统和腕带上标注对头孢噻肟钠/舒巴坦钠的严重过敏反应，并书面告知家属；不再用该药，肺炎换药；转诊变态反应科。",
+            "en": "Timed mast-cell tryptase samples; longer monitored observation, as he was shocked; anaphylaxis to cefotaxime/sulbactam recorded in the notes, the prescribing system and on a wristband, and given to the family in writing; no re-exposure, another drug for the pneumonia; allergy referral."
           },
           "correct": true,
           "feedback": {
@@ -2799,37 +2799,37 @@
         {
           "id": "rechallenge",
           "text": {
-            "zh-CN": "平稳后把同一种药换个批次、减慢滴速继续用——作者推测可能是批次杂质",
-            "en": "Once he is stable, restart the same drug from another batch at a slower rate — the authors suggest a batch impurity"
+            "zh-CN": "他平稳以后，换一个批次、减慢滴速继续用同一种药——作者推测是批次杂质，肺炎也还需要治疗；输注前先用激素预处理，输注时持续监护、床旁备好肾上腺素，在病历中记下这次反应并告知家属。",
+            "en": "Once he is stable, restart the same drug from another batch at a slower rate — the authors suggest a batch impurity, and the pneumonia still needs treating — with steroid premedication first, continuous monitoring and adrenaline at the bedside during the infusion, the reaction noted in his record and the family told."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "作者的三种推测（批次杂质、头孢噻肟、舒巴坦）都没有证实；对引起过敏性休克的药物再激发可能引起更重的反应，药物激发试验只能在变态反应专科评估后、在有条件的场所进行。",
-            "en": "None of the authors' three hypotheses (impurity, cefotaxime, sulbactam) was confirmed; rechallenging a drug that caused anaphylactic shock can provoke a worse reaction, and a drug challenge belongs only to an allergy specialist's assessment in a suitable setting."
+            "zh-CN": "作者的三种推测（批次杂质、头孢噻肟、舒巴坦）都没有证实；对引起过敏性休克的药物再激发可能引起更重的反应，激素预处理也不能可靠地预防，药物激发试验只能在变态反应专科评估后、在有条件的场所进行。",
+            "en": "None of the authors' three hypotheses (impurity, cefotaxime, sulbactam) was confirmed; rechallenging a drug that caused anaphylactic shock can provoke a worse reaction, which steroid premedication does not reliably prevent, and a drug challenge belongs only to an allergy specialist's assessment in a suitable setting."
           }
         },
         {
           "id": "steroids-home",
           "text": {
-            "zh-CN": "口服激素和抗组胺药3天预防再次反应，回到普通病房，不需要再特别观察",
-            "en": "Three days of oral steroids and antihistamines to prevent another reaction, back to routine ward care with no special observation"
+            "zh-CN": "口服激素和抗组胺药3天，预防双相反应；他已经平稳，回到普通病房常规护理，不需要特别观察，在病历中记下这次药物反应，肺炎换用其他抗菌药即可。",
+            "en": "Three days of oral steroids and antihistamines to prevent a biphasic reaction; now that he has settled, back to routine ward care with no special observation, a note of the drug reaction in his record and another antibiotic for the pneumonia."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "RCUK 2021不再建议常规使用激素，其证据更新也不建议急性期使用抗组胺药；它们都不能代替有监护的观察和反应后的随访安排。",
-            "en": "RCUK 2021 no longer advises routine steroids, and its evidence update recommends against antihistamines in the acute phase; neither replaces monitored observation and follow-up."
+            "zh-CN": "RCUK 2021不再建议常规使用激素，也缺乏它能预防双相反应的可靠证据；其证据更新也不建议急性期使用抗组胺药；它们都不能代替有监护的观察和反应后的随访安排。",
+            "en": "RCUK 2021 no longer advises routine steroids, and good evidence that they prevent a biphasic reaction is lacking; its evidence update recommends against antihistamines in the acute phase; neither replaces monitored observation and follow-up."
           }
         },
         {
           "id": "not-allergy",
           "text": {
-            "zh-CN": "告诉家长：青霉素皮试是阴性的，所以这不是真正的过敏，以后不用随访",
-            "en": "Tell the parents the penicillin skin test was negative, so this was not a true allergy and needs no follow-up"
+            "zh-CN": "告诉家长这是滴速过快引起的输液反应，不是真正的过敏：青霉素皮试是阴性，他从来不是过敏体质，家里也没有人对药物过敏，所以不必标注过敏，以后也不用随访，输液慢一点就行。",
+            "en": "Tell the parents this was a reaction to the infusion running too fast, not a true allergy: the penicillin skin test was negative, he has never been an allergic child and no one in the family is allergic to medicines, so no allergy record or follow-up is needed, only slower infusions in future."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "青霉素皮试阴性与这次头孢噻肟钠/舒巴坦钠的反应无关；这是一次严重过敏反应，必须记录、告知并随访。",
-            "en": "The negative penicillin skin test says nothing about this reaction to cefotaxime/sulbactam; this was anaphylaxis, and it must be recorded, explained and followed up."
+            "zh-CN": "输注开始15秒就出现休克，是严重过敏反应，不是滴速问题；青霉素皮试阴性与这次头孢噻肟钠/舒巴坦钠的反应无关，没有过敏体质、没有家族史的孩子同样可能发生药物严重过敏反应。这次反应必须记录、告知并随访。",
+            "en": "Shock 15 seconds into an infusion is anaphylaxis, not a rate effect; the negative penicillin skin test says nothing about this reaction to cefotaxime/sulbactam, and a child with no allergic history or family history can still have drug anaphylaxis. It must be recorded, explained and followed up."
           }
         }
       ]

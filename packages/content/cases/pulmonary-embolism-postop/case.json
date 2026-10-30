@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "pulmonary-embolism-postop",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "胸痛伴气促 · 52岁女性（术后第3天）",
     "en": "Chest pain and breathlessness · 52-year-old woman (post-op day 3)"
@@ -6597,8 +6597,8 @@
         {
           "id": "ddimer-first",
           "text": {
-            "zh-CN": "先查D-二聚体，阳性再做CTPA",
-            "en": "D-dimer first; CTPA only if it is positive"
+            "zh-CN": "先查D-二聚体：若结果阴性，即可免去CTPA的造影剂和辐射，阳性时再做CTPA",
+            "en": "D-dimer first: a negative result would spare her the contrast and radiation of CTPA, which follows only if it is positive"
           },
           "correct": false,
           "feedback": {
@@ -6609,8 +6609,8 @@
         {
           "id": "ctpa-direct",
           "text": {
-            "zh-CN": "临床可能性高（“PE可能”，Wells评分 > 4分）→ 直接行CTPA；若无禁忌，在等待影像期间即开始胃肠外抗凝",
-            "en": "High clinical probability ('PE likely', Wells score > 4) → go straight to CTPA, and start parenteral anticoagulation while awaiting imaging if there is no contraindication"
+            "zh-CN": "直接CTPA（PE可能，Wells > 4分），若无禁忌，同时开始胃肠外抗凝",
+            "en": "Straight to CTPA (PE likely, Wells > 4), with parenteral anticoagulation while awaiting it unless contraindicated"
           },
           "correct": true,
           "feedback": {
@@ -6621,8 +6621,8 @@
         {
           "id": "vq-first",
           "text": {
-            "zh-CN": "首选核素肺通气/灌注（V/Q）显像",
-            "en": "Ventilation/perfusion (V/Q) scan first"
+            "zh-CN": "首选核素肺通气/灌注（V/Q）显像：不用碘造影剂，辐射剂量也比CTPA低",
+            "en": "Ventilation/perfusion (V/Q) scan first: it avoids iodinated contrast and gives a lower radiation dose than CTPA"
           },
           "correct": false,
           "feedback": {
@@ -6633,25 +6633,25 @@
         {
           "id": "echo-only",
           "text": {
-            "zh-CN": "床旁超声心动图确诊或排除",
-            "en": "Use bedside echocardiography to confirm or exclude the diagnosis"
+            "zh-CN": "床旁超声心动图确诊或排除PE：她低氧、心率快，转运去CT风险大",
+            "en": "Bedside echocardiography to confirm or exclude PE, as moving a hypoxaemic, tachycardic patient to CT is risky"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。对血流动力学稳定的患者，超声心动图既不能确诊也不能排除肺栓塞（阴性预测值低）；它用于风险分层，或在患者不稳定、无法立即做CTPA时作为床旁依据。",
-            "en": "Incorrect. In a haemodynamically stable patient echocardiography can neither confirm nor exclude PE (low negative predictive value); it is used for risk stratification, or as bedside evidence when the patient is unstable and CTPA is not immediately feasible."
+            "zh-CN": "不正确。对血流动力学稳定的患者，超声心动图既不能确诊也不能排除肺栓塞（阴性预测值低）；它用于风险分层，或在患者不稳定、无法立即做CTPA时作为床旁依据。她血压正常，可在监护下转运去做CTPA。",
+            "en": "Incorrect. In a haemodynamically stable patient echocardiography can neither confirm nor exclude PE (low negative predictive value); it is used for risk stratification, or as bedside evidence when the patient is unstable and CTPA is not immediately feasible. She is normotensive and can go to CTPA monitored."
           }
         },
         {
           "id": "empirical-lysis",
           "text": {
-            "zh-CN": "不做影像，立即经验性全身溶栓",
-            "en": "Give empirical systemic thrombolysis now without imaging"
+            "zh-CN": "临床表现已几乎可以确定是PE：不做影像，立即经验性全身溶栓",
+            "en": "Empirical systemic thrombolysis now without imaging, as the clinical picture makes PE near-certain"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误且危险。她血压正常；溶栓只用于高危（休克型）肺栓塞，而开腹术后第3天属于溶栓禁忌。",
-            "en": "Wrong and dangerous. She is normotensive; lysis is reserved for high-risk (shocked) PE, and day 3 after a laparotomy is a contraindication."
+            "zh-CN": "错误且危险。临床可能性高意味着要尽快完成影像检查，而不是省略影像。她血压正常；溶栓只用于高危（休克型）肺栓塞，而开腹术后第3天属于溶栓禁忌。",
+            "en": "Wrong and dangerous. A high clinical probability makes imaging urgent, not unnecessary. She is normotensive; lysis is reserved for high-risk (shocked) PE, and day 3 after a laparotomy is a contraindication."
           }
         }
       ]
@@ -6706,8 +6706,8 @@
         {
           "id": "lmwh",
           "text": {
-            "zh-CN": "依诺肝素1 mg/kg皮下注射，每12小时一次",
-            "en": "Enoxaparin 1 mg/kg SC every 12 hours"
+            "zh-CN": "依诺肝素1 mg/kg皮下注射、每12小时一次：稳定型肺栓塞的指南首选，大出血和HIT更少，无需监测",
+            "en": "Enoxaparin 1 mg/kg SC every 12 hours: the guideline default for stable PE, with less major bleeding and HIT and no monitoring"
           },
           "correct": false,
           "feedback": {
@@ -6718,8 +6718,8 @@
         {
           "id": "doac",
           "text": {
-            "zh-CN": "立即口服利伐沙班15 mg，每日2次",
-            "en": "Start oral rivaroxaban 15 mg twice daily now"
+            "zh-CN": "立即口服利伐沙班15 mg每日2次：免注射、无需监测，出院后可直接延续",
+            "en": "Start oral rivaroxaban 15 mg twice daily now: no injections or monitoring, and it continues seamlessly after discharge"
           },
           "correct": false,
           "feedback": {
@@ -6730,8 +6730,8 @@
         {
           "id": "withhold-filter",
           "text": {
-            "zh-CN": "因手术出血风险暂不抗凝，先放置下腔静脉滤器，术后第7天再开始抗凝",
-            "en": "Withhold anticoagulation because of surgical bleeding risk, insert an IVC filter and start anticoagulation on POD7"
+            "zh-CN": "因术后出血风险暂不抗凝，先置入下腔静脉滤器，待术后第7天再开始治疗性抗凝",
+            "en": "Withhold anticoagulation because of surgical bleeding risk, insert an IVC filter and start therapeutic anticoagulation on POD7"
           },
           "correct": false,
           "feedback": {
@@ -6742,13 +6742,13 @@
         {
           "id": "prophylactic",
           "text": {
-            "zh-CN": "恢复预防剂量依诺肝素40 mg每日一次",
-            "en": "Resume prophylactic enoxaparin 40 mg once daily"
+            "zh-CN": "恢复预防剂量依诺肝素40 mg每日一次，因术后第3天用治疗剂量出血风险太高",
+            "en": "Resume prophylactic enoxaparin 40 mg once daily, as a treatment dose is too risky on post-operative day 3"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不正确。预防剂量不能治疗已形成的静脉血栓栓塞；她需要的是治疗剂量抗凝。",
-            "en": "Incorrect. A prophylactic dose does not treat established venous thromboembolism; she needs therapeutic-dose anticoagulation."
+            "zh-CN": "不正确。预防剂量不能治疗已形成的静脉血栓栓塞；她需要的是治疗剂量抗凝。出血风险应通过选择作用短、可逆转的治疗剂量方案来管理，而不是减少剂量。",
+            "en": "Incorrect. A prophylactic dose does not treat established venous thromboembolism; she needs therapeutic-dose anticoagulation. Manage the bleeding risk by choosing a short-acting, reversible treatment-dose regimen, not by lowering the dose."
           }
         }
       ]
@@ -6778,13 +6778,13 @@
         {
           "id": "high",
           "text": {
-            "zh-CN": "高危",
-            "en": "High risk"
+            "zh-CN": "高危（大面积肺栓塞）",
+            "en": "High risk ('massive' PE)"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "就她就诊时的状态而言不正确。高危要求血流动力学不稳定：心搏骤停、梗阻性休克（收缩压<90 mmHg或需血管活性药，伴终末器官低灌注），或持续低血压（收缩压<90 mmHg或下降≥40 mmHg超过15分钟，且非新发心律失常、低血容量或脓毒症所致）。就诊时她血压112/70 mmHg（平均动脉压84 mmHg），神志清楚，没有休克或持续低血压。若她之后出现（或已经出现）低血压或休克，应在那时重新归为高危并进行再灌注——对她而言是经PERT行导管介入治疗或外科取栓。",
-            "en": "Incorrect for her status at presentation. High risk requires haemodynamic instability: cardiac arrest, obstructive shock (SBP < 90 mmHg or vasopressors needed, with end-organ hypoperfusion) or persistent hypotension (SBP < 90 mmHg or a drop ≥ 40 mmHg for > 15 minutes, not caused by new arrhythmia, hypovolaemia or sepsis). At presentation her BP was 112/70 mmHg (MAP 84 mmHg) and she was alert, with no shock or persistent hypotension. If she becomes (or has since become) hypotensive or shocked, she is reclassified as high risk at that point and needs reperfusion — in her case catheter-directed therapy or surgical embolectomy via the PERT."
+            "zh-CN": "就她就诊时的状态而言不正确。“大面积”（现称高危）肺栓塞按血流动力学后果而非血栓负荷定义——血压正常者即使双侧栓塞也不属于大面积。高危要求血流动力学不稳定：心搏骤停、梗阻性休克（收缩压<90 mmHg或需血管活性药，伴终末器官低灌注），或持续低血压（收缩压<90 mmHg或下降≥40 mmHg超过15分钟，且非新发心律失常、低血容量或脓毒症所致）。就诊时她血压112/70 mmHg（平均动脉压84 mmHg），神志清楚，没有休克或持续低血压。若她之后出现（或已经出现）低血压或休克，应在那时重新归为高危并进行再灌注——对她而言是经PERT行导管介入治疗或外科取栓。",
+            "en": "Incorrect for her status at presentation. 'Massive' (now high-risk) PE is defined by its haemodynamic effect, not by the clot burden — bilateral emboli in a normotensive patient are not massive. High risk requires haemodynamic instability: cardiac arrest, obstructive shock (SBP < 90 mmHg or vasopressors needed, with end-organ hypoperfusion) or persistent hypotension (SBP < 90 mmHg or a drop ≥ 40 mmHg for > 15 minutes, not caused by new arrhythmia, hypovolaemia or sepsis). At presentation her BP was 112/70 mmHg (MAP 84 mmHg) and she was alert, with no shock or persistent hypotension. If she becomes (or has since become) hypotensive or shocked, she is reclassified as high risk at that point and needs reperfusion — in her case catheter-directed therapy or surgical embolectomy via the PERT."
           }
         },
         {
@@ -6843,8 +6843,8 @@
         {
           "id": "no-lysis",
           "text": {
-            "zh-CN": "不行全身溶栓：3周内大手术是溶栓禁忌，而且血流动力学稳定时本来也没有溶栓指征",
-            "en": "No systemic thrombolysis: major surgery within 3 weeks is a contraindication, and while she is haemodynamically stable there is no indication for it anyway"
+            "zh-CN": "不行全身溶栓：3周内大手术是溶栓禁忌，而且血流动力学稳定时本来也无溶栓指征",
+            "en": "No systemic thrombolysis: major surgery within 3 weeks contraindicates it, and while she is haemodynamically stable it is not indicated anyway"
           },
           "correct": true,
           "feedback": {
@@ -6879,8 +6879,8 @@
         {
           "id": "ivc-filter",
           "text": {
-            "zh-CN": "术后患者应常规放置下腔静脉滤器",
-            "en": "Post-operative patients should routinely have an IVC filter"
+            "zh-CN": "术后早期，在抗凝基础上加放下腔静脉滤器，以防再次栓塞",
+            "en": "Insert an IVC filter as well as anticoagulating, to prevent further emboli so soon after surgery"
           },
           "correct": false,
           "feedback": {
@@ -6903,8 +6903,8 @@
         {
           "id": "early-doac-discharge",
           "text": {
-            "zh-CN": "今晚改为口服DOAC，24小时内出院",
-            "en": "Switch to an oral DOAC tonight and discharge within 24 hours"
+            "zh-CN": "待吸氧需求下降后，今晚改为口服DOAC，24小时内出院",
+            "en": "Switch to an oral DOAC tonight and discharge within 24 hours once her oxygen requirement settles"
           },
           "correct": false,
           "feedback": {
@@ -8223,7 +8223,7 @@
         ]
       },
       {
-        "text": "NKDA?",
+        "text": "Are you allergic to any medicines, or to X-ray dye?",
         "locale": "en",
         "expect": [
           "h-allergies"

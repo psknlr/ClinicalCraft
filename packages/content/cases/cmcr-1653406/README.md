@@ -15,7 +15,7 @@ feedback and the debrief.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653406` / `1.1.0` |
+| id / version | `cmcr-1653406` / `1.1.1` |
 | setting / facility | `operating-room` / `general-hospital` (operating theatre → ICU → ward) |
 | specialty | obstetrics, anaesthesiology, critical care |
 | difficulty | 4 / 5 |
@@ -437,6 +437,36 @@ and Wanfang listings.
   listing and quotations.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all three
+  single-best decisions the keyed option was the uniquely longest in both
+  languages (1.9–2.8 times the mean option length); now it is in none. The
+  `next-step`, `diagnosis` and `coagulopathy` keys say the same in fewer
+  words, and the `coagulopathy` key no longer names amniotic fluid embolism
+  (that decision can be answered before `diagnosis`). Each distractor now
+  gives the reason it tempts: a general anaesthetic straight after vomiting
+  carries the greatest airway and aspiration risk (wait for the spinal);
+  in-utero resuscitation may bring the fetal heart back (500 mL and a
+  15-minute recheck); her symptoms are unexplained (back to the delivery
+  suite); profound hypotension with a low fibrinogen and a raised D-dimer
+  before the blood loss is measured (haemorrhage); collapse soon after
+  induction, the classic timing of anaphylaxis; vomiting before the airway
+  was protected (aspiration); symptoms that began while she was positioned
+  for the spinal (high block); a PT of 12.5 s and the volume load on the
+  right ventricle; products wasted or feeding the consumption before DIC is
+  proven; plasma replacing every clotting factor in one product; a D-dimer of
+  9.22 mcg/mL as clotting still being activated (heparin). In the select-all
+  `management` decision the two wrong options give their reason too
+  (restoring preload; each differential treated differently — named without
+  the key), and `oxygen-pressors` adds titration to blood pressure and
+  perfusion. The feedback of `proceed-spinal`, `back-to-labour`,
+  `wait-confirm`, `haemorrhage`, `aspiration`, `pt-normal` and `wait-dic` now
+  also answers the reason its text gives. Medical meaning, correct flags,
+  scoring and the reference path are unchanged; no new patient fact is
+  introduced.
+- **Option ids neutral:** every id already names its content; none renamed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

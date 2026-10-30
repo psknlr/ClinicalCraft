@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-33716",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "反复发热与咯血 · 29岁男性",
     "en": "Recurrent fever and haemoptysis · 29-year-old man"
@@ -2808,8 +2808,8 @@
           "id": "fs-ie",
           "correct": true,
           "text": {
-            "zh-CN": "按可能的感染性心内膜炎评估：在用新的抗菌药之前，从不同部位分次采集多套血培养；尽快做超声心动图（需要时经食管）；请心内科接手。",
-            "en": "Work him up for possible infective endocarditis: take several sets of blood cultures from separate venepunctures before any new antibiotic, get an echocardiogram promptly (transoesophageal if needed), and hand him over to cardiology."
+            "zh-CN": "按可能的感染性心内膜炎评估：新用抗菌药之前，分次从不同部位采集多套血培养；尽快做超声心动图（需要时经食管）；请心内科接手。",
+            "en": "Work him up for possible infective endocarditis: several sets of blood cultures from separate venepunctures before any new antibiotic, a prompt echocardiogram (transoesophageal if needed), and cardiology to take over."
           },
           "feedback": {
             "zh-CN": "正确。发热4个月加新出现的二尖瓣杂音，又有颅内出血和动脉瘤这样的血管事件，首先要想到感染性心内膜炎（ESC 2023）。他几个月里反复用过抗菌药，先在抗菌药之前采集多套血培养，才有机会培养出致病菌；超声心动图找赘生物和瓣膜损害。原报告的呼吸科正是在入院查体听到杂音后疑诊感染性心内膜炎、转入心内科。",
@@ -2820,8 +2820,8 @@
           "id": "fs-hap",
           "correct": false,
           "text": {
-            "zh-CN": "按医院获得性肺炎处理：马上开始广谱抗生素，超声心动图以后再做。",
-            "en": "Treat it as hospital-acquired pneumonia: start broad-spectrum antibiotics now and arrange an echo later."
+            "zh-CN": "按医院获得性肺炎处理：急诊胸片提示右肺感染，他在咯血，体温38.6 ℃、脉搏120次/分，应马上开始广谱抗生素，超声心动图等病情稳定后再做。",
+            "en": "Treat it as hospital-acquired pneumonia: the ED film shows a right-lung infection and he is coughing blood with a temperature of 38.6 °C and a pulse of 120/min, so start broad-spectrum antibiotics now and get the echo once he has settled."
           },
           "feedback": {
             "zh-CN": "胸片提示右肺感染，但肺炎解释不了4个月的发热、颅内出血和新出现的杂音。先上抗生素会让血培养更难阳性、错过病原学诊断——他几个月来已经多次用过抗生素。先采集血培养，尽快做超声心动图。",
@@ -2832,8 +2832,8 @@
           "id": "fs-flow",
           "correct": false,
           "text": {
-            "zh-CN": "杂音是发热和贫血引起的血流杂音：先退热，热退了再复听。",
-            "en": "It is a flow murmur from fever and anaemia: bring the fever down and listen again once he is afebrile."
+            "zh-CN": "这是血流杂音：体温38.6 ℃、脉搏120次/分，急诊血红蛋白98 g/L，循环处于高动力状态；先退热，热退后再复听。",
+            "en": "It is a flow murmur: with a temperature of 38.6 °C, a pulse of 120/min and an ED haemoglobin of 98 g/L his circulation is hyperdynamic, so bring the fever down and listen again once he is afebrile."
           },
           "feedback": {
             "zh-CN": "发热和贫血可以引起柔和的收缩期血流杂音；但这是3～4级、粗糙的二尖瓣区杂音，而一年前多次检查都没有杂音——这是新出现的器质性杂音。当作血流杂音会重演前4个月的漏诊。",
@@ -2844,8 +2844,8 @@
           "id": "fs-neuro",
           "correct": false,
           "text": {
-            "zh-CN": "多半是再发颅内出血：先复查头颅CT，按神经系统问题处理。",
-            "en": "Probably another intracranial bleed: repeat the head CT and manage it as a neurological problem."
+            "zh-CN": "多半是再发颅内出血：4个月前他发热时就出现过颅内动脉瘤出血（后已栓塞），应先复查头颅CT，按神经系统问题处理。",
+            "en": "Probably another intracranial bleed: four months ago his fever came with a haemorrhage from an intracranial aneurysm, since coiled, so repeat the head CT first and manage this as a neurological problem."
           },
           "feedback": {
             "zh-CN": "这正是首诊医院的思路——注意力全放在脑子上，没有认真查心脏，也没做超声心动图和血培养，诊断因此延误了4个月（原报告讨论）。他现在神志清楚；发热、新杂音和心衰症状要求先按感染性心内膜炎评估，神经影像留给团队评估手术时机时复核。",
@@ -2882,8 +2882,8 @@
           "id": "dx-definite",
           "correct": true,
           "text": {
-            "zh-CN": "确定的感染性心内膜炎：超声心动图赘生物是一项主要标准，再加发热≥38 ℃、血管现象（颅内出血、颅内动脉瘤）和阳性血培养三项次要标准；屎肠球菌不是“典型”致病菌、两次培养间隔未报告，可能达不到微生物主要标准，但无论哪种情况都已“确定”。",
-            "en": "Definite infective endocarditis: the vegetations on echo are one major criterion, plus three minor ones — fever ≥ 38 °C, vascular phenomena (intracranial haemorrhage, intracranial aneurysm) and positive blood cultures. E. faecium is not a 'typical' organism and the interval between the cultures is not reported, so the major microbiological criterion may not be met — but it is definite either way."
+            "zh-CN": "确定的感染性心内膜炎：赘生物（主要标准）加发热≥38 ℃、血管现象（颅内出血、动脉瘤）、阳性血培养（三项次要标准）；屎肠球菌并非典型致病菌，即使达不到微生物主要标准也已“确定”。",
+            "en": "Definite infective endocarditis: vegetations (one major criterion) plus fever ≥ 38 °C, vascular phenomena (intracranial haemorrhage, aneurysm) and positive cultures (three minor) — definite even if E. faecium, not a typical organism, misses the microbiological major criterion."
           },
           "feedback": {
             "zh-CN": "正确。ESC 2023改良Duke标准（与Duke-ISCVID 2023相同）中的“典型”致病菌是口腔链球菌、解没食子酸链球菌、HACEK、金黄色葡萄球菌和粪肠球菌，屎肠球菌不在其中；非典型致病菌要达到微生物主要标准，需要血培养持续阳性（如两次阳性采血间隔超过12小时）。即使不计这一项，1项主要标准加3项次要标准也已是“确定”。术后瓣膜病理又满足了病理学标准。",
@@ -2894,8 +2894,8 @@
           "id": "dx-possible",
           "correct": false,
           "text": {
-            "zh-CN": "只能算“可能的”感染性心内膜炎：屎肠球菌不是典型致病菌，血培养不能计入，要等经食管超声。",
-            "en": "Only 'possible' endocarditis: E. faecium is not a typical organism, so the cultures don't count; wait for a transoesophageal echo."
+            "zh-CN": "只能算“可能的”感染性心内膜炎：屎肠球菌不是典型致病菌，两次培养间隔又未报告，血培养不能计入；赘生物加发热和血管现象只有1项主要、2项次要标准，要等经食管超声证实后才能定为“确定”。",
+            "en": "Only 'possible' endocarditis: E. faecium is not a typical organism and the interval between the cultures is not reported, so the cultures do not count, and the vegetations with fever and vascular phenomena make only 1 major and 2 minor criteria; wait for a transoesophageal echo to confirm it before calling it definite."
           },
           "feedback": {
             "zh-CN": "屎肠球菌不是典型致病菌、培养间隔不明，确实可能达不到微生物主要标准——但阳性培养仍是一项次要标准。赘生物（主要）加发热、血管现象和阳性培养（次要）已经是1项主要加3项次要，满足“确定”。经食管超声能更好地评估并发症，但不是确诊的前提。",
@@ -2906,8 +2906,8 @@
           "id": "dx-typical",
           "correct": false,
           "text": {
-            "zh-CN": "确定的感染性心内膜炎：两次血培养长出屎肠球菌，本身就是一项主要标准。",
-            "en": "Definite endocarditis: two cultures growing E. faecium are a major criterion in themselves."
+            "zh-CN": "确定的感染性心内膜炎（两项主要标准）：超声心动图见赘生物；连续2次血培养屎肠球菌——肠球菌属于典型致病菌，不论两次采血间隔多久，本身就构成一项微生物主要标准。",
+            "en": "Definite endocarditis on two major criteria: the vegetations on echo, and two consecutive cultures growing E. faecium — an enterococcus, so a typical organism and a major microbiological criterion in itself, whatever the interval between the samples."
           },
           "feedback": {
             "zh-CN": "结论对，理由错。屎肠球菌不在ESC 2023和Duke-ISCVID 2023的“典型”致病菌之列（粪肠球菌才是）；非典型致病菌需要血培养持续阳性才算主要标准，而本例两次采血的间隔没有报告。确诊靠的是赘生物加三项次要标准，以及术后病理。",
@@ -2918,20 +2918,20 @@
           "id": "dx-rejected",
           "correct": false,
           "text": {
-            "zh-CN": "排除感染性心内膜炎：外伤后4次超声心动图都正常。",
-            "en": "Endocarditis is rejected: four echocardiograms after his injury were normal."
+            "zh-CN": "排除感染性心内膜炎：外伤后4次超声心动图都正常，说明瓣膜原本没有问题；现在的赘生物描述为陈旧性，是几个月抗菌治疗后已经愈合的病灶，不是需要现在治疗的活动性感染。",
+            "en": "Endocarditis is rejected: four echocardiograms after his injury were normal, so the valve was sound, and vegetations described as old are lesions healed by months of antibiotics, not active infection that needs treating now."
           },
           "feedback": {
-            "zh-CN": "几个月前正常的超声心动图不能排除后来发生的感染性心内膜炎——原报告作者正是据此认为它与外伤关系不大，瓣膜是在那之后才受累的。现在的超声心动图已经看到了赘生物。",
-            "en": "Normal echocardiograms months ago cannot exclude endocarditis acquired since — the authors used exactly those scans to argue that the trauma was not the cause; the valve was infected later. Today's echo shows the vegetations."
+            "zh-CN": "几个月前正常的超声心动图不能排除后来发生的感染性心内膜炎——原报告作者正是据此认为它与外伤关系不大，瓣膜是在那之后才受累的。赘生物看起来陈旧不等于已经愈合：他已经发热4个月，血培养也是阳性。",
+            "en": "Normal echocardiograms months ago cannot exclude endocarditis acquired since — the authors used exactly those scans to argue that the trauma was not the cause; the valve was infected later. Vegetations that look old are not healed: he has had fever for four months and his cultures are positive."
           }
         },
         {
           "id": "dx-pneumonia",
           "correct": false,
           "text": {
-            "zh-CN": "右肺感染合并败血症，杂音是血流杂音。",
-            "en": "Right-lung infection with sepsis; the murmur is a flow murmur."
+            "zh-CN": "右肺感染合并败血症：急诊胸片已提示肺炎，血培养阳性；杂音是发热和贫血（急诊血红蛋白98 g/L）引起的血流杂音，按肺炎治疗即可。",
+            "en": "Right-lung infection with sepsis: the ED film showed the pneumonia and the cultures are positive; the murmur is a flow murmur from the fever and his anaemia (haemoglobin 98 g/L in the ED), so treat the pneumonia."
           },
           "feedback": {
             "zh-CN": "超声心动图已经看到赘生物和重度二尖瓣反流，血流杂音解释不了；右肺的胸片改变也解释不了4个月的发热和颅内出血。",
@@ -2974,8 +2974,8 @@
           "id": "sx-urgent",
           "correct": true,
           "text": {
-            "zh-CN": "限期手术（数天内）：重度二尖瓣反流伴心衰症状是手术指征；脑出血已约4个月，超过ESC 2023建议的大量脑出血后可考虑推迟≥4周的期限，可能的缺血性梗死本身不是推迟的理由；由心内膜炎团队复核当前头颅影像（排查感染性动脉瘤），并按药敏调整抗菌方案。",
-            "en": "Urgent surgery, within days: severe mitral regurgitation with heart-failure symptoms is an indication; the haemorrhage was about 4 months ago — beyond the ≥ 4-week delay ESC 2023 suggests considering after a significant haemorrhage — and a probable ischaemic infarct is not in itself a reason to wait; the Endocarditis Team reviews current brain imaging (looking for an infective aneurysm) and tailors the antibiotics to susceptibilities."
+            "zh-CN": "数天内限期手术（重度反流伴心衰）：脑出血已约4个月，过了ESC 2023建议的≥4周推迟期，可能的脑梗死也不是等待的理由；心内膜炎团队复核当前头颅影像排查感染性动脉瘤，按药敏用药。",
+            "en": "Urgent surgery within days for severe regurgitation with heart failure: the haemorrhage about 4 months ago is past the ≥ 4-week delay ESC 2023 suggests, and a probable infarct is no reason to wait; the Endocarditis Team reviews current brain imaging for an infective aneurysm and sets antibiotics by susceptibility."
           },
           "feedback": {
             "zh-CN": "正确。ESC 2023：心衰是感染性心内膜炎最主要的急诊或限期手术指征——难治性肺水肿或心源性休克要急诊手术（24小时内），有心衰症状或血流动力学耐受差的重度反流要限期手术（3～5天）。他有端坐呼吸、BNP升高和腱索断裂，但血压平稳，属限期。神经系统并发症后：短暂性脑缺血发作或缺血性卒中后不应推迟有指征的手术；大量脑出血后可考虑推迟至少4周——他的出血已过去约4个月。原报告的团队同样选择了手术（时间未报告）。",
@@ -2986,36 +2986,36 @@
           "id": "sx-defer",
           "correct": false,
           "text": {
-            "zh-CN": "因为脑出血过，先完成6周抗菌疗程，再考虑手术。",
-            "en": "Because of the brain haemorrhage, finish a 6-week antibiotic course before considering surgery."
+            "zh-CN": "暂缓手术：他有过颅内出血和动脉瘤栓塞，体外循环全身肝素化可能诱发再出血；血压120/70 mmHg说明目前尚能耐受，先在心内膜炎团队指导下完成6周抗菌疗程，等脑部恢复得更久一些再考虑手术。",
+            "en": "Defer surgery: after an intracranial haemorrhage and a coiled aneurysm, full heparinisation on bypass could make him bleed again, and a blood pressure of 120/70 mmHg shows he is coping for now — complete a 6-week antibiotic course under the Endocarditis Team, then reconsider surgery once his brain has had longer to heal."
           },
           "feedback": {
-            "zh-CN": "推迟只会让心衰加重、瓣膜继续毁损；他的脑出血已约4个月，ESC 2023所说的出血后推迟（≥4周）早已过去。等疗程结束不是重度反流伴心衰患者的选项。",
-            "en": "Waiting lets the heart failure worsen and the valve keep breaking down; his haemorrhage was about 4 months ago, long past the ≥ 4-week delay ESC 2023 mentions after a bleed. Waiting for the end of the course is not an option with severe regurgitation and heart failure."
+            "zh-CN": "推迟只会让心衰加重、瓣膜继续毁损。体外循环肝素化的出血风险，正是ESC 2023建议大量脑出血后可考虑推迟≥4周的原因——而他的出血已约4个月。血压平稳并不能让重度反流伴心衰的患者安全地等到疗程结束。",
+            "en": "Waiting lets the heart failure worsen and the valve keep breaking down. The bleeding risk of heparin on bypass is the reason ESC 2023 suggests considering a delay of ≥ 4 weeks after a significant haemorrhage — and his was about 4 months ago. A stable blood pressure does not make it safe to wait for the end of the course with severe regurgitation and heart failure."
           }
         },
         {
           "id": "sx-medical",
           "correct": false,
           "text": {
-            "zh-CN": "只用抗生素，再发栓塞时再手术。",
-            "en": "Antibiotics alone; operate only if there is another embolic event."
+            "zh-CN": "单用抗生素，按药敏选药、足疗程：赘生物描述为陈旧性，血压稳定在120/70 mmHg，他的脑部又已受过一次损伤，体外循环手术风险太大，只有再次发生栓塞时才手术。",
+            "en": "Antibiotics alone, chosen by susceptibility for a full course: the vegetations are described as old, his blood pressure is a stable 120/70 mmHg and his brain has already been injured once, so bypass surgery is too risky unless there is another embolic event."
           },
           "feedback": {
-            "zh-CN": "心衰本身就是手术指征，等待再次栓塞是把预防变成补救。他已经有脑出血、动脉瘤和可能的脑梗死，赘生物也还在。",
-            "en": "Heart failure is an indication in itself, and waiting for another embolus turns prevention into salvage. He has already had a haemorrhage, an aneurysm and a probable infarct, and the vegetations are still there."
+            "zh-CN": "心衰本身就是手术指征，不论赘生物看起来是否陈旧、血压是否平稳；等待再次栓塞是把预防变成补救。他已经有脑出血、动脉瘤和可能的脑梗死，赘生物也还在。",
+            "en": "Heart failure is an indication in itself, however old the vegetations look and however stable the blood pressure, and waiting for another embolus turns prevention into salvage. He has already had a haemorrhage, an aneurysm and a probable infarct, and the vegetations are still there."
           }
         },
         {
           "id": "sx-emergency",
           "correct": false,
           "text": {
-            "zh-CN": "动脉瘤已经栓塞，今晚就急诊手术，不必复核神经影像，也不必团队讨论。",
-            "en": "The aneurysm is coiled: operate as an emergency tonight, without reviewing neuroimaging or a team discussion."
+            "zh-CN": "趁心衰还没加重，今晚急诊手术：腱索很可能已断裂，BNP 377 ng/L，夜间不能平卧，动脉瘤又已栓塞，没有理由再等——不必复核神经影像，也不必团队讨论，抗菌方案术后再定。",
+            "en": "Emergency surgery tonight, before the heart failure worsens: the chordae have probably ruptured, the BNP is 377 ng/L and he cannot lie flat, and with the aneurysm already coiled there is nothing to wait for — operate without a neuroimaging review or a team discussion, and settle the antibiotics afterwards."
           },
           "feedback": {
-            "zh-CN": "急诊（24小时内）手术留给难治性肺水肿或心源性休克；他血压120/70 mmHg，没有休克，属限期手术。有神经系统并发症的患者，术前要由团队复核当前影像、权衡风险——这正是ESC 2023强调心内膜炎团队的原因。",
-            "en": "Emergency surgery (within 24 hours) is for refractory pulmonary oedema or cardiogenic shock; with a BP of 120/70 mmHg and no shock, he needs urgent surgery. With neurological complications the team reviews current imaging and weighs the risks before operating — which is why ESC 2023 puts the Endocarditis Team at the centre."
+            "zh-CN": "急诊（24小时内）手术留给难治性肺水肿或心源性休克；端坐呼吸和BNP升高、血压120/70 mmHg，是心衰而没有休克，属限期手术。有神经系统并发症的患者，术前要由团队复核当前影像、权衡风险——这正是ESC 2023强调心内膜炎团队的原因。",
+            "en": "Emergency surgery (within 24 hours) is for refractory pulmonary oedema or cardiogenic shock; orthopnoea and a raised BNP with a BP of 120/70 mmHg are heart failure without shock, which calls for urgent surgery. With neurological complications the team reviews current imaging and weighs the risks before operating — which is why ESC 2023 puts the Endocarditis Team at the centre."
           }
         }
       ]
@@ -3048,8 +3048,8 @@
           "id": "fp-ie",
           "correct": true,
           "text": {
-            "zh-CN": "把“发热+颅内出血/动脉瘤”当作可能的感染性心内膜炎：反复仔细听诊心脏，在抗菌药之前采集血培养，做超声心动图；并在决定动脉瘤处理的时机和方式之前，考虑感染性动脉瘤的可能。",
-            "en": "Treat 'fever plus intracranial haemorrhage or aneurysm' as possible infective endocarditis: examine the heart carefully and repeatedly, take blood cultures before antibiotics, get an echocardiogram — and consider an infective aneurysm before deciding when and how to treat it."
+            "zh-CN": "把发热伴颅内出血或动脉瘤当作可能的感染性心内膜炎：反复仔细听诊，抗菌药前采集血培养，做超声心动图，决定动脉瘤处理的时机和方式前先考虑感染性动脉瘤。",
+            "en": "Treat fever with an intracranial haemorrhage or aneurysm as possible endocarditis: repeated careful auscultation, cultures before antibiotics, an echocardiogram, and an infective aneurysm considered before deciding when and how to treat it."
           },
           "feedback": {
             "zh-CN": "正确。发热患者出现颅内出血或动脉瘤，是感染性心内膜炎的血管现象（ESC 2023改良Duke标准的次要标准），应主动寻找心脏来源。首诊时没有杂音不能排除——杂音可以后来才出现，要复查；血培养和超声心动图才是关键。原报告作者认为，正是没有认真查体、没做超声心动图和血培养、注意力全在中枢神经系统，造成了4个月的误诊，并提出动脉瘤介入的时机值得反思。",
@@ -3060,20 +3060,20 @@
           "id": "fp-no-murmur",
           "correct": false,
           "text": {
-            "zh-CN": "当时心脏没有杂音，已经可以排除心内膜炎。",
-            "en": "There was no murmur then, so endocarditis was already excluded."
+            "zh-CN": "当时已可合理排除心内膜炎：各瓣膜区都没有杂音，就诊时体温只有37.7 ℃，外伤后4次超声心动图也都正常——只有之后的病程才能把它揭示出来，当时做什么都改变不了。",
+            "en": "Endocarditis was reasonably excluded at that visit: no murmur at any valve area, a temperature of only 37.7 °C when he was seen and four normal echocardiograms after his injury — only the later course could have revealed it, whatever was done then."
           },
           "feedback": {
-            "zh-CN": "一次没听到杂音不能排除感染性心内膜炎，尤其在病程早期；要反复听诊，并做血培养和超声心动图。",
-            "en": "A single examination without a murmur does not exclude endocarditis, especially early on; re-examine, and do the blood cultures and the echocardiogram."
+            "zh-CN": "一次没听到杂音不能排除感染性心内膜炎，尤其在病程早期；发热之前几个月的超声心动图也说明不了之后的瓣膜情况——他当时已经发热3天、最高40 ℃。要反复听诊，并做血培养和超声心动图。",
+            "en": "A single examination without a murmur does not exclude endocarditis, especially early on, and echocardiograms from months before the fever say nothing about the valve since — he had already had 3 days of fever up to 40 °C. Re-examine, and do the blood cultures and the echocardiogram."
           }
         },
         {
           "id": "fp-hysteria",
           "correct": false,
           "text": {
-            "zh-CN": "烦躁、谵妄符合癔症；发热按败血症经验性抗感染就行。",
-            "en": "The agitation and delirium fit hysteria; empirical antibiotics for 'sepsis' cover the fever."
+            "zh-CN": "突发烦躁、谵妄符合癔症，中性粒细胞91.8%符合细菌性败血症：立即按败血症经验性抗感染、控制发热，同时请精神科会诊，等精神症状平复。",
+            "en": "Sudden agitation and delirium fit hysteria, and neutrophils of 91.8 % fit bacterial sepsis: start empirical antibiotics for sepsis at once to cover the fever, and ask psychiatry to see him while his mental state settles."
           },
           "feedback": {
             "zh-CN": "发热伴急性谵妄首先要找器质性原因，何况CT随即发现了脑出血。不留血培养就经验性用抗生素，会让以后的培养更难阳性，也掩盖了感染性心内膜炎。",
@@ -3084,12 +3084,12 @@
           "id": "fp-coil-first",
           "correct": false,
           "text": {
-            "zh-CN": "先处理动脉瘤，发热等出院后门诊随访。",
-            "en": "Deal with the aneurysm first and follow up the fever in clinic after discharge."
+            "zh-CN": "先处理出血的动脉瘤——再出血是眼下最致命的威胁——等神经外科的急症过去、他出院以后，再到门诊追查发热的原因。",
+            "en": "Secure the bleeding aneurysm first — rebleeding is the immediate threat to his life — and look into the cause of the fever in clinic once the neurosurgical emergency is over and he has gone home."
           },
           "feedback": {
-            "zh-CN": "这基本就是当时发生的事：动脉瘤处理了，发热却又持续了4个月。发热患者的颅内动脉瘤要先考虑感染来源，再决定处理的时机和方式。",
-            "en": "That is roughly what happened: the aneurysm was treated and the fever went on for another four months. In a febrile patient, look for an infective source of an intracranial aneurysm before deciding when and how to treat it."
+            "zh-CN": "这基本就是当时发生的事：动脉瘤处理了，发热却又持续了4个月。出血的动脉瘤固然紧急，但发热患者的颅内动脉瘤要先找感染来源——血培养和超声心动图——再决定处理的时机和方式。",
+            "en": "That is roughly what happened: the aneurysm was treated and the fever went on for another four months. A bleeding aneurysm is urgent, but in a febrile patient look for an infective source — cultures and an echocardiogram — before deciding when and how to treat it."
           }
         }
       ]

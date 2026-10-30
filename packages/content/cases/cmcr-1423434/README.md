@@ -14,7 +14,7 @@ unknown.
 
 | | |
 |---|---|
-| id / version | `cmcr-1423434` / `1.1.0` |
+| id / version | `cmcr-1423434` / `1.1.1` |
 | setting / facility | `inpatient` / `general-hospital` (ward bed 1) |
 | specialty | cardiology, clinical pharmacology |
 | difficulty | 3 / 5 |
@@ -323,6 +323,23 @@ cited without a DOI because none was verified.
 - **中国专家共识（2013）:** bibliographic data from citing reference lists; content not read; no DOI confirmed.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all four single-best decisions the keyed option was the
+  uniquely longest in both languages (1.6–2.4 times the mean option length); now it is in none. The keys say the same
+  in fewer words; the distractors carry the key's detail and say why they tempt — keeping 3.75 mg/day because the INR
+  is still below 2.0; stopping warfarin while amiodarone builds up; increasing it because she is under-anticoagulated
+  with recurrent AF and a new bioprosthesis; a urinary cause because the INR was only 2.2–2.4 on the two days before;
+  amiodarone liver injury with right-sided congestion; "certainly" because the timing fits exactly; the report's IM
+  vitamin K as a full reversal-and-restart plan; PCC because visible haematuria looks major; carrying on at a lower
+  dose so the valve is not left unprotected; aspirin because a bioprosthesis carries less thrombotic risk; the
+  three-month clinic once the INR is 1.4 and warfarin has restarted lower; a week off warfarin so the urinary tract
+  can heal; stopping amiodarone and returning to 3.75 mg/day. The report's own choices remain distractors, so every
+  decision still sets the historical course against current practice. Medical meaning, correct flags, scoring and the
+  reference path are unchanged; the feedback of `pcc-now`, `continue-lower` and `stop-for-good` now also answers the
+  reason their text gives.
+- **Option ids neutral:** every id already names its content; none renamed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

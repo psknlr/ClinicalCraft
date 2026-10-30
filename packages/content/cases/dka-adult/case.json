@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "dka-adult",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "呕吐、腹痛伴呼吸急促 · 24岁女性",
     "en": "Vomiting, abdominal pain and fast breathing · 24-year-old woman"
@@ -8321,8 +8321,8 @@
         {
           "id": "dx-severe-dka",
           "text": {
-            "zh-CN": "重度糖尿病酮症酸中毒（DKA）：血糖28.0 mmol/L、血β-羟丁酸5.8 mmol/L、静脉pH 7.08、HCO₃⁻ 7.0 mmol/L、阴离子间隙26；HCO₃⁻ < 10 mmol/L即为重度，需HDU/ICU（2级）监护",
-            "en": "Severe diabetic ketoacidosis (DKA): glucose 28.0 mmol/L, β-hydroxybutyrate 5.8 mmol/L, venous pH 7.08, HCO₃⁻ 7.0 mmol/L, anion gap 26; a bicarbonate < 10 mmol/L makes it severe — HDU/ICU (level-2) care"
+            "zh-CN": "重度DKA：pH 7.08，但HCO₃⁻ 7.0 mmol/L（< 10）即为重度，需2级（HDU/ICU）监护",
+            "en": "Severe DKA: pH 7.08, but HCO₃⁻ 7.0 mmol/L (< 10) makes it severe — level-2 (HDU/ICU) care"
           },
           "correct": true,
           "feedback": {
@@ -8333,8 +8333,8 @@
         {
           "id": "dx-moderate-dka",
           "text": {
-            "zh-CN": "中度DKA（pH在7.00–7.24之间），收入普通病房即可",
-            "en": "Moderate DKA (pH between 7.00 and 7.24) — a general ward is fine"
+            "zh-CN": "中度DKA：静脉pH 7.08处于中度范围（7.00–7.24），收入普通内科病房、每小时监测血糖和血酮即可，无需HDU",
+            "en": "Moderate DKA: venous pH 7.08 is in the moderate band (7.00–7.24), so a general medical ward with hourly glucose and ketone checks will do — no HDU"
           },
           "correct": false,
           "feedback": {
@@ -8345,8 +8345,8 @@
         {
           "id": "dx-hhs",
           "text": {
-            "zh-CN": "高血糖高渗状态（HHS）",
-            "en": "Hyperosmolar hyperglycaemic state (HHS)"
+            "zh-CN": "高血糖高渗状态（HHS），血糖已达28.0 mmol/L",
+            "en": "Hyperosmolar hyperglycaemic state (HHS), given a glucose of 28.0 mmol/L"
           },
           "correct": false,
           "feedback": {
@@ -8357,8 +8357,8 @@
         {
           "id": "dx-mixed",
           "text": {
-            "zh-CN": "DKA与HHS混合型",
-            "en": "Mixed DKA–HHS"
+            "zh-CN": "DKA与HHS混合型：酮症酸中毒合并血糖28.0 mmol/L",
+            "en": "Mixed DKA–HHS: ketoacidosis together with a glucose of 28.0 mmol/L"
           },
           "correct": false,
           "feedback": {
@@ -8369,8 +8369,8 @@
         {
           "id": "dx-starvation",
           "text": {
-            "zh-CN": "饥饿性/酒精性酮症酸中毒",
-            "en": "Starvation or alcoholic ketoacidosis"
+            "zh-CN": "饥饿性或酒精性酮症酸中毒，而非DKA",
+            "en": "Starvation or alcoholic ketoacidosis rather than DKA"
           },
           "correct": false,
           "feedback": {
@@ -8381,8 +8381,8 @@
         {
           "id": "dx-euglycaemic",
           "text": {
-            "zh-CN": "正常血糖性DKA（SGLT2抑制剂相关）",
-            "en": "Euglycaemic DKA (SGLT2-inhibitor related)"
+            "zh-CN": "正常血糖性DKA（SGLT2抑制剂相关）：酮症酸中毒而血糖升高不明显",
+            "en": "Euglycaemic DKA (SGLT2-inhibitor related): ketoacidosis without marked hyperglycaemia"
           },
           "correct": false,
           "feedback": {
@@ -8393,8 +8393,8 @@
         {
           "id": "dx-lactic",
           "text": {
-            "zh-CN": "胃肠炎致脓毒症伴乳酸性酸中毒",
-            "en": "Sepsis from gastroenteritis with lactic acidosis"
+            "zh-CN": "胃肠炎致脓毒症，乳酸性酸中毒可解释HCO₃⁻降低和阴离子间隙升高",
+            "en": "Sepsis from gastroenteritis, with lactic acidosis accounting for the low HCO₃⁻ and the raised anion gap"
           },
           "correct": false,
           "feedback": {
@@ -8431,8 +8431,8 @@
         {
           "id": "k-first",
           "text": {
-            "zh-CN": "暂缓胰岛素；继续补液并静脉补钾10–20 mmol/h（本例：含钾40 mmol/L的0.9%氯化钠以500 mL/h泵入 = 20 mmol/h，持续心电监护），每小时复查钾；钾 ≥ 3.5 mmol/L后开始固定速率胰岛素0.1 U/kg/h",
-            "en": "Hold insulin; continue fluids and give IV potassium 10–20 mmol/h (here 0.9% NaCl with KCl 40 mmol/L at 500 mL/h = 20 mmol/h, on continuous ECG monitoring), recheck K⁺ hourly; start fixed-rate insulin 0.1 U/kg/h once K⁺ ≥ 3.5 mmol/L"
+            "zh-CN": "暂缓胰岛素；心电监护下继续补液并补钾10–20 mmol/h，每小时复查钾，钾 ≥ 3.5 mmol/L后开始固定速率胰岛素0.1 U/kg/h",
+            "en": "Hold insulin; continue fluids with KCl 10–20 mmol/h on a cardiac monitor, recheck K⁺ hourly, and start fixed-rate insulin 0.1 U/kg/h once K⁺ ≥ 3.5 mmol/L"
           },
           "correct": true,
           "feedback": {
@@ -8443,8 +8443,8 @@
         {
           "id": "k-insulin-now",
           "text": {
-            "zh-CN": "现在就开始固定速率胰岛素0.1 U/kg/h，下一袋液体里再加钾",
-            "en": "Start fixed-rate insulin 0.1 U/kg/h now and add potassium to the next bag"
+            "zh-CN": "立即开始固定速率静脉胰岛素0.1 U/kg/h以阻断酮体生成，继续补液，下一袋液体中再加氯化钾40 mmol/L",
+            "en": "Start fixed-rate IV insulin 0.1 U/kg/h now to switch off ketogenesis, continue the fluids and add KCl 40 mmol/L to the next bag"
           },
           "correct": false,
           "feedback": {
@@ -8455,8 +8455,8 @@
         {
           "id": "k-bolus",
           "text": {
-            "zh-CN": "先静推胰岛素0.1 U/kg负荷量再持续输注，尽快清除酮体",
-            "en": "Give an IV insulin bolus of 0.1 U/kg then an infusion, to clear ketones fast"
+            "zh-CN": "先静推胰岛素0.1 U/kg作负荷量，再以0.1 U/kg/h固定速率持续输注，同时在补液中加入氯化钾40 mmol/L，以便尽可能快地清除体内酮体",
+            "en": "Give an IV insulin bolus of 0.1 U/kg, then a fixed-rate infusion of 0.1 U/kg/h, adding KCl 40 mmol/L to the fluids, to clear the ketones as fast as possible"
           },
           "correct": false,
           "feedback": {
@@ -8467,8 +8467,8 @@
         {
           "id": "k-bicarb",
           "text": {
-            "zh-CN": "先给碳酸氢钠纠正酸中毒，再开始胰岛素",
-            "en": "Correct the acidosis with sodium bicarbonate first, then start insulin"
+            "zh-CN": "先静脉给予8.4%碳酸氢钠100 mL纠正酸中毒，再开始胰岛素输注",
+            "en": "Correct the acidosis first with 8.4% sodium bicarbonate 100 mL IV, then start the insulin infusion"
           },
           "correct": false,
           "feedback": {
@@ -8479,8 +8479,8 @@
         {
           "id": "k-push",
           "text": {
-            "zh-CN": "立即静推氯化钾20 mmol，然后开始胰岛素",
-            "en": "Push KCl 20 mmol IV now, then start insulin"
+            "zh-CN": "立即静推氯化钾20 mmol快速纠正低钾，然后开始胰岛素",
+            "en": "Push KCl 20 mmol IV now to correct the potassium quickly, then start the insulin"
           },
           "correct": false,
           "feedback": {
@@ -8491,8 +8491,8 @@
         {
           "id": "k-wait-lab",
           "text": {
-            "zh-CN": "等45分钟后生化室的正式钾结果出来再决定",
-            "en": "Wait 45 minutes for the formal laboratory potassium before deciding"
+            "zh-CN": "除补液外暂不处理，等45分钟后生化室的正式血钾结果核实血气数值，再作决定",
+            "en": "Hold everything but the fluids for 45 minutes until the laboratory potassium confirms the gas value, then decide"
           },
           "correct": false,
           "feedback": {
@@ -8576,8 +8576,8 @@
         {
           "id": "p-pancreatitis",
           "text": {
-            "zh-CN": "急性胰腺炎",
-            "en": "Acute pancreatitis"
+            "zh-CN": "急性胰腺炎（导致腹痛和呕吐）",
+            "en": "Acute pancreatitis causing the abdominal pain and vomiting"
           },
           "correct": false,
           "feedback": {
@@ -8588,8 +8588,8 @@
         {
           "id": "p-pregnancy",
           "text": {
-            "zh-CN": "妊娠",
-            "en": "Pregnancy"
+            "zh-CN": "未被发现的早期妊娠",
+            "en": "An unrecognised early pregnancy"
           },
           "correct": false,
           "feedback": {
@@ -8600,8 +8600,8 @@
         {
           "id": "p-uti",
           "text": {
-            "zh-CN": "尿路感染/肾盂肾炎",
-            "en": "Urinary tract infection / pyelonephritis"
+            "zh-CN": "尿路感染或肾盂肾炎（隐匿的感染灶）",
+            "en": "Urinary tract infection or pyelonephritis as a hidden source of infection"
           },
           "correct": false,
           "feedback": {
@@ -8612,8 +8612,8 @@
         {
           "id": "p-sglt2",
           "text": {
-            "zh-CN": "SGLT2抑制剂",
-            "en": "SGLT2 inhibitor"
+            "zh-CN": "SGLT2抑制剂（已知可诱发DKA）",
+            "en": "An SGLT2 inhibitor (a recognised trigger of DKA)"
           },
           "correct": false,
           "feedback": {
@@ -8657,8 +8657,8 @@
         {
           "id": "g-add-dextrose",
           "text": {
-            "zh-CN": "加用10%葡萄糖125 mL/h（与含钾0.9%氯化钠并行），静脉胰岛素继续输注、速率减至0.05 U/kg/h，直至酮症酸中毒缓解，目标血糖约11 mmol/L",
-            "en": "Add 10% glucose 125 mL/h alongside the 0.9% NaCl with potassium and keep the IV insulin running, reduced to 0.05 U/kg/h, until the ketoacidosis has resolved — aiming for glucose about 11 mmol/L"
+            "zh-CN": "加用10%葡萄糖125 mL/h，胰岛素减至0.05 U/kg/h继续泵入，直至酮症酸中毒缓解",
+            "en": "Add 10% glucose 125 mL/h and keep the IV insulin running, reduced to 0.05 U/kg/h, until the ketoacidosis resolves"
           },
           "correct": true,
           "feedback": {
@@ -8669,8 +8669,8 @@
         {
           "id": "g-stop-insulin",
           "text": {
-            "zh-CN": "血糖已接近正常，停用胰岛素",
-            "en": "Glucose is nearly normal — stop the insulin"
+            "zh-CN": "血糖已接近正常：停用静脉胰岛素以免低血糖，继续输注含钾液体",
+            "en": "Glucose is nearly normal: stop the IV insulin to avoid hypoglycaemia and keep the potassium-containing fluids running"
           },
           "correct": false,
           "feedback": {
@@ -8681,8 +8681,8 @@
         {
           "id": "g-switch-sc",
           "text": {
-            "zh-CN": "现在就改为皮下胰岛素",
-            "en": "Switch to subcutaneous insulin now"
+            "zh-CN": "血糖已经控制，现在改为皮下基础+餐时胰岛素并停用静脉胰岛素",
+            "en": "Switch to subcutaneous basal–bolus insulin now and stop the IV infusion, as the glucose is under control"
           },
           "correct": false,
           "feedback": {
@@ -8693,8 +8693,8 @@
         {
           "id": "g-cut-insulin",
           "text": {
-            "zh-CN": "把胰岛素减到0.02 U/kg/h，不加葡萄糖",
-            "en": "Cut insulin to 0.02 U/kg/h and add no glucose"
+            "zh-CN": "把胰岛素减到0.02 U/kg/h以免血糖继续下降，不加葡萄糖，并一直维持该速率直至酮症酸中毒缓解",
+            "en": "Cut the insulin to 0.02 U/kg/h to stop the glucose falling, add no glucose, and keep it there until the ketoacidosis resolves"
           },
           "correct": false,
           "feedback": {
@@ -8705,8 +8705,8 @@
         {
           "id": "g-continue-as-is",
           "text": {
-            "zh-CN": "维持原方案不变，4小时后再复查",
-            "en": "Carry on unchanged and recheck in 4 hours"
+            "zh-CN": "维持原方案不变（胰岛素0.1 U/kg/h加含钾0.9%氯化钠），4小时后再复查血糖和血酮",
+            "en": "Carry on unchanged with insulin 0.1 U/kg/h and the saline with potassium, and recheck glucose and ketones in 4 hours"
           },
           "correct": false,
           "feedback": {
@@ -8791,8 +8791,8 @@
         {
           "id": "r-glucose-only",
           "text": {
-            "zh-CN": "只要血糖 < 11 mmol/L就算缓解",
-            "en": "Glucose < 11 mmol/L alone means resolution"
+            "zh-CN": "只要血糖 < 11 mmol/L就算缓解，不必看血酮和酸碱指标",
+            "en": "Resolved once glucose is below 11 mmol/L, whatever the ketones and acid–base values"
           },
           "correct": false,
           "feedback": {
@@ -8803,8 +8803,8 @@
         {
           "id": "r-stop-first",
           "text": {
-            "zh-CN": "先停静脉胰岛素，等她下一餐时再打皮下胰岛素",
-            "en": "Stop the IV insulin first and give subcutaneous insulin at her next meal"
+            "zh-CN": "现在先停静脉胰岛素和葡萄糖，等她下一餐时再皮下注射基础和餐时胰岛素",
+            "en": "Stop the IV insulin and glucose now, then give subcutaneous basal and meal-time insulin with her next meal"
           },
           "correct": false,
           "feedback": {
@@ -8815,8 +8815,8 @@
         {
           "id": "r-wait-bicarb",
           "text": {
-            "zh-CN": "HCO₃⁻ 19仍偏低，继续静脉胰岛素直到HCO₃⁻ > 22",
-            "en": "HCO₃⁻ 19 is still low — continue IV insulin until it is > 22"
+            "zh-CN": "尚未缓解：HCO₃⁻ 19 mmol/L仍偏低，应继续静脉胰岛素，直到HCO₃⁻ > 22 mmol/L",
+            "en": "Not yet resolved: HCO₃⁻ 19 mmol/L is still low, so continue IV insulin until the bicarbonate is above 22 mmol/L"
           },
           "correct": false,
           "feedback": {
@@ -9916,7 +9916,7 @@
         ]
       },
       {
-        "text": "When did all this start?",
+        "text": "How long have you been feeling this rough?",
         "locale": "en",
         "expect": [
           "hx-onset-course"
@@ -9930,7 +9930,7 @@
         ]
       },
       {
-        "text": "Where is the tummy pain?",
+        "text": "Whereabouts is the tummy pain?",
         "locale": "en",
         "expect": [
           "hx-abd-pain"
@@ -10339,7 +10339,7 @@
         ]
       },
       {
-        "text": "现在感觉怎么样？",
+        "text": "这会儿感觉怎么样啦？",
         "locale": "zh-CN",
         "expect": [
           "hx-main-complaint",
@@ -10348,7 +10348,7 @@
         ]
       },
       {
-        "text": "肚子还疼吗？",
+        "text": "现在肚子还疼吗？",
         "locale": "zh-CN",
         "expect": [
           "hx-status-midway",
@@ -10356,7 +10356,7 @@
         ]
       },
       {
-        "text": "还恶心吗？",
+        "text": "这会儿还恶心吗？",
         "locale": "zh-CN",
         "expect": [
           "hx-status-midway",
@@ -10364,7 +10364,7 @@
         ]
       },
       {
-        "text": "Are you hungry?",
+        "text": "Are you feeling hungry yet?",
         "locale": "en",
         "expect": [
           "hx-status-midway",

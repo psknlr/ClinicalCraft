@@ -15,7 +15,7 @@ medical advice.
 
 | | |
 |---|---|
-| id / version | `dka-adult` / `1.1.1` |
+| id / version | `dka-adult` / `1.1.2` |
 | setting / facility | `emergency` (resus bay 1, managed to HDU/ICU level 2) / `general-hospital` |
 | specialty | emergency medicine, endocrinology, critical care |
 | difficulty | 3 / 5 |
@@ -513,6 +513,31 @@ them:
   ≥ 8 mmol/L) depend on the strip brand.
 
 ## Changelog
+
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all 3
+  single-best decisions (`dx-severity`, `k-sequencing`, `glucose-falling`) the
+  keyed option was the uniquely longest in both languages; now it is in none.
+  The keys are tighter wording of the same plan — the numbers they dropped
+  (the full D-K-A values, the 40 mmol/L bag at 500 mL/h, the glucose target of
+  about 11 mmol/L) stay in their feedback — and the distractors carry the same
+  register: moderate DKA reads pH 7.08 as the moderate band and sends her to a
+  general medical ward; HHS, mixed DKA–HHS and lactic acidosis say which value
+  they lean on; insulin now, the insulin bolus, bicarbonate, the KCl push and
+  waiting for the laboratory K⁺ give their full plan; stopping, switching to
+  SC, cutting to 0.02 U/kg/h and carrying on give their rationale. In the
+  select-all `precipitant` the correct options were on average about four
+  times as long as the wrong ones (nearly twice as long in
+  `resolution-transition`); the wrong ones now have the same
+  specificity (pancreatitis "causing the abdominal pain and vomiting", the
+  bicarbonate threshold of 22 mmol/L…) and still quote nothing the history
+  alone reveals. Medical meaning, correct flags, feedback and scoring are
+  unchanged.
+- **Option ids:** all already name their content; none changed.
+- **Matcher corpus:** six `extensions.testUtterances` that were one of their
+  item's keywords (`cases validate --strict`) are now paraphrases; no history
+  item, answer or keyword changed.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

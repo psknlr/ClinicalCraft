@@ -10,7 +10,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-1551893` · v1.1.0 |
+| Case | `cmcr-1551893` · v1.1.1 |
 | Source | 葉蔭霆, 陳泰業, 張錦標. 成人睾丸纖維性假瘤1例. 鏡湖醫學. 2025;25(1):66-67 (title names the diagnosis — facilitators only) |
 | Setting | Urology outpatient clinic (`outpatient`), then theatre and a post-operative clinic visit |
 | Facility | `general-hospital` (consult room 1; CT, MRI, theatre, pathology) |
@@ -321,6 +321,23 @@ PubMed record (PMID 22596100, verified by the PR #3 audit) and the journal's lis
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+* **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all 3
+  single-best decisions in both languages; now it is in one (`origin`). Each distractor states its reasoning in the
+  key's register: a hydrocele or cyst because the lump is painless with no groin nodes; epididymo-orchitis as a
+  tumour mimic, with antibiotics and a repeat scan; cancer excluded because ultrasound outranks palpation; a scrotal
+  core biopsy as a quick day case that spares an operation; radical orchidectomy without frozen section (the report's
+  operation) because a solid, growing mass cannot be called benign; observation because β-hCG and PSA are not raised
+  and the CT shows no spread; IgG4-related disease with steroids and an organ screen; mesothelioma with CT staging and
+  oncology referral; germ-cell follow-up because the testis was removed as a suspected tumour. The keys of `origin`,
+  `plan` and `pathology` are tighter wording of the same content. In the multiple-answer `consent` decision the two
+  distractors name their false grounds. The reassurance and IgG4 feedback also answer the CT and organ-screen
+  arguments. Correct flags and scoring are unchanged.
+* **Option ids:** all already name their content; none changed.
+* **Matcher corpus:** the test utterance 「疼不疼？」 was a keyword of `pain` (`cases validate --strict`); it is now the
+  paraphrase 「这个包块平时会痛吗？」. No history item, answer or keyword changed.
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 * **Timing of the key decision (audit A1/A2):** the post-orchidectomy pathology no longer sits in the
@@ -360,7 +377,7 @@ PubMed record (PMID 22596100, verified by the PR #3 audit) and the journal's lis
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-1551893/case.json   # 0 errors, 0 warnings
+npm run -s cc -- cases validate packages/content/cases/cmcr-1551893/case.json --strict   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-1551893      # solution 48 steps · objectives 5/5 · decisions 4/4 · utterances 40/40
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-1551893                 # collection contract: passed
 npm run -s cc -- exec --case cmcr-1551893 --autopilot --approval bypass --provider offline --output-format json            # 19/19, 5/5

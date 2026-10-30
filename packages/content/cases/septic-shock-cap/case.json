@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "septic-shock-cap",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "发热、咳嗽伴意识模糊 · 72岁女性",
     "en": "Fever, cough and confusion · 72-year-old woman"
@@ -8217,10 +8217,10 @@
       },
       "options": [
         {
-          "id": "a",
+          "id": "cultures-abx-1h",
           "text": {
-            "zh-CN": "立即留取两套血培养（不因此延误），并在识别休克后1小时内尽快静脉给予经验性抗菌药物",
-            "en": "Take two sets of blood cultures now (without delaying treatment) and give IV empirical antibiotics as soon as possible, within 1 hour of recognising shock"
+            "zh-CN": "立即留取两套血培养（不因此延误治疗），并在识别休克后1小时内静脉给予经验性抗菌药物",
+            "en": "Two sets of blood cultures now, without delaying treatment, and IV empirical antibiotics within 1 hour of recognising shock"
           },
           "correct": true,
           "feedback": {
@@ -8229,10 +8229,10 @@
           }
         },
         {
-          "id": "b",
+          "id": "ct-first",
           "text": {
-            "zh-CN": "先送胸部CT明确肺炎范围，再决定是否用抗生素",
-            "en": "Send her for a chest CT to define the pneumonia first, then decide on antibiotics"
+            "zh-CN": "先做胸部CT明确肺炎范围、排除脓胸等并发症，再决定用哪种抗生素",
+            "en": "Chest CT first to define the extent of the pneumonia and exclude complications such as empyema, then choose the antibiotics"
           },
           "correct": false,
           "feedback": {
@@ -8241,10 +8241,10 @@
           }
         },
         {
-          "id": "c",
+          "id": "await-procalcitonin",
           "text": {
-            "zh-CN": "等降钙素原结果：PCT > 0.5 µg/L 再开始抗生素",
-            "en": "Wait for the procalcitonin: start antibiotics only if PCT > 0.5 µg/L"
+            "zh-CN": "先等降钙素原结果：PCT > 0.5 µg/L才开始抗生素，以免把病毒感染当作细菌感染治疗",
+            "en": "Wait for the procalcitonin and start antibiotics only if PCT > 0.5 µg/L, to avoid treating a viral infection as bacterial"
           },
           "correct": false,
           "feedback": {
@@ -8253,10 +8253,10 @@
           }
         },
         {
-          "id": "d",
+          "id": "abx-within-3h",
           "text": {
-            "zh-CN": "她血压还能测到，3小时内给药即可",
-            "en": "Her blood pressure is still recordable, so giving antibiotics within 3 hours is fine"
+            "zh-CN": "她血压还能测到，在指南允许的3小时时间窗内给予抗生素即可",
+            "en": "Her blood pressure is still recordable, so antibiotics within the 3-hour window the guidance allows are fine"
           },
           "correct": false,
           "feedback": {
@@ -8265,10 +8265,10 @@
           }
         },
         {
-          "id": "e",
+          "id": "await-cultures",
           "text": {
-            "zh-CN": "等血培养报阳、拿到药敏后再针对性用药",
-            "en": "Wait for positive blood cultures and susceptibilities, then treat specifically"
+            "zh-CN": "暂不用抗生素，等血培养报阳并拿到药敏后，再给予窄谱的针对性治疗",
+            "en": "Hold antibiotics until the blood cultures and susceptibilities return, then give targeted narrow-spectrum treatment"
           },
           "correct": false,
           "feedback": {
@@ -8311,10 +8311,10 @@
       },
       "options": [
         {
-          "id": "a",
+          "id": "ceftriaxone-azithromycin",
           "text": {
-            "zh-CN": "头孢曲松 2 g IV q24h + 阿奇霉素 500 mg IV q24h",
-            "en": "Ceftriaxone 2 g IV q24h + azithromycin 500 mg IV q24h"
+            "zh-CN": "头孢曲松 2 g IV q24h + 阿奇霉素 500 mg IV q24h，兼顾非典型病原体",
+            "en": "Ceftriaxone 2 g IV q24h + azithromycin 500 mg IV q24h, covering atypical organisms too"
           },
           "correct": true,
           "feedback": {
@@ -8323,10 +8323,10 @@
           }
         },
         {
-          "id": "b",
+          "id": "ceftriaxone-moxifloxacin",
           "text": {
-            "zh-CN": "头孢曲松 2 g IV q24h + 莫西沙星 400 mg IV q24h",
-            "en": "Ceftriaxone 2 g IV q24h + moxifloxacin 400 mg IV q24h"
+            "zh-CN": "头孢曲松 2 g IV q24h + 莫西沙星 400 mg IV q24h，β-内酰胺联合呼吸喹诺酮",
+            "en": "Ceftriaxone 2 g IV q24h + moxifloxacin 400 mg IV q24h, a β-lactam with a respiratory quinolone"
           },
           "correct": true,
           "feedback": {
@@ -8335,10 +8335,10 @@
           }
         },
         {
-          "id": "c",
+          "id": "moxifloxacin-alone",
           "text": {
-            "zh-CN": "莫西沙星单药",
-            "en": "Moxifloxacin alone"
+            "zh-CN": "莫西沙星 400 mg IV q24h单药治疗：一种药就能同时覆盖典型和非典型病原体",
+            "en": "Moxifloxacin 400 mg IV q24h alone, covering typical and atypical organisms with one drug"
           },
           "correct": false,
           "feedback": {
@@ -8347,10 +8347,10 @@
           }
         },
         {
-          "id": "d",
+          "id": "meropenem-vancomycin",
           "text": {
-            "zh-CN": "美罗培南 + 万古霉素",
-            "en": "Meropenem + vancomycin"
+            "zh-CN": "美罗培南 + 万古霉素：休克时先用最广谱的覆盖，等培养结果回报后再降阶梯",
+            "en": "Meropenem + vancomycin for the broadest cover in shock, de-escalating once the cultures are back"
           },
           "correct": false,
           "feedback": {
@@ -8359,10 +8359,10 @@
           }
         },
         {
-          "id": "e",
+          "id": "azithromycin-alone",
           "text": {
-            "zh-CN": "阿奇霉素单药",
-            "en": "Azithromycin alone"
+            "zh-CN": "阿奇霉素 500 mg IV q24h单药治疗：可同时覆盖肺炎链球菌和非典型病原体",
+            "en": "Azithromycin 500 mg IV q24h alone, which covers both pneumococcus and atypical organisms"
           },
           "correct": false,
           "feedback": {
@@ -8371,15 +8371,15 @@
           }
         },
         {
-          "id": "f",
+          "id": "oral-amoxicillin",
           "text": {
-            "zh-CN": "口服阿莫西林 1 g tid",
-            "en": "Oral amoxicillin 1 g three times daily"
+            "zh-CN": "口服阿莫西林 1 g，每日3次——社区获得性肺炎的一线用药",
+            "en": "Oral amoxicillin 1 g three times daily, the first-line antibiotic for community-acquired pneumonia"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不合适。休克时胃肠吸收不可靠，且不覆盖非典型病原体；重症CAP应静脉给药。",
-            "en": "Not appropriate. Oral absorption is unreliable in shock and atypical organisms are not covered; severe CAP needs IV therapy."
+            "zh-CN": "不合适。阿莫西林只是低危CAP的一线用药；休克时胃肠吸收不可靠，且不覆盖非典型病原体；重症CAP应静脉给药。",
+            "en": "Not appropriate. Amoxicillin is first line only for low-severity CAP; oral absorption is unreliable in shock and atypical organisms are not covered; severe CAP needs IV therapy."
           }
         }
       ]
@@ -8415,22 +8415,22 @@
       },
       "options": [
         {
-          "id": "a",
+          "id": "norepinephrine-peripheral",
           "text": {
-            "zh-CN": "经近端粗外周静脉（≥20G）立即开始去甲肾上腺素，初始目标MAP 65 mmHg，随后再建立动脉和中心静脉通路",
-            "en": "Start norepinephrine now through a proximal large-bore peripheral cannula (≥ 20G), targeting an initial MAP of 65 mmHg, and place arterial and central lines afterwards"
+            "zh-CN": "立即经近端外周粗静脉开始去甲肾上腺素，初始目标MAP 65 mmHg，随后再行动脉和中心静脉置管",
+            "en": "Peripheral norepinephrine now (proximal large-bore cannula), initial MAP target 65 mmHg; arterial and central lines later"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。去甲肾上腺素是一线升压药；SSC 2021建议不必等待中心静脉，可经外周静脉起始，并尽早建立动脉监测。SSC 2026仍推荐初始MAP目标65 mmHg（而非更高）；对像她这样≥65岁的成人，建议60–65 mmHg——按此滴定，避免过高。",
-            "en": "Correct. Norepinephrine is first line; SSC 2021 suggests starting it peripherally rather than waiting for central access, with arterial monitoring as soon as practical. SSC 2026 keeps an initial MAP target of 65 mmHg over higher targets and, for adults aged 65 or over like her, suggests 60–65 mmHg — titrate to that and avoid overshooting."
+            "zh-CN": "正确。去甲肾上腺素是一线升压药；SSC 2021建议不必等待中心静脉，可经近端粗外周静脉（≥20G）起始，并尽早建立动脉监测。SSC 2026仍推荐初始MAP目标65 mmHg（而非更高）；对像她这样≥65岁的成人，建议60–65 mmHg——按此滴定，避免过高。",
+            "en": "Correct. Norepinephrine is first line; SSC 2021 suggests starting it peripherally, through a proximal large-bore cannula (≥ 20G), rather than waiting for central access, with arterial monitoring as soon as practical. SSC 2026 keeps an initial MAP target of 65 mmHg over higher targets and, for adults aged 65 or over like her, suggests 60–65 mmHg — titrate to that and avoid overshooting."
           }
         },
         {
-          "id": "b",
+          "id": "dopamine-first",
           "text": {
-            "zh-CN": "首选多巴胺",
-            "en": "Dopamine first line"
+            "zh-CN": "首选多巴胺，从5 µg/kg/min起滴定，兼有升压和正性肌力作用",
+            "en": "Dopamine first line, titrated from 5 µg/kg/min, for its added inotropic support"
           },
           "correct": false,
           "feedback": {
@@ -8439,10 +8439,10 @@
           }
         },
         {
-          "id": "c",
+          "id": "more-boluses",
           "text": {
-            "zh-CN": "继续每次500 mL快速推注，直到MAP ≥ 65 mmHg，不设上限",
-            "en": "Keep giving 500 mL boluses until MAP ≥ 65 mmHg, with no upper limit"
+            "zh-CN": "先不用升压药：继续每次500 mL快速推注，直到MAP ≥ 65 mmHg为止，总补液量不设上限",
+            "en": "No vasopressor yet: keep giving 500 mL boluses until the MAP reaches 65 mmHg, with no upper limit on the total volume"
           },
           "correct": false,
           "feedback": {
@@ -8451,10 +8451,10 @@
           }
         },
         {
-          "id": "d",
+          "id": "hydrocortisone-first",
           "text": {
-            "zh-CN": "先用氢化可的松，观察血压是否回升，再决定是否用升压药",
-            "en": "Give hydrocortisone first, see whether the pressure recovers, then decide on a vasopressor"
+            "zh-CN": "先静脉给氢化可的松50 mg（每6小时1次），观察血压能否回升，再决定是否需要升压药",
+            "en": "Give IV hydrocortisone 50 mg 6-hourly first, then watch whether the blood pressure recovers before deciding on a vasopressor"
           },
           "correct": false,
           "feedback": {
@@ -8463,10 +8463,10 @@
           }
         },
         {
-          "id": "e",
+          "id": "await-central-line",
           "text": {
-            "zh-CN": "等中心静脉置管完成后再开始任何升压药",
-            "en": "Wait until a central line is in before starting any vasopressor"
+            "zh-CN": "等中心静脉置管完成后再开始任何升压药，以免外周输注发生外渗损伤",
+            "en": "Wait until a central line is in before starting any vasopressor, to avoid peripheral extravasation injury"
           },
           "correct": false,
           "feedback": {
@@ -8475,10 +8475,10 @@
           }
         },
         {
-          "id": "f",
+          "id": "vasopressin-alone",
           "text": {
-            "zh-CN": "首选血管加压素单药",
-            "en": "Vasopressin alone as first line"
+            "zh-CN": "首选血管加压素单药，避免儿茶酚胺类药物加重心动过速",
+            "en": "Vasopressin alone as first line, to avoid catecholamine-driven tachycardia"
           },
           "correct": false,
           "feedback": {
@@ -8537,10 +8537,10 @@
       },
       "options": [
         {
-          "id": "a",
+          "id": "septic-shock",
           "text": {
-            "zh-CN": "脓毒性休克：感染导致SOFA急性增加≥2分（即脓毒症），且充分液体复苏后仍需血管活性药物维持MAP ≥ 65 mmHg，同时血乳酸>2 mmol/L",
-            "en": "Septic shock: infection with an acute SOFA rise ≥ 2 (sepsis), plus a vasopressor needed to keep MAP ≥ 65 mmHg despite adequate fluid resuscitation, with lactate > 2 mmol/L"
+            "zh-CN": "脓毒性休克：脓毒症（SOFA急性增加≥2分），补液后仍需升压药维持MAP ≥ 65 mmHg，乳酸>2 mmol/L",
+            "en": "Septic shock: sepsis (acute SOFA rise ≥ 2) needing a vasopressor for MAP ≥ 65 mmHg after adequate fluids, with lactate > 2 mmol/L"
           },
           "correct": true,
           "feedback": {
@@ -8549,10 +8549,10 @@
           }
         },
         {
-          "id": "b",
+          "id": "sirs-criteria",
           "text": {
-            "zh-CN": "SIRS ≥ 2项 + 感染 = 脓毒症；收缩压<90 mmHg 即为脓毒性休克",
-            "en": "SIRS ≥ 2 plus infection = sepsis; systolic BP < 90 mmHg = septic shock"
+            "zh-CN": "按SIRS标准：SIRS ≥ 2项加感染即为脓毒症，补液后收缩压仍<90 mmHg即为脓毒性休克",
+            "en": "By the SIRS criteria: SIRS ≥ 2 plus infection makes sepsis, and a systolic BP still < 90 mmHg after fluids makes it septic shock"
           },
           "correct": false,
           "feedback": {
@@ -8561,10 +8561,10 @@
           }
         },
         {
-          "id": "c",
+          "id": "qsofa-3",
           "text": {
-            "zh-CN": "qSOFA 3分即可诊断脓毒性休克",
-            "en": "A qSOFA of 3 establishes septic shock"
+            "zh-CN": "按qSOFA：3分（呼吸≥22次/分、意识改变、收缩压≤100 mmHg）即可在床旁诊断脓毒性休克，无需等待任何化验结果",
+            "en": "By qSOFA: a score of 3 (RR ≥ 22/min, altered mentation, systolic BP ≤ 100 mmHg) establishes septic shock at the bedside, without waiting for any results"
           },
           "correct": false,
           "feedback": {
@@ -8573,10 +8573,10 @@
           }
         },
         {
-          "id": "d",
+          "id": "lactate-4",
           "text": {
-            "zh-CN": "乳酸≥4 mmol/L本身就定义了脓毒性休克，与血压和升压药无关",
-            "en": "A lactate ≥ 4 mmol/L defines septic shock by itself, regardless of blood pressure or vasopressors"
+            "zh-CN": "按乳酸：乳酸≥4 mmol/L提示严重低灌注，本身就定义了脓毒性休克，与血压和升压药无关",
+            "en": "By lactate: a lactate ≥ 4 mmol/L signals severe hypoperfusion and so defines septic shock by itself, regardless of blood pressure or vasopressors"
           },
           "correct": false,
           "feedback": {
@@ -8585,15 +8585,15 @@
           }
         },
         {
-          "id": "e",
+          "id": "severe-sepsis",
           "text": {
-            "zh-CN": "严重脓毒症（severe sepsis）",
-            "en": "Severe sepsis"
+            "zh-CN": "严重脓毒症（severe sepsis）：感染伴急性器官功能障碍（新发意识模糊、肌酐升高、血小板减少）",
+            "en": "Severe sepsis: infection with acute organ dysfunction (new confusion, raised creatinine, low platelets)"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。Sepsis-3已取消“严重脓毒症”这一类别。",
-            "en": "No. Sepsis-3 abolished the 'severe sepsis' category."
+            "zh-CN": "不妥。Sepsis-3已取消“严重脓毒症”这一类别；补液后仍需升压药、乳酸>2 mmol/L，已属脓毒性休克。",
+            "en": "No. Sepsis-3 abolished the 'severe sepsis' category, and needing a vasopressor after fluids with a lactate above 2 mmol/L is septic shock."
           }
         }
       ]
@@ -8621,7 +8621,7 @@
       },
       "options": [
         {
-          "id": "a",
+          "id": "score-4-icu",
           "text": {
             "zh-CN": "4分（新发意识模糊、尿素>7 mmol/L、收缩压<90 mmHg、年龄≥65岁）——高危，按重症CAP收入ICU",
             "en": "4 (new confusion, urea > 7 mmol/L, systolic BP < 90 mmHg, age ≥ 65) — high risk; admit to ICU as severe CAP"
@@ -8633,10 +8633,10 @@
           }
         },
         {
-          "id": "b",
+          "id": "score-5-icu",
           "text": {
-            "zh-CN": "5分（呼吸频率也计1分）——高危",
-            "en": "5 (respiratory rate also scores) — high risk"
+            "zh-CN": "5分（新发意识模糊、尿素>7 mmol/L、呼吸频率增快、收缩压<90 mmHg、年龄≥65岁）——高危，收入ICU",
+            "en": "5 (new confusion, urea > 7 mmol/L, raised respiratory rate, systolic BP < 90 mmHg, age ≥ 65) — high risk; admit to ICU"
           },
           "correct": false,
           "feedback": {
@@ -8645,27 +8645,27 @@
           }
         },
         {
-          "id": "c",
+          "id": "score-3-ward",
           "text": {
-            "zh-CN": "3分——收入普通病房即可",
-            "en": "3 — a general ward is fine"
+            "zh-CN": "3分（新发意识模糊、收缩压<90 mmHg、年龄≥65岁）——中危，收入普通病房",
+            "en": "3 (new confusion, systolic BP < 90 mmHg, age ≥ 65) — moderate risk; admit to a general ward"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。计分有误；而且无论CURB-65多少分，需要升压药的脓毒性休克都应收入ICU。",
-            "en": "No. The score is wrong, and regardless of CURB-65, septic shock needing a vasopressor belongs in ICU."
+            "zh-CN": "不妥。计分有误（尿素>7 mmol/L也计1分）；而且无论CURB-65多少分，需要升压药的脓毒性休克都应收入ICU。",
+            "en": "No. The score is wrong (her urea above 7 mmol/L also scores), and regardless of CURB-65, septic shock needing a vasopressor belongs in ICU."
           }
         },
         {
-          "id": "d",
+          "id": "score-2-short-stay",
           "text": {
-            "zh-CN": "2分——可考虑短期住院或门诊口服治疗",
-            "en": "2 — consider a short stay or oral outpatient treatment"
+            "zh-CN": "2分（只计意识模糊和年龄≥65岁，血压和尿素补液后会恢复）——短期住院或门诊口服治疗",
+            "en": "2 (confusion and age ≥ 65 only; BP and urea should settle with fluids) — short stay or oral outpatient treatment"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。明显低估：意识模糊、尿素升高、低血压和年龄各计1分。",
-            "en": "No. A gross underestimate: confusion, raised urea, hypotension and age each score a point."
+            "zh-CN": "不妥。明显低估：意识模糊、尿素升高、低血压和年龄各计1分；应按就诊时的数值计分，而不是预期的补液反应。",
+            "en": "No. A gross underestimate: confusion, raised urea, hypotension and age each score a point; score the presentation values, not the expected response to fluids."
           }
         }
       ]
@@ -9428,15 +9428,15 @@
       "type": "answer",
       "decisionId": "abx-timing",
       "optionIds": [
-        "a"
+        "cultures-abx-1h"
       ]
     },
     {
       "type": "answer",
       "decisionId": "abx-regimen",
       "optionIds": [
-        "a",
-        "b"
+        "ceftriaxone-azithromycin",
+        "ceftriaxone-moxifloxacin"
       ]
     },
     {
@@ -9543,7 +9543,7 @@
       "type": "answer",
       "decisionId": "vasopressor",
       "optionIds": [
-        "a"
+        "norepinephrine-peripheral"
       ]
     },
     {
@@ -9603,14 +9603,14 @@
       "type": "answer",
       "decisionId": "sepsis3",
       "optionIds": [
-        "a"
+        "septic-shock"
       ]
     },
     {
       "type": "answer",
       "decisionId": "curb65",
       "optionIds": [
-        "a"
+        "score-4-icu"
       ]
     },
     {
@@ -9734,7 +9734,7 @@
         ]
       },
       {
-        "text": "平时吃什么药？",
+        "text": "她每天固定吃哪几种药？",
         "locale": "zh-CN",
         "expect": [
           "hx-meds"
@@ -10049,7 +10049,7 @@
         ]
       },
       {
-        "text": "NKDA?",
+        "text": "Does she have any drug allergies we should know about?",
         "locale": "en",
         "expect": [
           "hx-allergies"
@@ -10140,7 +10140,7 @@
         ]
       },
       {
-        "text": "她吃过什么药？",
+        "text": "来之前她自己吃过啥药没？",
         "locale": "zh-CN",
         "expect": [
           "hx-otc-ibuprofen"
@@ -10217,7 +10217,7 @@
         ]
       },
       {
-        "text": "以前有什么病？",
+        "text": "她以前得过什么病没有？",
         "locale": "zh-CN",
         "expect": [
           "hx-pmh"

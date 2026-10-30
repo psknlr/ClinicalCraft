@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1423434",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "反复心悸胸闷 · 42岁女性",
     "en": "Recurrent palpitations and chest tightness · 42-year-old woman"
@@ -3192,8 +3192,8 @@
         {
           "id": "reduce-monitor",
           "text": {
-            "zh-CN": "开胺碘酮的同时预先把华法林减量约 1/3–1/2，此后数周每 2–3 天查INR，并复核地高辛（减半或停用）和心率控制药物",
-            "en": "Start amiodarone with a pre-emptive warfarin reduction of about one-third to one-half, check the INR every 2–3 days for the following weeks, and review digoxin (halve or stop) and her rate-control drugs"
+            "zh-CN": "开胺碘酮时预先把华法林减量约 1/3–1/2，此后数周每 2–3 天查INR，并复核地高辛（减半或停用）和控制心率的药物",
+            "en": "Start amiodarone with a pre-emptive warfarin cut of about one-third to one-half, an INR every 2–3 days for weeks, and a review of digoxin (halve or stop) and rate control"
           },
           "correct": true,
           "feedback": {
@@ -3204,8 +3204,8 @@
         {
           "id": "keep-dose",
           "text": {
-            "zh-CN": "华法林维持 3.75 mg/d：INR还没到 2.0，相互作用要几周后才会出现",
-            "en": "Keep warfarin at 3.75 mg/day — the INR is still below 2.0 and the interaction takes weeks to appear"
+            "zh-CN": "华法林维持 3.75 mg/d：INR 1.9 仍低于 2.0，胺碘酮的相互作用要几周后才会出现，等INR真正升高后再调整剂量",
+            "en": "Keep warfarin at 3.75 mg/day: at an INR of 1.9 she is still below 2.0, and the amiodarone interaction takes weeks to appear, so adjust the dose only once the INR rises"
           },
           "correct": false,
           "feedback": {
@@ -3216,8 +3216,8 @@
         {
           "id": "stop-warfarin",
           "text": {
-            "zh-CN": "先停用华法林，等胺碘酮约一个月达到稳态后再重新开始",
-            "en": "Stop warfarin until amiodarone reaches steady state in about a month, then start again"
+            "zh-CN": "胺碘酮起效期间相互作用难以预测，先停用华法林，等胺碘酮约一个月达到稳态后再重新开始，从头调整剂量",
+            "en": "Stop warfarin while amiodarone builds up, as the interaction is unpredictable, and restart once amiodarone reaches steady state in about a month, titrating the dose afresh"
           },
           "correct": false,
           "feedback": {
@@ -3228,8 +3228,8 @@
         {
           "id": "increase",
           "text": {
-            "zh-CN": "趁胺碘酮还没起效，先把华法林加量，尽快达到目标范围",
-            "en": "Increase warfarin now to reach the target range before amiodarone takes effect"
+            "zh-CN": "先把华法林加量：术后第8天INR仅 1.9，房颤复发又刚置换生物瓣，应趁胺碘酮还没起效尽快达到目标范围",
+            "en": "Increase warfarin now: on postoperative day 8 the INR is only 1.9, with recurrent AF and a new bioprosthesis, so reach the target range before amiodarone takes effect"
           },
           "correct": false,
           "feedback": {
@@ -3273,8 +3273,8 @@
         {
           "id": "interaction-probable",
           "text": {
-            "zh-CN": "华法林–胺碘酮相互作用导致抗凝过度（加用胺碘酮时华法林未减量），术后早期状态和右心淤血可能也有影响；这是“很可能”而非“肯定”的药物相互作用，仍需排除尿路局部原因（导尿损伤、感染）",
-            "en": "Over-anticoagulation from the warfarin–amiodarone interaction (warfarin not reduced when amiodarone started), perhaps helped by the early post-operative state and right-sided congestion — a probable rather than certain interaction, with a local urinary cause (catheter trauma, infection) still to exclude"
+            "zh-CN": "很可能（而非肯定）是华法林–胺碘酮相互作用（加胺碘酮时未减量），术后状态和右心淤血或有影响；尚需排除尿路局部原因",
+            "en": "A probable, not certain, warfarin–amiodarone interaction (warfarin not cut when amiodarone began), perhaps helped by the post-operative state and right-sided congestion; a local urinary cause still needs excluding"
           },
           "correct": true,
           "feedback": {
@@ -3285,8 +3285,8 @@
         {
           "id": "urinary-cause",
           "text": {
-            "zh-CN": "尿路局部原因（导尿损伤或感染），INR升高只是巧合",
-            "en": "A local urinary cause — catheter trauma or infection — with the high INR a coincidence"
+            "zh-CN": "尿路局部原因（术后导尿损伤或尿路感染），INR 5.1 只是巧合：前两天INR仅 2.2–2.4，期间华法林也已经两次减量了",
+            "en": "A local urinary cause — catheter trauma or a urinary infection after surgery — with the INR of 5.1 only a coincidence: it was just 2.2–2.4 on the two days before, and the warfarin dose had already been reduced twice"
           },
           "correct": false,
           "feedback": {
@@ -3297,8 +3297,8 @@
         {
           "id": "amio-liver",
           "text": {
-            "zh-CN": "胺碘酮引起肝损伤，凝血因子合成减少",
-            "en": "Amiodarone liver injury reducing clotting-factor production"
+            "zh-CN": "胺碘酮肝损伤使凝血因子合成减少：肝毒性是胺碘酮的已知不良反应，右心淤血又让肝脏更易受损",
+            "en": "Amiodarone liver injury cutting clotting-factor production: hepatotoxicity is a known amiodarone effect, and right-sided congestion leaves her liver more vulnerable"
           },
           "correct": false,
           "feedback": {
@@ -3309,8 +3309,8 @@
         {
           "id": "certain",
           "text": {
-            "zh-CN": "肯定是药物相互作用：术前尿检正常，已经排除了其他原因",
-            "en": "Certainly the interaction: the normal pre-operative urine tests rule out any other cause"
+            "zh-CN": "肯定是药物相互作用：时间关系完全吻合——加用胺碘酮8天后INR一天内翻倍——术前尿检也正常，已经排除了其他原因",
+            "en": "Certainly the interaction: the timing fits exactly — the INR doubled in a day, eight days into amiodarone — and the normal pre-operative urine tests rule out any other cause"
           },
           "correct": false,
           "feedback": {
@@ -3345,8 +3345,8 @@
         {
           "id": "classify-hold",
           "text": {
-            "zh-CN": "停用华法林，先按ACC 2020标准给出血分级（复查血红蛋白、评估血流动力学、有无血块或尿潴留、出血部位）；非大出血一般不用逆转剂，复查INR等它回落；只有大出血才静脉用维生素K₁并联合凝血酶原复合物",
-            "en": "Withhold warfarin and first grade the bleed by the ACC 2020 criteria (repeat haemoglobin, haemodynamics, clots or retention, the site); a non-major bleed generally needs no reversal agent — recheck the INR as it falls; only a major bleed gets IV vitamin K1 with a prothrombin complex concentrate"
+            "zh-CN": "停用华法林，先按ACC 2020给出血分级（血红蛋白、血流动力学、血块或尿潴留、部位）：非大出血一般不逆转，复查INR待其回落；大出血才静脉用维生素K₁加凝血酶原复合物",
+            "en": "Withhold warfarin and grade the bleed first (ACC 2020: haemoglobin, haemodynamics, clots or retention, site); non-major: usually no reversal, recheck the INR as it falls; major: IV vitamin K1 plus prothrombin complex concentrate"
           },
           "correct": true,
           "feedback": {
@@ -3357,8 +3357,8 @@
         {
           "id": "im-vitk-repeat",
           "text": {
-            "zh-CN": "停用华法林，立即肌内注射维生素K₁ 10 mg，4小时后INR仍高就再注射一次",
-            "en": "Withhold warfarin and give vitamin K1 10 mg intramuscularly now, repeating it after 4 h if the INR is still high"
+            "zh-CN": "停用华法林：INR 5.1 且有肉眼血尿，需要尽快逆转——立即肌内注射维生素K₁ 10 mg，4小时后复查INR，若仍偏高就再注射一次，次日再以较低剂量重新开始服用华法林",
+            "en": "Withhold warfarin and give vitamin K1 10 mg intramuscularly now, as an INR of 5.1 with visible bleeding needs reversing; recheck after 4 h, repeat the dose if the INR is still high, and restart warfarin at a lower dose the next day"
           },
           "correct": false,
           "feedback": {
@@ -3369,37 +3369,37 @@
         {
           "id": "pcc-now",
           "text": {
-            "zh-CN": "立即输注凝血酶原复合物并静脉用维生素K₁，让INR马上恢复正常",
-            "en": "Give a prothrombin complex concentrate and IV vitamin K1 now to normalise the INR at once"
+            "zh-CN": "INR 5.1 伴肉眼血尿，按大出血处理：立即输注四因子凝血酶原复合物并静脉用维生素K₁，让INR马上恢复正常、尽快止血",
+            "en": "Treat visible haematuria at an INR of 5.1 as a major bleed: give four-factor prothrombin complex concentrate with IV vitamin K1 now, to normalise the INR at once and stop the bleeding"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。病历中没有大出血的证据，ACC 2020共识把逆转剂留给大出血。对术后两周的生物瓣和房颤患者，把INR迅速完全纠正会带来不必要的血栓风险。",
-            "en": "No. Nothing in the record shows a major bleed, and ACC 2020 reserves reversal agents for major bleeding. Rapid full correction of the INR adds an unnecessary thrombotic risk two weeks after a bioprosthesis, with AF."
+            "zh-CN": "不对。病历中没有大出血的证据，肉眼血尿本身并不等于大出血；ACC 2020共识把逆转剂留给大出血。对术后两周的生物瓣和房颤患者，把INR迅速完全纠正会带来不必要的血栓风险。",
+            "en": "No. Nothing in the record shows a major bleed — visible haematuria is not by itself a major bleed — and ACC 2020 reserves reversal agents for major bleeding. Rapid full correction of the INR adds an unnecessary thrombotic risk two weeks after a bioprosthesis, with AF."
           }
         },
         {
           "id": "continue-lower",
           "text": {
-            "zh-CN": "华法林继续用，按 2.25 mg/d再减一点，观察小便",
-            "en": "Carry on with warfarin at a slightly lower dose than 2.25 mg/day and watch the urine"
+            "zh-CN": "华法林不停，在 2.25 mg/d 基础上再减量，因为停药会让新生物瓣和房颤失去保护；观察尿色并每天复查INR",
+            "en": "Carry on with warfarin at a dose below 2.25 mg/day, as a pause would leave her new bioprosthesis and AF unprotected, and watch the urine colour and the daily INR"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。INR 5.1并且正在出血，必须先停用华法林；继续给药会让INR进一步升高。减量是在INR回到范围、出血停止后才考虑的事。",
-            "en": "No. With an INR of 5.1 and active bleeding, warfarin is withheld first; giving more would push the INR higher. A lower dose is a decision for after the bleeding has stopped and the INR is back in range."
+            "zh-CN": "不对。INR 5.1并且正在出血，必须先停用华法林；继续给药会让INR进一步升高。INR 5.1 时停药一两天并不会让她失去抗凝保护。减量是在INR回到范围、出血停止后才考虑的事。",
+            "en": "No. With an INR of 5.1 and active bleeding, warfarin is withheld first; giving more would push the INR higher. At an INR of 5.1, a pause of a day or two does not leave her unprotected. A lower dose is a decision for after the bleeding has stopped and the INR is back in range."
           }
         },
         {
           "id": "stop-for-good",
           "text": {
-            "zh-CN": "永久停用华法林，改用阿司匹林",
-            "en": "Stop warfarin for good and switch to aspirin"
+            "zh-CN": "永久停用华法林、改用阿司匹林：她已在华法林治疗中出血，而生物瓣的血栓风险低于机械瓣",
+            "en": "Stop warfarin for good and switch to aspirin: she has now bled on warfarin, and a bioprosthesis carries a lower thrombotic risk than a mechanical valve"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。房颤加上刚置换的三尖瓣生物瓣需要口服抗凝，阿司匹林不能替代。ACC 2020共识：大多数患者在医学上安全时就应尽早恢复抗凝。",
-            "en": "No. AF with a newly implanted tricuspid bioprosthesis needs oral anticoagulation, which aspirin does not replace. ACC 2020: in most patients anticoagulation is restarted as soon as it is medically safe."
+            "zh-CN": "不对。房颤加上刚置换的三尖瓣生物瓣需要口服抗凝，阿司匹林不能替代；生物瓣的血栓风险较低，也不能消除房颤带来的卒中风险。ACC 2020共识：大多数患者在医学上安全时就应尽早恢复抗凝。",
+            "en": "No. AF with a newly implanted tricuspid bioprosthesis needs oral anticoagulation, which aspirin does not replace; a lower valve risk does not remove the stroke risk of her AF. ACC 2020: in most patients anticoagulation is restarted as soon as it is medically safe."
           }
         }
       ]
@@ -3430,8 +3430,8 @@
         {
           "id": "close-inr",
           "text": {
-            "zh-CN": "出院后几天内复查INR，此后至少每周复查直至稳定，按INR调整华法林——胺碘酮的作用还会持续累积数周；同时复核地高辛，并教她识别出血征象和就医时机",
-            "en": "An INR within a few days of discharge and then at least weekly until stable, adjusting warfarin to it — the amiodarone effect keeps building for weeks; also review digoxin and teach her the bleeding warning signs and when to seek help"
+            "zh-CN": "出院后几天内查INR，此后至少每周一次直至稳定，随胺碘酮作用累积调整华法林；复核地高辛；教她识别出血征象和就医时机",
+            "en": "An INR within days of discharge, then at least weekly until stable, titrating warfarin as amiodarone's effect builds for weeks; review digoxin; teach bleeding warning signs and when to seek help"
           },
           "correct": true,
           "feedback": {
@@ -3442,8 +3442,8 @@
         {
           "id": "clinic-3-months",
           "text": {
-            "zh-CN": "INR已经降下来了，三个月后瓣膜门诊复查一次就够了",
-            "en": "The INR is down now, so a check at the three-month valve clinic is enough"
+            "zh-CN": "出血已停，INR降到 1.4，华法林已减量重新开始，三个月后瓣膜门诊例行复查即可，其间如果发现出血或瘀斑再提前查INR",
+            "en": "The bleeding has stopped, the INR is down to 1.4 and warfarin has restarted at a lower dose, so the routine three-month valve clinic is soon enough, with an earlier INR only if she notices any bleeding or bruising"
           },
           "correct": false,
           "feedback": {
@@ -3454,8 +3454,8 @@
         {
           "id": "wait-a-week",
           "text": {
-            "zh-CN": "出血后应停用华法林至少一周，次日恢复太早了，应再次停药",
-            "en": "Warfarin should be withheld for at least a week after a bleed — restarting the next day was too early, so stop it again"
+            "zh-CN": "出血后应停用华法林至少一周，让尿路黏膜充分愈合——次日就恢复太早了，应再次停药，等门诊复查时再决定是否恢复",
+            "en": "Warfarin should be withheld for at least a week after a bleed so the urinary tract can heal — restarting the next day was too early, so stop it again and decide at the clinic review whether to restart"
           },
           "correct": false,
           "feedback": {
@@ -3466,8 +3466,8 @@
         {
           "id": "stop-amio-old-dose",
           "text": {
-            "zh-CN": "停用胺碘酮，华法林恢复到原来的 3.75 mg/d",
-            "en": "Stop amiodarone and go back to the previous 3.75 mg/day warfarin dose"
+            "zh-CN": "停用引起这次相互作用的胺碘酮，让华法林恢复到合用前的 3.75 mg/d，这样剂量就不必再追着波动的INR反复调整了",
+            "en": "Stop amiodarone, the cause of this interaction, and go back to the 3.75 mg/day warfarin dose she took before it, so the dose no longer has to chase a moving INR"
           },
           "correct": false,
           "feedback": {
