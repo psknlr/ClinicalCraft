@@ -41,8 +41,8 @@
     ],
     "license": "Authored educational adaptation; original publication and local media retain their copyright.",
     "notes": {
-      "zh-CN": "依据已发表的单例报告改写。本版本（1.1.0）的患者事实全部沿用1.0.0版从报告中提取的内容，按阶段重新组织并改写为患者和家属的口语，没有增加或改动任何数值、时间、药物或结局；尚未对照原文全文核对。患者为化名，医院、日历日期和身份细节已去除，时间以相对时间表示。1.0.0版自身的不一致之处（此前血小板7×10⁹/L与入院6×10⁹/L、产后最低8×10⁹/L；起病时血压140/100 mmHg与入院120/79 mmHg；“剖宫产后仍反复意识不清”中“仍”字暗示的产前情况；首次头颅CT的时间）全部保留并列入待核实。家属、对话、决策、干预、评分和教学要点为教学设计；唯一的原图（头颅MRI）因可能残留身份信息而未采用，其所见以文字保留。",
-      "en": "Adapted from a published single-case report. In this version (1.1.0) every patient fact is the one extracted from the report for version 1.0.0, reorganised by phase and reworded into the patient's and the relative's lay speech; no value, timing, drug or outcome has been added or changed, and the facts have not yet been checked against the full article. The patient has a pseudonym; hospitals, calendar dates and identifying details are removed, and times are relative. Version 1.0.0's own inconsistencies (an earlier platelet count of 7×10⁹/L against 6×10⁹/L on admission and a postpartum nadir of 8×10⁹/L; BP 140/100 mmHg at onset against 120/79 mmHg on admission; the 'still' in 'still recurrent impaired consciousness after the caesarean'; the timing of the first head CT) are all kept and listed to verify. The relative, the dialogue, decisions, interventions, scoring and teaching points are educational design; the only published figure (the brain MRI) is withheld because residual identifying text cannot be excluded, and its finding is kept as text."
+      "zh-CN": "依据已发表的单例报告改写。本版本（1.1.0）的患者事实全部沿用1.0.0版从报告中提取的内容，按阶段重新组织并改写为患者和家属的口语，没有增加或改动任何数值、时间、药物或结局；尚未对照原文全文核对。患者为化名，医院、日历日期和身份细节已去除，时间以相对时间表示。1.0.0版自身的不一致之处（此前血小板7×10⁹/L与分娩前6×10⁹/L、剖宫产后最低8×10⁹/L；起病时血压140/100 mmHg与入院120/79 mmHg；“剖宫产后仍反复意识不清”中“仍”字暗示的产前情况；首次头颅CT的时间）全部保留并列入待核实。家属、对话、决策、干预、评分和教学要点为教学设计；唯一的原图（头颅MRI）因可能残留身份信息而未采用，其所见以文字保留。",
+      "en": "Adapted from a published single-case report. In this version (1.1.0) every patient fact is the one extracted from the report for version 1.0.0, reorganised by phase and reworded into the patient's and the relative's lay speech; no value, timing, drug or outcome has been added or changed, and the facts have not yet been checked against the full article. The patient has a pseudonym; hospitals, calendar dates and identifying details are removed, and times are relative. Version 1.0.0's own inconsistencies (an earlier platelet count of 7×10⁹/L against 6×10⁹/L before the delivery and a lowest count of 8×10⁹/L after the caesarean; BP 140/100 mmHg at onset against 120/79 mmHg on admission; the 'still' in 'still recurrent impaired consciousness after the caesarean'; the timing of the first head CT) are all kept and listed to verify. The relative, the dialogue, decisions, interventions, scoring and teaching points are educational design; the only published figure (the brain MRI) is withheld because residual identifying text cannot be excluded, and its finding is kept as text."
     },
     "review": {
       "status": "editorial",
@@ -59,7 +59,7 @@
         "中华医学会妇产科学分会妊娠期高血压疾病学组：妊娠期高血压疾病诊治指南（2020）",
         "SOAP 2021 interdisciplinary consensus statement: neuraxial procedures in obstetric patients with thrombocytopenia",
         "ACCM/ATS 2016 policy statement: shared decision making in ICUs",
-        "AHA/ASA 2019 guidelines for the early management of acute ischaemic stroke (thrombolysis exclusions)"
+        "AHA/ASA 2026 guideline for the early management of patients with acute ischaemic stroke (thrombolysis contraindications)"
       ],
       "notes": {
         "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
@@ -73,8 +73,8 @@
   },
   "learningOutcomes": [
     {
-      "zh-CN": "在妊娠晚期血小板减少、贫血和神经症状并存时，比较TTP、HELLP综合征、重度子痫前期和免疫性血小板减少症，并在血小板降到个位数而凝血正常时首先考虑血栓性微血管病（ISTH 2020）。",
-      "en": "Distinguish TTP from HELLP syndrome, severe pre-eclampsia and immune thrombocytopenia in late pregnancy, and put a thrombotic microangiopathy first when the platelet count is in single figures with normal clotting (ISTH 2020)."
+      "zh-CN": "在妊娠晚期鉴别TTP、HELLP综合征、重度子痫前期和免疫性血小板减少症：血小板降到个位数并伴贫血、神经或肾脏受累而凝血正常时，首先考虑血栓性微血管病，并用血涂片确认微血管病性溶血（ISTH 2020）。",
+      "en": "Distinguish TTP from HELLP syndrome, severe pre-eclampsia and immune thrombocytopenia in late pregnancy: put a thrombotic microangiopathy first when single-figure platelets come with anaemia, neurological or renal involvement and normal clotting, and confirm the microangiopathic haemolysis on the blood film (ISTH 2020)."
     },
     {
       "zh-CN": "在输注任何血浆前留取ADAMTS13标本，并按ISTH 2020和BSH 2023立即开始以血浆为置换液的血浆置换（首次1.5倍血浆容量）和甲泼尼龙1 g/d×3天，不等检测结果。",
@@ -89,8 +89,8 @@
       "en": "Plan the birth for a woman at term with a very low platelet count: delivery once she is stable (ACOG 2020), magnesium sulfate seizure prophylaxis, general rather than neuraxial anaesthesia for a caesarean (SOAP 2021) and the neonatal team present."
     },
     {
-      "zh-CN": "识别分娩后血栓性微血管病仍在进展的证据（LDH上升、血小板不恢复、新的脑缺血、肌酐升高），升级为重症监护下每日血浆置换，并规划ADAMTS13、补体介导TMA和先天性TTP的鉴别。",
-      "en": "Recognise that a thrombotic microangiopathy is still progressing after delivery (rising LDH, platelets not recovering, new cerebral ischaemia, rising creatinine), escalate to daily plasma exchange in intensive care, and plan the work-up for ADAMTS13, complement-mediated TMA and congenital TTP."
+      "zh-CN": "识别血栓性微血管病在分娩后仍未缓解（剖宫产后反复意识不清，LDH由1600升至4880 U/L，血小板最低8×10⁹/L，肌酐最高268 μmol/L），升级为重症监护下每日血浆置换，并规划ADAMTS13、补体介导TMA和先天性TTP的鉴别。",
+      "en": "Recognise that the thrombotic microangiopathy has not settled after the birth (after the caesarean: recurrent impaired consciousness, LDH rising from 1600 to 4880 U/L, a lowest count of 8×10⁹/L, creatinine up to 268 μmol/L), escalate to daily plasma exchange in intensive care, and plan the work-up for ADAMTS13, complement-mediated TMA and congenital TTP."
     },
     {
       "zh-CN": "在家属考虑撤除治疗时，按SPIKES框架和ACCM/ATS 2016共同决策原则主持家庭会议。",
@@ -1712,8 +1712,8 @@
         "admission": {
           "available": true,
           "date": {
-            "zh-CN": "入院时（孕37+1周）",
-            "en": "On admission (37+1 weeks)"
+            "zh-CN": "分娩前（具体时间未记录）",
+            "en": "Before delivery (exact timing not recorded)"
           },
           "text": {
             "zh-CN": "血红蛋白66 g/L，血小板6×10⁹/L。（此前一次血小板为7×10⁹/L。）",
@@ -1772,7 +1772,7 @@
           ],
           "source": {
             "zh-CN": "报告（1.0.0版摘录）：产后病程（血小板最低8×10⁹/L）",
-            "en": "Report (version 1.0.0 extract): postpartum course (platelet nadir 8×10⁹/L)"
+            "en": "Report (version 1.0.0 extract): postpartum course (lowest platelet count 8×10⁹/L after the caesarean)"
           },
           "critical": true
         },
@@ -1824,8 +1824,8 @@
         "admission": {
           "available": true,
           "date": {
-            "zh-CN": "入院时（孕37+1周）",
-            "en": "On admission (37+1 weeks)"
+            "zh-CN": "分娩前（具体时间未记录）",
+            "en": "Before delivery (exact timing not recorded)"
           },
           "text": {
             "zh-CN": "凝血常规：正常（具体数值没有记录）。",
@@ -1896,8 +1896,8 @@
         "admission": {
           "available": true,
           "date": {
-            "zh-CN": "入院时（孕37+1周）",
-            "en": "On admission (37+1 weeks)"
+            "zh-CN": "分娩前（具体时间未记录）",
+            "en": "Before delivery (exact timing not recorded)"
           },
           "text": {
             "zh-CN": "肌酐115 μmol/L。尿素和电解质没有记录。",
@@ -1990,8 +1990,8 @@
         "admission": {
           "available": true,
           "date": {
-            "zh-CN": "入院时（孕37+1周）",
-            "en": "On admission (37+1 weeks)"
+            "zh-CN": "分娩前（具体时间未记录）",
+            "en": "Before delivery (exact timing not recorded)"
           },
           "text": {
             "zh-CN": "谷丙转氨酶（ALT）51 U/L。其余肝功能项目没有记录。",
@@ -2058,8 +2058,8 @@
         "admission": {
           "available": true,
           "date": {
-            "zh-CN": "入院时（孕37+1周）",
-            "en": "On admission (37+1 weeks)"
+            "zh-CN": "分娩前（具体时间未记录）",
+            "en": "Before delivery (exact timing not recorded)"
           },
           "text": {
             "zh-CN": "尿红细胞+++，尿蛋白++。",
@@ -2220,8 +2220,8 @@
         "postpartum": {
           "available": true,
           "date": {
-            "zh-CN": "剖宫产后",
-            "en": "After the caesarean"
+            "zh-CN": "时间未记录",
+            "en": "Timing not recorded"
           },
           "text": {
             "zh-CN": "外周血涂片：可见大量破碎红细胞。",
@@ -2239,8 +2239,8 @@
         "icu": {
           "available": true,
           "date": {
-            "zh-CN": "剖宫产后",
-            "en": "After the caesarean"
+            "zh-CN": "时间未记录",
+            "en": "Timing not recorded"
           },
           "text": {
             "zh-CN": "外周血涂片：可见大量破碎红细胞。",
@@ -2464,17 +2464,25 @@
       ],
       "performedAt": "records",
       "risk": "none",
-      "value": "neutral",
+      "value": "essential",
       "results": {
         "admission": {
-          "available": false,
+          "available": true,
+          "date": {
+            "zh-CN": "时间未记录",
+            "en": "Timing not recorded"
+          },
           "text": {
-            "zh-CN": "此项检查在这一阶段没有结果记录。",
-            "en": "No result is recorded for this test at this stage."
+            "zh-CN": "头颅CT（本病例记录的首次头颅CT）：未见异常。检查时间没有记录。",
+            "en": "Head CT (the first head CT this case records): normal. Its timing is not recorded."
+          },
+          "note": {
+            "zh-CN": "本病例把它记为首次CT，所以从入院阶段起即可查看；是在分娩前还是分娩后做的，没有记录。",
+            "en": "This case records it as the initial CT, so it can be read from admission on; whether it was done before or after the delivery is not recorded."
           },
           "source": {
-            "zh-CN": "1.0.0版没有记录：保持未知，不补写",
-            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+            "zh-CN": "报告（1.0.0版摘录）：“初始CT正常”（见于1.0.0版决策选项及其反馈）",
+            "en": "Report (version 1.0.0 extract): 'an initially normal CT' (stated in a 1.0.0 decision option and its feedback)"
           }
         },
         "postpartum": {
@@ -2484,8 +2492,8 @@
             "en": "Timing not recorded"
           },
           "text": {
-            "zh-CN": "头颅CT（本病例记录的首次头颅CT）：未见异常。检查是在分娩前还是分娩后做的，本病例没有记录。",
-            "en": "Head CT (the first head CT this case records): normal. Whether it was done before or after the delivery is not recorded."
+            "zh-CN": "头颅CT（本病例记录的首次头颅CT）：未见异常。检查时间没有记录。",
+            "en": "Head CT (the first head CT this case records): normal. Its timing is not recorded."
           },
           "source": {
             "zh-CN": "报告（1.0.0版摘录）：“初始CT正常”（见于1.0.0版决策选项及其反馈）",
@@ -2499,8 +2507,8 @@
             "en": "Timing not recorded"
           },
           "text": {
-            "zh-CN": "头颅CT（本病例记录的首次头颅CT）：未见异常。检查是在分娩前还是分娩后做的，本病例没有记录。",
-            "en": "Head CT (the first head CT this case records): normal. Whether it was done before or after the delivery is not recorded."
+            "zh-CN": "头颅CT（本病例记录的首次头颅CT）：未见异常。检查时间没有记录。",
+            "en": "Head CT (the first head CT this case records): normal. Its timing is not recorded."
           },
           "source": {
             "zh-CN": "报告（1.0.0版摘录）：“初始CT正常”（见于1.0.0版决策选项及其反馈）",
@@ -2554,8 +2562,8 @@
         "postpartum": {
           "available": true,
           "date": {
-            "zh-CN": "剖宫产后",
-            "en": "After the caesarean"
+            "zh-CN": "时间未记录",
+            "en": "Timing not recorded"
           },
           "text": {
             "zh-CN": "头颅MRI：多发急性缺血病灶。本病例没有记录病灶部位和检查时间。",
@@ -2573,8 +2581,8 @@
         "icu": {
           "available": true,
           "date": {
-            "zh-CN": "剖宫产后",
-            "en": "After the caesarean"
+            "zh-CN": "时间未记录",
+            "en": "Timing not recorded"
           },
           "text": {
             "zh-CN": "头颅MRI：多发急性缺血病灶。本病例没有记录病灶部位和检查时间。",
@@ -2785,6 +2793,84 @@
       ],
       "value": "useful",
       "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版没有记录：保持未知，不补写",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "postpartum": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版没有记录：保持未知，不补写",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "icu": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版没有记录：保持未知，不补写",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "ecg",
+      "name": {
+        "zh-CN": "12导联心电图",
+        "en": "12-lead ECG"
+      },
+      "category": "bedside",
+      "aliases": {
+        "zh-CN": [
+          "心电图",
+          "十二导联心电图",
+          "12导联心电图",
+          "做个心电图",
+          "心电描记"
+        ],
+        "en": [
+          "ecg",
+          "ekg",
+          "12-lead ecg",
+          "electrocardiogram",
+          "twelve-lead",
+          "heart tracing"
+        ]
+      },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "performedAt": "bedside",
+      "turnaroundMinutes": 5,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版没有记录：保持未知，不补写",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          }
+        },
         "postpartum": {
           "available": false,
           "text": {
@@ -3191,18 +3277,11 @@
       ],
       "risk": "moderate",
       "contraindicatedWhen": {
-        "any": [
-          {
-            "phase": "admission"
-          },
-          {
-            "phase": "icu"
-          }
-        ]
+        "always": true
       },
       "harm": {
-        "zh-CN": "她入院血压120/79 mmHg，没有重度高血压（ACOG 2020：收缩压≥160或舒张压≥110 mmHg持续15分钟以上才需紧急降压），此时静脉降压可致低血压并减少胎盘灌注；到了重症监护阶段，她需要升压药，更不能降压。",
-        "en": "Her admission BP is 120/79 mmHg — not severe-range (ACOG 2020: urgent treatment for ≥ 160 mmHg systolic or ≥ 110 mmHg diastolic sustained for 15 minutes or more) — so an IV bolus now risks hypotension and poorer placental flow; in intensive care she needs vasopressors, not antihypertensives."
+        "zh-CN": "本病例记录的血压都不需要静脉降压：入院时120/79 mmHg，起病时的140/100 mmHg也未达到重度范围（ACOG 2020：收缩压≥160 mmHg或舒张压≥110 mmHg持续15分钟以上才需紧急降压），之后的血压没有记录，到了重症监护阶段她需要的是升压药。没有达到用药指征就静脉推注降压药，可致低血压，分娩前还会减少胎盘灌注。",
+        "en": "No blood pressure recorded in this case calls for IV treatment: it is 120/79 mmHg on admission, even the 140/100 mmHg at onset was below the severe range (ACOG 2020: urgent treatment for ≥ 160 mmHg systolic or ≥ 110 mmHg diastolic sustained for 15 minutes or more), no later reading is recorded, and in intensive care she needs vasopressors. An IV bolus without an indicating reading risks hypotension and, before the birth, poorer placental flow."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -3289,13 +3368,11 @@
       ],
       "risk": "moderate",
       "contraindicatedWhen": {
-        "not": {
-          "intervened": "tpe"
-        }
+        "always": true
       },
       "harm": {
-        "zh-CN": "单纯输注血浆不能代替血浆置换：1991年加拿大随机试验中血浆置换优于血浆输注，单纯输注还受到它带来的容量负荷限制。只有在置换无法马上开始时才作为过渡，应尽快开始血浆置换（ISTH 2020）。",
-        "en": "Plasma infusion is no substitute for plasma exchange: in the 1991 Canadian randomised trial exchange did better than infusion, and infusion alone is limited by the fluid it adds. Use it only as a bridge if exchange cannot start at once, and start plasma exchange (ISTH 2020)."
+        "zh-CN": "单纯输注血浆不能代替血浆置换：1991年加拿大随机试验中血浆置换优于血浆输注，单纯输注还受到它带来的容量负荷限制。血浆置换才是治疗（ISTH 2020）；血浆输注只在置换无法马上开始时作为过渡——这里可以马上开始——置换开始以后，血浆本身就是置换液，另外输注只会增加容量负荷。",
+        "en": "Plasma infusion is no substitute for plasma exchange: in the 1991 Canadian randomised trial exchange did better than infusion, and infusion alone is limited by the fluid it adds. Plasma exchange is the treatment (ISTH 2020); an infusion is only a bridge when exchange cannot start at once — here it can — and once exchange is running, plasma is its replacement fluid, so a separate infusion only adds volume."
       },
       "response": {
         "zh-CN": "血浆已输注。原报告用的是输注新鲜冰冻血浆；本病例没有记录血浆置换，也不模拟其效果。",
@@ -3478,21 +3555,18 @@
       },
       "risk": "high",
       "maxDoses": 1,
-      "indicatedWhen": {
-        "intervened": "tpe"
-      },
       "contraindicatedWhen": {
         "not": {
           "intervened": "tpe"
         }
       },
       "harm": {
-        "zh-CN": "在血浆置换开始之前、血小板只有个位数时手术，出血风险极高，TTP也仍未得到治疗；入院时没有记录到必须立即娩出的母胎情况，应先开始血浆置换、稳定母体再分娩（ACOG 2020：子痫前期有重度表现时，在母体稳定后终止妊娠）。",
-        "en": "Operating before plasma exchange has started, with a single-figure platelet count, carries a very high bleeding risk and leaves the TTP untreated; nothing recorded at admission forces immediate delivery, so start plasma exchange and stabilise her first (ACOG 2020: with severe features of pre-eclampsia, deliver once the mother is stable)."
+        "zh-CN": "在血浆置换开始之前手术，TTP完全没有得到治疗；她的血小板只有个位数——单次置换也纠正不了——任何手术都有大出血的风险。入院时没有记录到必须立即娩出的母胎情况：应先开始血浆置换，待母体稳定后再分娩（ACOG 2020：子痫前期有重度表现时，在母体稳定后终止妊娠）；不能等待的手术是否需要输注血小板，由血液科与麻醉科共同决定。",
+        "en": "Operating before plasma exchange has even started leaves the TTP untreated, and her count is in single figures — which one exchange does not correct either — so any operation risks major bleeding. Nothing recorded at admission forces an immediate delivery: start plasma exchange and deliver once she is stable (ACOG 2020: with severe features of pre-eclampsia, deliver once the mother is stable); platelet cover for an operation that cannot wait is decided jointly by haematology and anaesthesia."
       },
       "response": {
-        "zh-CN": "她被送往手术室。原报告记录她经剖宫产分娩；手术指征、麻醉方式和新生儿情况本病例没有记录。",
-        "en": "She is taken to theatre. The report records that she was delivered by caesarean section; the indication, the anaesthetic and the baby's condition are not recorded in this case."
+        "zh-CN": "她被送往手术室。原报告记录她经剖宫产分娩；本病例没有记录手术距入院多久、手术指征、麻醉方式和新生儿情况。",
+        "en": "She is taken to theatre. The report records that she was delivered by caesarean section; this case does not record how long after admission it was done, its indication, the anaesthetic or the baby's condition."
       }
     },
     {
@@ -3658,8 +3732,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "血小板低于100×10⁹/L是静脉溶栓的禁忌（AHA/ASA 2019），她的血小板只有个位数，又刚做过剖宫产，溶栓可致致命出血；TTP的脑缺血来自血小板–血管性血友病因子微血栓，治疗靠血浆置换。",
-        "en": "A platelet count below 100×10⁹/L rules out IV thrombolysis (AHA/ASA 2019); hers is in single figures and she has just had a caesarean, so lysis risks fatal bleeding. The ischaemia of TTP comes from platelet–von Willebrand factor microthrombi, which plasma exchange treats."
+        "zh-CN": "血小板只有个位数（分娩后还有新鲜的剖宫产切口），不能静脉溶栓（AHA/ASA 2026急性缺血性卒中指南；血小板<100×10⁹/L历来是溶栓的排除条件），溶栓可致致命出血。TTP的脑缺血来自血小板–血管性血友病因子微血栓，治疗靠血浆置换。",
+        "en": "A single-figure platelet count — and, after the birth, a fresh caesarean wound — puts IV thrombolysis out of the question (AHA/ASA 2026 acute ischaemic stroke guideline; a count below 100×10⁹/L has long been an exclusion): lysis risks fatal bleeding. The ischaemia of TTP comes from platelet–von Willebrand factor microthrombi, which plasma exchange treats."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -4218,44 +4292,44 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。血小板低到个位数、血红蛋白66 g/L、神经系统症状和肾功能受损，而凝血正常、ALT只是轻度升高，这种组合首先要想到血栓性微血管病，尤其是TTP；它可以与重度子痫前期并存，但分娩不能治愈TTP。ISTH 2020诊断指南要求先评估临床可能性并做ADAMTS13检测，中国TTP指南（2022）以活性<10%支持诊断，并在送检的同时开始治疗。",
-            "en": "Right. A single-figure platelet count, a haemoglobin of 66 g/L, neurological symptoms and renal impairment with normal clotting and an ALT barely raised point first to a thrombotic microangiopathy, above all TTP; it can coexist with severe pre-eclampsia, but delivery does not cure TTP. The ISTH 2020 diagnosis guideline asks for an assessment of clinical probability and ADAMTS13 testing, and the 2022 Chinese guideline takes activity below 10% as supporting TTP and starts treatment as the sample goes off."
+            "zh-CN": "正确。血小板低到个位数、血红蛋白66 g/L、神经系统症状和肾功能受损，而凝血正常、ALT只是轻度升高，这种组合首先要想到血栓性微血管病，尤其是TTP，并由血涂片确认微血管病性溶血；它可以与重度子痫前期并存，但分娩不能治愈TTP。ISTH 2020诊断指南要求先评估临床可能性并做ADAMTS13检测，中国TTP指南（2022）以活性<10%支持诊断，并在送检的同时开始治疗。",
+            "en": "Right. A single-figure platelet count, a haemoglobin of 66 g/L, neurological symptoms and renal impairment with normal clotting and an ALT barely raised point first to a thrombotic microangiopathy, above all TTP, with the film to confirm the microangiopathic haemolysis; it can coexist with severe pre-eclampsia, but delivery does not cure TTP. The ISTH 2020 diagnosis guideline asks for an assessment of clinical probability and ADAMTS13 testing, and the 2022 Chinese guideline takes activity below 10% as supporting TTP and starts treatment as the sample goes off."
           }
         },
         {
           "id": "hellp-deliver",
           "text": {
-            "zh-CN": "HELLP综合征：孕晚期溶血、ALT升高和血小板极低是它的特征，应尽快终止妊娠，分娩后血象和头痛都会随之恢复，不需要另外的血液科检查",
-            "en": "HELLP syndrome — haemolysis, a raised ALT and a very low platelet count in late pregnancy are its hallmarks: deliver promptly, and the blood count and the headache will recover after the birth without further haematology tests"
+            "zh-CN": "HELLP综合征（孕晚期溶血、ALT升高、血小板极低）：用硫酸镁，查血涂片和LDH证实溶血，输注血小板为手术做准备，今天就终止妊娠",
+            "en": "HELLP syndrome — haemolysis, a raised ALT and very low platelets in late pregnancy: magnesium sulfate, a blood film and LDH to confirm the haemolysis, platelets to cover the operation, and delivery today"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "HELLP以肝酶明显升高为特征（ACOG 2020：AST、ALT超过正常上限2倍，LDH≥600 IU/L），而她的ALT只有51 U/L、凝血正常，血小板却低到个位数，还有局灶性神经症状和明显贫血，这更符合TTP。按HELLP处理、指望分娩后自行恢复，会延误血浆置换。",
-            "en": "HELLP is marked by clearly raised liver enzymes (ACOG 2020: AST and ALT more than twice the upper limit, LDH ≥ 600 IU/L), yet her ALT is 51 U/L and her clotting normal while her platelets are in single figures, with a focal neurological episode and marked anaemia — a picture that fits TTP better. Treating it as HELLP and waiting for delivery to fix it delays plasma exchange."
+            "zh-CN": "查血涂片和LDH是对的，但HELLP以肝酶明显升高为特征（ACOG 2020：AST、ALT超过正常上限2倍，LDH≥600 IU/L），而她的ALT只有51 U/L、凝血正常，血小板却低到个位数，还有局灶性神经症状和明显贫血，这更符合TTP。为手术输注血小板会加重微血栓（BSH 2023），在TTP未治疗时今天就分娩，会推迟她真正需要的血浆置换。",
+            "en": "The film and LDH are right, but HELLP is marked by clearly raised liver enzymes (ACOG 2020: AST and ALT more than twice the upper limit, LDH ≥ 600 IU/L), while her ALT is 51 U/L and her clotting normal with platelets in single figures, a focal neurological episode and marked anaemia — a picture that fits TTP better. Platelets to cover the operation feed the microthrombi (BSH 2023), and delivering today with TTP untreated puts off the plasma exchange she needs."
           }
         },
         {
           "id": "itp-pregnancy",
           "text": {
-            "zh-CN": "妊娠合并免疫性血小板减少症，贫血另有原因：予静脉免疫球蛋白和泼尼松，并输注血小板，使她能在椎管内麻醉下安全分娩，血液科检查等产后再说",
-            "en": "Immune thrombocytopenia of pregnancy, with the anaemia from another cause: IVIG and prednisolone, and a platelet transfusion so that she can be delivered safely under a regional block, leaving haematology tests until after the birth"
+            "zh-CN": "妊娠合并免疫性血小板减少症，贫血另有原因：查血涂片，予静脉免疫球蛋白和泼尼松，并输注血小板到50×10⁹/L，以便在椎管内麻醉下安全分娩",
+            "en": "Immune thrombocytopenia of pregnancy, with the anaemia from another cause: a blood film, IVIG and prednisolone, and platelets transfused up to 50×10⁹/L so that she can be delivered under a regional block"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "免疫性血小板减少症只能解释血小板低，解释不了这么重的贫血、一过性肢体麻木、肾功能受损和蛋白尿。按ITP输注血小板、在这个计数下做椎管内麻醉，都可能造成伤害（BSH 2023；SOAP 2021）。",
-            "en": "Immune thrombocytopenia explains only the low platelets — not anaemia this severe, the transient limb numbness, the renal impairment or the proteinuria. Transfusing platelets for ITP and placing a regional block at this count could both do harm (BSH 2023; SOAP 2021)."
+            "zh-CN": "查血涂片是对的，但免疫性血小板减少症只能解释血小板低，解释不了这么重的贫血、一过性肢体麻木、肾功能受损和蛋白尿。单用静脉免疫球蛋白和泼尼松、不做血浆置换，治不了血栓性微血管病；为了椎管内麻醉输注血小板、在这个计数下穿刺，两方面都可能造成伤害（BSH 2023；SOAP 2021）。",
+            "en": "A film is right, but immune thrombocytopenia explains only the low platelets — not anaemia this severe, the transient limb numbness, the renal impairment or the proteinuria. IVIG and prednisolone without plasma exchange do not treat a thrombotic microangiopathy, and transfusing platelets to place a regional block at this count could do harm twice over (BSH 2023; SOAP 2021)."
           }
         },
         {
           "id": "preeclampsia-alone",
           "text": {
-            "zh-CN": "伴神经系统受累的重度子痫前期：硫酸镁、控制血压和终止妊娠就能全部解决，血小板减少、贫血和肾功能异常都是子痫前期的一部分，不需要另找原因",
-            "en": "Pre-eclampsia with severe features and neurological involvement: magnesium sulfate, blood-pressure control and delivery deal with all of it, as the low platelets, the anaemia and the renal changes are part of the pre-eclampsia"
+            "zh-CN": "伴神经系统受累的重度子痫前期：用硫酸镁、控制血压，查血涂片和LDH，母体稳定后终止妊娠，产后血小板仍不恢复时再考虑血浆治疗",
+            "en": "Pre-eclampsia with severe features and neurological involvement: magnesium sulfate, blood-pressure control, a blood film and LDH, delivery once she is stable, and plasma treatment only if the count fails to recover after the birth"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "她确实符合子痫前期的重度表现（ACOG 2020：血小板<100×10⁹/L、肌酐>97 μmol/L、新发头痛和视觉障碍），用硫酸镁也合理；但子痫前期很少使血小板降到个位数而凝血完全正常、血红蛋白只有66 g/L。把这些都归于子痫前期，会漏掉需要紧急血浆置换的TTP，而分娩不能治愈TTP。",
-            "en": "She does meet severe features of pre-eclampsia (ACOG 2020: platelets < 100×10⁹/L, creatinine > 97 μmol/L, new headache and visual disturbance), and magnesium is reasonable; but pre-eclampsia rarely drives the platelets into single figures with entirely normal clotting and a haemoglobin of 66 g/L. Putting it all down to pre-eclampsia misses the TTP that needs emergency plasma exchange — and delivery does not cure TTP."
+            "zh-CN": "她确实符合子痫前期的重度表现（ACOG 2020：血小板<100×10⁹/L、肌酐>97 μmol/L、新发头痛和视觉障碍），用硫酸镁、查涂片和LDH也合理——不过入院血压120/79 mmHg，现在不需要降压。但子痫前期很少使血小板降到个位数而凝血完全正常、血红蛋白只有66 g/L；等产后血小板仍不恢复才用血浆，会漏掉需要紧急血浆置换的TTP，而分娩不能治愈TTP。",
+            "en": "She does meet severe features of pre-eclampsia (ACOG 2020: platelets < 100×10⁹/L, creatinine > 97 μmol/L, new headache and visual disturbance), and magnesium, the film and LDH are reasonable — though at 120/79 mmHg her blood pressure needs no treatment now. But pre-eclampsia rarely drives the platelets into single figures with entirely normal clotting and a haemoglobin of 66 g/L, and keeping plasma until the count fails after the birth misses the TTP that needs emergency plasma exchange — delivery does not cure TTP."
           }
         }
       ]
@@ -4283,8 +4357,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ISTH 2020治疗指南强烈推荐血浆置换联合糖皮质激素（2025年重点更新对免疫性TTP的推荐没有改变）；BSH 2023从1.5倍血浆容量的置换开始，甲泼尼龙1 g/d连用3天，并避免输注血小板。中国TTP指南（2022）在送检ADAMTS13的同时就开始血浆置换和激素，不等结果。",
-            "en": "Right. ISTH 2020 strongly recommends plasma exchange with corticosteroids (its 2025 focused update left the immune-TTP recommendations unchanged); BSH 2023 starts with 1.5 plasma-volume exchanges, gives methylprednisolone 1 g daily for 3 days and avoids platelet transfusion. The 2022 Chinese guideline starts plasma exchange and steroids as the ADAMTS13 sample goes off, without waiting for the result."
+            "zh-CN": "正确。ISTH 2020治疗指南强烈推荐血浆置换联合糖皮质激素（2025年重点更新对免疫性TTP的推荐没有改变）；BSH 2023从1.5倍血浆容量的置换开始，甲泼尼龙1 g/d连用3天，并避免输注血小板。中国TTP指南（2022）在送检ADAMTS13的同时就开始血浆置换和激素，不等结果。开始置换所依据的，是急查血涂片证实微血管病性溶血伴血小板减少，并因局灶性症状做头颅CT排除出血；本病例没有记录入院时的涂片结果。",
+            "en": "Right. ISTH 2020 strongly recommends plasma exchange with corticosteroids (its 2025 focused update left the immune-TTP recommendations unchanged); BSH 2023 starts with 1.5 plasma-volume exchanges, gives methylprednisolone 1 g daily for 3 days and avoids platelet transfusion. The 2022 Chinese guideline starts plasma exchange and steroids as the ADAMTS13 sample goes off, without waiting for the result. Starting exchange does need an urgent film showing microangiopathic haemolysis with the low count, and a head CT for her focal symptoms to exclude bleeding; this case records no admission film result."
           }
         },
         {
@@ -4328,8 +4402,8 @@
     {
       "id": "delivery-plan",
       "prompt": {
-        "zh-CN": "血浆置换已经开始。她孕37+1周，胎心145次/分，血小板6×10⁹/L。你怎样安排分娩？",
-        "en": "Plasma exchange has started. She is 37+1 weeks, the fetal heart rate is 145/min and her platelets are 6×10⁹/L. How do you plan the birth?"
+        "zh-CN": "血浆置换已经开始。她孕37+1周，胎心145次/分；最近一次记录的血小板为6×10⁹/L，置换后的血小板计数没有记录。你怎样安排分娩？",
+        "en": "Plasma exchange has started. She is 37+1 weeks and the fetal heart rate is 145/min; her last recorded platelet count is 6×10⁹/L, and no count after exchange is recorded. How do you plan the birth?"
       },
       "kind": "single",
       "requires": {
@@ -4353,13 +4427,13 @@
         {
           "id": "deliver-when-stable-ga",
           "text": {
-            "zh-CN": "血浆置换后病情稳定即足月分娩，期间胎心监护；分娩方式按产科指征，剖宫产用全身麻醉，不做腰麻或硬膜外；只在危及生命的出血时输血小板；新生儿团队到场",
-            "en": "Deliver at term once she is stable on plasma exchange, with a CTG meanwhile; mode by obstetric indication, and general anaesthesia with no spinal or epidural for a caesarean; platelets only for life-threatening bleeding; neonatal team present"
+            "zh-CN": "血浆置换后病情稳定即足月分娩，期间胎心监护；分娩方式按产科指征，剖宫产用全身麻醉，不做腰麻或硬膜外；不常规预防性输注血小板；新生儿团队到场",
+            "en": "Deliver at term once she is stable on plasma exchange, with a CTG meanwhile; mode by obstetric indication, and general anaesthesia with no spinal or epidural for a caesarean; no routine platelet cover; neonatal team present"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。孕37周、有子痫前期重度表现时，应在母体稳定后分娩（ACOG 2020），而她的稳定靠血浆置换；分娩方式按产科指征。SOAP 2021共识认为血小板≥70×10⁹/L时椎管内阻滞风险很低，但只适用于妊娠期血小板减少、ITP和妊娠期高血压疾病，个位数的计数下应选全身麻醉；血小板只在危及生命的出血时输注（BSH 2023）。",
-            "en": "Right. At 37 weeks with severe features of pre-eclampsia, delivery follows maternal stabilisation (ACOG 2020), and her stabilisation depends on plasma exchange; the mode follows obstetric indications. The SOAP 2021 consensus finds neuraxial risk very low at ≥ 70×10⁹/L only in gestational thrombocytopenia, ITP and hypertensive disorders — at a single-figure count she needs general anaesthesia — and platelets are kept for life-threatening bleeding (BSH 2023)."
+            "zh-CN": "正确。孕37周、有子痫前期重度表现时，应在母体稳定后分娩（ACOG 2020）——对她来说，稳定是指每日血浆置换后血小板回升、神经症状平稳，而本病例没有记录这些；分娩方式按产科指征。SOAP 2021共识认为血小板≥70×10⁹/L时椎管内阻滞风险很低，但只适用于妊娠期血小板减少、ITP和妊娠期高血压疾病，个位数的计数下剖宫产应选全身麻醉。血小板不常规输注（BSH 2023）；置换开始后，不能等待的手术是否需要输注血小板，由血液科和麻醉科共同决定。",
+            "en": "Right. At 37 weeks with severe features of pre-eclampsia, delivery follows maternal stabilisation (ACOG 2020): here that means a platelet count rising on daily exchange and settled neurology, which this case does not record, and the mode follows obstetric indications. The SOAP 2021 consensus finds neuraxial risk very low at ≥ 70×10⁹/L only in gestational thrombocytopenia, ITP and hypertensive disorders, so at a single-figure count a caesarean needs general anaesthesia. Platelets are not given routinely (BSH 2023); cover for an operation that cannot wait, once exchange is under way, is a joint haematology–anaesthesia decision."
           }
         },
         {
@@ -4403,8 +4477,8 @@
     {
       "id": "after-delivery",
       "prompt": {
-        "zh-CN": "剖宫产后：她仍反复意识不清；血小板最低8×10⁹/L；LDH 1600 U/L，之后4880 U/L；肌酐最高268 μmol/L；头颅MRI见多发急性缺血病灶。你现在怎么判断、怎么处理？",
-        "en": "After the caesarean: she still has recurrent impaired consciousness; the lowest platelet count is 8×10⁹/L; LDH 1600 U/L, later 4880 U/L; creatinine up to 268 μmol/L; the brain MRI shows multiple acute ischaemic lesions. How do you read this, and what now?"
+        "zh-CN": "剖宫产后：她仍反复意识不清；此后血小板最低8×10⁹/L；LDH 1600 U/L，之后4880 U/L；肌酐最高268 μmol/L；头颅MRI（检查时间未记录）见多发急性缺血病灶。你现在怎么判断、怎么处理？",
+        "en": "After the caesarean she still has recurrent impaired consciousness; the lowest platelet count since is 8×10⁹/L; LDH 1600 U/L, later 4880 U/L; creatinine up to 268 μmol/L; and a brain MRI (timing not recorded) shows multiple acute ischaemic lesions. How do you read this, and what now?"
       },
       "kind": "single",
       "requires": {
@@ -4443,8 +4517,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。LDH从1600升到4880 U/L、血小板仍在个位数、MRI多发急性缺血灶、肌酐升到268 μmol/L，说明微血管病性溶血和器官损害在分娩后仍在进展，不是正在消退的HELLP。ISTH 2020推荐血浆置换加糖皮质激素，并有条件推荐加用利妥昔单抗；BSH 2023强调避免输注血小板；ADAMTS13活性>20%时TTP基本可以排除，应评估补体介导的TMA（中国TTP指南2022）。",
-            "en": "Right. LDH rising from 1600 to 4880 U/L, platelets still in single figures, multiple acute ischaemic lesions on MRI and creatinine up to 268 μmol/L mean the microangiopathic haemolysis and organ injury are progressing after delivery — not a HELLP that is burning out. ISTH 2020 recommends plasma exchange with corticosteroids and conditionally adds rituximab; BSH 2023 stresses avoiding platelet transfusion; with ADAMTS13 activity above 20% TTP is essentially excluded and complement-mediated TMA is assessed (Chinese TTP guideline 2022)."
+            "zh-CN": "正确。剖宫产后LDH由1600升到4880 U/L，血小板最低8×10⁹/L，肌酐升到268 μmol/L，意识反复不清，MRI又见多发急性缺血病灶，说明微血管病性溶血和器官损害没有随分娩缓解，不是正在消退的HELLP。ISTH 2020推荐血浆置换加糖皮质激素，并有条件推荐加用利妥昔单抗和卡普赛珠单抗（caplacizumab）（2025年更新未改）；是否用卡普赛珠单抗由血液科权衡她新鲜的手术切口、出血风险、哺乳和药物可及性后决定；BSH 2023强调避免输注血小板。ADAMTS13活性>20%时TTP基本可以排除，应评估补体介导的TMA（中国TTP指南2022）。",
+            "en": "Right. After the caesarean LDH rose from 1600 to 4880 U/L, the lowest count was 8×10⁹/L, creatinine reached 268 μmol/L and she still had recurrent impaired consciousness, and the MRI shows multiple acute ischaemic lesions: the microangiopathic haemolysis and organ injury have not settled with the birth — this is not a HELLP that is burning out. ISTH 2020 recommends plasma exchange with corticosteroids and conditionally adds rituximab and caplacizumab (unchanged in 2025; caplacizumab is a haematology decision that weighs her fresh wound, its bleeding risk, breastfeeding and availability), and BSH 2023 stresses avoiding platelet transfusion. With ADAMTS13 activity above 20% TTP is essentially excluded and complement-mediated TMA is assessed (Chinese TTP guideline 2022)."
           }
         },
         {
@@ -4479,8 +4553,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "血小板低于100×10⁹/L是静脉溶栓的禁忌（AHA/ASA 2019），她只有个位数，又刚做过剖宫产；为了溶栓去输血小板只会加重TTP。TTP的脑缺血来自血小板–血管性血友病因子微血栓，治疗是血浆置换，不是溶栓或抗血小板药。",
-            "en": "A platelet count below 100×10⁹/L rules out IV thrombolysis (AHA/ASA 2019); hers is in single figures and she has just had a caesarean, and transfusing platelets to make lysis possible would feed the TTP. The ischaemia of TTP comes from platelet–von Willebrand factor microthrombi; the treatment is plasma exchange, not lysis or antiplatelet drugs."
+            "zh-CN": "血小板只有个位数、剖宫产切口又是新鲜的，静脉溶栓根本无从谈起（AHA/ASA 2026急性缺血性卒中指南；血小板<100×10⁹/L历来是溶栓的排除条件），为了溶栓去输血小板只会加重TTP。TTP的脑缺血来自血小板–血管性血友病因子微血栓，治疗是血浆置换，不是溶栓或抗血小板药。",
+            "en": "A single-figure count with a fresh caesarean wound puts IV thrombolysis out of the question (AHA/ASA 2026 acute ischaemic stroke guideline; a count below 100×10⁹/L has long been an exclusion), and transfusing platelets to make lysis possible would feed the TTP. The ischaemia of TTP comes from platelet–von Willebrand factor microthrombi; the treatment is plasma exchange, not lysis or antiplatelet drugs."
           }
         },
         {
@@ -4579,12 +4653,12 @@
   ],
   "rubric": [
     {
-      "id": "rb-presenting-history",
+      "id": "rb-history-and-red-flags",
       "domain": "history",
-      "weight": 2,
+      "weight": 3,
       "text": {
-        "zh-CN": "问清头痛与眼花、一过性肢体麻木、孕周与胎次，以及入院前的血压和尿蛋白",
-        "en": "Took the history of the headache and visual disturbance, the transient limb numbness, the gestation and parity, and the blood pressure and urine protein before admission"
+        "zh-CN": "问清头痛与眼花、一过性肢体麻木、孕周与胎次以及入院前的血压和尿蛋白，并追问出血、抽搐或无力、上腹痛、胎动、用药和过敏",
+        "en": "Took the history of the headache and visual disturbance, the transient limb numbness, the gestation and parity and the blood pressure and urine protein before admission, and asked about bleeding, fits or weakness, upper abdominal pain, fetal movements, medicines and allergies"
       },
       "met": {
         "all": [
@@ -4602,20 +4676,7 @@
           },
           {
             "asked": "bp-history"
-          }
-        ]
-      }
-    },
-    {
-      "id": "rb-warning-symptoms",
-      "domain": "history",
-      "weight": 1,
-      "text": {
-        "zh-CN": "追问出血、抽搐或无力、上腹痛、胎动、用药和过敏",
-        "en": "Asked about bleeding, fits or weakness, upper abdominal pain, fetal movements, medicines and allergies"
-      },
-      "met": {
-        "all": [
+          },
           {
             "asked": "bleeding"
           },
@@ -4667,8 +4728,8 @@
       "domain": "investigations",
       "weight": 2,
       "text": {
-        "zh-CN": "看过入院血常规、凝血、肾功能和尿常规，并在入院时送检血涂片、LDH和ADAMTS13标本",
-        "en": "Read the admission blood count, clotting, renal function and urinalysis, and sent a blood film, LDH and the ADAMTS13 sample at admission"
+        "zh-CN": "看过就诊时的血常规、凝血、肾功能和尿常规，并在入院阶段送检血涂片、LDH和ADAMTS13标本",
+        "en": "Read the presenting blood count, clotting, renal function and urinalysis, and sent a blood film, LDH and the ADAMTS13 sample in the admission phase"
       },
       "met": {
         "all": [
@@ -4811,6 +4872,40 @@
       }
     },
     {
+      "id": "rb-no-unindicated-treatment",
+      "domain": "safety",
+      "weight": 1,
+      "text": {
+        "zh-CN": "血压未达用药指征时没有静脉降压，在可以做血浆置换时也没有另外输注血浆",
+        "en": "Gave no IV antihypertensive at a blood pressure that did not call for one, and no separate plasma infusion when plasma exchange was available"
+      },
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "labetalol"
+            },
+            {
+              "intervened": "ffp-infusion"
+            }
+          ]
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "first-hours"
+          },
+          {
+            "intervened": "labetalol"
+          },
+          {
+            "intervened": "ffp-infusion"
+          }
+        ]
+      }
+    },
+    {
       "id": "rb-postpartum-escalation",
       "domain": "management",
       "weight": 3,
@@ -4874,8 +4969,8 @@
         "en": "Dr Cen (obstetric attending, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“血小板降到个位数，而凝血完全正常，你会想到哪几类病？”“TTP和重度子痫前期能不能同时存在？分娩能治好哪一个？”“哪个标本必须在输任何血浆之前留？为什么不等结果就开始治疗？”“为什么这里不输血小板？”“这个血小板计数下，剖宫产用什么麻醉？”“分娩后哪些指标告诉你病情没有停下来？”“家属想放弃时，你先问什么？”。可以讲ISTH 2020、BSH 2023、中国TTP指南（2022）、ACOG 2020、SOAP 2021和ACCM/ATS 2016的相关原则。原报告的处理是历史记录，在病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；ADAMTS13、完整溶血指标、入院时的其余生命体征、新生儿情况都没有记录，不要替它补上。",
-        "en": "A Socratic teacher who asks only about information the learner already has, for example: 'With platelets in single figures and entirely normal clotting, which groups of disease come to mind?', 'Can TTP and severe pre-eclampsia coexist — and which of them does delivery cure?', 'Which sample must be taken before any plasma, and why start treatment without waiting for its result?', 'Why no platelets here?', 'What anaesthetic for a caesarean at this platelet count?', 'After the birth, which results tell you the disease has not stopped?', 'When the family wants to stop, what do you ask first?'. May explain the relevant principles of ISTH 2020, BSH 2023, the 2022 Chinese TTP guideline, ACOG 2020, SOAP 2021 and ACCM/ATS 2016. The report's management is a historical record shown at the end of the case, and is compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; ADAMTS13, a full haemolysis panel, the other admission vital signs and the baby's condition are not recorded — do not supply them."
+        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“血小板降到个位数，而凝血完全正常，你会想到哪几类病？”“TTP和重度子痫前期能不能同时存在？分娩能治好哪一个？”“哪个标本必须在输任何血浆之前留？为什么不等结果就开始治疗？”“她有局灶性症状、血小板只有6，做任何有创操作之前先要做什么影像？”“为什么这里不输血小板？”“这个血小板计数下，剖宫产用什么麻醉？”“分娩后哪些指标告诉你病情没有停下来？”“家属想放弃时，你先问什么？”。可以讲ISTH 2020、BSH 2023、中国TTP指南（2022）、ACOG 2020、SOAP 2021和ACCM/ATS 2016的相关原则。原报告的处理是历史记录，在病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；ADAMTS13、完整溶血指标、入院时的其余生命体征、头颅CT、MRI和血涂片的具体时间、新生儿情况都没有记录，不要替它补上。",
+        "en": "A Socratic teacher who asks only about information the learner already has, for example: 'With platelets in single figures and entirely normal clotting, which groups of disease come to mind?', 'Can TTP and severe pre-eclampsia coexist — and which of them does delivery cure?', 'Which sample must be taken before any plasma, and why start treatment without waiting for its result?', 'With focal symptoms and a count of 6, what imaging comes before anything invasive?', 'Why no platelets here?', 'What anaesthetic for a caesarean at this platelet count?', 'After the birth, which results tell you the disease has not stopped?', 'When the family wants to stop, what do you ask first?'. May explain the relevant principles of ISTH 2020, BSH 2023, the 2022 Chinese TTP guideline, ACOG 2020, SOAP 2021 and ACCM/ATS 2016. The report's management is a historical record shown at the end of the case, and is compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; ADAMTS13, a full haemolysis panel, the other admission vital signs, the timing of the head CT, the MRI and the film, and the baby's condition are not recorded — do not supply them."
       },
       "interprets": [
         "fbc",
@@ -4910,8 +5005,8 @@
         "en": "Dr Pang (haematology, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "血液科会诊医生，只解读学员已经看过的血液学结果。可以讲：血栓性微血管病的要点（微血管病性溶血、血小板消耗、器官缺血）；TTP临床可能性的评估和ADAMTS13检测（活性<10%支持TTP、>20%基本可排除，标本须在输血浆前留取）；血浆置换（首次1.5倍血浆容量、以血浆为置换液、每日一次）、甲泼尼龙1 g/d×3天和利妥昔单抗的作用；为什么避免输注血小板；免疫性与先天性TTP的区别，以及今后再次妊娠的风险和监测。不说出诊断结论，不补充病例没有记录的数值。",
-        "en": "Haematology consultant who interprets only haematology results the learner has already read. Can explain: the hallmarks of a thrombotic microangiopathy (microangiopathic haemolysis, platelet consumption, organ ischaemia); assessing the clinical probability of TTP and ADAMTS13 testing (activity below 10% supports TTP, above 20% essentially excludes it; the sample is taken before plasma); plasma exchange (1.5 plasma volumes at first, plasma as the replacement fluid, daily), methylprednisolone 1 g daily for 3 days and the place of rituximab; why platelet transfusion is avoided; immune versus congenital TTP, and the risk and monitoring in a later pregnancy. Does not state the diagnosis and adds no values the case does not record."
+        "zh-CN": "血液科会诊医生，只解读学员已经看过的血液学结果。可以讲：血栓性微血管病的要点（微血管病性溶血、血小板消耗、器官缺血）；TTP临床可能性的评估和ADAMTS13检测（活性<10%支持TTP、>20%基本可排除，标本须在输血浆前留取）；血浆置换（首次1.5倍血浆容量、以血浆为置换液、每日一次）、甲泼尼龙1 g/d×3天和利妥昔单抗的作用；卡普赛珠单抗（caplacizumab）——ISTH（2020年，2025年更新未改）有条件推荐用于已确诊、或ADAMTS13结果未出但可能性很高的免疫性TTP急性发作，必须与血浆置换和免疫抑制治疗合用；它增加出血风险，说明书建议妊娠期避免使用、哺乳期需另作决定，围产期的经验仅来自个案报道，各地可及性不同，所以是否使用由血液科决定；就诊时查肌钙蛋白和心电图，评估心脏受累；为什么避免输注血小板；免疫性与先天性TTP的区别，以及今后再次妊娠的风险和监测。不说出诊断结论，不补充病例没有记录的数值。",
+        "en": "Haematology consultant who interprets only haematology results the learner has already read. Can explain: the hallmarks of a thrombotic microangiopathy (microangiopathic haemolysis, platelet consumption, organ ischaemia); assessing the clinical probability of TTP and ADAMTS13 testing (activity below 10% supports TTP, above 20% essentially excludes it; the sample is taken before plasma); plasma exchange (1.5 plasma volumes at first, plasma as the replacement fluid, daily), methylprednisolone 1 g daily for 3 days and the place of rituximab; caplacizumab — conditionally recommended by ISTH (2020, unchanged in 2025) for an acute immune-TTP episode that is confirmed, or highly probable while ADAMTS13 is pending, always with exchange and immunosuppression; it adds bleeding risk, its labelling advises avoiding it in pregnancy and needs a decision about breastfeeding, experience around childbirth rests on case reports, and availability varies, so starting it is a haematology decision; a troponin and an ECG at presentation for cardiac involvement; why platelet transfusion is avoided; immune versus congenital TTP, and the risk and monitoring in a later pregnancy. Does not state the diagnosis and adds no values the case does not record."
       },
       "interprets": [
         "fbc",
@@ -4948,8 +5043,8 @@
       "en": "Debrief: a thrombotic microangiopathy at term (reported as TTP)"
     },
     "conclusion": {
-      "zh-CN": "21岁初产妇孕37+1周，头痛、眼花1天，一过性左侧肢体麻木约20分钟；起病时血压140/100 mmHg、尿蛋白++，入院血压120/79 mmHg。血红蛋白66 g/L，血小板6×10⁹/L（此前7×10⁹/L），凝血常规正常，肌酐115 μmol/L，ALT 51 U/L，尿红细胞+++。剖宫产后仍反复意识不清，血小板最低8×10⁹/L，LDH由1600升至4880 U/L，肌酐最高268 μmol/L，头颅MRI多发急性缺血病灶，血涂片见大量破碎红细胞——符合血栓性微血管病；报告诊断为TTP，本病例没有记录ADAMTS13结果。原报告在后期才考虑TTP，输注新鲜冰冻血浆并反复输注血小板，没有记录血浆置换；她出现心力衰竭、气管插管、深昏迷和升压药依赖，家属最终带她离院，此后结局未记录。按现行指南：入院时就应怀疑TTP，留ADAMTS13标本后立即开始血浆置换和糖皮质激素，避免输注血小板，母体稳定后在全身麻醉下分娩，产后病情不缓解时在ICU继续置换并升级治疗。",
-      "en": "A 21-year-old in her first pregnancy at 37+1 weeks had a day of headache and visual disturbance and 20 minutes of left-sided limb numbness; BP was 140/100 mmHg with proteinuria at onset and 120/79 mmHg on admission. Hb 66 g/L, platelets 6×10⁹/L (7 earlier), normal clotting, creatinine 115 μmol/L, ALT 51 U/L. After a caesarean she still had recurrent impaired consciousness; platelets reached 8×10⁹/L, LDH rose from 1600 to 4880 U/L, creatinine to 268 μmol/L, MRI showed multiple acute ischaemic lesions and the film many schistocytes: a TMA, reported as TTP; no ADAMTS13 result is recorded here. TTP was considered late; she had fresh frozen plasma and repeated platelets, no exchange is recorded, and heart failure, intubation, deep coma and vasopressors followed before her family took her away. Today: suspect TTP at admission, send ADAMTS13, start exchange with steroids, avoid platelets, deliver under general anaesthesia once stable, and escalate when delivery fails to stop it."
+      "zh-CN": "21岁初产妇孕37+1周，头痛、眼花1天，一过性左侧肢体麻木约20分钟；起病时血压140/100 mmHg、尿蛋白++，入院血压120/79 mmHg。血红蛋白66 g/L，血小板6×10⁹/L（此前7×10⁹/L），凝血常规正常，肌酐115 μmol/L，ALT 51 U/L，尿红细胞+++。剖宫产后仍反复意识不清，血小板最低8×10⁹/L，LDH由1600升至4880 U/L，肌酐最高268 μmol/L；头颅MRI见多发急性缺血病灶，后续血涂片见大量破碎红细胞（两者时间均未记录）——符合血栓性微血管病；报告诊断为TTP，本病例没有记录ADAMTS13结果。原报告在后期才考虑TTP，输注新鲜冰冻血浆并反复输注血小板，没有记录血浆置换；她出现心力衰竭、气管插管、深昏迷和升压药依赖，家属最终带她离院，此后结局未记录。按现行指南：入院时就应怀疑TTP，留ADAMTS13标本后立即开始血浆置换和糖皮质激素，避免输注血小板，母体稳定后分娩（如需剖宫产则用全身麻醉），产后病情不缓解时在ICU继续置换并升级治疗。",
+      "en": "A 21-year-old primigravida at 37+1 weeks had a day of headache and visual disturbance and 20 minutes of left-sided numbness; BP 140/100 mmHg with proteinuria at onset, 120/79 mmHg on admission. Hb 66 g/L, platelets 6×10⁹/L (7 earlier), normal clotting, creatinine 115 μmol/L, ALT 51 U/L. After a caesarean she still had recurrent impaired consciousness, a lowest count of 8×10⁹/L, LDH from 1600 to 4880 U/L and creatinine to 268 μmol/L; MRI showed multiple acute ischaemic lesions and a later film many schistocytes (timing not recorded): a TMA, reported as TTP, with no ADAMTS13 result recorded. TTP was considered late: fresh frozen plasma and repeated platelets, no recorded exchange; heart failure, intubation, deep coma and vasopressors followed until her family took her away. Today: suspect TTP at admission, send ADAMTS13, start exchange with steroids, avoid platelets, deliver once stable (general anaesthesia if a caesarean is needed), and escalate when the birth fails to stop it."
     },
     "keyReasoning": [
       {
@@ -4957,16 +5052,16 @@
         "en": "Single-figure platelets, a haemoglobin of 66 g/L, neurological symptoms and renal injury, with normal clotting and an ALT barely raised: this pattern is a thrombotic microangiopathy first, not pre-eclampsia alone."
       },
       {
-        "zh-CN": "治疗不等确诊：先留ADAMTS13标本，再开始血浆置换和激素；检测结果只决定之后怎样调整。",
-        "en": "Treatment does not wait for confirmation: the ADAMTS13 sample goes first, then plasma exchange and steroids; the result only shapes what follows."
+        "zh-CN": "治疗等的是血涂片，而不是ADAMTS13结果：急查血涂片见到破碎红细胞即可证实微血管病性溶血（本病例没有记录入院时的涂片结果），ADAMTS13标本在输任何血浆前留取，血浆置换和激素不等其结果就开始。",
+        "en": "Treatment waits for the blood film, not for ADAMTS13: schistocytes on an urgent film confirm the microangiopathic haemolysis (this case records no admission film), the ADAMTS13 sample goes before any plasma, and plasma exchange with steroids starts without its result."
       },
       {
         "zh-CN": "血小板低不等于要输血小板：在TTP中，提升计数不是目标，输注反而可能加重血栓。",
         "en": "A low count is not a reason to transfuse platelets: in TTP the number is not the target, and transfusion can feed the thrombosis."
       },
       {
-        "zh-CN": "把分娩前后的结果连起来看：分娩后LDH继续上升、血小板不回升、出现脑缺血和肾功能恶化，说明病情不会自己消退。",
-        "en": "Read the course across the delivery: an LDH still rising, platelets not recovering, new cerebral ischaemia and worsening renal function after the birth show a disease that will not settle on its own."
+        "zh-CN": "把分娩前后的结果连起来看：剖宫产后仍反复意识不清，LDH由1600升至4880 U/L，血小板最低8×10⁹/L，肌酐升到268 μmol/L——病情没有随分娩缓解，不会自己消退。",
+        "en": "Read the course across the delivery: after the caesarean she still had recurrent impaired consciousness, LDH rose from 1600 to 4880 U/L, the lowest count was 8×10⁹/L and creatinine reached 268 μmol/L — a disease that has not settled with the birth and will not settle on its own."
       },
       {
         "zh-CN": "本病例没有记录ADAMTS13结果，报告的TTP诊断只能算“高度可能”；免疫性TTP、先天性TTP和补体介导的TMA仍需鉴别。",
@@ -4978,8 +5073,8 @@
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单个病例报告，而且本版本的患者事实只来自1.0.0版的提取，尚未对照原文全文核对：它不能证明任何治疗的效果，也不能确定TTP的类型。原报告的处理作为历史事实保留；决策、干预和评分依据现行指南设计，属于教学设计。头颅CT、MRI和血涂片的确切时间没有记录，本病例把它们放在分娩后阶段；家属在重症监护阶段表达的考虑，是依据结局记录安排的教学呈现。",
-      "en": "This is a single case report, and in this version its patient facts come only from the version 1.0.0 extraction, not yet checked against the full article: it cannot show the effect of any treatment or settle which kind of TTP this was. The report's management is kept as historical fact; the decisions, interventions and scoring follow current guidance and are teaching design. The exact timing of the head CT, the MRI and the blood film is not recorded, and the case places them after the delivery; the family's thoughts voiced in intensive care are a teaching presentation built on the outcome record."
+      "zh-CN": "这是单个病例报告，而且本版本的患者事实只来自1.0.0版的提取，尚未对照原文全文核对：它不能证明任何治疗的效果，也不能确定TTP的类型。原报告的处理作为历史事实保留；决策、干预和评分依据现行指南设计，属于教学设计。头颅CT、MRI和血涂片的确切时间没有记录：本病例从入院阶段起即显示首次头颅CT，把MRI和后续血涂片放在分娩后阶段；入院化验的具体时间也没有记录，本病例把它们放在分娩前；家属在重症监护阶段表达的考虑，是依据结局记录安排的教学呈现。",
+      "en": "This is a single case report, and in this version its patient facts come only from the version 1.0.0 extraction, not yet checked against the full article: it cannot show the effect of any treatment or settle which kind of TTP this was. The report's management is kept as historical fact; the decisions, interventions and scoring follow current guidance and are teaching design. The exact timing of the head CT, the MRI and the blood film is not recorded: the case shows the first head CT from admission and places the MRI and the later film after the delivery; nor is the exact timing of the presenting blood results, which it places before the delivery; the family's thoughts voiced in intensive care are a teaching presentation built on the outcome record."
     },
     "unknowns": [
       {
@@ -5003,8 +5098,8 @@
         "en": "How many platelet and plasma transfusions she had and in what doses, and whether magnesium sulfate, antihypertensives or corticosteroids were given."
       },
       {
-        "zh-CN": "生命体征（入院时的心率、呼吸、血氧饱和度和之后的全部数值）、心力衰竭的检查依据、呼吸机参数和升压药剂量。",
-        "en": "Vital signs (the admission heart rate, respiratory rate and oxygen saturation, and every later value), the findings behind the heart-failure diagnosis, ventilator settings and vasopressor doses."
+        "zh-CN": "生命体征（入院时的心率、呼吸、血氧饱和度和之后的全部数值）、心力衰竭的检查依据（任何阶段都没有肌钙蛋白、心电图或超声心动图结果）、呼吸机参数和升压药剂量。",
+        "en": "Vital signs (the admission heart rate, respiratory rate and oxygen saturation, and every later value), the findings behind the heart-failure diagnosis (no troponin, ECG or echocardiogram result at any stage), ventilator settings and vasopressor doses."
       },
       {
         "zh-CN": "既往史、用药、过敏史、家族史，家属放弃治疗的原因，以及她离院后的结局。",
@@ -5013,16 +5108,16 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "妊娠期TMA的鉴别：子痫前期重度表现（ACOG 2020：血小板<100×10⁹/L、肌酐>97 μmol/L、新发头痛或视觉障碍）、HELLP（ACOG 2020：LDH≥600 IU/L、AST/ALT>2倍正常上限、血小板<100×10⁹/L）与TTP可以重叠。血小板<30×10⁹/L（PLASMIC评分的一项）、明显贫血、神经症状而凝血正常、转氨酶只是轻度升高时，首先考虑TTP（ISTH 2020诊断指南：先评估临床可能性，再做ADAMTS13检测）。原报告在病程后期才考虑TTP。",
-        "en": "Telling pregnancy TMAs apart: severe features of pre-eclampsia (ACOG 2020: platelets < 100×10⁹/L, creatinine > 97 μmol/L, new headache or visual disturbance), HELLP (ACOG 2020: LDH ≥ 600 IU/L, AST/ALT more than twice the upper limit, platelets < 100×10⁹/L) and TTP overlap. Platelets below 30×10⁹/L (one item of the PLASMIC score) with marked anaemia and neurological symptoms, normal clotting and transaminases only mildly raised point to TTP first (ISTH 2020 diagnosis guideline: assess the clinical probability, then test ADAMTS13). The report considered TTP only late."
+        "zh-CN": "妊娠期TMA的鉴别：子痫前期重度表现（ACOG 2020：血小板<100×10⁹/L、肌酐>97 μmol/L、新发头痛或视觉障碍）、HELLP（ACOG 2020：LDH≥600 IU/L、AST/ALT>2倍正常上限、血小板<100×10⁹/L）与TTP可以重叠。血小板<30×10⁹/L（PLASMIC评分的一项）、明显贫血、神经症状而凝血正常、转氨酶只是轻度升高时，首先考虑TTP，并由急查血涂片见到破碎红细胞证实微血管病性溶血（ISTH 2020诊断指南：先评估临床可能性，再做ADAMTS13检测）。原报告在病程后期才考虑TTP。",
+        "en": "Telling pregnancy TMAs apart: severe features of pre-eclampsia (ACOG 2020: platelets < 100×10⁹/L, creatinine > 97 μmol/L, new headache or visual disturbance), HELLP (ACOG 2020: LDH ≥ 600 IU/L, AST/ALT more than twice the upper limit, platelets < 100×10⁹/L) and TTP overlap. Platelets below 30×10⁹/L (one item of the PLASMIC score) with marked anaemia and neurological symptoms, normal clotting and transaminases only mildly raised point to TTP first, with schistocytes on an urgent film to confirm the microangiopathic haemolysis (ISTH 2020 diagnosis guideline: assess the clinical probability, then test ADAMTS13). The report considered TTP only late."
       },
       {
-        "zh-CN": "现行治疗（ISTH 2020，2025年重点更新对免疫性TTP未作改动；BSH 2023；中国TTP指南2022）：一旦高度怀疑，留取ADAMTS13标本后立即开始以血浆为置换液的血浆置换（首次1.5倍血浆容量，每日一次）和甲泼尼龙1 g/d×3天，并有条件推荐加用利妥昔单抗；ADAMTS13活性<10%支持TTP，>20%基本排除。血浆输注不能代替置换。原报告输注了新鲜冰冻血浆；本病例没有记录血浆置换。",
-        "en": "Current treatment (ISTH 2020, unchanged for immune TTP in the 2025 focused update; BSH 2023; Chinese TTP guideline 2022): once TTP is strongly suspected, take the ADAMTS13 sample and start plasma exchange with plasma at once (1.5 plasma volumes at first, daily) with methylprednisolone 1 g daily for 3 days, adding rituximab (a conditional recommendation); activity below 10% supports TTP and above 20% essentially excludes it. Plasma infusion does not replace exchange. The report's team gave fresh frozen plasma; this case records no plasma exchange."
+        "zh-CN": "现行治疗（ISTH 2020，2025年重点更新对免疫性TTP未作改动；BSH 2023；中国TTP指南2022）：一旦高度怀疑，留取ADAMTS13标本后立即开始以血浆为置换液的血浆置换（首次1.5倍血浆容量，每日一次）和甲泼尼龙1 g/d×3天，并有条件推荐加用利妥昔单抗；ISTH还有条件推荐卡普赛珠单抗（caplacizumab），用于已确诊、或ADAMTS13结果未出但可能性很高的免疫性TTP急性发作，与置换和免疫抑制治疗合用——由血液科权衡出血风险和可及性后决定，说明书建议妊娠期避免使用、哺乳期需另作决定，围产期经验仅来自个案报道；ADAMTS13活性<10%支持TTP，>20%基本排除。血浆输注不能代替置换。原报告输注了新鲜冰冻血浆；本病例没有记录血浆置换。",
+        "en": "Current treatment (ISTH 2020, unchanged for immune TTP in the 2025 focused update; BSH 2023; Chinese TTP guideline 2022): once TTP is strongly suspected, take the ADAMTS13 sample and start plasma exchange with plasma at once (1.5 plasma volumes at first, daily) with methylprednisolone 1 g daily for 3 days, adding rituximab (a conditional recommendation); ISTH also conditionally recommends caplacizumab for an acute immune-TTP episode, confirmed or highly probable while ADAMTS13 is pending, given with exchange and immunosuppression — a haematology decision weighing bleeding risk and availability, with labelling that advises avoiding it in pregnancy and needs a decision about breastfeeding, and experience around childbirth limited to case reports; activity below 10% supports TTP and above 20% essentially excludes it. Plasma infusion does not replace exchange. The report's team gave fresh frozen plasma; this case records no plasma exchange."
       },
       {
-        "zh-CN": "血小板与麻醉：BSH 2023建议TTP中避免输注血小板，除非出现危及生命的出血，观察性数据提示输注与动脉血栓和死亡增加相关。SOAP 2021共识中椎管内阻滞的低风险阈值（≥70×10⁹/L）只适用于妊娠期血小板减少、ITP和妊娠期高血压疾病，不适用于TTP；个位数的计数下剖宫产应选全身麻醉。原报告反复输注血小板；本病例没有记录麻醉方式。",
-        "en": "Platelets and anaesthesia: BSH 2023 advises avoiding platelet transfusion in TTP unless bleeding is life-threatening, and observational data link it with arterial thrombosis and death. The SOAP 2021 low-risk threshold for a neuraxial block (≥ 70×10⁹/L) applies to gestational thrombocytopenia, ITP and hypertensive disorders, not TTP; at a single-figure count a caesarean needs general anaesthesia. The report's team transfused platelets repeatedly; this case does not record the anaesthetic."
+        "zh-CN": "血小板与麻醉：BSH 2023建议TTP中避免输注血小板，除非出现危及生命的出血，观察性数据提示输注与动脉血栓和死亡增加相关。SOAP 2021共识中椎管内阻滞的低风险阈值（≥70×10⁹/L）只适用于妊娠期血小板减少、ITP和妊娠期高血压疾病，不适用于TTP；个位数的计数下剖宫产应选全身麻醉；不能等待的手术是否需要输注血小板，由血液科和麻醉科共同决定。原报告反复输注血小板；本病例没有记录麻醉方式。",
+        "en": "Platelets and anaesthesia: BSH 2023 advises avoiding platelet transfusion in TTP unless bleeding is life-threatening, and observational data link it with arterial thrombosis and death. The SOAP 2021 low-risk threshold for a neuraxial block (≥ 70×10⁹/L) applies to gestational thrombocytopenia, ITP and hypertensive disorders, not TTP; at a single-figure count a caesarean needs general anaesthesia, and platelet cover for an operation that cannot wait is decided jointly by haematology and anaesthesia. The report's team transfused platelets repeatedly; this case does not record the anaesthetic."
       },
       {
         "zh-CN": "分娩时机：孕34周以后有子痫前期重度表现时，应在母体稳定后终止妊娠（ACOG 2020），并用硫酸镁预防抽搐（负荷4–6 g，维持1–2 g/h，肾功能受损时减量并监测血镁）；但分娩不能治愈TTP，母体稳定靠的是血浆置换。分娩后LDH继续上升、血小板不回升，就要升级治疗，而不是等待。",
@@ -5075,8 +5170,8 @@
       "en": "How many platelet and plasma transfusions she had and in what doses, and whether magnesium sulfate, antihypertensives or corticosteroids were given."
     },
     {
-      "zh-CN": "生命体征（入院时的心率、呼吸、血氧饱和度和之后的全部数值）、心力衰竭的检查依据、呼吸机参数和升压药剂量。",
-      "en": "Vital signs (the admission heart rate, respiratory rate and oxygen saturation, and every later value), the findings behind the heart-failure diagnosis, ventilator settings and vasopressor doses."
+      "zh-CN": "生命体征（入院时的心率、呼吸、血氧饱和度和之后的全部数值）、心力衰竭的检查依据（任何阶段都没有肌钙蛋白、心电图或超声心动图结果）、呼吸机参数和升压药剂量。",
+      "en": "Vital signs (the admission heart rate, respiratory rate and oxygen saturation, and every later value), the findings behind the heart-failure diagnosis (no troponin, ECG or echocardiogram result at any stage), ventilator settings and vasopressor doses."
     },
     {
       "zh-CN": "既往史、用药、过敏史、家族史，家属放弃治疗的原因，以及她离院后的结局。",
@@ -5223,6 +5318,15 @@
     },
     {
       "type": "order",
+      "investigationId": "head-ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "head-ct",
+      "phase": "admission"
+    },
+    {
+      "type": "order",
       "investigationId": "blood-film"
     },
     {
@@ -5236,6 +5340,14 @@
     {
       "type": "order",
       "investigationId": "adamts13"
+    },
+    {
+      "type": "order",
+      "investigationId": "troponin"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
     },
     {
       "type": "order",
@@ -5335,15 +5447,6 @@
     {
       "type": "read",
       "investigationId": "renal-function",
-      "phase": "postpartum"
-    },
-    {
-      "type": "order",
-      "investigationId": "head-ct"
-    },
-    {
-      "type": "read",
-      "investigationId": "head-ct",
       "phase": "postpartum"
     },
     {

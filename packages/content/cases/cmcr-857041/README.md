@@ -23,24 +23,25 @@ and the spinal surgeon (瞿医生 / Dr Qu) are invented teaching roles. Hospital
 | estimated time | about 35 min (static clock: three record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
 | review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have an intensivist or respiratory physician (and a spinal surgeon for the bleeding questions) review it before teaching use |
-| phases | `onset` 病房：第一次下床之后 / On the ward: after she first got up → `icu` 重症监护病房：约 20 分钟之后 / ICU: about 20 minutes later → `followup` 记录的病程与结局 / Recorded course and outcome — all one-way, none learner-switchable |
-| content | 17 history items (7 recorded facts incl. one phase twin, 1 labelled teaching device, 9 unknown; 6 required) · 7 exam findings · 16 investigations (5 record reviews; 9 with no recorded result in any phase) · 16 interventions (5 harmful or contraindicated, 1 neutral alternative) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 27; 1 examiner-judged; 2 critical) · 4 staff + 1 relative · 6 learning outcomes · 6 teaching points · 39 test utterances |
+| phases | `onset` 病房：第一次下床之后 / On the ward: after she first got up → `icu` 重症监护病房：心脏骤停复苏后 / ICU: after the arrest → `followup` 记录的病程与结局 / Recorded course and outcome — all one-way, none learner-switchable |
+| content | 17 history items (7 recorded facts incl. one phase twin, 1 labelled teaching device, 9 unknown; 6 required) · 7 exam findings · 16 investigations (5 record reviews; 9 with no recorded result in any phase) · 16 interventions (3 always harmful; thrombolysis and intubation contraindicated on the ward; UFH and LMWH each contraindicated on top of the other during the emergency; LMWH a neutral alternative on the ward and the indicated step-down in `followup`) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 27; 1 examiner-judged; 2 critical) · 4 staff + 1 relative · 6 learning outcomes · 6 teaching points · 39 test utterances |
 
 ## Learning outcomes
 
 After the case the learner can:
 
 1. Recognise suspected high-risk pulmonary embolism at the bedside — sudden breathlessness on first mobilising after
-   major surgery with a systolic pressure < 90 mmHg, hypoxaemia, distended neck veins, one swollen leg and right-heart
-   strain on the ECG — and assess the right ventricle with bedside echocardiography rather than moving an unstable
-   patient to CT (ESC 2019).
+   major surgery with a systolic pressure < 90 mmHg, hypoxaemia, distended neck veins, a swollen right leg and
+   right-heart strain on the ECG — and assess the right ventricle with bedside echocardiography rather than moving an
+   unstable patient to CT (ESC 2019).
 2. Start high-risk PE treatment at once: IV unfractionated heparin 80 U/kg then 18 U/kg/h, noradrenaline for
    hypotension, no fluid bolus when the neck veins are distended, and intubation avoided where possible (ESC 2019;
    AHA/ACC 2026 for the vasopressor).
-3. Choose a reperfusion route when major surgery within 3 weeks contraindicates systemic thrombolysis: surgical
-   embolectomy or catheter-directed treatment through a multidisciplinary team first, systemic thrombolysis as the
-   rescue in cardiac arrest or collapse when nothing else can start in time, weighing and watching for a spinal
-   epidural haematoma (ESC 2019; AHA/ACC 2026; ERC 2025).
+3. Choose a reperfusion route when major surgery within 3 weeks contraindicates systemic thrombolysis: a bedside echo
+   for right-ventricular dysfunction and other causes of shock, then surgical embolectomy or catheter-directed
+   treatment through a multidisciplinary team first, systemic thrombolysis as the rescue in cardiac arrest or collapse
+   when nothing else can start in time, weighing and watching for a spinal epidural haematoma (ESC 2019; AHA/ACC 2026;
+   ERC 2025).
 4. Explain why a negative preoperative leg ultrasound does not exclude a post-operative deep-vein thrombosis, and what
    a calf (distal) DVT does and does not establish in suspected PE (ESC 2019); state the essentials of
    thromboprophylaxis after spinal surgery (ACCP 2012).
@@ -78,14 +79,16 @@ fractures related to chest compressions. Anticoagulation continued after dischar
 recurrence and no bleeding. Doses, timings, the anticoagulant and the length of follow-up are not recorded.
 
 **Diagnosis.** High-risk (massive) pulmonary embolism with obstructive shock and cardiac arrest on post-operative day 8
-after thoracic spinal decompression, from a new post-operative calf deep-vein thrombosis; rescued with systemic
-thrombolysis (urokinase) despite the recent spinal surgery.
+after thoracic spinal decompression, with a new post-operative calf deep-vein thrombosis as the presumed source; the
+report's team gave urokinase, then anticoagulation — the route of the urokinase (systemic IV or catheter-directed), its
+dose and its timing relative to the arrest are not recorded.
 
-**Today's answer.** UFH with a bolus, noradrenaline, oxygen, no fluid load and an immediate multidisciplinary call while
-she still has a pulse; reperfusion by the fastest feasible route once she has arrested and stays vasopressor-dependent —
-catheter-directed or surgical if it can start within minutes, otherwise systemic thrombolysis despite the operation —
-with the spinal team involved and hourly leg-neurology checks; then 3 months of anticoagulation for a surgery-provoked
-PE and a 3–6-month review.
+**Today's answer.** Oxygen, monitoring, IV access and an immediate multidisciplinary call at once; UFH with a bolus,
+noradrenaline and no fluid load while she still has a pulse; once she has arrested and stays vasopressor-dependent, a
+bedside echo in the same minutes (right-ventricular dysfunction, or another cause of shock) and reperfusion by the
+fastest feasible route — catheter-directed or surgical if it can start within minutes, otherwise systemic thrombolysis
+despite the operation — with the spinal team involved and hourly leg-neurology checks; then 3 months of
+anticoagulation for a surgery-provoked PE and a 3–6-month review.
 
 ## Scenario timeline (staged evidence by phase)
 
@@ -95,12 +98,12 @@ PE and a 3–6-month review.
 
 | phase | time | entered when | what is there |
 |---|---|---|---|
-| `onset` (ward) | post-operative day 8, minutes after she first got up | start | she answers herself (breathless, a few words at a time); exam on the ward (general look, vital signs, neck veins, lungs, legs); bedside ECG and chest film; the preoperative leg-ultrasound report; the drug chart, echo, blood gas and bloods (no recorded result); decisions 1–2 |
-| `icu` | about 20 minutes later and after the resuscitation | objectives 1–2 complete **and** decisions 1 and 2 right | location ICU (`location: {setting: "icu"}`); she is intubated and cannot speak — her relative relays what she said; the observation record of the arrest; the post-resuscitation leg ultrasound; decisions 3–5 |
+| `onset` (ward) | post-operative day 8, minutes after she first got up | start | she answers herself (breathless, a few words at a time); exam on the ward (general look, vital signs, neck veins, lungs, legs); bedside ECG and chest film (staged here; see "Source and adaptation"); the preoperative leg-ultrasound report; the drug chart, echo, blood gas and bloods (no recorded result); decisions 1–2 |
+| `icu` | after the arrest (about 20 minutes after the onset) and the resuscitation | objectives 1–2 complete **and** decisions 1 and 2 right | location ICU (`location: {setting: "icu"}`); she is intubated and cannot speak — her relative relays what she said; the observation record of the arrest; a repeat bedside echo (no recorded result); the post-resuscitation leg ultrasound; decisions 3–5 |
 | `followup` | the days and weeks after | all five decisions right **and** objective 4 (a reperfusion act given) | the recorded treatment course and outcome; the contrast CT report at about three weeks |
 
 - No prompt, hint or result states the later course before its record opens. The `icu` phase description narrates the
-  arrest because the phase begins after it; the urokinase, the extubation and the CT appear only in `followup` (and in
+  arrest because the phase begins after it; the urokinase, the weaning from the ventilator and the CT appear only in `followup` (and in
   the feedback of the decision-3 key, once committed).
 - A learner who gives no reperfusion act stays in `icu`: the outcome record waits for objective 4, as in cmcr-70044.
 
@@ -112,7 +115,7 @@ PE and a 3–6-month review.
 |---|---|---|
 | 1 | `obj-onset-story` Find out what happened when she got up | onset, other symptoms, chest pain/blood, operation, past illnesses and post-operative prevention asked |
 | 2 | `obj-bedside-exam` Examine her and read the bedside ECG and film | vital signs, neck veins, lungs, legs examined; ECG and chest film read in `onset` |
-| 3 | `obj-first-minutes` Decide on the first few minutes | decisions 1–2 right; UFH and noradrenaline given |
+| 3 | `obj-first-minutes` Decide on the first few minutes | decisions 1–2 right; an anticoagulant (UFH, or LMWH) and noradrenaline given — the choice of heparin is scored by decision 2 and `rb-first-minutes`, so a learner who chose LMWH can finish without stacking UFH on it |
 | 4 | `obj-next-treatment` Decide on the next key treatment | observation record read in `icu`; decision 3 right; systemic thrombolysis **or** catheter/surgical reperfusion given |
 | 5 | `obj-scan-and-plan` Interpret the leg scan and plan the weeks ahead | leg ultrasound read in `icu`; preoperative report read; decisions 4–5 right |
 | 6 | `obj-recorded-course` Compare your plan with what happened next | outcome record and three-week CT read in `followup` |
@@ -126,13 +129,14 @@ Hints coach with questions and contain no option text (`cases validate` checks i
 |---|---|---|---|
 | `first-call` | onset and operation asked; vital signs, neck veins, lungs and legs examined; ECG and film read | suspected high-risk PE: bedside echo for RV dysfunction on the ward, CT only once stable | CT angiography now with a nurse and monitor "because imaging should precede anticoagulation after surgery"; ACS from the ST depression → troponins and angiography; Wells + D-dimer to spare her contrast; post-operative septic shock → 30 mL/kg |
 | `first-hour` | decision 1 right | UFH 80 U/kg + 18 U/kg/h, noradrenaline without a fluid bolus, the team called for catheter or surgical reperfusion, systemic lysis kept for rescue | alteplase now "whatever the operation" (lysis is first-line for high-risk PE); no heparin + IVC filter + a litre of fluid (fresh wound); LMWH + a litre + stay on the ward; RSI first, then heparin and CT |
-| `reperfusion` | decision 2 right; observation record read in `icu` | reperfuse now by the fastest route: catheter/surgical if within minutes, else systemic lysis despite the operation, spinal team told, legs checked hourly — **the report's urokinase falls within it** | hold reperfusion now that circulation is back; CT angiography first on the ventilator; IVC filter and stop heparin; full-dose lysis "with no further thought for the operation" (no spinal team, no neuro checks) |
+| `reperfusion` | decision 2 right; observation record read in `icu` | a bedside echo at once for right-heart strain or another cause of shock (ESC 2019 Fig. 4: right-ventricular dysfunction at the bedside licenses reperfusion in an unstable patient; lysis on clinical grounds alone belongs to the arrest itself, ERC 2025), then the fastest reperfusion: catheter/surgical if within minutes, else systemic lysis despite the operation, spinal team told, legs checked hourly. The key is an act, not a reading of the echo, which the case does not record. The report records urokinase, then anticoagulation, without the route, dose or timing relative to the arrest, so whether its course matches the key cannot be said | hold reperfusion now that circulation is back; CT angiography first on the ventilator; IVC filter and stop heparin; full-dose lysis "with no further thought for the operation" (no spinal team, no neuro checks) |
 | `leg-scan` | leg ultrasound read in `icu`; preoperative report read | a new post-operative calf DVT: the old negative covers only that day; distal DVT supports VTE but does not alone prove PE | "proves the PE, no chest imaging ever needed"; artefact or old clot; calf clots do not embolise; "prophylaxis must have been missed" |
 | `anticoag-plan` | decisions 3 and 4 right | UFH without bolus once APTT < 2 × upper limit after lysis; hourly leg and wound checks; LMWH or oral anticoagulant when stable; 3 months (surgery-provoked) | lifelong anticoagulation after an arrest; stop everything and rely on an IVC filter; full-dose DOAC at once with deep sedation and routine observations |
 
 Every option has its own feedback naming the guidance, its body and year, and the reason. Option ids name content
-(`high-risk-pe-echo`, `fastest-reperfusion`…), never correctness. No key is the uniquely longest option in English;
-in Chinese one (`anticoag-plan`, 65 vs 63 characters) is, within the lint's limit of one per locale.
+(`high-risk-pe-echo`, `echo-then-fastest-reperfusion`…), never correctness. No key is the uniquely longest option in
+English (the `reperfusion` key ties with `hold-after-rosc` at 216 characters); in Chinese one (`anticoag-plan`, 65 vs
+63 characters) is, within the lint's limit of one per locale (the `reperfusion` key ties with `hold-after-rosc` at 66).
 
 ### Rubric (11 deterministic items, total weight 27, + 1 examiner-judged)
 
@@ -144,9 +148,9 @@ in Chinese one (`anticoag-plan`, 65 vs 63 characters) is, within the lint's limi
 | `rb-bedside-tests` | investigations | 2 | ECG, chest film and preoperative scan read; bedside echo ordered |
 | `rb-recognition` | diagnosis | 3 | `first-call` right first time |
 | `rb-first-minutes` | management | 3 | `first-hour` right first time; UFH, noradrenaline, high-flow oxygen and the team call given |
-| `rb-reperfusion-given` | management | 4 | **critical** — systemic thrombolysis **or** catheter/surgical reperfusion given |
-| `rb-reperfusion-choice` | management | 3 | `reperfusion` right first time; spinal team informed |
-| `rb-no-harm` | safety | 3 | **critical** — no CT ordered in `onset` or `icu`, no 1,000 mL fluid bolus, no IVC filter, no dual antiplatelet loading; scored once decision 2 or 3 is attempted or any of these is done |
+| `rb-reperfusion-given` | management | 4 | **critical** — systemic thrombolysis **or** catheter/surgical reperfusion given while indicated, i.e. in `icu` after the arrest (`{intervened, whenIndicated: true}`); a dose or request on the ward does not count |
+| `rb-reperfusion-choice` | management | 3 | `reperfusion` right first time; bedside echo ordered in `icu`; spinal team informed |
+| `rb-no-harm` | safety | 3 | **critical** — no CT ordered on the ward (`onset`), no 1,000 mL fluid bolus, no IVC filter, no dual antiplatelet loading, no UFH and LMWH stacked (LMWH counts as the step-down, not as stacking, only in `followup`), no systemic thrombolysis and no intubation given outside its indication (both are indicated only in `icu`; `maxDoses: 1`, so this isolates a ward dose); scored once decision 2 or 3 is attempted or any of these acts is done |
 | `rb-leg-scan` | diagnosis | 2 | leg scan read in `icu`; `leg-scan` right first time |
 | `rb-after-reperfusion` | management | 2 | post-arrest care and hourly neuro/wound checks given; `anticoag-plan` right first time |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge explanation and planning with SPIKES: calm words to her at the onset; after the arrest, the relative told what happened, the clot, the reperfusion trade-off (spinal haematoma, paralysis, death), consent, no false reassurance |
@@ -160,35 +164,52 @@ in Chinese one (`anticoag-plan`, 65 vs 63 characters) is, within the lint's limi
 | wrong first answer at all five decisions, then right | 14/27 (52 %) | none |
 | wrong first answer at `first-call` / `first-hour` / `reperfusion` only | 24/27 (89 %) each | none |
 | wrong first answer at `leg-scan` / `anticoag-plan` only | 25/27 (93 %) each | none |
-| reference path plus a 1,000 mL fluid bolus and a CT order on the ward | 24/27 (89 %) | `rb-no-harm` |
-| reference path plus a CT order in the ICU, an IVC filter, or dual antiplatelet loading (each alone) | 24/27 (89 %) | `rb-no-harm` |
+| reference path plus a CT order on the ward (alone, or with a 1,000 mL fluid bolus) | 24/27 (89 %) | `rb-no-harm` |
+| reference path plus an IVC filter, or dual antiplatelet loading (each alone) | 24/27 (89 %) | `rb-no-harm` |
+| systemic thrombolysis on the ward, nothing more after the arrest | 20/27 (74 %) | `rb-reperfusion-given`, `rb-no-harm` |
+| systemic thrombolysis on the ward, catheter/surgical reperfusion requested in `icu` | 24/27 (89 %) | `rb-no-harm` |
+| intubation on the ward | 24/27 (89 %) | `rb-no-harm` |
+| catheter/surgical reperfusion requested on the ward only (the request counts as given, not indicated, there) | 23/27 (85 %) | `rb-reperfusion-given` |
+| catheter/surgical reperfusion requested on the ward and again in `icu` (`maxDoses: 2`) | 27/27 (100 %) | none |
+| catheter/surgical reperfusion in `icu` instead of systemic lysis | 27/27 (100 %) | none |
 | reference path without any reperfusion act: the outcome record never opens and the case cannot be finished | 23/27 (85 %) | `rb-reperfusion-given` |
-| catheter/surgical reperfusion instead of systemic lysis | 27/27 (100 %) | none |
+| LMWH instead of UFH on the ward (the case finishes) | 24/27 (89 %) | none |
+| UFH and LMWH stacked, in either order, on the ward or in `icu` (LMWH after lysis included) | 24/27 (89 %) | `rb-no-harm` |
+| reference path plus LMWH in `followup` (the step-down; `indicated` there) | 27/27 (100 %) | none |
 | no heparin, noradrenaline or team calls before the arrest (decisions right) | 21/27 (78 %), objective 3 open | none |
+| reference path without the bedside echo in `icu` | 24/27 (89 %) | none |
+| no bedside echo at all (ward or `icu`) | 22/27 (81 %) | none |
 | reference path without informing the spinal team | 24/27 (89 %) | none |
 | reference path without post-arrest care and neuro checks | 25/27 (93 %) | none |
 | only the six required history questions | 24/27 (89 %) | none |
-| **known limit:** systemic thrombolysis, or intubation, given on the ward (`onset`) | 27/27 (100 %) | none — each is `contraindicated` (a safety event with its harm text in the debrief), but conditions cannot read the phase of an intervention, and the ward-phase dose then counts as the act |
+| **known limit:** a CT ordered in `icu`, before or after reperfusion | 27/27 (100 %) | none — the rubric is read on the final state and cannot tell a CT before reperfusion (the dangerous trip; scored at decision 3 through the `ct-first` distractor) from a CT once she can travel after reperfusion, which ERC–ESICM 2025 includes in the search for the cause after an arrest. The CT's result text in `icu` says both; the debrief's harmful-test list still names any CT order, because a test has one grade and the `icu` phase opens with her vasopressor-dependent |
 
 ### Critical items
 
 - `rb-reperfusion-given` — the missed life-saving act: a patient who has arrested from a presumed PE and stays
-  vasopressor-dependent gets reperfusion. It is an act (`intervened`), not the decision.
-- `rb-no-harm` — the dangerous errors of the first hour: the trip to CT while unstable, a litre of fluid into a failing
-  right ventricle, a filter instead of anticoagulation, antiplatelet loading for a presumed ACS. Its `scoredWhen` lists
-  every harm and the decisions that expose them, so doing nothing does not earn it.
+  vasopressor-dependent gets reperfusion. It is an act done in time (`{intervened, whenIndicated: true}`: systemic lysis
+  and the catheter/surgical request are indicated only in `icu`), not the decision, so the contraindicated ward dose
+  that the case teaches against no longer earns it.
+- `rb-no-harm` — the dangerous errors: the trip to CT from the ward while she is unstable, a litre of fluid into a
+  failing right ventricle, a filter instead of anticoagulation, antiplatelet loading for a presumed ACS, two heparins
+  stacked eight days after spinal surgery, and systemic thrombolysis or intubation on the ward before the arrest. Its
+  `scoredWhen` lists every harmful act and the decisions that expose them, so doing nothing does not earn it.
 
 ## Reference path (`solution`)
 
-64 steps: start → 15 history questions (the onset, other symptoms, chest pain and blood, the course, the operation,
-past illnesses, post-operative prevention, usual medicines, allergies, earlier clots, bleeding history, legs and wound,
-leg swelling, weight, her worry) → high-flow oxygen, monitoring, IV access → general look, vital signs, neck veins,
-lungs, legs → ECG, chest film, preoperative scan, drug chart, bedside echo, blood count, coagulation, renal function
-(the last five without recorded results) → `first-call` → UFH, noradrenaline, the multidisciplinary call, the spinal
-team → `first-hour` → (phase `icu`) general look, vital signs, ventilation, observation record → `reperfusion` →
-systemic thrombolysis, neuro checks, post-arrest care → leg ultrasound → `leg-scan` → `anticoag-plan` → (phase
+66 steps, in the order of an ABCDE primary survey (help, oxygen, monitoring and access before the history): start → high-flow oxygen,
+monitoring, the multidisciplinary call, IV access with bloods sent (blood count, coagulation, renal function) → general
+look, vital signs → a focused history (the onset, other symptoms, chest pain and blood, the course, the operation, past
+illnesses) → neck veins, lungs, legs, and whether the legs had been swollen → bedside ECG, chest film, bedside echo,
+preoperative scan → `first-call` → the drug-safety checks just before the anticoagulant (allergies, usual medicines,
+bleeding history, post-operative prevention, weight; the drug chart; the bloods, none with a recorded result) → UFH,
+noradrenaline → legs and wound since the operation, the spinal team → earlier clots, her worry → `first-hour` →
+(phase `icu`) general look, vital signs, ventilation, post-arrest care, observation record, a repeat bedside echo →
+`reperfusion` → systemic thrombolysis, neuro checks → leg ultrasound → `leg-scan` → `anticoag-plan` → (phase
 `followup`) outcome record, three-week CT → finish. `cases verify` passes; the deterministic rubric scores 27/27. The
-path never asks the family-history question (an unknown with no bearing on the emergency) and never moves her to CT.
+drug-safety questions come before the heparin rather than after it: allergies, anticoagulants already given and the
+bleeding history are checked before any anticoagulant, and asking them takes seconds. The path never asks the
+family-history question (an unknown with no bearing on the emergency) and never moves her to CT.
 
 ## Clinical numbers check
 
@@ -214,7 +235,7 @@ All numbers are those 1.0.0 extracted from the report; none is invented. 1.0.0 f
 
 **Derived values (editorial, not in the record):** shock index at the onset 132/89 ≈ 1.5; mean arterial pressure at
 the onset (89 + 2 × 51)/3 ≈ 64 mmHg, after the return of circulation (90 + 2 × 40)/3 ≈ 57 mmHg; onset to return of
-circulation ≈ 24 min (about 20 + 4); the arrest on post-operative day 8 to extubation on day 13 = 5 days. Her weight is
+circulation ≈ 24 min (about 20 + 4); the arrest on post-operative day 8 to coming off the ventilator on day 13 = 5 days. Her weight is
 not recorded, so every dose is printed as a formula (80 U/kg, 18 U/kg/h, 1 mg/kg, 0.6 mg/kg, µg/kg/min) and none is
 computed. The urokinase dose is not recorded (1.0.0 omitted the historical doses), so the case prints none.
 
@@ -234,6 +255,8 @@ computed. The urokinase dose is not recorded (1.0.0 omitted the historical doses
      catheter or surgical treatment that night?"
    - "After the return of circulation she still needed a vasopressor. What does that tell you, and what were you
      prepared to accept to treat it?"
+   - "Before giving a lytic she had an absolute contraindication to, what did you need the bedside echo to show — and to
+     rule out? Why is that different during CPR?"
    - "The scan before surgery was negative. What did it tell you, and what didn't it?"
    - "How long will she be anticoagulated, and why not lifelong after something this severe?"
    - "How did you talk to her relative about a treatment that might cause paralysis?"
@@ -244,13 +267,17 @@ computed. The urokinase dose is not recorded (1.0.0 omitted the historical doses
 
 | error | how the case surfaces it | where it scores |
 |---|---|---|
-| Sending the shocked patient to CT | `pe-ctpa-now` / `ct-first` feedback; the CT result text explains the transport risk | `rb-recognition`, `rb-reperfusion-choice`, `rb-no-harm` |
+| Sending the shocked patient to CT | `pe-ctpa-now` / `ct-first` feedback; the CT result text explains the transport risk (and, in `icu`, when a CT becomes part of the search for the cause) | `rb-recognition`, `rb-reperfusion-choice`, `rb-no-harm` (a CT order on the ward) |
+| Asking fifteen questions before oxygen, a monitor and help | the demonstration (reference path) models the ABCDE order: help, oxygen, monitoring and IV access first | — (examiner-judged in the debrief) |
 | D-dimer or Wells first | `ddimer-first` feedback; D-dimer is a low-value order with no result | `rb-recognition` |
 | Treating the ST depression as ACS | `acs-angiography` feedback; antiplatelet loading contraindicated | `rb-recognition`, `rb-no-harm` |
 | Fluids for "low blood pressure" | `septic-shock` / `filter-and-fluids` / `lmwh-ward` feedback; fluid bolus contraindicated with harm text | `rb-first-minutes`, `rb-no-harm` |
 | No heparin "because of the wound", or a filter instead | `filter-and-fluids`, `filter-stop-heparin`, `filter-no-anticoag` feedback; IVC filter contraindicated | `rb-first-minutes`, `rb-no-harm` |
-| Lysis on the ward, before the alternatives were sought | `lysis-now` feedback; systemic lysis contraindicated in `onset` (safety event, see the known limit) | `rb-first-minutes` |
+| Lysis on the ward, before the alternatives were sought | `lysis-now` feedback; systemic lysis contraindicated in `onset` (a safety event with its harm text) | `rb-first-minutes`, `rb-no-harm`; `rb-reperfusion-given` too unless catheter/surgical reperfusion is requested after the arrest (the single lytic dose is spent) |
+| Intubating her on the ward while she breathes and talks | `intubate-first` feedback; ventilation contraindicated in `onset` | `rb-first-minutes`, `rb-no-harm` |
+| UFH and LMWH stacked | the second heparin is contraindicated, with a harm text that says when the switch to LMWH belongs | `rb-no-harm` |
 | No reperfusion after the return of circulation | `hold-after-rosc` feedback; the outcome record waits for a reperfusion act | `rb-reperfusion-choice`, `rb-reperfusion-given` |
+| Lysis after the arrest without a bedside echo | the `reperfusion` key and its feedback (ESC 2019: RV dysfunction at the bedside; lysis on clinical grounds alone belongs to the arrest itself, ERC 2025) | `rb-reperfusion-choice` |
 | Lysis without bleeding surveillance | `lysis-no-precautions` / `doac-now-sedated` feedback; neuro checks and the spinal team are scored | `rb-reperfusion-choice`, `rb-after-reperfusion` |
 | Letting the negative preoperative scan overrule the new one | `artefact-or-old` feedback | `rb-leg-scan` |
 | Lifelong anticoagulation after a provoked PE | `lifelong` feedback | `rb-after-reperfusion` |
@@ -261,9 +288,11 @@ computed. The urokinase dose is not recorded (1.0.0 omitted the historical doses
 The six `debrief.teachingPoints`: (1) recognition and the diagnostic route — high-risk PE until proven otherwise,
 bedside echo before CT in a deteriorating patient, no D-dimer (ESC 2019), then and now; (2) the first minutes — UFH with
 a bolus, noradrenaline, no fluid, avoid intubation (ESC 2019; AHA/ACC 2026); (3) reperfusion with a contraindication —
-surgical embolectomy or catheter-directed treatment first, systemic lysis as the rescue after an arrest, spinal
-haematoma watch (ESC 2019; AHA/ACC 2026; Chinese guidance), then and now; (4) arrest from PE and the aftermath —
-thrombolysis and 60–90 min of CPR, post-arrest targets, CPR rib fractures (ERC 2025; ERC–ESICM 2025); (5) the two leg
+right-ventricular dysfunction on a bedside echo, surgical embolectomy or catheter-directed treatment first, systemic
+lysis as the rescue after an arrest, spinal haematoma watch (ESC 2019; AHA/ACC 2026; Chinese guidance), then and now —
+the report's urokinase, then anticoagulation, with route, dose and timing unrecorded; (4) arrest from PE and the
+aftermath — thrombolysis and 60–90 min of CPR, early echo and CT including CT pulmonary angiography once she can
+travel, post-arrest targets, CPR rib fractures (ERC 2025; ERC–ESICM 2025); (5) the two leg
 scans and post-operative prophylaxis (ESC 2019; ACCP 2012); (6) after reperfusion — UFH restart, DOAC, 3 months, no
 routine filter, the 3–6-month review (ESC 2019; CHEST 2021).
 
@@ -276,7 +305,8 @@ routine filter, the 3–6-month review (ESC 2019; CHEST 2021).
 - **Kit.** The ward bed has a patient monitor, an oxygen outlet, the crash cart (IV access and drugs), infusion pumps, an
   ECG machine and a defibrillator; vital signs need the monitor (`cardiac-monitor`). The bedside chest film
   (`performedAt: "bedside"`), the bedside echo and the leg ultrasound come to her; the CT (`ct`, `performedAt:
-  "provider"`) would take her to the scanner — the reference path never orders it. The ICU bed has the ventilator.
+  "provider"`) would take her to the scanner — the reference path never orders it. The bedside echo is ordered on the
+  ward and again in the ICU (a separate order per phase). The ICU bed has the ventilator.
   Record reviews (`preop-us`, `drug-chart`, `obs-record`, `ct-week3`, `course-outcome`) are read at a records terminal
   or the nurses' station, never a device or a transport. The case's IV-access procedure (`iv-access`) precedes the
   heparin and noradrenaline; she has no cannula in situ (`extensions.embodied.ivAccessInSitu: false`).
@@ -300,20 +330,23 @@ decompression and its length; hypertension and its treatment; the onset on post-
 of bed, with chest tightness and palpitations, without chest pain or haemoptysis, rapidly worse; every vital sign and
 sign at the onset; the ECG and the bedside film; SpO₂ 91 % → 50 % on oxygen; the arrest about 20 minutes after the
 onset and the return of circulation after 4 minutes; intubation and vasopressors for about 90/40 mmHg; the preoperative
-and post-resuscitation leg ultrasounds; urokinase then anticoagulation; recovery and extubation on post-operative day
-13; the CT at about three weeks; follow-up on anticoagulation without recurrence or bleeding. The extraction table is in
-the numbers check above.
+and post-resuscitation leg ultrasounds; urokinase then anticoagulation (no route, dose or timing); recovery and
+weaning from the ventilator on post-operative day 13; the CT at about three weeks; follow-up on anticoagulation without
+recurrence or bleeding. The extraction table is in the numbers check above.
 
 **Adapted for teaching.** The staging: she is assessed on the ward at the onset and in the ICU after the arrest (1.0.0
 put the learner in the ICU after the arrest, with the onset findings as records and a "companion" telling the story);
 her own breathless words on the ward and her relative relaying them in the ICU (the relative, their worries and their
 presence at her bedside are a teaching device — 1.0.0 does not say who was with her); her two voiced worries (teaching
-devices that add no clinical fact); the five decisions, their options and feedback; the 16 interventions (the record's
-step — systemic thrombolysis — and today's steps, plus the tempting wrong ones) with formula doses; the rubric; the
-staff; the "no result recorded" results for the tests a clinician would ask for (echo, blood gas, blood count,
-coagulation, renal function, cardiac markers, D-dimer, the drug chart, the repeat ECG and film, the CT during the
-emergency); the onset vital signs combine the examination at the onset with the oxygen saturation of the oxygenation
-record (the 91 % before it fell).
+devices that add no clinical fact); the five decisions, their options and feedback; the 16 interventions (thrombolysis,
+which the record names only as urokinase without its route, today's steps, and the tempting wrong ones) with formula
+doses; the rubric; the staff; the "no result recorded" results for the tests a clinician would ask for (echo on the
+ward and in the ICU, blood gas, blood count, coagulation, renal function, cardiac markers, D-dimer, the drug chart, the
+repeat ECG and film, the CT during the emergency); the onset vital signs combine the examination at the onset with the
+oxygen saturation of the oxygenation record (the 91 % before it fell). **The ECG and the bedside chest film are staged
+on the ward at the onset**, where decision 1 rests on them: 1.0.0 lists them among the early records of the emergency
+without saying when they were taken relative to the arrest, so their result date reads "After the breathlessness
+began" (气促发作后), which is true either way.
 
 **Points where 1.0.0 differs with itself (kept, not resolved).**
 - Recovery: the Chinese reads 意识和循环逐渐恢复 (consciousness and circulation), the English "neurological and
@@ -328,8 +361,9 @@ record (the 91 % before it fell).
 **Unknowns kept honest** (`unknowns`, the nine unknown history items, "no result recorded" results, `examNotRecorded`):
 echocardiography, blood gases and all laboratory tests; post-operative thromboprophylaxis, her usual medicines,
 weight, allergies, earlier clots or bleeding, family history; leg symptoms and the wound; the arrest rhythm, CPR drugs,
-the order of intubation and ROSC, the vasopressor and its dose; the urokinase dose and timing, the anticoagulant, its
-dose and duration, any in-hospital bleeding; her neurology after the arrest and after lysis; the CT protocol and the
+the order of intubation and ROSC, the vasopressor and its dose; the urokinase route (systemic IV or catheter-directed),
+dose and timing, the anticoagulant, its dose and duration, any in-hospital bleeding; her neurology after the arrest and
+after lysis; the timing of the ECG and film relative to the arrest; the CT protocol and the
 starting point of "three weeks"; the length of follow-up; the left leg, heart sounds, temperature, urine output and
 lactate.
 
@@ -343,6 +377,16 @@ act to a team — it names UFH with its dose, noradrenaline, the reperfusion rou
 item is the reperfusion act itself, not `decidedFirstTry` (critic gap 3); references in one Vancouver string each, the
 article first with its DOI and URL, no bare doi.org line (SI-18); this guide rewritten to the §9.6 template (SI-20).
 The critic named this case as the pilot for the "ICU arrest" class.
+
+**Independent review applied (2026-10-30).** Every finding was checked against 1.0.0, this standard and the cited
+guidance. The report's urokinase is no longer called systemic or given "after the arrest" (1.0.0 records neither; the
+route joins the unknowns); a CT order in the ICU no longer fails the critical safety item (ERC–ESICM 2025 places CT,
+including CT pulmonary angiography, in the search for the cause after an arrest); the decision-3 key now starts with a
+bedside echo (ESC 2019) and the reference path repeats it in the ICU; the first-minutes objective accepts LMWH, and
+stacked heparins count as a harm; the critical reperfusion item counts only an act given while indicated
+(`whenIndicated`), and thrombolysis or intubation on the ward is scored as a harm; the reference path follows the ABCDE
+order; "one swollen leg" became "a swollen right leg" (the left leg is not recorded); the ECG and film staging is
+declared; the ICU phase label no longer dates the ICU stay; the English conclusion states what the Chinese states.
 
 **Privacy.** Pseudonym unique in the 125 CMCR cases; relative time only; no hospital, place, occupation or initials.
 Authors' names appear only in the citation. No figure of the report is approved for display (scripts/cmcr-105-media-
@@ -401,15 +445,17 @@ DOI; doi.org, Crossref and PubMed hosts were not reachable from this session). R
 
 **In the source article (the details 1.0.0 did not carry):**
 - Where she was when she got up (ward or elsewhere) and where the arrest and resuscitation took place.
+- When the ECG and the bedside chest film were taken relative to the arrest (the case stages them on the ward at the
+  onset, before decision 1).
 - Any further vital signs (temperature) and examination (heart sounds, the left leg, the wound, leg neurology), and
   whether the right-leg oedema was new.
 - The arrest rhythm, the drugs given during CPR, whether intubation came before or after the return of circulation,
   and the vasopressor used and its dose.
 - Any echocardiogram (right-ventricular size and function, pulmonary pressure), blood gases and laboratory results
   (blood count, coagulation, renal function, troponin, BNP, D-dimer).
-- The urokinase regimen (dose, duration) and when it was started relative to the arrest and the return of
-  circulation; whether heparin was given before, during or after it; the anticoagulant afterwards, its dose and
-  duration.
+- The urokinase regimen: its route (systemic IV or catheter-directed), dose and duration, and when it was started
+  relative to the arrest and the return of circulation (during CPR or after it); whether heparin was given before,
+  during or after it; the anticoagulant afterwards, its dose and duration.
 - Post-operative thromboprophylaxis (mechanical or drug) before the event.
 - Any bleeding (wound, epidural haematoma) or neurological deficit after the thrombolysis; her neurological state after
   the arrest beyond "consciousness gradually recovered".
@@ -434,8 +480,13 @@ DOI; doi.org, Crossref and PubMed hosts were not reachable from this session). R
 - **ERC 2025 special circumstances** (secondary): consider thrombolysis when PE is the suspected cause, CPR for 60–90 min
   after it, extracorporeal CPR for selected patients; the adult alteplase dosing it gives was not printed in the case.
 - **ERC–ESICM 2025 post-resuscitation care**: the MAP target (> 60–65 mmHg in a secondary summary; the case prints
-  ≥ 65 mmHg), SpO₂ 94–98 %, the duration of fever prevention and the 72-hour prognostication rule; the full author list
-  (cited as "Nolan JP, Sandroni C, et al.").
+  ≥ 65 mmHg), SpO₂ 94–98 %, the duration of fever prevention and the 72-hour prognostication rule; echocardiography as
+  soon as possible in all patients and a dual-phase whole-body CT including CT pulmonary angiography when there is no
+  ST elevation (from secondary summaries returned by a web search on 2026-10-30; the full text was not read); the
+  full author list (cited as "Nolan JP, Sandroni C, et al.").
+- **ESC 2019 Fig. 4** (suspected high-risk PE): bedside echo for right-ventricular dysfunction, CT pulmonary
+  angiography only when immediately available and the patient is stabilised, otherwise PE-specific reperfusion on
+  the echo — quoted from memory and the independent review.
 - **ACCP 2012**: the exact spinal-surgery wording and grades (mechanical prophylaxis preferably IPC, 2C; drug
   prophylaxis added for high-risk patients when bleeding risk allows, 2C).
 - **Chinese guidance**: the 2018 guideline's last page (1086 or 1087), its contraindication table (whether recent brain
@@ -465,10 +516,20 @@ DOI; doi.org, Crossref and PubMed hosts were not reachable from this session). R
   recorded" bloods, gases and markers, a low-value D-dimer and a harmful CT during the emergency.
 - **Interventions.** 0 → 16, with formula doses and a response on each.
 - **Decisions.** 3 template decisions with `supported` ids → 5 (first call, first minutes, reperfusion, leg scan,
-  anticoagulation plan), 4–5 plausible options each with their own feedback; the report's urokinase is part of the
-  decision-3 key (rescue lysis after the arrest), the reflex ward-phase lysis a distractor of decision 2.
+  anticoagulation plan), 4–5 plausible options each with their own feedback; the decision-3 key is a bedside echo and
+  then the fastest reperfusion, systemic lysis the rescue (the report records urokinase, then anticoagulation, without
+  route, dose or timing), the reflex ward-phase lysis a distractor of decision 2.
 - **Rubric.** 11 items with a `decidedFirstTry`-only critical item → 12 items with two critical acts
-  (`rb-reperfusion-given`, `rb-no-harm` with `scoredWhen`) and a Calgary–Cambridge/SPIKES communication item.
+  (`rb-reperfusion-given` counting only an act given while indicated, `rb-no-harm` with `scoredWhen`) and a
+  Calgary–Cambridge/SPIKES communication item.
+- **Independent review fixes (same day).** No route or timing claimed for the report's urokinase (teaching point 3, the
+  decision-3 key feedback, this guide), the route added to the unknowns; `rb-no-harm` no longer fails a CT in the ICU
+  and now covers stacked heparins and thrombolysis or intubation on the ward; `rb-reperfusion-given` uses
+  `whenIndicated`, the catheter/surgical request is indicated only in the ICU (`maxDoses: 2`); LMWH completes the
+  first-minutes objective and is the indicated step-down in `followup`; the decision-3 key, its feedback and the
+  reference path add a bedside echo in the ICU, scored in `rb-reperfusion-choice`; the reference path reordered to
+  ABCDE (66 steps); "a swollen right leg"; ECG and film dated "After the breathlessness began"; ICU phase label "ICU:
+  after the arrest"; the English conclusion aligned with the Chinese.
 - **Teaching layer.** 4 → 6 learning outcomes; 3 → 5 key reasoning points; 3 → 6 dated teaching points (then and now);
   4 → 9 references in Vancouver form; 1 → 4 staff; 1 → 7 specific unknowns; the conclusion rewritten with the numbers.
 - **Card.** Title without "collapse" ("Sudden breathlessness after spinal surgery · 60-year-old woman"); a new summary
@@ -486,7 +547,7 @@ DOI; doi.org, Crossref and PubMed hosts were not reachable from this session). R
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-857041/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-857041 --lang en          # solution 64 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 27/27
+npm run -s cc -- cases verify cmcr-857041 --lang en          # solution 66 steps · objectives 6/6 · decisions 5/5 · utterances 39/39 · rubric 27/27
 npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-857041          # depth floor, do-nothing 0, wrong-first 14/27 < 27/27
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-857041:"   # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-857041:"   # in-world demonstration, en + zh-CN
@@ -499,14 +560,16 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 发绀，颈静脉怒张，双肺呼吸音粗、无干湿啰音，右下肢中度指凹性水肿；心电图示窦性心动过速、SⅠQⅢTⅢ、完全性右束支传导阻滞和胸前
 导联 ST 段压低，床旁胸片无明显异常；术前下肢超声未见血栓。约 20 分钟后 SpO₂ 迅速降至 50%，呼吸心跳停止，心肺复苏 4 分钟后
 恢复自主循环，气管插管，需升压药维持血压约 90/40 mmHg；复苏后超声见右侧腓静脉及小腿肌间静脉血栓。原报告团队用尿激酶溶栓后
-抗凝，意识和循环逐渐恢复，术后第 13 天撤机；约 3 周后增强CT见右下肺动脉分支充盈缺损和胸外按压相关的多发肋骨骨折；出院后抗凝
-随访无复发或出血。诊断：脊柱术后高危肺栓塞致心脏骤停。患者事实沿用 1.0.0 版的提取内容，尚未对照原文全文核对。
+抗凝（给药途径、剂量及与心脏骤停的先后没有记录），意识和循环逐渐恢复，术后第 13 天撤机；约 3 周后增强CT见右下肺动脉分支充盈
+缺损和胸外按压相关的多发肋骨骨折；出院后抗凝随访无复发或出血。诊断：脊柱术后高危肺栓塞致心脏骤停。心电图和床旁胸片在本例中放在
+发作时的病房，它们与心脏骤停的先后没有记录。患者事实沿用 1.0.0 版的提取内容，尚未对照原文全文核对。
 
 **学习目标。**
 
 1. 在床旁识别疑似高危肺栓塞，并按 ESC 2019 用床旁超声心动图而不是把不稳定的患者送去CT来评估右心室。
 2. 立即开始处理：普通肝素 80 U/kg 推注后 18 U/kg/h、去甲肾上腺素、颈静脉怒张时不补液、尽量避免插管。
-3. 3 周内大手术使全身溶栓成为禁忌时，经多学科团队首选外科取栓或导管介入；心脏骤停后来不及时以全身溶栓抢救，并监测椎管内血肿。
+3. 3 周内大手术使全身溶栓成为禁忌时，先用床旁超声心动图评估右心室、排除其他休克原因，再经多学科团队首选外科取栓或导管介入；
+   心脏骤停后来不及时以全身溶栓抢救，并监测椎管内血肿。
 4. 解释术前阴性的下肢超声为何不能排除术后血栓，以及小腿血栓对肺栓塞能说明和不能说明什么；说出脊柱术后血栓预防的要点。
 5. 制定再灌注后的抗凝计划：恢复普通肝素、改为低分子肝素或口服抗凝药、手术诱发者抗凝 3 个月、观察下肢神经和伤口、3–6 个月复诊。
 6. 按 ERC 2025 和 ERC–ESICM 2025 处理肺栓塞所致的心脏骤停及复苏后阶段。
@@ -516,8 +579,9 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 - 第 1 项（病房）：疑似高危肺栓塞——床旁超声心动图，不送CT；干扰项为立即送CT、按急性冠脉综合征处理、先查D-二聚体、按感染性休克补液。
 - 第 2 项（病房）：普通肝素加负荷量、去甲肾上腺素、不补液、呼叫团队准备导管或外科再灌注，全身溶栓留作抢救；干扰项为立即全身溶栓、
   不用肝素改放滤器并补液、低分子肝素加补液留病房、先插管。
-- 第 3 项（重症监护病房）：骤停后仍依赖升压药——以最快可行的方式立即再灌注，来不及时不顾近期手术全身溶栓（原报告的尿激酶即属此类），
-  并通知脊柱外科、每小时查下肢；干扰项为循环恢复后暂缓、先送CT、放滤器停肝素、溶栓却不观察出血。
+- 第 3 项（重症监护病房）：骤停后仍依赖升压药——立即做床旁超声心动图看右心、排除其他休克原因，再以最快可行的方式再灌注，
+  来不及时不顾近期手术全身溶栓，并通知脊柱外科、每小时查下肢（原报告用了尿激酶，随后抗凝；给药途径、剂量及与心脏骤停的先后
+  没有记录）；干扰项为循环恢复后暂缓、先送CT、放滤器停肝素、溶栓却不观察出血。
 - 第 4 项：术后新形成的小腿深静脉血栓支持静脉血栓栓塞，但单凭它不能确诊肺栓塞；术前阴性只代表当时。
 - 第 5 项：溶栓后 APTT 回落即不推注恢复肝素，观察下肢神经和伤口，稳定后改低分子肝素或口服药，手术诱发者抗凝 3 个月。
 
@@ -525,8 +589,12 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 
 - 大手术后首次下床时突发气促伴休克，按高危肺栓塞处理：床旁评估右心室，不送CT、不查D-二聚体（ESC 2019）。
 - 普通肝素、去甲肾上腺素、不补液、尽量不插管（ESC 2019；AHA/ACC 2026）。
-- 有溶栓禁忌时首选外科或导管再灌注；心脏骤停后来不及时全身溶栓是救命手段，同时警惕椎管内血肿（ESC 2019；AHA/ACC 2026；中国指南）。
-- 肺栓塞所致骤停考虑溶栓并继续复苏 60–90 分钟；复苏后的氧合、通气、血压和体温目标（ERC 2025；ERC–ESICM 2025）。
+- 有溶栓禁忌时，以床旁超声心动图所见的右心室功能不全为依据，首选外科或导管再灌注；心脏骤停后来不及时全身溶栓是救命手段，同时
+  警惕椎管内血肿（ESC 2019；AHA/ACC 2026；中国指南）。
+- 肺栓塞所致骤停考虑溶栓并继续复苏 60–90 分钟；复苏后尽早做超声心动图，能安全转运后行包括CT肺动脉造影在内的CT检查查找病因，
+  并维持氧合、通气、血压和体温目标（ERC 2025；ERC–ESICM 2025）。
+- 示范接诊按 ABCDE 顺序：先吸氧、上监护、呼叫团队、建立静脉通路，再做重点问诊和查体；用抗凝药之前核对过敏、出血史和已用药物。
+- 双联抗凝（普通肝素与低分子肝素叠加）、病房内溶栓或插管、从病房送CT都计入关键安全项。
 - 术前阴性超声不能排除术后血栓；脊柱术后以机械预防为主，高危者在出血风险允许时加用药物（ACCP 2012）。
 - 手术诱发的首次肺栓塞抗凝 3 个月，不常规放滤器，3–6 个月复诊评估持续气促（ESC 2019；CHEST 2021）。
 - 本病例为人工智能辅助编写、经编辑审核的教学设计；患者事实尚未对照原文全文核对，尚未经执业医师审核（待核实清单见上文“To verify”）。

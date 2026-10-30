@@ -42,8 +42,8 @@
     ],
     "license": "Authored educational adaptation; publication copyright remains with its original holders.",
     "notes": {
-      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——60岁女性，胸椎管狭窄后路减压术（约 3 小时）后第 8 天首次下床时突发严重气促、胸闷、心慌，无胸痛和咯血；6 年未规范治疗的高血压；发作时的生命体征和体征；心电图与床旁胸片；吸氧下 SpO₂ 由 91% 降至 50% 后心脏骤停、复苏 4 分钟恢复自主循环、需升压药维持血压约 90/40 mmHg；复苏后下肢超声（术前超声阴性）；尿激酶后抗凝、意识和循环恢复、术后第 13 天撤机；约 3 周后的增强CT；出院后随访——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计（发作时在病房问诊查体、心脏骤停后在重症监护病房）、决策、处置选项、评分、医护角色、陪护家属及患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（超声心动图、血气、化验、骤停心律、药物剂量、术后血栓预防、体重、过敏）保持未知。1.0.0 版的几处表述差异（意识恢复的英译、插管与恢复自主循环的先后、“三周后”的起算点、CT 的扫描方案）保留并列入导师指南的待核实清单。本例没有获准展示的原图。",
-      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 60-year-old woman who, on post-operative day 8 after a posterior decompression for thoracic spinal canal stenosis (about 3 hours), became suddenly and severely breathless with chest tightness and palpitations, without chest pain or haemoptysis, the first time she got out of bed; hypertension for 6 years, not regularly treated; the vital signs and signs at the onset; the ECG and bedside chest film; SpO₂ falling from 91 % to 50 % on oxygen, cardiac arrest, return of circulation after 4 minutes of CPR and vasopressors for a blood pressure of about 90/40 mmHg; the post-resuscitation leg ultrasound (negative before surgery); urokinase then anticoagulation, recovery of consciousness and circulation and extubation on post-operative day 13; the contrast CT at about three weeks; follow-up after discharge — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The staging (history and examination on the ward at the onset, the ICU after the arrest), decisions, intervention options, scoring, staff, the relative at her bedside and the patient's voiced worries (teaching devices that add no clinical fact) are teaching design; what is not recorded (echocardiography, blood gases, laboratory tests, the arrest rhythm, drug doses, post-operative thromboprophylaxis, weight, allergies) stays unknown. Points where the 1.0.0 text differs with itself (the English for the recovery of consciousness, the order of intubation and return of circulation, the starting point of “three weeks”, the CT protocol) are kept and listed in the facilitator guide's “To verify”. No figure of the report is approved for display."
+      "zh-CN": "依据单篇已发表病例报告改编。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——60岁女性，胸椎管狭窄后路减压术（约 3 小时）后第 8 天首次下床时突发严重气促、胸闷、心慌，无胸痛和咯血；6 年未规范治疗的高血压；发作时的生命体征和体征；心电图与床旁胸片；吸氧下 SpO₂ 由 91% 降至 50% 后心脏骤停、复苏 4 分钟恢复自主循环、需升压药维持血压约 90/40 mmHg；复苏后下肢超声（术前超声阴性）；尿激酶后抗凝、意识和循环恢复、术后第 13 天撤机；约 3 周后的增强CT；出院后随访——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计（发作时在病房问诊查体，心电图和床旁胸片也放在这一阶段——1.0.0 版没有记录它们与心脏骤停的先后；心脏骤停后在重症监护病房）、决策、处置选项、评分、医护角色、陪护家属及患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（超声心动图、血气、化验、骤停心律、尿激酶的给药途径、药物剂量、术后血栓预防、体重、过敏）保持未知。1.0.0 版的几处表述差异（意识恢复的英译、插管与恢复自主循环的先后、“三周后”的起算点、CT 的扫描方案）保留并列入导师指南的待核实清单。本例没有获准展示的原图。",
+      "en": "Adapted from a single published case report. Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 60-year-old woman who, on post-operative day 8 after a posterior decompression for thoracic spinal canal stenosis (about 3 hours), became suddenly and severely breathless with chest tightness and palpitations, without chest pain or haemoptysis, the first time she got out of bed; hypertension for 6 years, not regularly treated; the vital signs and signs at the onset; the ECG and bedside chest film; SpO₂ falling from 91 % to 50 % on oxygen, cardiac arrest, return of circulation after 4 minutes of CPR and vasopressors for a blood pressure of about 90/40 mmHg; the post-resuscitation leg ultrasound (negative before surgery); urokinase then anticoagulation, recovery of consciousness and circulation and weaning from the ventilator on post-operative day 13; the contrast CT at about three weeks; follow-up after discharge — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The staging (history and examination on the ward at the onset, with the ECG and bedside film placed there although 1.0.0 does not time them against the arrest; the ICU after the arrest), decisions, intervention options, scoring, staff, the relative at her bedside and the patient's voiced worries (teaching devices that add no clinical fact) are teaching design; what is not recorded (echocardiography, blood gases, laboratory tests, the arrest rhythm, the route of the urokinase, drug doses, post-operative thromboprophylaxis, weight, allergies) stays unknown. Points where the 1.0.0 text differs with itself (the English for the recovery of consciousness, the order of intubation and return of circulation, the starting point of “three weeks”, the CT protocol) are kept and listed in the facilitator guide's “To verify”. No figure of the report is approved for display."
     },
     "review": {
       "status": "editorial",
@@ -73,16 +73,16 @@
   },
   "learningOutcomes": [
     {
-      "zh-CN": "在床旁识别疑似高危肺栓塞——大手术后首次下床时突发气促，伴收缩压 < 90 mmHg、低氧、颈静脉怒张、单侧下肢水肿和右心负荷心电图——并按 ESC 2019 用床旁超声心动图而不是把不稳定的患者送去CT来评估右心室。",
-      "en": "Recognise suspected high-risk pulmonary embolism at the bedside — sudden breathlessness on first mobilising after major surgery with a systolic pressure < 90 mmHg, hypoxaemia, distended neck veins, one swollen leg and right-heart strain on the ECG — and assess the right ventricle with bedside echocardiography rather than moving an unstable patient to CT (ESC 2019)."
+      "zh-CN": "在床旁识别疑似高危肺栓塞——大手术后首次下床时突发气促，伴收缩压 < 90 mmHg、低氧、颈静脉怒张、右下肢水肿和右心负荷心电图——并按 ESC 2019 用床旁超声心动图而不是把不稳定的患者送去CT来评估右心室。",
+      "en": "Recognise suspected high-risk pulmonary embolism at the bedside — sudden breathlessness on first mobilising after major surgery with a systolic pressure < 90 mmHg, hypoxaemia, distended neck veins, a swollen right leg and right-heart strain on the ECG — and assess the right ventricle with bedside echocardiography rather than moving an unstable patient to CT (ESC 2019)."
     },
     {
       "zh-CN": "立即开始高危肺栓塞的处理：静脉普通肝素 80 U/kg 推注后 18 U/kg/h 泵入、去甲肾上腺素纠正低血压、颈静脉怒张时不快速补液、尽量避免插管（ESC 2019；升压药的选择亦见 AHA/ACC 2026）。",
       "en": "Start high-risk PE treatment at once: IV unfractionated heparin 80 U/kg then 18 U/kg/h, noradrenaline for hypotension, no fluid bolus when the neck veins are distended, and intubation avoided where possible (ESC 2019; AHA/ACC 2026 for the vasopressor)."
     },
     {
-      "zh-CN": "在 3 周内大手术使全身溶栓成为禁忌时选择再灌注方式：经多学科团队首选外科取栓或导管介入；心脏骤停或循环崩溃而其他方式来不及时，以全身溶栓抢救，并权衡和监测椎管内血肿的风险（ESC 2019；AHA/ACC 2026；ERC 2025）。",
-      "en": "Choose a reperfusion route when major surgery within 3 weeks contraindicates systemic thrombolysis: surgical embolectomy or catheter-directed treatment through a multidisciplinary team first, systemic thrombolysis as the rescue in cardiac arrest or collapse when nothing else can start in time, weighing and watching for a spinal epidural haematoma (ESC 2019; AHA/ACC 2026; ERC 2025)."
+      "zh-CN": "在 3 周内大手术使全身溶栓成为禁忌时选择再灌注方式：先用床旁超声心动图评估右心室、排除其他休克原因，再经多学科团队首选外科取栓或导管介入；心脏骤停或循环崩溃而其他方式来不及时，以全身溶栓抢救，并权衡和监测椎管内血肿的风险（ESC 2019；AHA/ACC 2026；ERC 2025）。",
+      "en": "Choose a reperfusion route when major surgery within 3 weeks contraindicates systemic thrombolysis: a bedside echo for right-ventricular dysfunction and other causes of shock, then surgical embolectomy or catheter-directed treatment through a multidisciplinary team first, systemic thrombolysis as the rescue in cardiac arrest or collapse when nothing else can start in time, weighing and watching for a spinal epidural haematoma (ESC 2019; AHA/ACC 2026; ERC 2025)."
     },
     {
       "zh-CN": "解释术前阴性的下肢超声为何不能排除术后深静脉血栓，以及小腿（远端）血栓对疑似肺栓塞能说明和不能说明什么（ESC 2019）；说出脊柱术后血栓预防的要点（ACCP 2012）。",
@@ -209,8 +209,8 @@
     {
       "id": "icu",
       "label": {
-        "zh-CN": "重症监护病房：约 20 分钟之后",
-        "en": "ICU: about 20 minutes later"
+        "zh-CN": "重症监护病房：心脏骤停复苏后",
+        "en": "ICU: after the arrest"
       },
       "description": {
         "zh-CN": "尽管一直在吸氧，她的血氧饱和度很快下降，约 20 分钟后呼吸心跳停止；经心肺复苏恢复了自主循环，已气管插管，现在在重症监护病房，仍要靠升压药维持血压。",
@@ -1489,8 +1489,8 @@
         "onset": {
           "available": true,
           "date": {
-            "zh-CN": "气促发作时",
-            "en": "At the onset of the breathlessness"
+            "zh-CN": "气促发作后",
+            "en": "After the breathlessness began"
           },
           "text": {
             "zh-CN": "窦性心动过速；SⅠQⅢTⅢ；完全性右束支传导阻滞；胸前导联 ST 段压低。",
@@ -1556,8 +1556,8 @@
         "onset": {
           "available": true,
           "date": {
-            "zh-CN": "气促发作时",
-            "en": "At the onset of the breathlessness"
+            "zh-CN": "气促发作后",
+            "en": "After the breathlessness began"
           },
           "text": {
             "zh-CN": "床旁胸片：未见明显异常。",
@@ -2243,8 +2243,8 @@
         "icu": {
           "available": false,
           "text": {
-            "zh-CN": "此时没有这项检查的结果记录。她刚恢复自主循环、仍靠升压药维持血压，转运去CT室风险很大。",
-            "en": "No result is recorded for this test at this point. Circulation has only just returned and she still depends on a vasopressor, so the trip to CT carries real risk."
+            "zh-CN": "此时没有这项检查的结果记录。她刚恢复自主循环、仍靠升压药维持血压，此刻送去CT室风险很大，再灌注也不能等这次检查。再灌注之后、她能由重症监护团队护送安全转运时，包括CT肺动脉造影在内的CT检查是心脏骤停后查找病因的一部分（ERC–ESICM 2025）。",
+            "en": "No result is recorded for this test at this point. Circulation has only just returned and she still depends on a vasopressor, so the trip to CT now carries real risk, and reperfusion must not wait for it. Once reperfusion has been given and she can travel safely with the ICU team, a CT that includes CT pulmonary angiography is part of the search for the cause after a cardiac arrest (ERC–ESICM 2025)."
           },
           "values": [],
           "figures": [],
@@ -2410,8 +2410,8 @@
           "values": [],
           "figures": [],
           "note": {
-            "zh-CN": "本病例没有记录尿激酶的剂量、开始的时间（与心脏骤停的先后），所用抗凝药及其剂量和疗程，住院期间有无出血，也没有记录随访多长时间。",
-            "en": "This case does not record the urokinase dose or when it was started relative to the arrest, the anticoagulant used or its dose and duration, any bleeding in hospital, or how long follow-up lasted."
+            "zh-CN": "本病例没有记录尿激酶的给药途径（全身静脉还是经导管）、剂量和开始的时间（与心脏骤停的先后），所用抗凝药及其剂量和疗程，住院期间有无出血，也没有记录随访多长时间。",
+            "en": "This case does not record the urokinase route (systemic IV or catheter-directed), its dose or when it was started relative to the arrest, the anticoagulant used or its dose and duration, any bleeding in hospital, or how long follow-up lasted."
           },
           "source": {
             "zh-CN": "原报告病例资料·治疗及转归（尿激酶后抗凝；意识和循环逐渐恢复；术后第 13 天撤机；出院后抗凝随访未报告复发或出血）（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2661,7 +2661,16 @@
         ]
       },
       "contraindicatedWhen": {
-        "intervened": "lmwh"
+        "all": [
+          {
+            "intervened": "lmwh"
+          },
+          {
+            "not": {
+              "phase": "followup"
+            }
+          }
+        ]
       },
       "harm": {
         "zh-CN": "已经用了治疗量低分子肝素，再加普通肝素就是重复抗凝，出血风险显著增加——何况她 8 天前刚做过脊柱手术。",
@@ -2702,16 +2711,28 @@
       ],
       "risk": "moderate",
       "maxDoses": 1,
+      "indicatedWhen": {
+        "phase": "followup"
+      },
       "contraindicatedWhen": {
-        "intervened": "ufh"
+        "all": [
+          {
+            "intervened": "ufh"
+          },
+          {
+            "not": {
+              "phase": "followup"
+            }
+          }
+        ]
       },
       "harm": {
-        "zh-CN": "已经在用普通肝素，再加低分子肝素是重复抗凝，出血风险显著增加。",
-        "en": "UFH is already running: adding LMWH stacks two anticoagulants and sharply raises the bleeding risk."
+        "zh-CN": "已经在用普通肝素，再加低分子肝素是重复抗凝，出血风险显著增加——何况她 8 天前刚做过脊柱手术。改用低分子肝素要等她病情稳定、停用普通肝素时再进行，而不是在普通肝素之上再加一种。",
+        "en": "UFH is already running: adding LMWH stacks two anticoagulants and sharply raises the bleeding risk, eight days after spinal surgery. The switch to LMWH comes once she is stable, as the UFH infusion is stopped, not as a second anticoagulant on top of it."
       },
       "response": {
-        "zh-CN": "已皮下注射。对多数需要抗凝的静脉血栓患者，低分子肝素是首选（ESC 2019；AHA/ACC 2026）；但她血压低、随时可能需要再灌注时，ESC 2019 更推荐静脉普通肝素——它能随时停用、调整并用鱼精蛋白完全中和，而低分子肝素作用约持续 12 小时、只能部分中和。不模拟其效果。",
-        "en": "Given. For most patients who need anticoagulation for venous thrombosis, LMWH is the first choice (ESC 2019; AHA/ACC 2026), but while she is hypotensive and may need reperfusion at any moment, ESC 2019 favours IV UFH, which can be stopped, adjusted and fully reversed with protamine; LMWH lasts about 12 hours and is only partly reversed. This case does not simulate its effect."
+        "zh-CN": "已皮下注射。低分子肝素是多数肺栓塞患者的首选抗凝药（ESC 2019；AHA/ACC 2026），也是病情稳定后的常规后续用药；但在她低血压、随时可能需要再灌注时，ESC 2019 更推荐静脉普通肝素——它能随时停用、调整并用鱼精蛋白完全中和，而低分子肝素作用约持续 12 小时、只能部分中和。本病例没有记录是否做过这一步；不模拟其效果。",
+        "en": "Given. LMWH is the first-choice anticoagulant for most patients with PE (ESC 2019; AHA/ACC 2026) and the usual next step once she is stable, but while she is hypotensive and may need reperfusion at any moment, ESC 2019 favours IV UFH, which can be stopped, adjusted and fully reversed with protamine; LMWH lasts about 12 hours and is only partly reversed. This case does not record whether this was done; it does not simulate its effect."
       }
     },
     {
@@ -2991,8 +3012,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "阿替普酶 100 mg 静脉输注 2 h（ESC 2019；中国指南常用 50 mg 2 h），或加速方案 0.6 mg/kg 15 min（最大 50 mg）；心脏骤停时按复苏指南给药，并继续心肺复苏 60–90 min。溶栓前通知脊柱外科，溶栓中和溶栓后每小时查下肢神经功能和伤口。",
-        "en": "Alteplase 100 mg IV over 2 h (ESC 2019; Chinese guidance commonly 50 mg over 2 h), or the accelerated 0.6 mg/kg over 15 min (max 50 mg); in cardiac arrest, dose per resuscitation guidance and continue CPR for 60–90 min. Tell the spinal team first, and check leg neurology and the wound hourly during and after."
+        "zh-CN": "阿替普酶 100 mg 静脉输注 2 h（ESC 2019；中国指南常用 50 mg 2 h），或加速方案 0.6 mg/kg 15 min（最大 50 mg）；心脏骤停时按复苏指南给药，并继续心肺复苏 60–90 min。有脉搏时先做床旁超声心动图，看右心室功能不全、排除其他休克原因（ESC 2019）。溶栓前通知脊柱外科，溶栓中和溶栓后每小时查下肢神经功能和伤口。",
+        "en": "Alteplase 100 mg IV over 2 h (ESC 2019; Chinese guidance commonly 50 mg over 2 h), or the accelerated 0.6 mg/kg over 15 min (max 50 mg); in cardiac arrest, dose per resuscitation guidance and continue CPR for 60–90 min. With a pulse, a bedside echo first for right-ventricular dysfunction and other causes of shock (ESC 2019). Tell the spinal team first, and check leg neurology and the wound hourly during and after."
       },
       "requires": [
         "medications",
@@ -3044,21 +3065,14 @@
         ]
       },
       "dose": {
-        "zh-CN": "由多学科团队决定：导管介入（局部低剂量溶栓、碎栓或抽吸），或体外循环下外科肺动脉取栓；循环难以维持时考虑 VA-ECMO 支持。",
-        "en": "As the multidisciplinary team decides: catheter-directed treatment (low-dose local lysis, fragmentation or aspiration) or surgical pulmonary embolectomy on bypass; consider VA-ECMO if the circulation cannot be maintained."
+        "zh-CN": "先用床旁超声心动图看右心室功能不全、排除其他休克原因，再由多学科团队决定：导管介入（局部低剂量溶栓、碎栓或抽吸），或体外循环下外科肺动脉取栓；循环难以维持时考虑 VA-ECMO 支持。",
+        "en": "After a bedside echo for right-ventricular dysfunction and other causes of shock, as the multidisciplinary team decides: catheter-directed treatment (low-dose local lysis, fragmentation or aspiration) or surgical pulmonary embolectomy on bypass; consider VA-ECMO if the circulation cannot be maintained."
       },
       "requires": [],
       "risk": "high",
-      "maxDoses": 1,
+      "maxDoses": 2,
       "indicatedWhen": {
-        "any": [
-          {
-            "phase": "onset"
-          },
-          {
-            "phase": "icu"
-          }
-        ]
+        "phase": "icu"
       },
       "response": {
         "zh-CN": "已提出申请，团队开始准备。本病例没有记录当时能否做导管介入或外科取栓，也没有记录做过；不模拟其效果。接下来的记录按实际病程展开。",
@@ -3355,7 +3369,14 @@
             "decided": "first-hour"
           },
           {
-            "intervened": "ufh"
+            "any": [
+              {
+                "intervened": "ufh"
+              },
+              {
+                "intervened": "lmwh"
+              }
+            ]
           },
           {
             "intervened": "noradrenaline"
@@ -3385,8 +3406,8 @@
         "en": "Key treatment"
       },
       "hint": {
-        "zh-CN": "先看这段时间的观察单。她现在最大的危险是什么？哪种治疗能最快解除它？近期手术带来的风险该怎样权衡、怎样监测？",
-        "en": "Read the observation chart for this period first. What is the greatest danger to her now, which treatment removes it fastest, and how do you weigh and watch the risk from her recent operation?"
+        "zh-CN": "先看这段时间的观察单。她现在最大的危险是什么？动手之前，你想在她床旁先看到什么？哪种治疗能最快解除这个危险？近期手术带来的风险该怎样权衡、怎样监测？",
+        "en": "Read the observation chart for this period first. What is the greatest danger to her now, what would you want to see at her bedside before you act, which treatment removes the danger fastest, and how do you weigh and watch the risk from her recent operation?"
       },
       "guidance": {
         "zh-CN": "在护士站调阅发作后的病情观察单，作答第 3 项决策，并给予你选择的治疗。",
@@ -3574,8 +3595,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。大手术后首次下床时突发气促，伴收缩压 < 90 mmHg、颈静脉怒张、单侧下肢水肿和右心负荷的心电图表现，在证实之前都要按高危肺栓塞处理。ESC 2019：疑似高危肺栓塞时，按可及性和病情选择床旁超声心动图或急诊CT肺动脉造影；正在恶化的患者先在床旁看有无右心室功能不全，而不是送去CT室。胸片清楚、没有啰音，不支持肺炎或肺水肿。",
-            "en": "Correct. Sudden breathlessness on first mobilising after major surgery, with a systolic pressure below 90 mmHg, distended neck veins, one swollen leg and right-heart strain on the ECG, is high-risk PE until shown otherwise. ESC 2019: in suspected high-risk PE, use bedside echocardiography or emergency CT pulmonary angiography according to availability and the patient's state; a patient who is deteriorating is checked at the bedside for right-ventricular dysfunction rather than taken to CT. A clear film and no crackles argue against pneumonia or pulmonary oedema."
+            "zh-CN": "正确。大手术后首次下床时突发气促，伴收缩压 < 90 mmHg、颈静脉怒张、右下肢水肿和右心负荷的心电图表现，在证实之前都要按高危肺栓塞处理。ESC 2019：疑似高危肺栓塞时，按可及性和病情选择床旁超声心动图或急诊CT肺动脉造影；正在恶化的患者先在床旁看有无右心室功能不全，而不是送去CT室。胸片清楚、没有啰音，不支持肺炎或肺水肿。",
+            "en": "Correct. Sudden breathlessness on first mobilising after major surgery, with a systolic pressure below 90 mmHg, distended neck veins, a swollen right leg and right-heart strain on the ECG, is high-risk PE until shown otherwise. ESC 2019: in suspected high-risk PE, use bedside echocardiography or emergency CT pulmonary angiography according to availability and the patient's state; a patient who is deteriorating is checked at the bedside for right-ventricular dysfunction rather than taken to CT. A clear film and no crackles argue against pneumonia or pulmonary oedema."
           }
         },
         {
@@ -3598,8 +3619,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。她没有胸痛；心率 132 次/分、低血压时的 ST 段压低更可能是需求性缺血或右心负荷，而 SⅠQⅢTⅢ、完全性右束支传导阻滞、颈静脉怒张和单侧下肢水肿共同指向右心室急性压力负荷。冠脉造影既不能诊断也不能治疗这种情况，还会耽误时间；ESC 2019 的诊断路径是床旁超声。",
-            "en": "No. She has no chest pain; ST depression at 132/min with hypotension more likely reflects demand ischaemia or right-heart strain, while SⅠQⅢTⅢ, complete RBBB, distended neck veins and one swollen leg together point to acute pressure overload of the right ventricle. Coronary angiography neither diagnoses nor treats that and costs time; the ESC 2019 pathway is a bedside echo."
+            "zh-CN": "不对。她没有胸痛；心率 132 次/分、低血压时的 ST 段压低更可能是需求性缺血或右心负荷，而 SⅠQⅢTⅢ、完全性右束支传导阻滞、颈静脉怒张和右下肢水肿共同指向右心室急性压力负荷。冠脉造影既不能诊断也不能治疗这种情况，还会耽误时间；ESC 2019 的诊断路径是床旁超声。",
+            "en": "No. She has no chest pain; ST depression at 132/min with hypotension more likely reflects demand ischaemia or right-heart strain, while SⅠQⅢTⅢ, complete RBBB, distended neck veins and a swollen right leg together point to acute pressure overload of the right ventricle. Coronary angiography neither diagnoses nor treats that and costs time; the ESC 2019 pathway is a bedside echo."
           }
         },
         {
@@ -3729,22 +3750,22 @@
       },
       "options": [
         {
-          "id": "fastest-reperfusion",
+          "id": "echo-then-fastest-reperfusion",
           "text": {
-            "zh-CN": "立即再灌注，选最快可行的方式：导管或外科治疗几分钟内能开始就用，否则不顾近期手术全身溶栓，并通知脊柱外科、每小时查下肢",
-            "en": "Reperfuse now by the fastest route — catheter or surgical treatment if it can start within minutes, otherwise systemic lysis despite the operation — telling the spinal team and checking her legs hourly"
+            "zh-CN": "立即做床旁超声心动图看右心、排除其他原因，再以最快方式再灌注：导管或外科几分钟内能开始就用，否则全身溶栓；通知脊柱外科，每小时查下肢",
+            "en": "Bedside echo at once for right-heart strain or another cause, then the fastest reperfusion — catheter or surgery if it can start within minutes, else systemic lysis — with the spinal team told and legs checked hourly"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。心脏骤停后仍需升压药，是危及生命的高危肺栓塞（AHA/ACC 2026 的 E 类，心肺功能衰竭）。ESC 2019 在溶栓有禁忌时首选外科取栓或导管介入；当二者来不及、而患者刚经历心脏骤停时，禁忌要重新权衡——死于肺栓塞的风险远高于椎管内血肿，全身溶栓就是救命的选择，这也是原报告团队用尿激酶所做的。溶栓后要密切观察下肢神经功能和伤口。",
-            "en": "Correct. Persistent vasopressor dependence after a cardiac arrest is immediately life-threatening high-risk PE (category E, cardiopulmonary failure, in AHA/ACC 2026). ESC 2019 prefers surgical embolectomy or catheter-directed treatment when lysis is contraindicated; when neither can be delivered in time to a patient who has just arrested, the contraindication is re-weighed — death from PE is far likelier than a spinal haematoma — and systemic thrombolysis is the life-saving option, which is what the report's team did with urokinase. Watch her leg neurology and wound closely afterwards."
+            "zh-CN": "正确：心脏骤停后仍依赖升压药，是危及生命的高危肺栓塞（AHA/ACC 2026 的 E 类，心肺功能衰竭）；对血流动力学不稳定的患者，ESC 2019 以床旁超声心动图所见的右心室功能不全作为再灌注的依据，这次检查同时排查心脏压塞、左心衰竭等其他休克原因——仅凭临床判断就溶栓，属于心脏骤停当时的处理（ERC 2025）。溶栓有禁忌时，ESC 2019 首选外科取栓或导管介入；二者来不及时，禁忌要重新权衡——死于肺栓塞的风险远高于椎管内血肿，全身溶栓就成为救命的选择，并每小时检查下肢和伤口。本病例没有记录超声心动图；原报告团队用了尿激酶，随后抗凝，给药途径、剂量及与心脏骤停的先后没有记录。",
+            "en": "Correct: persistent vasopressor dependence after an arrest is immediately life-threatening high-risk PE (AHA/ACC 2026 category E, cardiopulmonary failure), and in an unstable patient ESC 2019 bases reperfusion on right-ventricular dysfunction on a bedside echo, which also shows other causes of shock such as tamponade or a failing left ventricle; lysis on clinical grounds alone belongs to the arrest itself (ERC 2025). With lysis contraindicated, ESC 2019 prefers surgical embolectomy or catheter-directed treatment; when neither can start in time, the contraindication is re-weighed — death from PE is far likelier than a spinal haematoma — and systemic lysis becomes life-saving, with hourly leg and wound checks. This case records no echo; the report's team gave urokinase, then anticoagulation, and its route, dose and timing relative to the arrest are not recorded."
           }
         },
         {
           "id": "hold-after-rosc",
           "text": {
-            "zh-CN": "循环已经恢复，暂不再灌注：继续肝素和升压药，只有再次心脏骤停时才考虑溶栓，因为术后第 8 天溶栓有椎管内血肿和截瘫的风险",
-            "en": "Hold reperfusion now that circulation has returned: continue heparin and the vasopressor and consider lysis only if she arrests again, given the risk of a spinal haematoma and paralysis 8 days after surgery"
+            "zh-CN": "循环已经恢复，暂不再灌注：继续肝素和升压药，只有再次心脏骤停时才考虑溶栓，因为术后仅 8 天就溶栓有椎管内血肿和截瘫的风险，弊大于利",
+            "en": "Hold reperfusion now that circulation has returned: continue heparin and the vasopressor, and consider lysis only if she arrests again, given the risk of a spinal haematoma and paralysis only 8 days after her surgery"
           },
           "correct": false,
           "feedback": {
@@ -3755,13 +3776,13 @@
         {
           "id": "ct-first",
           "text": {
-            "zh-CN": "先带着呼吸机和升压药送她去做CT肺动脉造影，因为只有影像证实了血栓，才有理由不顾近期手术去冒溶栓或取栓的风险",
+            "zh-CN": "先带着呼吸机和升压药送她去做CT肺动脉造影，因为只有影像证实了血栓，才有理由不顾近期手术去冒溶栓或外科取栓的风险",
             "en": "Take her to CT pulmonary angiography first, ventilated and on the vasopressor, since only proof of the clot on imaging justifies the risk of lysis or embolectomy after recent surgery"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。刚复苏、依赖升压药的插管患者转运去CT风险很大，再次骤停时远离抢救条件。ESC 2019：疑似高危肺栓塞而病情不允许做CT时，床旁超声心动图显示右心室功能不全就足以开始再灌注。",
-            "en": "No. Moving a freshly resuscitated, ventilated patient on a vasopressor to CT is high-risk, and a second arrest in the scanner is far from help. ESC 2019: when suspected high-risk PE is too unstable for CT, right-ventricular dysfunction on a bedside echo is enough to proceed to reperfusion."
+            "zh-CN": "不对。刚复苏、依赖升压药的插管患者转运去CT风险很大，再次骤停时远离抢救条件。ESC 2019：疑似高危肺栓塞而病情不允许做CT时，床旁超声心动图显示右心室功能不全就足以开始再灌注；ERC–ESICM 2025 把包括CT肺动脉造影在内的CT检查放在她能安全转运之后用来查找病因，而不是放在不能等待的再灌注之前。",
+            "en": "No. Moving a freshly resuscitated, ventilated patient on a vasopressor to CT is high-risk, and a second arrest in the scanner is far from help. ESC 2019: when suspected high-risk PE is too unstable for CT, right-ventricular dysfunction on a bedside echo is enough to proceed to reperfusion; ERC–ESICM 2025 places CT, including CT pulmonary angiography, in the search for the cause once she can travel safely — not before a reperfusion that cannot wait."
           }
         },
         {
@@ -3779,13 +3800,13 @@
         {
           "id": "lysis-no-precautions",
           "text": {
-            "zh-CN": "立即足量全身溶栓，心脏骤停后不必再顾及手术：不必通知脊柱外科，也不必额外观察下肢，常规护理观察就足以发现出血",
+            "zh-CN": "立即足量全身溶栓，心脏骤停后已不必再顾及手术：不必通知脊柱外科，也不必额外观察下肢，常规护理观察就足以及时发现任何出血",
             "en": "Full-dose systemic lysis now, with no further thought for the operation after an arrest: there is no need to tell the spinal team or to watch her legs, as routine nursing observations will pick up any bleeding"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "部分正确，但不安全。其他再灌注方式来不及时，溶栓确实是此刻的救命选择；但术后第 8 天溶栓的主要风险是椎管内血肿，它的早期表现——下肢无力、麻木和括约肌障碍——在镇静插管的患者身上常规观察很容易漏掉。要事先通知脊柱外科，每小时评估下肢神经和伤口（必要时减浅镇静），一有变化立即停药、急查 MRI。",
-            "en": "Partly right, but unsafe. When no other reperfusion can be delivered in time, lysis is indeed the life-saving choice now; but its main danger 8 days after spinal surgery is an epidural haematoma, whose early signs — leg weakness, numbness, sphincter change — are easily missed in a sedated, ventilated patient on routine observations. Tell the spinal team beforehand, check leg neurology and the wound hourly (lightening sedation when needed), and stop the drug and get an urgent MRI at the first change."
+            "zh-CN": "部分正确，但不安全。床旁超声心动图支持肺栓塞、其他再灌注方式又来不及时，溶栓确实是此刻的救命选择；但术后第 8 天溶栓的主要风险是椎管内血肿，它的早期表现——下肢无力、麻木和括约肌障碍——在镇静插管的患者身上常规观察很容易漏掉。要事先通知脊柱外科，每小时评估下肢神经和伤口（必要时减浅镇静），一有变化立即停药、急查 MRI。",
+            "en": "Partly right, but unsafe. When a bedside echo supports PE and no other reperfusion can be delivered in time, lysis is indeed the life-saving choice now; but its main danger 8 days after spinal surgery is an epidural haematoma, whose early signs — leg weakness, numbness, sphincter change — are easily missed in a sedated, ventilated patient on routine observations. Tell the spinal team beforehand, check leg neurology and the wound hourly (lightening sedation when needed), and stop the drug and get an urgent MRI at the first change."
           }
         }
       ]
@@ -4107,10 +4128,12 @@
       "met": {
         "any": [
           {
-            "intervened": "systemic-lysis"
+            "intervened": "systemic-lysis",
+            "whenIndicated": true
           },
           {
-            "intervened": "catheter-reperfusion"
+            "intervened": "catheter-reperfusion",
+            "whenIndicated": true
           }
         ]
       }
@@ -4119,14 +4142,18 @@
       "id": "rb-reperfusion-choice",
       "domain": "management",
       "text": {
-        "zh-CN": "首次作答即选择最快可行的再灌注方式，并在决定前通知脊柱外科",
-        "en": "Chose the fastest feasible reperfusion at the first attempt and told the spinal team before acting"
+        "zh-CN": "首次作答即选对心脏骤停后的再灌注方案，复苏后做了床旁超声心动图，并通知了脊柱外科",
+        "en": "Chose the reperfusion plan after the arrest at the first attempt, got a bedside echo after the resuscitation and told the spinal team"
       },
       "weight": 3,
       "met": {
         "all": [
           {
             "decidedFirstTry": "reperfusion"
+          },
+          {
+            "ordered": "bedside-echo",
+            "phase": "icu"
           },
           {
             "intervened": "inform-spine-team"
@@ -4138,8 +4165,8 @@
       "id": "rb-no-harm",
       "domain": "safety",
       "text": {
-        "zh-CN": "没有做危险的事：没有在她不稳定时送去CT，没有快速输注一升液体，没有用滤器代替抗凝，也没有给双联抗血小板负荷量",
-        "en": "Did nothing dangerous: no trip to CT while she was unstable, no rapid litre of fluid, no filter in place of anticoagulation and no dual antiplatelet loading"
+        "zh-CN": "没有做危险的事：没有把她从病房送去CT，没有快速输注一升液体，没有用滤器代替抗凝，没有给双联抗血小板负荷量，没有在一种肝素之上再叠加另一种，也没有在没有指征时（在病房、心脏骤停之前）溶栓或气管插管",
+        "en": "Did nothing dangerous: no trip to CT from the ward, no rapid litre of fluid, no filter in place of anticoagulation, no dual antiplatelet loading, no second heparin on top of the first, and no thrombolysis or intubation outside its indication (on the ward, before the arrest)"
       },
       "weight": 3,
       "critical": true,
@@ -4151,10 +4178,6 @@
               "phase": "onset"
             },
             {
-              "ordered": "ctpa",
-              "phase": "icu"
-            },
-            {
               "intervened": "fluid-bolus"
             },
             {
@@ -4162,6 +4185,48 @@
             },
             {
               "intervened": "antiplatelet-load"
+            },
+            {
+              "all": [
+                {
+                  "intervened": "ufh"
+                },
+                {
+                  "intervened": "lmwh"
+                },
+                {
+                  "not": {
+                    "intervened": "lmwh",
+                    "whenIndicated": true
+                  }
+                }
+              ]
+            },
+            {
+              "all": [
+                {
+                  "intervened": "systemic-lysis"
+                },
+                {
+                  "not": {
+                    "intervened": "systemic-lysis",
+                    "whenIndicated": true
+                  }
+                }
+              ]
+            },
+            {
+              "all": [
+                {
+                  "intervened": "ventilation"
+                },
+                {
+                  "not": {
+                    "intervened": "ventilation",
+                    "whenIndicated": true
+                  }
+                }
+              ]
             }
           ]
         }
@@ -4179,10 +4244,6 @@
             "phase": "onset"
           },
           {
-            "ordered": "ctpa",
-            "phase": "icu"
-          },
-          {
             "intervened": "fluid-bolus"
           },
           {
@@ -4190,6 +4251,15 @@
           },
           {
             "intervened": "antiplatelet-load"
+          },
+          {
+            "intervened": "lmwh"
+          },
+          {
+            "intervened": "systemic-lysis"
+          },
+          {
+            "intervened": "ventilation"
           }
         ]
       }
@@ -4258,8 +4328,8 @@
         "en": "Dr Guan (critical care attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经获得的资料提问。第 1 项决策之前只问鉴别：“术后突然气促、低血压、颈静脉怒张、肺部清楚——心源性、肺源性和梗阻性的原因分别有哪些？哪些体征能把它们分开？”“这份心电图支持什么、反对什么？”学员作答后再深入：“为什么疑似高危时既不先送CT，也不查D-二聚体？”“肝素选普通肝素还是低分子肝素，为什么？”“为什么这里不补液？”“8 天前的脊柱手术让溶栓变成了怎样的权衡？还有哪些再灌注方式？”“心脏骤停后仍要靠升压药，意味着什么？”“术前阴性的超声和复苏后的小腿血栓各说明什么？”“这次血栓由什么诱发？抗凝多久？怎样监测出血？”可以讲解 ESC 2019、AHA/ACC 2026、ERC 2025 和中国肺栓塞指南的相关原则，并把原报告的历史处置与现行做法对照。不提前说出诊断或任何决策的正确选项；不补充病例中没有的数据（超声心动图、血气、化验、骤停心律、药物剂量、术后血栓预防都没有记录）。",
-        "en": "Socratic teacher who asks only about information the learner already has. Before decision 1, only the differential: “Sudden post-operative breathlessness, hypotension, distended neck veins, clear lungs — what cardiac, pulmonary and obstructive causes fit, and which signs separate them?”, “What does this ECG support, and what does it argue against?” After the learner commits, go deeper: “Why neither CT first nor a D-dimer when high-risk PE is suspected?”, “UFH or LMWH, and why?”, “Why no fluid here?”, “What trade-off does the spinal operation 8 days ago create for thrombolysis, and what other routes to reperfusion are there?”, “What does needing a vasopressor after the arrest mean?”, “What do the negative preoperative scan and the post-resuscitation calf clot each tell you?”, “What provoked this clot, how long do you treat, and how do you watch for bleeding?” May explain the relevant principles of ESC 2019, AHA/ACC 2026, ERC 2025 and the Chinese PE guidance, contrasting the reported course with current practice. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (echocardiography, blood gases, laboratory results, the arrest rhythm, drug doses and post-operative thromboprophylaxis are not recorded)."
+        "zh-CN": "苏格拉底式带教，只围绕学员已经获得的资料提问。第 1 项决策之前只问鉴别：“术后突然气促、低血压、颈静脉怒张、肺部清楚——心源性、肺源性和梗阻性的原因分别有哪些？哪些体征能把它们分开？”“这份心电图支持什么、反对什么？”学员作答后再深入：“为什么疑似高危时既不先送CT，也不查D-二聚体？”“肝素选普通肝素还是低分子肝素，为什么？”“为什么这里不补液？”“8 天前的脊柱手术让溶栓变成了怎样的权衡？还有哪些再灌注方式？”“心脏骤停后仍要靠升压药，意味着什么？”“心脏骤停后再灌注之前，床旁超声心动图需要看到什么、排除什么？”“术前阴性的超声和复苏后的小腿血栓各说明什么？”“这次血栓由什么诱发？抗凝多久？怎样监测出血？”可以讲解 ESC 2019、AHA/ACC 2026、ERC 2025 和中国肺栓塞指南的相关原则，并把原报告的历史处置与现行做法对照。不提前说出诊断或任何决策的正确选项；不补充病例中没有的数据（超声心动图、血气、化验、骤停心律、药物剂量、术后血栓预防都没有记录）。",
+        "en": "Socratic teacher who asks only about information the learner already has. Before decision 1, only the differential: “Sudden post-operative breathlessness, hypotension, distended neck veins, clear lungs — what cardiac, pulmonary and obstructive causes fit, and which signs separate them?”, “What does this ECG support, and what does it argue against?” After the learner commits, go deeper: “Why neither CT first nor a D-dimer when high-risk PE is suspected?”, “UFH or LMWH, and why?”, “Why no fluid here?”, “What trade-off does the spinal operation 8 days ago create for thrombolysis, and what other routes to reperfusion are there?”, “What does needing a vasopressor after the arrest mean?”, “What must a bedside echo show, or rule out, before you reperfuse after the arrest?”, “What do the negative preoperative scan and the post-resuscitation calf clot each tell you?”, “What provoked this clot, how long do you treat, and how do you watch for bleeding?” May explain the relevant principles of ESC 2019, AHA/ACC 2026, ERC 2025 and the Chinese PE guidance, contrasting the reported course with current practice. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (echocardiography, blood gases, laboratory results, the arrest rhythm, drug doses and post-operative thromboprophylaxis are not recorded)."
       },
       "interprets": [
         "ecg",
@@ -4322,21 +4392,21 @@
       "en": "Debrief: high-risk pulmonary embolism and cardiac arrest on first mobilising after spinal surgery"
     },
     "conclusion": {
-      "zh-CN": "胸椎管狭窄后路减压术后第 8 天，60岁女性第一次下床时突发严重气促、胸闷、心慌，无胸痛和咯血：心率 132 次/分，血压 89/51 mmHg，呼吸 38 次/分，吸氧下 SpO₂ 91%，颈静脉怒张，右下肢中度指凹性水肿；心电图示窦性心动过速、SⅠQⅢTⅢ、完全性右束支传导阻滞和胸前导联 ST 段压低，床旁胸片无明显异常——高危肺栓塞。约 20 分钟后 SpO₂ 降至 50% 并心脏骤停，复苏 4 分钟后恢复自主循环，仍需升压药维持血压约 90/40 mmHg；复苏后超声见右侧腓静脉及小腿肌间静脉血栓（术前阴性）。原报告团队用尿激酶溶栓后抗凝，她的意识和循环逐渐恢复，术后第 13 天撤机；约 3 周后增强CT见右下肺动脉分支充盈缺损和按压相关的多发肋骨骨折；出院后抗凝随访无复发或出血。按现行指南：立即普通肝素和去甲肾上腺素、不补液，经多学科团队尽快再灌注；近期脊柱手术使全身溶栓成为禁忌时首选导管或外科方式，心脏骤停后来不及时以全身溶栓抢救，并监测椎管内血肿（ESC 2019；AHA/ACC 2026）。",
-      "en": "High-risk PE on day 8 after posterior decompression for thoracic spinal canal stenosis: sudden severe breathlessness, chest tightness and palpitations on first getting out of bed, without chest pain or haemoptysis; pulse 132/min, BP 89/51 mmHg, RR 38/min, SpO₂ 91 % on oxygen, distended neck veins, right-leg pitting oedema; ECG SⅠQⅢTⅢ, complete RBBB and precordial ST depression; a clear chest film. About 20 minutes later SpO₂ fell to 50 % and she arrested; circulation returned after 4 minutes of CPR, but she needed vasopressors for a BP of about 90/40 mmHg; a leg scan showed right peroneal and calf muscle-vein thrombosis (none before surgery). The team gave urokinase, then anticoagulation; she recovered and was off the ventilator on day 13. CT at about three weeks: a right lower pulmonary artery branch defect and CPR rib fractures. Today: UFH, noradrenaline and fast team-led reperfusion, with systemic lysis the rescue after arrest despite recent spinal surgery (ESC 2019; AHA/ACC 2026)."
+      "zh-CN": "胸椎管狭窄后路减压术后第 8 天，60岁女性第一次下床时突发严重气促、胸闷、心慌，无胸痛和咯血：心率 132 次/分，血压 89/51 mmHg，呼吸 38 次/分，吸氧下 SpO₂ 91%，颈静脉怒张，右下肢中度指凹性水肿；心电图示窦性心动过速、SⅠQⅢTⅢ、完全性右束支传导阻滞和胸前导联 ST 段压低，床旁胸片无明显异常——高危肺栓塞。约 20 分钟后 SpO₂ 降至 50% 并心脏骤停，复苏 4 分钟后恢复自主循环，仍需升压药维持血压约 90/40 mmHg；复苏后超声见右侧腓静脉及小腿肌间静脉血栓（术前阴性）。原报告团队用尿激酶溶栓后抗凝，她的意识和循环逐渐恢复，术后第 13 天撤机；约 3 周后增强CT见右下肺动脉分支充盈缺损和按压相关的多发肋骨骨折；出院后抗凝随访无复发或出血。按现行指南：立即普通肝素和去甲肾上腺素、不补液，床旁超声心动图评估右心室，经多学科团队尽快再灌注；近期脊柱手术使全身溶栓成为禁忌时首选导管或外科方式，心脏骤停后来不及时以全身溶栓抢救，并监测椎管内血肿（ESC 2019；AHA/ACC 2026）。",
+      "en": "High-risk PE in a woman of 60, 8 days after posterior decompression for thoracic spinal stenosis: sudden severe breathlessness, chest tightness and palpitations on first getting up, no chest pain or haemoptysis; HR 132/min, BP 89/51 mmHg, RR 38/min, SpO₂ 91 % on O₂, distended neck veins, moderate right-leg pitting oedema; ECG sinus tachycardia, SⅠQⅢTⅢ, complete RBBB, precordial ST depression; unremarkable bedside film. About 20 min later SpO₂ fell to 50 % and she arrested; ROSC after 4 min of CPR, vasopressors for BP about 90/40 mmHg; post-CPR right peroneal and calf muscle-vein thrombosis (none pre-op). Urokinase, then anticoagulation; consciousness and circulation gradually recovered; off the ventilator on post-operative day 13. CT at about 3 weeks: right lower pulmonary artery branch defect, CPR rib fractures; no recurrence or bleeding on anticoagulation after discharge. Today: UFH, noradrenaline, bedside echo, fast team-led reperfusion, rescue lysis (ESC 2019; AHA/ACC 2026)."
     },
     "keyReasoning": [
       {
-        "zh-CN": "大手术后首次下床时呼吸和循环同时急剧恶化，首先要想到肺栓塞；颈静脉怒张、双肺无啰音、单侧下肢水肿，加上 SⅠQⅢTⅢ 和右束支传导阻滞，可以用“右心室流出受阻”一个机制解释全部表现，而胸片清楚、无啰音不支持肺炎或肺水肿。",
-        "en": "A sudden collapse of breathing and circulation on first mobilising after major surgery points to PE first; distended neck veins, clear lungs, one swollen leg, SⅠQⅢTⅢ and RBBB are all explained by one mechanism — an obstructed right ventricle — while a clear film without crackles argues against pneumonia or pulmonary oedema."
+        "zh-CN": "大手术后首次下床时呼吸和循环同时急剧恶化，首先要想到肺栓塞；颈静脉怒张、双肺无啰音、右下肢水肿，加上 SⅠQⅢTⅢ 和右束支传导阻滞，可以用“右心室流出受阻”一个机制解释全部表现，而胸片清楚、无啰音不支持肺炎或肺水肿。",
+        "en": "A sudden collapse of breathing and circulation on first mobilising after major surgery points to PE first; distended neck veins, clear lungs, a swollen right leg, SⅠQⅢTⅢ and RBBB are all explained by one mechanism — an obstructed right ventricle — while a clear film without crackles argues against pneumonia or pulmonary oedema."
       },
       {
         "zh-CN": "收缩压 89 mmHg 加上这些表现就是高危肺栓塞：问题不再是要不要抗凝，而是多快再灌注；病情恶化中的患者在床旁评估，而不是送去CT。",
         "en": "A systolic pressure of 89 mmHg with this picture makes it high-risk PE: the question is no longer whether to anticoagulate but how fast to reperfuse, and a deteriorating patient is assessed at the bedside, not sent to CT."
       },
       {
-        "zh-CN": "8 天前的脊柱手术把再灌注变成了“死于肺栓塞”和“椎管内血肿”之间的权衡：导管或外科方式可以避开全身溶栓，但在心脏骤停后仍依赖升压药时，最快可行的再灌注方式优先。",
-        "en": "The spinal operation 8 days earlier turns reperfusion into a trade-off between death from PE and a spinal haematoma: catheter or surgical treatment avoids systemic lysis, but after an arrest with persistent vasopressor dependence the fastest feasible reperfusion wins."
+        "zh-CN": "8 天前的脊柱手术把再灌注变成了“死于肺栓塞”和“椎管内血肿”之间的权衡：导管或外科方式可以避开全身溶栓，但在心脏骤停后仍依赖升压药时，最快可行的再灌注方式优先——前提是床旁超声心动图支持肺栓塞、没有发现其他休克原因。",
+        "en": "The spinal operation 8 days earlier turns reperfusion into a trade-off between death from PE and a spinal haematoma: catheter or surgical treatment avoids systemic lysis, but after an arrest with persistent vasopressor dependence the fastest feasible reperfusion wins, once a bedside echo has backed PE over another cause of shock."
       },
       {
         "zh-CN": "复苏后的小腿静脉血栓（术前超声阴性）说明血栓形成于术后，支持静脉血栓栓塞是病因；约 3 周后CT上右下肺动脉分支的残留充盈缺损是事后的佐证。",
@@ -4365,8 +4435,8 @@
         "en": "The arrest rhythm, the drugs given during CPR, whether intubation came before or after the return of circulation, and the vasopressor used and its dose."
       },
       {
-        "zh-CN": "尿激酶的剂量和开始时间（与心脏骤停的先后），此后所用的抗凝药、剂量和疗程，以及住院期间有无出血。",
-        "en": "The urokinase dose and when it was started relative to the arrest, the anticoagulant used afterwards with its dose and duration, and any bleeding in hospital."
+        "zh-CN": "尿激酶的给药途径（全身静脉还是经导管）、剂量和开始时间（与心脏骤停的先后），此后所用的抗凝药、剂量和疗程，以及住院期间有无出血。",
+        "en": "The urokinase route (systemic IV or catheter-directed), its dose and when it was started relative to the arrest, the anticoagulant used afterwards with its dose and duration, and any bleeding in hospital."
       },
       {
         "zh-CN": "复苏后神经功能的细节（只记录了意识逐渐恢复），溶栓后的下肢神经功能、伤口和引流情况。",
@@ -4391,12 +4461,12 @@
         "en": "The first minutes. ESC 2019: start UFH with a bolus at once in high-risk PE (80 U/kg, then 18 U/kg/h; class I) — preferred over LMWH when reperfusion may follow, because it can be stopped and reversed with protamine; noradrenaline first for hypotension (class IIa; AHA/ACC 2026 also prefers norepinephrine); no fluid when the neck veins are distended (at most a cautious ≤ 500 mL when filling pressures are low); and avoid intubation where possible, because induction and positive pressure can arrest a failing right ventricle. This case does not record whether heparin was given before the arrest."
       },
       {
-        "zh-CN": "有禁忌时的再灌注。ESC 2019：全身溶栓用于高危肺栓塞（Ⅰ类），但 3 周内的大手术是绝对禁忌；此时推荐外科取栓（Ⅰ类）或导管介入治疗（Ⅱa类），难治性循环衰竭可考虑联合 ECMO（Ⅱb类）。AHA/ACC 2026 把伴休克或心脏骤停的肺栓塞归为 E 类（心肺功能衰竭），全身溶栓、导管溶栓或机械取栓均为合理选择，由多学科团队评估。中国指南同样强调对危及生命的肺栓塞重新权衡禁忌。历史与现行：原报告团队在骤停后用了尿激酶；今天应先问导管或外科方式能否在几分钟内开始，不能时全身溶栓仍是救命手段——前提是通知脊柱外科，并每小时检查下肢神经和伤口，警惕椎管内血肿。",
-        "en": "Reperfusion with a contraindication. ESC 2019: systemic thrombolysis for high-risk PE (class I), but major surgery within 3 weeks is an absolute contraindication; then surgical embolectomy (class I) or catheter-directed treatment (class IIa), with ECMO considered for refractory collapse (class IIb). AHA/ACC 2026 places PE with shock or arrest in category E (cardiopulmonary failure), where systemic lysis, catheter-directed lysis or mechanical thrombectomy are reasonable, chosen by a multidisciplinary team. Chinese guidance likewise re-weighs contraindications when PE is immediately life-threatening. Then and now: the report's team gave urokinase after the arrest; today, ask first whether catheter or surgical treatment can start within minutes — if not, systemic lysis is still life-saving, with the spinal team told and leg neurology and the wound checked hourly for a spinal epidural haematoma."
+        "zh-CN": "有禁忌时的再灌注。ESC 2019：全身溶栓用于高危肺栓塞（Ⅰ类），但 3 周内的大手术是绝对禁忌；此时推荐外科取栓（Ⅰ类）或导管介入治疗（Ⅱa类），难治性循环衰竭可考虑联合 ECMO（Ⅱb类）；对血流动力学不稳定的患者，是否再灌注以床旁超声心动图所见的右心室功能不全为依据。AHA/ACC 2026 把伴休克或心脏骤停的肺栓塞归为 E 类（心肺功能衰竭），全身溶栓、导管溶栓或机械取栓均为合理选择，由多学科团队评估。中国指南同样强调对危及生命的肺栓塞重新权衡禁忌。历史与现行：原报告团队用了尿激酶，随后抗凝，给药途径、剂量及与心脏骤停的先后没有记录；今天应先做床旁超声心动图，并问导管或外科方式能否在几分钟内开始，不能时全身溶栓仍是救命手段——前提是通知脊柱外科，并每小时检查下肢神经和伤口，警惕椎管内血肿。",
+        "en": "Reperfusion with a contraindication. ESC 2019: systemic thrombolysis for high-risk PE (class I), but major surgery within 3 weeks is an absolute contraindication; then surgical embolectomy (class I) or catheter-directed treatment (class IIa), with ECMO considered for refractory collapse (class IIb) — and in an unstable patient the decision rests on right-ventricular dysfunction on a bedside echo. AHA/ACC 2026 places PE with shock or arrest in category E (cardiopulmonary failure), where systemic lysis, catheter-directed lysis or mechanical thrombectomy are reasonable, chosen by a multidisciplinary team. Chinese guidance likewise re-weighs contraindications when PE is immediately life-threatening. Then and now: the report's team gave urokinase, then anticoagulation — its route, dose and timing relative to the arrest are not recorded; today, get the bedside echo and ask first whether catheter or surgical treatment can start within minutes — if not, systemic lysis is still life-saving, with the spinal team told and leg neurology and the wound checked hourly for a spinal epidural haematoma."
       },
       {
-        "zh-CN": "肺栓塞所致心脏骤停及复苏后。ERC 2025：疑为肺栓塞所致的心脏骤停应考虑溶栓，溶栓后继续心肺复苏 60–90 分钟，常规复苏失败时可对选定患者考虑体外心肺复苏。复苏后（ERC–ESICM 2025）：避免低血压，SpO₂ 94–98%，维持正常二氧化碳分压，主动预防发热，至少 72 小时后再判断神经预后。她约 3 周后CT上的多发肋骨骨折是胸外按压的常见代价，“创伤性心肺复苏”本身也是溶栓的相对禁忌。",
-        "en": "Cardiac arrest from PE and the aftermath. ERC 2025: consider thrombolysis when PE is the suspected cause of an arrest and continue CPR for 60–90 minutes after it, with extracorporeal CPR for selected patients when conventional CPR is failing. After the return of circulation (ERC–ESICM 2025): avoid hypotension, SpO₂ 94–98 %, normocapnia, active fever prevention, and neuroprognostication no earlier than 72 hours. The multiple rib fractures on her CT at about three weeks are a common cost of chest compressions, and traumatic CPR is itself a relative contraindication to lysis."
+        "zh-CN": "肺栓塞所致心脏骤停及复苏后。ERC 2025：疑为肺栓塞所致的心脏骤停应考虑溶栓，溶栓后继续心肺复苏 60–90 分钟，常规复苏失败时可对选定患者考虑体外心肺复苏。复苏后（ERC–ESICM 2025）：尽早做超声心动图，能安全转运后行包括CT肺动脉造影在内的CT检查查找病因；避免低血压，SpO₂ 94–98%，维持正常二氧化碳分压，主动预防发热，至少 72 小时后再判断神经预后。她约 3 周后CT上的多发肋骨骨折是胸外按压的常见代价，“创伤性心肺复苏”本身也是溶栓的相对禁忌。",
+        "en": "Cardiac arrest from PE and the aftermath. ERC 2025: consider thrombolysis when PE is the suspected cause of an arrest and continue CPR for 60–90 minutes after it, with extracorporeal CPR for selected patients when conventional CPR is failing. After the return of circulation (ERC–ESICM 2025): echocardiography as soon as possible and, once she can travel, CT including CT pulmonary angiography to find the cause; avoid hypotension, SpO₂ 94–98 %, normocapnia, active fever prevention, and neuroprognostication no earlier than 72 hours. The multiple rib fractures on her CT at about three weeks are a common cost of chest compressions, and traumatic CPR is itself a relative contraindication to lysis."
       },
       {
         "zh-CN": "两次下肢超声与术后预防。术前阴性的超声只说明术前没有血栓；术后卧床 8 天、首次下床时，血栓完全可能在这期间形成。远端（小腿）血栓支持静脉血栓栓塞，但证据弱于近端血栓（ESC 2019）。ACCP 2012 对脊柱手术建议机械预防（首选间歇充气加压），高危患者在出血风险允许时加用药物预防，并尽早活动；本病例没有记录她术后用过哪种预防，复盘时应追问。",
@@ -4437,8 +4507,8 @@
       "en": "The arrest rhythm, the drugs given during CPR, whether intubation came before or after the return of circulation, and the vasopressor used and its dose."
     },
     {
-      "zh-CN": "尿激酶的剂量和开始时间（与心脏骤停的先后），此后所用的抗凝药、剂量和疗程，以及住院期间有无出血。",
-      "en": "The urokinase dose and when it was started relative to the arrest, the anticoagulant used afterwards with its dose and duration, and any bleeding in hospital."
+      "zh-CN": "尿激酶的给药途径（全身静脉还是经导管）、剂量和开始时间（与心脏骤停的先后），此后所用的抗凝药、剂量和疗程，以及住院期间有无出血。",
+      "en": "The urokinase route (systemic IV or catheter-directed), its dose and when it was started relative to the arrest, the anticoagulant used afterwards with its dose and duration, and any bleeding in hospital."
     },
     {
       "zh-CN": "复苏后神经功能的细节（只记录了意识逐渐恢复），溶栓后的下肢神经功能、伤口和引流情况。",
@@ -4457,6 +4527,42 @@
   "solution": [
     {
       "type": "start"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "oxygen-mask"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "monitoring"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "call-team"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
+    },
+    {
+      "type": "order",
+      "investigationId": "cbc"
+    },
+    {
+      "type": "order",
+      "investigationId": "coag"
+    },
+    {
+      "type": "order",
+      "investigationId": "renal"
+    },
+    {
+      "type": "examine",
+      "findingId": "general-look"
+    },
+    {
+      "type": "examine",
+      "findingId": "vitals-onset"
     },
     {
       "type": "ask",
@@ -4483,62 +4589,6 @@
       "itemId": "pmh"
     },
     {
-      "type": "ask",
-      "itemId": "prophylaxis"
-    },
-    {
-      "type": "ask",
-      "itemId": "regular-meds"
-    },
-    {
-      "type": "ask",
-      "itemId": "allergies"
-    },
-    {
-      "type": "ask",
-      "itemId": "clots-before"
-    },
-    {
-      "type": "ask",
-      "itemId": "bleeding-risk"
-    },
-    {
-      "type": "ask",
-      "itemId": "legs-wound"
-    },
-    {
-      "type": "ask",
-      "itemId": "leg-swelling"
-    },
-    {
-      "type": "ask",
-      "itemId": "weight"
-    },
-    {
-      "type": "ask",
-      "itemId": "worry"
-    },
-    {
-      "type": "intervene",
-      "interventionId": "oxygen-mask"
-    },
-    {
-      "type": "intervene",
-      "interventionId": "monitoring"
-    },
-    {
-      "type": "intervene",
-      "interventionId": "iv-access"
-    },
-    {
-      "type": "examine",
-      "findingId": "general-look"
-    },
-    {
-      "type": "examine",
-      "findingId": "vitals-onset"
-    },
-    {
       "type": "examine",
       "findingId": "neck-veins"
     },
@@ -4549,6 +4599,10 @@
     {
       "type": "examine",
       "findingId": "legs"
+    },
+    {
+      "type": "ask",
+      "itemId": "leg-swelling"
     },
     {
       "type": "order",
@@ -4570,12 +4624,48 @@
     },
     {
       "type": "order",
+      "investigationId": "bedside-echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "bedside-echo",
+      "phase": "onset"
+    },
+    {
+      "type": "order",
       "investigationId": "preop-us"
     },
     {
       "type": "read",
       "investigationId": "preop-us",
       "phase": "onset"
+    },
+    {
+      "type": "answer",
+      "decisionId": "first-call",
+      "optionIds": [
+        "high-risk-pe-echo"
+      ]
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-meds"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding-risk"
+    },
+    {
+      "type": "ask",
+      "itemId": "prophylaxis"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
     },
     {
       "type": "order",
@@ -4587,26 +4677,9 @@
       "phase": "onset"
     },
     {
-      "type": "order",
-      "investigationId": "bedside-echo"
-    },
-    {
-      "type": "read",
-      "investigationId": "bedside-echo",
-      "phase": "onset"
-    },
-    {
-      "type": "order",
-      "investigationId": "cbc"
-    },
-    {
       "type": "read",
       "investigationId": "cbc",
       "phase": "onset"
-    },
-    {
-      "type": "order",
-      "investigationId": "coag"
     },
     {
       "type": "read",
@@ -4614,20 +4687,9 @@
       "phase": "onset"
     },
     {
-      "type": "order",
-      "investigationId": "renal"
-    },
-    {
       "type": "read",
       "investigationId": "renal",
       "phase": "onset"
-    },
-    {
-      "type": "answer",
-      "decisionId": "first-call",
-      "optionIds": [
-        "high-risk-pe-echo"
-      ]
     },
     {
       "type": "intervene",
@@ -4638,12 +4700,20 @@
       "interventionId": "noradrenaline"
     },
     {
-      "type": "intervene",
-      "interventionId": "call-team"
+      "type": "ask",
+      "itemId": "legs-wound"
     },
     {
       "type": "intervene",
       "interventionId": "inform-spine-team"
+    },
+    {
+      "type": "ask",
+      "itemId": "clots-before"
+    },
+    {
+      "type": "ask",
+      "itemId": "worry"
     },
     {
       "type": "answer",
@@ -4665,6 +4735,10 @@
       "interventionId": "ventilation"
     },
     {
+      "type": "intervene",
+      "interventionId": "post-arrest-care"
+    },
+    {
       "type": "order",
       "investigationId": "obs-record"
     },
@@ -4674,10 +4748,19 @@
       "phase": "icu"
     },
     {
+      "type": "order",
+      "investigationId": "bedside-echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "bedside-echo",
+      "phase": "icu"
+    },
+    {
       "type": "answer",
       "decisionId": "reperfusion",
       "optionIds": [
-        "fastest-reperfusion"
+        "echo-then-fastest-reperfusion"
       ]
     },
     {
@@ -4687,10 +4770,6 @@
     {
       "type": "intervene",
       "interventionId": "neuro-checks"
-    },
-    {
-      "type": "intervene",
-      "interventionId": "post-arrest-care"
     },
     {
       "type": "order",

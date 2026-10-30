@@ -51,10 +51,13 @@
       "guidelines": [
         "ILAE 2023: treatment of seizures in the neonate — guidelines and consensus-based recommendations (ILAE Task Force on Neonatal Seizures)",
         "ILAE 2021: classification of seizures and the epilepsies — modification for seizures in the neonate (position paper)",
-        "NICE NG195 (2021): neonatal infection — antibiotics for prevention and treatment",
+        "NICE NG195 (2021, last updated 2026; lumbar-puncture recommendations added 2024): neonatal infection — antibiotics for prevention and treatment",
+        "BAPM 2017: identification and management of neonatal hypoglycaemia in the full-term infant — a framework for practice",
+        "BSH 2016: guidelines on transfusion for fetuses, neonates and older children (British Society for Haematology)",
         "AAP 2022: clinical practice guideline revision — hyperbilirubinaemia in the newborn infant ≥35 weeks' gestation",
         "FDA Drug Safety Communication 2011: antipsychotic labels — neonatal extrapyramidal and withdrawal symptoms after third-trimester exposure",
         "BAP 2017: consensus guidance on psychotropic medication preconception, in pregnancy and postpartum",
+        "NICE CG192 (2014): antenatal and postnatal mental health — clinical management and service guidance",
         "LactMed (NICHD Drugs and Lactation Database): clozapine, consulted 2026-10-30"
       ],
       "notes": {
@@ -73,8 +76,8 @@
       "en": "Distinguish neonatal seizures from jitteriness at the bedside and confirm suspected seizures with EEG (conventional or amplitude-integrated), as the ILAE 2021 neonatal classification requires."
     },
     {
-      "zh-CN": "一小时内完成新生儿惊厥的首轮评估：立即测血糖，查电解质（含钙、镁）、血常规、CRP和血培养，行腰椎穿刺，并因惊厥是早发感染的红旗征象而在取血培养后开始经验性静脉抗生素（NICE NG195，2021）。",
-      "en": "Complete the first-hour evaluation of a newborn with seizures — an immediate glucose, electrolytes with calcium and magnesium, blood count, CRP, blood culture and lumbar puncture — and start empirical IV antibiotics after the culture, because seizures are a red flag for early-onset infection (NICE NG195, 2021)."
+      "zh-CN": "一小时内完成新生儿惊厥的首轮评估——立即测血糖，查电解质（含钙、镁）、血常规、凝血、CRP和血培养——取血培养后立即静脉用覆盖脑膜炎的抗生素，并在血小板和凝血结果明确、确认安全后再行腰椎穿刺（NICE NG195，2021；腰穿建议2024年并入）。",
+      "en": "Complete the first-hour evaluation of a newborn with seizures — an immediate glucose, electrolytes with calcium and magnesium, blood count, clotting, CRP and blood culture — start IV antibiotics covering meningitis straight after the culture, and do the lumbar puncture once it is safe, with the platelet count and clotting known (NICE NG195, 2021; lumbar-puncture recommendations added 2024)."
     },
     {
       "zh-CN": "按ILAE 2023以静脉苯巴比妥（负荷量20 mg/kg）作为一线抗惊厥药，说出二线药物，并在急性诱发性发作停止、无新生儿起病癫痫证据时于出院前停药。",
@@ -350,7 +353,10 @@
           "吞咽",
           "咽奶",
           "奶粉",
-          "奶量"
+          "奶量",
+          "吃母乳",
+          "母乳还是奶粉",
+          "多少奶"
         ],
         "en": [
           "feeding",
@@ -360,18 +366,9 @@
           "formula",
           "bottle",
           "milk",
-          "latch"
-        ]
-      },
-      "excludeKeywords": {
-        "zh-CN": [
-          "母乳",
-          "想不想",
-          "亲喂"
-        ],
-        "en": [
-          "breastfe",
-          "wanted"
+          "latch",
+          "breastfed",
+          "breast or bottle"
         ]
       },
       "disclosure": "on-ask",
@@ -562,7 +559,8 @@
           "体温",
           "烧不烧",
           "高烧",
-          "温度"
+          "温度",
+          "感染"
         ],
         "en": [
           "fever",
@@ -570,7 +568,9 @@
           "febrile",
           "hot to touch",
           "high temp",
-          "pyrexia"
+          "pyrexia",
+          "signs of infection",
+          "infection"
         ]
       },
       "excludeKeywords": {
@@ -623,7 +623,8 @@
           "早产",
           "剖宫产",
           "生产方式",
-          "怎么生的"
+          "怎么生的",
+          "顺利"
         ],
         "en": [
           "gestation",
@@ -756,8 +757,8 @@
         "en": "How much does he weigh?"
       },
       "answer": {
-        "zh-CN": "称过，3.5公斤。",
-        "en": "They weighed him — 3.5 kilos."
+        "zh-CN": "称过，3.5公斤。是生下来称的还是住院后称的，我说不清。",
+        "en": "They weighed him at 3.5 kilos — I'm not sure whether that was at birth or after he came in."
       },
       "keywords": {
         "zh-CN": [
@@ -818,7 +819,8 @@
           "tablets in pregnancy",
           "took during pregnancy",
           "prescribed in pregnancy",
-          "maternal medication"
+          "maternal medication",
+          "mother take"
         ]
       },
       "excludeKeywords": {
@@ -830,7 +832,9 @@
           "浓度",
           "抽烟",
           "喝酒",
-          "母乳"
+          "母乳",
+          "抗生素",
+          "感染"
         ],
         "en": [
           "last",
@@ -839,7 +843,9 @@
           "smok",
           "alcohol",
           "breastfe",
-          "illness"
+          "illness",
+          "antibiotic",
+          "infection"
         ]
       },
       "disclosure": "on-ask",
@@ -961,28 +967,36 @@
       "keywords": {
         "zh-CN": [
           "剂量",
-          "吃多少",
+          "药量",
           "多大剂量",
-          "几片",
+          "吃几片",
           "多少毫克",
-          "一天几次"
+          "一天吃几次",
+          "每次吃多少"
         ],
         "en": [
           "dose",
           "doses",
-          "how much",
+          "dosage",
           "milligrams",
+          "mg",
           "howmanytablets",
-          "mg"
+          "howmuchdoesshetake",
+          "howmuchshetakes"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "最后一次",
-          "末次"
+          "末次",
+          "奶",
+          "体重"
         ],
         "en": [
-          "last"
+          "last",
+          "weigh",
+          "milk",
+          "feed"
         ]
       },
       "disclosure": "unknown",
@@ -1094,7 +1108,11 @@
           "产时发热",
           "产时发烧",
           "生的时候发烧",
-          "宫内感染"
+          "宫内感染",
+          "孕期感染",
+          "怀孕时感染",
+          "妈妈感染",
+          "产时用抗生素"
         ],
         "en": [
           "group b strep",
@@ -1102,7 +1120,11 @@
           "gbs",
           "fever in labour",
           "intrapartum fever",
-          "chorioamnionitis"
+          "chorioamnionitis",
+          "infection in pregnancy",
+          "antibiotics in labour",
+          "maternal infection",
+          "unwell in labour"
         ]
       },
       "disclosure": "unknown",
@@ -1284,27 +1306,23 @@
       },
       "keywords": {
         "zh-CN": [
-          "母乳",
-          "喂母乳",
-          "亲喂",
-          "母乳喂养",
-          "吃妈妈的奶"
+          "想喂母乳",
+          "想不想喂母乳",
+          "打算喂母乳",
+          "想母乳喂养",
+          "想亲喂",
+          "希望母乳喂养",
+          "母乳喂养的打算"
         ],
         "en": [
-          "breastfeed",
-          "breastfeeding",
-          "breast milk",
-          "nursing",
-          "expressed milk"
-        ]
-      },
-      "excludeKeywords": {
-        "zh-CN": [
-          "奶粉"
-        ],
-        "en": [
-          "formula",
-          "bottle"
+          "want to breastfeed",
+          "wanted to breastfeed",
+          "plan to breastfeed",
+          "planning to breastfeed",
+          "hoping to breastfeed",
+          "breastfeeding plans",
+          "wish to breastfeed",
+          "intend to breastfeed"
         ]
       },
       "disclosure": "unknown",
@@ -1836,8 +1854,8 @@
     {
       "id": "drug-levels",
       "name": {
-        "zh-CN": "新生儿血药浓度",
-        "en": "Neonatal drug levels"
+        "zh-CN": "毒物与药物筛查",
+        "en": "Toxicology and drug screen"
       },
       "category": "lab",
       "aliases": {
@@ -1852,7 +1870,8 @@
           "drug screen",
           "toxicology",
           "tox screen",
-          "serum levels"
+          "serum levels",
+          "toxicology screen"
         ]
       },
       "requires": [
@@ -1923,7 +1942,7 @@
         "lab-hematology"
       ],
       "risk": "none",
-      "value": "useful",
+      "value": "essential",
       "results": {
         "admission": {
           "available": false,
@@ -2801,8 +2820,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "新生儿外周静脉留置针；置管时同时采血送检（电解质含钙镁、血常规、CRP、胆红素）。",
-        "en": "A neonatal peripheral cannula; take the bloods at the same time (electrolytes with calcium and magnesium, blood count, CRP, bilirubin)."
+        "zh-CN": "新生儿外周静脉留置针；置管时同时采血送检（电解质含钙镁、血常规、凝血、CRP、胆红素）。",
+        "en": "A neonatal peripheral cannula; take the bloods at the same time (electrolytes with calcium and magnesium, blood count, clotting, CRP, bilirubin)."
       },
       "requires": [
         "iv-access"
@@ -2878,17 +2897,36 @@
         ]
       },
       "dose": {
-        "zh-CN": "无菌操作下腰椎穿刺；脑脊液送细胞计数、蛋白、葡萄糖、涂片和培养，同时抽同步血糖。",
-        "en": "Aseptic lumbar puncture; send CSF for cell count, protein, glucose, Gram stain and culture, with a paired blood glucose."
+        "zh-CN": "血小板计数已知、凝血已查（他有出血点）、惊厥已控制后，无菌操作下腰椎穿刺；脑脊液送细胞计数、蛋白、葡萄糖、涂片和培养，腰穿前即刻测血糖以计算比值（NICE NG195）。",
+        "en": "Once the platelet count is known, clotting has been checked (he has petechiae) and seizures are controlled: aseptic lumbar puncture; CSF for cell count, protein, glucose, Gram stain and culture, with a blood glucose taken just before for the ratio (NICE NG195)."
       },
       "requires": [],
       "risk": "moderate",
+      "maxDoses": 1,
       "indicatedWhen": {
-        "always": true
+        "all": [
+          {
+            "read": "blood-count",
+            "phase": "first-results"
+          },
+          {
+            "phase": "first-results"
+          }
+        ]
+      },
+      "contraindicatedWhen": {
+        "not": {
+          "read": "blood-count",
+          "phase": "first-results"
+        }
+      },
+      "harm": {
+        "zh-CN": "还不是时候：他有出血点，血小板、凝血和维生素K情况都不清楚，几小时前还抽过。NICE NG195（2024年并入的腰穿建议）要求只在安全时腰穿，出血风险和未控制的惊厥要先处理和稳定；现在先取血培养、立即用抗生素，待血小板计数回报、凝血查过后再腰穿。",
+        "en": "Not yet: he has petechiae, his platelet count, clotting and vitamin K status are unknown, and he had seizures a few hours ago. NICE NG195 (lumbar-puncture recommendations added 2024) allows an LP only when it is safe, once any bleeding risk or uncontrolled seizures have been treated and stabilised; take the culture and give the antibiotics now, and do the LP once the platelet count is back and clotting has been checked."
       },
       "response": {
-        "zh-CN": "已行腰椎穿刺，脑脊液已送检。报告记录了一次脑脊液检查，结果在后续阶段调阅。",
-        "en": "Lumbar puncture done and CSF sent. The report records a CSF examination; its result is read in a later phase."
+        "zh-CN": "已行腰椎穿刺，脑脊液已送检。报告记录了一次脑脊液检查（日期未记录），其结果随脑脊液和影像报告一起开放。",
+        "en": "Lumbar puncture done and CSF sent. The report records one CSF examination (its date is not recorded); its result opens with the CSF and imaging reports."
       }
     },
     {
@@ -2902,23 +2940,25 @@
         "zh-CN": [
           "抗生素",
           "抗感染",
+          "阿莫西林",
+          "头孢噻肟",
           "青霉素",
           "庆大霉素",
-          "氨苄西林",
-          "头孢噻肟"
+          "氨苄西林"
         ],
         "en": [
           "antibiotics",
+          "amoxicillin",
+          "cefotaxime",
           "benzylpenicillin",
           "gentamicin",
           "ampicillin",
-          "cefotaxime",
           "empirical antibiotics"
         ]
       },
       "dose": {
-        "zh-CN": "青霉素（苄青霉素）25 mg/kg静脉滴注，每12小时一次（病情重时每8小时一次），加庆大霉素首剂5 mg/kg静脉滴注，下一剂按血药浓度决定；36小时复核，血培养阴性、CRP和临床情况放心时停用（NICE NG195，2021）。当地政策避免氨基糖苷类时，用氨苄西林加第三代头孢菌素。",
-        "en": "Benzylpenicillin 25 mg/kg IV every 12 hours (every 8 hours if very unwell) plus gentamicin 5 mg/kg IV as the first dose, the next guided by levels; review at 36 hours and stop if the culture is negative and the CRP and his condition are reassuring (NICE NG195, 2021). Where local policy avoids aminoglycosides, ampicillin with a third-generation cephalosporin."
+        "zh-CN": "取血培养后立即给药，不等腰穿。脑膜炎尚未排除（有惊厥，腰穿暂缓），按NICE NG195对病原不明的可疑脑膜炎的方案，静脉用阿莫西林加头孢噻肟，剂量按新生儿处方集的脑膜炎剂量；若脑脊液随后排除脑膜炎，早发感染的首选方案为青霉素（苄青霉素）25 mg/kg每12小时一次加庆大霉素5 mg/kg（NG195）。36小时结合血培养、CRP、脑脊液和临床情况复核。",
+        "en": "Straight after the blood culture, without waiting for the lumbar puncture. Meningitis is not yet excluded (seizures; LP deferred), so use NICE NG195's regimen for suspected meningitis with an unknown pathogen: IV amoxicillin with cefotaxime at the neonatal formulary's meningitis doses. If the CSF later excludes meningitis, the first-choice early-onset regimen is benzylpenicillin 25 mg/kg 12-hourly with gentamicin 5 mg/kg (NG195). Review at 36 hours with the culture, CRP, CSF and his condition."
       },
       "requires": [
         "iv-access",
@@ -2926,7 +2966,15 @@
       ],
       "risk": "low",
       "indicatedWhen": {
-        "ordered": "blood-culture"
+        "all": [
+          {
+            "ordered": "blood-culture",
+            "phase": "admission"
+          },
+          {
+            "phase": "admission"
+          }
+        ]
       },
       "response": {
         "zh-CN": "已在取血培养后给药。本病例没有记录是否使用抗生素，也不模拟其效果。",
@@ -2967,11 +3015,13 @@
       "risk": "moderate",
       "maxDoses": 2,
       "indicatedWhen": {
-        "read": "glucose"
+        "read": "glucose",
+        "phase": "admission"
       },
       "contraindicatedWhen": {
         "not": {
-          "read": "glucose"
+          "read": "glucose",
+          "phase": "admission"
         }
       },
       "harm": {
@@ -3058,8 +3108,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "吗啡用于阿片类药物所致的新生儿戒断，本例没有记录阿片类暴露；Finnegan评分也是为阿片类戒断设计的。吗啡抑制呼吸，与苯巴比妥叠加，而且不能控制惊厥。FDA 2011指出抗精神病药相关的新生儿症状常可自限。",
-        "en": "Morphine treats opioid withdrawal in the newborn, and no opioid exposure is recorded here; the Finnegan score was designed for opioid withdrawal. Morphine depresses breathing, adds to phenobarbital and does not control seizures. FDA 2011 notes that antipsychotic-related newborn symptoms are often self-limiting."
+        "zh-CN": "吗啡用于阿片类药物所致的新生儿戒断，本例没有记录阿片类暴露；Finnegan评分也是为阿片类戒断设计的。吗啡抑制呼吸，与苯巴比妥叠加，而且不能控制惊厥；惊厥需要抗惊厥药并用脑电图确认（ILAE 2023）。",
+        "en": "Morphine treats opioid withdrawal in the newborn, and no opioid exposure is recorded here; the Finnegan score was designed for opioid withdrawal. Morphine depresses breathing, adds to phenobarbital and does not control seizures, which need an antiseizure drug and EEG confirmation (ILAE 2023)."
       },
       "response": {
         "zh-CN": "已给药。本病例没有记录使用吗啡，也不模拟其效果。",
@@ -3097,7 +3147,8 @@
       ],
       "risk": "moderate",
       "contraindicatedWhen": {
-        "read": "electrolytes"
+        "read": "electrolytes",
+        "phase": "first-results"
       },
       "harm": {
         "zh-CN": "他的血钙为2.21 mmol/L，并不低：静脉补钙只用于测得的低钙血症。推注过快可致心动过缓，外渗可致皮肤坏死。",
@@ -3423,8 +3474,8 @@
         "en": "Examination"
       },
       "hint": {
-        "zh-CN": "哪些体征能把惊厥和抖动分开？前囟、皮肤和下肢分别告诉你什么？",
-        "en": "Which signs separate seizures from jitteriness, and what do the fontanelle, the skin and the legs each tell you?"
+        "zh-CN": "哪些体征能帮你判断这些发作的性质？前囟、皮肤和下肢分别告诉你什么？",
+        "en": "Which signs help you judge what these episodes are, and what do the fontanelle, the skin and the legs each tell you?"
       },
       "guidance": {
         "zh-CN": "检查反应、肌张力和反射，摸前囟，看皮肤和下肢。",
@@ -3458,16 +3509,16 @@
     {
       "id": "obj-first-hour",
       "title": {
-        "zh-CN": "第一个小时：评估与止惊",
-        "en": "The first hour: work-up and seizure control"
+        "zh-CN": "第一个小时",
+        "en": "The first hour"
       },
       "short": {
         "zh-CN": "第一个小时",
         "en": "First hour"
       },
       "hint": {
-        "zh-CN": "哪个可治疗的病因一两分钟就能在床旁查出？哪项检查要赶在抗生素之前？用哪种药止惊，又怎么知道发作真的停了？",
-        "en": "Which treatable cause can you find at the cot side in a minute or two? Which test has to come before the antibiotics? Which drug stops the seizures, and how will you know they have really stopped?"
+        "zh-CN": "这些发作可能是什么？第一个小时里有哪些病因绝不能漏掉？",
+        "en": "What could these episodes be, and which causes must you not miss in the first hour?"
       },
       "guidance": {
         "zh-CN": "在会诊板作答决策 1 和决策 2，并在床旁开始相应处理。",
@@ -3486,9 +3537,6 @@
           },
           {
             "ordered": "blood-culture"
-          },
-          {
-            "intervened": "lumbar-puncture"
           },
           {
             "intervened": "antibiotics"
@@ -3530,26 +3578,33 @@
         "en": "First results"
       },
       "hint": {
-        "zh-CN": "哪些可治疗的病因现在可以划掉，哪些还不能？胆红素要和什么一起看？血小板正常时，出血点该怎么解释？",
-        "en": "Which treatable causes can you cross off now, and which not yet? What must a bilirubin be read against? How do you explain petechiae when the platelets are normal?"
+        "zh-CN": "首批结果补充了什么？关于他的皮肤，你还需要弄清什么？",
+        "en": "What do the first results add, and what do you still need to know about his skin?"
       },
       "guidance": {
-        "zh-CN": "在护士站调阅首批化验报告，再到会诊板作答决策 3。",
-        "en": "Read the first blood reports at the nurses' station, then answer decision 3 on the case board."
+        "zh-CN": "在护士站调阅首批化验报告，回到床旁处理，再到会诊板作答决策 3。",
+        "en": "Read the first blood reports at the nurses' station, return to the cot side, then answer decision 3 on the case board."
       },
       "completeWhen": {
         "all": [
           {
-            "read": "electrolytes"
+            "read": "electrolytes",
+            "phase": "first-results"
           },
           {
-            "read": "crp"
+            "read": "crp",
+            "phase": "first-results"
           },
           {
-            "read": "blood-count"
+            "read": "blood-count",
+            "phase": "first-results"
           },
           {
-            "read": "bilirubin"
+            "read": "bilirubin",
+            "phase": "first-results"
+          },
+          {
+            "intervened": "lumbar-puncture"
           },
           {
             "decided": "skin-findings"
@@ -3559,9 +3614,32 @@
       "waypoints": [
         {
           "unless": {
-            "read": "bilirubin"
+            "all": [
+              {
+                "read": "electrolytes",
+                "phase": "first-results"
+              },
+              {
+                "read": "crp",
+                "phase": "first-results"
+              },
+              {
+                "read": "blood-count",
+                "phase": "first-results"
+              },
+              {
+                "read": "bilirubin",
+                "phase": "first-results"
+              }
+            ]
           },
           "target": "records"
+        },
+        {
+          "unless": {
+            "intervened": "lumbar-puncture"
+          },
+          "target": "patient"
         },
         {
           "target": "board"
@@ -3579,8 +3657,8 @@
         "en": "Cause and plan"
       },
       "hint": {
-        "zh-CN": "正常的结果排除了什么、又证明了什么？没有脑电图和血药浓度，你能有多肯定？怎样安排母亲的治疗和孩子的喂养，才对母婴都安全？",
-        "en": "What do normal results exclude, and what do they prove? Without an EEG or drug levels, how sure can you be? How do you keep mother and baby safe with her treatment and his feeding?"
+        "zh-CN": "这些报告排除了什么，又证明不了什么？你会怎样和家属谈？",
+        "en": "What do these reports exclude, and what can they not prove? What will you say to his family?"
       },
       "guidance": {
         "zh-CN": "调阅脑脊液和影像报告，作答决策 4 和决策 5。",
@@ -3589,10 +3667,12 @@
       "completeWhen": {
         "all": [
           {
-            "read": "csf"
+            "read": "csf",
+            "phase": "csf-imaging"
           },
           {
-            "read": "cranial-us"
+            "read": "cranial-us",
+            "phase": "csf-imaging"
           },
           {
             "decided": "cause"
@@ -3608,7 +3688,8 @@
       "waypoints": [
         {
           "unless": {
-            "read": "csf"
+            "read": "csf",
+            "phase": "csf-imaging"
           },
           "target": "records"
         },
@@ -3650,8 +3731,8 @@
     {
       "id": "first-hour",
       "prompt": {
-        "zh-CN": "生后38小时男婴，39周出生，生后一直吃奶无力；生后约30和35小时各有一次凝视、四肢抽动伴口唇发绀，每次1–2分钟自行缓解。他易激惹，肌张力略高，吸吮和拥抱反射减弱。母亲孕期一直服用氯氮平和氟哌啶醇，末次在分娩前约5小时。第一个小时怎么处理？",
-        "en": "A 38-hour-old boy born at 39 weeks has fed weakly since birth and had two episodes of staring and jerking of all four limbs with blue lips, at about 30 and 35 hours, each 1–2 minutes and self-limiting. He is irritable with slightly increased tone and weak suck and Moro reflexes. His mother took clozapine and haloperidol throughout pregnancy, the last dose about 5 hours before delivery. What do you do in the first hour?"
+        "zh-CN": "生后38小时男婴，39周出生，生后一直吃奶无力；生后约30和35小时各有一次凝视、四肢抽动伴口唇发绀，每次1–2分钟自行缓解。他易激惹，肌张力略高，吸吮和拥抱反射减弱；胸前和四肢散在针尖样出血点。还没有任何化验结果。母亲孕期一直服用氯氮平和氟哌啶醇，末次在分娩前约5小时。第一个小时怎么处理？",
+        "en": "A 38-hour-old boy born at 39 weeks has fed weakly since birth and had two episodes of staring and jerking of all four limbs with blue lips, at about 30 and 35 hours, each 1–2 minutes and self-limiting. He is irritable with slightly increased tone and weak suck and Moro reflexes, and has scattered pinpoint petechiae on the chest and limbs. No results are back yet. His mother took clozapine and haloperidol throughout pregnancy, the last dose about 5 hours before delivery. What do you do in the first hour?"
       },
       "kind": "single",
       "requires": {
@@ -3676,24 +3757,27 @@
           },
           {
             "examined": "tone-reflexes"
+          },
+          {
+            "examined": "petechiae"
           }
         ]
       },
       "need": {
-        "zh-CN": "先向家属问清发作的表现和时间、出生和喂养情况以及母亲孕期用药，并检查肌张力和反射。",
-        "en": "First ask his relative about the episodes and their timing, his birth and feeding, and his mother's medicines in pregnancy, and examine his tone and reflexes."
+        "zh-CN": "先向家属问清发作的表现和时间、出生和喂养情况以及母亲孕期用药，并检查肌张力、反射和皮肤。",
+        "en": "First ask his relative about the episodes and their timing, his birth and feeding, and his mother's medicines in pregnancy, and examine his tone, reflexes and skin."
       },
       "options": [
         {
           "id": "seizure-workup",
           "text": {
-            "zh-CN": "按可能的新生儿惊厥处理：立即测血糖，接监护，查电解质（含钙、镁）、血常规、CRP和血培养，腰椎穿刺，取血培养后开始经验性抗生素，并做脑电图；药物暴露列入鉴别，但不因此省略检查。",
-            "en": "Treat them as probable seizures: glucose now, monitoring, electrolytes with calcium and magnesium, blood count, CRP and blood culture, a lumbar puncture, antibiotics after the culture, and an EEG; keep the exposure in the differential without cutting the work-up."
+            "zh-CN": "按可能的新生儿惊厥处理：立即测血糖并接监护，查电解质（含钙、镁）、血常规、凝血、CRP和血培养；取血培养后立即静脉用覆盖脑膜炎的抗生素；血小板和凝血允许后再腰穿；做脑电图。",
+            "en": "Treat as probable seizures: glucose now and monitoring; electrolytes with calcium and magnesium, blood count, clotting, CRP and blood culture; IV antibiotics covering meningitis straight after the culture; the LP once platelets and clotting allow; an EEG."
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。刻板、自限的凝视和四肢抽动伴发绀，应按惊厥处理，直到脑电图证明不是（ILAE 2021新生儿发作分类以脑电图为诊断依据）。先排除可治疗、可致残的病因——低血糖、电解质紊乱和感染；NICE NG195（2021）把惊厥列为早发感染的红旗征象，要求完善检查并在取血培养后开始抗生素。药物暴露是重要线索，但只有排除这些病因后才能用来解释。",
-            "en": "Right. Stereotyped, self-limiting episodes of staring and limb jerking with cyanosis are seizures until EEG shows otherwise (the ILAE 2021 neonatal classification rests on EEG). Exclude the treatable, disabling causes first — hypoglycaemia, electrolyte disturbance and infection; NICE NG195 (2021) lists seizures as a red flag for early-onset infection, calling for investigations and antibiotics after the blood culture. The drug exposure is an important clue, but it explains the picture only once these are excluded."
+            "zh-CN": "正确。刻板、自限的凝视和四肢抽动伴发绀，在脑电图证明之前都应按惊厥处理（ILAE 2021），并先排除可治疗的病因：低血糖、电解质紊乱和感染。NICE NG195把惊厥列为早发感染的红旗征象：取血培养后立即用抗生素，在腰穿暂缓期间覆盖脑膜炎——NG195 2024年并入的腰穿建议要求只在安全时腰穿、先评估出血风险，而他有出血点，血小板和凝血都还不清楚。药物暴露是重要线索，但只有排除这些病因后才能用来解释。",
+            "en": "Right. Stereotyped, self-limiting staring and limb jerking with cyanosis are seizures until EEG shows otherwise (ILAE 2021), and the treatable causes come first: hypoglycaemia, electrolyte disturbance and infection. Seizures are a NICE NG195 red flag, so antibiotics follow the blood culture at once and cover meningitis while the lumbar puncture waits — NG195's lumbar-puncture recommendations (added 2024) allow an LP only when it is safe, after any bleeding risk is assessed, and he has petechiae with an unknown platelet count and clotting. The drug exposure is an important clue, but it explains the picture only once these causes are excluded."
           }
         },
         {
@@ -3704,8 +3788,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是锚定偏差。FDA 2011抗精神病药类别警示列出的新生儿表现是激惹、肌张力异常、震颤、嗜睡、呼吸困难和喂养困难，并不包括惊厥；NICE NG195（2021）把惊厥列为早发感染的红旗征象，不必等到发热或CRP升高——发病初期CRP可以正常。",
-            "en": "This is anchoring. The FDA 2011 antipsychotic class warning lists agitation, abnormal tone, tremor, sleepiness, breathing difficulty and feeding difficulty in exposed newborns, not seizures; and NICE NG195 (2021) makes seizures a red flag for early-onset infection that does not wait for a fever or a raised CRP, which can be normal early on."
+            "zh-CN": "这是锚定偏差。FDA 2011抗精神病药类别警示列出的新生儿表现是激惹、肌张力异常、震颤、嗜睡、呼吸困难和喂养困难，并不包括惊厥；NICE NG195把惊厥列为早发感染的红旗征象，不必等到发热或CRP升高——发病初期CRP可以正常。",
+            "en": "This is anchoring. The FDA 2011 antipsychotic class warning lists agitation, abnormal tone, tremor, sleepiness, breathing difficulty and feeding difficulty in exposed newborns, not seizures; and NICE NG195 makes seizures a red flag for early-onset infection that does not wait for a fever or a raised CRP, which can be normal early on."
           }
         },
         {
@@ -3728,8 +3812,20 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "控制惊厥很重要，但不能抢在病因评估前面：低血糖一两分钟就能查出，治疗完全不同；抗生素也应在取血培养后尽早开始（NICE NG195，2021）。ILAE 2023只涉及抗惊厥药，纠正可逆病因须同时进行；先用药后检查，还可能让仍在发生的电发作没有记录。",
-            "en": "Seizure control matters, but not ahead of the causes: a low glucose takes a minute or two to find and is treated quite differently, and antibiotics should start soon after the blood culture (NICE NG195, 2021). ILAE 2023 covers antiseizure drugs, not the correction of reversible causes, which runs alongside; and drugs first can leave ongoing electrographic seizures unrecorded."
+            "zh-CN": "控制惊厥很重要，但不能抢在病因评估前面：低血糖一两分钟就能查出，治疗完全不同；抗生素也应在取血培养后尽早开始（NICE NG195）。ILAE 2023只涉及抗惊厥药，纠正可逆病因须同时进行；先用药后检查，还可能让仍在发生的电发作没有记录。",
+            "en": "Seizure control matters, but not ahead of the causes: a low glucose takes a minute or two to find and is treated quite differently, and antibiotics should start soon after the blood culture (NICE NG195). ILAE 2023 covers antiseizure drugs, not the correction of reversible causes, which runs alongside; and drugs first can leave ongoing electrographic seizures unrecorded."
+          }
+        },
+        {
+          "id": "lp-before-antibiotics",
+          "text": {
+            "zh-CN": "按可能的惊厥做全面评估，但先做腰椎穿刺，留好脑脊液后再开始抗生素，以免脑脊液培养受影响；抽血、血培养和脑电图同时进行。",
+            "en": "Treat as probable seizures with the full work-up, but do the lumbar puncture first and start the antibiotics once the CSF is in the bottle, so the culture is not spoiled; the bloods, blood culture and EEG go ahead at the same time."
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "出发点没错——在用抗生素前留取脑脊液，培养最可靠；NICE NG195也要求解读脑脊液结果时考虑此前是否已用抗生素。但NG195 2024年并入的腰穿建议只允许在安全时腰穿，出血风险要先评估和稳定，而他有出血点，血小板和凝血都还不清楚：应取血培养后立即用抗生素，待这些结果允许时再腰穿。",
+            "en": "The aim is sound — CSF taken before antibiotics gives the most reliable culture, and NICE NG195 asks for CSF results to be read with any earlier antibiotics in mind. But NG195's lumbar-puncture recommendations (added 2024) allow an LP only when it is safe, after any bleeding risk is assessed and stabilised, and he has petechiae with an unknown platelet count and clotting: give the antibiotics after the blood culture now, and do the LP once those results allow."
           }
         }
       ]
@@ -3765,8 +3861,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。ILAE 2023无论病因都推荐苯巴比妥为一线药（怀疑离子通道病时除外）；NEOLEV2随机试验（2020）中，苯巴比妥（负荷量20 mg/kg）使发作停止的比例明显高于左乙拉西坦。用药后临床表现可能消失而电发作仍在，所以需要脑电图；二线可选苯妥英、左乙拉西坦、咪达唑仑或利多卡因（ILAE 2023）。",
-            "en": "Right. ILAE 2023 recommends phenobarbital first-line whatever the cause (unless a channelopathy is suspected); in the NEOLEV2 randomised trial (2020) phenobarbital (20 mg/kg load) stopped seizures far more often than levetiracetam. After phenobarbital the clinical signs may stop while electrographic seizures go on, hence the EEG; second-line options are phenytoin, levetiracetam, midazolam or lidocaine (ILAE 2023)."
+            "zh-CN": "正确。血糖3.2 mmol/L，高于BAPM框架（2017）对有异常体征新生儿的处理阈值2.5 mmol/L，下一步是抗惊厥药：ILAE 2023无论病因都推荐苯巴比妥为一线药（怀疑离子通道病时除外）；NEOLEV2随机试验（2020）中，苯巴比妥（负荷量20 mg/kg）使发作停止的比例明显高于左乙拉西坦。用药后临床表现可能消失而电发作仍在，所以需要脑电图；二线可选苯妥英、左乙拉西坦、咪达唑仑或利多卡因（ILAE 2023）。",
+            "en": "Right. A glucose of 3.2 mmol/L is above the 2.5 mmol/L at which the BAPM framework (2017) treats a baby with abnormal signs, so an antiseizure drug comes next: ILAE 2023 recommends phenobarbital first-line whatever the cause (unless a channelopathy is suspected), and in the NEOLEV2 randomised trial (2020) phenobarbital (20 mg/kg load) stopped seizures far more often than levetiracetam. After phenobarbital the clinical signs may stop while electrographic seizures go on, hence the EEG; second-line options are phenytoin, levetiracetam, midazolam or lidocaine (ILAE 2023)."
           }
         },
         {
@@ -3801,8 +3897,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "吗啡用于阿片类药物所致的新生儿戒断，本例没有记录阿片类暴露，Finnegan评分也是为阿片类戒断设计的；吗啡抑制呼吸，也控制不了惊厥。惊厥需要抗惊厥药和脑电图（ILAE 2023）；FDA 2011指出，抗精神病药相关的新生儿症状常可自限。",
-            "en": "Morphine treats opioid withdrawal in newborns; no opioid exposure is recorded here, and the Finnegan score was built for opioid withdrawal. Morphine depresses breathing and does not control seizures, which need an antiseizure drug and an EEG (ILAE 2023); FDA 2011 notes that antipsychotic-related newborn symptoms are often self-limiting."
+            "zh-CN": "吗啡用于阿片类药物所致的新生儿戒断，本例没有记录阿片类暴露，Finnegan评分也是为阿片类戒断设计的。吗啡抑制呼吸，也控制不了惊厥；惊厥需要抗惊厥药并用脑电图确认（ILAE 2023）。",
+            "en": "Morphine treats opioid withdrawal in newborns; no opioid exposure is recorded here, and the Finnegan score was built for opioid withdrawal. Morphine depresses breathing and does not control seizures, which need an antiseizure drug and EEG confirmation (ILAE 2023)."
           }
         }
       ]
@@ -3810,8 +3906,8 @@
     {
       "id": "skin-findings",
       "prompt": {
-        "zh-CN": "总胆红素199.6 µmol/L（采样时的小时龄未记录；他现在生后38小时，39周出生）。面部和躯干黄染；胸前和四肢散在针尖样出血点，血小板306×10^9/L；下肢轻度凹陷性水肿。对这些皮肤表现，下一步最合适的是？",
-        "en": "Total bilirubin is 199.6 µmol/L (his age in hours at sampling is not recorded; he is 38 hours old, born at 39 weeks). He has jaundice of the face and trunk, scattered pinpoint petechiae on the chest and limbs with platelets of 306×10^9/L, and mild pitting oedema of the lower legs. What is the best next step for these skin findings?"
+        "zh-CN": "总胆红素199.6 µmol/L（采样时的小时龄未记录；他入院时生后38小时，39周出生）。面部和躯干黄染；胸前和四肢散在针尖样出血点，血小板306×10^9/L，CRP<1 mg/L；下肢轻度凹陷性水肿。对这些表现，下一步最合适的是？",
+        "en": "Total bilirubin is 199.6 µmol/L (his age in hours at sampling is not recorded; he was 38 hours old at admission, born at 39 weeks). He has jaundice of the face and trunk, scattered pinpoint petechiae on the chest and limbs with platelets of 306×10^9/L and a CRP below 1 mg/L, and mild pitting oedema of the lower legs. What is the best next step for these findings?"
       },
       "kind": "single",
       "requires": {
@@ -3822,6 +3918,14 @@
           },
           {
             "read": "blood-count",
+            "phase": "first-results"
+          },
+          {
+            "read": "electrolytes",
+            "phase": "first-results"
+          },
+          {
+            "read": "crp",
             "phase": "first-results"
           },
           {
@@ -3839,20 +3943,20 @@
         ]
       },
       "need": {
-        "zh-CN": "先调阅胆红素和血常规，并检查皮肤和下肢。",
-        "en": "Read the bilirubin and the blood count, and examine his skin and legs first."
+        "zh-CN": "先调阅首批化验（电解质、CRP、血常规、胆红素），并检查皮肤和下肢。",
+        "en": "Read the first blood reports (electrolytes, CRP, blood count, bilirubin), and examine his skin and legs first."
       },
       "options": [
         {
           "id": "plot-repeat",
           "text": {
-            "zh-CN": "按采样时的小时龄、胎龄和高危因素把胆红素标在小时胆红素曲线上，数小时内复查，达到光疗线才光疗；血小板正常的出血点要核实维生素K、查凝血功能，并继续排查感染。",
-            "en": "Plot the bilirubin by his age in hours at sampling, gestation and risk factors and repeat it within hours, with phototherapy only at the treatment line; for petechiae with normal platelets, confirm vitamin K, check clotting and keep infection in view."
+            "zh-CN": "把胆红素按采样时的小时龄、胎龄和高危因素标在小时曲线上，数小时内复查，达到光疗线才治疗；出血点要核实维生素K、查凝血；水肿要查白蛋白，评估液体平衡、心脏和肾脏。",
+            "en": "Plot the bilirubin by age in hours at sampling, gestation and risk factors, repeat it within hours and treat only at the line; for the petechiae, confirm vitamin K and check clotting; for the oedema, check albumin, fluid balance, heart and kidneys."
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。胆红素只有对照采样时的小时龄才有意义：AAP 2022按胎龄和神经毒性高危因素（如脓毒症、近24小时病情明显不稳定）给出逐小时的光疗和换血阈值；本例没有记录采样小时龄，所以要复查并标图。血小板306×10^9/L正常却有出血点，应核实维生素K、查凝血功能，并把先天感染和脓毒症留在鉴别中。",
-            "en": "Right. A bilirubin means something only against the age in hours at sampling: AAP 2022 gives hour-specific phototherapy and exchange thresholds by gestation and neurotoxicity risk factors (such as sepsis or significant clinical instability in the past 24 hours), and the sampling hour is not recorded here, so repeat and plot it. Petechiae with a normal platelet count of 306×10^9/L call for confirming vitamin K, a clotting screen, and keeping congenital infection and sepsis in the differential."
+            "zh-CN": "正确。胆红素只有对照采样时的小时龄才有意义：AAP 2022按胎龄和神经毒性高危因素（其中包括白蛋白<3.0 g/dL、脓毒症和近24小时明显的临床不稳定）给出逐小时的光疗和换血阈值，而本例既没有记录采样小时龄，也没有白蛋白结果。血小板306×10^9/L正常却有出血点，应核实维生素K、查凝血功能，并把感染留在鉴别中；足月新生儿出现凹陷性水肿也不正常，需要查白蛋白，并评估液体平衡、心脏和肾脏。",
+            "en": "Right. A bilirubin means something only against the age in hours at sampling: AAP 2022 sets hour-specific phototherapy and exchange thresholds by gestation and neurotoxicity risk factors — among them an albumin below 3.0 g/dL, sepsis and significant clinical instability in the past 24 hours — and neither the sampling hour nor an albumin is recorded here. Petechiae with a normal platelet count of 306×10^9/L call for vitamin K, a clotting screen and infection kept in view, and pitting oedema in a term newborn is not normal either: it needs an albumin and a review of fluid balance, heart and kidneys."
           }
         },
         {
@@ -3875,8 +3979,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "肉眼判断黄疸程度不可靠，AAP 2022要求测经皮或血清胆红素，并按小时龄解读；伴有惊厥和喂养困难时，更不能想当然地归为生理性。血小板正常的出血点也要找原因（维生素K、凝血、感染），不能直接归因于分娩受压。",
-            "en": "Judging jaundice by eye is unreliable — AAP 2022 asks for a transcutaneous or serum bilirubin read against the age in hours — and in a baby with seizures and poor feeding it cannot simply be called physiological. Petechiae with normal platelets need a cause (vitamin K, clotting, infection), not an assumption of birth pressure."
+            "zh-CN": "肉眼判断黄疸程度不可靠，AAP 2022要求测经皮或血清胆红素，并按小时龄解读；伴有惊厥和喂养困难时，更不能想当然地归为生理性。血小板正常的出血点要找原因（维生素K、凝血、感染），不能假定是分娩受压；凹陷性水肿也不是可以忽略的常见现象，要查白蛋白，并评估液体平衡、心脏和肾脏。",
+            "en": "Judging jaundice by eye is unreliable — AAP 2022 asks for a transcutaneous or serum bilirubin read against the age in hours — and in a baby with seizures and poor feeding it cannot simply be called physiological. Petechiae with normal platelets need a cause (vitamin K, clotting, infection) rather than an assumption of birth pressure, and pitting oedema is no common finding to pass over: it needs an albumin and a look at fluid balance, heart and kidneys."
           }
         },
         {
@@ -3887,8 +3991,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "血小板306×10^9/L正常，没有输注血小板的指征；没有血型、直接抗人球蛋白试验或溶血的证据，静脉免疫球蛋白也没有依据。应先复查胆红素、查凝血功能，并寻找出血点的原因。",
-            "en": "With platelets of 306×10^9/L there is no indication for a platelet transfusion, and without a blood group, direct antiglobulin test or evidence of haemolysis, IV immunoglobulin has no basis. Repeat the bilirubin, check clotting and look for the cause of the petechiae first."
+            "zh-CN": "血小板306×10^9/L正常，任何新生儿血小板输注阈值都远低于此（英国血液学会BSH 2016指南），没有输注指征。AAP 2022把静脉免疫球蛋白限于同族免疫性溶血病、且胆红素已达升级处理阈值的新生儿，而本例没有记录血型、直接抗人球蛋白试验或溶血证据。应先复查胆红素、查凝血功能，并寻找出血点的原因。",
+            "en": "With platelets of 306×10^9/L there is no indication for a transfusion: the British Society for Haematology's 2016 neonatal thresholds lie far below this count. AAP 2022 keeps IV immunoglobulin for isoimmune haemolytic disease with a bilirubin at the escalation-of-care threshold, and no blood group, direct antiglobulin test or haemolysis is recorded here. Repeat the bilirubin, check clotting and look for the cause of the petechiae first."
           }
         }
       ]
@@ -3903,13 +4007,16 @@
       "requires": {
         "all": [
           {
-            "read": "glucose"
+            "read": "glucose",
+            "phase": "admission"
           },
           {
-            "read": "electrolytes"
+            "read": "electrolytes",
+            "phase": "first-results"
           },
           {
-            "read": "crp"
+            "read": "crp",
+            "phase": "first-results"
           },
           {
             "read": "csf",
@@ -3930,8 +4037,8 @@
         ]
       },
       "need": {
-        "zh-CN": "先调阅电解质、CRP、脑脊液、TORCH和两份超声报告。",
-        "en": "Read the electrolytes, CRP, CSF, TORCH and both ultrasound reports first."
+        "zh-CN": "先调阅脑脊液、TORCH和两份超声报告。",
+        "en": "Read the CSF, TORCH and both ultrasound reports first."
       },
       "options": [
         {
@@ -3942,8 +4049,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。可逆病因已基本排除——血糖、钠、钾、钙、镁不低，CRP<1 mg/L，脑脊液白细胞2×10^6/L，超声未见结构异常——但血培养和脑电图没有结果记录，也没有磁共振。FDA 2011指出，因缺少血药浓度，无法判断这类新生儿表现来自药物毒性还是撤药；本例同样如此，归因只能是排除性的。",
-            "en": "Right. The reversible causes are largely excluded — glucose, sodium, potassium, calcium and magnesium not low, CRP <1 mg/L, CSF white cells 2×10^6/L, no structural lesion on ultrasound — yet no culture or EEG result is recorded and there is no MRI. FDA 2011 noted that without drug levels it could not tell toxicity from withdrawal in such newborns; the same holds here, so the attribution stays one of exclusion."
+            "zh-CN": "正确。可逆病因已基本排除——血糖3.2 mmol/L高于BAPM 2017对有异常体征新生儿的处理阈值2.5 mmol/L，钠、钾、钙、镁不低，CRP<1 mg/L，脑脊液白细胞2×10^6/L，超声未见结构异常——但血培养和脑电图没有结果记录，也没有磁共振。本例没有测新生儿血药浓度，药物残留作用和撤药无法区分；惊厥也不在FDA 2011抗精神病药类别警示所列的表现之中，所以归因只能是排除性的。",
+            "en": "Right. The reversible causes are largely excluded — a glucose of 3.2 mmol/L above the 2.5 mmol/L at which BAPM 2017 treats a baby with abnormal signs, sodium, potassium, calcium and magnesium not low, CRP <1 mg/L, CSF white cells 2×10^6/L, no structural lesion on ultrasound — yet no culture or EEG result is recorded and there is no MRI. No neonatal drug levels were measured, so residual drug effect cannot be told from withdrawal, and seizures are not among the signs in the FDA's 2011 antipsychotic class warning: the attribution stays one of exclusion."
           }
         },
         {
@@ -3954,20 +4061,20 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "过度结论。正常结果缩小了鉴别范围，但不能证明因果：血培养没有结果记录，抗生素应在36小时复核时根据培养、CRP和临床情况决定是否停用（NICE NG195，2021）；没有脑电图，这些发作的性质无法确认，两种药联合暴露也不能单独归因于氯氮平。",
-            "en": "An over-reach. Normal results narrow the differential but prove no cause: no culture result is recorded, and antibiotics are reviewed at 36 hours on the culture, CRP and his condition (NICE NG195, 2021); without an EEG the nature of the episodes is unconfirmed, and a combined exposure cannot be pinned on clozapine alone."
+            "zh-CN": "过度结论。正常结果缩小了鉴别范围，但不能证明因果：血培养没有结果记录，抗生素应在36小时复核时根据培养、CRP和临床情况决定是否停用（NICE NG195）；没有脑电图，这些发作的性质无法确认，两种药联合暴露也不能单独归因于氯氮平。",
+            "en": "An over-reach. Normal results narrow the differential but prove no cause: no culture result is recorded, and antibiotics are reviewed at 36 hours on the culture, CRP and his condition (NICE NG195); without an EEG the nature of the episodes is unconfirmed, and a combined exposure cannot be pinned on clozapine alone."
           }
         },
         {
-          "id": "hie-cooling",
+          "id": "channelopathy-switch",
           "text": {
-            "zh-CN": "最符合缺氧缺血性脑病：生后第2天出现惊厥，伴肌张力和吸吮异常，是典型表现；应评估亚低温治疗的指征，并按缺氧缺血性脑病安排磁共振检查和长期的神经发育随访。",
-            "en": "Hypoxic–ischaemic encephalopathy fits best: seizures on day 2 with abnormal tone and suck are its typical picture, so assess him for therapeutic hypothermia and plan an MRI and long-term neurodevelopmental follow-up as for HIE."
+            "zh-CN": "现在最符合遗传性新生儿癫痫（如KCNQ2离子通道病）：血液、脑脊液和超声都正常，应按ILAE 2023对疑似离子通道病的建议改用钠通道阻滞剂，并在出院前送检癫痫基因套餐。",
+            "en": "A genetic neonatal epilepsy such as a KCNQ2 channelopathy now fits best: the bloods, CSF and ultrasound are normal, so switch to a sodium-channel blocker, as ILAE 2023 advises when a channelopathy is suspected, and send a gene panel before discharge."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "1分钟和5分钟Apgar评分均为10分，羊水清，生后30小时才出现惊厥，没有围产期窒息的证据；亚低温须在出生后6小时内、按严格的入选标准开始，不适用于本例。",
-            "en": "Apgar scores of 10 at 1 and 5 minutes, clear liquor and seizures first at 30 hours give no evidence of perinatal asphyxia; therapeutic hypothermia starts within 6 hours of birth under strict entry criteria and does not apply here."
+            "zh-CN": "离子通道病确实应列入“生后第2天惊厥、检查结果正常”的鉴别，ILAE 2023也建议怀疑离子通道病时首选钠通道阻滞剂——但怀疑通常来自家族史，而本例家族史不详。目前没有证据指向它：没有脑电图结果记录，也没有磁共振；它应留在鉴别中，先做脑电图，若再发作再做基因检测，而不是现在就换药。",
+            "en": "A channelopathy does belong in the differential of day-2 seizures with normal results, and ILAE 2023 favours a sodium-channel blocker when one is suspected — usually because of a family history, which is unknown here. Nothing yet points to it: no EEG result is recorded and there is no MRI, so it stays in the differential, with an EEG first and genetic testing if seizures recur, rather than a change of drug now."
           }
         },
         {
@@ -3978,8 +4085,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "脑脊液白细胞只有2×10^6/L，外观清；脑脊液葡萄糖要与同步血糖比较——若与血糖3.2 mmol/L同时采样，比值约0.69，不在细菌性脑膜炎常见的偏低范围，只是两份标本的采样时间都没有记录。现有证据不支持细菌性脑膜炎，但培养结果仍需追踪。",
-            "en": "CSF white cells are only 2×10^6/L and the fluid is clear; CSF glucose has to be read against a paired blood glucose — against 3.2 mmol/L the ratio would be about 0.69, not in the low range seen with bacterial meningitis, though the timing of neither sample is recorded. The evidence does not support bacterial meningitis, though the culture still needs following up."
+            "zh-CN": "脑脊液白细胞只有2×10^6/L，外观清。NICE NG195（2024年并入的腰穿建议）要求腰穿前即刻测血糖，以便计算脑脊液与血糖的比值：若与血糖3.2 mmol/L同时采样，比值约0.69，不在细菌性脑膜炎常见的偏低范围，只是两份标本的采样时间都没有记录。现有证据不支持细菌性脑膜炎，但培养结果仍需追踪。",
+            "en": "CSF white cells are only 2×10^6/L and the fluid is clear. NICE NG195 (lumbar-puncture recommendations added 2024) asks for a blood glucose just before the LP so the CSF-to-blood ratio can be judged: against 3.2 mmol/L it would be about 0.69, not in the low range seen with bacterial meningitis, though the timing of neither sample is recorded. The evidence does not support bacterial meningitis, though the culture still needs following up."
           }
         }
       ]
@@ -4009,7 +4116,7 @@
         {
           "id": "continue-planned",
           "text": {
-            "zh-CN": "母亲的治疗不骤停，由她的精神科医生和药师有计划地评估；服用氯氮平期间一般不建议母乳喂养，继续配方奶并支持母婴接触；不带指责地说明结论的不确定性，并安排神经发育随访。",
+            "zh-CN": "母亲的治疗不骤停，由她的精神科医生和药师有计划地评估；服用氯氮平期间一般不建议母乳喂养，继续配方奶并支持母婴接触；不带指责地说明不确定性，并安排神经发育随访。",
             "en": "No abrupt change to her treatment: her psychiatrist and a pharmacist plan any change; breastfeeding is generally not advised on clozapine, so formula continues with support for closeness; explain the uncertainty without blame; plan developmental follow-up."
           },
           "correct": true,
@@ -4019,39 +4126,39 @@
           }
         },
         {
-          "id": "stop-to-breastfeed",
+          "id": "stop-clozapine-now",
           "text": {
-            "zh-CN": "建议母亲现在就停用氯氮平和氟哌啶醇，这样就能开始母乳喂养，母乳对孩子有保护作用；既然孕期正是这两种药让孩子出现了惊厥，继续吃下去对孩子没有任何好处，所以停药越早越好。",
-            "en": "Advise his mother to stop clozapine and haloperidol now so that she can start breastfeeding, which protects him; since these two drugs caused his seizures in pregnancy, continuing them can do him no good, and the sooner she stops, the better."
+            "zh-CN": "建议她现在就停用氯氮平、保留氟哌啶醇，这样马上就能开始母乳喂养：一种药总比两种药对孩子的暴露少，停药后的情况可以等她下次常规复诊时再请精神科医生评估。",
+            "en": "Advise her to stop the clozapine now and keep the haloperidol, so that she can start breastfeeding at once: one drug exposes him less than two, and her psychiatrist can review how she is doing at her next routine appointment."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "危险。骤停氯氮平和氟哌啶醇可致精神疾病复发和氯氮平反跳症状，危及母亲本人和孩子的照护（BAP 2017）。药物与惊厥的关系只是排除性推断，并未证实；喂养方式应由母亲与她的医生、药师一起决定。",
-            "en": "Dangerous. Stopping clozapine and haloperidol abruptly risks relapse and clozapine rebound, endangering the mother and the baby's care (BAP 2017). The link between the drugs and the seizures is an inference by exclusion, not a proven cause, and feeding is decided with the mother, her doctors and a pharmacist."
+            "zh-CN": "危险：骤停氯氮平可致精神疾病复发和胆碱能反跳，任何调整都应事先与她的精神科医生一起计划，而不是先停后评估（BAP 2017）。只要还在服用氯氮平，配方奶就是稳妥的默认选择（LactMed），孩子的喂养不是仓促停药的理由。",
+            "en": "Dangerous: stopping clozapine abruptly risks relapse and cholinergic rebound, so any change is planned with her psychiatrist before it is made, not reviewed afterwards (BAP 2017). While she takes clozapine, formula feeding is the safe default (LactMed), so his feeding is no reason to stop it in a hurry."
           }
         },
         {
-          "id": "breastfeed-reassure",
+          "id": "breastfeed-monitored",
           "text": {
-            "zh-CN": "鼓励按现在的剂量母乳喂养，因为乳汁里的抗精神病药含量很低，可以忽略；并告诉家属，各项检查都正常，说明这两种药在孕期和哺乳期都是安全的，不必再担心以后的事。",
-            "en": "Encourage breastfeeding on her current doses, since antipsychotic levels in breast milk are too low to matter, and tell the family that the normal tests show both drugs are safe in pregnancy and in breastfeeding, so they have nothing more to worry about later."
+            "zh-CN": "两种药都不变，同时支持母乳喂养，密切观察他有无嗜睡和吃奶变差，每隔几周查一次白细胞：氟哌啶醇在哺乳期通常可以用，氯氮平对孩子的影响也能通过这些监测及时发现。",
+            "en": "Keep both medicines unchanged and support breastfeeding, watching him closely for sleepiness and poorer feeding and checking his white cells every few weeks: haloperidol is usually acceptable in breastfeeding, and these checks will catch any effect of the clozapine early."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "对氯氮平来说不成立：LactMed汇总的多个权威来源不建议服用氯氮平时哺乳（哺乳婴儿可能出现过度镇静等不良反应）。正常的检查结果也不能证明这两种药在孕期安全；一个孩子的短期结局说明不了总体风险。",
-            "en": "Not for clozapine: several authoritative sources summarised in LactMed advise against breastfeeding on it (a breastfed infant may become over-sedated, among other effects). Normal test results do not show the drugs are safe in pregnancy either; one baby's short-term course says nothing about the overall risk."
+            "zh-CN": "LactMed确实提到，若服用氯氮平的母亲哺乳，需密切观察婴儿有无过度镇静并定期查白细胞；但它倾向于选用其他药物，并指出多个权威来源不建议服用氯氮平时哺乳，因为哺乳婴儿曾出现镇静和血液系统不良反应。只要还在服用氯氮平，氟哌啶醇的情况解决不了问题；他本来就吸吮无力、易激惹，镇静反应也很难察觉，配方奶喂养并支持母婴接触更稳妥。",
+            "en": "LactMed does describe close watching for sedation and periodic white-cell counts if a mother on clozapine breastfeeds, but it prefers other drugs and notes that several authoritative sources advise against breastfeeding on clozapine, since sedation and blood disorders have been reported in breastfed infants. Haloperidol does not settle the question while clozapine is taken, and his weak suck and irritability would make sedation hard to see; formula with support for closeness is the safer plan."
           }
         },
         {
-          "id": "child-protection",
+          "id": "routine-referral",
           "text": {
-            "zh-CN": "把他作为药物暴露的婴儿上报儿童保护机构，并建议在母亲的精神疾病得到专科控制之前，孩子不要跟母亲回家，由其他家人照顾，以确保孩子的安全。",
-            "en": "Refer him to child protection as a drug-exposed baby and advise that he should not go home with his mother until her psychiatric illness is under specialist control, with other relatives caring for him to keep him safe."
+            "zh-CN": "出院前按常规为他做儿童保护转介：凡母亲患有严重精神疾病的婴儿都应这样处理，以便儿童保护机构上门评估家庭情况和支持；在此期间她的治疗和孩子的配方奶喂养都保持不变。",
+            "en": "Make a safeguarding referral before discharge, as is routine for any baby whose mother has a severe mental illness, so that children's social care can assess the home and the support there; her treatment and his formula feeds stay as they are meanwhile."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "母亲按处方治疗精神疾病不是虐待或忽视；自动上报并主张母婴分离带有污名化，还可能让母亲回避治疗。应由围产期精神卫生团队评估家庭的支持需求，只有出现具体的安全隐患时才启动保护程序。",
-            "en": "A mother taking prescribed treatment for a mental illness is not abuse or neglect; an automatic referral and separation stigmatise her and may drive her away from care. Let the perinatal mental health team assess the family's support needs, and start protection procedures only for a specific safety concern."
+            "zh-CN": "儿童保护转介针对的是具体的安全隐患，本例没有记录任何此类隐患；仅因母亲在接受治疗的精神疾病就常规转介，带有污名化，还可能让她回避治疗。NICE CG192（2014）要求与围产期精神卫生团队共同制定整合的照护计划，由他们评估家庭的支持需求。",
+            "en": "A safeguarding referral answers a specific concern about the baby's safety, and none is recorded here; making it routine because of a treated mental illness stigmatises her and may drive her away from care. NICE CG192 (2014) asks instead for an integrated care plan with the perinatal mental health team, who can assess the family's support needs."
           }
         }
       ]
@@ -4142,13 +4249,13 @@
       }
     },
     {
-      "id": "rb-first-hour-acts",
+      "id": "rb-workup-in-time",
       "domain": "safety",
       "weight": 4,
       "critical": true,
       "text": {
-        "zh-CN": "在入院评估阶段就测血糖、留取血培养，并完成腰椎穿刺和经验性抗生素",
-        "en": "In the admission phase: checked the glucose, took a blood culture, and did the lumbar puncture and started empirical antibiotics"
+        "zh-CN": "入院评估阶段测血糖、留取血培养并在取血培养后立即开始抗生素；血小板计数回报后、脑脊液报告之前完成腰椎穿刺",
+        "en": "Checked the glucose, took a blood culture and started antibiotics straight after it in the admission phase, and did the lumbar puncture once the platelet count was back, before the CSF report"
       },
       "met": {
         "all": [
@@ -4161,10 +4268,12 @@
             "phase": "admission"
           },
           {
-            "intervened": "lumbar-puncture"
+            "intervened": "antibiotics",
+            "whenIndicated": true
           },
           {
-            "intervened": "antibiotics"
+            "intervened": "lumbar-puncture",
+            "whenIndicated": true
           }
         ]
       }
@@ -4186,8 +4295,8 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "完成关键处置：苯巴比妥负荷量、脑电图、心肺监护、营养支持、核实维生素K，并请专科和药师评估母亲用药",
-        "en": "Carried out the keyed care: phenobarbital load, EEG, cardiorespiratory monitoring, nutrition, vitamin K check, and a specialist and pharmacist review of the mother's medicines"
+        "zh-CN": "完成关键处置：苯巴比妥负荷量、脑电图、心肺监护、凝血检查、营养支持、核实维生素K，并请专科和药师评估母亲用药",
+        "en": "Carried out the keyed care: phenobarbital load, EEG, cardiorespiratory monitoring, a clotting screen, nutrition, a vitamin K check, and a specialist and pharmacist review of the mother's medicines"
       },
       "met": {
         "all": [
@@ -4199,6 +4308,9 @@
           },
           {
             "intervened": "monitoring"
+          },
+          {
+            "ordered": "coagulation"
           },
           {
             "intervened": "feeds"
@@ -4360,8 +4472,8 @@
         "en": "Dr Zhong (neonatal attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，按PEARLS引导，只围绕学员已经获得的资料提问。要引导出的推理：这些发作为什么按惊厥而不是抖动处理；第一个小时必须排除哪些可治疗、可致残的病因，哪一项一两分钟就能查出；为什么发病初期CRP正常不能让人放弃血培养和抗生素（NICE NG195 2021把惊厥列为红旗征象）；为什么苯巴比妥是一线药（ILAE 2023），用药后为什么更需要脑电图；胆红素为什么必须对照采样时的小时龄解读（AAP 2022）；没有血药浓度时，药物残留作用和撤药能否区分；怎样不带指责地与家属谈母亲的治疗和喂养。历史与现行：复盘时再把报告的处理与ILAE 2023、NICE NG195对照，例如抗惊厥药何时、怎样停用。病例没有记录的内容（生命体征数值、母亲的诊断和剂量、各次采样时间、脑电图、血培养、抗生素、维生素K、血药浓度、磁共振）不要替它补上。学员作答前不说出病因、任何决策的正确选项或报告的处理与结局。",
-        "en": "A Socratic teacher using PEARLS who asks only about information the learner already has. Reasoning to draw out: why these episodes are treated as seizures and not jitteriness; which treatable, disabling causes must be excluded in the first hour, and which can be found in a minute or two; why a normal CRP early on does not settle the blood culture and antibiotics (NICE NG195 2021 lists seizures as a red flag); why phenobarbital is first-line (ILAE 2023) and why an EEG matters even more after it; why a bilirubin must be read against the age in hours at sampling (AAP 2022); whether residual drug effect and withdrawal can be told apart without drug levels; how to talk with the family about the mother's treatment and feeding without blame. Then and now: in the debrief, compare the report's management with ILAE 2023 and NICE NG195 — for example, when and how the antiseizure drug is stopped. Never supply what the case does not record (vital-sign values, the mother's diagnosis and doses, sampling times, EEG, blood culture, antibiotics, vitamin K, drug levels, MRI). Before the learner commits, never state the cause, any decision's correct option, or the report's management and outcome."
+        "zh-CN": "苏格拉底式带教，按PEARLS引导，只围绕学员已经获得的资料提问。要引导出的推理：这些发作为什么按惊厥而不是抖动处理；第一个小时必须排除哪些可治疗、可致残的病因，哪一项一两分钟就能查出；为什么取血培养后抗生素立即开始，而腰穿要等血小板计数和凝血（他有出血点；NICE NG195 2024年并入的腰穿建议）；为什么发病初期CRP正常不能让人放弃抗生素；为什么苯巴比妥是一线药（ILAE 2023），用药后为什么更需要脑电图；胆红素为什么必须对照采样时的小时龄解读（AAP 2022），下肢水肿提示要查什么；没有血药浓度时，药物残留作用和撤药能否区分；怎样不带指责地与家属谈母亲的治疗和喂养。历史与现行：复盘时再把报告的处理与ILAE 2023、NICE NG195对照，例如抗惊厥药何时、怎样停用。病例没有记录的内容（生命体征数值、母亲的诊断和剂量、各次采样时间、脑电图、血培养、抗生素、维生素K、凝血、血药浓度、磁共振）不要替它补上。学员作答前不说出病因、任何决策的正确选项或报告的处理与结局。",
+        "en": "A Socratic teacher using PEARLS who asks only about information the learner already has. Reasoning to draw out: why these episodes are treated as seizures and not jitteriness; which treatable, disabling causes must be excluded in the first hour, and which can be found in a minute or two; why the antibiotics start straight after the blood culture while the lumbar puncture waits for the platelet count and clotting (he has petechiae; NICE NG195's lumbar-puncture recommendations, added 2024), and why a normal CRP early on does not settle the antibiotics; why phenobarbital is first-line (ILAE 2023) and why an EEG matters even more after it; why a bilirubin must be read against the age in hours at sampling (AAP 2022), and what the leg oedema asks for; whether residual drug effect and withdrawal can be told apart without drug levels; how to talk with the family about the mother's treatment and feeding without blame. Then and now: in the debrief, compare the report's management with ILAE 2023 and NICE NG195 — for example, when and how the antiseizure drug is stopped. Never supply what the case does not record (vital-sign values, the mother's diagnosis and doses, sampling times, EEG, blood culture, antibiotics, vitamin K, clotting, drug levels, MRI). Before the learner commits, never state the cause, any decision's correct option, or the report's management and outcome."
       },
       "interprets": [
         "glucose",
@@ -4396,8 +4508,8 @@
         "en": "Pharmacist Gu (clinical pharmacist)"
       },
       "knowledge": {
-        "zh-CN": "临床药师，只解读学员已经调阅的资料。可以讲：新生儿苯巴比妥负荷量20 mg/kg静脉缓慢给药，追加剂量按新生儿处方集，注意呼吸抑制和低血压；苯二氮䓬类是二线药（ILAE 2023），部分地西泮注射剂含苯甲醇或苯甲酸钠，不宜用于黄疸新生儿；FDA 2011抗精神病药类别警示：妊娠晚期暴露的新生儿可出现激惹、肌张力异常、震颤、嗜睡、呼吸困难和喂养困难，因缺少血药浓度无法区分毒性与撤药；氯氮平骤停可致精神症状复发和胆碱能反跳，调整须由精神科有计划地进行；LactMed汇总的多个来源不建议服用氯氮平时哺乳；新生儿血药浓度很少能及时回报，也不改变急诊处理。不替病例补充母亲的剂量或任何未记录的数值。",
-        "en": "Clinical pharmacist who interprets only what the learner has already read. Can explain: neonatal phenobarbital loading at 20 mg/kg by slow IV injection, further doses per the neonatal formulary, watching for respiratory depression and hypotension; benzodiazepines are second-line (ILAE 2023), and some diazepam injections contain benzyl alcohol or sodium benzoate, unsuitable for a jaundiced newborn; the FDA 2011 antipsychotic class warning — newborns exposed in the third trimester may show agitation, abnormal tone, tremor, sleepiness, breathing difficulty and feeding difficulty, and without drug levels toxicity cannot be told from withdrawal; stopping clozapine abruptly risks relapse and cholinergic rebound, so changes are planned by psychiatry; several sources summarised in LactMed advise against breastfeeding on clozapine; neonatal drug levels rarely come back in time and do not change emergency care. Never supplies the mother's doses or any value the case does not record."
+        "zh-CN": "临床药师，只解读学员已经调阅的资料。可以讲：新生儿苯巴比妥负荷量20 mg/kg静脉缓慢给药，追加剂量按新生儿处方集，注意呼吸抑制和低血压；苯二氮䓬类是二线药（ILAE 2023），部分地西泮注射剂含苯甲醇或苯甲酸钠，不宜用于黄疸新生儿；脑膜炎尚未排除时，NICE NG195对病原不明的可疑脑膜炎的方案是静脉阿莫西林加头孢噻肟，剂量按新生儿处方集；FDA 2011抗精神病药类别警示：妊娠晚期暴露的新生儿可出现激惹、肌张力异常、震颤、嗜睡、呼吸困难和喂养困难，惊厥不在其列；没有新生儿血药浓度，就无法区分药物残留作用和撤药；氯氮平骤停可致精神症状复发和胆碱能反跳，调整须由精神科有计划地进行；LactMed汇总的多个来源不建议服用氯氮平时哺乳；新生儿血药浓度很少能及时回报，也不改变急诊处理。不替病例补充母亲的剂量或任何未记录的数值。",
+        "en": "Clinical pharmacist who interprets only what the learner has already read. Can explain: neonatal phenobarbital loading at 20 mg/kg by slow IV injection, further doses per the neonatal formulary, watching for respiratory depression and hypotension; benzodiazepines are second-line (ILAE 2023), and some diazepam injections contain benzyl alcohol or sodium benzoate, unsuitable for a jaundiced newborn; while meningitis is not excluded, NICE NG195's regimen for suspected meningitis with an unknown pathogen is IV amoxicillin with cefotaxime, dosed from the neonatal formulary; the FDA 2011 antipsychotic class warning — newborns exposed in the third trimester may show agitation, abnormal tone, tremor, sleepiness, breathing difficulty and feeding difficulty, and seizures are not on the list; without neonatal drug levels, residual drug effect cannot be told from withdrawal; stopping clozapine abruptly risks relapse and cholinergic rebound, so changes are planned by psychiatry; several sources summarised in LactMed advise against breastfeeding on clozapine; neonatal drug levels rarely come back in time and do not change emergency care. Never supplies the mother's doses or any value the case does not record."
       },
       "interprets": [
         "drug-levels"
@@ -4411,8 +4523,8 @@
       "en": "Debrief: seizures in a newborn exposed to clozapine and haloperidol in pregnancy"
     },
     "conclusion": {
-      "zh-CN": "39周顺产男婴，Apgar评分1分钟、5分钟均为10分，生后一直吃奶无力，生后约30和35小时各有一次1–2分钟的凝视、四肢抽动伴口唇发绀；38小时时易激惹、肌张力略高、吸吮和拥抱反射减弱，伴黄疸、出血点和下肢轻度水肿。母亲孕期一直服用氯氮平和氟哌啶醇，末次在分娩前约5小时。血糖3.2 mmol/L，钠、钾、钙、镁不低，CRP<1 mg/L，血小板306×10^9/L，脑脊液白细胞2×10^6/L，TORCH-IgM阴性，超声未见明显异常，报告据此考虑两药所致的新生儿撤药综合征，机制未确证。经苯巴比妥、营养支持和退黄治疗后未再抽搐，住院10天出院。现行做法：用脑电图确认发作，第一个小时完成感染评估并用抗生素，苯巴比妥一线（ILAE 2023），药物归因只作排除性诊断。",
-      "en": "A term boy (39 weeks, vaginal birth, Apgar 10 and 10) fed weakly from birth and had two 1–2-minute episodes of staring, limb jerking and blue lips at about 30 and 35 hours; at 38 hours he was irritable with slightly raised tone, weak suck and Moro reflexes, jaundice, petechiae and mild leg oedema. His mother took clozapine and haloperidol throughout pregnancy, last about 5 hours before delivery. With glucose 3.2 mmol/L, sodium, potassium, calcium and magnesium not low, CRP <1 mg/L, platelets 306×10^9/L, CSF white cells 2×10^6/L, a negative TORCH IgM and unremarkable ultrasound, the report diagnosed neonatal withdrawal from both drugs, mechanism unproven. After phenobarbital, nutrition and jaundice treatment he had no further convulsions and went home at 10 days. Today: EEG confirmation, a first-hour infection screen with antibiotics, phenobarbital first-line (ILAE 2023), and the drug attribution held as one of exclusion."
+      "zh-CN": "39周顺产男婴，Apgar评分1分钟、5分钟均为10分，生后一直吃奶无力，生后约30和35小时各有一次1–2分钟的凝视、四肢抽动伴口唇发绀；38小时时易激惹、肌张力略高、吸吮和拥抱反射减弱，伴黄疸、出血点和下肢轻度水肿。母亲孕期一直服用氯氮平和氟哌啶醇，末次在分娩前约5小时。血糖3.2 mmol/L，钠、钾、钙、镁不低，CRP<1 mg/L，血小板306×10^9/L，脑脊液白细胞2×10^6/L，TORCH-IgM阴性，超声未见明显异常，报告据此考虑两药所致的新生儿撤药综合征，机制未确证。经苯巴比妥、营养支持和退黄治疗后未再抽搐，住院10天出院。现行做法：用脑电图确认发作，第一个小时完成感染评估、取血培养后立即用抗生素，血小板和凝血允许后再腰穿，苯巴比妥一线（ILAE 2023），药物归因只作排除性诊断。",
+      "en": "A term boy (39 weeks, vaginal birth, Apgar 10 and 10) fed weakly from birth and had two 1–2-minute episodes of staring, limb jerking and blue lips at about 30 and 35 hours; at 38 hours he was irritable with slightly raised tone, weak suck and Moro reflexes, jaundice, petechiae and mild leg oedema. His mother took clozapine and haloperidol throughout pregnancy, last about 5 hours before delivery. With glucose 3.2 mmol/L, sodium, potassium, calcium and magnesium not low, CRP <1 mg/L, platelets 306×10^9/L, CSF white cells 2×10^6/L, a negative TORCH IgM and unremarkable ultrasound, the report diagnosed neonatal withdrawal from both drugs, mechanism unproven. After phenobarbital, nutrition and jaundice treatment he had no further fits and went home at 10 days. Today: EEG confirmation, antibiotics straight after the culture with the LP once platelets and clotting allow, phenobarbital first-line (ILAE 2023), and the drug attribution held as one of exclusion."
     },
     "keyReasoning": [
       {
@@ -4422,6 +4534,10 @@
       {
         "zh-CN": "母亲用药史只能解释排除可治疗病因之后剩下的部分：血糖、钠、钙、镁、感染和结构性病变要先查。",
         "en": "The maternal drug history explains only what is left once treatable causes are excluded: glucose, sodium, calcium, magnesium, infection and structural lesions come first."
+      },
+      {
+        "zh-CN": "有出血点而血小板和凝血未知时，腰穿要等，抗生素不等：先取血培养、立即用覆盖脑膜炎的抗生素，血小板和凝血结果允许后再腰穿，并在解读脑脊液时考虑之前已用抗生素。",
+        "en": "Petechiae with an unknown platelet count and clotting make the lumbar puncture wait, but not the antibiotics: culture, antibiotics covering meningitis, then the LP once the results allow — and the CSF read with those earlier antibiotics in mind."
       },
       {
         "zh-CN": "Apgar评分10分、羊水清、生后30小时才起病，使缺氧缺血性脑病不太可能；发病初期CRP<1 mg/L并不能排除早发感染。",
@@ -4472,16 +4588,16 @@
         "en": "Recognition and confirmation: the ILAE 2021 neonatal classification rests on EEG — neonatal seizures can be electrographic only, and clinical events without an EEG correlate are not counted as seizures. After phenobarbital the clinical signs may stop while electrographic seizures continue; ILAE 2023 (expert agreement) holds that treating seizures, electrographic-only ones included, to reduce seizure burden may be associated with better outcomes. No EEG result is recorded in this case, so the nature of the episodes rests on clinical judgement."
       },
       {
-        "zh-CN": "第一个小时：立即测血糖，查钠、钙、镁、血常规、CRP和血培养，腰椎穿刺，安排头颅超声。NICE NG195（2021）把惊厥列为早发感染的红旗征象，出现任何红旗征象都要完善检查并开始抗生素——首选青霉素（苄青霉素）25 mg/kg每12小时一次加庆大霉素首剂5 mg/kg，36小时复核，血培养阴性且临床放心时停用。本病例没有记录血培养结果和抗生素使用。",
-        "en": "The first hour: an immediate glucose; sodium, calcium, magnesium, blood count, CRP and a blood culture; a lumbar puncture; cranial ultrasound. NICE NG195 (2021) lists seizures as a red flag for early-onset infection, and any red flag means investigations and antibiotics — first choice benzylpenicillin 25 mg/kg every 12 hours plus gentamicin 5 mg/kg as the first dose, reviewed at 36 hours and stopped if the culture is negative and the baby is well. This case records no culture result and no antibiotics."
+        "zh-CN": "第一个小时：立即测血糖（BAPM 2017框架对有异常体征的新生儿，血糖低于2.5 mmol/L即需处理；他是3.2 mmol/L），查钠、钙、镁、血常规、凝血、CRP和血培养，安排头颅超声。NICE NG195把惊厥列为早发感染的红旗征象：取血培养后立即用抗生素——脑膜炎未排除时用阿莫西林加头孢噻肟（NG195对病原不明的可疑脑膜炎的方案），36小时复核。NG195 2024年并入的腰穿建议只允许在安全时腰穿：有出血点、血小板未知时，腰穿要等血小板计数和凝血，之后解读脑脊液要考虑已用过抗生素。本病例没有记录血培养结果和抗生素使用。",
+        "en": "The first hour: an immediate glucose (the BAPM 2017 framework acts below 2.5 mmol/L in a baby with abnormal signs; his was 3.2), sodium, calcium, magnesium, blood count, clotting, CRP, a blood culture and a cranial ultrasound. Seizures are a NICE NG195 red flag, so antibiotics follow the culture at once — amoxicillin with cefotaxime while meningitis is not excluded (NG195's regimen for suspected meningitis with an unknown pathogen), reviewed at 36 hours. NG195's lumbar-puncture recommendations (added 2024) allow an LP only when it is safe: with petechiae and an unknown platelet count it waits for the count and clotting, and the CSF is then read with the earlier antibiotics in mind. This case records no culture result and no antibiotics."
       },
       {
         "zh-CN": "抗惊厥治疗：ILAE 2023无论病因都推荐苯巴比妥为一线（怀疑离子通道病时首选钠通道阻滞剂），二线为苯妥英、左乙拉西坦、咪达唑仑或利多卡因；NEOLEV2随机试验（2020）中，苯巴比妥组（负荷量20 mg/kg）24小时无发作比例为80%，左乙拉西坦组为28%。急性诱发性发作停止、无新生儿起病癫痫证据时，ILAE 2023建议出院前停药；报告用了苯巴比妥并逐步停药——药物选择与现行指南一致，停药方式值得对照。",
         "en": "Antiseizure treatment: ILAE 2023 recommends phenobarbital first-line whatever the cause (sodium-channel blockers first if a channelopathy is suspected), with phenytoin, levetiracetam, midazolam or lidocaine second-line; in the NEOLEV2 randomised trial (2020), 80% of infants on phenobarbital (20 mg/kg load) were seizure-free for 24 hours against 28% on levetiracetam. Once acute provoked seizures stop without evidence of neonatal-onset epilepsy, ILAE 2023 advises stopping the drug before discharge; the report used phenobarbital and withdrew the drug gradually — the choice of drug matches current guidance, and the way of stopping is the point to compare."
       },
       {
-        "zh-CN": "抗精神病药暴露：2011年FDA更新整类抗精神病药的说明书——妊娠晚期暴露的新生儿可出现锥体外系和/或撤药表现：激惹、肌张力增高或降低、震颤、嗜睡、呼吸困难和喂养困难，多可自限，少数需要更长时间住院；由于缺少血药浓度，FDA无法区分毒性与撤药。惊厥不在所列表现之中，只能在排除其他病因后归因；报告的归因来自单个病例，没有记录脑电图、血药浓度或磁共振。",
-        "en": "Antipsychotic exposure: in 2011 the FDA updated the labels of the whole antipsychotic class — newborns exposed in the third trimester may show extrapyramidal and/or withdrawal signs: agitation, increased or decreased tone, tremor, sleepiness, breathing difficulty and feeding difficulty, often self-limiting but sometimes needing a longer hospital stay; without drug levels, the FDA could not separate toxicity from withdrawal. Seizures are not on that list, so they are attributed only after other causes are excluded; the report's attribution rests on one case with no EEG, drug levels or MRI recorded."
+        "zh-CN": "抗精神病药暴露：2011年FDA更新整类抗精神病药的说明书——妊娠晚期暴露的新生儿可出现锥体外系和/或撤药表现：激惹、肌张力增高或降低、震颤、嗜睡、呼吸困难和喂养困难；有些新生儿的症状在数小时或数天内消退，另一些则需要延长住院。惊厥不在所列表现之中，只能在排除其他病因后归因；本例没有测新生儿血药浓度，药物残留作用与撤药无法区分。报告的归因来自单个病例，没有记录脑电图、血药浓度或磁共振。",
+        "en": "Antipsychotic exposure: in 2011 the FDA updated the labels of the whole antipsychotic class — newborns exposed in the third trimester may show extrapyramidal and/or withdrawal signs: agitation, increased or decreased tone, tremor, sleepiness, breathing difficulty and feeding difficulty; in some newborns the symptoms settled within hours or days, while others needed a longer hospital stay. Seizures are not on that list, so they are attributed only after other causes are excluded; and with no neonatal drug levels measured here, residual drug effect cannot be told from withdrawal. The report's attribution rests on one case with no EEG, drug levels or MRI recorded."
       },
       {
         "zh-CN": "黄疸与出血点：总胆红素199.6 µmol/L（约11.7 mg/dL）必须按采样时的小时龄、胎龄和神经毒性高危因素，在AAP 2022的小时曲线上解读，而本例没有记录采样小时龄；肉眼判断不可靠。血小板306×10^9/L正常却有出血点，需核实维生素K并查凝血；TORCH-IgM阴性不能排除所有先天感染。报告记录了退黄治疗，但没有记录方式。",
@@ -4497,7 +4613,7 @@
       "Pressler RM, Abend NS, Auvin S, Boylan G, et al. Treatment of seizures in the neonate: guidelines and consensus-based recommendations — special report from the ILAE Task Force on Neonatal Seizures. Epilepsia. 2023;64(10):2550-2570. doi:10.1111/epi.17745",
       "Pressler RM, Cilio MR, Mizrahi EM, Moshé SL, et al. The ILAE classification of seizures and the epilepsies: modification for seizures in the neonate. Position paper by the ILAE Task Force on Neonatal Seizures. Epilepsia. 2021;62(3):615-628. doi:10.1111/epi.16815",
       "Sharpe C, Reiner GE, Davis SL, Nespeca M, Gold JJ, Rasmussen M, et al. Levetiracetam versus phenobarbital for neonatal seizures: a randomized controlled trial. Pediatrics. 2020;145(6):e20193182. doi:10.1542/peds.2019-3182",
-      "National Institute for Health and Care Excellence. Neonatal infection: antibiotics for prevention and treatment. NICE guideline NG195. London: NICE; 2021.",
+      "National Institute for Health and Care Excellence. Neonatal infection: antibiotics for prevention and treatment. NICE guideline NG195. London: NICE; 2021 [updated 2024 Mar (lumbar-puncture recommendations); last updated 2026].",
       "Kemper AR, Newman TB, Slaughter JL, et al. Clinical practice guideline revision: management of hyperbilirubinemia in the newborn infant 35 or more weeks of gestation. Pediatrics. 2022;150(3):e2022058859. doi:10.1542/peds.2022-058859",
       "US Food and Drug Administration. FDA Drug Safety Communication: antipsychotic drug labels updated on use during pregnancy and risk of abnormal muscle movements and withdrawal symptoms in newborns. Silver Spring (MD): FDA; 2011 Feb 22.",
       "McAllister-Williams RH, Baldwin DS, Cantwell R, et al. British Association for Psychopharmacology consensus guidance on the use of psychotropic medication preconception, in pregnancy and postpartum 2017. J Psychopharmacol. 2017;31(5):519-552. doi:10.1177/0269881117699361",
@@ -4685,12 +4801,21 @@
       "phase": "admission"
     },
     {
-      "type": "intervene",
-      "interventionId": "lumbar-puncture"
+      "type": "order",
+      "investigationId": "coagulation"
+    },
+    {
+      "type": "read",
+      "investigationId": "coagulation",
+      "phase": "admission"
     },
     {
       "type": "intervene",
       "interventionId": "antibiotics"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "vitamin-k"
     },
     {
       "type": "order",
@@ -4740,6 +4865,10 @@
       "phase": "first-results"
     },
     {
+      "type": "intervene",
+      "interventionId": "lumbar-puncture"
+    },
+    {
       "type": "order",
       "investigationId": "bilirubin"
     },
@@ -4751,10 +4880,6 @@
     {
       "type": "intervene",
       "interventionId": "feeds"
-    },
-    {
-      "type": "intervene",
-      "interventionId": "vitamin-k"
     },
     {
       "type": "answer",
@@ -4852,10 +4977,10 @@
     "sourceTextChecked": false,
     "testUtterances": [
       {
-        "text": "宝宝这是怎么了？",
+        "text": "他是吃母乳还是喝奶粉？",
         "locale": "zh-CN",
         "expect": [
-          "presentation"
+          "feeding"
         ]
       },
       {
@@ -4887,10 +5012,10 @@
         ]
       },
       {
-        "text": "发作时嘴唇有没有发紫？",
+        "text": "他生下来多重？",
         "locale": "zh-CN",
         "expect": [
-          "episodes"
+          "weight"
         ]
       },
       {
@@ -4908,10 +5033,10 @@
         ]
       },
       {
-        "text": "有没有吐过奶？",
+        "text": "妈妈怀孕时有没有感染过？",
         "locale": "zh-CN",
         "expect": [
-          "vomiting"
+          "maternal-infection"
         ]
       },
       {
@@ -5002,7 +5127,7 @@
         ]
       },
       {
-        "text": "Is his suck any good?",
+        "text": "Is he breastfed or on the bottle?",
         "locale": "en",
         "expect": [
           "feeding"
