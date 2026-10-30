@@ -416,6 +416,12 @@ html[lang="en"] .intro-card h2 {
     overscroll-behavior: contain;
   }
 }
+/*
+ * A long list (135 cases): a card out of view skips layout and paint, standing in at its last rendered height (an
+ * estimate before it has been rendered), so a search or a filter costs the cards in view only. The list is changed in
+ * place (src/ui/library-list.ts): a selection changes no card's size, and a scroll that lands on a card renders the
+ * cards it brings into view first (`cv-render`), so it lands exactly.
+ */
 .case-card {
   display: grid;
   gap: 5px;
@@ -426,6 +432,11 @@ html[lang="en"] .intro-card h2 {
   background: #ecebd2;
   border-color: #c3cdae;
   box-shadow: inset 0 2px #fff9e9, inset 0 -3px #0001;
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 120px;
+}
+.case-card.cv-render {
+  content-visibility: visible;
 }
 .case-card.prov-published-case {
   background: #f3f0dc;
