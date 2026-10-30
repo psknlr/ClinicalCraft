@@ -133,6 +133,14 @@ describe("levels", () => {
     expect(model.doors.find((d) => d.id === "door:ward:e:0")).toMatchObject({ level: "L1", rooms: ["ward", "office"], interior: true });
   });
 
+  it("building walls carry their window frame and mullion materials (absent: the renderer's defaults)", () => {
+    const styled = structuredClone(f);
+    styled.buildings[0]!.walls = { ...styled.buildings[0]!.walls, frame: "steel", mullion: "black" };
+    const outer = (m: ReturnType<typeof buildCollisionModel>) => m.walls.filter((w) => !w.partition);
+    expect(outer(buildCollisionModel(styled, catalogs)).every((w) => w.materials.frame === "steel" && w.materials.mullion === "black")).toBe(true);
+    expect(outer(model).every((w) => w.materials.frame === undefined && w.materials.mullion === undefined)).toBe(true);
+  });
+
   it("entities take their room's level and elevation", () => {
     expect(byId.get("eq:ward-ecg")).toMatchObject({ level: "L1", minY: 4.5 });
     expect(byId.get("eq:store-shelves")).toMatchObject({ level: "L0", minY: 0 });

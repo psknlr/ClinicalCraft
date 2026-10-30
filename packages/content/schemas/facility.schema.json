@@ -503,6 +503,12 @@
                     "type": "number",
                     "exclusiveMinimum": 0,
                     "default": 1
+                  },
+                  "frame": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "mullion": {
+                    "$ref": "#/definitions/Id"
                   }
                 },
                 "additionalProperties": false,

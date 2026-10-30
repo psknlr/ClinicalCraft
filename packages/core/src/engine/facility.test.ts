@@ -117,6 +117,7 @@ describe("checkFacility", () => {
     f.catalogs.push("hospital");
     f.terrain.ground = "lava";
     f.buildings[0].walls.body = "marble";
+    f.buildings[0].walls.frame = "titanium";
     f.rooms[0].partitions[0].material = "cardboard";
     f.rooms.push({ ...f.rooms[0], id: "annex", building: "ghost-building", rect: { x: 18, z: 0, w: 10, d: 4 } });
     f.placements.push({ id: "mystery", type: "teleporter", x: 0, z: 0, y: 0, rot: 0 });
@@ -136,6 +137,7 @@ describe("checkFacility", () => {
     expectIssue("catalogs.1", "warning", /catalog "hospital" is not loaded/);
     expectIssue("terrain.ground", "error", /unknown material "lava"/);
     expectIssue("buildings.0.walls.body", "error", /unknown material "marble"/);
+    expectIssue("buildings.0.walls.frame", "error", /unknown material "titanium"/);
     expectIssue("rooms.0.partitions.0.material", "error", /unknown material "cardboard"/);
     expectIssue("buildZone.materials.4", "error", /unknown material "unobtainium"/);
     expectIssue("rooms.3.building", "error", /unknown building "ghost-building"/);
