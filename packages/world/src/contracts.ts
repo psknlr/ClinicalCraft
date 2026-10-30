@@ -1011,6 +1011,13 @@ export interface WorldRuntime {
   observe(actorId: ActorId, opts?: Partial<PerceptionOptions>): WorldObservation;
   find(actorId: ActorId, query: EntityQuery): ObservedEntity[];
   inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string }[] }) | null;
+  /**
+   * In-service devices of an equipment type near an entity — the same level, footprint to footprint within `within` m
+   * (default the `nearbyState` range), itself excluded — with their behaviour state, nearest first: what a
+   * `nearbyState` precondition reads (devices that depend on devices). `states`: every state it is in — a carried
+   * item is "held" and in its own lifecycle state; `nearbyState` matches any.
+   */
+  nearby(aroundId: EntityId, type: string, within?: number): { id: EntityId; state: string | null; states: string[] }[];
   roomInfo(actorId: ActorId, roomId?: string): { id: string; name: string; kind: string; level: string; exits: { door: EntityId; to: string | null; toName: string }[]; entities: ObservedEntity[] } | null;
   canSee(actorId: ActorId, id: EntityId): boolean;
   /**

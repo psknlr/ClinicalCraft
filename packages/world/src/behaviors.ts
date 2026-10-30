@@ -28,17 +28,18 @@
  * footprint and never below `MIN_RANGE`; an operation without
  * `actorWithin` / `patientWithin` must be done within the entity's reach.
  */
-import { monitorAttached, type ClinicalEffect, type LocalizedText } from "@clinicalcraft/core";
+import { monitorAttached, NEARBY_STATE_RANGE, t, type ClinicalEffect, type LocalizedText } from "@clinicalcraft/core";
 import { permits, rolesFor, operationClass } from "./authority.js";
 import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
 import { listText, metres, operationName, roleName, stateName, worldMessage } from "./i18n.js";
 import { escortProblem } from "./escort.js";
 import type { Placed, WorldLocator } from "./locate.js";
 import { MIN_RANGE } from "./nav/backend.js";
+import type { Area } from "./raster.js";
 import type { WorldStateStore } from "./state.js";
 
 /** Built-in effects of operations (beyond a declarative state transition). */
-export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "transport" | "escort" | "release" | "reposition";
+export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "hand-over" | "transport" | "escort" | "release" | "reposition";
 
 /** One operation an entity offers (built-in or from the catalog). */
 export interface OperationSpec {
@@ -179,7 +180,7 @@ export function behaviorOf(e: SemanticEntity): BehaviorSpec {
     if (b.derived) spec.derived = b.derived;
   } else spec = BUILTIN_BEHAVIORS[e.interaction] ?? NO_BEHAVIOR;
   if (type.portable === "cart") spec = { ...spec, operations: [...spec.operations, op("move_to", { effect: "move-to" })] };
-  if (type.portable === "handheld") spec = { ...spec, operations: [...spec.operations, op("pick_up", { effect: "pick-up" }), op("put_down", { effect: "put-down" }), op("equip", { effect: "equip" })] };
+  if (type.portable === "handheld") spec = { ...spec, operations: [...spec.operations, op("pick_up", { effect: "pick-up" }), op("put_down", { effect: "put-down" }), op("equip", { effect: "equip" }), op("hand_over", { effect: "hand-over" })] };
   cache.set(type, spec);
   return spec;
 }
@@ -197,6 +198,10 @@ export interface PredicateEnv {
   actorWithin(m: number): boolean;
   patientWithin(m: number): boolean;
   deviceAtBedside(): boolean;
+  /** Another in-service device of `type` within `within` m of this one is in one of `states` (`nearbyState`; absent: false). */
+  nearby?(type: string, states: readonly string[], within: number): boolean;
+  /** Every state the entity is in (`state` predicates match any): a carried item is "held" and in its own lifecycle state (absent: `state`). */
+  states?: readonly string[];
 }
 
 /** Evaluate a world predicate (core `WorldPredicate`). */
@@ -208,10 +213,27 @@ export function evaluatePredicate(p: WorldPredicate, env: PredicateEnv): boolean
   if ("patientWithin" in p) return env.patientWithin(p.patientWithin);
   if ("deviceAtBedside" in p) return env.deviceAtBedside();
   if ("actorHolding" in p) return env.holding(p.actorHolding);
-  if ("state" in p) return env.state !== null && (Array.isArray(p.state) ? p.state : [p.state]).includes(env.state);
+  if ("state" in p) {
+    const wanted = Array.isArray(p.state) ? p.state : [p.state];
+    return (env.states ?? (env.state === null ? [] : [env.state])).some((s) => wanted.includes(s));
+  }
   if ("role" in p) return p.role.includes(env.role);
   if ("handsClean" in p) return env.handsClean;
+  if ("nearbyState" in p) {
+    const n = p.nearbyState;
+    return !!env.nearby?.(n.type, Array.isArray(n.state) ? n.state : [n.state], n.within ?? NEARBY_STATE_RANGE);
+  }
   return false;
+}
+
+/** Metres between two ground footprints (0 when they touch or overlap). */
+export function areaDistance(a: Area, b: Area): number {
+  return Math.hypot(Math.max(0, b.minX - a.maxX, a.minX - b.maxX), Math.max(0, b.minZ - a.maxZ, a.minZ - b.maxZ));
+}
+
+/** Handheld items an actor has in hand (carried, not worn): at most `MAX_HELD` (`HANDS_FULL`). */
+export function itemsInHand(actor: Pick<ActorState, "holding">, store: Pick<WorldStateStore, "entity">): EntityId[] {
+  return actor.holding.filter((h) => !store.entity(h)?.data?.equipped);
 }
 
 /** Does the predicate depend on where the acting actor stands (`actorWithin` / `patientWithin`, at any depth)? */
@@ -286,10 +308,42 @@ export class DeviceRules {
     }
   }
 
+  /**
+   * Every state an entity is in, for an operation's `from`, a `state` predicate and `nearbyState`: its state, and for
+   * a carried item with a stored behaviour also its own lifecycle state ("held" and "sterile": a scalpel in hand that
+   * has not been used yet).
+   */
+  states(id: EntityId): string[] {
+    const state = this.state(id);
+    const own = this.carriedOwnState(id);
+    return [...(state === null ? [] : [state]), ...(own !== null && own !== state ? [own] : [])];
+  }
+
+  /** A carried item's own stored lifecycle state (null: not carried, or no stored behaviour). */
+  private carriedOwnState(id: EntityId): string | null {
+    const spec = this.spec(id);
+    const s = this.d.store.entity(id);
+    return s?.heldBy && spec.stateSource === "stored" ? (s.state ?? spec.initial) : null;
+  }
+
   /** Localised state name (behaviour names first). */
   stateLabel(id: EntityId, state = this.state(id)): string | undefined {
     if (state === null) return undefined;
     return stateName(state, this.d.locale, this.spec(id).states[state]?.name);
+  }
+
+  /** An equipment type's name (an entity id or a type id; the id itself when the facility has none of it). */
+  typeName(ref: string): string {
+    const reg = this.d.locator.registry;
+    const e = reg.entity(ref) ?? reg.entity(`eq:${ref}`) ?? reg.ofKind("equipment").find((x) => x.type === ref);
+    if (!e) return ref;
+    return e.equipmentType?.name ? t(e.equipmentType.name, this.d.locale) : this.d.locator.name(e.id);
+  }
+
+  /** A state of an equipment type by name (its behaviour's name for it, else the built-in name). */
+  typeStateName(type: string, state: string): string {
+    const e = this.d.locator.registry.ofKind("equipment").find((x) => x.type === type);
+    return stateName(state, this.d.locale, e ? behaviorOf(e).states[state]?.name : undefined);
   }
 
   /** Localised operation name. */
@@ -310,7 +364,26 @@ export class DeviceRules {
         return !!p && this.within(actor, p, m);
       },
       deviceAtBedside: () => !!place && loc.atBedside(place),
+      nearby: (type, states, within) => !!place && this.nearbyOfType(place, type, within).some((id) => this.states(id).some((x) => states.includes(x))),
+      states: place ? this.states(place.id) : state === null ? [] : [state],
     };
+  }
+
+  /**
+   * In-service devices of an equipment type near a placed entity (`nearbyState`): the same level, footprint to
+   * footprint within `within` m, itself excluded — nearest first (then id).
+   */
+  nearbyOfType(place: Placed, type: string, within: number): EntityId[] {
+    const loc = this.d.locator;
+    const out: { id: EntityId; d: number }[] = [];
+    for (const e of loc.registry.ofKind("equipment")) {
+      if (e.id === place.id || e.type !== type || !this.d.store.available(e.id)) continue;
+      const p = loc.place(e.id);
+      if (!p || p.level !== place.level) continue;
+      const d = areaDistance(place.area, p.area);
+      if (d <= within + 1e-6) out.push({ id: e.id, d });
+    }
+    return out.sort((a, b) => a.d - b.d || (a.id < b.id ? -1 : a.id > b.id ? 1 : 0)).map((x) => x.id);
   }
 
   /** Within `m` (≥ MIN_RANGE) of the entity's footprint, same level, line of sight (or carrying it). */
@@ -346,7 +419,9 @@ export class DeviceRules {
       const alt = this.alternativeTo(id, actor);
       return { code: "DEVICE_BUSY", message: worldMessage("DEVICE_BUSY", L, { target, holder: loc.name(holder) }), ...(alt ? { goal: { kind: "interact", id: alt }, label: worldMessage("hint.alternative", L, { target: loc.name(alt) }) } : {}) };
     }
-    if (o.from !== "*" && (state === null || !o.from.includes(state))) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id, state) ?? "—" }) };
+    // a carried item is in its holder's hands: nobody else operates it
+    if (s?.heldBy && s.heldBy !== actor.id) return { code: "DEVICE_BUSY", message: worldMessage("pre.heldByOther", L, { target, holder: loc.name(s.heldBy) }) };
+    if (o.from !== "*" && !this.states(id).some((x) => o.from.includes(x))) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id, this.carriedOwnState(id) ?? state) ?? "—" }) };
     const builtin = this.builtinPrecheck(id, o, actor, target);
     if (builtin) return builtin;
     const place = loc.place(id);
@@ -396,8 +471,11 @@ export class DeviceRules {
       case "pick-up":
         if (s?.heldBy === actor.id) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.state", L, { target, operation: this.operationLabel(o), state: stateName("held", L) }) };
         if (s?.heldBy) return { code: "DEVICE_BUSY", message: worldMessage("pre.heldByOther", L, { target, holder: this.d.locator.name(s.heldBy) }) };
-        if (actor.holding.length >= MAX_HELD) return { code: "HANDS_FULL", message: worldMessage("HANDS_FULL", L, { max: MAX_HELD }) };
+        if (itemsInHand(actor, this.d.store).length >= MAX_HELD) return { code: "HANDS_FULL", message: worldMessage("HANDS_FULL", L, { max: MAX_HELD }) };
         return null;
+      case "hand-over":
+        if (s?.heldBy !== actor.id) return { code: "NOT_HOLDING", message: worldMessage("NOT_HOLDING", L, { target }) };
+        return s.data?.equipped ? { code: "PRECONDITION_FAILED", message: worldMessage("pre.handOverWorn", L, { target }) } : null;
       case "put-down":
         return s?.heldBy === actor.id ? null : { code: "NOT_HOLDING", message: worldMessage("NOT_HOLDING", L, { target }) };
       case "equip":
@@ -446,7 +524,21 @@ export class DeviceRules {
       const sink = this.nearestSink(actor);
       return { code: "PRECONDITION_FAILED", message: worldMessage("pre.handsClean", L), ...(sink ? { goal: { kind: "interact", id: sink } as NavGoal, label: worldMessage("hint.wash", L, { target: this.d.locator.name(sink) }), then: { operation: "wash_hands", targetId: sink } } : {}) };
     }
-    if ("actorHolding" in p) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.holding", L, { item: p.actorHolding }) };
+    if ("actorHolding" in p) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.holding", L, { item: this.typeName(p.actorHolding) }) };
+    if ("nearbyState" in p && place) {
+      const n = p.nearbyState;
+      const within = n.within ?? NEARBY_STATE_RANGE;
+      const device = this.typeName(n.type);
+      const wanted = (Array.isArray(n.state) ? n.state : [n.state]).map((s) => this.typeStateName(n.type, s));
+      const near = this.nearbyOfType(place, n.type, within)[0];
+      if (!near) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.nearbyStateNone", L, { operation, device, distance: metres(within) }) };
+      return {
+        code: "PRECONDITION_FAILED",
+        message: worldMessage("pre.nearbyState", L, { operation, device, states: listText(wanted, L), state: this.stateLabel(near) ?? "—" }),
+        goal: { kind: "interact", id: near },
+        label: worldMessage("hint.approach", L, { target: this.d.locator.name(near) }),
+      };
+    }
     if ("role" in p) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.role", L, { roles: listText(p.role.map((r) => roleName(r, L)), L), operation }) };
     if ("state" in p) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id) ?? "—" }) };
     if ("deviceAtBedside" in p) {
@@ -467,7 +559,8 @@ export class DeviceRules {
    * reach; `put_down` / `equip` need nothing. Null when satisfied.
    */
   spatial(id: EntityId, o: OperationSpec, actor: ActorState): RuleFailure | null {
-    if (o.effect === "put-down" || o.effect === "equip") return null;
+    // the item travels with its holder; a hand-over measures the recipient (`hand.ts`)
+    if (o.effect === "put-down" || o.effect === "equip" || o.effect === "hand-over") return null;
     const loc = this.d.locator;
     const place = loc.place(id);
     if (!place) return null;

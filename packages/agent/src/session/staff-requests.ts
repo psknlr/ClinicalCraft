@@ -7,6 +7,7 @@
  * | request                            | what happens |
  * |------------------------------------|--------------|
  * | a task (monitor, ECG, IV access, fetch, give, take the patient) | the role's scope of practice first (`checkTaskScope`): outside it, a refusal in their own voice that says what they can do and who can; else an acknowledgement, `delegate_task` with their own body (hooks, approvals — a high-risk drug still asks the learner), and the outcome in their own voice (plus the `/delegate` report) |
+ * | pass me … (a handheld item)        | they pick it up where it lies (unless it is already in their hands), come to the learner and `hand_over` it — the learner's hands full, or the item in someone else's hands, said in their voice; a fetch naming a handheld item is passed the same way |
  * | come here / to the bedside         | they walk to the learner (a `follow` goal) or to the patient |
  * | go back                            | they walk back to their post |
  * | show me the way to …               | they say where it is and walk there (the learner follows) |
@@ -16,9 +17,10 @@
  * own agent to answer.
  */
 import { t } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, roleName, type ActorId, type ActorState, type NavGoal, type ObservedEntity } from "@clinicalcraft/world";
+import { MAX_HELD, PRIMARY_ACTOR, roleName, type ActorId, type ActorState, type NavGoal, type ObservedEntity, type WorldActionResult } from "@clinicalcraft/world";
 import { npcDisplayName } from "../agents/prompts.js";
 import { resolveIntervention } from "../tools/clinical.js";
+import type { WorldRequestInput } from "../tools/world.js";
 import { checkTaskScope, scopeOf } from "../tools/scope.js";
 import { rt, type RuntimeKey } from "./i18n.js";
 import { pickStaff, type DelegationResult } from "./delegation.js";
@@ -103,7 +105,18 @@ export class StaffRequests {
         const ack = destination === "home" ? rt(L, "move.staffHome", { patient }) : rt(L, "move.staffAck", { patient, place: where.label });
         return this.task(id, say, who, "transport_patient", { ...(destination ? { target: destination } : {}), ...(capability ? { params: { capability } } : {}) }, ack, signal);
       }
+      case "hand": {
+        const item = this.handheld(who, intent.what);
+        if (!item) return false;
+        await this.hand(id, say, who, item, signal);
+        return true;
+      }
       case "fetch": {
+        const item = this.handheld(who, intent.what);
+        if (item) {
+          await this.hand(id, say, who, item, signal);
+          return true;
+        }
         const thing = this.equipment(who, intent.what);
         if (!thing) {
           say(rt(L, "req.unknownThing", { thing: intent.what }));
@@ -207,6 +220,67 @@ export class StaffRequests {
       if (kit) return { args: { params: { capability: cap } }, label: kit.name };
     }
     return null;
+  }
+
+  /* ---------------------------------------------------------------- */
+  /* Passing things                                                    */
+  /* ---------------------------------------------------------------- */
+
+  /** A handheld item called that (either language) the colleague knows of, nearest first: the one in their own hands, else a free one. */
+  private handheld(who: Colleague, what: string): ObservedEntity | null {
+    const world = this.k.embodied!.world();
+    const hits = world.find(who.actor.id, { kind: "equipment", name: what, limit: 12 }).filter((e) => world.entity(e.id)?.portable === "handheld");
+    return hits.find((e) => who.actor.holding.includes(e.id)) ?? hits.find((e) => !this.holderOf(e.id)) ?? hits[0] ?? null;
+  }
+
+  /** Who carries an item now (null: it lies somewhere). */
+  private holderOf(itemId: string): ActorState | null {
+    return this.k.embodied!.world().actors().find((a) => a.holding.includes(itemId)) ?? null;
+  }
+
+  /**
+   * "Pass me the …": the colleague picks the item up (unless it is in their hands), comes to the learner and hands it
+   * over with their own body (`hand_over`), saying so; what stops them — the learner's hands full, the item with
+   * someone else, a step that fails — in their own voice.
+   */
+  private async hand(id: string, say: Say, who: Colleague, item: ObservedEntity, signal: AbortSignal): Promise<void> {
+    const L = this.k.locale;
+    const world = this.k.embodied!.world();
+    const me = world.actor(PRIMARY_ACTOR);
+    const holder = this.holderOf(item.id);
+    if (!me) return;
+    if (holder?.id === me.id) return say(rt(L, "req.handHave", { thing: item.name }));
+    if (holder && holder.id !== who.actor.id) return say(rt(L, "req.handWith", { thing: item.name, holder: this.nameOf(holder.id) }));
+    const inHand = me.holding.filter((h) => world.inspect(PRIMARY_ACTOR, h)?.state !== "equipped");
+    if (inHand.length >= MAX_HELD) return say(rt(L, "req.handsFull", { thing: item.name }));
+    say(rt(L, "req.ackHand", { thing: item.name }));
+    const steps: WorldRequestInput[] = [
+      ...(holder ? [] : [{ actorId: who.actor.id, operation: "approach", targetId: item.id, onBehalfOf: PRIMARY_ACTOR }, { actorId: who.actor.id, operation: "pick_up", targetId: item.id, onBehalfOf: PRIMARY_ACTOR }]),
+      { actorId: who.actor.id, operation: "navigate", goal: { kind: "follow", id: PRIMARY_ACTOR, range: 1 }, onBehalfOf: PRIMARY_ACTOR },
+      { actorId: who.actor.id, operation: "hand_over", targetId: item.id, parameters: { to: PRIMARY_ACTOR }, onBehalfOf: PRIMARY_ACTOR },
+    ];
+    for (const step of steps) {
+      const r = await this.step(id, step, signal);
+      if (r.status === "completed") continue;
+      if (r.status === "failed") say(rt(L, "req.cantHand", { thing: item.name, reason: r.message.split("\n")[0]!.replace(/[.。]\s*$/u, "") }));
+      return;
+    }
+    say(rt(L, "req.handed", { thing: item.name }));
+  }
+
+  /** One act of the colleague's, following a reach hint once (the learner moved while they walked). */
+  private async step(id: string, request: WorldRequestInput, signal: AbortSignal): Promise<WorldActionResult> {
+    const caller = { agent: "learner", submission: id, signal } as const;
+    const r = await this.k.embodied!.act(caller, request, signal);
+    if (r.status !== "failed" || !r.hint || (r.errorCode !== "NOT_IN_RANGE" && r.errorCode !== "NOT_VISIBLE")) return r;
+    const moved = await this.k.embodied!.act(caller, { actorId: request.actorId, operation: "navigate", goal: r.hint.goal, onBehalfOf: PRIMARY_ACTOR }, signal);
+    return moved.status === "completed" ? this.k.embodied!.act(caller, request, signal) : r;
+  }
+
+  /** A person's name as the world shows it. */
+  private nameOf(actorId: string): string {
+    const ent = this.k.embodied!.world().entity(actorId);
+    return ent ? t(ent.name, this.k.locale) : actorId;
   }
 
   /* ---------------------------------------------------------------- */

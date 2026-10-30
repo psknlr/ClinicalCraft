@@ -39,10 +39,10 @@ describe("operations by kind (built-in and catalog behaviours)", () => {
     expect(ops(w, cabinet.id)).toEqual(["open", "close"]);
   });
 
-  it("handheld items add pick_up / put_down / equip", () => {
+  it("handheld items add pick_up / put_down / equip / hand_over", () => {
     const { facility, catalogs } = hospitalWithTestItems();
     const t = makeWorld("stemi-inferior-rv", { facility, catalogs });
-    expect(ops(t, "eq:pocket-glu-1")).toEqual(["use", "pick_up", "put_down", "equip"]);
+    expect(ops(t, "eq:pocket-glu-1")).toEqual(["use", "pick_up", "put_down", "equip", "hand_over"]);
   });
 });
 

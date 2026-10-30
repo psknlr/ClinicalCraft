@@ -299,7 +299,7 @@ The same encounter with a body: the session runs a headless world (`@clinicalcra
 | `observe_world` | yes | `{max_entities?}` | where you are (room, level, position, facing, clock) and what you perceive, nearest first: distance, direction, state, the operations offered now |
 | `get_agent_state` | yes | `{actor?}` | room, pose, holding, task, hand hygiene; another actor (`staff:<id>`) only while the caller perceives them or they carry out its delegation — else where the caller last saw them (`awareness: "remembered"`), else "unknown here" (review G13) |
 | `find_entities` | yes | `{name?, kind?, type?, capabilities?, room?, visible_only?, reachable_only?, max_distance?, limit?}` | known entities (seen, remembered, on the map) by walking distance |
-| `find_objects` | yes | `{query?, capabilities?, type?, interaction?, portable_only?, limit?}` | equipment and items |
+| `find_objects` | yes | `{query?, capabilities?, type?, interaction?, portable_only?, prefer_available?, room?, limit?}` | equipment and items (`room`: a room id, or `"here"` — the room the actor is in) |
 | `inspect_object` | yes | `{target}` | description, state, every operation with availability and why not |
 | `get_nearby_objects` / `get_visible_objects` | yes | `{radius?}` / `{}` | |
 | `get_room_info` | yes | `{room?}` | exits and known contents |

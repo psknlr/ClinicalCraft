@@ -357,6 +357,7 @@ export function predicateHolds(p: SkillPredicate, scope: Scope, r: SkillRunner):
     actorWithin: (m) => !!seen && seen.level === actor.pose.level && seen.distance <= m + 1e-6,
     patientWithin: (m) => !!patientSeen && patientSeen.level === actor.pose.level && patientSeen.distance <= m + 1e-6,
     deviceAtBedside: () => !!target && r.atBedside(target),
+    nearby: (type, states, within) => !!target && world.nearby(target, type, within).some((n) => n.states.some((s) => states.includes(s))),
   });
 }
 

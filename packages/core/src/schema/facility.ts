@@ -93,7 +93,12 @@ export type ActorRole = z.infer<typeof ActorRoleSchema>;
  * `deviceAtBedside` this device stands within the bedside radius of the patient;
  * `actorHolding` the actor holds an item (entity id or equipment type id);
  * `state` the device is in one of these behaviour states;
- * `role` the actor has one of these roles; `handsClean` hand hygiene is valid.
+ * `role` the actor has one of these roles; `handsClean` hand hygiene is valid;
+ * `nearbyState` another in-service device of equipment type `type`, on the same
+ * level within `within` m of this device (footprint to footprint, default
+ * `NEARBY_STATE_RANGE`), is in one of `state` — equipment that depends on
+ * equipment (an electrosurgical unit fires only with the smoke evacuator
+ * running; a C-arm screens only with its lead shield in place).
  */
 export type WorldPredicate =
   | { actorWithin: number }
@@ -103,9 +108,13 @@ export type WorldPredicate =
   | { state: string | string[] }
   | { role: ActorRole[] }
   | { handsClean: true }
+  | { nearbyState: { type: string; state: string | string[]; within?: number } }
   | { all: WorldPredicate[] }
   | { any: WorldPredicate[] }
   | { not: WorldPredicate };
+
+/** Default range (m, footprint to footprint, same level) of a `nearbyState` predicate: the bedside radius. */
+export const NEARBY_STATE_RANGE = 6;
 
 export const WorldPredicateSchema: z.ZodType<WorldPredicate> = z.lazy(() =>
   z.union([
@@ -116,6 +125,11 @@ export const WorldPredicateSchema: z.ZodType<WorldPredicate> = z.lazy(() =>
     z.object({ state: z.union([IdSchema, z.array(IdSchema).min(1)]) }).strict(),
     z.object({ role: z.array(ActorRoleSchema).min(1) }).strict(),
     z.object({ handsClean: z.literal(true) }).strict(),
+    z
+      .object({
+        nearbyState: z.object({ type: IdSchema, state: z.union([IdSchema, z.array(IdSchema).min(1)]), within: z.number().positive().max(20).optional() }).strict(),
+      })
+      .strict(),
     z.object({ all: z.array(WorldPredicateSchema) }).strict(),
     z.object({ any: z.array(WorldPredicateSchema) }).strict(),
     z.object({ not: WorldPredicateSchema }).strict(),

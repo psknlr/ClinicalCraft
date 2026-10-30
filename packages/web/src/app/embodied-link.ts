@@ -256,6 +256,13 @@ export class EmbodiedLink {
     return this.states.get(entityId) ?? null;
   }
 
+  /** A handheld item in the learner's hands: "held", or "equipped" when worn; null when the learner does not carry it. */
+  carriedState(entityId: string): "held" | "equipped" | null {
+    const world = this.world;
+    if (!world?.actor(PRIMARY_ACTOR)?.holding.includes(entityId)) return null;
+    return world.snapshot().entities[entityId]?.data?.equipped ? "equipped" : "held";
+  }
+
   /**
    * The cart an actor pushes in its current `move_to` (the portable cart nearest to it, within 2.5 m), or the
    * trolley the patient lies on in its `transport_patient` (the world's `transit`).

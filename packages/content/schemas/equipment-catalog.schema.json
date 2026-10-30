@@ -695,6 +695,47 @@
         {
           "type": "object",
           "properties": {
+            "nearbyState": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "$ref": "#/definitions/Id"
+                },
+                "state": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Id"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "within": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 20
+                }
+              },
+              "required": [
+                "type",
+                "state"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "nearbyState"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "all": {
               "type": "array",
               "items": {
