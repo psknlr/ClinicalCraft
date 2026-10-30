@@ -672,8 +672,8 @@ the learning outcomes, the review status and the changelog.
 `cases validate` checks the standard's mechanical parts
 (`checkContentStandard`, `packages/core/src/engine/content-standard.ts`). Each
 finding is a **warning**: the case still plays. `cases validate --strict`
-fails on any warning — the built-in cases have none, and a new case should
-not either. Fix the content where a lint finds a real problem; when a lint is
+fails on any warning, and CI runs it over the whole library: a case should
+have none. Fix the content where a lint finds a real problem; when a lint is
 wrong for a case, say so in the README rather than bending the text to it.
 
 | lint | where it points |
@@ -688,3 +688,11 @@ wrong for a case, say so in the README rather than bending the text to it.
 | no exam finding says it is "not recorded" (`examNotRecorded` answers for anything unrecorded) | `exam.<i>.finding` |
 | a child under 12 is not asked adult social history (smoking, alcohol, drugs, work): the carer is | `history.<i>` |
 | an avoided-harm item with `scoredWhen` counts whenever its harm is done: each harmful step in `met` is in the `scoredWhen` "any" | `rubric.<i>.scoredWhen` |
+| an option id names the option's content (`ivig-now`), never its correctness or its position — the id reaches the web board's markup, hook payloads, traces and exports: not `supported` (`unsupported`), `correct`, `right`, `wrong`, `incorrect`, `true`, `false`, `yes`, `no`, `best`, `key`, `answer` (nor these numbered or as `correct-answer`), `alternative`, `alt-N`, `option-N`, `opt-N`, `distractor…`, a single letter or a number | `decisions.<i>.options.<j>.id` |
+| no length cue: in a single-best decision (exactly one correct option) the key is the uniquely longest option (in characters, per locale) in at most one decision of the case; each further such decision is a warning naming its locale(s) | `decisions.<i>.options.<j>.text` |
+| no authoring language in what learners read from the patient, the carer or the nurse — history answers, `openingLine`, `fallbackUnknown`, the companion's name, `chiefComplaint`, `triageNote`: 原报告, 原病历, 原文, 源病例, 原始资料, 教学设定, 教学改写, 教学角色; "the source" (not "the source of …"), "source notes", "source report", "the original report", "educational role", "teaching role", "teaching device". Record-facing text (results, `examNotRecorded`, the debrief) may name the report | `history.<i>.answer`, `patient.persona.openingLine`, `.fallbackUnknown`, `.companion.name`, `patient.chiefComplaint`, `patient.triageNote` |
+| no decision is gated on a history item the case does not record: no `{ "asked": id }` of a `disclosure: "unknown"` item in `requires`, at any depth | `decisions.<i>.requires.….asked` |
+| no redundant gate structure in `phases[].enterWhen`, `decisions[].requires` and `objectives[].completeWhen`: no `{ "always": true }` in an `all` or `any` list, no `all` directly in an `all` (nor `any` in an `any`) | `phases.<i>.enterWhen.…`, `decisions.<i>.requires.…`, `objectives.<i>.completeWhen.…` |
+| a key reasoning point is not a teaching point again (the same text in any locale, case, spaces and punctuation aside) | `debrief.keyReasoning.<i>` |
+| a test utterance is not one of its expected item's keywords (compared the same way) | `extensions.testUtterances.<i>` |
+| every specialty id is canonical — one id per discipline, US spelling (`CANONICAL_SPECIALTIES` in `packages/core/src/specialties.ts`, labelled in `SPECIALTY_LABELS`); a synonym's warning names its replacement (`SPECIALTY_SYNONYMS`). Paediatric scheme: the age group is `pediatrics` (`neonatology` for a newborn) and a child's organ specialty is the adult id beside it (`["pediatrics", "neurology"]`, not `paediatric-neurology`); `pediatric-surgery` and `neonatology` are disciplines of their own | `specialty.<i>` |
