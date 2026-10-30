@@ -408,22 +408,32 @@ distractor, and the `myeloid-m0` and `biopsy-first` feedback) is addressed as de
 6. Pieters R, De Lorenzo P, Ancliffe P, et al. Outcome of infants younger than 1 year with acute lymphoblastic
    leukemia treated with the Interfant-06 protocol: results from an international phase III randomized study.
    J Clin Oncol. 2019;37(25):2246-2256. doi:10.1200/JCO.19.00261
-7. National Institute for Health and Care Excellence. Neonatal infection: antibiotics for prevention and
-   treatment. NICE guideline NG195. London: NICE; 2021.
-8. Wilkinson D, Bertaud S, Mancini A, Murdoch E; BAPM Working Group. Recognising uncertainty: an integrated
-   framework for palliative care in perinatal medicine. Arch Dis Child Fetal Neonatal Ed. 2025;110(3):236-244.
+7. van der Linden MH, Valsecchi MG, De Lorenzo P, Möricke A, Janka G, Leblanc TM, et al. Outcome of congenital
+   acute lymphoblastic leukemia treated on the Interfant-99 protocol. Blood. 2009;114(18):3764-3768.
+   doi:10.1182/blood-2009-02-204214
+8. National Institute for Health and Care Excellence. Neonatal infection: antibiotics for prevention and
+   treatment. NICE guideline NG195. London: NICE; 2021 (updated 2024).
+9. Wilkinson D, Bertaud S, Mancini A, Murdoch E; BAPM Working Group. Recognising uncertainty: an integrated
+   framework for palliative care in perinatal medicine. Arch Dis Child Fetal Neonatal Ed. 2025;110(3):F236-F244.
    doi:10.1136/archdischild-2024-327662
-9. Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad
-   news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302
+10. Baile WF, Buckman R, Lenzi R, Glober G, Beale EA, Kudelka AP. SPIKES—a six-step protocol for delivering bad
+    news: application to the patient with cancer. Oncologist. 2000;5(4):302-311. doi:10.1634/theoncologist.5-4-302
 
-The same strings are `debrief.references`. How they were checked (2026-10-30; PubMed and publisher pages could
-not be fetched from this environment, so web-search records were used): ref. 1 — the source map's
-`verifiedDoi` (publisher page checked 2026-10-29); ref. 2 — PubMed record 29806701 (volume, issue, pages, DOI);
-ref. 3 — bibliographic records (PMID 35732829; an erratum exists, doi:10.1038/s41375-023-01962-5); ref. 4 —
-BSH guideline page and repository records (volume 169, pages 661–671, DOI; the issue number was not confirmed
-and is left out); ref. 5 — PubMed 27861734 (a 2020 addendum exists); ref. 6 — PMID 31283407 and repository
-records; ref. 7 — the NICE guideline page (the 1-hour standard; NICE lists 2026 updates); ref. 8 — journal and
-repository records; ref. 9 — PubMed 10964998.
+The same strings are `debrief.references`. Ten references are one more than the standard's "article + 3–8":
+ref. 7 is the only direct evidence for the odds of an infant with ALL from birth, which the review asked the
+family conversation to rest on, and each of the others is cited in the case text. How they were checked
+(2026-10-30; PubMed, Crossref and publisher pages could not be fetched from this environment, so web-search
+records were used): ref. 1 — the source map's `verifiedDoi` (publisher page checked 2026-10-29); ref. 2 — PubMed
+record 29806701 (volume, issue, pages, DOI); ref. 3 — bibliographic records (PMID 35732829; an erratum exists,
+doi:10.1038/s41375-023-01962-5); ref. 4 — BSH guideline page and repository records (volume 169, pages 661–671,
+DOI; the issue number was not confirmed and is left out); ref. 5 — PubMed 27861734 (a 2020 addendum exists);
+ref. 6 — PMID 31283407 and repository records, including the high-risk group's 6-year EFS of 20.9 % (SE 3.4);
+ref. 7 — repository records (Universidad de Chile, Erasmus University, Prinses Máxima Centrum, Charles
+University): authors, title, volume, issue, pages, DOI and the abstract's figures (30 infants; 2-year EFS and
+survival 20 %, SE 9.1 %; survival 17 % at last follow-up; 2-year relapse 60.0 % vs 34.2 % in older infants;
+curative intent judged justified); ref. 8 — the NICE update page (the 1-hour standard of 2021; in March 2024 the
+newborn meningitis recommendations, lumbar puncture included, moved into NG195; NICE lists later amendments);
+ref. 9 — the journal page (110(3):F236–F244) and repository records; ref. 10 — PubMed 10964998.
 
 ### To verify
 
