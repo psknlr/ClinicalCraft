@@ -418,6 +418,8 @@ function materialRefs(f: FacilityDefinition): [string, string][] {
     refs.push([`buildings.${i}.floor`, b.floor], [`buildings.${i}.walls.base`, b.walls.base], [`buildings.${i}.walls.body`, b.walls.body]);
     refs.push([`buildings.${i}.walls.top`, b.walls.top], [`buildings.${i}.roof.material`, b.roof.material]);
     if (b.roof.beams) refs.push([`buildings.${i}.roof.beams`, b.roof.beams]);
+    if (b.walls.frame) refs.push([`buildings.${i}.walls.frame`, b.walls.frame]);
+    if (b.walls.mullion) refs.push([`buildings.${i}.walls.mullion`, b.walls.mullion]);
   });
   f.rooms.forEach((r, i) => {
     if (r.floor) refs.push([`rooms.${i}.floor`, r.floor]);

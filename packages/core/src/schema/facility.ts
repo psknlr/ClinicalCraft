@@ -321,6 +321,10 @@ export const WallStyleSchema = z
     body: IdSchema.default("cream"),
     top: IdSchema.default("wood"),
     thickness: z.number().positive().default(1),
+    /** Window frames (default: the base material). */
+    frame: IdSchema.optional(),
+    /** Mullions of windows ≥ 2.5 m wide, one every 1.5 m (default: "wood" when the library has it — V4 —, else the frame). */
+    mullion: IdSchema.optional(),
   })
   .strict();
 
