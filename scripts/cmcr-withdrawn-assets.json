@@ -1,5 +1,5 @@
 {
-  "$comment": "CMCR source media that are never installed or shown because they identify a patient or carry the patient's calendar dates (docs/CMCR_CASES.md, Privacy). The installer refuses them and removes a copy an earlier version installed (matched by checksum); the collection test keeps them out of the cases.",
+  "$comment": "CMCR source media that are never installed or shown because they identify a patient or carry the patient's calendar dates (docs/CMCR_CASES.md, Privacy). The list applies to every CMCR collection (cmcr-20 and cmcr-105). The installer checks it first: it refuses these files and removes a copy an earlier version installed (matched by checksum); the collection tests keep them out of the cases. cmcr-105 media must in addition carry an approved entry with its sha256 in scripts/cmcr-105-media-review.json.",
   "withdrawn": [
     {
       "case": "cmcr-70005",

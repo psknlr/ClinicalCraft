@@ -78,7 +78,10 @@ describe("traceGroups", () => {
       ["order_test", "cbc"],
       ["examine", null],
     ]);
-    expect(groups[0]!.steps[0]).toMatchObject({ name: "order_test", item: "cbc" });
+    expect(groups[0]!.steps[0]).toMatchObject({ name: "order_test", item: "cbc", itemArg: "investigation_id" });
+    // A decision as an agent names it ("2"): the argument goes with it, so the label reads it as answer_decision does.
+    const answer = traceGroups([span("clinical_action", "answer_decision", null, { id: "c3", data: { args: { decision_id: "2", option_ids: ["B"] } } })]);
+    expect(answer[0]).toMatchObject({ item: "2", itemArg: "decision_id" });
   });
 
   it("returns the last `limit` steps, oldest first", () => {

@@ -3,5 +3,7 @@
  * See docs/ARCHITECTURE.md §2–3 for the contract of every export.
  */
 export * from "./i18n.js";
+export * from "./patient-age.js";
+export * from "./specialties.js";
 export * from "./schema/index.js";
 export * from "./engine/index.js";

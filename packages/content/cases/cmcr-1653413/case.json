@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653413",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "长期咳喘突然加重 · 74岁男性",
     "en": "Acute worsening of longstanding breathlessness · 74-year-old man"
@@ -1981,7 +1981,7 @@
           "id": "aecopd-infection",
           "text": {
             "zh-CN": "纤维化肺病急性加重合并感染，并发急性高碳酸血症呼吸衰竭；需搜寻其他可逆诱因与影像并发症",
-            "en": "Acute deterioration of fibrotic lung disease with infection, complicated by acute hypercapnic respiratory failure; search for other reversible contributors and imaging complications"
+            "en": "Acute deterioration of fibrotic lung disease with infection and acute hypercapnic respiratory failure; seek other reversible causes and imaging complications"
           },
           "correct": true,
           "feedback": {
@@ -1992,8 +1992,8 @@
         {
           "id": "invasive-fungal",
           "text": {
-            "zh-CN": "痰中有真菌即可确诊侵袭性真菌肺炎，并以此解释全部恶化",
-            "en": "Fungi in the sputum confirm invasive fungal pneumonia and explain all the deterioration"
+            "zh-CN": "痰中见酵母样真菌及菌丝即可确诊侵袭性真菌肺炎，并以此解释全部恶化，包括CT上进一步的通气减少",
+            "en": "Yeast and hyphae in the sputum confirm invasive fungal pneumonia, which explains all of the deterioration, including the further loss of aeration on the chest CT"
           },
           "correct": false,
           "feedback": {
@@ -2004,25 +2004,25 @@
         {
           "id": "pure-progression",
           "text": {
-            "zh-CN": "只是特发性肺纤维化自然进展，没有急性问题",
-            "en": "Just the natural progression of IPF, with nothing acute"
+            "zh-CN": "九年进行性肺纤维化，CT见蜂窝影：这只是特发性肺纤维化的自然进展，没有需要处理或可逆转的急性问题",
+            "en": "Nine years of progressive fibrosis with honeycombing on CT: this is just the natural progression of IPF, with nothing acute to treat or reverse"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。5小时内 PaCO₂ 由 56.3 升至 118.5 mmHg、pH 降至 7.149，属急性失代偿，绝非单纯缓慢进展。",
-            "en": "Wrong. A PaCO₂ rising from 56.3 to 118.5 mmHg and a pH of 7.149 within 5 hours is acute decompensation, not slow progression."
+            "zh-CN": "错误。蜂窝影反映的是慢性病变，而不是这次的变化：5小时内 PaCO₂ 由 56.3 升至 118.5 mmHg、pH 降至 7.149，属急性失代偿，绝非单纯缓慢进展。",
+            "en": "Wrong. Honeycombing shows the chronic disease, not what has changed: a PaCO₂ rising from 56.3 to 118.5 mmHg and a pH of 7.149 within 5 hours is acute decompensation, not slow progression."
           }
         },
         {
           "id": "temp-reassuring",
           "text": {
-            "zh-CN": "体温36.5℃不高，病情并不危急",
-            "en": "The temperature of 36.5 °C is not raised, so this is not urgent"
+            "zh-CN": "体温36.5℃不高、血压145/89 mmHg，没有脓毒症的表现，病情并不危急",
+            "en": "He is afebrile at 36.5 °C with a blood pressure of 145/89 mmHg, so there is no sepsis and the deterioration is not urgent"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。患者无热，但连续血气才是本次危急程度的关键——单次体温正常不能排除危重呼吸衰竭。",
-            "en": "Wrong. He is afebrile, but the serial blood gases, not the temperature, show how critical this is — a single normal temperature does not exclude life-threatening respiratory failure."
+            "zh-CN": "错误。患者无热、血压也不低，但连续血气才是本次危急程度的关键，而不是体温或血压——体温正常不能排除危重呼吸衰竭。",
+            "en": "Wrong. He is afebrile and not hypotensive, but the serial blood gases, not the temperature or the blood pressure, show how critical this is — a normal temperature does not exclude life-threatening respiratory failure."
           }
         }
       ]
@@ -2046,8 +2046,8 @@
         {
           "id": "likely-colonisation",
           "text": {
-            "zh-CN": "多为气道定植，尚不能按侵袭性真菌病确诊；是否需覆盖霉菌应据侵袭证据与宿主因素决定",
-            "en": "Most likely airway colonisation, not proven invasive fungal disease; whether to cover moulds depends on evidence of invasion and host factors"
+            "zh-CN": "多为气道定植，尚不能确诊侵袭性真菌病；是否需覆盖霉菌，取决于侵袭证据与宿主因素",
+            "en": "Most likely airway colonisation, not proven invasive disease; mould cover depends on evidence of invasion and on host factors"
           },
           "correct": true,
           "feedback": {
@@ -2058,8 +2058,8 @@
         {
           "id": "confirmed-aspergillosis",
           "text": {
-            "zh-CN": "即为确诊侵袭性曲霉病，无需更多证据即应抗霉菌治疗",
-            "en": "This confirms invasive aspergillosis; start antimould therapy without needing more evidence"
+            "zh-CN": "菌丝提示霉菌、最可能是曲霉：即可确诊侵袭性曲霉病，应立即抗霉菌治疗，无需更多证据",
+            "en": "Hyphae point to a mould, most likely Aspergillus: this confirms invasive aspergillosis, so start antimould therapy without waiting for more evidence"
           },
           "correct": false,
           "feedback": {
@@ -2070,8 +2070,8 @@
         {
           "id": "ignore-fungi",
           "text": {
-            "zh-CN": "真菌无意义，完全忽略",
-            "en": "The fungi are meaningless and can be ignored entirely"
+            "zh-CN": "使用广谱抗生素的患者痰中常培养出真菌：这些真菌没有意义，可以完全忽略",
+            "en": "Fungi often grow from the sputum of patients on broad-spectrum antibiotics, so these are meaningless and can be ignored entirely"
           },
           "correct": false,
           "feedback": {
@@ -2108,8 +2108,8 @@
         {
           "id": "niv-fail-goals",
           "text": {
-            "zh-CN": "识别无创通气失败；在升级前核对影像图注的气漏（气胸/纵隔气肿），并与患者/家属讨论治疗目标",
-            "en": "Recognise non-invasive-ventilation failure; before escalating, check the imaging caption for the air leak (pneumothorax/mediastinal emphysema) and discuss goals of care with the patient/family"
+            "zh-CN": "识别无创通气失败；升级前核对图注中的气漏（气胸/纵隔气肿），并与患者及家属讨论治疗目标",
+            "en": "Recognise NIV failure; before escalating, check the CT caption for the air leak (pneumothorax, mediastinal emphysema) and discuss goals of care with him and his family"
           },
           "correct": true,
           "feedback": {
@@ -2120,20 +2120,20 @@
         {
           "id": "ignore-temp",
           "text": {
-            "zh-CN": "体温不高，继续原方案观察即可",
-            "en": "The temperature is not raised, so just continue and observe"
+            "zh-CN": "他不发热，且已在用无创通气：维持当前参数继续观察，几小时后再复查血气",
+            "en": "He is afebrile and already on non-invasive ventilation, so keep the current settings, observe him and recheck the blood gas in a few hours"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。单次体温正常不能反映危急程度；PaCO₂ 118.5 mmHg、pH 7.149 提示急性失代偿，必须重新评估呼吸支持。",
-            "en": "Wrong. A single normal temperature does not reflect the severity; a PaCO₂ of 118.5 mmHg and a pH of 7.149 show acute decompensation and demand a reassessment of respiratory support."
+            "zh-CN": "错误。单次体温正常不能反映危急程度，而且他正是在无创通气下恶化的；PaCO₂ 118.5 mmHg、pH 7.149 提示急性失代偿，必须立即重新评估呼吸支持。",
+            "en": "Wrong. A single normal temperature does not reflect the severity, and he has worsened on non-invasive ventilation; a PaCO₂ of 118.5 mmHg and a pH of 7.149 show acute decompensation and demand a reassessment of respiratory support now."
           }
         },
         {
           "id": "high-fio2",
           "text": {
-            "zh-CN": "提高吸氧浓度把血氧饱和度拉上去",
-            "en": "Turn up the oxygen concentration to push the saturation up"
+            "zh-CN": "PaO₂仅20.7 mmHg，低氧最要紧：先提高吸氧浓度，把血氧饱和度拉上去再说",
+            "en": "With a PaO₂ of 20.7 mmHg the hypoxaemia comes first: turn up the oxygen concentration to push the saturation back up before anything else"
           },
           "correct": false,
           "feedback": {
@@ -2144,8 +2144,8 @@
         {
           "id": "intubate-now",
           "text": {
-            "zh-CN": "立即气管插管行有创通气，无需顾及气漏或治疗目标",
-            "en": "Intubate immediately for invasive ventilation, without regard to the air leak or goals of care"
+            "zh-CN": "无创通气已失败、pH 7.149：立即气管插管行有创通气，气漏和治疗目标等他上了呼吸机、稳定之后再处理",
+            "en": "NIV has failed with a pH of 7.149, so intubate him immediately for invasive ventilation; the air leak and the goals of care can be dealt with once he is stable on the ventilator"
           },
           "correct": false,
           "feedback": {
@@ -2184,8 +2184,8 @@
         {
           "id": "critical-care-goals",
           "text": {
-            "zh-CN": "紧急重症与呼吸专科评估通气、可逆诱因与治疗目标，控制感染；中药不能替代呼吸支持，改善也不能归因于某一药物",
-            "en": "Urgent critical-care and respiratory review of ventilation, reversible contributors and goals of care, with infection control; herbal treatment must not replace respiratory support, and any improvement cannot be attributed to a single agent"
+            "zh-CN": "紧急请重症和呼吸专科评估通气、可逆诱因与治疗目标并控制感染；中药不能替代呼吸支持，改善不能归功于单一药物",
+            "en": "Urgent critical-care and respiratory review (ventilation, reversible causes, goals of care) and infection control; herbs must not replace respiratory support, and no single agent takes the credit"
           },
           "correct": true,
           "feedback": {
@@ -2196,8 +2196,8 @@
         {
           "id": "copy-aconite",
           "text": {
-            "zh-CN": "照搬高剂量含附子（黑顺片60克）的破格救心汤，并认定它逆转了肺纤维化",
-            "en": "Copy the high-dose aconite-containing 破格救心汤 (黑顺片 60 g) and conclude it reversed the fibrosis"
+            "zh-CN": "照搬含高剂量附子（黑顺片60克）的破格救心汤回阳固脱，并认定它逆转了肺纤维化",
+            "en": "Copy the high-dose aconite-containing 破格救心汤 (黑顺片 60 g) to restore yang in the dyspnoeic collapse, and conclude that it reversed the fibrosis"
           },
           "correct": false,
           "feedback": {
@@ -2208,20 +2208,20 @@
         {
           "id": "steroid-only",
           "text": {
-            "zh-CN": "把大剂量激素作为唯一确证有效的治疗",
-            "en": "Make high-dose corticosteroids the sole proven treatment"
+            "zh-CN": "按特发性肺纤维化急性加重处理：加大甲泼尼龙剂量，把大剂量激素作为唯一确证有效的治疗，改善即完全归功于它",
+            "en": "Treat this as an acute exacerbation of IPF: escalate the methylprednisolone, make high-dose corticosteroids the sole proven treatment, and credit any improvement to them alone"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。激素在特发性肺纤维化急性加重中的证据有限，不能作为唯一确证有效的治疗；且需与感染、血糖、免疫抑制风险权衡。",
-            "en": "Wrong. The evidence for steroids in AE-IPF is limited; they cannot be the sole proven treatment and must be balanced against infection, glucose and immunosuppression risks."
+            "zh-CN": "错误。激素在特发性肺纤维化急性加重中的证据有限，不能作为唯一确证有效的治疗，多种措施同用时改善也不能归功于激素；且需与感染、血糖、免疫抑制风险权衡。",
+            "en": "Wrong. The evidence for steroids in AE-IPF is limited; they cannot be the sole proven treatment, any improvement under many concurrent measures cannot be credited to them, and they must be balanced against infection, glucose and immunosuppression risks."
           }
         },
         {
           "id": "stop-antimicrobials",
           "text": {
-            "zh-CN": "既然真菌多为定植，停用全部抗感染药物",
-            "en": "Since the fungi are mostly colonisers, stop all antimicrobials"
+            "zh-CN": "既然真菌多为定植、他又不发热，就停用包括美罗培南在内的全部抗感染药物，减少毒性和耐药，让激素和通气发挥作用",
+            "en": "Since the fungi are most likely colonisers and he is afebrile, stop all antimicrobials, the meropenem included, to limit toxicity and resistance, and let the corticosteroids and ventilation do the work"
           },
           "correct": false,
           "feedback": {

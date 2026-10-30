@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "stemi-inferior-rv",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "胸痛 · 58岁男性",
     "en": "Chest pain · 58-year-old man"
@@ -6271,7 +6271,7 @@
         {
           "id": "dx-inferior-rv",
           "text": {
-            "zh-CN": "急性下壁ST段抬高型心肌梗死合并右心室梗死（右冠近段闭塞可能）",
+            "zh-CN": "急性下壁STEMI合并右心室梗死（右冠近段闭塞可能）",
             "en": "Acute inferior STEMI with right-ventricular involvement (likely proximal RCA occlusion)"
           },
           "correct": true,
@@ -6283,8 +6283,8 @@
         {
           "id": "dx-inferior-only",
           "text": {
-            "zh-CN": "单纯急性下壁STEMI（无右室受累）",
-            "en": "Acute inferior STEMI without RV involvement"
+            "zh-CN": "急性下壁STEMI，无右心室受累（右冠远段闭塞可能）",
+            "en": "Acute inferior STEMI without RV involvement (likely distal RCA occlusion)"
           },
           "correct": false,
           "feedback": {
@@ -6295,8 +6295,8 @@
         {
           "id": "dx-posterior",
           "text": {
-            "zh-CN": "急性下后壁STEMI（回旋支闭塞）",
-            "en": "Acute inferoposterior STEMI (circumflex occlusion)"
+            "zh-CN": "急性下后壁STEMI（优势型左回旋支闭塞可能）",
+            "en": "Acute inferoposterior STEMI (likely occlusion of a dominant left circumflex artery)"
           },
           "correct": false,
           "feedback": {
@@ -6307,8 +6307,8 @@
         {
           "id": "dx-pericarditis",
           "text": {
-            "zh-CN": "急性心包炎",
-            "en": "Acute pericarditis"
+            "zh-CN": "急性心包炎：多个导联ST段抬高，伴剧烈胸痛",
+            "en": "Acute pericarditis, given the ST elevation in several leads with severe chest pain"
           },
           "correct": false,
           "feedback": {
@@ -6319,8 +6319,8 @@
         {
           "id": "dx-dissection",
           "text": {
-            "zh-CN": "主动脉夹层累及右冠开口",
-            "en": "Aortic dissection involving the RCA ostium"
+            "zh-CN": "A型主动脉夹层累及右冠开口，引起下壁ST段抬高",
+            "en": "Type A aortic dissection extending into the RCA ostium and causing the inferior ST elevation"
           },
           "correct": false,
           "feedback": {
@@ -6331,8 +6331,8 @@
         {
           "id": "dx-nstemi",
           "text": {
-            "zh-CN": "非ST段抬高型心肌梗死",
-            "en": "NSTEMI"
+            "zh-CN": "非ST段抬高型心肌梗死，待肌钙蛋白结果确认",
+            "en": "NSTEMI, to be confirmed once the troponin result is back"
           },
           "correct": false,
           "feedback": {
@@ -6383,7 +6383,7 @@
           "id": "nitro-withhold",
           "text": {
             "zh-CN": "不给硝酸酯；先小剂量补液维持前负荷，尽快再灌注，必要时小剂量滴定镇痛",
-            "en": "Withhold nitrates; support preload with a cautious fluid bolus, reperfuse fast, and give small titrated analgesia only if needed"
+            "en": "Withhold nitrates: a cautious fluid bolus for preload, fast reperfusion, and small titrated analgesia if needed"
           },
           "correct": true,
           "feedback": {
@@ -6394,8 +6394,8 @@
         {
           "id": "nitro-sl",
           "text": {
-            "zh-CN": "含服硝酸甘油0.4–0.5 mg，每5分钟一次，最多3次",
-            "en": "Sublingual nitroglycerin 0.4–0.5 mg every 5 minutes, up to 3 doses"
+            "zh-CN": "可以：含服硝酸甘油0.4–0.5 mg，每5分钟一次，最多3次，先缓解缺血性胸痛",
+            "en": "Yes: sublingual nitroglycerin 0.4–0.5 mg every 5 minutes, up to 3 doses, to relieve the ischaemic chest pain first"
           },
           "correct": false,
           "feedback": {
@@ -6406,20 +6406,20 @@
         {
           "id": "nitro-iv",
           "text": {
-            "zh-CN": "静脉泵入硝酸甘油，按疼痛滴定",
-            "en": "Start an IV nitroglycerin infusion titrated to pain"
+            "zh-CN": "改为静脉泵入硝酸甘油按疼痛滴定，比含服更容易随时停用",
+            "en": "Start an IV nitroglycerin infusion titrated to pain, which is easier to stop than a tablet"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "危险。静脉硝酸酯同样减少前负荷，且收缩压已接近90 mmHg。",
-            "en": "Dangerous. IV nitrates also reduce preload, and the SBP is already close to 90 mmHg."
+            "zh-CN": "危险。静脉硝酸酯同样减少前负荷，且收缩压已接近90 mmHg；更容易停用并不能避免前负荷下降。",
+            "en": "Dangerous. IV nitrates also reduce preload, and the SBP is already close to 90 mmHg; being easier to stop does not prevent the fall in preload."
           }
         },
         {
           "id": "nitro-after-fluid",
           "text": {
-            "zh-CN": "先补液500 mL，血压 > 100 mmHg后再给硝酸甘油",
-            "en": "Give 500 mL of fluid first, then nitroglycerin once SBP > 100 mmHg"
+            "zh-CN": "先补液500 mL，待收缩压升至100 mmHg以上，再含服硝酸甘油",
+            "en": "Give 500 mL of fluid first, then sublingual nitroglycerin once the systolic BP is above 100 mmHg"
           },
           "correct": false,
           "feedback": {
@@ -6430,8 +6430,8 @@
         {
           "id": "nitro-furosemide",
           "text": {
-            "zh-CN": "若颈静脉怒张，提示容量过多，应改用呋塞米",
-            "en": "If the JVP is raised, that means fluid overload — give furosemide instead"
+            "zh-CN": "如颈静脉怒张，说明容量过多，应改用静脉呋塞米而不是硝酸酯",
+            "en": "If the JVP is raised, that means fluid overload: give IV furosemide instead of a nitrate"
           },
           "correct": false,
           "feedback": {
@@ -6472,8 +6472,8 @@
         {
           "id": "rep-lysis",
           "text": {
-            "zh-CN": "立即替奈普酶溶栓，再转导管室",
-            "en": "Give tenecteplase now, then send him to the cath lab"
+            "zh-CN": "先立即替奈普酶溶栓以争取时间，再转导管室行药物-介入策略",
+            "en": "Give tenecteplase now to save time, then send him to the cath lab as a pharmaco-invasive strategy"
           },
           "correct": false,
           "feedback": {
@@ -6484,8 +6484,8 @@
         {
           "id": "rep-wait-trop",
           "text": {
-            "zh-CN": "等高敏肌钙蛋白结果回报确认后再决定",
-            "en": "Wait for the hs-troponin result to confirm before deciding"
+            "zh-CN": "先等高敏肌钙蛋白结果确认心肌梗死，再决定是否启动导管室",
+            "en": "Wait for the hs-troponin result to confirm an infarct before committing him to the cath lab"
           },
           "correct": false,
           "feedback": {
@@ -6496,20 +6496,20 @@
         {
           "id": "rep-ccu",
           "text": {
-            "zh-CN": "收入CCU药物治疗，24–72小时内择期造影",
-            "en": "Admit to CCU for medical therapy with angiography in 24–72 h"
+            "zh-CN": "先收入CCU药物治疗，待血压、心率平稳后，24–72小时内择期造影",
+            "en": "Admit to CCU for medical therapy until his BP and heart rate settle, with angiography in 24–72 h"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。这是NSTE-ACS的策略。发病12小时内的STEMI需要立即再灌注。",
-            "en": "No. That is an NSTE-ACS strategy; STEMI within 12 hours of onset needs immediate reperfusion."
+            "zh-CN": "不对。这是NSTE-ACS的策略。发病12小时内的STEMI需要立即再灌注；右冠闭塞引起的低血压和心动过缓正是要尽快再灌注的理由，而不是等待的理由。",
+            "en": "No. That is an NSTE-ACS strategy; STEMI within 12 hours of onset needs immediate reperfusion. Hypotension and bradycardia from an RCA occlusion are reasons to reperfuse sooner, not to wait."
           }
         },
         {
           "id": "rep-cta",
           "text": {
-            "zh-CN": "先行主动脉CTA排除夹层，再决定是否启动导管室",
-            "en": "Get a CT aortogram to exclude dissection before deciding on the cath lab"
+            "zh-CN": "先行主动脉CTA：下壁STEMI有可能是主动脉夹层累及右冠所致，排除后再启动导管室",
+            "en": "Get a CT aortogram first: an inferior STEMI can be caused by a dissection involving the RCA, so exclude it before the cath lab"
           },
           "correct": false,
           "feedback": {
@@ -6569,8 +6569,8 @@
         {
           "id": "at-ufh",
           "text": {
-            "zh-CN": "普通肝素70–100 U/kg静脉推注",
-            "en": "UFH 70–100 U/kg IV bolus"
+            "zh-CN": "普通肝素70–100 U/kg静脉推注，导管室内按ACT追加",
+            "en": "UFH 70–100 U/kg IV bolus, with further doses guided by ACT in the lab"
           },
           "correct": true,
           "feedback": {
@@ -6581,8 +6581,8 @@
         {
           "id": "at-fonda",
           "text": {
-            "zh-CN": "磺达肝癸钠2.5 mg皮下注射",
-            "en": "Fondaparinux 2.5 mg SC"
+            "zh-CN": "磺达肝癸钠2.5 mg皮下注射，因其出血风险较低",
+            "en": "Fondaparinux 2.5 mg SC, chosen for its lower bleeding risk"
           },
           "correct": false,
           "feedback": {
@@ -6617,8 +6617,8 @@
         {
           "id": "at-tnk",
           "text": {
-            "zh-CN": "替奈普酶（按体重分档静推）",
-            "en": "Tenecteplase (weight-banded bolus)"
+            "zh-CN": "同时给予替奈普酶（按体重分档静推），以便更早开通血管",
+            "en": "Tenecteplase as well (weight-banded bolus), to open the artery sooner"
           },
           "correct": false,
           "feedback": {
@@ -7560,7 +7560,7 @@
         ]
       },
       {
-        "text": "When did the pain start?",
+        "text": "How long have you had this pain for?",
         "locale": "en",
         "expect": [
           "hpi-onset"
@@ -7672,7 +7672,7 @@
         ]
       },
       {
-        "text": "When did you last eat?",
+        "text": "Have you eaten anything today?",
         "locale": "en",
         "expect": [
           "last-meal"
@@ -7749,7 +7749,7 @@
         ]
       },
       {
-        "text": "SOB?",
+        "text": "Are you getting breathless at all?",
         "locale": "en",
         "expect": [
           "assoc-dyspnoea"
@@ -7889,7 +7889,7 @@
         ]
       },
       {
-        "text": "NKDA?",
+        "text": "Any drug allergies I should know about?",
         "locale": "en",
         "expect": [
           "allergies"
@@ -7966,28 +7966,28 @@
         ]
       },
       {
-        "text": "Where is the pain?",
+        "text": "Can you point to where the pain is?",
         "locale": "en",
         "expect": [
           "pain-site"
         ]
       },
       {
-        "text": "Where's the pain?",
+        "text": "whereabouts is the pain exactly",
         "locale": "en",
         "expect": [
           "pain-site"
         ]
       },
       {
-        "text": "Where does it hurt?",
+        "text": "Point to the spot where it hurts",
         "locale": "en",
         "expect": [
           "pain-site"
         ]
       },
       {
-        "text": "Where do you feel the pain?",
+        "text": "Which part of your chest hurts?",
         "locale": "en",
         "expect": [
           "pain-site"
@@ -8008,7 +8008,7 @@
         ]
       },
       {
-        "text": "Where does the pain go?",
+        "text": "Does it go up into your neck or down your arm?",
         "locale": "en",
         "expect": [
           "pain-radiation"

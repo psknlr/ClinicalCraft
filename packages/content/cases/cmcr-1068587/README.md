@@ -21,7 +21,7 @@
 
 ## Source and adaptation
 
-**Source facts:** The published single-patient history, examination, tests and outcome were individually read and paraphrased. Source values and limitations are preserved in the records below. Publisher metadata verified the source DOI.
+**Source facts:** The published single-patient history, examination, tests and outcome were individually read and paraphrased. Source values and limitations are preserved in the records below. The publisher article identity and URL were checked; the DOI remains unverified because its trailing punctuation is unresolved.
 
 **Teaching additions:** Pseudonym, bilingual dialogue, staged disclosure, decisions, distractor feedback and assessment are educational design. No new treatment response or physiological time series was invented.
 
@@ -91,12 +91,12 @@ The bilingual corpus uses paraphrases of topic labels rather than canonical ques
 
 ## References
 
-- 杨书龙, 管声扬, 李昭铸, 崔清波. 小儿克罗恩病合并梅克尔憩室炎误诊为阑尾炎1例. 中华结直肠疾病电子杂志. 2013;02(04):195-195. doi:10.3877/cma.j.issn.2095-3224.2013.04.11..
+- 杨书龙, 管声扬, 李昭铸, 崔清波. 小儿克罗恩病合并梅克尔憩室炎误诊为阑尾炎1例. 中华结直肠疾病电子杂志. 2013;02(04):195-195. DOI unverified; use the publisher article URL below.
 - https://rs.yiigle.com/cmaid/1068587
 
 **Guidance check scope:** Historical source review only; no condition-specific contemporary guideline verified for this rare presentation. Specialist review remains pending.
 
-**Source verification:** Publisher metadata verified the DOI 10.3877/cma.j.issn.2095-3224.2013.04.11. on 2026-10-29. Source and guideline checks are AI-assisted editorial work, not clinician review. Current specialty review remains required; no unverified guideline version is claimed.
+**Source verification:** The publisher article identity and URL were checked on 2026-10-29. The DOI recorded for the article, `10.3877/cma.j.issn.2095-3224.2013.04.11.`, ends with an ambiguous period, as cmcr-1068618's does (the journal's other 2013 DOIs end without one). doi.org and Crossref could not be reached to resolve it, so no verified DOI is asserted. Source and guideline checks are AI-assisted editorial work, not clinician review. Current specialty review remains required; no unverified guideline version is claimed.
 
 ## Changelog
 
@@ -114,4 +114,4 @@ Verified 2026-10-28 with validateCaseFile(strict=true) and verifyCaseDefinition:
 
 **关键决策：** 手术发现能否解释全部病程？ 后续资料能支持哪一项结论？ 持续症状应怎样衔接照护？
 
-**复盘要点：** 比较局部急腹症与较长炎症性病程；说明肉芽肿病理的非特异性；列出持续症状需补充的感染及全肠评估。尚待核对：完整内镜、影像、感染排除、营养生长及后续治疗。本稿尚未经执业医师审核。
+**复盘要点：** 比较局部急腹症与较长炎症性病程；说明肉芽肿病理的非特异性；列出持续症状需补充的感染及全肠评估。尚待核对：完整内镜、影像、感染排除、营养生长及后续治疗；DOI尾点待核。本稿尚未经执业医师审核。

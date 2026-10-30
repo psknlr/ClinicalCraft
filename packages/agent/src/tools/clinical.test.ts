@@ -1,4 +1,4 @@
-import { createSession as createEngineState, presentedOptions, reduce, RHYTHMS, type CaseInput, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
+import { createSession as createEngineState, presentedOptions, reduce, RHYTHMS, t, type CaseInput, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
 import { loadMiniCase } from "../__fixtures__/harness.js";
 import type { PlanItem } from "../protocol.js";
@@ -6,6 +6,14 @@ import { clockTime, rhythmLabel } from "./format.js";
 import { ToolRegistry, isHiddenByDeny } from "./index.js";
 import type { ToolContext } from "./types.js";
 import { validateArgs } from "./validate.js";
+import { checkPermission } from "../permissions.js";
+
+/** Read the ECG: the mini case's decision ("Most likely diagnosis?", Decision 1) unlocks. */
+function unlock(h: { ctx: ToolContext }): void {
+  h.ctx.dispatch({ type: "order", investigationId: "ecg" });
+  h.ctx.dispatch({ type: "advance-time", minutes: 10 });
+  h.ctx.dispatch({ type: "read", investigationId: "ecg" });
+}
 
 /** A tool context over the real engine (no session); `mutate` edits the mini case first. */
 function harness(locale = "en", agent: string = "clinician", utterance: string | null = null, mutate?: (input: CaseInput) => void) {
@@ -126,17 +134,118 @@ describe("clinical tools", () => {
     expect(zh.state.interventions).toEqual([]);
   });
 
-  it("answer_decision validates options and reports requirements", async () => {
+  it("answer_decision refuses an unknown decision or option before any approval (precheck), naming decisions by number and options by letter", async () => {
     const h = harness();
-    expect((await h.run("answer_decision", { decision_id: "dx", option_ids: ["stemi"] })).output).toBe("Not yet answerable: Review the ECG first.");
-    // Once unlocked, an unknown option id lists the options in presentation order.
-    h.ctx.dispatch({ type: "order", investigationId: "ecg" });
-    h.ctx.dispatch({ type: "advance-time", minutes: 10 });
-    h.ctx.dispatch({ type: "read", investigationId: "ecg" });
-    const bad = await h.run("answer_decision", { decision_id: "dx", option_ids: ["zzz"] });
-    expect(bad.output).toMatch(/Unknown option id/);
-    const presented = presentedOptions(h.caseDef, h.caseDef.decisions[0]!).map((o) => o.id);
-    expect(bad.output.indexOf(`${presented[0]} (`)).toBeLessThan(bad.output.indexOf(`${presented[1]} (`));
+    const tool = h.registry.get("answer_decision")!;
+    const refused = async (args: Record<string, unknown>) => {
+      const out = await h.run("answer_decision", args);
+      expect(out.ok, JSON.stringify(args)).toBe(false);
+      // The same refusal before the gate: no approval is asked for a call that cannot run.
+      expect(tool.precheck!(args, h.ctx)?.output, JSON.stringify(args)).toBe(out.output);
+      return out.output;
+    };
+    expect(await refused({ decision_id: "dx", option_ids: ["stemi"] })).toBe("Decision 1 is not yet answerable: Review the ECG first.");
+    // A reference naming no decision: the decisions by number, never by id.
+    for (const ref of ["nope", "2", "D0"]) expect(await refused({ decision_id: ref, option_ids: ["A"] })).toBe(`No decision “${ref}”. Name a decision by its number: 1.`);
+    unlock(h);
+    const [first, second] = presentedOptions(h.caseDef, h.caseDef.decisions[0]!).map((o) => t(o.text, "en"));
+    const letters = `A (${first}); B (${second})`;
+    // Every token naming no option, once; every option by its letter in presentation order — never by its id.
+    expect(await refused({ decision_id: "1", option_ids: ["zzz", "C", "zzz"] })).toBe(`Unknown option(s): zzz, C. Answer by letter — options: ${letters}.`);
+    expect(await refused({ decision_id: "dx", option_ids: ["A, C"] })).toBe(`Unknown option(s): C. Answer by letter — options: ${letters}.`);
+    // Separators only: no option given — the letters, not a bare "invalid action".
+    for (const sep of [",", ";", "、", " ，; "]) expect(await refused({ decision_id: "1", option_ids: [sep] })).toBe(`No option given. Answer by letter — options: ${letters}.`);
+    // "A, B" is two options: a single-best-answer decision takes one.
+    expect(await refused({ decision_id: "1", option_ids: ["A, B"] })).toBe("Decision 1 takes a single best answer: answer with one letter.");
+    expect(tool.precheck!({ decision_id: "1", option_ids: ["A, A, 1"] }, h.ctx)).toBeNull();
+    expect(h.state.attempts).toEqual([]);
+    // Chinese: several tokens joined with 、, full-width punctuation.
+    const zh = harness("zh-CN");
+    unlock(zh);
+    const [zhFirst, zhSecond] = presentedOptions(zh.caseDef, zh.caseDef.decisions[0]!).map((o) => t(o.text, "zh-CN"));
+    expect((await zh.run("answer_decision", { decision_id: "1", option_ids: ["zzz", "C"] })).output).toBe(`未知选项：zzz、C。请按字母作答，可选：A（${zhFirst}）；B（${zhSecond}）。`);
+    expect((await zh.run("answer_decision", { decision_id: "决策 1", option_ids: ["、"] })).output).toBe(`未给出选项。请按字母作答，可选：A（${zhFirst}）；B（${zhSecond}）。`);
+    expect((await zh.run("answer_decision", { decision_id: "第 9 个", option_ids: ["A"] })).output).toBe("没有决策“第 9 个”。请用决策编号指明：1。");
+    expect((await zh.run("answer_decision", { decision_id: "1", option_ids: ["Ａ，Ｂ"] })).output).toBe("决策 1 为单选题：请只用一个字母作答。");
+    expect(zh.state.attempts).toEqual([]);
+  });
+
+  it("decisions are named by number in case order and their options by letter, never by id; answer_decision reads both back (en + zh-CN)", async () => {
+    for (const locale of ["en", "zh-CN"]) {
+      const h = harness(locale);
+      unlock(h);
+      const presented = presentedOptions(h.caseDef, h.caseDef.decisions[0]!);
+      const letter = (id: string) => "AB"[presented.findIndex((o) => o.id === id)]!;
+      const text = (id: string) => t(presented.find((o) => o.id === id)!.text, locale);
+      const listed = await h.run("list_options", { kind: "decisions" });
+      // Headings and lines in the learner's punctuation (full-width in Chinese).
+      expect(listed.output.split("\n")[0]).toBe(locale === "en" ? "Decisions:" : "决策：");
+      expect(listed.output).toContain(locale === "en" ? "- Decision 1: Most likely diagnosis? (open)" : "- 决策 1：最可能的诊断？（可以作答）");
+      expect(listed.output).toContain(`    [${letter("stemi")}] ${text("stemi")}`);
+      expect(listed.output).toContain(`    [${letter("pe")}] ${text("pe")}`);
+      const items = (listed.data as { items: Record<string, unknown>[] }).items;
+      expect(items[0]).toMatchObject({ number: 1, unlocked: true, decided: false });
+      expect(items[0]).not.toHaveProperty("id");
+      expect(items[0]!.options).toEqual(presented.map((o, i) => ({ label: "AB"[i], text: t(o.text, locale) })));
+      expect(`${listed.output}${JSON.stringify(listed.data)}`).not.toMatch(/\bdx\b|\[(stemi|pe)\]|"(stemi|pe)"/);
+      // case_status names it by number too.
+      const status = await h.run("case_status");
+      expect(status.output).toContain(locale === "en" ? "Decisions:\n  - Decision 1: Most likely diagnosis? (open)" : "决策：\n  - 决策 1：最可能的诊断？（可以作答）");
+      expect(status.output).toContain(locale === "en" ? "Objectives (1/3):" : "目标（1/3）：");
+      expect((status.data as { decisions: unknown[] }).decisions).toEqual([{ number: 1, unlocked: true, decided: false }]);
+      expect(`${status.output}${JSON.stringify(status.data)}`).not.toMatch(/\bdx\b/);
+      // The approval summary names the chosen option by its text, whatever token chose it.
+      const tool = h.registry.get("answer_decision")!;
+      for (const token of [letter("pe").toLowerCase(), String("AB".indexOf(letter("pe")) + 1), "pe"]) {
+        expect(tool.summarize({ decision_id: "1", option_ids: [token] }, h.ctx), token).toContain(text("pe"));
+      }
+      // A wrong answer by number, then the right one by letter: the data names the decision by number, options by letter and text.
+      const wrong = await h.run("answer_decision", { decision_id: "D1", option_ids: [String("AB".indexOf(letter("pe")) + 1)] });
+      expect(wrong.output.split("\n")[0]).toBe(locale === "en" ? "Not correct." : "不正确。");
+      expect(wrong.data).toEqual({ decision: 1, options: [{ label: letter("pe"), text: text("pe") }], correct: false, firstTry: true });
+      const right = await h.run("answer_decision", { decision_id: locale === "en" ? "Decision 1" : "决策1", option_ids: [`[${letter("stemi").toLowerCase()}]`] });
+      expect(right.data).toEqual({ decision: 1, options: [{ label: letter("stemi"), text: text("stemi") }], correct: true, firstTry: false });
+      expect(`${wrong.output}${right.output}${JSON.stringify([wrong.data, right.data])}`).not.toMatch(/\b(stemi|pe|dx)\b/);
+      expect(h.state.attempts.map((a) => a.optionIds)).toEqual([["pe"], ["stemi"]]);
+      // A decided decision still lists its options by letter; answering it again names it by number — its data only
+      // the rejection code, never the engine's message (which names the decision by its id), also asked by id.
+      const decided = await h.run("list_options", { kind: "decisions" });
+      expect((decided.data as { items: { decided: boolean; options: unknown[] }[] }).items[0]).toMatchObject({ decided: true, options: items[0]!.options });
+      for (const ref of ["1", "dx"]) {
+        const again = await h.run("answer_decision", { decision_id: ref, option_ids: ["A"] });
+        expect(again).toEqual({ ok: false, output: locale === "en" ? "Decision 1 has already been answered correctly." : "决策 1 已正确作答。", data: { rejected: { code: "already-decided" } } });
+      }
+    }
+    // An exact authored decision and option id still answer (older clients, the reference walkthrough); the same option twice counts once.
+    const h = harness();
+    unlock(h);
+    const letter = "AB"[presentedOptions(h.caseDef, h.caseDef.decisions[0]!).findIndex((o) => o.id === "stemi")]!;
+    expect((await h.run("answer_decision", { decision_id: "dx", option_ids: ["stemi", letter] })).data).toMatchObject({ decision: 1, correct: true, firstTry: true });
+    expect(h.state.attempts.map((a) => a.optionIds)).toEqual([["stemi"]]);
+  });
+
+  it("answer_decision's other rejections give the reason in the learner's language and the code — never the engine's message", async () => {
+    const h = harness();
+    unlock(h);
+    const finished: SessionState = { ...h.state, finished: true };
+    const ctx: ToolContext = { ...h.ctx, state: () => finished, dispatch: (action) => reduce(h.caseDef, finished, action) };
+    const out = await h.registry.get("answer_decision")!.run({ decision_id: "1", option_ids: ["A"] }, ctx);
+    expect(out).toEqual({ ok: false, output: "Rejected (finished): The case is already finished.", data: { rejected: { code: "finished" }, message: "The case is already finished." } });
+  });
+
+  it("\"A, C\" in one item is two options (one tokenizer: commas, 、, full-width letters, spaces); the same option twice counts once", async () => {
+    for (const item of ["A, B", "a,b", "Ａ，Ｂ", "A、B", "A B", "B; A; 1"]) {
+      // A select-all decision: both options are chosen, in the order first named.
+      const h = harness("en", "clinician", null, (x) => {
+        x.decisions![0]!.kind = "multiple";
+      });
+      unlock(h);
+      const out = await h.run("answer_decision", { decision_id: "1", option_ids: [item] });
+      expect(out.ok, item).toBe(true);
+      const labels = (out.data as { options: { label: string }[] }).options.map((o) => o.label);
+      expect(labels.sort(), item).toEqual(["A", "B"]);
+      expect(h.state.attempts.map((a) => a.optionIds.length)).toEqual([2]);
+    }
   });
 
   it("answer_decision on a locked decision never names its prompt or options (F0/F1)", async () => {
@@ -146,18 +255,32 @@ describe("clinical tools", () => {
       const out = await h.run("answer_decision", { decision_id: "dx", option_ids: ["zzz"] });
       expect(out.ok).toBe(false);
       for (const secret of ["Inferior STEMI", "Pulmonary embolism", "下壁STEMI", "肺栓塞", "stemi", "pe (", "Most likely", "最可能"]) expect(out.output).not.toContain(secret);
-      expect(out.output).toContain(locale === "en" ? "Review the ECG first." : "先查看心电图。");
-      // The pre-gate refusal and the approval summary say no more.
-      expect(tool.precheck!({ decision_id: "dx", option_ids: ["stemi"] }, h.ctx)?.ok).toBe(false);
-      const summary = tool.summarize({ decision_id: "dx", option_ids: ["pe"] }, h.ctx);
-      for (const secret of ["Pulmonary", "肺栓塞", "Most likely", "最可能", "pe"]) expect(summary).not.toContain(secret);
-      expect(summary).toContain(locale === "en" ? "Decision 1" : "判断 1");
+      expect(out.output).toBe(locale === "en" ? "Decision 1 is not yet answerable: Review the ECG first." : "决策 1 暂时还不能作答：先查看心电图。");
+      // The pre-gate refusal and the approval summary say no more, by number or by id.
+      for (const ref of ["dx", "1"]) expect(tool.precheck!({ decision_id: ref, option_ids: ["stemi"] }, h.ctx)?.output).toBe(out.output);
+      const summary = tool.summarize({ decision_id: "1", option_ids: ["pe"] }, h.ctx);
+      for (const secret of ["Pulmonary", "肺栓塞", "Most likely", "最可能", "pe", "dx"]) expect(summary).not.toContain(secret);
+      expect(summary).toContain(locale === "en" ? "Decision 1" : "决策 1");
     }
     const h = harness();
-    h.ctx.dispatch({ type: "order", investigationId: "ecg" });
-    h.ctx.dispatch({ type: "advance-time", minutes: 10 });
-    h.ctx.dispatch({ type: "read", investigationId: "ecg" });
+    unlock(h);
     expect(h.registry.get("answer_decision")!.precheck!({ decision_id: "dx", option_ids: ["stemi"] }, h.ctx)).toBeNull();
+  });
+
+  it("answer_decision's rule specifier is the decision's number (the gate's reasons quote it); a rule written with the id still applies", () => {
+    const h = harness();
+    unlock(h);
+    const tool = h.registry.get("answer_decision")!;
+    for (const ref of ["dx", "1", "D1"]) {
+      expect(tool.specifier!({ decision_id: ref, option_ids: ["A"] }, h.ctx)).toBe("1");
+      expect(tool.specifiers!({ decision_id: ref, option_ids: ["A"] }, h.ctx)).toEqual([["1", "dx"]]);
+    }
+    const strict = checkPermission(tool, { decision_id: "dx", option_ids: ["A"] }, h.ctx, "strict", "full");
+    expect(strict.decision).toBe("ask");
+    expect(strict.reason).toContain("answer_decision(1)");
+    expect(strict.reason).not.toMatch(/\bdx\b/);
+    expect(checkPermission(tool, { decision_id: "1", option_ids: ["A"] }, h.ctx, "default", "full", { deny: ["answer_decision(dx)"] }).decision).toBe("deny");
+    expect(checkPermission(tool, { decision_id: "dx", option_ids: ["A"] }, h.ctx, "default", "full", { deny: ["answer_decision(1)"] }).decision).toBe("deny");
   });
 
   it("wait refuses on static clocks; update_workup publishes a plan; consult asks the role", async () => {

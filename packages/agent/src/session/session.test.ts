@@ -262,6 +262,22 @@ describe("autopilot", () => {
     expect(msgsOf(events, "agent_message").some((m) => m.agent === "patient" && m.text.startsWith("About two hours ago"))).toBe(true);
   });
 
+  it("the demonstration's end message names an answer step it could not carry out by the decision's number, never its id", async () => {
+    // A deny rule written with the authored id still applies; the learner reads the decision's number.
+    for (const [locale, missed] of [
+      ["en", "Steps not carried out (denied or blocked): answer_decision(1)."],
+      ["zh-CN", "未能执行的步骤（被拒绝或受阻）：answer_decision(1)。"],
+    ] as const) {
+      const t = await makeSession({ settingsPatch: { locale, permissions: { deny: ["answer_decision(dx)"] } } });
+      const events = await t.session.run({ type: "autopilot" });
+      const end = msgsOf(events, "agent_message").filter((m) => m.agent === "clinician").at(-1)!.text;
+      expect(end, locale).toContain(missed);
+      expect(end, locale).not.toMatch(/\bdx\b/);
+      expect(t.session.state.decisions).toEqual({});
+      expect(t.session.state.finished).toBe(false);
+    }
+  });
+
   it("offline autopilot respects approvals (strict mode asks; abort stops it)", async () => {
     const t = await makeSession({ settingsPatch: { approvalMode: "strict" } });
     answerApprovals(t, "abort");

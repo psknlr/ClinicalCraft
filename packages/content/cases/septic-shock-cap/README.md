@@ -12,7 +12,7 @@ medical advice and does not replace local protocols or current guidelines. 虚�
 
 | | |
 |---|---|
-| id / version | `septic-shock-cap` / `1.1.1` |
+| id / version | `septic-shock-cap` / `1.1.2` |
 | setting / facility | `emergency` (ED resus bay 1, night shift) / `general-hospital` |
 | specialty | emergency medicine, critical care, infectious diseases, respiratory medicine |
 | difficulty / estimated time | 4 / 5 · ~45 min (simulated clock from 21:30, 180-min limit) |
@@ -131,6 +131,14 @@ norepinephrine **and** a post-resuscitation lactate, because its feedback cites 
 lactate), `curb65` (single). Every option has bilingual feedback. Answering is free and unlimited, so first-attempt
 accuracy is scored (`r-dx` uses `decidedFirstTry: sepsis3`; `r-reasoning` needs `abx-timing`, `vasopressor` and
 `curb65` right first time).
+
+Option ids name the option's content (`cultures-abx-1h`, `ct-first`, `norepinephrine-peripheral`, `score-4-icu`…),
+because agents and the CLI answer by id. Length gives nothing away: in the four single-best decisions the key is not
+the longest option, and the distractors are as specific as the key and state the reason a learner would choose them —
+a CT to exclude empyema, a procalcitonin to avoid treating a viral infection, the 3-hour window "the guidance allows",
+dopamine's inotropic support, hydrocortisone "first", a central line to avoid extravasation, a lactate ≥ 4 mmol/L
+as a definition of shock by itself, CURB-65 scores that miscount the respiratory rate or the urea. Each one's
+feedback answers that reason.
 
 **Rubric** (deterministic total 21; two communication items judged by the examiner agent from the transcript).
 Safety-critical items weigh most: antibiotics within the hour and avoiding harmful choices (3 each), then
@@ -264,13 +272,13 @@ thresholds and is not used by the case.
 
 | Error | How the case surfaces it |
 |---|---|
-| Waiting for a CT or the procalcitonin before antibiotics | "Hold antibiotics until CT" is contraindicated; a CT ordered first prompts the nurse's question and sets `ct-before-abx` (`r-safety`); `abx-timing` options b and c; the nurse prompts at 30 min; `abx-late` deteriorates her at 60 min |
+| Waiting for a CT or the procalcitonin before antibiotics | "Hold antibiotics until CT" is contraindicated; a CT ordered first prompts the nurse's question and sets `ct-before-abx` (`r-safety`); `abx-timing` options `ct-first` and `await-procalcitonin`; the nurse prompts at 30 min; `abx-late` deteriorates her at 60 min |
 | Antibiotic before cultures | the nurse's note on lower yield; `r-cultures` lost |
 | Dopamine first line | contraindicated; atrial fibrillation; `r-norepi` lost |
-| Open-ended boluses in a hypoxaemic pneumonia | the 5th bolus is contraindicated, with crackles and RR 32; `vasopressor` option c |
-| Steroids instead of a vasopressor | the pharmacist's question (`ev-steroid-first`); `vasopressor` option d |
-| Scoring the R in CURB-65 at RR 28 | `curb65` option b |
-| Pre-Sepsis-3 thinking (SIRS, "severe sepsis", qSOFA as a diagnosis, lactate alone) | `sepsis3` options b–e |
+| Open-ended boluses in a hypoxaemic pneumonia | the 5th bolus is contraindicated, with crackles and RR 32; `vasopressor` option `more-boluses` |
+| Steroids instead of a vasopressor | the pharmacist's question (`ev-steroid-first`); `vasopressor` option `hydrocortisone-first` |
+| Scoring the R in CURB-65 at RR 28 | `curb65` option `score-5-icu` |
+| Pre-Sepsis-3 thinking (SIRS, "severe sepsis", qSOFA as a diagnosis, lactate alone) | `sepsis3` options `sirs-criteria`, `severe-sepsis`, `qsofa-3` and `lactate-4` |
 | Missing the over-the-counter ibuprofen; continuing metformin | `hx-otc-ibuprofen` is a specific question; `r-med-safety` |
 | Intubating unresuscitated shock | contraindicated; her pressure falls on induction |
 | Ward admission | contraindicated; the ward calls back |
@@ -431,6 +439,33 @@ Ref. 13 is the CAPE COD trial; ref. 14 derives CURB-65.
 
 ## Changelog
 
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length; option ids neutral.** Every option id was a letter (`a`…`f`,
+  the authored position), and the key was `a` and the longest option in all four single-best decisions in both
+  languages — length cues and position ids the content lints now flag (CASE_AUTHORING §9.8). Option ids now name the
+  content, and the solution answers with them (earlier changelog entries keep the letters):
+
+  | decision | a | b | c | d | e | f |
+  |---|---|---|---|---|---|---|
+  | `abx-timing` | `cultures-abx-1h` | `ct-first` | `await-procalcitonin` | `abx-within-3h` | `await-cultures` | |
+  | `abx-regimen` | `ceftriaxone-azithromycin` | `ceftriaxone-moxifloxacin` | `moxifloxacin-alone` | `meropenem-vancomycin` | `azithromycin-alone` | `oral-amoxicillin` |
+  | `vasopressor` | `norepinephrine-peripheral` | `dopamine-first` | `more-boluses` | `hydrocortisone-first` | `await-central-line` | `vasopressin-alone` |
+  | `sepsis3` | `septic-shock` | `sirs-criteria` | `qsofa-3` | `lactate-4` | `severe-sepsis` | |
+  | `curb65` | `score-4-icu` | `score-5-icu` | `score-3-ward` | `score-2-short-stay` | | |
+
+  The `abx-timing`, `vasopressor` and `sepsis3` keys are tightened without losing content (the norepinephrine cannula
+  size, ≥ 20G, moves to its feedback; "as soon as possible" is the feedback's "immediately"), and
+  the distractors state, in the key's register and specificity, the reason a learner would choose them (see
+  "Decisions"); the key is now the longest option in no decision. In `abx-regimen` the right and wrong regimens carry
+  the same kind of detail, so length does not separate them either. Feedback gained a clause where a distractor's new
+  reason needed an answer (`oral-amoxicillin`, `severe-sepsis`, `score-3-ward`, `score-2-short-stay`). Medical meaning
+  and correct flags are unchanged; the reference path still scores 21/21. No test, bench scenario or e2e spec named
+  these option ids.
+- Matcher corpus: four `extensions.testUtterances` that were one of their item's keywords (平时吃什么药？, "NKDA?",
+  她吃过什么药？, 以前有什么病？) are now paraphrases (`cases validate --strict`); no history item, answer or keyword
+  changed (the review tests still pin 以前有什么病？ → `hx-pmh`).
+
 ### 1.1.1 — 2026-10-28 (assessment integrity; no speech after intubation)
 
 - **`r-safety` counts only once the harm was possible** (`scoredWhen`): once resuscitation has started (a fluid bolus
@@ -490,6 +525,9 @@ On 2026-10-28 (version 1.1.0): validate 0 errors, 0 warnings; verify passes — 
 expected history item as the top `matchHistory` hit and is selected under the patient pipeline's ≥ 0.55 rule); the
 reference path scores 21/21 with no rejections, no contraindicated intervention and no critical alarm. Grounding
 benchmark for this case unchanged from the baseline: dev 87/91, test 79/86, no item lost or gained.
+
+On 2026-10-30 (version 1.1.2): `cases validate --strict` 0 errors, 0 warnings; `cases verify` passes with 86/86
+utterances and 21/21. The decisions are not part of the grounding benchmark, and no history item changed.
 
 ## 中文摘要
 

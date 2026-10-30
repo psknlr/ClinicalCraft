@@ -7,8 +7,11 @@
  * Information discipline: tools only return what the action itself reveals
  * (an examined finding, a result that was read) or learner-visible
  * metadata (names, ids, phases, objective titles). `list_options` never
- * returns findings, results or answers; ambiguous queries return the
- * candidate names and perform no action.
+ * returns findings, results or answers; it names a decision only by its
+ * number in case order (`decision-refs.ts`) and its options only by their
+ * letters (`option-labels.ts`) — authored decision and option ids can name the
+ * diagnosis or the answer; ambiguous queries return the candidate names and
+ * perform no action.
  */
 import {
   availableDecisions,
@@ -17,20 +20,22 @@ import {
   historyVoice,
   orderStatus,
   orderWarnings,
-  presentedOptions,
   progress,
   resultFor,
   t,
   vitalsAt,
   type CaseDefinition,
   type ClinicalAction,
+  type Decision,
   type DomainEvent,
   type ReduceResult,
   type SessionState,
 } from "@clinicalcraft/core";
 import type { PlanItem } from "../protocol.js";
-import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
+import { countedLabel, isZh, joinList, listHeading, rt, type RuntimeKey } from "../session/i18n.js";
 import { nonVerbalNarration, nonVerbalReason } from "../session/nonverbal.js";
+import { decisionNumber, resolveDecisionRef } from "./decision-refs.js";
+import { labelledOptions, optionTokens, resolveOptionTokens, type LabelledOption } from "./option-labels.js";
 import { availableInPhase, clockTime, formatResult, interventionLabel, investigationName, learnerVitals, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit, vitalsText } from "./format.js";
 import {
   actorFor,
@@ -125,9 +130,9 @@ const LIST_LABEL: Record<ListKind, RuntimeKey> = {
   phases: "label.phases",
 };
 
-/** "Decision 3" — what a locked decision is called instead of its prompt. */
-export function lockedDecisionLabel(c: CaseDefinition, decisionId: string, locale: string): string {
-  return rt(locale, "label.decisionN", { n: c.decisions.findIndex((d) => d.id === decisionId) + 1 });
+/** "Decision 3 (not yet available)" — what a locked decision is called instead of its prompt (its number in case order). */
+export function lockedDecisionLabel(c: Pick<CaseDefinition, "decisions">, decisionId: string, locale: string): string {
+  return rt(locale, "label.decisionN", { n: decisionNumber(c, decisionId) });
 }
 
 /**
@@ -143,7 +148,11 @@ export function visiblePhases(c: CaseDefinition, s: SessionState): Set<string> {
   return new Set(c.phases.map((p) => p.id).filter((id) => shown.has(id)));
 }
 
-/** Names/ids only — never findings, results or correct answers. */
+/**
+ * Names/ids only — never findings, results or correct answers. A decision is listed by its number in case order
+ * ("- Decision 2: <prompt> (open)"; `data.number`) and its options by their letters in presentation order
+ * ("    [A] <text>"; `data.options: [{label, text}]`), never by their authored ids.
+ */
 export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, kind: ListKind): { text: string; data: unknown[] } {
   const c = ctx.caseDef;
   const s = ctx.state();
@@ -188,25 +197,27 @@ export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "s
       break;
     case "decisions":
       for (const d of availableDecisions(c, s)) {
-        const status = d.decided ? "label.decided" : d.unlocked ? "label.unlocked" : "label.locked";
+        // By number in case order, never by authored id: ids can name the diagnosis or the answer ("carney").
+        const number = decisionNumber(c, d.decision.id);
         // A locked decision's prompt and options can state results not yet obtained (or another
-        // decision's answer): only a placeholder and what it still needs.
+        // decision's answer): only its number and what it still needs.
         if (!d.unlocked && !d.decided) {
-          lines.push(`- [${d.decision.id}] ${lockedDecisionLabel(c, d.decision.id, L)}`);
+          lines.push(`- ${lockedDecisionLabel(c, d.decision.id, L)}`);
           lines.push(`    ${t(d.decision.need, L)}`);
-          data.push({ id: d.decision.id, prompt: null, kind: d.decision.kind, unlocked: false, decided: false, need: t(d.decision.need, L), options: [] });
+          data.push({ number, prompt: null, kind: d.decision.kind, unlocked: false, decided: false, need: t(d.decision.need, L), options: [] });
           continue;
         }
-        const options = presentedOptions(c, d.decision);
-        lines.push(`- [${d.decision.id}] ${t(d.decision.prompt, L)} (${rt(L, status)})`);
-        for (const o of options) lines.push(`    [${o.id}] ${t(o.text, L)}`);
+        // Letters in presentation order: authored option ids often name the answer ("supported", "alternative-1").
+        const options = labelledOptions(c, d.decision);
+        lines.push(`- ${rt(L, "tool.list.decision", { n: number, prompt: t(d.decision.prompt, L), status: rt(L, d.decided ? "label.decided" : "label.unlocked") })}`);
+        for (const o of options) lines.push(`    [${o.label}] ${t(o.option.text, L)}`);
         data.push({
-          id: d.decision.id,
+          number,
           prompt: t(d.decision.prompt, L),
           kind: d.decision.kind,
           unlocked: d.unlocked,
           decided: d.decided,
-          options: options.map((o) => ({ id: o.id, text: t(o.text, L) })),
+          options: options.map((o) => ({ label: o.label, text: t(o.option.text, L) })),
         });
       }
       break;
@@ -228,14 +239,14 @@ export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "s
       return never;
     }
   }
-  return { text: `${rt(L, LIST_LABEL[kind])}:\n${lines.length > 0 ? lines.join("\n") : rt(L, "tool.list.empty")}`, data };
+  return { text: `${listHeading(L, rt(L, LIST_LABEL[kind]))}\n${lines.length > 0 ? lines.join("\n") : rt(L, "tool.list.empty")}`, data };
 }
 
 const listOptions: ToolDefinition<ToolArgs> = {
   name: "list_options",
   description:
     "List what can be asked, examined, ordered, given, decided or which phases exist (ids and names only — never findings or results). " +
-    "Use it to find exact ids for other tools.",
+    "Use it to find exact ids for other tools; decisions are numbered (Decision 1, 2, …) and their options lettered (A, B, …) — answer_decision takes the number and the letters.",
   inputSchema: {
     type: "object",
     properties: { kind: { type: "string", enum: [...LIST_KINDS] } },
@@ -554,35 +565,99 @@ const consult: ToolDefinition<ToolArgs> = {
 /* Decisions, phases, time, plan                                       */
 /* ------------------------------------------------------------------ */
 
-function optionIds(args: ToolArgs): string[] {
-  const v = args.option_ids;
-  if (Array.isArray(v)) return v.map((x) => String(x).trim()).filter(Boolean);
-  if (typeof v === "string" && v.trim()) return [v.trim()];
-  return [];
+/** "A (Inferior STEMI); B (Pulmonary embolism)" — every option by its letter, in presentation order. */
+function optionsByLetter(options: readonly LabelledOption<Decision["options"][number]>[], locale: string): string {
+  const zh = isZh(locale);
+  return options.map((o) => (zh ? `${o.label}（${t(o.option.text, locale)}）` : `${o.label} (${t(o.option.text, locale)})`)).join(zh ? "；" : "; ");
+}
+
+/** The decision a `decision_id` names, or the refusal: the reference is not a decision's number or id. */
+export type AnsweredDecision = { ok: true; decision: Decision } | { ok: false; output: string };
+
+/**
+ * The refusal of a reference naming no decision of the case: the decisions by their numbers, never their ids
+ * (which can name the diagnosis or the answer). Shared by `answeredDecision` and a learner `answer` action naming
+ * a decision id the case lacks (`session/action-input.ts`).
+ */
+export function noSuchDecisionText(c: CaseDefinition, ref: string, locale: string): string {
+  if (c.decisions.length === 0) return rt(locale, "tool.answer.noDecisions");
+  return rt(locale, "tool.answer.noSuchDecision", { ref: ref.trim(), numbers: joinList(locale, c.decisions.map((_, i) => String(i + 1))) });
 }
 
 /**
- * A decision the caller may not see yet (neither unlocked nor decided): its
- * prompt and options can state results not yet obtained, so a call naming it
- * gets only what it still needs — never its prompt, option texts or ids.
+ * The decision an `answer_decision` `decision_id` names (`resolveDecisionRef`: its number in case order — "2",
+ * "D2", "决策 2" — else its exact id). A reference naming none is refused with the decisions' numbers, never
+ * their ids (which can name the diagnosis or the answer).
  */
-function lockedDecisionRefusal(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, decisionId: string): ToolOutput | null {
+export function answeredDecision(c: CaseDefinition, ref: string, locale: string): AnsweredDecision {
+  const decision = resolveDecisionRef(c.decisions, ref);
+  return decision ? { ok: true, decision } : { ok: false, output: noSuchDecisionText(c, ref, locale) };
+}
+
+/**
+ * The refusal of tokens naming no option of a decision the caller may see: the tokens as given, then every option
+ * by its letter in presentation order — never its id, never the authored order (where the correct answer usually
+ * comes first). Shared by `answeredOptions` and a learner `answer` action naming an option id its decision lacks.
+ */
+export function unknownOptionsText(c: CaseDefinition, decision: Decision, tokens: readonly string[], locale: string): string {
+  return rt(locale, "tool.answer.badOption", { tokens: joinList(locale, tokens), options: optionsByLetter(labelledOptions(c, decision), locale) });
+}
+
+/** The options an answer names, each once in the order first named, or the refusal listing every option by letter. */
+export type AnsweredOptions = { ok: true; chosen: LabelledOption<Decision["options"][number]>[] } | { ok: false; output: string };
+
+/**
+ * The options an `option_ids` value names on a decision the caller may see (unlocked or decided): read by the one
+ * tokenizer (`optionTokens`: "A, C" in one item is two) and resolved as letters, numbers or exact ids
+ * (`resolveOptionTokens`; the same option twice counts once). A token naming no option, or no token at all (an
+ * item of separators only), is refused with every option by its letter in presentation order — never its id, never
+ * the authored order (where the correct answer usually comes first); more than one option on a single-best-answer
+ * decision is refused too. Shared by `answer_decision` (its precheck and run) and a learner action's tool input
+ * (`session/action-input.ts`).
+ */
+export function answeredOptions(c: CaseDefinition, decision: Decision, optionIds: unknown, locale: string): AnsweredOptions {
+  const labelled = labelledOptions(c, decision);
+  const { chosen, unresolved } = resolveOptionTokens(labelled, optionTokens(optionIds));
+  if (unresolved.length > 0) return { ok: false, output: unknownOptionsText(c, decision, unresolved, locale) };
+  if (chosen.length === 0) return { ok: false, output: rt(locale, "tool.answer.noOption", { options: optionsByLetter(labelled, locale) }) };
+  // "A, C" is two options: a single-best-answer decision takes one (the engine would refuse the answer as invalid).
+  if (decision.kind === "single" && chosen.length > 1) return { ok: false, output: rt(locale, "tool.answer.oneOption", { n: decisionNumber(c, decision.id) }) };
+  return { ok: true, chosen };
+}
+
+/**
+ * A decision the caller may not see yet (neither unlocked nor decided): its prompt and options can state results
+ * not yet obtained, so a call naming it gets only its number and what it still needs — never its prompt, option
+ * texts or ids. Null when the caller may see it.
+ */
+export function lockedDecisionRefusal(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, decision: Pick<Decision, "id">): ToolOutput | null {
   const c = ctx.caseDef;
-  const entry = availableDecisions(c, ctx.state()).find((x) => x.decision.id === decisionId);
+  const entry = availableDecisions(c, ctx.state()).find((x) => x.decision.id === decision.id);
   if (!entry || entry.unlocked || entry.decided) return null;
-  return { ok: false, output: rt(ctx.locale, "tool.answer.need", { need: t(entry.decision.need, ctx.locale) }), data: { rejected: { code: "requirements-unmet" } } };
+  return { ok: false, output: rt(ctx.locale, "tool.answer.need", { n: decisionNumber(c, decision.id), need: t(entry.decision.need, ctx.locale) }), data: { rejected: { code: "requirements-unmet" } } };
+}
+
+/** The decision an `answer_decision` call names, when it names one (its number or id). */
+function namedDecision(args: ToolArgs, ctx: Pick<ToolContext, "caseDef">): Decision | undefined {
+  return resolveDecisionRef(ctx.caseDef.decisions, strArg(args, "decision_id"));
 }
 
 const answerDecision: ToolDefinition<ToolArgs> = {
   name: "answer_decision",
   description:
-    "Answer a decision on the case board (single best answer: one option id; select-all: every option id you choose). " +
+    "Answer a decision on the case board: the decision by its number and the options by the letters list_options(decisions) shows (single best answer: one letter; select-all: every letter you choose). " +
     "Returns whether it is correct and feedback. Decisions unlock once their evidence has been gathered.",
   inputSchema: {
     type: "object",
     properties: {
-      decision_id: { type: "string", minLength: 1 },
-      option_ids: { type: "array", items: { type: "string", minLength: 1 }, minItems: 1, maxItems: 12 },
+      decision_id: { type: "string", minLength: 1, description: "The decision's number as list_options(decisions) and case_status show it (\"2\" for Decision 2); an exact decision id from older clients is accepted too." },
+      option_ids: {
+        type: "array",
+        items: { type: "string", minLength: 1, description: "An option's letter as list_options(decisions) lists it (\"A\", \"B\", …), or its 1-based number in that order; \"A, C\" in one item is two options." },
+        minItems: 1,
+        maxItems: 12,
+        description: "The options you choose, by letter (\"A\") or number (\"1\"); an exact option id from older clients is accepted too.",
+      },
     },
     required: ["decision_id", "option_ids"],
     additionalProperties: false,
@@ -592,49 +667,68 @@ const answerDecision: ToolDefinition<ToolArgs> = {
   scope: "history-only",
   risk: () => "low",
   summarize(args, ctx) {
-    const decisionId = strArg(args, "decision_id");
-    const d = ctx.caseDef.decisions.find((x) => x.id === decisionId);
+    const d = namedDecision(args, ctx);
     const L = ctx.locale;
     // A locked decision is named by its number only (approval dialogs are shown to the learner).
-    if (d && lockedDecisionRefusal(ctx, d.id)) return rt(L, "sum.answerLocked", { label: lockedDecisionLabel(ctx.caseDef, d.id, L) });
-    const options = optionIds(args).map((id) => {
-      const o = d?.options.find((x) => x.id === id);
-      return o ? t(o.text, L) : id;
-    });
-    return rt(L, "sum.answer", { prompt: d ? t(d.prompt, L) : decisionId, options: joinList(L, options) });
+    if (d && lockedDecisionRefusal(ctx, d)) return rt(L, "sum.answerLocked", { label: lockedDecisionLabel(ctx.caseDef, d.id, L) });
+    // The chosen options by their text (letters, numbers and ids alike, each once); a token naming none as given.
+    const { chosen, unresolved } = resolveOptionTokens(d ? labelledOptions(ctx.caseDef, d) : [], optionTokens(args.option_ids));
+    const options = [...chosen.map((o) => t(o.option.text, L)), ...unresolved];
+    return rt(L, "sum.answer", { prompt: d ? t(d.prompt, L) : strArg(args, "decision_id"), options: joinList(L, options) });
   },
-  specifier: (args) => strArg(args, "decision_id"),
-  precheck: (args, ctx) => lockedDecisionRefusal(ctx, strArg(args, "decision_id")),
+  // Rules, and the gate's reasons that quote them (shown to the learner), name a decision by its number; a rule
+  // written with the authored id still applies (`specifiers`).
+  specifier(args, ctx) {
+    const d = namedDecision(args, ctx);
+    return d ? String(decisionNumber(ctx.caseDef, d.id)) : strArg(args, "decision_id");
+  },
+  specifiers(args, ctx) {
+    const d = namedDecision(args, ctx);
+    return d ? [[String(decisionNumber(ctx.caseDef, d.id)), d.id]] : [[strArg(args, "decision_id")]];
+  },
+  // Before any approval, on every tool path: a call naming no decision, a locked one (only what it needs) or no
+  // option of its own cannot run.
+  precheck(args, ctx) {
+    const named = answeredDecision(ctx.caseDef, strArg(args, "decision_id"), ctx.locale);
+    if (!named.ok) return { ok: false, output: named.output };
+    const locked = lockedDecisionRefusal(ctx, named.decision);
+    if (locked) return locked;
+    const options = answeredOptions(ctx.caseDef, named.decision, args.option_ids, ctx.locale);
+    return options.ok ? null : { ok: false, output: options.output };
+  },
   async run(args, ctx) {
     const c = ctx.caseDef;
     const L = ctx.locale;
-    const decisionId = strArg(args, "decision_id");
-    const d = c.decisions.find((x) => x.id === decisionId);
-    if (!d) return { ok: false, output: rt(L, "tool.noSuchId", { id: decisionId }) };
-    // Locked first: an unknown option id must not list a locked decision's options.
-    const locked = lockedDecisionRefusal(ctx, decisionId);
+    const named = answeredDecision(c, strArg(args, "decision_id"), L);
+    if (!named.ok) return { ok: false, output: named.output };
+    const d = named.decision;
+    const n = decisionNumber(c, d.id);
+    // Locked first: an unknown option must not list a locked decision's options.
+    const locked = lockedDecisionRefusal(ctx, d);
     if (locked) return locked;
-    const ids = optionIds(args);
-    const bad = ids.filter((id) => !d.options.some((o) => o.id === id));
-    if (bad.length > 0) {
-      // Presentation order (presentedOptions), never the authored order (correct answer usually first).
-      const listed = presentedOptions(c, d).map((o) => `${o.id} (${t(o.text, L)})`).join(isZh(L) ? "；" : "; ");
-      return { ok: false, output: rt(L, "tool.answer.badOption", { ids: bad.join(", "), options: listed }) };
-    }
-    const result = dispatch(ctx, { type: "answer", decisionId, optionIds: ids });
+    // Letters and numbers in presentation order (presentedOptions), else exact ids; the same option twice counts once.
+    const options = answeredOptions(c, d, args.option_ids, L);
+    if (!options.ok) return { ok: false, output: options.output };
+    const chosen = options.chosen;
+    const result = dispatch(ctx, { type: "answer", decisionId: d.id, optionIds: chosen.map((o) => o.option.id) });
     if (result.rejected) {
-      if (result.rejected.code === "requirements-unmet") return { ok: false, output: rt(L, "tool.answer.need", { need: t(d.need, L) }), data: { rejected: result.rejected } };
-      if (result.rejected.code === "already-decided") return { ok: false, output: rt(L, "tool.answer.already"), data: { rejected: result.rejected } };
-      return rejectedOutput(L, result);
+      // The code only, as `lockedDecisionRefusal`: the engine's own message names the decision by its authored id
+      // ("decision \"phosphate-wasting\" was already answered correctly"), and `data` reaches MCP clients.
+      const rejected = { code: result.rejected.code };
+      if (rejected.code === "requirements-unmet") return { ok: false, output: rt(L, "tool.answer.need", { n, need: t(d.need, L) }), data: { rejected } };
+      if (rejected.code === "already-decided") return { ok: false, output: rt(L, "tool.answer.already", { n }), data: { rejected } };
+      // Anything else (the case has finished…): the reason in the learner's language, as `rejectedOutput` words it.
+      const { output, data } = rejectedOutput(L, result);
+      return { ok: false, output, data: { rejected, message: (data as { message: string }).message } };
     }
     const answered = eventsOf(result, "decision.answered")[0];
     const correct = answered?.correct ?? false;
     const lines = [rt(L, correct ? "tool.answer.correct" : "tool.answer.incorrect")];
-    for (const id of ids) {
-      const o = d.options.find((x) => x.id === id)!;
-      lines.push(`- ${t(o.text, L)}: ${t(o.feedback, L)}`);
-    }
-    return { ok: true, output: lines.join("\n"), data: { decisionId, optionIds: ids, correct, firstTry: answered?.firstTry ?? false } };
+    for (const o of chosen) lines.push(`- ${t(o.option.text, L)}: ${t(o.option.feedback, L)}`);
+    // The decision by its number, the options by letter and text — never their authored ids (the engine's
+    // `decision.answered` records those).
+    const picked = chosen.map((o) => ({ label: o.label, text: t(o.option.text, L) }));
+    return { ok: true, output: lines.join("\n"), data: { decision: n, options: picked, correct, firstTry: answered?.firstTry ?? false } };
   },
 };
 
@@ -776,29 +870,29 @@ const updateWorkup: ToolDefinition<ToolArgs> = {
   },
 };
 
-/** Learner-visible status: objectives, orders, decisions, phase, clock. */
+/** Learner-visible status: objectives, orders, decisions (by number in case order, never by id), phase, clock. */
 export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">): { text: string; data: unknown } {
   const c = ctx.caseDef;
   const s = ctx.state();
   const L = ctx.locale;
   const p = progress(c, s);
   const lines = [rt(L, "tool.status.header", { phase: phaseLabel(c, s.phase, L), clock: clockTime(c, s.clock, L), finished: s.finished ? rt(L, "tool.status.finished") : "" })];
-  lines.push(`${rt(L, "label.objectives")} (${p.done}/${p.total}):`);
+  lines.push(listHeading(L, countedLabel(L, rt(L, "label.objectives"), p.done, p.total)));
   for (const o of p.objectives) lines.push(`  ${o.done ? "✓" : o.current ? "▶" : "·"} ${objectiveTitle(c, o.id, L)}`);
   const orders = orderStatus(c, s);
   if (orders.length > 0) {
-    lines.push(`${rt(L, "label.orders")}:`);
+    lines.push(listHeading(L, rt(L, "label.orders")));
     for (const o of orders) {
       lines.push(`  - ${investigationName(c, o.order.investigationId, L)} [${o.order.investigationId}@${o.order.phase}] ${orderStatusText(c, o, L)}`);
     }
   }
   const decisions = availableDecisions(c, s);
   if (decisions.length > 0) {
-    lines.push(`${rt(L, "label.decisions")}:`);
+    lines.push(listHeading(L, rt(L, "label.decisions")));
     for (const d of decisions) {
       // A locked decision's label already says it is not yet available: no "(locked)" suffix.
-      if (!d.unlocked && !d.decided) lines.push(`  - [${d.decision.id}] ${lockedDecisionLabel(c, d.decision.id, L)}`);
-      else lines.push(`  - [${d.decision.id}] ${t(d.decision.prompt, L)} (${rt(L, d.decided ? "label.decided" : "label.unlocked")})`);
+      if (!d.unlocked && !d.decided) lines.push(`  - ${lockedDecisionLabel(c, d.decision.id, L)}`);
+      else lines.push(`  - ${rt(L, "tool.list.decision", { n: decisionNumber(c, d.decision.id), prompt: t(d.decision.prompt, L), status: rt(L, d.decided ? "label.decided" : "label.unlocked") })}`);
     }
   }
   const objective = currentObjective(c, s);
@@ -812,7 +906,7 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
       progress: p,
       currentObjective: objective?.id ?? null,
       orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
-      decisions: decisions.map((d) => ({ id: d.decision.id, unlocked: d.unlocked, decided: d.decided })),
+      decisions: decisions.map((d) => ({ number: decisionNumber(c, d.decision.id), unlocked: d.unlocked, decided: d.decided })),
       hints: s.hints,
     },
   };

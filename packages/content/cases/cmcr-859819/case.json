@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-859819",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "孕中期发热咳嗽 · 25岁女性",
     "en": "Fever and cough in the second trimester · 25-year-old woman"
@@ -2169,8 +2169,8 @@
         {
           "id": "withhold-pregnancy",
           "text": {
-            "zh-CN": "因为怀孕而暂不使用奥司他韦",
-            "en": "Withhold oseltamivir because of the pregnancy"
+            "zh-CN": "因为怀孕暂不使用奥司他韦：孕22周时这个药对胎儿是否安全还不确定",
+            "en": "Withhold oseltamivir because of the pregnancy: its safety for the fetus at 22 weeks is uncertain"
           },
           "correct": false,
           "feedback": {
@@ -2214,8 +2214,8 @@
         {
           "id": "h7n9-ards",
           "text": {
-            "zh-CN": "人感染H7N9禽流感，合并重度低氧性呼吸衰竭/急性呼吸窘迫综合征",
-            "en": "Human H7N9 avian influenza with severe hypoxaemic respiratory failure / ARDS"
+            "zh-CN": "人感染H7N9禽流感合并重度低氧性呼吸衰竭/急性呼吸窘迫综合征：家禽接触、H7N9核酸阳性、双肺片影、重度低氧",
+            "en": "Human H7N9 avian influenza with severe hypoxaemic respiratory failure / ARDS: a poultry exposure, a positive H7N9 test, bilateral opacities and severe hypoxaemia"
           },
           "correct": true,
           "feedback": {
@@ -2226,20 +2226,20 @@
         {
           "id": "bacterial-cap",
           "text": {
-            "zh-CN": "单纯重症细菌性社区获得性肺炎，继续头孢曲松即可",
-            "en": "Severe bacterial community-acquired pneumonia alone; continue ceftriaxone"
+            "zh-CN": "单纯重症细菌性社区获得性肺炎：发热、咳痰1周，胸片有支气管充气征；住在家禽市场旁边这种接触太常见，说明不了什么——继续头孢曲松即可",
+            "en": "Severe bacterial community-acquired pneumonia alone: a week of fever and sputum with air bronchograms on the film, and living by a poultry market is too common an exposure to count — continue ceftriaxone"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不足。H7N9核酸阳性与流行病学线索指向病毒性重症肺炎；仅抗菌不覆盖病毒。可合并细菌感染，但不能以此否定抗病毒。",
-            "en": "Insufficient. A positive H7N9 test and the epidemiology point to severe viral pneumonia; antibacterials alone do not cover the virus. A bacterial co-infection is possible but does not override antivirals."
+            "zh-CN": "不足。H7N9核酸阳性与流行病学线索指向病毒性重症肺炎：家禽接触在禽流感季节正是关键线索，支气管充气征在病毒性肺炎中同样常见；仅抗菌不覆盖病毒。可合并细菌感染，但不能以此否定抗病毒。",
+            "en": "Insufficient. A positive H7N9 test and the epidemiology point to severe viral pneumonia: in avian-influenza season a poultry exposure is the key clue, and air bronchograms are common in viral pneumonia too; antibacterials alone do not cover the virus. A bacterial co-infection is possible but does not override antivirals."
           }
         },
         {
           "id": "pulmonary-oedema",
           "text": {
-            "zh-CN": "妊娠相关肺水肿",
-            "en": "Pulmonary oedema of pregnancy"
+            "zh-CN": "妊娠相关肺水肿：孕22周血容量增加，双肺门周围片影伴重度低氧符合肺内液体增多，发热只是合并的感染",
+            "en": "Pulmonary oedema of pregnancy: blood volume rises by 22 weeks, perihilar shadowing in both lungs with severe hypoxaemia fits fluid in the lungs, and the fever is a coincidental infection"
           },
           "correct": false,
           "feedback": {
@@ -2250,8 +2250,8 @@
         {
           "id": "uri",
           "text": {
-            "zh-CN": "普通上呼吸道感染，观察即可",
-            "en": "An uncomplicated upper respiratory infection needing only observation"
+            "zh-CN": "普通上呼吸道感染：既往体健的年轻女性，咽痛、全身酸痛、咳少量白痰、发热1周——补液、退热、观察即可",
+            "en": "An uncomplicated upper respiratory infection: sore throat, aches, a little white sputum and a week of fever in a previously well young woman — fluids, antipyretics and observation"
           },
           "correct": false,
           "feedback": {
@@ -2299,20 +2299,20 @@
         {
           "id": "continue-niv",
           "text": {
-            "zh-CN": "继续无创通气，暂不插管",
-            "en": "Continue non-invasive ventilation and hold off on intubation"
+            "zh-CN": "继续无创通气，暂不插管：镇静和有创通气对她和胎儿都有风险，无创通气才试了 1 小时，时间还太短",
+            "en": "Continue non-invasive ventilation and hold off on intubation: sedation and invasive ventilation carry risks for her and the fetus, and one hour is too short a trial"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。无创通气已试用 1 小时无改善即为失败，继续拖延只会延误肺保护性通气、加重缺氧性器官损害。",
-            "en": "Wrong. An hour of non-invasive ventilation without improvement is failure; persisting only delays lung-protective ventilation and worsens hypoxic organ injury."
+            "zh-CN": "错误。无创通气已试用 1 小时无改善即为失败，继续拖延只会延误肺保护性通气、加重缺氧性器官损害；母体缺氧对胎儿的威胁更大。",
+            "en": "Wrong. An hour of non-invasive ventilation without improvement is failure; persisting only delays lung-protective ventilation and worsens hypoxic organ injury, and maternal hypoxaemia is the greater threat to the fetus."
           }
         },
         {
           "id": "high-tidal",
           "text": {
-            "zh-CN": "有创通气但用大潮气量尽快纠正低氧",
-            "en": "Intubate but use large tidal volumes to correct the hypoxaemia quickly"
+            "zh-CN": "插管后用大潮气量、高吸气压尽快纠正低氧：氧合指数持续 < 100 mmHg，母胎都受威胁",
+            "en": "Intubate, then use large tidal volumes and high inspiratory pressures to correct the hypoxaemia quickly, as an oxygenation index persistently below 100 mmHg threatens her and the fetus"
           },
           "correct": false,
           "feedback": {
@@ -2323,8 +2323,8 @@
         {
           "id": "hfno-only",
           "text": {
-            "zh-CN": "仅予经鼻高流量氧疗继续观察",
-            "en": "Give high-flow nasal oxygen only and keep observing"
+            "zh-CN": "改为单用经鼻高流量氧疗继续观察：比面罩耐受性好，孕期能避免插管就尽量避免，她疲劳时再升级",
+            "en": "Change to high-flow nasal oxygen only and keep observing: it is better tolerated than a mask, avoids intubation in pregnancy and can be escalated if she tires"
           },
           "correct": false,
           "feedback": {
@@ -2375,8 +2375,8 @@
         {
           "id": "recruitment-routine",
           "text": {
-            "zh-CN": "常规采用长时程高压肺复张手法改善氧合",
-            "en": "Routinely use prolonged high-pressure recruitment manoeuvres to improve oxygenation"
+            "zh-CN": "在肺保护性通气基础上常规做长时程高压肺复张（PEEP 30 cmH₂O维持30秒），先把塌陷的肺泡打开、改善氧合，必要时再俯卧位",
+            "en": "Routine prolonged high-pressure recruitment manoeuvres (PEEP 30 cmH₂O held for 30 seconds) on top of lung-protective ventilation, to reopen collapsed lung and lift the oxygenation before prone positioning is needed"
           },
           "correct": false,
           "feedback": {
@@ -2387,8 +2387,8 @@
         {
           "id": "ivig-thymosin",
           "text": {
-            "zh-CN": "以免疫球蛋白加胸腺肽α1为主要治疗并认定有效",
-            "en": "Make immunoglobulin plus thymosin α1 the main treatment and regard it as proven effective"
+            "zh-CN": "以免疫球蛋白加胸腺肽α1为主要治疗、配合机械通气，并认定有效：用来增强她对病毒的免疫应答，弥补妊娠期的免疫抑制",
+            "en": "Immunoglobulin plus thymosin α1 as the main treatment alongside ventilation, regarded as proven effective, to boost her immune response to the virus while pregnancy damps it"
           },
           "correct": false,
           "feedback": {
@@ -2399,8 +2399,8 @@
         {
           "id": "highdose-steroid-routine",
           "text": {
-            "zh-CN": "常规大剂量糖皮质激素冲击抗炎",
-            "en": "Give routine high-dose corticosteroid pulses as anti-inflammatory therapy"
+            "zh-CN": "在肺保护性通气基础上常规大剂量糖皮质激素冲击抗炎，压住驱动急性呼吸窘迫综合征的炎症——ATS 2024也建议急性呼吸窘迫综合征用激素",
+            "en": "Routine high-dose corticosteroid pulses alongside lung-protective ventilation, to damp the inflammation driving the ARDS — ATS 2024 suggests corticosteroids for ARDS"
           },
           "correct": false,
           "feedback": {

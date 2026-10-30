@@ -12,9 +12,9 @@
  * (`refused.confirm: "required"`) runs when the client calls again with
  * `confirm: true` (every state-changing tool accepts it).
  */
-import { EmbodimentError, inScope, isHiddenByDeny, rt, validateArgs, WORLD_READ_ONLY_TOOLS, WORLD_TOOL_SPECS, type PracticeScope, type ToolDefinition, type WorldToolSpec } from "@clinicalcraft/agent";
+import { decisionNumber, EmbodimentError, inScope, isHiddenByDeny, rt, validateArgs, WORLD_READ_ONLY_TOOLS, WORLD_TOOL_SPECS, type PracticeScope, type ToolDefinition, type WorldToolSpec } from "@clinicalcraft/agent";
 import type { CaseLibrary } from "@clinicalcraft/agent/node";
-import { normalizeLocale, progress, t, type AssessmentReport } from "@clinicalcraft/core";
+import { normalizeLocale, progress, t, type AssessmentReport, type CaseDefinition } from "@clinicalcraft/core";
 import { bridgedTools } from "./bridge.js";
 import { assessmentText, caseHandle, caseListing, casesText, resolveCaseRef } from "./format.js";
 import { mm } from "./i18n.js";
@@ -381,10 +381,15 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
   });
 }
 
-/** The assessment report as a client may see it before the case is complete. */
-function midCaseReport(report: AssessmentReport, handle: string): Record<string, unknown> {
+/**
+ * The assessment report as a client may see it before the case is complete: the case's handle, how many essential
+ * tests are missing (not which), and every decision — locked ones too — by its number in case order, never its
+ * authored id (ids can name the diagnosis or the answer).
+ */
+function midCaseReport(report: AssessmentReport, c: Pick<CaseDefinition, "id" | "decisions">): Record<string, unknown> {
   const { essentialMissing, ...investigations } = report.investigations;
-  return { ...report, caseId: handle, investigations: { ...investigations, essentialMissingCount: essentialMissing.length } };
+  const decisions = report.decisions.map(({ id, ...d }) => ({ number: decisionNumber(c, id), ...d }));
+  return { ...report, caseId: caseHandle(c.id), investigations: { ...investigations, essentialMissingCount: essentialMissing.length }, decisions };
 }
 
 async function debrief(entry: McpSession): Promise<McpToolResult> {
@@ -408,9 +413,9 @@ async function debrief(entry: McpSession): Promise<McpToolResult> {
   return textResult(text, {
     session_id: entry.id,
     complete,
-    // Mid-case: the handle, not the diagnosis-bearing caseId, and how many essential tests are missing, not which
-    // (an answer key). The debrief names both once the case is complete.
-    report: complete ? assessment.report : midCaseReport(assessment.report, caseHandle(c.id)),
+    // Mid-case: the handle, not the diagnosis-bearing caseId, how many essential tests are missing, not which (an
+    // answer key), and decisions by number, not by id. The debrief names all of them once the case is complete.
+    report: complete ? assessment.report : midCaseReport(assessment.report, c),
     narrative: assessment.narrative,
     judged: assessment.judged,
     debrief: caseDebrief?.data ?? null,

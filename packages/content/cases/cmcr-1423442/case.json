@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1423442",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "胸背痛与渐进性无力 · 46岁男性",
     "en": "Chest and back pain with progressive weakness · 46-year-old man"
@@ -3971,8 +3971,8 @@
         {
           "id": "low",
           "text": {
-            "zh-CN": "偏低：低于参考值下限，说明肾脏在保磷，应找摄入不足或肠道丢失",
-            "en": "Low: it is below the reference range, so the kidney is conserving phosphate — look for poor intake or gut loss"
+            "zh-CN": "偏低：13 mmol低于参考值16–48 mmol/24 h，说明肾脏在恰当地保磷，应找摄入不足、肠道丢失或吸收不良",
+            "en": "Low: 13 mmol is below the laboratory range of 16–48 mmol/24 h, so the kidney is conserving phosphate appropriately — look for poor intake, gut loss or malabsorption"
           },
           "correct": false,
           "feedback": {
@@ -3983,8 +3983,8 @@
         {
           "id": "uninterpretable",
           "text": {
-            "zh-CN": "无法解读：没有磷排泄分数就不能判断是否存在肾性失磷",
-            "en": "Uninterpretable: without the fractional excretion you cannot tell whether he is wasting phosphate"
+            "zh-CN": "无法解读：没有尿肌酐就算不出磷排泄分数或TmP/GFR，单凭24小时尿磷总量不能判断是否存在肾性失磷",
+            "en": "Uninterpretable: with no urine creatinine there is no fractional excretion or TmP/GFR, and a 24-hour total alone cannot show whether he is wasting phosphate"
           },
           "correct": false,
           "feedback": {
@@ -3995,8 +3995,8 @@
         {
           "id": "shift",
           "text": {
-            "zh-CN": "提示磷向细胞内转移（如再喂养、呼吸性碱中毒），与肾脏无关",
-            "en": "It points to phosphate shifting into cells (refeeding, respiratory alkalosis), not to the kidney"
+            "zh-CN": "提示磷向细胞内转移（如再喂养、呼吸性碱中毒）：尿磷只是随血磷降低而减少，与肾脏无关",
+            "en": "It points to phosphate shifting into cells, as in refeeding or respiratory alkalosis: the urinary phosphate simply follows the low serum level and says nothing about the kidney"
           },
           "correct": false,
           "feedback": {
@@ -4056,8 +4056,8 @@
         {
           "id": "adefovir-fanconi",
           "text": {
-            "zh-CN": "阿德福韦酯引起的获得性近端肾小管病（范科尼综合征），伴低磷性骨软化",
-            "en": "Adefovir-induced acquired proximal tubulopathy (Fanconi syndrome) with hypophosphataemic osteomalacia"
+            "zh-CN": "阿德福韦酯引起的获得性近端肾小管病（范科尼综合征）伴低磷性骨软化，发生在用药近10年后",
+            "en": "Adefovir-induced acquired proximal tubulopathy (Fanconi syndrome) with hypophosphataemic osteomalacia, after nearly ten years on the drug"
           },
           "correct": true,
           "feedback": {
@@ -4068,8 +4068,8 @@
         {
           "id": "myeloma",
           "text": {
-            "zh-CN": "多发性骨髓瘤（轻链近端肾小管病）伴病理性骨折",
-            "en": "Multiple myeloma (light-chain proximal tubulopathy) with pathological fractures"
+            "zh-CN": "多发性骨髓瘤伴轻链近端肾小管病：骨折为病理性骨折，骨痛和蛋白尿也都相符",
+            "en": "Multiple myeloma with light-chain proximal tubulopathy: the fractures are pathological, and the bone pain and proteinuria fit too"
           },
           "correct": false,
           "feedback": {
@@ -4080,8 +4080,8 @@
         {
           "id": "vitd-osteomalacia",
           "text": {
-            "zh-CN": "单纯维生素D缺乏引起的骨软化",
-            "en": "Osteomalacia from vitamin D deficiency alone"
+            "zh-CN": "单纯维生素D缺乏引起的骨软化：25-羟维生素D偏低，伴ALP升高、低血磷和骨痛，单补钙未能纠正",
+            "en": "Osteomalacia from vitamin D deficiency alone: a low 25-hydroxyvitamin D with a raised ALP, a low phosphate and bone pain that calcium alone has not corrected"
           },
           "correct": false,
           "feedback": {
@@ -4092,8 +4092,8 @@
         {
           "id": "distal-rta",
           "text": {
-            "zh-CN": "远端（Ⅰ型）肾小管酸中毒",
-            "en": "Distal (type 1) renal tubular acidosis"
+            "zh-CN": "远端（Ⅰ型）肾小管酸中毒：高氯性代谢性酸中毒伴低钾和尿钾丢失，并由此导致骨病",
+            "en": "Distal (type 1) renal tubular acidosis: a hyperchloraemic metabolic acidosis with hypokalaemia and urinary potassium loss, causing the bone disease"
           },
           "correct": false,
           "feedback": {
@@ -4104,8 +4104,8 @@
         {
           "id": "osteoporosis",
           "text": {
-            "zh-CN": "原发性骨质疏松（肌酐正常，可以排除肾脏问题）",
-            "en": "Primary osteoporosis (a normal creatinine rules out a kidney problem)"
+            "zh-CN": "原发性骨质疏松，即此前的诊断：骨科查血钙和PTH正常，肌酐103 μmol/L也正常，可以排除肾脏问题",
+            "en": "Primary osteoporosis, the working diagnosis so far: calcium and PTH were normal in orthopaedics, and a normal creatinine of 103 μmol/L rules out a kidney problem"
           },
           "correct": false,
           "feedback": {
@@ -4142,7 +4142,7 @@
           "id": "switch",
           "text": {
             "zh-CN": "停用阿德福韦酯，当天改用恩替卡韦（原报告做法）或丙酚替诺福韦，不中断抑制病毒，并监测HBV DNA",
-            "en": "Stop adefovir and switch the same day to entecavir (as reported) or tenofovir alafenamide, with no gap in viral suppression, and monitor HBV DNA"
+            "en": "Stop adefovir and switch the same day to entecavir (as reported) or tenofovir alafenamide, with no gap in suppression; monitor HBV DNA"
           },
           "correct": true,
           "feedback": {
@@ -4153,8 +4153,8 @@
         {
           "id": "tdf",
           "text": {
-            "zh-CN": "改用富马酸替诺福韦二吡呋酯（TDF）：抗病毒更强、耐药少",
-            "en": "Switch to tenofovir disoproxil fumarate (TDF): more potent, with little resistance"
+            "zh-CN": "当天改用富马酸替诺福韦二吡呋酯（TDF）：抗病毒作用强于阿德福韦酯、耐药少，可持续抑制HBV DNA",
+            "en": "Switch the same day to tenofovir disoproxil fumarate (TDF): more potent than adefovir, with little resistance, so the HBV DNA stays suppressed"
           },
           "correct": false,
           "feedback": {
@@ -4165,8 +4165,8 @@
         {
           "id": "stop-all",
           "text": {
-            "zh-CN": "停用所有抗乙肝病毒药，等肾小管恢复后再决定",
-            "en": "Stop all hepatitis B treatment until the tubule has recovered, then decide"
+            "zh-CN": "HBV DNA已测不到，先停用所有抗乙肝病毒药，等肾小管恢复后再决定换用什么药",
+            "en": "Stop all hepatitis B treatment, as the HBV DNA is already undetectable, and decide on a new drug once the tubule has recovered"
           },
           "correct": false,
           "feedback": {
@@ -4177,8 +4177,8 @@
         {
           "id": "reduce",
           "text": {
-            "zh-CN": "继续阿德福韦酯，按肾功能延长给药间隔，同时加大补钙",
-            "en": "Continue adefovir with a longer dosing interval for his kidney function, and give more calcium"
+            "zh-CN": "继续用阿德福韦酯（HBV DNA已被抑制），按肾功能延长给药间隔，同时加大补钙",
+            "en": "Continue adefovir, under which the HBV DNA is suppressed, at a longer dosing interval for his kidney function, and give more calcium"
           },
           "correct": false,
           "feedback": {
@@ -4254,8 +4254,8 @@
         {
           "id": "bisphosphonate",
           "text": {
-            "zh-CN": "现在加用双膦酸盐（如阿仑膦酸钠），治疗“重度骨质疏松”和骨折",
-            "en": "Start a bisphosphonate (such as alendronate) now for the 'severe osteoporosis' and the fractures"
+            "zh-CN": "现在加用双膦酸盐（如阿仑膦酸钠70 mg每周1次），治疗“重度骨质疏松”和骨折",
+            "en": "Start a bisphosphonate (such as alendronate 70 mg weekly) now for the 'severe osteoporosis' and the fractures"
           },
           "correct": false,
           "feedback": {
@@ -4266,8 +4266,8 @@
         {
           "id": "wait",
           "text": {
-            "zh-CN": "停用阿德福韦酯后肾小管会很快恢复，继续补钙即可，暂不补磷",
-            "en": "The tubule recovers quickly once adefovir is stopped, so continue calcium and hold off on phosphate"
+            "zh-CN": "停用阿德福韦酯后肾小管会很快恢复，继续补钙即可，暂不补磷，几天后复查血磷再决定",
+            "en": "The tubule recovers quickly once adefovir is stopped, so continue calcium, hold off on phosphate and recheck the serum phosphate in a few days before adding it"
           },
           "correct": false,
           "feedback": {
@@ -5304,7 +5304,7 @@
         ]
       },
       {
-        "text": "以前得过什么病？",
+        "text": "平时有没有什么基础疾病？",
         "locale": "zh-CN",
         "expect": [
           "hepatitis"

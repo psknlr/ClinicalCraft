@@ -43,6 +43,40 @@ The learner always carries `stethoscope`, `thermometer`, `reflex-hammer`,
 provided by equipment in the facility (workstation placements may add
 capabilities via `placement.capabilities`).
 
+## Capability vocabulary
+
+The canonical capabilities are `CAPABILITIES` in core (`schema/common.ts`,
+one-line descriptions); learners and models read their display labels
+(`CAPABILITY_LABELS`, core `i18n.ts`). Case `requires`, equipment
+`capabilities` and template `capabilities` use these ids; any other string is
+a validation warning.
+
+| group | capabilities |
+|---|---|
+| laboratory | `lab-hematology`, `lab-chemistry`, `lab-blood-gas`, `lab-serology`, `lab-microbiology`, `lab-urinalysis`, `lab-endocrine`, `flow-cytometry`, `point-of-care` |
+| imaging | `xray`, `ct`, `mri`, `ultrasound`, `pet-ct`, `fluoroscopy`, `echocardiography` |
+| pathology, genetics | `histopathology`, `cytology`, `cytogenetics`, `molecular` |
+| bedside diagnostics, monitoring | `ecg-12lead`, `cardiac-monitor`, `capnography`, `eeg`, `fetal-monitor`, `stethoscope`, `otoscope`, `reflex-hammer`, `thermometer`, `scale`, `peak-flow` |
+| therapy, resuscitation | `oxygen`, `suction`, `airway`, `ventilator`, `niv`, `nebulizer`, `iv-access`, `infusion-pump`, `defibrillator`, `crash-cart`, `medications`, `blood-bank`, `surgery`, `anesthesia`, `endoscopy`, `dialysis`, `apheresis`, `neonatal-care`, `phototherapy`, `hyperbaric-oxygen` |
+| teaching, records | `anatomy-atlas`, `evidence-board`, `records`, `crafting` |
+
+Specialist capabilities added for the re-authored CMCR cases (plasma
+exchange, EEG, CTG, neonatal care, phototherapy, hyperbaric oxygen), and where
+they are:
+
+| capability | for | equipment (`core-clinical`) | `general-hospital` | `teaching-hospital` |
+|---|---|---|---|---|
+| `apheresis` | therapeutic plasma exchange, red-cell exchange, cytapheresis | `apheresis-machine` (cart) | ward equipment bay, ICU | ICU store |
+| `eeg` | routine and continuous bedside EEG, neonatal aEEG | `eeg-machine` (cart) | ward equipment bay, ICU | ICU store |
+| `fetal-monitor` | cardiotocography (CTG) | `fetal-monitor` (cart) | ward, by bed 1 | — |
+| `neonatal-care` | incubator or radiant-warmer care of a newborn | `neonatal-incubator` (cart) | ward by bed 1, ICU by bed 1 | — |
+| `phototherapy` | neonatal phototherapy | `phototherapy-unit` (cart) | ward by bed 1, ICU by bed 1 | — |
+| `hyperbaric-oxygen` | hyperbaric oxygen therapy | `hyperbaric-chamber` (fixed) | ICU, by the door | — |
+
+A neonatal exchange transfusion needs `neonatal-care`, `blood-bank` and
+`iv-access` (it is done by hand, usually through umbilical catheters, not
+with an apheresis machine).
+
 ## Interaction semantics (web world)
 
 | `interaction.kind` | aimed + `E` opens |
@@ -107,7 +141,7 @@ Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
 
 | field | meaning |
 |---|---|
-| `portable: "cart" \| "handheld"` | can be wheeled to another spot (`cart`) or carried (`handheld`); absent = fixed. The built-in carts: `ecg-machine`, `defibrillator`, `crash-cart`, `treatment-cart`, `oxygen-cylinder`, `nebulizer`, `glucometer-station`, `pocus-cart`, `ultrasound-machine`. Every actor knows where the departments keep them (embodied perception: "usually kept in …") until it sees one elsewhere |
+| `portable: "cart" \| "handheld"` | can be wheeled to another spot (`cart`) or carried (`handheld`); absent = fixed. The built-in carts: `ecg-machine`, `defibrillator`, `crash-cart`, `treatment-cart`, `oxygen-cylinder`, `nebulizer`, `niv-ventilator`, `glucometer-station`, `apheresis-machine`, `eeg-machine`, `fetal-monitor`, `neonatal-incubator`, `phototherapy-unit`, `pocus-cart`, `ultrasound-machine`. Every actor knows where the departments keep them (embodied perception: "usually kept in …") until it sees one elsewhere |
 | `reach` | interaction reach in metres from the footprint (≤ 10). Default by interaction kind (core `DEFAULT_REACH`): workstation 1.2, monitor 2, bed 1.5, device 1.2, atlas 1.5, board 2.5, craft 1.2, sink 1, storage 1, none 1 (doors 1.2, staff 2). `oxygen-outlet` declares 2.2 (reached over the bed head) |
 | `interactionPoints: [{ x, z }]` | where an actor stands to use it: local offsets from the footprint centre, rotated with the placement; absent = any free spot within reach with line of sight |
 | `behavior: { initial, states: { id: { name?, available? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select }, durationSeconds?, reserve?, release?, roles? } }, derived? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`) through the session's normal tool path; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
@@ -225,12 +259,12 @@ size w × d in m):
 | `ed-cubicle` | emergency | 5 × 8 | stretcher, monitor, O₂, infusion pump, crash cart, peak-flow station, curtain; open front; emergency slot |
 | `outpatient-consult` | consult | 6 × 8 | treatment plinth, desk, chairs, diagnostic wall set, records terminal, glucometer, scale, sink; outpatient slot |
 | `ortho-exam` | consult | 6 × 8 | treatment plinth, X-ray lightbox, desk, records terminal, wheelchair, sink; outpatient slot |
-| `operating-theatre` | operating-room | 10 × 8 | operating table, surgical light, anaesthesia machine, monitor, instrument table, suction, infusion pump, O₂, C-arm, medication cabinet, records terminal, scrub sink; sliding door; restricted zone `sterile` (clinician, attending, nurse, porter); operating-room slot |
+| `operating-theatre` | operating-room | 10 × 8 | operating table, surgical light, anaesthesia machine, monitor, instrument table, suction, infusion pump, O₂, C-arm, medication cabinet, treatment cart, records terminal, scrub sink; sliding door; restricted zone `sterile` (clinician, attending, nurse, porter); operating-room slot |
 | `ct-room` | imaging | 7 × 8 | CT scanner, radiology console, O₂, sink; radiologist |
 | `xray-room` | imaging | 6 × 8 | X-ray machine, chest stand, C-arm, ultrasound/echo machine, lightbox |
 | `clinical-lab` | laboratory | 10 × 8 | chemistry, haematology, blood-gas and urinalysis analysers, flow cytometer, cytogenetics workstation, biosafety cabinet, centrifuge, microscope, blood-bank and lab fridges, workstation, tube station (13 laboratory/pathology capabilities); lab technician |
-| `ward-bay-4` | ward | 12 × 8 | 4 beds, 4 monitors, 4 O₂ outlets, 2 infusion pumps, curtains, overbed tables, sink; double door; 4 inpatient/ward slots |
-| `icu-bed-space` | icu | 5.5 × 8 | bed, monitor, O₂, ventilator, infusion pump, suction, dialysis machine, sink; sliding door; icu slot |
+| `ward-bay-4` | ward | 12 × 8 | 4 beds, 4 monitors, 4 O₂ outlets, 2 infusion pumps, curtains, overbed tables, sink, treatment cart, mobile NIV unit; double door; 4 inpatient/ward slots |
+| `icu-bed-space` | icu | 5.5 × 8 | bed, monitor, O₂, ventilator, infusion pump, suction, dialysis machine, treatment cart, sink; sliding door; icu slot |
 | `rehab-gym` | rehabilitation | 10 × 8 | parallel bars, treatment plinths, exercise bikes, wall bars, exercise mat, scale, wheelchair |
 | `pharmacy` | pharmacy | 6 × 8 | counter, records terminal, medication cabinet and fridge, pharmacy shelves; restricted zone `dispensary` (pharmacist, nurse); pharmacist |
 | `nursing-station` | nurse-station | 6 × 8 | nurse-station desk, records terminal, board, medication cabinet and fridge, glucometer, ECG cart, crash cart, defibrillator, sink; open front; nurse |
@@ -324,14 +358,23 @@ suction, wall), `oxygen-cylinder` (device, oxygen, portable),
 `iv-pole` (no capability, interaction none: a stand), `infusion-pump` (device,
 infusion-pump — infusion hardware; IV access is the patient's cannula, not
 equipment),
-`ventilator` (device, ventilator), `suction-unit` (device, suction),
-`nebulizer` (device, nebulizer, portable), `glucometer-station` (device, point-of-care),
+`ventilator` (device, ventilator + niv), `suction-unit` (device, suction),
+`nebulizer` (device, nebulizer, portable), `niv-ventilator` (device, niv,
+portable: the ward's mobile BiPAP/CPAP unit), `glucometer-station` (device, point-of-care),
 `diagnostic-wall-set` (device, otoscope + stethoscope, wall),
 `anesthesia-machine` (device, anesthesia + airway), `operating-table`,
 `surgical-light` (light), `instrument-table`, `medication-cabinet`
 (device, medications), `medication-fridge` (storage, medications),
 `pharmacy-shelves`, `blood-bank-fridge` (device, blood-bank),
-`dialysis-machine` (device, dialysis), `exam-light`, `peak-flow-station`
+`dialysis-machine` (device, dialysis), `apheresis-machine` (device, apheresis,
+portable: a centrifugal cell separator for plasma exchange, red-cell exchange
+and cytapheresis), `eeg-machine` (device, eeg, portable: video-EEG for routine
+and continuous bedside EEG, aEEG in neonates), `fetal-monitor` (device,
+fetal-monitor, portable: a CTG on a trolley), `neonatal-incubator` (device,
+neonatal-care, portable: an incubator whose hood lifts to a radiant-warmer
+bed), `phototherapy-unit` (device, phototherapy, portable: an LED lamp on a
+pole stand), `hyperbaric-chamber` (device, hyperbaric-oxygen, fixed: a
+monoplace chamber that takes ventilated patients), `exam-light`, `peak-flow-station`
 (device, peak-flow), `weighing-scale` (device, scale).
 
 `core-diagnostics.json` — imaging, laboratory, pathology:
@@ -360,7 +403,16 @@ cytogenetics + molecular), `slide-scanner`, `microtome`, `tissue-processor`,
 * `general-hospital` — multi-department hospital (ED with resus bays and
   ambulance bay, outpatient clinic, radiology, laboratory, pathology,
   pharmacy, ward, ICU, operating theatre, nurse station, conference room,
-  garden + build zone). Patient slots accept every case setting.
+  garden + build zone). Patient slots accept every case setting. Because a
+  case's patient takes the first slot accepting its setting (an `inpatient`
+  case ward bed 1, an `icu` case ICU bed 1; neonates and pregnant women
+  included), the ward and the ICU also hold the specialist equipment the CMCR
+  cases need: in the ward's equipment bay an EEG cart and an apheresis
+  machine, and by bed 1 a mother-and-baby corner (neonatal incubator,
+  phototherapy unit, CTG); in the ICU an EEG cart, an apheresis machine, a
+  neonatal incubator and a phototherapy unit, and by the door a monoplace
+  hyperbaric chamber (the hospital has no separate neurophysiology,
+  apheresis, maternity, neonatal or hyperbaric unit).
 * `teaching-hospital` — a two-level teaching hospital composed from room
   templates (22 instances): **L0** entrance plaza, lobby with reception,
   triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology
@@ -371,7 +423,11 @@ cytogenetics + molecular), `slide-scanner`, `microtome`, `tissue-processor`,
   rehabilitation gym, operating theatre (restricted sterile zone), staff
   room. Main stairs (2 m wide, lobby → first-floor landing) and an elevator
   (cars on both levels). 17 patient slots (emergency, outpatient,
-  inpatient/ward, icu, operating-room), 11 staff on both levels. It is
+  inpatient/ward, icu, operating-room), 11 staff on both levels. The ICU
+  store keeps an EEG cart and an apheresis machine for the first floor; an
+  adult hospital, it has no neonatal, obstetric (CTG) or hyperbaric
+  equipment, so cases that need `neonatal-care`, `phototherapy`,
+  `fetal-monitor` or `hyperbaric-oxygen` are not offered there. It is
   nobody's own facility: the web offers it as an alternative for every case
   it can host without blocking capability gaps (9 of the 10 built-in cases).
 

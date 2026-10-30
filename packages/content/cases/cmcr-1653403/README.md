@@ -15,7 +15,7 @@ feedback and the debrief.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653403` / `1.1.0` |
+| id / version | `cmcr-1653403` / `1.1.1` |
 | setting / facility | `outpatient` / `general-hospital` (antenatal clinic → operating theatre → ward) |
 | specialty | obstetrics, neonatology |
 | difficulty | 3 / 5 |
@@ -378,6 +378,35 @@ edition and URL were confirmed by the audit, its publication year was not.
   guideline (ERC/AHA) is cited; a reviewer may add them.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all four
+  single-best decisions the keyed option was the uniquely longest in both
+  languages (1.4–2.5 times the mean option length); now it is in none. The
+  `neonatal-resus` and `diagnosis` keys say the same in fewer words (the
+  `management` and `anti-d` keys are unchanged). Each distractor now gives
+  the reason it tempts, in the key's register: she has not counted the
+  movements and last week's scan was normal (repeat the CTG in a week, sooner
+  if the movements stop); the sinusoidal pattern is only suspected, so
+  confirm fetal anaemia by MCA Doppler and KB first; two previous births, so
+  induce under continuous CTG; a breech at term, so turn the baby first;
+  shock at 49/25 mmHg, so 10 mL/kg saline boluses that need no crossmatch;
+  samples taken after a transfusion are harder to interpret; an exchange
+  corrects the anaemia without overloading the circulation; ABO disease
+  despite a negative Coombs test; Rhesus disease worsening in a third
+  pregnancy; anaemia found the moment she was born (blood lost at the
+  caesarean); severe α-thalassaemia as a recognised cause of anaemia from
+  birth — each `diagnosis` option now also names the test it would send;
+  a standard anti-D dose within 72 hours for a large bleed; a calculated
+  dose because the bleed exceeds a standard dose; anti-D as routine antenatal
+  prophylaxis rather than a response to a bleed. The feedback of
+  `routine-review`, `investigate-first`, `induce`, `ecv`, `crystalloid-only`,
+  `wait-tests`, `exchange`, `abo`, `rh`, `standard-dose` and `never` now also
+  answers the reason its text gives. Every reason uses facts the case
+  already holds (triage note, history, CTG, the decision prompts); medical
+  meaning, correct flags, scoring and the reference path are unchanged.
+- **Option ids neutral:** every id already names its content; none renamed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

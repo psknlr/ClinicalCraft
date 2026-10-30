@@ -13,7 +13,7 @@ outcome are the report's; what the report does not record stays unknown.
 
 | | |
 |---|---|
-| id / version | `cmcr-1551890` / `1.1.0` |
+| id / version | `cmcr-1551890` / `1.1.1` |
 | setting / facility | `icu` / `general-hospital` (ICU bed 1) |
 | specialty | cardiology, critical care |
 | difficulty | 4 / 5 |
@@ -346,6 +346,25 @@ no DOI: its volume and pages appear only in citing articles.
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all 4
+  single-best decisions in both languages; now it is in one (`lv-unloading`). Each distractor states its reasoning in
+  the key's register: re-occlusion after lysis with an ischaemic murmur; papillary-muscle rupture with severe mitral
+  regurgitation, confirmed by echo; free-wall rupture as the most rapidly fatal complication; fluid boluses because
+  positive-pressure ventilation lowers preload; multivessel PCI to restore pump function; a titrated vasodilator with
+  support in reserve; immediate repair because each day on support adds complications; a fixed 4–6-week date (the
+  report's surgical advice) on ECMO and the IABP; no repair while support holds; device closure to spare a sternotomy;
+  more ECMO flow with CRRT ultrafiltration; removing the IABP to spare a femoral line; a fluid bolus to fill the
+  ventricle. The keys of `support`, `management` and `lv-unloading` are tighter wording of the same plan; the
+  `diagnosis` key text is unchanged. The more-flow feedback also answers the ultrafiltration argument. Correct flags
+  and scoring are unchanged.
+- **Option id `supported`** (it named the answer) is now `septal-rupture`; the reference `solution` answers with it. No
+  test, benchmark scenario or e2e spec referred to it (`packages/web/e2e/cmcr.spec.ts` replays the `solution`).
+- **Companion named in character** (`cases validate --strict`): 「家属（教学设定）」/ "Relative (teaching role)" →
+  「欧阳女士的家属（化名）」/ "Ms Ouyang's relative (pseudonym)", as in cmcr-138898. The persona, the answers and
+  the unrecorded relationship are unchanged.
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 - **She cannot speak (audit B1, D1, D4).** The ventilated patient no longer greets the learner: an actor brief
@@ -398,7 +417,7 @@ no DOI: its volume and pages appear only in citing articles.
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-1551890/case.json   # 0 errors, 0 warnings
+npm run -s cc -- cases validate packages/content/cases/cmcr-1551890/case.json --strict   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-1551890                                      # 52 steps, objectives 6/6, decisions 4/4, utterances 40/40
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-1551890
 npm run -s cc -- exec --case cmcr-1551890 --autopilot --approval bypass --provider offline --output-format json             # 19/19

@@ -12,7 +12,7 @@ record; the decisions teach current guidance and say where earlier care fell sho
 
 | | |
 |---|---|
-| id / version | `cmcr-33716` / `1.1.0` |
+| id / version | `cmcr-33716` / `1.1.1` |
 | setting / facility | `inpatient` (a ward bed: respiratory ward, then cardiology) / `general-hospital` |
 | specialty | cardiology, infectious diseases, cardiac surgery |
 | difficulty / estimated time | 3 / 5 · ~35 min (static clock) |
@@ -95,7 +95,7 @@ option's text.
 | decision | opens when | correct | distractors (and why they are there) |
 |---|---|---|---|
 | `first-steps` | history (incl. this week, the brain event, earlier heart checks), the murmur and the ED record — **before** any echo or culture result | work up for IE: cultures before any new antibiotic, prompt echo (TOE if needed), cardiology to take over — what the report's respiratory team did | hospital-acquired pneumonia, antibiotics now (the ED film); a flow murmur from fever and anaemia; another brain bleed — repeat the head CT (**the first hospital's anchoring**) |
-| `diagnosis` | echo and cultures read | definite IE: 1 major + 3 minor whatever the microbiological criterion | "possible" because E. faecium doesn't count; definite because E. faecium is a major criterion (right answer, wrong reason); rejected because of the earlier normal echos; pneumonia with sepsis |
+| `diagnosis` | echo and cultures read | definite IE: 1 major + 3 minor whatever the microbiological criterion | "possible" because E. faecium doesn't count; definite because E. faecium is a major criterion (right answer, wrong reason); rejected because of the earlier normal echos and the "old" (healed-looking) vegetations; pneumonia with sepsis |
 | `surgery` | diagnosis decided, labs and neurological record read, the breathing history asked | urgent surgery within days; the haemorrhage (~4 months) is past the ≥ 4-week delay; probable infarct no reason to wait; Endocarditis Team | defer until a 6-week course ends; antibiotics alone; emergency surgery tonight without team review |
 | `first-presentation` | earlier records read (any phase) | fever + intracranial haemorrhage/aneurysm = possible IE: repeated auscultation, cultures, echo, consider an infective aneurysm before treating it | "no murmur, so excluded"; hysteria plus empirical antibiotics; coil first, chase the fever later |
 
@@ -303,6 +303,24 @@ independently; see To verify.
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all four
+  single-best decisions in both languages (2.2–5.2 times the mean length of the other options); now it is in none
+  (0.99–1.13). The keys say the same in fewer words; each distractor now says why it tempts, from recorded facts only:
+  hospital-acquired pneumonia from the ED film, 38.6 °C and a pulse of 120/min; a flow murmur from a hyperdynamic
+  circulation with an ED haemoglobin of 98 g/L; another bleed, as with the fever four months ago; "possible" by
+  counting 1 major and 2 minor criteria; E. faecium as a typical enterococcus whatever the culture interval;
+  "rejected" because the post-injury echocardiograms were normal and the old-looking vegetations seem healed; deferral
+  for the bleeding risk of heparin on bypass; antibiotics alone because the vegetations look old and the blood
+  pressure is stable; emergency surgery for probable chordal rupture, a BNP of 377 ng/L and orthopnoea; endocarditis
+  "reasonably excluded" at the first visit (no murmur, 37.7 °C, normal echocardiograms); hysteria with neutrophils of
+  91.8 % and a psychiatry review; securing the bleeding aneurysm first. Medical meaning, correct flags, scoring and
+  the reference path are unchanged; the feedback of `dx-rejected`, `sx-defer`, `sx-medical`, `sx-emergency`,
+  `fp-no-murmur` and `fp-coil-first` now also answers the reason its text gives.
+- **Option ids neutral:** every id already names its content; none renamed.
+- Checked on 2026-10-30: `cases validate --strict` 0 errors, 0 warnings; `cases verify` 100 % (see Validation).
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 - **DOI fixed:** `10.3760/cma.j.issn.0253-3758.2014.02.016` (hyphen, as printed in the PDF) in `provenance.doi`, the
@@ -337,7 +355,7 @@ independently; see To verify.
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-33716/case.json
+npm run -s cc -- cases validate packages/content/cases/cmcr-33716/case.json --strict
 npm run -s cc -- cases verify cmcr-33716
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-33716
 npm run -s cc -- exec --case cmcr-33716 --autopilot --approval bypass --provider offline --output-format json
@@ -347,6 +365,9 @@ npm run -s cc -- exec --case cmcr-33716 --autopilot --approval bypass --provider
 On 2026-10-28 (1.1.0): validate 0 errors, 0 warnings; verify passes — 50 steps, objectives 6/6, decisions 4/4,
 utterances 40/40; the collection test passes; the offline demonstration scores 19/19 (100 %) with every objective done
 in clinical and in-world mode (zh-CN and en).
+
+On 2026-10-30 (1.1.1): `cases validate --strict` 0 errors, 0 warnings; `cases verify` passes — 50 steps,
+objectives 6/6, decisions 4/4, utterances 40/40, rubric 19/19 (100 %).
 
 ## 中文摘要
 

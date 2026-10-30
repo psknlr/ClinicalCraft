@@ -15,9 +15,9 @@ feedback and debrief.
 
 | | |
 |---|---|
-| id / version | `cmcr-51617` / `1.1.0` |
+| id / version | `cmcr-51617` / `1.1.1` |
 | setting / facility | `inpatient` / `general-hospital` (paediatric ward bed `ward-1`) |
-| specialty | paediatrics, paediatric cardiology |
+| specialty | paediatrics, cardiology |
 | difficulty | 4 / 5 |
 | estimated time | about 35 min (static clock: four staged phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
@@ -454,6 +454,35 @@ catalogues; the 2023 Chinese guideline on the journal's own site
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** The keyed option
+  was the uniquely longest in all four decisions in both languages
+  (1.9–3.8 times the mean length of the other options); now it is in none
+  (1.03–1.15). The keys say the same in fewer words; each distractor now says
+  why it tempts: escalation because amoxicillin and then cefepime failed;
+  meningitis first because she is drowsy with a tense fontanelle and equivocal
+  neck stiffness; Kawasaki disease "excluded" because only today's examination
+  counts; aseptic meningitis from a CSF protein of 0.49 g/L with those signs;
+  partly treated infection after five days of antibiotics and a CRP over
+  200 mg/L; IVIG "too late" on illness day 10 with the coronaries already
+  dilated; the millimetre grades read as "not high-risk" without a recorded
+  length; a repeat lumbar puncture because the CSF was taken on antibiotics;
+  the report's 50 mg twice daily because of platelets of 915 ×10⁹/L and a CRP
+  of 20.9 mg/L; stopping aspirin to spare the Reye syndrome and bleeding
+  risks; routine vaccines, measles-containing included, so that an infant this
+  ill misses no protection. Medical meaning, correct flags, scoring and the
+  reference path are unchanged; the feedback of `culture-negative-sepsis`,
+  `absolute-grade`, `report-dose` and `stop-aspirin` now also answers the
+  reason its text gives.
+- **Option ids neutral:** every id already names its content; none renamed.
+- **Specialty canonical (`cases validate --strict`):** `pediatric-cardiology`
+  is a synonym, so the case lists `pediatrics` + `cardiology`, as the
+  specialty canon asks for a child's organ specialty.
+- Checked on 2026-10-30: `cases validate --strict` 0 errors, 0 warnings;
+  `cases verify` passes (69 steps, objectives 6/6, decisions 4/4, utterances
+  39/39, rubric 22/22).
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 - **Clinical content.** The management decision now teaches IVIG 2 g/kg as a
@@ -503,7 +532,7 @@ catalogues; the 2023 Chinese guideline on the journal's own site
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-51617/case.json
+npm run -s cc -- cases validate packages/content/cases/cmcr-51617/case.json --strict
 npm run -s cc -- cases verify cmcr-51617
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-51617
 npm run -s cc -- exec --case cmcr-51617 --autopilot --approval bypass --provider offline --output-format json

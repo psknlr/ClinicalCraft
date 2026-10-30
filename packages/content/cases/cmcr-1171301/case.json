@@ -11,10 +11,10 @@
     "en": "Eye history, hypotonia and tubular abnormalities suggest a multisystem genetic disorder beyond isolated motor delay."
   },
   "specialty": [
-    "paediatric-neurology",
+    "pediatrics",
+    "neurology",
     "nephrology",
-    "genetics",
-    "ophthalmology"
+    "genetics"
   ],
   "setting": "inpatient",
   "facility": "general-hospital",

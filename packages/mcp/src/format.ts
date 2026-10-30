@@ -3,7 +3,7 @@
  * Only case data and engine results are stated (grounding rules §2.1); every
  * assessment ends with the teaching-script notice.
  */
-import { caseHandle, criticalMissLines, investigationName, joinList, reviewStatusLine, rt } from "@clinicalcraft/agent";
+import { caseHandle, criticalMissLines, decisionNumber, investigationName, joinList, labelledOptions, reviewStatusLine, rt } from "@clinicalcraft/agent";
 import { specialtyLabels, t, type AssessmentReport, type CaseDefinition, type LocalizedText } from "@clinicalcraft/core";
 import { mm } from "./i18n.js";
 
@@ -15,6 +15,34 @@ import { mm } from "./i18n.js";
  * a caller who knows it).
  */
 export { caseHandle };
+
+/**
+ * The letters a learner's answer is presented under (`labelledOptions`, as `list_options(decisions)` lists them):
+ * the state and transcript resources say what the learner chose by letter, never by the authored option ids,
+ * which can name the answer ("supported", "alternative-1"). An option the case lacks reads "?".
+ */
+export function answerLetters(c: Pick<CaseDefinition, "id" | "decisions">, decisionId: string, optionIds: readonly string[]): string[] {
+  const d = c.decisions.find((x) => x.id === decisionId);
+  const labelled = d ? labelledOptions(c, d) : [];
+  return optionIds.map((id) => labelled.find((o) => o.option.id === id)?.label ?? "?");
+}
+
+/** A learner's answer as the resources show it: what `learnerAnswer` gives in place of the authored ids. */
+export interface LearnerAnswer {
+  /** The decision's number in case order (as `list_options(decisions)` and `case_status` show it); null if unknown. */
+  decision: number | null;
+  /** The options chosen, by their letters (`answerLetters`). */
+  options: string[];
+}
+
+/**
+ * A learner's answer by the names the learner reads: the decision by its number in case order, the options by their
+ * letters — never the authored ids, which can name the diagnosis or the answer ("carney", "supported").
+ */
+export function learnerAnswer(c: Pick<CaseDefinition, "id" | "decisions">, decisionId: string, optionIds: readonly string[]): LearnerAnswer {
+  const n = decisionNumber(c, decisionId);
+  return { decision: n > 0 ? n : null, options: answerLetters(c, decisionId, optionIds) };
+}
 
 /** The case a `start_case` reference names: a handle from `list_cases`, else an exact case id. */
 export function resolveCaseRef<T extends { id: string }>(cases: Iterable<T>, ref: string): T | null {

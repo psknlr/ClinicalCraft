@@ -19,6 +19,7 @@ import { statusLabel } from "../app/llm.js";
 import { caseDisclaimer, ct, getLocale, reviewLine, tr, trMaybe } from "../i18n/index.js";
 import { clear, h } from "./dom.js";
 import { caseCollectionBadge, caseCollections, matchesLibraryQuery } from "./library.js";
+import { searchInput, type SearchInput } from "./search-input.js";
 
 type Status = "loading" | "ready" | "failed";
 
@@ -47,6 +48,8 @@ export class Intro {
   private listEl: HTMLElement | null = null;
   private countEl: HTMLElement | null = null;
   private resetEl: HTMLButtonElement | null = null;
+  /** The search box's input handling: the list follows typing once it pauses, never pinyin being composed. */
+  private search: SearchInput | null = null;
   /** The case whose learning-outcomes disclosure the learner opened (kept across re-renders). */
   private outcomesOpenFor: string | null = null;
 
@@ -63,6 +66,7 @@ export class Intro {
   }
 
   hide(): void {
+    this.search?.cancel();
     this.root.hidden = true;
   }
 
@@ -113,6 +117,9 @@ export class Intro {
     const pill = statusLabel(app.choice());
     const pillText = pill.mode === "offline" ? tr("llm.pill.offline") : pill.mode === "proxy" ? tr("llm.pill.proxy", { model: pill.model || pill.provider }) : tr("llm.pill.direct", { provider: pill.provider, model: pill.model });
 
+    // The case list is rebuilt: it keeps its scroll position, so the card a learner just tapped stays under the
+    // finger (restored below, once the new list is in the document: a detached element ignores scrollTop).
+    const listScroll = this.listEl?.scrollTop ?? 0;
     clear(this.root);
     this.root.append(
       h(
@@ -171,6 +178,7 @@ export class Intro {
       ),
       h("div", { class: "intro-foot", html: tr("intro.foot.html", { caseLabel: card ? escapeHtml(footLabel(card)) : "" }) }),
     );
+    if (this.listEl) this.listEl.scrollTop = listScroll;
   }
 
   private async start(caseId: string, facilityId: string, resume: boolean): Promise<void> {
@@ -244,11 +252,13 @@ export class Intro {
       card.review
         ? h("p", { id: "case-review", class: ["case-review", `review-${card.review.status}`], title: reviewNotes ? ct(reviewNotes) : null, dataset: { status: card.review.status } }, reviewLine(card.review))
         : null,
+      // The teaching-case notice and the (closed) learning outcomes come before the controls: they stay in view
+      // however short the panel's scroll area is.
+      h("p", { id: "case-disclaimer", class: "case-disclaimer", role: "note" }, caseDisclaimer(card.disclaimer)),
+      this.outcomesDisclosure(card),
       h("label", { class: "facility-row" }, h("span", null, tr("library.facility")), facility),
       card.setting !== "outpatient" ? h("small", { class: "facility-note" }, tr("library.facilityOutpatient")) : null,
       this.embodimentRow(card),
-      h("p", { id: "case-disclaimer", class: "case-disclaimer", role: "note" }, caseDisclaimer(card.disclaimer)),
-      this.outcomesDisclosure(card),
       this.caseStatusLine(card),
     );
   }
@@ -324,6 +334,17 @@ export class Intro {
     const specialties = [...new Set(cards.flatMap((c) => c.specialty.map(specialtyLabel)))].sort((a, b) => a.localeCompare(b, getLocale()));
     if (this.specialty && !specialties.includes(this.specialty)) this.specialty = ""; // a label from the previous language
     const settings = [...new Set(cards.map((c) => c.setting))];
+    // The list follows typing once it pauses, and never while an input method composes pinyin (search-input.ts);
+    // `aria-busy` marks the list while a search waits.
+    this.search?.cancel();
+    const typed = searchInput({
+      query: (text) => {
+        this.query = text;
+        this.listEl?.setAttribute("aria-busy", "true");
+      },
+      refresh: () => this.renderList(selected),
+    });
+    this.search = typed;
     const search = h("input", {
       type: "search",
       id: "library-search",
@@ -331,12 +352,14 @@ export class Intro {
       "aria-label": tr("library.search"),
       value: this.query,
       autocomplete: "off",
-      oninput: (e: Event) => {
-        this.query = (e.target as HTMLInputElement).value;
-        this.renderList(selected);
-      },
+      oninput: (e: Event) => typed.input((e.target as HTMLInputElement).value, (e as InputEvent).isComposing),
+      oncompositionstart: () => typed.compositionStart(),
+      oncompositionend: (e: Event) => typed.compositionEnd((e.target as HTMLInputElement).value),
     });
-    search.addEventListener("keydown", (e) => e.stopPropagation());
+    search.addEventListener("keydown", (e) => {
+      e.stopPropagation();
+      if (e.key === "Enter" && !e.isComposing) typed.flush();
+    });
     const spec = h(
       "select",
       {
@@ -376,6 +399,7 @@ export class Intro {
     collections.map((item) => h("option", { value: item.id, selected: this.collection === item.id }, item.label))) : null;
     this.countEl = h("span", { class: "count", role: "status", "aria-live": "polite", "aria-atomic": "true" });
     this.resetEl = h("button", { type: "button", id: "library-reset", class: "link", onclick: () => {
+      this.search?.cancel();
       this.query = this.specialty = this.setting = this.collection = "";
       this.render();
       this.root.querySelector<HTMLInputElement>("#library-search")?.focus();
@@ -412,6 +436,12 @@ export class Intro {
   private renderList(selected: CaseCard | null): void {
     const list = this.listEl;
     if (!list) return;
+    // This rebuild applies the current query: a search waiting for the typing pause is done.
+    this.search?.cancel();
+    list.removeAttribute("aria-busy");
+    // Nor does a rebuild take the keyboard focus away from the card it was on.
+    const active = document.activeElement;
+    const focusedCase = active instanceof HTMLElement && list.contains(active) ? active.dataset.case : undefined;
     clear(list);
     const app = this.app;
     const shown = app.content.cards.filter((c) => this.matches(c));
@@ -467,14 +497,21 @@ export class Intro {
       );
       list.append(b);
     }
-    // Keep the selected card visible inside the list only (scrollIntoView would also scroll the page).
+    const refocus = focusedCase ? [...list.querySelectorAll<HTMLButtonElement>(".case-card")].find((b) => b.dataset.case === focusedCase) : undefined;
+    if (refocus) {
+      for (const b of list.querySelectorAll<HTMLButtonElement>(".case-card")) b.tabIndex = b === refocus ? 0 : -1;
+      refocus.focus({ preventScroll: true });
+    }
+    // Keep the selected card visible inside the list only (scrollIntoView would also scroll the page), scrolling no
+    // further than it takes: a card already in view does not move.
     const act = list.querySelector<HTMLElement>(".case-card.active");
     if (act)
       requestAnimationFrame(() => {
-        if (list.scrollHeight <= list.clientHeight + 2) return;
+        if (!act.isConnected || list.scrollHeight <= list.clientHeight + 2) return;
         const lr = list.getBoundingClientRect();
         const ar = act.getBoundingClientRect();
-        if (ar.top < lr.top || ar.bottom > lr.bottom) list.scrollTop += ar.top - lr.top - 8;
+        if (ar.top < lr.top) list.scrollTop -= lr.top - ar.top + 8;
+        else if (ar.bottom > lr.bottom) list.scrollTop += Math.min(ar.bottom - lr.bottom + 8, ar.top - lr.top - 8);
       });
   }
 }

@@ -14,7 +14,7 @@ Node only; run it through `clinicalcraft bench`.
 `pulmonary-embolism-postop`, `septic-shock-cap`, `smzl-lung-adeno`,
 `stemi-inferior-rv`). Every one of those cases has a clinical workflow.
 Adding cases to the catalogue does not add benchmark scenarios or extend
-the published results. The 20 CMCR adaptations are checked separately by
+the published results. The 125 CMCR adaptations are checked separately by
 `cases verify --all` and the CMCR content tests; they are not represented by
 the v1 benchmark success rate. `grounding-v1` uses the same ten-case cohort
 and retains its frozen test digest (see [scope and freezing](../../docs/GROUNDING.md#3-splits-freezing-and-honesty)).

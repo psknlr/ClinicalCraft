@@ -11,8 +11,9 @@
     "en": "Persistent pain, fever and diarrhoea in a young child may not be fully explained by a local surgical finding."
   },
   "specialty": [
-    "paediatric-surgery",
-    "paediatric-gastroenterology"
+    "pediatric-surgery",
+    "pediatrics",
+    "gastroenterology"
   ],
   "setting": "inpatient",
   "facility": "general-hospital",
@@ -29,8 +30,7 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "杨书龙, 管声扬, 李昭铸, 崔清波. 小儿克罗恩病合并梅克尔憩室炎误诊为阑尾炎1例. 中华结直肠疾病电子杂志. 2013;02(04):195-195. doi:10.3877/cma.j.issn.2095-3224.2013.04.11..",
-    "doi": "10.3877/cma.j.issn.2095-3224.2013.04.11.",
+    "citation": "杨书龙, 管声扬, 李昭铸, 崔清波. 小儿克罗恩病合并梅克尔憩室炎误诊为阑尾炎1例. 中华结直肠疾病电子杂志. 2013;02(04):195-195.",
     "authors": [
       "杨书龙",
       "管声扬",
@@ -1561,7 +1561,7 @@
       }
     ],
     "references": [
-      "杨书龙, 管声扬, 李昭铸, 崔清波. 小儿克罗恩病合并梅克尔憩室炎误诊为阑尾炎1例. 中华结直肠疾病电子杂志. 2013;02(04):195-195. doi:10.3877/cma.j.issn.2095-3224.2013.04.11..",
+      "杨书龙, 管声扬, 李昭铸, 崔清波. 小儿克罗恩病合并梅克尔憩室炎误诊为阑尾炎1例. 中华结直肠疾病电子杂志. 2013;02(04):195-195.",
       "https://rs.yiigle.com/cmaid/1068587"
     ],
     "notice": {
@@ -1722,8 +1722,7 @@
     "collection": "cmcr-105",
     "sourceArticleId": "1068587",
     "sourceUrl": "https://rs.yiigle.com/cmaid/1068587",
-    "sourceDoi": "10.3877/cma.j.issn.2095-3224.2013.04.11.",
-    "doiVerifiedAt": "2026-10-29",
+    "sourceDoiPendingVerification": "10.3877/cma.j.issn.2095-3224.2013.04.11.",
     "historicalReview": true,
     "testUtterances": [
       {

@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-138898",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "乏力、纳差与皮肤瘀斑 · 57岁男性",
     "en": "Fatigue, poor appetite and bruising · 57-year-old man"
@@ -3810,7 +3810,7 @@
           "id": "withhold-search",
           "text": {
             "zh-CN": "暂不诱导化疗：先给支持治疗，追查骨髓活检病理及免疫组化，并寻找实体瘤原发灶（如胸部CT）",
-            "en": "Hold off induction chemotherapy: give supportive care, chase the marrow trephine histology and immunohistochemistry, and look for a solid primary (for example with a chest CT)"
+            "en": "Hold induction chemotherapy: give supportive care, chase the marrow trephine histology and immunohistochemistry, and look for a solid primary, starting with a chest CT"
           },
           "correct": true,
           "feedback": {
@@ -3821,20 +3821,20 @@
         {
           "id": "start-induction",
           "text": {
-            "zh-CN": "诱导化疗不能拖：骨髓原始细胞已达76%，今天就按急性髓系白血病开始“3+7”诱导",
-            "en": "Induction can't wait — the marrow has 76 % blasts, so start “7 + 3” induction for AML today"
+            "zh-CN": "诱导化疗不能拖：骨髓原始细胞76%，异常细胞表达CD117和CD15，就是急性髓系白血病，今天开始“3+7”诱导并输血支持",
+            "en": "Induction can't wait: 76 % marrow blasts, with CD117 and CD15 on the abnormal cells, mean AML — start “7 + 3” induction today, with transfusion support"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不合适。“原始细胞”比例高不等于急性髓系白血病：本例无Auer小体、POX阴性、谱系标志大多阴性，这个诊断并不成立。谱系判断错误时给予强烈化疗，只会造成严重的骨髓抑制、感染和出血。",
-            "en": "Not appropriate. A high proportion of “blasts” does not make it AML: with no Auer rods, a negative POX and mostly negative lineage markers, that diagnosis is unproven. Intensive chemotherapy given on the wrong lineage brings profound marrow suppression, infection and bleeding."
+            "zh-CN": "不合适。“原始细胞”比例高不等于急性髓系白血病：本例无Auer小体、POX阴性、谱系标志大多阴性，这个诊断并不成立；单凭CD117和CD15也不能证明髓系来源，非造血系统的肿瘤细胞同样可以表达。谱系判断错误时给予强烈化疗，只会造成严重的骨髓抑制、感染和出血。",
+            "en": "Not appropriate. A high proportion of “blasts” does not make it AML: with no Auer rods, a negative POX and mostly negative lineage markers, that diagnosis is unproven, and CD117 and CD15 alone do not prove a myeloid lineage — non-haematopoietic tumour cells can carry both. Intensive chemotherapy given on the wrong lineage brings profound marrow suppression, infection and bleeding."
           }
         },
         {
           "id": "treat-pancreatitis",
           "text": {
-            "zh-CN": "先继续按急性胰腺炎禁食、补液、抑酸，等胰酶降下来再评估骨髓",
-            "en": "Keep treating acute pancreatitis — nil by mouth, fluids, acid suppression — until the enzymes fall, then reassess the marrow"
+            "zh-CN": "脂肪酶仍高达1686～2086 U/L：继续按急性胰腺炎禁食、补液、抑酸，等胰酶降下来再评估骨髓",
+            "en": "Keep treating acute pancreatitis — nil by mouth, IV fluids, acid suppression — because the lipase is still 1686–2086 U/L, and reassess the marrow once the enzymes have fallen"
           },
           "correct": false,
           "feedback": {
@@ -3845,13 +3845,13 @@
         {
           "id": "correct-sodium-first",
           "text": {
-            "zh-CN": "先把血钠尽快纠正到正常，再考虑其他检查",
-            "en": "Correct the sodium to normal as fast as possible first, then think about other tests"
+            "zh-CN": "先尽快把121 mmol/L的血钠纠正到正常——这么严重的低钠本身就能解释乏力和纳差——再考虑其他检查",
+            "en": "Bring the sodium of 121 mmol/L back to normal as fast as possible first, since hyponatraemia this severe could itself explain his fatigue and poor appetite, then think about other tests"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不合适。他的低钠是慢性的，神志清楚、没有严重症状，不需要也不应该快速纠正：过快升高血钠可致渗透性脱髓鞘，长期大量饮酒和营养不良使他风险更高。低钠本身是诊断线索，应查明原因。",
-            "en": "Not appropriate. His hyponatraemia is chronic and he is alert with no severe symptoms, so it neither needs nor should get rapid correction: raising the sodium too fast can cause osmotic demyelination, and heavy drinking and malnutrition put him at higher risk. The low sodium is itself a clue — find its cause."
+            "zh-CN": "不合适。他的低钠是慢性的，神志清楚、没有严重症状，不需要也不应该快速纠正：过快升高血钠可致渗透性脱髓鞘，长期大量饮酒和营养不良使他风险更高。即使低钠加重了乏力，它也解释不了骨髓和胰酶的异常。低钠本身是诊断线索，应查明原因。",
+            "en": "Not appropriate. His hyponatraemia is chronic and he is alert with no severe symptoms, so it neither needs nor should get rapid correction: raising the sodium too fast can cause osmotic demyelination, and heavy drinking and malnutrition put him at higher risk. Even if it adds to his fatigue, it does not explain the marrow or the enzymes. The low sodium is itself a clue — find its cause."
           }
         }
       ]
@@ -3899,32 +3899,32 @@
         {
           "id": "workup-slow",
           "text": {
-            "zh-CN": "按慢性、无严重症状的低钠处理：评估容量状态，查血、尿渗透压和尿钠（甲状腺功能外院正常，肾上腺皮质功能还需评估），针对病因治疗；如需纠正，24小时内升高不超过10 mmol/L、此后每24小时不超过8 mmol/L，并因饮酒和营养不良取更保守的目标",
-            "en": "Treat it as chronic hyponatraemia without severe symptoms: assess volume status, send serum and urine osmolality and urine sodium (thyroid function was normal elsewhere; adrenal function still needs assessing), and treat the cause; if correcting, keep the rise to no more than 10 mmol/L in the first 24 h and 8 mmol/L in each 24 h after, aiming lower because of his drinking and malnutrition"
+            "zh-CN": "按慢性、无严重症状处理：评估容量状态，查血、尿渗透压、尿钠和肾上腺皮质功能，针对病因治疗；24小时升幅≤10 mmol/L，因饮酒和营养不良目标更低",
+            "en": "Chronic and without severe symptoms: check volume status, serum and urine osmolality, urine sodium and adrenal function; treat the cause; raise the sodium by ≤ 10 mmol/L in 24 h, aiming lower given his drinking and malnutrition"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确（欧洲低钠血症指南2014）。SIADH是排除性诊断：需要低血浆渗透压、尿液不适当浓缩、尿钠、临床容量正常，以及甲状腺和肾上腺功能正常等依据。原报告入院初期没有查渗透压和尿钠（作者认为当时首要的是尽快明确原发病）。限制纠正速度是防止渗透性脱髓鞘的关键。",
-            "en": "Correct (European hyponatraemia guideline 2014). SIADH is a diagnosis of exclusion: it needs a low serum osmolality, inappropriately concentrated urine, a urine sodium, clinical euvolaemia, and normal thyroid and adrenal function. The report did not measure osmolality or urine sodium early in the admission (the authors felt the first priority was to find the underlying disease). Limiting the rate of correction is what prevents osmotic demyelination."
+            "zh-CN": "正确（欧洲低钠血症指南2014）。SIADH是排除性诊断：需要低血浆渗透压、尿液不适当浓缩、尿钠、临床容量正常，以及甲状腺和肾上腺功能正常等依据（他的甲状腺功能外院正常，肾上腺皮质功能还需评估）。原报告入院初期没有查渗透压和尿钠（作者认为当时首要的是尽快明确原发病）。限制纠正速度——最初24小时升幅不超过10 mmol/L、此后每24小时不超过8 mmol/L，并因饮酒和营养不良取更保守的目标——是防止渗透性脱髓鞘的关键。",
+            "en": "Correct (European hyponatraemia guideline 2014). SIADH is a diagnosis of exclusion: it needs a low serum osmolality, inappropriately concentrated urine, a urine sodium, clinical euvolaemia, and normal thyroid and adrenal function (his thyroid function was normal at the other hospital; adrenal function still needs assessing). The report did not measure osmolality or urine sodium early in the admission (the authors felt the first priority was to find the underlying disease). Limiting the rate of correction — no more than 10 mmol/L in the first 24 h and 8 mmol/L in each 24 h after, aiming lower because of his drinking and malnutrition — is what prevents osmotic demyelination."
           }
         },
         {
           "id": "hypertonic-now",
           "text": {
-            "zh-CN": "立即静脉推注3%高渗盐水，迅速提高血钠",
-            "en": "Give a 3 % hypertonic saline bolus now to raise the sodium quickly"
+            "zh-CN": "补钠无效，121 mmol/L已属重度低钠：立即静脉输注3%高渗盐水150 mL（20分钟），可重复至血钠升高5 mmol/L，此后每几小时复查血钠",
+            "en": "Supplementation has failed and 121 mmol/L is profound hyponatraemia: give 150 mL of 3 % hypertonic saline IV over 20 minutes now, repeating the bolus until the sodium has risen by 5 mmol/L, then recheck the sodium every few hours"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不合适。高渗盐水推注用于有严重症状（如抽搐、昏迷、心肺窘迫）的低钠血症；他神志清楚、没有严重症状，快速升高血钠会增加渗透性脱髓鞘的风险。",
-            "en": "Not appropriate. A hypertonic saline bolus is for hyponatraemia with severe symptoms (such as seizures, coma or cardiorespiratory distress); he is alert without severe symptoms, and raising the sodium quickly adds the risk of osmotic demyelination."
+            "zh-CN": "不合适。高渗盐水推注用于有严重症状（如抽搐、昏迷、心肺窘迫）的低钠血症，是否推注取决于症状，而不是血钠数值或补钠是否有效；他神志清楚、没有严重症状，快速升高血钠会增加渗透性脱髓鞘的风险。",
+            "en": "Not appropriate. A hypertonic saline bolus is for hyponatraemia with severe symptoms (such as seizures, coma or cardiorespiratory distress) — the symptoms decide, not the sodium value or a failed trial of supplementation; he is alert without severe symptoms, and raising the sodium quickly adds the risk of osmotic demyelination."
           }
         },
         {
           "id": "normal-in-24h",
           "text": {
-            "zh-CN": "24小时内把血钠补到正常（≥135 mmol/L）",
-            "en": "Bring the sodium back to normal (≥ 135 mmol/L) within 24 hours"
+            "zh-CN": "补钠效果不好，低钠可能加重了乏力和纳差：改为静脉补钠，24小时内把血钠补到正常（≥135 mmol/L）",
+            "en": "Give IV sodium to bring it back to normal (≥ 135 mmol/L) within 24 hours, since supplementation has failed and the low sodium may be adding to his fatigue and poor appetite"
           },
           "correct": false,
           "feedback": {
@@ -3935,8 +3935,8 @@
         {
           "id": "ignore",
           "text": {
-            "zh-CN": "低钠只是吃得少引起的，不用评估，等恢复进食自然会好",
-            "en": "The low sodium is just from eating so little — no work-up needed; it will recover once he eats again"
+            "zh-CN": "低钠只是三个月来吃得太少、溶质摄入不足引起的，他也没有因低钠出现症状，不用评估，恢复进食自然会好",
+            "en": "The low sodium is just poor solute intake after three months of eating little, and he has no symptoms from it — no work-up is needed; it will recover once he eats again"
           },
           "correct": false,
           "feedback": {
@@ -3982,7 +3982,7 @@
           "id": "sclc-marrow",
           "text": {
             "zh-CN": "小细胞肺癌（左肺门中心型）骨髓转移，广泛期（IV期）；肺部原发灶依据临床证据推定，未取得肺部组织",
-            "en": "Small-cell lung cancer (central, left hilar) with bone marrow metastasis — extensive stage (stage IV); the lung primary is inferred from clinical evidence, without lung tissue"
+            "en": "Small-cell lung cancer (central, left hilar) with bone marrow metastasis, extensive stage (IV); the lung primary is inferred clinically, without lung tissue"
           },
           "correct": true,
           "feedback": {
@@ -3993,8 +3993,8 @@
         {
           "id": "pancreatic-net",
           "text": {
-            "zh-CN": "胰腺神经内分泌癌骨髓转移（胰酶升高提示胰腺来源）",
-            "en": "Pancreatic neuroendocrine carcinoma with marrow metastasis (the raised enzymes point to the pancreas)"
+            "zh-CN": "胰腺神经内分泌癌骨髓转移：按胰腺炎治疗后脂肪酶、淀粉酶仍持续升高，提示胰腺肿瘤而非胰腺炎",
+            "en": "Pancreatic neuroendocrine carcinoma with marrow metastasis: lipase and amylase that stay high despite treatment for pancreatitis point to a pancreatic tumour"
           },
           "correct": false,
           "feedback": {
@@ -4005,25 +4005,25 @@
         {
           "id": "aml-aberrant",
           "text": {
-            "zh-CN": "急性髓系白血病伴异常抗原表达，骨髓中的癌细胞只是继发改变",
-            "en": "AML with aberrant antigen expression; the carcinoma cells in the marrow are a secondary change"
+            "zh-CN": "急性髓系白血病伴异常抗原表达（原始细胞76%，表达CD117和CD15），骨髓活检中的癌细胞只是继发改变",
+            "en": "AML with aberrant antigen expression — 76 % blasts carrying CD117 and CD15 — with the carcinoma cells in the trephine only a secondary change"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不支持。肿瘤细胞表达上皮和神经内分泌标记（AE1/AE3、CAM5.2、Syn、CgA），而MPO、LCA阴性——这些细胞不是造血细胞。",
-            "en": "Not supported. The tumour cells express epithelial and neuroendocrine markers (AE1/AE3, CAM5.2, synaptophysin, CgA) and are MPO- and LCA-negative — they are not blood-forming cells."
+            "zh-CN": "不支持。肿瘤细胞表达上皮和神经内分泌标记（AE1/AE3、CAM5.2、Syn、CgA），而MPO、LCA阴性——这些细胞不是造血细胞。转移癌细胞在涂片上可以酷似原始细胞。",
+            "en": "Not supported. The tumour cells express epithelial and neuroendocrine markers (AE1/AE3, CAM5.2, synaptophysin, CgA) and are MPO- and LCA-negative — they are not blood-forming cells. Metastatic carcinoma cells can look like blasts on the smear."
           }
         },
         {
           "id": "must-bronchoscope",
           "text": {
-            "zh-CN": "原发灶不明的神经内分泌癌，必须先做支气管镜取得肺组织才能下诊断",
-            "en": "Neuroendocrine carcinoma of unknown primary — bronchoscopy for lung tissue is needed before any diagnosis"
+            "zh-CN": "原发灶不明的神经内分泌癌：TTF-1阴性，肺来源未经证实，必须先做支气管镜取得肺组织才能下诊断",
+            "en": "Neuroendocrine carcinoma of unknown primary: TTF-1 is negative, so a lung origin is unproven — bronchoscopy for lung tissue is needed before any diagnosis"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "组织学诊断已经由骨髓活检确立，肺原发靠临床证据推定；作者认为他病情重、进展快、血小板极低，支气管镜等有创操作的风险远大于获益。指南通常要求病理确诊——本例的组织来自骨髓。",
-            "en": "The histological diagnosis already comes from the marrow, and the lung primary is inferred clinically; the authors judged that in a very sick, rapidly worsening man with very low platelets, bronchoscopy and other invasive procedures carried far more risk than benefit. Guidelines ask for a pathological diagnosis — here the tissue is the marrow."
+            "zh-CN": "组织学诊断已经由骨髓活检确立，肺原发靠临床证据推定；TTF-1阴性并不能排除肺原发，少数小细胞肺癌TTF-1为阴性。作者认为他病情重、进展快、血小板极低，支气管镜等有创操作的风险远大于获益。指南通常要求病理确诊——本例的组织来自骨髓。",
+            "en": "The histological diagnosis already comes from the marrow, and the lung primary is inferred clinically; a negative TTF-1 does not rule out a lung primary, as a minority of small-cell lung cancers are TTF-1-negative. The authors judged that in a very sick, rapidly worsening man with very low platelets, bronchoscopy and other invasive procedures carried far more risk than benefit. Guidelines ask for a pathological diagnosis — here the tissue is the marrow."
           }
         }
       ]
@@ -4069,8 +4069,8 @@
         {
           "id": "resus-bundle",
           "text": {
-            "zh-CN": "立即储氧面罩高流量给氧，留取血培养后尽快开始经验性广谱抗生素，输注血小板等血制品并处理出血，请上级和重症医生评估，同时尽早与他和家属坦诚讨论治疗目标",
-            "en": "High-flow oxygen by reservoir mask now, blood cultures and then prompt empirical broad-spectrum antibiotics, platelets and other blood products for possible bleeding, senior and critical-care review — and an early, honest conversation with him and his family about the goals of care"
+            "zh-CN": "储氧面罩给氧，留血培养后尽快用广谱抗生素，输血小板等血制品处理可能的出血，请上级和重症医生评估，尽早与他和家属讨论治疗目标",
+            "en": "Reservoir-mask oxygen, blood cultures then prompt broad-spectrum antibiotics, platelets and blood products for possible bleeding, senior and critical-care review, and an early goals-of-care talk with him and his family"
           },
           "correct": true,
           "feedback": {
@@ -4081,8 +4081,8 @@
         {
           "id": "bronchoscopy-first",
           "text": {
-            "zh-CN": "先做急诊支气管镜和肺泡灌洗，明确是出血还是感染后再用药",
-            "en": "Urgent bronchoscopy and lavage first, to tell bleeding from infection before treating"
+            "zh-CN": "先输血小板，在储氧面罩给氧下做急诊支气管镜和肺泡灌洗，分清是出血还是感染，让抗生素或止血治疗针对真正的病因，而不是凭猜测用药",
+            "en": "Give platelets, then urgent bronchoscopy with bronchoalveolar lavage on reservoir-mask oxygen to tell bleeding from infection, so that antibiotics or haemostatic treatment are aimed at the actual cause rather than guessed"
           },
           "correct": false,
           "feedback": {
@@ -4093,8 +4093,8 @@
         {
           "id": "wait-cultures",
           "text": {
-            "zh-CN": "先留血培养，等培养和药敏结果出来再决定用哪种抗生素",
-            "en": "Take blood cultures and wait for the results and sensitivities before choosing an antibiotic"
+            "zh-CN": "先留血培养，等培养和药敏结果出来再用抗生素——阴影可能是出血而不是感染，有针对性的用药胜过盲目用药",
+            "en": "Take blood cultures now and hold antibiotics until the results and sensitivities are back, because the opacity may be haemorrhage rather than infection and a targeted drug beats a blind one"
           },
           "correct": false,
           "feedback": {
@@ -4105,8 +4105,8 @@
         {
           "id": "chemo-today",
           "text": {
-            "zh-CN": "病因是肿瘤，今天就开始依托泊苷联合铂类化疗，肺部阴影不必另行处理",
-            "en": "The cause is the cancer — start etoposide–platinum chemotherapy today and leave the lung opacity alone"
+            "zh-CN": "一切都源于肿瘤：小细胞肺癌对化疗反应快，今天就开始依托泊苷联合铂类化疗，肺部阴影不消退再另行处理",
+            "en": "The cancer is driving everything: start etoposide–platinum chemotherapy today, as small-cell lung cancer responds quickly, and treat the lung opacity only if it fails to settle"
           },
           "correct": false,
           "feedback": {

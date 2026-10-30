@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1551893",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "逐渐增大的左侧阴囊肿物 · 40岁男性",
     "en": "Enlarging left scrotal mass · 40-year-old man"
@@ -2351,8 +2351,8 @@
         {
           "id": "possible-malignant",
           "text": {
-            "zh-CN": "来源不明的阴囊内实性肿块：触诊左睾丸增大、与附睾分不清，超声却示与睾丸分界尚清。在组织学明确前须按可能恶性（睾丸生殖细胞肿瘤或睾丸旁肿瘤）处理，良性睾丸旁病变也在鉴别之列",
-            "en": "A solid intrascrotal mass of uncertain origin — the left testis feels enlarged and inseparable from the epididymis, yet ultrasound shows the masses fairly distinct from the testis. Until histology says otherwise, manage it as possibly malignant (a testicular germ-cell tumour or a paratesticular tumour), with benign paratesticular lesions in the differential"
+            "zh-CN": "来源不明的阴囊内实性肿块——触诊像睾丸来源，超声却示与睾丸分界尚清：组织学明确前按可能恶性（睾丸生殖细胞肿瘤或睾丸旁肿瘤）处理，良性睾丸旁病变也在鉴别之列",
+            "en": "A solid intrascrotal mass of uncertain origin — testicular to palpation, fairly distinct from the testis on ultrasound: manage as possibly malignant (testicular germ-cell or paratesticular tumour) until histology, with benign paratesticular lesions in the differential"
           },
           "correct": true,
           "feedback": {
@@ -2363,8 +2363,8 @@
         {
           "id": "hydrocele",
           "text": {
-            "zh-CN": "鞘膜积液或附睾囊肿，向他解释是良性的就可以",
-            "en": "A hydrocele or an epididymal cyst — reassure him that it is benign"
+            "zh-CN": "鞘膜积液或附睾囊肿：肿块无痛、已经有11个月，腹股沟也没有肿大的淋巴结，多半是良性的，向他解释清楚、让他放心，等疼了再来复诊即可",
+            "en": "A hydrocele or an epididymal cyst: a painless swelling present for 11 months, with no enlarged groin nodes, is usually benign, so reassure him and see him again only if it starts to hurt"
           },
           "correct": false,
           "feedback": {
@@ -2375,8 +2375,8 @@
         {
           "id": "orchitis",
           "text": {
-            "zh-CN": "慢性附睾睾丸炎，先用2周抗生素再复查",
-            "en": "Chronic epididymo-orchitis — two weeks of antibiotics, then review"
+            "zh-CN": "慢性附睾睾丸炎，可使睾丸增大、变硬、与附睾分不清，容易被误当成肿瘤：先用2周抗生素，再复查体格检查和阴囊超声",
+            "en": "Chronic epididymo-orchitis, which can leave an enlarged, firm testis that is hard to feel apart from the epididymis and is easily mistaken for a tumour: two weeks of antibiotics, then repeat the examination and the ultrasound"
           },
           "correct": false,
           "feedback": {
@@ -2387,8 +2387,8 @@
         {
           "id": "cancer-excluded",
           "text": {
-            "zh-CN": "超声示睾丸旁来源，已可排除睾丸肿瘤，择期把肿物切掉即可",
-            "en": "Ultrasound shows it arises beside the testis, so testicular cancer is excluded and the lump can simply be removed electively"
+            "zh-CN": "超声示肿块位于睾丸旁，而超声定位比触诊更可靠，所以已可排除睾丸肿瘤，择期把肿物切掉即可",
+            "en": "Ultrasound places the masses beside the testis, and it locates a scrotal lump more reliably than palpation does, so testicular cancer is excluded and the lump can simply be removed electively"
           },
           "correct": false,
           "feedback": {
@@ -2429,8 +2429,8 @@
         {
           "id": "inguinal-fs",
           "text": {
-            "zh-CN": "补齐AFP、β-hCG和LDH，并确认对侧睾丸；超声仍定位不清时加做阴囊MRI；然后经腹股沟探查并送快速冰冻——良性则切除病灶、保留睾丸，恶性则行经腹股沟根治性睾丸切除",
-            "en": "Complete AFP, β-hCG and LDH and check the other testis; add a scrotal MRI if ultrasound still cannot place the lesion; then explore through the groin with frozen section — excise the lesion and keep the testis if benign, radical inguinal orchidectomy if malignant"
+            "zh-CN": "补齐AFP、β-hCG和LDH并检查对侧睾丸（超声定位不清时加做阴囊MRI）；再经腹股沟探查加快速冰冻：良性只切病灶、保留睾丸，恶性行根治性睾丸切除",
+            "en": "Complete AFP, β-hCG and LDH and image the other testis (scrotal MRI if ultrasound cannot place the lesion); then inguinal exploration with frozen section: excise the lesion and keep the testis if benign, radical orchidectomy if malignant"
           },
           "correct": true,
           "feedback": {
@@ -2441,8 +2441,8 @@
         {
           "id": "scrotal-biopsy",
           "text": {
-            "zh-CN": "先经阴囊穿刺活检，拿到病理再决定术式",
-            "en": "Biopsy it through the scrotum first and choose the operation on the histology"
+            "zh-CN": "先在超声引导下经阴囊皮肤穿刺活检，门诊就能做完，再根据病理在局部切除和睾丸切除之间选择，免得他白做一次不必要的手术",
+            "en": "An ultrasound-guided core biopsy through the scrotal skin first — a quick day-case procedure — then choose between local excision and orchidectomy on the histology, sparing him an unnecessary operation"
           },
           "correct": false,
           "feedback": {
@@ -2453,8 +2453,8 @@
         {
           "id": "radical-now",
           "text": {
-            "zh-CN": "直接行左侧经腹股沟根治性睾丸切除（原报告的做法）",
-            "en": "Go straight to a left radical inguinal orchidectomy (what the report's team did)"
+            "zh-CN": "直接行左侧经腹股沟根治性睾丸切除、术中不做冰冻——这是怀疑睾丸肿瘤时的标准术式，也正是原报告团队的做法——实性、进行性增大的肿块术前不能贸然当良性看待",
+            "en": "Go straight to a left radical inguinal orchidectomy without frozen section — the standard operation for a suspected testicular tumour, and what the report's team did — since a solid, growing mass cannot safely be called benign before surgery"
           },
           "correct": false,
           "feedback": {
@@ -2465,8 +2465,8 @@
         {
           "id": "observe",
           "text": {
-            "zh-CN": "标志物正常，先观察，3个月后复查超声",
-            "en": "The markers are normal, so watch and repeat the ultrasound in 3 months"
+            "zh-CN": "β-hCG和PSA都不高，分期CT也没有转移，恶性可能不大：先观察，3个月后复查超声，肿块继续增大再手术",
+            "en": "The β-hCG and PSA are not raised and the staging CT shows no spread, so cancer is unlikely: watch, repeat the ultrasound in 3 months and operate only if the mass keeps growing"
           },
           "correct": false,
           "feedback": {
@@ -2530,20 +2530,20 @@
         {
           "id": "reassure-benign",
           "text": {
-            "zh-CN": "标志物正常，可以向他保证不是癌",
-            "en": "The markers are normal, so you can promise him it is not cancer"
+            "zh-CN": "标志物正常、CT也没有转移，可以向他保证不是癌",
+            "en": "The markers are normal and the CT shows no spread, so you can promise him it is not cancer"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不能这样说。标志物正常不能排除恶性，AFP和LDH也不全；虚假的保证会让他在冰冻或最终病理不理想时毫无准备。",
-            "en": "You cannot say that. Normal markers do not exclude malignancy, and AFP and LDH are incomplete; false reassurance leaves him unprepared if the frozen section or the final pathology is unfavourable."
+            "zh-CN": "不能这样说。标志物正常、CT未见转移都不能排除恶性，AFP和LDH也不全；虚假的保证会让他在冰冻或最终病理不理想时毫无准备。",
+            "en": "You cannot say that. Normal markers and a CT without spread do not exclude malignancy, and AFP and LDH are incomplete; false reassurance leaves him unprepared if the frozen section or the final pathology is unfavourable."
           }
         },
         {
           "id": "chemo-certain",
           "text": {
-            "zh-CN": "术后肯定需要化疗",
-            "en": "He will certainly need chemotherapy afterwards"
+            "zh-CN": "无论冰冻结果如何，术后都肯定需要化疗",
+            "en": "Whatever the frozen section shows, he will certainly need chemotherapy after the operation"
           },
           "correct": false,
           "feedback": {
@@ -2571,8 +2571,8 @@
         {
           "id": "benign-fp",
           "text": {
-            "zh-CN": "良性睾丸旁纤维性假瘤，已随标本切除：不需辅助治疗；IgG4比值不支持IgG4相关疾病，除非出现其他器官受累的线索，不必按此检查或治疗；门诊随访留下的睾丸、睾酮和生育",
-            "en": "A benign paratesticular fibrous pseudotumour, removed with the specimen: no adjuvant treatment; the IgG4 ratio does not support IgG4-related disease, so no work-up or treatment for it unless other organs give a clue; clinic follow-up of the remaining testis, testosterone and fertility"
+            "zh-CN": "良性睾丸旁纤维性假瘤，已随标本切除，无需辅助治疗；IgG4/IgG<20%不支持IgG4相关疾病，无其他器官线索则不必为此检查或治疗；随访余下的睾丸、睾酮和生育",
+            "en": "A benign paratesticular fibrous pseudotumour, already excised: no adjuvant treatment; IgG4/IgG < 20 % does not support IgG4-related disease, so no work-up or treatment for it unless other organs give a clue; follow up the remaining testis, testosterone and fertility"
           },
           "correct": true,
           "feedback": {
@@ -2583,20 +2583,20 @@
         {
           "id": "igg4-rd",
           "text": {
-            "zh-CN": "IgG4阳性细胞>50/HPF，可诊断IgG4相关疾病，开始糖皮质激素治疗",
-            "en": "More than 50 IgG4-positive cells per HPF: diagnose IgG4-related disease and start glucocorticoids"
+            "zh-CN": "硬化性炎症病变中IgG4阳性细胞>50/HPF，可以诊断IgG4相关疾病：开始糖皮质激素治疗以防其他部位复发，并筛查胰腺、涎腺和腹膜后等处有无受累",
+            "en": "More than 50 IgG4-positive cells per HPF in a sclerosing inflammatory lesion: diagnose IgG4-related disease, start glucocorticoids to prevent relapse elsewhere, and screen the pancreas, salivary glands and retroperitoneum"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。IgG4阳性细胞增多见于许多炎症，单凭计数不能诊断；本例IgG4/IgG<20%，报告也没有描述席纹状纤维化或闭塞性静脉炎。2019年ACR/EULAR标准是研究用的分类标准，不能用来给单个病灶下诊断；病灶已经切除，激素没有指征。",
-            "en": "No. Raised IgG4-positive cells occur in many inflammatory lesions, and a count alone does not make the diagnosis; here IgG4/IgG is < 20 %, and no storiform fibrosis or obliterative phlebitis is described. The 2019 ACR/EULAR criteria classify patients for research and do not diagnose a single lesion; with the lesion removed, steroids have no indication."
+            "zh-CN": "不对。IgG4阳性细胞增多见于许多炎症，单凭计数不能诊断；本例IgG4/IgG<20%，报告也没有描述席纹状纤维化或闭塞性静脉炎。2019年ACR/EULAR标准是研究用的分类标准，不能用来给单个病灶下诊断；病灶已经切除，激素没有指征，其他器官只在有临床线索时才需检查。",
+            "en": "No. Raised IgG4-positive cells occur in many inflammatory lesions, and a count alone does not make the diagnosis; here IgG4/IgG is < 20 %, and no storiform fibrosis or obliterative phlebitis is described. The 2019 ACR/EULAR criteria classify patients for research and do not diagnose a single lesion; with the lesion removed, steroids have no indication, and other organs are examined only if there is a clinical clue."
           }
         },
         {
           "id": "mesothelioma",
           "text": {
-            "zh-CN": "Calretinin阳性提示鞘膜恶性间皮瘤，需全身分期并辅助治疗",
-            "en": "Calretinin positivity points to malignant mesothelioma of the tunica vaginalis: stage him and give adjuvant treatment"
+            "zh-CN": "睾丸旁病变中Calretinin阳性细胞提示鞘膜恶性间皮瘤，这也是作者列出的鉴别诊断：应先用胸腹部增强CT完善全身分期，再转诊到肿瘤科做术后辅助治疗，并安排长期随访",
+            "en": "Calretinin-positive cells in this paratesticular lesion point to malignant mesothelioma of the tunica vaginalis, a differential the authors list: complete the staging with contrast-enhanced chest and abdominal CT, then refer him to oncology for adjuvant treatment and long-term surveillance"
           },
           "correct": false,
           "feedback": {
@@ -2607,8 +2607,8 @@
         {
           "id": "gct-surveillance",
           "text": {
-            "zh-CN": "按睾丸生殖细胞肿瘤进行CT监测，并评估腹膜后淋巴结清扫",
-            "en": "Follow him up like a testicular germ-cell tumour, with CT surveillance and an assessment for retroperitoneal lymph node dissection"
+            "zh-CN": "睾丸是按可疑肿瘤切除的，所以按睾丸生殖细胞肿瘤随访：定期复查肿瘤标志物，CT监测腹膜后，并评估腹膜后淋巴结清扫",
+            "en": "The testis was removed for a suspected tumour, so follow him up like a testicular germ-cell tumour: serial markers, CT surveillance of the retroperitoneum and an assessment for retroperitoneal lymph node dissection"
           },
           "correct": false,
           "feedback": {
@@ -3359,7 +3359,7 @@
         ]
       },
       {
-        "text": "疼不疼？",
+        "text": "这个包块平时会痛吗？",
         "locale": "zh-CN",
         "expect": [
           "pain"

@@ -12,7 +12,7 @@ medical advice (`disclaimer`).
 
 | | |
 |---|---|
-| id / version | `cmcr-138898` / `1.1.0` |
+| id / version | `cmcr-138898` / `1.1.1` |
 | setting / facility | `inpatient` / `general-hospital` (ward bed; he lies in bed throughout) |
 | specialty | haematology, oncology |
 | difficulty | 4 / 5 |
@@ -120,8 +120,8 @@ resuscitation and took him home, and he died on the way the same day. No antican
   start "7 + 3" today; keep treating pancreatitis; correct the sodium fast first.
 - `sodium` (single; needs the outside bloods, the electrolyte record, his consciousness, alcohol and weight):
   chronic hyponatraemia without severe symptoms — volume status, serum/urine osmolality, urine sodium, adrenal
-  function, treat the cause, rise ≤ 10 mmol/L in 24 h and ≤ 8 mmol/L per 24 h after, aiming lower for drinking and
-  malnutrition ✓. Distractors: hypertonic bolus; normal within 24 h; "just poor eating, no work-up".
+  function, treat the cause, rise ≤ 10 mmol/L in 24 h, aiming lower for drinking and malnutrition ✓ (its feedback
+  adds ≤ 8 mmol/L per 24 h after). Distractors: hypertonic bolus; normal within 24 h; "just poor eating, no work-up".
 - `diagnosis` (single; needs trephine, CT, PET-CT, markers): small-cell lung cancer with marrow metastasis,
   extensive stage, lung primary inferred ✓; the feedback also corrects the report's N2 to N3. Distractors:
   pancreatic neuroendocrine primary (no pancreatic uptake); AML with aberrant markers (MPO/LCA negative, epithelial
@@ -339,6 +339,27 @@ The NCI PDQ summary cited by 1.0.0 is dropped (a summary, not a guideline).
   this pass.
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In all four single-best decisions the keyed option was the
+  uniquely longest in both languages (the `sodium` key had 391 characters in English against 62–100 for the
+  distractors); now it is in none. The keys say the same in fewer words: the `sodium` key keeps volume status, serum
+  and urine osmolality, urine sodium, adrenal function, the cause and the ≤ 10 mmol/L-in-24 h limit, and its
+  feedback now carries the ≤ 8 mmol/L per 24 h after and the normal outside thyroid function. The distractors carry
+  the key's detail and say why they tempt — AML from 76 % blasts with CD117 and CD15; pancreatitis because the lipase
+  is still 1686–2086 U/L; fast correction because a sodium of 121 mmol/L could explain his symptoms; the
+  severe-symptom hypertonic protocol (150 mL of 3 % over 20 minutes) because supplementation failed; IV sodium to
+  normal within 24 h; "poor solute intake"; a pancreatic primary because the enzymes stayed high despite treatment;
+  AML with aberrant CD117/CD15; bronchoscopy because TTF-1 is negative; platelets then bronchoscopy to tell bleeding
+  from infection; cultures before antibiotics for a targeted drug; chemotherapy today because small-cell lung cancer
+  responds fast. Medical meaning, correct flags, scoring and the reference path are unchanged; the feedback of
+  `start-induction`, `correct-sodium-first`, `hypertonic-now`, `aml-aberrant` and `must-bronchoscope` now also
+  answers the reason their text gives (CD117 and CD15 occur on non-haematopoietic tumour cells; the symptoms, not
+  the number, decide a bolus; carcinoma cells can look like blasts; a minority of small-cell lung cancers are
+  TTF-1-negative).
+- **Option ids neutral:** every id already names its content (`correct-sodium-first` says what the option does —
+  correct the sodium first); none renamed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

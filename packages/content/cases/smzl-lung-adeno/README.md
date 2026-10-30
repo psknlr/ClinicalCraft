@@ -17,9 +17,9 @@ left upper lung**. The case teaches:
 
 | | |
 |---|---|
-| id / version | `smzl-lung-adeno` / `1.2.2` |
+| id / version | `smzl-lung-adeno` / `1.2.3` |
 | setting / facility | `outpatient` / `clinic-v4` (the V4 world) |
-| locales | `zh-CN` (source language; V4 text verbatim), `en` (translation) |
+| locales | `zh-CN` (source language; V4 text verbatim except the documented divergences), `en` (translation) |
 | phases | `pre` 诊断期 Diagnostic phase · `post` 治疗后复评期 Post-treatment re-evaluation (learner-switchable; static clock) |
 | difficulty | 4 / 5 |
 
@@ -53,7 +53,7 @@ teaching use.
 - **Port:** V4's case data (`Za` questions, `zn` chapters, `Ka` decisions, `is`
   investigations, `Xd` order matcher, `dh` results, quest copy, destination
   logic `gh`, and the finish, journal and source screens) is reproduced
-  verbatim in `zh-CN` — with one documented divergence (see "Deliberate
+  verbatim in `zh-CN` — with four documented divergences (see "Deliberate
   divergences from V4") — and English translations that keep every
   evidence-boundary caveat.
 - The patient is a **pseudonymous** teaching NPC (王先生（化名）/ Mr. Wang). The
@@ -95,7 +95,7 @@ clinicalcraft import-v4 ./Virtual_Patient_V4_Part1.zip ./Virtual_Patient_V4_Part
 | `zn` (5 chapters) + quest copy `n[i]` | `objectives` `ch1-history` … `ch5-review` (`hint` and `guidance` verbatim) |
 | `kn(state, id, phase = "pre")` | `{ "read": id, "phase": "pre" }`. Chapter checks default to the **pre** phase, as in V4 |
 | `gh()` destinations `patient/lab/imaging/path/board` | waypoints `patient` → `lab-hematology` → `ct` → `histopathology` → `flow-cytometry` → `board` → `lab-serology` → `cytogenetics` → `board` |
-| `Ka` (4 decisions) | `decisions` `diagnosis`, `safety`, `genetics` and `response` (`requires`, `need`, options and feedback verbatim) |
+| `Ka` (4 decisions) | `decisions` `diagnosis`, `safety`, `genetics` and `response` (`prompt`, `need`, option ids, keys and feedback verbatim; `requires` equivalent, the `diagnosis` gate written as one flat list; three distractors lengthened, see "Deliberate divergences from V4") |
 | `is` (13 investigations) | `investigations` in the **same order**, because match order follows declaration order |
 | `Xd` matcher | `orderMatching` (V4's 7 rules + `exact` overrides, plus 2 English-only rules). The 平扫 notice is in `orderMatching.warnings` |
 | `dh(id, phase)` | `results.pre` and `results.post` for every investigation (date, text, figures, note, source) |
@@ -131,13 +131,24 @@ Once every objective is done V5 has no waypoint, where V4 pointed at the board.
 
 ## Deliberate divergences from V4
 
-| item | V4 (`Za`) | V5 | why |
+| item | V4 (`Za` / `Ka`) | V5 | why |
 |---|---|---|---|
 | `spleen.answer` | 大约30年前就发现脾大了。2024年11月的PET/CT又提示脾脏明显增大。**不能据这段病史认定淋巴瘤已经持续30年。** | the same without the last sentence (both locales) | The last sentence is a clinician's diagnostic caveat spoken in the patient's voice, against `persona.actingNotes` ("do not discuss … diagnostic conclusions"). The caveat is kept as teaching knowledge of the Socratic attending instead. |
+| `diagnosis` option `metastasis` (text) | 肺腺癌转移可以解释全部异常 | 肺腺癌骨髓及脾转移可以解释全部异常 / "Lung adenocarcinoma metastatic to the marrow and spleen explains all the abnormalities" | Length cue (CASE_AUTHORING §9.8): in V4 the key was the longest option in all four decisions, so a test-wise learner could answer by length. The distractor names the sites it would have to explain; its V4 feedback already answers that. |
+| `safety` option `negative` (text) | HBV DNA未检出，可以排除再激活风险 | HBV DNA未检出，可以排除再激活风险，无需抗病毒预防 / "… can be ruled out and no antiviral prophylaxis is needed" | Length cue: the distractor states the consequence a learner would draw; its V4 feedback (an undetectable HBV DNA cannot by itself rule out reactivation) already answers it. |
+| `genetics` option `same` (text) | 足以证明两种肿瘤具有共同起源 | 足以证明两种肿瘤同源，并可据断点确定融合基因 / "It is enough to prove that the two tumours share a common origin and to name the fusion gene from the breakpoints" | Length cue: the distractor adds the fusion-gene claim, which its V4 feedback already rebuts ("nor can a fusion gene be determined directly from the breakpoints"). |
 
-The parity test (`V5_TEXT_DIVERGENCES` in `smzl-parity.test.ts`) pins this
-entry exactly — V4's text still equals `Za`, and V5's is V4's minus that one
-sentence — and keeps every other carried-over string strict.
+Keys, prompts, `need` texts and all feedback stay V4-verbatim. `response`
+keeps V4's two options: its key stays the longer one there, the one decision
+per locale the length-cue lint allows — making the key of every two-option
+decision the shorter one would only invert the cue. The `diagnosis` gate,
+V4's "first three chapters done", is written as one flat `all` list (an `all`
+directly inside an `all` is a lint); it unlocks on exactly the same facts.
+
+The parity test (`V5_TEXT_DIVERGENCES` in `smzl-parity.test.ts`) pins these
+entries exactly — V4's text still equals `Za` or `Ka`, `spleen.answer` is
+V4's minus that one sentence, and each option text is pinned to its V4 and V5
+strings — and keeps every other carried-over string strict.
 
 ## What V5 adds beyond V4 (all sourced; nothing invented)
 
@@ -211,6 +222,15 @@ hypertension items.
 
 ## Changelog
 
+- **1.2.3 — 2026-10-30 (assessment validity).** Options rebalanced so the key is not cued by length; option ids
+  neutral (they already named the content: `dual`, `assess`, `limited`, `separate`…, unchanged). V4's keys were the
+  longest option in all four decisions in both languages, a length cue the content lints now flag (CASE_AUTHORING
+  §9.8). Three distractors are lengthened with the claim a learner would make (`metastasis`, `negative`, `same`; see
+  "Deliberate divergences from V4"), so the key is the longest only in `response`, the one decision per locale the
+  lint allows. Keys, correct flags and all feedback are unchanged, and each lengthened distractor's V4 feedback already
+  answers its new claim. The `diagnosis` gate is one flat `all` list instead of three nested ones (same facts). One
+  `extensions.testUtterances` entry that was one of its item's keywords (现在吃什么药？) is now a paraphrase; no history
+  item, answer or keyword changed. The V4-parity test must pin the three option texts as divergences.
 - **1.2.2 — 2026-10-29 (assessment integrity).** `rb-eff-hints` (at most two preceptor hints) counts once the
   learner has attempted the diagnosis decision or used a third hint (`scoredWhen`), so a learner who does nothing no
   longer earns it: doing nothing now scores 0. No change to the case record, decisions or the V4-parity texts.

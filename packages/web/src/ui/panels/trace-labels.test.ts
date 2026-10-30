@@ -10,12 +10,12 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { compileFacility, parseCase, parseCatalog, parseFacility, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition } from "@clinicalcraft/core";
+import { compileFacility, createSession as createEngineState, parseCase, parseCatalog, parseFacility, reduce, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition } from "@clinicalcraft/core";
 import type { TraceSpan } from "@clinicalcraft/world";
 import { setLocale } from "../../i18n/index.js";
 import { startAppSession, type AppSession } from "../../app/session.js";
 import { defaultSettings } from "../../app/settings.js";
-import { callArgsLabel, traceActorLabel, traceCodeLabel, traceLabel, type TraceLabelContext } from "./trace-labels.js";
+import { callArgsLabel, itemLabel, traceActorLabel, traceCodeLabel, traceLabel, type TraceLabelContext } from "./trace-labels.js";
 
 const here = path.dirname(fileURLToPath(import.meta.url));
 const content = path.resolve(here, "../../../../content");
@@ -111,6 +111,22 @@ describe("a tool call's arguments (the autopilot's calls list)", () => {
     expect(callArgsLabel({ text: "x".repeat(400) }, stemi).length).toBeLessThanOrEqual(140);
     setLocale("en");
     expect(callArgsLabel({ investigation_id: "ecg-12lead" }, stemi)).toBe("12-lead ECG");
+  });
+
+  it("names a decision by its prompt whether the call gives its number (an attached agent) or its id (the demonstration) — one still locked by its number only", () => {
+    const third = stemi.decisions[2]!;
+    setLocale("en");
+    for (const ref of [third.id, "3", "D3", "Decision 3"]) expect(callArgsLabel({ decision_id: ref, option_ids: ["B"] }, stemi), ref).toBe(`${t(third.prompt, "en")} · option_ids: ["B"]`);
+    // A reference naming no decision, and a number in another argument, stay as given.
+    expect(callArgsLabel({ decision_id: "9" }, stemi)).toBe("decision_id: 9");
+    expect(callArgsLabel({ investigation_id: "3" }, stemi)).toBe("investigation_id: 3");
+    // Before its evidence is in, the board names it by its number only: the calls list too.
+    const started = reduce(stemi, createEngineState(stemi), { type: "start" }).state;
+    expect(callArgsLabel({ decision_id: "3" }, stemi, started)).toBe("Decision 3 — locked");
+    expect(itemLabel(stemi, third.id, "decision_id", started)).toBe("Decision 3 — locked");
+    setLocale("zh-CN");
+    expect(callArgsLabel({ decision_id: "决策 3" }, stemi)).toBe(t(third.prompt, "zh-CN"));
+    expect(callArgsLabel({ decision_id: "决策 3" }, stemi, started)).toBe("决策 3 · 尚未解锁");
   });
 });
 

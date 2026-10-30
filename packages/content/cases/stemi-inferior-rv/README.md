@@ -11,7 +11,7 @@ pseudonym (刘振华（化名）/ Liu Zhenhua; his wife 王丽（化名）/ Wang
 
 | | |
 |---|---|
-| id / version | `stemi-inferior-rv` / `1.1.1` |
+| id / version | `stemi-inferior-rv` / `1.1.2` |
 | setting / facility | `emergency` / `general-hospital` (resus bay 1) |
 | specialty | emergency medicine, cardiology |
 | difficulty / estimated time | 3 / 5 · 35 min (simulated clock, 120-min limit) |
@@ -123,6 +123,15 @@ never state a result.
   time exceeds 120 min.
 - `antithrombotic-bundle` (select all; after the 12-lead and the bleeding/stroke history): aspirin + one P2Y12
   inhibitor + UFH.
+- **No length cue.** In the three single-best decisions the key is not the longest option (it was in all three), and
+  the distractors are as specific as the key and state the reason a learner would choose them: each wrong diagnosis
+  names its culprit or its tempting feature (distal RCA, a dominant circumflex, ST elevation with severe pain, a type A
+  dissection reaching the RCA ostium, NSTEMI "to be confirmed once the troponin result is back"); the nitrate options
+  give the dose and the reason (ischaemic chest pain, an infusion "easier to stop", a fluid-restored BP, a raised JVP
+  read as overload); the reperfusion options offer a pharmaco-invasive plan, troponin confirmation, CCU "until his BP
+  and heart rate settle" and a CT aortogram for dissection. Each one's feedback answers that reason. In the select-all
+  bundle, fondaparinux and tenecteplase carry their rationale and UFH its ACT-guided top-up, so length does not
+  separate right from wrong.
 
 **Rubric** (deterministic total 22; the reference path scores 22/22):
 
@@ -291,7 +300,11 @@ clinical scores are equal (100 % in both modes and languages).
 - Co-selections removed in the fifth review: `pain-site` excludes radiation words (放射, 别的地方, "spread"),
   `medications` excludes PDE5-inhibitor words (Viagra, 伟哥), and `assoc-dyspnoea` excludes pleuritic phrasing ("hurt
   to breathe", 吸气时疼), so those questions select only `pain-radiation`, `pde5` and `pain-pleuritic`.
-- `extensions.testUtterances` ends with a regression set for each collision above.
+- `extensions.testUtterances` ends with a regression set for each collision above. The plain site questions are the
+  run-together keywords themselves, so the set uses paraphrases around them ("Can you point to where the pain is?",
+  "whereabouts is the pain exactly", "Point to the spot where it hurts", "Which part of your chest hurts?", "Does it go
+  up into your neck or down your arm?"); an utterance that is one of its item's keywords tests nothing the keyword does
+  not (`cases validate --strict`).
 - Questions about things the case does not record get `persona.fallbackUnknown` or, offline, a clarifying question:
   weight change, stress, sleep, urinary, bowel and other systems, insurance, and the details listed under `unknowns`.
   The patient never invents a "normal" answer. `pmh-cardiac` excludes urine, bowel, sleep, eye, memory and similar
@@ -367,6 +380,21 @@ no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
 - Ref. 2: the issue number (cited without it); ref. 4: a DOI (none could be verified, so none is given).
 
 ## Changelog
+
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length; option ids neutral.** The keyed option was the longest option
+  in all three single-best decisions in both languages, a length cue the content lints now flag (CASE_AUTHORING §9.8);
+  it is now the longest in none. The diagnosis key says "STEMI" in Chinese as its distractors do, the nitrate key is
+  tightened without losing content, and the distractors state, in the key's register and specificity, the reason a
+  learner would choose them (see "Decisions"). Feedback gained a clause where a distractor's new reason needed an
+  answer (`nitro-iv`, `rep-ccu`). The nitrate distractor still opens "If the JVP is raised, that means fluid
+  overload…", and the sublingual option keeps the 0.4–0.5 mg of the `nitroglycerin` dose. Medical meaning, correct
+  flags and option ids (already content ids) are unchanged; the reference path still scores 22/22.
+- Matcher corpus: nine `extensions.testUtterances` that were one of their item's keywords ("Where is the pain?",
+  "Where's the pain?", "Where does it hurt?", "Where do you feel the pain?", "Where does the pain go?", "When did the
+  pain start?", "When did you last eat?", "SOB?", "NKDA?") are now paraphrases (`cases validate --strict`); no history
+  item, answer or keyword changed.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653409",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "逐渐增大的耻骨上皮下肿物 · 15岁女孩",
     "en": "Enlarging lump under the skin above the pubic bone · 15-year-old girl"
@@ -1975,8 +1975,8 @@
         {
           "id": "ultrasound-first",
           "text": {
-            "zh-CN": "先尽快做肿物超声：若证实为体积小、位置表浅、表现良性的病变，可完整切除活检；若超声提示可疑、病变深在或体积较大，转诊肉瘤团队行MRI和影像引导下粗针活检",
-            "en": "Ultrasound the lump promptly first: if it confirms a small, superficial lesion with benign features, remove it whole as an excisional biopsy; if ultrasound is suspicious or the lesion is deep or large, refer to a sarcoma team for MRI and image-guided core biopsy"
+            "zh-CN": "先尽快做超声：小、表浅、像良性则完整切除活检；可疑、深在或较大则转肉瘤团队行MRI和影像引导下粗针活检",
+            "en": "Prompt ultrasound first: excisional biopsy if small, superficial and benign-looking; if suspicious, deep or large, sarcoma-team referral for MRI and image-guided core biopsy"
           },
           "correct": true,
           "feedback": {
@@ -1987,20 +1987,20 @@
         {
           "id": "watch",
           "text": {
-            "zh-CN": "边界清楚、能活动，多半是良性的，先观察1–2个月",
-            "en": "It is well defined and mobile, so probably benign — watch it for 1–2 months"
+            "zh-CN": "肿物小、边界清楚、可活动且有压痛，这些都是良性或炎性包块的特点：先观察1–2个月，继续长大时再做影像检查",
+            "en": "It is small, well defined, mobile and tender — the features of a benign or inflamed lump — so watch it for 1–2 months and image it only if it keeps growing"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。边界清楚、可活动并不能排除恶性；这个肿物二十多天来一直在长，按NICE NG12应在48小时内做超声，而不是等待。",
-            "en": "No. Being well defined and mobile does not exclude malignancy; this lump has grown over more than 20 days, and NICE NG12 asks for an ultrasound within 48 hours rather than waiting."
+            "zh-CN": "不对。边界清楚、可活动、有压痛都不能排除恶性；这个肿物二十多天来已经在长，按NICE NG12应在48小时内做超声，而不是等待。",
+            "en": "No. Being well defined, mobile and tender does not exclude malignancy; this lump has already grown over more than 20 days, and NICE NG12 asks for an ultrasound within 48 hours rather than waiting."
           }
         },
         {
           "id": "incisional",
           "text": {
-            "zh-CN": "门诊先切开取一块组织活检，再决定怎么处理",
-            "en": "Take an incisional biopsy in clinic first, then decide"
+            "zh-CN": "先在门诊切开取一块组织活检：有了病理诊断，再决定是单纯切除还是按肉瘤手术，根本不必做影像",
+            "en": "Take an incisional biopsy in clinic first: a tissue diagnosis from part of the lump decides between simple excision and sarcoma surgery, so there is no need to image it at all"
           },
           "correct": false,
           "feedback": {
@@ -2011,8 +2011,8 @@
         {
           "id": "wide",
           "text": {
-            "zh-CN": "不必先做影像，直接按软组织肉瘤做广泛切除",
-            "en": "Skip imaging and go straight to a wide excision as for a soft tissue sarcoma"
+            "zh-CN": "青少年的肿物在长大，可能是肉瘤：不必先做影像，直接按软组织肉瘤做广泛切除，良性恶性都能一次处理",
+            "en": "A growing lump in a young person could be a sarcoma, so skip imaging and go straight to a wide excision, which deals with a sarcoma and a benign lump alike in one operation"
           },
           "correct": false,
           "feedback": {
@@ -2062,20 +2062,20 @@
         {
           "id": "nerve-sheath-myxoma",
           "text": {
-            "zh-CN": "真皮神经鞘黏液瘤",
-            "en": "Dermal nerve sheath myxoma"
+            "zh-CN": "真皮神经鞘黏液瘤（施万细胞肿瘤）",
+            "en": "Dermal nerve sheath myxoma (a Schwann-cell tumour)"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。真皮神经鞘黏液瘤呈小叶状，梭形细胞排列成漩涡状或条索状，S-100和SOX10阳性；本例S-100阴性（SOX10未做）。",
-            "en": "No. Dermal nerve sheath myxoma is lobular, with spindle cells in whorls or cords, and is S-100 and SOX10 positive; here S-100 is negative (SOX10 was not done)."
+            "zh-CN": "不对。真皮神经鞘黏液瘤呈小叶状，梭形细胞排列成漩涡状或条索状，作为施万细胞肿瘤，S-100和SOX10阳性；本例S-100阴性（SOX10未做）。",
+            "en": "No. Dermal nerve sheath myxoma is lobular, with spindle cells in whorls or cords, and as a Schwann-cell tumour it is S-100 and SOX10 positive; here S-100 is negative (SOX10 was not done)."
           }
         },
         {
           "id": "aggressive-angiomyxoma",
           "text": {
-            "zh-CN": "侵袭性（深部）血管黏液瘤",
-            "en": "Aggressive (deep) angiomyxoma"
+            "zh-CN": "侵袭性血管黏液瘤（深部血管黏液瘤）",
+            "en": "Aggressive angiomyxoma (deep angiomyxoma)"
           },
           "correct": false,
           "feedback": {
@@ -2086,8 +2086,8 @@
         {
           "id": "myxofibrosarcoma",
           "text": {
-            "zh-CN": "低级别黏液纤维肉瘤",
-            "en": "Low-grade myxofibrosarcoma"
+            "zh-CN": "低级别黏液纤维肉瘤（黏液样肉瘤）",
+            "en": "Low-grade myxofibrosarcoma (a myxoid sarcoma)"
           },
           "correct": false,
           "feedback": {
@@ -2123,7 +2123,7 @@
           "id": "margins-follow-up",
           "text": {
             "zh-CN": "向病理科确认切缘是否完整（不完整则考虑再切除），并安排局部随访，教她自查复发",
-            "en": "Confirm with pathology whether the margins are clear (re-excise if incomplete), and arrange local follow-up, teaching her to check for recurrence"
+            "en": "Confirm the margins with pathology (re-excise if incomplete) and arrange local follow-up, teaching her to check for recurrence"
           },
           "correct": true,
           "feedback": {
@@ -2134,20 +2134,20 @@
         {
           "id": "no-follow-up",
           "text": {
-            "zh-CN": "良性肿瘤，切掉就好，不需要随访",
-            "en": "It is benign and has been removed, so no follow-up is needed"
+            "zh-CN": "这是良性肿瘤，已经切除，也从未有转移的报道：可以出院，不需要随访",
+            "en": "It is benign, it has been excised and no metastasis has ever been reported, so she can be discharged with no follow-up"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。良性不等于不会复发：切除不完整时局部复发并不少见（原文引用约30%–40%），而本例连切缘状态都不知道。",
-            "en": "No. Benign does not mean it cannot come back: local recurrence after incomplete excision is not rare (the source cites about 30–40 %), and here even the margin status is unknown."
+            "zh-CN": "不对。良性不等于不会复发：虽然未见转移报道，但切除不完整时局部复发并不少见（原文引用约30%–40%），而本例连切缘状态都不知道。",
+            "en": "No. Benign does not mean it cannot come back: no metastasis is reported, but local recurrence after incomplete excision is not rare (the source cites about 30–40 %), and here even the margin status is unknown."
           }
         },
         {
           "id": "adjuvant-rt",
           "text": {
-            "zh-CN": "术后补充局部放疗，预防复发",
-            "en": "Add local radiotherapy to prevent recurrence"
+            "zh-CN": "复发并不少见，切缘状态又不明：术后对瘤床补充局部放疗，预防复发",
+            "en": "Recurrence is not rare and the margin status is unknown, so add local radiotherapy to the excision bed to prevent it coming back"
           },
           "correct": false,
           "feedback": {
@@ -2158,8 +2158,8 @@
         {
           "id": "carney-confirmed",
           "text": {
-            "zh-CN": "这一个黏液瘤就足以诊断Carney综合征，应立即全面筛查",
-            "en": "This one myxoma is enough to diagnose Carney complex, so start full screening now"
+            "zh-CN": "皮肤黏液瘤是Carney综合征的主要表现之一，这一个黏液瘤就足以诊断：应立即全面筛查",
+            "en": "A cutaneous myxoma is a major manifestation of Carney complex, so this one lesion is enough to diagnose it: start full screening now"
           },
           "correct": false,
           "feedback": {
@@ -2177,21 +2177,11 @@
       },
       "kind": "multiple",
       "requires": {
-        "all": [
-          {
-            "decided": "diagnosis"
-          },
-          {
-            "asked": "other-lesions"
-          },
-          {
-            "asked": "pigmentation"
-          }
-        ]
+        "decided": "diagnosis"
       },
       "need": {
-        "zh-CN": "先作出诊断，并问过身上其他部位的包和皮肤上的斑。",
-        "en": "First make the diagnosis and ask about other lumps and spots on the skin."
+        "zh-CN": "先作出诊断。",
+        "en": "First make the diagnosis."
       },
       "options": [
         {
@@ -3094,7 +3084,7 @@
         ]
       },
       {
-        "text": "Where is the lump?",
+        "text": "Whereabouts is this lump located?",
         "locale": "en",
         "expect": [
           "presentation"

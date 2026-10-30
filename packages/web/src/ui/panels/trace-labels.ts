@@ -10,8 +10,8 @@
  * `trace.code.*`); case items by their names, skills by their own, staff by
  * name. An unknown name is shown as it is.
  */
-import { BUILTIN_SKILLS } from "@clinicalcraft/agent";
-import type { CaseDefinition } from "@clinicalcraft/core";
+import { BUILTIN_SKILLS, resolveDecisionRef } from "@clinicalcraft/agent";
+import { availableDecisions, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { operationName, OPERATION_NAMES, type TraceSpan } from "@clinicalcraft/world";
 import { trTask } from "../../app/embodied-link.js";
 import { ct, getLocale, joinList, tr, trMaybe } from "../../i18n/index.js";
@@ -20,6 +20,8 @@ export interface TraceLabelContext {
   caseDef: CaseDefinition | null;
   /** Display name of a world entity or actor (`staff:ed-nurse` → "Lin Xiao"), null when unknown. */
   name?: (id: string) => string | null;
+  /** The learner's record now: a decision still locked is named by its number only (`decisionLabel`). */
+  state?: SessionState | null;
 }
 
 /** One identifier (operation, tool, event type, action type), localised; unknown ones as they are. */
@@ -29,9 +31,27 @@ export function nameLabel(name: string): string {
   return OPERATION_NAMES[name] ? operationName(name, getLocale()) : name;
 }
 
-/** A case item by its name (investigation, intervention, exam manoeuvre, history question, decision), else its id. */
-export function itemLabel(c: CaseDefinition | null, id: string): string {
+/**
+ * The decision a `decision_id` names — its number ("2", "D2", "决策 2", as agents now answer) or its id (the
+ * demonstration's walkthrough): `resolveDecisionRef`, as `answer_decision` reads it — by its prompt; with `state`, one
+ * still locked by its number only, as the case board shows it (its prompt can state results not yet obtained).
+ * Null when it names none.
+ */
+export function decisionLabel(c: CaseDefinition, ref: string, state?: SessionState | null): string | null {
+  const d = resolveDecisionRef(c.decisions, ref);
+  if (!d) return null;
+  const entry = state ? availableDecisions(c, state).find((x) => x.decision.id === d.id) : undefined;
+  if (entry && !entry.unlocked && !entry.decided) return tr("board.lockedTitle", { n: c.decisions.indexOf(d) + 1 });
+  return ct(d.prompt);
+}
+
+/**
+ * A case item by its name (investigation, intervention, exam manoeuvre, history question, decision), else its id.
+ * `arg` is the tool argument that named it: a `decision_id` is read as `answer_decision` reads it (`decisionLabel`).
+ */
+export function itemLabel(c: CaseDefinition | null, id: string, arg?: string, state?: SessionState | null): string {
   if (!c) return id;
+  if (arg === "decision_id") return decisionLabel(c, id, state) ?? id;
   const inv = c.investigations.find((x) => x.id === id);
   if (inv) return ct(inv.name);
   const iv = c.interventions.find((x) => x.id === id);
@@ -111,14 +131,14 @@ export function traceCodeLabel(code: string): string {
 
 /**
  * A tool call's arguments for the autopilot's calls list: the case items they point at by name (an
- * investigation, intervention, finding, question or decision), other arguments as `key: value`; at most 140
- * characters.
+ * investigation, intervention, finding, question or decision — a `decision_id` by its number too, a locked one by
+ * its number only: `itemLabel`), other arguments as `key: value`; at most 140 characters.
  */
-export function callArgsLabel(args: unknown, c: CaseDefinition | null): string {
+export function callArgsLabel(args: unknown, c: CaseDefinition | null, state?: SessionState | null): string {
   if (!args || typeof args !== "object") return "";
   const parts = Object.entries(args as Record<string, unknown>).map(([k, v]) => {
     if (typeof v === "string") {
-      const item = itemLabel(c, v);
+      const item = itemLabel(c, v, k, state);
       return item !== v ? item : `${k}: ${v}`;
     }
     return `${k}: ${JSON.stringify(v)}`;

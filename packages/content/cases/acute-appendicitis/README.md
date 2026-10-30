@@ -15,7 +15,7 @@ Fictional teaching case — not medical advice.
 
 | | |
 |---|---|
-| id / version | `acute-appendicitis` / `1.1.1` |
+| id / version | `acute-appendicitis` / `1.1.2` |
 | setting / facility | `emergency` (night shift; the first slot accepting `emergency`, currently `resus-1`) / `general-hospital` |
 | specialty | emergency medicine, general surgery |
 | difficulty | 2 / 5 |
@@ -450,8 +450,9 @@ rank an expected history item first, at or above the 0.55 selection score.
 Three negatives with `expect: []` (最近压力大吗？, 你喜欢看什么电影？, "Which
 football team do you support?") select nothing, so the patient falls back to
 `fallbackUnknown`. They include 28 colloquial, typo and abbreviation
-paraphrases (拉稀没有, 尿尿疼不疼, 恶新想吐不, 输过血没, "any n/v?", "NKDA?",
-"any alergies", "When did u last drink water", "Any pain in your penis?").
+paraphrases (拉稀没有, 尿尿疼不疼, 恶新想吐不, 输过血没, "any n/v?",
+"NKDA, or any allergies?", "any alergies", "When did u last drink water",
+"Any pain in your penis?").
 
 Authoring lessons for the offline matcher, all applied here:
 
@@ -578,6 +579,26 @@ them:
   out.
 
 ## Changelog
+
+### 1.1.2 — 2026-10-30 (assessment validity)
+
+- **Options rebalanced so the key is not cued by length.** In 2 of the 3
+  single-best decisions (`dec-imaging`, `dec-definitive`) the keyed option was
+  the uniquely longest in both languages; now it is in none. The distractors
+  carry the detail and register of the key and say why they tempt: contrast CT
+  as "the most accurate test", a plain film "to look for an appendicolith,
+  free gas or bowel obstruction", MRI as radiation-free, home on oral
+  analgesia; antibiotics-first with its regimen (IV ≥ 24 h, then oral, about
+  7–10 days — the `abx-first-nom` dose), open appendectomy with the same
+  single pre-operative antibiotic dose as the key, admission for untreated
+  observation, discharge with a surgical clinic review. The laparoscopy key
+  is tighter wording of the same plan. Medical meaning, correct flags,
+  feedback and scoring are unchanged; `dec-supportive` and `dec-diagnosis`
+  had no cue and are untouched.
+- **Option ids:** all already name their content; none changed.
+- **Matcher corpus:** five `extensions.testUtterances` that were one of their
+  item's keywords (`cases validate --strict`) are now paraphrases; no history
+  item, answer or keyword changed.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

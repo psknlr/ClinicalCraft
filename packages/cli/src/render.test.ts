@@ -93,6 +93,23 @@ describe("EventRenderer never forwards terminal control sequences", () => {
   });
 });
 
+describe("EventRenderer names decisions by number", () => {
+  it.skipIf(!smzl)("an answer_decision call shows the decision's number, never its authored id (the demonstration passes ids)", () => {
+    let out = "";
+    const renderer = new EventRenderer({ out: { write: (s: string) => ((out += s), true) }, palette: createPalette(false), caseDef: smzl!, locale: () => "en", interactive: false });
+    let seq = 0;
+    const emit = (msg: EventMsg) => renderer.handle({ id: "s", seq: ++seq, msg } as AgentEvent);
+    const [first, second] = smzl!.decisions;
+    emit({ type: "tool_call_begin", turnId: "t1", agent: "clinician", callId: "c1", tool: "answer_decision", args: { decision_id: second!.id, option_ids: ["B"] } });
+    emit({ type: "tool_call_end", turnId: "t1", agent: "clinician", callId: "c1", tool: "answer_decision", ok: true, output: "Correct." });
+    emit({ type: "tool_call_begin", turnId: "t1", agent: "clinician", callId: "c2", tool: "answer_decision", args: { decision_id: "1", option_ids: ["A", "C"] } });
+    expect(out).toContain("answer_decision(2: B)");
+    expect(out).toContain("answer_decision(1: A+C)");
+    expect(out).not.toContain(first!.id);
+    expect(out).not.toContain(second!.id);
+  });
+});
+
 describe("import-v4 output", () => {
   it("prints warnings and errors built from file contents without control sequences", { timeout: 60_000 }, async () => {
     const home = join(root, "home");

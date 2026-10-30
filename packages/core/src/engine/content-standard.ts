@@ -15,10 +15,19 @@
  * | no exam finding is a "not recorded" placeholder (`examNotRecorded` says that) | `exam.<i>.finding` |
  * | a child under 12 is not asked adult social history (smoking, alcohol, drugs, work) — the carer is | `history.<i>` |
  * | an avoided-harm item gated by `scoredWhen` counts whenever its harm is done (each harmful step is in the gate) | `rubric.<i>.scoredWhen` |
+ * | an option id names the option's content, not its correctness or position (`supported`, `alt-1`, `a`…) | `decisions.<i>.options.<j>.id` |
+ * | the key of a single-best decision is the uniquely longest option in at most one decision per locale (length cue) | `decisions.<i>.options.<j>.text` |
+ * | no authoring language ("原报告", "the source", "teaching role"…) in the patient's, carer's or nurse's learner-facing words | `history.<i>.answer`, `patient.persona.openingLine` / `.fallbackUnknown` / `.companion.name`, `patient.chiefComplaint`, `patient.triageNote` |
+ * | no decision is gated on asking an item the case does not record (`disclosure: "unknown"`) | `decisions.<i>.requires…asked` |
+ * | no redundant gate structure: `{always: true}` in an all/any list, an all directly in an all (an any in an any) | `phases.<i>.enterWhen…`, `decisions.<i>.requires…`, `objectives.<i>.completeWhen…` |
+ * | a key reasoning point is not a copy of a teaching point | `debrief.keyReasoning.<i>` |
+ * | a test utterance is not one of its expected item's keywords | `extensions.testUtterances.<i>` |
+ * | every specialty id is canonical (`CANONICAL_SPECIALTIES`); a synonym's warning names its replacement | `specialty.<i>` |
  */
-import type { CaseDefinition, HistoryItem } from "../schema/case.js";
+import type { CaseDefinition, Decision, HistoryItem } from "../schema/case.js";
 import { PERSONAL_KIT, type Condition } from "../schema/common.js";
-import { hasLocale, t, type LocalizedText } from "../i18n.js";
+import { hasLocale, t, tList, type LocalizedText } from "../i18n.js";
+import { canonicalSpecialty, isCanonicalSpecialty } from "../specialties.js";
 import { createSession } from "./reducer.js";
 import { historyVoice } from "./speech.js";
 import { compactText } from "./text.js";
@@ -317,6 +326,184 @@ function checkScoredWhenCoverage(c: CaseDefinition): Issue[] {
 }
 
 /* ------------------------------------------------------------------ */
+/* Decision options: neutral ids, no length cue                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * An option id that names the option's role instead of its content: a correctness marker (`supported`, `correct`,
+ * `wrong`, `yes`, `best`, `key`, `answer`…, also numbered or as `correct-answer`), a placeholder (`alternative`,
+ * `alt-2`, `option-1`, `opt3`, `choice-b`), a distractor (`distractor…`), a single letter or a number (the authored
+ * position — options are shown shuffled). Agents and MCP see letters, but the id still reaches the web board's markup, hook
+ * payloads, traces and record exports.
+ */
+const ROLE_OPTION_ID =
+  /^(?:(?:un|not-)?supported|correct|incorrect|right|wrong|true|false|yes|no|best|key|answer)(?:[-_.](?:answer|option|choice))?(?:[-_.]?\d+)?$|^(?:alternative|alt|option|opt|choice)(?:[-_.]?(?:\d+|[a-z]))?$|^distract[eo]r|^[a-z]$|^\d+$/i;
+
+function checkOptionIds(c: CaseDefinition): Issue[] {
+  return c.decisions.flatMap((d, i) =>
+    d.options.flatMap((o, j) =>
+      ROLE_OPTION_ID.test(o.id)
+        ? [warn(`decisions.${i}.options.${j}.id`, `option id "${o.id}" names the option's role, not its content — the id reaches the web board, hook payloads, traces and exports, so it gives the answer or its position away: name what the option says (e.g. "ivig-now")`)]
+        : [],
+    ),
+  );
+}
+
+/** The keyed option of a single-best decision (exactly one correct option) when it is the uniquely longest in `locale` (characters), else -1. */
+function keyedLongest(d: Decision, locale: string): number {
+  const keyed = d.options.flatMap((o, j) => (o.correct ? [j] : []));
+  if (d.kind !== "single" || keyed.length !== 1 || !d.options.every((o) => hasLocale(o.text, locale))) return -1;
+  const k = keyed[0]!;
+  const lengths = d.options.map((o) => [...t(o.text, locale).trim()].length);
+  return lengths.every((n, j) => j === k || n < lengths[k]!) ? k : -1;
+}
+
+/** A key that is the longest option in more than one decision teaches learners to pick the longest: per locale, one such decision is allowed. */
+function checkLengthCue(c: CaseDefinition): Issue[] {
+  const repeats = new Map<number, string[]>(); // decision index → the locales where an earlier decision has the cue
+  for (const l of c.locales) {
+    let seen = 0;
+    c.decisions.forEach((d, i) => {
+      if (keyedLongest(d, l) < 0 || seen++ === 0) return;
+      repeats.set(i, [...(repeats.get(i) ?? []), l]);
+    });
+  }
+  return [...repeats]
+    .sort(([a], [b]) => a - b)
+    .map(([i, locales]) => {
+      const d = c.decisions[i]!;
+      const k = keyedLongest(d, locales[0]!);
+      return warn(`decisions.${i}.options.${k}.text`, `the correct option "${d.options[k]!.id}" of decision "${d.id}" is its longest option (${locales.join(", ")}), as in an earlier decision: a key that is the longest more than once is a length cue — make a distractor as long, or the key shorter`);
+    });
+}
+
+/* ------------------------------------------------------------------ */
+/* Authoring language in what the learner reads                        */
+/* ------------------------------------------------------------------ */
+
+/**
+ * Authoring language: words about the source or the teaching design ("原病历", "the source", "teaching role"). Learners
+ * read the patient's and carer's words, the chief complaint and the triage note; only record-facing text (results,
+ * `examNotRecorded`, the debrief) may name the report. "The source of the bleeding" is clinical language, not this.
+ */
+const AUTHORING_LANGUAGE =
+  /原报告|原病历|原文|源病例|原始资料|教学设定|教学改写|教学角色|\bthe source\b(?!\s+of\b)|\bsource (?:notes?|reports?)\b|\bthe original report\b|\beducational role\b|\bteaching (?:role|device)\b/iu;
+
+function checkAuthoringLanguage(c: CaseDefinition): Issue[] {
+  const { persona } = c.patient;
+  const texts: [path: string, what: string, text: LocalizedText | undefined][] = [
+    ...c.history.map((h, i): [string, string, LocalizedText] => [`history.${i}.answer`, `the answer to "${h.id}"`, h.answer]),
+    ["patient.persona.openingLine", "the opening line", persona.openingLine],
+    ["patient.persona.fallbackUnknown", "the fallback answer", persona.fallbackUnknown],
+    ["patient.persona.companion.name", "the companion's name", persona.companion?.name],
+    ["patient.chiefComplaint", "the chief complaint", c.patient.chiefComplaint],
+    ["patient.triageNote", "the triage note", c.patient.triageNote],
+  ];
+  const issues: Issue[] = [];
+  for (const [path, what, text] of texts) {
+    const found = localesOf(c, text).flatMap((l) => {
+      const m = AUTHORING_LANGUAGE.exec(t(text, l));
+      return m ? [`"${m[0]}" (${l})`] : [];
+    });
+    if (found.length) issues.push(warn(path, `${what} uses authoring language — ${found.join(", ")}: learners read it, so write it in character; only record-facing text (results, examNotRecorded, the debrief) may name the report`));
+  }
+  return issues;
+}
+
+/* ------------------------------------------------------------------ */
+/* Gates: unrecorded history, redundant structure                      */
+/* ------------------------------------------------------------------ */
+
+/** The leaves of a condition (through all, any and not), each with its path below `path`. */
+function leaves(cond: Condition, path: string): [Condition, string][] {
+  if ("all" in cond) return cond.all.flatMap((x, k) => leaves(x, `${path}.all.${k}`));
+  if ("any" in cond) return cond.any.flatMap((x, k) => leaves(x, `${path}.any.${k}`));
+  if ("not" in cond) return leaves(cond.not, `${path}.not`);
+  return [[cond, path]];
+}
+
+/** A decision gated on asking an item the case does not record is a hidden gate: the question has no answer to find. */
+function checkUnrecordedGates(c: CaseDefinition): Issue[] {
+  const unrecorded = new Set(c.history.filter((h) => h.disclosure === "unknown").map((h) => h.id));
+  return c.decisions.flatMap((d, i) =>
+    leaves(d.requires, `decisions.${i}.requires`).flatMap(([leaf, path]) =>
+      "asked" in leaf && unrecorded.has(leaf.asked)
+        ? [warn(`${path}.asked`, `decision "${d.id}" requires asking "${leaf.asked}", which the case does not record (disclosure "unknown"): gate it on recorded evidence — a question without an answer is a hidden gate`)]
+        : [],
+    ),
+  );
+}
+
+/** Redundant structure below `path`: `{always: true}` in an all or any list; an all directly in an all, an any in an any. */
+function redundantGate(cond: Condition, path: string): Issue[] {
+  if ("not" in cond) return redundantGate(cond.not, `${path}.not`);
+  if (!("all" in cond) && !("any" in cond)) return [];
+  const kind = "all" in cond ? "all" : "any";
+  const list = "all" in cond ? cond.all : cond.any;
+  return list.flatMap((x, k) => {
+    const at = `${path}.${kind}.${k}`;
+    const own: Issue[] = [];
+    if ("always" in x && x.always) own.push(warn(at, kind === "all" ? '{"always": true} in an "all" list adds nothing: drop it' : '{"always": true} in an "any" list makes the whole "any" hold from the start: gate on what the learner does'));
+    if (kind in x) own.push(warn(at, `an "${kind}" directly in an "${kind}" list: move its conditions into the outer list`));
+    return [...own, ...redundantGate(x, at)];
+  });
+}
+
+function checkRedundantGates(c: CaseDefinition): Issue[] {
+  return [
+    ...c.phases.flatMap((p, i) => (p.enterWhen ? redundantGate(p.enterWhen, `phases.${i}.enterWhen`) : [])),
+    ...c.decisions.flatMap((d, i) => redundantGate(d.requires, `decisions.${i}.requires`)),
+    ...c.objectives.flatMap((o, i) => redundantGate(o.completeWhen, `objectives.${i}.completeWhen`)),
+  ];
+}
+
+/* ------------------------------------------------------------------ */
+/* Echoes: key reasoning, keyword utterances                           */
+/* ------------------------------------------------------------------ */
+
+function checkKeyReasoningEchoes(c: CaseDefinition): Issue[] {
+  const { keyReasoning, teachingPoints } = c.debrief;
+  return keyReasoning.flatMap((k, i) => {
+    for (const [j, point] of teachingPoints.entries()) {
+      const same = c.locales.filter((l) => hasLocale(k, l) && hasLocale(point, l) && compactText(t(k, l)) !== "" && compactText(t(k, l)) === compactText(t(point, l)));
+      if (same.length) return [warn(`debrief.keyReasoning.${i}`, `the key reasoning point repeats debrief.teachingPoints.${j} (${same.join(", ")}): give the reasoning chain that leads to the answer, not the teaching point again`)];
+    }
+    return [];
+  });
+}
+
+/** `caseTestUtterances` with each entry's index in `extensions.testUtterances` (malformed entries are skipped). */
+function indexedUtterances(c: CaseDefinition): [number, TestUtterance][] {
+  const raw = (c.extensions as Record<string, unknown>).testUtterances;
+  return Array.isArray(raw) ? (caseTestUtterances(c) ?? []).map((u) => [raw.indexOf(u), u]) : [];
+}
+
+function checkKeywordUtterances(c: CaseDefinition): Issue[] {
+  const byId = new Map(c.history.map((h) => [h.id, h]));
+  return indexedUtterances(c).flatMap(([i, u]) => {
+    const text = compactText(u.text);
+    const item = text === "" ? undefined : u.expect.find((id) => tList(byId.get(id)?.keywords, "*").some((k) => compactText(k) === text));
+    return item === undefined ? [] : [warn(`extensions.testUtterances.${i}`, `"${u.text}" is a keyword of "${item}", so it tests nothing the keyword does not: write a paraphrase a learner would type`)];
+  });
+}
+
+/* ------------------------------------------------------------------ */
+/* Specialty ids                                                       */
+/* ------------------------------------------------------------------ */
+
+/** Every specialty id is canonical, so the library filter lists each discipline once (packages/core/src/specialties.ts). */
+function checkSpecialties(c: CaseDefinition): Issue[] {
+  return c.specialty.flatMap((id, i) => {
+    if (isCanonicalSpecialty(id)) return [];
+    const replacement = canonicalSpecialty(id, c.specialty);
+    if (replacement === null) return [warn(`specialty.${i}`, `specialty "${id}" is not a canonical id: use one of CANONICAL_SPECIALTIES (packages/core/src/specialties.ts), or add the discipline there with its bilingual label`)];
+    const use = replacement.map((r) => `"${r}"`).join(" + ");
+    const child = /^p(?:a)?ediatric-/.test(id) && !replacement.includes("pediatric-surgery");
+    return [warn(`specialty.${i}`, `specialty "${id}" is a synonym: use ${use}${child ? ' — a child\'s organ specialty is the adult id beside the age group ("pediatrics", or "neonatology" for a newborn)' : ""}`)];
+  });
+}
+
+/* ------------------------------------------------------------------ */
 /* Entry point                                                         */
 /* ------------------------------------------------------------------ */
 
@@ -333,5 +520,13 @@ export function checkContentStandard(c: CaseDefinition): Issue[] {
     ...checkExamPlaceholders(c),
     ...checkChildSocialHistory(c),
     ...checkScoredWhenCoverage(c),
+    ...checkOptionIds(c),
+    ...checkLengthCue(c),
+    ...checkAuthoringLanguage(c),
+    ...checkUnrecordedGates(c),
+    ...checkRedundantGates(c),
+    ...checkKeyReasoningEchoes(c),
+    ...checkKeywordUtterances(c),
+    ...checkSpecialties(c),
   ];
 }

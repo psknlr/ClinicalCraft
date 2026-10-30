@@ -150,9 +150,13 @@ const EN = {
   "tool.intervention.harm": "Harm: {text}",
   "tool.answer.correct": "Correct.",
   "tool.answer.incorrect": "Not correct.",
-  "tool.answer.need": "Not yet answerable: {need}",
-  "tool.answer.already": "This decision has already been answered correctly.",
-  "tool.answer.badOption": "Unknown option id(s): {ids}. Options: {options}.",
+  "tool.answer.need": "Decision {n} is not yet answerable: {need}",
+  "tool.answer.already": "Decision {n} has already been answered correctly.",
+  "tool.answer.badOption": "Unknown option(s): {tokens}. Answer by letter — options: {options}.",
+  "tool.answer.noOption": "No option given. Answer by letter — options: {options}.",
+  "tool.answer.oneOption": "Decision {n} takes a single best answer: answer with one letter.",
+  "tool.answer.noSuchDecision": "No decision “{ref}”. Name a decision by its number: {numbers}.",
+  "tool.answer.noDecisions": "This case has no decisions.",
   "tool.phase.set": "Now reviewing phase: {label}.{description}",
   "tool.wait.static": "This case uses a static clock: time does not pass. Results are available immediately.",
   "tool.wait.done": "Waited {minutes} min ({from} → {to}).",
@@ -187,6 +191,7 @@ const EN = {
   "tool.list.cannotAnswer": "(Nobody can answer history questions now: {text})",
   "tool.list.laterPhases": "(+{count} later phase(s), not reached yet)",
   "label.decisionN": "Decision {n} (not yet available)",
+  "tool.list.decision": "Decision {n}: {prompt} ({status})",
 
   // engine rejections
   "reject.not-started": "The case has not started.",
@@ -588,9 +593,13 @@ const ZH: Record<RuntimeKey, string> = {
   "tool.intervention.harm": "不良后果：{text}",
   "tool.answer.correct": "正确。",
   "tool.answer.incorrect": "不正确。",
-  "tool.answer.need": "暂时还不能作答：{need}",
-  "tool.answer.already": "该决策已正确作答。",
-  "tool.answer.badOption": "未知选项编号：{ids}。可选：{options}。",
+  "tool.answer.need": "决策 {n} 暂时还不能作答：{need}",
+  "tool.answer.already": "决策 {n} 已正确作答。",
+  "tool.answer.badOption": "未知选项：{tokens}。请按字母作答，可选：{options}。",
+  "tool.answer.noOption": "未给出选项。请按字母作答，可选：{options}。",
+  "tool.answer.oneOption": "决策 {n} 为单选题：请只用一个字母作答。",
+  "tool.answer.noSuchDecision": "没有决策“{ref}”。请用决策编号指明：{numbers}。",
+  "tool.answer.noDecisions": "本病例没有决策。",
   "tool.phase.set": "当前查看阶段：{label}。{description}",
   "tool.wait.static": "本病例为静态时钟：时间不会流逝，结果可立即查看。",
   "tool.wait.done": "已等待 {minutes} 分钟（{from} → {to}）。",
@@ -624,7 +633,8 @@ const ZH: Record<RuntimeKey, string> = {
   "tool.list.empty": "（无）",
   "tool.list.cannotAnswer": "（现在没有人能回答病史问题：{text}）",
   "tool.list.laterPhases": "（另有 {count} 个后续阶段，尚未到达）",
-  "label.decisionN": "判断 {n}（尚未开放）",
+  "label.decisionN": "决策 {n}（尚未开放）",
+  "tool.list.decision": "决策 {n}：{prompt}（{status}）",
 
   "reject.not-started": "病例尚未开始。",
   "reject.finished": "病例已经结束。",
@@ -763,7 +773,7 @@ const ZH: Record<RuntimeKey, string> = {
   "label.current": "当前",
   "label.locked": "未解锁",
   "label.autoPhase": "随病情自动推进",
-  "label.unlocked": "可作答",
+  "label.unlocked": "可以作答",
   "label.decided": "已作答",
   "label.asked": "已问",
   "label.yes": "是",
@@ -920,6 +930,16 @@ export function agentLabel(locale: string, agent: string): string {
 
 export function joinList(locale: string, items: readonly string[]): string {
   return items.join(isZh(locale) ? "、" : ", ");
+}
+
+/** A list heading in the learner's language: "Decisions:" / "决策：" (full-width punctuation in Chinese, docs/GLOSSARY.md). */
+export function listHeading(locale: string, label: string): string {
+  return `${label}${isZh(locale) ? "：" : ":"}`;
+}
+
+/** "Objectives (1/3)" / "目标（1/3）" — a label with a count, its brackets full-width in Chinese. */
+export function countedLabel(locale: string, label: string, done: number, total: number): string {
+  return isZh(locale) ? `${label}（${done}/${total}）` : `${label} (${done}/${total})`;
 }
 
 /**

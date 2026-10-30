@@ -1348,6 +1348,309 @@
       ]
     },
     {
+      "id": "apheresis-machine",
+      "name": {"zh-CN":"血细胞分离机","en":"Apheresis machine"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "可推至床旁的离心式血细胞分离机：触摸屏、离心仓，以及采血、回输、枸橼酸抗凝和置换液蠕动泵；挂有抗凝液、置换用血浆或白蛋白和废弃血浆袋，用于治疗性血浆置换、红细胞置换和血液成分单采。",
+        "en": "Mobile centrifugal apheresis system with a touchscreen, a centrifuge compartment and peristaltic pumps for inlet, return, citrate anticoagulant and replacement fluid; it carries the anticoagulant, the replacement plasma or albumin and the waste-plasma bag, for therapeutic plasma exchange, red-cell exchange and cytapheresis."
+      },
+      "usage": {
+        "zh-CN": "经双腔中心静脉导管（或两条粗大的外周静脉）建立通路，预冲一次性管路，输入身高、体重和血细胞比容，设定置换量（通常为 1–1.5 倍血浆容量）和置换液（血栓性血小板减少性紫癜用血浆，其他多数适应证用白蛋白），以枸橼酸抗凝；注意口周麻木（低钙）、低血压和通路报警。",
+        "en": "Gain access through a dual-lumen central venous catheter (or two large peripheral veins), prime the disposable set, enter height, weight and haematocrit, set the exchange volume (usually 1–1.5 plasma volumes) and the replacement fluid (plasma for thrombotic thrombocytopenic purpura, albumin for most other indications) and run with citrate anticoagulation; watch for perioral tingling (low ionised calcium), hypotension and access alarms."
+      },
+      "capabilities": ["apheresis"],
+      "footprint": {"w":0.6,"d":0.65,"h":1.75},
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 设置血浆置换","en":"E · Set up plasma exchange"}
+      },
+      "screen": "text",
+      "tags": ["apheresis","blood","icu","ward"],
+      "portable": "cart",
+      "parts": [
+        {"m":"rubber","p":[-0.24,0.035,-0.26],"s":[0.07,0.07,0.07]},
+        {"m":"rubber","p":[0.24,0.035,-0.26],"s":[0.07,0.07,0.07]},
+        {"m":"rubber","p":[-0.24,0.035,0.25],"s":[0.07,0.07,0.07]},
+        {"m":"rubber","p":[0.24,0.035,0.25],"s":[0.07,0.07,0.07]},
+        {"m":"coal","p":[0,0.095,-0.005],"s":[0.56,0.05,0.6]},
+        {"m":"plastic","p":[0,0.45,-0.02],"s":[0.54,0.68,0.56]},
+        {"m":"mint","p":[0,0.45,0.265],"s":[0.5,0.6,0.01]},
+        {"m":"steel","p":[0,0.4,0.276],"s":[0.36,0.3,0.012]},
+        {"m":"chrome","p":[0,0.6,0.286],"s":[0.2,0.025,0.02]},
+        {"m":"plastic","p":[0,1.02,-0.04],"s":[0.54,0.46,0.5]},
+        {"m":"coal","p":[0,1,0.215],"s":[0.48,0.36,0.01]},
+        {"m":"chrome","p":[-0.15,1.08,0.232],"s":[0.08,0.08,0.025]},
+        {"m":"chrome","p":[0,1.08,0.232],"s":[0.08,0.08,0.025]},
+        {"m":"chrome","p":[0.15,1.08,0.232],"s":[0.08,0.08,0.025]},
+        {"m":"chrome","p":[-0.15,0.94,0.232],"s":[0.08,0.08,0.025]},
+        {"m":"clin-blood-bag","p":[0,0.885,0.232],"s":[0.4,0.015,0.012]},
+        {"m":"clin-blood-bag","p":[0.2,0.98,0.232],"s":[0.015,0.2,0.012]},
+        {"m":"yellow","p":[0.07,0.94,0.232],"s":[0.12,0.015,0.012]},
+        {"m":"led-green","p":[0.2,1.205,0.222],"s":[0.04,0.015,0.006]},
+        {"m":"steel","p":[0,1.28,-0.04],"s":[0.08,0.06,0.06]},
+        {"m":"plastic","p":[0,1.42,0],"s":[0.4,0.28,0.05]},
+        {"m":"screen-dark","p":[0,1.42,0.027],"s":[0.36,0.24,0.004],"name":"screen"},
+        {"m":"chrome","p":[0,1.5,-0.27],"s":[0.03,0.5,0.03]},
+        {"m":"chrome","p":[0,1.735,-0.27],"s":[0.44,0.02,0.02]},
+        {"m":"yellow","p":[-0.15,1.6,-0.27],"s":[0.1,0.16,0.03]},
+        {"m":"plastic","p":[-0.15,1.475,-0.27],"s":[0.012,0.09,0.012]},
+        {"m":"paper","p":[0.15,1.63,-0.27],"s":[0.08,0.12,0.025]},
+        {"m":"plastic","p":[0.15,1.52,-0.27],"s":[0.012,0.1,0.012]},
+        {"m":"steel","p":[0.285,1.05,0.05],"s":[0.03,0.03,0.06]},
+        {"m":"yellow","p":[0.285,0.92,0.05],"s":[0.025,0.2,0.12]},
+        {"m":"chrome","p":[0,0.95,-0.305],"s":[0.4,0.03,0.03]}
+      ]
+    },
+    {
+      "id": "eeg-machine",
+      "name": {"zh-CN":"视频脑电图仪","en":"Video-EEG cart"},
+      "category": "monitoring",
+      "description": {
+        "zh-CN": "可推至床旁的视频脑电图仪：放大器头盒、电极帽和导联线、立杆红外摄像头及回放显示器，用于常规脑电图和床旁持续脑电监测，新生儿可显示振幅整合脑电图（aEEG）趋势。",
+        "en": "Mobile video-EEG system with an amplifier head-box, an electrode cap and leads, a pole-mounted infrared camera and a review screen, for routine EEG and continuous bedside EEG, with amplitude-integrated EEG (aEEG) trends for neonates."
+      },
+      "usage": {
+        "zh-CN": "按国际 10–20 系统放置电极（新生儿用简化导联），检查阻抗后同步录像记录，并标记临床发作；意识障碍、镇静和新生儿患者需要持续监测，因为他们的许多发作只有脑电改变而没有临床表现。",
+        "en": "Place the electrodes by the international 10–20 system (a reduced montage in neonates), check impedances, record with synchronised video and mark clinical events; encephalopathic, sedated and neonatal patients need continuous monitoring because many of their seizures are electrographic only."
+      },
+      "capabilities": ["eeg"],
+      "footprint": {"w":0.6,"d":0.6,"h":1.9},
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 记录脑电图","en":"E · Record an EEG"}
+      },
+      "screen": "text",
+      "tags": ["neurology","bedside","icu","ward"],
+      "portable": "cart",
+      "parts": [
+        {"m":"coal","p":[0,0.08,0],"s":[0.54,0.04,0.06]},
+        {"m":"coal","p":[0,0.08,0],"s":[0.06,0.036,0.54]},
+        {"m":"rubber","p":[-0.24,0.03,0],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0.24,0.03,0],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0,0.03,-0.24],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0,0.03,0.24],"s":[0.06,0.06,0.06]},
+        {"m":"steel","p":[0,0.13,0],"s":[0.1,0.06,0.1]},
+        {"m":"steel","p":[0,0.5,-0.1],"s":[0.08,0.68,0.08]},
+        {"m":"plastic","p":[0,0.2,0],"s":[0.5,0.03,0.44]},
+        {"m":"coal","p":[-0.07,0.34,0.02],"s":[0.3,0.25,0.3]},
+        {"m":"led-green","p":[-0.12,0.42,0.172],"s":[0.03,0.015,0.006]},
+        {"m":"blue","p":[0.17,0.27,0.04],"s":[0.12,0.1,0.14]},
+        {"m":"plastic","p":[0,0.82,0],"s":[0.52,0.04,0.46]},
+        {"m":"navy","p":[-0.14,0.89,0.07],"s":[0.18,0.1,0.14]},
+        {"m":"black","p":[-0.14,0.945,0.07],"s":[0.16,0.01,0.12]},
+        {"m":"purple","p":[-0.14,0.74,0.215],"s":[0.08,0.16,0.02]},
+        {"m":"yellow","p":[-0.1,0.72,0.212],"s":[0.012,0.2,0.012]},
+        {"m":"red","p":[-0.18,0.73,0.212],"s":[0.012,0.18,0.012]},
+        {"m":"black","p":[0.1,0.85,0.15],"s":[0.24,0.015,0.1]},
+        {"m":"steel","p":[0,1,-0.12],"s":[0.06,0.32,0.06]},
+        {"m":"plastic","p":[0,1.3,-0.1],"s":[0.46,0.3,0.05]},
+        {"m":"screen-dark","p":[0,1.3,-0.073],"s":[0.42,0.26,0.004],"name":"screen"},
+        {"m":"chrome","p":[0.2,1.35,-0.22],"s":[0.03,1,0.03]},
+        {"m":"black","p":[0.2,1.82,-0.18],"s":[0.1,0.07,0.12]},
+        {"m":"led-red","p":[0.2,1.82,-0.118],"s":[0.05,0.04,0.004]},
+        {"m":"chrome","p":[0,0.86,-0.25],"s":[0.36,0.03,0.03]}
+      ]
+    },
+    {
+      "id": "fetal-monitor",
+      "name": {"zh-CN":"胎心监护仪","en":"Fetal monitor (CTG)"},
+      "category": "monitoring",
+      "description": {
+        "zh-CN": "推车式电子胎心监护仪：多普勒超声胎心探头和宫缩压力探头配弹力腹带、孕妇胎动按钮、显示屏和热敏纸打印机，同时记录胎心率和宫缩。",
+        "en": "Cardiotocograph on a trolley: a Doppler ultrasound fetal-heart transducer and a tocodynamometer on elastic belts, a maternal event marker, a screen and a thermal printer, recording the fetal heart rate and uterine activity together."
+      },
+      "usage": {
+        "zh-CN": "先触诊腹部并核对孕妇脉搏，以免把母体心率误当胎心；超声探头置于胎背处、宫缩探头置于宫底，用腹带固定，至少记录 20 分钟，按基线、变异、加速和减速进行结构化判读。",
+        "en": "Palpate the abdomen and check the maternal pulse so it is not recorded as the fetal heart, place the ultrasound transducer over the fetal back and the toco transducer at the fundus, secure them with the belts, record for at least 20 minutes and classify the trace in a structured way (baseline, variability, accelerations, decelerations)."
+      },
+      "capabilities": ["fetal-monitor"],
+      "footprint": {"w":0.5,"d":0.45,"h":1.2},
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 胎心监护","en":"E · Start CTG"}
+      },
+      "screen": "text",
+      "tags": ["obstetric","bedside","ward"],
+      "portable": "cart",
+      "parts": [
+        {"m":"rubber","p":[-0.2,0.03,-0.17],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0.2,0.03,-0.17],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[-0.2,0.03,0.17],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0.2,0.03,0.17],"s":[0.06,0.06,0.06]},
+        {"m":"coal","p":[0,0.085,0],"s":[0.46,0.04,0.4]},
+        {"m":"steel","p":[0,0.45,-0.12],"s":[0.06,0.68,0.06]},
+        {"m":"plastic","p":[0,0.4,0.04],"s":[0.36,0.03,0.28]},
+        {"m":"paper","p":[-0.08,0.44,0.06],"s":[0.14,0.05,0.12]},
+        {"m":"blue","p":[0.1,0.46,0.06],"s":[0.05,0.09,0.05]},
+        {"m":"plastic","p":[0,0.8,0],"s":[0.44,0.03,0.36]},
+        {"m":"plastic","p":[0,0.95,-0.04],"s":[0.38,0.26,0.26]},
+        {"m":"screen-dark","p":[0.04,0.98,0.093],"s":[0.24,0.16,0.004],"name":"screen"},
+        {"m":"black","p":[-0.13,0.9,0.092],"s":[0.08,0.02,0.004]},
+        {"m":"paper","p":[0,1.087,0.02],"s":[0.14,0.012,0.1]},
+        {"m":"led-green","p":[0.15,1.05,0.093],"s":[0.03,0.012,0.004]},
+        {"m":"blue","p":[-0.16,0.835,0.12],"s":[0.08,0.04,0.08]},
+        {"m":"pink","p":[0.16,0.835,0.12],"s":[0.08,0.04,0.08]},
+        {"m":"pink","p":[0,0.825,0.13],"s":[0.14,0.02,0.06]},
+        {"m":"black","p":[-0.16,0.86,0.04],"s":[0.012,0.012,0.1]},
+        {"m":"black","p":[0.16,0.86,0.04],"s":[0.012,0.012,0.1]},
+        {"m":"chrome","p":[0,1,-0.2],"s":[0.34,0.03,0.03]}
+      ]
+    },
+    {
+      "id": "neonatal-incubator",
+      "name": {"zh-CN":"新生儿暖箱","en":"Neonatal incubator"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "带轮支架上的双层壁新生儿暖箱：透明罩和操作窗、肤温探头伺服控温、加湿器、供氧接口和 X 线片托盘；罩体可升起转为开放式辐射保暖台，便于复苏和操作。",
+        "en": "Double-walled neonatal incubator on a wheeled stand: a clear hood with hand ports, servo control from a skin-temperature probe, a humidifier, an oxygen inlet and an X-ray cassette tray; the hood lifts to turn it into an open radiant-warmer bed for resuscitation and procedures."
+      },
+      "usage": {
+        "zh-CN": "预热后放入患儿，贴肤温探头，用伺服模式把体温维持在 36.5–37.5 ℃；极早产儿需加湿；经操作窗护理，做操作时升罩转为辐射台模式，同时备好监护和氧源。",
+        "en": "Pre-warm it, nurse the baby with a skin-temperature probe in servo mode to keep the body temperature at 36.5–37.5 °C, add humidity for very preterm babies, work through the hand ports, raise the hood to warmer mode for procedures, and keep monitoring and oxygen to hand."
+      },
+      "capabilities": ["neonatal-care"],
+      "footprint": {"w":1.05,"d":0.65,"h":1.4},
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 使用暖箱","en":"E · Use incubator"}
+      },
+      "screen": "text",
+      "tags": ["neonatal","icu","ward"],
+      "portable": "cart",
+      "parts": [
+        {"m":"rubber","p":[-0.42,0.035,-0.24],"s":[0.07,0.07,0.07]},
+        {"m":"rubber","p":[0.42,0.035,-0.24],"s":[0.07,0.07,0.07]},
+        {"m":"rubber","p":[-0.42,0.035,0.24],"s":[0.07,0.07,0.07]},
+        {"m":"rubber","p":[0.42,0.035,0.24],"s":[0.07,0.07,0.07]},
+        {"m":"coal","p":[0,0.095,0],"s":[0.96,0.05,0.58]},
+        {"m":"plastic","p":[0,0.45,-0.12],"s":[0.3,0.68,0.24]},
+        {"m":"plastic","p":[0,0.3,0.12],"s":[0.6,0.24,0.22]},
+        {"m":"mint","p":[0,0.3,0.233],"s":[0.56,0.2,0.006]},
+        {"m":"chrome","p":[0,0.36,0.24],"s":[0.16,0.02,0.012]},
+        {"m":"steel","p":[0,0.775,0],"s":[0.7,0.02,0.5]},
+        {"m":"plastic","p":[0,0.86,0],"s":[0.98,0.14,0.6]},
+        {"m":"mattress","p":[0,0.95,0],"s":[0.8,0.04,0.44]},
+        {"m":"glass","p":[0,1.13,0],"s":[0.94,0.36,0.56]},
+        {"m":"plastic","p":[0,1.335,0],"s":[0.98,0.05,0.6]},
+        {"m":"plastic","p":[-0.22,1.1,0.285],"s":[0.14,0.14,0.012]},
+        {"m":"plastic","p":[0.22,1.1,0.285],"s":[0.14,0.14,0.012]},
+        {"m":"coal","p":[0.27,0.84,0.305],"s":[0.3,0.1,0.01]},
+        {"m":"screen-dark","p":[0.27,0.84,0.312],"s":[0.24,0.07,0.004],"name":"screen"},
+        {"m":"led-green","p":[0.46,0.84,0.31],"s":[0.02,0.02,0.006]},
+        {"m":"water","p":[-0.44,0.84,0.15],"s":[0.06,0.08,0.12]},
+        {"m":"oxygen-green","p":[-0.47,0.88,-0.2],"s":[0.03,0.04,0.04]},
+        {"m":"yellow","p":[0.1,0.975,0.1],"s":[0.3,0.01,0.01]},
+        {"m":"chrome","p":[-0.505,0.86,0],"s":[0.02,0.03,0.4]},
+        {"m":"chrome","p":[0.505,0.86,0],"s":[0.02,0.03,0.4]}
+      ]
+    },
+    {
+      "id": "phototherapy-unit",
+      "name": {"zh-CN":"新生儿光疗仪","en":"Phototherapy unit"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "移动立柱式 LED 蓝光治疗仪，灯头可伸到暖箱或婴儿床上方，配控制面板和治疗计时器，用于新生儿高胆红素血症。",
+        "en": "Mobile LED blue-light phototherapy unit on a pole stand; the lamp head swings over an incubator or cot, with a control panel and treatment timer, for neonatal hyperbilirubinaemia."
+      },
+      "usage": {
+        "zh-CN": "遮盖患儿双眼，尽量暴露皮肤，按说明书距离放置灯头（强光疗的辐照度至少 30 μW/cm²/nm），继续喂养，监测体温和液体状况，开始光疗后 4–6 小时复查血清胆红素。",
+        "en": "Cover the baby's eyes, expose as much skin as possible, set the lamp at the distance the manufacturer gives (intensive phototherapy: an irradiance of at least 30 µW/cm²/nm), keep feeding, watch temperature and hydration, and recheck the serum bilirubin 4–6 hours after starting."
+      },
+      "capabilities": ["phototherapy"],
+      "footprint": {"w":0.6,"d":0.6,"h":1.7},
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 设置光疗","en":"E · Set up phototherapy"}
+      },
+      "screen": "text",
+      "tags": ["neonatal","icu","ward"],
+      "portable": "cart",
+      "parts": [
+        {"m":"coal","p":[0,0.08,0],"s":[0.54,0.04,0.06]},
+        {"m":"coal","p":[0,0.08,0],"s":[0.06,0.036,0.54]},
+        {"m":"rubber","p":[-0.24,0.03,0],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0.24,0.03,0],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0,0.03,-0.24],"s":[0.06,0.06,0.06]},
+        {"m":"rubber","p":[0,0.03,0.24],"s":[0.06,0.06,0.06]},
+        {"m":"steel","p":[0,0.13,0],"s":[0.1,0.06,0.1]},
+        {"m":"chrome","p":[0,0.85,0],"s":[0.04,1.4,0.04]},
+        {"m":"steel","p":[0,1.1,0],"s":[0.07,0.08,0.07]},
+        {"m":"coal","p":[0,1.25,0.045],"s":[0.14,0.12,0.05]},
+        {"m":"screen-dark","p":[0,1.26,0.072],"s":[0.1,0.06,0.004],"name":"screen"},
+        {"m":"led-green","p":[0.045,1.21,0.072],"s":[0.02,0.012,0.004]},
+        {"m":"steel","p":[0,1.6,0.12],"s":[0.04,0.04,0.3]},
+        {"m":"plastic","p":[0,1.62,0.18],"s":[0.44,0.08,0.22]},
+        {"m":"led-blue","p":[0,1.575,0.18],"s":[0.4,0.01,0.18]},
+        {"m":"navy","p":[0,1.665,0.18],"s":[0.3,0.01,0.14]}
+      ]
+    },
+    {
+      "id": "hyperbaric-chamber",
+      "name": {"zh-CN":"单人高压氧舱","en":"Monoplace hyperbaric chamber"},
+      "category": "therapy",
+      "description": {
+        "zh-CN": "以纯氧加压的单人高压氧舱：透明亚克力舱体、担架滑板、对讲、输液泵和呼吸机穿舱接口及控制台，可收治气管插管机械通气的重症患者。",
+        "en": "Monoplace chamber with a clear acrylic hull pressurised with 100 % oxygen, a sliding stretcher tray, an intercom, through-hull ports for infusion pumps and a ventilator, and a control console; it can treat intubated, ventilated critical-care patients."
+      },
+      "usage": {
+        "zh-CN": "先排除禁忌（首要是未处理的气胸，必要时先放置胸腔引流），清除一切火源，按患者耳部能耐受的速度加压，执行高压氧医师开具的治疗方案（如气体栓塞或减压病用美国海军 6 号治疗表），并观察气压伤和氧中毒惊厥。",
+        "en": "Exclude contraindications (above all an untreated pneumothorax; insert a chest drain first if needed), remove every ignition source, compress at the rate the patient's ears tolerate, run the treatment table the hyperbaric physician prescribes (such as US Navy Treatment Table 6 for gas embolism or decompression sickness) and watch for barotrauma and oxygen-toxicity seizures."
+      },
+      "capabilities": ["hyperbaric-oxygen"],
+      "footprint": {"w":2.8,"d":1.2,"h":1.7},
+      "solid": true,
+      "interaction": {
+        "kind": "device",
+        "prompt": {"zh-CN":"E · 高压氧治疗","en":"E · Hyperbaric oxygen"}
+      },
+      "screen": "text",
+      "tags": ["hyperbaric","oxygen","icu"],
+      "parts": [
+        {"m":"rubber","p":[-1.1,0.05,-0.36],"s":[0.1,0.1,0.1]},
+        {"m":"rubber","p":[1.1,0.05,-0.36],"s":[0.1,0.1,0.1]},
+        {"m":"rubber","p":[-1.1,0.05,0.36],"s":[0.1,0.1,0.1]},
+        {"m":"rubber","p":[1.1,0.05,0.36],"s":[0.1,0.1,0.1]},
+        {"m":"steel","p":[0,0.25,0],"s":[2.4,0.3,0.8]},
+        {"m":"coal","p":[0,0.42,0],"s":[2.3,0.04,0.7]},
+        {"m":"glass","p":[0,0.95,0],"s":[2.2,0.8,0.9]},
+        {"m":"glass","p":[0,1.4,0],"s":[2.2,0.1,0.6]},
+        {"m":"glass","p":[0,0.5,0],"s":[2.2,0.1,0.6]},
+        {"m":"mattress","p":[0,0.72,0],"s":[2,0.06,0.6]},
+        {"m":"white","p":[-0.85,0.78,0],"s":[0.25,0.06,0.4]},
+        {"m":"steel","p":[-0.55,1.465,0],"s":[0.05,0.03,0.62]},
+        {"m":"steel","p":[-0.55,0.435,0],"s":[0.05,0.03,0.62]},
+        {"m":"steel","p":[-0.55,0.95,0.465],"s":[0.05,0.82,0.03]},
+        {"m":"steel","p":[-0.55,0.95,-0.465],"s":[0.05,0.82,0.03]},
+        {"m":"steel","p":[0.55,1.465,0],"s":[0.05,0.03,0.62]},
+        {"m":"steel","p":[0.55,0.435,0],"s":[0.05,0.03,0.62]},
+        {"m":"steel","p":[0.55,0.95,0.465],"s":[0.05,0.82,0.03]},
+        {"m":"steel","p":[0.55,0.95,-0.465],"s":[0.05,0.82,0.03]},
+        {"m":"steel","p":[-1.15,0.95,0],"s":[0.1,0.8,0.9]},
+        {"m":"steel","p":[-1.15,1.4,0],"s":[0.1,0.1,0.6]},
+        {"m":"steel","p":[-1.15,0.5,0],"s":[0.1,0.1,0.6]},
+        {"m":"steel","p":[1.15,0.95,0],"s":[0.1,0.8,0.9]},
+        {"m":"steel","p":[1.15,1.4,0],"s":[0.1,0.1,0.6]},
+        {"m":"steel","p":[1.15,0.5,0],"s":[0.1,0.1,0.6]},
+        {"m":"chrome","p":[-1.21,0.95,0],"s":[0.02,0.5,0.5]},
+        {"m":"chrome","p":[-1.225,0.95,0.2],"s":[0.01,0.12,0.04]},
+        {"m":"plastic","p":[1.3,0.8,0],"s":[0.18,0.8,0.9]},
+        {"m":"coal","p":[1.3,1.05,0.47],"s":[0.16,0.22,0.04]},
+        {"m":"screen-dark","p":[1.3,1.05,0.492],"s":[0.14,0.18,0.004],"name":"screen"},
+        {"m":"chrome","p":[1.3,0.78,0.465],"s":[0.1,0.1,0.03]},
+        {"m":"chrome","p":[1.3,0.62,0.465],"s":[0.1,0.1,0.03]},
+        {"m":"led-green","p":[1.3,1.18,0.472],"s":[0.03,0.02,0.006]},
+        {"m":"black","p":[1.3,0.95,-0.465],"s":[0.12,0.08,0.03]},
+        {"m":"oxygen-green","p":[0.6,0.43,-0.42],"s":[1.2,0.04,0.04]},
+        {"m":"oxygen-green","p":[1.3,0.3,-0.42],"s":[0.04,0.22,0.04]}
+      ]
+    },
+    {
       "id": "exam-light",
       "name": {"zh-CN":"检查灯","en":"Examination light"},
       "category": "furniture",

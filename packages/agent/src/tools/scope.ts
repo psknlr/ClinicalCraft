@@ -14,7 +14,7 @@
  * | role | delegable tasks | clinical tools with their body | interventions |
  * |---|---|---|---|
  * | clinician (the learner's avatar), attending | all | all | all |
- * | nurse | attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention, transport_patient | check_vitals, examine, order_test (bedside tests: ECG, point of care, peak flow), read_result, intervene | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (CPR, defibrillation, catheters, NG tube, swallow screen…) — never an item authored `scope: "medical"`, airway/RSI, an arterial line or another medical procedure, a consult or a disposition |
+ * | nurse | attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention, transport_patient | check_vitals, examine, order_test (bedside tests: ECG, point of care, peak flow, CTG — not an EEG), read_result, intervene | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (CPR, defibrillation, catheters, NG tube, swallow screen…) — never an item authored `scope: "medical"`, airway/RSI, an arterial line or another medical procedure, a consult or a disposition |
  * | paramedic | as a nurse | as a nurse | as a nurse + airway |
  * | porter | fetch_equipment, transport_patient (wheel the patient to a study and back) | — (no clinical class) | — |
  * | receptionist | fetch_equipment | — (no clinical class) | — |
@@ -74,7 +74,7 @@ export const SCOPE_OF_PRACTICE: Readonly<Record<ActorRole, RoleScope>> = {
 };
 
 /** Capabilities of tests done at the bedside with a device the nursing staff operate. */
-const BEDSIDE_TEST_CAPABILITIES: readonly string[] = ["ecg-12lead", "point-of-care", "peak-flow"];
+const BEDSIDE_TEST_CAPABILITIES: readonly string[] = ["ecg-12lead", "point-of-care", "peak-flow", "fetal-monitor"];
 
 /** The scope of a role (an unknown role: nothing). */
 export function scopeOf(role: string): RoleScope {

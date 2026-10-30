@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1551890",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "胸痛后心功能恶化 · 65岁女性",
     "en": "Worsening cardiac function after chest pain · 65-year-old woman"
@@ -145,8 +145,8 @@
       "companion": {
         "role": "carer",
         "name": {
-          "zh-CN": "家属（教学设定）",
-          "en": "Relative (teaching role)"
+          "zh-CN": "欧阳女士的家属（化名）",
+          "en": "Ms Ouyang's relative (pseudonym)"
         },
         "persona": {
           "zh-CN": "她的近亲属（教学设定，原报告未提及家属），一路陪她转院过来。焦虑、疲惫，说话直白，用日常说法；只知道外院医生告诉家里的情况，记不住医学名词，具体结果让医生看转院资料；不知道的就直说不知道，绝不替她猜。最担心她能不能挺过来，也想知道为什么不能马上做手术。开场时会说：“医生，她在那边越来越重，我们就转过来了。”",
@@ -2938,7 +2938,7 @@
       },
       "options": [
         {
-          "id": "supported",
+          "id": "septal-rupture",
           "text": {
             "zh-CN": "心肌梗死后机械并发症——前壁梗死后最可能是室间隔破裂，乳头肌断裂是主要的鉴别——立即床旁超声心动图确认",
             "en": "A mechanical complication — after this anterior infarct most likely a ventricular septal rupture, with papillary-muscle rupture the main alternative — to be confirmed now by bedside echocardiography"
@@ -2952,8 +2952,8 @@
         {
           "id": "reocclusion",
           "text": {
-            "zh-CN": "溶栓失败、梗死相关血管再闭塞——再给一次溶栓药并复查心电图",
-            "en": "Failed reperfusion with re-occlusion — give a second dose of the fibrinolytic and repeat the ECG"
+            "zh-CN": "溶栓失败、梗死相关血管再闭塞——溶栓后血管可以再次闭塞，前壁缺血加重也可出现杂音：再给一次溶栓药并复查心电图",
+            "en": "Failed reperfusion with re-occlusion of the infarct artery — after lysis the artery can close again, and worsening anterior ischaemia can add a murmur: give a second dose of the fibrinolytic and repeat the ECG"
           },
           "correct": false,
           "feedback": {
@@ -2964,8 +2964,8 @@
         {
           "id": "papillary",
           "text": {
-            "zh-CN": "乳头肌断裂最可能，因为它典型地见于前壁梗死",
-            "en": "Papillary-muscle rupture is the likeliest cause, because it typically follows an anterior infarct"
+            "zh-CN": "乳头肌断裂伴急性重度二尖瓣反流，最可能，因为它典型地见于前壁梗死——立即床旁超声心动图确认，并通知心外科",
+            "en": "Papillary-muscle rupture with acute severe mitral regurgitation, the likeliest cause because it typically follows an anterior infarct — to be confirmed now by bedside echocardiography, with the cardiac surgeons alerted"
           },
           "correct": false,
           "feedback": {
@@ -2976,8 +2976,8 @@
         {
           "id": "free-wall",
           "text": {
-            "zh-CN": "心室游离壁破裂并心包填塞——先行心包穿刺，不必等影像",
-            "en": "Free-wall rupture with tamponade — needle pericardiocentesis before any imaging"
+            "zh-CN": "心室游离壁破裂并心包填塞，是最凶险的机械并发症——立即心包穿刺为手术争取时间，不必等影像",
+            "en": "Free-wall rupture with tamponade, the most rapidly fatal of the mechanical complications — needle pericardiocentesis at once, before any imaging, to buy time for surgery"
           },
           "correct": false,
           "feedback": {
@@ -3016,8 +3016,8 @@
         {
           "id": "mcs-bridge",
           "text": {
-            "zh-CN": "立即用血管活性药，并早期机械循环支持作为过渡——IABP，灌注仍不能恢复时加用VA-ECMO——继续机械通气，每日超声评估，在有心外科的中心由心脏团队讨论",
-            "en": "Vasoactive drugs now with early mechanical circulatory support as a bridge — an IABP, adding VA-ECMO if perfusion is not restored — continuing ventilation, with a daily echo and Heart-Team review at a centre with cardiac surgery"
+            "zh-CN": "立即用血管活性药，早期机械循环支持过渡——IABP，灌注不能恢复时加VA-ECMO——继续机械通气，每日超声评估，在有心外科的中心由心脏团队讨论",
+            "en": "Vasoactive drugs now and early mechanical support as a bridge — an IABP, adding VA-ECMO if perfusion is not restored — with ventilation continued, a daily echo and Heart-Team review at a cardiac surgical centre"
           },
           "correct": true,
           "feedback": {
@@ -3028,8 +3028,8 @@
         {
           "id": "fluids-first",
           "text": {
-            "zh-CN": "先快速补液纠正低血压，再决定是否需要其他支持",
-            "en": "Fluid boluses first to correct the low blood pressure, then decide on further support"
+            "zh-CN": "先快速补液——15分钟内输注晶体液500 ml，血压有反应就再重复，因为正压通气会降低回心血量和前负荷——然后再决定是否用血管活性药或机械循环支持",
+            "en": "Fluid boluses first — 500 mL of crystalloid over 15 minutes, repeated while the blood pressure responds, because positive-pressure ventilation lowers preload — then decide on vasoactive drugs or mechanical support"
           },
           "correct": false,
           "feedback": {
@@ -3040,8 +3040,8 @@
         {
           "id": "pci-first",
           "text": {
-            "zh-CN": "先对三支病变血管行急诊PCI，再评估是否需要支持",
-            "en": "Emergency PCI of all three diseased vessels first, then reassess the need for support"
+            "zh-CN": "先对三支病变血管行急诊PCI：恢复全部缺血心肌的血流就能改善泵功能、限制梗死范围，之后再根据当时的血流动力学情况来评估是否还需要IABP或ECMO支持",
+            "en": "Emergency PCI of all three diseased vessels first, since restoring flow to all the ischaemic myocardium should improve pump function and limit the infarct, then reassess whether she still needs an IABP or ECMO at all"
           },
           "correct": false,
           "feedback": {
@@ -3052,8 +3052,8 @@
         {
           "id": "vasodilator",
           "text": {
-            "zh-CN": "用血管扩张剂（如硝普钠）泵入减少分流，暂不需要机械支持",
-            "en": "A vasodilator infusion (such as nitroprusside) to reduce the shunt, with no mechanical support for now"
+            "zh-CN": "泵入血管扩张剂（如硝普钠），滴定降低后负荷、从而减少经缺损的左向右分流，机械支持暂时备而不用",
+            "en": "A vasodilator infusion (such as nitroprusside), titrated to lower afterload and so the left-to-right shunt across the defect, keeping mechanical support in reserve for now"
           },
           "correct": false,
           "feedback": {
@@ -3094,8 +3094,8 @@
         {
           "id": "heart-team-individualised",
           "text": {
-            "zh-CN": "由心脏团队个体化决定：在机械循环支持下先稳定，每日重新评估；稳定时可延期修补，支持下仍恶化则提前手术；只有解剖合适时才考虑经皮封堵",
-            "en": "A Heart-Team decision made for her: stabilise on mechanical support and reassess every day — delay the repair while she is stable, operate sooner if she deteriorates on support — and consider percutaneous closure only if the anatomy suits"
+            "zh-CN": "由心脏团队个体化决定：机械循环支持下先稳定、每日重新评估；稳定时可延期修补，支持下仍恶化则提前手术；解剖合适时才考虑经皮封堵",
+            "en": "A Heart-Team plan for her: stabilise on mechanical support and reassess daily — repair later while she is stable, sooner if she deteriorates on support — and percutaneous closure only if the anatomy suits"
           },
           "correct": true,
           "feedback": {
@@ -3106,8 +3106,8 @@
         {
           "id": "always-immediate",
           "text": {
-            "zh-CN": "立即手术修补永远最好，因为不修补约 90% 的人会死亡",
-            "en": "Immediate surgical repair is always best, because about 90 % die without repair"
+            "zh-CN": "立即手术修补永远是最好的选择：不修补约 90% 的人会死亡，而机械支持每多一天，出血、感染和肢体并发症就多一分，最终手术的风险也更高",
+            "en": "Immediate surgical repair is always the best course: about 90 % die without repair, and every day on mechanical support adds bleeding, infection and limb complications that make the eventual operation riskier"
           },
           "correct": false,
           "feedback": {
@@ -3118,8 +3118,8 @@
         {
           "id": "always-delay",
           "text": {
-            "zh-CN": "延期到 4–6 周后再修补永远更安全，现在就把手术日期定下来",
-            "en": "Repair after 4–6 weeks is always safer, so fix the date now"
+            "zh-CN": "延期到 4–6 周、破口边缘瘢痕化能缝牢后再修补永远更安全：现在就定下手术日期，无论期间病情如何，都用ECMO和IABP维持到那时",
+            "en": "Repair after 4–6 weeks is always safer, once the margins of the defect have scarred and will hold sutures: fix the date now and keep her on ECMO and the IABP until then, whatever her course in the meantime"
           },
           "correct": false,
           "feedback": {
@@ -3130,8 +3130,8 @@
         {
           "id": "no-repair",
           "text": {
-            "zh-CN": "只要ECMO能把她稳定住，缺损就不必修补",
-            "en": "If ECMO keeps her stable, the defect need not be repaired"
+            "zh-CN": "只要ECMO和IABP能把她稳定住，缺损就不必修补：继续支持，随心室功能恢复逐步撤除，残余分流用药物处理",
+            "en": "If ECMO and the IABP keep her stable, the defect need not be repaired: continue support, wean it as the ventricle recovers and treat the residual shunt medically"
           },
           "correct": false,
           "feedback": {
@@ -3142,8 +3142,8 @@
         {
           "id": "device-now",
           "text": {
-            "zh-CN": "立即经皮封堵作为根治，避免开胸手术",
-            "en": "Immediate percutaneous device closure as the definitive treatment, avoiding surgery"
+            "zh-CN": "立即经皮封堵作为根治：病情这么重的患者能免于开胸和体外循环，而且可以在ECMO支持下进行",
+            "en": "Immediate percutaneous device closure as the definitive treatment: it spares a sternotomy and cardiopulmonary bypass in a patient this unwell, and the device can be placed while she stays on ECMO"
           },
           "correct": false,
           "feedback": {
@@ -3181,8 +3181,8 @@
         {
           "id": "closed-av-unload",
           "text": {
-            "zh-CN": "主动脉瓣持续不开、左心室进行性扩大（伴肺淤血加重）：把ECMO流量降到仍能维持灌注的最低水平，支持左心室射血（正性肌力药、IABP），持续存在时加用主动减负（如Impella或左心引流）",
-            "en": "An aortic valve that stays shut with a dilating left ventricle (and worsening lung congestion): lower the ECMO flow to the least that keeps her perfused, support LV ejection (inotrope, IABP) and add active unloading (such as an Impella or a vent) if it persists"
+            "zh-CN": "主动脉瓣持续不开、左心室进行性扩大、肺淤血加重：把ECMO流量降到仍能维持灌注的最低水平，支持左心室射血（正性肌力药、IABP），持续存在时加用Impella或左心引流主动减负",
+            "en": "An aortic valve that stays shut with a dilating left ventricle and worsening lung congestion: lower ECMO flow to the least that keeps her perfused, support LV ejection (inotrope, IABP) and add active unloading (Impella or a vent) if it persists"
           },
           "correct": true,
           "feedback": {
@@ -3193,20 +3193,20 @@
         {
           "id": "more-flow",
           "text": {
-            "zh-CN": "VA-ECMO下主动脉瓣关闭是正常现象，继续提高流量保障器官灌注",
-            "en": "A closed aortic valve is expected on VA-ECMO, so raise the flow further to protect organ perfusion"
+            "zh-CN": "VA-ECMO全流量支持时主动脉瓣关闭是正常现象，说明体外循环正在替心脏工作：应继续提高流量保障器官灌注，肺淤血则通过加大CRRT超滤来清除",
+            "en": "A closed aortic valve is expected on full VA-ECMO support and simply shows the circuit is doing the work: raise the flow further to protect organ perfusion, and clear the lung congestion by increasing ultrafiltration on the CRRT"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。提高流量会进一步升高左心室后负荷，使瓣膜更打不开、左心室更扩张、肺水肿加重。原报告明确提醒：流量设定过高会加重左心室后负荷，应保持主动脉瓣开放。",
-            "en": "No. More flow raises LV afterload further, keeping the valve shut, dilating the ventricle and worsening pulmonary oedema. The report warns explicitly that too high a flow increases LV afterload and that the aortic valve should be kept opening."
+            "zh-CN": "不对。提高流量会进一步升高左心室后负荷，使瓣膜更打不开、左心室更扩张、肺水肿加重；超滤也解决不了左心室射不出血的问题。原报告明确提醒：流量设定过高会加重左心室后负荷，应保持主动脉瓣开放。",
+            "en": "No. More flow raises LV afterload further, keeping the valve shut, dilating the ventricle and worsening pulmonary oedema, and ultrafiltration cannot empty a ventricle that cannot eject. The report warns explicitly that too high a flow increases LV afterload and that the aortic valve should be kept opening."
           }
         },
         {
           "id": "stop-iabp",
           "text": {
-            "zh-CN": "撤掉IABP，有了ECMO就不需要两套装置",
-            "en": "Remove the IABP — with ECMO running, two devices are unnecessary"
+            "zh-CN": "撤掉IABP：VA-ECMO已提供全流量支持，再多一套装置获益有限，却要承担其股动脉通路的出血、肢体缺血和感染风险",
+            "en": "Remove the IABP: with VA-ECMO providing full flow, a second device gives little extra support but brings the bleeding, limb-ischaemia and infection risks of its femoral arterial access"
           },
           "correct": false,
           "feedback": {
@@ -3217,8 +3217,8 @@
         {
           "id": "fluid-fill",
           "text": {
-            "zh-CN": "快速补液让左心室充盈，主动脉瓣自然就会打开",
-            "en": "Give a fluid bolus to fill the left ventricle so that the valve opens"
+            "zh-CN": "左心室推不开主动脉瓣是因为充盈不足：快速补液500 ml提高前负荷，让左心室产生足够压力把主动脉瓣推开",
+            "en": "A ventricle that cannot open its valve is underfilled: give a 500 mL fluid bolus to raise the preload, so that the left ventricle can build enough pressure to open the aortic valve"
           },
           "correct": false,
           "feedback": {
@@ -3835,7 +3835,7 @@
       "type": "answer",
       "decisionId": "diagnosis",
       "optionIds": [
-        "supported"
+        "septal-rupture"
       ]
     },
     {

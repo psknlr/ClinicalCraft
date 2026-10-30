@@ -81,7 +81,7 @@ describe("DefaultSpatialPolicy: the requirement of each clinical action (EMBODIE
     expect(req(read("ecg-12lead"))).toEqual({ kind: "any-of", options: [{ kind: "at-patient", range: 1.5 }, CHART, { kind: "at-provider", capabilities: ["ecg-12lead"], fixedOnly: true, providerKinds: ["workstation"] }] });
     expect(req(read("cxr-portable"))).toEqual({ kind: "at-provider", capabilities: ["xray"] });
     expect(req(order("poc-glucose"), of("anaphylaxis-garden"))).toEqual({ kind: "anywhere" }); // requires nothing
-    for (const cap of ["ecg-12lead", "point-of-care", "ultrasound", "peak-flow", "scale"]) expect(BEDSIDE_CAPABILITIES).toContain(cap);
+    for (const cap of ["ecg-12lead", "point-of-care", "ultrasound", "peak-flow", "scale", "eeg", "fetal-monitor"]) expect(BEDSIDE_CAPABILITIES).toContain(cap);
   });
 
   it("studies on the patient at a fixed device: the patient brought there, then ordered at the device or its console; the report read anywhere it is shown (G8)", () => {

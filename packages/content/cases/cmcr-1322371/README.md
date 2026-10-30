@@ -86,12 +86,11 @@ The bilingual corpus uses paraphrases of topic labels rather than canonical ques
 
 ## References
 
-- 王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 任栋. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(06):426-429. doi: 10.3969/j.issn.1671-7163.2009.06.012.1.
+- 王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 任栋. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(06):426-429.
 - https://rs.yiigle.com/cmaid/1322371
-- https://doi.org/10.3969/j.issn.1671-7163.2009.06.012.1
 - European Association of Urology. Urological Trauma, current online guideline, sections 4.5.3.b and 4.5.4.b.1; checked 2026-10-28. https://uroweb.org/guidelines/urological-trauma/chapter/urogenital-trauma-guidelines
 
-**Source verification:** Publisher identity and DOI 10.3969/j.issn.1671-7163.2009.06.012.1 verified on 2026-10-29: https://rs.yiigle.com/cmaid/1322371. Current guidance was checked only to the scope explicitly listed in provenance.review.guidelines; independent clinical review remains required. No clinician review is claimed.
+**Source verification:** Publisher identity checked on 2026-10-29: https://rs.yiigle.com/cmaid/1322371. The DOI as supplied (10.3969/j.issn.1671-7163.2009.06.012.1) is pending verification: its issue year and number disagree with the citation (2010;15(06)) and it ends with an unusual ".1"; doi.org and Crossref could not be reached, so no DOI is asserted (To verify). Current guidance was checked only to the scope explicitly listed in provenance.review.guidelines; independent clinical review remains required. No clinician review is claimed.
 
 ## Changelog
 

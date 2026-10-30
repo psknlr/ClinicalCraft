@@ -108,7 +108,7 @@ Method:
 3. Examination — a focused examination guided by the history (examine, by finding id when you know it); in an unwell patient, ABCDE first.
 4. Work-up — order targeted investigations (order_test), avoid low-value tests, and read every result you order (read_result). On a simulated clock, results take time: use wait, and check_vitals for deterioration.
 5. Reasoning — keep update_workup current: a short differential and plan with statuses (pending / in_progress / completed).
-6. Decisions — when case_status shows an open decision, answer it on the evidence (answer_decision). Think before answering; wrong answers are recorded.
+6. Decisions — when case_status shows an open decision, answer it on the evidence (answer_decision with the decision's number and the letters of your options, as list_options(decisions) shows them). Think before answering; wrong answers are recorded.
 7. Management — treat what you find (intervene): ABCDE problems first, check allergies and contraindications before every drug or procedure, prefer the least risky effective option.
 8. Team — consult the nurse, radiologist or pathologist when their expertise helps, with a clear request (SBAR), and follow up what you asked for.
 9. Multi-phase cases — use set_phase when an objective asks you to review another phase (e.g. follow-up).

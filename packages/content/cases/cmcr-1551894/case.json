@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1551894",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "反复下肢水肿与腹胀 · 35岁女性",
     "en": "Recurrent leg swelling and abdominal fullness · 35-year-old woman"
@@ -3298,8 +3298,8 @@
           "id": "loc-portal",
           "correct": false,
           "text": {
-            "zh-CN": "门静脉高压（肝硬化）引起的脐周静脉曲张",
-            "en": "Periumbilical varices of portal hypertension (cirrhosis)"
+            "zh-CN": "肝硬化门静脉高压：巨脾加腹壁静脉曲张是其典型组合，血液经脐周侧支绕过肝脏回流",
+            "en": "Portal hypertension from cirrhosis: a massive spleen with distended abdominal wall veins is its classic pairing, the blood bypassing the liver through periumbilical collaterals"
           },
           "feedback": {
             "zh-CN": "不正确。门静脉高压的腹壁侧支以脐为中心向四周放射，脐以下的血流向下；本例全部由下向上，还有下肢静脉高压的表现。肝功能原文没有报告，不能拿来支持肝硬化。",
@@ -3310,8 +3310,8 @@
           "id": "loc-svc",
           "correct": false,
           "text": {
-            "zh-CN": "上腔静脉梗阻",
-            "en": "Superior vena cava obstruction"
+            "zh-CN": "上腔静脉梗阻：前胸和两侧胸壁静脉怒张是其标志，血液经胸壁侧支绕行",
+            "en": "Superior vena cava obstruction: distended veins over the front and both sides of the chest are its hallmark, with blood diverted through chest wall collaterals"
           },
           "feedback": {
             "zh-CN": "不正确。上腔静脉梗阻时胸壁静脉血流由上向下，伴面颈部和上肢肿胀；本例血流由下向上，肿在双下肢。",
@@ -3322,8 +3322,8 @@
           "id": "loc-legs",
           "correct": false,
           "text": {
-            "zh-CN": "下肢深静脉血栓或慢性静脉功能不全",
-            "en": "Deep-vein thrombosis of the legs or chronic venous insufficiency"
+            "zh-CN": "下肢深静脉血栓或慢性静脉功能不全：十余年的双下肢水肿、足靴区色素沉着和愈合的皮肤破溃，是典型的下肢静脉病表现",
+            "en": "Deep-vein thrombosis of the legs or chronic venous insufficiency: more than ten years of leg swelling, gaiter-area pigmentation and healed skin breakdown is the typical picture of leg venous disease"
           },
           "feedback": {
             "zh-CN": "不完整。下肢静脉高压能解释水肿、色素沉着和溃疡，却解释不了由下向上的胸腹壁侧支、肝大和巨脾。",
@@ -3334,8 +3334,8 @@
           "id": "loc-cardiac",
           "correct": false,
           "text": {
-            "zh-CN": "右心衰竭或缩窄性心包炎",
-            "en": "Right heart failure or constrictive pericarditis"
+            "zh-CN": "右心衰竭或缩窄性心包炎：右心压力升高可以同时解释肝大、下肢水肿和静脉怒张",
+            "en": "Right heart failure or constrictive pericarditis: a raised right-sided pressure would explain the enlarged liver, the leg oedema and the engorged veins together"
           },
           "feedback": {
             "zh-CN": "可能性不大，但需要排除。心源性淤血会引起肝大和下肢水肿，却不会产生由下向上的胸腹壁侧支循环；颈静脉压和超声心动图原报告都没有记录，诊断前应补查。",
@@ -3375,8 +3375,8 @@
           "id": "dx-bcs",
           "correct": true,
           "text": {
-            "zh-CN": "下腔静脉型布-加综合征（Budd-Chiari综合征）：肝段下腔静脉狭窄，肝静脉增宽",
-            "en": "IVC-type Budd–Chiari syndrome: narrowing of the intrahepatic IVC with widened hepatic veins"
+            "zh-CN": "下腔静脉型布-加综合征：肝段下腔静脉局限性狭窄伴高速血流、远端扩张，肝静脉增宽",
+            "en": "IVC-type Budd–Chiari syndrome: a focal narrowing of the intrahepatic IVC with high-velocity flow and dilatation beyond it, and widened hepatic veins"
           },
           "feedback": {
             "zh-CN": "正确。MRI示肝段下腔静脉局部狭窄至1.3 cm，超声示狭窄处峰值流速269 cm/s、其远端瘤样扩张；肝静脉增宽（13–15 mm），肝脾增大，腹壁大量侧支——符合下腔静脉梗阻所致的布-加综合征。按定义，布-加综合征是肝静脉流出道梗阻，需排除心源性病因——本例没有超声心动图，正式诊断前应补做。门静脉通畅、向肝血流，门静脉和肝静脉内未见异常回声。确诊后还要查找病因（EASL 2025）。",
@@ -3387,8 +3387,8 @@
           "id": "dx-cirrhosis",
           "correct": false,
           "text": {
-            "zh-CN": "肝硬化门静脉高压",
-            "en": "Portal hypertension from cirrhosis"
+            "zh-CN": "肝硬化门静脉高压：肝脏增大、各叶比例失调、实质回声不均匀，伴巨脾和脾静脉迂曲扩张",
+            "en": "Portal hypertension from cirrhosis: an enlarged liver with uneven echoes and disproportionate lobes, a massive spleen and a dilated, tortuous splenic vein"
           },
           "feedback": {
             "zh-CN": "不正确。梗阻在肝后的下腔静脉：门静脉通畅、向肝血流，下腔静脉有局限性狭窄和高速血流。肝硬化的证据（肝功能、肝脏组织学）原报告没有，不能把脾大和全血细胞减少直接等同于肝硬化。",
@@ -3399,8 +3399,8 @@
           "id": "dx-sos",
           "correct": false,
           "text": {
-            "zh-CN": "肝窦阻塞综合征（肝小静脉闭塞病）",
-            "en": "Sinusoidal obstruction syndrome (hepatic veno-occlusive disease)"
+            "zh-CN": "肝窦阻塞综合征（肝小静脉闭塞病）：肝内小静脉流出受阻，肝脏和脾脏随之增大",
+            "en": "Sinusoidal obstruction syndrome (hepatic veno-occlusive disease): blocked outflow from the small intrahepatic veins, with an enlarged liver and spleen"
           },
           "feedback": {
             "zh-CN": "不正确。肝窦阻塞综合征的肝静脉和下腔静脉是通畅的；本例有明确的下腔静脉狭窄和高速血流。原报告也没有记录可引起肝窦阻塞的药物或草药接触史。",
@@ -3411,8 +3411,8 @@
           "id": "dx-cardiac",
           "correct": false,
           "text": {
-            "zh-CN": "缩窄性心包炎引起的心源性肝淤血",
-            "en": "Cardiac hepatic congestion from constrictive pericarditis"
+            "zh-CN": "缩窄性心包炎引起的心源性肝淤血：右心回流受阻，使下腔静脉和肝静脉均增宽、肝脏增大",
+            "en": "Cardiac hepatic congestion from constrictive pericarditis: impaired filling of the right heart widens the IVC and the hepatic veins and enlarges the liver"
           },
           "feedback": {
             "zh-CN": "不正确。心源性淤血时下腔静脉和肝静脉均扩张，没有局限性狭窄；本例是下腔静脉局部狭窄伴高速血流，属于梗阻。超声心动图原报告没有，正式诊断前仍应补做。",
@@ -3423,8 +3423,8 @@
           "id": "dx-compression",
           "correct": false,
           "text": {
-            "zh-CN": "肿瘤侵犯或外压导致的下腔静脉狭窄",
-            "en": "IVC narrowing from tumour invasion or external compression"
+            "zh-CN": "肿瘤侵犯或肝内占位外压导致肝段下腔静脉狭窄，狭窄远端的下腔静脉随之瘤样扩张",
+            "en": "IVC narrowing from tumour invasion or external compression of its intrahepatic segment, with the IVC dilated aneurysmally beyond it"
           },
           "feedback": {
             "zh-CN": "可能性小。超声未见肝内肿块回声，MRI描述的是下腔静脉本身的局限性狭窄和侧支循环，没有占位；但继发性布-加综合征（肿瘤、囊肿、脓肿压迫）确实需要在影像上排除。",
@@ -3460,8 +3460,8 @@
           "id": "mgmt-stepwise",
           "correct": true,
           "text": {
-            "zh-CN": "抗凝（权衡血小板减少并密切监测）、病因筛查和多学科评估，同时对局限性下腔静脉狭窄行血管成形和支架开通；无效再考虑TIPS，最后才是肝移植",
-            "en": "Anticoagulation (weighing and monitoring the thrombocytopenia), a cause work-up and multidisciplinary review, with angioplasty and stenting of the focal IVC narrowing; TIPS if that fails, transplantation last"
+            "zh-CN": "抗凝（权衡并监测血小板减少）、病因筛查、多学科评估，并对局限性下腔静脉狭窄行血管成形和支架；无效再行TIPS，最后才是肝移植",
+            "en": "Anticoagulation (weighing and monitoring the low platelets), a cause work-up and multidisciplinary review, with angioplasty and stenting of the focal IVC narrowing; TIPS if that fails, transplantation last"
           },
           "feedback": {
             "zh-CN": "正确。EASL 2025：诊断后尽早开始治疗性抗凝并通常长期维持（首选低分子肝素序贯维生素K拮抗剂），同时处理病因；按阶梯策略依次为血管成形、TIPS、肝移植，并在有血管性肝病和移植经验的中心多学科管理。APASL 2021也以抗凝为一线，并指出在亚太地区，下腔静脉狭窄或膜性梗阻的血管开通是重要选择。血小板60×10⁹/L增加出血风险，需要与血液科权衡并监测。原报告做了球囊扩张和支架，但没有报告抗凝或病因筛查。",
@@ -3472,32 +3472,32 @@
           "id": "mgmt-report",
           "correct": false,
           "text": {
-            "zh-CN": "球囊扩张和支架后以活血中药维持，不用抗凝",
-            "en": "Angioplasty and stenting, then blood-activating herbs instead of anticoagulation"
+            "zh-CN": "对下腔静脉狭窄行球囊扩张和支架开通后，改用活血中药维持而不用抗凝：血小板只有60×10⁹/L，用肝素或华法林的出血风险实在太大",
+            "en": "Angioplasty and stenting of the IVC narrowing, then the blood-activating herbal decoction in place of anticoagulation, since with platelets at 60 ×10⁹/L heparin or warfarin would carry too great a bleeding risk"
           },
           "feedback": {
-            "zh-CN": "这是原报告的做法：支架开通后用活血通脉汤维持，没有报告抗凝或病因筛查。现行指南（EASL 2025、APASL 2021）都以抗凝为一线，并要求查找病因；活血中药不能代替抗凝，与血小板减少同用时出血风险还需要评估。",
-            "en": "This is what the report did: stenting followed by the Huoxue Tongmai decoction, with no anticoagulation or cause work-up reported. Current guidance (EASL 2025, APASL 2021) makes anticoagulation first-line and asks for a search for the cause; blood-activating herbs do not replace anticoagulation, and with thrombocytopenia their bleeding risk needs assessing."
+            "zh-CN": "这是原报告的做法：支架开通后用活血通脉汤维持，没有报告抗凝或病因筛查。现行指南（EASL 2025、APASL 2021）都以抗凝为一线，并要求查找病因；活血中药不能代替抗凝，与血小板减少同用时其本身的出血风险还需要评估。血小板60×10⁹/L需要与血液科权衡抗凝并加强监测，而不是用中药替代。",
+            "en": "This is what the report did: stenting followed by the Huoxue Tongmai decoction, with no anticoagulation or cause work-up reported. Current guidance (EASL 2025, APASL 2021) makes anticoagulation first-line and asks for a search for the cause; blood-activating herbs do not replace anticoagulation, and with thrombocytopenia their own bleeding risk needs assessing. A platelet count of 60 ×10⁹/L calls for weighing anticoagulation with haematology and monitoring it, not for replacing it."
           }
         },
         {
           "id": "mgmt-diuretic",
           "correct": false,
           "text": {
-            "zh-CN": "继续用利尿剂消肿，门诊随访",
-            "en": "Carry on with diuretics for the swelling and follow up in clinic"
+            "zh-CN": "继续用利尿剂消肿，每三个月门诊随访并复查超声：十年来利尿剂一直能控制水肿，而血小板只有60×10⁹/L，做有创介入的风险实在太大",
+            "en": "Carry on with diuretics for the swelling and review her in clinic every three months with a repeat ultrasound: they have kept the oedema in check for ten years, and an invasive procedure is risky with platelets at 60 ×10⁹/L"
           },
           "feedback": {
-            "zh-CN": "不正确。这正是她过去10年的做法：水肿能暂时消退，梗阻和门静脉高压却在进展（侧支循环、巨脾、皮肤改变）。利尿剂只能作为辅助。",
-            "en": "Incorrect. That is what she has done for ten years: the swelling settles for a while while the obstruction and portal hypertension progress (collaterals, a massive spleen, skin changes). Diuretics can only support treatment."
+            "zh-CN": "不正确。这正是她过去10年的做法：水肿能暂时消退，梗阻和门静脉高压却在进展（侧支循环、巨脾、皮肤改变）。利尿剂只能作为辅助；血小板低意味着介入时要格外谨慎，而不是放着梗阻不治。",
+            "en": "Incorrect. That is what she has done for ten years: the swelling settles for a while while the obstruction and portal hypertension progress (collaterals, a massive spleen, skin changes). Diuretics can only support treatment, and the low platelets call for care around the procedure, not for leaving the obstruction untreated."
           }
         },
         {
           "id": "mgmt-transplant",
           "correct": false,
           "text": {
-            "zh-CN": "立即转诊肝移植",
-            "en": "Refer for liver transplantation straight away"
+            "zh-CN": "立即转诊肝移植：巨脾、大量侧支循环和全血细胞减少说明病变已到晚期，只有换肝才能逆转",
+            "en": "Refer for liver transplantation straight away: the massive spleen, the collaterals and the low blood counts show advanced disease that only a new liver will reverse"
           },
           "feedback": {
             "zh-CN": "过早。她不是急性肝衰竭——EASL 2025只在急性肝衰竭时从一开始就考虑移植；阶梯治疗中，移植是抗凝、血管开通和TIPS都无效以后的最后一步。",
@@ -3508,8 +3508,8 @@
           "id": "mgmt-tips",
           "correct": false,
           "text": {
-            "zh-CN": "先做TIPS降低门静脉压力",
-            "en": "TIPS first to lower the portal pressure"
+            "zh-CN": "先做TIPS降低门静脉压力：一次操作就能同时给淤血的肝脏和巨脾减压，分流道建好后再抗凝",
+            "en": "TIPS first to lower the portal pressure: one procedure decompresses both the congested liver and the massive spleen, and anticoagulation can follow once the shunt is in"
           },
           "feedback": {
             "zh-CN": "顺序不对。局限性下腔静脉狭窄应先尝试血管成形和支架；TIPS用于开通失败或不适合开通的患者（EASL 2025的阶梯策略）。",
@@ -3546,8 +3546,8 @@
           "id": "herb-review",
           "correct": true,
           "text": {
-            "zh-CN": "在中药与抗凝同用之前，请临床药师和中医科逐味评估活血、破血类药物（如丹参、水蛭）与抗凝、血小板减少叠加的出血风险和相互作用，决定停用或调整，并监测血小板、INR和出血征象",
-            "en": "Before the herbs and anticoagulation are given together, ask the clinical pharmacist and the TCM team to review, herb by herb, the bleeding risk and interactions of the blood-activating and blood-breaking herbs (such as danshen and leech) with anticoagulation and thrombocytopenia; decide whether to stop or adjust them, and monitor platelets, INR and bleeding"
+            "zh-CN": "中药与抗凝同用前，请临床药师和中医科逐味评估活血、破血药（如丹参、水蛭）与抗凝、血小板减少叠加的出血风险和相互作用，决定停用或调整，并监测血小板、INR和出血征象",
+            "en": "Before combining them, have the clinical pharmacist and the TCM team review each blood-activating or blood-breaking herb (such as danshen and leech) for bleeding risk and interactions with anticoagulation and low platelets; decide whether to stop or adjust them, and monitor platelets, INR and bleeding"
           },
           "feedback": {
             "zh-CN": "正确。丹参有增强华法林作用的报道（Chua 2015），水蛭在中医属破血药；血小板减少、刚放支架又需要抗凝时叠加这些药物，出血风险需要专业评估。原报告既没有报告抗凝，也没有报告出血监测；单个病例也无法分离中药的独立疗效。",
@@ -3558,8 +3558,8 @@
           "id": "herb-both",
           "correct": false,
           "text": {
-            "zh-CN": "两者照常同时使用：中药是天然的，不会增加出血",
-            "en": "Give both as planned: herbs are natural and add no bleeding risk"
+            "zh-CN": "两者照常同时使用：中药是天然药物，支架术后一直在用，作用机制与抗凝药不同，合用也不会增加出血风险；按常规间隔复查血常规即可",
+            "en": "Give both as planned: the herbs are natural, have been part of her treatment since the stenting and act by a different mechanism from the anticoagulant, so together they add no bleeding risk; just check her blood count at the usual interval"
           },
           "feedback": {
             "zh-CN": "不正确。“天然”不等于安全：活血类中药有抗血小板或增强抗凝作用的报道，与抗凝药和血小板减少叠加会增加出血风险，必须先评估。",
@@ -3570,8 +3570,8 @@
           "id": "herb-instead",
           "correct": false,
           "text": {
-            "zh-CN": "既然中药能“活血”，就用它代替抗凝",
-            "en": "Since the decoction “activates the blood”, use it instead of anticoagulation"
+            "zh-CN": "既然中药能“活血化瘀”，就用它代替抗凝：血小板只有60×10⁹/L，用中药保持新支架通畅更温和",
+            "en": "Since the decoction “activates the blood” and resolves stasis, use it instead of anticoagulation: with platelets at 60 ×10⁹/L it is the gentler way to keep the new stent open"
           },
           "feedback": {
             "zh-CN": "不正确。中药的抗栓作用没有经过验证，不能代替指南推荐的抗凝；这样做既得不到可靠的抗栓保护，又保留了出血风险。",
@@ -3582,8 +3582,8 @@
           "id": "herb-no-anticoag",
           "correct": false,
           "text": {
-            "zh-CN": "血小板只有60×10⁹/L，所以永远不抗凝",
-            "en": "Her platelets are only 60 ×10⁹/L, so never anticoagulate"
+            "zh-CN": "血小板只有60×10⁹/L，所以永远不抗凝：血小板这么低时出血风险总是大于血栓风险，靠支架就能保持下腔静脉通畅",
+            "en": "Her platelets are only 60 ×10⁹/L, so never anticoagulate: with a count that low the bleeding risk always outweighs the thrombotic one, and the new stent on its own will keep the IVC open"
           },
           "feedback": {
             "zh-CN": "不恰当。血小板减少增加出血风险，需要与血液科权衡、监测并评估静脉曲张，而不是自动放弃指南推荐的抗凝；刚放的支架和布-加综合征本身都有血栓风险。",
@@ -3594,8 +3594,8 @@
           "id": "herb-unrecorded",
           "correct": false,
           "text": {
-            "zh-CN": "中药不必写进用药记录，也不用告诉医疗团队",
-            "en": "The decoction need not go on the medication record or be mentioned to the team"
+            "zh-CN": "中药不必写进用药记录，也不用告诉医疗团队：它是中医处方，由中药房单独调配管理，与西药医嘱无关",
+            "en": "The decoction need not go on the medication record or be mentioned to the team: it is a TCM prescription dispensed and managed separately by the herbal pharmacy, outside the Western drug chart"
           },
           "feedback": {
             "zh-CN": "不正确。所有中药都要写进用药清单并告知医疗团队和药师，否则无法评估相互作用和出血风险。",
@@ -4455,7 +4455,7 @@
         ]
       },
       {
-        "text": "什么时候肿得厉害？",
+        "text": "一般什么时候会更肿一些？",
         "locale": "zh-CN",
         "expect": [
           "modifiers"
@@ -4581,7 +4581,7 @@
         ]
       },
       {
-        "text": "甲亢吃过什么药？",
+        "text": "你甲亢当时是怎么治疗的？",
         "locale": "zh-CN",
         "expect": [
           "thyroid-treatment"

@@ -1,7 +1,7 @@
 /** Spoiler-free presentation helpers for the case library; never read the full case. */
-import { specialtyLabel } from "@clinicalcraft/core";
+import { SUPPORTED_LOCALES, specialtyLabel } from "@clinicalcraft/core";
 import type { CaseCard } from "../app/content.js";
-import { getLocale, tr, trMaybe } from "../i18n/index.js";
+import { tr, trEvery } from "../i18n/index.js";
 
 const COLLECTIONS = [
   { id: "cmcr-105", label: "library.cmcr105Collection", badge: "library.cmcr105Badge" },
@@ -22,19 +22,28 @@ export function caseCollectionBadge(card: Pick<CaseCard, "tags">): string | null
   return collection ? tr(collection.badge) : null;
 }
 
+/**
+ * Comparable search text: NFKC (full-width letters), case folded independently of the browser's locale (a Turkish
+ * browser would fold "ICU" to "ıcu"), punctuation and spaces as one space.
+ */
 function searchable(text: string): string {
-  return text.normalize("NFKC").toLocaleLowerCase().replace(/[\p{P}\p{Z}\s]+/gu, " ").trim();
+  return text.normalize("NFKC").toLowerCase().replace(/[\p{P}\p{Z}\s]+/gu, " ").trim();
 }
 
-/** Search both languages of the public index, excluding diagnosis-bearing ids and source details. */
+/**
+ * Search both languages of the public index, excluding diagnosis-bearing ids and source details: the titles and
+ * summaries, the specialty and setting ids with their labels in both languages (so "ICU" finds the ICU cases in the
+ * Chinese interface and "急诊" the emergency ones in the English interface), and the tags.
+ */
 export function matchesLibraryQuery(card: CaseCard, query: string): boolean {
   const words = searchable(query).split(/\s+/).filter(Boolean);
   if (!words.length) return true;
   const localised = (value: CaseCard["title"]): string[] => typeof value === "string" ? [value] : Object.values(value);
   const haystack = searchable([
     ...localised(card.title), ...localised(card.summary),
-    ...card.specialty, ...card.specialty.map((id) => specialtyLabel(id, getLocale())), ...card.tags,
-    trMaybe(`setting.${card.setting}`, card.setting),
+    ...card.specialty, ...SUPPORTED_LOCALES.flatMap((locale) => card.specialty.map((id) => specialtyLabel(id, locale))),
+    ...card.tags,
+    card.setting, ...trEvery(`setting.${card.setting}`),
   ].join(" "));
   return words.every((word) => haystack.includes(word));
 }

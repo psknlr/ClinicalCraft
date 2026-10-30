@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653406",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "足月妊娠待产 · 34岁女性",
     "en": "Term pregnancy awaiting delivery · 34-year-old woman"
@@ -3751,8 +3751,8 @@
         {
           "id": "cat1-ga",
           "text": {
-            "zh-CN": "按即刻剖宫产处理：呼叫上级和帮手，在环状软骨按压下快速顺序诱导全麻，立即娩出胎儿，同时为产妇可能的恶化做好准备",
-            "en": "Treat it as a category-1 emergency: call senior help, give general anaesthesia by rapid-sequence induction with cricoid pressure, deliver the baby at once, and prepare for the mother to deteriorate"
+            "zh-CN": "按即刻剖宫产处理：呼叫上级帮手，环状软骨按压下快速顺序诱导全麻，立即娩出胎儿，准备应对产妇恶化",
+            "en": "Category-1 caesarean: call senior help, rapid-sequence general anaesthesia with cricoid pressure, deliver at once, and prepare for the mother to deteriorate"
           },
           "correct": true,
           "feedback": {
@@ -3763,20 +3763,20 @@
         {
           "id": "proceed-spinal",
           "text": {
-            "zh-CN": "等她不吐了、情况平稳后，按原计划打腰麻再手术",
-            "en": "Wait for the vomiting to settle, then give the planned spinal and operate"
+            "zh-CN": "等她不吐了、情况平稳后，按原计划打腰麻再手术：刚呕吐完就做全麻，气道和误吸的风险最大",
+            "en": "Let the vomiting settle, then give the planned spinal and operate: a general anaesthetic straight after vomiting carries the greatest airway and aspiration risk"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。胎心约60次/分说明胎儿可能正在缺氧，等待会延误娩出；产妇自己又出现了原因不明的症状，把手术建立在“等她平稳”上并不安全。生命体征“无明显变化”不能说明母胎安全。",
-            "en": "No. A fetal heart rate of about 60/min means the baby may be becoming hypoxic, so waiting delays delivery; and the mother has unexplained symptoms of her own, so planning around 'once she settles' is unsafe. 'No clear change' in her vital signs does not mean mother and baby are safe."
+            "zh-CN": "不妥。胎心约60次/分说明胎儿可能正在缺氧，等待会延误娩出；产妇自己又出现了原因不明的症状，把手术建立在“等她平稳”上并不安全。分娩不能等待时，正是靠快速顺序诱导来应对误吸风险；生命体征“无明显变化”也不能说明母胎安全。",
+            "en": "No. A fetal heart rate of about 60/min means the baby may be becoming hypoxic, so waiting delays delivery; and the mother has unexplained symptoms of her own, so planning around 'once she settles' is unsafe. Rapid-sequence induction is how the aspiration risk is managed when delivery cannot wait, and 'no clear change' in her vital signs does not mean mother and baby are safe."
           }
         },
         {
           "id": "fluid-recheck",
           "text": {
-            "zh-CN": "先快速补液500 mL，15分钟后复测胎心再决定",
-            "en": "Give 500 mL of fluid and re-check the fetal heart in 15 minutes before deciding"
+            "zh-CN": "胎心可能会在宫内复苏起效后恢复：先快速补液500 mL，15分钟后再复测胎心，然后决定是否分娩",
+            "en": "The fetal heart may recover once in-utero resuscitation takes effect: give 500 mL of fluid and re-check it in 15 minutes before deciding on delivery"
           },
           "correct": false,
           "feedback": {
@@ -3787,13 +3787,13 @@
         {
           "id": "back-to-labour",
           "text": {
-            "zh-CN": "暂停手术，送回产房做持续胎心监护观察",
-            "en": "Stop, and take her back to the delivery suite for continuous CTG monitoring"
+            "zh-CN": "她的症状原因不明：暂停手术，送回产房，在持续胎心监护下观察母胎情况，等病情明朗后再决定",
+            "en": "Her symptoms are unexplained, so stop, take her back to the delivery suite and watch her and the baby on continuous CTG until the picture is clearer"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。她已经在手术室、本来就有剖宫产指征，此刻胎心约60次/分；离开手术室只会拖延娩出，也让产妇离开了最好的抢救条件。",
-            "en": "Wrong. She is already in theatre with an indication for caesarean, and the fetal heart is about 60/min; leaving theatre only delays delivery and takes the mother away from the best place to resuscitate her."
+            "zh-CN": "错误。症状原因不明正是要留在手术室的理由：她已经在手术室、本来就有剖宫产指征，此刻胎心约60次/分；离开手术室只会拖延娩出，也让产妇离开了最好的抢救条件。",
+            "en": "Wrong. Unexplained symptoms are a reason to stay, not to leave: she is already in theatre with an indication for caesarean, and the fetal heart is about 60/min; leaving theatre only delays delivery and takes the mother away from the best place to resuscitate her."
           }
         }
       ]
@@ -3828,8 +3828,8 @@
         {
           "id": "oxygen-pressors",
           "text": {
-            "zh-CN": "纯氧通气，并用血管活性药和正性肌力药支持循环",
-            "en": "Ventilate with 100% oxygen and support the circulation with vasopressors and inotropes"
+            "zh-CN": "纯氧通气，并用血管活性药和正性肌力药支持循环，根据血压和灌注调整剂量",
+            "en": "Ventilate with 100% oxygen and support the circulation with vasopressors and inotropes, titrated to her blood pressure and perfusion"
           },
           "correct": true,
           "feedback": {
@@ -3852,8 +3852,8 @@
         {
           "id": "big-fluids",
           "text": {
-            "zh-CN": "加压快速大量补液，直到血压恢复正常",
-            "en": "Run in large volumes of fluid under pressure until her blood pressure is normal"
+            "zh-CN": "她严重低血压：加压快速大量补液，恢复前负荷，直到血压恢复正常",
+            "en": "She is profoundly hypotensive, so run in large volumes of fluid under pressure to restore preload until her blood pressure is normal"
           },
           "correct": false,
           "feedback": {
@@ -3864,13 +3864,13 @@
         {
           "id": "wait-confirm",
           "text": {
-            "zh-CN": "先等能确诊的检查结果，再开始针对性治疗",
-            "en": "Wait for a test that confirms the diagnosis before starting specific treatment"
+            "zh-CN": "过敏、出血和高位阻滞的治疗各不相同：先等能确诊的检查结果，再开始针对性治疗",
+            "en": "Anaphylaxis, haemorrhage and a high block are each treated differently, so wait for a test that confirms the diagnosis before starting specific treatment"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。没有任何实验室检查能确诊或排除羊水栓塞（SMFM 2016）；治疗以支持为主，必须立即开始。",
-            "en": "Wrong. No laboratory test confirms or excludes amniotic fluid embolism (SMFM 2016); treatment is supportive and has to start immediately."
+            "zh-CN": "错误。没有任何实验室检查能确诊或排除羊水栓塞（SMFM 2016）；呼救、给氧和循环支持这些第一步，无论病因如何都一样：治疗以支持为主，必须立即开始。",
+            "en": "Wrong. No laboratory test confirms or excludes amniotic fluid embolism (SMFM 2016), and the first steps — help, oxygen and circulatory support — are the same whatever the cause: treatment is supportive and has to start immediately."
           }
         }
       ]
@@ -3905,8 +3905,8 @@
         {
           "id": "afe",
           "text": {
-            "zh-CN": "羊水栓塞：剖宫产术中突发低血压、低氧和凝血功能异常，其他原因解释不了；这是排除其他病因后的临床诊断",
-            "en": "Amniotic fluid embolism: sudden hypotension, hypoxaemia and abnormal clotting during the caesarean that nothing else explains — a clinical diagnosis made after excluding other causes"
+            "zh-CN": "羊水栓塞：剖宫产术中突发低血压、低氧和凝血功能异常，其他原因解释不了；是排除其他病因后的临床诊断",
+            "en": "Amniotic fluid embolism: sudden hypotension, hypoxaemia and coagulopathy during the caesarean that nothing else explains — a clinical diagnosis of exclusion"
           },
           "correct": true,
           "feedback": {
@@ -3917,20 +3917,20 @@
         {
           "id": "haemorrhage",
           "text": {
-            "zh-CN": "产科大出血导致的失血性休克",
-            "en": "Haemorrhagic shock from obstetric bleeding"
+            "zh-CN": "产科大出血导致的失血性休克：剖宫产术中极度低血压，纤维蛋白原降低、D-二聚体升高，而失血量尚未计量",
+            "en": "Haemorrhagic shock from obstetric bleeding: profound hypotension at caesarean with a low fibrinogen and a raised D-dimer, while the blood loss is still unmeasured"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "可能性小。休克时的血气报告“Hb不低”，原文没有记录大量出血，作者也明确排除了产科出血。但失血量本身未记录，仍须持续观察出血。",
-            "en": "Unlikely. The gas taken during the collapse reports 'Hb not low', no major bleeding is recorded, and the authors explicitly excluded obstetric haemorrhage. The blood loss itself was not recorded, though, so bleeding still has to be watched for."
+            "zh-CN": "可能性小。休克时的血气报告“Hb不低”，原文没有记录大量出血，出血也解释不了突发的低氧和发绀，作者也明确排除了产科出血。但失血量本身未记录，仍须持续观察出血。",
+            "en": "Unlikely. The gas taken during the collapse reports 'Hb not low', no major bleeding is recorded, bleeding would not explain the abrupt hypoxaemia and cyanosis, and the authors explicitly excluded obstetric haemorrhage. The blood loss itself was not recorded, though, so bleeding still has to be watched for."
           }
         },
         {
           "id": "anaphylaxis",
           "text": {
-            "zh-CN": "麻醉诱导药物引起的过敏性休克",
-            "en": "Anaphylaxis to the induction drugs"
+            "zh-CN": "麻醉诱导药物引起的过敏性休克：快速顺序诱导后不久即出现循环衰竭和氧饱和度下降，正是围术期过敏的典型时机",
+            "en": "Anaphylaxis to the induction drugs: circulatory collapse and desaturation came soon after rapid-sequence induction, the classic timing of perioperative anaphylaxis"
           },
           "correct": false,
           "feedback": {
@@ -3941,20 +3941,20 @@
         {
           "id": "aspiration",
           "text": {
-            "zh-CN": "诱导前呕吐导致的胃内容物误吸",
-            "en": "Aspiration of the vomit before induction"
+            "zh-CN": "诱导前呕吐导致的胃内容物误吸：她在气道得到保护之前就呕吐过，误吸可引起突发低氧和支气管痉挛",
+            "en": "Aspiration of the vomit before induction: she vomited before her airway was protected, and aspiration can cause sudden hypoxaemia and bronchospasm"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不符合。她诱导前确实呕吐过，误吸会造成低氧；但血气报告PaO₂正常（采样时点和吸氧浓度未记录），而且误吸解释不了极度低血压和凝血异常。",
-            "en": "Does not fit. She did vomit before induction, and aspiration causes hypoxaemia; but the gas reports a normal PaO₂ (sampling time and FiO₂ not recorded), and aspiration explains neither the profound hypotension nor the coagulopathy."
+            "zh-CN": "不符合。她诱导前确实呕吐过，误吸会造成低氧；但记录中没有支气管痉挛，血气报告PaO₂正常（采样时点和吸氧浓度未记录），而且误吸解释不了极度低血压和凝血异常。",
+            "en": "Does not fit. She did vomit before induction, and aspiration causes hypoxaemia; but no bronchospasm is recorded, the gas reports a normal PaO₂ (sampling time and FiO₂ not recorded), and aspiration explains neither the profound hypotension nor the coagulopathy."
           }
         },
         {
           "id": "high-block",
           "text": {
-            "zh-CN": "高位或全脊髓椎管内阻滞",
-            "en": "A high or total neuraxial block"
+            "zh-CN": "高位或全脊髓椎管内阻滞：症状恰在摆腰麻体位时出现，高位阻滞可引起恶心呕吐、低血压和呼吸衰竭",
+            "en": "A high or total neuraxial block: her symptoms began as she was positioned for the spinal, and a high block causes nausea, vomiting, hypotension and respiratory failure"
           },
           "correct": false,
           "feedback": {
@@ -3983,8 +3983,8 @@
         {
           "id": "replace-fib",
           "text": {
-            "zh-CN": "按进展中的羊水栓塞凝血病处理：在大量输血方案中尽早补充纤维蛋白原（冷沉淀，或按本院方案用纤维蛋白原浓缩物），并复查凝血以指导后续用血",
-            "en": "Treat it as an evolving coagulopathy of amniotic fluid embolism: replace fibrinogen early within the massive transfusion protocol (cryoprecipitate, or fibrinogen concentrate where local protocol uses it) and repeat the clotting tests to guide further products"
+            "zh-CN": "按进展中的凝血病处理：在大量输血方案中尽早补充纤维蛋白原（冷沉淀，或按本院方案用浓缩物），复查凝血指导后续用血",
+            "en": "An evolving coagulopathy: give fibrinogen early within the massive transfusion protocol (cryoprecipitate, or concentrate per local protocol) and recheck clotting to guide further products"
           },
           "correct": true,
           "feedback": {
@@ -3995,32 +3995,32 @@
         {
           "id": "pt-normal",
           "text": {
-            "zh-CN": "PT基本正常，凝血还可以；只有出血失控时才输血制品",
-            "en": "The PT is essentially normal, so clotting is acceptable; give products only if bleeding becomes uncontrollable"
+            "zh-CN": "PT 12.5 s基本正常，凝血暂时还可以：除非出血失控，先不输血制品，以免加重右心室的容量负荷",
+            "en": "The PT of 12.5 s is essentially normal, so clotting is acceptable for now: hold blood products unless bleeding becomes uncontrollable, to spare her right ventricle the volume"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。不能只看一个PT：纤维蛋白原已经下降，D-二聚体升高，APTT延长（原文病例部分还写明PT延长，只是讨论部分给的12.5 s没有参考范围）。等到出血失控再处理，违背了SMFM“早期积极处理”的推荐。",
-            "en": "Wrong. Don't read one PT on its own: the fibrinogen has fallen, the D-dimer is raised and the APTT is prolonged (the case presentation also calls the PT prolonged; only the discussion gives 12.5 s, without a range). Waiting for uncontrolled bleeding goes against SMFM's call for early, aggressive management."
+            "zh-CN": "错误。不能只看一个PT：纤维蛋白原已经下降，D-二聚体升高，APTT延长（原文病例部分还写明PT延长，只是讨论部分给的12.5 s没有参考范围）。等到出血失控再处理，违背了SMFM“早期积极处理”的推荐；冷沉淀能以较小的容量补充纤维蛋白原。",
+            "en": "Wrong. Don't read one PT on its own: the fibrinogen has fallen, the D-dimer is raised and the APTT is prolonged (the case presentation also calls the PT prolonged; only the discussion gives 12.5 s, without a range). Waiting for uncontrolled bleeding goes against SMFM's call for early, aggressive management, and cryoprecipitate replaces fibrinogen in a small volume."
           }
         },
         {
           "id": "wait-dic",
           "text": {
-            "zh-CN": "先凑齐血小板等指标算出显性DIC评分，确诊DIC后再输血制品",
-            "en": "Wait until an overt-DIC score can be calculated (platelets and the rest) and treat only once DIC is confirmed"
+            "zh-CN": "DIC未证实就输血制品可能白白浪费、甚至加重消耗：先凑齐血小板等指标算出显性DIC评分，确诊DIC后再输血制品",
+            "en": "Products given before DIC is proven may be wasted or feed the consumption, so wait until an overt-DIC score can be calculated (platelets and the rest) and treat only once DIC is confirmed"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。DIC评分有助于研究和分级，但不能因此推迟治疗；羊水栓塞的凝血病可以进展得很快。",
-            "en": "Wrong. A DIC score helps research and grading, but it must not delay treatment — the coagulopathy of amniotic fluid embolism can progress very quickly."
+            "zh-CN": "错误。DIC评分有助于研究和分级，但不能因此推迟治疗；羊水栓塞的凝血病可以进展得很快，及时补充正在下降的纤维蛋白原并不是浪费。",
+            "en": "Wrong. A DIC score helps research and grading, but it must not delay treatment — the coagulopathy of amniotic fluid embolism can progress very quickly, and replacing a falling fibrinogen in time is not a waste."
           }
         },
         {
           "id": "ffp-only",
           "text": {
-            "zh-CN": "只输大量新鲜冰冻血浆来纠正纤维蛋白原",
-            "en": "Correct the fibrinogen with large volumes of fresh frozen plasma alone"
+            "zh-CN": "只输大量新鲜冰冻血浆来纠正纤维蛋白原：一种制品就能同时补充纤维蛋白原和其他各种凝血因子",
+            "en": "Correct the fibrinogen with large volumes of fresh frozen plasma alone, since one product replaces fibrinogen and every other clotting factor together"
           },
           "correct": false,
           "feedback": {
@@ -4031,8 +4031,8 @@
         {
           "id": "heparin",
           "text": {
-            "zh-CN": "开始静脉肝素，阻断DIC",
-            "en": "Start IV heparin to switch off the DIC"
+            "zh-CN": "D-二聚体9.22 mcg/mL提示凝血仍在激活：开始静脉普通肝素阻断DIC，避免进一步消耗纤维蛋白原",
+            "en": "A D-dimer of 9.22 mcg/mL shows clotting is still being activated: start IV unfractionated heparin to switch off the DIC before it consumes more fibrinogen"
           },
           "correct": false,
           "feedback": {

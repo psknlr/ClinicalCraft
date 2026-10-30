@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-51617",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "持续发热与嗜睡 · 34日龄女婴",
     "en": "Persistent fever and drowsiness · 34-day-old girl"
@@ -12,7 +12,7 @@
   },
   "specialty": [
     "pediatrics",
-    "pediatric-cardiology"
+    "cardiology"
   ],
   "difficulty": 4,
   "setting": "inpatient",
@@ -3011,8 +3011,8 @@
         {
           "id": "parallel-workup",
           "text": {
-            "zh-CN": "同时按严重细菌感染和不完全川崎病评估：血常规、CRP和血沉、白蛋白、ALT、尿常规和血培养，腰椎穿刺查脑脊液及培养，并尽快做超声心动图",
-            "en": "Evaluate for serious bacterial infection and incomplete Kawasaki disease together: blood count, CRP and ESR, albumin, ALT, urinalysis and blood culture, a lumbar puncture with CSF culture, and an echocardiogram without delay"
+            "zh-CN": "同时评估严重细菌感染和不完全川崎病：血常规、CRP、血沉、白蛋白、ALT、尿常规和血培养，腰穿查脑脊液及培养，尽快做超声心动图",
+            "en": "Evaluate for serious bacterial infection and incomplete Kawasaki disease together: blood count, CRP, ESR, albumin, ALT, urinalysis and blood culture, a lumbar puncture with CSF culture, and an echocardiogram without delay"
           },
           "correct": true,
           "feedback": {
@@ -3023,8 +3023,8 @@
         {
           "id": "broaden-antibiotics",
           "text": {
-            "zh-CN": "先升级为更广谱的抗生素，等培养结果；川崎病至少要有4项主要表现才需要考虑",
-            "en": "Escalate to broader-spectrum antibiotics and wait for the cultures; Kawasaki disease only needs considering with at least four principal features"
+            "zh-CN": "阿莫西林、头孢吡肟先后无效，多半是耐药菌：升级为更广谱的抗生素，等血和脑脊液培养结果；川崎病要有5项主要表现中的至少4项才需要考虑",
+            "en": "Escalate to broader-spectrum antibiotics for a probably resistant organism, as amoxicillin and then cefepime have failed, and wait for the blood and CSF cultures; Kawasaki disease only needs considering with at least four of the five principal features"
           },
           "correct": false,
           "feedback": {
@@ -3035,8 +3035,8 @@
         {
           "id": "neuro-first",
           "text": {
-            "zh-CN": "以脑膜炎为主：先做头颅影像并用降颅压药，心脏评估以后再说",
-            "en": "Treat this as meningitis first: brain imaging and drugs to lower intracranial pressure now, the heart later"
+            "zh-CN": "先按脑膜炎处理：她嗜睡、前囟张力偏高、颈抵抗可疑，应立即做头颅影像并用降颅压药，等脑部安全了再评估心脏",
+            "en": "Treat this as meningitis first: she is drowsy with a tense fontanelle and equivocal neck stiffness, so brain imaging and drugs to lower intracranial pressure now, and the heart once her brain is safe"
           },
           "correct": false,
           "feedback": {
@@ -3047,8 +3047,8 @@
         {
           "id": "kd-excluded",
           "text": {
-            "zh-CN": "眼红和唇红已经消退、也没有皮疹，可以排除川崎病，继续观察",
-            "en": "The red eyes and lips have gone and there is no rash, so Kawasaki disease is excluded: observe"
+            "zh-CN": "可以排除川崎病：眼红、唇红已经自行消退，也没有皮疹，今天查体看不到的表现不能计入诊断——继续观察",
+            "en": "Kawasaki disease is excluded: the red eyes and lips cleared by themselves and there is no rash, and features that cannot be seen on examination today cannot count towards the diagnosis — observe"
           },
           "correct": false,
           "feedback": {
@@ -3093,8 +3093,8 @@
         {
           "id": "incomplete-kd",
           "text": {
-            "zh-CN": "不完全川崎病：发热≥5天伴2项主要表现、CRP明显升高、血小板增多，超声心动图示冠脉扩张（按她的体型很可能已达冠脉瘤范围）；脑脊液细胞数和蛋白都在该日龄的正常范围内，病历并未证明脑膜炎",
-            "en": "Incomplete Kawasaki disease: fever of 5 days or more with 2 principal features, a markedly raised CRP and thrombocytosis, and coronary dilatation on the echo (very likely aneurysmal at her size); CSF cells and protein are within normal limits for her age, so the record does not demonstrate meningitis"
+            "zh-CN": "不完全川崎病：发热≥5天、2项主要表现、CRP明显升高、血小板增多，冠脉扩张（按她的体型很可能已是冠脉瘤）；脑脊液细胞数和蛋白符合该日龄正常，病历并未证明脑膜炎",
+            "en": "Incomplete Kawasaki disease: fever of 5 days or more, 2 principal features, a markedly raised CRP, thrombocytosis and coronary dilatation (very likely aneurysmal at her size); CSF cells and protein are normal for her age, so meningitis is not demonstrated"
           },
           "correct": true,
           "feedback": {
@@ -3105,8 +3105,8 @@
         {
           "id": "kd-meningitis",
           "text": {
-            "zh-CN": "川崎病并发无菌性脑膜炎：脑脊液蛋白升高，加上嗜睡和前囟张力高，即可诊断",
-            "en": "Kawasaki disease with aseptic meningitis: the raised CSF protein, with the drowsiness and tense fontanelle, makes the diagnosis"
+            "zh-CN": "川崎病并发无菌性脑膜炎：冠脉扩张证实了川崎病，脑脊液蛋白0.49 g/L，加上嗜睡、前囟张力偏高和可疑颈抵抗，即可诊断脑膜炎",
+            "en": "Kawasaki disease with aseptic meningitis: the coronary dilatation confirms Kawasaki disease, and a CSF protein of 0.49 g/L with the drowsiness, a tense fontanelle and equivocal neck stiffness makes the diagnosis of meningitis"
           },
           "correct": false,
           "feedback": {
@@ -3117,13 +3117,13 @@
         {
           "id": "culture-negative-sepsis",
           "text": {
-            "zh-CN": "培养阴性的败血症或部分治疗过的细菌性脑膜炎，延长抗生素疗程即可；不足4项主要表现就不是川崎病",
-            "en": "Culture-negative sepsis or partly treated bacterial meningitis — extend the antibiotics; with fewer than four principal features it is not Kawasaki disease"
+            "zh-CN": "培养阴性的败血症或部分治疗过的细菌性脑膜炎：采样前已用抗生素5天，可以解释培养阴性，CRP>200 mg/L也提示细菌感染——延长抗生素疗程；不足4项主要表现就不是川崎病",
+            "en": "Culture-negative sepsis or partly treated bacterial meningitis: five days of antibiotics before sampling explain the sterile cultures and a CRP over 200 mg/L points to bacteria — extend the antibiotics; with fewer than four principal features it is not Kawasaki disease"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。采样前用过抗生素确实会降低培养阳性率，但脑脊液细胞数、糖、氯化物正常不支持细菌性脑膜炎，冠脉扩张也不是败血症能解释的；“不足4项”恰恰是不完全川崎病的情形。原作者也以无感染灶、培养阴性、抗生素无效而排除了败血症。",
-            "en": "No. Antibiotics before sampling do lower culture yield, but normal CSF cells, glucose and chloride argue against bacterial meningitis, and sepsis does not explain coronary dilatation; fewer than four features is exactly the incomplete-Kawasaki situation. The authors, too, excluded sepsis: no focus, negative cultures, no response to antibiotics."
+            "zh-CN": "不对。采样前用过抗生素确实会降低培养阳性率，但脑脊液细胞数、糖、氯化物正常不支持细菌性脑膜炎，CRP很高也区分不了二者，冠脉扩张更不是败血症能解释的；“不足4项”恰恰是不完全川崎病的情形。原作者也以无感染灶、培养阴性、抗生素无效而排除了败血症。",
+            "en": "No. Antibiotics before sampling do lower culture yield, but normal CSF cells, glucose and chloride argue against bacterial meningitis, a very high CRP does not separate the two, and sepsis does not explain coronary dilatation; fewer than four features is exactly the incomplete-Kawasaki situation. The authors, too, excluded sepsis: no focus, negative cultures, no response to antibiotics."
           }
         }
       ]
@@ -3146,8 +3146,8 @@
         {
           "id": "ivig-high-risk",
           "text": {
-            "zh-CN": "立即静脉输注IVIG 2 g/kg（单次）并口服阿司匹林；她<6月龄、诊断时已有冠脉扩张，属高危，与儿童心脏科讨论强化初始治疗（如加用糖皮质激素）；量身长、按体表面积计算冠脉Z值，抗栓方案按Z值分级确定",
-            "en": "Give IVIG 2 g/kg as a single infusion now with oral aspirin; she is high-risk (under 6 months, coronary dilatation at diagnosis), so discuss intensified initial therapy (for example a corticosteroid) with paediatric cardiology; measure her length, express the coronary sizes as Z-scores from body surface area, and base antithrombotic therapy on the Z grade"
+            "zh-CN": "立即单次静脉输注IVIG 2 g/kg并口服阿司匹林；她<6月龄、冠脉已扩张，属高危，与儿童心脏科讨论强化治疗（如加用糖皮质激素）；量身长、按Z值给冠脉分级，据此确定抗栓方案",
+            "en": "IVIG 2 g/kg as a single infusion now, with oral aspirin; she is high-risk (under 6 months, coronary dilatation): discuss intensified therapy such as a corticosteroid with paediatric cardiology, and measure her length to grade the coronaries by Z-score for the antithrombotic plan"
           },
           "correct": true,
           "feedback": {
@@ -3158,8 +3158,8 @@
         {
           "id": "too-late",
           "text": {
-            "zh-CN": "已到发病第10天，IVIG已经没用，只用阿司匹林",
-            "en": "It is day 10 already — too late for IVIG; aspirin alone"
+            "zh-CN": "IVIG已经来不及：现在是发病第10天，已过它能预防冠脉瘤的时间窗，冠脉也已经扩张——只用阿司匹林，请儿童心脏科随访，定期复查超声心动图监测冠脉",
+            "en": "Too late for IVIG: it is illness day 10, past the window in which it prevents aneurysms, and her coronary arteries have already dilated — give aspirin alone, with paediatric cardiology follow-up and serial echocardiograms to watch the coronaries"
           },
           "correct": false,
           "feedback": {
@@ -3170,20 +3170,20 @@
         {
           "id": "absolute-grade",
           "text": {
-            "zh-CN": "报告为轻度、中度扩张，常规用IVIG和阿司匹林即可，不必算Z值，出院后单用阿司匹林",
-            "en": "The report grades the dilatation as mild and moderate: routine IVIG and aspirin, no need for Z-scores, aspirin alone after discharge"
+            "zh-CN": "超声报告为轻度（左冠3.0 mm）和中度（右冠3.1–4.7 mm）扩张，没有提到冠脉瘤，不属高危：常规IVIG 2 g/kg加阿司匹林，不必算Z值、不必强化治疗（病历里也没有身长），出院后单用阿司匹林",
+            "en": "The echo report grades the dilatation as mild (left, 3.0 mm) and moderate (right, 3.1–4.7 mm) and names no aneurysm, so she is not high-risk: routine IVIG 2 g/kg and aspirin, no Z-scores or intensified therapy, as her length is not recorded anyway, and aspirin alone after discharge"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。按毫米分级会低估婴儿的冠脉病变：4.3 kg婴儿的右冠状动脉4.7 mm很可能已是冠脉瘤。AHA 2017/2024按体表面积校正的Z值分级，这一分级决定是单用阿司匹林还是加抗凝，以及多久复查一次。",
-            "en": "No. Millimetre grading under-classifies coronary disease in infants: a 4.7-mm right coronary artery in a 4.3-kg infant is very likely an aneurysm. AHA 2017/2024 grade by body-surface-area-adjusted Z-score, and that grade decides between aspirin alone and aspirin plus anticoagulation, and how often to scan."
+            "zh-CN": "不对。按毫米分级会低估婴儿的冠脉病变：4.3 kg婴儿的右冠状动脉4.7 mm很可能已是冠脉瘤，而且<6月龄本身就属高危。AHA 2017/2024按体表面积校正的Z值分级——没有身长就去量，而不是因此不算——这一分级决定是单用阿司匹林还是加抗凝，以及多久复查一次。",
+            "en": "No. Millimetre grading under-classifies coronary disease in infants: a 4.7-mm right coronary artery in a 4.3-kg infant is very likely an aneurysm, and under 6 months she is high-risk by age alone. AHA 2017/2024 grade by body-surface-area-adjusted Z-score — a missing length is a reason to measure it, not to skip the grading — and that grade decides between aspirin alone and aspirin plus anticoagulation, and how often to scan."
           }
         },
         {
           "id": "antibiotics-first",
           "text": {
-            "zh-CN": "先继续抗生素并复查脑脊液，排除感染后再决定是否用IVIG",
-            "en": "Continue the antibiotics and repeat the CSF first; decide about IVIG once infection is excluded"
+            "zh-CN": "先继续抗生素并复查腰穿：脑脊液是在用了5天抗生素之后才采集的，蛋白0.49 g/L，感染还不能排除——排除感染后再决定是否用IVIG",
+            "en": "Continue the antibiotics and repeat the lumbar puncture first: the CSF was taken after five days of antibiotics and its protein is 0.49 g/L, so infection is not yet excluded — decide about IVIG once it is"
           },
           "correct": false,
           "feedback": {
@@ -3212,8 +3212,8 @@
         {
           "id": "z-based-plan",
           "text": {
-            "zh-CN": "改为小剂量阿司匹林3–5 mg/kg每日1次；算出Z值后按危险分层决定是否加抗凝（大型或巨大冠脉瘤加低分子肝素或华法林）并安排超声随访；每年接种灭活流感疫苗、避免布洛芬，接触水痘或流感时及时就诊；IVIG后11个月内暂缓麻疹、水痘等活疫苗",
-            "en": "Switch to low-dose aspirin 3–5 mg/kg once daily; once the Z-scores are known, decide on anticoagulation by risk level (LMWH or warfarin for a large or giant aneurysm) and schedule echocardiograms; inactivated influenza vaccine every year, no ibuprofen, prompt review after contact with chickenpox or influenza; defer measles and varicella vaccines for 11 months after IVIG"
+            "zh-CN": "小剂量阿司匹林3–5 mg/kg每日1次；按Z值分层定抗凝（大型或巨大冠脉瘤加低分子肝素或华法林）和超声随访；每年接种灭活流感疫苗，避免布洛芬，接触水痘或流感及时就诊；IVIG后11个月内暂缓麻疹、水痘疫苗",
+            "en": "Low-dose aspirin 3–5 mg/kg once daily; anticoagulation (LMWH or warfarin for a large or giant aneurysm) and echo follow-up by Z-score risk; yearly inactivated influenza vaccine, no ibuprofen, prompt review after chickenpox or influenza contact; no measles or varicella vaccine for 11 months after IVIG"
           },
           "correct": true,
           "feedback": {
@@ -3224,32 +3224,32 @@
         {
           "id": "report-dose",
           "text": {
-            "zh-CN": "按原报告的做法：阿司匹林50 mg每日2次（约23 mg/kg/日），一直用到冠脉恢复",
-            "en": "As the report did: aspirin 50 mg twice daily (about 23 mg/kg/day) until the coronary arteries recover"
+            "zh-CN": "按原报告的做法：阿司匹林50 mg每日2次（约23 mg/kg/日）一直用到冠脉恢复，因为血小板915×10⁹/L、CRP仍有20.9 mg/L，需要的不只是抗血小板剂量；定期复查超声心动图，让她远离水痘患者",
+            "en": "As the report did: aspirin 50 mg twice daily (about 23 mg/kg/day) until the coronary arteries recover, because platelets of 915 ×10⁹/L and a CRP still at 20.9 mg/L call for more than an antiplatelet dose; regular review with echocardiograms, and keep her well away from anyone who has chickenpox"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是原报告的方案，沿用了当时“2个月后减为15–30 mg/(kg·d)”的旧做法。现行抗血小板剂量是3–5 mg/kg每日1次（AHA 2017/2024；中国2022共识）：更大的剂量增加胃肠道和瑞氏综合征风险，却不增加抗血小板作用，对需要抗凝的大型冠脉瘤也无济于事。",
-            "en": "That is the report's regimen, following the older practice of 15–30 mg/kg/day after 2 months. The antiplatelet dose today is 3–5 mg/kg once daily (AHA 2017/2024; Chinese 2022 consensus): higher doses add gastrointestinal and Reye syndrome risk without more antiplatelet effect, and do nothing for a large aneurysm that needs anticoagulation."
+            "zh-CN": "这是原报告的方案，沿用了当时“2个月后减为15–30 mg/(kg·d)”的旧做法。退热以后，血小板增多和尚在下降的CRP并不需要更大的剂量：现行抗血小板剂量是3–5 mg/kg每日1次（AHA 2017/2024；中国2022共识），更大的剂量增加胃肠道和瑞氏综合征风险，却不增加抗血小板作用，对需要抗凝的大型冠脉瘤也无济于事。",
+            "en": "That is the report's regimen, following the older practice of 15–30 mg/kg/day after 2 months. Once she is afebrile, thrombocytosis and a CRP that is still settling do not call for a higher dose: the antiplatelet dose today is 3–5 mg/kg once daily (AHA 2017/2024; Chinese 2022 consensus), and higher doses add gastrointestinal and Reye syndrome risk without more antiplatelet effect, and do nothing for a large aneurysm that needs anticoagulation."
           }
         },
         {
           "id": "stop-aspirin",
           "text": {
-            "zh-CN": "已退热、CRP下降，出院时停用阿司匹林，3个月后复查超声",
-            "en": "She is afebrile and the CRP is falling: stop aspirin at discharge and repeat the echo in 3 months"
+            "zh-CN": "她已退热多日，CRP从>200 mg/L降到20.9 mg/L，急性期已过：出院时停用阿司匹林，免去长期服药带来的瑞氏综合征和出血风险，3个月后复查超声心动图，再决定是否需要长期治疗",
+            "en": "She has been afebrile for days and the CRP has fallen from over 200 to 20.9 mg/L, so the acute phase is over: stop aspirin at discharge to spare her the Reye syndrome and bleeding risks of long-term use, and repeat the echocardiogram in 3 months to decide whether she needs any long-term treatment at all"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。冠脉仍在扩张，至少要继续小剂量阿司匹林，Z值分级高时还要更多；高危患儿约1周内就应复查（AHA 2024），以便及时发现正在扩大的冠脉瘤。",
-            "en": "No. The coronary arteries are still dilated, so at least low-dose aspirin continues, and more if the Z grade demands it; a high-risk infant should be re-scanned within about a week (AHA 2024) to catch an expanding aneurysm."
+            "zh-CN": "不对。冠脉仍在扩张，至少要继续小剂量阿司匹林，Z值分级高时还要更多；瑞氏综合征的风险靠每年接种流感疫苗、接触后及时就诊来防，而不是停用阿司匹林。高危患儿约1周内就应复查（AHA 2024），以便及时发现正在扩大的冠脉瘤。",
+            "en": "No. The coronary arteries are still dilated, so at least low-dose aspirin continues, and more if the Z grade demands it; the Reye syndrome risk is managed with yearly influenza vaccine and prompt review after exposure, not by stopping aspirin. A high-risk infant should be re-scanned within about a week (AHA 2024) to catch an expanding aneurysm."
           }
         },
         {
           "id": "routine-vaccines",
           "text": {
-            "zh-CN": "按常规程序接种所有疫苗，包括到期的含麻疹成分疫苗；长期服阿司匹林不需要特别防护",
-            "en": "Vaccinate on the routine schedule, including measles-containing vaccine when due; no special precautions on long-term aspirin"
+            "zh-CN": "继续阿司匹林、儿童心脏科随访，所有疫苗按常规程序接种，到期的含麻疹成分疫苗也照常接种，病得这么重的婴儿不能再少一份保护；长期服阿司匹林不需要针对感染的特别防护",
+            "en": "Continue aspirin with paediatric cardiology follow-up, and keep every vaccine on the routine schedule, measles-containing vaccine included when due, so that an infant who has been this ill misses no protection; long-term aspirin needs no special precautions against infection"
           },
           "correct": false,
           "feedback": {

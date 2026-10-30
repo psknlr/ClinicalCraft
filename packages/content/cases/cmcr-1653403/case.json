@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653403",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "title": {
     "zh-CN": "孕晚期胎动减少 · 29岁女性",
     "en": "Reduced fetal movements late in pregnancy · 29-year-old woman"
@@ -2550,49 +2550,49 @@
         {
           "id": "routine-review",
           "text": {
-            "zh-CN": "一周前B超正常，先安慰她，按常规一周后复查胎心监护",
-            "en": "Reassure her — last week's scan was normal — and repeat the CTG in a week as routine"
+            "zh-CN": "先安慰她：胎动她没有数过，一周前B超也正常；按常规一周后复查胎心监护，胎动停止就随时来",
+            "en": "Reassure her — she has not counted the movements and last week's scan was normal — and repeat the CTG in a week as routine, sooner if the movements stop"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。一周前的检查说明不了现在胎儿是否安全；胎动减少伴异常胎监是急症，回家等待可能导致胎死宫内。",
-            "en": "Wrong. Last week's scan says nothing about the baby now; reduced movements with an abnormal trace are an emergency, and waiting at home risks a stillbirth."
+            "zh-CN": "错误。她虽然没有数过胎动，但她感觉到胎动减少本身就要重视；一周前的检查说明不了现在胎儿是否安全；胎动减少伴异常胎监是急症，回家等待可能导致胎死宫内。",
+            "en": "Wrong. Her sense that the baby is moving less matters even though she has not counted, and last week's scan says nothing about the baby now; reduced movements with an abnormal trace are an emergency, and waiting at home risks a stillbirth."
           }
         },
         {
           "id": "investigate-first",
           "text": {
-            "zh-CN": "收入院，先做大脑中动脉多普勒和母血KB试验，有结果后再决定是否分娩",
-            "en": "Admit her, get an MCA Doppler and a maternal KB test first, and decide about delivery once the results are back"
+            "zh-CN": "收入院，先做大脑中动脉多普勒和母血KB试验：正弦波形只是可疑，先证实胎儿贫血，再决定是否分娩",
+            "en": "Admit her and get an MCA Doppler and a maternal KB test first: the sinusoidal pattern is only suspected, so confirm the fetal anaemia before deciding about delivery"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。大脑中动脉收缩期峰值流速和KB试验能帮助判断胎儿贫血和胎母输血（原报告讨论中也提到），但对已足月、胎监异常的胎儿，不能为了等结果而推迟分娩；母血可以在分娩后尽快送检。",
-            "en": "Not right. An MCA Doppler and a KB test help to show fetal anaemia and fetomaternal haemorrhage (the report's discussion mentions both), but in a term baby with an abnormal trace, delivery must not wait for results; the mother's blood can be sent soon after the birth."
+            "zh-CN": "不妥。大脑中动脉收缩期峰值流速和KB试验能帮助判断胎儿贫血和胎母输血（原报告讨论中也提到），但足月、胎动减少再加上可疑的正弦波形，已足以尽快分娩：不能为了等结果而推迟分娩；母血可以在分娩后尽快送检。",
+            "en": "Not right. An MCA Doppler and a KB test help to show fetal anaemia and fetomaternal haemorrhage (the report's discussion mentions both), but reduced movements at term with even a suspected sinusoidal pattern are reason enough to deliver: delivery must not wait for results, and the mother's blood can be sent soon after the birth."
           }
         },
         {
           "id": "induce",
           "text": {
-            "zh-CN": "引产，产程中持续胎心监护",
-            "en": "Induce labour with continuous CTG monitoring"
+            "zh-CN": "她已足月、之前分娩过两次：现在引产，产程中持续胎心监护，胎监恶化再改行剖宫产",
+            "en": "She is at term and has given birth twice before: induce labour now with continuous CTG monitoring, and move to a caesarean only if the trace worsens"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。胎儿可能已严重贫血，难以耐受宫缩，产程还会拖延娩出；一周前胎位为臀位（现在的胎位原文未记录）。",
-            "en": "Not right. An anaemic baby may not tolerate contractions, labour delays delivery, and the baby was breech a week ago (its position now is not recorded)."
+            "zh-CN": "不妥。之前分娩过两次（分娩方式原文未记录），并不能让这个胎儿安全经历产程：胎监已经异常，胎儿可能已严重贫血，难以耐受宫缩，产程还会拖延娩出；一周前胎位为臀位（现在的胎位原文未记录）。",
+            "en": "Not right. Two earlier births (how they were delivered is not recorded) do not make labour safe for this baby: the trace is already abnormal, an anaemic baby may not tolerate contractions, labour delays delivery, and the baby was breech a week ago (its position now is not recorded)."
           }
         },
         {
           "id": "ecv",
           "text": {
-            "zh-CN": "先做外倒转把臀位转过来，再计划阴道分娩",
-            "en": "Turn the breech baby first (external cephalic version), then plan a vaginal birth"
+            "zh-CN": "一周前B超为臀位，现已足月：先做外倒转把胎儿转成头位，再计划在持续胎心监护下阴道分娩",
+            "en": "Last week's scan showed a breech and she is now at term: turn the baby by external cephalic version first, then plan a vaginal birth with continuous monitoring"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。胎监已经异常，这时操作胎儿可能加重危险，而她需要的是尽快分娩；产科干预本身也是原报告讨论所列的胎母输血诱因之一。",
-            "en": "Wrong. The trace is already abnormal, so manipulating the baby could make things worse, and what she needs is prompt delivery; obstetric procedures are themselves among the causes of fetomaternal haemorrhage listed in the report's discussion."
+            "zh-CN": "错误。外倒转只适用于没有并发症的臀位，而这个胎儿的胎监已经异常：这时操作胎儿可能加重危险，而她需要的是尽快分娩；产科干预本身也是原报告讨论所列的胎母输血诱因之一。",
+            "en": "Wrong. A version is for an uncomplicated breech, and this baby's trace is already abnormal: manipulating the baby could make things worse, and what she needs is prompt delivery; obstetric procedures are themselves among the causes of fetomaternal haemorrhage listed in the report's discussion."
           }
         }
       ]
@@ -2616,8 +2616,8 @@
         {
           "id": "support-transfuse",
           "text": {
-            "zh-CN": "给予呼吸支持，并立即输注紧急发放的O型红细胞，不等交叉配血或溶血检查结果；分次给予，边输边评估",
-            "en": "Support her breathing and transfuse emergency-issue group O red cells straight away — without waiting for a crossmatch or haemolysis tests — in aliquots, reassessing as you go"
+            "zh-CN": "给予呼吸支持，立即输注紧急发放的O型红细胞，不等交叉配血或溶血检查结果；分次输注，边输边评估",
+            "en": "Support her breathing and transfuse emergency-issue group O red cells now, without waiting for a crossmatch or haemolysis tests, in aliquots with reassessment"
           },
           "correct": true,
           "feedback": {
@@ -2628,37 +2628,37 @@
         {
           "id": "crystalloid-only",
           "text": {
-            "zh-CN": "先快速推注生理盐水扩容，血红蛋白不升再考虑输血",
-            "en": "Give saline boluses first, and transfuse only if the haemoglobin does not rise"
+            "zh-CN": "血压49/25 mmHg，已经休克：先用生理盐水10 mL/kg快速推注扩容，不用配血；推注后仍休克再输血",
+            "en": "She is shocked at 49/25 mmHg, so restore her volume first with 10 mL/kg saline boluses, which need no crossmatch, and transfuse only if she stays shocked"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不妥。晶体液最多能暂时扩容，却不能携氧，还会进一步稀释血红蛋白；血红蛋白38 g/L伴休克需要的是红细胞。",
-            "en": "Not right. Crystalloid can at most expand the volume for a while; it carries no oxygen and dilutes the haemoglobin further — a haemoglobin of 38 g/L with shock needs red cells."
+            "zh-CN": "不妥。晶体液最多能暂时扩容，却不能携氧，还会进一步稀释血红蛋白；血红蛋白38 g/L伴休克需要的是红细胞，而紧急发放的O型红细胞同样不用等配血。",
+            "en": "Not right. Crystalloid can at most expand the volume for a while; it carries no oxygen and dilutes the haemoglobin further — a haemoglobin of 38 g/L with shock needs red cells, and emergency-issue group O red cells need no crossmatch either."
           }
         },
         {
           "id": "wait-tests",
           "text": {
-            "zh-CN": "先等宝宝的血型、Coombs试验和交叉配血结果，再输血",
-            "en": "Wait for the baby's blood group, Coombs test and crossmatch before transfusing"
+            "zh-CN": "先等宝宝的血型、Coombs试验和交叉配血结果再输血：溶血病尚未排除，输血后再采的血样难以解读",
+            "en": "Wait for the baby's group, Coombs test and crossmatch before transfusing: haemolytic disease is not yet excluded, and samples taken after a transfusion are harder to interpret"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。休克中的严重贫血新生儿等不起配血；紧急发放的O型红细胞正是为这种情况准备的。原报告中宝宝的血型和Coombs试验是在第一次输血之后才检测的。",
-            "en": "Wrong. A shocked, severely anaemic newborn cannot wait for crossmatching — emergency-issue group O red cells exist for exactly this. In the report, the baby's group and Coombs test were done after the first transfusion."
+            "zh-CN": "错误。休克中的严重贫血新生儿等不起配血；紧急发放的O型红细胞正是为这种情况准备的。可以在输血前留取血样，但不能等结果；原报告中宝宝的血型和Coombs试验是在第一次输血之后才检测的。",
+            "en": "Wrong. A shocked, severely anaemic newborn cannot wait for crossmatching — emergency-issue group O red cells exist for exactly this. Take the pre-transfusion samples, but do not wait for their results; in the report, the baby's group and Coombs test were done after the first transfusion."
           }
         },
         {
           "id": "exchange",
           "text": {
-            "zh-CN": "按新生儿溶血病行双倍量换血",
-            "en": "Do a double-volume exchange transfusion as for haemolytic disease"
+            "zh-CN": "按新生儿溶血病行双倍量换血：既能纠正贫血、不加重循环负荷，又能清除可能存在的母体抗体",
+            "en": "Do a double-volume exchange transfusion as for haemolytic disease: it corrects the anaemia without overloading her circulation and removes any maternal antibodies"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不符合。目前没有溶血的证据（换血主要用于严重高胆红素血症或溶血病），而她处于休克状态，需要的是尽快补充红细胞和血容量。",
-            "en": "Does not fit. There is no evidence of haemolysis (exchange transfusion is mainly for severe hyperbilirubinaemia or haemolytic disease), and she is in shock: she needs red cells and volume now."
+            "zh-CN": "不符合。目前没有溶血的证据（换血主要用于严重高胆红素血症或溶血病），而她处于休克状态，需要的是尽快补充红细胞和血容量，而不是需要时间准备、又不增加血容量的换血。",
+            "en": "Does not fit. There is no evidence of haemolysis (exchange transfusion is mainly for severe hyperbilirubinaemia or haemolytic disease), and she is in shock: she needs red cells and volume now, not a volume-neutral exchange that takes time to set up."
           }
         }
       ]
@@ -2693,8 +2693,8 @@
         {
           "id": "fmh",
           "text": {
-            "zh-CN": "胎母输血：胎儿的血逐渐进入了母亲的循环；送母血红细胞酸洗脱（KB）试验（或流式细胞术），并查母血甲胎蛋白",
-            "en": "Fetomaternal haemorrhage — the baby's blood has been leaking into the mother's circulation; send a maternal Kleihauer–Betke test (or flow cytometry) and a maternal AFP"
+            "zh-CN": "胎母输血（胎儿的血逐渐进入母亲的循环）：送母血红细胞酸洗脱（KB）试验或流式细胞术，并查母血甲胎蛋白",
+            "en": "Fetomaternal haemorrhage — fetal blood leaking into the mother's circulation; send a maternal Kleihauer–Betke test (or flow cytometry) and a maternal AFP"
           },
           "correct": true,
           "feedback": {
@@ -2705,32 +2705,32 @@
         {
           "id": "abo",
           "text": {
-            "zh-CN": "ABO溶血病：母亲B型，与宝宝血型不同",
-            "en": "ABO haemolytic disease, because mother and baby have different groups"
+            "zh-CN": "ABO溶血病：母亲B型、宝宝O型，血型不同，Coombs阴性也不能排除；送胆红素、网织红细胞计数和血涂片",
+            "en": "ABO haemolytic disease: mother (group B) and baby (group O) differ, and a negative Coombs test does not exclude it; send a bilirubin, a reticulocyte count and a blood film"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。宝宝是O型，红细胞上没有A、B抗原，母亲（B型）的抗A抗体无从作用，不会发生ABO溶血；Coombs试验也是阴性。",
-            "en": "Wrong. The baby is group O, so her red cells carry no A or B antigen for the mother's (group B) anti-A to act on — ABO haemolysis cannot happen; the Coombs test is negative too."
+            "zh-CN": "错误。ABO溶血病的Coombs试验确实可以弱阳性甚至阴性，但这里关键不在于此：宝宝是O型，红细胞上没有A、B抗原，母亲（B型）的抗A抗体无从作用，不会发生ABO溶血。",
+            "en": "Wrong. The Coombs test can indeed be weak or negative in ABO disease, but that is not the point here: the baby is group O, so her red cells carry no A or B antigen for the mother's (group B) anti-A to act on — ABO haemolysis cannot happen."
           }
         },
         {
           "id": "rh",
           "text": {
-            "zh-CN": "Rh溶血病",
-            "en": "Rhesus haemolytic disease"
+            "zh-CN": "Rh溶血病：这类溶血往往一胎比一胎重，而这已是她第三次妊娠；送母血抗体筛查和宝宝胆红素",
+            "en": "Rhesus haemolytic disease, which tends to worsen with each pregnancy — this is her third; send a maternal antibody screen and the baby's bilirubin"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。母亲和宝宝都是Rh阳性，Coombs试验阴性。",
-            "en": "Wrong. Mother and baby are both Rh-positive, and the Coombs test is negative."
+            "zh-CN": "错误。Rh溶血病确实可能一胎比一胎重，但前提是母亲已被致敏；母亲和宝宝都是Rh阳性，Coombs试验也是阴性。",
+            "en": "Wrong. Rhesus disease does worsen with successive pregnancies, but only once the mother has been sensitised: mother and baby are both Rh-positive, and the Coombs test is negative."
           }
         },
         {
           "id": "intrapartum",
           "text": {
-            "zh-CN": "剖宫产时的急性失血（如切到胎盘或脐带出血）",
-            "en": "Acute blood loss at the caesarean (for example a cut placenta or a bleeding cord)"
+            "zh-CN": "剖宫产时的急性失血（如切到胎盘或脐带出血）：贫血是宝宝一出生就发现的；检查胎盘和脐带",
+            "en": "Acute blood loss at the caesarean, such as a cut placenta or a bleeding cord, since the anaemia was found the moment she was born; examine the placenta and cord"
           },
           "correct": false,
           "feedback": {
@@ -2741,8 +2741,8 @@
         {
           "id": "thal",
           "text": {
-            "zh-CN": "重型α地中海贫血",
-            "en": "Severe alpha-thalassaemia"
+            "zh-CN": "重型α地中海贫血：出生时即重度贫血的公认病因；送宝宝血红蛋白分析和α珠蛋白基因检测",
+            "en": "Severe alpha-thalassaemia, a recognised cause of profound anaemia from birth; send the baby's haemoglobin analysis and an alpha-globin gene test"
           },
           "correct": false,
           "feedback": {
@@ -2790,20 +2790,20 @@
         {
           "id": "standard-dose",
           "text": {
-            "zh-CN": "需要：发生了大量胎母输血，应给标准剂量抗D",
-            "en": "Yes — there has been a large fetomaternal haemorrhage, so give a standard dose of anti-D"
+            "zh-CN": "需要：胎儿红细胞占9.2%，说明发生了大量胎母输血，应在分娩后72小时内给标准剂量抗D，预防致敏",
+            "en": "Yes — 9.2% fetal cells means a large fetomaternal haemorrhage, so give a standard dose of anti-D within 72 hours of the birth to prevent sensitisation"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。决定是否需要抗D的是母亲的RhD血型，而不是出血量；她是Rh阳性。",
-            "en": "Wrong. What decides anti-D is the mother's RhD type, not the size of the bleed — and she is Rh-positive."
+            "zh-CN": "错误。决定是否需要抗D的是母亲的RhD血型，而不是出血量；她是Rh阳性，72小时的时限只适用于RhD阴性的母亲。",
+            "en": "Wrong. What decides anti-D is the mother's RhD type, not the size of the bleed — and she is Rh-positive; the 72-hour window applies only to RhD-negative mothers."
           }
         },
         {
           "id": "calculated",
           "text": {
-            "zh-CN": "需要：按KB估算的出血量计算抗D剂量",
-            "en": "Yes — calculate the anti-D dose from the bleed estimated by the KB test"
+            "zh-CN": "需要：出血量这么大，标准剂量覆盖不了，应按KB估算的出血量计算抗D剂量",
+            "en": "Yes — a bleed this large is more than a standard dose covers, so calculate the anti-D dose from the volume estimated by the KB test"
           },
           "correct": false,
           "feedback": {
@@ -2814,13 +2814,13 @@
         {
           "id": "never",
           "text": {
-            "zh-CN": "胎母输血与抗D无关，任何情况下都不用考虑",
-            "en": "Fetomaternal haemorrhage has nothing to do with anti-D, whatever the mother's blood group"
+            "zh-CN": "胎母输血与抗D无关，任何血型的母亲都一样：抗D是孕期的常规预防，不是针对出血的处理",
+            "en": "Fetomaternal haemorrhage has nothing to do with anti-D, whatever the mother's blood group: anti-D is routine antenatal prophylaxis, not a response to a bleed"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "错误。RhD阴性的母亲发生胎母输血时，抗D预防非常重要，剂量还要按出血量增加。",
-            "en": "Wrong. In an RhD-negative mother, fetomaternal haemorrhage makes anti-D prophylaxis essential, and the dose must be increased to match the bleed."
+            "zh-CN": "错误。对RhD阴性的母亲，孕期常规预防不能覆盖致敏事件：发生胎母输血时，抗D预防非常重要，剂量还要按出血量增加。",
+            "en": "Wrong. In an RhD-negative mother, routine antenatal prophylaxis does not cover a sensitising event: fetomaternal haemorrhage makes anti-D prophylaxis essential, and the dose must be increased to match the bleed."
           }
         }
       ]

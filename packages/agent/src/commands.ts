@@ -11,7 +11,7 @@ import {
   currentObjective,
   historyVoice,
   orderStatus,
-  presentedOptions,
+  patientAgeText,
   progress,
   resultFor,
   t,
@@ -25,11 +25,13 @@ import type { SlashCommand } from "./agents/types.js";
 import type { PlanItem, RuntimeConfigPatch } from "./protocol.js";
 import { PROVIDER_TEMPLATES, localizedName } from "./providers/catalog.js";
 import type { SessionSnapshot } from "./session/types.js";
-import { agentLabel, isZh, joinList, reviewStatusLine, rt, type RuntimeKey } from "./session/i18n.js";
+import { agentLabel, countedLabel, isZh, joinList, listHeading, reviewStatusLine, rt, type RuntimeKey } from "./session/i18n.js";
 import { resolveAgentAlias } from "./session/router.js";
 import type { ResolvedSettings } from "./settings/schema.js";
-import { caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
+import { answeredDecision, caseStatusText, listOptionsText, orderStatusText } from "./tools/clinical.js";
+import { decisionNumber } from "./tools/decision-refs.js";
 import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/format.js";
+import { labelledOptions, optionTokens, resolveOptionToken } from "./tools/option-labels.js";
 import { executeEmbodiedCommand } from "./commands-world.js";
 import { criticalMisses } from "./critical.js";
 import type { ToolOutput } from "./tools/types.js";
@@ -81,6 +83,9 @@ export interface CommandHost {
   skills?(): { id: string; name: string }[];
 }
 
+/** `/answer`'s argument hint: the decision's number as /board shows it, then the options' letters (or numbers). */
+const ANSWER_HINT = "<decision> <letter|number…>";
+
 const BUILTIN_NAMES = [
   ["help", ""],
   ["case", ""],
@@ -92,7 +97,7 @@ const BUILTIN_NAMES = [
   ["give", "<query>"],
   ["vitals", ""],
   ["board", ""],
-  ["answer", "<decision> <option…>"],
+  ["answer", ANSWER_HINT],
   ["phase", "[id]"],
   ["wait", "<minutes>"],
   ["hint", ""],
@@ -234,21 +239,6 @@ export function closestMatch(input: string, candidates: readonly string[]): stri
   return best;
 }
 
-/** Resolve "3" (1-based) or an id against a list. */
-function pick<T extends { id: string }>(items: readonly T[], token: string): T | undefined {
-  if (/^\d+$/.test(token)) return items[Number(token) - 1];
-  return items.find((i) => i.id === token) ?? items.find((i) => i.id.toLowerCase() === token.toLowerCase());
-}
-
-/** Resolve an option token: id, letter (A, b…) or 1-based number. */
-function pickOption<T extends { id: string }>(options: readonly T[], token: string): T | undefined {
-  if (/^[A-Za-z]$/.test(token)) {
-    const byId = options.find((o) => o.id === token);
-    return byId ?? options[token.toUpperCase().charCodeAt(0) - 65];
-  }
-  return pick(options, token);
-}
-
 /* ------------------------------------------------------------------ */
 /* Individual commands                                                 */
 /* ------------------------------------------------------------------ */
@@ -272,13 +262,13 @@ function caseCommand(host: CommandHost): void {
   const s = host.state();
   const p = progress(c, s);
   const sexKey = c.patient.sex === "male" ? "cmd.sex.male" : c.patient.sex === "female" ? "cmd.sex.female" : "cmd.sex.other";
-  const ageUnit = isZh(L) ? { years: "岁", months: "个月", days: "天" }[c.patient.ageUnit] : { years: " y", months: " mo", days: " d" }[c.patient.ageUnit];
   const lines = [
     rt(L, "cmd.case.summary", { title: t(c.title, L), summary: t(c.summary, L) }),
-    rt(L, "cmd.case.patient", { name: t(c.patient.displayName, L), age: `${c.patient.age}${ageUnit}`, sex: rt(L, sexKey), complaint: t(c.patient.chiefComplaint, L) }),
+    // The age as clinicians write it ("8岁4个月", "18 hours"), never a raw fraction: core `patientAgeText`.
+    rt(L, "cmd.case.patient", { name: t(c.patient.displayName, L), age: patientAgeText(c.patient, L), sex: rt(L, sexKey), complaint: t(c.patient.chiefComplaint, L) }),
   ];
   if (c.patient.triageNote) lines.push(t(c.patient.triageNote, L));
-  lines.push(`${rt(L, "label.objectives")} (${p.done}/${p.total}):`);
+  lines.push(listHeading(L, countedLabel(L, rt(L, "label.objectives"), p.done, p.total)));
   for (const o of p.objectives) lines.push(`  ${o.done ? "✓" : o.current ? "▶" : "·"} ${objectiveTitle(c, o.id, L)}`);
   if (c.disclaimer) lines.push(rt(L, "cmd.case.disclaimer", { text: t(c.disclaimer, L) }));
   // No case id in the data either: ids name the diagnosis.
@@ -302,7 +292,7 @@ async function askCommand(host: CommandHost, args: string): Promise<void> {
       return;
     }
     const rows = items.map((it, i) => [`${i + 1}.`, `${it.asked ? "✓" : " "} ${it.question}`]);
-    host.output(`${rt(L, "label.history")}:\n${table(rows)}`, { items });
+    host.output(`${listHeading(L, rt(L, "label.history"))}\n${table(rows)}`, { items });
     return;
   }
   if (/^\d+$/.test(args)) {
@@ -349,16 +339,29 @@ function resultsCommand(host: CommandHost): void {
 
 async function answerCommand(host: CommandHost, args: string): Promise<void> {
   const tokens = splitArgs(args);
-  if (tokens.length < 2) return usage(host, "answer", "<decision> <option…>");
-  const decision = pick(host.caseDef.decisions, tokens[0]!);
-  if (!decision) {
-    host.output(rt(host.locale, "tool.noSuchId", { id: tokens[0]! }), { error: "unknown-decision" });
+  if (tokens.length < 2) return usage(host, "answer", ANSWER_HINT);
+  const c = host.caseDef;
+  const L = host.locale;
+  // The decision by its number as /board shows it ("2", "D2", "决策2" — "决策 2" and "Decision 2" are two words), or an
+  // exact id; one naming none is refused with the decisions' numbers.
+  let named = answeredDecision(c, tokens[0]!, L);
+  let rest = tokens.slice(1);
+  if (!named.ok) {
+    const twoWords = answeredDecision(c, `${tokens[0]} ${tokens[1]}`, L);
+    if (twoWords.ok) [named, rest] = [twoWords, tokens.slice(2)];
+  }
+  if (!named.ok) {
+    host.output(named.output, { error: "unknown-decision" });
     return;
   }
-  // Numbers/letters count in the order /board presents the options (presentedOptions), not the authored order.
-  const presented = presentedOptions(host.caseDef, decision);
-  const options = tokens.slice(1).flatMap((tok) => tok.split(/[,，]/)).filter(Boolean).map((tok) => pickOption(presented, tok)?.id ?? tok);
-  toolOut(host, await host.runTool("answer_decision", { decision_id: decision.id, option_ids: options }));
+  // "Decision 1" / "决策 1" and nothing after it: no option given.
+  if (rest.length === 0) return usage(host, "answer", ANSWER_HINT);
+  // The options by the tool's one tokenizer ("A,C", "A、C" and "A C" alike), letters and numbers in the order /board
+  // presents them (presentedOptions). The tool gets the decision's number and the letters, as a model reading /board
+  // would send them; a token naming no option goes as typed, so the tool's refusal lists every option by letter.
+  const labelled = labelledOptions(c, named.decision);
+  const options = optionTokens(rest).map((token) => resolveOptionToken(labelled, token)?.label ?? token);
+  toolOut(host, await host.runTool("answer_decision", { decision_id: String(decisionNumber(c, named.decision.id)), option_ids: options.length > 0 ? options : rest }));
 }
 
 function statusCommand(host: CommandHost): void {
@@ -390,7 +393,7 @@ function planCommand(host: CommandHost): void {
     return;
   }
   const mark = { pending: "·", in_progress: "▶", completed: "✓" } as const;
-  const lines = [`${rt(L, "label.plan")}:`, ...(plan.explanation ? [plan.explanation] : []), ...plan.items.map((p) => `  ${mark[p.status] ?? "·"} ${p.text}`)];
+  const lines = [listHeading(L, rt(L, "label.plan")), ...(plan.explanation ? [plan.explanation] : []), ...plan.items.map((p) => `  ${mark[p.status] ?? "·"} ${p.text}`)];
   host.output(lines.join("\n"), plan);
 }
 

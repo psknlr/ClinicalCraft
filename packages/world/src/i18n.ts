@@ -4,7 +4,7 @@
  * postures, age/sex tags) and navigation messages. Content text stays
  * `LocalizedText` in the facility/catalog data.
  */
-import { t, type LocalizedText } from "@clinicalcraft/core";
+import { patientAgeText, t, type LocalizedText, type PatientAge } from "@clinicalcraft/core";
 
 type Pair = { "zh-CN": string; en: string };
 
@@ -35,12 +35,6 @@ const SEX: Record<string, Pair> = {
   unspecified: { "zh-CN": "性别未注明", en: "sex not stated" },
 };
 
-const AGE: Record<string, Pair> = {
-  years: { "zh-CN": "{n}岁", en: "{n} years" },
-  months: { "zh-CN": "{n}个月", en: "{n} months" },
-  days: { "zh-CN": "{n}天", en: "{n} days" },
-};
-
 const fill = (pattern: string, vars: Record<string, string | number>) => pattern.replace(/\{(\w+)\}/g, (_, k: string) => String(vars[k] ?? `{${k}}`));
 
 /** Localised role name ("护士" / "Nurse"); unknown roles are returned as is. */
@@ -60,9 +54,12 @@ export function postureName(posture: string, locale: string): string {
   return p ? t(p, locale) : posture;
 }
 
-/** Bystander age/sex tag, the same wording as the web name tag: "74岁男性" / "74 years male". */
-export function ageSexTag(patient: { age: number; ageUnit?: string; sex: string }, locale: string): string {
-  const age = fill(t(AGE[patient.ageUnit ?? "years"] ?? AGE.years, locale), { n: patient.age });
+/**
+ * Bystander age/sex tag, the same wording as the web name tag: "74岁男性" / "74 years male", "8岁4个月男性" /
+ * "8 years 4 months male" — the age as clinicians write it (core `patientAgeText`), never a raw fraction.
+ */
+export function ageSexTag(patient: PatientAge & { sex: string }, locale: string): string {
+  const age = patientAgeText(patient, locale);
   const sex = t(SEX[patient.sex] ?? SEX.unspecified, locale);
   return locale.toLowerCase().startsWith("zh") ? `${age}${sex}` : `${age} ${sex}`;
 }

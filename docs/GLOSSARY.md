@@ -32,7 +32,8 @@ names. Only the words around them follow the glossary.
 | an AI agent | 代理 (agent warnings, `/autopilot` help, external agent) | **智能体** | 代理 is "proxy" — the LLM proxy mode (代理 · {model}) uses it; one word, one meaning |
 | external agent (`mcp --attach`) | 外部代理 | **外部智能体** | as above; the badge, approvals, CLI and MCP texts name it alike |
 | model provider | 提供商 (agent), 供应商 (web), 服务商 (CLI, bench) | **服务商** | the CLI and benchmark already used it |
-| a case-board decision (`decisions[]`) | 判断 / "judgement" (web), 决策 / "decision" (CLI, agent, MCP) | **决策** / **decision** (临床决策 / clinical decisions) | the schema, tools and reports say decision; "can answer" reads 可以作答 |
+| a case-board decision (`decisions[]`) | 判断 / "judgement" (web), 决策 / "decision" (CLI, agent, MCP) | **决策** / **decision** (临床决策 / clinical decisions) | the schema, tools and reports say decision; "can answer" reads 可以作答 (also the status in decision lists, not 可作答) |
+| how a decision and its options are named while the case runs | by authored id (`/answer diagnosis dual`, `[dual]` in lists); a locked one 判断 N (agent, CLI) | **决策 2** / **Decision 2** (its number in case order) and **选项 B** / **option B** (letters in presentation order); `/answer 1 B` | authored ids can name the diagnosis or the answer (`phosphate-wasting`, `carney`, `supported`); numbers and letters say nothing, and every surface — board, `/board`, tools, MCP — uses the same ones |
 | the board where decisions are made | 会诊板 / "case board" (web), 决策板 / "evidence board" (CLI, agent), 证据板 / "the evidence board" (capability label, `answer_decision`) | **会诊板** (panel title 会诊证据板) / **case board** | the object in the world; the web already used it. In-world signs and labels (facility data) name each board, e.g. "ED Case Board", "Case Conference · Evidence Board" |
 | case phase (`phases[]`) | 时期 (web), 阶段 (agent, CLI) | **阶段** | acute cases have stages, not periods; matches the runtime |
 | facility (`facility`) | 场景 (web), 场馆 (CLI, agent) | **场馆** | 场景 is the case setting (门诊, 急诊…); one word per concept |
@@ -47,6 +48,7 @@ names. Only the words around them follow the glossary.
 | debrief `boundaries` | 复评边界 / "Boundaries" (web), 证据边界 / "Evidence boundaries" (CLI) | **证据边界** / **evidence boundaries** | what the evidence does and does not show |
 | work-up plan | "workup plan" (agent, CLI) | **work-up plan** | British spelling of the noun; the tool keeps its id `update_workup` |
 | operating room (case setting, room kind) | "Operating room" (web, CLI) | **operating theatre** | British usage, as the world and facilities already say; the id stays `operating-room` |
+| the CMCR collections (library filter, card label) | 中华病例说 · 多专科疑难（{n} 例）, 多专科疑难病例集 / "CMCR · multispecialty cases ({n})", "Multispecialty collection" (web); 中华病例说 · 20 例 / "CMCR · 20 cases" (docs) | **中华病例说 · 原选病例（{n} 例）**, label **原选病例集** / **CMCR · original selection ({n})**, label **Original selection**; **中华病例说 · 新增病例（{n} 例）**, label **新增病例集** / **CMCR · additional cases ({n})**, label **Additional collection** | a collection is named for how it joined the library, the same way in both languages: 疑难 ("difficult") judged the cases and had no counterpart in "multispecialty", and both collections are multispecialty |
 
 ## 2. Terms
 
@@ -78,12 +80,20 @@ developer documents use.
 | session | session | 会话 | `session_id`, `ClinicalSession` | technical; learners read "this encounter" / 本次接诊 |
 | case library | case library | 病例库 | case index (`CaseIndexEntry`) | |
 | case card | case card | 病例卡片 | library entry and selected-case panel | |
+| case collection | collection; the filter's "All collections" | 病例集；筛选项“全部病例集” | collection tag in `tags` (`cmcr-20`, `cmcr-105`) | a case carries at most one collection tag; one wording per collection below |
+| the original CMCR selection | CMCR · original selection ({n}); card label "Original selection" | 中华病例说 · 原选病例（{n} 例）；卡片标签“原选病例集” | tag `cmcr-20` | the 20 published cases of [CMCR_CASES.md](CMCR_CASES.md) |
+| the additional CMCR cases | CMCR · additional cases ({n}); card label "Additional collection" | 中华病例说 · 新增病例（{n} 例）；卡片标签“新增病例集” | tag `cmcr-105` | the 105 of [CMCR_105_CASES.md](CMCR_105_CASES.md); never 疑难 / "difficult" or "multispecialty" (§1) |
 | setting | setting (outpatient, emergency, inpatient, ICU, ward, operating theatre, community) | 场景（门诊、急诊、住院、重症监护、病房、手术室、院外现场） | `setting` | |
 | facility | facility | 场馆 | `facility`, `clinicalcraft/facility@1` | |
 | phase | phase | 阶段 | `phases[]` | |
 | objective | objective; a "chapter" in the HUD | 任务目标（HUD 中为“章节”）；简称“目标” | `objectives[]` | the in-game task list; "目标" alone always means an objective |
 | learning outcome | learning outcome | 学习目标 | `learningOutcomes[]` | an action verb and its standard; see §4 |
 | decision | decision (clinical decisions) | 决策（临床决策） | `decisions[]`, `answer_decision` | answered on the case board |
+| decision number | Decision 2 | 决策 2 | `decisionNumber`, `resolveDecisionRef`; `answer_decision` `decision_id: "2"`, `/answer 2 B` | how every learner-facing surface names a decision while the case runs: its number in case order, never its authored id (§1); a half-width space before the number (§3); a locked one shows only its number and what it needs |
+| option letter | option B; "Answer by letter" | 选项 B；“请按字母作答” | `labelledOptions`; `option_ids: ["B"]` | A, B, C… in presentation order (`presentedOptions`), never the authored id or order; half-width capitals (full-width ones are read too); several options "A, C" (the CLI shows "A+C") |
+| decision status | open; decided; a locked one "Decision 2 (not yet available)" in lists, "Decision 2 — locked" on the board | 可以作答；已作答；未开放的在列表中为“决策 2（尚未开放）”，在会诊板上为“决策 2 · 尚未解锁” | `label.unlocked`, `label.decided`, `label.decisionN` (lists: `/board`, `list_options`, `case_status`); web `board.ready`, `board.lockedTitle` | "can answer" is 可以作答 (§1), also the board's "Ready to decide" |
+| single best answer | single best answer ("Decision 2 takes a single best answer: answer with one letter.") | 单选题（“决策 2 为单选题：请只用一个字母作答。”） | `decisions[].kind: "single"` | the default kind |
+| select all that apply | select all that apply (a prompt ends "(Select all that apply.)"; the board: "Select all that apply, then submit") | 多选（题干注明“（多选）”；会诊板：“可多选 · 选出全部正确项后提交”） | `decisions[].kind: "multiple"` | not 多选题: the words say what to do |
 | case board | case board | 会诊板（面板标题：会诊证据板） | interaction kind `board`, `/board`, object type `evidence-board` | a facility's own sign may name its board (急诊病例讨论板, 会诊 · 证据拼图) |
 | hint | hint (counts against the score) | 提示（计入评分） | `hint`, `give_hint` | |
 | journal | journal | 随身档案 | journal panel | |
@@ -168,9 +178,10 @@ developer documents use.
 * **Clinical words, not software words, for learners.** Learner-facing text
   never shows a tool id (`navigate_to`), an error code
   (`SPATIAL_REQUIREMENT_UNMET`), a JSON field, an id that names a diagnosis
-  (`stemi-inferior-rv`) or AI jargon (agent loop, prompt, token, embodied /
-  具身, grounding / 落地, autopilot / 自动驾驶). Those belong to the technical
-  register.
+  (`stemi-inferior-rv`) or an answer (a decision's or option's authored id:
+  `phosphate-wasting`, `supported` — decisions by number, options by letter,
+  §2) or AI jargon (agent loop, prompt, token, embodied / 具身, grounding /
+  落地, autopilot / 自动驾驶). Those belong to the technical register.
 * **Facts only from the case record.** Runtime strings never add a clinical
   "normal", a number or a finding; unrecorded data stays "not recorded" /
   “未记录” (ARCHITECTURE §2.1).

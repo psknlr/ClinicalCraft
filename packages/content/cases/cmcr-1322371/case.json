@@ -29,7 +29,7 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 任栋. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(06):426-429. doi: 10.3969/j.issn.1671-7163.2009.06.012.1.",
+    "citation": "王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 任栋. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(06):426-429. Available from: https://rs.yiigle.com/cmaid/1322371",
     "authors": [
       "王庆贤",
       "张英泽",
@@ -54,8 +54,7 @@
         "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
         "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
       }
-    },
-    "doi": "10.3969/j.issn.1671-7163.2009.06.012.1"
+    }
   },
   "disclaimer": {
     "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
@@ -1474,9 +1473,8 @@
       }
     ],
     "references": [
-      "王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 任栋. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(06):426-429. doi: 10.3969/j.issn.1671-7163.2009.06.012.1.",
+      "王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 任栋. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(06):426-429.",
       "https://rs.yiigle.com/cmaid/1322371",
-      "https://doi.org/10.3969/j.issn.1671-7163.2009.06.012.1",
       "European Association of Urology. Urological Trauma, current online guideline, sections 4.5.3.b and 4.5.4.b.1; checked 2026-10-28. https://uroweb.org/guidelines/urological-trauma/chapter/urogenital-trauma-guidelines"
     ],
     "notice": {
@@ -1907,10 +1905,6 @@
         ]
       }
     ],
-    "sourceDoiVerification": {
-      "verified": true,
-      "checkedAt": "2026-10-29",
-      "url": "https://rs.yiigle.com/cmaid/1322371"
-    }
+    "sourceDoiPendingVerification": "10.3969/j.issn.1671-7163.2009.06.012.1"
   }
 }

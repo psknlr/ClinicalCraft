@@ -88,7 +88,7 @@ function load(id: string) {
 describe("CMCR teaching depth and governance (docs/CASE_AUTHORING.md §9)", () => {
   for (const id of ids) it(`${id}: decisions, rubric, debrief, references, matcher corpus and README`, () => {
     const c = load(id);
-    expect(c.version).toBe("1.1.0");
+    expect(c.version).toMatch(/^1\.1\.\d+$/); // the 1.1 revision; patch releases keep the standard
     // Decisions test reasoning: at least three, each with at least three options and feedback of its own.
     expect(c.decisions.length).toBeGreaterThanOrEqual(3);
     for (const d of c.decisions) {

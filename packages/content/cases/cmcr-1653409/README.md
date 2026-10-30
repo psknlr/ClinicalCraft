@@ -12,7 +12,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-1653409` · v1.1.0 |
+| Case | `cmcr-1653409` · v1.1.1 |
 | Source | 古杰鳴. 淺表性血管黏液瘤1例. 鏡湖醫學. 2025;25(2):57 (title names the diagnosis — facilitators only) |
 | Setting | Outpatient clinic (`outpatient`); excision and pathology; a follow-up record 6 years later |
 | Facility | `general-hospital` (consult room 1; pathology) |
@@ -93,7 +93,7 @@ can still ask before the Carney decision.
 | `pre-excision` | single | presentation + growth asked, lump examined | ultrasound first; excisional biopsy if small, superficial and benign-looking, sarcoma team (MRI + image-guided core biopsy) if suspicious, deep or large | watch 1–2 months; incisional biopsy in clinic; wide "sarcoma" excision without imaging |
 | `diagnosis` | single | gross, microscopy, IHC read | superficial angiomyxoma (cutaneous myxoma) | dermal nerve sheath myxoma (S-100/SOX10⁺); aggressive angiomyxoma (deep, desmin/ER/PR⁺); low-grade myxofibrosarcoma (curvilinear vessels, atypia) |
 | `follow-up` | single | `diagnosis` + operation/margin record read | confirm the margins with pathology (re-excise if incomplete), local follow-up, self-check | no follow-up; adjuvant radiotherapy; "one myxoma proves Carney complex" |
-| `carney` | multiple | `diagnosis` + other lumps and pigmentation asked | multiple myxomas · a lesion on the external ear or breast · spotty pigmentation of lips, eyelids/conjunctiva or genital mucosa | a single tender suprapubic lesion with none of these; focal CD34 positivity |
+| `carney` | multiple | `diagnosis` (asking about other lumps and pigmentation is scored by `r-hx-carney`, not a gate: the report records neither) | multiple myxomas · a lesion on the external ear or breast · spotty pigmentation of lips, eyelids/conjunctiva or genital mucosa | a single tender suprapubic lesion with none of these; focal CD34 positivity |
 
 ### Interventions (9)
 
@@ -293,6 +293,29 @@ ref. 4 — citation and DOI from the PR #3 audit (academic.oup.com).
 * The specialty label `dermatology` has no zh/en label in the framework (reported).
 
 ## Changelog
+
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+* **Options rebalanced so the key is not cued by length.** In all three single-best decisions the keyed option was
+  the uniquely longest in both languages (1.4–2.2 times the mean option length); now it is in none. The
+  `pre-excision` key says the same in fewer words (and the `follow-up` key in English). The four `diagnosis` options
+  now each carry a parenthesis — cutaneous myxoma (the key, as before), a Schwann-cell tumour, deep angiomyxoma, a
+  myxoid sarcoma. Each other distractor gives the reason it tempts: small, well defined, mobile and tender like a
+  benign or inflamed lump (watch); a tissue diagnosis from part of the lump decides the surgery (incisional biopsy);
+  one wide excision deals with a sarcoma and a benign lump alike; no metastasis has ever been reported (no
+  follow-up); recurrence is not rare and the margins are unknown (radiotherapy); a cutaneous myxoma is a major
+  manifestation (Carney complex on one lesion). The feedback of `watch`, `nerve-sheath-myxoma` and `no-follow-up`
+  now also answers the reason its text gives. Medical meaning, correct flags, scoring and the reference path are
+  unchanged; no new patient fact is introduced.
+* **Option ids neutral:** every id already names its content (`multiple` in the select-all `carney` decision is
+  "multiple myxomas"); none renamed.
+* **No hidden gate** (`cases validate --strict`): `carney` no longer requires asking `other-lesions` and
+  `pigmentation`, which the report does not record (she can only say she does not know); it opens once the diagnosis
+  is made (`need`: 先作出诊断。/ "First make the diagnosis."). Asking both is still scored by `r-hx-carney`,
+  `other-lesions` is still part of objective 1, and the reference path still asks both before the decision.
+* **Matcher corpus:** the test utterance "Where is the lump?" was one of `presentation`'s keywords
+  (`cases validate --strict`); it is now "Whereabouts is this lump located?". No history item, answer or keyword
+  changed.
 
 ### 1.1.0 — 2026-10-28 (editorial revision)
 

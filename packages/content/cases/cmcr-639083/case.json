@@ -12,8 +12,8 @@
   },
   "specialty": [
     "neonatology",
-    "paediatric-endocrinology",
-    "paediatric-surgery"
+    "endocrinology",
+    "pediatric-surgery"
   ],
   "setting": "inpatient",
   "facility": "general-hospital",

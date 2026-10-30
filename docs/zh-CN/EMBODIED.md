@@ -509,7 +509,8 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   结果和查阅病历（CASE_AUTHORING §5）。
 * **能力分组。** `BEDSIDE_CAPABILITIES` = `ecg-12lead`、`point-of-care`、
   `ultrasound`、`echocardiography`、`peak-flow`、`scale`、`cardiac-monitor`、
-  `capnography`、`oxygen`、`suction`。床旁检查也可以在其**固定**提供者处申请
+  `capnography`、`oxygen`、`suction`、`eeg`、`fetal-monitor`（脑电图和胎心监护都在患者
+  身上记录：便携设备推到床旁）。床旁检查也可以在其**固定**提供者处申请
   （`at-provider` + `fixedOnly`：正规超声在放射科控制台、分诊处的呼气峰流速测定站、
   V4 诊所的影像工作站），前提是患者处于其够及范围内——与网页的开单方式一致——但
   从不在停在别处的便携设备上申请（那台设备必须推到患者身边）。没有这一点，
@@ -730,7 +731,7 @@ clinical 类别只允许行动者*请求*临床效果；最终仍由会话的工
 | 角色 | 可委派的任务 | 可借其身体使用的临床工具 | 处置 |
 |---|---|---|---|
 | clinician（学员的化身）、attending | 全部 | 全部 | 全部 |
-| nurse | `attach_monitor`、`record_ecg`、`obtain_iv_access`、`fetch_equipment`、`give_intervention`、`transport_patient` | `check_vitals`、`examine`、`order_test`（仅床旁检查：心电图、床旁快速检测、呼气峰流速）、`read_result`、`intervene` | 用药、补液、吸氧、监护、体位、病例的建立静脉通路，以及标注 `scope: "nursing"` 的条目（胸外按压、除颤、导尿、鼻胃管、床旁吞咽筛查…）——从不包括标注 `scope: "medical"` 的条目、气道管理 / 快速顺序诱导插管、动脉置管或其他医疗操作、会诊或去向安排 |
+| nurse | `attach_monitor`、`record_ecg`、`obtain_iv_access`、`fetch_equipment`、`give_intervention`、`transport_patient` | `check_vitals`、`examine`、`order_test`（仅床旁检查：心电图、床旁快速检测、呼气峰流速、胎心监护——脑电图不属于护理检查）、`read_result`、`intervene` | 用药、补液、吸氧、监护、体位、病例的建立静脉通路，以及标注 `scope: "nursing"` 的条目（胸外按压、除颤、导尿、鼻胃管、床旁吞咽筛查…）——从不包括标注 `scope: "medical"` 的条目、气道管理 / 快速顺序诱导插管、动脉置管或其他医疗操作、会诊或去向安排 |
 | paramedic | 同 nurse | 同 nurse | 同 nurse + 气道管理 |
 | porter | `fetch_equipment`、`transport_patient`（把患者推去检查再推回） | —（无 clinical 类别） | — |
 | receptionist | `fetch_equipment` | —（无 clinical 类别） | — |
@@ -1316,7 +1317,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 2026-10-20 在提交 cc5f6a7 上验证：vitest 171 个测试文件 / 2364 个测试全部通过；
 网页 e2e 45 / 45（16 个 spec 文件，由工程师们在这棵树上分九段在前台运行——本文未重跑）；
 两个基础设施基准智能体均为 123 / 123 且无被接受的违规；离线示范接诊 40 / 40 次运行
-（10 个病例 × 2 种语言 × 临床 / 具身）均达到临床模式得分（后来加入的中华病例说 20 例在两种语言下通过同一示范接诊测试）；STEMI 演示在两种语言下通过。
+（10 个病例 × 2 种语言 × 临床 / 具身）均达到临床模式得分（后来加入的中华病例说 125 例在两种语言下通过同一示范接诊测试：原选 20 例于 2026-10-29，新增 105 例于同日在提交 88ed0d2 的 CI 中）；STEMI 演示在两种语言下通过。
 本文给出的命令都在当天为本文实际运行过（CLI、经 stdio 的 MCP、`serve`、基准测试与演示、
 `assets inspect`、§4、§7、§11 的测量）。
 
@@ -1343,13 +1344,13 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 角色权限与执业范围（S3） | yes | 智能体 `scope-review.test.ts`（前台接待、检验技师、药师、放射科医师、护士、急救员、护工；点名职员的审批；作者标注的 `scope`），基准 `audit-scope.test.ts` | 每次基准运行的授权审计（0 / 249 与 0 / 252 个被接受操作越权） | no——这是教学用的简化，不是任何司法辖区的规定；未经临床教师审阅 |
 | 生命体征通道（G3 / G11：`vitalsView`、`learnerVitals`） | yes | 单元测试：临床医生的 `<monitor>` 段、`wait`、技能的 `vital` 谓词、MCP 状态资源、REPL 状态行（`monitor-status.test.ts`） | 远离床旁时 REPL 显示 "vitals: not in view"；网页监护面板显示“看不到屏幕”（e2e） | no——Perf、Rel（§14.4） |
 | 网页具身运行时（§2.1：默认具身、按接诊选择模式；`BrowserMover` / `BrowserCamera`；`world_pose`；面板操作即 `world_action`、自动走近与“前往”；R8 的计时暂停；职员行走、停放的推车、门锁；UI 中的世界判定；徽标、提示、地图上的行动者、实时轨迹） | yes（A6 及面向学员的评审） | 单元测试：与帧率无关的转向、路径分段、基于模拟渲染器的 Mover 与摄像头、便携设备提升、空间辅助函数与拒绝文字、world-view 判定、存储折叠、轨迹分组、具身开始 / 恢复 / 存档校验；e2e `embodied*.spec.ts`、`transport.spec.ts`、`review.spec.ts` 及测试集其余部分（45 个测试） | 具身模式下的完整网页 e2e 测试集（Chromium + SwiftShader）；从 `file://` 打开的离线单文件页面 | no——只用 Chromium + SwiftShader（没有 Firefox / Safari、没有真实 GPU、没有手机硬件）；已知的 UI 行为（§14.3）。Perf |
-| 具身离线示范接诊 | yes（A5） | 每个内置病例 × zh-CN / en 都在自己的场馆中以临床模式得分完成（测试）；STEMI 轨迹链 | `exec --embodied --autopilot`：40 / 40 次运行（两种模式）达到临床得分；教学医院：38 / 38 次为 100 %（2026-10-29）。中华病例说 20 例（[CMCR_CASES.md](../CMCR_CASES.md)）：该测试在综合医院、两种语言下均达到临床得分（2026-10-29）；调阅病历从不移动患者；未在教学医院测量 | no——是参考解法的确定性重放：展示的是管道，不是推理 |
+| 具身离线示范接诊 | yes（A5） | 每个内置病例 × zh-CN / en 都在自己的场馆中以临床模式得分完成（测试）；STEMI 轨迹链 | `exec --embodied --autopilot`：40 / 40 次运行（两种模式）达到临床得分；教学医院：38 / 38 次为 100 %（2026-10-29）。中华病例说 125 例（原选 20 例见 [CMCR_CASES.md](../CMCR_CASES.md)，新增 105 例见 [CMCR_105_CASES.md](../CMCR_105_CASES.md)）：该测试在综合医院、两种语言下均达到临床得分（20 例：2026-10-29；105 例：提交 88ed0d2 的 CI，2026-10-29）；调阅病历从不移动患者；未在教学医院测量；没有基准场景使用这些病例；新增 105 例正在重写，尚不可用于教学 | no——是参考解法的确定性重放：展示的是管道，不是推理 |
 | 委派（`delegate_task`：`attach_monitor`、`record_ecg`、`obtain_iv_access`、`fetch_equipment`、`give_intervention`、`transport_patient`） | yes（A5；评审：床旁规则、跟随取设备提示、`onBehalfOf`、迈步前检查执业范围、`cancelled` C17、不留下任何占用 C3） | 护士连接监护仪（引擎、世界状态、护士在床旁、行走时间）；拒绝规则作用于委派者；`/delegate staff:ed-nurse record_ecg`（综合医院）与 `staff:ed-station.nurse`（教学医院，先把推车推到床边）；护工转运 | 多智能体场景；REPL `/delegate nurse attach_monitor` | no——职员按确定性脚本行动；没有模型驱动职员 |
 | 技能（`clinicalcraft/skill@1`、11 个内置技能、项目与内联技能、解释器） | yes（A5；评审 S2、S8、G1、C3、C8–C10） | schema（引用、宏、无代码）、解释器（when、重试、恢复、最终拒绝、后置条件）、STEMI 上的内置技能、项目加载器、按步骤评估风险 | REPL `/skill` 列出 11 个；**没有任何基准场景运行技能** | no——未端到端验证；没有真实模型提出过内联技能。Sec |
 | 会话轨迹、`world` 会话记录条目、恢复 | yes（A5） | 轨迹作用域、JSONL、STEMI 链；从内存和 JSONL 恢复（`createNodeSession`），保留具身模式 / 显式指定其他模式时拒绝 | `exec --trace`（STEMI：首行 + 287 个跨度）；`--continue` 恢复世界 | no——会话记录是本地 JSONL 文件，没有保留或备份策略。Ops |
 | MCP 具身（`start_case {embodied}`、17 个带注解的世界工具、`not_embodied`、世界操作内部审批的两步确认） | yes（A5；评审 S1、G11、C15） | 进程内 JSON-RPC 测试；真实 stdio 冒烟测试 | 一次 stdio 会话：列出 34 个带注解的工具；带 `hint.goal` 的空间拒绝 → `navigate_to` → `interact_object` → `intervene` → 状态资源；临床会话上返回 `not_embodied` | no——未由 Claude Code、Codex 或 Grok CLI 配合真实模型运行过 |
 | 世界桥接：MCP ⇄ 实时浏览器世界（`WorldSessionRouter`；op `external_tool_call` / `external_tool_cancel`；`connectWorldBridge`；`WorldAttachClient`；`clinicalcraft mcp --attach`、`list_live_sessions`；网页开关、徽标与标注的审批） | yes（A8、A8b；加固 S5、S9、S10、S11） | 经 HTTP 的路由器测试（令牌、通道密钥、注册校验与上限、路由、确认、去重与冲突、超时、取消、过期与心跳、DELETE、重投递、各类限制、CORS、关闭）；会话 op；浏览器客户端在 Node 中对真实服务器以及对模拟服务器的测试；用桩服务器经 stdio 测试 MCP 连接模式；评审中的复现用例作为回归测试；网页 `ExternalControl` / `BrowserMover` 在隐藏标签页中的测试；Playwright `external-agent.spec.ts`（en + zh-CN） | 用真实进程端到端（`world-attach.e2e.test.ts`：`serve` + 经客户端的无界面具身 STEMI 会话 + 经 stdio 的 `mcp --attach`；另一令牌持有者注册的诱饵会话从未被触达）；Playwright：构建后的页面、开关、凭徽标中读到的 ID 与密钥配对的 `mcp --attach`、经推车完成心电图、在标注的对话框中点击审批、隐藏标签页中的行走、一次拒绝、断开 → `session_closed`、恢复的接诊从关闭状态开始 | no——针对评审复现用例做了加固，但从未独立审计；明文 HTTP（应在 `serve` 前终结 TLS）；一个共享的服务器令牌，没有用户账户；注册表在内存中（服务器重启会丢失实时会话，直到浏览器重新注册）；最多 16 个实时会话、每个客户端 4 个。Sec、Rel、Dep、Ops |
-| 具身基准测试（`@clinicalcraft/bench`：场景 schema、含 8 个类别 41 个场景的 `embodied-v1`、隔离的确定性运行、记录器、空间 / 授权 / 安全审计、基于权威状态的谓词、Wilson 区间、JSON + Markdown 报告；智能体 `reference`、`scripted-llm`、`llm`） | yes（A7；转运场景来自 FX-T） | 每个场景文件都能通过校验（schema + 引用）；每种谓词在真实运行中都测过真与假；对照 Newcombe 1998 验证 Wilson；3 个场景 × 每种智能体（`llm` 智能体配模拟提供方）；只声称成功的出错智能体得 0 分；限制、预算、真实智能体的拒绝；CLI | `reference` 与 `scripted-llm`：各 123 / 123 次运行，0 个被接受的空间或授权违规，每个轨迹在各种子下都相同（本地运行与 CI）；真实运行的拒绝 | no——**没有记录过真实模型运行：模型能力尚未测量**；41 个场景中 23 个使用 STEMI 病例；每次运行只有一个行动的智能体（临床医生） |
+| 具身基准测试（`@clinicalcraft/bench`：场景 schema、含 8 个类别 41 个场景的 `embodied-v1`、隔离的确定性运行、记录器、空间 / 授权 / 安全审计、基于权威状态的谓词、Wilson 区间、JSON + Markdown 报告；智能体 `reference`、`scripted-llm`、`llm`） | yes（A7；转运场景来自 FX-T） | 每个场景文件都能通过校验（schema + 引用）；每种谓词在真实运行中都测过真与假；对照 Newcombe 1998 验证 Wilson；3 个场景 × 每种智能体（`llm` 智能体配模拟提供方）；只声称成功的出错智能体得 0 分；限制、预算、真实智能体的拒绝；CLI | `reference` 与 `scripted-llm`：各 123 / 123 次运行，0 个被接受的空间或授权违规，每个轨迹在各种子下都相同（本地运行与 CI）；真实运行的拒绝 | no——**没有记录过真实模型运行：模型能力尚未测量**；41 个场景中 23 个使用 STEMI 病例，没有一个使用中华病例说病例；每次运行只有一个行动的智能体（临床医生） |
 | 患者转运（G8、FX-T：`transport_patient` 世界操作、学员工具、`/transport`、`delegate_task … transport_patient`；按标注的 `destination` / 阶段 `location` 转移；`patient-at-provider`；床旁、患者的监护仪和屏幕都随患者移动；网页：推着躺有患者的床、`placePatient`） | yes（FX-T） | 世界 `transport.test.ts`、`nav/backend.test.ts`（`ignoreObstacles`：可穿过障碍，从不穿过上锁的门）、含转运的提示性质测试、峰流速测定站的可操作性；智能体 `session/transport.test.ts`；示范接诊转运（PE：临床医生；`teaching-hospital` 中的卒中：护工）；基准 `workflow-pe-ctpa-transport`；网页单元测试与 e2e `transport.spec.ts` | 10 个病例 × 2 种语言在各自场馆中达到临床模式得分；教学医院的护工转运 | no——团队转移在浏览器中不播放动画（§14.3） |
 | 真实的旁观者线索（G12）：体位来自临床状态（标注的 `posture`），吸氧附件来自标注的 `device`，无法说话的患者（`patient.nonVerbalWhen` → `cannotSpeak`） | yes（FX-T；无法说话：内容标准轮次） | core `transport-fields.test.ts`、`cues.test.ts`、`nonverbal.test.ts`；世界感知 / 体位 / `speech` 线索；智能体严重过敏反应体位、`session/nonverbal.test.ts`；网页 e2e（坐起会改变画出的患者） | 10 个病例中标注的字段（`cases verify --all`） | no——Rel、Perf（§14.4） |
 | 屏幕规则、学员文字、惰性提示（额外评审项 1–5） | yes（FX-T 轮） | `screen-rule.test.ts`（读屏 ⇔ 空间规则，抽样点；评审者选的位置）、世界 `i18n.test.ts`（无原始工具 ID；两种语言、占位符一致）、按名称列出不支持的操作、`hint-cost.test.ts`（预算、结果一致）、委派语句 | 网页 e2e（看不到屏幕、“前往”） | no——对提示排序仍要为每个新栅格做一次可达性泛洪（60 个冷栅格约 1.3–1.8 s），只在读取时付出。Perf |

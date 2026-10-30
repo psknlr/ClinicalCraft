@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { keyedUnion } from "./keyed-union.js";
 
 /* ------------------------------------------------------------------ */
 /* Primitive schemas                                                   */
@@ -122,8 +123,17 @@ export type Condition =
   /** Number of hints used. */
   | { hints: { gte?: number; lte?: number } };
 
+/** The union behind `ConditionSchema`, built once (`z.lazy` calls its getter on every parse). */
+let conditionUnion: z.ZodType<Condition> | undefined;
+
+/**
+ * A `Condition`, parsed by a `KeyedUnion`: a valid condition is parsed only
+ * by the options whose required keys it has (a case holds hundreds of
+ * conditions; with a plain `z.union` they took most of the time it took to
+ * load the case library).
+ */
 export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
-  z.union([
+  (conditionUnion ??= keyedUnion([
     z.object({ all: z.array(ConditionSchema) }).strict(),
     z.object({ any: z.array(ConditionSchema) }).strict(),
     z.object({ not: ConditionSchema }).strict(),
@@ -143,7 +153,7 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ vital: VitalKeySchema, op: z.enum(["lt", "lte", "gt", "gte", "eq"]), value: z.number() }).strict(),
     z.object({ elapsed: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
     z.object({ hints: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
-  ]),
+  ])),
 );
 
 /* ------------------------------------------------------------------ */
@@ -184,6 +194,8 @@ export const CAPABILITIES = {
   "ecg-12lead": "12-lead ECG",
   "cardiac-monitor": "Continuous ECG, NIBP, SpO2 monitoring",
   "capnography": "End-tidal CO2 monitoring",
+  "eeg": "Electroencephalography, incl. continuous bedside EEG / aEEG",
+  "fetal-monitor": "Cardiotocography (CTG): fetal heart rate and uterine activity",
   "stethoscope": "Auscultation",
   "otoscope": "Otoscopy / fundoscopy",
   "reflex-hammer": "Neurological reflex exam",
@@ -207,6 +219,10 @@ export const CAPABILITIES = {
   "anesthesia": "Anaesthesia machine",
   "endoscopy": "Endoscopy suite",
   "dialysis": "Haemodialysis",
+  "apheresis": "Therapeutic apheresis: plasma exchange, red-cell exchange, cytapheresis",
+  "neonatal-care": "Neonatal thermal care: incubator or radiant warmer",
+  "phototherapy": "Neonatal phototherapy for hyperbilirubinaemia",
+  "hyperbaric-oxygen": "Hyperbaric oxygen therapy (a monoplace chamber)",
   // Teaching & records
   "anatomy-atlas": "3D anatomical reference",
   "evidence-board": "Case conference / decision board",

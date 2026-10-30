@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-70005` · v1.1.0 · CMCR collection (`cmcr-20`) |
+| Case | `cmcr-70005` · v1.1.1 · CMCR collection (`cmcr-20`) |
 | Source | 孙静敏, 金丹群, 许愿愿, 郑丽云. 紫色色杆菌脓毒症一例并文献复习. 中国小儿急救医学. 2014;21(1):57-58 |
 | Setting | Children's ward (`inpatient`), then the PICU (phase `picu`, `location: {"setting": "icu"}`) |
 | Facility | `general-hospital` |
@@ -323,6 +323,28 @@ source's reference list [14]).
 
 ## Changelog
 
+### 1.1.1 — 2026-10-30 (assessment validity)
+
+* **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all four
+  decisions in both languages (3.7–7.8 times the mean length of the other options); now it is in none
+  (1.03–1.22). The keys say the same in fewer words; the `shock` key keeps the Phoenix scoring and the
+  first-hour bundle, and its feedback now carries the details moved out of the option text (stop at fluid
+  overload, vasoactive drugs through a peripheral vein, airway support ready). Each distractor now says why it
+  tempts: vancomycin because a child's skin abscess is usually S. aureus and drainage needs time (the report's
+  choice); ceftriaxone for a water-borne Gram-negative organism; waiting because another empirical guess adds
+  resistance; clindamycin against toxins; "no shock yet" because a seizure can raise the lactate; a febrile
+  seizure explaining the tachycardia and cold limbs; 60 mL/kg saline because volume comes first; albumin because
+  a colloid stays in a leaky circulation; high-dose ceftazidime as the melioidosis drug that spares carbapenems;
+  piperacillin/tazobactam at a high dose for an intermediate isolate; a short course because the groin abscess
+  is drained; "complete" because the swim explains the infection; HIV and diabetes as the usual screen for an
+  acquired cause; re-checking immunoglobulins because antibody deficiency is the commonest primary immunodeficiency.
+  Medical meaning, correct flags, scoring and the reference path are unchanged; the feedback of `continue-vanc`,
+  `needs-hypotension`, `febrile-seizure`, `albumin-first`, `ceftazidime`, `pip-taz`, `short-course`, `complete`,
+  `hiv-only` and `repeat-ig` now also answers the reason its text gives.
+* **Option ids neutral:** every id already names its content; none renamed.
+* Checked on 2026-10-30: `cases validate --strict` 0 errors, 0 warnings; `cases verify` passes (89 steps,
+  objectives 6/6, decisions 4/4, utterances 40/40, rubric 25/25).
+
 ### 1.1.0 — 2026-10-28 (editorial revision)
 
 * **Privacy:** fig01 (the identifying CT) and the source PDF stay withdrawn; the CT result note says why; the
@@ -361,7 +383,7 @@ source's reference list [14]).
 ## Validation
 
 ```bash
-npm run -s cc -- cases validate packages/content/cases/cmcr-70005/case.json   # 0 errors, 0 warnings
+npm run -s cc -- cases validate packages/content/cases/cmcr-70005/case.json --strict   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-70005        # solution 89 steps · objectives 6/6 · decisions 4/4 · utterances 40/40
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-70005              # 1 passed
 npm run -s cc -- exec --case cmcr-70005 --autopilot --approval bypass --provider offline --output-format json             # 25/25, 6/6
