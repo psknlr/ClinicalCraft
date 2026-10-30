@@ -2,6 +2,7 @@
 import { readFileSync, readdirSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import { assess, availableDecisions, caseCapabilityGaps, createSession, parseCase, parseCatalog, parseFacility, reduce, verifyCase } from "@clinicalcraft/core";
+import { stepsThatTrapALateLearner } from "./__fixtures__/completable.js";
 
 const ids = ["1551890", "33716", "859819", "1653413", "1551894", "138796", "1423446", "1423442", "1423434", "70044", "1653406", "1653403", "1653404", "1551887", "51617", "70005", "138898", "1074569", "1551893", "1653409"].map((id) => `cmcr-${id}`).sort();
 const hospital = parseFacility(JSON.parse(readFileSync(new URL("../facilities/general-hospital.json", import.meta.url), "utf8")));
@@ -72,6 +73,8 @@ describe("CMCR published-case collection", () => {
     }
     const verification = verifyCase(c);
     expect(verification.ok, JSON.stringify(verification.issues)).toBe(true);
+    // No objective can become impossible: a learner who does any order or intervention late can still finish.
+    expect(stepsThatTrapALateLearner(c)).toEqual([]);
   });
 });
 

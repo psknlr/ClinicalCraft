@@ -445,10 +445,13 @@ ref. 9 — the journal page (110(3):F236–F244) and repository records; ref. 10
   reported.
 * The multiplex RT-PCR targets (does it cover KMT2A partners such as AFF1?), whether "limited coverage" is the
   authors' phrase, and whether any FISH or KMT2A test was done.
+* The karyotype's specimen (marrow or blood): 1.0.0 records only "karyotype", so the test is named without one.
 * CSF examination, chest imaging, cranial imaging, electrolytes/urate, clotting, G6PD.
-* What treatment, if any, was given during the 9 days (fluids, uric-acid control, transfusions, antibiotics,
-  steroids or chemotherapy) and whether a family meeting or palliative care is described.
+* What treatment, if any, was given during the admission (up to day 9: fluids, uric-acid control, transfusions,
+  antibiotics, steroids or chemotherapy) and whether a family meeting or palliative care is described.
 * The day count of "day 4" and "day 9" (days in hospital or of life); whether the weight is the birth weight.
+* The distribution and extent of the petechiae (1.0.0 records only that petechiae developed after admission;
+  the case says "petechiae" and nothing more).
 * The nodule: why it was not biopsied; any other skin lesions.
 * The neonatal outcome: care after discharge, cause and place of death at 45 days, and the family's stated
   reasons for withdrawing treatment.
@@ -461,6 +464,11 @@ ref. 9 — the journal page (110(3):F236–F244) and repository records; ref. 10
 * BSH 2015: the exact hydration wording (3 L/m²/day; 200 mL/kg/day below 10 kg?), the rasburicase dose
   (0.2 mg/kg) and G6PD wording, the monitoring frequency for high risk, the risk category "ALL with white cells
   ≥ 100 × 10⁹/L" (adopted from the 2010 TLS panel), and its advice on diuretics.
+* Applicability of the BSH hydration volume in the first days of life: the figure for children (3 L/m²/day;
+  200 mL/kg/day at ≤ 10 kg) is several times a term newborn's first-day maintenance volume (NICE NG29, 2015),
+  so the case leaves the volume to the neonatal team, starting from a newborn's requirement and stepping up with
+  checks of weight, sodium and urine output. A neonatologist should confirm this wording and how fast a unit
+  builds up to hyperhydration.
 * Allopurinol dosing in a newborn (the case prints "children commonly about 10 mg/kg/day"; neonatal dosing is
   left to the specialist team).
 * BSH 2016 (and its 2020 addendum): the neonatal red-cell and platelet thresholds; any statement on
@@ -469,15 +477,23 @@ ref. 9 — the journal page (110(3):F236–F244) and repository records; ref. 10
   guidelines).
 * Exchange transfusion or leukapheresis for neonatal hyperleucocytosis (the ASFA 2023 category was not
   confirmed and is not printed).
-* Interfant-06 (Pieters 2019): the high-risk definition — search summaries disagreed on the age criterion
-  (younger vs older than 6 months), so the case prints only that KMT2A, age, white count and prednisone
-  response decide the outlook; the 6-year EFS 46.1 % and OS 58.2 % were confirmed.
+* Interfant-06 (Pieters 2019): the high-risk definition printed in teaching point 4 (KMT2A-rearranged, younger
+  than 6 months, with white cells ≥ 300 × 10⁹/L or a poor prednisone response) follows the trial registry; one
+  secondary record of the abstract reads "older than 6 months", probably a transcription error — confirm against
+  the JCO full text. The 6-year EFS of 46.1 % (all), 20.9 % (high risk) and the OS of 58.2 % were confirmed.
+* van der Linden 2009: the definition of congenital ALL (records say "diagnosed in the first month of life";
+  whether the paper uses 28 days), and whether the 2-year EFS of 20 % or the survival of 17 % at last follow-up
+  is the better figure to give a family.
 * Newer infant-ALL evidence not cited in the case: blinatumomab added to Interfant-06 chemotherapy (van der
   Sluis et al., N Engl J Med 2023;388(17):1572-1581, doi:10.1056/NEJMoa2214171; 30 infants with KMT2A-rearranged
   ALL, 2-year disease-free survival 81.6 % vs 49.4 % in historical controls) and the NCI PDQ statement that
-  infants ≤ 90 days fare worse (seen only in a 2019 mirror) — consider adding after review.
-* NICE NG195: the lumbar-puncture wording ("if it is thought safe and will not delay antibiotics") and the
-  date of the latest update (NICE lists 2026 changes).
+  infants ≤ 90 days fare worse (seen only in a 2019 mirror). A clinician reviewer should decide whether the
+  blinatumomab results change the odds the case gives the family ("about one in five" rests on chemotherapy
+  alone).
+* NICE NG195: the 1-hour standard (2021) and the lumbar-puncture recommendations, which moved into NG195 from the
+  meningitis guideline in March 2024 (stabilise bleeding risk first; "if it is thought safe … and will not delay
+  antibiotics"). The case cites "2021, updated 2024"; NICE lists later amendments (December 2024; 2026) —
+  confirm that none changes the recommendations the case cites.
 * RCPCH 2015 framework (Larcher et al., Arch Dis Child 2015;100 Suppl 2:s1-s23,
   doi:10.1136/archdischild-2014-306666) is being replaced (RCPCH: late 2026, "Navigating decisions to provide,
   limit or withdraw treatment in children towards the end of life"); not cited in the case for that reason.
@@ -498,8 +514,8 @@ ref. 9 — the journal page (110(3):F236–F244) and repository records; ref. 10
   after all five decisions. The deterioration became a phase the learner acts in.
 * **Decisions.** 3 → 5, each with 4 options and its own guideline-based feedback: recognition, the first hours
   (tumour-lysis prevention), classification and the missing KMT2A test, the family conversation, the
-  deterioration. Option ids `supported` / `stress` / `infection` / `aml` … → content ids; the key is the longest
-  option in only one decision per locale.
+  deterioration. Option ids `supported` / `stress` / `infection` / `aml` … → content ids; no key is the
+  uniquely longest option of its decision.
 * **Interventions.** 0 → 16: IV access, potassium-free hydration, allopurinol, fluid chart, monitoring,
   haemato-oncology referral, family meeting, palliative-care referral, antibiotics, platelets and exchange
   transfusion (neutral), and five contraindicated traps with harm texts (red cells for pallor, prednisolone,
@@ -515,8 +531,21 @@ ref. 9 — the journal page (110(3):F236–F244) and repository records; ref. 10
   `rb-no-harm` with `scoredWhen`); 12 rubric items with first-try scoring; a SPIKES communication item written
   for this family. Do nothing scores 0; a wrong first answer everywhere scores 50 %.
 * **Teaching layer.** 6 learning outcomes, 6 key reasoning steps, 6 teaching points with guidance and year,
-  8 unknowns, 3 staff (attending, nurse, haemato-oncology consultant), 9 Vancouver references (DOIs found by
+  8 unknowns, 3 staff (attending, nurse, haemato-oncology consultant), 10 Vancouver references (DOIs found by
   search), editorial review status with five guidelines and the §6.6 notes.
+* **Independent review (2026-10-30).** "Scattered" petechiae → "petechiae" (no distribution is recorded);
+  "Marrow karyotype" → "Karyotype"; "9-day admission" → "the admission, up to day 9"; the non-verbal reason no
+  longer gives "18 hours" in later phases. `obj-first-hours` now needs potassium-free hydration, allopurinol and
+  the TLS bloods (or the 4–6-hourly chart, which `rb-tls-prevention` now also accepts) before `work-up` opens, so
+  the critical item can no longer be met by prophylaxis started after the deterioration. Decision 4 and teaching
+  point 4, learning outcome 4, the judge guidance and the consultant give the odds of his group — congenital ALL
+  on Interfant-99 (20 % 2-year EFS; van der Linden 2009, new reference 7) and the Interfant-06 high-risk group
+  (20.9 %) — with the all-infant figures as context; `consent-pressure` → the near-miss `palliative-if-declined`,
+  the key shortened and given "agree when to talk again" in English; the conversation held with the relative
+  present and the parents invited. Attending examples made open; `myeloid-m0`, `mixed-phenotype` and
+  `biopsy-first` feedback corrected; skin biopsy dropped from the reference path (82 → 80 steps); newborn
+  hydration volume, "NICE NG195 (2021, updated 2024)" and "F236-F244" corrected; matcher fixes and 6 new English
+  utterances (6 Chinese ones dropped to keep 40).
 * **Card and voice.** Title "· 18-hour-old boy"; spoiler-free summary (no "clonal disease") distinct from the
   triage note; 3 patient tags; the relative named in character; persona fields written as actor briefs; no
   authoring language in anything the carer says.
@@ -535,7 +564,7 @@ Run from the worktree root (all passed on 2026-10-30):
 
 ```sh
 npm run -s cc -- cases validate packages/content/cases/cmcr-655458/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-655458 --lang en          # 82 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 30/30
+npm run -s cc -- cases verify cmcr-655458 --lang en          # 80 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 30/30
 npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-655458        # depth floor, do-nothing 0, wrong-first 50 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-655458:"          # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-655458:"   # in-world demonstration, en + zh-CN
@@ -558,17 +587,22 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 2. 对白细胞≥100×10⁹/L的急性淋巴细胞白血病在确诊前就预防肿瘤溶解（BSH 2015）：不含钾的水化、排除G6PD缺乏前用别嘌醇、
    频繁复查电解质和尿量；避免因面色差输红细胞、确诊前用激素和计划外腰穿。
 3. 按WHO第5版（2022）判读免疫分型为B淋巴母细胞白血病，说明正常核型和有限的RT-PCR不能排除KMT2A重排、需要FISH。
-4. 说明婴儿急性淋巴细胞白血病要在有经验的中心按婴儿方案治疗，用Interfant-06（2019）的数据讲清获益与负担。
+4. 说明婴儿急性淋巴细胞白血病要在有经验的中心按婴儿方案治疗，并向家属说明他所属群体的机会：出生即发病者
+   （Interfant-99，2009）和Interfant-06高危组（2019）的无事件生存都只有约五分之一，而不是全体婴儿的平均数。
 5. 用SPIKES与父母沟通，在结局不确定时共同决策，并与姑息治疗并行计划（BAPM 2025）。
-6. 把白血病新生儿的发热和反应变差按疑似晚发型败血症处理（NICE NG195，2021：决定治疗后1小时内静脉抗生素），并排查颅内出血。
+6. 把白血病新生儿的发热和反应变差按疑似晚发型败血症处理（NICE NG195，2021，2024年更新：决定治疗后1小时内静脉
+   抗生素），并排查颅内出血。
 
 **关键决策。** ① 初步判断：新生儿（先天性）白血病，按急症处理，用流式和骨髓定系别，查唐氏特征（干扰项：类白血病反应、
 暂时性异常骨髓造血、计数误差）；② 最初几小时：不含钾的水化、别嘌醇、每4–6小时复查、没有实测指征不输红细胞、监护、当天联系
 血液肿瘤科（干扰项：输红细胞后换血、先用激素、限液观察）；③ 分型：B系已确立，KMT2A未排除，需FISH并补CD10（干扰项：M0、
-标危本院诱导、混合表型）；④ 与家属谈：SPIKES、讲清获益负担和不确定性、并行计划姑息治疗（干扰项：宣布无效、等待自发缓解、
-施压签字）；⑤ 病情变化：血培养后1小时内静脉抗生素、查血常规凝血、床旁头颅超声、腰穿待安全（干扰项：肿瘤热、先活检、先腰穿）。
-关键项：最初几小时预防肿瘤溶解的处置，以及避免六种危险操作。
+标危本院诱导、混合表型）；④ 与家属谈（陪同的家属在场，并请父母来）：SPIKES、如实讲清机会与负担、把姑息治疗作为同等选择
+并行计划、约好再谈（干扰项：宣布无效、等待自发缓解、只在家属拒绝治疗时才提姑息治疗）；⑤ 病情变化：血培养后1小时内静脉抗生素、
+查血常规凝血、床旁头颅超声、腰穿待安全（干扰项：肿瘤热、先活检、先腰穿）。关键项：最初几小时预防肿瘤溶解的处置——不含钾的
+水化、别嘌醇及肿瘤溶解化验（或每4–6小时复查）完成之前，确诊阶段不会开放——以及避免六种危险操作。
 
 **复盘要点（PEARLS）。** 先谈感受；复述最初18小时和最初几小时的处置；分析：涂片为什么指向白血病、为什么确诊前就预防肿瘤溶解、
-哪些操作看似合理却危险、阴性遗传学结果能说明什么不能说明什么、怎样和父母谈治疗与姑息、发热和反应变差时先排除什么；最后讨论：
-家属放弃治疗后的死亡结局不能证明现代治疗无效。本病例为人工智能辅助编写、经编辑审核的教学材料，尚未经执业医师审核。
+哪些操作看似合理却危险、阴性遗传学结果能说明什么不能说明什么、怎样和家属谈治疗与姑息、发热和反应变差时先排除什么；告诉家属的
+机会应当是他所属群体的（出生即发病者约五分之一：Interfant-99，van der Linden 2009；Interfant-06高危组20.9%），全体婴儿的
+46.1%只作背景；最后讨论：家属放弃治疗后的死亡结局不能证明现代治疗无效。本病例为人工智能辅助编写、经编辑审核的教学材料，
+尚未经执业医师审核。

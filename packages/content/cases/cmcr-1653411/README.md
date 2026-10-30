@@ -561,7 +561,8 @@ other library cases cite them.
   records (it scored 24/24 when made after the outcome record). Teaching: the Chinese lipid guideline's own targets
   (极高危 < 1.8, 超高危 < 1.4 mmol/L; his tier cannot be set) are stated in place of the < 1.4 mmol/L target it had been
   given; the decision 1 and 3 keys give one reason in the form of their distractors and no longer rebut them (the key of
-  decision 3 no longer echoes "subtotal occlusion" before the catheter-laboratory record); the `obj-week` hint no longer
+  decision 3 no longer pre-echoes the angiographic finding — "thrombotic near-occlusion" / "血栓性次全闭塞" — before the
+  catheter-laboratory record); the `obj-week` hint no longer
   names the infarct; the look-alike negatives now share words with real questions, and `family` excludes "does your
   family know you're here". In-world: `cath-week` carries a ward location, and the nurse's name and brief are no longer
   tied to the ED.

@@ -108,8 +108,12 @@ export type Condition =
    * session — intended for rubric items, not for objectives or `requires`.
    */
   | { decidedFirstTry: string }
-  /** Intervention given at least `minCount` times (default 1). */
-  | { intervened: string; minCount?: number }
+  /**
+   * Intervention given at least `minCount` times (default 1). With `whenIndicated`, only the times it was given
+   * while its `indicatedWhen` held (and its `contraindicatedWhen` did not) count — "given in time": the window is
+   * the intervention's own `indicatedWhen` (e.g. `{ "phase": "admission" }`), judged when it is given.
+   */
+  | { intervened: string; minCount?: number; whenIndicated?: boolean }
   /** Current case phase equals. */
   | { phase: string }
   /** Scenario flag set (by interventions, events or `flag` actions). */
@@ -146,7 +150,7 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ decided: IdSchema }).strict(),
     z.object({ attempted: IdSchema }).strict(),
     z.object({ decidedFirstTry: IdSchema }).strict(),
-    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional() }).strict(),
+    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional(), whenIndicated: z.boolean().optional() }).strict(),
     z.object({ phase: IdSchema }).strict(),
     z.object({ flag: IdSchema }).strict(),
     z.object({ objective: IdSchema }).strict(),

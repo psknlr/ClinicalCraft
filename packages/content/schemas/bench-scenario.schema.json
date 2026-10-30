@@ -196,6 +196,9 @@
             "minCount": {
               "type": "integer",
               "minimum": 1
+            },
+            "whenIndicated": {
+              "type": "boolean"
             }
           },
           "required": [

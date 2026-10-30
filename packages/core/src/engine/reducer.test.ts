@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
 import type { ClinicalAction, DomainEvent, SessionState } from "../schema/session.js";
-import { availableDecisions, createSession, currentWaypoint, orderStatus, parseCase, progress, reduce, replay, resultFor, resultKey } from "./index.js";
+import { availableDecisions, createSession, currentWaypoint, evaluate, orderStatus, parseCase, progress, reduce, replay, resultFor, resultKey } from "./index.js";
 
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), "utf8"));
 
@@ -551,5 +551,20 @@ describe("hardening: reducer edge cases", () => {
     expect(ofType(events, "time.advanced")).toEqual([{ type: "time.advanced", from: 1, to: 5 }]);
     expect(ofType(events, "scenario.event").map((e) => e.eventId)).toEqual(["stridor"]);
     expect(ofType(events, "result.ready").map((e) => e.key)).toEqual(["abg@arrival"]);
+  });
+});
+
+describe("intervened whenIndicated: an act counted only when given while indicated", () => {
+  it("counts the doses given while indicatedWhen held, never the earlier ones", () => {
+    // epi is indicated once the trigger has been asked about (or stridor flagged)
+    const inTime = { intervened: "epi", whenIndicated: true } as const;
+    let s = replay(SIM, [{ type: "start" }, { type: "intervene", interventionId: "epi" }]).state;
+    expect(s.interventions.map((r) => r.appropriateness)).toEqual(["neutral"]);
+    expect(evaluate(SIM, s, { intervened: "epi" })).toBe(true);
+    expect(evaluate(SIM, s, inTime)).toBe(false);
+    s = reduce(SIM, s, { type: "ask", itemId: "trigger" }).state;
+    s = reduce(SIM, s, { type: "intervene", interventionId: "epi" }).state;
+    expect(evaluate(SIM, s, inTime)).toBe(true);
+    expect(evaluate(SIM, s, { ...inTime, minCount: 2 })).toBe(false);
   });
 });

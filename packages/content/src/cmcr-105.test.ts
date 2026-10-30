@@ -22,6 +22,7 @@ import {
   WELL_FORMED_DOI,
   type CaseDefinition,
 } from "@clinicalcraft/core";
+import { stepsThatTrapALateLearner } from "./__fixtures__/completable.js";
 
 /** The source map decides the collection: a DOI is either verified or pending, with the string as supplied and why. */
 const source = JSON.parse(readFileSync(new URL("../../../scripts/cmcr-105-sources.json", import.meta.url), "utf8")) as {
@@ -377,6 +378,9 @@ describe("CMCR additional 105 source reports", () => {
       return assess(c, state).score.percent;
     };
     expect(replay(true)).toBeLessThan(replay(false));
+    // No objective can become impossible (the case would never finish): a learner who does any order or intervention
+    // of the reference path late can still finish.
+    expect(stepsThatTrapALateLearner(c), at("steps that, done late, leave the case impossible to finish")).toEqual([]);
 
     // The facilitator guide (CASE_AUTHORING §9.6) with what is still to verify.
     const guide = readFileSync(new URL(`../cases/${entry.id}/README.md`, import.meta.url), "utf8");
