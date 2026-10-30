@@ -19,6 +19,13 @@ describe("said to the patient", () => {
     ["You can wait here", { kind: "wait" }],
     ["Let's go back to your bed", { kind: "home" }],
     ["Back to bed, please", { kind: "home" }],
+    ["Please lie down on the couch", { kind: "posture", posture: "lying" }],
+    ["Could you lie down on the couch?", { kind: "posture", posture: "lying" }],
+    ["Lie flat for me", { kind: "posture", posture: "lying" }],
+    ["Lie on your back, please", { kind: "posture", posture: "lying" }],
+    ["Sit up for me", { kind: "posture", posture: "sitting" }],
+    ["Could you sit forward for me, please?", { kind: "posture", posture: "sitting" }],
+    ["Stand up, please", { kind: "posture", posture: "standing" }],
   ])("%s", (text, intent) => {
     expect(movementIntent(text, "patient")).toEqual(intent);
   });
@@ -34,6 +41,10 @@ describe("said to the patient", () => {
     ["您先在这儿坐一下", { kind: "wait" }],
     ["回病床休息吧", { kind: "home" }],
     ["我们回去吧", { kind: "home" }],
+    ["请躺下", { kind: "posture", posture: "lying" }],
+    ["您先躺到床上吧", { kind: "posture", posture: "lying" }],
+    ["请坐起来", { kind: "posture", posture: "sitting" }],
+    ["站起来一下好吗", { kind: "posture", posture: "standing" }],
   ])("%s", (text, intent) => {
     expect(movementIntent(text, "patient")).toEqual(intent);
   });
@@ -51,6 +62,12 @@ describe("said to the patient", () => {
     "我们去年体检正常吗",
     "等一下，疼痛是什么时候开始的？",
     "您平时走路会喘吗？",
+    "Can you lie flat?",
+    "Can you lie flat at night without getting breathless?",
+    "Do you get up at night to pass urine?",
+    "Can you stand up without using your arms?",
+    "你能平躺吗？",
+    "晚上能躺平睡觉吗？",
     "",
   ])("talk, not a request: %s", (text) => {
     expect(movementIntent(text, "patient")).toBeNull();

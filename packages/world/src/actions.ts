@@ -44,6 +44,7 @@ import { permits } from "./authority.js";
 import type { DeviceRules } from "./behaviors.js";
 import { escortPatient } from "./escort.js";
 import type { PatientBody } from "./patient.js";
+import { repositionPatient } from "./posture.js";
 import { refreshPatient, relocatePatient, transportPatient, type TransportHost } from "./transport.js";
 import type {
   ActionHint,
@@ -478,6 +479,7 @@ export class ActionBus implements EffectsHost, TransportHost {
     }
     if (o.effect === "transport") return transportPatient(this, request, actor, targetId, signal);
     if (o.effect === "escort" || o.effect === "release") return escortPatient(this, request, actor, targetId, o.effect === "escort");
+    if (o.effect === "reposition") return repositionPatient(this, request, actor, targetId);
     return runOperation(this, request, actor, targetId, o, signal);
   }
 

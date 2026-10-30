@@ -95,4 +95,42 @@ test.describe("walking with the patient (en)", () => {
     expect(await drawn(page)).toMatchObject({ posture: "lying", travelling: null });
     expect(errors).toEqual([]);
   });
+
+  test("(w4) a colleague asked in words answers in her own voice, walks over, and her own mouth moves", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    await freshStart(page);
+    await enterCase(page, "stemi-inferior-rv");
+    await embodiedSetup(page, { bypassApprovals: true });
+    await toPatientSide(page);
+    await page.evaluate(() => (window as any).__QA__.interact({ kind: "staff", staffId: "ed-nurse", role: "nurse", name: "nurse", hint: "" }));
+    await expect(page.locator('#panel .window[data-panel="conversation"]')).toBeVisible();
+    await page.locator('#come-chips button[data-ask="come"]').click();
+    await expect(page.locator(".chat-log .msg.agent").filter({ hasText: "On my way to the bedside." }).first()).toContainText("Lin Xiao");
+    await expect.poll(() => page.evaluate(() => (window as any).__QA__.world.debug.npcs.get("staff:ed-nurse")?.speaking ?? false), { timeout: 10_000, intervals: [50] }).toBe(true);
+    await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
+    const nurse = await page.evaluate(() => (window as any).__QA__.worldSnapshot().actors.find((a: any) => a.id === "staff:ed-nurse").pose);
+    const bed = await place(page);
+    expect(Math.hypot(nurse.x - bed.x, nurse.z - bed.z)).toBeLessThan(3);
+    // outside the receptionist's role: she says so herself, and nothing is done
+    await page.evaluate(() => (window as any).__QA__.say("Could you attach the monitor?", "nurse", "receptionist"));
+    await expect.poll(() => page.evaluate(() => (window as any).__QA__.store.chat.some((m: any) => m.staffId === "receptionist" && /A nurse can/.test(m.text))), { timeout: 30_000 }).toBe(true);
+    await shot(page, "staff-answers");
+    expect(errors).toEqual([]);
+  });
+
+  test("(w5) 'Please lie down.' — the outpatient lies down on the couch where you can see it", async ({ page }) => {
+    const errors: string[] = [];
+    page.on("pageerror", (e) => errors.push(e.message));
+    await freshStart(page);
+    await enterCase(page, "smzl-lung-adeno");
+    await embodiedSetup(page, { bypassApprovals: true });
+    await toPatientSide(page);
+    expect((await drawn(page)).posture).toBe("standing");
+    await say(page, "Please lie down.");
+    await expect.poll(async () => (await place(page))?.posture, { timeout: 30_000 }).toBe("lying");
+    await expect.poll(async () => (await drawn(page))?.posture, { timeout: 30_000 }).toBe("lying");
+    await shot(page, "patient-lies-down");
+    expect(errors).toEqual([]);
+  });
 });

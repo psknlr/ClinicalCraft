@@ -38,7 +38,7 @@ import { MIN_RANGE } from "./nav/backend.js";
 import type { WorldStateStore } from "./state.js";
 
 /** Built-in effects of operations (beyond a declarative state transition). */
-export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "transport" | "escort" | "release";
+export type BuiltinEffect = "door-open" | "door-close" | "door-lock" | "door-unlock" | "wash-hands" | "monitor-read" | "move-to" | "pick-up" | "put-down" | "equip" | "transport" | "escort" | "release" | "reposition";
 
 /** One operation an entity offers (built-in or from the catalog). */
 export interface OperationSpec {
@@ -127,8 +127,9 @@ export const TRANSPORT_ROLES: readonly ActorRole[] = ["clinician", "attending", 
 /**
  * The patient (EMBODIED §8, patient transport): `transport_patient {destination}` — wheel the bed (or walk
  * the patient) to a provider, a bed space or back home; from the patient's side (physical class, narrowed to
- * `TRANSPORT_ROLES`). `escort_patient` — the patient gets up and walks with the actor wherever they go — and
- * `release_patient` — they wait where they are — are asked from conversation range (`escort.ts`).
+ * `TRANSPORT_ROLES`). `escort_patient` — the patient gets up and walks with the actor wherever they go —,
+ * `release_patient` — they wait where they are — and `reposition_patient {posture}` — they lie down, sit up or
+ * stand up — are asked from conversation range (`escort.ts`, `posture.ts`).
  */
 export const PATIENT_BEHAVIOR: BehaviorSpec = {
   stateSource: "none",
@@ -138,6 +139,7 @@ export const PATIENT_BEHAVIOR: BehaviorSpec = {
     op("transport_patient", { effect: "transport", requires: [{ patientWithin: RANGES.contact }], roles: TRANSPORT_ROLES }),
     op("escort_patient", { effect: "escort", requires: [{ patientWithin: RANGES.talk }], roles: TRANSPORT_ROLES }),
     op("release_patient", { effect: "release", requires: [{ patientWithin: RANGES.talk }], roles: TRANSPORT_ROLES }),
+    op("reposition_patient", { effect: "reposition", requires: [{ patientWithin: RANGES.talk }], roles: TRANSPORT_ROLES }),
   ],
 };
 

@@ -96,7 +96,7 @@ export class LearnerPath {
       k.ensureStarted(id);
       k.conversations.addDialogue({ who: "learner", speaker: "learner", text: target === "patient" ? body : `@${voice?.name ?? target} ${body}` });
     }
-    await k.agents.runAgent(id, target, body, signal, hook.additionalContext, mode, voice);
+    await k.agents.runAgent(id, target, body, signal, hook.additionalContext, mode, voice, true);
   }
 
   /** Is `target` the patient or the companion (the patient-side voices)? */

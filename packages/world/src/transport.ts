@@ -287,6 +287,13 @@ export function refreshPatient(host: TransportHost): boolean {
   const body = host.d.patient;
   if (!body.id) return false;
   if (endEscortIfUnable(host)) return true;
+  // a posture taken when asked lapses once clinical state positions the patient otherwise: forget it
+  const st = body.state();
+  if (st?.asked && st.asked.over !== body.clinicalPostureOf(st)) {
+    const { asked: _asked, ...rest } = st;
+    void _asked;
+    host.d.store.patchEntity(body.id, { patient: rest });
+  }
   const key = body.bodyKey();
   const stamp = host.patientStamp;
   if (key === stamp.key) return false;

@@ -98,11 +98,12 @@ test.describe("embodied review (en)", () => {
     await expect(page.locator(".convo-side")).toContainText("Nurse · Lin Xiao");
     await expect(page.locator(".chat-empty")).toContainText("Ask Lin Xiao.");
     await expect(page.locator(".chat-input")).toHaveAttribute("placeholder", /Say something to Lin Xiao/);
-    // her delegate tasks are offered here too
+    // her delegate tasks are offered here too — said to her in words; she answers in her own voice
     await page.locator('#delegate-chips button[data-task="attach_monitor"]').click();
     const mine = page.locator(".chat-log .msg.learner").last();
     await expect(mine).toContainText("Lin Xiao");
-    await expect(mine).toContainText("Attach the monitor");
+    await expect(mine).toContainText("Please put the patient on the monitor.");
+    await expect(page.locator(".chat-log .msg.agent").filter({ hasText: "I'll attach the monitor" }).first()).toContainText("Lin Xiao");
     await expect(page.locator(".chat-log")).not.toContainText("staff:ed-nurse");
     await expect.poll(() => page.evaluate(() => typeof (window as any).__QA__.session.state.monitorAttachedAt), { timeout: 180_000 }).toBe("number");
     await shot(page, "review-nurse-named");

@@ -72,7 +72,13 @@
   operations (`escort_patient`, `release_patient`) and short movement requests
   in either language are carried out by the world; colleagues are addressed
   by name and answer as themselves; the companion is drawn at the patient's
-  side and speech moves the mouth of the one who spoke (§2.1, §8.4).
+  side and speech moves the mouth of the one who spoke (§2.1, §8.4). Then:
+  everyone answers words with acts — every colleague does what their role
+  may when asked (monitor, ECG, IV access, fetch, give, take the patient,
+  come, go back, show the way, say where things are) or says in their own
+  voice that it is not their job and who can; the patient lies down, sits up
+  or stands when asked (`reposition_patient`, or the case's positioning
+  treatment); a model-voiced colleague acts only through `do_task`.
 - **Not done** (§14): no live language model has been run through the
   embodied tools or the benchmark; no GLB equipment model ships; nothing has
   been hardened, deployed or operated as a production service.
@@ -241,11 +247,15 @@ the world model; the browser supplies its sensors and actuators
     and the speaking animation follows the line's `staffId` (PROTOCOL §4) —
     never whichever window happens to be open;
   - moving the patient is said: the patient window offers "Please follow me" /
-    "Please wait here", "Please come with me to ‹the CT scanner›" (the study
-    devices the case needs, `app/destinations.ts`) and "Back to bed"; a
-    nurse's, paramedic's, porter's or attending's window offers "Please take
-    the patient to ‹…›" — the same sentences the session understands typed
-    (§8.4).
+    "Please wait here", the two postures they are not in ("Please lie down." /
+    "Please sit up." / "Please stand up."), "Please come with me to ‹the CT
+    scanner›" (the study devices the case needs, `app/destinations.ts`) and
+    "Back to bed"; a colleague's window offers, as sentences said to them, the
+    bedside tasks their role may do (`scopeOf`: "Please put the patient on the
+    monitor."…), "Please take the patient to ‹…›" when their role takes
+    patients, and "Please come to the bedside." / "You can go back now." —
+    the same sentences the session understands typed (§8.4); they answer in
+    their own voice, and the learner's line reads "Learner → ‹their name›".
 * **R8**: real-time ticks pause while an agent drives a body (a Mover walk,
   the autopilot, a clinician turn, a running body-moving world tool, an
   external agent's call).
@@ -257,6 +267,10 @@ the world model; the browser supplies its sensors and actuators
   target. A line moves the mouth of the one who spoke — the patient, the
   companion, the colleague the line names — and a narration (a patient who
   cannot speak, a movement carried out) moves none.
+* **Body language**: someone standing who speaks to the learner within 6 m —
+  a colleague at their post, the companion, a standing patient — turns to
+  face them (never mid-walk, never a patient on a bed or travelling); a view
+  only, the world's poses are unchanged.
 * **Feedback that asks for an act** (a refusal with "Go there", or the act to
   do first) stays until the learner takes it, dismisses it or does something
   that can be done; a step being taken or a refusal nothing fixes leaves after
@@ -465,7 +479,8 @@ state): e.g. doors `open`/`close`/`lock`/`unlock`; workstations
 `order`/`read`; monitors `attach`/`read`/`cycle_nibp`; ECG cart
 `prepare`/`connect`/`record`/`reset`; carts `move_to`; handheld items
 `pick_up`/`put_down`/`equip`; sinks `wash_hands`; the patient
-`transport_patient`, `escort_patient`, `release_patient` (§8.4). A CT scanner never advertises `pick_up`; a door never
+`transport_patient`, `escort_patient`, `release_patient`,
+`reposition_patient` (§8.4). A CT scanner never advertises `pick_up`; a door never
 advertises `order`.
 
 Every request (`WorldActionRequest`) carries an `actionId`; a retried request
@@ -880,7 +895,7 @@ reservation) replaces them — the built-in catalogs declare one for
 | door | `open` / `closed` / `locked` (the door record) | `open` (closed), `close` (open; nobody in the doorway area), `lock` (closed → locked), `unlock` (locked → closed) |
 | sink | — | `wash_hands`: hand hygiene valid for 30 simulated minutes (`handsCleanUntil` = clock + 30), event `hygiene`, 30 s |
 | storage | `closed` / `open` (stored) | `open`, `close` |
-| the patient (`patient:<slot>`) | — | `transport_patient {destination}` (physical; from the patient's side, 1.5 m; roles `TRANSPORT_ROLES`: clinician, attending, nurse, paramedic, porter) — §8.4; `escort_patient` / `release_patient` (physical; from conversation range, 3 m with line of sight; the same roles; the patient must be able to walk — `PRECONDITION_FAILED` with the reason otherwise) — §8.4 |
+| the patient (`patient:<slot>`) | — | `transport_patient {destination}` (physical; from the patient's side, 1.5 m; roles `TRANSPORT_ROLES`: clinician, attending, nurse, paramedic, porter) — §8.4; `escort_patient` / `release_patient` (physical; from conversation range, 3 m with line of sight; the same roles; the patient must be able to walk — `PRECONDITION_FAILED` with the reason otherwise) — §8.4; `reposition_patient {posture}` (physical; conversation range; the same roles; lie down / sit up only on something to lie or sit on, stand up only if they could walk, nothing on a place that forces a posture, while walking with someone or unresponsive) — §8.4 |
 | bed, board, atlas, craft, none; other people, rooms | — | none |
 | + `portable: "cart"` | — | `move_to {goal}` (§5) |
 | + `portable: "handheld"` | `held` / `equipped` while carried | `pick_up` (in reach, at most `MAX_HELD` = 2 → `HANDS_FULL`), `put_down` (on a free spot in front), `equip` (`NOT_HOLDING` unless carried) |
@@ -922,7 +937,7 @@ Each operation has a class; a role holds classes; an operation's own
 | class | operations |
 |---|---|
 | `move` | navigate, approach, look_at, cancel |
-| `physical` | open / close (doors, storage), wash_hands, move_to, pick_up, put_down, equip, transport_patient, escort_patient, release_patient, device operations without a clinical effect (prepare, connect, reset, cycle_nibp, a monitor's read) |
+| `physical` | open / close (doors, storage), wash_hands, move_to, pick_up, put_down, equip, transport_patient, escort_patient, release_patient, reposition_patient, device operations without a clinical effect (prepare, connect, reset, cycle_nibp, a monitor's read) |
 | `secure` | lock, unlock |
 | `clinical` | every operation with a clinical effect (workstation order/read, device use, monitor attach, ECG record…) |
 
@@ -1066,6 +1081,40 @@ acknowledging in their own voice before `delegate_task transport_patient`. A
 destination is a study's capability named in either language (CT, MRI, X-ray,
 the cath lab, peak flow…), "back to bed", or a place by name (`find`): a bed
 space's room or a study device is a transport, any other room a walk together.
+
+**The patient changes position when asked** (`reposition_patient {posture}`;
+`posture.ts`). "Lie down on the couch", "sit up for me", "could you stand
+up, please?": physical state — the posture taken is stored with the clinical
+posture it was asked over (`PatientPlaceState.asked`) and holds while
+clinical state still gives that posture; a positioning intervention, a
+transport or a transfer replaces it (and it is forgotten). They lie or sit
+down only on something there (their bed space's bed or couch, a bench, a
+chair), stand up only if they could walk (`walkProblem`), and do nothing on a
+place that forces a posture (a scanner table), while walking with someone or
+when they cannot respond. The session maps the words to the case's
+positioning treatment first when it has one for that posture ("sit her
+upright" in the PE case: a clinical, scored act through the approval gate),
+keeps a posture such a treatment imposes ("stays as positioned"), and only
+otherwise uses this operation. Lying down on a couch moves the body there, so
+the clinician may need a step to stay within conversation range (the web
+takes it).
+
+**Everyone answers with words and acts.** Every person in the encounter can
+be spoken to, and what they do in reply is a validated act — never a model's
+claim:
+
+| who | words | acts |
+|---|---|---|
+| the patient (and the companion at their side) | their agent (case-grounded) | follow, wait, come with me to …, back to bed, lie down / sit up / stand up — narrated from the world's result |
+| a nurse, a paramedic, the attending | their agent, as themselves (`user_message.staff`) | the bedside tasks of their scope (monitor, ECG, IV access, fetch, give — through the approval gate —, take the patient), come, go back, show the way, where is … |
+| a porter | their own role's words (offline: who they are, what they do) | fetch, take the patient, come, go back, show the way, where is …; a clinical task: "Sorry, … not a porter's job here. A nurse can." |
+| a receptionist, a pharmacist, a laboratory technician, a radiologist, a pathologist | as above | fetch, come, go back, show the way, where is …; anything else refused in their own voice |
+
+A colleague voiced by a model gets `do_task` in a turn the learner's words
+started (PROTOCOL §3): the same delegation with their own body, scope and
+approvals — the free-form words the deterministic recogniser leaves to the
+model ("could you get him hooked up when you have a sec?") still end in a
+validated act or none.
 
 **The companion** (the case's `persona.companion`) is drawn at the patient's
 side in the browser and follows them; the world model has no body for them
@@ -1781,7 +1830,7 @@ the measurements of §4, §7, §11).
 | World bridge: MCP ⇄ live browser world (`WorldSessionRouter`; ops `external_tool_call` / `external_tool_cancel`; `connectWorldBridge`; `WorldAttachClient`; `clinicalcraft mcp --attach`, `list_live_sessions`; the web switch, badge and labelled approvals) | yes (A8, A8b; hardening S5, S9, S10, S11) | router over HTTP (token, channel secret, registration validation and caps, routing, acks, dedupe and conflicts, timeouts, cancellation, expiry and heartbeats, DELETE, re-delivery, limits, CORS, shutdown); session ops; the browser client against a real server in Node and against a fake server; MCP attach over stdio with a stubbed server; the review reproductions as regression tests; web `ExternalControl` / `BrowserMover` in hidden tabs; Playwright `external-agent.spec.ts` (en + zh-CN) | end to end with real processes (`world-attach.e2e.test.ts`: `serve` + a headless embodied STEMI session through the client + `mcp --attach` over stdio; a decoy session of another token holder never reached); Playwright: a served build, the switch, `mcp --attach` paired by the id and key read from the badge, the ECG through the cart, an approval clicked in the labelled dialog, a hidden tab's walk, a denial, disconnect → `session_closed`, a resumed encounter starting off | no — hardened against the review's reproductions, never independently audited; plain HTTP (terminate TLS in front of `serve`); one shared server token, no user accounts; the registry is in memory (a restart drops live sessions until the browser re-registers); 16 live sessions, 4 per client. Sec, Rel, Dep, Ops |
 | Embodied benchmark (`@clinicalcraft/bench`: scenario schema, suite `embodied-v1` with 41 scenarios in 8 categories, isolated deterministic runs, recorder, spatial / authorisation / safety audits, predicates on authoritative state, Wilson intervals, JSON + Markdown reports; agents `reference`, `scripted-llm`, `llm`) | yes (A7; transport scenarios FX-T) | every scenario file validates (schema + references); every predicate kind true and false on a real run; Wilson against Newcombe 1998; 3 scenarios × each agent kind (the `llm` agent with a fake provider); a broken agent that only claims success scores 0; limits, budget, live-agent refusals; CLI | `reference` and `scripted-llm`: 123 / 123 runs each, 0 accepted spatial or authorisation violations, every trace identical across seeds (local run and CI); the live-run refusals | no — **no live-model run recorded: model competence is unmeasured**; 23 of the 41 scenarios use the STEMI case; one acting agent (the clinician) per run |
 | Patient transport (G8, FX-T: `transport_patient` operation, learner tool, `/transport`, `delegate_task … transport_patient`; relocations by authored `destination` / phase `location`; `patient-at-provider`; the bedside, the patient's monitor and the screen follow the patient; web: the bed pushed with the patient on it, `placePatient`; IX: an ambulatory patient walks upright and lies down only on arrival, never lying without a trolley) | yes (FX-T, IX) | world `transport.test.ts` (IX: the SMZL outpatient walks to the CT and back, a sitting outpatient without a trolley walks, an interrupted walk leaves them standing), `nav/backend.test.ts` (`ignoreObstacles`: through an obstacle, never a locked door), the hint property with transports, operability with the peak-flow station; agent `session/transport.test.ts`; autopilot transports (PE: the clinician; stroke in `teaching-hospital`: the porter); bench `workflow-pe-ctpa-transport`; web unit and e2e `transport.spec.ts` | the 10 cases × 2 languages in their own facility at the clinical-mode score; the teaching hospital's porter transports | no — team relocations are not animated in the browser (§14.3) |
-| Interaction round (IX): free text to the patient held to conversation range; walking with the patient (`escort_patient` / `release_patient`, a derived place, positioned studies); movement requests in words (zh-CN + en); colleagues by name (`user_message.staff`, `staffId` on the events, their own conversation and persona); web: the companion drawn and speaking, speech animating the one who spoke, the patient drawn walking on the walker's path, movement chips, action-required feedback that stays | yes (IX) | world `escort.test.ts` (follow, sensor poses, studies need positioning, home, range, who cannot walk in both languages, roles, wait, clinical state ends it, snapshots, recent events); agent `movement-intents.test.ts` (requests and look-alike history questions, both languages), `embodied-talk.test.ts` (refused from the entrance with nothing credited, the companion, clinical mode unchanged, follow / wait / come with me to the CT / back to bed / a nurse by name takes the patient, colleagues' voices and conversations, the receptionist's identity prompt); web `trail.test.ts`, `talk.test.ts` (speaker resolution, per-colleague windows, the UI's sentences parse), `feedback.test.ts`, `embodied-world.test.ts` (a question from the entrance is not sent; "Please follow me." drawn following); e2e `escort.spec.ts` (the companion speaks with their own mouth, follow and wait, SMZL walked upright to the CT) | the web e2e `escort.spec.ts` in Chromium + SwiftShader; the whole vitest suite; the infrastructure benchmark agents and the embodied autopilot unchanged (their reference paths use no free text to the patient and no escort) | no — the phrase set is fixed (no model interprets requests); the companion has no body in the world model; no live model has been asked to move a patient in words; not reviewed by clinical educators |
+| Interaction round (IX): free text to the patient held to conversation range; walking with the patient (`escort_patient` / `release_patient`, a derived place, positioned studies); repositioning (`reposition_patient`, the case's positioning treatment first); requests in words to everyone (zh-CN + en: the patient's movement and posture; every colleague's tasks within their scope, come, go back, show the way, where is …, refusals in their own voice); a model-voiced colleague's `do_task`; colleagues by name (`user_message.staff`, `staffId` on the events, their own conversation and persona; role-true offline replies); web: the companion drawn and speaking, speech animating the one who spoke, body language, the patient drawn walking on the walker's path, sentence chips per role, action-required feedback that stays | yes (IX) | world `posture.test.ts` (lie down, sit up, stand, lapse on clinical positioning, who cannot, where not, snapshots), `escort.test.ts` (follow, sensor poses, studies need positioning, home, range, who cannot walk in both languages, roles, wait, clinical state ends it, snapshots, recent events); agent `movement-intents.test.ts` and `staff-intents.test.ts` (requests and look-alike history questions, both languages), `staff-talk.test.ts` (a nurse by name attaches the monitor, gives the aspirin, records the ECG in Chinese; the receptionist refuses and names who can; a treatment the case lacks is talk; come, go back, where is, show the way; lie down / stand up; PE's positioning scored; an imposed posture kept; "Can you lie flat?" answered; a scripted model nurse acting through `do_task`, none in clinical mode; role-true offline replies), `embodied-talk.test.ts` (refused from the entrance with nothing credited, the companion, clinical mode unchanged, follow / wait / come with me to the CT / back to bed / a nurse by name takes the patient, colleagues' voices and conversations, the receptionist's identity prompt); web `trail.test.ts`, `talk.test.ts` (speaker resolution, per-colleague windows, the UI's sentences parse), `feedback.test.ts`, `embodied-world.test.ts` (a question from the entrance is not sent; "Please follow me." drawn following); e2e `escort.spec.ts` (the companion speaks with their own mouth, follow and wait, SMZL walked upright to the CT, a nurse answering a chip in her own voice and walking over while the receptionist refuses, the patient lying down when asked), `embodied-review.spec.ts` (the delegate chip said to Lin Xiao, her answer) | the web e2e `escort.spec.ts` in Chromium + SwiftShader; the whole vitest suite; the infrastructure benchmark agents and the embodied autopilot unchanged (their reference paths use no free text to the patient and no escort) | no — the phrase set is fixed (no model interprets requests); the companion has no body in the world model; no live model has been asked to move a patient in words; not reviewed by clinical educators |
 | Truthful bystander cues (G12): posture from clinical state (authored `posture`), oxygen accessory from the authored `device`, a patient who cannot speak (`patient.nonVerbalWhen` → `cannotSpeak`) | yes (FX-T; cannot speak: the content-standard round) | core `transport-fields.test.ts`, `cues.test.ts`, `nonverbal.test.ts`; world perception / posture / `speech` cue; agent anaphylaxis posture, `session/nonverbal.test.ts`; web e2e (sitting up changes the drawn patient) | the 10 cases' authored fields (`cases verify --all`) | no — Rel, Perf (§14.4) |
 | Screen rule, learner text, lazy hints (extra review items 1–5) | yes (FX-T round) | `screen-rule.test.ts` (read ⇔ policy over sampled points; the reviewer's spots), world `i18n.test.ts` (no raw tool id; both languages, same placeholders), unsupported operations named, `hint-cost.test.ts` (budget, identical results), delegation sentences | web e2e (out of view, "Go there") | no — ranking a hint still costs a reachability flood per new cell (≈ 1.3–1.8 s for 60 cold cells), paid only when read. Perf |
 | Reference demonstration (`clinicalcraft bench demo`) | yes (A7) | STEMI in both languages: every step confirmed by engine + world state, the per-step chain with ids and versions, the assessment span; an encounter cut short fails | `docs/bench/demo.en.md` / `demo.zh-CN.md` regenerated on 2026-10-29: 50 steps, 26 world actions, 0 violations, 22 / 22; the trace is byte-identical when regenerated | no — demonstrates the infrastructure (a replay), not clinical reasoning |
@@ -1840,9 +1889,10 @@ Stated as they are; none was changed in this behaviour-preserving release
     block nobody's walk and an agent cannot address them as an entity; their
     words come through the patient's conversation.
 15. **Movement requests are a fixed phrase set** (IX): "follow me", "wait
-    here", "come with me to …", "back to bed" and "take the patient to …" in
-    zh-CN and en; other wordings are talk for the patient's (or the
-    colleague's) agent, which has no tool to move anybody.
+    here", "come with me to …", "back to bed", "lie down / sit up / stand
+    up" and "take the patient to …" in zh-CN and en; other wordings are talk
+    for the patient's agent, which has no tool to move anybody (a colleague's
+    model acts only through `do_task`).
 16. **A patient walking with someone is placed by geometry** (IX): half a
     step behind the walker on its side of any wall; the renderer draws them on
     the walker's own path, so the drawn and the authoritative spot can differ
@@ -1852,6 +1902,11 @@ Stated as they are; none was changed in this behaviour-preserving release
     nobody (a critical-result call, a scenario announcement, `@nurse` without
     a staff id) stay in the role's conversation, which no colleague addressed
     by name reads.
+18. **Requests to colleagues are a fixed phrase set too** (IX) — the
+    bedside tasks, fetch, give, take, come, go back, show the way, where is
+    — and a model-voiced colleague's `do_task` has been exercised with a
+    scripted model only, never a live one. Body language (turning to face
+    the learner) is drawn only: the world's poses do not change.
 
 ### 14.4 What production would need
 

@@ -342,6 +342,12 @@ export interface PatientPlaceState {
    * body on the floor of their own. Absent or null: they stay where they are.
    */
   escort?: ActorId | null;
+  /**
+   * A posture the patient took when asked (`reposition_patient`: "lie down on the couch", "sit up for me") and the
+   * clinical posture it was asked over: it holds while clinical state still gives `over` — an intervention that
+   * positions the patient, a transport or a transfer replaces it. Absent or null: the clinical posture.
+   */
+  asked?: { posture: BodyPosture; over: BodyPosture } | null;
 }
 
 /** Where the patient is now, resolved (`WorldRuntime.patientPlace`). */
@@ -455,7 +461,7 @@ export type WorldEvent = (
   | { id: string; type: "action.completed"; actionId: string; actorId: ActorId; operation: string; status: WorldActionResult["status"]; errorCode?: WorldErrorCode }
   /** The patient's body moved (a transport by `by`, or a relocation by the team: `by` null) along `path`. */
   | { id: string; type: "patient.moved"; entityId: EntityId; from: PatientPlace; to: PatientPlace; by: ActorId | null; distance: number; path: PathPoint[] }
-  /** The patient's posture changed where they are (clinical state: positioning, a transfer). */
+  /** The patient's posture changed where they are (clinical state: positioning, a transfer; or asked to: `reposition_patient`). */
   | { id: string; type: "patient.posture"; entityId: EntityId; from: BodyPosture; to: BodyPosture }
   /**
    * The patient started walking with an actor (`escort`: that actor) or stopped (`escort` null: they stay where

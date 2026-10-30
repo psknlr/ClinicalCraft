@@ -1,45 +1,52 @@
 /**
- * Movement requests in the learner's words, carried out by the world (docs/EMBODIED.md §8.4) — embodied mode only.
- * The words are recognised deterministically (`movement-intents.ts`); what happens is a world action on the
- * learner's tool path (validation, PreToolUse hooks, the approval gate, the world's own rules), and what the
- * learner reads is what the world did — never a model's claim:
+ * Requests in the learner's words, carried out by the world (docs/EMBODIED.md §8.4) — embodied mode only. The
+ * words are recognised deterministically (`movement-intents.ts`, `staff-intents.ts`); what happens is a world
+ * action on the learner's tool path (validation, PreToolUse hooks, the approval gate, the world's own rules), and
+ * what the learner reads is what the world did — never a model's claim:
  *
- * | request                                 | world action (by)                                                   |
- * |-----------------------------------------|---------------------------------------------------------------------|
- * | "follow me" (to the patient)            | `escort_patient` (the learner's body): the patient walks with you    |
- * | "wait here"                             | `release_patient`: they stay where they are                          |
- * | "come with me to CT" / "back to bed"    | `transport_patient {capability \| destination \| home}` — a short step to the patient's side first when needed; a place no patient is taken to (a corridor, the pharmacy): `escort_patient`, then `navigate_to` it |
- * | "please take the patient to CT" (to a colleague) | `delegate_task transport_patient` by the colleague addressed (`user_message.staff`), else the role |
+ * | request (to the patient or the companion) | world action (by the learner's body) |
+ * |-------------------------------------------|---------------------------------------|
+ * | "follow me"                               | `escort_patient`: the patient walks with you |
+ * | "wait here"                               | `release_patient`: they stay where they are |
+ * | "come with me to CT" / "back to bed"      | `transport_patient {capability \| destination \| home}` — a step to the patient's side first when only the distance refuses it; a place no patient is taken to (a corridor, the pharmacy): `escort_patient`, then `navigate_to` it |
+ * | "lie down" / "sit up" / "stand up"        | the case's positioning treatment for that posture when it has one (`intervene`: a clinical, scored act through the approval gate); a posture an applied positioning imposes is kept; else `reposition_patient {posture}` |
  *
- * The patient's side of it is narrated (a narrator's line in the patient's conversation, nothing credited); a
- * colleague acknowledges in their own voice, and the delegation's outcome is reported as `/delegate`'s is.
+ * The patient's side is narrated (a narrator's line in the patient's conversation, nothing credited). Requests to a
+ * colleague — a task, come here, go back, show me the way, where is … — are `staff-requests.ts`.
  */
 import { capabilityLabels, t } from "@clinicalcraft/core";
 import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES, PRIMARY_ACTOR, type NavGoal, type WorldActionResult } from "@clinicalcraft/world";
-import { agentKind, npcDisplayName } from "../agents/prompts.js";
+import { agentKind } from "../agents/prompts.js";
 import type { ToolOutput } from "../tools/types.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 import { destinationCapability, meansHome, movementIntent, type MovementIntent } from "./movement-intents.js";
-import { conversationKey, type StaffVoice } from "./staff-voice.js";
+import { StaffRequests } from "./staff-requests.js";
+import { staffIntent } from "./staff-intents.js";
+import type { StaffVoice } from "./staff-voice.js";
 
 /** Runs a learner tool (the learner's tool path: hooks, approval gate, the tool). */
 export type LearnerToolRunner = (id: string, name: string, args: Record<string, unknown>, signal?: AbortSignal) => Promise<{ output: ToolOutput; status: string }>;
 
 /** Where a destination phrase leads: a transport destination, a place to walk to with the patient, or nowhere known. */
-type Where = { kind: "transport"; params: Record<string, unknown>; label: string } | { kind: "walk"; target: string; label: string } | { kind: "unknown"; label: string };
+export type Where = { kind: "transport"; params: Record<string, unknown>; label: string } | { kind: "walk"; target: string; label: string } | { kind: "unknown"; label: string };
 
-/** Staff roles who take a patient somewhere when asked (their delegation scope has `transport_patient`). */
-const TAKERS: ReadonlySet<string> = new Set(["nurse", "paramedic", "porter", "attending"]);
+/** Agents with colleagues' bodies in the world behind them (`@nurse`: the nearest nurse acts). */
+const STAFF_KINDS: ReadonlySet<string> = new Set(["nurse", "attending", "radiologist", "pathologist"]);
 
 const resultOf = (out: ToolOutput): WorldActionResult | null => ((out.data as { result?: WorldActionResult } | undefined)?.result ?? null);
 
 /** The movement requests of one session (see the module docs). */
 export class MovementRequests {
+  /** A colleague's requests (every role). */
+  private readonly staff: StaffRequests;
+
   constructor(
     private readonly k: SessionKernel,
     private readonly runTool: LearnerToolRunner,
-  ) {}
+  ) {
+    this.staff = new StaffRequests(k, runTool, (phrase) => this.whereTo(phrase));
+  }
 
   /**
    * Handle `body` said to `target` when it is a movement request (embodied mode). True: handled — the agent does
@@ -50,20 +57,21 @@ export class MovementRequests {
     if (!k.embodied) return false;
     const profile = k.profiles.get(target);
     const kind = profile ? agentKind(profile) : null;
-    const toPatient = kind === "patient" || kind === "companion";
-    // a colleague who takes patients places — by name, or the nurse / the attending by role (never the examiner, a
-    // consultant on the phone…); anyone else hears talk
-    const toStaff = !toPatient && (voice ? TAKERS.has(voice.role) : kind === "nurse" || kind === "attending");
-    if (!toPatient && !toStaff) return false;
     const c = k.caseDef;
     const names = [t(c.patient.displayName, "en"), t(c.patient.displayName, "zh-CN")];
-    const intent = movementIntent(body, toPatient ? "patient" : "staff", names);
-    if (!intent) return false;
-    k.ensureStarted(id);
-    k.conversations.addDialogue({ who: "learner", speaker: "learner", text: toPatient ? body : `@${voice?.name ?? target} ${body}` });
-    if (toPatient) await this.patientRequest(id, kind === "companion" ? "companion" : "patient", intent, signal);
-    else await this.staffRequest(id, target, voice, intent, body, signal);
-    return true;
+    if (kind === "patient" || kind === "companion") {
+      const intent = movementIntent(body, "patient", names);
+      if (!intent || intent.kind === "take") return false;
+      k.ensureStarted(id);
+      k.conversations.addDialogue({ who: "learner", speaker: "learner", text: body });
+      await this.patientRequest(id, kind, intent, signal);
+      return true;
+    }
+    // a colleague: by name (any role), or one of the roles with a body in the world addressed as such (never the
+    // examiner, the clinician…); anything that is no request — or names nothing the world or the case knows — is talk
+    if (!voice && !STAFF_KINDS.has(kind ?? "")) return false;
+    const intent = staffIntent(body, names);
+    return intent ? this.staff.request(id, target, voice, intent, body, signal) : false;
   }
 
   /* ---------------------------------------------------------------- */
@@ -79,6 +87,8 @@ export class MovementRequests {
         return this.narrateResult(id, agent, await this.transport(id, { destination: "home" }, signal));
       case "take":
         return; // a colleague's request (said to the patient: talk was never routed here)
+      case "posture":
+        return this.posture(id, agent, intent.posture, signal);
       case "follow": {
         if (!intent.destination) return this.narrateResult(id, agent, await this.operate(id, "escort_patient", signal));
         const where = this.whereTo(intent.destination);
@@ -105,18 +115,51 @@ export class MovementRequests {
     return (await this.runTool(id, "interact_object", { target: "patient", operation }, signal)).output;
   }
 
+  /** `transport_patient` by the learner's body (a short step to the patient's side first when needed: `stepped`). */
+  private transport(id: string, params: Record<string, unknown>, signal: AbortSignal): Promise<ToolOutput> {
+    return this.stepped(id, "transport_patient", params, signal);
+  }
+
   /**
-   * `transport_patient` by the learner's body; refused only for the distance (the learner stands within earshot,
-   * not yet at the patient's side): a short step there (the world's hint), then once more.
+   * A learner tool refused only for the distance — the learner stands within earshot, not yet at the patient's side,
+   * or the patient lay down on a couch a step away: a short walk there (the world's or the spatial gate's hint),
+   * then once more. Any other refusal stands.
    */
-  private async transport(id: string, params: Record<string, unknown>, signal: AbortSignal): Promise<ToolOutput> {
-    const first = (await this.runTool(id, "transport_patient", params, signal)).output;
+  private async stepped(id: string, tool: string, args: Record<string, unknown>, signal: AbortSignal): Promise<ToolOutput> {
+    const first = (await this.runTool(id, tool, args, signal)).output;
+    if (first.ok) return first;
     const r = resultOf(first);
-    const goal: NavGoal | undefined = r?.hint?.goal;
-    if (first.ok || !r || !goal || (r.errorCode !== "NOT_IN_RANGE" && r.errorCode !== "NOT_VISIBLE")) return first;
+    const data = first.data as { code?: string; reason?: string; hint?: { goal?: NavGoal } } | undefined;
+    const range = r ? r.errorCode === "NOT_IN_RANGE" || r.errorCode === "NOT_VISIBLE" : data?.code === "SPATIAL_REQUIREMENT_UNMET" && /^not-(?:at|near)-patient$/.test(data.reason ?? "");
+    const goal: NavGoal | undefined = r?.hint?.goal ?? data?.hint?.goal;
+    if (!range || !goal) return first;
     const step = await this.runTool(id, "navigate_to", { goal }, signal);
     if (!step.output.ok) return first;
-    return (await this.runTool(id, "transport_patient", params, signal)).output;
+    return (await this.runTool(id, tool, args, signal)).output;
+  }
+
+  /**
+   * "Lie down" / "sit up" / "stand up": the case's positioning treatment for that posture when it has one (a clinical,
+   * scored act — through the approval gate); a posture an applied positioning treatment imposes is kept (the
+   * narrator says so); otherwise the patient takes it if they can (`reposition_patient`).
+   */
+  private async posture(id: string, agent: "patient" | "companion", posture: "lying" | "sitting" | "standing", signal: AbortSignal): Promise<void> {
+    const k = this.k;
+    const L = k.locale;
+    const c = k.caseDef;
+    const given = new Set(k.state.interventions.map((r) => r.interventionId));
+    const positioning = c.interventions.filter((i) => i.kind === "positioning" && i.posture === posture && !given.has(i.id));
+    if (positioning.length === 1) {
+      const item = positioning[0]!;
+      const out = await this.stepped(id, "intervene", { intervention_id: item.id }, signal);
+      if (out.ok) return this.narrate(id, agent, rt(L, "move.positioned", { patient: this.patientName(), item: t(item.name, L) }));
+      return this.narrateResult(id, agent, out);
+    }
+    // the posture a positioning treatment imposes (the latest given) stays unless another treatment changes it
+    const imposed = [...k.state.interventions].reverse().map((r) => c.interventions.find((i) => i.id === r.interventionId)).find((i) => i?.kind === "positioning" && i.posture);
+    if (imposed && imposed.posture !== posture) return this.narrate(id, agent, rt(L, "move.keepPosture", { patient: this.patientName(), item: t(imposed.name, L) }));
+    const out = await this.stepped(id, "interact_object", { target: "patient", operation: "reposition_patient", parameters: { posture } }, signal);
+    return this.narrateResult(id, agent, out);
   }
 
   /** The world's words for what happened (learner-facing: the result's message, never the model-facing tool lines). */
@@ -136,43 +179,6 @@ export class MovementRequests {
   }
 
   /* ---------------------------------------------------------------- */
-  /* Said to a colleague                                               */
-  /* ---------------------------------------------------------------- */
-
-  private async staffRequest(id: string, agent: string, voice: StaffVoice | null, intent: MovementIntent, body: string, signal: AbortSignal): Promise<void> {
-    if (intent.kind !== "take") return;
-    const k = this.k;
-    const L = k.locale;
-    const patient = this.patientName();
-    const say = (text: string) => this.staffLine(id, agent, voice, body, text);
-    if (!intent.destination) return say(rt(L, "move.staffWhere", { patient }));
-    const where = intent.destination === "home" ? ({ kind: "transport", params: { destination: "home" }, label: "" } as const) : this.whereTo(intent.destination);
-    if (where.kind !== "transport") return say(rt(L, "move.staffCannot", { place: where.label }));
-    say(where.params.destination === "home" ? rt(L, "move.staffHome", { patient }) : rt(L, "move.staffAck", { patient, place: where.label }));
-    const role = voice ? `staff:${voice.staffId}` : agent;
-    const { capability, destination } = where.params as { capability?: string; destination?: string };
-    const args = { role, task: "transport_patient", ...(destination ? { target: destination } : {}), ...(capability ? { params: { capability } } : {}) };
-    const out = (await this.runTool(id, "delegate_task", args, signal)).output;
-    // reported as `/delegate` reports it (the conversation's outcome line, the HUD's toast)
-    k.emit(id, { type: "command_output", name: "delegate", text: out.output, data: { ok: out.ok, data: out.data ?? null } });
-  }
-
-  /**
-   * A colleague's answer to the learner's request in their own voice (the one addressed: their name, and their staff
-   * id for the world's figure) — kept in their conversation, so they remember what they were asked and said.
-   */
-  private staffLine(id: string, agent: string, voice: StaffVoice | null, request: string, text: string): void {
-    const k = this.k;
-    const speaker = voice?.name ?? npcDisplayName(k.caseDef, k.facility, agent, k.locale);
-    k.speakLine(id, { agent, speaker, text, grounded: [], ...(voice ? { staffId: voice.staffId } : {}) });
-    k.conversations.append(conversationKey(agent, voice), [
-      { role: "user", content: [{ type: "text", text: request }] },
-      { role: "assistant", content: [{ type: "text", text }] },
-    ]);
-    k.conversations.addDialogue({ who: agent, speaker, text });
-  }
-
-  /* ---------------------------------------------------------------- */
   /* Where a destination phrase leads                                  */
   /* ---------------------------------------------------------------- */
 
@@ -181,7 +187,7 @@ export class MovementRequests {
    * device providing `ct`); a place by name (`find`, either language) — a bed space's room or a device a patient is
    * brought to is a transport, any other room or thing a place to walk to; else unknown.
    */
-  private whereTo(phrase: string): Where {
+  whereTo(phrase: string): Where {
     const k = this.k;
     const L = k.locale;
     if (meansHome(phrase)) return { kind: "transport", params: { destination: "home" }, label: phrase };

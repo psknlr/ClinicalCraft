@@ -8,7 +8,7 @@
  * Also the autopilot's host: the clinician driving the case through the same tool path.
  */
 import { assess, patientNonVerbal } from "@clinicalcraft/core";
-import { attendingOffline, consultantOffline, examinerOffline, nurseOffline } from "../agents/offline.js";
+import { attendingOffline, consultantOffline, examinerOffline, nurseOffline, staffOffline } from "../agents/offline.js";
 import { agentKind, buildSystemSections, npcDisplayName, patientLocation } from "../agents/prompts.js";
 import type { AgentProfile } from "../agents/types.js";
 import { executeToolCall, runAgentTurn } from "../loop.js";
@@ -21,7 +21,12 @@ import { runExaminer, runExaminerPrompt, type ExaminerVerdict } from "./examiner
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 import { runPatientTurn, selectFacts } from "./patient-pipeline.js";
+import { colleagueOf } from "./staff-requests.js";
+import { staffTaskTool } from "./staff-tool.js";
 import { conversationKey, type StaffVoice } from "./staff-voice.js";
+
+/** Agents with colleagues' bodies in the world behind them (they may act on the learner's request). */
+const STAFF_KINDS: ReadonlySet<string> = new Set(["nurse", "attending", "radiologist", "pathologist"]);
 
 /** How learner text reaches an agent: a message, or a custom slash command's prompt (PROTOCOL §9). */
 export type AgentTurnMode = "message" | "prompt";
@@ -38,6 +43,8 @@ export class AgentTurns {
    * of running an assessment; every other agent takes it as a message.
    * `voice`: the staff member the learner addressed (`user_message.staff`) —
    * they answer under their own name, with their own conversation.
+   * `fromLearner`: the learner's own words started the turn (not another agent's
+   * nested ask) — a staff agent with a model may then act (`do_task`).
    */
   async runAgent(
     id: string,
@@ -47,6 +54,7 @@ export class AgentTurns {
     extraContext: readonly string[] = [],
     mode: AgentTurnMode = "message",
     voice: StaffVoice | null = null,
+    fromLearner = false,
   ): Promise<{ text: string; grounded: string[] }> {
     const k = this.k;
     const turnId = k.newId();
@@ -64,7 +72,7 @@ export class AgentTurns {
         if (kind === "patient" || kind === "companion") outcome = await this.runPatientAgent(id, turnId, kind, utterance, signal);
         else if (kind === "examiner") outcome = mode === "prompt" ? await this.examinerPromptTurn(id, turnId, profile, utterance, signal) : await this.examinerTurn(id, turnId, signal);
         else if (kind === "clinician" && !k.models.model("clinician").provider) outcome = await this.offlineClinicianBlock(id, turnId, k.models.model("clinician").maxToolRounds, signal);
-        else outcome = await this.runModelAgent(id, turnId, profile, utterance, signal, extraContext, voice);
+        else outcome = await this.runModelAgent(id, turnId, profile, utterance, signal, extraContext, voice, fromLearner);
       }
     } catch (err) {
       outcome = { status: "error", text: "", grounded: [], error: { message: err instanceof Error ? err.message : String(err) } };
@@ -213,7 +221,7 @@ export class AgentTurns {
     }
   }
 
-  private async runModelAgent(id: string, turnId: string, profile: AgentProfile, utterance: string, signal?: AbortSignal, extraContext: readonly string[] = [], voice: StaffVoice | null = null): Promise<AgentOutcome> {
+  private async runModelAgent(id: string, turnId: string, profile: AgentProfile, utterance: string, signal?: AbortSignal, extraContext: readonly string[] = [], voice: StaffVoice | null = null, fromLearner = false): Promise<AgentOutcome> {
     const k = this.k;
     const m = k.models.model(profile.name);
     if (!m.provider) return this.offlineReply(id, turnId, profile, utterance, false, voice);
@@ -221,6 +229,9 @@ export class AgentTurns {
     const key = conversationKey(profile.name, voice);
     await k.conversations.maybeAutoCompact(id, key, signal);
     const parts: ChatPart[] = [{ type: "text", text: utterance.trim() || rt(k.locale, "npc.approach") }];
+    // a colleague with a body acts on the learner's request with it (embodied mode; never in a nested ask)
+    const who = fromLearner && STAFF_KINDS.has(agentKind(profile)) ? colleagueOf(k, profile.name, voice) : null;
+    const tools = who ? [...k.toolsFor(profile.name), staffTaskTool(k, id, who)] : k.toolsFor(profile.name);
     for (const extra of extraContext) parts.push({ type: "text", text: extra });
     const turn = await runAgentTurn({
       host: k.tools.loopHost(id),
@@ -229,7 +240,7 @@ export class AgentTurns {
       system: buildSystemSections(profile, { ...k.promptContext(), ...(voice ? { speakingAs: { name: voice.name, role: voice.role } } : {}) }),
       history: k.conversations.of(key),
       userParts: parts,
-      tools: k.toolsFor(profile.name),
+      tools,
       maxToolRounds: m.maxToolRounds,
       turnId,
       emit: (msg) => k.emit(id, msg),
@@ -260,13 +271,15 @@ export class AgentTurns {
     const ctx = { caseDef: k.caseDef, locale: k.locale, state: () => k.state };
     const kind = agentKind(profile);
     let text: string;
+    // a colleague of another role speaking through this profile (a porter through the nurse's) says what they do
+    const other = voice && voice.role !== kind && !(kind === "nurse" && voice.role === "paramedic") ? staffOffline(voice.role, voice.name, k.locale) : null;
     switch (kind) {
       case "nurse":
-        text = nurseOffline(ctx, utterance);
+        text = other ?? nurseOffline(ctx, utterance);
         break;
       case "radiologist":
       case "pathologist":
-        text = consultantOffline(kind, ctx, utterance);
+        text = other ?? consultantOffline(kind, ctx, utterance);
         break;
       case "attending":
         text = attendingOffline(ctx, (action) => k.dispatch(action, id), utterance).text;

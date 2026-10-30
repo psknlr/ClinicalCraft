@@ -36,10 +36,11 @@ function commit(host: TransportHost, next: PatientPlaceState, by: string | null)
   return host.emit({ type: "patient.moved", entityId: id, from, to, by, distance, path: [] });
 }
 
-/** The stored place without an escort (the key left out: snapshots stay as they were before anyone walked together). */
+/** The stored place without an escort or a posture asked for (the keys left out: snapshots stay as they were before). */
 function without(st: PatientPlaceState): PatientPlaceState {
-  const { escort: _escort, ...rest } = st;
+  const { escort: _escort, asked: _asked, ...rest } = st;
   void _escort;
+  void _asked;
   return rest;
 }
 
@@ -66,7 +67,7 @@ export function escortPatient(host: TransportHost, _request: WorldActionRequest,
   }
   // they get up and come along: no bed space, no provider, no support any more — the place is the walker's side
   const here = body.place()!;
-  const next: PatientPlaceState = { ...st, slot: null, provider: null, spot: { level: here.level, x: here.x, z: here.z, rot: here.rot }, posture: null, support: null, escort: actor.id };
+  const next: PatientPlaceState = { ...without(st), slot: null, provider: null, spot: { level: here.level, x: here.x, z: here.z, rot: here.rot }, posture: null, support: null, escort: actor.id };
   const event = commit(host, next, actor.id);
   const started = host.emit({ type: "patient.escort", entityId: patientId, escort: actor.id, actorId: actor.id });
   return { status: "completed", message: worldMessage("ok.patientFollows", L, { patient: name }), events: [event, started] };

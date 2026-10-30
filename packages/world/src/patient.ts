@@ -141,15 +141,20 @@ export class PatientBody {
     return !!this.id && !!this.d.state.entity(this.id)?.patient;
   }
 
-  /** The posture now: standing beside the actor they walk with, else the place's, else the clinical one, else the encounter's. */
+  /**
+   * The posture now: standing beside the actor they walk with, else the place's, else the one they took when asked
+   * (while clinical state still gives the posture it was asked over), else the clinical one, else the encounter's.
+   */
   posture(st: PatientPlaceState | null = this.state()): BodyPosture {
     if (this.escort(st)) return "standing";
-    return st?.posture ?? this.d.clinicalPosture() ?? this.d.initialPosture;
+    if (st?.posture) return st.posture;
+    const clinical = this.d.clinicalPosture() ?? this.d.initialPosture;
+    return st?.asked && st.asked.over === clinical ? st.asked.posture : clinical;
   }
 
-  /** The posture clinical state gives (an intervention's authored posture, else the case's), whatever the place forces. */
+  /** The posture clinical state gives (an intervention's authored posture, else the case's), whatever the place forces or the patient was asked. */
   clinicalPostureOf(st: PatientPlaceState | null = this.state()): BodyPosture {
-    return this.posture(st ? { ...st, posture: null, escort: null } : null);
+    return this.posture(st ? { ...st, posture: null, escort: null, asked: null } : null);
   }
 
   /** Does clinical state have the patient on their feet (an ambulatory patient: walks where a transport takes them)? */
@@ -164,10 +169,14 @@ export class PatientBody {
    */
   walkProblem(st: PatientPlaceState | null = this.state()): WalkProblem | null {
     if (this.clinicalPostureOf(st) === "lying") return "lying";
-    const cues = this.d.cues?.() ?? {};
-    if (cues.cannotSpeak !== undefined) return "unresponsive";
-    if (cues.distressed) return "unwell";
+    if (!this.responsive()) return "unresponsive";
+    if (this.d.cues?.().distressed) return "unwell";
     return null;
+  }
+
+  /** Can the patient respond to being asked (not `cannotSpeak`: intubated, sedated, unconscious)? */
+  responsive(): boolean {
+    return this.d.cues?.().cannotSpeak === undefined;
   }
 
   /** The actor the patient walks with now (`escort`; null: nobody, or an actor the world no longer knows). */

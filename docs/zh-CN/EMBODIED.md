@@ -56,6 +56,10 @@
   的患者直立行走，到达后才躺下；“跟我来” / “在这里等”是世界操作（`escort_patient`、
   `release_patient`），两种语言里简短的移动请求由世界执行；可以点名与同事交谈，对方
   以自己的身份回答；陪同者画在患者身边，说话时动嘴的是真正说话的人（§2.1、§8.4）。
+  随后：每个人都以话语和行动回应——每位同事在被请求时做本角色可做的事（上监护、做心电图、
+  建立静脉通路、取设备、给药、转运患者、过来、回岗、带路、说明某处在哪里），否则用自己的
+  声音说明这不是自己的工作、谁可以做；患者在被请求时躺下、坐起或站起
+  （`reposition_patient`，或病例中的体位处置）；由模型扮演的同事只能通过 `do_task` 行动。
 - **尚未完成**（§14）：没有任何真实大模型跑过具身工具或基准测试；没有随附任何
   GLB 设备模型；也没有作为生产服务做过加固、部署或运维。
 
@@ -192,9 +196,12 @@
     （`ui/panels/trace-labels.ts`），同事以姓名称呼（`app/staff.ts`）：学员的话发给
     这位同事（`user_message.staff`），每位同事的窗口只显示与其本人的对话，说话动画
     跟随该句的 `staffId`（PROTOCOL §4）——而不是当时恰好打开的窗口；
-  - 移动患者用说的：患者窗口提供“请跟我来” / “请在这里等一下”、“请跟我去‹CT扫描仪›”
-    （病例需要的检查设备，`app/destinations.ts`）和“回病床”；护士、急救员、护工或
-    主治医生的窗口提供“请把患者送到‹…›”——与会话理解的手打句子相同（§8.4）。
+  - 移动患者用说的：患者窗口提供“请跟我来” / “请在这里等一下”、患者当前不在的两种体位
+    （“请躺下。” / “请坐起来。” / “请站起来。”）、“请跟我去‹CT扫描仪›”（病例需要的检查
+    设备，`app/destinations.ts`）和“回病床”；同事的窗口以对其说出的句子提供其角色可做的
+    床旁任务（`scopeOf`：“请给患者上监护。”……）、角色可转运患者时的“请把患者送到‹…›”，
+    以及“请到床旁来。” / “您可以回岗位了。”——与会话理解的手打句子相同（§8.4）；他们
+    用自己的声音回答，学员的那句话显示为“学员 → ‹其姓名›”。
 * **R8**：当智能体驱动身体时（Mover 行走、示范接诊、临床医生回合、正在执行的
   会移动身体的世界工具、外部智能体的调用），实时计时暂停。
 * **画出谁、谁在说话**：病例中的陪同者站在患者身边（`WorldPatient.companion`；在床头
@@ -202,6 +209,9 @@
   没有他们的身体（没有碰撞体：渲染器的碰撞体就是世界模型的，R2），与患者共用瞄准
   目标。一句话只让说话的人动嘴——患者、陪同者、该句指明的同事；旁白（无法说话的
   患者、已执行的移动）不让任何人动嘴。
+* **肢体语言**：站着并在 6 米内对学员说话的人——在岗位上的同事、陪同者、站着的患者——
+  会转身面向学员（行走途中、躺或坐在床上的患者、转运中的患者除外）；只改变画面，世界中的
+  位姿不变。
 * **要求行动的反馈**（带“前往”的拒绝，或需先完成的操作）会一直保留，直到学员采纳、
   关闭，或做了一件此处能完成的事；正在走的小步、没有补救办法的拒绝 15 秒后自动
   消失（`ui/feedback.ts`）。
@@ -369,7 +379,7 @@
 `open`/`close`/`lock`/`unlock`；工作站的 `order`/`read`；监护仪的
 `attach`/`read`/`cycle_nibp`；心电图车的 `prepare`/`connect`/`record`/`reset`；
 推车的 `move_to`；手持物品的 `pick_up`/`put_down`/`equip`；水槽的 `wash_hands`；
-患者的 `transport_patient`、`escort_patient`、`release_patient`（§8.4）。CT 扫描仪从不
+患者的 `transport_patient`、`escort_patient`、`release_patient`、`reposition_patient`（§8.4）。CT 扫描仪从不
 提供 `pick_up`；门从不提供 `order`。
 
 每个请求（`WorldActionRequest`）都带 `actionId`；用同一 ID 重试的请求返回已记录
@@ -689,7 +699,7 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | door | `open` / `closed` / `locked`（门记录） | `open`（关闭时）、`close`（打开时；门洞区域无人）、`lock`（closed → locked）、`unlock`（locked → closed） |
 | sink | — | `wash_hands`：手卫生在 30 模拟分钟内有效（`handsCleanUntil` = 时钟 + 30），事件 `hygiene`，30 s |
 | storage | `closed` / `open`（存储） | `open`、`close` |
-| 患者（`patient:<slot>`） | — | `transport_patient {destination}`（物理操作；在患者身边 1.5 m 以内；角色 `TRANSPORT_ROLES`：clinician、attending、nurse、paramedic、porter）——见 §8.4；`escort_patient` / `release_patient`（物理操作；在交谈距离 3 m 内且有视线；角色相同；患者必须能走动，否则 `PRECONDITION_FAILED` 并说明原因）——见 §8.4 |
+| 患者（`patient:<slot>`） | — | `transport_patient {destination}`（物理操作；在患者身边 1.5 m 以内；角色 `TRANSPORT_ROLES`：clinician、attending、nurse、paramedic、porter）——见 §8.4；`escort_patient` / `release_patient`（物理操作；在交谈距离 3 m 内且有视线；角色相同；患者必须能走动，否则 `PRECONDITION_FAILED` 并说明原因）——见 §8.4；`reposition_patient {posture}`（物理操作；交谈距离；角色相同；只有在有可躺可坐之处时才能躺下或坐起，能走动时才能站起，在强制体位的地方、跟人走动中或无法回应时都不行）——见 §8.4 |
 | bed、board、atlas、craft、none；其他人、房间 | — | 无 |
 | + `portable: "cart"` | — | `move_to {goal}`（§5） |
 | + `portable: "handheld"` | 携带时为 `held` / `equipped` | `pick_up`（在够及范围内，最多 `MAX_HELD` = 2 件 → `HANDS_FULL`）、`put_down`（放在前方空闲处）、`equip`（未携带时 `NOT_HOLDING`） |
@@ -723,7 +733,7 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | 类别 | 操作 |
 |---|---|
 | `move` | navigate、approach、look_at、cancel |
-| `physical` | open / close（门、储物柜）、wash_hands、move_to、pick_up、put_down、equip、transport_patient、escort_patient、release_patient、无临床效果的设备操作（prepare、connect、reset、cycle_nibp、监护仪的 read） |
+| `physical` | open / close（门、储物柜）、wash_hands、move_to、pick_up、put_down、equip、transport_patient、escort_patient、release_patient、reposition_patient、无临床效果的设备操作（prepare、connect、reset、cycle_nibp、监护仪的 read） |
 | `secure` | lock、unlock |
 | `clinical` | 一切带临床效果的操作（工作站 order/read、设备 use、监护仪 attach、心电图 record…） |
 
@@ -833,6 +843,30 @@ reference 行走者（基准测试）和具身示范接诊会规划这些转运�
 旁白，同事先用自己的声音应答，再执行 `delegate_task transport_patient`。目的地可以是
 用任一语言说出的检查能力（CT、MRI、X 光、导管室、峰流速……）、“回病床”，或按名称找到
 的地点（`find`）：床位所在房间或检查设备是转运，其他房间是一起走过去。
+
+**患者被请求时改变体位**（`reposition_patient {posture}`；`posture.ts`）。“请躺到诊察床上”
+“请坐起来”“能请您站起来吗？”：这是物理状态——所取的体位与当时的临床体位一同存储
+（`PatientPlaceState.asked`），只要临床状态仍给出那个体位就保持；一次体位处置、一次转运或
+转科会取代它（并将其遗忘）。只有在有可躺可坐之处（床位上的床或诊察床、长椅、椅子）时才能
+躺下或坐起，只有能走动（`walkProblem`）时才能站起；在强制体位的地方（扫描检查床）、跟人
+走动中或无法回应时都不能改变体位。会话先把话语映射到病例中对应该体位的体位处置（PE 病例
+中的“坐直”：经审批闸门、计分的临床操作），保持此类处置所规定的体位（“保持现在的体位”），
+否则才使用这个操作。躺到诊察床上会把身体移到那里，临床医生可能需要走近一步才能保持在交谈
+距离内（网页会自动走过去）。
+
+**每个人都以话语和行动回应。** 接诊中的每个人都可以交谈，而他们的回应行动都是经过校验的
+行动——从来不是模型的声称：
+
+| 谁 | 话语 | 行动 |
+|---|---|---|
+| 患者（及身边的陪同者） | 他们的智能体（依据病例） | 跟随、等候、跟我去……、回病床、躺下 / 坐起 / 站起——由世界的结果旁白 |
+| 护士、急救员、主治医生 | 他们的智能体，以本人身份（`user_message.staff`） | 其执业范围内的床旁任务（上监护、心电图、静脉通路、取设备、给药——经审批闸门——、转运患者）、过来、回岗、带路、某处在哪里 |
+| 护工 | 本角色的话（离线时：自己是谁、做什么） | 取设备、转运患者、过来、回岗、带路、某处在哪里；临床任务：“抱歉，……不是护工在这里做的事。可以请护士来做。” |
+| 导诊、药师、检验技师、放射科医生、病理科医生 | 同上 | 取设备、过来、回岗、带路、某处在哪里；其他请求用自己的声音拒绝 |
+
+由模型扮演的同事在学员话语开启的回合中获得 `do_task`（PROTOCOL §3）：同样的委派，用他们
+自己的身体、执业范围与审批——确定性识别留给模型的自由说法（“有空的时候帮他把监护都接上？”）
+最终仍只会得到一个经过校验的行动，或者没有行动。
 
 **陪同者**（病例的 `persona.companion`）在浏览器中画在患者身边并随之移动；世界模型中
 没有他们的身体（§2.1）。和陪同者说话就是在患者身边说话：`ask` 要求对两者都成立。
@@ -1412,7 +1446,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 世界桥接：MCP ⇄ 实时浏览器世界（`WorldSessionRouter`；op `external_tool_call` / `external_tool_cancel`；`connectWorldBridge`；`WorldAttachClient`；`clinicalcraft mcp --attach`、`list_live_sessions`；网页开关、徽标与标注的审批） | yes（A8、A8b；加固 S5、S9、S10、S11） | 经 HTTP 的路由器测试（令牌、通道密钥、注册校验与上限、路由、确认、去重与冲突、超时、取消、过期与心跳、DELETE、重投递、各类限制、CORS、关闭）；会话 op；浏览器客户端在 Node 中对真实服务器以及对模拟服务器的测试；用桩服务器经 stdio 测试 MCP 连接模式；评审中的复现用例作为回归测试；网页 `ExternalControl` / `BrowserMover` 在隐藏标签页中的测试；Playwright `external-agent.spec.ts`（en + zh-CN） | 用真实进程端到端（`world-attach.e2e.test.ts`：`serve` + 经客户端的无界面具身 STEMI 会话 + 经 stdio 的 `mcp --attach`；另一令牌持有者注册的诱饵会话从未被触达）；Playwright：构建后的页面、开关、凭徽标中读到的 ID 与密钥配对的 `mcp --attach`、经推车完成心电图、在标注的对话框中点击审批、隐藏标签页中的行走、一次拒绝、断开 → `session_closed`、恢复的接诊从关闭状态开始 | no——针对评审复现用例做了加固，但从未独立审计；明文 HTTP（应在 `serve` 前终结 TLS）；一个共享的服务器令牌，没有用户账户；注册表在内存中（服务器重启会丢失实时会话，直到浏览器重新注册）；最多 16 个实时会话、每个客户端 4 个。Sec、Rel、Dep、Ops |
 | 具身基准测试（`@clinicalcraft/bench`：场景 schema、含 8 个类别 41 个场景的 `embodied-v1`、隔离的确定性运行、记录器、空间 / 授权 / 安全审计、基于权威状态的谓词、Wilson 区间、JSON + Markdown 报告；智能体 `reference`、`scripted-llm`、`llm`） | yes（A7；转运场景来自 FX-T） | 每个场景文件都能通过校验（schema + 引用）；每种谓词在真实运行中都测过真与假；对照 Newcombe 1998 验证 Wilson；3 个场景 × 每种智能体（`llm` 智能体配模拟提供方）；只声称成功的出错智能体得 0 分；限制、预算、真实智能体的拒绝；CLI | `reference` 与 `scripted-llm`：各 123 / 123 次运行，0 个被接受的空间或授权违规，每个轨迹在各种子下都相同（本地运行与 CI）；真实运行的拒绝 | no——**没有记录过真实模型运行：模型能力尚未测量**；41 个场景中 23 个使用 STEMI 病例；每次运行只有一个行动的智能体（临床医生） |
 | 患者转运（G8、FX-T：`transport_patient` 世界操作、学员工具、`/transport`、`delegate_task … transport_patient`；按标注的 `destination` / 阶段 `location` 转移；`patient-at-provider`；床旁、患者的监护仪和屏幕都随患者移动；网页：推着躺有患者的床、`placePatient`；IX：能走动的患者直立行走、到达后才躺下，没有推床时从不躺着移动） | yes（FX-T、IX） | 世界 `transport.test.ts`（IX：SMZL 门诊患者步行往返 CT，没有推床的坐位门诊患者步行，中途停下的步行让患者站着）、`nav/backend.test.ts`（`ignoreObstacles`：可穿过障碍，从不穿过上锁的门）、含转运的提示性质测试、峰流速测定站的可操作性；智能体 `session/transport.test.ts`；示范接诊转运（PE：临床医生；`teaching-hospital` 中的卒中：护工）；基准 `workflow-pe-ctpa-transport`；网页单元测试与 e2e `transport.spec.ts` | 10 个病例 × 2 种语言在各自场馆中达到临床模式得分；教学医院的护工转运 | no——团队转移在浏览器中不播放动画（§14.3） |
-| 交互轮次（IX）：对患者说的自由文本受交谈距离约束；带患者走动（`escort_patient` / `release_patient`、推导出的位置、检查须就位）；用话语提出的移动请求（zh-CN + en）；点名与同事交谈（`user_message.staff`、事件上的 `staffId`、各自的对话与身份）；网页：画出并会说话的陪同者、说话动画属于真正说话的人、患者沿带路人的路线行走、移动快捷按钮、要求行动的反馈保持显示 | yes（IX） | 世界 `escort.test.ts`（跟随、传感器位姿、检查须就位、回床位、距离、两种语言下不能走动的原因、角色、等候、临床状态结束跟随、快照、最近事件）；智能体 `movement-intents.test.ts`（请求与形似的病史问题，两种语言）、`embodied-talk.test.ts`（在入口处被拒且不计分、陪同者、临床模式不变、跟随 / 等候 / 跟我去 CT / 回病床 / 点名护士送患者、同事各自的声音与对话、前台人员的身份提示）；网页 `trail.test.ts`、`talk.test.ts`（说话人解析、按同事分开的窗口、界面句子可被解析）、`feedback.test.ts`、`embodied-world.test.ts`（在入口处的问题不会发出；“请跟我来。”后画出跟随）；e2e `escort.spec.ts`（陪同者用自己的嘴说话、跟随与等候、SMZL 直立步行到 CT） | 网页 e2e `escort.spec.ts`（Chromium + SwiftShader）；完整 vitest 套件；基础设施基准智能体与具身示范接诊不受影响（其参考路径不对患者说自由文本、不让患者跟随） | no——短语集合固定（没有模型解释请求）；陪同者在世界模型中没有身体；没有让真实大模型用话语移动患者；未经临床教师评审 |
+| 交互轮次（IX）：对患者说的自由文本受交谈距离约束；带患者走动（`escort_patient` / `release_patient`、推导出的位置、检查须就位）；改变体位（`reposition_patient`，优先使用病例的体位处置）；对每个人的话语请求（zh-CN + en：患者的移动与体位；每位同事执业范围内的任务、过来、回岗、带路、某处在哪里，用自己的声音拒绝）；由模型扮演的同事的 `do_task`；点名与同事交谈（`user_message.staff`、事件上的 `staffId`、各自的对话与身份；符合角色的离线回答）；网页：画出并会说话的陪同者、说话动画属于真正说话的人、肢体语言、患者沿带路人的路线行走、按角色提供的句子按钮、要求行动的反馈保持显示 | yes（IX） | 世界 `posture.test.ts`（躺下、坐起、站起、临床体位处置使其失效、谁不能、哪里不能、快照）、`escort.test.ts`（跟随、传感器位姿、检查须就位、回床位、距离、两种语言下不能走动的原因、角色、等候、临床状态结束跟随、快照、最近事件）；智能体 `movement-intents.test.ts` 与 `staff-intents.test.ts`（请求与形似的病史问题，两种语言）、`staff-talk.test.ts`（点名护士上监护、给阿司匹林、用中文做心电图；导诊拒绝并说明谁可以；病例没有的处置是交谈；过来、回岗、某处在哪里、带路；躺下 / 站起；PE 的体位处置计分；保持规定的体位；“Can you lie flat?”得到回答；脚本模型扮演的护士通过 `do_task` 行动，临床模式下没有该工具；符合角色的离线回答）、`embodied-talk.test.ts`（在入口处被拒且不计分、陪同者、临床模式不变、跟随 / 等候 / 跟我去 CT / 回病床 / 点名护士送患者、同事各自的声音与对话、前台人员的身份提示）；网页 `trail.test.ts`、`talk.test.ts`（说话人解析、按同事分开的窗口、界面句子可被解析）、`feedback.test.ts`、`embodied-world.test.ts`（在入口处的问题不会发出；“请跟我来。”后画出跟随）；e2e `escort.spec.ts`（陪同者用自己的嘴说话、跟随与等候、SMZL 直立步行到 CT、护士用自己的声音回应按钮请求并走过来而导诊拒绝、患者被请求时躺下）、`embodied-review.spec.ts`（对林晓说出的委派按钮、她的回答） | 网页 e2e `escort.spec.ts`（Chromium + SwiftShader）；完整 vitest 套件；基础设施基准智能体与具身示范接诊不受影响（其参考路径不对患者说自由文本、不让患者跟随） | no——短语集合固定（没有模型解释请求）；陪同者在世界模型中没有身体；没有让真实大模型用话语移动患者；未经临床教师评审 |
 | 真实的旁观者线索（G12）：体位来自临床状态（标注的 `posture`），吸氧附件来自标注的 `device`，无法说话的患者（`patient.nonVerbalWhen` → `cannotSpeak`） | yes（FX-T；无法说话：内容标准轮次） | core `transport-fields.test.ts`、`cues.test.ts`、`nonverbal.test.ts`；世界感知 / 体位 / `speech` 线索；智能体严重过敏反应体位、`session/nonverbal.test.ts`；网页 e2e（坐起会改变画出的患者） | 10 个病例中标注的字段（`cases verify --all`） | no——Rel、Perf（§14.4） |
 | 屏幕规则、学员文字、惰性提示（额外评审项 1–5） | yes（FX-T 轮） | `screen-rule.test.ts`（读屏 ⇔ 空间规则，抽样点；评审者选的位置）、世界 `i18n.test.ts`（无原始工具 ID；两种语言、占位符一致）、按名称列出不支持的操作、`hint-cost.test.ts`（预算、结果一致）、委派语句 | 网页 e2e（看不到屏幕、“前往”） | no——对提示排序仍要为每个新栅格做一次可达性泛洪（60 个冷栅格约 1.3–1.8 s），只在读取时付出。Perf |
 | 参考演示（`clinicalcraft bench demo`） | yes（A7） | 两种语言的 STEMI：每一步都由引擎 + 世界状态确认，带 ID 与版本的逐步链条，评估跨度；中途中断的接诊判为失败 | 2026-10-29 重新生成的 `docs/bench/demo.en.md` / `demo.zh-CN.md`：50 步、26 个世界动作、0 违规、22 / 22；重新生成时轨迹逐字节相同 | no——演示的是基础设施（一次重放），不是临床推理 |
@@ -1452,13 +1486,16 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 14. **陪同者在世界模型中没有身体**（IX）：他们画在患者身边并会说话，但感知不列出他们，
     他们不挡任何人的路，智能体也不能把他们当作实体来称呼；他们的话经由患者的对话说出。
 15. **移动请求是固定的短语集合**（IX）：zh-CN 与 en 的“跟我来”“在这里等”“跟我去……”
-    “回病床”“把患者送到……”；其他说法是交给患者（或同事）智能体的交谈，而该智能体没有
-    移动任何人的工具。
+    “回病床”“躺下 / 坐起 / 站起”“把患者送到……”；其他说法是交给患者智能体的交谈，而该
+    智能体没有移动任何人的工具（同事的模型只能通过 `do_task` 行动）。
 16. **跟随中的患者位置由几何推导**（IX）：在带路人身后半步、墙的同一侧；渲染器把患者
     画在带路人自己走过的路线上，所以行走途中画出的位置与权威位置可能相差约一米（“在
     这里等”提交空位后两者一致）。
 17. **同事的对话按人区分**（IX），但不指明任何人的话（危急值通知、场景播报、不带职员
     ID 的 `@nurse`）仍留在该角色的对话中，点名交谈的同事读不到。
+18. **对同事的请求同样是固定的短语集合**（IX）——床旁任务、取设备、给药、转运、过来、
+    回岗、带路、某处在哪里——由模型扮演的同事的 `do_task` 只用脚本模型验证过，从未用真实
+    模型运行。肢体语言（转身面向学员）只改变画面：世界中的位姿不变。
 
 ### 14.4 投产所需
 

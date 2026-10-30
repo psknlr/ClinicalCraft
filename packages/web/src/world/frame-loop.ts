@@ -11,7 +11,18 @@ import { monitorRenderer } from "../shared/monitor-render.js";
 import { clampPitch, PHYSICS, stepPlayer, targetFov, type Aabb } from "./physics.js";
 import { regionAt } from "./region.js";
 import { animateDoors } from "./structures.js";
+import { normAngle, rigRotationOf, yawTowards } from "./embodiment.js";
+import type { NpcRecord } from "./context.js";
 import type { VoxelWorld } from "./voxel-world.js";
+
+/** Within this distance (m) someone speaking to the learner turns to face them. */
+const FACE_RANGE = 6;
+
+/** May this NPC turn where it stands (not walking a route, not travelling with or walking behind someone)? */
+function facesSpeaker(world: VoxelWorld, n: NpcRecord): boolean {
+  if (n.kind === "staff") return !world.walkers.busy(n.id);
+  return !world.people.patientPushes.has(n.id) && !world.people.patientEscorts.has(n.id);
+}
 
 /**
  * While paused (intro, a window or the approval dialog covers the view behind a blurred
@@ -176,6 +187,14 @@ export class FrameLoop {
     for (const n of ctx.npcs.values()) {
       const rig = n.rig;
       const dist = Math.hypot(player.x - n.x, player.z - n.z);
+      // body language: someone standing who speaks to the learner nearby turns to face them (never mid-walk, never
+      // a patient lying or sitting on a bed, nor one travelling or walking with someone)
+      if (n.speaking && dist < FACE_RANGE && dist > 0.3 && rig.posture === "standing" && facesSpeaker(world, n)) {
+        const want = rigRotationOf(yawTowards(n.x, n.z, player.x, player.z));
+        const turn = normAngle(want - rig.root.rotation.y);
+        rig.root.rotation.y += turn * Math.min(1, dt * 4);
+        n.rot = rig.root.rotation.y;
+      }
       if (dist < 5) {
         tmpV.copy(tmpCam);
         rig.body.worldToLocal(tmpV);

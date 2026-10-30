@@ -29,7 +29,7 @@ import {
   type VitalsSnapshot,
 } from "@clinicalcraft/core";
 import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from "../session/patient-pipeline.js";
-import { isZh, joinList, joinSentences, rt } from "../session/i18n.js";
+import { isZh, joinList, joinSentences, rt, type RuntimeKey } from "../session/i18n.js";
 import { obtainedResultsText } from "../tools/npc.js";
 import { bedsideReadings, formatVitals, interventionLabel, investigationName, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
 
@@ -94,6 +94,16 @@ function nurseVitalsLine(snapshot: VitalsSnapshot, L: string): string {
   if (manual.length > 0) parts.push(rt(L, "nurse.offline.spotChecks", { readings: manual.join(" · ") }));
   if (live.length > 0) parts.push(rt(L, "nurse.offline.observations", { readings: live.join(" · ") }));
   return parts.join(isZh(L) ? "" : " ");
+}
+
+/**
+ * What a colleague of a role without their own profile says offline (a porter, a receptionist, a pharmacist, a
+ * laboratory technician speaking through the nurse's or the pathologist's): who they are and what they do here —
+ * never another role's clinical knowledge (a porter does not read out the vital signs).
+ */
+export function staffOffline(role: string, name: string, locale: string): string {
+  const key = (["porter", "receptionist", "pharmacist", "lab-tech"].includes(role) ? `staff.offline.${role}` : "staff.offline.generic") as RuntimeKey;
+  return rt(locale, key, { name });
 }
 
 /** Deterministic nurse reply. */

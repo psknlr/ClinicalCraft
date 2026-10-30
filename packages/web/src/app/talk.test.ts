@@ -11,9 +11,10 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { afterEach, describe, expect, it } from "vitest";
-import { movementIntent, type AgentEvent } from "@clinicalcraft/agent";
+import { movementIntent, staffIntent, type AgentEvent } from "@clinicalcraft/agent";
 import { parseCase } from "@clinicalcraft/core";
 import { setLocale, tr } from "../i18n/index.js";
+import { delegateTasks } from "../ui/panels/conversation.js";
 import { SessionStore } from "./store.js";
 import { lineSpeaker } from "./world-bridge.js";
 
@@ -79,6 +80,21 @@ describe("the movement sentences the UI offers are understood (both languages)",
       expect(movementIntent(tr("move.withMe", { place }), "patient")).toEqual({ kind: "follow", destination: place });
       expect(movementIntent(tr("move.take", { place }), "staff")).toEqual({ kind: "take", destination: place });
       expect(movementIntent(tr("move.takeBack"), "staff")).toEqual({ kind: "take", destination: "home" });
+      expect(movementIntent(tr("pose.lying"), "patient")).toEqual({ kind: "posture", posture: "lying" });
+      expect(movementIntent(tr("pose.sitting"), "patient")).toEqual({ kind: "posture", posture: "sitting" });
+      expect(movementIntent(tr("pose.standing"), "patient")).toEqual({ kind: "posture", posture: "standing" });
+      for (const task of ["attach_monitor", "record_ecg", "obtain_iv_access"] as const) expect(staffIntent(tr(`req.say.${task}`)), task).toEqual({ kind: "task", task });
+      expect(staffIntent(tr("req.say.come"))).toEqual({ kind: "come", to: "patient" });
+      expect(staffIntent(tr("req.say.back"))).toEqual({ kind: "back" });
     });
   }
+});
+
+describe("the chips a colleague's window offers follow their role's scope of practice", () => {
+  it("nurses and paramedics: the bedside tasks; a porter, a receptionist, a radiologist: none", () => {
+    expect(delegateTasks("nurse")).toEqual(["attach_monitor", "record_ecg", "obtain_iv_access"]);
+    expect(delegateTasks("paramedic")).toEqual(["attach_monitor", "record_ecg", "obtain_iv_access"]);
+    expect(delegateTasks("attending")).toEqual(["attach_monitor", "record_ecg", "obtain_iv_access"]);
+    for (const role of ["porter", "receptionist", "radiologist", "lab-tech", "pharmacist"]) expect(delegateTasks(role), role).toEqual([]);
+  });
 });

@@ -78,6 +78,7 @@ export * from "./session/delegation.js";
 export * from "./session/embodied.js";
 export * from "./session/embodied-autopilot.js";
 export * from "./session/movement-intents.js";
+export * from "./session/staff-intents.js";
 export * from "./session/staff-voice.js";
 export * from "./session/session.js";
 
