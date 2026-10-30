@@ -121,7 +121,11 @@ developer documents use.
 | triage readings | triage readings (taken by hand) | 分诊手测数值 | `physiology.monitor.spotChecks` |
 | IV access | IV access | 静脉通路 | `iv-access` |
 | delegate a task | delegate a task | 委派任务 | `delegate_task` |
-| take the patient (on their trolley) | take the patient to …; patient transport | 转运患者；用推床把患者送过去 | `transport_patient` |
+| take the patient (on their trolley) | take the patient to …; patient transport | 转运患者；用推床把患者送过去 | `transport_patient` (a patient who can walk walks there, EMBODIED §8.4) |
+| walk with the patient | walk with the patient; said: "Please follow me." / "Please wait here." | 带患者走动；说：“请跟我来。” / “请在这里等一下。” | `escort_patient` / `release_patient`, `PatientPlace.escort` (the technical name *escort* stays out of learner text) |
+| come with me to … | said: "Please come with me to the CT scanner." | 说：“请跟我去CT扫描仪。” | a movement request → `transport_patient` (typed or a chip; understood in both languages) |
+| change position | said: "Please lie down." / "Please sit up." / "Please stand up." | 说：“请躺下。” / “请坐起来。” / “请站起来。” | the case's positioning intervention for that posture, else `reposition_patient` |
+| ask a colleague | said to them: "Please put the patient on the monitor.", "Please come to the bedside.", "You can go back now." | 对同事说：“请给患者上监护。”“请到床旁来。”“您可以回岗位了。” | a request in words → `delegate_task` / a walk by that colleague; outside their role they say so (`checkTaskScope`) |
 | equipment operation | operate the equipment (device operations) | 设备操作 | world action / 世界动作: `world_action`, `interact_object` |
 | refusal | "Not here: …" with the reason and the way | “此处无法进行：……”及原因与去路 | spatial refusal: `SPATIAL_REQUIREMENT_UNMET`, `hint.goal` |
 | Go there | Go there | 前往 | a `navigate` to `hint.goal` |
