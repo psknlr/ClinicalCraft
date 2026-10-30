@@ -60,6 +60,10 @@
   建立静脉通路、取设备、给药、转运患者、过来、回岗、带路、说明某处在哪里），否则用自己的
   声音说明这不是自己的工作、谁可以做；患者在被请求时躺下、坐起或站起
   （`reposition_patient`，或病例中的体位处置）；由模型扮演的同事只能通过 `do_task` 行动。
+- **手部轮次（HX）：** 物品在人与人之间传递，设备依赖设备——`hand_over {to}`（把携带的
+  物品递给伸手可及、有空手的人）、佩戴（equipped）的物品不占手、`nearbyState`（操作需要
+  附近某台设备处于某状态，并提示去那台设备）、用任一语言请任何同事“递给我……”（对方拿起、
+  走过来、递过来），以及浏览器中手持物品设备面板的携带行和背包面板中的“手中物品”（§2.1）。
 - **尚未完成**（§14）：没有任何真实大模型跑过具身工具或基准测试；没有随附任何
   GLB 设备模型；也没有作为生产服务做过加固、部署或运维。
 
@@ -174,7 +178,9 @@
   每次提交和启动示范接诊前再发一次；Mover 驱动时从不发送。
 * **同一条动作路径**：面板上的设备按钮都是 `world_action` 操作（监护仪的连接 /
   无创血压 / 读屏——读屏只在屏幕可读时提供——，心电图车的准备 / 连接 / 记录 /
-  复位，水槽的 `wash_hands`，把推车 `move_to` 到床旁，按 E 对上锁的门执行
+  复位，水槽的 `wash_hands`，把推车 `move_to` 到床旁，手持物品的 `pick_up` /
+  `put_down` / `equip` / `hand_over`——其设备面板中的携带行，以及背包面板（按键 7）
+  中的“手中物品”，列出学员携带的东西，并为 5 米内的每个人提供“递给……”——，按 E 对上锁的门执行
   `unlock`）；学员的临床操作先经 `checkSpatial` 检查。若拒绝只与距离有关且步行
   ≤ 5.5 m（瞄准距离），化身会走到 `hint.goal` 并重试一次；否则显示本地化的
   拒绝原因和“前往”按钮（向提示目标执行 `navigate`）。会话拒绝信息的第二行
@@ -378,7 +384,7 @@
 的操作列在其 `availableActions` 中（取决于其行为和当前状态）：例如门的
 `open`/`close`/`lock`/`unlock`；工作站的 `order`/`read`；监护仪的
 `attach`/`read`/`cycle_nibp`；心电图车的 `prepare`/`connect`/`record`/`reset`；
-推车的 `move_to`；手持物品的 `pick_up`/`put_down`/`equip`；水槽的 `wash_hands`；
+推车的 `move_to`；手持物品的 `pick_up`/`put_down`/`equip`/`hand_over {to}`；水槽的 `wash_hands`；
 患者的 `transport_patient`、`escort_patient`、`release_patient`、`reposition_patient`（§8.4）。CT 扫描仪从不
 提供 `pick_up`；门从不提供 `order`。
 
@@ -702,7 +708,7 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | 患者（`patient:<slot>`） | — | `transport_patient {destination}`（物理操作；在患者身边 1.5 m 以内；角色 `TRANSPORT_ROLES`：clinician、attending、nurse、paramedic、porter）——见 §8.4；`escort_patient` / `release_patient`（物理操作；在交谈距离 3 m 内且有视线；角色相同；患者必须能走动，否则 `PRECONDITION_FAILED` 并说明原因）——见 §8.4；`reposition_patient {posture}`（物理操作；交谈距离；角色相同；只有在有可躺可坐之处时才能躺下或坐起，能走动时才能站起，在强制体位的地方、跟人走动中或无法回应时都不行）——见 §8.4 |
 | bed、board、atlas、craft、none；其他人、房间 | — | 无 |
 | + `portable: "cart"` | — | `move_to {goal}`（§5） |
-| + `portable: "handheld"` | 携带时为 `held` / `equipped` | `pick_up`（在够及范围内，最多 `MAX_HELD` = 2 件 → `HANDS_FULL`）、`put_down`（放在前方空闲处）、`equip`（未携带时 `NOT_HOLDING`） |
+| + `portable: "handheld"` | 携带时为 `held` / `equipped`，同时保留自身存储的生命周期状态——操作的 `from`、`state` 谓词和 `nearbyState` 与两者之一匹配即可（持针器 `from: ["loaded"]` 加 `requires: [{state: "held"}]`：已夹针且拿在手里）；携带中的物品只有拿着它的人能操作（其他人：`DEVICE_BUSY`） | `pick_up`（在够及范围内，手里最多 `MAX_HELD` = 2 件 → `HANDS_FULL`；佩戴（equipped）的物品不占手）、`put_down`（放在前方空闲处；佩戴的物品即脱下）、`equip`（未携带时 `NOT_HOLDING`）、`hand_over {to}`（`hand.ts`：递给一个人——行动者或职员——须在接触距离 1.5 m 内且有视线，否则 `NOT_IN_RANGE` 并提示走到对方身边；对方手里拿满 → `HANDS_FULL`；佩戴的物品须先脱下；物品仍是 `held`，改由接收者拿着；两条 `item.held` 事件） |
 
 * 目录操作用 `select` 选择病例条目：`param`（操作参数）、`capability`（第一个
   `requires` 非空且全部由该设备提供的病例条目——心电图车的 `record` → 病例的十二
@@ -710,9 +716,14 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   目录行为上（监护仪的 `read` 显示屏幕）。
 * **谓词**：`actorWithin` / `patientWithin` 在空间阶段检查（`NOT_IN_RANGE` /
   `NOT_VISIBLE` + 提示：交互距离足够时指向交互点，否则是该范围的 `look` 目标）；
-  `state`、`role`、`handsClean`、`actorHolding` 和 `deviceAtBedside` 是前置条件
+  `state`、`role`、`handsClean`、`actorHolding`（物品 ID 或设备类型；佩戴的物品也算）、
+  `nearbyState` 和 `deviceAtBedside` 是前置条件
   （`PRECONDITION_FAILED`；`deviceAtBedside` 提示去取便携设备并附 `hint.then`；
-  `handsClean` 提示最近的水槽，`then: wash_hands`）。既未声明 `actorWithin` 也未
+  `handsClean` 提示最近的水槽，`then: wash_hands`）。`nearbyState {type, state, within?}`
+  让设备依赖设备：同一楼层、`within` 米内（占地边缘之间；默认 `NEARBY_STATE_RANGE`
+  = 6 m）另一台该类型的在用设备须处于所列状态之一——高频电刀只有在烟雾排除器运行时
+  才能激发。失败时说明是哪台设备、它现在处于什么状态，并提示去操作最近的那台；附近
+  没有时如实说明（`WorldRuntime.nearby` 读取同样的信息，技能的 `requires` 也会求值）。既未声明 `actorWithin` 也未
   声明 `patientWithin` 的操作，必须在实体的交互距离内完成；两者都声明的操作（心电图
   机的 `prepare` 和 `connect`；`record` 则加上规则要求的贴近患者距离）同时按两者
   确定站位——找一个共同位置，否则去取设备（§5）。
@@ -860,9 +871,17 @@ reference 行走者（基准测试）和具身示范接诊会规划这些转运�
 | 谁 | 话语 | 行动 |
 |---|---|---|
 | 患者（及身边的陪同者） | 他们的智能体（依据病例） | 跟随、等候、跟我去……、回病床、躺下 / 坐起 / 站起——由世界的结果旁白 |
-| 护士、急救员、主治医生 | 他们的智能体，以本人身份（`user_message.staff`） | 其执业范围内的床旁任务（上监护、心电图、静脉通路、取设备、给药——经审批闸门——、转运患者）、过来、回岗、带路、某处在哪里 |
-| 护工 | 本角色的话（离线时：自己是谁、做什么） | 取设备、转运患者、过来、回岗、带路、某处在哪里；临床任务：“抱歉，……不是护工在这里做的事。可以请护士来做。” |
-| 导诊、药师、检验技师、放射科医生、病理科医生 | 同上 | 取设备、过来、回岗、带路、某处在哪里；其他请求用自己的声音拒绝 |
+| 护士、急救员、主治医生 | 他们的智能体，以本人身份（`user_message.staff`） | 其执业范围内的床旁任务（上监护、心电图、静脉通路、取设备、给药——经审批闸门——、转运患者）、递给我……、过来、回岗、带路、某处在哪里 |
+| 护工 | 本角色的话（离线时：自己是谁、做什么） | 取设备、递给我……、转运患者、过来、回岗、带路、某处在哪里；临床任务：“抱歉，……不是护工在这里做的事。可以请护士来做。” |
+| 导诊、药师、检验技师、放射科医生、病理科医生 | 同上 | 取设备、递给我……、过来、回岗、带路、某处在哪里；其他请求用自己的声音拒绝 |
+
+**递给我……**（“Pass me the scalpel”、“Needle holder, please”、“Scalpel.”、
+“把手术刀递给我”、“递一下纱布”、“纱布，谢谢”）：找一件叫这个名字（任一语言）的手持
+物品，近者优先——先找同事自己手里的，再找没人拿着的。同事在物品所在处把它拿起，走到
+学员身边，用自己的身体执行 `hand_over` 递过来（学员走开了就按距离提示再跟一次），先应答，
+再说“给您”；学员手里拿满、东西已经在学员手里或在别人手里时，用自己的声音说明，什么都
+不移动。单独一个名词只是猜测：没有叫这个名字的手持物品时，这句话仍作为对同事智能体说的
+话。取设备时若说的是手持物品，也同样递过来。
 
 由模型扮演的同事在学员话语开启的回合中获得 `do_task`（PROTOCOL §3）：同样的委派，用他们
 自己的身体、执业范围与审批——确定性识别留给模型的自由说法（“有空的时候帮他把监护都接上？”）
@@ -1425,7 +1444,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 可见性（`VisibilityModel`） | yes（W1；门从不遮挡自己） | 单元测试：墙、窗、门、视野、部分遮挡、被挪动的推车、从交互点看关闭的门、楼层之间无视线 | 感知与空间场景；任何观察中都没有病例事实（10 个病例 × 2 种语言） | no——性能只测到 120 × 100 m 和两层 |
 | 导航（`GridAStarBackend`、`NavGrids`、入口图；目标代价上限 S7；多楼层行走被打断 C11） | yes（W1） | 单元测试：三个场馆中的真实路线、每个交互设备和每扇门、各类失败、门锁、区域、障碍、被挪动的推车、两层测试场馆、评审者构造的 DoS 目标被拒绝或 < 1 s、在楼梯路线的每个点停下的行走 | 已测量（§7）；导航场景 | no——更大的医院未测量；评估过的替代方案（导航网格）未采用（R12）。Perf |
 | 状态存储（`WorldStateStore`：行动者、版本、事件、幂等窗口、规范化快照） | yes（W2） | 单元测试：版本规则（含传感器更新）、动态信息、有界日志、快照一致性与拒绝 | `--continue` 恢复具身会话的位置；演示的轨迹重新生成时逐字节相同 | no——快照格式（`clinicalcraft-world@1`）没有迁移方案；会话记录是本地文件。Rel、Ops |
-| 设备行为与权限（`behaviors.ts`、`clinical.ts`、`authority.ts`） | yes（W2） | 在内置目录 + 一个测试目录上的单元测试：各类型的操作、谓词、带占用与时长的心电图状态机、跟随引擎的派生监护仪状态、门、水槽、储物柜、手持物品、角色限制 | 交互与恢复场景；STEMI 演示（心电图 prepare / connect / record / reset，监护仪 attach） | no——只编写了两个目录行为（`ecg-machine`、`patient-monitor`）；手持物品只存在于测试目录中 |
+| 设备行为与权限（`behaviors.ts`、`clinical.ts`、`authority.ts`） | yes（W2） | 在内置目录 + 一个测试目录上的单元测试：各类型的操作、谓词、带占用与时长的心电图状态机、跟随引擎的派生监护仪状态、门、水槽、储物柜、手持物品、角色限制 | 交互与恢复场景；STEMI 演示（心电图 prepare / connect / record / reset，监护仪 attach） | no——只编写了两个目录行为（`ecg-machine`、`patient-monitor`）；手持物品（递交、佩戴）与 `nearbyState` 只存在于测试目录和内容包中 |
 | 空间规则（`DefaultSpatialPolicy`、`SpatialChecker`）：唯一的床旁规则、唯一的屏幕规则、生命体征读屏 / 手测 / 查病历、kind 默认值、静脉通路是患者状态、化验在患者身边采样、结果不在设备上读、病历查阅在电子病历终端或床旁进行、药品配送、被占用的设备、`patient-at-provider`、能力显示名称 | yes（W2；评审 G4–G10、G8、C14） | §6 的每一行（成立、每种失败原因、能解决它的提示）；对 10 个病例每个条目的提示性质测试（含转运）；三个医院每个床位的床旁规则；设备操作收敛性扫描（C7）；屏幕规则 ⇔ 空间规则；惰性提示的预算 | `cases verify --all`；对整个病例库的具身示范接诊（40 / 40 达到临床得分）；两个基准智能体均无被接受的违规 | no——只在 10 个内置病例和 3 个场馆上验证；没有临床教师审阅这些规则的记录 |
 | 感知（`observe`、`find`、`inspect`、`roomInfo`、`canSee`；认知等级、下落、近期事件、区域名称、跨楼层可达性） | yes（W2；G13、线索说明 1–2、C16） | 单元测试：认知等级、上限、方位、线索、屏幕规则、不改变版本的记忆、下落及其快照、第二 / 第三人称事件、按名称的出口、楼上 ICU 可达并按路径排序；任何观察中都没有病例事实 | 感知 / 空间场景；在护士站执行 `/delegate staff:ed-nurse record_ecg`（综合医院与教学医院） | no——按 ID 导航去的是真实位置而非“认为的”位置（§14.3）；`find {}` 每次 7–12 ms。Perf |
 | 动作总线、运行时（`createWorldRuntime`）、世界轨迹 | yes（W2） | 在真实引擎上用模拟会话做的单元测试：提交顺序、幂等、过期版本、占用与执行中的锁、行走中和审批中取消、按行动者排队、可用性、权限、行走只计一次、场景控制、恢复、确定性、轨迹树 | 已接入智能体会话（CLI、MCP、基准测试、网页）；每个场景在各种子下都是确定的 | no——HTTP 服务自身不托管世界运行时（只转发桥接调用）。Rel |
@@ -1478,7 +1497,9 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
    去它真正所在的地方（§4）。
 9. `anaphylaxis-garden`（`community` 病例）在 `teaching-hospital` 中没有位置，因此不能在
    那里以具身模式进行（`embodiment_no_slot`）；临床模式可以。
-10. 内置目录中没有声明任何手持物品：`pick_up` / `put_down` / `equip` 只用测试目录测试过。
+10. 内置目录中没有声明任何手持物品：`pick_up` / `put_down` / `equip` / `hand_over`、
+    `nearbyState` 与“递给我……”只用测试目录测试过（世界 `hand.test.ts`、会话
+    `staff-hand.test.ts`）；内容包（`contentDirs`）可以声明它们。
 11. `STALE_DESTINATION` 已声明，但从不返回。
 12. 职员是确定性脚本；世界中没有由模型驱动的职员智能体。
 13. 临床模式下，网页示范接诊（`walk_to`）仍在渲染器碰撞体（同一组碰撞体）上用自己的

@@ -132,8 +132,17 @@ accessible route (beds take lifts and ramps, never stairs).
 World predicates (`requires`): `{ actorWithin: m }` (the acting actor is
 within m of this device), `{ patientWithin: m }` (… of the bound patient),
 `{ deviceAtBedside: true }` (this device stands within the bedside radius of
-the patient), `{ actorHolding: id }`, `{ state: id | [id…] }`,
-`{ role: [role…] }`, `{ handsClean: true }`, and `all` / `any` / `not`.
+the patient), `{ actorHolding: id }` (an item id or an equipment type; worn
+items count), `{ state: id | [id…] }`, `{ role: [role…] }`,
+`{ handsClean: true }`, `{ nearbyState: { type, state, within? } }` (another
+in-service device of that type on the same level within `within` m —
+footprint to footprint, default 6 — is in one of the states: equipment that
+depends on equipment, e.g. an electrosurgical unit that fires only with the
+smoke evacuator running; `checkCatalogs` warns about an unknown type or
+state), and `all` / `any` / `not`. A carried handheld item is in two states
+at once — `held` / `equipped` and its own lifecycle state — and `from`,
+`state` and `nearbyState` match either: `from: ["loaded"]` with
+`requires: [{ "state": "held" }]` means loaded and in hand (EMBODIED §8.1).
 
 **Validation.** `checkFacility`: unknown level ids (buildings, rooms,
 placements, slots, staff, access zones; errors), an entity on another level

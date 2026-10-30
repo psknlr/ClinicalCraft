@@ -12,6 +12,7 @@
  * `perception.ts`). `entity()` / `entities()` are the static registry
  * (positions at build time): use `observe` / `inspect` for where things are now.
  */
+import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
 import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
 import { buildCollisionModel } from "./collision.js";
@@ -104,6 +105,10 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     },
 
     entity: (id) => registry.entity(id),
+    nearby(aroundId, type, within = NEARBY_STATE_RANGE) {
+      const place = locator.place(aroundId);
+      return place ? rules.nearbyOfType(place, type, within).map((id) => ({ id, state: rules.state(id), states: rules.states(id) })) : [];
+    },
     entities: () => [...registry.entities],
     resolveId: (alias) => actions.resolve(alias),
 

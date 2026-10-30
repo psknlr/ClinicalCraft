@@ -9,6 +9,7 @@
  * | "Could you do a 12-lead ECG?", "做个心电图"                    | `task` record_ecg |
  * | "Put in a cannula", "建立静脉通路"                             | `task` obtain_iv_access |
  * | "Bring the defibrillator", "把除颤仪推过来"                     | `fetch` (the words naming what) |
+ * | "Pass me the scalpel", "Scalpel, please", "把手术刀递给我", "纱布" | `hand` (a carried item, from their hands to the learner's) |
  * | "Give aspirin 300 mg", "给他用阿司匹林"                         | `give` (the words naming what; talk unless the case has it) |
  * | "Please take the patient to CT", "把患者送到CT室"               | `take` (`movement-intents.ts`) |
  * | "Come here", "Come to the bedside", "过来一下", "到床旁来"       | `come` (to the learner / to the patient) |
@@ -17,7 +18,8 @@
  * | "Where is the CT scanner?", "CT室在哪里？"                     | `where` |
  *
  * Anchored to the whole short utterance, like the patient's requests: "Did you give the aspirin?", "What did the
- * ECG show?", "Where did he fall?" are talk.
+ * ECG show?", "Where did he fall?" are talk. A bare noun ("Scalpel.", "纱布") is a `hand` request only as a guess:
+ * the colleague passes it when the world has a handheld item called that, else the words stay talk.
  */
 import { EN_ASK, EN_LEAD, EN_TAIL, isZhText, MAX_LENGTH, movementIntent, ZH_LEAD, ZH_TAIL } from "./movement-intents.js";
 
@@ -28,6 +30,7 @@ export type NamedTask = "attach_monitor" | "record_ecg" | "obtain_iv_access";
 export type StaffIntent =
   | { kind: "task"; task: NamedTask }
   | { kind: "fetch"; what: string }
+  | { kind: "hand"; what: string }
   | { kind: "give"; what: string }
   | { kind: "take"; destination: string | null }
   | { kind: "come"; to: "me" | "patient" }
@@ -38,8 +41,8 @@ export type StaffIntent =
 const tidy = (s: string) =>
   s
     .trim()
-    .replace(/^(?:the|a|an|some|another)\s+/iu, "")
-    .replace(/^(?:那个|这个|一个|一台|一下)/u, "")
+    .replace(/^(?:the|a|an|some|another|that|this|my)\s+/iu, "")
+    .replace(/^(?:那个|这个|一个|一台|一下|一把|一支|一块|一根|一包|一副)/u, "")
     .trim();
 
 /** Who the patient is in a request ("him", "the patient", their name). */
@@ -47,6 +50,12 @@ function patientWords(names: readonly string[], zh: boolean): string {
   const own = names.filter((n) => n.trim()).map((n) => n.trim().replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
   return (zh ? ["患者", "病人", "他", "她", "这位患者", "病患", ...own] : ["(?:the |this |our )?patient", "him", "her", "them", ...own]).join("|");
 }
+
+/** Short replies that are not an item called for (a bare-noun `hand` guess). */
+const ZH_NOT_A_THING = /^(?:好的?|好了|好吧|谢谢|是的?|不是|对的?|不对|没有|没事|可以|不行|行|嗯+|哦+|你好|您好|明白|明白了|知道了|收到|等等|稍等|继续|停|开始|结束)$/u;
+/** Characters a bare instrument name does not carry (a short sentence: "他是在哪里摔倒的", "来一下"). */
+const ZH_NOT_A_NOUN = /[是在吗了呢吧我你您他她它么什怎哪谁有没不要请帮能会看说做给把去来到过还就都也很太呀啊哈嘛]/u;
+const EN_NOT_A_THING = /^(?:yes|yeah|yep|no|nope|ok(?:ay)?|sure|fine|good|great|right|thanks?|thank you|hi|hello|hey|sorry|what|why|how|who|when|where|which|wait|stop|go|continue|done|ready|me|you|him|her|them|it|this|that)$/iu;
 
 function zhIntent(text: string, names: readonly string[]): StaffIntent | null {
   const s = text.replace(ZH_LEAD, "");
@@ -59,6 +68,9 @@ function zhIntent(text: string, names: readonly string[]): StaffIntent | null {
   if (m && end(m[1]!)) return { kind: "task", task: "record_ecg" };
   m = new RegExp(String.raw`${ask}(?:给(?:${who}))?(?:建立|开|开放|打|留|扎|上)(?:个|一条|一个|一下)?(?:静脉通路|静脉通道|留置针|静脉(?:输液)?通路)(.*)$`, "u").exec(s);
   if (m && end(m[1]!)) return { kind: "task", task: "obtain_iv_access" };
+  // hand: "把手术刀递给我", "递一下纱布", "给我一把持针器"
+  m = new RegExp(String.raw`${ask}把(.+?)(?:递给我|递过来|递一下|拿给我|交给我|给我)(.*)$`, "u").exec(s) ?? new RegExp(String.raw`${ask}(?:递给我|递一下|递|拿给我|给我)(?:一下)?(.+)$`, "u").exec(s);
+  if (m && (m[2] === undefined || end(m[2])) && tidy(m[1]!.replace(ZH_TAIL, ""))) return { kind: "hand", what: tidy(m[1]!.replace(ZH_TAIL, "")) };
   // fetch: "把除颤仪推过来", "去拿一下心电图机", "拿个氧气瓶来"
   m = new RegExp(String.raw`${ask}把(.+?)(?:推|拿|取|带|搬)(?:过来|来|到床旁|到这里|到这儿)(.*)$`, "u").exec(s) ?? new RegExp(String.raw`${ask}(?:去)?(?:拿|取|推)(?:一下|个|一个|一台)?(.+?)(?:过来|来)(.*)$`, "u").exec(s);
   if (m && end(m[2]!) && tidy(m[1]!)) return { kind: "fetch", what: tidy(m[1]!) };
@@ -85,6 +97,9 @@ function zhIntent(text: string, names: readonly string[]): StaffIntent | null {
     const place = tidy(m[1]!);
     if (place && place.length <= 16) return { kind: "where", place };
   }
+  // a bare noun, the way an instrument is called for at the table: "手术刀", "纱布，谢谢"
+  m = /^([\p{Script=Han}A-Za-z0-9-]{2,10}?)(?:[，,\s]*(?:谢谢|麻烦了|麻烦你|麻烦您))?[。.!！]?$/u.exec(s);
+  if (m && !ZH_NOT_A_THING.test(m[1]!) && !ZH_NOT_A_NOUN.test(m[1]!)) return { kind: "hand", what: m[1]! };
   return null;
 }
 
@@ -102,6 +117,9 @@ function enIntent(text: string, names: readonly string[]): StaffIntent | null {
   if (m && end(m[1]!)) return { kind: "task", task: "record_ecg" };
   m = re(String.raw`(?:put in|place|insert|get|site|start|establish|pop in|put up)\s+(?:a\s+|an\s+|the\s+|some\s+)?(?:iv access|iv line|intravenous (?:access|line)|cannula|venflon|iv)\b`).exec(s);
   if (m && end(m[1]!)) return { kind: "task", task: "obtain_iv_access" };
+  // hand: "pass me the scalpel", "could you hand me a swab?" ("give me a minute" is talk)
+  m = new RegExp(String.raw`^${EN_ASK}(?:hand|pass|give)\s+(?:me|us)\s+(?!a\s+(?:minute|moment|second|sec|hand|call|ring|break|chance)\b|(?:a\s+)?(?:some\s+)?(?:time|space|room|privacy)\b)(.+?)(?:\s+(?:here|over|over here|back))?(\s*[.!?]*\s*(?:please)?\s*[.!?]*)$`, "iu").exec(s);
+  if (m && end(m[2]!) && tidy(m[1]!.replace(EN_TAIL, ""))) return { kind: "hand", what: tidy(m[1]!.replace(EN_TAIL, "")) };
   // fetch: "bring the defibrillator", "could you get me the ECG cart over here?"
   m = new RegExp(String.raw`^${EN_ASK}(?:bring|fetch|get|grab|wheel)\s+(?:me\s+|us\s+)?(?:the|a|an)\s+(.+?)(?:\s+(?:here|over|over here|in here|to the bed(?:side)?|to the patient))?(\s*[.!?]*\s*(?:please)?\s*[.!?]*)$`, "iu").exec(s);
   if (m && end(m[2]!) && tidy(m[1]!)) return { kind: "fetch", what: tidy(m[1]!.replace(EN_TAIL, "")) };
@@ -125,6 +143,12 @@ function enIntent(text: string, names: readonly string[]): StaffIntent | null {
   if (m) {
     const place = tidy(m[1]!);
     if (place && place.split(/\s+/).length <= 5) return { kind: "where", place };
+  }
+  // a bare noun, the way an instrument is called for at the table: "Scalpel.", "Mayo scissors, please"
+  m = /^((?:the\s+|a\s+|an\s+|some\s+|another\s+)?[\p{L}][\p{L}\d'-]*(?:\s+(?!please\b)[\p{L}\d][\p{L}\d'-]*){0,2})(?:[\s,]+please)?[\s.!]*$/iu.exec(s);
+  if (m) {
+    const what = tidy(m[1]!);
+    if (what && !EN_NOT_A_THING.test(what) && !EN_NOT_A_THING.test(what.split(/\s+/)[0]!)) return { kind: "hand", what };
   }
   return null;
 }

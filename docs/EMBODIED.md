@@ -79,6 +79,13 @@
   voice that it is not their job and who can; the patient lies down, sits up
   or stands when asked (`reposition_patient`, or the case's positioning
   treatment); a model-voiced colleague acts only through `do_task`.
+- **Hands round (HX):** things pass between people and devices depend on
+  devices — `hand_over {to}` (a carried item to a person within arm's
+  reach with a free hand), worn (equipped) items leave the hands free,
+  `nearbyState` (an operation needs a nearby device in a state, with a hint
+  to it), "pass me …" to any colleague in either language (they pick it up,
+  come over and hand it over), and in the browser the carry row of a handheld
+  item's device panel and "In your hands" in the inventory panel (§2.1).
 - **Not done** (§14): no live language model has been run through the
   embodied tools or the benchmark; no GLB equipment model ships; nothing has
   been hardened, deployed or operated as a production service.
@@ -213,8 +220,11 @@ the world model; the browser supplies its sensors and actuators
 * **Same action path**: the panels' equipment buttons are `world_action` ops
   (monitor attach / NIBP / read — the read is offered only while the screen
   is readable —, ECG cart prepare / connect / record / reset, a sink's
-  `wash_hands`, a cart's `move_to` to the bed, a locked door's `unlock` on
-  E); learner clinical actions are checked with `checkSpatial` first. A
+  `wash_hands`, a cart's `move_to` to the bed, a handheld item's `pick_up` /
+  `put_down` / `equip` / `hand_over` — its device panel's carry row, and
+  "In your hands" in the inventory panel (key 7) for what the learner
+  carries, with "Hand to …" for each person within 5 m —, a locked door's
+  `unlock` on E); learner clinical actions are checked with `checkSpatial` first. A
   refusal only about distance whose walk is ≤ 5.5 m (the aim reach) walks the
   avatar to `hint.goal` and retries once; otherwise the localised refusal
   shows with "Go there" (a `navigate` to the hint). The session's second
@@ -478,7 +488,7 @@ listed in its `availableActions` (they depend on its behaviour and current
 state): e.g. doors `open`/`close`/`lock`/`unlock`; workstations
 `order`/`read`; monitors `attach`/`read`/`cycle_nibp`; ECG cart
 `prepare`/`connect`/`record`/`reset`; carts `move_to`; handheld items
-`pick_up`/`put_down`/`equip`; sinks `wash_hands`; the patient
+`pick_up`/`put_down`/`equip`/`hand_over {to}`; sinks `wash_hands`; the patient
 `transport_patient`, `escort_patient`, `release_patient`,
 `reposition_patient` (§8.4). A CT scanner never advertises `pick_up`; a door never
 advertises `order`.
@@ -898,7 +908,7 @@ reservation) replaces them — the built-in catalogs declare one for
 | the patient (`patient:<slot>`) | — | `transport_patient {destination}` (physical; from the patient's side, 1.5 m; roles `TRANSPORT_ROLES`: clinician, attending, nurse, paramedic, porter) — §8.4; `escort_patient` / `release_patient` (physical; from conversation range, 3 m with line of sight; the same roles; the patient must be able to walk — `PRECONDITION_FAILED` with the reason otherwise) — §8.4; `reposition_patient {posture}` (physical; conversation range; the same roles; lie down / sit up only on something to lie or sit on, stand up only if they could walk, nothing on a place that forces a posture, while walking with someone or unresponsive) — §8.4 |
 | bed, board, atlas, craft, none; other people, rooms | — | none |
 | + `portable: "cart"` | — | `move_to {goal}` (§5) |
-| + `portable: "handheld"` | `held` / `equipped` while carried | `pick_up` (in reach, at most `MAX_HELD` = 2 → `HANDS_FULL`), `put_down` (on a free spot in front), `equip` (`NOT_HOLDING` unless carried) |
+| + `portable: "handheld"` | `held` / `equipped` while carried, besides its own stored lifecycle state — an operation's `from`, a `state` predicate and `nearbyState` match either (a needle holder `from: ["loaded"]` with `requires: [{state: "held"}]`: loaded and in hand); only its holder operates a carried item (anyone else: `DEVICE_BUSY`) | `pick_up` (in reach, at most `MAX_HELD` = 2 in hand → `HANDS_FULL`; worn — equipped — items do not fill a hand), `put_down` (on a free spot in front; takes a worn item off), `equip` (`NOT_HOLDING` unless carried), `hand_over {to}` (`hand.ts`: to a person — an actor or a member of staff — within contact range, 1.5 m, with line of sight, `NOT_IN_RANGE` + a hint to step up to them otherwise; their hands full → `HANDS_FULL`; a worn item is taken off first; the item stays `held`, now by the recipient; two `item.held` events) |
 
 * Catalog operations select their case item with `select`: `param` (an
   operation parameter), `capability` (the first case item whose non-empty
@@ -909,10 +919,18 @@ reservation) replaces them — the built-in catalogs declare one for
 * **Predicates**: `actorWithin` / `patientWithin` are checked in the spatial
   phase (`NOT_IN_RANGE` / `NOT_VISIBLE` + hint: the interaction point when
   the reach is enough, else a `look` goal with that range); `state`, `role`,
-  `handsClean`, `actorHolding` and `deviceAtBedside` are preconditions
+  `handsClean`, `actorHolding` (an item id or an equipment type; worn items
+  count), `nearbyState` and `deviceAtBedside` are preconditions
   (`PRECONDITION_FAILED`; `deviceAtBedside` hints a portable device to
   fetch, with `hint.then`; `handsClean` hints the nearest sink, `then:
-  wash_hands`). An operation that declares neither `actorWithin` nor
+  wash_hands`). `nearbyState {type, state, within?}` makes equipment depend
+  on equipment: another in-service device of that type, on the same level
+  within `within` m (footprint to footprint; default `NEARBY_STATE_RANGE`
+  = 6 m), must be in one of the states — an electrosurgical unit fires only
+  with the smoke evacuator running. A failure names the device and the state
+  it is in, and hints the nearest one to go and operate; none nearby says so
+  (`WorldRuntime.nearby` reads the same, and skills' `requires` evaluate it
+  too). An operation that declares neither `actorWithin` nor
   `patientWithin` must be done within the entity's reach; one that declares
   both (the ECG machine's `prepare` and `connect`; `record` with the
   policy's at-patient range) is placed by both at once — a joint spot, else
@@ -1106,9 +1124,20 @@ claim:
 | who | words | acts |
 |---|---|---|
 | the patient (and the companion at their side) | their agent (case-grounded) | follow, wait, come with me to …, back to bed, lie down / sit up / stand up — narrated from the world's result |
-| a nurse, a paramedic, the attending | their agent, as themselves (`user_message.staff`) | the bedside tasks of their scope (monitor, ECG, IV access, fetch, give — through the approval gate —, take the patient), come, go back, show the way, where is … |
-| a porter | their own role's words (offline: who they are, what they do) | fetch, take the patient, come, go back, show the way, where is …; a clinical task: "Sorry, … not a porter's job here. A nurse can." |
-| a receptionist, a pharmacist, a laboratory technician, a radiologist, a pathologist | as above | fetch, come, go back, show the way, where is …; anything else refused in their own voice |
+| a nurse, a paramedic, the attending | their agent, as themselves (`user_message.staff`) | the bedside tasks of their scope (monitor, ECG, IV access, fetch, give — through the approval gate —, take the patient), pass me …, come, go back, show the way, where is … |
+| a porter | their own role's words (offline: who they are, what they do) | fetch, pass me …, take the patient, come, go back, show the way, where is …; a clinical task: "Sorry, … not a porter's job here. A nurse can." |
+| a receptionist, a pharmacist, a laboratory technician, a radiologist, a pathologist | as above | fetch, pass me …, come, go back, show the way, where is …; anything else refused in their own voice |
+
+**Pass me …** ("Pass me the scalpel", "Needle holder, please", "Scalpel.",
+"把手术刀递给我", "递一下纱布", "纱布，谢谢"): a handheld item called that
+(either language), nearest first — the one in the colleague's own hands,
+else a free one. They pick it up where it lies, come to the learner and
+`hand_over` it with their own body (a reach hint followed once if the
+learner moved), acknowledging and then saying "Here you are"; the learner's
+hands full, the item already in them or in someone else's hands is said in
+their voice and nothing moves. A bare noun is only a guess: with no handheld
+item called that, the words stay talk for the colleague's agent. A fetch that
+names a handheld item is passed the same way.
 
 A colleague voiced by a model gets `do_task` in a turn the learner's words
 started (PROTOCOL §3): the same delegation with their own body, scope and
@@ -1809,7 +1838,7 @@ the measurements of §4, §7, §11).
 | Visibility (`VisibilityModel`) | yes (W1; a door never hides itself) | unit: walls, windows, doors, field of view, partial occlusion, displaced carts, closed doors seen from their interaction points, no sight between levels | perception and spatial scenarios; no case fact in any observation (10 cases × 2 languages) | no — Perf measured only up to 120 × 100 m and two levels |
 | Navigation (`GridAStarBackend`, `NavGrids`, portal graph; goal cost bound S7; interrupted multi-level walks C11) | yes (W1) | unit: real routes in the three facilities, every interactive placement and door, failures, locks, zones, obstacles, moved carts, a two-level fixture, the reviewer's DoS shapes refused or < 1 s, a walk stopped at every point of a stairs route | measured (§7); navigation scenarios | no — larger hospitals unmeasured; evaluated alternatives (navmesh) not adopted (R12). Perf |
 | State store (`WorldStateStore`: actors, versions, events, idempotency window, canonical snapshots) | yes (W2) | unit: version rules incl. sensor updates, dynamics, bounded log, snapshot identity and refusal | `--continue` restores an embodied session's place; the demonstration's trace is byte-identical when regenerated | no — the snapshot format (`clinicalcraft-world@1`) has no migration; transcripts are local files. Rel, Ops |
-| Device behaviours and authority (`behaviors.ts`, `clinical.ts`, `authority.ts`) | yes (W2) | unit over the built-in catalogs + a test catalog: operations per kind, predicates, the ECG state machine with reservation and durations, the derived monitor state following the engine, doors, sinks, storage, handheld items, role restrictions | interaction and recovery scenarios; the STEMI demonstration (ECG prepare / connect / record / reset, monitor attach) | no — only two catalog behaviours authored (`ecg-machine`, `patient-monitor`); handheld items exist only in the test catalog |
+| Device behaviours and authority (`behaviors.ts`, `clinical.ts`, `authority.ts`) | yes (W2) | unit over the built-in catalogs + a test catalog: operations per kind, predicates, the ECG state machine with reservation and durations, the derived monitor state following the engine, doors, sinks, storage, handheld items, role restrictions | interaction and recovery scenarios; the STEMI demonstration (ECG prepare / connect / record / reset, monitor attach) | no — only two catalog behaviours authored (`ecg-machine`, `patient-monitor`); handheld items (hand-over, worn items) and `nearbyState` exist only in test catalogs and content packs |
 | Spatial policy (`DefaultSpatialPolicy`, `SpatialChecker`): THE bedside rule, THE screen rule, vitals by screen / hands / chart, kind defaults, IV access as patient state, labs sampled at the patient, results never on the device, record reviews at a records terminal or the bedside, delivered drugs, busy devices, `patient-at-provider`, capability labels | yes (W2; reviews G4–G10, G8, C14) | every §6 row (ok, each failure reason, the hint that fixes it); the hint property over every item of the 10 cases (transports included); the bedside rule over every slot of the three hospitals; the device-operation convergence sweep (C7); screen rule ⇔ policy; lazy-hint budget | `cases verify --all`; the embodied autopilot over the library (40 / 40 at the clinical score); both benchmark agents with 0 accepted violations | no — validated on the 10 built-in cases and 3 facilities only; no review of the rules by clinical educators is recorded |
 | Perception (`observe`, `find`, `inspect`, `roomInfo`, `canSee`; awareness, whereabouts, recent events, region names, cross-level reachability) | yes (W2; G13, lead notes 1–2, C16) | unit: awareness levels, bounds, bearings, cues, screen rules, memory without versions, whereabouts and their snapshot, second/third-person events, exits by name, the ICU upstairs reachable and path-sorted; no case fact in any observation | perception / spatial scenarios; `/delegate staff:ed-nurse record_ecg` from the nurse's post (general and teaching hospital) | no — navigation by id goes to the real place, not the believed one (§14.3); `find {}` costs 7–12 ms. Perf |
 | Action bus, runtime (`createWorldRuntime`), world traces | yes (W2) | unit over a fake session on the real engine: commit order, idempotency, stale versions, reservations and in-flight locks, cancellation mid-walk and mid-approval, per-actor queue, availability, authority, travel charged once, scenario controls, resume, determinism, trace trees | wired into the agent session (CLI, MCP, benchmark, web); every scenario deterministic across seeds | no — the HTTP server hosts no world runtime of its own (it only routes bridge calls). Rel |
@@ -1877,7 +1906,9 @@ Stated as they are; none was changed in this behaviour-preserving release
    `teaching-hospital`, so it cannot be played embodied there
    (`embodiment_no_slot`); clinical mode works.
 10. Built-in catalogs declare no handheld item: `pick_up` / `put_down` /
-    `equip` are exercised with a test catalog only.
+    `equip` / `hand_over`, `nearbyState` and "pass me …" are exercised with
+    test catalogs (world `hand.test.ts`, session `staff-hand.test.ts`);
+    content packs (`contentDirs`) may declare them.
 11. `STALE_DESTINATION` is declared but never returned.
 12. Staff are deterministic scripts; there is no model-driven staff agent
     in the world.

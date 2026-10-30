@@ -51,6 +51,22 @@ describe("world tool specs", () => {
     await t.session.close();
   });
 
+  it("find_objects {room}: only what is in that room — \"here\" is the room the actor is in", async () => {
+    const t = await makeEmbodiedSession();
+    const s = t.session;
+    const ctx = { caseDef: s.caseDef, facility: s.facility, catalogs: s.catalogs, locale: "en", agent: "learner", state: () => s.state } as never;
+    const find = async (args: Record<string, unknown>) => ((await s.tool("find_objects")!.run(args, ctx)).data as { entities: { id: string; room: string | null }[] }).entities;
+    const go = await s.run({ type: "world_action", request: { actionId: "wa-resus", actorId: "actor:clinician", operation: "navigate", goal: { kind: "room", id: "ed-resus" } } });
+    expect(go.some((e) => e.msg.type === "world_action_result" && e.msg.result.status === "completed")).toBe(true);
+    const all = await find({ limit: 50 });
+    expect(new Set(all.map((e) => e.room)).size).toBeGreaterThan(1);
+    const here = await find({ room: "here", limit: 50 });
+    expect(here.length).toBeGreaterThan(0);
+    expect(here.every((e) => e.room === "ed-resus")).toBe(true);
+    expect((await find({ room: "ed-resus", limit: 50 })).map((e) => e.id)).toEqual(here.map((e) => e.id));
+    await s.close();
+  });
+
   it("answer bad targets and goals with a localised failure (nothing happens)", async () => {
     const t = await makeEmbodiedSession({ settingsPatch: { locale: "zh-CN" } });
     const version = t.session.world()!.version;
