@@ -21,7 +21,8 @@
       "journal": "鏡湖醫學",
       "year": "2025",
       "url": "https://rs.yiigle.com/cmaid/1551889",
-      "verifiedDoi": "10.12408/j.issn2223-4462.2025.01.16",
+      "doiPendingVerification": "10.12408/j.issn2223-4462.2025.01.16",
+      "doiPendingReason": "A two-digit article number, out of sequence with the other reports of the issue (…2025.01.014, …2025.01.015, …2025.01.017); the registered DOI may be …2025.01.016. doi.org and Crossref could not be reached to resolve it, so the case cites the publisher URL and asserts no DOI.",
       "publisherCheckedAt": "2026-10-29",
       "sourceTextSha256": "b48e1c9b847fcf22452fdb8b29ffe177514a9b6fe2111ae44b10cb27f6bb8b1f"
     },
@@ -571,7 +572,8 @@
       "journal": "中华结直肠疾病电子杂志",
       "year": "2013",
       "url": "https://rs.yiigle.com/cmaid/1068587",
-      "verifiedDoi": "10.3877/cma.j.issn.2095-3224.2013.04.11.",
+      "doiPendingVerification": "10.3877/cma.j.issn.2095-3224.2013.04.11.",
+      "doiPendingReason": "Ends with an ambiguous period, like cmcr-1068618's; the journal's other 2013 DOIs (…2013.01.07, …2013.01.08, …2013.03.09) end without one. doi.org and Crossref could not be reached to resolve it, so the case cites the publisher URL and asserts no DOI.",
       "publisherCheckedAt": "2026-10-29",
       "sourceTextSha256": "97f460a8471c5fc67845c3d35bc5e279ef7b25e0881f9361c67a363b34b9ceca"
     },
@@ -659,6 +661,8 @@
       "journal": "中华结直肠疾病电子杂志",
       "year": "2013",
       "url": "https://rs.yiigle.com/cmaid/1068618",
+      "doiPendingVerification": "10.3877/cma.j.issn.2095-3224.2013.05.14.",
+      "doiPendingReason": "The supplied and publisher strings end with an ambiguous period; doi.org and Crossref could not be reached to resolve it, so the case cites the publisher URL and asserts no DOI.",
       "publisherCheckedAt": "2026-10-29",
       "sourceTextSha256": "85cdfa86f1449421a2a03344fd4830bc92a4a643d00ec90fa5ae72546d640eff"
     },
@@ -1142,7 +1146,8 @@
       "journal": "解剖与临床",
       "year": "2010",
       "url": "https://rs.yiigle.com/cmaid/1322371",
-      "verifiedDoi": "10.3969/j.issn.1671-7163.2009.06.012.1",
+      "doiPendingVerification": "10.3969/j.issn.1671-7163.2009.06.012.1",
+      "doiPendingReason": "Its issue year and number (…2009.06…) disagree with the citation (2010;15(06):426-429), and it ends with an unusual \".1\" suffix; doi.org and Crossref could not be reached to resolve it, so the case cites the publisher URL and asserts no DOI.",
       "publisherCheckedAt": "2026-10-29",
       "sourceTextSha256": "a9de40002b02ee4b9f05d393017277fb7f9a3dd88f5c6130a95edddefe1ae4f7"
     },

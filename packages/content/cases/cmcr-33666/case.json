@@ -11,7 +11,8 @@
     "en": "Extreme thrombocytosis persists after antibiotics; distinguish reactive and clonal causes while considering bleeding risk."
   },
   "specialty": [
-    "paediatric-haematology"
+    "pediatrics",
+    "hematology"
   ],
   "setting": "inpatient",
   "facility": "general-hospital",

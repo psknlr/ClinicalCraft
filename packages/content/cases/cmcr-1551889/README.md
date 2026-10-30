@@ -73,7 +73,7 @@ The source contains 0 usable examination finding(s); other manoeuvres use the ho
 
 ### To verify
 
-Publisher title, article identifier and DOI were checked against the publisher page by the project team. The listed authorities were checked for the stated teaching principles. Full specialty review and any patient-specific dose or treatment eligibility remain to be verified. No licensed-clinician review is claimed.
+Publisher title and article identifier were checked against the publisher page by the project team. The DOI is pending verification: the recorded `10.12408/j.issn2223-4462.2025.01.16` has a two-digit article number, out of sequence with the other reports of the same issue (…2025.01.014 at pp. 57–58, …2025.01.015 at p. 59, …2025.01.017 at pp. 62–63), so the registered DOI may be …2025.01.016. doi.org and Crossref could not be reached to resolve it; until it resolves, the case cites the publisher article URL and asserts no DOI. The listed authorities were checked for the stated teaching principles. Full specialty review and any patient-specific dose or treatment eligibility remain to be verified. No licensed-clinician review is claimed.
 
 ## Matcher notes
 
@@ -81,7 +81,7 @@ Thirty-six bilingual paraphrases cover all 15 history questions, including expli
 
 ## References
 
-葉柳虹. 產前診斷胎兒雙主動脈弓：病例個案及文獻回顧. 鏡湖醫學. 2025;25(01):60-61. doi:10.12408/j.issn2223-4462.2025.01.16
+葉柳虹. 產前診斷胎兒雙主動脈弓：病例個案及文獻回顧. 鏡湖醫學. 2025;25(01):60-61. DOI pending verification (see To verify); publisher article: https://rs.yiigle.com/cmaid/1551889
 
 ISUOG. Practice Guidelines (updated): fetal cardiac screening. Ultrasound Obstet Gynecol. 2023;61:788-803. https://www.isuog.org/static/a529f402-06f9-42b6-ae9abdc736c43bf2/UOG-2023-Carvalho-ISUOG-Practice-Guidelines-updated-fetal-cardiac-screening.pdf
 
@@ -89,7 +89,7 @@ ISUOG. Practice Guidelines (updated): fetal cardiac screening. Ultrasound Obstet
 
 Source landing page recorded in the supplied dataset: https://rs.yiigle.com/cmaid/1551889
 
-The case facts were individually compared with the source presentation. The project team verified the publisher title, identifier and DOI. Dates, hospital and personal identifiers are removed; dialogue, setting conventions, decisions, distractors, goals and scoring are authored educational adaptations. Missing findings remain unknown and no original article text or media is embedded here. AI-assisted internal editorial check against each source case and the listed authorities for teaching principles; not a licensed-clinician review. Patient-specific treatment eligibility still needs specialty review.
+The case facts were individually compared with the source presentation. The project team verified the publisher title and identifier; the DOI is pending verification (see To verify). Dates, hospital and personal identifiers are removed; dialogue, setting conventions, decisions, distractors, goals and scoring are authored educational adaptations. Missing findings remain unknown and no original article text or media is embedded here. AI-assisted internal editorial check against each source case and the listed authorities for teaching principles; not a licensed-clinician review. Patient-specific treatment eligibility still needs specialty review.
 
 ## Changelog
 
@@ -116,7 +116,7 @@ Run `clinicalcraft cases validate <case.json> --strict` and `clinicalcraft cases
 
 原报告结局：孕 39 周剖宫产男婴 3120 g，5 分钟 Apgar 10 分；出生后需高流量呼吸支持，CTA 确认右弓优势及气管受压。哭闹或喂养后咳嗽并偶有喘鸣，生后 18 天切断左弓；6 月龄无呼吸困难、发绀或喉鸣，生长发育报告正常。
 
-审核状态：AI辅助内部编辑核对，未经执业医师审定。所有检查均为病历查阅；未载明的体检、数值及治疗反应保持未知。
+审核状态：AI辅助内部编辑核对，未经执业医师审定。所有检查均为病历查阅；未载明的体检、数值及治疗反应保持未知。来源DOI待核：文章编号与同期文章不连续，暂以出版方文章链接为准。
 
 ### Local source media review
 

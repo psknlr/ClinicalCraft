@@ -1,8 +1,8 @@
 # 中华病例说：20 例真实病例 / CMCR collection
 
-This page documents the original 20 cases. The separate [105-case expansion](CMCR_105_CASES.md) brings the library to 135 cases; the original collection remains available under its own filter. 本页保留原 20 例的来源和审核记录，新增 105 例详见独立文档。
+This page documents the original 20 cases. The separate [105-case expansion](CMCR_105_CASES.md), which is being re-authored from its sources and is not yet ready for teaching, brings the library to 135 cases: the 10 earlier cases and 125 CMCR cases. The original collection remains available under its own filter. 本页保留原 20 例的来源和审核记录；新增 105 例（正在依据原文重写，尚不可用于教学）详见独立文档。全库共 135 例：原有 10 例和中华病例说 125 例。
 
-本病例集从用户 Drive 的 `医学数据研究 / cmcr-data / cmcr_all_cases_dedup.jsonl` 及对应 `media` 文件夹选取 20 篇有完整正文的已发表病例报告，覆盖多专科的常见就诊问题与疑难诊断。每例保留原报告的年龄、症状、检查、诊断依据、处置和结局，以化名及中英双语改写为可交互的教学病例：问诊、查体、检查、处置和会诊板决策都可操作，复盘时把报告当年的做法与现行指南对照讲解。
+本病例集从中华医学会系列期刊的已发表病例报告语料（本地目录 `<selected-20 directory>`，不入库）选取 20 篇有完整正文的报告，覆盖多专科的常见就诊问题与疑难诊断。每例保留原报告的年龄、症状、检查、诊断依据、处置和结局，以化名及中英双语改写为可交互的教学病例：问诊、查体、检查、处置和会诊板决策都可操作，复盘时把报告当年的做法与现行指南对照讲解。
 
 The collection adapts 20 distinct published case reports with complete source text. Each keeps the report's age, symptoms, findings, diagnosis, management and outcome, and turns them into a playable bilingual case: history, examination, investigations, interventions and case-board decisions, with a debrief that sets the report's historical practice against current guidance. The original articles remain the authority for the historical facts.
 
@@ -12,12 +12,12 @@ The original reports, figures and PDFs remain © their publishers and authors. T
 
 ## 使用 / Playing
 
-- 在首页“全部病例集”选择“中华病例说 · 20 例”，再按专科或场景筛选。病例标题、简介和分诊信息不提示诊断。
+- 在首页“全部病例集”选择“中华病例说 · 原选病例（20 例）”，再按专科或场景筛选。病例标题、简介和分诊信息不提示诊断。
 - 病例按阶段推进（如门诊 → 住院检查 → 手术/ICU → 随访），阶段只能向前，不能回到已结束的阶段。每个决策在所需证据齐备时开放，并且开放在给出答案的检查结果之前——考的是推理，不是读报告。随访记录在本例的各项决策完成后开放（具体条件见各病例 README）。
 - 缺失信息如实回答“病历里没有记录”，不补写正常查体、检查数值或结局；原报告内部的矛盾保留并注明。
 - 完整论文题目、DOI 和原文 PDF 在病例完成或进入复盘后开放。
 
-In the case library, select **CMCR · 20 cases**. The cases work through the CLI, the server and MCP as well; no separate registration is needed:
+In the case library, select **CMCR · original selection (20)**. The cases work through the CLI, the server and MCP as well; no separate registration is needed:
 
 ```sh
 npm run cc -- play cmcr-1551890 --provider offline
@@ -91,11 +91,12 @@ The downloaded `selected-20` directory holds `<articleId>.json`, `<articleId>.tx
 The download contains 20 PDFs, 24 figures and 4 table CSVs. The cases reference 21 figures and 17 PDFs: the other three figures and three PDFs are withdrawn because they identify a patient or carry the patient's calendar dates (see Privacy below). The withdrawn images' findings remain in the cases as text.
 
 ```sh
-node scripts/install-cmcr-assets.mjs "E:/clinicalcraft-source/中华病例说/selected-20"
+node scripts/install-cmcr-assets.mjs "<selected-20 directory>" --dry-run   # checks only; writes and removes nothing
+node scripts/install-cmcr-assets.mjs "<selected-20 directory>"
 npm run dev
 ```
 
-The installer verifies PNG/PDF signatures and the authored checksums, refuses withdrawn files (and removes a copy an earlier version installed, only when the bytes match), preserves differing existing assets, and writes only to the ignored `assets/local/cases/cmcr-<articleId>/`. It leaves a SHA-256 manifest in `assets/local/cmcr-20-manifest.json`. Original PDFs, figures, downloaded tables and full source text are **not distributed in Git**. Without local media the cases remain fully playable; the image viewer shows a missing-asset placeholder.
+The installer verifies PNG/PDF signatures and the authored checksums, refuses withdrawn files (by name or by checksum), preserves differing existing assets, copies nothing unless every asset passes, refuses a directory without a `media` folder, and writes only to the ignored `assets/local/cases/cmcr-<articleId>/`. Before anything else it removes a copy of a withdrawn file that an earlier version installed, only when the bytes match. A successful run leaves a SHA-256 manifest in `assets/local/cmcr-20-manifest.json`. The additional 105 cases install with `cmcr-105`, which also requires each file's approval in their media review ([CMCR_105_CASES.md](CMCR_105_CASES.md#local-media)). Original PDFs, figures, downloaded tables and full source text are **not distributed in Git**. Without local media the cases remain fully playable; the image viewer shows a missing-asset placeholder.
 
 ## 隐私 / Privacy
 

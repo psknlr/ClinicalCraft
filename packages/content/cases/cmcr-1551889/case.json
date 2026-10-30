@@ -12,7 +12,8 @@
   },
   "specialty": [
     "obstetrics",
-    "pediatric-cardiology"
+    "pediatrics",
+    "cardiology"
   ],
   "difficulty": 4,
   "setting": "outpatient",
@@ -47,8 +48,7 @@
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "葉柳虹. 產前診斷胎兒雙主動脈弓：病例個案及文獻回顧. 鏡湖醫學. 2025;25(01):60-61. doi:10.12408/j.issn2223-4462.2025.01.16",
-    "doi": "10.12408/j.issn2223-4462.2025.01.16",
+    "citation": "葉柳虹. 產前診斷胎兒雙主動脈弓：病例個案及文獻回顧. 鏡湖醫學. 2025;25(01):60-61.",
     "authors": [
       "葉柳虹"
     ],
@@ -1470,7 +1470,7 @@
       }
     ],
     "references": [
-      "葉柳虹. 產前診斷胎兒雙主動脈弓：病例個案及文獻回顧. 鏡湖醫學. 2025;25(01):60-61. doi:10.12408/j.issn2223-4462.2025.01.16",
+      "葉柳虹. 產前診斷胎兒雙主動脈弓：病例個案及文獻回顧. 鏡湖醫學. 2025;25(01):60-61.",
       "https://rs.yiigle.com/cmaid/1551889",
       "ISUOG. Practice Guidelines (updated): fetal cardiac screening. Ultrasound Obstet Gynecol. 2023;61:788-803. https://www.isuog.org/static/a529f402-06f9-42b6-ae9abdc736c43bf2/UOG-2023-Carvalho-ISUOG-Practice-Guidelines-updated-fetal-cardiac-screening.pdf"
     ],
@@ -1661,6 +1661,7 @@
     "collection": "cmcr-105",
     "sourceArticleId": "1551889",
     "sourceUrl": "https://rs.yiigle.com/cmaid/1551889",
+    "sourceDoiPendingVerification": "10.12408/j.issn2223-4462.2025.01.16",
     "sourceTextSha256": "b48e1c9b847fcf22452fdb8b29ffe177514a9b6fe2111ae44b10cb27f6bb8b1f",
     "historicalReview": true,
     "authorChecks": {
@@ -1668,7 +1669,7 @@
       "sourceValuesRetained": true,
       "noUnrecordedPhysiology": true,
       "mediaAwaitingPrivacyReview": true,
-      "doiWebVerified": true,
+      "doiWebVerified": false,
       "publisherVerificationFile": "publisher-verification.json"
     },
     "testUtterances": [

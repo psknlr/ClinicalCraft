@@ -78,7 +78,7 @@ and English: `acute-appendicitis`, `acute-ischemic-stroke`,
 `anaphylaxis-garden`, `dka-adult`, `new-onset-t2dm`, `pediatric-asthma`,
 `pulmonary-embolism-postop`, `septic-shock-cap`, `smzl-lung-adeno` and
 `stemi-inferior-rv`. Its 843 test items and 676 dev items do not grow when
-the case catalogue grows. The 20 CMCR adaptations are outside this fixed
+the case catalogue grows. The 125 CMCR adaptations are outside this fixed
 cohort: they have their own per-case `extensions.testUtterances` and
 reference `solution`, checked by `cases verify --all` and the CMCR content
 tests. Those checks are authoring regressions, **not** a held-out grounding

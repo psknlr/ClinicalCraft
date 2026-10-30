@@ -5,8 +5,8 @@ Some content cannot (or should not) live in a public repository:
 | asset | why local-only | source |
 |---|---|---|
 | SMZL case figures `fig1`–`fig7` and the source PDF | © original rights holders (Chinese Medical Association journal) — local teaching use only | Virtual Patient V4 package |
-| CMCR original 20 cases: 20 PDFs and 24 figures downloaded; 17 PDFs and 21 figures approved for display | © original rights holders — local teaching use only | User's Drive CMCR corpus; [installation and source mapping](CMCR_CASES.md) |
-| CMCR additional 105 cases: original PDFs, figures and tables, with only individually approved media displayed | © original rights holders — local teaching use only | User's Drive CMCR corpus; [installation and review boundaries](CMCR_105_CASES.md) |
+| CMCR original 20 cases: 20 PDFs and 24 figures downloaded; 17 PDFs and 21 figures approved for display | © original rights holders — local teaching use only | The user's own copy of the CMCR corpus; [installation and source mapping](CMCR_CASES.md) |
+| CMCR additional 105 cases: 105 PDFs, 101 figures and 9 tables downloaded; 1 PDF and 69 figures approved in the media review, and only those are installed | © original rights holders — local teaching use only | The user's own copy of the CMCR corpus; [installation and review boundaries](CMCR_105_CASES.md) |
 | Anatomy model (`anatomy.glb.gz`, 25 MB) + organ catalog | size (Z-Anatomy / BodyParts3D, CC BY-SA 4.0 — attribution kept) | Virtual Patient V4 package |
 
 ## Install
@@ -32,6 +32,13 @@ mismatch is only a warning), then writes (default destination
 <dest>/cases/smzl-lung-adeno/source_case_report.pdf
 <dest>/manifest.json            # sha256 of every file
 ```
+
+CMCR case media come from the user's own download, never from the network:
+`node scripts/install-cmcr-assets.mjs "<download directory>" [cmcr-20|cmcr-105] [--dry-run]`
+copies only the files the collection's cases list (for `cmcr-105`, only those the
+media review approves, with a matching checksum) into `assets/local/cases/cmcr-<articleId>/`,
+refuses withdrawn files and copies nothing unless every file passes; `--dry-run`
+only checks. See [CMCR_CASES.md](CMCR_CASES.md) and [CMCR_105_CASES.md](CMCR_105_CASES.md).
 
 ## Serving
 

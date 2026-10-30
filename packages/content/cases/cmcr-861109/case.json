@@ -11,7 +11,8 @@
     "en": "Chest/abdominal symptoms and bloody drainage require distinction between evidence of bleeding and an idiopathic label."
   },
   "specialty": [
-    "paediatric-respiratory",
+    "pediatrics",
+    "respiratory-medicine",
     "gastroenterology"
   ],
   "setting": "inpatient",
