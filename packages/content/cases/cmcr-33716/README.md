@@ -303,6 +303,10 @@ independently; see To verify.
 
 ## Changelog
 
+### 1.1.2 — 2026-10-30 (completable)
+
+The planning objective accepts the prior records read in either phase where they exist (initial or work-up). A learner who first read them after the transfer could otherwise never finish the case, because the initial phase cannot be re-entered.
+
 ### 1.1.1 — 2026-10-30 (assessment validity)
 
 - **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all four

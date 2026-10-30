@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-33716",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "反复发热与咯血 · 29岁男性",
     "en": "Recurrent fever and haemoptysis · 29-year-old man"
@@ -2610,8 +2610,16 @@
             "phase": "initial"
           },
           {
-            "read": "prior-records",
-            "phase": "initial"
+            "any": [
+              {
+                "read": "prior-records",
+                "phase": "initial"
+              },
+              {
+                "read": "prior-records",
+                "phase": "workup"
+              }
+            ]
           },
           {
             "decided": "first-steps"
