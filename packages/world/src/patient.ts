@@ -14,11 +14,16 @@
  * Positions follow the collision model's rules (`patientPose`): lying on a bed space's bed, the body spans
  * the bed and has no collider of its own; otherwise a body box at the slot point. At a spot: on a support
  * (sitting or lying) the support collides; standing, a body box.
+ *
+ * A patient who walks with someone (`escort`, EMBODIED §8.4) is where that actor is — half a step behind,
+ * on the actor's side of any wall — standing, with no body box of their own (like a patient in transit): the
+ * place is derived from the actor's pose, so a human avatar driven by its sensor takes the patient along
+ * without a single stored step. Whether a patient can walk at all is `walkProblem`.
  */
 import { capabilityLabels, t, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import { PATIENT_PERFORMED_CAPABILITIES, TABLE_CAPABILITIES, TROLLEY_TYPES } from "./capabilities.js";
 import { npcBodyBox } from "./collision.js";
-import type { BodyPosture, EntityId, EntityRuntimeState, NavGoal, PatientDestination, PatientPlace, PatientPlaceState, SemanticEntity } from "./contracts.js";
+import type { ActorId, BodyPosture, EntityId, EntityRuntimeState, NavGoal, PatientDestination, PatientPlace, PatientPlaceState, Pose, SemanticEntity } from "./contracts.js";
 import { rotatedFootprint } from "./geometry.js";
 import { listText, worldMessage } from "./i18n.js";
 import { entityLevel, levelElevation } from "./levels.js";
@@ -49,7 +54,25 @@ export interface PatientBodyDeps {
   /** The collision model's own body of the patient (floor area), null when it has none (on a bed or chair). */
   staticBody: Area | null;
   locale: string;
+  /** The pose of an actor (whom a patient walks with), null when unknown. */
+  actorPose?: (id: ActorId) => Pose | null;
+  /** Clear sight between two points of a level (walls, partitions): a patient walking with someone stays on their side of a wall. */
+  clear?: (level: string, a: { x: number; z: number }, b: { x: number; z: number }) => boolean;
+  /** What clinical state shows of the patient now (distress, cannot speak) — whether they can walk with someone. */
+  cues?: () => { distressed?: boolean; cannotSpeak?: string };
 }
+
+/** Why a patient cannot walk with someone (`walkProblem`): lying by clinical state, unable to respond, too unwell. */
+export type WalkProblem = "lying" | "unresponsive" | "unwell";
+
+/** Offsets (m: behind, right) of the spot beside an actor a patient walking with them takes, in order of preference. */
+const ESCORT_OFFSETS: readonly [number, number][] = [
+  [0.7, 0.45],
+  [0.7, -0.45],
+  [0.75, 0],
+  [0, 0.8],
+  [0, -0.8],
+];
 
 /** Where a destination takes the patient (before the trolley and home are settled). */
 export interface PatientTarget {
@@ -118,9 +141,64 @@ export class PatientBody {
     return !!this.id && !!this.d.state.entity(this.id)?.patient;
   }
 
-  /** The posture now: the place's, else the clinical one, else the encounter's. */
+  /**
+   * The posture now: standing beside the actor they walk with, else the place's, else the one they took when asked
+   * (while clinical state still gives the posture it was asked over), else the clinical one, else the encounter's.
+   */
   posture(st: PatientPlaceState | null = this.state()): BodyPosture {
-    return st?.posture ?? this.d.clinicalPosture() ?? this.d.initialPosture;
+    if (this.escort(st)) return "standing";
+    if (st?.posture) return st.posture;
+    const clinical = this.d.clinicalPosture() ?? this.d.initialPosture;
+    return st?.asked && st.asked.over === clinical ? st.asked.posture : clinical;
+  }
+
+  /** The posture clinical state gives (an intervention's authored posture, else the case's), whatever the place forces or the patient was asked. */
+  clinicalPostureOf(st: PatientPlaceState | null = this.state()): BodyPosture {
+    return this.posture(st ? { ...st, posture: null, escort: null, asked: null } : null);
+  }
+
+  /** Does clinical state have the patient on their feet (an ambulatory patient: walks where a transport takes them)? */
+  walks(st: PatientPlaceState | null = this.state()): boolean {
+    return this.clinicalPostureOf(st) === "standing";
+  }
+
+  /**
+   * Why the patient cannot walk with someone now (null: they can): clinical state has them lying, they cannot
+   * respond (`cannotSpeak`: intubated, sedated, unconscious), or they look too unwell (`distressed`). A patient
+   * sitting up — in a chair, on a couch — gets up and walks.
+   */
+  walkProblem(st: PatientPlaceState | null = this.state()): WalkProblem | null {
+    if (this.clinicalPostureOf(st) === "lying") return "lying";
+    if (!this.responsive()) return "unresponsive";
+    if (this.d.cues?.().distressed) return "unwell";
+    return null;
+  }
+
+  /** Can the patient respond to being asked (not `cannotSpeak`: intubated, sedated, unconscious)? */
+  responsive(): boolean {
+    return this.d.cues?.().cannotSpeak === undefined;
+  }
+
+  /** The actor the patient walks with now (`escort`; null: nobody, or an actor the world no longer knows). */
+  escort(st: PatientPlaceState | null = this.state()): ActorId | null {
+    const id = st?.escort ?? null;
+    return id && this.d.actorPose?.(id) ? id : null;
+  }
+
+  /**
+   * Where a patient walking with an actor is: half a step behind them, to one side, on the actor's side of any wall
+   * (else at the actor's own spot), facing the actor's way (`rot`, degrees).
+   */
+  escortSpot(pose: Pose): { level: string; x: number; z: number; rot: number } {
+    const back = { x: Math.sin(pose.yaw), z: Math.cos(pose.yaw) };
+    const right = { x: Math.cos(pose.yaw), z: -Math.sin(pose.yaw) };
+    // a body's rotation faces the way its walker looks (a rig turned by yaw + 180°, as the renderer draws people)
+    const rot = Math.round((((((pose.yaw * 180) / Math.PI + 180) % 360) + 360) % 360) * 1000) / 1000;
+    for (const [b, r] of ESCORT_OFFSETS) {
+      const at = { x: pose.x + back.x * b + right.x * r, z: pose.z + back.z * b + right.z * r };
+      if (!this.d.clear || this.d.clear(pose.level, pose, at)) return { level: pose.level, x: at.x, z: at.z, rot };
+    }
+    return { level: pose.level, x: pose.x, z: pose.z, rot };
   }
 
   /** A slot by id. */
@@ -150,6 +228,11 @@ export class PatientBody {
     if (!st) return null;
     const posture = this.posture(st);
     const f = this.d.facility;
+    const by = this.escort(st);
+    if (by) {
+      const s = this.escortSpot(this.d.actorPose!(by)!);
+      return { slot: null, provider: null, home: { ...st.home }, level: s.level, x: s.x, y: levelElevation(f, s.level), z: s.z, rot: s.rot, room: this.d.registry.roomAt(s.level, s.x, s.z), posture, support: null, trolley: st.trolley, footprint: { ...BODY_FOOTPRINT[posture] }, escort: by };
+    }
     if (st.slot) {
       const slot = this.slot(st.slot)!;
       const level = this.slotLevel(slot);
@@ -172,6 +255,11 @@ export class PatientBody {
   anchor(): { level: string; x: number; z: number; room: string | null } | null {
     const st = this.state();
     if (!st) return null;
+    const by = this.escort(st);
+    if (by) {
+      const s = this.escortSpot(this.d.actorPose!(by)!);
+      return { level: s.level, x: s.x, z: s.z, room: this.d.registry.roomAt(s.level, s.x, s.z) };
+    }
     if (st.slot) {
       const slot = this.slot(st.slot)!;
       return { level: this.slotLevel(slot), x: slot.x, z: slot.z, room: slot.room };
@@ -185,8 +273,10 @@ export class PatientBody {
     return this.slot(this.state()?.slot ?? null);
   }
 
-  /** The body box walkers must avoid now (floor area), null when a bed, table or chair carries the body. */
+  /** The body box walkers must avoid now (floor area), null when a bed, table or chair carries the body — or while they walk with someone. */
   body(): { level: string; area: Area } | null {
+    // walking with someone: no box (and no `place()` — the grids ask while they are composed)
+    if (this.escort()) return null;
     const p = this.place();
     if (!p) return null;
     const onSupport = p.posture !== "standing" && !!p.support;

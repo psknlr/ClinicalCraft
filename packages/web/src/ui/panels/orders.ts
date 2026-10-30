@@ -21,6 +21,7 @@ import { ct, getLocale, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { capList, evidenceGrid, minutesLeft, phaseName, riskBadge } from "./common.js";
+import { carryRow } from "./hands.js";
 import { treatRow } from "./treat-row.js";
 import type { ReportBack } from "./report.js";
 
@@ -344,7 +345,8 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
 
 /**
  * Embodied mode: the device's own operations (catalog behaviour, e.g. the ECG cart's prepare → connect →
- * record → reset, offered from its current state) and, for a cart, "Bring to the patient" (`move_to`).
+ * record → reset, offered from its current state) and, for a cart, "Bring to the patient" (`move_to`); for a
+ * handheld item, its carry row (`hands.ts`: pick up, put down, equip, hand to someone).
  * Each is a `world_action` — validated, spatially checked and (for `record`) run through the approval gate
  * by the world, exactly as for an agent. Null when the device has none (or clinical mode).
  */
@@ -357,11 +359,17 @@ function deviceOps(game: Game, placementId: string): HTMLElement | null {
   const behavior = type.behavior && !type.behavior.derived ? type.behavior : null;
   const portable = type.portable === "cart";
   const patient = emb.patientId();
-  if (!behavior && !(portable && patient)) return null;
+  const carry = carryRow(game, placementId);
+  if (!behavior && !(portable && patient) && !carry) return null;
   const run = (operation: string, extra: Record<string, unknown> = {}) => void emb.worldAction({ operation, targetId: entityId, ...extra });
   const wrap = h("section", { class: "device-ops" }, h("h3", null, tr("device.ops")), h("p", { class: "small muted" }, tr("device.opsLead")));
+  if (carry) wrap.append(carry);
   if (behavior) {
-    const state = emb.deviceState(entityId) ?? behavior.initial;
+    // a handheld item: its own lifecycle state as the world stores it, and "held" / "equipped" while the learner
+    // carries it (operations made for the hand: `from: ["held"]`)
+    const handheld = type.portable === "handheld";
+    const carried = handheld ? emb.carriedState(entityId) : null;
+    const state = (handheld ? game.session.world()?.snapshot().entities[entityId]?.state : emb.deviceState(entityId)) ?? behavior.initial;
     const stateName = behavior.states?.[state]?.name;
     wrap.append(h("p", { class: "small", id: "device-state", dataset: { state } }, tr("device.state", { state: stateName ? ct(stateName) : state })));
     wrap.append(
@@ -370,7 +378,7 @@ function deviceOps(game: Game, placementId: string): HTMLElement | null {
         { class: "row wrap device-op-list" },
         Object.entries(behavior.operations).map(([id, op]) => {
           const from = op.from ?? ["*"];
-          const offered = from.includes("*") || from.includes(state);
+          const offered = from.includes("*") || from.includes(state) || (!!carried && from.includes(carried));
           return h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
         }),
       ),

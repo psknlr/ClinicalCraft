@@ -25,8 +25,8 @@ describe("operations by kind (built-in and catalog behaviours)", () => {
     expect(ops(w, "eq:resus-sink")).toEqual(["wash_hands"]);
     expect(ops(w, "eq:resus1-bed")).toEqual([]);
     expect(ops(w, "eq:evidence-board")).toEqual([]);
-    // the patient is wheeled (or walked) to a device, a bed space or back (EMBODIED §8, G8)
-    expect(ops(w, w.patientId)).toEqual(["transport_patient"]);
+    // the patient is wheeled (or walked) to a device, a bed space or back (EMBODIED §8, G8), or walks with you / waits
+    expect(ops(w, w.patientId)).toEqual(["transport_patient", "escort_patient", "release_patient", "reposition_patient"]);
     for (const id of ["staff:ed-nurse", "room:ed-resus", "level:L0"]) expect(ops(w, id), id).toEqual([]);
     const doors = w.runtime.entities().filter((e) => e.kind === "door");
     expect(doors.length).toBeGreaterThan(5);
@@ -39,10 +39,10 @@ describe("operations by kind (built-in and catalog behaviours)", () => {
     expect(ops(w, cabinet.id)).toEqual(["open", "close"]);
   });
 
-  it("handheld items add pick_up / put_down / equip", () => {
+  it("handheld items add pick_up / put_down / equip / hand_over", () => {
     const { facility, catalogs } = hospitalWithTestItems();
     const t = makeWorld("stemi-inferior-rv", { facility, catalogs });
-    expect(ops(t, "eq:pocket-glu-1")).toEqual(["use", "pick_up", "put_down", "equip"]);
+    expect(ops(t, "eq:pocket-glu-1")).toEqual(["use", "pick_up", "put_down", "equip", "hand_over"]);
   });
 });
 

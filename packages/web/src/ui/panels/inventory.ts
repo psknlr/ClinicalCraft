@@ -1,22 +1,41 @@
 /**
  * Inventory (V4 `Qd`) and the build-zone crafting bench (V4 `ef`): block
- * counts, build rules, touch mine/place buttons, the two V4 recipes.
+ * counts, build rules, touch mine/place buttons, the two V4 recipes. In
+ * embodied mode it opens with what the learner carries ("In your hands",
+ * `hands.ts`), re-rendered as the world changes.
  */
 import type { App } from "../../app/context.js";
 import { BLOCK_TYPES } from "../../app/persistence.js";
 import { tr } from "../../i18n/index.js";
-import { h } from "../dom.js";
+import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
+import { handsSection } from "./hands.js";
 
 export function inventoryPanel(app: App): () => PanelView {
   return () => {
     const inv = app.inventory;
     const bench = app.game?.facility.placements.find((p) => app.game?.stations.kindOf(p) === "craft");
+    const hands = h("div", { id: "inventory-hands" });
+    const world = () => app.game?.session.world() ?? null;
+    const renderHands = (): void => {
+      clear(hands);
+      const section = handsSection(app);
+      if (section) hands.append(section);
+    };
+    renderHands();
+    let lastVersion = world()?.version;
     return {
       id: "inventory",
       kicker: tr("inv.kicker"),
       title: tr("inv.title"),
+      update() {
+        // what the learner carries changes with world events (their own buttons, a colleague's hand-over)
+        if (world()?.version === lastVersion) return;
+        lastVersion = world()?.version;
+        renderHands();
+      },
       body: [
+        hands,
         h(
           "div",
           { class: "inventory-grid" },

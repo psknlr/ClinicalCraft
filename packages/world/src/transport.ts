@@ -18,6 +18,7 @@ import { capabilityLabels } from "@clinicalcraft/core";
 import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
 import type { ActorState, BodyPosture, EntityId, PatientDestination, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, WorldActionRequest, WorldEvent } from "./contracts.js";
 import { failed, type EffectsHost, type Outcome, type Walk } from "./effects.js";
+import { endEscortIfUnable } from "./escort.js";
 import { listText, metres, worldMessage } from "./i18n.js";
 import { levelElevation } from "./levels.js";
 import { freeCellNear, patientProviders, resolveTarget, sameTarget, trolleySpot, type PatientTarget, type TargetDeps } from "./patient.js";
@@ -87,13 +88,37 @@ export function destinationOf(host: EffectsHost, request: WorldActionRequest): P
   return { provider: raw };
 }
 
-/** Does the patient travel lying (on their trolley): lying now, or lying where they go? */
-function travelsLying(host: EffectsHost, st: PatientPlaceState, target: PatientTarget): boolean {
+/**
+ * How the patient travels (EMBODIED §8.4): the trolley they lie on while they go (returned), or on foot (null).
+ * The patient's posture now, where they go and their posture there are three different things: a patient whom
+ * clinical state has standing (an outpatient, `walks()`) gets up from a scanner table or a couch and walks
+ * there upright, lying down only on arrival; anyone else travels lying on their own trolley when they lie now
+ * or will lie there — and walks when there is no trolley free to lie on (a couch is no trolley): a body is never
+ * carried lying through the air.
+ */
+function trolleyFor(host: EffectsHost, st: PatientPlaceState, target: PatientTarget): EntityId | null {
   const body = host.d.patient;
-  if (body.posture(st) === "lying") return true;
-  if (target.posture) return target.posture === "lying";
-  // a bed space: the clinical posture there
-  return body.posture({ ...st, posture: null }) === "lying";
+  if (body.walks(st) || !trolleyAtHand(host, st)) return null;
+  // lying now, or lying where they go (a bed space: the clinical posture there)
+  const lying = body.posture(st) === "lying" || (target.posture ? target.posture === "lying" : body.clinicalPostureOf(st) === "lying");
+  return lying && st.trolley && !host.busy.get(st.trolley) ? st.trolley : null;
+}
+
+/** How far (m) a trolley may wait from the patient and still come along (parked beside a scanner: `TROLLEY_RINGS`). */
+const TROLLEY_AT_HAND = 5;
+
+/**
+ * Is the patient's trolley with them — they lie or sit on it, or it waits beside them (parked by the scanner they
+ * lie on)? Not while they walk with someone, nor once they walked away from it: a bed left in its bay never
+ * follows the patient across the hospital.
+ */
+function trolleyAtHand(host: EffectsHost, st: PatientPlaceState): boolean {
+  const body = host.d.patient;
+  if (!st.trolley || body.escort(st)) return false;
+  if (st.support === st.trolley) return true;
+  const at = body.equipmentAt(st.trolley);
+  const p = body.anchor();
+  return !!at && !!p && at.level === p.level && Math.hypot(at.x - p.x, at.z - p.z) <= TROLLEY_AT_HAND;
 }
 
 /** The area of an equipment footprint where it stands now (null: unknown). */
@@ -154,6 +179,8 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
     const before = equipmentArea(host, m.id);
     if (before) touched.push({ level: before.level, area: grow(before.area, 0.5) });
   }
+  // a transport or a transfer ends a walk together (the patient is where they were taken now)
+  const escorted = body.escort(st);
   store.patchEntity(id, { patient: next });
   for (const m of moves) {
     store.patchEntity(m.id, { position: m.position });
@@ -167,19 +194,21 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
   for (const t of touched) host.invalidate({ level: t.level, ...grow(t.area, 0.1) });
   host.patientStamp = { key: body.bodyKey(), posture: body.posture(), body: newBody };
   const to = body.place()!;
-  return [host.emit({ type: "patient.moved", entityId: id, from, to, by, distance: Math.round(distance * 100) / 100, path: path.map((p) => ({ ...p })) })];
+  const events = [host.emit({ type: "patient.moved", entityId: id, from, to, by, distance: Math.round(distance * 100) / 100, path: path.map((p) => ({ ...p })) })];
+  if (escorted) events.push(host.emit({ type: "patient.escort", entityId: id, escort: null, actorId: null }));
+  return events;
 }
 
-/** Where the patient stays when a transport stops short: beside the body that wheeled them (on the trolley when lying). */
-function stopTarget(host: EffectsHost, pose: Pose, lying: boolean, trolley: EntityId | null): PatientTarget {
+/** Where the patient stays when a transport stops short: beside the body that wheeled them (on the trolley), or standing where they walked to. */
+function stopTarget(host: EffectsHost, pose: Pose, trolley: EntityId | null): PatientTarget {
   const ahead = { x: pose.x - Math.sin(pose.yaw) * 0.95, z: pose.z - Math.cos(pose.yaw) * 0.95 };
   const cell = freeCellNear(host.d.grids, host.d.visibility, pose.level, { minX: ahead.x, maxX: ahead.x, minZ: ahead.z, maxZ: ahead.z }, 2, null) ?? ahead;
   return {
     slot: null,
     provider: null,
     spot: { level: pose.level, x: cell.x, z: cell.z, rot: 0 },
-    posture: lying ? "lying" : "standing",
-    support: lying && trolley ? "trolley" : null,
+    posture: trolley ? "lying" : "standing",
+    support: trolley ? "trolley" : null,
     stand: { kind: "point", x: cell.x, z: cell.z, level: pose.level, range: 1.5 },
     name: host.d.locator.regionName({ level: pose.level, x: cell.x, z: cell.z }),
   };
@@ -196,14 +225,14 @@ export async function transportPatient(host: TransportHost, request: WorldAction
   let target = resolveTarget(deps, dest, st.trolley);
   if (!target) return failed("TARGET_NOT_FOUND", worldMessage("pre.unknownDestination", L, { destination: body.describe(dest) }));
   if (sameTarget(st, target)) return { status: "completed", message: worldMessage("ok.patientThere", L, { patient: name, place: target.name }), events: [] };
-  const lying = travelsLying(host, st, target);
-  const trolley = lying && st.trolley && !host.busy.get(st.trolley) ? st.trolley : null;
+  const trolley = trolleyFor(host, st, target);
   if (trolley !== st.trolley) target = resolveTarget(deps, dest, trolley) ?? target;
   const plan = backend.plan({ actorId: actor.id, from: actor.pose, goal: target.stand, role: actor.role, accessibleOnly: true });
   if (!plan.ok) return failed(plan.code, plan.message, { hint: null });
   host.busy.set(patientId, actor.id);
   if (trolley) host.busy.set(trolley, actor.id);
-  host.transit = { by: actor.id, trolley, posture: lying ? "lying" : "standing" };
+  // lying only on the trolley the walker pushes; otherwise upright beside them (the place's posture comes on arrival)
+  host.transit = { by: actor.id, trolley, posture: trolley ? "lying" : "standing" };
   let walk: Walk;
   try {
     walk = await host.walk(actor, plan, signal, request);
@@ -215,7 +244,7 @@ export async function transportPatient(host: TransportHost, request: WorldAction
   const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
   if (walk.interrupted) {
     const now = host.d.store.actor(actor.id)!;
-    const stop = stopTarget(host, now.pose, lying, trolley);
+    const stop = stopTarget(host, now.pose, trolley);
     const events = [...walk.events, ...commitPatient(host, stop, trolley, "keep", actor.id, walk.record.path, walk.walked)];
     return { status: "cancelled", errorCode: "MOVEMENT_INTERRUPTED", message: worldMessage("ok.interrupted", L, { distance: metres(walk.walked) }), events, ...base };
   }
@@ -239,8 +268,7 @@ export function relocatePatient(host: TransportHost, dest: PatientDestination): 
     if (body.moved() && (st.home.slot !== home.slot || st.home.provider !== home.provider)) store.patchEntity(id, { patient: { ...st, home } });
     return { ok: true, moved: false, place: body.place()!, name: target.name, message: worldMessage("relocate.already", L, { patient: name, place: target.name }) };
   }
-  const lying = travelsLying(host, st, target);
-  const trolley = lying && st.trolley && !host.busy.get(st.trolley) ? st.trolley : null;
+  const trolley = trolleyFor(host, st, target);
   if (trolley !== st.trolley) target = resolveTarget(deps, dest, trolley) ?? target;
   // the team's route from the patient (the record, the browser's animation) — carts and people by the bed are set
   // aside; no route: the patient is there all the same
@@ -251,10 +279,21 @@ export function relocatePatient(host: TransportHost, dest: PatientDestination): 
   return { ok: true, moved: true, place: body.place()!, name: target.name, message: worldMessage("relocate.done", L, { patient: name, place: target.name }) };
 }
 
-/** `WorldRuntime.refreshPatient`: the clinical posture changed the body? Re-stamp the grids and say so. */
+/**
+ * `WorldRuntime.refreshPatient`: the clinical posture changed the body? Re-stamp the grids and say so. A patient
+ * walking with someone whom clinical state no longer lets walk stops where they are (`endEscortIfUnable`).
+ */
 export function refreshPatient(host: TransportHost): boolean {
   const body = host.d.patient;
   if (!body.id) return false;
+  if (endEscortIfUnable(host)) return true;
+  // a posture taken when asked lapses once clinical state positions the patient otherwise: forget it
+  const st = body.state();
+  if (st?.asked && st.asked.over !== body.clinicalPostureOf(st)) {
+    const { asked: _asked, ...rest } = st;
+    void _asked;
+    host.d.store.patchEntity(body.id, { patient: rest });
+  }
   const key = body.bodyKey();
   const stamp = host.patientStamp;
   if (key === stamp.key) return false;

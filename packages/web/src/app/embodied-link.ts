@@ -17,7 +17,8 @@
  */
 import { actionIntent } from "@clinicalcraft/agent";
 import { regionAt, t, type CaseDefinition, type ClinicalAction, type FacilityDefinition } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, type ActionHint, type ActorId, type NavGoal, type NavPlan, type PatientPlace, type WorldActionRequest, type WorldActionResult, type WorldEvent, type WorldRuntime } from "@clinicalcraft/world";
+import type { Op } from "@clinicalcraft/agent";
+import { PRIMARY_ACTOR, type ActionHint, type ActorId, type ClinicalIntent, type NavGoal, type NavPlan, type PatientPlace, type WorldActionRequest, type WorldActionResult, type WorldEvent, type WorldRuntime } from "@clinicalcraft/world";
 import type { BodyMove, PatientSpot, WorldApi } from "../contracts.js";
 import { tr, trMaybe } from "../i18n/index.js";
 import type { ActionFeedback, FeedbackItem } from "../ui/feedback.js";
@@ -176,6 +177,8 @@ export class EmbodiedLink {
       const place = world.patientPlace();
       api.placePatient(this.o.slotId, patientSpotOf(place, this.o.slotId));
       if (place && !patientSpotOf(place, this.o.slotId)) api.setPatientState(this.o.slotId, { posture: place.posture });
+      // walking with someone (a restored world, a rebuilt scene): drawn following them again
+      if (place?.escort) api.escortPatient(this.o.slotId, walkerOf(place.escort));
     }
     for (const d of world.collision.doors) {
       const st = snap.entities[d.id]?.door;
@@ -208,6 +211,15 @@ export class EmbodiedLink {
         if (ev.by === null) this.o.toast(tr("emb.toast.patientMoved", { place: this.patientPlaceName(ev.to) }), "", "info", "patient-moved");
         return;
       }
+      case "patient.escort": {
+        // the patient walks with someone (EMBODIED §8.4): drawn following them; stopped: where the world placed them
+        const api = this.o.renderer();
+        if (!api || !this.o.slotId) return;
+        api.escortPatient(this.o.slotId, ev.escort ? walkerOf(ev.escort) : null);
+        if (ev.escort === PRIMARY_ACTOR) this.o.toast(tr("emb.toast.patientFollows", { patient: this.patientName() }), "", "info", "patient-escort");
+        else if (!ev.escort && ev.actorId === null) this.o.toast(tr("emb.toast.patientStopped", { patient: this.patientName() }), "", "info", "patient-escort");
+        return;
+      }
       case "patient.posture": {
         // clinical state changed the posture (positioning, a transfer): the NPC follows
         const api = this.o.renderer();
@@ -221,6 +233,11 @@ export class EmbodiedLink {
       default:
         return;
     }
+  }
+
+  /** The patient's name in the UI language. */
+  private patientName(): string {
+    return t(this.o.caseDef.patient.displayName, this.o.locale());
   }
 
   /** The name of where the patient is (a bed space's room, a device). */
@@ -237,6 +254,13 @@ export class EmbodiedLink {
   /** A device's stored behaviour state (ECG cart: idle / prepared / connected / completed), else null. */
   deviceState(entityId: string): string | null {
     return this.states.get(entityId) ?? null;
+  }
+
+  /** A handheld item in the learner's hands: "held", or "equipped" when worn; null when the learner does not carry it. */
+  carriedState(entityId: string): "held" | "equipped" | null {
+    const world = this.world;
+    if (!world?.actor(PRIMARY_ACTOR)?.holding.includes(entityId)) return null;
+    return world.snapshot().entities[entityId]?.data?.equipped ? "equipped" : "held";
   }
 
   /**
@@ -307,15 +331,31 @@ export class EmbodiedLink {
    * id the UI tracks it by (the submission id, or an alias linked to it once a short walk let it go).
    */
   act(action: ClinicalAction, rationale?: string): string {
+    return this.gated(actionIntent(action), () => this.o.app.act(action, rationale));
+  }
+
+  /**
+   * Learner words for the patient (or the companion at their side): a conversation in the room — the session's
+   * `ask` requirement (EMBODIED §6), checked here first like a clinical act: said at once within earshot, after
+   * a short walk when only the distance stands in the way, else the refusal with "Go there". Movement requests
+   * ("Please follow me") take the same path; the session carries them out.
+   */
+  say(op: Extract<Op, { type: "user_message" }>, view?: string): string {
+    const to = op.to ?? "patient";
+    const intent: ClinicalIntent | null = (to === "patient" || to === "companion") && op.text.trim() ? { tool: "ask_patient", kind: "ask" } : null;
+    return this.gated(intent, () => this.o.app.submit(op, view));
+  }
+
+  /** Run `run` (a submission) when the world allows `intent` from here — after a short walk — else refuse (see `act`). */
+  private gated(intent: ClinicalIntent | null, run: () => string): string {
     const world = this.world;
-    const intent = actionIntent(action);
-    if (!world || !intent || this.o.mover.isMoving(PRIMARY_ACTOR)) return this.o.app.act(action, rationale);
+    if (!world || !intent || this.o.mover.isMoving(PRIMARY_ACTOR)) return run();
     this.syncPose();
     const check = world.checkSpatial(PRIMARY_ACTOR, intent);
     if (check.ok) {
       // an earlier refusal no longer stands once the learner does something that can be done here
       this.o.feedback.clear();
-      return this.o.app.act(action, rationale);
+      return run();
     }
     const alias = `web-act-${++this.seq}`;
     const plan = check.hint ? world.plan(PRIMARY_ACTOR, check.hint.goal) : null;
@@ -328,7 +368,7 @@ export class EmbodiedLink {
         if (ok) {
           if (this.o.feedback.current?.tone === "info") this.o.feedback.clear();
           // retry once (the session checks again: a refusal now shows "Go there")
-          this.o.app.store.linkSubmission(alias, this.o.app.act(action, rationale));
+          this.o.app.store.linkSubmission(alias, run());
           return;
         }
         this.refuse(alias, check.message, check.hint?.goal ?? null, check.hint?.label ?? null, prerequisiteOf(check), check.hint?.then);
@@ -476,7 +516,9 @@ export class EmbodiedLink {
     const world = this.world;
     const op = [...this.o.app.store.log].reverse().find((e) => e.kind === "op" && e.id === submission);
     const action = op?.kind === "op" && op.op.type === "clinical_action" ? op.op.action : null;
-    const intent = action ? actionIntent(action) : null;
+    // words for the patient refused from across the hospital: the same `ask` requirement, with the way there
+    const talk = op?.kind === "op" && op.op.type === "user_message" && (op.op.to === "patient" || op.op.to === "companion");
+    const intent: ClinicalIntent | null = action ? actionIntent(action) : talk ? { tool: "ask_patient", kind: "ask" } : null;
     const check = world && intent ? world.checkSpatial(PRIMARY_ACTOR, intent) : null;
     const hint = check && !check.ok ? check.hint : null;
     // the session's text names the model-facing tool call ("navigate_to {…}"): the learner gets the reason only
@@ -546,6 +588,11 @@ export class EmbodiedLink {
 export function patientSpotOf(place: PatientPlace | null, slotId: string | null): PatientSpot | null {
   if (!place || (place.slot !== null && place.slot === slotId)) return null;
   return { x: place.x, z: place.z, level: place.level, rot: place.rot, posture: place.posture, support: place.support ? placementIdOf(place.support) : null };
+}
+
+/** The renderer's walker of an actor: "avatar" for the learner's body, the staff id of a staff member (null: undrawn). */
+export function walkerOf(actorId: ActorId): string | null {
+  return actorId === PRIMARY_ACTOR ? "avatar" : staffIdOf(actorId);
 }
 
 /** What the UI shows of a delegation's outcome. */

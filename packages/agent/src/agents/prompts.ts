@@ -91,6 +91,12 @@ export interface PromptContext {
    * see from there (review G11: the `<monitor>` section shows only those).
    */
   embodied?: { place: string | null; skills: readonly string[]; vitals?: VitalsView };
+  /**
+   * The facility staff member this turn speaks as (`user_message.staff`): their name in `{{npc.name}}`, the case's
+   * knowledge for the profile only when they hold its role, and — a porter speaking through the nurse profile — who
+   * they are and what they do not do.
+   */
+  speakingAs?: { name: string; role: string };
 }
 
 /* ------------------------------------------------------------------ */
@@ -150,8 +156,8 @@ export function templateVars(profile: Pick<AgentProfile, "name">, ctx: PromptCon
   const c = ctx.caseDef;
   const L = ctx.locale;
   const companion = c.patient.persona.companion;
-  const npcName = npcDisplayName(c, ctx.facility, profile.name, L);
-  const brief = c.npcs.find((n) => n.role === profile.name);
+  const npcName = ctx.speakingAs?.name ?? npcDisplayName(c, ctx.facility, profile.name, L);
+  const brief = ctx.speakingAs && ctx.speakingAs.role !== profile.name ? undefined : c.npcs.find((n) => n.role === profile.name);
   return {
     locale: L,
     language: languageName(L),
@@ -166,7 +172,7 @@ export function templateVars(profile: Pick<AgentProfile, "name">, ctx: PromptCon
       chiefComplaint: t(c.patient.chiefComplaint, L),
     },
     companion: companion ? { name: t(companion.name, L), role: companion.role, persona: t(companion.persona, L) } : { name: "", role: "", persona: "" },
-    npc: { name: npcName, nameSuffix: brief?.name ? ` (${t(brief.name, L)})` : "", knowledge: brief ? t(brief.knowledge, L) : "" },
+    npc: { name: npcName, nameSuffix: ctx.speakingAs ? ` (${ctx.speakingAs.name})` : brief?.name ? ` (${t(brief.name, L)})` : "", knowledge: brief ? t(brief.knowledge, L) : "" },
     facility: { name: ctx.facility ? t(ctx.facility.name, L) : isZh(L) ? "本院" : "the hospital" },
   };
 }
@@ -328,7 +334,9 @@ function personaBlock(p: PatientContext): string {
 function caseBrief(kind: AgentKind, profile: Pick<AgentProfile, "name">, ctx: PromptContext): string | null {
   const c = ctx.caseDef;
   const L = ctx.locale;
-  const knowledge = c.npcs.filter((n) => n.role === profile.name).map((n) => t(n.knowledge, L));
+  // the case's knowledge of a role is for the colleagues who hold it (never a porter speaking through the nurse profile)
+  const ownRole = !ctx.speakingAs || ctx.speakingAs.role === profile.name;
+  const knowledge = ownRole ? c.npcs.filter((n) => n.role === profile.name).map((n) => t(n.knowledge, L)) : [];
   const triage = c.patient.triageNote ? t(c.patient.triageNote, L) : "";
   const demographics = `${t(c.patient.displayName, L)}, ${ageText(c)} ${SEX_WORD[c.patient.sex] ?? ""}`.trim();
   switch (kind) {
@@ -483,6 +491,30 @@ Walking and device operations take simulated time.
  * memory, brief/persona/fact index), dynamic last (scene, monitor, progress,
  * plan, patient ledger, session context).
  */
+/** Facility staff roles in words (system prompts are written in English; replies follow the language rule). */
+const STAFF_ROLE_WORDS: Readonly<Record<string, string>> = {
+  nurse: "nurse",
+  radiologist: "radiologist",
+  pathologist: "pathologist",
+  attending: "attending physician",
+  "lab-tech": "laboratory technician",
+  pharmacist: "pharmacist",
+  receptionist: "receptionist",
+  paramedic: "paramedic",
+  porter: "porter",
+};
+
+/** Who speaks when a staff member of another role speaks through this profile (a porter through the nurse's). */
+function speakingAsSection(as: { name: string; role: string }, profileName: string): string {
+  const role = STAFF_ROLE_WORDS[as.role] ?? as.role;
+  return [
+    "<speaking_as>",
+    `In this conversation you are ${as.name}, the hospital's ${role} — not a ${STAFF_ROLE_WORDS[profileName] ?? profileName}.`,
+    `Say and offer only what a ${role} knows and does here. For clinical questions or tasks outside a ${role}'s work, say so kindly and offer to find a nurse or a doctor.`,
+    "</speaking_as>",
+  ].join("\n");
+}
+
 export function buildSystemSections(profile: AgentProfile, ctx: PromptContext): SystemSection[] {
   const kind = agentKind(profile);
   const vars = templateVars(profile, ctx);
@@ -495,6 +527,7 @@ export function buildSystemSections(profile: AgentProfile, ctx: PromptContext): 
   };
 
   stable("identity", renderTemplate(profile.prompt, vars));
+  if (ctx.speakingAs && ctx.speakingAs.role !== profile.name) stable("speaking-as", speakingAsSection(ctx.speakingAs, profile.name));
   stable("rules", rulesFor(kind, ctx));
   stable("language", languageRule(kind, ctx.locale));
   if (profile.injectMemory && ctx.memory?.trim()) {

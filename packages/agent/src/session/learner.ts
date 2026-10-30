@@ -21,20 +21,30 @@ import type { AgentTurnMode } from "./agent-turns.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 import { spokenAnswer } from "./nonverbal.js";
+import { MovementRequests } from "./movement.js";
 import { sessionSnapshot } from "./resume.js";
 import { parseLearnerInput, resolveAgentAlias } from "./router.js";
+import { staffVoice, type StaffVoice } from "./staff-voice.js";
 import type { ToolPathExtra } from "./tool-path.js";
 
 /** The learner's side of one session. */
 export class LearnerPath {
-  constructor(private readonly k: SessionKernel) {}
+  /** Movement requests in the learner's words ("follow me", "take the patient to CT"): world actions (embodied mode). */
+  private readonly movement: MovementRequests;
+
+  constructor(private readonly k: SessionKernel) {
+    this.movement = new MovementRequests(k, (id, name, args, signal) => this.runToolDetailed(id, name, args, signal));
+  }
 
   /* ---------------------------------------------------------------- */
   /* Messages and slash commands                                       */
   /* ---------------------------------------------------------------- */
 
-  /** A `user_message` op: a slash command, or text to an agent (`@nurse …`, `to`, else the interlocutor). */
-  async handleUserMessage(id: string, text: string, to: string | null): Promise<void> {
+  /**
+   * A `user_message` op: a slash command, or text to an agent (`@nurse …`, `to`, else the interlocutor); `staff`: the
+   * colleague addressed by name (they answer as themselves when their role speaks through the target agent).
+   */
+  async handleUserMessage(id: string, text: string, to: string | null, staff: string | null = null): Promise<void> {
     const k = this.k;
     if (typeof text !== "string") {
       k.emit(id, { type: "error", message: rt(k.locale, "error.internal", { message: "user_message.text must be a string" }), code: "invalid_op" });
@@ -50,7 +60,8 @@ export class LearnerPath {
     } else {
       target = resolveAgentAlias(String(to));
     }
-    await k.ops.withTurn(id, (signal) => this.sendMessage(id, target, body, signal));
+    const voice = staffVoice(k.facility, staff, target, k.locale);
+    await k.ops.withTurn(id, (signal) => this.sendMessage(id, target, body, signal, "message", voice));
   }
 
   /**
@@ -58,7 +69,7 @@ export class LearnerPath {
    * command (`/ask …`, `/consult …`, custom templates): UserPromptSubmit hooks
    * (may block or add context) → start → transcript → the agent's turn.
    */
-  async sendMessage(id: string, target: string, body: string, signal: AbortSignal, mode: AgentTurnMode = "message"): Promise<void> {
+  async sendMessage(id: string, target: string, body: string, signal: AbortSignal, mode: AgentTurnMode = "message", voice: StaffVoice | null = null): Promise<void> {
     const k = this.k;
     if (!k.availableAgents().includes(target)) {
       k.emit(id, { type: "error", message: rt(k.locale, "warning.unknownAgent", { agent: target }), code: "unknown_agent" });
@@ -74,11 +85,40 @@ export class LearnerPath {
       k.emit(id, { type: "warning", message: rt(k.locale, "submission.cancelled", { reason: rt(k.locale, "submission.reason.interrupt") }) });
       return;
     }
+    // Embodied: free text to the patient (or the companion at their side) is a conversation in the room — the same
+    // requirement as `ask_patient` (EMBODIED §6), checked before anyone answers: nothing said, disclosed or
+    // credited from across the hospital. A movement request ("follow me", "wait here") becomes a world action.
+    if (body.trim()) {
+      if (this.talksToPatient(target) && !this.withinEarshot(id)) return;
+      if (await this.movement.request(id, target, body, voice, signal)) return;
+    }
     if (body.trim()) {
       k.ensureStarted(id);
-      k.conversations.addDialogue({ who: "learner", speaker: "learner", text: target === "patient" ? body : `@${target} ${body}` });
+      k.conversations.addDialogue({ who: "learner", speaker: "learner", text: target === "patient" ? body : `@${voice?.name ?? target} ${body}` });
     }
-    await k.agents.runAgent(id, target, body, signal, hook.additionalContext, mode);
+    await k.agents.runAgent(id, target, body, signal, hook.additionalContext, mode, voice, true);
+  }
+
+  /** Is `target` the patient or the companion (the patient-side voices)? */
+  private talksToPatient(target: string): boolean {
+    const profile = this.k.profiles.get(target);
+    const kind = profile ? agentKind(profile) : null;
+    return kind === "patient" || kind === "companion";
+  }
+
+  /**
+   * Embodied mode: is the learner's body within conversation range of the patient — the policy's `ask` requirement
+   * (EMBODIED §6), one rule for typed text, `/ask` and the `ask_patient` tool? A refusal is emitted with its code and
+   * the way there; clinical mode always passes.
+   */
+  private withinEarshot(id: string): boolean {
+    const embodied = this.k.embodied;
+    if (!embodied) return true;
+    const check = embodied.check(PRIMARY_ACTOR, { tool: "ask_patient", kind: "ask" }, false);
+    if (check.ok) return true;
+    const refusal = spatialRefusal(check, this.k.locale);
+    this.k.emit(id, { type: "error", message: refusal.output, code: check.code });
+    return false;
   }
 
   /** A slash command (`slash_command` op or typed `/…`); refused when the front-end disabled it. */

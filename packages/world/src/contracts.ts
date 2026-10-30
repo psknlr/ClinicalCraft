@@ -336,6 +336,18 @@ export interface PatientPlaceState {
   trolley: EntityId | null;
   /** What the patient lies or sits on at the spot (a table, the scanner, the trolley), or null (standing). In a slot: its bed. */
   support: EntityId | null;
+  /**
+   * The actor the patient walks with (`escort_patient`, EMBODIED §8.4): while set, the patient is at that actor's
+   * side wherever the actor goes — derived from the actor's pose, never stored step by step — standing, with no
+   * body on the floor of their own. Absent or null: they stay where they are.
+   */
+  escort?: ActorId | null;
+  /**
+   * A posture the patient took when asked (`reposition_patient`: "lie down on the couch", "sit up for me") and the
+   * clinical posture it was asked over: it holds while clinical state still gives `over` — an intervention that
+   * positions the patient, a transport or a transfer replaces it. Absent or null: the clinical posture.
+   */
+  asked?: { posture: BodyPosture; over: BodyPosture } | null;
 }
 
 /** Where the patient is now, resolved (`WorldRuntime.patientPlace`). */
@@ -362,6 +374,8 @@ export interface PatientPlace {
    * (null: walking), in which posture — renderers draw them travelling with the walker. Absent otherwise.
    */
   transit?: { by: ActorId; trolley: EntityId | null; posture: BodyPosture };
+  /** The actor the patient walks with now (`escort_patient`): renderers draw them following that actor. Absent otherwise. */
+  escort?: ActorId;
 }
 
 /**
@@ -447,8 +461,13 @@ export type WorldEvent = (
   | { id: string; type: "action.completed"; actionId: string; actorId: ActorId; operation: string; status: WorldActionResult["status"]; errorCode?: WorldErrorCode }
   /** The patient's body moved (a transport by `by`, or a relocation by the team: `by` null) along `path`. */
   | { id: string; type: "patient.moved"; entityId: EntityId; from: PatientPlace; to: PatientPlace; by: ActorId | null; distance: number; path: PathPoint[] }
-  /** The patient's posture changed where they are (clinical state: positioning, a transfer). */
+  /** The patient's posture changed where they are (clinical state: positioning, a transfer; or asked to: `reposition_patient`). */
   | { id: string; type: "patient.posture"; entityId: EntityId; from: BodyPosture; to: BodyPosture }
+  /**
+   * The patient started walking with an actor (`escort`: that actor) or stopped (`escort` null: they stay where
+   * they are); `actorId` asked for it (null: it ended by itself — a transport, a transfer, clinical state).
+   */
+  | { id: string; type: "patient.escort"; entityId: EntityId; escort: ActorId | null; actorId: ActorId | null }
 ) & {
   /**
    * The actor an action was done for (`WorldActionRequest.onBehalfOf`, a
@@ -992,6 +1011,13 @@ export interface WorldRuntime {
   observe(actorId: ActorId, opts?: Partial<PerceptionOptions>): WorldObservation;
   find(actorId: ActorId, query: EntityQuery): ObservedEntity[];
   inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string }[] }) | null;
+  /**
+   * In-service devices of an equipment type near an entity — the same level, footprint to footprint within `within` m
+   * (default the `nearbyState` range), itself excluded — with their behaviour state, nearest first: what a
+   * `nearbyState` precondition reads (devices that depend on devices). `states`: every state it is in — a carried
+   * item is "held" and in its own lifecycle state; `nearbyState` matches any.
+   */
+  nearby(aroundId: EntityId, type: string, within?: number): { id: EntityId; state: string | null; states: string[] }[];
   roomInfo(actorId: ActorId, roomId?: string): { id: string; name: string; kind: string; level: string; exits: { door: EntityId; to: string | null; toName: string }[]; entities: ObservedEntity[] } | null;
   canSee(actorId: ActorId, id: EntityId): boolean;
   /**

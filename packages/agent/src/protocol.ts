@@ -81,8 +81,13 @@ export interface TokenUsage {
 /* ------------------------------------------------------------------ */
 
 export type Op =
-  /** Free text from the learner, routed to `to` (default: the session's current interlocutor, initially the patient). */
-  | { type: "user_message"; text: string; to?: AddressTarget }
+  /**
+   * Free text from the learner, routed to `to` (default: the session's current interlocutor, initially the patient).
+   * `staff`: the facility staff member addressed (`staff:<id>` or the id) — they answer under their own name, as their
+   * own role, with their own conversation (the events of the turn carry `staffId`); ignored unless their role speaks
+   * through `to` (a porter through the nurse profile).
+   */
+  | { type: "user_message"; text: string; to?: AddressTarget; staff?: string }
   /** A deterministic clinical action (button press in the world, `/order cbc`, MCP tool). Passes the approval gate. */
   | { type: "clinical_action"; action: ClinicalAction; rationale?: string }
   /** Slash command typed by the learner: `/name args`. */
@@ -179,8 +184,11 @@ export type EventMsg =
    * call, scenario announcement, a button answer) in its own one-line turn (§4
    * Turn bracketing) — not the addressed agent's reply.
    */
-  /** `speaker`: the display name the turn's messages will carry (staff with a case/facility name), so a front-end can label the first streamed text. */
-  | { type: "turn_started"; turnId: string; agent: AgentRole; synthetic?: true; speaker?: string }
+  /**
+   * `speaker`: the display name the turn's messages will carry (staff with a case/facility name), so a front-end can label
+   * the first streamed text; `staffId`: the facility staff member who speaks (a `user_message` that named one).
+   */
+  | { type: "turn_started"; turnId: string; agent: AgentRole; synthetic?: true; speaker?: string; staffId?: string }
   | { type: "turn_phase"; turnId: string; agent: AgentRole; phase: TurnPhase }
   /** Streaming text from an agent (patient speech, nurse reply, clinician reasoning summary). */
   | { type: "agent_message_delta"; turnId: string; agent: AgentRole; delta: string }
@@ -200,6 +208,8 @@ export type EventMsg =
       grounding?: "llm" | "template" | "offline" | "deflected" | "opening" | "greeting" | "clarify" | "narrated";
       /** Non-verbal cue for the world/UI (e.g. "winces, holding the left flank"). */
       nonverbal?: string | null;
+      /** The facility staff member who speaks (`user_message.staff`): front-ends animate that person, not another of the role. */
+      staffId?: string;
     }
   | { type: "agent_reasoning"; turnId: string; agent: AgentRole; text: string }
   | { type: "tool_call_begin"; turnId: string; agent: AgentRole; callId: string; tool: string; args: unknown }

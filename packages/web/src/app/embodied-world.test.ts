@@ -280,3 +280,61 @@ describe("what a panel may offer (the world's verdict)", () => {
     }
   });
 });
+
+describe("words for the patient and walking with them (EMBODIED §6, §8.4)", () => {
+  /** The renderer's avatar (the link syncs the world to it before every submission). */
+  const here = { x: 0, y: 0, z: 27, yaw: 0, pitch: 0, level: "L0" };
+  const standAt = (at: { x: number; z: number }) => Object.assign(here, { x: at.x, z: at.z });
+
+  async function outpatient(): Promise<{ app: AppSession; link: EmbodiedLink; feedback: ActionFeedback; calls: string[]; slot: { x: number; z: number; id: string } }> {
+    setLocale("en");
+    Object.assign(here, { x: facility.spawn.x, z: facility.spawn.z });
+    const c = caseOf("new-onset-t2dm");
+    const stored = defaultSettings();
+    stored.agent.approvalMode = "bypass";
+    const calls: string[] = [];
+    const api = {
+      position: here,
+      staffPose: () => null,
+      placePatient: (slot: string, at: { posture?: string } | null) => calls.push(`place:${slot}:${at ? at.posture : "home"}`),
+      escortPatient: (slot: string, by: string | null) => calls.push(`escort:${slot}:${by}`),
+      setPatientState: () => undefined,
+      setDoor: () => undefined,
+    } as unknown as WorldApi;
+    const mover = new BrowserMover({ renderer: () => null });
+    const app = await startAppSession({ caseDef: c, facility, catalogs, stored, choice: { provider: "offline", model: null, mode: "offline", fellBack: false }, locale: "en", served: false, embodiment: "embodied", embodied: { mover } });
+    app.submit({ type: "configure", patch: { approvalMode: "bypass" } });
+    app.session.dispatch({ type: "start" });
+    const slotId = app.world()!.patientPlace()!.slot!;
+    const feedback = new ActionFeedback(() => null, () => null, () => undefined);
+    const link = new EmbodiedLink({ app, renderer: () => api, mover, facility, caseDef: c, slotId, feedback, toast: () => undefined, locale: () => "en" });
+    open.push({ app, link });
+    const slot = facility.patientSlots.find((s) => s.id === slotId)!;
+    return { app, link, feedback, calls, slot };
+  }
+
+  const said = (app: AppSession) => app.store.log.filter((e) => e.kind === "op" && e.op.type === "user_message").length;
+
+  it("from the entrance a question is not even sent: the refusal says why, with the way to the patient", async () => {
+    const { app, link, feedback } = await outpatient();
+    link.say({ type: "user_message", text: "Where does it hurt?", to: "patient" });
+    expect(said(app)).toBe(0);
+    expect(feedback.current).toMatchObject({ tone: "refused" });
+    expect(feedback.current?.goal).toMatchObject({ id: expect.stringMatching(/^patient:/) });
+  });
+
+  it("within earshot 'Please follow me.' is said; the world has the patient walk with the learner and the scene draws them following", async () => {
+    const { app, link, calls, slot } = await outpatient();
+    standAt({ x: slot.x + 1.2, z: slot.z });
+    link.say({ type: "user_message", text: "Please follow me.", to: "patient" });
+    expect(said(app)).toBe(1);
+    const world = app.world()!;
+    const t0 = Date.now();
+    while (world.patientPlace()?.escort !== PRIMARY_ACTOR && Date.now() - t0 < 10_000) await new Promise((r) => setTimeout(r, 20));
+    expect(world.patientPlace()?.escort).toBe(PRIMARY_ACTOR);
+    expect(calls).toContain(`escort:${slot.id}:avatar`);
+    // the narrator says what the world did, in the patient's conversation
+    const note = app.store.chat.find((m) => m.grounding === "narrated");
+    expect(note?.text).toMatch(/walks with you/);
+  });
+});

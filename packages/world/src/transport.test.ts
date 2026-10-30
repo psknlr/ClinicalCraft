@@ -269,6 +269,73 @@ describe("transport_patient (a body wheels the bed or walks the patient there)",
   });
 });
 
+describe("how the patient travels: on foot, or lying on the trolley that comes along (EMBODIED §8.4)", () => {
+  it("a standing outpatient walks upright to the CT and lies down only on its table — no couch is carried through the air (clinic-v4)", async () => {
+    let armed = false;
+    const seen: unknown[] = [];
+    const mover = steppingMover((i) => {
+      if (armed && i === 1) seen.push(place(w).transit);
+    });
+    const w = makeWorld("smzl-lung-adeno", { mover });
+    await toPatient(w);
+    armed = true;
+    const there = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+    expect(there.status, there.message).toBe("completed");
+    expect(seen[0]).toEqual({ by: PRIMARY_ACTOR, trolley: null, posture: "standing" });
+    expect(place(w)).toMatchObject({ provider: "eq:ct-scanner", support: "eq:ct-scanner", posture: "lying", trolley: null });
+    // back: they get off the table and walk, standing in their bed space again
+    seen.length = 0;
+    const back = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "home" } });
+    expect(back.status, back.message).toBe("completed");
+    expect(seen[0]).toEqual({ by: PRIMARY_ACTOR, trolley: null, posture: "standing" });
+    expect(place(w)).toMatchObject({ slot: "consult-1", posture: "standing" });
+  });
+
+  it("a sitting outpatient with no trolley to lie on walks too (a couch is no trolley)", async () => {
+    let armed = false;
+    const seen: unknown[] = [];
+    const mover = steppingMover((i) => {
+      if (armed && i === 1) seen.push(place(w).transit);
+    });
+    const w = makeWorld("new-onset-t2dm", { mover });
+    expect(place(w)).toMatchObject({ trolley: null });
+    await toPatient(w);
+    armed = true;
+    const r = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+    expect(r.status, r.message).toBe("completed");
+    expect(seen[0]).toEqual({ by: PRIMARY_ACTOR, trolley: null, posture: "standing" });
+    expect(place(w)).toMatchObject({ provider: "eq:ct-scanner", posture: "lying" });
+  });
+
+  it("an interrupted walk leaves an ambulatory patient standing where it stopped, never lying on the floor", async () => {
+    const ctrl = new AbortController();
+    let armed = false;
+    const mover = steppingMover((i) => {
+      if (armed && i === 2) ctrl.abort();
+    });
+    const w = makeWorld("smzl-lung-adeno", { mover });
+    await toPatient(w);
+    armed = true;
+    const r = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } }, ctrl.signal);
+    expect(r.status).toBe("cancelled");
+    expect(place(w)).toMatchObject({ slot: null, provider: null, posture: "standing", support: null });
+  });
+
+  it("a patient lying on their own trolley still goes on it (bed-bound: unchanged)", async () => {
+    let armed = false;
+    const seen: unknown[] = [];
+    const mover = steppingMover((i) => {
+      if (armed && i === 1) seen.push(place(w).transit);
+    });
+    const w = makeWorld("acute-ischemic-stroke", { mover });
+    await toPatient(w);
+    armed = true;
+    const r = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+    expect(r.status, r.message).toBe("completed");
+    expect(seen[0]).toMatchObject({ trolley: "eq:resus1-bed", posture: "lying" });
+  });
+});
+
 describe("the patient's posture and body follow clinical state", () => {
   it("a standing outpatient who lies down on the couch has no body of their own on the floor any more", () => {
     const w = makeWorld("smzl-lung-adeno");

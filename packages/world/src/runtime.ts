@@ -12,6 +12,7 @@
  * `perception.ts`). `entity()` / `entities()` are the static registry
  * (positions at build time): use `observe` / `inspect` for where things are now.
  */
+import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
 import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
 import { buildCollisionModel } from "./collision.js";
@@ -54,6 +55,10 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     initialPosture: bindingPosture(binding, facility),
     staticBody: staticBody ? { minX: staticBody.minX, maxX: staticBody.maxX, minZ: staticBody.minZ, maxZ: staticBody.maxZ } : null,
     locale,
+    // walking with someone (`escort_patient`): at that actor's side, on their side of any wall
+    actorPose: (id) => store.actor(id)?.pose ?? null,
+    clear: (level, a, b) => visibility.lineOfSight(level, a, b),
+    cues: () => (slot ? clinical.cues(slot.id) : {}),
   });
   // the grids and the occlusion read the physical state (doors, obstacles, moved carts and beds, carried items, the patient's body) as they are built
   const dynamics: WorldDynamics = {
@@ -100,6 +105,10 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     },
 
     entity: (id) => registry.entity(id),
+    nearby(aroundId, type, within = NEARBY_STATE_RANGE) {
+      const place = locator.place(aroundId);
+      return place ? rules.nearbyOfType(place, type, within).map((id) => ({ id, state: rules.state(id), states: rules.states(id) })) : [];
+    },
     entities: () => [...registry.entities],
     resolveId: (alias) => actions.resolve(alias),
 
