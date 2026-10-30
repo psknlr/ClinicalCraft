@@ -11,12 +11,11 @@
  *                  clock ticks — paused while an agent drives a body (EMBODIED R8) —, the clinical-mode
  *                  `walk_to` dynamic tool (embodied: mapped onto a world navigation)
  */
-import { patientCues, resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
+import { patientAgeText, patientCues, resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import type { InteractionTarget, WorldApi, WorldCallbacks, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { createWorld } from "../world/index.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
-import { tr } from "../i18n/index.js";
-import { patientAgeText } from "../ui/patient-age.js";
+import { getLocale, tr } from "../i18n/index.js";
 import type { EmbodiedLink } from "./embodied-link.js";
 import type { AppSession } from "./session.js";
 import { Stations } from "./stations.js";
@@ -31,9 +30,9 @@ export function slotFor(c: Pick<CaseDefinition, "setting">, f: FacilityDefinitio
   return f.patientSlots.find((s) => s.accepts.includes(c.setting)) ?? f.patientSlots[0] ?? null;
 }
 
+/** The patient's age in the UI language as clinicians write it ("8岁4个月", "18 hours"): core `patientAgeText`. */
 export function ageText(c: CaseDefinition): string {
-  const p = c.patient;
-  return patientAgeText(p.age, p.ageUnit);
+  return patientAgeText(c.patient, getLocale());
 }
 
 export function sexText(c: CaseDefinition): string {

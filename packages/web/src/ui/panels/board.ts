@@ -3,8 +3,16 @@
  * decisions with options / feedback / locked "need" text, multi-phase image
  * comparison (generalised V4 "治疗前后原图对照": any investigation with figures
  * read in ≥ 2 phases) and "finish" → debrief.
+ *
+ * Decisions and options carry the names every other surface uses
+ * (docs/PROTOCOL.md §3): a decision its number in case order ("Decision 2"),
+ * an option its letter in presentation order (A, B, C…: `labelledOptions`, as
+ * `list_options`, `/board`, `answer_decision` and the demonstration's calls
+ * list show them), so a learner, the CLI and an external agent agree on
+ * "Decision 2, B".
  */
-import { availableDecisions, presentedOptions, resultFor, type CaseDefinition, type Decision, type LocalizedText, type SessionState } from "@clinicalcraft/core";
+import { labelledOptions } from "@clinicalcraft/agent";
+import { availableDecisions, resultFor, type CaseDefinition, type Decision, type LocalizedText, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { ct, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
@@ -35,25 +43,41 @@ function feedbackFor(d: Decision, optionIds: string[]): string {
     .join(" ");
 }
 
-function decisionCard(app: App, game: Game, d: Decision, unlocked: boolean, decided: boolean): HTMLElement {
+/** An option's letter badge — decorative: the option's accessible name says "Option B" (`board.option`). */
+function optionBadge(label: string): HTMLElement {
+  return h("span", { class: "option-letter", "aria-hidden": "true" }, label);
+}
+
+/**
+ * One decision's card: a locked one shows only its number and what it needs; an open or decided one its number with
+ * the status, its prompt and its options, each with its letter badge (see the module docs). Exported for tests.
+ */
+export function decisionCard(app: App, game: Game, d: Decision, unlocked: boolean, decided: boolean): HTMLElement {
   const answers = game.session.store.answers.get(d.id) ?? [];
   const last = answers[answers.length - 1];
+  const n = game.caseDef.decisions.findIndex((x) => x.id === d.id) + 1;
   const status = decided ? tr("board.done") : unlocked ? tr("board.ready") : tr("board.waiting");
   // A locked prompt can state results not yet obtained, or another decision's answer: only its number and need.
-  const title = unlocked || decided ? ct(d.prompt) : tr("board.lockedTitle", { n: game.caseDef.decisions.findIndex((x) => x.id === d.id) + 1 });
-  const card = h("article", { class: ["decision", decided ? "correct" : "", !unlocked ? "locked" : ""], dataset: { decision: d.id } }, h("div", { class: "eyebrow", style: "margin-bottom:9px" }, status), h("h3", null, title));
+  const title = unlocked || decided ? ct(d.prompt) : tr("board.lockedTitle", { n });
+  const eyebrow = unlocked || decided ? tr("board.numbered", { n, status }) : status;
+  const card = h("article", { class: ["decision", decided ? "correct" : "", !unlocked ? "locked" : ""], dataset: { decision: d.id } }, h("div", { class: "eyebrow", style: "margin-bottom:9px" }, eyebrow), h("h3", null, title));
   if (!unlocked) {
     card.append(h("p", { class: "small muted" }, ct(d.need)));
     return card;
   }
   // Presentation order (seeded per case and decision): never the authored order, where the answer tends to come first.
-  const options = presentedOptions(game.caseDef, d);
+  const options = labelledOptions(game.caseDef, d);
   if (d.kind === "multiple" && !decided) {
     const picked = new Set<string>();
     card.append(h("p", { class: "small muted" }, tr("board.multiple")));
-    for (const o of options) {
-      const cb = h("input", { type: "checkbox", value: o.id, onchange: (e: Event) => ((e.target as HTMLInputElement).checked ? picked.add(o.id) : picked.delete(o.id)) });
-      card.append(h("label", { class: "decision-option check" }, cb, h("span", null, ct(o.text))));
+    for (const { label, option: o } of options) {
+      const cb = h("input", {
+        type: "checkbox",
+        value: o.id,
+        "aria-label": tr("board.option", { label, text: ct(o.text) }),
+        onchange: (e: Event) => ((e.target as HTMLInputElement).checked ? picked.add(o.id) : picked.delete(o.id)),
+      });
+      card.append(h("label", { class: "decision-option check" }, cb, optionBadge(label), h("span", null, ct(o.text))));
     }
     card.append(
       h(
@@ -70,19 +94,22 @@ function decisionCard(app: App, game: Game, d: Decision, unlocked: boolean, deci
       ),
     );
   } else {
-    for (const o of options) {
-      const chosen = last?.optionIds.includes(o.id);
+    for (const { label, option: o } of options) {
+      const right = decided && o.correct;
+      const wrong = !!last?.optionIds.includes(o.id) && !last.correct;
       card.append(
         h(
           "button",
           {
             type: "button",
-            class: ["decision-option", decided && o.correct ? "right" : "", chosen && !last?.correct ? "wrong" : ""],
+            class: ["decision-option", right ? "right" : "", wrong ? "wrong" : ""],
             disabled: decided,
             dataset: { option: o.id },
+            "aria-label": tr(right ? "board.optionRight" : wrong ? "board.optionWrong" : "board.option", { label, text: ct(o.text) }),
             onclick: () => app.act({ type: "answer", decisionId: d.id, optionIds: [o.id] }),
           },
-          `${decided && o.correct ? "✓ " : ""}${ct(o.text)}`,
+          optionBadge(label),
+          h("span", { class: "option-text" }, `${right ? "✓ " : ""}${ct(o.text)}`),
         ),
       );
     }

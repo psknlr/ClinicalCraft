@@ -171,6 +171,14 @@ button.link {
   gap: 3vw;
   padding: 64px 4vw 18px;
 }
+/* The hero card fits its grid track: at V4's fixed 590 px it ran under the library from about 1100 to 1530 px wide. */
+@media (min-width: 901px) {
+  .intro-layout > .intro-card {
+    width: auto;
+    max-width: 590px;
+    min-width: 0;
+  }
+}
 html[lang="en"] .intro-card h2 {
   font-size: 19px;
   letter-spacing: 4px;
@@ -240,7 +248,7 @@ html[lang="en"] .intro-card h2 {
   color: #2f5a3a;
 }
 .case-outcomes {
-  margin: 8px 0 0;
+  margin: 0 0 10px;
   font-size: 11px;
   line-height: 1.5;
   color: #4f5d45;
@@ -262,17 +270,8 @@ html[lang="en"] .intro-card h2 {
 .case-outcomes li + li {
   margin-top: 3px;
 }
-/* Keep the catalogue usable at scale: the selected case has its own scroll area, including expanded outcomes. */
-@media (min-width: 901px) {
-  .intro-selected {
-    flex-shrink: 0;
-    max-height: max(210px, min(280px, calc(100vh - 550px)));
-    overflow: auto;
-    overscroll-behavior: contain;
-  }
-}
 .case-disclaimer {
-  margin: 8px 0 0;
+  margin: 0 0 8px;
   padding-left: 8px;
   border-left: 3px solid #c9a24f;
   font-size: 11px;
@@ -327,8 +326,6 @@ html[lang="en"] .intro-card h2 {
 .library {
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 88px);
-  min-height: 0;
   background: var(--cream);
   border: 3px solid #7f946c;
   box-shadow: 8px 8px #193c2c55;
@@ -396,6 +393,35 @@ html[lang="en"] .intro-card h2 {
   padding: 12px 14px 14px;
   overscroll-behavior: contain;
 }
+/*
+ * Desktop: the library is a column of the viewport's height (100vh − 88px). The case list takes the room left, at
+ * least a card where the viewport allows (130–180 px); the selected case shows in full up to its cap and scrolls in
+ * place beyond it (expanded learning outcomes). Where the viewport is too short for both, the frame grows to its
+ * content and the page scrolls instead of anything hanging out of the frame: `min-height: min-content`, with
+ * `contain: size` keeping the list's cards out of that minimum.
+ */
+@media (min-width: 901px) {
+  .library {
+    height: calc(100vh - 88px);
+    min-height: min-content;
+  }
+  .case-list {
+    min-height: clamp(130px, calc(100vh - 600px), 180px);
+    contain: size;
+  }
+  .intro-selected {
+    flex-shrink: 0;
+    max-height: max(220px, calc(100vh - 460px));
+    overflow: auto;
+    overscroll-behavior: contain;
+  }
+}
+/*
+ * A long list (135 cases): a card out of view skips layout and paint, standing in at its last rendered height (an
+ * estimate before it has been rendered), so a search or a filter costs the cards in view only. The list is changed in
+ * place (src/ui/library-list.ts): a selection changes no card's size, and a scroll that lands on a card renders the
+ * cards it brings into view first (`cv-render`), so it lands exactly.
+ */
 .case-card {
   display: grid;
   gap: 5px;
@@ -406,6 +432,11 @@ html[lang="en"] .intro-card h2 {
   background: #ecebd2;
   border-color: #c3cdae;
   box-shadow: inset 0 2px #fff9e9, inset 0 -3px #0001;
+  content-visibility: auto;
+  contain-intrinsic-block-size: auto 120px;
+}
+.case-card.cv-render {
+  content-visibility: visible;
 }
 .case-card.prov-published-case {
   background: #f3f0dc;
@@ -413,9 +444,11 @@ html[lang="en"] .intro-card h2 {
 .case-card:hover {
   background: #f4f0d9;
 }
+/* Keyboard focus: a dark ring outside the border, apart from the active card's green border and strong on the cream
+   library (the global gold ring is faint there). */
 .case-card:focus-visible {
-  outline: 3px solid #476e52;
-  outline-offset: -3px;
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
 }
 .case-card.active {
   background: #fbf5dc;
@@ -1600,6 +1633,37 @@ details.topic .question {
   border: 2px solid #9aa98c;
   background: #e4e4cd;
   cursor: pointer;
+}
+/* An option's letter (A, B, C… — the letters the CLI, the tools and an external agent use). */
+button.decision-option {
+  display: flex;
+  align-items: flex-start;
+  gap: 9px;
+}
+.decision-option .option-letter {
+  display: inline-grid;
+  place-items: center;
+  flex-shrink: 0;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 4px;
+  border: 1px solid #b2bd9b;
+  background: #dce3c9;
+  color: #3e4f36;
+  font: 700 12px var(--mono);
+}
+.decision-option .option-text {
+  align-self: center;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+.decision-option.right .option-letter {
+  border-color: #6c935b;
+  background: #c9dbb6;
+}
+.decision-option.wrong .option-letter {
+  border-color: #b0583f;
+  background: #efc9b9;
 }
 .decision .attempts {
   display: block;
