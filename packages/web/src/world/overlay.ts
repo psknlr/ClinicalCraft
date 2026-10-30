@@ -1,19 +1,51 @@
 /**
- * What a voxel world draws for the player rather than of the facility: the first-person hand (V4) holding the
- * selected block, the outline around the aimed target or block, and the golden waypoint beacon over the
- * current objective's destination, with its label (`WorldApi.setWaypoint`).
+ * What a voxel world draws for the player rather than of the facility: the first-person hand (V4) holding a
+ * stethoscope in every hotbar slot (the hotbar shows the selected block), the outline around the aimed target or
+ * block, and the golden waypoint beacon over the current objective's destination, with its label
+ * (`WorldApi.setWaypoint`).
  */
-import { BoxGeometry, Color, EdgesGeometry, Group, LineBasicMaterial, LineSegments, Mesh, MeshBasicMaterial, MeshStandardMaterial, type Material, type Object3D, type Vector3 } from "three";
+import { BoxGeometry, Color, CubicBezierCurve3, EdgesGeometry, Group, LineBasicMaterial, LineSegments, Mesh, MeshBasicMaterial, MeshStandardMaterial, Vector3, type Material, type Object3D } from "three";
 import type { WorldPoint } from "../contracts.js";
+import type { MaterialLibrary } from "./materials.js";
 import { UNIT_BOX } from "./voxels.js";
 import type { VoxelWorld } from "./voxel-world.js";
+
+/** A box of `mat` at (x, y, z) sized (sx, sy, sz), added to `parent`. */
+function voxel(parent: Group, mat: Material, x: number, y: number, z: number, sx: number, sy: number, sz: number): Mesh {
+  const m = new Mesh(UNIT_BOX, mat);
+  m.position.set(x, y, z);
+  m.scale.set(sx, sy, sz);
+  parent.add(m);
+  return m;
+}
+
+/**
+ * The stethoscope in the first-person hand, in voxels: the chest piece (black rim, steel diaphragm towards the
+ * player) between the fingers, its steel stem, and the tubing in an arc over the fingers and down past the
+ * hand. Origin: the chest piece's centre.
+ */
+function stethoscope(lib: MaterialLibrary): Group {
+  const g = new Group();
+  const rim = lib.color("#23292b", "flat", 0.05);
+  const steel = lib.color("#c9d1d3", "flat", 0.05);
+  const tube = lib.color("#2c4250", "noise", 0.06);
+  // chest piece: two crossed boxes make an octagon
+  voxel(g, rim, 0, 0, 0, 0.16, 0.1, 0.035);
+  voxel(g, rim, 0, 0, 0, 0.1, 0.16, 0.035);
+  voxel(g, steel, 0, 0, 0.008, 0.12, 0.07, 0.035);
+  voxel(g, steel, 0, 0, 0.008, 0.07, 0.12, 0.035);
+  voxel(g, steel, 0, 0.1, -0.004, 0.03, 0.05, 0.026);
+  // tubing: cubes along a curve, close enough to read as one tube
+  const curve = new CubicBezierCurve3(new Vector3(0, 0.12, -0.004), new Vector3(0, 0.21, -0.01), new Vector3(-0.17, 0.21, -0.02), new Vector3(-0.15, -0.3, 0.01));
+  const n = Math.ceil(curve.getLength() / 0.014);
+  for (const p of curve.getSpacedPoints(n)) voxel(g, tube, p.x, p.y, p.z, 0.026, 0.026, 0.026);
+  return g;
+}
 
 /** Hand, highlight and waypoint beacon of one world. */
 export class Overlay {
   /** The first-person hand (a child of the camera). */
   readonly hand: Group;
-  /** The block in the hand (hotbar block slots). */
-  readonly held: Mesh;
   /** The outline around the aimed target or block. */
   readonly highlight: LineSegments;
   readonly beacon: Group;
@@ -32,20 +64,10 @@ export class Overlay {
     camera.add(hand);
     hand.position.set(0.4, -0.39, -0.58);
     hand.rotation.set(-0.12, -0.17, -0.2);
-    const handMesh = (mat: Material, x: number, y: number, z: number, sx: number, sy: number, sz: number) => {
-      const m = new Mesh(UNIT_BOX, mat);
-      m.position.set(x, y, z);
-      m.scale.set(sx, sy, sz);
-      hand.add(m);
-      return m;
-    };
-    handMesh(lib.get("skin"), 0, 0, 0, 0.16, 0.27, 0.18);
-    handMesh(lib.get("white"), 0, -0.22, 0, 0.19, 0.2, 0.21);
-    const held = new Mesh(UNIT_BOX, lib.get("wood"));
-    this.held = held;
-    held.scale.setScalar(0.22);
-    held.position.set(-0.02, 0.2, -0.01);
-    held.visible = false;
+    voxel(hand, lib.get("skin"), 0, 0, 0, 0.16, 0.27, 0.18);
+    voxel(hand, lib.get("white"), 0, -0.22, 0, 0.19, 0.2, 0.21);
+    const held = stethoscope(lib);
+    held.position.set(-0.02, 0.19, 0.02);
     hand.add(held);
 
     const highlight = new LineSegments(new EdgesGeometry(new BoxGeometry(1.01, 1.01, 1.01)), new LineBasicMaterial({ color: "#faf6cf", transparent: true, opacity: 0.85 }));

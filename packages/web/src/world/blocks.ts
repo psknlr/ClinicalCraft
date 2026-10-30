@@ -1,8 +1,8 @@
 /**
  * The build zone of a voxel world (V4): the blocks placed in it (seeded, or restored from a save), each with the
  * collision model's block box; mining (a burst of particles) and placing at the aimed face, within reach and
- * the zone's rules and capacity, with the app's materials check; and the hotbar's block slots — the block held
- * in the first-person hand.
+ * the zone's rules and capacity, with the app's materials check; and the hotbar's block slots (the first-person
+ * hand holds a stethoscope in every slot: `overlay.ts`).
  */
 import { InstancedMesh, Matrix3, Matrix4, Mesh, Vector3, type Intersection } from "three";
 import { blockBox } from "@clinicalcraft/world";
@@ -177,12 +177,8 @@ export class BuildZone {
     return n;
   }
 
-  /** Hotbar slot `n`: a block slot shows its block in the hand. */
+  /** Hotbar slot `n` (a block slot places its block). */
   select(n: number): void {
-    const { lib, overlay } = this.world;
     this.world.slot = n;
-    const mat = this.materials[n - 3];
-    overlay.held.visible = n >= 3 && !!mat;
-    overlay.held.material = mat ? lib.get(mat) : lib.get("wood");
   }
 }
