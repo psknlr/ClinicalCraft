@@ -289,9 +289,14 @@ function triggers(cond: Condition): Condition[] {
   return [cond];
 }
 
-/** Does the trigger hold whenever the step is done (`{ intervened: x }` covers `{ intervened: x, minCount: 2 }`)? */
+/**
+ * Does the trigger hold whenever the step is done (`{ intervened: x }` covers `{ intervened: x, minCount: 2 }` and
+ * `{ intervened: x, whenIndicated: true }`; a trigger `whenIndicated` covers only a step that is too)?
+ */
 function covers(trigger: Condition, step: Condition): boolean {
-  if ("intervened" in trigger && "intervened" in step) return trigger.intervened === step.intervened && (trigger.minCount ?? 1) <= (step.minCount ?? 1);
+  if ("intervened" in trigger && "intervened" in step) {
+    return trigger.intervened === step.intervened && (trigger.minCount ?? 1) <= (step.minCount ?? 1) && (!trigger.whenIndicated || !!step.whenIndicated);
+  }
   if ("ordered" in trigger && "ordered" in step) return trigger.ordered === step.ordered && (trigger.phase === undefined || trigger.phase === step.phase);
   if ("flag" in trigger && "flag" in step) return trigger.flag === step.flag;
   return false;

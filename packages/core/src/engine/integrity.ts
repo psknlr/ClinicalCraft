@@ -118,9 +118,13 @@ function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef): Issue[] {
       return ids.decisions.has(ref.id) ? [] : missing("decision");
     case "intervention": {
       if (!ids.interventions.has(ref.id)) return missing("intervention");
-      const max = c.interventions.find((i) => i.id === ref.id)?.maxDoses;
+      const intervention = c.interventions.find((i) => i.id === ref.id);
+      const max = intervention?.maxDoses;
       if (ref.minCount != null && max != null && ref.minCount > max) {
         return [err([...ref.path.slice(0, -1), "minCount"], `needs ${ref.minCount} doses but "${ref.id}" may be given at most ${max} time(s), so this can never become true`)];
+      }
+      if (ref.whenIndicated && !intervention?.indicatedWhen) {
+        return [err([...ref.path.slice(0, -1), "whenIndicated"], `"${ref.id}" has no indicatedWhen, so it is never given while indicated and this can never become true`)];
       }
       return [];
     }

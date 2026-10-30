@@ -96,7 +96,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("attempted" in cond) return s.attempts.some((a) => a.decisionId === cond.attempted);
   if ("decidedFirstTry" in cond) return s.attempts.find((a) => a.decisionId === cond.decidedFirstTry)?.correct === true;
   if ("intervened" in cond) {
-    const count = s.interventions.filter((r) => r.interventionId === cond.intervened).length;
+    const count = s.interventions.filter((r) => r.interventionId === cond.intervened && (!cond.whenIndicated || r.appropriateness === "indicated")).length;
     return count >= (cond.minCount ?? 1);
   }
   if ("phase" in cond) return s.phase === cond.phase;
@@ -121,7 +121,7 @@ export type ConditionRef =
   | { kind: "exam"; id: string; path: (string | number)[] }
   | { kind: "investigation"; id: string; phase?: string; requiresRecord: boolean; path: (string | number)[] }
   | { kind: "decision"; id: string; path: (string | number)[] }
-  | { kind: "intervention"; id: string; minCount?: number; path: (string | number)[] }
+  | { kind: "intervention"; id: string; minCount?: number; whenIndicated?: boolean; path: (string | number)[] }
   | { kind: "phase"; id: string; path: (string | number)[] }
   | { kind: "flag"; id: string; path: (string | number)[] }
   | { kind: "objective"; id: string; path: (string | number)[] }
@@ -144,7 +144,7 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("attempted" in node) out.push({ kind: "decision", id: node.attempted, path: [...path, "attempted"] });
     else if ("decidedFirstTry" in node) out.push({ kind: "decision", id: node.decidedFirstTry, path: [...path, "decidedFirstTry"] });
     else if ("intervened" in node)
-      out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), path: [...path, "intervened"] });
+      out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), ...(node.whenIndicated ? { whenIndicated: true } : {}), path: [...path, "intervened"] });
     else if ("phase" in node) out.push({ kind: "phase", id: node.phase, path: [...path, "phase"] });
     else if ("flag" in node) out.push({ kind: "flag", id: node.flag, path: [...path, "flag"] });
     else if ("objective" in node) out.push({ kind: "objective", id: node.objective, path: [...path, "objective"] });

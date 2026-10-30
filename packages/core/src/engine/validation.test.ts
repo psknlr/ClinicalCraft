@@ -305,7 +305,11 @@ describe("hardening: checkCaseIntegrity blind spots", () => {
       { id: "x3", domain: "management", text: "x", weight: 1, met: { intervened: "epi", minCount: 3 } },
       { id: "x4", domain: "efficiency", text: "x", weight: 1, met: { elapsed: { gte: 10, lte: 5 } } },
       { id: "x5", domain: "efficiency", text: "x", weight: 1, met: { hints: { gte: 2, lte: 1 } } },
+      { id: "x6", domain: "management", text: "x", weight: 1, met: { intervened: "epi", whenIndicated: true } },
     );
+    // "epi" has an indicatedWhen in the fixture; an intervention without one is never given while indicated
+    const noWindow = c.interventions.find((i) => !i.indicatedWhen)!;
+    c.rubric.push({ id: "x7", domain: "management", text: "x", weight: 1, met: { intervened: noWindow.id, whenIndicated: true } });
     const issues = checkCaseIntegrity(c);
     const n = SIM.rubric.length;
     expect(issues.map((i) => [i.path, i.severity])).toEqual([
@@ -314,6 +318,7 @@ describe("hardening: checkCaseIntegrity blind spots", () => {
       [`rubric.${n + 2}.met.minCount`, "error"],
       [`rubric.${n + 3}.met.elapsed`, "error"],
       [`rubric.${n + 4}.met.hints`, "error"],
+      [`rubric.${n + 6}.met.whenIndicated`, "error"],
       [`investigations.${SIM.investigations.length}.results`, "warning"],
     ]);
     expect(at(issues, `rubric.${n}.met.read`)[0].message).toMatch(/no result in any phase/);

@@ -355,7 +355,14 @@ solution is sent to the browser).
 * Conditions available everywhere: `all/any/not/always`, `asked`, `examined`,
   `ordered`, `read`, `resultReady`, `decided`, `decidedFirstTry` (rubric: first
   attempt correct), `attempted`, `intervened`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`.
+  `elapsed`, `hints`. `ordered` and `read` take a `phase` (that phase's order or
+  result — an unphased `read` is also met by a "no result yet" placeholder of any
+  phase). An act done **in time**: `{ "intervened": "tpe", "whenIndicated": true }`
+  counts only the times the intervention was given while its `indicatedWhen` held
+  (e.g. `{ "phase": "admission" }`) — rubric `met` is evaluated on the final state,
+  so a `{ "phase": … }` leaf there is false at the end, and one in an objective's
+  `completeWhen` can become impossible to meet, leaving the case impossible to
+  finish.
 * `rubric`: 8–15 deterministic items across domains (history, examination,
   investigations, diagnosis, management, safety, efficiency) + 1–3
   communication items judged by the examiner (`judgeGuidance`, no `met`).

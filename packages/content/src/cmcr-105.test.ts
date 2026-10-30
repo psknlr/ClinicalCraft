@@ -377,6 +377,20 @@ describe("CMCR additional 105 source reports", () => {
       return assess(c, state).score.percent;
     };
     expect(replay(true)).toBeLessThan(replay(false));
+    // No objective can become impossible (the case would never finish): a learner who skips any act of the reference
+    // path and does it late — then everything else again — can still finish.
+    const acts = c.solution.flatMap((a, k) => (a.type === "intervene" || a.type === "order" ? [k] : []));
+    for (const k of acts) {
+      let state = createSession(c);
+      const tryStep = (action: (typeof c.solution)[number]) => {
+        const step = reduce(c, state, action);
+        if (!step.rejected) state = step.state;
+      };
+      c.solution.forEach((action, i) => i !== k && action.type !== "finish" && tryStep(action));
+      tryStep(c.solution[k]!);
+      for (const action of c.solution) if (action.type !== "finish") tryStep(action);
+      expect(reduce(c, state, { type: "finish" }).rejected?.code, at(`skipping solution step ${k} (${JSON.stringify(c.solution[k])}) and doing it late`)).toBeUndefined();
+    }
 
     // The facilitator guide (CASE_AUTHORING §9.6) with what is still to verify.
     const guide = readFileSync(new URL(`../cases/${entry.id}/README.md`, import.meta.url), "utf8");
