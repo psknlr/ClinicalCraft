@@ -9,7 +9,7 @@
  * (order_test → bedside-provider, or a fixed station; read_result → at the
  * patient or a records terminal, never the device).
  */
-export const BEDSIDE_CAPABILITIES: readonly string[] = ["ecg-12lead", "point-of-care", "ultrasound", "echocardiography", "peak-flow", "scale", "cardiac-monitor", "capnography", "oxygen", "suction"];
+export const BEDSIDE_CAPABILITIES: readonly string[] = ["ecg-12lead", "point-of-care", "ultrasound", "echocardiography", "peak-flow", "scale", "cardiac-monitor", "capnography", "oxygen", "suction", "eeg", "fetal-monitor"];
 
 /**
  * Laboratory capabilities: the specimen is taken at the patient and sent to
