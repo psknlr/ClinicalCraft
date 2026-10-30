@@ -146,7 +146,7 @@ export class OpDispatcher {
     try {
       switch (op.type) {
         case "user_message":
-          return await k.learner.handleUserMessage(id, op.text, op.to ?? null);
+          return await k.learner.handleUserMessage(id, op.text, op.to ?? null, op.staff ?? null);
         case "clinical_action":
           await k.learner.handleClinicalAction(id, op.action, op.rationale);
           return;

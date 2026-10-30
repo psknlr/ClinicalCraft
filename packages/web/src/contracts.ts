@@ -34,6 +34,11 @@ export interface WorldPatient {
   posture: "standing" | "sitting" | "lying";
   /** Floating name tag text, e.g. "患者 · 74岁男性". */
   tag: string;
+  /**
+   * The case's companion (the parent, the spouse…), drawn at the patient's side and going where they go: their
+   * look and their tag ("Mother · Li Hua"). No body in the world model.
+   */
+  companion?: { appearance: Partial<Appearance>; label: string };
 }
 
 /**
@@ -219,6 +224,8 @@ export interface WorldApi {
   /** Animate an NPC: speaking (head bob), posture, accessory (oxygen mask…), affect tint. */
   setPatientState(slotId: string, state: { speaking?: boolean; posture?: WorldPatient["posture"]; accessory?: Appearance["accessory"]; distressed?: boolean }): void;
   setStaffSpeaking(staffId: string, speaking: boolean): void;
+  /** The speaking animation of the patient's companion (`WorldPatient.companion`; none: nothing). */
+  setCompanionSpeaking(slotId: string, speaking: boolean): void;
   /** Golden beacon over the current objective's destination (null hides it); stands on `level`'s floor. */
   setWaypoint(target: (WorldPoint & { label: string }) | null): void;
   /**
@@ -266,10 +273,16 @@ export interface WorldApi {
   placePatient(slotId: string, at: PatientSpot | null): void;
   /**
    * Draw the patient travelling with a walker while wheeled or walked (`by`: "avatar" or a staff id; `null`: stop):
-   * lying on the trolley the walker pushes, or walking ahead of them. No collider meanwhile; the world model then
-   * says where they are (`placePatient`).
+   * lying on the trolley the walker pushes, else walking upright a step behind the walker (never lying without a
+   * trolley under them). No collider meanwhile; the world model then says where they are (`placePatient`).
    */
   pushPatient(slotId: string, by: string | null, posture?: WorldPatient["posture"]): void;
+  /**
+   * Draw the patient walking with someone who asked them to follow (`escort_patient`, EMBODIED §8.4: `by` "avatar"
+   * or a staff id; `null`: stop) — upright, a step behind on the walker's own path, their companion behind them; no
+   * collider meanwhile. The world model says where they stay (`placePatient`).
+   */
+  escortPatient(slotId: string, by: string | null): void;
   /** Open or close a door (renderer door id; a `door:` prefix is accepted). A locked door does not open. */
   setDoor(doorId: string, open: boolean): void;
   /** Lock / unlock a door: a locked door closes and stays shut for the player and for walkers. */

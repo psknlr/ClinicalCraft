@@ -389,6 +389,8 @@ export class Perception {
         return e.by === actor.id || sees(e.entityId);
       case "patient.posture":
         return sees(e.entityId);
+      case "patient.escort":
+        return e.actorId === actor.id || e.escort === actor.id || sees(e.entityId);
       case "obstacle.changed": {
         const r = e.obstacle.rect;
         const at = { x: r.x, z: r.z };
@@ -609,6 +611,9 @@ export class Perception {
       }
       case "patient.posture":
         summary = worldMessage("patient.posture", L, { patient: n(e.entityId), posture: postureName(e.to, L) });
+        break;
+      case "patient.escort":
+        summary = e.escort ? worldMessage(key(e.escort, "patient.escort", "self.escort"), L, { actor: n(e.escort), patient: n(e.entityId) }) : worldMessage("patient.stays", L, { patient: n(e.entityId) });
         break;
     }
     return { id: e.id, type: e.type, summary };

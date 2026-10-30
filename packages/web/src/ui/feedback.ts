@@ -5,8 +5,11 @@
  * walks the avatar to the place the world model names (`hint.goal`); when no
  * walk fixes it but an act does (a clinical prerequisite: the IV access
  * before an IV drug), a button for that act. Shown inside the open window
- * (the HUD is inert under it), else in the HUD; it leaves by itself after a
- * while, or with ×.
+ * (the HUD is inert under it), else in the HUD. A refusal with a way forward
+ * ("Go there", the act to do first) is action-required: it stays until the
+ * learner takes it, dismisses it (×) or does something that can be done —
+ * a busy encounter must not wash it away. Everything else (a short step being
+ * taken, a refusal nothing fixes) leaves by itself after `FEEDBACK_MS`.
  */
 import type { ActionHint, NavGoal } from "@clinicalcraft/world";
 import { tr } from "../i18n/index.js";
@@ -25,8 +28,13 @@ export interface FeedbackItem {
   then?: ActionHint["then"];
 }
 
-/** How long a refusal stays (ms). */
+/** How long feedback without a way forward stays (ms). */
 export const FEEDBACK_MS = 15_000;
+
+/** Does this feedback ask the learner to act (a refusal with "Go there" or an act to do first)? It then stays until handled. */
+export function actionRequired(item: FeedbackItem): boolean {
+  return item.tone === "refused" && (!!item.goal || !!item.action);
+}
 
 export class ActionFeedback {
   private item: FeedbackItem | null = null;
@@ -47,7 +55,7 @@ export class ActionFeedback {
   show(item: FeedbackItem): void {
     this.item = item;
     if (this.timer) clearTimeout(this.timer);
-    this.timer = setTimeout(() => this.clear(), FEEDBACK_MS);
+    this.timer = actionRequired(item) ? null : setTimeout(() => this.clear(), FEEDBACK_MS);
     this.render();
   }
 
@@ -72,7 +80,7 @@ export class ActionFeedback {
     slot.append(
       h(
         "div",
-        { id: "action-feedback", class: ["action-feedback", `tone-${item.tone}`], role: "status", "aria-live": "polite" },
+        { id: "action-feedback", class: ["action-feedback", `tone-${item.tone}`, actionRequired(item) ? "action-required" : ""], role: "status", "aria-live": "polite" },
         h("p", null, item.text),
         h(
           "div",

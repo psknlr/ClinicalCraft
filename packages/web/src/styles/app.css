@@ -2567,6 +2567,36 @@ button.decision-option {
 .device-op.unavailable {
   opacity: 0.55;
 }
+.carry-row {
+  gap: 8px;
+  align-items: center;
+  margin: 6px 0 8px;
+}
+.hands {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  background: #f2efd9;
+  border-left: 3px solid #e6b979;
+}
+.hands h3 {
+  margin: 0 0 6px;
+}
+.hand-item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 4px 10px;
+  align-items: baseline;
+  padding: 8px 0;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+.hand-item .row {
+  grid-column: 1 / -1;
+  gap: 8px;
+}
+.hand-item[data-worn="true"] b::after {
+  content: " ◇";
+  opacity: 0.6;
+}
 .monitor-read {
   margin-top: 8px;
   white-space: pre-line;

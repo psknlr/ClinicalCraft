@@ -85,6 +85,18 @@ describe("case library at 135 cases", () => {
     expect(matchesLibraryQuery(plain(["general-surgery"], "operating-room"), "手术室")).toBe(true);
   });
 
+  it("searches an index entry's text as it is: a changed entry (a new object) is searched afresh", () => {
+    setLocale("en");
+    const fever = plain(["pediatrics"], "outpatient");
+    expect(matchesLibraryQuery(fever, "fever paediatrics")).toBe(true);
+    const cough = { ...fever, title: { "zh-CN": "咳嗽 · 7岁男孩", en: "Cough · boy aged 7" }, summary: { "zh-CN": "咳嗽两周。", en: "Two weeks of cough." } };
+    expect(matchesLibraryQuery(cough, "cough")).toBe(true);
+    expect(matchesLibraryQuery(cough, "fever")).toBe(false);
+    expect(matchesLibraryQuery(fever, "cough")).toBe(false);
+    setLocale("zh-CN");
+    expect(matchesLibraryQuery(cough, "咳嗽 outpatient")).toBe(true);
+  });
+
   it("does not turn a diagnosis-bearing id, review date or hash into searchable information", () => {
     const hidden = { ...card, contentHash: "secretchecksum", review: { status: "editorial" as const, reviewedAt: "1999-12-31" } };
     expect(matchesLibraryQuery(hidden, "secret-final-diagnosis")).toBe(false);

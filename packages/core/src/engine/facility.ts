@@ -693,6 +693,9 @@ export function checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[
  * declared footprint, screens without a "screen" part and non-canonical
  * capabilities (warnings); behaviours (initial/from/to/predicate states must
  * exist, `derived` monitor attachment needs "attached"/"detached" — errors;
+ * a `nearbyState` naming a type no loaded catalog defines or a state that
+ * type's behaviour does not have — warnings; a handheld item's operations
+ * may be offered in its carried states "held" / "equipped";
  * clinical effects the type cannot back, releases without a reservation —
  * warnings), interaction points (inside a solid footprint or beyond reach —
  * warnings), portable carts that are wall-mounted and models that are not
@@ -715,14 +718,15 @@ export function checkCatalogs(catalogs: EquipmentCatalog[]): Issue[] {
       equipmentOwner.set(e.id, catalog.id);
     });
   }
+  const types = new Map<string, EquipmentType>(catalogs.flatMap((c) => c.equipment.map((e) => [e.id, e] as const)));
   for (const catalog of catalogs) {
     const prefix = `catalog(${catalog.id})`;
-    catalog.equipment.forEach((e, i) => issues.push(...checkEquipmentType(e, `${prefix}.equipment.${i}`, materialOwner)));
+    catalog.equipment.forEach((e, i) => issues.push(...checkEquipmentType(e, `${prefix}.equipment.${i}`, materialOwner, types)));
   }
   return issues;
 }
 
-function checkEquipmentType(e: EquipmentType, path: string, materials: Map<string, string>): Issue[] {
+function checkEquipmentType(e: EquipmentType, path: string, materials: Map<string, string>, types: ReadonlyMap<string, EquipmentType> = new Map()): Issue[] {
   const issues: Issue[] = [];
   const { w, d, h } = e.footprint;
   e.parts.forEach((part, j) => {
@@ -735,7 +739,7 @@ function checkEquipmentType(e: EquipmentType, path: string, materials: Map<strin
   e.capabilities.forEach((cap, j) => {
     if (!(cap in CAPABILITIES)) issues.push(warn(`${path}.capabilities.${j}`, `non-canonical capability "${cap}"`));
   });
-  if (e.behavior) issues.push(...checkBehavior(e, e.behavior, `${path}.behavior`));
+  if (e.behavior) issues.push(...checkBehavior(e, e.behavior, `${path}.behavior`, types));
   issues.push(...checkEmbodiment(e, path));
   return issues;
 }
@@ -749,7 +753,24 @@ function predicateStates(p: WorldPredicate, out: string[] = []): string[] {
   return out;
 }
 
-function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string): Issue[] {
+/** `nearbyState` leaves of a world predicate (outside or inside all/any/not). */
+function nearbyLeaves(p: WorldPredicate, out: { type: string; state: string | string[] }[] = []): { type: string; state: string | string[] }[] {
+  if ("nearbyState" in p) out.push(p.nearbyState);
+  else if ("all" in p) p.all.forEach((x) => nearbyLeaves(x, out));
+  else if ("any" in p) p.any.forEach((x) => nearbyLeaves(x, out));
+  else if ("not" in p) nearbyLeaves(p.not, out);
+  return out;
+}
+
+/** States another type can be in: its catalog behaviour's (plus held / equipped for a handheld item); null when built in. */
+function knownStates(t: EquipmentType): Set<string> | null {
+  if (!t.behavior) return null;
+  const states = new Set(Object.keys(t.behavior.states));
+  if (t.portable === "handheld") for (const s of ["held", "equipped"]) states.add(s);
+  return states;
+}
+
+function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types: ReadonlyMap<string, EquipmentType> = new Map()): Issue[] {
   const issues: Issue[] = [];
   const states = new Set(Object.keys(b.states));
   if (states.size === 0) issues.push(err(`${path}.states`, `behaviour of "${e.id}" declares no states`));
@@ -761,16 +782,29 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string): Issue
   const ops = Object.entries(b.operations);
   if (ops.length === 0) issues.push(warn(`${path}.operations`, `behaviour of "${e.id}" offers no operations`));
   const reserves = ops.some(([, op]) => op.reserve);
+  // a handheld item reports "held" / "equipped" while carried: an operation may be offered in those (never lead to them)
+  const carried = new Set(e.portable === "handheld" ? ["held", "equipped"] : []);
   for (const [name, op] of ops) {
     const at = `${path}.operations.${name}`;
     if (op.from !== "*") {
       op.from.forEach((s, k) => {
-        if (!states.has(s)) issues.push(err(`${at}.from.${k}`, `unknown state "${s}"`));
+        if (!states.has(s) && !carried.has(s)) issues.push(err(`${at}.from.${k}`, `unknown state "${s}"`));
       });
     }
     if (op.to !== undefined && !states.has(op.to)) issues.push(err(`${at}.to`, `unknown state "${op.to}"`));
     (op.requires ?? []).forEach((p, k) => {
-      for (const s of predicateStates(p)) if (!states.has(s)) issues.push(err(`${at}.requires.${k}`, `predicate refers to unknown state "${s}"`));
+      for (const s of predicateStates(p)) if (!states.has(s) && !carried.has(s)) issues.push(err(`${at}.requires.${k}`, `predicate refers to unknown state "${s}"`));
+      for (const near of nearbyLeaves(p)) {
+        const other = types.get(near.type);
+        if (!other) {
+          issues.push(warn(`${at}.requires.${k}`, `"nearbyState" names equipment type "${near.type}", which no loaded catalog defines`));
+          continue;
+        }
+        const known = knownStates(other);
+        for (const s of Array.isArray(near.state) ? near.state : [near.state]) {
+          if (known && !known.has(s)) issues.push(warn(`${at}.requires.${k}`, `"nearbyState" refers to state "${s}", which "${near.type}" does not have`));
+        }
+      }
     });
     if (op.clinical?.select === "capability" && e.capabilities.length === 0) issues.push(warn(`${at}.clinical.select`, `"capability" selection on "${e.id}", which provides no capabilities`));
     if (op.clinical?.select === "monitoring" && op.clinical.tool !== "intervene") issues.push(warn(`${at}.clinical.tool`, `"monitoring" selects an intervention: expected tool "intervene", got "${op.clinical.tool}"`));

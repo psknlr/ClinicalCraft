@@ -39,6 +39,11 @@ export interface ChatItem {
   nonverbal?: string;
   /** A command's structured output (`command_output.data`), e.g. a delegation's steps for the learner's view. */
   data?: unknown;
+  /**
+   * The colleague a line was said to or by (`user_message.staff`, `agent_message.staffId`): two nurses share an
+   * agent, never a conversation window. Absent: every window of the agent shows it (an alarm call, `@nurse`).
+   */
+  staffId?: string;
 }
 
 export interface Snapshot {
@@ -119,6 +124,10 @@ export class SessionStore {
    * deflection, unverified reply) are shown in that conversation, not only as a passing toast.
    */
   private readonly views = new Map<string, string>();
+  /** Submission id → the colleague it was said to (`user_message.staff`): their window shows what follows. */
+  private readonly viewStaff = new Map<string, string>();
+  /** Running turns that speak as a colleague (`turn_started.staffId`, `speaker`): streamed text is labelled at once. */
+  private readonly turnStaff = new Map<string, { staffId: string; speaker: string | null }>();
   private readonly entryListeners = new Set<(entry: LogEntry) => void>();
   private readonly changeListeners = new Set<() => void>();
   private seq = 0;
@@ -183,12 +192,15 @@ export class SessionStore {
 
   /* ---------------- selectors ---------------- */
 
-  /** Chat items visible in a conversation with `agents` (null = every chat agent). */
-  chatFor(agents: ReadonlySet<string> | null): ChatItem[] {
+  /**
+   * Chat items visible in a conversation with `agents` (null = every chat agent) — with one colleague (`staffId`):
+   * their lines and the agent's lines that name nobody, never another colleague's of the same role.
+   */
+  chatFor(agents: ReadonlySet<string> | null, staffId: string | null = null): ChatItem[] {
     if (!agents) return this.chat;
     // Exam/treatment lines carry agent "patient"; command output and turn warnings carry the
     // conversation they belong to — each shows only in its own window.
-    return this.chat.filter((c) => agents.has(c.agent));
+    return this.chat.filter((c) => agents.has(c.agent) && (!staffId || !c.staffId || c.staffId === staffId));
   }
 
   /** The conversation (agent) a submission belongs to, if it came from one. */
@@ -304,7 +316,9 @@ export class SessionStore {
       }
       if (!op.to && /^[/／]{2}/.test(trimmed)) text = trimmed.slice(1);
       this.views.set(id, to);
-      this.chat.push({ key: this.key("u"), role: "learner", agent: to, speaker: "learner", text, grounded: [], streaming: false, tone: "speech", at });
+      const staffId = typeof op.staff === "string" && op.staff.trim() ? op.staff.trim().replace(/^staff:/, "") : undefined;
+      if (staffId) this.viewStaff.set(id, staffId);
+      this.chat.push({ key: this.key("u"), role: "learner", agent: to, speaker: "learner", text, grounded: [], streaming: false, tone: "speech", at, ...(staffId ? { staffId } : {}) });
     } else if (op.type === "clinical_action" && op.action.type === "ask") {
       const itemId = op.action.itemId;
       const item = this.caseDef.history.find((h) => h.id === itemId);
@@ -355,12 +369,14 @@ export class SessionStore {
         break;
       case "turn_started":
         this.phases.set(String(msg.agent), "awaiting_model");
+        if (msg.staffId) this.turnStaff.set(msg.turnId, { staffId: msg.staffId, speaker: msg.speaker ?? null });
         break;
       case "agent_message_delta": {
         if (CHAT_AGENTS_EXCLUDED.has(String(msg.agent))) break;
         let item = this.streams.get(msg.turnId);
         if (!item) {
-          item = { key: this.key("s"), role: "agent", agent: String(msg.agent), speaker: this.displaySpeaker(String(msg.agent), ""), text: "", grounded: [], turnId: msg.turnId, streaming: true, tone: "speech", at };
+          const as = this.turnStaff.get(msg.turnId);
+          item = { key: this.key("s"), role: "agent", agent: String(msg.agent), speaker: this.displaySpeaker(String(msg.agent), as?.speaker ?? ""), text: "", grounded: [], turnId: msg.turnId, streaming: true, tone: "speech", at, ...(as ? { staffId: as.staffId } : {}) };
           this.streams.set(msg.turnId, item);
           this.chat.push(item);
         }
@@ -373,14 +389,16 @@ export class SessionStore {
         const extra = msg as typeof msg & { grounding?: string; nonverbal?: string };
         const stream = this.streams.get(msg.turnId);
         const speaker = this.displaySpeaker(String(msg.agent), msg.speaker);
+        const staffId = msg.staffId ?? this.turnStaff.get(msg.turnId)?.staffId;
+        const own = staffId ? { staffId } : {};
         if (extra.grounding === "narrated") {
           // A narration (the patient cannot speak, or an aside): a note in the conversation, never the patient's words.
           if (stream) this.streams.delete(msg.turnId);
           if (stream) this.chat.splice(this.chat.indexOf(stream), 1);
-          this.chat.push({ key: this.key("n"), role: "system", agent: String(msg.agent), speaker, text: msg.text, grounded: [], streaming: false, tone: "note", at, grounding: "narrated" });
+          this.chat.push({ key: this.key("n"), role: "system", agent: String(msg.agent), speaker, text: msg.text, grounded: [], streaming: false, tone: "note", at, grounding: "narrated", ...own });
         } else if (stream) {
           this.streams.delete(msg.turnId);
-          Object.assign(stream, { text: msg.text, grounded: msg.grounded, streaming: false, speaker });
+          Object.assign(stream, { text: msg.text, grounded: msg.grounded, streaming: false, speaker, ...own });
           if (extra.grounding) stream.grounding = extra.grounding;
           if (extra.nonverbal) stream.nonverbal = extra.nonverbal;
         } else {
@@ -397,12 +415,14 @@ export class SessionStore {
             at,
             ...(extra.grounding ? { grounding: extra.grounding } : {}),
             ...(extra.nonverbal ? { nonverbal: extra.nonverbal } : {}),
+            ...own,
           });
         }
         break;
       }
       case "turn_complete":
       case "turn_aborted": {
+        this.turnStaff.delete(msg.turnId);
         for (const [turnId, item] of this.streams) {
           if (turnId === msg.turnId) {
             item.streaming = false;
@@ -433,7 +453,8 @@ export class SessionStore {
         const refused = commandRefusal(msg.data);
         const text = refused ? learnerText(refusalLead(msg.text)) : msg.text;
         if (refused && ev.id && text && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
-        if (text.trim()) this.chat.push({ key: this.key("c"), role: "system", agent: where, speaker: `/${msg.name}`, text, grounded: [], streaming: false, tone: refused ? "error" : "command", at, ...(msg.data !== undefined ? { data: msg.data } : {}) });
+        const staffId = this.viewStaff.get(ev.id);
+        if (text.trim()) this.chat.push({ key: this.key("c"), role: "system", agent: where, speaker: `/${msg.name}`, text, grounded: [], streaming: false, tone: refused ? "error" : "command", at, ...(msg.data !== undefined ? { data: msg.data } : {}), ...(staffId ? { staffId } : {}) });
         break;
       }
       case "plan_updated":
@@ -456,7 +477,8 @@ export class SessionStore {
         // its second line tells a model which tool call fixes it: not for the learner
         const text = spatial ? learnerText(refusalLead(msg.message)) : msg.message.trim();
         if (ev.id && text && !this.failures.has(ev.id)) this.failures.set(ev.id, text);
-        if (where && text) this.chat.push({ key: this.key("w"), role: "system", agent: where, speaker: "", text, grounded: [], streaming: false, tone: "error", at });
+        const staffId = this.viewStaff.get(ev.id);
+        if (where && text) this.chat.push({ key: this.key("w"), role: "system", agent: where, speaker: "", text, grounded: [], streaming: false, tone: "error", at, ...(staffId ? { staffId } : {}) });
         break;
       }
       case "world_action_result": {

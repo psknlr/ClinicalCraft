@@ -130,6 +130,7 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
       interaction: { type: "string", enum: ["workstation", "monitor", "bed", "device", "atlas", "board", "craft", "door", "sink", "storage"], description: "Interaction kind (sink: sinks and hand-rub dispensers)." },
       portable_only: { type: "boolean", description: "Only carts and handheld items (what can be brought to the patient)." },
       prefer_available: { type: "boolean", description: "List equipment in service that nobody else is using first (a busy or broken device cannot be used)." },
+      room: { type: "string", maxLength: 80, description: 'Only in this room: a room id, or "here" (the room you are in).' },
       limit: { type: "integer", minimum: 1, maximum: 50 },
     }),
   },
@@ -446,6 +447,9 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         if (Array.isArray(args.capabilities) && args.capabilities.length) q.capabilities = args.capabilities.map(String);
         const world = host.world();
         const actorId = host.actorOf(ctx);
+        // "here": the room the actor is in (outside any room: nothing is "here")
+        const room = strArg(args, "room");
+        if (room) q.room = room === "here" ? (world.actor(actorId)?.room ?? "room:-") : room;
         let list = world.find(actorId, q);
         if (filtered) {
           list = list.filter((e) => {

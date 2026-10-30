@@ -24,7 +24,7 @@ import { statusLabel } from "../app/llm.js";
 import { caseDisclaimer, ct, getLocale, reviewLine, tr, trMaybe } from "../i18n/index.js";
 import { clear, h } from "./dom.js";
 import { caseCollectionBadge, caseCollections, matchesLibraryQuery } from "./library.js";
-import { cardOffset, listAnchor, placeChildren, renderAbove, revealOffset, scrollCardTo } from "./library-list.js";
+import { cardOffset, listAnchor, placeChildren, renderAround, revealOffset, scrollCardTo } from "./library-list.js";
 import { searchInput, type SearchInput } from "./search-input.js";
 
 type Status = "loading" | "ready" | "failed";
@@ -546,7 +546,7 @@ export class Intro {
     requestAnimationFrame(() => {
       const act = list.querySelector<HTMLElement>(".case-card.active");
       if (!act || !list.isConnected || list.scrollHeight <= list.clientHeight + 2) return;
-      if (changed) renderAbove(act, 0);
+      if (changed) renderAround(act, 0, 0);
       const offset = cardOffset(list, act);
       const target = revealOffset(offset, act.getBoundingClientRect().height, list.getBoundingClientRect().height);
       if (changed) scrollCardTo(list, act, target);

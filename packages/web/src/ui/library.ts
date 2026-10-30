@@ -31,6 +31,27 @@ function searchable(text: string): string {
 }
 
 /**
+ * A card's searchable text, made once per index entry (an entry never changes; a new one is a new object): the same
+ * whatever the interface language, so a search over 135 cards compares strings only.
+ */
+const haystacks = new WeakMap<CaseCard, string>();
+
+function haystack(card: CaseCard): string {
+  let text = haystacks.get(card);
+  if (text === undefined) {
+    const localised = (value: CaseCard["title"]): string[] => typeof value === "string" ? [value] : Object.values(value);
+    text = searchable([
+      ...localised(card.title), ...localised(card.summary),
+      ...card.specialty, ...SUPPORTED_LOCALES.flatMap((locale) => card.specialty.map((id) => specialtyLabel(id, locale))),
+      ...card.tags,
+      card.setting, ...trEvery(`setting.${card.setting}`),
+    ].join(" "));
+    haystacks.set(card, text);
+  }
+  return text;
+}
+
+/**
  * Search both languages of the public index, excluding diagnosis-bearing ids and source details: the titles and
  * summaries, the specialty and setting ids with their labels in both languages (so "ICU" finds the ICU cases in the
  * Chinese interface and "急诊" the emergency ones in the English interface), and the tags.
@@ -38,12 +59,6 @@ function searchable(text: string): string {
 export function matchesLibraryQuery(card: CaseCard, query: string): boolean {
   const words = searchable(query).split(/\s+/).filter(Boolean);
   if (!words.length) return true;
-  const localised = (value: CaseCard["title"]): string[] => typeof value === "string" ? [value] : Object.values(value);
-  const haystack = searchable([
-    ...localised(card.title), ...localised(card.summary),
-    ...card.specialty, ...SUPPORTED_LOCALES.flatMap((locale) => card.specialty.map((id) => specialtyLabel(id, locale))),
-    ...card.tags,
-    card.setting, ...trEvery(`setting.${card.setting}`),
-  ].join(" "));
-  return words.every((word) => haystack.includes(word));
+  const text = haystack(card);
+  return words.every((word) => text.includes(word));
 }

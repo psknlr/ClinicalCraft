@@ -14,8 +14,8 @@ export interface ChildrenPlan<T> {
 }
 
 /**
- * The fewest moves from `current` children to `desired`: the children not wanted are detached; a child that stays is
- * moved only when the order changed (a search or a filter keeps the library order, so it moves none).
+ * How `current` children become `desired`: the children not wanted are detached, the new ones inserted in place, and
+ * a child that stays is moved only when the order changed (a search or a filter keeps the library order: it moves none).
  */
 export function planChildren<T>(current: readonly T[], desired: readonly T[]): ChildrenPlan<T> {
   const wanted = new Set(desired);
@@ -55,19 +55,21 @@ export function cardOffset(list: HTMLElement, card: HTMLElement): number {
   return card.getBoundingClientRect().top - list.getBoundingClientRect().top;
 }
 
-/** The least height a card with its gap takes (px; real cards take 136 or more): what counts the cards in a stretch of the list. */
-const MIN_CARD_PX = 90;
+/** Less than any card takes with its gap (px; real cards take 136 or more): what counts the cards a stretch of the list can show. */
+const MIN_CARD_PX = 120;
 
 /**
- * Render `card` and the cards within `above` px before it, until a frame has rendered them (they keep that height
- * while off-screen afterwards). Where `card` lands depends on those only: what is measured now is what is painted,
- * and the browser's scroll anchoring holds a rendered card in view in place while cards further up take their real
- * height.
+ * Render `card` and the cards within `above` px before it and `below` px after it, until a frame has rendered them
+ * (they keep that height while off-screen afterwards). A card brought into view by a jump would otherwise take its
+ * real height a frame late; rendered first, what is measured now is what is painted, and the browser's scroll
+ * anchoring holds a rendered card in view in place while cards further up take their real height.
  */
-export function renderAbove(card: HTMLElement, above: number): void {
+export function renderAround(card: HTMLElement, above: number, below: number): void {
   const cards: Element[] = [card];
   let el = card.previousElementSibling;
-  for (let n = Math.ceil(Math.max(0, above) / MIN_CARD_PX) + 1; el && n > 0; n--, el = el.previousElementSibling) cards.push(el);
+  for (let n = Math.ceil(Math.max(0, above) / MIN_CARD_PX); el && n > 0; n--, el = el.previousElementSibling) cards.push(el);
+  el = card.nextElementSibling;
+  for (let n = Math.ceil(Math.max(0, below) / MIN_CARD_PX); el && n > 0; n--, el = el.nextElementSibling) cards.push(el);
   for (const c of cards) c.classList.add("cv-render");
   requestAnimationFrame(() =>
     requestAnimationFrame(() => {
@@ -76,9 +78,9 @@ export function renderAbove(card: HTMLElement, above: number): void {
   );
 }
 
-/** Scroll the list so that `card`'s top is `offset` px below the top of its visible part, exactly (`renderAbove`). */
+/** Scroll the list so that `card`'s top is `offset` px below the top of its visible part, exactly (`renderAround`). */
 export function scrollCardTo(list: HTMLElement, card: HTMLElement, offset: number): void {
-  renderAbove(card, offset);
+  renderAround(card, offset, list.clientHeight - offset);
   list.scrollTop += cardOffset(list, card) - offset;
 }
 
@@ -88,7 +90,7 @@ export interface ListAnchor {
   offset: number;
 }
 
-/** The card to keep in place when the list is rebuilt: the selected card when it is in view, else the first card in view; none at the top. */
+/** The card to keep in place when the intro is rendered again: the selected card when it is in view, else the first card in view; none at the top. */
 export function listAnchor(list: HTMLElement): ListAnchor | null {
   if (!list.isConnected || list.scrollTop <= 0) return null;
   const top = list.getBoundingClientRect().top;

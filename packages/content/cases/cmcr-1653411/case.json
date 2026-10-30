@@ -1,14 +1,14 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653411",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "title": {
     "zh-CN": "持续胸痛 · 68岁男性",
     "en": "Persistent chest pain · 68-year-old man"
   },
   "summary": {
-    "zh-CN": "胸痛患者的心电图存在传导异常，比较连续记录并决定处理紧迫性。",
-    "en": "Chest pain with a conduction abnormality requires comparison of serial recordings and a decision about urgency."
+    "zh-CN": "一位老年男性胸痛数小时仍未缓解：读懂到院心电图，决定行动有多快，再沿着他的实际病程复盘。",
+    "en": "An older man arrives with hours of unrelieved chest pain: read his arrival ECG, decide how fast to act, then follow his recorded course."
   },
   "specialty": [
     "cardiology",
@@ -21,33 +21,43 @@
     "zh-CN",
     "en"
   ],
-  "estimatedMinutes": 30,
+  "estimatedMinutes": 35,
   "learningOutcomes": [
     {
-      "zh-CN": "识别 RBBB 背景下的动态缺血信号。",
-      "en": "Recognise evolving ischaemic signs despite RBBB."
+      "zh-CN": "根据心电图报告区分右束支传导阻滞时的原发性与继发性 ST–T 改变：识别 V1–V3 导联 ST 段抬高伴直立 T 波为急性损伤，而不是阻滞本身的复极改变（第四版心肌梗死通用定义，2018）。",
+      "en": "From a reported ECG, distinguish primary from secondary ST–T change in right bundle branch block, recognising ST elevation with upright T waves in V1–V3 as acute injury rather than the block's own repolarisation (Fourth Universal Definition of MI, 2018)."
     },
     {
-      "zh-CN": "整合胸痛与标志物确定处理紧迫性。",
-      "en": "Integrate pain and biomarkers to determine urgency."
+      "zh-CN": "对持续缺血性胸痛伴 RBBB 下 ST 段抬高的患者立即启动直接 PCI 策略，不因等待肌钙蛋白、既往心电图或冠状动脉 CT 而延误（ESC 2023 ACS）。",
+      "en": "Start a primary PCI strategy at once for ongoing ischaemic pain with ST elevation in RBBB, without waiting for troponin, an old ECG or a coronary CT (ESC 2023 ACS)."
     },
     {
-      "zh-CN": "避免把不典型 ST 形态作为排除依据。",
-      "en": "Avoid excluding occlusion on atypical ST morphology."
+      "zh-CN": "给予疑似急性冠脉闭塞的即刻处理——持续心电监护并备除颤、阿司匹林 150–300 mg 负荷、PCI 时普通肝素 70–100 U/kg、仅在 SpO₂ < 90% 时吸氧——并说明为何能在 120 分钟内行直接 PCI 时不选溶栓（ESC 2023 ACS）。",
+      "en": "Give the immediate care for suspected acute coronary occlusion — continuous ECG monitoring with a defibrillator, aspirin 150–300 mg, unfractionated heparin 70–100 U/kg at PCI, oxygen only if SpO₂ is below 90 % — and explain why fibrinolysis is not chosen when primary PCI is possible within 120 minutes (ESC 2023 ACS)."
     },
     {
-      "zh-CN": "说明基线缺失限制新发 RBBB 判断。",
-      "en": "Explain why absent baseline ECG limits classification as new RBBB."
+      "zh-CN": "解读连续心电图的演变（ST 段抬高范围扩大、T 波倒置、新出现的 QS 波）和反复胸痛等极高危表现，说明为何冠状动脉 CT 的狭窄分级或 Q 波都不能成为推迟有创造影的理由（ESC 2023 ACS）。",
+      "en": "Interpret serial ECG evolution (spreading ST elevation, T-wave inversion, new QS complexes) and recurrent pain as very-high-risk features, and explain why neither a CT stenosis grade nor Q waves justify delaying invasive angiography (ESC 2023 ACS)."
+    },
+    {
+      "zh-CN": "为大面积前壁梗死后的患者制订出院前计划：住院期间超声心动图、12 个月双联抗血小板、LDL-C < 1.4 mmol/L 的降脂目标，并说明单纯持续的 RBBB 不需要起搏器（ESC 2023 ACS；ESC 2021 起搏指南）。",
+      "en": "Plan discharge after a large anterior infarct — in-hospital echocardiography, 12 months of dual antiplatelet therapy, an LDL-C target below 1.4 mmol/L — and explain why isolated persisting RBBB needs no pacemaker (ESC 2023 ACS; ESC 2021 pacing)."
+    },
+    {
+      "zh-CN": "说明缺少基线心电图时为何不能断定 RBBB 为新发，以及单个病例为何无法衡量延误造成的心肌损失。",
+      "en": "Explain why, without a baseline ECG, the RBBB cannot be called new, and why a single case cannot measure the myocardium lost to delay."
     }
   ],
   "tags": [
     "cmcr-105",
     "published-case",
-    "historical-review"
+    "historical-review",
+    "chest-pain",
+    "ecg-interpretation"
   ],
   "provenance": {
     "kind": "published-case",
-    "citation": "劉書雷,  柯于梵,  劉紅. 右束支傳導阻滯影響急性心肌梗死心電圖判讀. 鏡湖醫學. 2025;25(02):58-59. doi:10.12408/j.issn2223-4462.2025.02.020",
+    "citation": "劉書雷, 柯于梵, 劉紅. 右束支傳導阻滯影響急性心肌梗死心電圖判讀. 鏡湖醫學. 2025;25(2):58-59. doi:10.12408/j.issn2223-4462.2025.02.020. Available from: https://rs.yiigle.com/cmaid/1653411",
     "doi": "10.12408/j.issn2223-4462.2025.02.020",
     "authors": [
       "劉書雷",
@@ -56,27 +66,34 @@
     ],
     "license": "Authored educational adaptation; publication copyright remains with its original holders.",
     "notes": {
-      "zh-CN": "依据单例报告改编；姓名、医院和日历日期已去标识化。问答、决策及评分为教学设计。原报告已做的检查仅供病历查阅，未记录的信息保持未知。",
-      "en": "Adapted from a single-patient report, with names, hospitals and calendar dates de-identified. Dialogue, decisions and scoring are educational design. Existing investigations are chart reviews; missing information remains unknown."
+      "zh-CN": "依据单篇已发表病例报告改编（原文为繁体中文）。本版（1.1.0）的患者事实全部沿用 1.0.0 版从报告中提取的内容——68岁男性，胸痛 5 小时伴胸闷；首份心电图，2 小时后及之后的复查心电图；心肌损伤标志物（无数值）；冠状动脉 CT；症状反复后的急诊造影与支架；术后 1 周心电图——尚未对照原文全文核对。患者为化名，医院和日历日期已去除，时间以相对时间表示。分阶段设计、决策、处置选项、评分、医护角色和患者说出的担忧（教学设定，不增加临床事实）均为教学设计；未记录的内容（生命体征、查体、心电图测量值、标志物数值、既往史、超声心动图、远期结局）保持未知。原报告的图片（心电图及影像）和 PDF 因带有日期或身份信息未获准展示，本例只依据文字报告教学。1.0.0 版内部没有发现相互矛盾的记录。",
+      "en": "Adapted from a single published case report (written in traditional Chinese). Every patient fact in this version (1.1.0) is one extracted from the report for version 1.0.0 — a 68-year-old man with five hours of chest pain and chest tightness; the first ECG and the repeat ECGs two hours later and after; cardiac markers (no values); the coronary CT; emergency angiography with a stent after the symptoms recurred; the ECG one week after the procedure — and none has yet been checked against the full article. The patient has a pseudonym; hospitals and calendar dates are removed and time is relative. The phases, decisions, intervention options, scoring, staff and the patient's voiced worry (a teaching device that adds no clinical fact) are teaching design; what is not recorded (vital signs, examination, ECG measurements, marker values, past history, echocardiography, long-term outcome) stays unknown. The report's figures (ECG tracings and imaging) and its PDF carry dates or identifiers and are withheld, so the case teaches from the written reports. No internal contradiction was found in version 1.0.0."
     },
     "review": {
       "status": "editorial",
-      "reviewedAt": "2026-10-28",
-      "guidelines": [
-        "ESC. Guidelines for the management of acute coronary syndromes. 2023. https://academic.oup.com/eurheartj/article/44/38/3720/7243210"
-      ],
+      "reviewedAt": "2026-10-30",
       "reviewers": [
-        "AI-assisted internal editorial check (not a licensed clinician)"
+        "ClinicalCraft editorial review (AI-assisted)"
+      ],
+      "guidelines": [
+        "ESC 2023 ACS",
+        "ACC/AHA/ACEP/NAEMSP/SCAI 2025 ACS",
+        "Fourth Universal Definition of Myocardial Infarction (ESC/ACC/AHA/WHF 2018)",
+        "AHA/ACC/ASE/CHEST/SAEM/SCCT/SCMR 2021 chest pain",
+        "中华医学会心血管病学分会 急性ST段抬高型心肌梗死诊断和治疗指南（2019）",
+        "ESC 2021 cardiac pacing and CRT",
+        "ESC 2022 ventricular arrhythmias and sudden cardiac death",
+        "中国血脂管理指南（2023年）"
       ],
       "notes": {
-        "zh-CN": "已完成AI辅助内部编辑核对：逐例对照源病例，并针对所列权威资料核对教学原则；非执业医师审核，具体治疗适用性仍需专科确认。",
-        "en": "AI-assisted internal editorial check against each source case and the listed authorities for teaching principles; not a licensed-clinician review. Patient-specific treatment eligibility still needs specialty review."
+        "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
+        "en": "AI-assisted teaching design with an editorial review against the cited guidance. The patient facts are those extracted from the published report for version 1.0.0; they have not yet been checked against the full source article. The case is not yet reviewed by a licensed clinician."
       }
     }
   },
   "disclaimer": {
-    "zh-CN": "历史病例教学，不构成个体诊疗建议。原报告处置不自动成为今天的推荐；不模拟未记录的生理变化。",
-    "en": "Historical teaching case, not individual medical advice. Reported care is not automatically a current recommendation; undocumented physiological changes are not simulated."
+    "zh-CN": "历史病例回看，仅供临床教育，不用于个体诊疗或自行用药。病程和结果均来自原报告，不模拟未记录的生理变化。",
+    "en": "Historical case review for clinical education, not for individual care or self-medication. The course and results come from the report; unrecorded physiological changes are not simulated."
   },
   "patient": {
     "displayName": {
@@ -87,35 +104,55 @@
     "ageUnit": "years",
     "sex": "male",
     "chiefComplaint": {
-      "zh-CN": "胸痛 5 小时",
-      "en": "Chest pain for five hours"
+      "zh-CN": "胸口痛了 5 个钟头",
+      "en": "My chest has been hurting for five hours"
     },
     "triageNote": {
-      "zh-CN": "胸痛持续，需核对连续心电图及既往记录。",
-      "en": "Ongoing chest pain requires review of serial ECGs and prior records."
+      "zh-CN": "68岁男性，胸痛 5 小时，至今未缓解，现已在急诊抢救区。",
+      "en": "68-year-old man with chest pain for five hours that has not eased, now in the ED resus area."
     },
-    "tags": [],
+    "tags": [
+      {
+        "zh-CN": "急性胸痛",
+        "en": "Acute chest pain"
+      },
+      {
+        "zh-CN": "胸闷",
+        "en": "Chest tightness"
+      },
+      {
+        "zh-CN": "症状持续数小时",
+        "en": "Hours of symptoms"
+      }
+    ],
     "persona": {
       "personality": {
-        "zh-CN": "以原报告为边界回答；交流方式为教学设定。",
-        "en": "Answers within the source record; communication style is an educational convention."
+        "zh-CN": "68岁男性，胸口痛了好几个钟头还没缓解，被疼痛和担心占着；有问必答，但说得很简短。他只说自己清楚的事，不清楚的就直说说不上来，从不猜。",
+        "en": "A 68-year-old man whose chest has been hurting for hours and still is; taken up with the pain and the worry, he answers what he is asked, briefly. He says only what he knows; when he doesn't know, he says so and never guesses."
       },
       "speechStyle": {
-        "zh-CN": "简短日常语言，医学数据查阅病历。",
-        "en": "Brief everyday language; technical data are reviewed in the chart."
+        "zh-CN": "口语、短句，不用医学术语。",
+        "en": "Plain, short sentences; no medical terms."
       },
-      "affect": "calm",
+      "healthLiteracy": "medium",
+      "affect": "in-pain",
       "openingLine": {
-        "zh-CN": "胸口痛。",
-        "en": "My chest hurts."
+        "zh-CN": "医生，我胸口痛。",
+        "en": "Doctor, my chest hurts."
       },
       "fallbackUnknown": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
       },
+      "concerns": [
+        {
+          "zh-CN": "医生，是不是心脏出问题了？",
+          "en": "Doctor, is it my heart?"
+        }
+      ],
       "actingNotes": {
-        "zh-CN": "仅使用当前阶段资料，不提前描述后续检查或结局。",
-        "en": "Use current-stage information only; do not reveal later findings or outcomes."
+        "zh-CN": "扮演者：到院时他胸口一直在痛，躺在推床上，痛苦而担心；之后胸闷加重、胸痛一阵阵又来时更加担心。只回答被问到的内容；不提心电图、化验或检查结果，不说任何数字，不编造病史、用药或过敏。",
+        "en": "For the actor: on arrival his chest is hurting and he lies on the trolley, in pain and worried; later, as the tightness worsens and the pain keeps returning, he grows more worried. He answers only what he is asked, never mentions ECGs, tests or numbers, and never invents history, medicines or allergies."
       }
     },
     "appearance": {
@@ -126,325 +163,834 @@
   },
   "phases": [
     {
-      "id": "initial",
+      "id": "arrival",
       "label": {
-        "zh-CN": "就诊与病史",
-        "en": "Presentation and history"
+        "zh-CN": "急诊到院",
+        "en": "Arrival in the emergency department"
       },
-      "learnerSwitchable": true
+      "description": {
+        "zh-CN": "他胸痛 5 小时仍未缓解，刚到急诊抢救区：采集病史，记录并解读心电图，决定即刻处理。",
+        "en": "Five hours into chest pain that has not eased, he has just arrived in the ED resus area: take the history, record and read the ECG, and decide what to do now."
+      },
+      "learnerSwitchable": false
     },
     {
-      "id": "workup",
+      "id": "course",
       "label": {
-        "zh-CN": "病历证据与决策",
-        "en": "Chart evidence and decisions"
+        "zh-CN": "到院后的记录病程",
+        "en": "The recorded hours after arrival"
       },
-      "learnerSwitchable": true
-    },
-    {
-      "id": "followup",
-      "label": {
-        "zh-CN": "后续经过与复盘",
-        "en": "Subsequent course and review"
+      "description": {
+        "zh-CN": "从这里开始，病例按记录的实际病程展开：多次复查的心电图、心肌损伤标志物，以及病历中的冠状动脉 CT 报告（做 CT 的时间没有记录）。",
+        "en": "From here the case follows the recorded course: the repeat ECGs, the cardiac markers and the coronary CT report in his record (when the CT was done is not recorded)."
       },
       "learnerSwitchable": false,
       "enterWhen": {
         "all": [
           {
-            "all": [
-              {
-                "asked": "presentation"
-              },
-              {
-                "asked": "onset"
-              },
-              {
-                "asked": "progression"
-              },
-              {
-                "asked": "associated"
-              }
-            ]
+            "objective": "obj-pain-story"
           },
           {
-            "always": true
+            "objective": "obj-first-ecg"
           },
           {
-            "decided": "interpretation"
+            "objective": "obj-reperfusion"
+          }
+        ]
+      }
+    },
+    {
+      "id": "cath-week",
+      "label": {
+        "zh-CN": "急诊造影与此后 1 周",
+        "en": "Emergency angiography and the following week"
+      },
+      "description": {
+        "zh-CN": "胸痛反复之后，他接受了急诊冠状动脉造影；本阶段查阅心导管室记录和 1 周后的心电图，并安排此后的治疗。",
+        "en": "After the pain kept returning he went for emergency coronary angiography; this phase covers the catheter laboratory record, the ECG a week later and the plan for the weeks ahead."
+      },
+      "learnerSwitchable": false,
+      "location": {
+        "setting": "ward"
+      },
+      "enterWhen": {
+        "all": [
+          {
+            "objective": "obj-pain-story"
           },
           {
-            "decided": "management"
+            "objective": "obj-first-ecg"
+          },
+          {
+            "objective": "obj-reperfusion"
+          },
+          {
+            "objective": "obj-course"
+          }
+        ]
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "记录的结局",
+        "en": "Recorded outcome"
+      },
+      "description": {
+        "zh-CN": "查阅本病例记录的全部病程与结局；1 周以后的情况没有记录。",
+        "en": "Review the course and outcome as recorded; nothing after the first week is recorded."
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "objective": "obj-pain-story"
+          },
+          {
+            "objective": "obj-first-ecg"
+          },
+          {
+            "objective": "obj-reperfusion"
+          },
+          {
+            "objective": "obj-course"
+          },
+          {
+            "objective": "obj-week"
           }
         ]
       }
     }
   ],
-  "initialPhase": "initial",
+  "initialPhase": "arrival",
   "clock": {
     "mode": "static",
     "realtimeScale": 0
   },
   "history": [
     {
-      "id": "presentation",
+      "id": "presenting",
       "topic": "presenting-complaint",
       "question": {
-        "zh-CN": "这次主要哪里不舒服？",
-        "en": "What is the main problem today?"
+        "zh-CN": "今天是哪里不舒服来看急诊？",
+        "en": "What brought you to the emergency department today?"
       },
       "answer": {
-        "zh-CN": "胸口痛。",
-        "en": "My chest hurts."
+        "zh-CN": "我是因为胸口痛来的。",
+        "en": "I came in because of pain in my chest."
       },
       "keywords": {
         "zh-CN": [
-          "主要不适",
-          "来院原因",
-          "这次症状",
-          "哪里难受"
+          "哪里不舒服",
+          "怎么不舒服",
+          "哪里难受",
+          "哪儿难受",
+          "哪儿痛",
+          "因为什么来",
+          "来看急诊",
+          "什么情况来"
         ],
         "en": [
-          "main complaint",
-          "presenting problem",
-          "reason for attending",
-          "current symptoms"
+          "brought in",
+          "main problem",
+          "what's wrong",
+          "come in today",
+          "reason for coming",
+          "troubling you"
         ]
       },
-      "excludeKeywords": [],
+      "excludeKeywords": {
+        "zh-CN": [
+          "心脏病",
+          "以前",
+          "家里",
+          "除了"
+        ],
+        "en": [
+          "heart",
+          "before",
+          "family",
+          "besides",
+          "apart from"
+        ]
+      },
       "disclosure": "volunteer",
       "required": true,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
       "source": {
-        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
-        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+        "zh-CN": "原报告病例资料·主诉（经 1.0.0 版提取，待对照原文全文核对）；患者口吻为教学改写",
+        "en": "Case presentation in the report: presenting complaint (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
       }
     },
     {
       "id": "onset",
       "topic": "hpi",
       "question": {
-        "zh-CN": "最早什么时候开始？",
-        "en": "When did this first start?"
+        "zh-CN": "胸痛是什么时候开始的？",
+        "en": "When did the chest pain start?"
       },
       "answer": {
-        "zh-CN": "来就诊前痛了 5 小时。",
-        "en": "The pain had lasted five hours when I presented."
+        "zh-CN": "到医院的时候已经痛了 5 个钟头了。",
+        "en": "By the time I got here it had been hurting for five hours."
       },
       "keywords": {
         "zh-CN": [
+          "什么时候开始",
+          "几点开始",
+          "痛了多久",
+          "多长时间了",
+          "多久了",
           "起病时间",
-          "持续多久",
-          "最早发病",
-          "病了多久"
+          "开始痛",
+          "持续多久"
         ],
         "en": [
-          "symptom onset",
-          "first onset",
-          "duration",
-          "time of onset"
+          "start",
+          "how long",
+          "onset",
+          "howmanyhours",
+          "since when",
+          "began"
         ]
       },
-      "excludeKeywords": [],
+      "excludeKeywords": {
+        "zh-CN": [
+          "在干",
+          "在做",
+          "干什么",
+          "做什么",
+          "干嘛",
+          "诱因",
+          "以前"
+        ],
+        "en": [
+          "doing",
+          "trigger",
+          "before"
+        ]
+      },
       "disclosure": "on-ask",
       "required": true,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
       "source": {
-        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
-        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+        "zh-CN": "原报告病例资料·现病史（胸痛 5 小时）（经 1.0.0 版提取，待对照原文全文核对）；患者口吻为教学改写",
+        "en": "Case presentation in the report: history of the presenting complaint (chest pain for five hours) (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
       }
     },
     {
-      "id": "progression",
+      "id": "pain-now",
       "topic": "hpi",
       "question": {
-        "zh-CN": "这段时间病情怎样变化？",
-        "en": "How has the problem changed over time?"
+        "zh-CN": "现在还痛吗？",
+        "en": "Is the pain still there now?"
       },
       "answer": {
-        "zh-CN": "后来胸闷加重，胸痛反复。",
-        "en": "Chest tightness worsened and the pain recurred."
+        "zh-CN": "还在痛，一直没缓解。",
+        "en": "Yes, it's still there — it hasn't eased off."
       },
       "keywords": {
         "zh-CN": [
-          "病情变化",
-          "逐渐加重",
-          "发作频率",
-          "症状演变"
+          "现在还痛",
+          "还在痛",
+          "缓解了吗",
+          "好点了吗",
+          "有没有好转",
+          "一直痛",
+          "现在感觉",
+          "感觉怎样",
+          "减轻"
         ],
         "en": [
-          "symptom progression",
-          "change over time",
-          "episode frequency",
-          "getting worse"
+          "still hurting",
+          "still there",
+          "eased",
+          "better now",
+          "settled",
+          "gone away",
+          "right now",
+          "constant"
         ]
       },
-      "excludeKeywords": [],
       "disclosure": "on-ask",
       "required": true,
       "phases": [
-        "initial",
-        "workup",
-        "followup"
+        "arrival"
       ],
       "source": {
-        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
-        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+        "zh-CN": "原报告病例资料·就诊时胸痛持续（经 1.0.0 版提取，待对照原文全文核对）；患者口吻为教学改写",
+        "en": "Case presentation in the report: chest pain persisting on arrival (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
       }
     },
     {
-      "id": "associated",
-      "topic": "associated-symptoms",
+      "id": "status-course",
+      "topic": "hpi",
       "question": {
-        "zh-CN": "当时还伴有什么不舒服？",
-        "en": "What other symptoms occurred with it?"
+        "zh-CN": "现在胸口感觉怎么样？",
+        "en": "How is your chest feeling now?"
       },
       "answer": {
-        "zh-CN": "还感到胸闷。",
-        "en": "I also felt chest tightness."
+        "zh-CN": "越来越闷了，胸口痛也是一阵一阵地又来。",
+        "en": "It's getting tighter, and the pain keeps coming back."
       },
       "keywords": {
         "zh-CN": [
-          "伴随症状",
-          "同时不适",
-          "其他表现",
-          "伴有什么"
+          "现在怎么样",
+          "感觉怎么样",
+          "感觉怎样",
+          "好些了吗",
+          "又痛了",
+          "又回来",
+          "又来了",
+          "更闷",
+          "反复",
+          "加重了吗"
         ],
         "en": [
-          "associated symptoms",
-          "accompanying symptoms",
-          "additional complaints",
-          "other symptoms"
+          "howareyounow",
+          "feeling now",
+          "any worse",
+          "coming back",
+          "pain return",
+          "better or worse",
+          "tighter"
         ]
       },
-      "excludeKeywords": [],
       "disclosure": "on-ask",
       "required": true,
       "phases": [
-        "initial",
-        "workup",
-        "followup"
+        "course"
+      ],
+      "supersedes": [
+        "pain-now",
+        "tightness"
       ],
       "source": {
-        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
-        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+        "zh-CN": "原报告病例资料·病程（后来胸闷加重、胸痛反复）（经 1.0.0 版提取，待对照原文全文核对）；患者口吻为教学改写",
+        "en": "Case presentation in the report: course (later the tightness worsened and the pain recurred) (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "tightness",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "除了胸痛，还有别的不舒服吗？",
+        "en": "Apart from the pain, do you feel anything else?"
+      },
+      "answer": {
+        "zh-CN": "胸口还发闷。",
+        "en": "My chest feels tight as well."
+      },
+      "keywords": {
+        "zh-CN": [
+          "别的不舒服",
+          "其他不舒服",
+          "其他症状",
+          "伴随症状",
+          "胸闷",
+          "闷不闷",
+          "闷吗",
+          "发闷",
+          "憋闷",
+          "除了痛"
+        ],
+        "en": [
+          "other symptoms",
+          "apart from the pain",
+          "besides the pain",
+          "tightness",
+          "tight",
+          "chest pressure",
+          "heaviness",
+          "squeezing"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "药",
+          "过敏",
+          "血压"
+        ],
+        "en": [
+          "medic",
+          "allerg",
+          "tablet",
+          "blood"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "arrival"
+      ],
+      "source": {
+        "zh-CN": "原报告病例资料·伴随症状（胸闷）（经 1.0.0 版提取，待对照原文全文核对）；患者口吻为教学改写",
+        "en": "Case presentation in the report: associated symptom (chest tightness) (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
+      }
+    },
+    {
+      "id": "character",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "胸痛是什么样的感觉？压着痛、烧灼痛还是刺痛？",
+        "en": "What does the pain feel like — pressing, burning or sharp?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I can't really put it into words, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "什么样的痛",
+          "怎么个痛法",
+          "压着痛",
+          "压榨",
+          "烧灼",
+          "刺痛",
+          "针扎",
+          "性质",
+          "绞痛"
+        ],
+        "en": [
+          "feel like",
+          "describe the pain",
+          "pressing pain",
+          "burning",
+          "sharp",
+          "crushing",
+          "stabbing"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "现在",
+          "传到"
+        ],
+        "en": [
+          "now",
+          "spread"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "radiation",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "痛会不会传到别的地方，比如手臂、下巴或后背？",
+        "en": "Does the pain spread anywhere — your arm, jaw or back?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "放射",
+          "传到",
+          "牵涉",
+          "胳膊",
+          "左臂",
+          "下巴",
+          "后背",
+          "窜到"
+        ],
+        "en": [
+          "spread",
+          "radiate",
+          "arm",
+          "jaw",
+          "shoulder blades",
+          "go anywhere",
+          "travel"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "severity",
+      "topic": "pain",
+      "question": {
+        "zh-CN": "如果用 0 到 10 分打分，痛有几分？",
+        "en": "On a scale of 0 to 10, how bad is the pain?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I couldn't put a number on it, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "几分",
+          "打分",
+          "多痛",
+          "疼痛评分",
+          "痛得厉害",
+          "严重程度",
+          "有多严重",
+          "能忍"
+        ],
+        "en": [
+          "how bad",
+          "outoften",
+          "severity",
+          "score",
+          "how severe",
+          "worst pain",
+          "scale"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "trigger",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "开始痛的时候您在做什么？",
+        "en": "What were you doing when the pain came on?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "当时在做什么",
+          "在干什么",
+          "在干嘛",
+          "干什么的时候",
+          "活动时",
+          "休息时",
+          "诱因",
+          "劳累",
+          "用力"
+        ],
+        "en": [
+          "whatwereyoudoing",
+          "trigger",
+          "exertion",
+          "at rest",
+          "exercise",
+          "activity",
+          "effort"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "autonomic",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有出冷汗、恶心或者呕吐？",
+        "en": "Have you been sweating, or felt sick or vomited?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出汗",
+          "冷汗",
+          "恶心",
+          "呕吐",
+          "想吐",
+          "大汗"
+        ],
+        "en": [
+          "sweat",
+          "sweating",
+          "nausea",
+          "vomit",
+          "clammy",
+          "felt sick"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "breathless",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有喘不上气？",
+        "en": "Are you short of breath?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喘",
+          "气短",
+          "喘不上气",
+          "呼吸困难",
+          "憋气",
+          "气急"
+        ],
+        "en": [
+          "breath",
+          "breathless",
+          "breathing",
+          "short of breath",
+          "winded",
+          "puffed"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "syncope",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有心慌、头晕或者晕过去？",
+        "en": "Any palpitations, dizziness or blackouts?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "心慌",
+          "心悸",
+          "头晕",
+          "晕倒",
+          "晕过去",
+          "眼前发黑",
+          "昏厥"
+        ],
+        "en": [
+          "palpitations",
+          "dizzy",
+          "faint",
+          "blackout",
+          "passed out",
+          "collapse",
+          "pounding"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "previous-episodes",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "以前有过这样的胸痛吗？",
+        "en": "Have you had chest pain like this before?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前有过",
+          "以前痛过",
+          "这样痛过",
+          "第一次",
+          "类似的痛",
+          "以前发作",
+          "犯过"
+        ],
+        "en": [
+          "before",
+          "first time",
+          "happened before",
+          "previous episodes",
+          "similar pain",
+          "ever had this"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "心脏",
+          "手术",
+          "药",
+          "过敏",
+          "支架",
+          "心电图"
+        ],
+        "en": [
+          "heart",
+          "operation",
+          "surgery",
+          "medic",
+          "allerg",
+          "stent",
+          "ecg",
+          "tracing"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "heart-history",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前心脏有没有毛病？做心电图有没有说过异常？",
+        "en": "Have you had heart trouble before, or been told your heart tracing was abnormal?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏病",
+          "心脏有没有毛病",
+          "心梗",
+          "放过支架",
+          "心电图异常",
+          "以前做过心电图",
+          "冠心病",
+          "心脏不好",
+          "束支传导阻滞"
+        ],
+        "en": [
+          "heart trouble",
+          "heart problems",
+          "heart attack",
+          "stent",
+          "abnormal ecg",
+          "abnormal tracing",
+          "bundle branch block",
+          "angina"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "家里",
+          "家族",
+          "父母",
+          "又做",
+          "几回",
+          "几次",
+          "复查"
+        ],
+        "en": [
+          "family",
+          "relatives",
+          "parents",
+          "repeated",
+          "again"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
       }
     },
     {
       "id": "pmh",
       "topic": "pmh",
       "question": {
-        "zh-CN": "以前得过哪些病？",
-        "en": "What illnesses have you had previously?"
+        "zh-CN": "平时有高血压、糖尿病或者血脂高吗？",
+        "en": "Do you have high blood pressure, diabetes or high cholesterol?"
       },
       "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
       },
       "keywords": {
         "zh-CN": [
-          "既往疾病",
-          "以前病史",
-          "过去疾病",
-          "慢性疾病"
+          "高血压",
+          "糖尿病",
+          "血脂",
+          "胆固醇",
+          "慢性病",
+          "基础病",
+          "老毛病",
+          "以前得过什么病"
         ],
         "en": [
-          "past medical history",
-          "previous illnesses",
-          "chronic conditions",
-          "medical background"
+          "blood pressure",
+          "diabetes",
+          "cholesterol",
+          "medical history",
+          "long-term conditions",
+          "illnesses",
+          "past history"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
+          "家里",
           "家族",
-          "家人"
+          "父母"
         ],
         "en": [
           "family",
-          "relatives"
+          "relatives",
+          "parents"
         ]
       },
       "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
       "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
-      }
-    },
-    {
-      "id": "operations",
-      "topic": "psh",
-      "question": {
-        "zh-CN": "以前做过什么手术或操作？",
-        "en": "Have you had previous operations or procedures?"
-      },
-      "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
-      },
-      "keywords": {
-        "zh-CN": [
-          "手术经历",
-          "既往手术",
-          "操作经历",
-          "动过手术"
-        ],
-        "en": [
-          "previous operations",
-          "surgical history",
-          "past procedures",
-          "previous surgery"
-        ]
-      },
-      "excludeKeywords": [],
-      "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
-      "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
       }
     },
     {
       "id": "medications",
       "topic": "medications",
       "question": {
-        "zh-CN": "发病前后用过什么药？",
-        "en": "What medicines were used around the illness?"
+        "zh-CN": "平时在吃什么药？有没有吃抗凝或者抗血小板的药？",
+        "en": "What medicines do you take — any blood thinners?"
       },
       "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
       },
       "keywords": {
         "zh-CN": [
-          "用药清单",
-          "服用药物",
-          "药物疗程",
-          "吃了什么药"
+          "吃什么药",
+          "长期吃药",
+          "用药",
+          "抗凝药",
+          "吃的药",
+          "华法林",
+          "降压药",
+          "常吃的药"
         ],
         "en": [
-          "medication list",
-          "regular medicines",
-          "recent medication",
-          "drug treatment"
+          "medicines",
+          "medication",
+          "tablets",
+          "pills",
+          "blood thinners",
+          "warfarin",
+          "regular meds"
         ]
       },
       "excludeKeywords": {
@@ -456,810 +1002,2105 @@
         ]
       },
       "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
       "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
       }
     },
     {
       "id": "allergies",
       "topic": "allergies",
       "question": {
-        "zh-CN": "以前有过药物或食物过敏吗？",
-        "en": "Have medicines or foods caused an allergic reaction before?"
+        "zh-CN": "对什么药过敏吗？比如阿司匹林或者造影剂？",
+        "en": "Are you allergic to any medicines, such as aspirin or X-ray dye?"
       },
       "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
       },
       "keywords": {
         "zh-CN": [
+          "过敏",
           "药物过敏",
-          "食物过敏",
-          "过敏经历",
-          "过敏史"
+          "过敏史",
+          "造影剂过敏",
+          "碘过敏",
+          "对什么过敏"
         ],
         "en": [
-          "drug allergies",
-          "food allergies",
-          "allergy history",
-          "allergic reaction"
+          "allergy",
+          "allergic",
+          "allergies",
+          "contrast dye",
+          "iodine",
+          "reaction to"
         ]
       },
-      "excludeKeywords": [],
       "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
+      "required": true,
       "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "bleeding",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "最近有没有出过血、做过手术，或者以前中过风？",
+        "en": "Any recent bleeding or surgery, or a stroke in the past?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出血",
+          "手术",
+          "中风",
+          "脑梗",
+          "脑出血",
+          "胃出血",
+          "黑便",
+          "开过刀"
+        ],
+        "en": [
+          "bleeding",
+          "bleed",
+          "surgery",
+          "operation",
+          "stroke",
+          "ulcer",
+          "black stools"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      }
+    },
+    {
+      "id": "smoking",
+      "topic": "social",
+      "question": {
+        "zh-CN": "您平时抽烟吗？抽了多少年？",
+        "en": "Do you smoke, and for how many years?"
+      },
+      "answer": {
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽烟",
+          "吸烟",
+          "烟龄",
+          "一天几支",
+          "戒烟",
+          "香烟"
+        ],
+        "en": [
+          "smoke",
+          "smoking",
+          "smoker",
+          "cigarettes",
+          "tobacco"
+        ]
+      },
+      "disclosure": "unknown",
+      "source": {
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
       }
     },
     {
       "id": "family",
       "topic": "family",
       "question": {
-        "zh-CN": "家人有过类似的病吗？",
-        "en": "Have relatives had a similar illness?"
+        "zh-CN": "家里人有没有年纪不大就得心脏病的？",
+        "en": "Has anyone in your family had heart disease at a young age?"
       },
       "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
       },
       "keywords": {
         "zh-CN": [
-          "家族病史",
-          "家人患病",
-          "遗传病史",
-          "亲属疾病"
+          "家里人",
+          "家族史",
+          "父母",
+          "兄弟姐妹",
+          "遗传",
+          "家里有没有"
         ],
         "en": [
-          "family history",
-          "illness in relatives",
-          "familial disease",
-          "hereditary history"
+          "family",
+          "relatives",
+          "parents",
+          "brothers",
+          "runs in the family",
+          "inherited"
         ]
       },
-      "excludeKeywords": [],
       "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
       "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
-      }
-    },
-    {
-      "id": "exposure",
-      "topic": "social",
-      "question": {
-        "zh-CN": "生活环境或近期接触有特别的情况吗？",
-        "en": "Were there any relevant environmental or recent exposures?"
+        "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+        "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
       },
-      "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
-      },
-      "keywords": {
+      "excludeKeywords": {
         "zh-CN": [
-          "环境接触",
-          "接触经历",
-          "生活环境",
-          "接触物质"
+          "知道你来",
+          "知道您来"
         ],
         "en": [
-          "environmental exposure",
-          "recent exposure",
-          "living environment",
-          "contact history"
+          "on their way"
         ]
-      },
-      "excludeKeywords": [],
-      "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
-      "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
-      }
-    },
-    {
-      "id": "function",
-      "topic": "functional",
-      "question": {
-        "zh-CN": "这次生病怎样影响日常活动？",
-        "en": "How has this affected everyday activities?"
-      },
-      "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
-      },
-      "keywords": {
-        "zh-CN": [
-          "活动能力",
-          "日常活动",
-          "生活自理",
-          "活动受限"
-        ],
-        "en": [
-          "daily activities",
-          "functional capacity",
-          "self care",
-          "activity limitation"
-        ]
-      },
-      "excludeKeywords": [],
-      "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
-      "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
-      }
-    },
-    {
-      "id": "redflags",
-      "topic": "ros",
-      "question": {
-        "zh-CN": "有没有其他需要马上处理的症状？",
-        "en": "Were there other symptoms needing urgent attention?"
-      },
-      "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
-      },
-      "keywords": {
-        "zh-CN": [
-          "危险症状",
-          "紧急症状",
-          "警示症状",
-          "急性变化"
-        ],
-        "en": [
-          "warning symptoms",
-          "urgent symptoms",
-          "red flags",
-          "acute warning signs"
-        ]
-      },
-      "excludeKeywords": [],
-      "disclosure": "unknown",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
-      "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
-      }
-    },
-    {
-      "id": "prior",
-      "topic": "other",
-      "question": {
-        "zh-CN": "来这里之前在哪里看过病，怎样处理？",
-        "en": "What assessment or care occurred before this encounter?"
-      },
-      "answer": {
-        "zh-CN": "医生反复做了心电图。",
-        "en": "ECGs were repeated."
-      },
-      "keywords": {
-        "zh-CN": [
-          "之前就诊",
-          "院外处理",
-          "前期诊治",
-          "此前处理"
-        ],
-        "en": [
-          "earlier assessment",
-          "previous consultation",
-          "prior care",
-          "pre-referral care"
-        ]
-      },
-      "excludeKeywords": [],
-      "disclosure": "on-ask",
-      "required": false,
-      "phases": [
-        "initial",
-        "workup",
-        "followup"
-      ],
-      "source": {
-        "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
-        "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
       }
     },
     {
       "id": "concerns",
       "topic": "ice",
       "question": {
-        "zh-CN": "对这次病情最担心什么？",
-        "en": "What worries you most about this illness?"
+        "zh-CN": "这会儿您心里最担心的是什么？",
+        "en": "What worries you most about all this?"
       },
       "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
+        "zh-CN": "就怕是心脏出了问题，医生。",
+        "en": "That it's my heart, doctor."
       },
       "keywords": {
         "zh-CN": [
-          "个人担心",
-          "最担心什么",
-          "治疗期望",
-          "心里顾虑"
+          "担心",
+          "顾虑",
+          "害怕",
+          "最担心",
+          "最怕",
+          "有什么想法",
+          "怕什么"
         ],
         "en": [
-          "personal concerns",
-          "main worry",
-          "expectations",
-          "patient concerns"
+          "worried",
+          "worry",
+          "concerns",
+          "afraid",
+          "scared",
+          "frightened"
         ]
       },
-      "excludeKeywords": [],
-      "disclosure": "unknown",
-      "required": false,
+      "disclosure": "on-ask",
       "phases": [
-        "initial",
-        "workup",
-        "followup"
+        "arrival",
+        "course"
       ],
       "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
+        "zh-CN": "教学设定（ICE）：只表达担忧，不增加任何临床事实；1.0.0 版没有记录患者的担忧",
+        "en": "Teaching device (ICE): voices a worry and adds no clinical fact; version 1.0.0 records no concerns"
       }
     },
     {
-      "id": "baseline",
+      "id": "ecg-repeated",
       "topic": "other",
       "question": {
-        "zh-CN": "发病前的基础生活情况怎样？",
-        "en": "What was your baseline health and living situation?"
+        "zh-CN": "来了以后医生又给您做过心电图吗？",
+        "en": "Have the doctors repeated your heart tracing since you came in?"
       },
       "answer": {
-        "zh-CN": "这方面原病历没有提供信息，我不能补充。",
-        "en": "The source notes do not provide that information; I cannot fill it in."
+        "zh-CN": "做了好几次了，医生一直在给我复查心电图。",
+        "en": "Yes, several times — they keep repeating it."
       },
       "keywords": {
         "zh-CN": [
-          "平时情况",
-          "基础生活",
-          "发病前状态",
-          "原来状况"
+          "又做心电图",
+          "复查心电图",
+          "做了几次",
+          "做了几回",
+          "又做了",
+          "几次心电图",
+          "重复做"
         ],
         "en": [
-          "baseline health",
-          "usual state",
-          "baseline circumstances",
-          "usual health"
+          "repeated",
+          "ecg again",
+          "howmanyecgs",
+          "tracing again",
+          "another ecg",
+          "more tracings"
         ]
       },
-      "excludeKeywords": [],
-      "disclosure": "unknown",
-      "required": false,
+      "disclosure": "on-ask",
       "phases": [
-        "initial",
-        "workup",
-        "followup"
+        "course",
+        "cath-week"
       ],
       "source": {
-        "zh-CN": "原报告未载；为教学补充的问题。",
-        "en": "Not supplied by the source; a question added for teaching."
+        "zh-CN": "原报告病例资料·心电图反复复查（经 1.0.0 版提取，待对照原文全文核对）；患者口吻为教学改写",
+        "en": "Case presentation in the report: the ECG was repeated (as extracted for version 1.0.0; check against the full article pending); the patient's wording is a teaching adaptation"
       }
     }
   ],
   "exam": [],
   "examNotRecorded": {
-    "zh-CN": "原报告没有这项查体资料，不能视为正常。",
-    "en": "The report supplies no finding for this manoeuvre; do not assume it is normal."
+    "zh-CN": "本病例没有记录这项检查的结果；请把它当作未知，既不当作正常，也不当作异常。",
+    "en": "No finding is recorded for this examination in this case; treat it as unknown — neither normal nor abnormal."
   },
   "investigations": [
     {
-      "id": "ecg-first",
+      "id": "ecg",
       "name": {
-        "zh-CN": "调阅首份心电图",
-        "en": "Review the first ECG"
+        "zh-CN": "12导联心电图",
+        "en": "12-lead ECG"
       },
-      "category": "record",
-      "performedAt": "records",
-      "requires": [
-        "records"
-      ],
-      "risk": "none",
-      "value": "essential",
+      "category": "bedside",
       "aliases": {
         "zh-CN": [
-          "调阅首份心电图"
+          "心电图",
+          "十二导联",
+          "12导联",
+          "做个心电图",
+          "复查心电图",
+          "ecg",
+          "床旁心电图"
         ],
         "en": [
-          "Review the first ECG",
-          "ecg-first"
+          "ecg",
+          "ekg",
+          "12-lead",
+          "electrocardiogram",
+          "repeat ecg",
+          "tracing"
         ]
       },
+      "requires": [
+        "ecg-12lead"
+      ],
+      "performedAt": "bedside",
+      "turnaroundMinutes": 5,
+      "risk": "none",
+      "value": "essential",
       "results": {
-        "workup": {
+        "arrival": {
+          "available": true,
+          "date": {
+            "zh-CN": "首份心电图（准确时间未记录）",
+            "en": "First ECG (exact time not recorded)"
+          },
           "text": {
-            "zh-CN": "右束支传导阻滞，V2–V3 非弓背向上 ST 抬高、T 波正向，V4–V6 为 Rs。",
-            "en": "RBBB, non-convex ST elevation and upright T waves in V2–V3, with Rs complexes in V4–V6."
+            "zh-CN": "首份心电图：右束支传导阻滞（RBBB）；V2–V3 导联 ST 段抬高，形态非弓背向上，T 波直立；V4–V6 导联呈 Rs 型。",
+            "en": "First ECG: right bundle branch block (RBBB); ST elevation in V2–V3 with a non-convex contour and upright T waves; Rs complexes in V4–V6."
+          },
+          "note": {
+            "zh-CN": "本病例没有记录这份心电图的心率、节律、QRS 时限或 ST 段抬高的幅度。原报告的图片（心电图及影像）带有日期或身份信息，未获准展示，只提供文字报告。",
+            "en": "This case records no rate, rhythm, QRS duration or ST-elevation amplitude for this tracing. The report's figures (ECG tracings and imaging) carry dates or identifiers and are withheld, so only the written report is given."
           },
           "source": {
-            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
-            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+            "zh-CN": "原报告病例资料·首份心电图（经 1.0.0 版提取，待对照原文全文核对）",
+            "en": "Case presentation in the report: first ECG (as extracted for version 1.0.0; check against the full article pending)"
+          }
+        },
+        "course": {
+          "available": true,
+          "date": {
+            "zh-CN": "2 小时后及之后（各次的准确时间未记录）",
+            "en": "Two hours later, and after that (the exact times are not recorded)"
           },
-          "available": true
+          "text": {
+            "zh-CN": "复查心电图：2 小时后 V1–V3 导联 ST 段抬高，V2 导联 T 波转为倒置。此后 V4 导联呈 QS 型，V2–V3 与 V5–V6 导联 R 波降低；随着症状加重，缺血和坏死图形继续演变。",
+            "en": "Repeat ECGs: two hours later, ST elevation in V1–V3 with T-wave inversion in V2. Later, V4 became a QS complex and the R waves fell in V2–V3 and V5–V6; as his symptoms worsened, the ischaemic and necrotic pattern evolved further."
+          },
+          "note": {
+            "zh-CN": "本病例没有记录这几次心电图上 RBBB 是否持续、ST 段抬高幅度和准确时间。",
+            "en": "This case does not record whether the RBBB persisted on these tracings, their ST amplitudes or their exact times."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料·复查心电图（2 小时及其后）（经 1.0.0 版提取，待对照原文全文核对）",
+            "en": "Case presentation in the report: repeat ECGs (2 hours and later) (as extracted for version 1.0.0; check against the full article pending)"
+          }
+        },
+        "cath-week": {
+          "available": true,
+          "date": {
+            "zh-CN": "术后 1 周",
+            "en": "One week after the procedure"
+          },
+          "text": {
+            "zh-CN": "术后 1 周心电图：仍为右束支传导阻滞；V2–V4 导联呈 QS 型，V5 导联呈 rS 型；报告描述为广泛梗死图形。",
+            "en": "ECG one week after the procedure: RBBB persists; QS complexes in V2–V4 and an rS complex in V5, described in the report as an extensive infarction pattern."
+          },
+          "note": {
+            "zh-CN": "本病例没有记录这份心电图的房室传导、心率或节律。",
+            "en": "This case records no AV conduction, rate or rhythm for this tracing."
+          },
+          "source": {
+            "zh-CN": "原报告治疗及随访部分·术后 1 周心电图（经 1.0.0 版提取，待对照原文全文核对）",
+            "en": "Treatment and follow-up in the report: ECG one week after the procedure (as extracted for version 1.0.0; check against the full article pending)"
+          }
         }
       }
     },
     {
-      "id": "ecg-serial",
+      "id": "old-ecg",
       "name": {
-        "zh-CN": "调阅连续心电图",
-        "en": "Review serial ECGs"
+        "zh-CN": "既往心电图（病历调阅）",
+        "en": "Previous ECG for comparison (records)"
       },
       "category": "record",
-      "performedAt": "records",
+      "aliases": {
+        "zh-CN": [
+          "既往心电图",
+          "以前的心电图",
+          "旧心电图",
+          "老的心电图",
+          "对比心电图",
+          "基线心电图"
+        ],
+        "en": [
+          "old ecg",
+          "previous ecg",
+          "prior ecg",
+          "baseline ecg",
+          "earlier tracing",
+          "old tracing"
+        ]
+      },
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
-      "value": "essential",
-      "aliases": {
-        "zh-CN": [
-          "调阅连续心电图"
-        ],
-        "en": [
-          "Review serial ECGs",
-          "ecg-serial"
-        ]
-      },
+      "value": "useful",
       "results": {
-        "workup": {
+        "arrival": {
+          "available": false,
           "text": {
-            "zh-CN": "2 小时后 V1–V3 ST 抬高、V2 T 波转负，后续 V4 呈 QS，V2–V3 与 V5–V6 的 R 波降低；症状加重时缺血和坏死图形继续演变。",
-            "en": "After two hours, V1–V3 showed ST elevation and V2 T-wave inversion; later V4 became QS and R waves fell in V2–V3/V5–V6, with further evolution during worsening symptoms."
+            "zh-CN": "本病例没有记录可供对比的既往心电图，因此无法判断右束支传导阻滞是否为新发。",
+            "en": "No earlier ECG is recorded for comparison in this case, so whether the RBBB is new cannot be established."
           },
           "source": {
-            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
-            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
-          },
-          "available": true
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
         }
       }
     },
     {
       "id": "markers",
       "name": {
-        "zh-CN": "调阅心肌损伤标志物",
-        "en": "Review cardiac injury markers"
+        "zh-CN": "心肌损伤标志物（cTnT、CK-MB）",
+        "en": "Cardiac injury markers (cTnT, CK-MB)"
       },
-      "category": "record",
-      "performedAt": "records",
-      "requires": [
-        "records"
-      ],
-      "risk": "none",
-      "value": "essential",
+      "category": "lab",
       "aliases": {
         "zh-CN": [
-          "调阅心肌损伤标志物"
+          "肌钙蛋白",
+          "心肌标志物",
+          "心肌酶",
+          "ck-mb",
+          "ctnt",
+          "心梗三项",
+          "心肌损伤标志物"
         ],
         "en": [
-          "Review cardiac injury markers",
-          "markers"
+          "troponin",
+          "cardiac markers",
+          "ck-mb",
+          "ctnt",
+          "trop",
+          "cardiac enzymes"
         ]
       },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 45,
+      "risk": "none",
+      "value": "useful",
       "results": {
-        "workup": {
+        "arrival": {
+          "available": false,
           "text": {
-            "zh-CN": "cTnT 与 CK-MB 明显升高，原文未列具体数值。",
-            "en": "cTnT and CK-MB were markedly elevated; numerical values are not supplied."
+            "zh-CN": "血标本已送检。本病例没有记录到院时这份标本的标志物数值。",
+            "en": "Blood sent. This case records no marker value for the arrival sample."
           },
           "source": {
-            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
-            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        },
+        "course": {
+          "available": true,
+          "date": {
+            "zh-CN": "采血时间未记录",
+            "en": "Sampling time not recorded"
           },
-          "available": true
+          "text": {
+            "zh-CN": "肌钙蛋白 T（cTnT）与肌酸激酶同工酶（CK-MB）均明显升高；本病例没有记录具体数值、单位、参考区间和采血时间。",
+            "en": "Troponin T (cTnT) and CK-MB were both markedly raised; this case records no values, units, reference ranges or sampling times."
+          },
+          "values": [
+            {
+              "analyte": {
+                "zh-CN": "肌钙蛋白 T（cTnT）",
+                "en": "Troponin T (cTnT)"
+              },
+              "value": {
+                "zh-CN": "明显升高",
+                "en": "markedly raised"
+              },
+              "unit": "",
+              "refText": {
+                "zh-CN": "本病例未记录参考区间",
+                "en": "no reference range recorded"
+              },
+              "flag": "H"
+            },
+            {
+              "analyte": {
+                "zh-CN": "肌酸激酶同工酶（CK-MB）",
+                "en": "Creatine kinase MB (CK-MB)"
+              },
+              "value": {
+                "zh-CN": "明显升高",
+                "en": "markedly raised"
+              },
+              "unit": "",
+              "refText": {
+                "zh-CN": "本病例未记录参考区间",
+                "en": "no reference range recorded"
+              },
+              "flag": "H"
+            }
+          ],
+          "source": {
+            "zh-CN": "原报告病例资料·心肌损伤标志物（经 1.0.0 版提取，待对照原文全文核对）",
+            "en": "Case presentation in the report: cardiac injury markers (as extracted for version 1.0.0; check against the full article pending)"
+          }
         }
       }
     },
     {
       "id": "coronary-ct",
       "name": {
-        "zh-CN": "调阅冠脉 CT",
-        "en": "Review coronary CT"
+        "zh-CN": "冠状动脉 CT 报告（病历调阅）",
+        "en": "Coronary CT report (records)"
       },
       "category": "record",
-      "performedAt": "records",
+      "aliases": {
+        "zh-CN": [
+          "冠脉ct",
+          "冠状动脉ct",
+          "冠脉cta",
+          "ct报告",
+          "心脏ct",
+          "冠脉ct报告"
+        ],
+        "en": [
+          "coronary ct",
+          "ct coronary",
+          "ccta",
+          "cardiac ct",
+          "ct report"
+        ]
+      },
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
-      "value": "essential",
-      "aliases": {
-        "zh-CN": [
-          "调阅冠脉 CT"
-        ],
-        "en": [
-          "Review coronary CT",
-          "coronary-ct"
-        ]
-      },
+      "value": "useful",
       "results": {
-        "workup": {
+        "arrival": {
+          "available": false,
           "text": {
-            "zh-CN": "前降支近段中重度狭窄，回旋支中段轻中度狭窄。",
-            "en": "Moderate-to-severe proximal LAD and mild-to-moderate mid-LCx stenosis."
+            "zh-CN": "此时病例中还没有可调阅的冠状动脉 CT 报告；做 CT 的时间没有记录。",
+            "en": "No coronary CT report is available at this point in the case; when the CT was done is not recorded."
           },
           "source": {
-            "zh-CN": "原报告病例资料；去标识化事实摘要，对话为教学改写。",
-            "en": "Source report, case presentation; de-identified factual summary with educational dialogue."
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        },
+        "course": {
+          "available": true,
+          "date": {
+            "zh-CN": "时间未记录（随记录病程展示）",
+            "en": "Time not recorded; shown with the recorded course"
           },
-          "available": true
+          "text": {
+            "zh-CN": "冠状动脉 CT：前降支近段中重度狭窄，回旋支中段轻中度狭窄。",
+            "en": "Coronary CT: moderate-to-severe stenosis of the proximal left anterior descending artery (LAD) and mild-to-moderate stenosis of the mid left circumflex artery (LCx)."
+          },
+          "note": {
+            "zh-CN": "本病例没有记录这次 CT 是什么时候做的（包括是否在本次住院期间），也没有记录斑块特征、钙化或其他血管的情况。",
+            "en": "This case does not record when the CT was done (or whether during this admission), its plaque features, calcium or the other vessels."
+          },
+          "source": {
+            "zh-CN": "原报告病例资料·冠状动脉 CT（经 1.0.0 版提取，待对照原文全文核对）",
+            "en": "Case presentation in the report: coronary CT (as extracted for version 1.0.0; check against the full article pending)"
+          }
+        }
+      }
+    },
+    {
+      "id": "angiography",
+      "name": {
+        "zh-CN": "心导管室记录",
+        "en": "Catheter laboratory record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "冠脉造影",
+          "冠状动脉造影",
+          "造影报告",
+          "导管室记录",
+          "pci记录",
+          "支架"
+        ],
+        "en": [
+          "coronary angiogram",
+          "coronary angiography",
+          "cath report",
+          "cath lab record",
+          "pci report",
+          "stent"
+        ]
+      },
+      "requires": [
+        "records"
+      ],
+      "performedAt": "records",
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "arrival": {
+          "available": false,
+          "text": {
+            "zh-CN": "到院时还没有心导管室记录。",
+            "en": "At arrival there is no catheter laboratory record yet."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        },
+        "course": {
+          "available": false,
+          "text": {
+            "zh-CN": "此时病历中还没有心导管室记录。",
+            "en": "There is no catheter laboratory record in the chart at this point."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        },
+        "cath-week": {
+          "available": true,
+          "date": {
+            "zh-CN": "症状反复之后（距到院的时间未记录）",
+            "en": "After the symptoms recurred (time from arrival not recorded)"
+          },
+          "text": {
+            "zh-CN": "症状反复后行急诊冠状动脉造影：前降支近段次全闭塞，置入支架。",
+            "en": "Emergency coronary angiography after the symptoms recurred: subtotal occlusion of the proximal LAD, treated with a stent."
+          },
+          "note": {
+            "zh-CN": "本病例没有记录 TIMI 血流、支架类型和数量、回旋支在造影中的情况、术中用药或并发症。",
+            "en": "This case records no TIMI flow, stent type or number, circumflex findings at angiography, procedural drugs or complications."
+          },
+          "source": {
+            "zh-CN": "原报告治疗及随访部分·急诊冠状动脉造影与支架（经 1.0.0 版提取，待对照原文全文核对）",
+            "en": "Treatment and follow-up in the report: emergency coronary angiography and stent (as extracted for version 1.0.0; check against the full article pending)"
+          }
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "经胸超声心动图",
+        "en": "Transthoracic echocardiogram"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "心脏彩超",
+          "超声心动图",
+          "心超",
+          "心脏超声",
+          "射血分数",
+          "床旁心超"
+        ],
+        "en": [
+          "echo",
+          "echocardiogram",
+          "tte",
+          "cardiac ultrasound",
+          "lvef",
+          "ejection fraction"
+        ]
+      },
+      "requires": [
+        "echocardiography"
+      ],
+      "performedAt": "bedside",
+      "turnaroundMinutes": 20,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "arrival": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        },
+        "cath-week": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录：左心室射血分数、室壁运动和有无左心室血栓都不清楚。",
+            "en": "No result is recorded for this test: the LVEF, wall motion and any LV thrombus are unknown."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        }
+      }
+    },
+    {
+      "id": "renal-electrolytes",
+      "name": {
+        "zh-CN": "肾功能与电解质",
+        "en": "Renal function and electrolytes"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "肾功能",
+          "电解质",
+          "肌酐",
+          "血钾",
+          "生化"
+        ],
+        "en": [
+          "renal function",
+          "electrolytes",
+          "creatinine",
+          "potassium",
+          "u and e"
+        ]
+      },
+      "requires": [
+        "lab-chemistry"
+      ],
+      "turnaroundMinutes": 40,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "arrival": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        }
+      }
+    },
+    {
+      "id": "cbc",
+      "name": {
+        "zh-CN": "血常规",
+        "en": "Full blood count"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "血常规",
+          "血象",
+          "血红蛋白",
+          "血小板"
+        ],
+        "en": [
+          "full blood count",
+          "fbc",
+          "cbc",
+          "haemoglobin",
+          "platelets"
+        ]
+      },
+      "requires": [
+        "lab-hematology"
+      ],
+      "turnaroundMinutes": 30,
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "arrival": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
+        }
+      }
+    },
+    {
+      "id": "cxr",
+      "name": {
+        "zh-CN": "床旁胸部 X 线片",
+        "en": "Portable chest X-ray"
+      },
+      "category": "imaging",
+      "aliases": {
+        "zh-CN": [
+          "胸片",
+          "床旁胸片",
+          "胸部x线",
+          "x线胸片",
+          "胸部平片"
+        ],
+        "en": [
+          "chest x-ray",
+          "cxr",
+          "chest film",
+          "portable chest",
+          "chest radiograph"
+        ]
+      },
+      "requires": [
+        "xray"
+      ],
+      "performedAt": "bedside",
+      "turnaroundMinutes": 20,
+      "risk": "low",
+      "value": "neutral",
+      "results": {
+        "arrival": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
+            "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+          }
         }
       }
     },
     {
       "id": "outcome",
       "name": {
-        "zh-CN": "调阅原报告后续经过",
-        "en": "Review the reported subsequent course"
+        "zh-CN": "记录的病程与结局",
+        "en": "Reported course and outcome"
       },
       "category": "record",
-      "performedAt": "records",
+      "aliases": {
+        "zh-CN": [
+          "结局",
+          "转归",
+          "后来怎么样",
+          "病程记录",
+          "随访"
+        ],
+        "en": [
+          "outcome",
+          "what happened",
+          "course and outcome",
+          "follow-up",
+          "final course"
+        ]
+      },
       "requires": [
         "records"
       ],
+      "performedAt": "records",
       "risk": "none",
       "value": "useful",
       "results": {
         "followup": {
+          "available": true,
+          "date": {
+            "zh-CN": "到院至术后 1 周",
+            "en": "From arrival to one week after the procedure"
+          },
           "text": {
-            "zh-CN": "症状反复后急诊造影显示前降支近段次全闭塞并置入支架；术后 1 周心电图仍为 RBBB，V2–V4 QS、V5 rS，原文称广泛梗死图形。远期结局未载。",
-            "en": "Emergency angiography after recurrent symptoms showed subtotal proximal LAD occlusion, treated with a stent. At one week the ECG retained RBBB, QS in V2–V4 and rS in V5, described as extensive infarction changes. Long-term outcome is absent."
+            "zh-CN": "记录的病程：68岁男性，胸痛 5 小时伴胸闷就诊。首份心电图为右束支传导阻滞，V2–V3 导联 ST 段非弓背向上抬高、T 波直立，V4–V6 导联呈 Rs 型；医生多次复查心电图：2 小时后 V1–V3 导联 ST 段抬高、V2 导联 T 波倒置，此后 V4 导联呈 QS 型，V2–V3 与 V5–V6 导联 R 波降低，并随症状加重继续演变。cTnT 和 CK-MB 明显升高。冠状动脉 CT 示前降支近段中重度狭窄、回旋支中段轻中度狭窄。后来胸闷加重、胸痛反复，行急诊冠状动脉造影，见前降支近段次全闭塞，置入支架。术后 1 周心电图仍为右束支传导阻滞，V2–V4 导联呈 QS 型、V5 导联呈 rS 型，报告称为广泛梗死图形。本病例没有记录超声心动图、出院用药、随访和远期结局。",
+            "en": "Recorded course: a 68-year-old man presented with five hours of chest pain and chest tightness. The first ECG showed RBBB with non-convex ST elevation and upright T waves in V2–V3 and Rs complexes in V4–V6. The ECG was repeated several times: two hours later there was ST elevation in V1–V3 with T-wave inversion in V2; later V4 became QS and the R waves fell in V2–V3 and V5–V6, evolving further as his symptoms worsened. Troponin T and CK-MB were markedly raised. A coronary CT showed moderate-to-severe proximal LAD and mild-to-moderate mid-circumflex stenosis. When the tightness worsened and the pain recurred, emergency coronary angiography showed a subtotal occlusion of the proximal LAD, which was stented. One week after the procedure the ECG still showed RBBB, with QS complexes in V2–V4 and an rS complex in V5, which the report calls an extensive infarction pattern. This case records no echocardiogram, discharge medicines, follow-up or long-term outcome."
           },
           "source": {
-            "zh-CN": "原报告治疗及随访段。",
-            "en": "Source treatment and follow-up section."
-          },
-          "available": true
+            "zh-CN": "原报告病例资料、治疗及随访部分（经 1.0.0 版提取，待对照原文全文核对）",
+            "en": "Case presentation, treatment and follow-up in the report (as extracted for version 1.0.0; check against the full article pending)"
+          }
         }
       }
     }
   ],
-  "interventions": [],
+  "orderMatching": {
+    "rules": [
+      {
+        "ifHas": "ecg",
+        "ifMatches": "既往|以前|旧|老的|对比|基线|old|previous|prior|baseline|earlier",
+        "remove": [
+          "ecg"
+        ],
+        "add": [
+          "old-ecg"
+        ]
+      },
+      {
+        "ifHas": "angiography",
+        "ifMatches": "(^|[^a-z])ct|cta",
+        "remove": [
+          "angiography"
+        ]
+      }
+    ],
+    "exact": {},
+    "warnings": []
+  },
+  "interventions": [
+    {
+      "id": "cardiac-monitoring",
+      "name": {
+        "zh-CN": "持续心电监护并备好除颤仪",
+        "en": "Continuous ECG monitoring with a defibrillator at the bedside"
+      },
+      "kind": "monitoring",
+      "aliases": {
+        "zh-CN": [
+          "心电监护",
+          "上监护",
+          "接监护仪",
+          "除颤仪",
+          "贴除颤电极",
+          "监护"
+        ],
+        "en": [
+          "cardiac monitor",
+          "monitoring",
+          "attach the monitor",
+          "defibrillator",
+          "defib pads",
+          "telemetry"
+        ]
+      },
+      "dose": {
+        "zh-CN": "床旁监护仪持续监测心电（同时测血压和经皮血氧饱和度），除颤仪推到床旁并贴好电极片。",
+        "en": "Continuous ECG on the bedside monitor (with blood pressure and SpO₂), the defibrillator at the bedside with pads applied."
+      },
+      "requires": [
+        "cardiac-monitor",
+        "defibrillator"
+      ],
+      "risk": "none",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "监护已接上，除颤仪在床旁。本病例没有记录他的监护读数和心律，也不模拟。",
+        "en": "Monitoring is on and the defibrillator is at the bedside. This case does not record his monitor readings or rhythm and does not simulate them."
+      }
+    },
+    {
+      "id": "iv-access",
+      "name": {
+        "zh-CN": "建立静脉通路并抽血送检",
+        "en": "IV cannula and blood samples"
+      },
+      "kind": "procedure",
+      "aliases": {
+        "zh-CN": [
+          "静脉通路",
+          "留置针",
+          "开通静脉",
+          "抽血",
+          "建立通路",
+          "扎针"
+        ],
+        "en": [
+          "iv access",
+          "cannula",
+          "cannulate",
+          "iv line",
+          "bloods",
+          "venflon"
+        ]
+      },
+      "dose": {
+        "zh-CN": "外周静脉留置针（尽量避开右侧桡动脉，留给经桡动脉介入），同时抽血送检。",
+        "en": "Peripheral IV cannula (sparing the right radial artery for radial access), with blood samples sent at the same time."
+      },
+      "requires": [
+        "iv-access"
+      ],
+      "risk": "low",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "zh-CN": "静脉通路已建立，血标本已送检。本病例没有记录是否做过这一步；不模拟其效果。",
+        "en": "The cannula is in and the samples have gone. This case does not record whether this was done; it does not simulate its effect."
+      }
+    },
+    {
+      "id": "aspirin",
+      "name": {
+        "zh-CN": "阿司匹林负荷量",
+        "en": "Aspirin loading dose"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "阿司匹林",
+          "嚼服阿司匹林",
+          "抗血小板",
+          "阿斯匹林",
+          "拜阿司匹灵"
+        ],
+        "en": [
+          "aspirin",
+          "chew aspirin",
+          "antiplatelet",
+          "aspirin 300",
+          "acetylsalicylic acid"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "12个月",
+          "出院"
+        ],
+        "en": [
+          "12 months",
+          "discharge"
+        ]
+      },
+      "dose": {
+        "zh-CN": "阿司匹林 150–300 mg 嚼服（非肠溶片）；不能口服时 75–250 mg 静脉注射。",
+        "en": "Aspirin 150–300 mg orally, chewed (non-enteric-coated); 75–250 mg IV if he cannot take it by mouth."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "low",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "ecg",
+        "phase": "arrival"
+      },
+      "response": {
+        "zh-CN": "阿司匹林已嚼服。本病例没有记录是否做过这一步；不模拟其效果。",
+        "en": "Aspirin chewed. This case does not record whether this was done; it does not simulate its effect."
+      }
+    },
+    {
+      "id": "p2y12",
+      "name": {
+        "zh-CN": "P2Y12 受体抑制剂负荷量",
+        "en": "P2Y12 inhibitor loading dose"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "替格瑞洛",
+          "普拉格雷",
+          "氯吡格雷",
+          "p2y12",
+          "倍林达"
+        ],
+        "en": [
+          "ticagrelor",
+          "prasugrel",
+          "clopidogrel",
+          "p2y12",
+          "brilinta"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "12个月",
+          "出院"
+        ],
+        "en": [
+          "12 months",
+          "discharge"
+        ]
+      },
+      "dose": {
+        "zh-CN": "替格瑞洛 180 mg 口服负荷（或普拉格雷 60 mg，有卒中或短暂性脑缺血发作史者禁用）；最迟在 PCI 时给予，造影前预先给药为可选。",
+        "en": "Ticagrelor 180 mg orally as a loading dose (or prasugrel 60 mg, not after a stroke or TIA); give it at the latest at PCI — loading before angiography is optional."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "intervened": "activate-cath-lab"
+      },
+      "response": {
+        "zh-CN": "已给负荷量。本病例没有记录是否做过这一步；不模拟其效果。",
+        "en": "Loading dose given. This case does not record whether this was done; it does not simulate its effect."
+      }
+    },
+    {
+      "id": "ufh",
+      "name": {
+        "zh-CN": "普通肝素静脉推注（PCI 抗凝）",
+        "en": "Unfractionated heparin IV bolus (anticoagulation for PCI)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "肝素",
+          "普通肝素",
+          "抗凝",
+          "肝素钠",
+          "ufh"
+        ],
+        "en": [
+          "heparin",
+          "ufh",
+          "unfractionated heparin",
+          "anticoagulation",
+          "heparin bolus"
+        ]
+      },
+      "dose": {
+        "zh-CN": "普通肝素 70–100 U/kg 静脉推注（计划使用糖蛋白 IIb/IIIa 受体拮抗剂时 50–70 U/kg），导管室内按活化凝血时间追加。",
+        "en": "Unfractionated heparin 70–100 U/kg IV bolus (50–70 U/kg if a glycoprotein IIb/IIIa inhibitor is planned), with further doses guided by the activated clotting time in the catheter laboratory."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "intervened": "activate-cath-lab"
+      },
+      "response": {
+        "zh-CN": "肝素已推注。本病例没有记录是否做过这一步；不模拟其效果。",
+        "en": "Heparin given. This case does not record whether this was done; it does not simulate its effect."
+      }
+    },
+    {
+      "id": "activate-cath-lab",
+      "name": {
+        "zh-CN": "启动心导管室（急诊冠状动脉造影）",
+        "en": "Activate the catheter laboratory (emergency coronary angiography)"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "导管室",
+          "启动导管室",
+          "急诊pci",
+          "直接pci",
+          "急诊造影",
+          "介入团队"
+        ],
+        "en": [
+          "cath lab",
+          "activate the cath lab",
+          "primary pci",
+          "emergency angiography",
+          "interventional team",
+          "catheter laboratory"
+        ]
+      },
+      "dose": {
+        "zh-CN": "一键启动：呼叫介入心内科医生和导管室团队，准备立即冠状动脉造影并按需行 PCI。",
+        "en": "Single-call activation: page the interventional cardiologist and the catheter-laboratory team for immediate coronary angiography and PCI as needed."
+      },
+      "requires": [],
+      "risk": "low",
+      "maxDoses": 1,
+      "setFlags": [
+        "cath-lab-activated"
+      ],
+      "indicatedWhen": {
+        "read": "ecg",
+        "phase": "arrival"
+      },
+      "response": {
+        "zh-CN": "介入团队已接到呼叫，导管室正在准备。本病例没有记录从首份心电图到进入导管室的时间；接下来的记录按实际病程展开。",
+        "en": "The interventional team has been called and the catheter laboratory is being prepared. This case does not record the time from the first ECG to the catheter laboratory; the records that follow show the course as it happened."
+      }
+    },
+    {
+      "id": "gtn",
+      "name": {
+        "zh-CN": "硝酸甘油舌下含服",
+        "en": "Sublingual glyceryl trinitrate (GTN)"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "硝酸甘油",
+          "舌下含服",
+          "硝酸酯",
+          "硝酸甘油片"
+        ],
+        "en": [
+          "gtn",
+          "nitroglycerin",
+          "glyceryl trinitrate",
+          "nitrate",
+          "sublingual"
+        ]
+      },
+      "dose": {
+        "zh-CN": "硝酸甘油 0.4–0.5 mg 舌下含服，可每 5 分钟重复，最多 3 次；仅在收缩压 ≥ 90 mmHg、无右心室梗死、24–48 小时内未用磷酸二酯酶-5 抑制剂时使用。",
+        "en": "GTN 0.4–0.5 mg sublingually, repeated every 5 minutes up to 3 doses, only if the systolic blood pressure is at least 90 mmHg, there is no right-ventricular infarction and no PDE-5 inhibitor has been taken in the last 24–48 hours."
+      },
+      "requires": [
+        "medications"
+      ],
+      "risk": "moderate",
+      "maxDoses": 3,
+      "response": {
+        "zh-CN": "本病例没有记录血压，也没有记录是否用过硝酸酯；不模拟其效果。硝酸酯只缓解症状，不能开通闭塞的血管，也不能代替再灌注。",
+        "en": "This case records no blood pressure and does not record whether a nitrate was given; it does not simulate its effect. A nitrate relieves symptoms — it does not open an occluded artery or replace reperfusion."
+      }
+    },
+    {
+      "id": "oxygen",
+      "name": {
+        "zh-CN": "吸氧（仅在 SpO₂ < 90% 时）",
+        "en": "Oxygen (only if SpO₂ is below 90 %)"
+      },
+      "kind": "oxygen",
+      "aliases": {
+        "zh-CN": [
+          "吸氧",
+          "氧气",
+          "鼻导管",
+          "给氧",
+          "氧疗"
+        ],
+        "en": [
+          "oxygen",
+          "o2",
+          "nasal cannula",
+          "supplemental oxygen",
+          "nasal prongs"
+        ]
+      },
+      "dose": {
+        "zh-CN": "先测经皮血氧饱和度：SpO₂ < 90% 时经鼻导管给氧，滴定至 ≥ 90%；SpO₂ ≥ 90% 时不常规给氧。",
+        "en": "Measure the SpO₂ first: oxygen by nasal cannula only if it is below 90 %, titrated to at least 90 %; no routine oxygen at 90 % or above."
+      },
+      "requires": [
+        "oxygen"
+      ],
+      "device": "nasal-cannula",
+      "risk": "low",
+      "maxDoses": 1,
+      "response": {
+        "zh-CN": "本病例没有记录他的血氧饱和度，也没有记录是否吸氧；不模拟其效果。",
+        "en": "This case does not record his oxygen saturation or whether oxygen was given; it does not simulate its effect."
+      }
+    },
+    {
+      "id": "fibrinolysis",
+      "name": {
+        "zh-CN": "替奈普酶静脉溶栓",
+        "en": "Tenecteplase fibrinolysis"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "溶栓",
+          "替奈普酶",
+          "tnk",
+          "阿替普酶",
+          "尿激酶",
+          "溶栓治疗"
+        ],
+        "en": [
+          "thrombolysis",
+          "fibrinolysis",
+          "tenecteplase",
+          "tnk",
+          "alteplase",
+          "lysis"
+        ]
+      },
+      "dose": {
+        "zh-CN": "替奈普酶按体重分档单次静脉推注（< 60 kg 30 mg，至 ≥ 90 kg 50 mg）。",
+        "en": "Tenecteplase as a single weight-banded IV bolus (30 mg below 60 kg, up to 50 mg at 90 kg or more)."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "high",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "在能于诊断后 120 分钟内完成直接 PCI 的医院（本院设有心导管室），直接 PCI 优于溶栓（ESC 2023 ACS）；溶栓只用于无法及时行 PCI 的情况。他的出血史、近期手术和卒中史都还不清楚，此时溶栓只增加出血风险。",
+        "en": "Where primary PCI can be done within 120 minutes of diagnosis — this hospital has a catheter laboratory — it is preferred to fibrinolysis (ESC 2023 ACS); fibrinolysis is for when timely PCI is not possible. With his bleeding, surgical and stroke history still unknown, it adds bleeding risk for no gain."
+      },
+      "response": {
+        "zh-CN": "溶栓药已推注。本病例没有记录溶栓，不模拟其效果。",
+        "en": "The lytic has been given. This case records no fibrinolysis and does not simulate its effect."
+      }
+    },
+    {
+      "id": "ct-first",
+      "name": {
+        "zh-CN": "先做冠状动脉 CT 血管成像，再决定是否造影",
+        "en": "CT coronary angiogram first; decide on catheterisation afterwards"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "先做ct",
+          "冠脉cta",
+          "冠状动脉ct血管成像",
+          "ct血管成像",
+          "先做冠脉ct",
+          "心脏ct"
+        ],
+        "en": [
+          "ct first",
+          "ct coronary angiogram",
+          "ccta",
+          "cardiac ct",
+          "ct angiography first",
+          "coronary cta"
+        ]
+      },
+      "dose": {
+        "zh-CN": "送 CT 室行冠状动脉 CT 血管成像，按狭窄程度再决定是否行有创造影。",
+        "en": "Send him to the CT suite for a CT coronary angiogram and decide on invasive angiography by the degree of stenosis."
+      },
+      "requires": [],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "ESC 2023 ACS 把冠状动脉 CT 血管成像用于肌钙蛋白和心电图正常或不确定、胸痛不再发作的疑似 ACS 患者，用来排除诊断；对胸痛持续、ST 段抬高的患者，它让患者离开有监护和除颤条件的抢救区，增加造影剂负担，并推迟本身就能诊断和治疗的有创造影。",
+        "en": "ESC 2023 ACS uses CT coronary angiography in suspected ACS when troponin and the ECG are normal or inconclusive and the pain has not recurred — to rule the diagnosis out. With ongoing pain and ST elevation it takes him away from monitoring and a defibrillator, adds contrast and delays the invasive angiogram that both diagnoses and treats."
+      },
+      "response": {
+        "zh-CN": "已预约 CT。他的病历中也有一份冠状动脉 CT 报告，在下一阶段展示（做 CT 的时间没有记录）。",
+        "en": "The CT is booked. His record also holds a coronary CT report, shown in the next part of the case (when that CT was done is not recorded)."
+      }
+    },
+    {
+      "id": "defer-angiography",
+      "name": {
+        "zh-CN": "收入病房药物治疗，24 小时内择期造影",
+        "en": "Admit for medical therapy with angiography within 24 hours"
+      },
+      "kind": "disposition",
+      "aliases": {
+        "zh-CN": [
+          "收住院",
+          "收入病房",
+          "择期造影",
+          "24小时内造影",
+          "保守治疗",
+          "收入ccu"
+        ],
+        "en": [
+          "admit",
+          "admit to ccu",
+          "delayed angiography",
+          "angiography tomorrow",
+          "medical therapy",
+          "early invasive"
+        ]
+      },
+      "dose": {
+        "zh-CN": "收入心内科病房或 CCU，给予抗栓和抗缺血治疗，复查肌钙蛋白和心电图，24 小时内安排冠状动脉造影。",
+        "en": "Admit to the cardiology ward or CCU on antithrombotic and anti-ischaemic treatment, repeat the troponin and ECGs, and schedule coronary angiography within 24 hours."
+      },
+      "requires": [],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "24 小时内的早期侵入策略针对病情稳定的高危非 ST 段抬高 ACS。胸痛持续伴 RBBB 下的 ST 段抬高要按直接 PCI 策略处理；即便按非 ST 段抬高 ACS 理解，持续或反复胸痛伴动态 ST 段改变也属于极高危，需要 2 小时内的立即侵入策略（ESC 2023 ACS）。",
+        "en": "An early invasive strategy within 24 hours is for stable high-risk NSTE-ACS. Ongoing pain with ST elevation in RBBB calls for a primary PCI strategy; even read as NSTE-ACS, ongoing or recurrent pain with dynamic ST changes is very high risk and needs an immediate invasive strategy within 2 hours (ESC 2023 ACS)."
+      },
+      "response": {
+        "zh-CN": "已安排收入院。本病例不模拟这一选择之后的经过；接下来的记录按实际病程展开。",
+        "en": "Admission arranged. This case does not simulate what would follow; the records that follow show the course as it happened."
+      }
+    },
+    {
+      "id": "pacing-referral",
+      "name": {
+        "zh-CN": "转介植入永久起搏器",
+        "en": "Referral for a permanent pacemaker"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "起搏器",
+          "永久起搏器",
+          "植入起搏器",
+          "起搏",
+          "心脏起搏"
+        ],
+        "en": [
+          "pacemaker",
+          "permanent pacemaker",
+          "pacing",
+          "ppm",
+          "pacemaker referral"
+        ]
+      },
+      "dose": {
+        "zh-CN": "请电生理医生评估并植入永久起搏器。",
+        "en": "Ask the electrophysiology team to assess him for a permanent pacemaker."
+      },
+      "requires": [],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "contraindicatedWhen": {
+        "always": true
+      },
+      "harm": {
+        "zh-CN": "单纯的右束支传导阻滞（不伴高度房室传导阻滞，也没有不明原因晕厥）不是永久起搏的指征（ESC 2021 心脏起搏指南）；本病例 1 周心电图只记录了 RBBB 和梗死图形。梗死后的传导问题要观察和复查，而不是因为束支阻滞本身植入起搏器。",
+        "en": "Isolated RBBB without high-degree AV block or unexplained syncope is not an indication for permanent pacing (ESC 2021 cardiac pacing guideline); the one-week ECG here records RBBB and the infarction pattern only. Conduction after an infarct is watched and re-checked, not paced for the bundle branch block itself."
+      },
+      "response": {
+        "zh-CN": "转介已提出。本病例没有记录起搏评估，不模拟其结果。",
+        "en": "Referral made. This case records no pacing assessment and does not simulate one."
+      }
+    },
+    {
+      "id": "discharge-prevention",
+      "name": {
+        "zh-CN": "出院前二级预防与随访安排",
+        "en": "Secondary prevention and follow-up before discharge"
+      },
+      "kind": "other",
+      "aliases": {
+        "zh-CN": [
+          "二级预防",
+          "出院带药",
+          "双联抗血小板",
+          "他汀",
+          "心脏康复",
+          "出院计划"
+        ],
+        "en": [
+          "secondary prevention",
+          "discharge medicines",
+          "dual antiplatelet",
+          "statin",
+          "cardiac rehabilitation",
+          "discharge plan"
+        ]
+      },
+      "dose": {
+        "zh-CN": "阿司匹林 75–100 mg 每日一次，加替格瑞洛 90 mg 每日两次（或普拉格雷 10 mg 每日一次），共 12 个月，出血风险高时调整；高强度他汀，LDL-C 目标 < 1.4 mmol/L 且较基线下降 ≥ 50%；按左心室射血分数使用 β 受体阻滞剂、ACEI/ARB 和醛固酮受体拮抗剂；转介心脏康复；射血分数降低者梗死后 6–12 周复查。",
+        "en": "Aspirin 75–100 mg daily plus ticagrelor 90 mg twice daily (or prasugrel 10 mg daily) for 12 months, adjusted if bleeding risk is high; a high-intensity statin to an LDL-C below 1.4 mmol/L and at least 50 % below baseline; a beta-blocker, ACE inhibitor or ARB and mineralocorticoid-receptor antagonist by LVEF; cardiac rehabilitation; LVEF re-assessed 6–12 weeks after the infarct if it is reduced."
+      },
+      "requires": [],
+      "risk": "low",
+      "maxDoses": 1,
+      "indicatedWhen": {
+        "read": "angiography",
+        "phase": "cath-week"
+      },
+      "response": {
+        "zh-CN": "已列入出院计划。本病例没有记录出院用药、心脏康复或随访，不模拟其效果。",
+        "en": "Added to the discharge plan. This case does not record his discharge medicines, rehabilitation or follow-up and does not simulate their effect."
+      }
+    }
+  ],
   "objectives": [
     {
-      "id": "history",
+      "id": "obj-pain-story",
       "title": {
-        "zh-CN": "重建就诊经过",
-        "en": "Reconstruct the presentation"
+        "zh-CN": "了解这次胸痛",
+        "en": "Take the chest-pain history"
+      },
+      "short": {
+        "zh-CN": "病史",
+        "en": "History"
       },
       "hint": {
-        "zh-CN": "从起病、演变及伴随症状寻找关键信息。",
-        "en": "Clarify onset, progression and associated symptoms."
+        "zh-CN": "要判断有多紧急，你需要知道这次胸痛的哪些情况？现在还在痛吗？",
+        "en": "Before you can judge how urgent this is, what do you need to know about the pain — and is it still there?"
+      },
+      "guidance": {
+        "zh-CN": "到床旁问他胸痛何时开始、现在是否仍在痛、还有什么不舒服。",
+        "en": "At the bedside, ask when the pain began, whether it is still there and what else he feels."
       },
       "completeWhen": {
         "all": [
           {
-            "asked": "presentation"
+            "asked": "presenting"
           },
           {
             "asked": "onset"
           },
           {
-            "asked": "progression"
+            "asked": "pain-now"
           },
           {
-            "asked": "associated"
+            "asked": "tightness"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
     },
     {
-      "id": "evidence",
+      "id": "obj-first-ecg",
       "title": {
-        "zh-CN": "核对查体与病历证据",
-        "en": "Check examination and chart evidence"
+        "zh-CN": "记录并解读到院心电图",
+        "en": "Record and read the arrival ECG"
+      },
+      "short": {
+        "zh-CN": "心电图",
+        "en": "ECG"
       },
       "hint": {
-        "zh-CN": "区分患者叙述、查体记录和辅助检查报告。",
-        "en": "Distinguish the history, examination record and investigation reports."
+        "zh-CN": "按顺序读图：节律、QRS 波，再看 ST 段和 T 波。哪些改变可以用 QRS 波本身的形态来解释，哪些不能？有没有可以对比的旧心电图？",
+        "en": "Read it in order: rhythm, the QRS, then the ST segments and T waves. Which changes can the QRS pattern itself explain, and which can it not? Is there an old tracing to compare?"
+      },
+      "guidance": {
+        "zh-CN": "推来心电图机记录 12 导联心电图，在床旁或病历终端阅读，并查找既往心电图；然后到会诊板作答决策 1。",
+        "en": "Bring the ECG machine and record a 12-lead ECG, read it at the bedside or a records terminal, look for an earlier tracing, then answer decision 1 on the case board."
       },
       "completeWhen": {
         "all": [
           {
-            "always": true
+            "read": "ecg",
+            "phase": "arrival"
           },
           {
-            "read": "ecg-first",
-            "phase": "workup"
+            "read": "old-ecg"
           },
           {
-            "read": "ecg-serial",
-            "phase": "workup"
+            "decided": "ecg-reading"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "ecg",
+            "phase": "arrival"
+          },
+          "target": "ecg-12lead"
+        },
+        {
+          "unless": {
+            "read": "old-ecg"
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-reperfusion",
+      "title": {
+        "zh-CN": "决定即刻处理",
+        "en": "Decide what to do now"
+      },
+      "short": {
+        "zh-CN": "即刻处理",
+        "en": "Immediate plan"
+      },
+      "hint": {
+        "zh-CN": "他还在痛：这份心电图需要你等待什么结果才能行动吗？哪种处理能最快、最可靠地解决问题？在此期间他床边要准备什么？",
+        "en": "He is still in pain: does this tracing make you wait for any result before acting? Which treatment solves the problem fastest and most reliably — and what must be at his bedside meanwhile?"
+      },
+      "guidance": {
+        "zh-CN": "在会诊板作答决策 2，再把计划付诸行动：床旁的监护和用药，以及启动你所选再灌注方案的那一步（呼叫或医嘱）。行动之后，病例才进入记录病程。",
+        "en": "Answer decision 2 on the case board, then put your plan into action: monitoring and medicines at the bedside, and the call or order that starts your reperfusion plan. The recorded course opens once you have acted."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "reperfusion"
+          },
+          {
+            "any": [
+              {
+                "intervened": "activate-cath-lab"
+              },
+              {
+                "intervened": "ct-first"
+              },
+              {
+                "intervened": "defer-angiography"
+              },
+              {
+                "intervened": "fibrinolysis"
+              }
+            ]
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "decided": "reperfusion"
+          },
+          "target": "board"
+        },
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-course",
+      "title": {
+        "zh-CN": "回顾到院后的记录病程",
+        "en": "Review the recorded hours after arrival"
+      },
+      "short": {
+        "zh-CN": "病程",
+        "en": "Course"
+      },
+      "hint": {
+        "zh-CN": "把每一份新心电图和第一份比较：哪些导联变了、朝哪个方向变？标志物又补充了什么？CT 的狭窄分级能告诉你斑块此刻是否稳定吗？",
+        "en": "Compare each new tracing with the first: which leads have changed, and which way? What do the markers add? Can a CT stenosis grade tell you whether a plaque is stable right now?"
+      },
+      "guidance": {
+        "zh-CN": "问他现在怎么样，复查心电图，调阅心肌损伤标志物和冠状动脉 CT 报告，然后作答决策 3。",
+        "en": "Ask how he is now, repeat the ECG, read the cardiac markers and the coronary CT report, then answer decision 3."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "status-course"
+          },
+          {
+            "read": "ecg",
+            "phase": "course"
           },
           {
             "read": "markers",
-            "phase": "workup"
+            "phase": "course"
           },
           {
             "read": "coronary-ct",
-            "phase": "workup"
+            "phase": "course"
+          },
+          {
+            "decided": "course-review"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "asked": "status-course"
+          },
+          "target": "patient"
+        },
+        {
+          "unless": {
+            "read": "ecg",
+            "phase": "course"
+          },
+          "target": "ecg-12lead"
+        },
+        {
+          "unless": {
+            "all": [
+              {
+                "read": "markers",
+                "phase": "course"
+              },
+              {
+                "read": "coronary-ct",
+                "phase": "course"
+              }
+            ]
+          },
+          "target": "records"
+        },
+        {
+          "target": "board"
+        }
+      ]
     },
     {
-      "id": "reasoning",
+      "id": "obj-week",
       "title": {
-        "zh-CN": "比较解释并制定计划",
-        "en": "Compare interpretations and plan care"
+        "zh-CN": "安排此后数周的治疗",
+        "en": "Plan the weeks ahead"
+      },
+      "short": {
+        "zh-CN": "后续计划",
+        "en": "Next weeks"
       },
       "hint": {
-        "zh-CN": "指出支持证据、反证和仍需核对的信息。",
-        "en": "Identify supporting evidence, conflicting evidence and remaining gaps."
+        "zh-CN": "出院前，他还需要哪项心肌评估？哪些药要用多久、目标是多少？之后的心电图上，有没有哪项表现真正需要植入装置？",
+        "en": "Before he goes home, which assessment of the heart muscle does he need? Which medicines, for how long and to what targets — and does anything on the later tracing truly need a device?"
+      },
+      "guidance": {
+        "zh-CN": "调阅心导管室记录，复查 1 周后的心电图，然后作答决策 4 并安排出院计划。",
+        "en": "Read the catheter laboratory record and the ECG a week later, then answer decision 4 and set out the discharge plan."
       },
       "completeWhen": {
         "all": [
           {
-            "decided": "interpretation"
+            "read": "angiography",
+            "phase": "cath-week"
           },
           {
-            "decided": "management"
+            "read": "ecg",
+            "phase": "cath-week"
+          },
+          {
+            "decided": "discharge-plan"
           }
         ]
-      }
+      },
+      "waypoints": [
+        {
+          "unless": {
+            "read": "angiography",
+            "phase": "cath-week"
+          },
+          "target": "records"
+        },
+        {
+          "unless": {
+            "read": "ecg",
+            "phase": "cath-week"
+          },
+          "target": "ecg-12lead"
+        },
+        {
+          "target": "board"
+        }
+      ]
     },
     {
-      "id": "review",
+      "id": "obj-outcome",
       "title": {
-        "zh-CN": "复盘后续经过",
-        "en": "Review the subsequent course"
+        "zh-CN": "查阅记录的结局",
+        "en": "Review the recorded outcome"
+      },
+      "short": {
+        "zh-CN": "结局",
+        "en": "Outcome"
       },
       "hint": {
-        "zh-CN": "将报告结局与当时可获得的证据分开。",
-        "en": "Separate the reported outcome from evidence available at the decision point."
+        "zh-CN": "记录的病程与你的计划有哪些不同？哪些情况始终没有记录？",
+        "en": "Where does the recorded course differ from your plan, and what was never recorded?"
+      },
+      "guidance": {
+        "zh-CN": "在病历终端调阅记录的病程与结局。",
+        "en": "Read the recorded course and outcome at a records terminal."
       },
       "completeWhen": {
-        "all": [
-          {
-            "read": "outcome",
-            "phase": "followup"
-          },
-          {
-            "decided": "safety"
-          }
-        ]
-      }
+        "read": "outcome",
+        "phase": "followup"
+      },
+      "waypoints": [
+        {
+          "target": "records"
+        }
+      ]
     }
   ],
   "decisions": [
     {
-      "id": "interpretation",
+      "id": "ecg-reading",
       "prompt": {
-        "zh-CN": "怎样解释症状与连续心电图？",
-        "en": "How should symptoms and serial ECGs be interpreted?"
+        "zh-CN": "他胸痛 5 小时仍未缓解。首份心电图：右束支传导阻滞；V2–V3 导联 ST 段抬高，形态非弓背向上，T 波直立；V4–V6 导联呈 Rs 型。没有可供对比的既往心电图。你怎样解读这些 ST–T 改变？",
+        "en": "Five hours into chest pain that has not eased. His first ECG shows right bundle branch block; ST elevation in V2–V3, not convex, with upright T waves; and Rs complexes in V4–V6. There is no earlier ECG for comparison. How do you read these ST–T changes?"
       },
       "kind": "single",
       "requires": {
         "all": [
           {
-            "read": "ecg-first",
-            "phase": "workup"
+            "asked": "presenting"
           },
           {
-            "read": "ecg-serial",
-            "phase": "workup"
+            "asked": "onset"
+          },
+          {
+            "asked": "pain-now"
+          },
+          {
+            "read": "ecg",
+            "phase": "arrival"
+          },
+          {
+            "read": "old-ecg"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先问清胸痛何时开始、现在是否仍在痛，记录并阅读到院心电图，并查找既往心电图。",
+        "en": "First establish when the pain began and whether it is still there, record and read the arrival ECG, and look for an earlier tracing."
+      },
+      "options": [
+        {
+          "id": "primary-st-change",
+          "text": {
+            "zh-CN": "原发性 ST–T 改变：V2–V3 导联 ST 段抬高、T 波直立，与终末 R′ 波同向——结合持续胸痛，按急性前壁损伤处理",
+            "en": "A primary ST–T change: the ST elevation and upright T waves in V2–V3 point the same way as the terminal R′ — with his pain still going on, treat it as acute anterior injury"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。右束支传导阻滞的继发性复极改变与终末 R′ 波方向相反（V1–V3 导联 ST 段压低、T 波倒置）；与之同向的 ST 段抬高和直立 T 波属于原发性改变。第四版心肌梗死通用定义（ESC/ACC/AHA/WHF 2018）指出，RBBB 患者出现新的 ST 段抬高或 Q 波应考虑心肌缺血或梗死；ESC 2023 ACS 指南对持续缺血症状合并束支阻滞的患者采用直接 PCI 策略。",
+            "en": "Correct. The secondary repolarisation of RBBB runs opposite to the terminal R′ (ST depression and T-wave inversion in V1–V3); ST elevation and upright T waves in the same direction as the R′ are primary changes. The Fourth Universal Definition of MI (ESC/ACC/AHA/WHF 2018) says new ST elevation or Q waves in RBBB should raise ischaemia or infarction, and ESC 2023 ACS manages ongoing ischaemic symptoms with bundle branch block by a primary PCI strategy."
+          }
+        },
+        {
+          "id": "secondary-repolarisation",
+          "text": {
+            "zh-CN": "RBBB 的继发性复极改变：束支阻滞会让 V1–V3 导联的 ST 段和 T 波变形，这类改变在 RBBB 患者中很常见，本身没有缺血意义，继续观察、稍后再复查一次心电图即可",
+            "en": "Secondary repolarisation of RBBB: the block distorts the ST segment and T wave in V1–V3, changes that are common in RBBB and carry no ischaemic meaning of their own, so watching him and repeating the ECG later is enough"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。RBBB 的继发改变方向是确定的：V1–V3 导联 ST 段压低、T 波倒置。ST 段抬高伴直立 T 波恰恰方向相反，不能归因于阻滞（第四版心肌梗死通用定义，2018）。把它当作“阻滞造成的变形”，正是这类患者被延误的常见原因。",
+            "en": "No. The secondary change of RBBB has a fixed direction: ST depression and T-wave inversion in V1–V3. ST elevation with upright T waves runs the other way and cannot be blamed on the block (Fourth Universal Definition of MI, 2018). Calling it 'block artefact' is the classic route to delay in patients like him."
+          }
+        },
+        {
+          "id": "early-repolarisation",
+          "text": {
+            "zh-CN": "良性早复极样改变：ST 段抬高不呈弓背向上，形态不像心肌梗死，而且 V4–V6 导联仍保留 Rs 型 R 波，不支持大面积梗死",
+            "en": "A benign early-repolarisation pattern: the ST elevation is not convex, its shape is not that of an infarct, and the Rs complexes in V4–V6 keep their R waves, which argues against a large infarct"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。ST 段形态不能排除急性冠脉闭塞：早期前壁梗死的 ST 段抬高常呈直线或凹面向上，伴直立的 T 波；R 波尚存也只说明坏死还没有形成，不说明没有损伤。在 RBBB 背景下，V2–V3 导联出现与终末 R′ 同向的 ST 段抬高本身就不是良性表现（第四版心肌梗死通用定义，2018）。",
+            "en": "No. ST morphology does not exclude acute coronary occlusion: early anterior infarction often shows straight or concave ST elevation with upright T waves, and preserved R waves mean necrosis has not yet formed, not that there is no injury. In RBBB, ST elevation concordant with the terminal R′ in V2–V3 is not a benign finding (Fourth Universal Definition of MI, 2018)."
+          }
+        },
+        {
+          "id": "needs-old-ecg",
+          "text": {
+            "zh-CN": "暂时无法判断：只有拿到既往心电图、确认 RBBB 是新发的，才能解读 ST 段；在此之前应等待肌钙蛋白结果来决定下一步",
+            "en": "Not interpretable yet: the ST segment can only be read once an earlier ECG shows whether the RBBB is new, and until then the troponin result should decide the next step"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。RBBB 并不妨碍判读 ST 段，阻滞是否新发也不改变当下的处理：ESC 2023 ACS 对持续缺血症状合并束支阻滞的患者采用直接 PCI 策略，疑似 ST 段抬高心肌梗死时再灌注决策不等待肌钙蛋白。缺少旧心电图只意味着无法证明阻滞是新发的。",
+            "en": "No. RBBB does not stop you reading the ST segment, and whether the block is new does not change what to do now: ESC 2023 ACS manages ongoing ischaemic symptoms with bundle branch block by a primary PCI strategy, and the reperfusion decision in suspected STEMI does not wait for troponin. A missing old ECG only means you cannot prove the block is new."
+          }
+        },
+        {
+          "id": "rbbb-alone-diagnostic",
+          "text": {
+            "zh-CN": "RBBB 本身即可确诊：新出现的右束支传导阻滞等同于前降支闭塞，无需再分析 ST 段和 T 波，可直接诊断急性前壁心肌梗死",
+            "en": "The RBBB itself is diagnostic: a new right bundle branch block equals LAD occlusion, so there is no need to analyse the ST segment or T waves before calling this an acute anterior infarct"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。RBBB 本身不是诊断标准，而且没有旧心电图，无法知道它是不是新发的。真正提示急性损伤的是 V2–V3 导联与终末 R′ 同向的 ST 段抬高和直立 T 波；RBBB 合并急性心肌梗死提示梗死范围大、预后差，但诊断仍要依靠 ST–T 改变和临床表现（第四版心肌梗死通用定义，2018）。",
+            "en": "No. RBBB is not a diagnostic criterion in itself, and with no earlier ECG you cannot know it is new. What signals acute injury is the ST elevation with upright T waves concordant with the terminal R′ in V2–V3; RBBB with an acute infarct marks a large territory and a worse prognosis, but the diagnosis still rests on the ST–T changes and the clinical picture (Fourth Universal Definition of MI, 2018)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "reperfusion",
+      "prompt": {
+        "zh-CN": "你判断这是 RBBB 背景下的急性前壁损伤，他仍在胸痛。本院设有心导管室。现在的处理计划是什么？",
+        "en": "You have read the tracing as acute anterior injury despite the RBBB, and he is still in pain. This hospital has a catheter laboratory. What is your plan now?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "ecg-reading"
+          },
+          {
+            "asked": "pain-now"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先完成到院心电图的解读（决策 1）。",
+        "en": "First commit to a reading of the arrival ECG (decision 1)."
+      },
+      "options": [
+        {
+          "id": "cath-lab-now",
+          "text": {
+            "zh-CN": "立即启动导管室行急诊造影和直接 PCI：阿司匹林 150–300 mg 嚼服，PCI 时普通肝素 70–100 U/kg，心电监护并备除颤，不等肌钙蛋白",
+            "en": "Activate the catheter laboratory now for angiography and primary PCI: aspirin 150–300 mg chewed, unfractionated heparin 70–100 U/kg at PCI, ECG monitoring with a defibrillator, no wait for troponin"
+          },
+          "correct": true,
+          "feedback": {
+            "zh-CN": "正确。持续缺血症状伴 RBBB 下的 ST 段抬高按直接 PCI 策略处理：能在诊断后 120 分钟内完成 PCI 时，直接 PCI 优于溶栓，并应尽快持续心电监护、具备除颤条件（ESC 2023 ACS）。中国 STEMI 指南（2019）同样推荐阿司匹林 150–300 mg 负荷，且不因等待心肌损伤标志物而延误再灌注。",
+            "en": "Correct. Ongoing ischaemic symptoms with ST elevation in RBBB are managed by a primary PCI strategy: primary PCI is preferred to fibrinolysis when it can be done within 120 minutes of diagnosis, with continuous ECG monitoring and defibrillation available as soon as possible (ESC 2023 ACS). The Chinese STEMI guideline (2019) likewise loads aspirin 150–300 mg and does not hold reperfusion for cardiac markers."
+          }
+        },
+        {
+          "id": "ct-angiogram-first",
+          "text": {
+            "zh-CN": "先做冠状动脉 CT 血管成像明确解剖：见到前降支严重狭窄或闭塞再启动导管室，其间给阿司匹林和抗凝并持续监护，这样冠脉若无明显病变，就免去了一次有创检查",
+            "en": "A CT coronary angiogram first to define the anatomy: activate the catheter laboratory if it shows a severe LAD stenosis or occlusion, with aspirin, anticoagulation and monitoring meanwhile, so that clean coronaries spare him an invasive test"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对，尽管这位患者的病历中确有一份冠状动脉 CT 报告。ESC 2023 ACS 把冠状动脉 CT 血管成像用于肌钙蛋白和心电图正常或不确定、胸痛不再发作的疑似 ACS 患者，用来排除诊断；对持续胸痛和 ST 段抬高的患者，它让患者离开监护区，并推迟本身就能诊断和治疗的有创造影。",
+            "en": "No — though this patient's record does include a coronary CT report. ESC 2023 ACS uses CT coronary angiography in suspected ACS when troponin and the ECG are normal or inconclusive and the pain has not recurred, to rule the diagnosis out. With ongoing pain and ST elevation it takes him away from monitoring and delays the invasive angiogram that both diagnoses and treats."
+          }
+        },
+        {
+          "id": "serial-troponin",
+          "text": {
+            "zh-CN": "先按 0 小时/1 小时高敏肌钙蛋白方案采血，15–30 分钟后复查心电图；肌钙蛋白升高或 ST 段抬高加重时再启动导管室",
+            "en": "Run the 0 h/1 h high-sensitivity troponin protocol and repeat the ECG in 15–30 minutes, activating the catheter laboratory if the troponin rises or the ST elevation grows"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。0 小时/1 小时肌钙蛋白方案用于心电图不能诊断时排除或确诊非 ST 段抬高心肌梗死；ESC 2023 ACS 不让持续胸痛伴 ST 段抬高的患者等待肌钙蛋白。复查心电图是对的，但应与启动导管室同时进行，而不是作为启动的前提。",
+            "en": "No. The 0 h/1 h troponin algorithm rules NSTEMI in or out when the ECG is not diagnostic; ESC 2023 ACS does not make a patient with ongoing pain and ST elevation wait for troponin. Repeating the ECG is right — alongside activation, not as its precondition."
+          }
+        },
+        {
+          "id": "fibrinolysis-now",
+          "text": {
+            "zh-CN": "立即替奈普酶溶栓：症状 5 小时、仍在 12 小时时间窗之内，溶栓药几分钟内就能推注完毕，比等待导管室团队集结、穿刺和送入导丝更快开通血管",
+            "en": "Tenecteplase now: five hours from onset is well inside the 12-hour window, and a lytic can be given within minutes, opening the artery sooner than waiting for the catheter team to assemble"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。溶栓用于预计无法在诊断后 120 分钟内完成直接 PCI 的情况（ESC 2023 ACS）；本院有心导管室，直接 PCI 更有效、出血风险更低。何况他的出血史、近期手术和卒中史都还没有问清。",
+            "en": "No. Fibrinolysis is for when primary PCI cannot be done within 120 minutes of diagnosis (ESC 2023 ACS); with a catheter laboratory here, primary PCI is more effective and carries less bleeding risk — and his bleeding, surgical and stroke history has not even been established."
+          }
+        },
+        {
+          "id": "admit-early-invasive",
+          "text": {
+            "zh-CN": "收入 CCU，给予双联抗血小板、抗凝和抗缺血治疗，按高危非 ST 段抬高 ACS 在 24 小时内行冠状动脉造影",
+            "en": "Admit to the CCU on dual antiplatelet therapy, anticoagulation and anti-ischaemic treatment, with coronary angiography within 24 hours as for high-risk NSTE-ACS"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。24 小时内的早期侵入策略针对病情稳定的高危非 ST 段抬高 ACS。持续胸痛伴 ST 段抬高要按直接 PCI 策略处理；即便按非 ST 段抬高 ACS 理解，持续或反复胸痛伴动态 ST 段改变也属于极高危，需要 2 小时内立即侵入策略（ESC 2023 ACS）。",
+            "en": "No. An early invasive strategy within 24 hours is for stable high-risk NSTE-ACS. Ongoing pain with ST elevation calls for a primary PCI strategy, and even read as NSTE-ACS, ongoing or recurrent pain with dynamic ST changes is very high risk and needs an immediate invasive strategy within 2 hours (ESC 2023 ACS)."
+          }
+        }
+      ]
+    },
+    {
+      "id": "course-review",
+      "prompt": {
+        "zh-CN": "记录病程：2 小时后复查心电图示 V1–V3 导联 ST 段抬高、V2 导联 T 波倒置；此后 V4 导联呈 QS 型，V2–V3 与 V5–V6 导联 R 波降低，并随症状加重继续演变。cTnT 和 CK-MB 明显升高。冠状动脉 CT 报告前降支近段中重度狭窄、回旋支中段轻中度狭窄。他说胸口越来越闷，胸痛一阵阵又来。他还没有做有创造影。这些资料对下一步意味着什么？",
+        "en": "The recorded course: two hours later the ECG shows ST elevation in V1–V3 with T-wave inversion in V2; later V4 becomes QS and the R waves fall in V2–V3 and V5–V6, evolving further as his symptoms worsen. Troponin T and CK-MB are markedly raised. The coronary CT reports moderate-to-severe proximal LAD and mild-to-moderate mid-circumflex stenosis. He says the tightness is getting worse and the pain keeps coming back. He has not yet had invasive angiography. What do these findings mean for the next step?"
+      },
+      "kind": "single",
+      "requires": {
+        "all": [
+          {
+            "decided": "reperfusion"
+          },
+          {
+            "asked": "status-course"
+          },
+          {
+            "read": "ecg",
+            "phase": "course"
           },
           {
             "read": "markers",
-            "phase": "workup"
+            "phase": "course"
           },
           {
             "read": "coronary-ct",
-            "phase": "workup"
+            "phase": "course"
           }
         ]
       },
       "need": {
-        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
-        "en": "First review the relevant history and source records available in this phase."
+        "zh-CN": "先在本阶段问他现在感觉怎样，并复查心电图、调阅心肌损伤标志物和冠状动脉 CT 报告。",
+        "en": "First ask how he is now, and repeat the ECG and read the cardiac markers and the coronary CT report in this phase."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "angiography-now",
           "text": {
-            "zh-CN": "高度怀疑持续心肌缺血，RBBB 不构成放心等待的依据",
-            "en": "Strong suspicion of ongoing ischaemia; RBBB does not justify reassurance"
+            "zh-CN": "胸痛反复、ST 段抬高扩展到 V1–V3，说明前壁梗死仍在进展：立即行有创冠状动脉造影，并对罪犯血管行 PCI",
+            "en": "Recurrent pain with ST elevation now spreading to V1–V3 shows an anterior infarct still in progress: immediate invasive coronary angiography and PCI of the culprit artery"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "症状、动态 ST-T/R 波改变与标志物一致。",
-            "en": "Symptoms, evolving ST-T/R-wave changes and biomarkers are concordant."
+            "zh-CN": "正确。反复或持续胸痛加上动态 ST 段改变是 2 小时内立即侵入策略的极高危指征；缺血症状持续时，即使超过 12 小时也推荐直接 PCI 策略（ESC 2023 ACS）。记录中的急诊造影是在症状反复之后才做的，发现前降支近段次全闭塞并置入支架。",
+            "en": "Correct. Recurrent or ongoing pain with dynamic ST changes is a very-high-risk indication for an immediate invasive strategy within 2 hours, and with ongoing ischaemic symptoms a primary PCI strategy is recommended even beyond 12 hours (ESC 2023 ACS). In the record, the emergency angiogram came only after the pain recurred and found a subtotal occlusion of the proximal LAD, which was stented."
           }
         },
         {
-          "id": "alternative-1",
+          "id": "stenosis-not-occlusion",
           "text": {
-            "zh-CN": "全部归因于无害的继发复极改变",
-            "en": "Attribute everything to harmless secondary repolarisation"
+            "zh-CN": "CT 显示的是狭窄而不是闭塞：继续双联抗血小板、抗凝和硝酸酯治疗，收入病房复查肌钙蛋白，等病情平稳后再择期造影，只有胸痛用药也控制不住时才提前做冠状动脉造影",
+            "en": "The CT shows a stenosis, not an occlusion: continue dual antiplatelet therapy, anticoagulation and nitrates, admit him to repeat the troponin, and plan elective angiography once he settles, sooner only if the pain cannot be controlled"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "动态演变与进行性症状不能这样解释。",
-            "en": "Progression and dynamic changes are not safely explained that way."
+            "zh-CN": "不对。CT 的狭窄分级描述的是管腔形态，判断不了斑块是否破裂、有没有血栓正在形成；他胸痛反复、ST 段持续抬高并出现 QS 波，已属于极高危，需要立即侵入策略（ESC 2023 ACS）。等症状再发才造影，正是记录病程中的延误。",
+            "en": "No. A CT stenosis grade describes the lumen, not whether the plaque has ruptured or thrombus is forming; recurrent pain with persisting ST elevation and new QS waves is very high risk and needs an immediate invasive strategy (ESC 2023 ACS). Waiting for the pain to come back before angiography is the delay the recorded course shows."
           }
         },
         {
-          "id": "alternative-2",
+          "id": "spontaneous-reperfusion",
           "text": {
-            "zh-CN": "因为没有典型弓背抬高而排除心梗",
-            "en": "Exclude infarction without classical convex elevation"
+            "zh-CN": "V2 导联 T 波倒置说明血管已经自发再通，紧迫性已过：继续抗栓治疗，按非 ST 段抬高 ACS 在 24 小时内造影即可",
+            "en": "The T-wave inversion in V2 shows the artery has reopened by itself, so the urgency has passed: continue antithrombotic treatment and arrange angiography within 24 hours as for NSTE-ACS"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "形态不典型并不排除急性冠脉闭塞。",
-            "en": "Atypical morphology does not exclude acute coronary occlusion."
+            "zh-CN": "不对。T 波倒置可见于再灌注，但前提是胸痛消失、ST 段回落；他的 ST 段抬高扩展到 V1–V3，随后出现 QS 波，胸痛还在反复，说明梗死仍在进展。ESC 2023 ACS 对反复胸痛伴动态 ST 段改变要求 2 小时内立即侵入策略。",
+            "en": "No. T-wave inversion can follow reperfusion, but only with resolution of the pain and of the ST elevation; here the ST elevation has spread to V1–V3, QS waves have followed and the pain keeps returning — the infarct is still evolving. ESC 2023 ACS requires an immediate invasive strategy within 2 hours for recurrent pain with dynamic ST changes."
+          }
+        },
+        {
+          "id": "completed-infarct",
+          "text": {
+            "zh-CN": "V4 导联 QS 型和 R 波降低说明前壁梗死已经完成：再灌注已经没有心肌可以挽救，应收入病房以药物治疗为主，择期再评估血运重建",
+            "en": "QS in V4 and the falling R waves show the anterior infarct is complete: there is no myocardium left for reperfusion to save, so treat him medically on the ward and assess revascularisation electively"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。Q 波说明已有心肌坏死，不说明已无存活心肌；缺血症状持续或反复，提示仍有心肌处于危险之中。ESC 2023 ACS 对就诊超过 12 小时、但缺血症状持续的患者仍推荐直接 PCI 策略，Q 波本身不是放弃再灌注的理由。",
+            "en": "No. Q waves mark necrosis, not the absence of viable myocardium; ongoing or recurrent ischaemic symptoms mean muscle is still at risk. ESC 2023 ACS recommends a primary PCI strategy even beyond 12 hours when ischaemic symptoms persist, and Q waves alone are no reason to withhold it."
+          }
+        },
+        {
+          "id": "refer-cabg",
+          "text": {
+            "zh-CN": "CT 提示两支血管病变：应转心外科行冠状动脉旁路移植术，而不是对前降支做 PCI，以便一次完成全部血运重建",
+            "en": "The CT shows two-vessel disease: refer for coronary artery bypass grafting rather than PCI of the LAD, so that revascularisation is completed in one operation"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不对。急性梗死伴持续缺血时，首要任务是尽快开通罪犯血管，通常靠 PCI；回旋支只是轻中度狭窄，是否需要处理在造影时评估。只有罪犯病变不适合 PCI 或出现心源性休克等并发症时，才由心脏团队考虑急诊旁路手术（ESC 2023 ACS）。",
+            "en": "No. In an acute infarct with ongoing ischaemia the first task is to open the culprit artery quickly, usually by PCI; the circumflex lesion is only mild-to-moderate and is assessed at angiography. Emergency bypass is a Heart Team decision when the culprit lesion is unsuitable for PCI or in complications such as cardiogenic shock (ESC 2023 ACS)."
           }
         }
       ]
     },
     {
-      "id": "management",
+      "id": "discharge-plan",
       "prompt": {
-        "zh-CN": "持续胸痛时应选择什么路径？",
-        "en": "What pathway fits ongoing chest pain?"
+        "zh-CN": "急诊造影示前降支近段次全闭塞，已置入支架。1 周后心电图仍为右束支传导阻滞，V2–V4 导联呈 QS 型，V5 导联呈 rS 型（广泛梗死图形）。出院前计划应包括哪些？（多选）",
+        "en": "Emergency angiography showed a subtotal occlusion of the proximal LAD, now stented. A week later the ECG still shows RBBB, with QS complexes in V2–V4 and an rS complex in V5 (an extensive infarction pattern). What should the plan before discharge include? (Select all that apply.)"
       },
-      "kind": "single",
+      "kind": "multiple",
       "requires": {
         "all": [
           {
-            "decided": "interpretation"
+            "decided": "course-review"
           },
           {
-            "asked": "pmh"
+            "read": "angiography",
+            "phase": "cath-week"
           },
           {
-            "asked": "medications"
-          },
-          {
-            "asked": "allergies"
+            "read": "ecg",
+            "phase": "cath-week"
           }
         ]
       },
       "need": {
-        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
-        "en": "First review the relevant history and source records available in this phase."
+        "zh-CN": "先调阅心导管室记录，并复查 1 周后的心电图。",
+        "en": "First read the catheter laboratory record and the ECG a week later."
       },
       "options": [
         {
-          "id": "supported",
+          "id": "echo-lv",
           "text": {
-            "zh-CN": "立即升级心脏团队评估急诊再灌注",
-            "en": "Urgently escalate for cardiology assessment of immediate reperfusion"
+            "zh-CN": "住院期间行经胸超声心动图，评估左心室射血分数、室壁运动和有无左心室血栓",
+            "en": "Transthoracic echocardiography before discharge for LVEF, regional wall motion and LV thrombus"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "ESC 2023 将高度疑似持续缺血伴束支阻滞作为紧急处理情境。",
-            "en": "ESC 2023 treats strongly suspected ongoing ischaemia with bundle branch block as an urgent presentation."
+            "zh-CN": "应选。ESC 2023 ACS 建议所有 ACS 患者住院期间行超声心动图，评估整体和节段收缩功能、机械并发症并排除左心室血栓；广泛前壁梗死后尤其重要，射血分数还决定后续用药和猝死风险评估。",
+            "en": "Include. ESC 2023 ACS recommends echocardiography during the admission in every ACS patient to assess global and regional function, look for mechanical complications and exclude LV thrombus — all the more after an extensive anterior infarct; the LVEF also steers drug therapy and the sudden-death risk assessment."
           }
         },
         {
-          "id": "alternative-1",
+          "id": "dapt-12m",
           "text": {
-            "zh-CN": "固定等待 24 小时，不考虑病情变化",
-            "en": "Wait a fixed 24 hours regardless of deterioration"
-          },
-          "correct": false,
-          "feedback": {
-            "zh-CN": "固定延迟忽视进行性缺血。",
-            "en": "A fixed delay ignores progressive ischaemia."
-          }
-        },
-        {
-          "id": "alternative-2",
-          "text": {
-            "zh-CN": "先完成非急诊检查再联系介入团队",
-            "en": "Complete non-urgent tests before contacting the interventional team"
-          },
-          "correct": false,
-          "feedback": {
-            "zh-CN": "不应让非必要检查延误急诊评估。",
-            "en": "Non-essential tests should not delay urgent assessment."
-          }
-        }
-      ]
-    },
-    {
-      "id": "safety",
-      "prompt": {
-        "zh-CN": "哪些结论必须保留不确定性？",
-        "en": "Which conclusion requires caution?"
-      },
-      "kind": "single",
-      "requires": {
-        "all": [
-          {
-            "decided": "management"
-          },
-          {
-            "read": "outcome",
-            "phase": "followup"
-          },
-          {
-            "asked": "pmh"
-          },
-          {
-            "asked": "medications"
-          },
-          {
-            "asked": "allergies"
-          }
-        ]
-      },
-      "need": {
-        "zh-CN": "请先核对相应病史和这一阶段的原始记录。",
-        "en": "First review the relevant history and source records available in this phase."
-      },
-      "options": [
-        {
-          "id": "supported",
-          "text": {
-            "zh-CN": "RBBB 是否新发及确切梗死范围尚不能由现有资料确定",
-            "en": "Whether RBBB was new and the exact infarct extent remain uncertain"
+            "zh-CN": "双联抗血小板 12 个月：阿司匹林 75–100 mg 每日一次，加替格瑞洛 90 mg 每日两次或普拉格雷 10 mg 每日一次（无高出血风险时）",
+            "en": "Dual antiplatelet therapy for 12 months: aspirin 75–100 mg daily plus ticagrelor 90 mg twice daily or prasugrel 10 mg daily, unless bleeding risk is high"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "原文缺乏基线心电图和定量梗死范围。",
-            "en": "Baseline ECG and quantified infarct extent are absent."
+            "zh-CN": "应选。ESC 2023 ACS 对无高出血风险的 ACS 患者默认 12 个月双联抗血小板，P2Y12 抑制剂首选普拉格雷或替格瑞洛；出血风险高时缩短疗程或降阶。本病例没有记录他实际的出院用药。",
+            "en": "Include. ESC 2023 ACS makes 12 months of dual antiplatelet therapy with prasugrel or ticagrelor the default for ACS patients without high bleeding risk, shortening or de-escalating when bleeding risk is high. The case does not record his actual discharge medicines."
           }
         },
         {
-          "id": "alternative-1",
+          "id": "statin-ldl",
           "text": {
-            "zh-CN": "既然 RBBB 就一定新发",
-            "en": "RBBB is necessarily new"
+            "zh-CN": "尽早开始高强度他汀，目标 LDL-C < 1.4 mmol/L 且较基线下降 ≥ 50%，未达标时加用依折麦布",
+            "en": "A high-intensity statin started early, aiming for LDL-C below 1.4 mmol/L and at least a 50 % fall from baseline, adding ezetimibe if the target is missed"
           },
-          "correct": false,
+          "correct": true,
           "feedback": {
-            "zh-CN": "未提供既往记录。",
-            "en": "No earlier tracing is supplied."
+            "zh-CN": "应选。ESC 2023 ACS 建议所有 ACS 患者尽早开始高强度他汀，目标 LDL-C < 1.4 mmol/L 且较基线下降 ≥ 50%，未达标时加用依折麦布，必要时再加 PCSK9 抑制剂。中国血脂管理指南（2023 年）按危险分层定目标：ASCVD 极高危者 LDL-C < 1.8 mmol/L，超高危者 < 1.4 mmol/L，均要求较基线降幅超过 50%；他的危险因素没有记录，无法判断属于哪一层。他的血脂也没有记录，但这不影响启动治疗。",
+            "en": "Include. ESC 2023 ACS recommends a high-intensity statin as early as possible in every ACS patient, aiming for LDL-C below 1.4 mmol/L and at least a 50 % fall from baseline, adding ezetimibe and then a PCSK9 inhibitor if needed. The Chinese lipid guideline (2023) sets targets by risk tier — LDL-C below 1.8 mmol/L for very-high-risk and below 1.4 mmol/L for ultra-high-risk ASCVD, each with a fall of more than 50 % — and his tier cannot be set because his risk factors are not recorded. His lipids are not recorded either, which does not delay starting treatment."
           }
         },
         {
-          "id": "alternative-2",
+          "id": "pacemaker-rbbb",
           "text": {
-            "zh-CN": "推迟处理已经被证明造成全部损伤",
-            "en": "Delay is proven to have caused all injury"
+            "zh-CN": "植入永久起搏器：梗死后 1 周 RBBB 仍然存在，提示传导系统受损，日后可能进展为完全性房室传导阻滞",
+            "en": "A permanent pacemaker, because RBBB persisting a week after the infarct shows conduction-system damage that may progress to complete heart block"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "单例回顾不能量化反事实损伤。",
-            "en": "A retrospective case cannot quantify counterfactual injury."
+            "zh-CN": "不应选。单纯的束支阻滞（不伴高度房室传导阻滞或不明原因晕厥）不是永久起搏指征（ESC 2021 心脏起搏指南）；本病例 1 周心电图只记录了 RBBB 和梗死图形，没有记录房室传导阻滞。梗死后的传导异常应继续观察和复查。",
+            "en": "Exclude. Isolated bundle branch block without high-degree AV block or unexplained syncope is not an indication for permanent pacing (ESC 2021 cardiac pacing guideline); the one-week ECG here records RBBB and the infarction pattern, not AV block. Conduction after the infarct is watched and re-checked."
+          }
+        },
+        {
+          "id": "icd-before-discharge",
+          "text": {
+            "zh-CN": "出院前植入 ICD 作一级预防：广泛前壁梗死后心脏性猝死风险高，不必等待复查射血分数",
+            "en": "An ICD for primary prevention before discharge: sudden death is common after an extensive anterior infarct, so there is no need to wait for a repeat ejection fraction"
+          },
+          "correct": false,
+          "feedback": {
+            "zh-CN": "不应选。梗死后最初几周内常规植入 ICD 作一级预防没有降低总死亡率（DINAMIT、IRIS 试验）；ESC 2022 室性心律失常指南建议射血分数降低者在梗死后 6–12 周复查，再决定是否植入。他的射血分数还没有测量。",
+            "en": "Exclude. Routine primary-prevention ICD implantation in the first weeks after an infarct has not reduced overall mortality (the DINAMIT and IRIS trials); ESC 2022 ventricular arrhythmia guidance re-assesses a reduced LVEF 6–12 weeks after the infarct before deciding. His LVEF has not even been measured."
           }
         }
       ]
@@ -1267,224 +3108,453 @@
   ],
   "rubric": [
     {
-      "id": "history-0",
+      "id": "rb-pain-history",
       "domain": "history",
       "text": {
-        "zh-CN": "问清主要不适",
-        "en": "Clarify the presenting problem"
-      },
-      "weight": 1,
-      "met": {
-        "asked": "presentation"
-      }
-    },
-    {
-      "id": "history-1",
-      "domain": "history",
-      "text": {
-        "zh-CN": "问清起病时间",
-        "en": "Clarify onset"
-      },
-      "weight": 1,
-      "met": {
-        "asked": "onset"
-      }
-    },
-    {
-      "id": "history-2",
-      "domain": "history",
-      "text": {
-        "zh-CN": "询问病情演变",
-        "en": "Clarify progression"
-      },
-      "weight": 1,
-      "met": {
-        "asked": "progression"
-      }
-    },
-    {
-      "id": "history-3",
-      "domain": "history",
-      "text": {
-        "zh-CN": "询问伴随症状",
-        "en": "Clarify associated symptoms"
-      },
-      "weight": 1,
-      "met": {
-        "asked": "associated"
-      }
-    },
-    {
-      "id": "records",
-      "domain": "investigations",
-      "text": {
-        "zh-CN": "调阅关键记录后再决策",
-        "en": "Review key records before deciding"
+        "zh-CN": "问清胸痛何时开始、到院时仍在痛，以及伴随的胸闷",
+        "en": "Established when the pain began, that it was still present on arrival and that it came with chest tightness"
       },
       "weight": 2,
       "met": {
         "all": [
           {
-            "read": "ecg-first",
-            "phase": "workup"
+            "asked": "presenting"
           },
           {
-            "read": "ecg-serial",
-            "phase": "workup"
+            "asked": "onset"
           },
           {
-            "read": "markers",
-            "phase": "workup"
+            "asked": "pain-now"
           },
           {
-            "read": "coronary-ct",
-            "phase": "workup"
+            "asked": "tightness"
           }
         ]
       }
     },
     {
-      "id": "diagnosis",
-      "domain": "diagnosis",
+      "id": "rb-risk-screen",
+      "domain": "history",
       "text": {
-        "zh-CN": "选择证据最支持的解释",
-        "en": "Choose the interpretation best supported by the evidence"
+        "zh-CN": "抗栓治疗前询问既往心脏病或心电图异常、出血/手术/卒中史、药物过敏和长期用药",
+        "en": "Before antithrombotic treatment, asked about previous heart disease or ECG abnormality, bleeding, surgery or stroke, drug allergies and regular medicines"
       },
-      "weight": 3,
+      "weight": 1,
       "met": {
-        "decidedFirstTry": "interpretation"
+        "all": [
+          {
+            "asked": "heart-history"
+          },
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "allergies"
+          },
+          {
+            "asked": "medications"
+          }
+        ]
       }
     },
     {
-      "id": "safety",
-      "domain": "safety",
+      "id": "rb-arrival-ecg",
+      "domain": "investigations",
       "text": {
-        "zh-CN": "不因束支阻滞或非典型 ST 形态延误紧急缺血评估",
-        "en": "Do not delay urgent ischaemia assessment because of bundle branch block or atypical ST shape"
+        "zh-CN": "到院即记录并阅读 12 导联心电图，并查找可对比的既往心电图",
+        "en": "Recorded and read a 12-lead ECG on arrival and looked for an earlier tracing to compare"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "ecg",
+            "phase": "arrival"
+          },
+          {
+            "read": "old-ecg"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-ecg-reading",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即识别 RBBB 背景下 V2–V3 导联的原发性 ST–T 改变",
+        "en": "Identified the primary ST–T change in V2–V3 despite the RBBB, at the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "ecg-reading"
+      }
+    },
+    {
+      "id": "rb-reperfusion",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即选择直接 PCI 策略，并实际启动了心导管室",
+        "en": "Chose a primary PCI strategy at the first attempt and actually activated the catheter laboratory"
       },
       "weight": 4,
       "critical": true,
       "met": {
-        "decidedFirstTry": "safety"
+        "all": [
+          {
+            "decidedFirstTry": "reperfusion"
+          },
+          {
+            "intervened": "activate-cath-lab"
+          }
+        ]
       }
     },
     {
-      "id": "outcome",
+      "id": "rb-immediate-care",
       "domain": "management",
       "text": {
-        "zh-CN": "核对原报告结局并保留未知",
-        "en": "Review the reported outcome without filling gaps"
+        "zh-CN": "给予持续心电监护与除颤准备、阿司匹林负荷和 PCI 用普通肝素",
+        "en": "Gave continuous ECG monitoring with a defibrillator ready, an aspirin loading dose and unfractionated heparin for PCI"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "intervened": "cardiac-monitoring"
+          },
+          {
+            "intervened": "aspirin"
+          },
+          {
+            "intervened": "ufh"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-no-delay",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "没有用冠状动脉 CT、收住院择期造影或溶栓代替立即造影",
+        "en": "Did not replace immediate angiography with a coronary CT, admission for later angiography or fibrinolysis"
+      },
+      "weight": 3,
+      "critical": true,
+      "met": {
+        "not": {
+          "any": [
+            {
+              "intervened": "ct-first"
+            },
+            {
+              "intervened": "defer-angiography"
+            },
+            {
+              "intervened": "fibrinolysis"
+            }
+          ]
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "reperfusion"
+          },
+          {
+            "intervened": "activate-cath-lab"
+          },
+          {
+            "intervened": "ct-first"
+          },
+          {
+            "intervened": "defer-angiography"
+          },
+          {
+            "intervened": "fibrinolysis"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-course-records",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "在记录病程中复查心电图，并调阅心肌损伤标志物和冠状动脉 CT 报告",
+        "en": "In the recorded course, repeated the ECG and read the cardiac markers and the coronary CT report"
       },
       "weight": 1,
       "met": {
-        "read": "outcome",
-        "phase": "followup"
+        "all": [
+          {
+            "read": "ecg",
+            "phase": "course"
+          },
+          {
+            "read": "markers",
+            "phase": "course"
+          },
+          {
+            "read": "coronary-ct",
+            "phase": "course"
+          }
+        ]
       }
     },
     {
-      "id": "safe-plan",
-      "domain": "management",
+      "id": "rb-course-decision",
+      "domain": "diagnosis",
       "text": {
-        "zh-CN": "首次选择符合证据的处理路径",
-        "en": "Choose an evidence-consistent plan on the first attempt"
+        "zh-CN": "首次作答即判断进展中的前壁梗死需要立即造影，没有被 CT 狭窄分级、T 波倒置或 QS 波误导",
+        "en": "Recognised at the first attempt that the evolving anterior infarct needed immediate angiography, unswayed by the CT grade, the T-wave inversion or the QS complexes"
       },
       "weight": 3,
       "met": {
-        "decidedFirstTry": "management"
+        "decidedFirstTry": "course-review"
       }
     },
     {
-      "id": "communication",
+      "id": "rb-discharge",
+      "domain": "management",
+      "text": {
+        "zh-CN": "首次作答即制订出院前计划，并申请超声心动图、安排二级预防",
+        "en": "Set the pre-discharge plan correctly at the first attempt, requested echocardiography and arranged secondary prevention"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "decidedFirstTry": "discharge-plan"
+          },
+          {
+            "ordered": "echo",
+            "phase": "cath-week"
+          },
+          {
+            "intervened": "discharge-prevention"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-no-pacing",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "没有因单纯持续的 RBBB 转介植入起搏器",
+        "en": "Did not refer him for a pacemaker for isolated persisting RBBB"
+      },
+      "weight": 1,
+      "met": {
+        "not": {
+          "intervened": "pacing-referral"
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "attempted": "discharge-plan"
+          },
+          {
+            "intervened": "pacing-referral"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-communication",
       "domain": "communication",
       "text": {
-        "zh-CN": "解释证据与不确定性，核对患者或陪同者理解",
-        "en": "Explain evidence and uncertainty and check patient or companion understanding"
+        "zh-CN": "向他解释病情、紧急造影的理由与风险，并取得同意",
+        "en": "Explained the problem, the reason for urgent angiography and its risks to him, and obtained his consent"
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "以通俗语言说明主要判断、下一步及至少一项具体未知，询问理解和顾虑；不得声称未载明的疗效或预后。",
-        "en": "Use plain language for the interpretation, next step and at least one case-specific uncertainty; check understanding and concerns, without asserting undocumented benefit or prognosis."
+        "zh-CN": "良好表现（Calgary–Cambridge：开始接诊、解释与计划、结束）：自我介绍，先了解他对自己为什么来医院的理解；用通俗的话说明心电图提示心脏的一根血管很可能堵了——“束支传导阻滞”这种传导图形只是让心电图看起来不典型——最快的办法是立即做冠状动脉造影，多半需要放支架；说明抗血小板和抗凝药的作用与出血风险，并取得造影的知情同意；坦诚回应他“是不是心脏出了问题”的担心，不作虚假保证，也不承诺病例没有记录的结局；确认他听懂了，留出提问时间，告诉他接下来会发生什么。之后能解释为什么持续的束支阻滞本身不需要起搏器，以及超声心动图、12 个月的药物和心脏康复为什么重要。不编造病例中没有的检查结果。",
+        "en": "Good performance (Calgary–Cambridge: initiating, explaining and planning, closing): introduces themselves and first finds out what he understands about why he is here; explains in plain words that the heart tracing suggests one of the heart's arteries is blocked — a wiring pattern called bundle branch block only makes the tracing look unusual — and that the fastest fix is an angiogram now, usually with a stent; explains the blood-thinning medicines and their bleeding risk and obtains consent for the procedure; answers his worry that it is his heart honestly, without false reassurance or promises about an outcome the case does not record; checks understanding, leaves room for questions and says what happens next. Later explains why the persisting bundle branch block does not by itself need a pacemaker and why the echo, the 12 months of tablets and rehabilitation matter. Invents no result the case does not record."
       }
     }
   ],
   "npcs": [
     {
-      "role": "attending",
+      "role": "nurse",
+      "name": {
+        "zh-CN": "芮护士",
+        "en": "Nurse Rui"
+      },
       "knowledge": {
-        "zh-CN": "先区分病史、检查和推论；指出不确定性。后续经过须在完成当前决策后查阅。",
-        "en": "Distinguish history, findings and inference, and state uncertainty. The subsequent course is reviewed after completing the current decisions."
+        "zh-CN": "到院交班（ISBAR）：68岁男性，胸痛 5 小时仍未缓解，刚到急诊抢救区。抢救区床旁有监护除颤仪、心电图机、抢救车（留置针、常用急救药）和氧气；心导管室和介入医生可一键电话呼叫。病房有自己的心电图机、床旁监护仪、除颤仪和抢救车，护士站有病历终端；超声心动图机要从影像科推来。复述医嘱并完成护理范围内的操作；只报告已经出来的结果，不解读、不诊断。被问到生命体征、既往史或用药时，如实说没有可报的记录，绝不报出数字。",
+        "en": "Handover on arrival (ISBAR): a 68-year-old man with five hours of chest pain that has not eased, just arrived in the ED resus area. In resus, at the bedside: a monitor-defibrillator, the ECG machine, the crash cart (cannulas, emergency drugs) and oxygen; the catheter laboratory and the interventional cardiologist are reached with a single call. The ward has its own ECG machine, bedside monitors, defibrillator and crash cart, with a records terminal at the nurses' station; the echo machine has to be brought from imaging. Reads orders back and carries out nursing-scope tasks; reports only results that are back, never interprets or diagnoses. Asked for vital signs, past history or medicines, says plainly there is nothing recorded to report — never gives a number."
+      },
+      "interprets": [],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "attending",
+      "name": {
+        "zh-CN": "邝医生（急诊科主治医师）",
+        "en": "Dr Kuang (emergency medicine attending)"
+      },
+      "knowledge": {
+        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“RBBB 本身会让 V1–V3 导联的 ST 段和 T 波朝哪个方向？”“ST 段不呈弓背向上，就能排除冠脉闭塞吗？”“没有旧心电图、还没有肌钙蛋白，你需要等吗？”“为什么这里不选溶栓？”“CT 报告的‘狭窄’能说明斑块此刻是否稳定吗？”“出现 QS 波以后还有心肌可救吗？”“大面积前壁梗死后，出院前还缺什么？”。可以讲解 ESC 2023 ACS、第四版心肌梗死通用定义（2018）和中国 STEMI 指南（2019）的相关原则；学员读到相应记录之后，可以指出记录病程（多次复查心电图、病历中有一份冠状动脉 CT、症状反复后才急诊造影）与现行做法的差别。不提前说出诊断或任何决策的正确选项；不补充病例中没有的资料（生命体征、查体、ST 段抬高幅度、标志物数值、各次心电图和冠状动脉 CT 的准确时间、超声心动图和远期结局都没有记录）。",
+        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “Which way does RBBB itself push the ST segment and T wave in V1–V3?”, “Does a non-convex ST segment exclude an occluded artery?”, “No old ECG and no troponin yet — do you need to wait?”, “Why not fibrinolysis here?”, “Can a CT report of ‘stenosis’ tell you whether the plaque is stable right now?”, “Once QS waves appear, is anything left to save?”, “After a large anterior infarct, what is still missing before discharge?”. May explain the relevant principles of ESC 2023 ACS, the Fourth Universal Definition of MI (2018) and the Chinese STEMI guideline (2019), and — once the learner has read the records — contrast the recorded course (repeated ECGs, a coronary CT in his record, emergency angiography only after the pain recurred) with current practice. Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (vital signs, examination, ST amplitudes, marker values, the exact times of the tracings and of the CT, echocardiography and the long-term outcome are not recorded)."
       },
       "interprets": [
-        "ecg-first",
-        "ecg-serial",
+        "ecg",
+        "old-ecg",
         "markers",
         "coronary-ct",
-        "outcome"
+        "angiography"
+      ],
+      "revealsDiagnosis": false
+    },
+    {
+      "role": "consultant",
+      "name": {
+        "zh-CN": "靳医生（心内科介入医师）",
+        "en": "Dr Jin (interventional cardiologist)"
+      },
+      "knowledge": {
+        "zh-CN": "介入心内科医生，接到导管室呼叫后参与。只解读学员已经读过的心电图、冠状动脉 CT 和心导管室记录：解释 RBBB 背景下原发与继发 ST–T 改变的区别、前壁导联与前降支近段的对应关系、为什么 CT 的狭窄分级不能代替有创造影、罪犯病变 PCI 后非罪犯血管的评估，以及 PCI 后的双联抗血小板。不报告学员尚未读到的结果；不编造 TIMI 血流、支架类型、回旋支的造影所见、术中所见或并发症（都没有记录）。",
+        "en": "Interventional cardiologist who joins once the catheter laboratory is called. Interprets only the ECGs, coronary CT and catheter laboratory record the learner has read: primary versus secondary ST–T change in RBBB, how the anterior leads map to the proximal LAD, why a CT stenosis grade cannot stand in for invasive angiography, how non-culprit vessels are assessed after culprit PCI, and dual antiplatelet therapy after PCI. Never reports a result the learner has not read, and never invents TIMI flow, stent type, circumflex findings at angiography, procedural findings or complications (none is recorded)."
+      },
+      "interprets": [
+        "ecg",
+        "coronary-ct",
+        "angiography"
       ],
       "revealsDiagnosis": false
     }
   ],
   "debrief": {
     "title": {
-      "zh-CN": "证据与安全复盘",
-      "en": "Evidence and safety debrief"
+      "zh-CN": "复盘：右束支传导阻滞背景下的胸痛心电图与再灌注时机",
+      "en": "Debrief: chest-pain ECGs in right bundle branch block and the timing of reperfusion"
     },
     "conclusion": {
-      "zh-CN": "持续缺血伴 RBBB 和动态心电图改变，后续证实前降支近段严重闭塞。",
-      "en": "Ongoing ischaemia with RBBB and evolving ECG changes preceded confirmation of severe proximal LAD obstruction."
+      "zh-CN": "68岁男性，胸痛 5 小时仍未缓解，伴胸闷。首份心电图为右束支传导阻滞，V2–V3 导联 ST 段抬高（非弓背向上）伴直立 T 波——阻滞解释不了的原发性改变——V4–V6 导联呈 Rs 型。记录病程中多次复查心电图：2 小时后 V1–V3 导联 ST 段抬高、V2 导联 T 波倒置，此后 V4 导联呈 QS 型，V2–V3 与 V5–V6 导联 R 波降低；cTnT 和 CK-MB 明显升高；冠状动脉 CT 报告前降支近段中重度狭窄。胸痛反复后急诊造影见前降支近段次全闭塞，置入支架；1 周后心电图仍为 RBBB，V2–V4 导联呈 QS 型，为广泛梗死图形。诊断：前降支近段罪犯病变所致、表现为 RBBB 背景下 ST 段抬高的急性前壁心肌梗死。按现行指南（ESC 2023 ACS），应在首份心电图后立即造影行直接 PCI，而不是先做 CT、等待肌钙蛋白或等症状再发。1 周以后的情况没有记录。",
+      "en": "A 68-year-old man presented with five hours of unrelieved chest pain and chest tightness. His first ECG showed RBBB with non-convex ST elevation and upright T waves in V2–V3 — a primary change the block cannot explain — and Rs complexes in V4–V6. In the recorded course the ECG was repeated: at 2 hours, ST elevation in V1–V3 with T-wave inversion in V2; later QS in V4 and falling R waves in V2–V3 and V5–V6. Troponin T and CK-MB were markedly raised; a coronary CT reported moderate-to-severe proximal LAD stenosis. After the pain recurred, emergency angiography found a subtotal proximal LAD occlusion, which was stented; a week later the ECG still showed RBBB with QS in V2–V4, an extensive infarction pattern. Diagnosis: acute anterior myocardial infarction from a proximal LAD culprit, presenting as ST elevation in RBBB. Today's answer (ESC 2023 ACS): immediate angiography and primary PCI on the first tracing — not a CT, a troponin wait or a recurrence. Nothing later is recorded."
     },
     "keyReasoning": [
       {
-        "zh-CN": "连续心电图应与症状变化一起解释。",
-        "en": "Interpret serial ECGs with symptom evolution."
+        "zh-CN": "68岁男性胸痛 5 小时仍未缓解，首先要排除急性冠脉闭塞；第一项检查是几分钟内完成的心电图。",
+        "en": "Five hours of unrelieved chest pain in a 68-year-old man puts acute coronary occlusion first; the first test is an ECG within minutes."
       },
       {
-        "zh-CN": "高度疑似持续缺血合并 RBBB 需紧急评估（ESC 2023）。",
-        "en": "Strongly suspected ongoing ischaemia with RBBB needs urgent assessment (ESC 2023)."
+        "zh-CN": "RBBB 预期的是 V1–V3 导联 ST 段压低、T 波倒置；V2–V3 导联 ST 段抬高伴直立 T 波与阻滞自身的图形相反，因此提示原发性损伤。",
+        "en": "RBBB predicts ST depression and inverted T waves in V1–V3; ST elevation with upright T waves in V2–V3 contradicts the block's own pattern and so signals primary injury."
       },
       {
-        "zh-CN": "单例不能证明延迟与全部损伤的定量因果。",
-        "en": "One case cannot quantify how much injury was caused by delay."
+        "zh-CN": "胸痛仍在时，这一图形就足以决定立即造影：没有旧心电图、肌钙蛋白未出、ST 段不呈弓背向上，都不改变决定。",
+        "en": "With the pain still present, that pattern is enough for immediate angiography: the missing old tracing, the pending troponin and the non-convex shape change nothing in the decision."
+      },
+      {
+        "zh-CN": "之后的心电图（ST 段抬高扩展到 V1–V3、V2 导联 T 波倒置、V4 导联 QS 型、V2–V3 与 V5–V6 导联 R 波降低）和明显升高的标志物证实前壁梗死在进展；CT 的狭窄分级不能把它降级。",
+        "en": "The later tracings (ST elevation spreading to V1–V3, T inversion in V2, QS in V4, falling R waves in V2–V3 and V5–V6) and markedly raised markers confirm an evolving anterior infarct; a CT stenosis grade does not downgrade it."
+      },
+      {
+        "zh-CN": "前降支近段罪犯病变置入支架后，梗死范围（V2–V4 导联 QS 型）把重点转向左心室功能、二级预防和心律失常风险评估的时机，而不是为束支阻滞植入起搏器。",
+        "en": "Once the proximal LAD culprit is stented, the size of the infarct (QS in V2–V4) turns attention to LV function, secondary prevention and the timing of rhythm-risk assessment — not to pacing for the bundle branch block."
       }
     ],
     "boundaries": {
-      "zh-CN": "单例回顾不能证明因果或比较疗效。数字仅为原报告时点记录，不是实时监测；没有参考区间的数据不自行补区间。",
-      "en": "A single retrospective report cannot establish causality or comparative efficacy. Numbers are source time-point records, not live monitoring; missing reference intervals are not invented."
+      "zh-CN": "这是单篇病例报告，本版依据 1.0.0 版提取的事实改写，尚未对照原文全文核对。它不能说明延误造成了多少心肌损失，也不能证明更早造影会改变结局。病例没有记录生命体征、查体、ST 段抬高幅度、标志物数值、各次心电图的准确时间、超声心动图和 1 周以后的情况；决策、处置选项和评分是教学设计，不改变记录的病程。",
+      "en": "A single case report, re-authored here from the facts extracted for version 1.0.0 and not yet checked against the full article. It cannot show how much myocardium the delay cost, or that earlier angiography would have changed the result. No vital signs, examination, ST amplitudes, marker values, exact ECG times, echocardiogram or follow-up beyond one week are recorded; the decisions, intervention options and scoring are teaching design and do not change the recorded course."
     },
     "unknowns": [
       {
-        "zh-CN": "生命体征、既往心电图、标志物数值及长期结局未载。",
-        "en": "Vital signs, baseline ECG, numerical biomarkers and long-term outcome are absent."
+        "zh-CN": "各阶段的生命体征和查体结果。",
+        "en": "Vital signs and examination findings at any point."
+      },
+      {
+        "zh-CN": "心电图的测量值（心率、节律、QRS 时限、各导联 ST 段抬高幅度）、首份及之后各次心电图的准确时间，以及有没有可对比的既往心电图（RBBB 是否新发）。",
+        "en": "ECG measurements (rate, rhythm, QRS duration, ST amplitude in each lead), the exact times of the first and the later tracings, and whether an earlier ECG existed (whether the RBBB was new)."
+      },
+      {
+        "zh-CN": "cTnT 和 CK-MB 的数值、单位、参考区间和采血时间。",
+        "en": "Troponin T and CK-MB values, units, reference ranges and sampling times."
+      },
+      {
+        "zh-CN": "冠状动脉 CT 是什么时候做的（是否在本次住院期间，与各次心电图和症状反复的先后），以及从到院到急诊造影隔了多久。",
+        "en": "When the coronary CT was done (whether during this admission, and relative to the tracings and to the recurrence of pain), and how long passed from arrival to the emergency angiogram."
+      },
+      {
+        "zh-CN": "造影和介入细节：TIMI 血流、支架类型和数量、回旋支病变的造影所见、术中及术前用药与剂量、并发症。",
+        "en": "Angiographic and procedural detail: TIMI flow, stent type and number, the circumflex lesion at angiography, the drugs and doses given before and during PCI, and complications."
+      },
+      {
+        "zh-CN": "既往史、危险因素（高血压、糖尿病、血脂、吸烟、家族史）、长期用药、过敏史和出血史。",
+        "en": "Past history, risk factors (hypertension, diabetes, lipids, smoking, family history), regular medicines, allergies and bleeding history."
+      },
+      {
+        "zh-CN": "左心室功能（超声心动图）、住院期间并发症、出院用药、随访和远期结局。",
+        "en": "Left-ventricular function (echocardiography), in-hospital complications, discharge medicines, follow-up and the long-term outcome."
       }
     ],
     "teachingPoints": [
       {
-        "zh-CN": "连续心电图应与症状变化一起解释。",
-        "en": "Interpret serial ECGs with symptom evolution."
+        "zh-CN": "RBBB 时照样读 ST 段。阻滞本身的复极方向与终末 R′ 相反——V1–V3 导联 ST 段压低、T 波倒置——所以这些导联出现 ST 段抬高伴直立 T 波就是原发性损伤图形，与 ST 段形态无关；早期前壁梗死的 ST 段常呈直线或凹面向上。第四版心肌梗死通用定义（ESC/ACC/AHA/WHF 2018）把 RBBB 患者新出现的 ST 段抬高或 Q 波视为缺血或梗死的线索。记录与现行做法：记录中的团队用数小时反复复查心电图；按现行做法，持续胸痛加上首份心电图已足以行动。",
+        "en": "Read the ST segment in RBBB. The block's own repolarisation runs against the terminal R′ — ST depression and T-wave inversion in V1–V3 — so ST elevation with upright T waves there is a primary injury pattern whatever its shape; early anterior infarction often has straight or concave ST elevation. The Fourth Universal Definition of MI (ESC/ACC/AHA/WHF 2018) treats new ST elevation or Q waves in RBBB as signs of ischaemia or infarction. Then and now: the recorded team repeated the ECG over hours; today ongoing pain plus the first tracing is enough to act."
       },
       {
-        "zh-CN": "高度疑似持续缺血合并 RBBB 需紧急评估（ESC 2023）。",
-        "en": "Strongly suspected ongoing ischaemia with RBBB needs urgent assessment (ESC 2023)."
+        "zh-CN": "按首份心电图行动。ESC 2023 ACS：首次医疗接触后 10 分钟内完成心电图；立即持续心电监护并具备除颤条件；持续缺血症状合并束支阻滞按直接 PCI 策略处理，能在诊断后 120 分钟内完成 PCI 时优于溶栓；阿司匹林 150–300 mg 口服负荷，PCI 时普通肝素 70–100 U/kg。肌钙蛋白、旧心电图和 CT 都不是启动的前提。中国 STEMI 指南（2019）同样要求 10 分钟内完成心电图并给予阿司匹林负荷。",
+        "en": "Act on the first ECG. ESC 2023 ACS: an ECG within 10 minutes of first medical contact; continuous ECG monitoring with a defibrillator at once; a primary PCI strategy for ongoing ischaemic symptoms with bundle branch block, preferred to fibrinolysis whenever PCI can be done within 120 minutes of diagnosis; aspirin 150–300 mg orally and unfractionated heparin 70–100 U/kg at PCI. Troponin, an old ECG and a CT do not gate the decision. The Chinese STEMI guideline (2019) sets the same 10-minute ECG and aspirin loading."
       },
       {
-        "zh-CN": "单例不能证明延迟与全部损伤的定量因果。",
-        "en": "One case cannot quantify how much injury was caused by delay."
+        "zh-CN": "反复胸痛伴动态 ST 段改变属于极高危：即使把心电图理解为非 ST 段抬高 ACS，ESC 2023 ACS 也要求 2 小时内立即侵入策略。冠状动脉 CT 血管成像属于谱系的另一端——肌钙蛋白和心电图正常或不确定、胸痛不再发作的疑似 ACS（ESC 2023 ACS）。记录与现行做法：这位患者的病历中有一份冠状动脉 CT（前降支近段“中重度”狭窄，做 CT 的时间没有记录），他在胸痛反复后才进导管室，造影见同一节段次全闭塞。",
+        "en": "Recurrent pain with dynamic ST changes is very high risk: even if the tracing is read as NSTE-ACS, ESC 2023 ACS calls for an immediate invasive strategy within 2 hours. CT coronary angiography belongs at the other end of the spectrum — suspected ACS with normal or inconclusive troponin and ECG and no recurrent pain (ESC 2023 ACS). Then and now: this patient's record holds a coronary CT ('moderate-to-severe' proximal LAD stenosis; when it was done is not recorded), and he reached the catheter laboratory only after the pain recurred; the angiogram showed a subtotal occlusion of that same segment."
+      },
+      {
+        "zh-CN": "演变不等于缓解。ST 段抬高扩展到 V1、ST 段仍抬高时出现的 T 波倒置、V4 导联新的 QS 型和 R 波降低，提示梗死在进展，而不是自发再通；Q 波代表已有坏死，不代表已无可挽救的心肌。ESC 2023 ACS 对缺血症状持续或反复的患者，即使超过 12 小时也推荐直接 PCI 策略。",
+        "en": "Evolution is not resolution. ST elevation spreading to V1, T-wave inversion while the ST segment stays raised, a new QS complex in V4 and falling R waves mark an infarct in progress, not spontaneous reperfusion; Q waves mark necrosis, not the absence of salvageable muscle. ESC 2023 ACS recommends a primary PCI strategy even beyond 12 hours whenever ischaemic symptoms persist or recur."
+      },
+      {
+        "zh-CN": "大面积前壁梗死伴持续 RBBB 之后：住院期间行超声心动图评估射血分数、室壁运动和左心室血栓；阿司匹林 75–100 mg 加替格瑞洛 90 mg 每日两次或普拉格雷 10 mg 每日一次，共 12 个月（出血风险高时调整）；高强度他汀，LDL-C < 1.4 mmol/L 且下降 ≥ 50%；心脏康复（ESC 2023 ACS）。中国血脂管理指南（2023 年）按危险分层定目标——极高危 < 1.8 mmol/L，超高危 < 1.4 mmol/L——他的危险因素没有记录，无法分层。单纯 RBBB 不伴房室传导阻滞或晕厥不是起搏指征（ESC 2021 起搏指南）；一级预防 ICD 要等梗死后 6–12 周复查射血分数再定（ESC 2022 室性心律失常指南）。",
+        "en": "After a large anterior infarct with persisting RBBB: echocardiography during the admission for LVEF, wall motion and LV thrombus; aspirin 75–100 mg plus ticagrelor 90 mg twice daily or prasugrel 10 mg daily for 12 months, adjusted if bleeding risk is high; a high-intensity statin to LDL-C below 1.4 mmol/L with a fall of at least 50 %; cardiac rehabilitation (ESC 2023 ACS). The Chinese lipid guideline (2023) sets its targets by risk tier — below 1.8 mmol/L for very high risk, below 1.4 mmol/L for ultra-high risk — and his tier cannot be set because his risk factors are not recorded. Isolated RBBB without AV block or syncope is not a pacing indication (ESC 2021 pacing), and a primary-prevention ICD waits for LVEF re-assessment 6–12 weeks after the infarct (ESC 2022 ventricular arrhythmias)."
       }
     ],
     "references": [
-      "劉書雷,  柯于梵,  劉紅. 右束支傳導阻滯影響急性心肌梗死心電圖判讀. 鏡湖醫學. 2025;25(02):58-59. doi:10.12408/j.issn2223-4462.2025.02.020",
-      "https://rs.yiigle.com/cmaid/1653411",
-      "ESC. Guidelines for the management of acute coronary syndromes. 2023. https://academic.oup.com/eurheartj/article/44/38/3720/7243210"
+      "劉書雷, 柯于梵, 劉紅. 右束支傳導阻滯影響急性心肌梗死心電圖判讀. 鏡湖醫學. 2025;25(2):58-59. doi:10.12408/j.issn2223-4462.2025.02.020. Available from: https://rs.yiigle.com/cmaid/1653411",
+      "Byrne RA, Rossello X, Coughlan JJ, et al. 2023 ESC Guidelines for the management of acute coronary syndromes. Eur Heart J. 2023;44(38):3720-3826. doi:10.1093/eurheartj/ehad191",
+      "Rao SV, O'Donoghue ML, Ruel M, et al. 2025 ACC/AHA/ACEP/NAEMSP/SCAI guideline for the management of patients with acute coronary syndromes: a report of the American College of Cardiology/American Heart Association Joint Committee on Clinical Practice Guidelines. Circulation. 2025;151(13):e771-e862. doi:10.1161/CIR.0000000000001309",
+      "Thygesen K, Alpert JS, Jaffe AS, et al. Fourth universal definition of myocardial infarction (2018). Circulation. 2018;138(20):e618-e651. doi:10.1161/CIR.0000000000000617",
+      "Gulati M, Levy PD, Mukherjee D, et al. 2021 AHA/ACC/ASE/CHEST/SAEM/SCCT/SCMR guideline for the evaluation and diagnosis of chest pain. Circulation. 2021;144(22):e368-e454.",
+      "中华医学会心血管病学分会, 中华心血管病杂志编辑委员会. 急性ST段抬高型心肌梗死诊断和治疗指南(2019). 中华心血管病杂志. 2019;47(10):766-783.",
+      "Glikson M, Nielsen JC, Kronborg MB, et al. 2021 ESC Guidelines on cardiac pacing and cardiac resynchronization therapy. Eur Heart J. 2021;42(35):3427-3520.",
+      "Zeppenfeld K, Tfelt-Hansen J, de Riva M, et al. 2022 ESC Guidelines for the management of patients with ventricular arrhythmias and the prevention of sudden cardiac death. Eur Heart J. 2022;43(40):3997-4126.",
+      "中国血脂管理指南修订联合专家委员会. 中国血脂管理指南（2023年）. 中华心血管病杂志. 2023;51(3):221-255."
     ],
     "notice": {
-      "zh-CN": "本评分为教学脚本评估，并非经过验证的能力评分。",
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
       "en": "A teaching-script measure, not a validated competency score."
     }
   },
   "unknowns": [
     {
-      "zh-CN": "生命体征、既往心电图、标志物数值及长期结局未载。",
-      "en": "Vital signs, baseline ECG, numerical biomarkers and long-term outcome are absent."
+      "zh-CN": "各阶段的生命体征和查体结果。",
+      "en": "Vital signs and examination findings at any point."
+    },
+    {
+      "zh-CN": "心电图的测量值（心率、节律、QRS 时限、各导联 ST 段抬高幅度）、首份及之后各次心电图的准确时间，以及有没有可对比的既往心电图（RBBB 是否新发）。",
+      "en": "ECG measurements (rate, rhythm, QRS duration, ST amplitude in each lead), the exact times of the first and the later tracings, and whether an earlier ECG existed (whether the RBBB was new)."
+    },
+    {
+      "zh-CN": "cTnT 和 CK-MB 的数值、单位、参考区间和采血时间。",
+      "en": "Troponin T and CK-MB values, units, reference ranges and sampling times."
+    },
+    {
+      "zh-CN": "冠状动脉 CT 是什么时候做的（是否在本次住院期间，与各次心电图和症状反复的先后），以及从到院到急诊造影隔了多久。",
+      "en": "When the coronary CT was done (whether during this admission, and relative to the tracings and to the recurrence of pain), and how long passed from arrival to the emergency angiogram."
+    },
+    {
+      "zh-CN": "造影和介入细节：TIMI 血流、支架类型和数量、回旋支病变的造影所见、术中及术前用药与剂量、并发症。",
+      "en": "Angiographic and procedural detail: TIMI flow, stent type and number, the circumflex lesion at angiography, the drugs and doses given before and during PCI, and complications."
+    },
+    {
+      "zh-CN": "既往史、危险因素（高血压、糖尿病、血脂、吸烟、家族史）、长期用药、过敏史和出血史。",
+      "en": "Past history, risk factors (hypertension, diabetes, lipids, smoking, family history), regular medicines, allergies and bleeding history."
+    },
+    {
+      "zh-CN": "左心室功能（超声心动图）、住院期间并发症、出院用药、随访和远期结局。",
+      "en": "Left-ventricular function (echocardiography), in-hospital complications, discharge medicines, follow-up and the long-term outcome."
     }
   ],
   "assets": [],
@@ -1494,7 +3564,7 @@
     },
     {
       "type": "ask",
-      "itemId": "presentation"
+      "itemId": "presenting"
     },
     {
       "type": "ask",
@@ -1502,23 +3572,44 @@
     },
     {
       "type": "ask",
-      "itemId": "progression"
+      "itemId": "pain-now"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg",
+      "phase": "arrival"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "cardiac-monitoring"
     },
     {
       "type": "ask",
-      "itemId": "associated"
+      "itemId": "tightness"
     },
     {
       "type": "ask",
-      "itemId": "pmh"
+      "itemId": "heart-history"
     },
     {
-      "type": "ask",
-      "itemId": "operations"
+      "type": "order",
+      "investigationId": "old-ecg"
     },
     {
-      "type": "ask",
-      "itemId": "medications"
+      "type": "read",
+      "investigationId": "old-ecg",
+      "phase": "arrival"
+    },
+    {
+      "type": "answer",
+      "decisionId": "ecg-reading",
+      "optionIds": [
+        "primary-st-change"
+      ]
     },
     {
       "type": "ask",
@@ -1526,53 +3617,99 @@
     },
     {
       "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "medications"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "aspirin"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "activate-cath-lab"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "iv-access"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "ufh"
+    },
+    {
+      "type": "ask",
+      "itemId": "character"
+    },
+    {
+      "type": "ask",
+      "itemId": "radiation"
+    },
+    {
+      "type": "ask",
+      "itemId": "severity"
+    },
+    {
+      "type": "ask",
+      "itemId": "trigger"
+    },
+    {
+      "type": "ask",
+      "itemId": "autonomic"
+    },
+    {
+      "type": "ask",
+      "itemId": "breathless"
+    },
+    {
+      "type": "ask",
+      "itemId": "syncope"
+    },
+    {
+      "type": "ask",
+      "itemId": "previous-episodes"
+    },
+    {
+      "type": "ask",
+      "itemId": "pmh"
+    },
+    {
+      "type": "ask",
+      "itemId": "smoking"
+    },
+    {
+      "type": "ask",
       "itemId": "family"
-    },
-    {
-      "type": "ask",
-      "itemId": "exposure"
-    },
-    {
-      "type": "ask",
-      "itemId": "function"
-    },
-    {
-      "type": "ask",
-      "itemId": "redflags"
-    },
-    {
-      "type": "ask",
-      "itemId": "prior"
     },
     {
       "type": "ask",
       "itemId": "concerns"
     },
     {
+      "type": "answer",
+      "decisionId": "reperfusion",
+      "optionIds": [
+        "cath-lab-now"
+      ]
+    },
+    {
       "type": "ask",
-      "itemId": "baseline"
+      "itemId": "status-course"
     },
     {
-      "type": "set-phase",
-      "phase": "workup"
-    },
-    {
-      "type": "order",
-      "investigationId": "ecg-first"
-    },
-    {
-      "type": "read",
-      "investigationId": "ecg-first",
-      "phase": "workup"
+      "type": "ask",
+      "itemId": "ecg-repeated"
     },
     {
       "type": "order",
-      "investigationId": "ecg-serial"
+      "investigationId": "ecg"
     },
     {
       "type": "read",
-      "investigationId": "ecg-serial",
-      "phase": "workup"
+      "investigationId": "ecg",
+      "phase": "course"
     },
     {
       "type": "order",
@@ -1581,7 +3718,7 @@
     {
       "type": "read",
       "investigationId": "markers",
-      "phase": "workup"
+      "phase": "course"
     },
     {
       "type": "order",
@@ -1590,20 +3727,53 @@
     {
       "type": "read",
       "investigationId": "coronary-ct",
-      "phase": "workup"
+      "phase": "course"
     },
     {
       "type": "answer",
-      "decisionId": "interpretation",
+      "decisionId": "course-review",
       "optionIds": [
-        "supported"
+        "angiography-now"
       ]
     },
     {
+      "type": "order",
+      "investigationId": "angiography"
+    },
+    {
+      "type": "read",
+      "investigationId": "angiography",
+      "phase": "cath-week"
+    },
+    {
+      "type": "order",
+      "investigationId": "ecg"
+    },
+    {
+      "type": "read",
+      "investigationId": "ecg",
+      "phase": "cath-week"
+    },
+    {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
+      "phase": "cath-week"
+    },
+    {
+      "type": "intervene",
+      "interventionId": "discharge-prevention"
+    },
+    {
       "type": "answer",
-      "decisionId": "management",
+      "decisionId": "discharge-plan",
       "optionIds": [
-        "supported"
+        "echo-lv",
+        "dapt-12m",
+        "statin-ldl"
       ]
     },
     {
@@ -1616,13 +3786,6 @@
       "phase": "followup"
     },
     {
-      "type": "answer",
-      "decisionId": "safety",
-      "optionIds": [
-        "supported"
-      ]
-    },
-    {
       "type": "finish"
     }
   ],
@@ -1630,268 +3793,284 @@
     "collection": "cmcr-105",
     "sourceArticleId": "1653411",
     "sourceUrl": "https://rs.yiigle.com/cmaid/1653411",
-    "sourceTextSha256": "3e44ab13d0222ab4dc4bd5308261759ed1749370ef6fb7688115ee07e3c4668b",
+    "sourceDoi": "10.12408/j.issn2223-4462.2025.02.020",
+    "doiVerifiedAt": "2026-10-29",
     "historicalReview": true,
-    "authorChecks": {
-      "individuallyRead": true,
-      "sourceValuesRetained": true,
-      "noUnrecordedPhysiology": true,
-      "mediaAwaitingPrivacyReview": true,
-      "doiWebVerified": true,
-      "publisherVerificationFile": "publisher-verification.json"
-    },
+    "sourceTextChecked": false,
     "testUtterances": [
       {
-        "text": "说说来院原因。",
+        "text": "您今天怎么不舒服过来的？",
         "locale": "zh-CN",
         "expect": [
-          "presentation"
+          "presenting"
         ]
       },
       {
-        "text": "Tell me your main complaint.",
-        "locale": "en",
-        "expect": [
-          "presentation"
-        ]
-      },
-      {
-        "text": "症状持续多久了？",
+        "text": "胸口痛了有多长时间？",
         "locale": "zh-CN",
         "expect": [
           "onset"
         ]
       },
       {
-        "text": "Describe the symptom onset.",
-        "locale": "en",
-        "expect": [
-          "onset"
-        ]
-      },
-      {
-        "text": "病情变化过程是什么？",
+        "text": "那现在还痛着吗？",
         "locale": "zh-CN",
         "expect": [
-          "progression"
+          "pain-now"
         ]
       },
       {
-        "text": "Describe the symptom progression.",
-        "locale": "en",
-        "expect": [
-          "progression"
-        ]
-      },
-      {
-        "text": "还有哪些伴随症状？",
+        "text": "除了痛，身上还有哪里不得劲？",
         "locale": "zh-CN",
         "expect": [
-          "associated"
+          "tightness"
         ]
       },
       {
-        "text": "Tell me about associated symptoms.",
-        "locale": "en",
+        "text": "胸口闷不闷？",
+        "locale": "zh-CN",
         "expect": [
-          "associated"
+          "tightness"
         ]
       },
       {
-        "text": "讲讲既往疾病。",
+        "text": "现在胸口是不是比刚来时更闷了？",
+        "locale": "zh-CN",
+        "expect": [
+          "status-course"
+        ]
+      },
+      {
+        "text": "刚才那阵痛又回来了吗",
+        "locale": "zh-CN",
+        "expect": [
+          "status-course"
+        ]
+      },
+      {
+        "text": "是压着痛还是像针扎一样？",
+        "locale": "zh-CN",
+        "expect": [
+          "character"
+        ]
+      },
+      {
+        "text": "痛的时候会不会窜到左胳膊或者下巴？",
+        "locale": "zh-CN",
+        "expect": [
+          "radiation"
+        ]
+      },
+      {
+        "text": "痛得厉害吗，打几分？",
+        "locale": "zh-CN",
+        "expect": [
+          "severity"
+        ]
+      },
+      {
+        "text": "痛起来那会儿你在干嘛？",
+        "locale": "zh-CN",
+        "expect": [
+          "trigger"
+        ]
+      },
+      {
+        "text": "有没有出一身冷汗，想吐？",
+        "locale": "zh-CN",
+        "expect": [
+          "autonomic"
+        ]
+      },
+      {
+        "text": "喘气费劲吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathless"
+        ]
+      },
+      {
+        "text": "有没有心慌，或者晕倒过？",
+        "locale": "zh-CN",
+        "expect": [
+          "syncope"
+        ]
+      },
+      {
+        "text": "以前也这样痛过吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "previous-episodes"
+        ]
+      },
+      {
+        "text": "以前查出过心脏病没有，放过支架吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "heart-history"
+        ]
+      },
+      {
+        "text": "有没有高血压或者糖尿病？",
         "locale": "zh-CN",
         "expect": [
           "pmh"
         ]
       },
       {
-        "text": "Tell me your past medical history.",
-        "locale": "en",
-        "expect": [
-          "pmh"
-        ]
-      },
-      {
-        "text": "讲讲既往手术。",
-        "locale": "zh-CN",
-        "expect": [
-          "operations"
-        ]
-      },
-      {
-        "text": "Tell me your surgical history.",
-        "locale": "en",
-        "expect": [
-          "operations"
-        ]
-      },
-      {
-        "text": "核对一下用药清单。",
+        "text": "平常都吃些什么药，吃不吃华法林？",
         "locale": "zh-CN",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "Could we review your medication list?",
+        "text": "有对哪种药过敏吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "最近哪里出过血，或者做过手术、中过风没有？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "抽烟不？",
+        "locale": "zh-CN",
+        "expect": [
+          "smoking"
+        ]
+      },
+      {
+        "text": "家里人有心脏不好的吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "您心里最怕的是什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "concerns"
+        ]
+      },
+      {
+        "text": "到医院后又做了几回心电图？",
+        "locale": "zh-CN",
+        "expect": [
+          "ecg-repeated"
+        ]
+      },
+      {
+        "text": "你家里人知道你来医院了吗？",
+        "locale": "zh-CN",
+        "expect": []
+      },
+      {
+        "text": "So what's brought you in?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "how long have you had this pain for?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "is it still hurting right now?",
+        "locale": "en",
+        "expect": [
+          "pain-now"
+        ]
+      },
+      {
+        "text": "besides the pain, anything else bothering you?",
+        "locale": "en",
+        "expect": [
+          "tightness"
+        ]
+      },
+      {
+        "text": "how's the chest now — any worse than when you came in?",
+        "locale": "en",
+        "expect": [
+          "status-course"
+        ]
+      },
+      {
+        "text": "what kind of pain is it, crushing or stabbing?",
+        "locale": "en",
+        "expect": [
+          "character"
+        ]
+      },
+      {
+        "text": "does it go down your arm at all?",
+        "locale": "en",
+        "expect": [
+          "radiation"
+        ]
+      },
+      {
+        "text": "any sweats or vomiting?",
+        "locale": "en",
+        "expect": [
+          "autonomic"
+        ]
+      },
+      {
+        "text": "any heart problems in the past, stents or heart attacks?",
+        "locale": "en",
+        "expect": [
+          "heart-history"
+        ]
+      },
+      {
+        "text": "do you take any regular meds, like blood thinners?",
         "locale": "en",
         "expect": [
           "medications"
         ]
       },
       {
-        "text": "请说说药物过敏史。",
-        "locale": "zh-CN",
-        "expect": [
-          "allergies"
-        ]
-      },
-      {
-        "text": "Tell me about drug allergies.",
+        "text": "are you allergic to anything?",
         "locale": "en",
         "expect": [
           "allergies"
         ]
       },
       {
-        "text": "介绍一下家族病史。",
-        "locale": "zh-CN",
-        "expect": [
-          "family"
-        ]
-      },
-      {
-        "text": "What is your family history?",
+        "text": "any recent bleeding, operations or strokes?",
         "locale": "en",
         "expect": [
-          "family"
+          "bleeding"
         ]
       },
       {
-        "text": "了解一下环境接触。",
-        "locale": "zh-CN",
-        "expect": [
-          "exposure"
-        ]
-      },
-      {
-        "text": "Describe relevant environmental exposure.",
+        "text": "do you smoke at all?",
         "locale": "en",
         "expect": [
-          "exposure"
+          "smoking"
         ]
       },
       {
-        "text": "现在的活动能力怎样？",
-        "locale": "zh-CN",
-        "expect": [
-          "function"
-        ]
-      },
-      {
-        "text": "Describe your daily activities.",
+        "text": "did someone drive you here today?",
         "locale": "en",
-        "expect": [
-          "function"
-        ]
+        "expect": []
       },
       {
-        "text": "有没有危险症状？",
-        "locale": "zh-CN",
-        "expect": [
-          "redflags"
-        ]
-      },
-      {
-        "text": "Were there any warning symptoms?",
+        "text": "is your family on their way in?",
         "locale": "en",
-        "expect": [
-          "redflags"
-        ]
-      },
-      {
-        "text": "讲讲之前就诊经过。",
-        "locale": "zh-CN",
-        "expect": [
-          "prior"
-        ]
-      },
-      {
-        "text": "Describe the earlier assessment.",
-        "locale": "en",
-        "expect": [
-          "prior"
-        ]
-      },
-      {
-        "text": "想了解您的个人担心。",
-        "locale": "zh-CN",
-        "expect": [
-          "concerns"
-        ]
-      },
-      {
-        "text": "Tell me your personal concerns.",
-        "locale": "en",
-        "expect": [
-          "concerns"
-        ]
-      },
-      {
-        "text": "介绍一下平时情况。",
-        "locale": "zh-CN",
-        "expect": [
-          "baseline"
-        ]
-      },
-      {
-        "text": "Describe your baseline health.",
-        "locale": "en",
-        "expect": [
-          "baseline"
-        ]
-      },
-      {
-        "text": "主要不适具体是什么情况？",
-        "locale": "zh-CN",
-        "expect": [
-          "presentation"
-        ]
-      },
-      {
-        "text": "Could you clarify main complaint?",
-        "locale": "en",
-        "expect": [
-          "presentation"
-        ]
-      },
-      {
-        "text": "起病时间具体是什么情况？",
-        "locale": "zh-CN",
-        "expect": [
-          "onset"
-        ]
-      },
-      {
-        "text": "Could you clarify symptom onset?",
-        "locale": "en",
-        "expect": [
-          "onset"
-        ]
-      },
-      {
-        "text": "病情变化具体是什么情况？",
-        "locale": "zh-CN",
-        "expect": [
-          "progression"
-        ]
-      },
-      {
-        "text": "Could you clarify symptom progression?",
-        "locale": "en",
-        "expect": [
-          "progression"
-        ]
+        "expect": []
       }
     ]
   }
