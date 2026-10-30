@@ -8,6 +8,7 @@ import { BUILTIN_COMMANDS, commandDescription } from "./commands.js";
 import type { ApprovalDecision } from "./protocol.js";
 import { reviewStatusLine } from "./session/i18n.js";
 import { displayWidth, table } from "./tools/format.js";
+import { labelledOptions } from "./tools/option-labels.js";
 
 async function command(t: Awaited<ReturnType<typeof makeSession>>, line: string) {
   const events = await t.session.run({ type: "user_message", text: line });
@@ -77,28 +78,101 @@ describe("built-in commands", () => {
     expect((out.data as { data: { vitals: { hr: number } } }).data.vitals.hr).toBe(96);
   });
 
-  it("/board and /answer by index and letter", async () => {
+  it("/board and /answer: decisions by number, options by letter (or number) — never by authored id", async () => {
     const t = await makeSession();
     const board = await command(t, "/board");
-    // A locked decision is listed by number with what it needs — never its prompt or options.
-    expect(board.out.text).toMatch(/\[dx\] Decision 1 \(not yet available\)$/m);
+    // A locked decision is listed by number with what it needs — never its prompt, options or id.
+    expect(board.out.text).toMatch(/^- Decision 1 \(not yet available\)$/m);
     expect(board.out.text).not.toContain("Most likely diagnosis?");
     expect(board.out.text).not.toContain("Inferior STEMI");
+    expect(board.out.text).not.toMatch(/\bdx\b/);
     expect(board.out.text).toContain("Review the ECG first.");
     const early = await command(t, "/answer 1 A");
-    expect(early.out.text).toMatch(/Not yet answerable/);
+    expect(early.out.text).toBe("Decision 1 is not yet answerable: Review the ECG first.");
     await command(t, "/order ecg");
     await command(t, "/wait 5");
     const read = await command(t, "/read ecg");
     expect(read.out.text).toContain("ST elevation in II, III and aVF");
     const unlocked = await command(t, "/board");
-    expect(unlocked.out.text).toContain("Most likely diagnosis?");
-    // Letters follow the presented (shuffled) order shown by /board.
-    const shown = [...unlocked.out.text.matchAll(/^\s+\[([\w-]+)\] /gm)].map((m) => m[1]!);
-    const letter = String.fromCharCode(65 + shown.indexOf("stemi"));
-    const answer = await command(t, `/answer dx ${letter}`);
+    expect(unlocked.out.text).toContain("- Decision 1: Most likely diagnosis? (open)");
+    // The options by letter, in the presented (shuffled) order — never by their authored ids.
+    const shown = [...unlocked.out.text.matchAll(/^\s+\[(\w+)\] (.+)$/gm)].map((m) => ({ label: m[1]!, text: m[2]! }));
+    expect(shown.map((o) => o.label)).toEqual(["A", "B"]);
+    expect(shown.map((o) => o.text).sort()).toEqual(["Inferior STEMI", "Pulmonary embolism"]);
+    expect(unlocked.out.text).not.toMatch(/\[(stemi|pe)\]|\bdx\b/);
+    expect(JSON.stringify(unlocked.out.data)).not.toMatch(/"(stemi|pe|dx)"/);
+    const letter = shown.find((o) => o.text === "Inferior STEMI")!.label;
+    const wrong = shown.find((o) => o.text !== "Inferior STEMI")!.label;
+    // Refusals before anything is recorded: no such decision (named by number), two options on a single-best-answer
+    // decision ("A,B" is two), separators only, an unknown letter.
+    expect((await command(t, "/answer 2 A")).out.text).toBe("No decision “2”. Name a decision by its number: 1.");
+    expect((await command(t, "/answer 1 A,B")).out.text).toBe("Decision 1 takes a single best answer: answer with one letter.");
+    expect((await command(t, "/answer 1 、")).out.text).toMatch(/^No option given\. Answer by letter — options: A \(.+\); B \(.+\)\.$/);
+    expect((await command(t, "/answer D1 C")).out.text).toMatch(/^Unknown option\(s\): C\. Answer by letter — options: A \(/);
+    expect(t.session.state.attempts).toEqual([]);
+    // A number counts in the same order; a lower-case letter is the same letter; the decision as "Decision 1" or by id.
+    const first = await command(t, `/answer Decision 1 ${"AB".indexOf(wrong) + 1}`);
+    expect(first.out.text).toMatch(/^Not correct\./);
+    expect((first.out.data as { data: unknown }).data).toMatchObject({ decision: 1, options: [{ label: wrong }] });
+    const answer = await command(t, `/answer dx ${letter.toLowerCase()}`);
     expect(answer.out.text).toMatch(/^Correct\./);
     expect(t.session.state.decisions).toHaveProperty("dx");
+    expect(t.session.state.attempts.map((a) => a.optionIds)).toEqual([["pe"], ["stemi"]]);
+    // The usage line agrees with PROTOCOL §9; a decision named in two words with no option after it gets it too.
+    for (const line of ["/answer 1", "/answer Decision 1"]) expect((await command(t, line)).out.text, line).toBe("Usage: /answer <decision> <letter|number…>");
+    expect((await command(t, "/help")).out.text).toContain("/answer <decision> <letter|number…>");
+  });
+
+  it("/answer reads the CLI's own \"A+C\" and a list marker's \"A.\" or \"B)\"", async () => {
+    // The mini case's decision made select-all, with a second correct option.
+    const caseDef = loadMiniCaseWith((x) => {
+      const d = x.decisions![0]!;
+      d.kind = "multiple";
+      d.options.push({ id: "ischaemia", text: { "zh-CN": "心肌缺血", en: "Myocardial ischaemia" }, correct: true, feedback: { "zh-CN": "对。", en: "Yes." } });
+      for (const step of x.solution ?? []) if (step.type === "answer") step.optionIds = ["stemi", "ischaemia"];
+    });
+    const letterOf = (id: string) => labelledOptions(caseDef, caseDef.decisions[0]!).find((o) => o.option.id === id)!.label;
+    const t = await makeSession({ caseDef });
+    await command(t, "/order ecg");
+    await command(t, "/wait 5");
+    await command(t, "/read ecg");
+    expect((await command(t, `/answer 1 ${letterOf("pe")}.`)).out.text).toMatch(/^Not correct\./);
+    expect((await command(t, `/answer Decision 1 ${letterOf("stemi")})`)).out.text).toMatch(/^Not correct\./);
+    expect((await command(t, `/answer 1 ${letterOf("stemi")}+${letterOf("ischaemia")}`)).out.text).toMatch(/^Correct\./);
+    expect(t.session.state.attempts.map((a) => a.optionIds)).toEqual([["pe"], ["stemi"], ["stemi", "ischaemia"]]);
+  });
+
+  it("/answer in Chinese: 决策 2 / 决策2 name a decision, Ａ、Ｂ are two letters", async () => {
+    const t = await makeSession({ settingsPatch: { locale: "zh-CN" } });
+    await command(t, "/order ecg");
+    await command(t, "/wait 5");
+    await command(t, "/read ecg");
+    expect((await command(t, "/board")).out.text).toContain("- 决策 1：最可能的诊断？（可以作答）");
+    expect((await command(t, "/answer 决策 1 Ａ、Ｂ")).out.text).toBe("决策 1 为单选题：请只用一个字母作答。");
+    expect((await command(t, "/answer 决策9 A")).out.text).toBe("没有决策“决策9”。请用决策编号指明：1。");
+    expect((await command(t, "/answer 决策 1")).out.text).toBe("用法：/answer <decision> <letter|number…>");
+    const presented = (await command(t, "/board")).out.text;
+    const letter = /^\s+\[(\w)\] 下壁STEMI$/m.exec(presented)![1]!;
+    expect((await command(t, `/answer 决策1 ${String.fromCharCode(letter.charCodeAt(0) + 0xfee0)}`)).out.text).toMatch(/^正确。/);
+  });
+
+  it("/case gives the patient's age as clinicians write it (months, fractions of a year)", async () => {
+    const cases: [Partial<{ age: number; ageUnit: "years" | "months" | "days" }>, string, string][] = [
+      [{ age: 100, ageUnit: "months" }, "8 years 4 months", "8岁4个月"],
+      [{ age: 4 + 1 / 12, ageUnit: "years" }, "4 years 1 month", "4岁1个月"],
+      [{ age: 11 + 5 / 12 }, "11 years 5 months", "11岁5个月"],
+      [{ age: 10, ageUnit: "months" }, "10 months", "10个月"],
+      [{ age: 0.75, ageUnit: "days" }, "18 hours", "18小时"],
+      [{ age: 58 }, "58 years", "58岁"],
+    ];
+    for (const [patient, en, zh] of cases) {
+      const c = loadMiniCaseWith((x) => Object.assign(x.patient, patient));
+      const enOut = (await command(await makeSession({ caseDef: c }), "/case")).out.text;
+      expect(enOut, en).toContain(`Patient: Li Ming, ${en}, male.`);
+      expect(enOut).not.toMatch(/\d\.\d{3}|100 mo/);
+      const zhOut = (await command(await makeSession({ caseDef: c, settingsPatch: { locale: "zh-CN" } }), "/case")).out.text;
+      expect(zhOut, zh).toContain(`患者：李明，${zh}，男。`);
+    }
   });
 
   it("/ask lists questions and asks by number (the patient answers)", async () => {

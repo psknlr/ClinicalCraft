@@ -76,7 +76,7 @@ export function walkthroughEndText(c: CaseDefinition, state: SessionState, misse
   if (prog.complete || state.finished) return rt(locale, "clinician.narrate.done");
   const labels = [
     ...new Set(
-      missed.flatMap((step) => (step.kind === "tool" && step.tool !== "finish_case" && !stepAlreadySatisfied(step, state) ? [formatRule(step.tool, actionSpecifier(step.action))] : [])),
+      missed.flatMap((step) => (step.kind === "tool" && step.tool !== "finish_case" && !stepAlreadySatisfied(step, state) ? [formatRule(step.tool, actionSpecifier(step.action, c))] : [])),
     ),
   ];
   const list = labels.length > 0 ? rt(locale, "clinician.narrate.missed", { steps: joinList(locale, labels) }) : "";

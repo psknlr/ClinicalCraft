@@ -8,11 +8,14 @@
  * resources carry only what the learner can see — the same grounding as the
  * tools: no diagnosis-bearing case id (the opaque handle instead), no engine
  * internals that name findings or show unmeasured values (see
- * `LEARNER_STATE_KEYS`; the transcript is redacted in `sessions.ts`).
+ * `LEARNER_STATE_KEYS`; the transcript is redacted in `sessions.ts`), and a
+ * decision only by its number and its options only by their letters
+ * (`learnerAnswer`), never their authored ids.
  */
-import { currentWaypoint, progress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
+import { currentWaypoint, progress, type AttemptRecord, type CaseDefinition, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 import type { CaseLibrary } from "@clinicalcraft/agent/node";
-import { caseHandle, caseListing } from "./format.js";
+import { decisionNumber } from "@clinicalcraft/agent";
+import { caseHandle, caseListing, learnerAnswer, type LearnerAnswer } from "./format.js";
 import { RPC_ERRORS, RpcError } from "./jsonrpc.js";
 import type { McpSession, SessionManager } from "./sessions.js";
 
@@ -85,11 +88,28 @@ export const LEARNER_STATE_KEYS = [
   "seq",
 ] as const satisfies readonly (keyof SessionState)[];
 
-/** `state` reduced to `LEARNER_STATE_KEYS`, with the case's opaque handle as `caseId`. */
-export function learnerState(state: SessionState, caseId: string): Pick<SessionState, (typeof LEARNER_STATE_KEYS)[number]> & { caseId: string } {
-  const visible: Record<string, unknown> = { caseId: caseHandle(caseId) };
+/** An answer as the learner may read it: the decision by its number, the options by their letters ("A") — never their authored ids. */
+export type LearnerAttempt = Omit<AttemptRecord, "decisionId" | "optionIds"> & LearnerAnswer;
+
+/** What the state resource shows of the engine state (`learnerState`). */
+export type LearnerState = Omit<Pick<SessionState, (typeof LEARNER_STATE_KEYS)[number]>, "attempts" | "decisions"> & {
+  caseId: string;
+  /** Decisions answered correctly → minute answered, keyed by the decision's number ("2"), never its id. */
+  decisions: Record<string, number>;
+  attempts: LearnerAttempt[];
+};
+
+/**
+ * `state` reduced to `LEARNER_STATE_KEYS`, with the case's opaque handle as `caseId`, decided decisions keyed by
+ * their numbers and each attempt as `{decision, options}` — the number and letters `list_options(decisions)` shows
+ * (authored decision and option ids can name the diagnosis or the answer).
+ */
+export function learnerState(state: SessionState, c: Pick<CaseDefinition, "id" | "decisions">): LearnerState {
+  const visible: Record<string, unknown> = { caseId: caseHandle(c.id) };
   for (const key of LEARNER_STATE_KEYS) if (state[key] !== undefined) visible[key] = state[key];
-  return visible as Pick<SessionState, (typeof LEARNER_STATE_KEYS)[number]> & { caseId: string };
+  visible.decisions = Object.fromEntries(Object.entries(state.decisions).map(([id, at]) => [String(decisionNumber(c, id)), at]));
+  visible.attempts = state.attempts.map(({ decisionId, optionIds, ...attempt }) => ({ ...attempt, ...learnerAnswer(c, decisionId, optionIds) }));
+  return visible as LearnerState;
 }
 
 /** The state resource's vitals: the learner's view, or null with the reason (embodied, nothing in view). */
@@ -112,7 +132,7 @@ function stateOf(entry: McpSession) {
     embodiment: s.embodiment,
     place: s.placeLabel(),
     // The engine state's caseId names the diagnosis: the opaque handle instead (as list_cases).
-    state: learnerState(state, c.id),
+    state: learnerState(state, c),
     progress: progress(c, state),
     // What the learner may see (reviews G3/G11): never the ECG morphology; embodied, only where the body can see them.
     ...vitalsOf(entry),

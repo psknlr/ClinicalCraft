@@ -14,7 +14,9 @@ import { npcTools, type NpcToolOptions } from "./npc.js";
 import type { ToolDefinition } from "./types.js";
 
 export * from "./clinical.js";
+export * from "./decision-refs.js";
 export * from "./npc.js";
+export * from "./option-labels.js";
 export * from "./spatial.js";
 export * from "./scope.js";
 export * from "./world.js";

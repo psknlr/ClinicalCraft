@@ -409,11 +409,17 @@ describe("MCP stdio server", () => {
     const def = content.cases.get(caseRef)!.def;
     const sessionId = (await client.call("start_case", { case_id: caseRef, locale: "en" })).structuredContent!.session_id as string;
     const listed = await client.call("list_options", { session_id: sessionId, kind: "decisions" });
-    const locked = (listed.structuredContent!.data as { items: { id: string; unlocked: boolean; decided: boolean }[] }).items.find((d) => !d.unlocked && !d.decided);
+    const locked = (listed.structuredContent!.data as { items: { number: number; unlocked: boolean; decided: boolean }[] }).items.find((d) => !d.unlocked && !d.decided);
     expect(locked).toBeDefined();
-    const decision = def.decisions.find((d) => d.id === locked!.id)!;
+    // Listed by number in case order, never by id.
+    const decision = def.decisions[locked!.number - 1]!;
+    expect(JSON.stringify(listed)).not.toContain(`"${decision.id}"`);
     const out = await client.call("answer_decision", { session_id: sessionId, decision_id: decision.id, option_ids: ["zzz"] });
     expect(out.isError).toBe(true);
+    // By number too, the same refusal: what it still needs, named by its number.
+    const byNumber = await client.call("answer_decision", { session_id: sessionId, decision_id: String(locked!.number), option_ids: ["zzz"] });
+    expect(byNumber.content[0]!.text).toBe(out.content[0]!.text);
+    expect(out.content[0]!.text).toMatch(new RegExp(`^Decision ${locked!.number} is not yet answerable: `));
     const text = out.content[0]!.text + JSON.stringify(out.structuredContent);
     for (const o of decision.options) {
       expect(text).not.toContain(t(o.text, "en"));

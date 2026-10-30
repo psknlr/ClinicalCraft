@@ -15,7 +15,8 @@ const EN = {
   "start.says": "{speaker}: “{text}”",
   "start.narration": "({text})",
   "start.next":
-    "Pass session_id \"{session}\" to every clinical tool. Talk with ask_patient, find ids with list_options, then examine / order_test / read_result / answer_decision; " +
+    "Pass session_id \"{session}\" to every clinical tool. Talk with ask_patient, find ids with list_options, then examine / order_test / read_result / answer_decision " +
+    "(decisions are numbered 1, 2, … and their options lettered A, B, …: answer with the decision's number and the letters); " +
     "case_status shows objectives and open decisions; finish_case when every objective is complete; get_debrief for the assessment.",
   "start.failed": "Could not start the case: {message}",
   "start.embodied":
@@ -87,7 +88,8 @@ const ZH: Record<McpMessageKey, string> = {
   "start.says": "{speaker}：“{text}”",
   "start.narration": "（{text}）",
   "start.next":
-    "每个临床工具都要传入 session_id \"{session}\"。用 ask_patient 问诊，用 list_options 查找 id，然后 examine / order_test / read_result / answer_decision；" +
+    "每个临床工具都要传入 session_id \"{session}\"。用 ask_patient 问诊，用 list_options 查找 id，然后 examine / order_test / read_result / answer_decision" +
+    "（决策按编号 1、2……标注，选项按字母 A、B……标注：用决策编号和选项字母作答）；" +
     "case_status 显示目标与待作答的决策；所有目标完成后调用 finish_case；get_debrief 获取评估。",
   "start.failed": "无法开始病例：{message}",
   "start.embodied":

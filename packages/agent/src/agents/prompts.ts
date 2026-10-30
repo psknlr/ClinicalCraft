@@ -12,6 +12,8 @@
  */
 import {
   assignPatientSlot,
+  patientAgeAdjective,
+  patientAgeText,
   t,
   vitalsAt,
   type CaseDefinition,
@@ -111,10 +113,12 @@ export function renderTemplate(template: string, vars: TemplateVars): string {
 
 const SEX_WORD: Record<string, string> = { male: "male", female: "female", intersex: "intersex", unspecified: "" };
 
-/** "74-year-old", "4-month-old", "10-day-old". */
+/**
+ * The patient's age as the prompts' compound adjective, in the units clinicians use (core `patientAgeAdjective`):
+ * "74-year-old", "8-year-4-month-old" (stored as 100 months), "4-month-old", "18-hour-old" — never a raw fraction.
+ */
 export function ageText(c: CaseDefinition): string {
-  const unit = c.patient.ageUnit === "months" ? "month" : c.patient.ageUnit === "days" ? "day" : "year";
-  return `${c.patient.age}-${unit}-old`;
+  return patientAgeAdjective(c.patient);
 }
 
 /** Display name of the NPC playing `role` (case brief name, facility staff, else the generic role name). */
@@ -127,7 +131,21 @@ export function npcDisplayName(c: CaseDefinition, facility: FacilityDefinition |
   return ["nurse", "radiologist", "pathologist", "attending", "examiner", "clinician"].includes(role) ? rt(locale, key) : role;
 }
 
-/** Placeholder values for profile prompts. */
+/**
+ * Placeholder values for profile prompts (`renderTemplate`; an unknown placeholder renders as ""):
+ *
+ *   {{locale}}, {{language}}           the session locale ("zh-CN") and its language name ("Simplified Chinese (zh-CN)")
+ *   {{agent.name}}                     the profile's name
+ *   {{case.id}}, {{case.title}}, {{case.setting}}, {{case.summary}}
+ *   {{patient.displayName}}            in the session language
+ *   {{patient.age}}                    the age as clinicians write it, in the session language (core
+ *                                      `patientAgeText`: "8 years 4 months" / "8岁4个月" for 100 months, "18 hours")
+ *   {{patient.ageText}}                the English compound adjective (`ageText`: "8-year-4-month-old")
+ *   {{patient.sex}}, {{patient.chiefComplaint}}
+ *   {{companion.name}}, {{companion.role}}, {{companion.persona}}   ("" without a companion)
+ *   {{npc.name}}, {{npc.nameSuffix}}, {{npc.knowledge}}             the NPC this profile plays (case `npcs[]` brief)
+ *   {{facility.name}}                  the facility, else "the hospital" / "本院"
+ */
 export function templateVars(profile: Pick<AgentProfile, "name">, ctx: PromptContext): TemplateVars {
   const c = ctx.caseDef;
   const L = ctx.locale;
@@ -141,7 +159,8 @@ export function templateVars(profile: Pick<AgentProfile, "name">, ctx: PromptCon
     case: { id: c.id, title: t(c.title, L), setting: c.setting, summary: t(c.summary, L) },
     patient: {
       displayName: t(c.patient.displayName, L),
-      age: String(c.patient.age),
+      // Never the raw record ("100" for 100 months, "4.083333333333333" for 4 years 1 month).
+      age: patientAgeText(c.patient, L),
       ageText: ageText(c),
       sex: SEX_WORD[c.patient.sex] ?? "",
       chiefComplaint: t(c.patient.chiefComplaint, L),

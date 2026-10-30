@@ -16,7 +16,7 @@ import { isLearnerTool } from "../tools/learner.js";
 import { actionIntent, spatialCodeOf, spatialRefusal } from "../tools/spatial.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
 import { validateArgs } from "../tools/validate.js";
-import { actionFromToolInput, actionToolArgs } from "./action-input.js";
+import { actionFromToolInput, actionToolArgs, answerActionRefusal } from "./action-input.js";
 import type { AgentTurnMode } from "./agent-turns.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
@@ -167,7 +167,8 @@ export class LearnerPath {
    * A learner action through PreToolUse hooks and the approval gate (as its
    * equivalent tool), then the engine. A hook's `updatedInput` is re-validated
    * and mapped back to the action, so the gate, the engine and PostToolUse all
-   * see the rewritten input.
+   * see the rewritten input. An answer naming a decision or option id its case
+   * lacks is refused first (`answerActionRefusal`).
    */
   async action(id: string, requested: ClinicalAction, signal?: AbortSignal): Promise<ReduceResult | null> {
     const k = this.k;
@@ -179,6 +180,13 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "action.flagOwned", { flag: requested.flag }) }), code: "permission_denied" });
       return null;
     }
+    // Before the hooks and the gate: they see `answer_decision` input, read letters and numbers first, while the
+    // engine reads the action's ids as they are — an id the case lacks would be approved as another option.
+    const unanswerable = requested.type === "answer" ? answerActionRefusal(k.caseDef, requested, L, k.state) : null;
+    if (unanswerable) {
+      k.emit(id, { type: "error", message: rt(L, "error.invalidAction", { errors: unanswerable }), code: "invalid_action" });
+      return null;
+    }
     let action = requested;
     const toolName = actionToolName(action);
     const tool = toolName ? k.registry.get(toolName) : undefined;
@@ -187,7 +195,8 @@ export class LearnerPath {
       const pre = await this.preToolUse(id, tool, args, signal);
       if (!pre.ok) return null;
       if (pre.updated) {
-        const mapped = actionFromToolInput(k.caseDef, action, pre.input, L, k.state.phase);
+        // Read as the tool reads it, before any approval (a locked decision names only what it needs).
+        const mapped = actionFromToolInput(k.caseDef, action, pre.input, L, k.state);
         if (!mapped.ok) {
           k.emit(id, { type: "error", message: rt(L, "action.hookInputUnresolved", { tool: tool.name, detail: mapped.detail }), code: "invalid_action" });
           return null;

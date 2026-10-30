@@ -32,6 +32,8 @@ import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from ".
 import { isZh, joinList, joinSentences, rt } from "../session/i18n.js";
 import { obtainedResultsText } from "../tools/npc.js";
 import { bedsideReadings, formatVitals, interventionLabel, investigationName, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
+import { decisionRefFor } from "../tools/decision-refs.js";
+import { optionLabelsFor } from "../tools/option-labels.js";
 
 /** What an offline responder may look at. */
 export interface OfflineContext {
@@ -315,8 +317,13 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
       return tool("order_test", { investigation_id: action.investigationId });
     case "read":
       return tool("read_result", { investigation_id: action.investigationId, ...(action.phase ? { phase: action.phase } : {}) });
-    case "answer":
-      return tool("answer_decision", { decision_id: action.decisionId, option_ids: action.optionIds });
+    case "answer": {
+      // The letters a clinician model reads in list_options(decisions): a one-letter authored id would read as a letter.
+      // The decision by its id (the demonstration's calls list names it by its prompt), or by its number when the id
+      // would read as another decision's number (`decisionRefFor`).
+      const d = c.decisions.find((x) => x.id === action.decisionId);
+      return tool("answer_decision", { decision_id: decisionRefFor(c, action.decisionId), option_ids: d ? optionLabelsFor(c, d, action.optionIds) : action.optionIds });
+    }
     case "set-phase":
       return tool("set_phase", { phase: action.phase });
     case "intervene":

@@ -89,9 +89,6 @@ const EN = {
   "sex.female": "female",
   "sex.intersex": "intersex",
   "sex.unspecified": "sex not stated",
-  "age.years": "{n} years",
-  "age.months": "{n} months",
-  "age.days": "{n} days",
   "level.warning": "warning",
   "level.critical": "critical",
 
@@ -468,9 +465,6 @@ const ZH: Record<MsgKey, string> = {
   "sex.female": "女",
   "sex.intersex": "间性",
   "sex.unspecified": "性别未注明",
-  "age.years": "{n}岁",
-  "age.months": "{n}个月",
-  "age.days": "{n}天",
   "level.warning": "警告",
   "level.critical": "危急",
 

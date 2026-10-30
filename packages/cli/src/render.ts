@@ -7,11 +7,13 @@
 import { progress as caseProgress, t, type AssessmentReport, type CaseDefinition, type DomainEvent, type ObjectiveProgress, type SessionState, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   criticalMissLines,
+  decisionNumber,
   findProviderTemplate,
   investigationName,
   noReading,
   objectiveTitle,
   phaseLabel,
+  resolveDecisionRef,
   rt,
   sanitizeTerminal,
   vitalLabel,
@@ -91,7 +93,10 @@ export function resolvedModelLabel(settings: Pick<ResolvedSettings, "provider" |
 const SPINNER = ["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"];
 const TOOL_ARG_KEYS = ["investigation_id", "finding_id", "intervention_id", "decision_id", "query", "phase", "minutes", "role", "kind", "target", "question", "fact_ids", "option_ids"];
 
-/** Compact rendering of tool arguments: `cbc`, `"Where is the pain?"`, `diagnosis: dual`. */
+/**
+ * Compact rendering of tool arguments: `cbc`, `"Where is the pain?"`; an answer as its decision and options,
+ * `2: B` (several options `2: A+C`, which `/answer` reads back).
+ */
 export function summarizeArgs(args: unknown, max = 48): string {
   if (!args || typeof args !== "object") return "";
   const obj = args as Record<string, unknown>;
@@ -201,6 +206,17 @@ export class EventRenderer {
 
   private get L(): string {
     return this.o.locale();
+  }
+
+  /**
+   * `answer_decision` input with its decision by number, as `/board` names it (`⏺ answer_decision(2: B)`): the
+   * demonstration's walkthrough passes authored ids, which can name the answer.
+   */
+  private decisionByNumber(args: unknown): unknown {
+    if (!args || typeof args !== "object") return args;
+    const input = args as Record<string, unknown>;
+    const d = typeof input.decision_id === "string" ? resolveDecisionRef(this.c.decisions, input.decision_id) : undefined;
+    return d ? { ...input, decision_id: String(decisionNumber(this.c, d.id)) } : args;
   }
 
   /* ---------------------------------------------------------------- */
@@ -385,7 +401,7 @@ export class EventRenderer {
         return;
       case "tool_call_begin": {
         this.ensureLineStart();
-        const args = sanitizeTerminal(summarizeArgs(msg.args));
+        const args = sanitizeTerminal(summarizeArgs(msg.tool === "answer_decision" ? this.decisionByNumber(msg.args) : msg.args));
         this.raw(`${p.dim("⏺")} ${p.bold(msg.tool)}${p.dim(`(${args})`)} ${p.dim("…")}`);
         this.pendingTool = msg.callId;
         return;
