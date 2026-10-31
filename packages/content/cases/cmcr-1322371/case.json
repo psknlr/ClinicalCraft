@@ -1,0 +1,1916 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1322371",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "多发伤恢复中发现右侧阴囊空虚",
+    "en": "An empty right hemiscrotum noticed during recovery from multiple injuries"
+  },
+  "summary": {
+    "zh-CN": "多发骨折患者在住院恢复中发现新的会阴异常，需要重建损伤机制并沿精索核对两侧结构。",
+    "en": "A patient recovering from multiple fractures notices a perineal abnormality requiring reconstruction of the injury and identification of both structures along the cords."
+  },
+  "specialty": [
+    "urology",
+    "trauma-surgery"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 任栋. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(06):426-429. doi: 10.3969/j.issn.1671-7163.2009.06.012.1.",
+    "authors": [
+      "王庆贤",
+      "张英泽",
+      "赵宇宙",
+      "潘进社",
+      "吴希瑞",
+      "张世强",
+      "任栋"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "EAU current online Urological Trauma, sections 4.5.3.b and 4.5.4.b.1, checked 2026-10-28: ultrasound/perfusion assessment and specialist reduction/fixation. No unverified edition number is asserted."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3969/j.issn.1671-7163.2009.06.012.1"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别多发伤后易漏诊的会阴异常。",
+      "en": "Recognise easily missed perineal findings after multiple trauma."
+    },
+    {
+      "zh-CN": "利用精索追踪解释两侧睾丸位置。",
+      "en": "Use cord tracing to explain the position of both testes."
+    },
+    {
+      "zh-CN": "区分解剖外观与灌注、生殖功能证据。",
+      "en": "Distinguish gross anatomy from perfusion and reproductive evidence."
+    },
+    {
+      "zh-CN": "讨论及时专科处置及长期随访的安全边界。",
+      "en": "Discuss safe timely specialist care and long-term follow-up."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "韩知远（化名）",
+      "en": "Han Zhiyuan (pseudonym)"
+    },
+    "age": 30,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "严重交通伤十三天后排尿时发现右侧阴囊空虚",
+      "en": "An empty right hemiscrotum noticed while voiding thirteen days after major road trauma"
+    },
+    "triageNote": {
+      "zh-CN": "教学起点为伤后第十三天泌尿外科会诊；既往休克已处理，当前血压等未记录。",
+      "en": "The teaching encounter starts with the day-thirteen urology consultation; earlier shock was treated, but current blood pressure and other observations were not recorded."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "受伤后第十三天，排尿时才发现右边阴囊空了。",
+        "en": "On the thirteenth day after the injury, I noticed an empty right side of the scrotum while urinating."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "discovery"
+          },
+          {
+            "asked": "mechanism"
+          },
+          {
+            "asked": "associated-injuries"
+          },
+          {
+            "asked": "operations"
+          },
+          {
+            "examined": "scrotum"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "discovery",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "您是什么时候发现阴囊不一样的？",
+        "en": "When did you notice the change in the scrotum?"
+      },
+      "answer": {
+        "zh-CN": "受伤后第十三天，排尿时才发现右边阴囊空了。",
+        "en": "On the thirteenth day after the injury, I noticed an empty right side of the scrotum while urinating."
+      },
+      "keywords": {
+        "zh-CN": [
+          "阴囊发现时间",
+          "排尿时发现",
+          "右边空了",
+          "会诊缘由"
+        ],
+        "en": [
+          "scrotal discovery timing",
+          "noticed while voiding",
+          "empty right side",
+          "reason for consultation"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "mechanism",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "受伤时身体怎样受到挤压？",
+        "en": "How was your body compressed during the injury?"
+      },
+      "answer": {
+        "zh-CN": "当时坐在卡车前排，未系安全带，双腿分开睡着；撞车后被挤在座椅和仪表盘之间。",
+        "en": "I was asleep in the front of a truck, unbelted with my legs apart; the collision compressed me between the seat and dashboard."
+      },
+      "keywords": {
+        "zh-CN": [
+          "撞击经过",
+          "受伤机制",
+          "仪表盘挤压",
+          "安全带情况"
+        ],
+        "en": [
+          "collision mechanism",
+          "injury mechanism",
+          "dashboard compression",
+          "seatbelt use"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "associated-injuries",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "这次还有哪些部位受伤？",
+        "en": "What other injuries were identified?"
+      },
+      "answer": {
+        "zh-CN": "有创伤性休克和右前臂、骨盆、右股骨及右胫腓骨多处骨折，右足严重毁损。",
+        "en": "Traumatic shock and fractures of the right forearm, pelvis, right femur and right tibia/fibula were identified, with a severely mangled right foot."
+      },
+      "keywords": {
+        "zh-CN": [
+          "合并伤部位",
+          "骨折范围",
+          "其他损伤",
+          "多发伤背景"
+        ],
+        "en": [
+          "associated injury sites",
+          "fracture distribution",
+          "other injuries",
+          "multiple trauma background"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "operations",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "到这次会诊以前，已经做过什么手术？",
+        "en": "Which operations had already occurred before this consultation?"
+      },
+      "answer": {
+        "zh-CN": "休克纠正后，受伤当天做了右小腿截肢；第八天固定了右前臂和右股骨近端骨折。",
+        "en": "After shock correction, the right lower leg was amputated on the injury day. Right forearm and proximal femoral fractures were fixed on day eight."
+      },
+      "keywords": {
+        "zh-CN": [
+          "已完成手术",
+          "创伤手术经过",
+          "小腿截肢时间",
+          "骨折固定时间"
+        ],
+        "en": [
+          "completed operations",
+          "trauma surgery course",
+          "amputation timing",
+          "fracture fixation timing"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-scrotum",
+      "topic": "other",
+      "question": {
+        "zh-CN": "受伤以前，睾丸位置和阴囊有没有异常？",
+        "en": "Was the position of the testes or scrotum abnormal before the injury?"
+      },
+      "answer": {
+        "zh-CN": "报告没有提供伤前睾丸位置、疝或既往阴囊疾病的具体资料。",
+        "en": "The report does not provide details of pre-injury testicular position, hernia or earlier scrotal disease."
+      },
+      "keywords": {
+        "zh-CN": [
+          "伤前阴囊",
+          "以前睾丸位置",
+          "既往腹股沟疝",
+          "生殖器既往情况"
+        ],
+        "en": [
+          "preinjury scrotum",
+          "previous testicular position",
+          "prior inguinal hernia",
+          "earlier genital condition"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "voiding-history",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "发现异常时，有没有尿痛或肉眼血尿的记录？",
+        "en": "Were dysuria or visible haematuria recorded when the abnormality was noticed?"
+      },
+      "answer": {
+        "zh-CN": "只记载排尿时发现阴囊空虚，没有明确尿痛或肉眼血尿的有无。",
+        "en": "It only records discovery during voiding; the presence or absence of dysuria or visible haematuria is not specified."
+      },
+      "keywords": {
+        "zh-CN": [
+          "排尿伴随症状",
+          "尿痛记录",
+          "肉眼血尿记录",
+          "尿路主诉"
+        ],
+        "en": [
+          "associated urinary symptoms",
+          "dysuria documentation",
+          "visible haematuria record",
+          "urinary complaints"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "fertility-before",
+      "topic": "other",
+      "question": {
+        "zh-CN": "受伤前的生育和精液检查情况有记录吗？",
+        "en": "Were fertility or semen tests documented before the injury?"
+      },
+      "answer": {
+        "zh-CN": "原报告未提供伤前生育史、精液检查或性激素基线。",
+        "en": "Pre-injury fertility, semen testing and baseline sex hormones were not supplied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "伤前生育史",
+          "既往精液检查",
+          "受伤前性激素",
+          "生育基线"
+        ],
+        "en": [
+          "preinjury fertility",
+          "previous semen testing",
+          "baseline sex hormones",
+          "fertility baseline"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往手术还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about earlier operations?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "scrotum",
+      "system": "genitourinary",
+      "maneuver": {
+        "zh-CN": "核对会诊时双侧阴囊与会阴触诊",
+        "en": "Review scrotal and perineal palpation at consultation"
+      },
+      "finding": {
+        "zh-CN": "右侧阴囊空虚；肛门前右外侧皮肤青紫，可触及光滑、有压痛、大小似睾丸的肿块。",
+        "en": "The right hemiscrotum was empty. Bruised skin anterolateral to the right of the anus covered a smooth, tender, testis-sized mass."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "trauma-records",
+      "name": {
+        "zh-CN": "初次创伤与尿液检查记录",
+        "en": "Initial trauma and urine records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "初次创伤与尿液检查记录"
+        ],
+        "en": [
+          "Initial trauma and urine records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "既往影像记载右耻骨体、耻骨下支及双侧髋臼无移位骨折，并有其他右侧肢体骨折。腹部超声见少量液体；初次尿常规阴性。尿常规阴性不能解释会阴肿块。",
+            "en": "Earlier imaging recorded undisplaced right pubic-body/inferior-ramus and bilateral acetabular fractures with other right-limb fractures. Abdominal ultrasound showed small fluid collections; the initial urinalysis was negative. A negative urinalysis does not explain the perineal mass."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "cord-ultrasound",
+      "name": {
+        "zh-CN": "会诊超声与精索追踪记录",
+        "en": "Consultation ultrasound and cord-tracing record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "会诊超声与精索追踪记录"
+        ],
+        "en": [
+          "Consultation ultrasound and cord-tracing record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "沿精索追踪显示：右睾丸在左侧阴囊内，左睾丸在肛门右前方软组织，约3.5×1.7 cm、距皮肤约0.34 cm、回声均匀，周围少量液体。报告未描述睾丸血流，不能补为灌注正常。",
+            "en": "Tracing the cords placed the right testis in the left hemiscrotum and the left testis in soft tissue anterior-right to the anus, about 3.5×1.7 cm and 0.34 cm beneath skin, with homogeneous echoes and a little surrounding fluid. Testicular blood flow was not described and cannot be assumed normal."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "operative-anatomy",
+      "name": {
+        "zh-CN": "后续手术解剖记录",
+        "en": "Subsequent operative anatomy record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "后续手术解剖记录"
+        ],
+        "en": [
+          "Subsequent operative anatomy record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "伤后第二十五天探查发现阴囊中隔破裂，右睾丸位于左侧阴囊、左睾丸位于右侧会阴，并已有纤维索带。两侧睾丸和附睾形态、颜色被记录为正常。这是历史延迟和肉眼观察，不能当作推荐等待时间或完整功能证明。",
+            "en": "Exploration on day twenty-five showed a torn scrotal septum, the right testis in the left hemiscrotum and the left in the right perineum, with fibrous bands already present. Both testes and epididymides were described as normal in shape and colour. The historical delay and gross appearance do not establish a recommended waiting interval or complete functional preservation."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原手术解除纤维索带、复位固定两侧睾丸并修补中隔。术后一个半月勃起功能正常；精液量3.2 ml、密度17.5×10^6/ml、正常形态85%。作者写为外伤后死精，但未列精子活率或运动率，不能独立验证该结论，形态比例也不能证明存活或生育正常。孕酮0.98 ng/ml、泌乳素17.38 ng/ml、雌二醇88 pg/ml均高于报告参考范围；睾酮、LH、FSH记录为正常。长期生育结局未提供。",
+            "en": "Surgery released fibrous bands, reduced and fixed both testes, and repaired the septum. At one and a half months, erections were normal; semen volume was 3.2 ml, concentration 17.5×10^6/ml and normal morphology 85%. The authors labelled traumatic necrospermia without providing vitality or motility; this cannot be independently confirmed, and morphology does not establish sperm survival or fertility. Progesterone 0.98 ng/ml, prolactin 17.38 ng/ml and estradiol 88 pg/ml exceeded the reported reference ranges; testosterone, LH and FSH were described as normal. Long-term fertility was not supplied."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "discovery"
+          },
+          {
+            "asked": "mechanism"
+          },
+          {
+            "asked": "associated-injuries"
+          },
+          {
+            "asked": "operations"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "scrotum"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "哪一项解释最能同时说明空虚阴囊、会阴肿块及精索追踪结果？",
+        "en": "Which interpretation best accounts for the empty hemiscrotum, perineal mass and cord tracing?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "trauma-records",
+            "phase": "workup"
+          },
+          {
+            "read": "cord-ultrasound",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "crossed",
+          "text": {
+            "zh-CN": "创伤性睾丸交叉脱位，需分别确认两侧位置及损伤情况",
+            "en": "Traumatic crossed testicular dislocation, requiring identification and injury assessment of both testes"
+          },
+          "feedback": {
+            "zh-CN": "右睾丸跨到左侧阴囊，左睾丸移至右会阴；不能只按肿块所在侧命名。",
+            "en": "The right testis crossed into the left hemiscrotum while the left reached the right perineum; side cannot be assigned from mass location alone."
+          },
+          "correct": true
+        },
+        {
+          "id": "haematoma-only",
+          "text": {
+            "zh-CN": "会阴肿块仅为骨盆骨折血肿，阴囊无须进一步解释",
+            "en": "The mass is only a fracture-related haematoma and the scrotal finding needs no explanation"
+          },
+          "feedback": {
+            "zh-CN": "超声追踪到睾丸与精索，且阴囊确实空虚，不能用血肿解释全部证据。",
+            "en": "Cord continuity identifies testicular tissue, and the empty hemiscrotum remains unexplained by a haematoma."
+          },
+          "correct": false
+        },
+        {
+          "id": "unilateral",
+          "text": {
+            "zh-CN": "只是一侧睾丸移向同侧会阴，另一侧位置正常",
+            "en": "Only one testis moved to its ipsilateral perineum, with the other normally positioned"
+          },
+          "feedback": {
+            "zh-CN": "精索追踪记录显示两侧均发生位置改变。",
+            "en": "Cord tracing documented displacement of both testes."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "operative-anatomy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "anatomy",
+          "text": {
+            "zh-CN": "手术证实交叉位置与中隔破裂，但肉眼颜色不能替代灌注和生殖功能评估",
+            "en": "Surgery confirms crossed positions and septal rupture, but gross colour does not replace perfusion or reproductive assessment"
+          },
+          "feedback": {
+            "zh-CN": "记录能证实解剖；缺少超声血流和功能数据时，不应宣布全部功能正常。",
+            "en": "The record confirms anatomy; absent Doppler and functional data preclude declaring complete normal function."
+          },
+          "correct": true
+        },
+        {
+          "id": "perfusion",
+          "text": {
+            "zh-CN": "回声均匀加上颜色正常，已证明术前灌注无损",
+            "en": "Homogeneous echoes plus normal colour prove intact preoperative perfusion"
+          },
+          "feedback": {
+            "zh-CN": "原超声没有血流描述，后续外观不能补回未测量的术前数据。",
+            "en": "The ultrasound omitted blood flow, and later appearance cannot supply unmeasured preoperative data."
+          },
+          "correct": false
+        },
+        {
+          "id": "safe-delay",
+          "text": {
+            "zh-CN": "第二十五天外观尚正常，证明同类损伤都可等待数周",
+            "en": "Normal appearance on day twenty-five proves all similar injuries can wait weeks"
+          },
+          "feedback": {
+            "zh-CN": "这是单例历史时间线，不能证明延迟安全；已有纤维粘连。",
+            "en": "This single historical timeline cannot establish delay as safe; fibrous adhesions were already present."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "复盘同类创伤的诊疗路径，怎样改进最安全？",
+        "en": "What is the safest improvement to the pathway for a similar injury?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "operative-anatomy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "specialist",
+          "text": {
+            "zh-CN": "及时泌尿外科评估，核对超声灌注和破裂风险；不能复位时及时手术固定，并安排生殖功能随访",
+            "en": "Arrange timely urology assessment of perfusion and rupture; use timely operative fixation when reduction cannot be achieved, with reproductive follow-up"
+          },
+          "feedback": {
+            "zh-CN": "现行EAU路径不支持照搬数周等待，也不支持患者自行复位；还需说明后续功能仍可能不确定。",
+            "en": "The current EAU pathway does not support copying a weeks-long wait or self-reduction, and later function may remain uncertain."
+          },
+          "correct": true
+        },
+        {
+          "id": "wait",
+          "text": {
+            "zh-CN": "按原报告一律等到伤后第二十五天再考虑处理",
+            "en": "Routinely wait until day twenty-five before considering treatment"
+          },
+          "feedback": {
+            "zh-CN": "原报告的延迟不是临床推荐，不能据此排除缺血或破裂风险。",
+            "en": "The report delay is not a recommendation and does not exclude ischaemia or rupture."
+          },
+          "correct": false
+        },
+        {
+          "id": "self",
+          "text": {
+            "zh-CN": "先让患者自行反复挤压复位，外观恢复后不再随访",
+            "en": "Ask the patient to repeatedly push the testis back, then omit follow-up once appearance recovers"
+          },
+          "feedback": {
+            "zh-CN": "复位需要专业评估与监测，外观恢复也不等于生育功能恢复。",
+            "en": "Reduction requires professional assessment and monitoring; normal appearance does not establish restored fertility."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "discovery"
+          },
+          {
+            "asked": "mechanism"
+          },
+          {
+            "asked": "associated-injuries"
+          },
+          {
+            "asked": "operations"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "prior-scrotum"
+          },
+          {
+            "asked": "voiding-history"
+          },
+          {
+            "asked": "fertility-before"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "scrotum"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "trauma-records",
+            "phase": "workup"
+          },
+          {
+            "read": "cord-ultrasound",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "operative-anatomy",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "避免复制历史延迟或自行复位，保留灌注及生育功能的不确定性",
+        "en": "Avoid copying historical delay or self-reduction, and retain uncertainty about perfusion and fertility"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明多发伤不能遮蔽外生殖器的异常体征。；承认缺少会诊时生命体征、超声血流、伤前生育基线、精子活率及运动率和长期生育结局。，用复述确认理解。",
+        "en": "Explain that Multiple trauma must not obscure abnormal genital findings.; acknowledge Consultation vital signs, ultrasound blood flow, baseline fertility, sperm vitality/motility and long-term fertility are absent. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "trauma-records",
+        "cord-ultrasound",
+        "operative-anatomy",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "超声沿精索定位及后续探查支持创伤性睾丸交叉脱位；灌注和生育功能证据不完整。",
+      "en": "Cord-tracing ultrasound and exploration support traumatic crossed testicular dislocation, with incomplete evidence on perfusion and fertility."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "多发伤不能遮蔽外生殖器的异常体征。",
+        "en": "Multiple trauma must not obscure abnormal genital findings."
+      },
+      {
+        "zh-CN": "精索追踪用于确认侧别，不能仅按肿块位置判断。",
+        "en": "Cord tracing identifies side; mass location alone is insufficient."
+      },
+      {
+        "zh-CN": "形态、灌注、精子存活和生育结局是不同证据层面。",
+        "en": "Morphology, perfusion, sperm vitality and fertility are distinct evidence domains."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "本场景回顾已有记录，不要求现场重复侵入性操作。",
+        "en": "This scenario reviews existing records without repeating invasive procedures."
+      },
+      {
+        "zh-CN": "历史等待时间不可直接转换为现代处置策略。",
+        "en": "Historical waiting intervals cannot be converted directly into current care strategies."
+      },
+      {
+        "zh-CN": "报告的死精标签缺乏活率数据，应保留不确定性。",
+        "en": "The necrospermia label lacks vitality data and must remain uncertain."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "缺少会诊时生命体征、超声血流、伤前生育基线、精子活率及运动率和长期生育结局。",
+        "en": "Consultation vital signs, ultrasound blood flow, baseline fertility, sperm vitality/motility and long-term fertility are absent."
+      }
+    ],
+    "references": [
+      "王庆贤, 张英泽, 赵宇宙, 潘进社, 吴希瑞, 张世强, 任栋. 创伤性睾丸交叉脱位1例并文献复习. 解剖与临床. 2010;15(06):426-429. doi: 10.3969/j.issn.1671-7163.2009.06.012.1.",
+      "https://rs.yiigle.com/cmaid/1322371",
+      "https://doi.org/10.3969/j.issn.1671-7163.2009.06.012.1",
+      "European Association of Urology. Urological Trauma, current online guideline, sections 4.5.3.b and 4.5.4.b.1; checked 2026-10-28. https://uroweb.org/guidelines/urological-trauma/chapter/urogenital-trauma-guidelines"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "缺少会诊时生命体征、超声血流、伤前生育基线、精子活率及运动率和长期生育结局。",
+      "en": "Consultation vital signs, ultrasound blood flow, baseline fertility, sperm vitality/motility and long-term fertility are absent."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "discovery"
+    },
+    {
+      "type": "ask",
+      "itemId": "mechanism"
+    },
+    {
+      "type": "ask",
+      "itemId": "associated-injuries"
+    },
+    {
+      "type": "ask",
+      "itemId": "operations"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-scrotum"
+    },
+    {
+      "type": "ask",
+      "itemId": "voiding-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "fertility-before"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "examine",
+      "findingId": "scrotum"
+    },
+    {
+      "type": "order",
+      "investigationId": "trauma-records"
+    },
+    {
+      "type": "read",
+      "investigationId": "trauma-records",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "cord-ultrasound"
+    },
+    {
+      "type": "read",
+      "investigationId": "cord-ultrasound",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "crossed"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "operative-anatomy"
+    },
+    {
+      "type": "read",
+      "investigationId": "operative-anatomy",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "anatomy"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "specialist"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1322371",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1322371",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于阴囊发现时间，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "discovery"
+        ]
+      },
+      {
+        "text": "Could you tell me about scrotal discovery timing?",
+        "locale": "en",
+        "expect": [
+          "discovery"
+        ]
+      },
+      {
+        "text": "我想了解排尿时发现。",
+        "locale": "zh-CN",
+        "expect": [
+          "discovery"
+        ]
+      },
+      {
+        "text": "Please explain noticed while voiding in more detail.",
+        "locale": "en",
+        "expect": [
+          "discovery"
+        ]
+      },
+      {
+        "text": "关于撞击经过，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "mechanism"
+        ]
+      },
+      {
+        "text": "Could you tell me about collision mechanism?",
+        "locale": "en",
+        "expect": [
+          "mechanism"
+        ]
+      },
+      {
+        "text": "我想了解受伤机制。",
+        "locale": "zh-CN",
+        "expect": [
+          "mechanism"
+        ]
+      },
+      {
+        "text": "Please explain injury mechanism in more detail.",
+        "locale": "en",
+        "expect": [
+          "mechanism"
+        ]
+      },
+      {
+        "text": "关于合并伤部位，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated-injuries"
+        ]
+      },
+      {
+        "text": "Could you tell me about associated injury sites?",
+        "locale": "en",
+        "expect": [
+          "associated-injuries"
+        ]
+      },
+      {
+        "text": "我想了解骨折范围。",
+        "locale": "zh-CN",
+        "expect": [
+          "associated-injuries"
+        ]
+      },
+      {
+        "text": "Please explain fracture distribution in more detail.",
+        "locale": "en",
+        "expect": [
+          "associated-injuries"
+        ]
+      },
+      {
+        "text": "关于已完成手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "Could you tell me about completed operations?",
+        "locale": "en",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "我想了解创伤手术经过。",
+        "locale": "zh-CN",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "Please explain trauma surgery course in more detail.",
+        "locale": "en",
+        "expect": [
+          "operations"
+        ]
+      },
+      {
+        "text": "关于伤前阴囊，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-scrotum"
+        ]
+      },
+      {
+        "text": "Could you tell me about preinjury scrotum?",
+        "locale": "en",
+        "expect": [
+          "prior-scrotum"
+        ]
+      },
+      {
+        "text": "我想了解以前睾丸位置。",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-scrotum"
+        ]
+      },
+      {
+        "text": "Please explain previous testicular position in more detail.",
+        "locale": "en",
+        "expect": [
+          "prior-scrotum"
+        ]
+      },
+      {
+        "text": "关于排尿伴随症状，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "voiding-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about associated urinary symptoms?",
+        "locale": "en",
+        "expect": [
+          "voiding-history"
+        ]
+      },
+      {
+        "text": "关于伤前生育史，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "fertility-before"
+        ]
+      },
+      {
+        "text": "Could you tell me about preinjury fertility?",
+        "locale": "en",
+        "expect": [
+          "fertility-before"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/1322371"
+    }
+  }
+}

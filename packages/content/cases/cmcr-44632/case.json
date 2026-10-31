@@ -1,0 +1,1983 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-44632",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "水肿深色尿与溶血 · 7岁女孩",
+    "en": "Oedema, dark urine and haemolysis · girl aged 7"
+  },
+  "summary": {
+    "zh-CN": "溶血、低血小板和严重肾损伤需进一步区分TMA病因，避免仅以有无腹泻分类。",
+    "en": "Haemolysis, thrombocytopenia and severe renal injury require TMA aetiology assessment beyond diarrhoea history."
+  },
+  "specialty": [
+    "paediatric-nephrology",
+    "hematology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "刘晓宇, 管娜, 姚勇. 抗H因子自身抗体相关性溶血尿毒综合征一例. 中华儿科杂志. 2012;50(04):313-314. doi:10.3760/cma.j.issn.0578-1310.2012.04.019.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2012.04.019",
+    "authors": [
+      "刘晓宇",
+      "管娜",
+      "姚勇"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "组合溶血、血小板减少和肾损伤识别TMA。",
+      "en": "Combine haemolysis, thrombocytopenia and renal injury to recognise TMA."
+    },
+    {
+      "zh-CN": "解释补体和ADAMTS13证据的不同作用。",
+      "en": "Explain the differing roles of complement and ADAMTS13 evidence."
+    },
+    {
+      "zh-CN": "区分器官恢复与持续抗体。",
+      "en": "Distinguish organ recovery from persistent antibody activity."
+    },
+    {
+      "zh-CN": "持续监测高血压神经风险和补体活动，避免血象改善后的过早停访",
+      "en": "Monitor hypertensive neurological risk and complement activity beyond count recovery"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "吕清和（化名）",
+      "en": "Lü Qinghe (pseudonym)"
+    },
+    "age": 7,
+    "ageUnit": "years",
+    "sex": "female",
+    "weightKg": 15.5,
+    "chiefComplaint": {
+      "zh-CN": "水肿和可乐色尿30天",
+      "en": "Thirty days of oedema and cola-coloured urine"
+    },
+    "triageNote": {
+      "zh-CN": "少尿、贫血和高血压，在肾替代治疗后仍未恢复。",
+      "en": "Oliguria, anaemia and hypertension persist despite renal replacement treatment."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "一个月前出现眼睑水肿、可乐色尿。",
+        "en": "Eyelid swelling and cola-coloured urine began a month earlier."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "urine"
+          },
+          {
+            "asked": "gut"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "examined": "circulation"
+          },
+          {
+            "examined": "abdomen-neuro"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "眼睛肿和尿色变深什么时候开始？ 最初尿是什么颜色？",
+        "en": "When did eyelid swelling and dark urine begin? What colour was the urine initially?"
+      },
+      "answer": {
+        "zh-CN": "一个月前出现眼睑水肿、可乐色尿。",
+        "en": "Eyelid swelling and cola-coloured urine began a month earlier."
+      },
+      "keywords": {
+        "zh-CN": [
+          "水肿深色尿",
+          "眼睛肿和尿色变深什么时候开始？",
+          "最初尿是什么颜色？",
+          "水肿深色尿情况"
+        ],
+        "en": [
+          "swelling and dark urine",
+          "When did eyelid swelling and dark urine begin?",
+          "What colour was the urine initially?",
+          "swelling and dark urine information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "urine",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "每天尿量大约多少，后来更少了吗？ 最近有没有明显少尿？",
+        "en": "How much urine is passed daily, and has it decreased further? Has urine output become markedly reduced?"
+      },
+      "answer": {
+        "zh-CN": "最初每天150–500 mL，后来仅50–150 mL。",
+        "en": "Initially 150–500 mL daily, later only 50–150 mL."
+      },
+      "keywords": {
+        "zh-CN": [
+          "尿量变化",
+          "每天尿量大约多少，后来更少了吗？",
+          "最近有没有明显少尿？",
+          "尿量变化情况"
+        ],
+        "en": [
+          "urine volume change",
+          "How much urine is passed daily, and has it decreased further?",
+          "Has urine output become markedly reduced?",
+          "urine volume change information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "gut",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "发病前有没有腹泻或呕吐？ 肠胃不舒服先持续了多久？",
+        "en": "Was there diarrhoea or vomiting before the illness? How long did the preceding stomach symptoms last?"
+      },
+      "answer": {
+        "zh-CN": "先有一周恶心呕吐，没有腹泻。",
+        "en": "Nausea and vomiting preceded illness by a week, without diarrhoea."
+      },
+      "keywords": {
+        "zh-CN": [
+          "前驱胃肠症状",
+          "发病前有没有腹泻或呕吐？",
+          "肠胃不舒服先持续了多久？",
+          "前驱胃肠症状情况"
+        ],
+        "en": [
+          "preceding gastrointestinal symptoms",
+          "Was there diarrhoea or vomiting before the illness?",
+          "How long did the preceding stomach symptoms last?",
+          "preceding gastrointestinal symptoms information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "treatment",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前做过透析或血浆治疗吗，哪里改善了？ 水肿退了以后尿量恢复了吗？",
+        "en": "Was dialysis or plasma treatment given, and what improved? Did urine output recover when oedema improved?"
+      },
+      "answer": {
+        "zh-CN": "此前输红细胞和血浆、一次血浆置换及肾替代治疗后水肿减轻，少尿仍持续。",
+        "en": "Red cells, plasma, one plasma exchange and renal replacement improved oedema but not persistent oliguria."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此前支持治疗",
+          "之前做过透析或血浆治疗吗，哪里改善了？",
+          "水肿退了以后尿量恢复了吗？",
+          "此前支持治疗情况"
+        ],
+        "en": [
+          "previous support",
+          "Was dialysis or plasma treatment given, and what improved?",
+          "Did urine output recover when oedema improved?",
+          "previous support information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "purpura",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有没有出现紫癜？ 那次皮肤紫癜时尿检怎样？",
+        "en": "Was there previous purpura? What did urine tests show during the earlier purpura?"
+      },
+      "answer": {
+        "zh-CN": "八个月前皮肤型紫癜，当时尿检正常。",
+        "en": "Cutaneous purpura eight months earlier with normal urine then."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往紫癜",
+          "以前有没有出现紫癜？",
+          "那次皮肤紫癜时尿检怎样？",
+          "既往紫癜情况"
+        ],
+        "en": [
+          "previous purpura",
+          "Was there previous purpura?",
+          "What did urine tests show during the earlier purpura?",
+          "previous purpura information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人有类似疾病或遗传病吗？ 父母和兄弟姐妹健康情况怎样？",
+        "en": "Does anyone in the family have similar or inherited illness? How is the health of parents and siblings?"
+      },
+      "answer": {
+        "zh-CN": "父母健康，个人发育正常。",
+        "en": "Parents were healthy and development had been normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族健康",
+          "家里有人有类似疾病或遗传病吗？",
+          "父母和兄弟姐妹健康情况怎样？",
+          "家族健康情况"
+        ],
+        "en": [
+          "family health",
+          "Does anyone in the family have similar or inherited illness?",
+          "How is the health of parents and siblings?",
+          "family health information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "abdominal",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "现在还会反复腹胀呕吐吗？ 胃肠减压后症状有没有缓解？",
+        "en": "Do distension and vomiting continue to recur? Did gastrointestinal decompression relieve symptoms?"
+      },
+      "answer": {
+        "zh-CN": "过程中反复恶心呕吐腹胀，胃肠减压后稍好。",
+        "en": "Recurrent nausea, vomiting and distension improved partly after decompression."
+      },
+      "keywords": {
+        "zh-CN": [
+          "持续腹胀呕吐",
+          "现在还会反复腹胀呕吐吗？",
+          "胃肠减压后症状有没有缓解？",
+          "持续腹胀呕吐情况"
+        ],
+        "en": [
+          "persistent distension and vomiting",
+          "Do distension and vomiting continue to recur?",
+          "Did gastrointestinal decompression relieve symptoms?",
+          "persistent distension and vomiting information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "circulation",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对血压与贫血",
+        "en": "Review BP and pallor"
+      },
+      "finding": {
+        "zh-CN": "血压150/110 mmHg，重度贫血貌，当前已无水肿。",
+        "en": "BP 150/110 mmHg with marked pallor; oedema had resolved."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "abdomen-neuro",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "核对腹部与肌力",
+        "en": "Review abdomen and strength"
+      },
+      "finding": {
+        "zh-CN": "腹膨隆、可见肠型、无压痛；四肢低张力、肌力Ⅳ级。",
+        "en": "Distended abdomen with visible bowel contours but no tenderness; low tone and grade IV limb power."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "tma",
+      "name": {
+        "zh-CN": "最重血液和肾功能记录",
+        "en": "Peak haematological and renal abnormalities"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "最重血液和肾功能记录"
+        ],
+        "en": [
+          "Peak haematological and renal abnormalities"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "Hb最低58 g/L、血小板33×10⁹/L、破碎红细胞，LDH1369 U/L、肌酐最高507 μmol/L。",
+            "en": "Hb nadir 58 g/L, platelets 33×10⁹/L, schistocytes, LDH 1369 U/L and creatinine up to 507 µmol/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "complement",
+      "name": {
+        "zh-CN": "补体与鉴别",
+        "en": "Complement and differential tests"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "补体与鉴别"
+        ],
+        "en": [
+          "Complement and differential tests"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "C3约0.4 g/L低，Coombs及所列ANA/ANCA阴性；便培养阴性但未详Shiga毒素检测。",
+            "en": "C3 about 0.4 g/L was low; Coombs and listed ANA/ANCA tests negative. Stool culture was negative but Shiga-toxin testing was not detailed."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "肾活检",
+        "en": "Renal biopsy"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肾活检"
+        ],
+        "en": [
+          "Renal biopsy"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "内皮增生肿胀、缺血皱缩和双轨，动脉葱皮样增生及间质纤维化。",
+            "en": "Endothelial swelling/proliferation, ischaemic wrinkling and double contours, onion-skin arterioles and interstitial fibrosis."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "factorh",
+      "name": {
+        "zh-CN": "补体H因子及ADAMTS13",
+        "en": "Factor H and ADAMTS13"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "补体H因子及ADAMTS13"
+        ],
+        "en": [
+          "Factor H and ADAMTS13"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "H因子209 μg/mL（参考380–762），抗H因子抗体定性阳性无滴度；ADAMTS13活性85%，父母相关检查正常。",
+            "en": "Factor H 209 µg/mL (reference 380–762), qualitative anti-factor-H positivity without titre; ADAMTS13 activity 85%, with normal parental related tests."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "历史激素和MMF后约一月血象恢复，四月停腹透；曾出现癫痫和脑影像异常。十月余抗H抗体仍阳性、H因子仍低，继续治疗，无再抽搐但EEG未完全正常。",
+            "en": "Counts recovered about a month after historical steroids/MMF and dialysis stopped at four months. Seizures and brain abnormalities occurred. Beyond ten months anti-factor-H remained positive and factor H low; therapy continued, with no recurrent clinical seizure but persistent EEG abnormalities."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "urine"
+          },
+          {
+            "asked": "gut"
+          },
+          {
+            "asked": "treatment"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "circulation"
+          },
+          {
+            "examined": "abdomen-neuro"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "这种肾脏为主的TMA应如何进一步鉴别？",
+        "en": "How should this renal-predominant TMA be differentiated?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "tma",
+            "phase": "workup"
+          },
+          {
+            "read": "complement",
+            "phase": "workup"
+          },
+          {
+            "read": "biopsy",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "评估补体相关HUS、感染相关HUS及其他TMA",
+            "en": "Assess complement-associated HUS, infection-associated HUS and other TMAs"
+          },
+          "feedback": {
+            "zh-CN": "腹泻阴性并不能替代病原及补体证据。",
+            "en": "Absent diarrhoea does not replace pathogen and complement evidence."
+          },
+          "correct": true
+        },
+        {
+          "id": "purpura",
+          "text": {
+            "zh-CN": "既往皮肤紫癜已确定这次所有肾损害病因",
+            "en": "Previous cutaneous purpura establishes the current renal cause"
+          },
+          "feedback": {
+            "zh-CN": "严重微血管性溶血和血小板减少需独立解释。",
+            "en": "Severe microangiopathic haemolysis and thrombocytopenia need separate explanation."
+          },
+          "correct": false
+        },
+        {
+          "id": "hypertension",
+          "text": {
+            "zh-CN": "高血压足以停止所有TMA病因检查",
+            "en": "Hypertension ends all TMA aetiology assessment"
+          },
+          "feedback": {
+            "zh-CN": "高压可参与也可继发于TMA，需要双向评估。",
+            "en": "Hypertension may contribute to or result from TMA."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "factorh",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "抗H抗体支持免疫介导补体机制，定性结果和遗传信息仍有限",
+            "en": "Anti-factor-H positivity supports an immune complement mechanism, with limited titre/genetic data"
+          },
+          "feedback": {
+            "zh-CN": "正常ADAMTS13不支持严重缺乏型TTP，但不完成所有病因排除。",
+            "en": "Normal ADAMTS13 argues against severe-deficiency TTP without excluding every other cause."
+          },
+          "correct": true
+        },
+        {
+          "id": "c3",
+          "text": {
+            "zh-CN": "低C3单项即可确诊抗H抗体病",
+            "en": "Low C3 alone diagnoses anti-factor-H disease"
+          },
+          "feedback": {
+            "zh-CN": "需要抗体及临床联合。",
+            "en": "Antibody and clinical evidence are needed."
+          },
+          "correct": false
+        },
+        {
+          "id": "negative-stool",
+          "text": {
+            "zh-CN": "普通便培养阴性彻底排除STEC",
+            "en": "Routine negative stool culture fully excludes STEC"
+          },
+          "feedback": {
+            "zh-CN": "毒素或特异检测未详。",
+            "en": "Specific toxin testing was not detailed."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何组织急性和长期管理？",
+        "en": "How should acute and long-term management be organised?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "factorh",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "肾脏血液团队处理肾替代、血压与神经风险，复核抗体并讨论当前补体/免疫治疗",
+            "en": "Renal/haematology teams should manage renal support, BP and neurological risk, repeat antibodies and consider current complement/immune therapies"
+          },
+          "feedback": {
+            "zh-CN": "旧报道疗法和血压水平不直接作为今日目标。",
+            "en": "Historical therapy and achieved BP are not automatically current targets."
+          },
+          "correct": true
+        },
+        {
+          "id": "resolved",
+          "text": {
+            "zh-CN": "血常规恢复就永久停止随访",
+            "en": "Normal counts permit permanent discharge from follow-up"
+          },
+          "feedback": {
+            "zh-CN": "抗体及器官风险可以持续。",
+            "en": "Antibody and organ risks can persist."
+          },
+          "correct": false
+        },
+        {
+          "id": "home",
+          "text": {
+            "zh-CN": "自行按旧文调免疫抑制药",
+            "en": "Adjust immunosuppression independently from the old report"
+          },
+          "feedback": {
+            "zh-CN": "需要感染、抗体及器官监测。",
+            "en": "Infection, antibody and organ monitoring are required."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "urine"
+          },
+          {
+            "asked": "gut"
+          },
+          {
+            "asked": "treatment"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "purpura"
+          },
+          {
+            "asked": "family"
+          },
+          {
+            "asked": "abdominal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "circulation"
+          },
+          {
+            "examined": "abdomen-neuro"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "tma",
+            "phase": "workup"
+          },
+          {
+            "read": "complement",
+            "phase": "workup"
+          },
+          {
+            "read": "biopsy",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "factorh",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "持续监测高血压神经风险和补体活动，避免血象改善后的过早停访",
+        "en": "Monitor hypertensive neurological risk and complement activity beyond count recovery"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：组合溶血、血小板减少和肾损伤识别TMA。同时解释以下信息仍有缺失或疑问：抗体滴度、补体遗传、Shiga毒素检测及更长肾神经结局。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Combine haemolysis, thrombocytopenia and renal injury to recognise TMA. Identify the following as missing or uncertain: Antibody titre, complement genetics, Shiga-toxin testing and longer renal/neurological outcome. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "tma",
+        "complement",
+        "biopsy",
+        "factorh",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "抗H因子抗体相关HUS的证据较强，血液和肾脏恢复不等于免疫学缓解。",
+      "en": "Evidence supports anti-factor-H-associated HUS; haematological/renal recovery is not immunological remission."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "组合溶血、血小板减少和肾损伤识别TMA。",
+        "en": "Combine haemolysis, thrombocytopenia and renal injury to recognise TMA."
+      },
+      {
+        "zh-CN": "解释补体和ADAMTS13证据的不同作用。",
+        "en": "Explain the differing roles of complement and ADAMTS13 evidence."
+      },
+      {
+        "zh-CN": "区分器官恢复与持续抗体。",
+        "en": "Distinguish organ recovery from persistent antibody activity."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "组合溶血、血小板减少和肾损伤识别TMA。",
+        "en": "Combine haemolysis, thrombocytopenia and renal injury to recognise TMA."
+      },
+      {
+        "zh-CN": "解释补体和ADAMTS13证据的不同作用。",
+        "en": "Explain the differing roles of complement and ADAMTS13 evidence."
+      },
+      {
+        "zh-CN": "区分器官恢复与持续抗体。",
+        "en": "Distinguish organ recovery from persistent antibody activity."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "抗体滴度、补体遗传、Shiga毒素检测及更长肾神经结局。",
+        "en": "Antibody titre, complement genetics, Shiga-toxin testing and longer renal/neurological outcome."
+      }
+    ],
+    "references": [
+      "刘晓宇, 管娜, 姚勇. 抗H因子自身抗体相关性溶血尿毒综合征一例. 中华儿科杂志. 2012;50(04):313-314. doi:10.3760/cma.j.issn.0578-1310.2012.04.019.",
+      "https://rs.yiigle.com/cmaid/44632"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "抗体滴度、补体遗传、Shiga毒素检测及更长肾神经结局。",
+      "en": "Antibody titre, complement genetics, Shiga-toxin testing and longer renal/neurological outcome."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "urine"
+    },
+    {
+      "type": "ask",
+      "itemId": "gut"
+    },
+    {
+      "type": "ask",
+      "itemId": "treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "purpura"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "abdominal"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "circulation"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen-neuro"
+    },
+    {
+      "type": "order",
+      "investigationId": "tma"
+    },
+    {
+      "type": "read",
+      "investigationId": "tma",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "complement"
+    },
+    {
+      "type": "read",
+      "investigationId": "complement",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "factorh"
+    },
+    {
+      "type": "read",
+      "investigationId": "factorh",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "44632",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/44632",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2012.04.019",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "眼睛肿和尿色变深什么时候开始？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "When did eyelid swelling and dark urine begin?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "最初尿是什么颜色？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "What colour was the urine initially?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "每天尿量大约多少，后来更少了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "urine"
+        ]
+      },
+      {
+        "text": "How much urine is passed daily, and has it decreased further?",
+        "locale": "en",
+        "expect": [
+          "urine"
+        ]
+      },
+      {
+        "text": "最近有没有明显少尿？",
+        "locale": "zh-CN",
+        "expect": [
+          "urine"
+        ]
+      },
+      {
+        "text": "Has urine output become markedly reduced?",
+        "locale": "en",
+        "expect": [
+          "urine"
+        ]
+      },
+      {
+        "text": "发病前有没有腹泻或呕吐？",
+        "locale": "zh-CN",
+        "expect": [
+          "gut"
+        ]
+      },
+      {
+        "text": "Was there diarrhoea or vomiting before the illness?",
+        "locale": "en",
+        "expect": [
+          "gut"
+        ]
+      },
+      {
+        "text": "肠胃不舒服先持续了多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "gut"
+        ]
+      },
+      {
+        "text": "How long did the preceding stomach symptoms last?",
+        "locale": "en",
+        "expect": [
+          "gut"
+        ]
+      },
+      {
+        "text": "之前做过透析或血浆治疗吗，哪里改善了？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "Was dialysis or plasma treatment given, and what improved?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "水肿退了以后尿量恢复了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "Did urine output recover when oedema improved?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "以前有没有出现紫癜？",
+        "locale": "zh-CN",
+        "expect": [
+          "purpura"
+        ]
+      },
+      {
+        "text": "Was there previous purpura?",
+        "locale": "en",
+        "expect": [
+          "purpura"
+        ]
+      },
+      {
+        "text": "那次皮肤紫癜时尿检怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "purpura"
+        ]
+      },
+      {
+        "text": "What did urine tests show during the earlier purpura?",
+        "locale": "en",
+        "expect": [
+          "purpura"
+        ]
+      },
+      {
+        "text": "家里有人有类似疾病或遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anyone in the family have similar or inherited illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "父母和兄弟姐妹健康情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How is the health of parents and siblings?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "现在还会反复腹胀呕吐吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "abdominal"
+        ]
+      },
+      {
+        "text": "Do distension and vomiting continue to recur?",
+        "locale": "en",
+        "expect": [
+          "abdominal"
+        ]
+      },
+      {
+        "text": "胃肠减压后症状有没有缓解？",
+        "locale": "zh-CN",
+        "expect": [
+          "abdominal"
+        ]
+      },
+      {
+        "text": "Did gastrointestinal decompression relieve symptoms?",
+        "locale": "en",
+        "expect": [
+          "abdominal"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有既往健康情况方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you describe any previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      }
+    ]
+  }
+}

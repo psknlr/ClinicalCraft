@@ -1,0 +1,2010 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-639083",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "生后早期反复低血糖 · 女婴",
+    "en": "Recurrent early neonatal hypoglycaemia · baby girl"
+  },
+  "summary": {
+    "zh-CN": "低血糖时未被抑制的胰岛素与低酮体需结合后续定位，不能由常规超声排除局灶病变。",
+    "en": "Unsuppressed insulin and low ketones during hypoglycaemia require later localisation; normal ultrasound does not exclude a focal lesion."
+  },
+  "specialty": [
+    "neonatology",
+    "paediatric-endocrinology",
+    "paediatric-surgery"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "桑艳梅, 李文京, 王焕民, 徐子迪. 胰腺局灶增生型先天性高胰岛素血症一例. 中华糖尿病杂志. 2013;05(11):705-707. doi:10.3760/cma.j.issn.1674-5809.2013.11.014.",
+    "doi": "10.3760/cma.j.issn.1674-5809.2013.11.014",
+    "authors": [
+      "桑艳梅",
+      "李文京",
+      "王焕民",
+      "徐子迪"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "De Leon DD, et al. International guidelines for diagnosis and management of hyperinsulinism. Horm Res Paediatr. 2024;97(3):279-298. doi:10.1159/000531766. https://pmc.ncbi.nlm.nih.gov/articles/PMC11124746/"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "解释低糖时胰岛素和酮体的生理不适当性。",
+      "en": "Explain inappropriate insulin/ketone responses during hypoglycaemia."
+    },
+    {
+      "zh-CN": "区分常规结构影像与功能定位。",
+      "en": "Distinguish routine structural imaging from functional localisation."
+    },
+    {
+      "zh-CN": "指出短期血糖正常不等于长期神经结局已知。",
+      "en": "Explain that short-term normoglycaemia does not establish long-term neurological outcome."
+    },
+    {
+      "zh-CN": "防止低糖脑损伤及无监护禁食，定位后个体化处理",
+      "en": "Prevent hypoglycaemic injury and unsupervised fasting, then individualise treatment after localisation"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "周予宁（化名）",
+      "en": "Zhou Yuning (pseudonym)"
+    },
+    "age": 0.4583333333333333,
+    "ageUnit": "days",
+    "sex": "female",
+    "weightKg": 4.05,
+    "chiefComplaint": {
+      "zh-CN": "出生11小时出现低血糖，此后反复",
+      "en": "Hypoglycaemia began at eleven hours and recurred"
+    },
+    "triageNote": {
+      "zh-CN": "教学起点为生后早期低血糖，后续转诊月龄未记录。",
+      "en": "Teaching begins with early neonatal hypoglycaemia; age at later referral is unrecorded."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "生后11小时开始低血糖。",
+        "en": "Hypoglycaemia began eleven hours after birth."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "infant",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "any": [
+        {
+          "phase": "initial"
+        },
+        {
+          "phase": "workup"
+        },
+        {
+          "phase": "confirmation"
+        },
+        {
+          "phase": "followup"
+        }
+      ]
+    },
+    "nonVerbalReason": {
+      "zh-CN": "出生后11小时起病的婴儿不能言语，由陪同者及记录提供信息；实际转诊年龄未给出。",
+      "en": "An infant symptomatic from eleven hours cannot provide verbal history; use companion and records. Exact referral age was not provided."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "recurrent"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "maternal"
+          },
+          {
+            "examined": "birth-review"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "第一次血糖低是出生后多久？ 低血糖是不是出生当天就出现？",
+        "en": "How long after birth was the first low glucose? Did hypoglycaemia begin on the first day?"
+      },
+      "answer": {
+        "zh-CN": "生后11小时开始低血糖。",
+        "en": "Hypoglycaemia began eleven hours after birth."
+      },
+      "keywords": {
+        "zh-CN": [
+          "低血糖起病",
+          "第一次血糖低是出生后多久？",
+          "低血糖是不是出生当天就出现？",
+          "低血糖起病情况"
+        ],
+        "en": [
+          "hypoglycaemia onset",
+          "How long after birth was the first low glucose?",
+          "Did hypoglycaemia begin on the first day?",
+          "hypoglycaemia onset information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "recurrent",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "后来还反复测到血糖低吗？ 血糖有没有只是偶尔一次低？",
+        "en": "Were further low glucose readings recorded? Was it a single low reading or repeated episodes?"
+      },
+      "answer": {
+        "zh-CN": "后来多次血糖低于2.8 mmol/L。",
+        "en": "Repeated glucose readings were below 2.8 mmol/L."
+      },
+      "keywords": {
+        "zh-CN": [
+          "重复血糖",
+          "后来还反复测到血糖低吗？",
+          "血糖有没有只是偶尔一次低？",
+          "重复血糖情况"
+        ],
+        "en": [
+          "repeated glucose results",
+          "Were further low glucose readings recorded?",
+          "Was it a single low reading or repeated episodes?",
+          "repeated glucose results information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "宝宝出生多重，是足月吗？ 出生时需要因窒息抢救吗？",
+        "en": "What was birth weight, and was the baby term? Was resuscitation for asphyxia needed at birth?"
+      },
+      "answer": {
+        "zh-CN": "足月顺产，出生4.05 kg，无窒息。",
+        "en": "Term vaginal birth, weight 4.05 kg, without asphyxia."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生体重过程",
+          "宝宝出生多重，是足月吗？",
+          "出生时需要因窒息抢救吗？",
+          "出生体重过程情况"
+        ],
+        "en": [
+          "birth weight and course",
+          "What was birth weight, and was the baby term?",
+          "Was resuscitation for asphyxia needed at birth?",
+          "birth weight and course information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "maternal",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "怀孕时妈妈有糖尿病或血糖高吗？ 孕期糖耐量检查有没有异常记录？",
+        "en": "Did the mother have diabetes or high glucose in pregnancy? Was abnormal glucose tolerance documented during pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "母孕期健康，无糖耐量异常史。",
+        "en": "The mother was healthy during pregnancy without known glucose intolerance."
+      },
+      "keywords": {
+        "zh-CN": [
+          "母亲糖代谢",
+          "怀孕时妈妈有糖尿病或血糖高吗？",
+          "孕期糖耐量检查有没有异常记录？",
+          "母亲糖代谢情况"
+        ],
+        "en": [
+          "maternal glucose history",
+          "Did the mother have diabetes or high glucose in pregnancy?",
+          "Was abnormal glucose tolerance documented during pregnancy?",
+          "maternal glucose history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人有类似疾病或遗传病吗？ 父母和兄弟姐妹健康情况怎样？",
+        "en": "Does anyone in the family have similar or inherited illness? How is the health of parents and siblings?"
+      },
+      "answer": {
+        "zh-CN": "父母非近亲，无低血糖或糖尿病家族史。",
+        "en": "Parents were non-consanguineous without a family history of hypoglycaemia or diabetes."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族低血糖",
+          "家里有人有类似疾病或遗传病吗？",
+          "父母和兄弟姐妹健康情况怎样？",
+          "家族低血糖情况"
+        ],
+        "en": [
+          "family hypoglycaemia",
+          "Does anyone in the family have similar or inherited illness?",
+          "How is the health of parents and siblings?",
+          "family hypoglycaemia information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "symptoms",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "血糖低的时候具体有什么表现？ 低血糖发作的床旁情况有记录吗？",
+        "en": "What symptoms occurred during low glucose? Are bedside features of hypoglycaemic episodes recorded?"
+      },
+      "answer": {
+        "zh-CN": "原文未描述低血糖发作的具体床旁症状。",
+        "en": "The source does not describe specific bedside symptoms during hypoglycaemia."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发作症状记录",
+          "血糖低的时候具体有什么表现？",
+          "低血糖发作的床旁情况有记录吗？",
+          "发作症状记录情况"
+        ],
+        "en": [
+          "episode symptoms",
+          "What symptoms occurred during low glucose?",
+          "Are bedside features of hypoglycaemic episodes recorded?",
+          "episode symptoms information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对哪些药物过敏？ 用药后出现过什么过敏反应？",
+        "en": "Which medicines have caused allergy? What allergic reactions have occurred after medicines?"
+      },
+      "answer": {
+        "zh-CN": "过敏史未记录。",
+        "en": "Allergy history is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "过敏记录",
+          "对哪些药物过敏？",
+          "用药后出现过什么过敏反应？",
+          "过敏记录情况"
+        ],
+        "en": [
+          "allergy record",
+          "Which medicines have caused allergy?",
+          "What allergic reactions have occurred after medicines?",
+          "allergy record information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "birth-review",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "调阅出生体重测量记录",
+        "en": "Review recorded birth weight"
+      },
+      "finding": {
+        "zh-CN": "出生体重4.05 kg。",
+        "en": "Recorded birth weight was 4.05 kg."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "critical",
+      "name": {
+        "zh-CN": "低血糖关键标本",
+        "en": "Critical hypoglycaemia sample"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "低血糖关键标本"
+        ],
+        "en": [
+          "Critical hypoglycaemia sample"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "血糖1.8 mmol/L时胰岛素11 μU/mL、C肽0.74 nmol/L、β羟丁酸0.5 mmol/L。原文血氨单位可疑，不改写成正常值。",
+            "en": "At glucose 1.8 mmol/L, insulin was 11 µU/mL, C-peptide 0.74 nmol/L and beta-hydroxybutyrate 0.5 mmol/L. Questionable source ammonia units are not normalised."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "imaging",
+      "name": {
+        "zh-CN": "常规影像及内分泌",
+        "en": "Routine imaging and endocrinology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "常规影像及内分泌"
+        ],
+        "en": [
+          "Routine imaging and endocrinology"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "胰腺超声、脑和垂体MRI无异常；心超房缺、动脉导管未闭、轻三尖瓣反流；甲功及ACTH正常。",
+            "en": "Pancreatic ultrasound and brain/pituitary MRI were unremarkable; echo showed ASD, PDA and mild tricuspid regurgitation. Thyroid and ACTH results were normal."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "response",
+      "name": {
+        "zh-CN": "专科治疗反应记录",
+        "en": "Specialist treatment-response record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "专科治疗反应记录"
+        ],
+        "en": [
+          "Specialist treatment-response record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "报告二氮嗪及奥曲肽试验仍频繁低血糖，具体历史剂量不作为教学推荐。",
+            "en": "Reported diazoxide and octreotide trials did not prevent frequent hypoglycaemia; historical doses are not recommendations."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "localisation",
+      "name": {
+        "zh-CN": "定位及遗传",
+        "en": "Localisation and genetics"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "定位及遗传"
+        ],
+        "en": [
+          "Localisation and genetics"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "18F-DOPA定位胰体远端12.2×9.5 mm病灶；ABCC8 c.1792C>T (p.Arg598X)，父母该位点正常；KCNJ11未见异常。",
+            "en": "18F-DOPA localised a 12.2×9.5 mm distal pancreatic-body lesion; ABCC8 c.1792C>T (p.Arg598X) was absent in tested parents, with no KCNJ11 abnormality reported."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "局灶部分切除，病理证实局灶型；三个月空腹血糖约4.4–6.0、餐后约7 mmol/L。长期神经发育、复发及胰腺功能未提供。",
+            "en": "Partial resection confirmed focal histology; at three months fasting glucose was about 4.4–6.0 and post-meal about 7 mmol/L. Long-term neurodevelopment, recurrence and pancreatic function were not provided."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "recurrent"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "maternal"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "birth-review"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "低血糖标本支持哪种机制？",
+        "en": "What mechanism is supported by the critical sample?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "critical",
+            "phase": "workup"
+          },
+          {
+            "read": "imaging",
+            "phase": "workup"
+          },
+          {
+            "read": "response",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "低糖时不适当胰岛素分泌与低酮体支持高胰岛素机制",
+            "en": "Unsuppressed insulin with low ketones during hypoglycaemia supports hyperinsulinism"
+          },
+          "feedback": {
+            "zh-CN": "应按低糖当时的激素反应解释，不能套普通空腹参考范围。",
+            "en": "Interpret hormones during hypoglycaemia, not by ordinary fasting ranges."
+          },
+          "correct": true
+        },
+        {
+          "id": "normal-insulin",
+          "text": {
+            "zh-CN": "胰岛素数值不很高就排除高胰岛素机制",
+            "en": "A modest insulin number excludes hyperinsulinism"
+          },
+          "feedback": {
+            "zh-CN": "低糖时应被抑制，绝对值不是唯一判断。",
+            "en": "Insulin should be suppressed during low glucose; absolute magnitude is not sufficient."
+          },
+          "correct": false
+        },
+        {
+          "id": "transient",
+          "text": {
+            "zh-CN": "足月出生说明低糖一定暂时",
+            "en": "Term birth proves hypoglycaemia is transient"
+          },
+          "feedback": {
+            "zh-CN": "持续反复和治疗反应需重新评估。",
+            "en": "Recurrent persistence and response require reassessment."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "localisation",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "功能定位提示局灶，基因结果需结合组织而非单独预测全部病灶",
+            "en": "Functional localisation suggests a focus; genetics require tissue correlation rather than predicting all anatomy"
+          },
+          "feedback": {
+            "zh-CN": "常规超声正常不否定功能定位。",
+            "en": "Normal ultrasound does not negate functional localisation."
+          },
+          "correct": true
+        },
+        {
+          "id": "ultrasound",
+          "text": {
+            "zh-CN": "正常超声排除胰腺局灶病变",
+            "en": "Normal ultrasound excludes a focal pancreatic lesion"
+          },
+          "feedback": {
+            "zh-CN": "微小功能病灶可能不显影。",
+            "en": "Small functional lesions may be occult."
+          },
+          "correct": false
+        },
+        {
+          "id": "perfect",
+          "text": {
+            "zh-CN": "18F-DOPA在所有患者中都是100%准确",
+            "en": "18F-DOPA is universally 100% accurate"
+          },
+          "feedback": {
+            "zh-CN": "原报告泛化表述不能替代现代敏感度边界。",
+            "en": "The report’s general statement does not establish universal accuracy."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "怎样安全推进专科定位和治疗？",
+        "en": "How should localisation and treatment proceed safely?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "localisation",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "持续预防低糖脑损伤，由专科团队制定药物、检查禁食支持和局灶手术计划",
+            "en": "Prevent hypoglycaemic brain injury while specialists plan medication, fasting support for investigations and focal surgery"
+          },
+          "feedback": {
+            "zh-CN": "不能自行禁食或照搬历史药物剂量。",
+            "en": "Do not undertake unsupervised fasting or copy historical doses."
+          },
+          "correct": true
+        },
+        {
+          "id": "fast",
+          "text": {
+            "zh-CN": "在家长时间禁食验证低糖",
+            "en": "Use prolonged fasting at home to confirm hypoglycaemia"
+          },
+          "feedback": {
+            "zh-CN": "可致严重脑损伤。",
+            "en": "This can cause severe neurological injury."
+          },
+          "correct": false
+        },
+        {
+          "id": "total",
+          "text": {
+            "zh-CN": "任何基因变异都需全胰切除",
+            "en": "Any gene variant requires total pancreatectomy"
+          },
+          "feedback": {
+            "zh-CN": "局灶与弥漫病变的处理不同。",
+            "en": "Focal and diffuse disease require different strategies."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "recurrent"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "maternal"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "family"
+          },
+          {
+            "asked": "symptoms"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "birth-review"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "critical",
+            "phase": "workup"
+          },
+          {
+            "read": "imaging",
+            "phase": "workup"
+          },
+          {
+            "read": "response",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "localisation",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "防止低糖脑损伤及无监护禁食，定位后个体化处理",
+        "en": "Prevent hypoglycaemic injury and unsupervised fasting, then individualise treatment after localisation"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：解释低糖时胰岛素和酮体的生理不适当性。同时解释以下信息仍有缺失或疑问：准确转诊年龄、床旁神经查体、原文氨单位及长期发育结局。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Explain inappropriate insulin/ketone responses during hypoglycaemia. Identify the following as missing or uncertain: Exact referral age, neurological examination, source ammonia units and long-term developmental outcome. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "critical",
+        "imaging",
+        "response",
+        "localisation",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "先天性高胰岛素性低血糖，经功能定位及病理证实局灶病变，短期术后改善。",
+      "en": "Congenital hyperinsulinaemic hypoglycaemia with functionally localised and histologically confirmed focal disease improved short-term after surgery."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "解释低糖时胰岛素和酮体的生理不适当性。",
+        "en": "Explain inappropriate insulin/ketone responses during hypoglycaemia."
+      },
+      {
+        "zh-CN": "区分常规结构影像与功能定位。",
+        "en": "Distinguish routine structural imaging from functional localisation."
+      },
+      {
+        "zh-CN": "指出短期血糖正常不等于长期神经结局已知。",
+        "en": "Explain that short-term normoglycaemia does not establish long-term neurological outcome."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "解释低糖时胰岛素和酮体的生理不适当性。",
+        "en": "Explain inappropriate insulin/ketone responses during hypoglycaemia."
+      },
+      {
+        "zh-CN": "区分常规结构影像与功能定位。",
+        "en": "Distinguish routine structural imaging from functional localisation."
+      },
+      {
+        "zh-CN": "指出短期血糖正常不等于长期神经结局已知。",
+        "en": "Explain that short-term normoglycaemia does not establish long-term neurological outcome."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "准确转诊年龄、床旁神经查体、原文氨单位及长期发育结局。",
+        "en": "Exact referral age, neurological examination, source ammonia units and long-term developmental outcome."
+      }
+    ],
+    "references": [
+      "桑艳梅, 李文京, 王焕民, 徐子迪. 胰腺局灶增生型先天性高胰岛素血症一例. 中华糖尿病杂志. 2013;05(11):705-707. doi:10.3760/cma.j.issn.1674-5809.2013.11.014.",
+      "https://rs.yiigle.com/cmaid/639083",
+      "De Leon DD, et al. International guidelines for diagnosis and management of hyperinsulinism. Horm Res Paediatr. 2024;97(3):279-298. doi:10.1159/000531766. https://pmc.ncbi.nlm.nih.gov/articles/PMC11124746/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "准确转诊年龄、床旁神经查体、原文氨单位及长期发育结局。",
+      "en": "Exact referral age, neurological examination, source ammonia units and long-term developmental outcome."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-639083/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "2f028e7dd8d13f40e9ab04f5a1a0a630382bcf9fb030915f15f81d4ae04d6221"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-639083/fig02.png",
+      "title": {
+        "zh-CN": "原文图组 2（含后续病程，仅供复盘）",
+        "en": "Source image group 2 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "c99426da1d28c36e88ca52ae1bfaad36095817fb28bb097968fa64d3dcbb12ca"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "recurrent"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "maternal"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "symptoms"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "birth-review"
+    },
+    {
+      "type": "order",
+      "investigationId": "critical"
+    },
+    {
+      "type": "read",
+      "investigationId": "critical",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "imaging",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "response"
+    },
+    {
+      "type": "read",
+      "investigationId": "response",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "localisation"
+    },
+    {
+      "type": "read",
+      "investigationId": "localisation",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "639083",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/639083",
+    "sourceDoi": "10.3760/cma.j.issn.1674-5809.2013.11.014",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "第一次血糖低是出生后多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How long after birth was the first low glucose?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "低血糖是不是出生当天就出现？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Did hypoglycaemia begin on the first day?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "后来还反复测到血糖低吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "recurrent"
+        ]
+      },
+      {
+        "text": "Were further low glucose readings recorded?",
+        "locale": "en",
+        "expect": [
+          "recurrent"
+        ]
+      },
+      {
+        "text": "血糖有没有只是偶尔一次低？",
+        "locale": "zh-CN",
+        "expect": [
+          "recurrent"
+        ]
+      },
+      {
+        "text": "Was it a single low reading or repeated episodes?",
+        "locale": "en",
+        "expect": [
+          "recurrent"
+        ]
+      },
+      {
+        "text": "宝宝出生多重，是足月吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "What was birth weight, and was the baby term?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "出生时需要因窒息抢救吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Was resuscitation for asphyxia needed at birth?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "怀孕时妈妈有糖尿病或血糖高吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "maternal"
+        ]
+      },
+      {
+        "text": "Did the mother have diabetes or high glucose in pregnancy?",
+        "locale": "en",
+        "expect": [
+          "maternal"
+        ]
+      },
+      {
+        "text": "孕期糖耐量检查有没有异常记录？",
+        "locale": "zh-CN",
+        "expect": [
+          "maternal"
+        ]
+      },
+      {
+        "text": "Was abnormal glucose tolerance documented during pregnancy?",
+        "locale": "en",
+        "expect": [
+          "maternal"
+        ]
+      },
+      {
+        "text": "家里有人有类似疾病或遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anyone in the family have similar or inherited illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "父母和兄弟姐妹健康情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How is the health of parents and siblings?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "血糖低的时候具体有什么表现？",
+        "locale": "zh-CN",
+        "expect": [
+          "symptoms"
+        ]
+      },
+      {
+        "text": "What symptoms occurred during low glucose?",
+        "locale": "en",
+        "expect": [
+          "symptoms"
+        ]
+      },
+      {
+        "text": "低血糖发作的床旁情况有记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "symptoms"
+        ]
+      },
+      {
+        "text": "Are bedside features of hypoglycaemic episodes recorded?",
+        "locale": "en",
+        "expect": [
+          "symptoms"
+        ]
+      },
+      {
+        "text": "对哪些药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Which medicines have caused allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "用药后出现过什么过敏反应？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What allergic reactions have occurred after medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有过敏记录方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any allergy record?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有既往健康情况方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you describe any previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      }
+    ]
+  }
+}

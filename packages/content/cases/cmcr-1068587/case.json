@@ -1,0 +1,1983 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1068587",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "右下腹痛、发热与黏液便 · 4岁3月男孩",
+    "en": "Right lower abdominal pain, fever and mucus stools · boy aged 4 years 3 months"
+  },
+  "summary": {
+    "zh-CN": "幼儿持续发热腹痛伴腹泻，外科局部发现可能只解释部分病程。",
+    "en": "Persistent pain, fever and diarrhoea in a young child may not be fully explained by a local surgical finding."
+  },
+  "specialty": [
+    "paediatric-surgery",
+    "paediatric-gastroenterology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "杨书龙, 管声扬, 李昭铸, 崔清波. 小儿克罗恩病合并梅克尔憩室炎误诊为阑尾炎1例. 中华结直肠疾病电子杂志. 2013;02(04):195-195. doi:10.3877/cma.j.issn.2095-3224.2013.04.11..",
+    "doi": "10.3877/cma.j.issn.2095-3224.2013.04.11.",
+    "authors": [
+      "杨书龙",
+      "管声扬",
+      "李昭铸",
+      "崔清波"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "比较局部急腹症与较长炎症性病程。",
+      "en": "Compare a local surgical process with the longer inflammatory course."
+    },
+    {
+      "zh-CN": "说明肉芽肿病理的非特异性。",
+      "en": "Explain the non-specificity of granulomatous histology."
+    },
+    {
+      "zh-CN": "列出持续症状需补充的感染及全肠评估。",
+      "en": "Identify infection and full-bowel assessment needed for persistent symptoms."
+    },
+    {
+      "zh-CN": "对术后持续腹泻发热继续评估，免疫抑制前明确证据边界",
+      "en": "Reassess persistent postoperative fever/diarrhoea and define evidence before immunosuppression"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "王知远（化名）",
+      "en": "Wang Zhiyuan (pseudonym)"
+    },
+    "age": 51,
+    "ageUnit": "months",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "阵发性腹痛伴发热14天",
+      "en": "Fourteen days of episodic abdominal pain and fever"
+    },
+    "triageNote": {
+      "zh-CN": "腹痛发热两周，黏液便每天4–6次，非手术治疗无效。",
+      "en": "Two weeks of pain and fever with four to six mucus stools daily despite conservative treatment."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "腹痛一阵阵地发作了14天。",
+        "en": "Pain has occurred in episodes for fourteen days."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "stool"
+          },
+          {
+            "asked": "prior-care"
+          },
+          {
+            "examined": "temperature"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "pain",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "肚子痛了几天，是一阵阵的吗？ 腹痛一直不停还是反复发作？",
+        "en": "How many days has the pain lasted, and is it episodic? Is the pain continuous or recurrent?"
+      },
+      "answer": {
+        "zh-CN": "腹痛一阵阵地发作了14天。",
+        "en": "Pain has occurred in episodes for fourteen days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹痛时程",
+          "肚子痛了几天，是一阵阵的吗？",
+          "腹痛一直不停还是反复发作？",
+          "腹痛时程情况"
+        ],
+        "en": [
+          "pain duration",
+          "How many days has the pain lasted, and is it episodic?",
+          "Is the pain continuous or recurrent?",
+          "pain duration information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "fever",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "最高烧到多少度？ 发热是不是一直反复？",
+        "en": "What was the highest temperature? Has fever kept recurring?"
+      },
+      "answer": {
+        "zh-CN": "发热反复，最高39℃。",
+        "en": "Fever recurred up to 39°C."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热程度",
+          "最高烧到多少度？",
+          "发热是不是一直反复？",
+          "发热程度情况"
+        ],
+        "en": [
+          "fever severity",
+          "What was the highest temperature?",
+          "Has fever kept recurring?",
+          "fever severity information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "stool",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "大便一天几次，里面有黏液吗？ 腹泻时大便是什么样？",
+        "en": "How often are stools passed, and is there mucus? What do the diarrhoeal stools look like?"
+      },
+      "answer": {
+        "zh-CN": "有黏液样便，一天四到六次。",
+        "en": "Mucus-containing diarrhoea occurred four to six times daily."
+      },
+      "keywords": {
+        "zh-CN": [
+          "黏液便腹泻",
+          "大便一天几次，里面有黏液吗？",
+          "腹泻时大便是什么样？",
+          "黏液便腹泻情况"
+        ],
+        "en": [
+          "mucus diarrhoea",
+          "How often are stools passed, and is there mucus?",
+          "What do the diarrhoeal stools look like?",
+          "mucus diarrhoea information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-care",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前治疗后腹痛发热好了吗？ 来这里前做过什么治疗，有没有效果？",
+        "en": "Did earlier treatment settle the pain and fever? What treatment preceded referral, and did it help?"
+      },
+      "answer": {
+        "zh-CN": "之前非手术治疗未解决症状，具体方案未给出。",
+        "en": "Previous non-operative treatment did not resolve symptoms; details are unspecified."
+      },
+      "keywords": {
+        "zh-CN": [
+          "保守治疗反应",
+          "之前治疗后腹痛发热好了吗？",
+          "来这里前做过什么治疗，有没有效果？",
+          "保守治疗反应情况"
+        ],
+        "en": [
+          "conservative treatment response",
+          "Did earlier treatment settle the pain and fever?",
+          "What treatment preceded referral, and did it help?",
+          "conservative treatment response information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过腹股沟疝手术吗？ 腹股沟部位曾经开过刀吗？",
+        "en": "Was there previous inguinal hernia surgery? Has the groin been operated on before?"
+      },
+      "answer": {
+        "zh-CN": "做过右腹股沟斜疝手术。",
+        "en": "He previously had right inguinal hernia surgery."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹股沟手术",
+          "以前做过腹股沟疝手术吗？",
+          "腹股沟部位曾经开过刀吗？",
+          "腹股沟手术情况"
+        ],
+        "en": [
+          "inguinal operation",
+          "Was there previous inguinal hernia surgery?",
+          "Has the groin been operated on before?",
+          "inguinal operation information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prolapse",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有没有直肠脱垂？ 大便时有没有组织脱出过？",
+        "en": "Has there been rectal prolapse before? Has tissue protruded during bowel movements?"
+      },
+      "answer": {
+        "zh-CN": "有直肠脱垂病史。",
+        "en": "There was a history of rectal prolapse."
+      },
+      "keywords": {
+        "zh-CN": [
+          "直肠脱垂",
+          "以前有没有直肠脱垂？",
+          "大便时有没有组织脱出过？",
+          "直肠脱垂情况"
+        ],
+        "en": [
+          "rectal prolapse",
+          "Has there been rectal prolapse before?",
+          "Has tissue protruded during bowel movements?",
+          "rectal prolapse information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "growth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "以前的身高体重增长怎样？ 有生长曲线可以查看吗？",
+        "en": "How did height and weight grow previously? Is a growth chart available?"
+      },
+      "answer": {
+        "zh-CN": "原文未提供身高体重轨迹。",
+        "en": "The report does not supply growth measurements over time."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往生长记录",
+          "以前的身高体重增长怎样？",
+          "有生长曲线可以查看吗？",
+          "既往生长记录情况"
+        ],
+        "en": [
+          "earlier growth record",
+          "How did height and weight grow previously?",
+          "Is a growth chart available?",
+          "earlier growth record information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "temperature",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对体温",
+        "en": "Review temperature"
+      },
+      "finding": {
+        "zh-CN": "体温39℃。",
+        "en": "Temperature 39°C."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "复核腹部体征",
+        "en": "Review abdominal findings"
+      },
+      "finding": {
+        "zh-CN": "全腹压痛、右下腹明显，轻度肌紧张反跳痛，肠鸣音活跃。",
+        "en": "Generalised tenderness maximal in the right lower quadrant, mild guarding/rebound and active bowel sounds."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "blood",
+      "name": {
+        "zh-CN": "炎症血象",
+        "en": "Inflammatory blood count"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "炎症血象"
+        ],
+        "en": [
+          "Inflammatory blood count"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "WBC15.9×10⁹/L，中性粒83%。",
+            "en": "WBC 15.9×10⁹/L with 83% neutrophils."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "us",
+      "name": {
+        "zh-CN": "腹部超声",
+        "en": "Abdominal ultrasound"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "腹部超声"
+        ],
+        "en": [
+          "Abdominal ultrasound"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "右下腹肠系膜淋巴结增大。",
+            "en": "Enlarged right lower-quadrant mesenteric lymph nodes."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "operation",
+      "name": {
+        "zh-CN": "原报告手术所见",
+        "en": "Reported operative findings"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "原报告手术所见"
+        ],
+        "en": [
+          "Reported operative findings"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "阑尾轻度炎性改变、增厚僵硬；距回盲部40 cm处炎性Meckel憩室，均已切除。",
+            "en": "The appendix showed mild inflammation, thickening and stiffness; an inflamed Meckel diverticulum 40 cm from the ileocaecal region was also resected."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "pathology",
+      "name": {
+        "zh-CN": "术后病理及持续症状",
+        "en": "Postoperative pathology and symptoms"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "术后病理及持续症状"
+        ],
+        "en": [
+          "Postoperative pathology and symptoms"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "阑尾为急性单纯性及肉芽肿性炎症，病理提示Crohn累及；术后第2天仍稀黏液便、腹痛发热，无肉眼血便。原文无完整内镜和小肠分期。",
+            "en": "Appendix showed acute simple and granulomatous inflammation, interpreted as possible Crohn involvement. Loose mucus stools, pain and fever persisted on day 2 without visible blood. Complete endoscopic and small-bowel staging is absent."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "患儿转儿内科继续治疗，具体药物未记载；报告随访2年未复发。",
+            "en": "He transferred to paediatric medicine; specific therapy was not described. No recurrence was reported over two years."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "stool"
+          },
+          {
+            "asked": "prior-care"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "temperature"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "手术发现能否解释全部病程？",
+        "en": "Do the operative findings explain the entire course?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "us",
+            "phase": "workup"
+          },
+          {
+            "read": "operation",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "局部炎症之外需考虑持续肠道炎症性疾病及其他肉芽肿病因",
+            "en": "Consider broader inflammatory bowel disease and other granulomatous causes beyond local inflammation"
+          },
+          "feedback": {
+            "zh-CN": "较长病程和持续黏液腹泻需要进一步内科评估。",
+            "en": "The prolonged course and mucus diarrhoea need further medical assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "appendix",
+          "text": {
+            "zh-CN": "切除阑尾后无需关注继续腹泻",
+            "en": "Ongoing diarrhoea needs no attention after appendectomy"
+          },
+          "feedback": {
+            "zh-CN": "持续症状是重新评估的重要信息。",
+            "en": "Persistent symptoms are an important reassessment signal."
+          },
+          "correct": false
+        },
+        {
+          "id": "nodes",
+          "text": {
+            "zh-CN": "淋巴结大可排除外科急腹症",
+            "en": "Enlarged nodes exclude surgical disease"
+          },
+          "feedback": {
+            "zh-CN": "影像单一表现不排除腹膜刺激征的病因。",
+            "en": "A single imaging finding does not dismiss peritoneal signs."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "肉芽肿提示Crohn方向，但需排除感染并完整评估分布",
+            "en": "Granulomas support consideration of Crohn disease but require infection exclusion and full extent assessment"
+          },
+          "feedback": {
+            "zh-CN": "病理提示不是自动完成所有诊断和分期。",
+            "en": "A suggestive pathology report does not complete diagnosis and staging."
+          },
+          "correct": true
+        },
+        {
+          "id": "specific",
+          "text": {
+            "zh-CN": "任何阑尾肉芽肿都特异等于Crohn",
+            "en": "Any appendiceal granuloma is specific for Crohn disease"
+          },
+          "feedback": {
+            "zh-CN": "肉芽肿存在其他原因。",
+            "en": "Granulomas have other causes."
+          },
+          "correct": false
+        },
+        {
+          "id": "blood",
+          "text": {
+            "zh-CN": "没有肉眼血便即可排除IBD",
+            "en": "No visible blood excludes IBD"
+          },
+          "feedback": {
+            "zh-CN": "临床表现可无明显出血。",
+            "en": "IBD can present without visible bleeding."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "持续症状应怎样衔接照护？",
+        "en": "How should continuing symptoms be followed up?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "儿外与儿消化联合复核病理、感染、营养和全肠评估",
+            "en": "Paediatric surgery and gastroenterology should review pathology, infection, nutrition and full bowel assessment"
+          },
+          "feedback": {
+            "zh-CN": "不凭一段阑尾病理自行启动长期免疫抑制。",
+            "en": "Do not self-initiate long-term immunosuppression from appendiceal histology alone."
+          },
+          "correct": true
+        },
+        {
+          "id": "ignore",
+          "text": {
+            "zh-CN": "归为正常术后反应，无需复评",
+            "en": "Dismiss all symptoms as normal postoperative recovery"
+          },
+          "feedback": {
+            "zh-CN": "持续发热腹泻不能自动视为正常。",
+            "en": "Persistent fever and diarrhoea are not automatically normal."
+          },
+          "correct": false
+        },
+        {
+          "id": "immuno",
+          "text": {
+            "zh-CN": "未排除感染就照搬长期激素方案",
+            "en": "Copy a prolonged steroid regimen before infection assessment"
+          },
+          "feedback": {
+            "zh-CN": "需要专科鉴别和风险评估。",
+            "en": "Specialist differential and safety assessment are needed."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "stool"
+          },
+          {
+            "asked": "prior-care"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "surgery"
+          },
+          {
+            "asked": "prolapse"
+          },
+          {
+            "asked": "growth"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "temperature"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "us",
+            "phase": "workup"
+          },
+          {
+            "read": "operation",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "对术后持续腹泻发热继续评估，免疫抑制前明确证据边界",
+        "en": "Reassess persistent postoperative fever/diarrhoea and define evidence before immunosuppression"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：比较局部急腹症与较长炎症性病程。同时解释以下信息仍有缺失或疑问：完整内镜、影像、感染排除、营养生长及后续治疗。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Compare a local surgical process with the longer inflammatory course. Identify the following as missing or uncertain: Complete endoscopy, imaging, infection exclusion, growth/nutrition and subsequent therapy. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "blood",
+        "us",
+        "operation",
+        "pathology",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告诊断Crohn病合并Meckel憩室炎，阑尾肉芽肿提供线索但完整分期资料缺失。",
+      "en": "The report diagnoses Crohn disease with Meckel diverticulitis; appendiceal granulomas provide a clue, with full staging absent."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "比较局部急腹症与较长炎症性病程。",
+        "en": "Compare a local surgical process with the longer inflammatory course."
+      },
+      {
+        "zh-CN": "说明肉芽肿病理的非特异性。",
+        "en": "Explain the non-specificity of granulomatous histology."
+      },
+      {
+        "zh-CN": "列出持续症状需补充的感染及全肠评估。",
+        "en": "Identify infection and full-bowel assessment needed for persistent symptoms."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "比较局部急腹症与较长炎症性病程。",
+        "en": "Compare a local surgical process with the longer inflammatory course."
+      },
+      {
+        "zh-CN": "说明肉芽肿病理的非特异性。",
+        "en": "Explain the non-specificity of granulomatous histology."
+      },
+      {
+        "zh-CN": "列出持续症状需补充的感染及全肠评估。",
+        "en": "Identify infection and full-bowel assessment needed for persistent symptoms."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整内镜、影像、感染排除、营养生长及后续治疗。",
+        "en": "Complete endoscopy, imaging, infection exclusion, growth/nutrition and subsequent therapy."
+      }
+    ],
+    "references": [
+      "杨书龙, 管声扬, 李昭铸, 崔清波. 小儿克罗恩病合并梅克尔憩室炎误诊为阑尾炎1例. 中华结直肠疾病电子杂志. 2013;02(04):195-195. doi:10.3877/cma.j.issn.2095-3224.2013.04.11..",
+      "https://rs.yiigle.com/cmaid/1068587"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整内镜、影像、感染排除、营养生长及后续治疗。",
+      "en": "Complete endoscopy, imaging, infection exclusion, growth/nutrition and subsequent therapy."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever"
+    },
+    {
+      "type": "ask",
+      "itemId": "stool"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "prolapse"
+    },
+    {
+      "type": "ask",
+      "itemId": "growth"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "temperature"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "us"
+    },
+    {
+      "type": "read",
+      "investigationId": "us",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "operation"
+    },
+    {
+      "type": "read",
+      "investigationId": "operation",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "pathology"
+    },
+    {
+      "type": "read",
+      "investigationId": "pathology",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1068587",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1068587",
+    "sourceDoi": "10.3877/cma.j.issn.2095-3224.2013.04.11.",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "肚子痛了几天，是一阵阵的吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "How many days has the pain lasted, and is it episodic?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "腹痛一直不停还是反复发作？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Is the pain continuous or recurrent?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "最高烧到多少度？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "What was the highest temperature?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "发热是不是一直反复？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Has fever kept recurring?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "大便一天几次，里面有黏液吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "stool"
+        ]
+      },
+      {
+        "text": "How often are stools passed, and is there mucus?",
+        "locale": "en",
+        "expect": [
+          "stool"
+        ]
+      },
+      {
+        "text": "腹泻时大便是什么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "stool"
+        ]
+      },
+      {
+        "text": "What do the diarrhoeal stools look like?",
+        "locale": "en",
+        "expect": [
+          "stool"
+        ]
+      },
+      {
+        "text": "之前治疗后腹痛发热好了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "Did earlier treatment settle the pain and fever?",
+        "locale": "en",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "来这里前做过什么治疗，有没有效果？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "What treatment preceded referral, and did it help?",
+        "locale": "en",
+        "expect": [
+          "prior-care"
+        ]
+      },
+      {
+        "text": "以前做过腹股沟疝手术吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Was there previous inguinal hernia surgery?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "腹股沟部位曾经开过刀吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Has the groin been operated on before?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有直肠脱垂？",
+        "locale": "zh-CN",
+        "expect": [
+          "prolapse"
+        ]
+      },
+      {
+        "text": "Has there been rectal prolapse before?",
+        "locale": "en",
+        "expect": [
+          "prolapse"
+        ]
+      },
+      {
+        "text": "大便时有没有组织脱出过？",
+        "locale": "zh-CN",
+        "expect": [
+          "prolapse"
+        ]
+      },
+      {
+        "text": "Has tissue protruded during bowel movements?",
+        "locale": "en",
+        "expect": [
+          "prolapse"
+        ]
+      },
+      {
+        "text": "以前的身高体重增长怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "How did height and weight grow previously?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "有生长曲线可以查看吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "Is a growth chart available?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "以前有没有既往生长记录方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier growth record?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

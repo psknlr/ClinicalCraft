@@ -1,0 +1,1859 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-44509",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "糖尿病男孩一周内全身水肿",
+    "en": "Generalised oedema developing over a week in a boy with diabetes"
+  },
+  "summary": {
+    "zh-CN": "既有糖尿病的孩子短期出现大量蛋白尿和水肿，需要避免把所有肾脏表现直接归于旧病。",
+    "en": "A child with diabetes develops rapid oedema and heavy proteinuria, requiring reassessment beyond the existing diagnosis."
+  },
+  "specialty": [
+    "pediatrics",
+    "nephrology",
+    "endocrinology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "周爱华. 1型糖尿病合并微小病变型肾病综合征一例. 中华儿科杂志. 2011;49(07):554-556. doi: 10.3760/cma.j.issn.0578-1310.2011.07.016.",
+    "authors": [
+      "周爱华"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "KDIGO 2025 paediatric nephrotic syndrome guideline, checked 2026-10-28; scope individualised biopsy/treatment and glucocorticoid burden with comorbid type 1 diabetes."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.07.016"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "避免糖尿病诊断锚定。",
+      "en": "Avoid diagnostic anchoring on diabetes."
+    },
+    {
+      "zh-CN": "比较快速与渐进蛋白尿。",
+      "en": "Compare rapid and gradual proteinuria."
+    },
+    {
+      "zh-CN": "整合光镜免疫和电镜。",
+      "en": "Integrate light, immune and electron microscopy."
+    },
+    {
+      "zh-CN": "讨论联合专科监测。",
+      "en": "Discuss coordinated specialist monitoring."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "朱清和（化名）",
+      "en": "Zhu Qinghe (pseudonym)"
+    },
+    "age": 10,
+    "ageUnit": "years",
+    "sex": "male",
+    "weightKg": 45,
+    "chiefComplaint": {
+      "zh-CN": "全身进行性水肿一周",
+      "en": "Progressive generalised oedema for one week"
+    },
+    "triageNote": {
+      "zh-CN": "核对起病速度、糖尿病病程和组织证据。",
+      "en": "Review onset speed, diabetes duration and tissue evidence."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "一周内出现并逐渐加重为全身水肿。",
+        "en": "Swelling developed over one week and progressed throughout the body."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "oedema"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "control"
+          },
+          {
+            "asked": "renal-history"
+          },
+          {
+            "examined": "oedema-signs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "oedema",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "水肿从什么时候开始？",
+        "en": "When did swelling start?"
+      },
+      "answer": {
+        "zh-CN": "一周内出现并逐渐加重为全身水肿。",
+        "en": "Swelling developed over one week and progressed throughout the body."
+      },
+      "keywords": {
+        "zh-CN": [
+          "水肿起始",
+          "全身肿胀",
+          "一周进展",
+          "浮肿经过"
+        ],
+        "en": [
+          "oedema onset",
+          "generalised swelling",
+          "one week progression",
+          "swelling course"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "diabetes",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "糖尿病确诊多久了？",
+        "en": "How long has diabetes been diagnosed?"
+      },
+      "answer": {
+        "zh-CN": "四年前确诊1型糖尿病。",
+        "en": "Type 1 diabetes was diagnosed four years earlier."
+      },
+      "keywords": {
+        "zh-CN": [
+          "糖尿病病程",
+          "确诊时间",
+          "胰岛疾病",
+          "四年病史"
+        ],
+        "en": [
+          "diabetes duration",
+          "diagnosis timing",
+          "islet disease",
+          "four year history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "control",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "最近血糖控制怎样？",
+        "en": "How was recent glucose control?"
+      },
+      "answer": {
+        "zh-CN": "最近三个月血糖控制不佳。",
+        "en": "Glucose control was poor over the last three months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期血糖",
+          "控制情况",
+          "三个月血糖",
+          "糖代谢变化"
+        ],
+        "en": [
+          "recent glucose",
+          "glycaemic control",
+          "three month glucose",
+          "glycaemic changes"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "renal-history",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有肾脏病吗？",
+        "en": "Was there previous kidney disease?"
+      },
+      "answer": {
+        "zh-CN": "此前没有肾脏病史，家族也无肾病史。",
+        "en": "There was no previous kidney disease or family renal history."
+      },
+      "keywords": {
+        "zh-CN": [
+          "旧肾病",
+          "肾脏既往史",
+          "家族肾病",
+          "此前尿病"
+        ],
+        "en": [
+          "prior renal disease",
+          "kidney history",
+          "family renal disease",
+          "earlier urinary disease"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "twin",
+      "topic": "family",
+      "question": {
+        "zh-CN": "同卵双胞胎哥哥情况怎样？",
+        "en": "How was the identical twin brother?"
+      },
+      "answer": {
+        "zh-CN": "哥哥患1型糖尿病七年，但尿常规和尿微量白蛋白正常。",
+        "en": "The identical twin had type 1 diabetes for seven years but normal urinalysis and urinary microalbumin."
+      },
+      "keywords": {
+        "zh-CN": [
+          "双胞胎情况",
+          "哥哥尿检",
+          "同胞糖尿病",
+          "孪生病史"
+        ],
+        "en": [
+          "twin history",
+          "brother urinalysis",
+          "sibling diabetes",
+          "identical twin background"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "除了已记录的情况，家族疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about family illnesses?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "oedema-signs",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对水肿和血压",
+        "en": "Review oedema and blood pressure"
+      },
+      "finding": {
+        "zh-CN": "全身高度水肿，阴囊和双下肢明显，移动性浊音阳性；血压132/95 mmHg，眼底无异常。",
+        "en": "Marked generalised, scrotal and pitting leg oedema with shifting dullness; blood pressure 132/95 mmHg and no fundal abnormality."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "nephrotic",
+      "name": {
+        "zh-CN": "尿蛋白和代谢记录",
+        "en": "Proteinuria and metabolic record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "尿蛋白和代谢记录"
+        ],
+        "en": [
+          "Proteinuria and metabolic record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "24小时尿蛋白2.59 g（58 mg/kg），白蛋白14 g/L，胆固醇9.32 mmol/L，HbA1c 11.40%；尿镜检阴性，初始肌酐、补体和狼疮检查无异常。",
+            "en": "24-hour protein 2.59 g (58 mg/kg), albumin 14 g/L, cholesterol 9.32 mmol/L and HbA1c 11.40%; urine microscopy negative with initially normal creatinine, complement and lupus tests."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "biopsy",
+      "name": {
+        "zh-CN": "肾活检记录",
+        "en": "Renal biopsy record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肾活检记录"
+        ],
+        "en": [
+          "Renal biopsy record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "光镜肾小球基本正常、轻微系膜改变；免疫荧光基本阴性；电镜足突轻度融合、基底膜增厚，无电子致密物。原报告综合临床诊断微小病变型肾病。",
+            "en": "Glomeruli were largely normal by light microscopy with minor mesangial changes; immunofluorescence was largely negative; electron microscopy showed mild foot-process fusion, thickened basement membrane and no deposits. The report integrated these findings as minimal-change nephrotic syndrome."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "活检后曾一过性肾功能不全，随后恢复；加泼尼松并调整胰岛素后两周尿蛋白转阴、水肿消退，随访一年七个月稳定。",
+            "en": "Transient renal dysfunction after biopsy recovered; after prednisolone with insulin adjustment, proteinuria cleared and oedema resolved in two weeks. Stability was reported over one year seven months."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "oedema"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "control"
+          },
+          {
+            "asked": "renal-history"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "oedema-signs"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "急骤肾病综合征应怎样归因？",
+        "en": "How should abrupt nephrotic syndrome be attributed?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "nephrotic",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "broaden",
+          "text": {
+            "zh-CN": "考虑非糖尿病肾病或并存病变，不能仅凭既有糖尿病定因",
+            "en": "Consider non-diabetic or coexisting renal disease rather than assigning cause from diabetes alone"
+          },
+          "feedback": {
+            "zh-CN": "短病程和快速大量蛋白尿需要重新分类。",
+            "en": "Short duration and rapid heavy proteinuria require reclassification."
+          },
+          "correct": true
+        },
+        {
+          "id": "automatic",
+          "text": {
+            "zh-CN": "有糖尿病就必然是晚期糖尿病肾病",
+            "en": "Diabetes necessarily means advanced diabetic nephropathy"
+          },
+          "feedback": {
+            "zh-CN": "诊断标签不能替代病程和组织证据。",
+            "en": "A prior label does not replace chronology and tissue evidence."
+          },
+          "correct": false
+        },
+        {
+          "id": "twin",
+          "text": {
+            "zh-CN": "哥哥尿正常即可排除患儿肾病",
+            "en": "The twin’s normal urine excludes kidney disease in this child"
+          },
+          "feedback": {
+            "zh-CN": "同胞资料不能否定本人的蛋白尿。",
+            "en": "Sibling results cannot negate this patient’s proteinuria."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "integrate",
+          "text": {
+            "zh-CN": "组织整体及起病模式支持原报告的微小病变解释，同时基底膜改变需保留背景意义",
+            "en": "The overall tissue and onset pattern support the report’s minimal-change interpretation while retaining basement-membrane changes as context"
+          },
+          "feedback": {
+            "zh-CN": "不能只看一项增厚就覆盖其余证据，也不把轻度足突融合夸大为全融合。",
+            "en": "One thickening feature must not override all other evidence, and mild fusion must not be exaggerated as diffuse fusion."
+          },
+          "correct": true
+        },
+        {
+          "id": "deposit",
+          "text": {
+            "zh-CN": "已经证明免疫复合物大量沉积",
+            "en": "Extensive immune-complex deposition is proven"
+          },
+          "feedback": {
+            "zh-CN": "免疫荧光和电镜不支持这一说法。",
+            "en": "Immunofluorescence and electron microscopy do not support it."
+          },
+          "correct": false
+        },
+        {
+          "id": "irreversible",
+          "text": {
+            "zh-CN": "所有这些病变都不可逆",
+            "en": "All these changes are necessarily irreversible"
+          },
+          "feedback": {
+            "zh-CN": "资料尚未提供这种预后证据。",
+            "en": "The evidence does not establish that prognosis."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "治疗教学应优先考虑哪一协调？",
+        "en": "Which coordination is central to treatment teaching?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "joint",
+          "text": {
+            "zh-CN": "儿童肾科与内分泌共同制定肾病治疗和血糖监测调整",
+            "en": "Paediatric renal and endocrine teams should coordinate nephrotic treatment with glucose monitoring and adjustment"
+          },
+          "feedback": {
+            "zh-CN": "糖皮质激素选择和糖尿病风险需一并处理，不能只顾一种病。",
+            "en": "Glucocorticoid decisions and diabetes risk must be managed together."
+          },
+          "correct": true
+        },
+        {
+          "id": "no-treatment",
+          "text": {
+            "zh-CN": "糖尿病使任何肾病治疗都应放弃",
+            "en": "Diabetes means all nephrotic treatment should be abandoned"
+          },
+          "feedback": {
+            "zh-CN": "合并症要求调整，而非自动放弃。",
+            "en": "Comorbidity calls for adaptation rather than abandonment."
+          },
+          "correct": false
+        },
+        {
+          "id": "ignore-glucose",
+          "text": {
+            "zh-CN": "照搬旧激素剂量而不监测血糖",
+            "en": "Copy historical steroid dosing without glucose monitoring"
+          },
+          "feedback": {
+            "zh-CN": "这忽略可预见的代谢风险。",
+            "en": "This ignores foreseeable metabolic risk."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "oedema"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "control"
+          },
+          {
+            "asked": "renal-history"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "twin"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "oedema-signs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "nephrotic",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "biopsy",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "协调肾病治疗与胰岛素监测，避免单病种处置",
+        "en": "Coordinate nephrotic treatment and insulin monitoring rather than treating only one condition"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明起病速度不符合简单旧病归因。；承认没有完整水肿前体重、连续尿蛋白和长期糖尿病肾脏结局。，用复述确认理解。",
+        "en": "Explain that Onset speed challenges automatic attribution to existing disease.; acknowledge Complete dry weight, serial proteinuria and long-term diabetic renal outcomes are unavailable. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "nephrotic",
+        "biopsy",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告诊断1型糖尿病合并激素敏感的微小病变型肾病综合征。",
+      "en": "The report diagnosed type 1 diabetes with steroid-sensitive minimal-change nephrotic syndrome."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "起病速度不符合简单旧病归因。",
+        "en": "Onset speed challenges automatic attribution to existing disease."
+      },
+      {
+        "zh-CN": "组织需整体解读。",
+        "en": "Tissue requires integrated interpretation."
+      },
+      {
+        "zh-CN": "联合治疗需要代谢风险管理。",
+        "en": "Combined treatment requires metabolic risk management."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "水肿体重不能直接当干体重。",
+        "en": "Oedematous weight is not dry weight."
+      },
+      {
+        "zh-CN": "双胞胎差异不否定个体病变。",
+        "en": "Twin differences do not negate individual disease."
+      },
+      {
+        "zh-CN": "按现代儿童肾病指南评估激素负担。",
+        "en": "Assess steroid burden using current paediatric nephrotic guidance."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "没有完整水肿前体重、连续尿蛋白和长期糖尿病肾脏结局。",
+        "en": "Complete dry weight, serial proteinuria and long-term diabetic renal outcomes are unavailable."
+      }
+    ],
+    "references": [
+      "周爱华. 1型糖尿病合并微小病变型肾病综合征一例. 中华儿科杂志. 2011;49(07):554-556. doi: 10.3760/cma.j.issn.0578-1310.2011.07.016.",
+      "https://rs.yiigle.com/cmaid/44509",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.07.016",
+      "KDIGO 2025 Nephrotic Syndrome in Children. https://kdigo.org/guidelines/nephrotic-syndrome-in-children/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "没有完整水肿前体重、连续尿蛋白和长期糖尿病肾脏结局。",
+      "en": "Complete dry weight, serial proteinuria and long-term diabetic renal outcomes are unavailable."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "oedema"
+    },
+    {
+      "type": "ask",
+      "itemId": "diabetes"
+    },
+    {
+      "type": "ask",
+      "itemId": "control"
+    },
+    {
+      "type": "ask",
+      "itemId": "renal-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "twin"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "oedema-signs"
+    },
+    {
+      "type": "order",
+      "investigationId": "nephrotic"
+    },
+    {
+      "type": "read",
+      "investigationId": "nephrotic",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "broaden"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "biopsy"
+    },
+    {
+      "type": "read",
+      "investigationId": "biopsy",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "integrate"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "joint"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "44509",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/44509",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于水肿起始，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "oedema"
+        ]
+      },
+      {
+        "text": "Could you tell me about oedema onset?",
+        "locale": "en",
+        "expect": [
+          "oedema"
+        ]
+      },
+      {
+        "text": "我想了解全身肿胀。",
+        "locale": "zh-CN",
+        "expect": [
+          "oedema"
+        ]
+      },
+      {
+        "text": "Please explain generalised swelling in more detail.",
+        "locale": "en",
+        "expect": [
+          "oedema"
+        ]
+      },
+      {
+        "text": "关于糖尿病病程，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "Could you tell me about diabetes duration?",
+        "locale": "en",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "我想了解确诊时间。",
+        "locale": "zh-CN",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "Please explain diagnosis timing in more detail.",
+        "locale": "en",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "关于近期血糖，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "control"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent glucose?",
+        "locale": "en",
+        "expect": [
+          "control"
+        ]
+      },
+      {
+        "text": "我想了解控制情况。",
+        "locale": "zh-CN",
+        "expect": [
+          "control"
+        ]
+      },
+      {
+        "text": "Please explain glycaemic control in more detail.",
+        "locale": "en",
+        "expect": [
+          "control"
+        ]
+      },
+      {
+        "text": "关于旧肾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "renal-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about prior renal disease?",
+        "locale": "en",
+        "expect": [
+          "renal-history"
+        ]
+      },
+      {
+        "text": "我想了解肾脏既往史。",
+        "locale": "zh-CN",
+        "expect": [
+          "renal-history"
+        ]
+      },
+      {
+        "text": "Please explain kidney history in more detail.",
+        "locale": "en",
+        "expect": [
+          "renal-history"
+        ]
+      },
+      {
+        "text": "关于双胞胎情况，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "twin"
+        ]
+      },
+      {
+        "text": "Could you tell me about twin history?",
+        "locale": "en",
+        "expect": [
+          "twin"
+        ]
+      },
+      {
+        "text": "我想了解哥哥尿检。",
+        "locale": "zh-CN",
+        "expect": [
+          "twin"
+        ]
+      },
+      {
+        "text": "Please explain brother urinalysis in more detail.",
+        "locale": "en",
+        "expect": [
+          "twin"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/44509"
+    }
+  }
+}

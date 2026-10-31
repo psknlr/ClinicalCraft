@@ -1,0 +1,1864 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-635201",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "幼年起肥胖伴视力下降与新发高血糖",
+    "en": "Childhood-onset obesity, visual decline and newly detected hyperglycaemia"
+  },
+  "summary": {
+    "zh-CN": "年轻女性从小有体型、视力和手足发育特点，近期发现高血糖，需要整合多系统信息并提供可理解的沟通。",
+    "en": "A young woman has longstanding body, visual and digit-development findings with new hyperglycaemia, requiring multisystem assessment and accessible communication."
+  },
+  "specialty": [
+    "endocrinology",
+    "genetics",
+    "ophthalmology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "肖淳纯, 叶山东, 任安, 胡圆圆, 方芳, 王炜. Bardet－Biedl综合征一例. 中华糖尿病杂志. 2011;03(06):501-502. doi: 10.3760/cma.j.issn.1674-5809.2011.06.013.",
+    "authors": [
+      "肖淳纯",
+      "叶山东",
+      "任安",
+      "胡圆圆",
+      "方芳",
+      "王炜"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "FDA 2026 IMCIVREE label checked 2026-10-28 to avoid obsolete no-specific-treatment claim; eligibility/dosing not prescribed in this adaptation."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.1674-5809.2011.06.013"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别综合征性肥胖。",
+      "en": "Recognise syndromic obesity."
+    },
+    {
+      "zh-CN": "整合多趾和视网膜证据。",
+      "en": "Integrate polydactyly and retinal findings."
+    },
+    {
+      "zh-CN": "区分临床与分子确证。",
+      "en": "Distinguish clinical and molecular confirmation."
+    },
+    {
+      "zh-CN": "制定可及沟通及低血糖预防。",
+      "en": "Plan accessible communication and hypoglycaemia prevention."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "孙予宁（化名）",
+      "en": "Sun Yuning (pseudonym)"
+    },
+    "age": 20,
+    "ageUnit": "years",
+    "sex": "female",
+    "weightKg": 110,
+    "chiefComplaint": {
+      "zh-CN": "肥胖十四年，发现血糖升高两周",
+      "en": "Obesity for fourteen years and high glucose detected two weeks ago"
+    },
+    "triageNote": {
+      "zh-CN": "患者表达和视力受限，陪同者仅协助转述既有记录。",
+      "en": "Speech and vision are limited; a companion helps relay documented information."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "出生一个月左右被注意到偏重，六岁后明显肥胖。",
+        "en": "Excess weight was noticed at about one month, with marked obesity from age six."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "carer",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "weight"
+          },
+          {
+            "asked": "digits"
+          },
+          {
+            "asked": "vision"
+          },
+          {
+            "asked": "development"
+          },
+          {
+            "examined": "syndromic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "weight",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "体重从什么时候开始偏高？",
+        "en": "When did excess weight begin?"
+      },
+      "answer": {
+        "zh-CN": "出生一个月左右被注意到偏重，六岁后明显肥胖。",
+        "en": "Excess weight was noticed at about one month, with marked obesity from age six."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肥胖起始",
+          "幼年体重",
+          "六岁变化",
+          "体型病程"
+        ],
+        "en": [
+          "obesity onset",
+          "childhood weight",
+          "six year change",
+          "body size course"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "digits",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "出生时手足有什么特点？",
+        "en": "What digit differences were present at birth?"
+      },
+      "answer": {
+        "zh-CN": "左手和双足各有六指趾，三岁切除左手多指，双足仍各六趾。",
+        "en": "There were six digits on the left hand and each foot; the extra left finger was removed at three years, with six toes remaining on each foot."
+      },
+      "keywords": {
+        "zh-CN": [
+          "多指趾史",
+          "手足出生特点",
+          "幼年手术",
+          "额外指趾"
+        ],
+        "en": [
+          "extra digit history",
+          "birth hand foot features",
+          "childhood digit surgery",
+          "additional digits"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vision",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "视力怎样变化？",
+        "en": "How has vision changed?"
+      },
+      "answer": {
+        "zh-CN": "九岁后持续下降，现在接近失明。",
+        "en": "Vision declined progressively from nine years and was now almost absent."
+      },
+      "keywords": {
+        "zh-CN": [
+          "视力下降",
+          "九岁眼病",
+          "看不清经过",
+          "视觉变化"
+        ],
+        "en": [
+          "visual decline",
+          "nine year eye onset",
+          "poor sight course",
+          "vision changes"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "development",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "学习和表达能力怎样？",
+        "en": "How were learning and communication?"
+      },
+      "answer": {
+        "zh-CN": "自幼发育和学习有困难，言语表达不流利。",
+        "en": "Development and learning were difficult from childhood with limited verbal expression."
+      },
+      "keywords": {
+        "zh-CN": [
+          "学习表达",
+          "发育能力",
+          "语言情况",
+          "认知背景"
+        ],
+        "en": [
+          "learning communication",
+          "developmental ability",
+          "speech history",
+          "cognitive background"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family-known",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族背景怎样？",
+        "en": "What was the family background?"
+      },
+      "answer": {
+        "zh-CN": "父母为表亲，有一哥哥体型和发育正常；十二岁月经初潮，周期规律。",
+        "en": "Parents were cousins; a brother had normal body size and development. Menarche was at twelve with regular cycles."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族背景",
+          "近亲婚配",
+          "哥哥发育",
+          "月经情况"
+        ],
+        "en": [
+          "family background",
+          "parental consanguinity",
+          "brother development",
+          "menstrual history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "除了已记录的情况，家族疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about family illnesses?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "syndromic",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对体型、指趾和视网膜",
+        "en": "Review body size, digits and retina"
+      },
+      "finding": {
+        "zh-CN": "身高150 cm、BMI48.9 kg/m²，X形腿、皱褶部位黑棘皮样改变，双足12趾；视力<0.01，视网膜色素沉着。",
+        "en": "Height 150 cm and BMI 48.9 kg/m², knock knees, acanthosis-like flexural changes and twelve toes; acuity <0.01 with retinal pigmentation."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "metabolic",
+      "name": {
+        "zh-CN": "代谢和器官评估",
+        "en": "Metabolic and organ assessment"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "代谢和器官评估"
+        ],
+        "en": [
+          "Metabolic and organ assessment"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "空腹血糖13.6 mmol/L；餐试验高糖伴保留C肽，HOMA-IR8.64。肝肾功能和电解质正常，超声脂肪肝；未报告专门长期肾脏筛查。",
+            "en": "Fasting glucose 13.6 mmol/L; meal testing showed hyperglycaemia with preserved C-peptide and HOMA-IR 8.64. Liver/renal function and electrolytes were normal; ultrasound showed fatty liver without documented dedicated longitudinal renal surveillance."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "classification",
+      "name": {
+        "zh-CN": "综合征评估及缺口",
+        "en": "Syndrome assessment and gaps"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "综合征评估及缺口"
+        ],
+        "en": [
+          "Syndrome assessment and gaps"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "肥胖、多趾、视网膜色素变性及发育学习困难支持原报告Bardet–Biedl临床诊断。无分子结果。部分性激素数值单位可疑，不用于建立额外内分泌诊断。",
+            "en": "Obesity, polydactyly, retinal degeneration and developmental/learning difficulties supported the source’s clinical Bardet–Biedl diagnosis. No molecular result was supplied. Some sex-hormone units are questionable and are not used to create additional endocrine diagnoses."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告多种降糖治疗后控制改善，出院后频繁低血糖，逐步减少并两周后停胰岛素，后续血糖良好，约三个月体重107.5 kg。",
+            "en": "Combined glucose treatment improved control, but frequent post-discharge hypoglycaemia led to insulin reduction and withdrawal after two weeks. Subsequent control was good and weight was 107.5 kg at about three months."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "weight"
+          },
+          {
+            "asked": "digits"
+          },
+          {
+            "asked": "vision"
+          },
+          {
+            "asked": "development"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "syndromic"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "是否可把本例只作为一般肥胖糖尿病？",
+        "en": "Can this be treated as ordinary obesity-associated diabetes alone?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "syndromic",
+          "text": {
+            "zh-CN": "应评估综合征性肥胖，整合先天指趾、视网膜及发育特点",
+            "en": "Assess syndromic obesity by integrating congenital digits, retinal and developmental findings"
+          },
+          "feedback": {
+            "zh-CN": "跨系统组合不能由饮食习惯单独解释。",
+            "en": "The multisystem pattern cannot be attributed to diet alone."
+          },
+          "correct": true
+        },
+        {
+          "id": "lifestyle",
+          "text": {
+            "zh-CN": "全部问题都归因于个人不自律",
+            "en": "Attribute everything to poor self-discipline"
+          },
+          "feedback": {
+            "zh-CN": "忽略先天和进行性器官表现，也是不恰当沟通。",
+            "en": "This ignores congenital and progressive organ findings and is inappropriate communication."
+          },
+          "correct": false
+        },
+        {
+          "id": "blindness",
+          "text": {
+            "zh-CN": "血糖发现两周足以解释从九岁起失明",
+            "en": "Two weeks of detected hyperglycaemia explains visual loss since nine"
+          },
+          "feedback": {
+            "zh-CN": "病程顺序不支持这一简单归因。",
+            "en": "The chronology does not support that attribution."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "classification",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "clinical",
+          "text": {
+            "zh-CN": "BBS临床表型较完整，但基因和长期器官风险仍需评估",
+            "en": "The clinical BBS phenotype is substantial, while genetics and long-term organ risks still need assessment"
+          },
+          "feedback": {
+            "zh-CN": "正常一次肌酐不等于没有未来肾脏风险。",
+            "en": "One normal creatinine does not establish absence of future renal risk."
+          },
+          "correct": true
+        },
+        {
+          "id": "gene",
+          "text": {
+            "zh-CN": "近亲婚配已证明具体BBS基因",
+            "en": "Consanguinity proves a particular BBS gene"
+          },
+          "feedback": {
+            "zh-CN": "遗传方式线索不能指定基因。",
+            "en": "An inheritance clue does not identify a gene."
+          },
+          "correct": false
+        },
+        {
+          "id": "gonadal",
+          "text": {
+            "zh-CN": "所有BBS患者必须已有性腺发育不全",
+            "en": "Every BBS patient must already have hypogonadism"
+          },
+          "feedback": {
+            "zh-CN": "表型可变，本例有规律月经及已记录正常外生殖器。",
+            "en": "Phenotypes vary and this case had regular menses and documented normal external genitalia."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前长期计划应强调什么？",
+        "en": "What should a current long-term plan emphasise?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "classification",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "accessible",
+          "text": {
+            "zh-CN": "遗传、眼科、肾科和代谢联合照护，采用可及沟通并防低血糖，评估现有治疗选择",
+            "en": "Coordinate genetics, eye, renal and metabolic care with accessible communication, hypoglycaemia prevention and review of current options"
+          },
+          "feedback": {
+            "zh-CN": "现代已有针对部分BBS肥胖的获批治疗，旧文“无特殊治疗”不能当永久结论。",
+            "en": "Approved treatment for some BBS-related obesity now exists; the historical absence of specific therapy is not a permanent conclusion."
+          },
+          "correct": true
+        },
+        {
+          "id": "no-options",
+          "text": {
+            "zh-CN": "旧文说无特效药所以不再评估治疗",
+            "en": "Stop reviewing treatment because the old article said none existed"
+          },
+          "feedback": {
+            "zh-CN": "治疗证据与许可随时间变化。",
+            "en": "Evidence and authorisations change over time."
+          },
+          "correct": false
+        },
+        {
+          "id": "fixed-regimen",
+          "text": {
+            "zh-CN": "照搬旧多药方案不考虑低血糖和表达障碍",
+            "en": "Copy historical polypharmacy without considering hypoglycaemia or communication limits"
+          },
+          "feedback": {
+            "zh-CN": "后续已经发生频繁低血糖，应预防和调整。",
+            "en": "Frequent hypoglycaemia occurred later and requires prevention and adjustment."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "weight"
+          },
+          {
+            "asked": "digits"
+          },
+          {
+            "asked": "vision"
+          },
+          {
+            "asked": "development"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "family-known"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "syndromic"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "classification",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "提供可及的多学科照护并主动防范低血糖",
+        "en": "Provide accessible multidisciplinary care and actively prevent hypoglycaemia"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明先天指趾与进行性视力改变帮助识别综合征。；承认分子结果、完整肾脏长期评估及性激素单位核验缺失。，用复述确认理解。",
+        "en": "Explain that Congenital digits and progressive visual loss identify a syndromic pattern.; acknowledge Molecular results, longitudinal renal assessment and verified sex-hormone units are missing. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "metabolic",
+        "classification",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告为临床Bardet–Biedl综合征伴肥胖、视网膜病和糖尿病，未分子确诊。",
+      "en": "The report describes clinical Bardet–Biedl syndrome with obesity, retinal disease and diabetes without molecular confirmation."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "先天指趾与进行性视力改变帮助识别综合征。",
+        "en": "Congenital digits and progressive visual loss identify a syndromic pattern."
+      },
+      {
+        "zh-CN": "临床诊断与特定基因不同。",
+        "en": "Clinical diagnosis differs from a specific gene diagnosis."
+      },
+      {
+        "zh-CN": "低血糖和可及沟通是实际安全问题。",
+        "en": "Hypoglycaemia and accessible communication are practical safety issues."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "避免责备性体重解释。",
+        "en": "Avoid blame-based explanations of weight."
+      },
+      {
+        "zh-CN": "不沿用旧基因数量或无治疗结论。",
+        "en": "Do not repeat obsolete gene counts or absence-of-treatment claims."
+      },
+      {
+        "zh-CN": "一次正常肾功能不终止随访。",
+        "en": "One normal renal test does not end surveillance."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "分子结果、完整肾脏长期评估及性激素单位核验缺失。",
+        "en": "Molecular results, longitudinal renal assessment and verified sex-hormone units are missing."
+      }
+    ],
+    "references": [
+      "肖淳纯, 叶山东, 任安, 胡圆圆, 方芳, 王炜. Bardet－Biedl综合征一例. 中华糖尿病杂志. 2011;03(06):501-502. doi: 10.3760/cma.j.issn.1674-5809.2011.06.013.",
+      "https://rs.yiigle.com/cmaid/635201",
+      "https://doi.org/10.3760/cma.j.issn.1674-5809.2011.06.013",
+      "FDA IMCIVREE prescribing information 2026, BBS obesity indication. https://www.accessdata.fda.gov/drugsatfda_docs/label/2026/213793s009lbl.pdf"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "分子结果、完整肾脏长期评估及性激素单位核验缺失。",
+      "en": "Molecular results, longitudinal renal assessment and verified sex-hormone units are missing."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "digits"
+    },
+    {
+      "type": "ask",
+      "itemId": "vision"
+    },
+    {
+      "type": "ask",
+      "itemId": "development"
+    },
+    {
+      "type": "ask",
+      "itemId": "family-known"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "syndromic"
+    },
+    {
+      "type": "order",
+      "investigationId": "metabolic"
+    },
+    {
+      "type": "read",
+      "investigationId": "metabolic",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "syndromic"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "classification"
+    },
+    {
+      "type": "read",
+      "investigationId": "classification",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "clinical"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "accessible"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "635201",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/635201",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于肥胖起始，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Could you tell me about obesity onset?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "我想了解幼年体重。",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Please explain childhood weight in more detail.",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "关于多指趾史，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "digits"
+        ]
+      },
+      {
+        "text": "Could you tell me about extra digit history?",
+        "locale": "en",
+        "expect": [
+          "digits"
+        ]
+      },
+      {
+        "text": "我想了解手足出生特点。",
+        "locale": "zh-CN",
+        "expect": [
+          "digits"
+        ]
+      },
+      {
+        "text": "Please explain birth hand foot features in more detail.",
+        "locale": "en",
+        "expect": [
+          "digits"
+        ]
+      },
+      {
+        "text": "关于视力下降，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "Could you tell me about visual decline?",
+        "locale": "en",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "我想了解九岁眼病。",
+        "locale": "zh-CN",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "Please explain nine year eye onset in more detail.",
+        "locale": "en",
+        "expect": [
+          "vision"
+        ]
+      },
+      {
+        "text": "关于学习表达，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "Could you tell me about learning communication?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "我想了解发育能力。",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "Please explain developmental ability in more detail.",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "关于家族背景，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Could you tell me about family background?",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "我想了解近亲婚配。",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Please explain parental consanguinity in more detail.",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/635201"
+    }
+  }
+}

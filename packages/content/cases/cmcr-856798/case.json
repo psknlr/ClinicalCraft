@@ -1,0 +1,1864 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-856798",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "更换肿瘤药物后反复发热与肺部阴影",
+    "en": "Recurrent fever and pulmonary opacities after a change in cancer treatment"
+  },
+  "summary": {
+    "zh-CN": "接受肿瘤治疗的患者反复发热，症状与停药、再用药的关系和肺部证据需要共同分析。",
+    "en": "A patient receiving cancer therapy has recurrent fever requiring joint analysis of the drug timeline and pulmonary evidence."
+  },
+  "specialty": [
+    "respiratory-medicine",
+    "oncology",
+    "pharmacology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "刘颖, 张波. 依维莫司相关性肺损伤一例. 中华结核和呼吸杂志. 2010;33(05):390-391. doi: 10.3760/cma.j.issn.1001-0939.2010.05.023.",
+    "authors": [
+      "刘颖",
+      "张波"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "Current DailyMed everolimus prescribing information checked 2026-10-28; scope non-infectious pneumonitis, opportunistic infection differential and severity-based interruption/discontinuation. Label guidance, not an asserted society-guideline edition."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.1001-0939.2010.05.023"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "重建停药及再暴露时间关系。",
+      "en": "Reconstruct withdrawal and re-exposure timing."
+    },
+    {
+      "zh-CN": "识别药物肺损伤的证据强度。",
+      "en": "Assess evidence strength for drug-related lung injury."
+    },
+    {
+      "zh-CN": "保留免疫抑制相关感染鉴别。",
+      "en": "Retain infection differentials in immunosuppression."
+    },
+    {
+      "zh-CN": "按严重度讨论安全停药与复用边界。",
+      "en": "Discuss severity-based interruption and re-exposure boundaries."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "许予宁（化名）",
+      "en": "Xu Yuning (pseudonym)"
+    },
+    "age": 62,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "再次用药后发热咳嗽约六周，抗菌治疗效果不佳",
+      "en": "Fever and cough for about six weeks after restarting treatment, with little response to antibiotics"
+    },
+    "triageNote": {
+      "zh-CN": "先重建药物暴露和症状时序，再核对肺部记录。",
+      "en": "Reconstruct medication exposure and symptom timing before interpreting pulmonary records."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "十二年前左肾透明细胞癌切除，两年前肺与纵隔转移经活检证实。",
+        "en": "Left clear-cell renal carcinoma was resected twelve years earlier; lung and mediastinal metastases were biopsy-confirmed two years earlier."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "cancer"
+          },
+          {
+            "asked": "first-exposure"
+          },
+          {
+            "asked": "restart"
+          },
+          {
+            "asked": "respiratory"
+          },
+          {
+            "examined": "resp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "cancer",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "肿瘤治疗的背景是什么？",
+        "en": "What is the cancer-treatment background?"
+      },
+      "answer": {
+        "zh-CN": "十二年前左肾透明细胞癌切除，两年前肺与纵隔转移经活检证实。",
+        "en": "Left clear-cell renal carcinoma was resected twelve years earlier; lung and mediastinal metastases were biopsy-confirmed two years earlier."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肿瘤背景",
+          "肾切除史",
+          "转移时间",
+          "原发病程"
+        ],
+        "en": [
+          "cancer background",
+          "nephrectomy history",
+          "metastasis timing",
+          "primary disease course"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "first-exposure",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "第一次用新药后出现过什么？",
+        "en": "What happened after the first exposure to the new drug?"
+      },
+      "answer": {
+        "zh-CN": "索拉非尼因皮疹及淋巴结进展停用，改依维莫司两周后发热咳嗽；青霉素效果差，停药并短期激素后体温及胸片改善。",
+        "en": "Sorafenib was stopped after rash and nodal progression. Fever and cough began two weeks after everolimus; penicillin helped little, while withdrawal with a short steroid course improved temperature and chest radiography."
+      },
+      "keywords": {
+        "zh-CN": [
+          "首次依维莫司",
+          "最初暴露反应",
+          "停药经过",
+          "更换肿瘤药"
+        ],
+        "en": [
+          "first everolimus exposure",
+          "initial exposure response",
+          "withdrawal course",
+          "cancer drug change"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "restart",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "再次使用后多久发热？",
+        "en": "How soon did fever recur after restarting?"
+      },
+      "answer": {
+        "zh-CN": "再次服依维莫司约一周后发热38–39℃，伴畏寒、乏力和肌肉酸痛。",
+        "en": "About one week after restarting everolimus, fever 38–39°C recurred with chills, fatigue and myalgia."
+      },
+      "keywords": {
+        "zh-CN": [
+          "再用时间",
+          "再次发热",
+          "复用药经过",
+          "一周反应"
+        ],
+        "en": [
+          "restart timing",
+          "recurrent fever",
+          "rechallenge course",
+          "one week reaction"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "respiratory",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这次还有哪些呼吸症状？",
+        "en": "What respiratory symptoms accompanied this episode?"
+      },
+      "answer": {
+        "zh-CN": "咳少量白痰、轻度胸闷气促，无胸痛、咯血或盗汗。",
+        "en": "There was scant white sputum with mild chest tightness and dyspnoea, without chest pain, haemoptysis or night sweats."
+      },
+      "keywords": {
+        "zh-CN": [
+          "呼吸表现",
+          "咳痰特点",
+          "胸闷气促",
+          "伴随胸症"
+        ],
+        "en": [
+          "respiratory symptoms",
+          "sputum features",
+          "tightness dyspnoea",
+          "associated chest symptoms"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "antibiotics",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "入院前抗菌治疗有改善吗？",
+        "en": "Did antibiotics before admission help?"
+      },
+      "answer": {
+        "zh-CN": "青霉素及头孢米诺约三周效果不佳，肺部CT阴影进展。",
+        "en": "Around three weeks of penicillin and cefminox gave little benefit while CT opacities progressed."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抗菌药疗效",
+          "院前治疗",
+          "头孢米诺反应",
+          "影像进展"
+        ],
+        "en": [
+          "antibiotic response",
+          "preadmission treatment",
+          "cefminox response",
+          "imaging progression"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "resp",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "核对生命体征及胸部体征",
+        "en": "Review vital signs and chest findings"
+      },
+      "finding": {
+        "zh-CN": "体温38.4℃、脉搏116次/分、呼吸16次/分、血压130/90 mmHg；双肺呼吸音粗，未闻明显干湿啰音，无发绀和下肢水肿。",
+        "en": "Temperature 38.4°C, pulse 116/min, respiratory rate 16/min and pressure 130/90 mmHg; coarse breath sounds without clear added sounds, cyanosis or leg oedema."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "lung-records",
+      "name": {
+        "zh-CN": "入院肺部及炎症记录",
+        "en": "Admission pulmonary and inflammatory records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "入院肺部及炎症记录"
+        ],
+        "en": [
+          "Admission pulmonary and inflammatory records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "白细胞10.3×10^9/L、中性84.1%，CRP14.8 mg/L、ESR47 mm/h；pH7.42、PaCO2 33 mmHg、PaO2 79.9 mmHg。CT双肺斑片影进展；支原体、衣原体和结核抗体阴性，不能据此排除机会感染。",
+            "en": "White count 10.3×10^9/L, neutrophils 84.1%, CRP 14.8 mg/L and ESR 47 mm/h; pH 7.42, PaCO2 33 mmHg and PaO2 79.9 mmHg. Bilateral patchy CT opacities progressed; negative mycoplasma, chlamydia and tuberculosis antibodies do not exclude opportunistic infection."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "response-limit",
+      "name": {
+        "zh-CN": "住院短期反应与诊断缺口",
+        "en": "Short inpatient response and diagnostic gaps"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "住院短期反应与诊断缺口"
+        ],
+        "en": [
+          "Short inpatient response and diagnostic gaps"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "住院采用泼尼松，未继续抗生素，三天后体温正常、咳嗽减轻、CT影吸收。未提供支气管肺泡灌洗、肺组织病理或完整机会感染检查；第二次具体停药时间未明确。",
+            "en": "Prednisone was used without continuing antibiotics; after three days temperature normalised, cough improved and CT opacities regressed. Bronchoalveolar lavage, lung histology and a full opportunistic-infection work-up were not supplied; timing of a second drug withdrawal was not explicit."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告三天后退热、咳嗽减轻、CT改善；未给长期肺功能、肿瘤疗效、感染终审或后续依维莫司处置。",
+            "en": "Defervescence, reduced cough and CT improvement were reported after three days; long-term lung function, cancer outcomes, final infection exclusion and later everolimus decisions were not supplied."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "cancer"
+          },
+          {
+            "asked": "first-exposure"
+          },
+          {
+            "asked": "restart"
+          },
+          {
+            "asked": "respiratory"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "resp"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前药物时序和肺部证据最支持哪项工作判断？",
+        "en": "Which working interpretation best fits the drug timeline and pulmonary evidence?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "lung-records",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "drug",
+          "text": {
+            "zh-CN": "高度怀疑依维莫司相关肺炎，同时保留感染与肿瘤进展的鉴别",
+            "en": "Strongly suspect everolimus-associated pneumonitis while retaining infection and tumour progression in the differential"
+          },
+          "feedback": {
+            "zh-CN": "停药改善和再暴露复发增强关联，但不消除免疫抑制患者感染风险。",
+            "en": "Improvement after withdrawal and recurrence after re-exposure strengthen association without removing infection risk."
+          },
+          "correct": true
+        },
+        {
+          "id": "antibody",
+          "text": {
+            "zh-CN": "三项抗体阴性证明肺部无感染",
+            "en": "Three negative antibodies prove there is no lung infection"
+          },
+          "feedback": {
+            "zh-CN": "这些检查不能涵盖全部病原或PJP。",
+            "en": "These tests do not cover all organisms or Pneumocystis."
+          },
+          "correct": false
+        },
+        {
+          "id": "tumour-only",
+          "text": {
+            "zh-CN": "有转移史就只能解释为肿瘤进展",
+            "en": "A metastatic history means the opacities must be tumour progression"
+          },
+          "feedback": {
+            "zh-CN": "药物时间关系和既往回退现象需要纳入。",
+            "en": "The medication timeline and prior regression must be considered."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "response-limit",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "support",
+          "text": {
+            "zh-CN": "再次迅速改善支持炎症性药物反应，但激素反应不是病原排除试验",
+            "en": "Rapid improvement again supports an inflammatory drug reaction, but steroid response is not an infection-exclusion test"
+          },
+          "feedback": {
+            "zh-CN": "临床关联较强，病因确证仍受缺少灌洗和病理限制。",
+            "en": "The clinical association is strong, but absent lavage and pathology limit confirmation."
+          },
+          "correct": true
+        },
+        {
+          "id": "proof",
+          "text": {
+            "zh-CN": "激素三天有效即可证明绝无感染",
+            "en": "Three-day steroid response proves infection is impossible"
+          },
+          "feedback": {
+            "zh-CN": "短期抑炎反应不能替代微生物评估。",
+            "en": "Short-term anti-inflammatory response does not replace microbiology."
+          },
+          "correct": false
+        },
+        {
+          "id": "dose-universal",
+          "text": {
+            "zh-CN": "本例反应可确定所有患者的固定激素剂量",
+            "en": "This response establishes a fixed steroid dose for every patient"
+          },
+          "feedback": {
+            "zh-CN": "严重程度、感染风险和个体状况不同。",
+            "en": "Severity, infection risk and individual circumstances differ."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "按当前药品安全资料，下一步应强调什么？",
+        "en": "What should be prioritised according to current medicine-safety information?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "response-limit",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "review",
+          "text": {
+            "zh-CN": "暂停可疑药并由肿瘤与呼吸团队按严重度评估，排查机会感染后决定激素及后续用药",
+            "en": "Withhold the suspected drug and arrange oncology/respiratory severity assessment, including opportunistic infection, before deciding steroids and future therapy"
+          },
+          "feedback": {
+            "zh-CN": "现行标签将非感染性肺炎列为风险；停药或永久停用按严重度，不能无监测再挑战。",
+            "en": "Current labelling recognises non-infectious pneumonitis; interruption or discontinuation depends on severity, without unmonitored rechallenge."
+          },
+          "correct": true
+        },
+        {
+          "id": "rechallenge",
+          "text": {
+            "zh-CN": "为证实因果立即自行再次服用",
+            "en": "Immediately restart independently to prove causality"
+          },
+          "feedback": {
+            "zh-CN": "重复暴露可造成更严重肺损伤。",
+            "en": "Repeated exposure can cause more severe lung injury."
+          },
+          "correct": false
+        },
+        {
+          "id": "ignore-pjp",
+          "text": {
+            "zh-CN": "因旧文抗体阴性，激素前不必考虑PJP",
+            "en": "Negative historical antibodies remove the need to consider PJP before steroids"
+          },
+          "feedback": {
+            "zh-CN": "抗体项目未覆盖该机会感染。",
+            "en": "Those antibodies do not assess this opportunistic infection."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "cancer"
+          },
+          {
+            "asked": "first-exposure"
+          },
+          {
+            "asked": "restart"
+          },
+          {
+            "asked": "respiratory"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "antibiotics"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "resp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "lung-records",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "response-limit",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "避免无保护再暴露，并将机会感染纳入药物肺炎评估",
+        "en": "Avoid unprotected re-exposure and include opportunistic infection in pneumonitis assessment"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明药物时序比单次发热更有区分力。；承认缺少灌洗、组织学、完整机会感染检测、吸氧条件和长期随访。，用复述确认理解。",
+        "en": "Explain that Drug timing discriminates better than a single fever episode.; acknowledge Lavage, histology, complete opportunistic-infection testing, oxygen conditions and long-term follow-up are absent. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "lung-records",
+        "response-limit",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告以停药改善及再用复发支持依维莫司相关肺损伤，仍缺少完整感染排除及组织证据。",
+      "en": "Withdrawal improvement and recurrence on re-exposure support everolimus-associated lung injury, with incomplete infection exclusion and tissue evidence."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "药物时序比单次发热更有区分力。",
+        "en": "Drug timing discriminates better than a single fever episode."
+      },
+      {
+        "zh-CN": "抗体阴性不能覆盖机会感染。",
+        "en": "Negative antibodies do not cover opportunistic infection."
+      },
+      {
+        "zh-CN": "激素反应支持但不能确证病因。",
+        "en": "Steroid response supports but does not prove aetiology."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "不需为教学目的再次挑战可疑药。",
+        "en": "Teaching does not require another challenge with a suspected drug."
+      },
+      {
+        "zh-CN": "吸入氧条件未提供，不能计算可靠氧合分级。",
+        "en": "Inspired oxygen conditions are absent, preventing reliable oxygenation grading."
+      },
+      {
+        "zh-CN": "现行标签与个案历史剂量应分开。",
+        "en": "Current labelling and historical case doses must be separated."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "缺少灌洗、组织学、完整机会感染检测、吸氧条件和长期随访。",
+        "en": "Lavage, histology, complete opportunistic-infection testing, oxygen conditions and long-term follow-up are absent."
+      }
+    ],
+    "references": [
+      "刘颖, 张波. 依维莫司相关性肺损伤一例. 中华结核和呼吸杂志. 2010;33(05):390-391. doi: 10.3760/cma.j.issn.1001-0939.2010.05.023.",
+      "https://rs.yiigle.com/cmaid/856798",
+      "https://doi.org/10.3760/cma.j.issn.1001-0939.2010.05.023",
+      "Everolimus prescribing information, DailyMed current label checked 2026-10-28. https://dailymed.nlm.nih.gov/dailymed/lookup.cfm?setid=67e62e26-448d-46ec-b5a1-00dc1b5e26c6"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "缺少灌洗、组织学、完整机会感染检测、吸氧条件和长期随访。",
+      "en": "Lavage, histology, complete opportunistic-infection testing, oxygen conditions and long-term follow-up are absent."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-856798/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "026a514634c4959e22af55ab54d8282ed2345bd85105dbd6f3e5bd5b18420ec2"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "cancer"
+    },
+    {
+      "type": "ask",
+      "itemId": "first-exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "restart"
+    },
+    {
+      "type": "ask",
+      "itemId": "respiratory"
+    },
+    {
+      "type": "ask",
+      "itemId": "antibiotics"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "resp"
+    },
+    {
+      "type": "order",
+      "investigationId": "lung-records"
+    },
+    {
+      "type": "read",
+      "investigationId": "lung-records",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "drug"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "response-limit"
+    },
+    {
+      "type": "read",
+      "investigationId": "response-limit",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "support"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "review"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "856798",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/856798",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于肿瘤背景，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "cancer"
+        ]
+      },
+      {
+        "text": "Could you tell me about cancer background?",
+        "locale": "en",
+        "expect": [
+          "cancer"
+        ]
+      },
+      {
+        "text": "我想了解肾切除史。",
+        "locale": "zh-CN",
+        "expect": [
+          "cancer"
+        ]
+      },
+      {
+        "text": "Please explain nephrectomy history in more detail.",
+        "locale": "en",
+        "expect": [
+          "cancer"
+        ]
+      },
+      {
+        "text": "关于首次依维莫司，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "first-exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about first everolimus exposure?",
+        "locale": "en",
+        "expect": [
+          "first-exposure"
+        ]
+      },
+      {
+        "text": "我想了解最初暴露反应。",
+        "locale": "zh-CN",
+        "expect": [
+          "first-exposure"
+        ]
+      },
+      {
+        "text": "Please explain initial exposure response in more detail.",
+        "locale": "en",
+        "expect": [
+          "first-exposure"
+        ]
+      },
+      {
+        "text": "关于再用时间，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "restart"
+        ]
+      },
+      {
+        "text": "Could you tell me about restart timing?",
+        "locale": "en",
+        "expect": [
+          "restart"
+        ]
+      },
+      {
+        "text": "我想了解再次发热。",
+        "locale": "zh-CN",
+        "expect": [
+          "restart"
+        ]
+      },
+      {
+        "text": "Please explain recurrent fever in more detail.",
+        "locale": "en",
+        "expect": [
+          "restart"
+        ]
+      },
+      {
+        "text": "关于呼吸表现，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "respiratory"
+        ]
+      },
+      {
+        "text": "Could you tell me about respiratory symptoms?",
+        "locale": "en",
+        "expect": [
+          "respiratory"
+        ]
+      },
+      {
+        "text": "我想了解咳痰特点。",
+        "locale": "zh-CN",
+        "expect": [
+          "respiratory"
+        ]
+      },
+      {
+        "text": "Please explain sputum features in more detail.",
+        "locale": "en",
+        "expect": [
+          "respiratory"
+        ]
+      },
+      {
+        "text": "关于抗菌药疗效，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "antibiotics"
+        ]
+      },
+      {
+        "text": "Could you tell me about antibiotic response?",
+        "locale": "en",
+        "expect": [
+          "antibiotics"
+        ]
+      },
+      {
+        "text": "我想了解院前治疗。",
+        "locale": "zh-CN",
+        "expect": [
+          "antibiotics"
+        ]
+      },
+      {
+        "text": "Please explain preadmission treatment in more detail.",
+        "locale": "en",
+        "expect": [
+          "antibiotics"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/856798"
+    }
+  }
+}

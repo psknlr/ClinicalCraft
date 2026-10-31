@@ -1,0 +1,1895 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-44471",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "黄疸、黑便与进行性全身衰弱",
+    "en": "Jaundice, melaena and progressive weakness"
+  },
+  "summary": {
+    "zh-CN": "男孩黄疸迅速加深并出现黑便和肾功能异常，转氨酶并不显著升高，需要判断肝功能严重程度和时间紧迫性。",
+    "en": "A boy develops worsening jaundice, melaena and renal dysfunction despite modest aminotransferases, requiring assessment of liver failure and urgency."
+  },
+  "specialty": [
+    "pediatrics",
+    "hepatology",
+    "critical-care"
+  ],
+  "setting": "icu",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "莫国生, 张金龙, 吴子龙. 血浆置换联合肝移植治疗儿童肝衰竭一例. 中华儿科杂志. 2011;49(06):473-474. doi: 10.3760/cma.j.issn.0578-1310.2011.06.019.",
+    "authors": [
+      "莫国生",
+      "张金龙",
+      "吴子龙"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "AASLD 2022 Wilson disease guidance, verified 2026-10-28; scope severe/acute liver failure, expedited transplant assessment and bridging copper-removal support."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.06.019"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别低ALT伴严重肝衰竭。",
+      "en": "Recognise severe liver failure despite low ALT."
+    },
+    {
+      "zh-CN": "整合Wilson病临床线索。",
+      "en": "Integrate clinical Wilson disease clues."
+    },
+    {
+      "zh-CN": "区分桥接支持与移植。",
+      "en": "Distinguish bridging support and transplantation."
+    },
+    {
+      "zh-CN": "按真实时间线解释意识变化。",
+      "en": "Interpret consciousness changes chronologically."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "沈清和（化名）",
+      "en": "Shen Qinghe (pseudonym)"
+    },
+    "age": 10,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "乏力、食欲差、尿黄两个月，加重一周",
+      "en": "Weakness, poor appetite and dark urine for two months, worse for one week"
+    },
+    "triageNote": {
+      "zh-CN": "按入院清醒状态回顾；后续意识变化在记录阶段呈现。",
+      "en": "Begin with the alert admission state; later consciousness changes appear in subsequent records."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "两个多月乏力、食欲下降和尿黄，近一周明显加重。",
+        "en": "Weakness, poor appetite and dark urine had lasted over two months and worsened markedly over the last week."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "course"
+          },
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "admission-state"
+          },
+          {
+            "asked": "context"
+          },
+          {
+            "examined": "liver"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "course",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "乏力和尿黄出现多久？",
+        "en": "How long have weakness and dark urine lasted?"
+      },
+      "answer": {
+        "zh-CN": "两个多月乏力、食欲下降和尿黄，近一周明显加重。",
+        "en": "Weakness, poor appetite and dark urine had lasted over two months and worsened markedly over the last week."
+      },
+      "keywords": {
+        "zh-CN": [
+          "黄尿病程",
+          "乏力进展",
+          "食欲经过",
+          "黄疸时间"
+        ],
+        "en": [
+          "dark urine course",
+          "weakness progression",
+          "appetite course",
+          "jaundice duration"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "bleeding",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近有发热或黑便吗？",
+        "en": "Has there been fever or black stool?"
+      },
+      "answer": {
+        "zh-CN": "入院前两天出现发热和黑便。",
+        "en": "Fever and melaena appeared two days before admission."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期黑便",
+          "发热出血",
+          "两天变化",
+          "消化道出血史"
+        ],
+        "en": [
+          "recent melaena",
+          "fever and bleeding",
+          "two day changes",
+          "GI bleeding history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "admission-state",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "刚入院时能清楚回答吗？",
+        "en": "Could the child answer clearly on arrival?"
+      },
+      "answer": {
+        "zh-CN": "当时神志清楚，对答切题，用推车进入病房并面罩吸氧。",
+        "en": "The child was alert and answered appropriately, arriving by trolley with oxygen by mask."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院意识",
+          "当时交流",
+          "初始状态",
+          "转入情况"
+        ],
+        "en": [
+          "admission consciousness",
+          "initial communication",
+          "presenting state",
+          "transfer status"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "context",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原文有没有提供之前用药的完整清单？",
+        "en": "Was a complete pre-admission medicine list supplied?"
+      },
+      "answer": {
+        "zh-CN": "原报告没有给出完整入院前药物清单。",
+        "en": "The source did not provide a complete pre-admission medicine list."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院前药单",
+          "此前药物资料",
+          "药品清单",
+          "既往处方记录"
+        ],
+        "en": [
+          "preadmission drug list",
+          "earlier medication data",
+          "medicine list",
+          "prior prescription record"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family-known",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家族中有没有类似肝病的资料？",
+        "en": "Was similar liver disease in relatives documented?"
+      },
+      "answer": {
+        "zh-CN": "原报告未提供家族相关病史。",
+        "en": "Related family history was not provided."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族肝病",
+          "亲属黄疸",
+          "家庭铜病史",
+          "同胞肝病"
+        ],
+        "en": [
+          "family liver disease",
+          "relatives jaundice",
+          "familial copper disease",
+          "sibling liver disease"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "除了已记录的情况，家族疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about family illnesses?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "这次发病以前，身体有什么疾病？",
+        "en": "What illnesses were present before this episode?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "liver",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对黄疸、眼部及水肿",
+        "en": "Review jaundice, eyes and oedema"
+      },
+      "finding": {
+        "zh-CN": "全身和巩膜深度黄染、肝掌，角膜K–F环阳性，双下肢明显凹陷性水肿。",
+        "en": "Deep skin and scleral jaundice, palmar erythema, a positive Kayser–Fleischer ring and marked bilateral pitting leg oedema."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "核对腹部体征",
+        "en": "Review abdominal findings"
+      },
+      "finding": {
+        "zh-CN": "腹隆起，全腹压痛和反跳痛，移动性浊音阳性，肝区叩击痛。",
+        "en": "Distended abdomen with diffuse tenderness and rebound, shifting dullness and hepatic percussion tenderness."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "liver-labs",
+      "name": {
+        "zh-CN": "肝肾与凝血记录",
+        "en": "Liver, renal and coagulation records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肝肾与凝血记录"
+        ],
+        "en": [
+          "Liver, renal and coagulation records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "总胆红素738 µmol/L，ALT 12 U/L、AST 104 U/L、ALP 53 U/L；白蛋白27.2 g/L，肌酐317.5 µmol/L，PT 61.5 s，铜蓝蛋白49 mg/L。",
+            "en": "Total bilirubin 738 µmol/L, ALT 12 U/L, AST 104 U/L and ALP 53 U/L; albumin 27.2 g/L, creatinine 317.5 µmol/L, PT 61.5 s and ceruloplasmin 49 mg/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "deterioration",
+      "name": {
+        "zh-CN": "第三天变化与补充影像",
+        "en": "Day-three change and additional imaging"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "第三天变化与补充影像"
+        ],
+        "en": [
+          "Day-three change and additional imaging"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "第3天出现意识不清和躁动，原文标为重度肝性脑病；MRI见双侧基底节区异常，影像并见腹水及双侧胸水。病毒病因筛查未支持所列病毒感染；无ATP7B结果。",
+            "en": "On day 3 impaired consciousness and agitation were labelled severe hepatic encephalopathy. MRI showed bilateral basal-ganglia abnormalities, with ascites and bilateral pleural fluid on other imaging. Listed viral investigations did not support infection; no ATP7B result was supplied."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "综合治疗并六次血浆置换后意识和肾功能改善，PT仍55.5 s，随后肝移植。术后三个月总胆红素15.3 µmol/L、肌酐53.6 µmol/L、PT 13.5 s。",
+            "en": "After combined care and six plasma exchanges, consciousness and renal function improved but PT remained 55.5 s; liver transplantation followed. At three months bilirubin was 15.3 µmol/L, creatinine 53.6 µmol/L and PT 13.5 s."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "course"
+          },
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "admission-state"
+          },
+          {
+            "asked": "context"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "liver"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "低ALT是否能降低本例的紧迫性？",
+        "en": "Does the low ALT reduce urgency in this case?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "liver-labs",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "failure",
+          "text": {
+            "zh-CN": "不能；重度黄疸、凝血异常和肾损伤提示严重肝功能衰竭",
+            "en": "No; severe jaundice, coagulopathy and renal injury indicate serious liver failure"
+          },
+          "feedback": {
+            "zh-CN": "合成功能与器官损害比单看ALT更能反映此处危险。",
+            "en": "Synthetic dysfunction and organ injury convey risk beyond ALT alone."
+          },
+          "correct": true
+        },
+        {
+          "id": "mild",
+          "text": {
+            "zh-CN": "ALT低说明肝病很轻",
+            "en": "Low ALT proves mild liver disease"
+          },
+          "feedback": {
+            "zh-CN": "无法解释PT明显延长及严重黄疸。",
+            "en": "This cannot explain markedly prolonged PT and severe jaundice."
+          },
+          "correct": false
+        },
+        {
+          "id": "renal-only",
+          "text": {
+            "zh-CN": "只需按单纯肾衰竭处理",
+            "en": "Treat only isolated renal failure"
+          },
+          "feedback": {
+            "zh-CN": "肝脏、凝血和铜代谢线索不能忽略。",
+            "en": "Hepatic, coagulation and copper-metabolism clues cannot be ignored."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "deterioration",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "wilson",
+          "text": {
+            "zh-CN": "K–F环、低铜蓝蛋白及整体表现支持Wilson病相关肝衰竭的临床判断，基因尚未确认",
+            "en": "The ring, low ceruloplasmin and overall pattern support clinical Wilson-related liver failure without genetic confirmation"
+          },
+          "feedback": {
+            "zh-CN": "意识恶化进一步提高紧迫性；单独铜蓝蛋白不能承担全部诊断。",
+            "en": "Consciousness deterioration increases urgency; ceruloplasmin alone cannot carry the entire diagnosis."
+          },
+          "correct": true
+        },
+        {
+          "id": "genetic",
+          "text": {
+            "zh-CN": "已完成ATP7B分子确诊",
+            "en": "ATP7B molecular diagnosis is complete"
+          },
+          "feedback": {
+            "zh-CN": "原文未报告基因结果。",
+            "en": "No genetic result was reported."
+          },
+          "correct": false
+        },
+        {
+          "id": "recovered",
+          "text": {
+            "zh-CN": "暂时清醒就能排除肝性脑病",
+            "en": "Temporary alertness excludes hepatic encephalopathy"
+          },
+          "feedback": {
+            "zh-CN": "后续记录有明确精神状态变化，须按时序理解。",
+            "en": "Later mental-state changes require chronological interpretation."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前应怎样安排治疗路径？",
+        "en": "How should the current treatment pathway be organised?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "deterioration",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "transplant",
+          "text": {
+            "zh-CN": "尽早与儿童肝移植中心协作，重症支持及必要的血浆置换作为桥接评估",
+            "en": "Engage a paediatric transplant centre early, with critical support and assessment of plasma exchange as a bridge"
+          },
+          "feedback": {
+            "zh-CN": "AASLD指导强调Wilson相关急性肝衰竭的加速移植评估；暂时改善不意味着病因解除。",
+            "en": "AASLD guidance emphasises expedited transplant assessment in Wilson-related acute liver failure; temporary improvement does not establish cure."
+          },
+          "correct": true
+        },
+        {
+          "id": "delay",
+          "text": {
+            "zh-CN": "先等待所有传统保肝药都失败再转诊",
+            "en": "Wait until every traditional liver-support drug fails before referral"
+          },
+          "feedback": {
+            "zh-CN": "会浪费危重肝衰竭的时间窗。",
+            "en": "This may lose the window for management of critical liver failure."
+          },
+          "correct": false
+        },
+        {
+          "id": "exchange-cure",
+          "text": {
+            "zh-CN": "血浆置换已能替代所有肝移植",
+            "en": "Plasma exchange replaces transplantation in every case"
+          },
+          "feedback": {
+            "zh-CN": "支持或桥接不能被单例推广为普遍根治。",
+            "en": "Support or bridging cannot be generalised as cure from one case."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "course"
+          },
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "admission-state"
+          },
+          {
+            "asked": "context"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "family-known"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "liver"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "liver-labs",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "deterioration",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "早期移植中心评估，区别桥接支持与根本治疗",
+        "en": "Seek early transplant-centre assessment and distinguish bridging support from definitive treatment"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明低转氨酶不排除严重肝衰竭。；承认没有ATP7B检测、完整铜定量和长期移植物结局。，用复述确认理解。",
+        "en": "Explain that Low aminotransferases do not exclude severe liver failure.; acknowledge ATP7B testing, complete copper quantification and long-term graft outcomes are absent. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "liver-labs",
+        "deterioration",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告将肝衰竭归于Wilson病，并以血浆置换等支持桥接肝移植。",
+      "en": "The report attributed liver failure to Wilson disease and used plasma exchange and other support as a bridge to transplantation."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "低转氨酶不排除严重肝衰竭。",
+        "en": "Low aminotransferases do not exclude severe liver failure."
+      },
+      {
+        "zh-CN": "跨系统铜代谢线索支持病因评估。",
+        "en": "Multisystem copper-related clues support aetiological assessment."
+      },
+      {
+        "zh-CN": "支持后改善与恢复肝脏合成功能不是一回事。",
+        "en": "Improvement after support is not equivalent to restored hepatic synthesis."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "按凝血、意识及器官损害判断危险。",
+        "en": "Assess danger through coagulation, consciousness and organ injury."
+      },
+      {
+        "zh-CN": "原文脑病级别标签不替代具体症状。",
+        "en": "Historical encephalopathy grades do not replace described symptoms."
+      },
+      {
+        "zh-CN": "不复制旧文大量保肝处方。",
+        "en": "Do not reproduce the historical multi-drug prescription."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "没有ATP7B检测、完整铜定量和长期移植物结局。",
+        "en": "ATP7B testing, complete copper quantification and long-term graft outcomes are absent."
+      }
+    ],
+    "references": [
+      "莫国生, 张金龙, 吴子龙. 血浆置换联合肝移植治疗儿童肝衰竭一例. 中华儿科杂志. 2011;49(06):473-474. doi: 10.3760/cma.j.issn.0578-1310.2011.06.019.",
+      "https://rs.yiigle.com/cmaid/44471",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.06.019",
+      "AASLD Wilson disease 2022 practice guidance. https://www.aasld.org/practice-guidelines/diagnosis-and-treatment-wilson-disease",
+      "Executive summary. https://doi.org/10.1002/hep.32805"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "没有ATP7B检测、完整铜定量和长期移植物结局。",
+      "en": "ATP7B testing, complete copper quantification and long-term graft outcomes are absent."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "course"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "admission-state"
+    },
+    {
+      "type": "ask",
+      "itemId": "context"
+    },
+    {
+      "type": "ask",
+      "itemId": "family-known"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "liver"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "order",
+      "investigationId": "liver-labs"
+    },
+    {
+      "type": "read",
+      "investigationId": "liver-labs",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "failure"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "deterioration"
+    },
+    {
+      "type": "read",
+      "investigationId": "deterioration",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "wilson"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "transplant"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "44471",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/44471",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于黄尿病程，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "course"
+        ]
+      },
+      {
+        "text": "Could you tell me about dark urine course?",
+        "locale": "en",
+        "expect": [
+          "course"
+        ]
+      },
+      {
+        "text": "我想了解乏力进展。",
+        "locale": "zh-CN",
+        "expect": [
+          "course"
+        ]
+      },
+      {
+        "text": "Please explain weakness progression in more detail.",
+        "locale": "en",
+        "expect": [
+          "course"
+        ]
+      },
+      {
+        "text": "关于近期黑便，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent melaena?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "我想了解发热出血。",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "Please explain fever and bleeding in more detail.",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "关于入院意识，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "admission-state"
+        ]
+      },
+      {
+        "text": "Could you tell me about admission consciousness?",
+        "locale": "en",
+        "expect": [
+          "admission-state"
+        ]
+      },
+      {
+        "text": "我想了解当时交流。",
+        "locale": "zh-CN",
+        "expect": [
+          "admission-state"
+        ]
+      },
+      {
+        "text": "Please explain initial communication in more detail.",
+        "locale": "en",
+        "expect": [
+          "admission-state"
+        ]
+      },
+      {
+        "text": "关于入院前药单，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "context"
+        ]
+      },
+      {
+        "text": "Could you tell me about preadmission drug list?",
+        "locale": "en",
+        "expect": [
+          "context"
+        ]
+      },
+      {
+        "text": "我想了解此前药物资料。",
+        "locale": "zh-CN",
+        "expect": [
+          "context"
+        ]
+      },
+      {
+        "text": "Please explain earlier medication data in more detail.",
+        "locale": "en",
+        "expect": [
+          "context"
+        ]
+      },
+      {
+        "text": "关于家族肝病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Could you tell me about family liver disease?",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "我想了解亲属黄疸。",
+        "locale": "zh-CN",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "Please explain relatives jaundice in more detail.",
+        "locale": "en",
+        "expect": [
+          "family-known"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/44471"
+    }
+  }
+}

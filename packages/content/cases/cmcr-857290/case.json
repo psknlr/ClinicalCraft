@@ -1,0 +1,1866 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-857290",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "长期反复气短与新近活动能力下降",
+    "en": "Longstanding recurrent breathlessness with recent functional decline"
+  },
+  "summary": {
+    "zh-CN": "有血管炎病史的老年患者气短长期反复，常规心肺治疗效果不佳，需要寻找未解释的肺循环问题。",
+    "en": "An older patient with vasculitis has persistent breathlessness despite conventional heart/lung treatment."
+  },
+  "specialty": [
+    "respiratory",
+    "cardiology",
+    "rheumatology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "王红军, 于洪涛, 贾金广, 徐秋萍. 结节性多动脉炎合并慢性血栓栓塞性肺动脉高压一例. 中华结核和呼吸杂志. 2011;34(10):790-792. doi: 10.3760/cma.j.issn.1001-0939.2011.10.024.",
+    "authors": [
+      "王红军",
+      "于洪涛",
+      "贾金广",
+      "徐秋萍"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "ESC/ERS 2022 PH guideline, checked 2026-10-28; scope CTEPH confirmation and expert multidisciplinary operability/multimodal treatment."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.1001-0939.2011.10.024"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别肺循环病线索。",
+      "en": "Recognise pulmonary vascular clues."
+    },
+    {
+      "zh-CN": "区分急性加重与慢性基础。",
+      "en": "Separate acute worsening from chronic substrate."
+    },
+    {
+      "zh-CN": "解释现代确认缺口。",
+      "en": "Explain gaps in modern confirmation."
+    },
+    {
+      "zh-CN": "讨论多学科可干预性评估。",
+      "en": "Discuss multidisciplinary intervention assessment."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "施予宁（化名）",
+      "en": "Shi Yuning (pseudonym)"
+    },
+    "age": 69,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "胸闷气急反复一年，加重八天",
+      "en": "Recurrent chest tightness and breathlessness for one year, worse for eight days"
+    },
+    "triageNote": {
+      "zh-CN": "结合长期症状、低氧与右心线索。",
+      "en": "Integrate chronic symptoms, hypoxaemia and right-heart clues."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "一年反复胸闷气急，轻度活动就加重，夜里尚能平卧。",
+        "en": "Chest tightness and breathlessness recurred for a year, worsened by light activity; lying flat at night remained possible."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "dyspnoea"
+          },
+          {
+            "asked": "worsening"
+          },
+          {
+            "asked": "vasculitis"
+          },
+          {
+            "asked": "previous-treatment"
+          },
+          {
+            "examined": "right-heart"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "dyspnoea",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "气短多久，什么活动会加重？",
+        "en": "How long has breathlessness lasted and what worsens it?"
+      },
+      "answer": {
+        "zh-CN": "一年反复胸闷气急，轻度活动就加重，夜里尚能平卧。",
+        "en": "Chest tightness and breathlessness recurred for a year, worsened by light activity; lying flat at night remained possible."
+      },
+      "keywords": {
+        "zh-CN": [
+          "气短病程",
+          "活动气促",
+          "胸闷起始",
+          "平卧情况"
+        ],
+        "en": [
+          "breathlessness course",
+          "exertional dyspnoea",
+          "tightness onset",
+          "lying flat"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "worsening",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近有什么变化？",
+        "en": "What changed recently?"
+      },
+      "answer": {
+        "zh-CN": "八天来明显加重，日常活动受限，双腿水肿并膝痛。",
+        "en": "Symptoms worsened markedly over eight days with restricted daily activity, leg oedema and knee pain."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期加重",
+          "八天变化",
+          "活动受限",
+          "腿肿膝痛"
+        ],
+        "en": [
+          "recent worsening",
+          "eight day change",
+          "activity restriction",
+          "leg swelling knee pain"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vasculitis",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前血管疾病怎样确诊？",
+        "en": "How was the earlier vascular disease diagnosed?"
+      },
+      "answer": {
+        "zh-CN": "六年前因双腿痛，经血管造影和动脉活检诊断结节性多动脉炎，长期服泼尼松。",
+        "en": "Six years earlier leg pain led to angiography and arterial biopsy diagnosing polyarteritis nodosa, treated with long-term prednisone."
+      },
+      "keywords": {
+        "zh-CN": [
+          "血管炎病史",
+          "动脉活检史",
+          "长期激素",
+          "六年前诊断"
+        ],
+        "en": [
+          "vasculitis history",
+          "arterial biopsy history",
+          "long term steroids",
+          "six year diagnosis"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "previous-treatment",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "此前这次气短用了什么，效果怎样？",
+        "en": "What had been tried for this deterioration?"
+      },
+      "answer": {
+        "zh-CN": "曾按心衰或肺炎给氧、利尿、激素和抗菌药，未明显好转。",
+        "en": "Oxygen, diuretics, steroids and antibiotics for presumed heart failure or pneumonia gave no clear improvement."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此前气短治疗",
+          "利尿效果",
+          "抗菌疗效",
+          "外院处置"
+        ],
+        "en": [
+          "previous dyspnoea treatment",
+          "diuretic response",
+          "antibiotic response",
+          "outside management"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "negative-symptoms",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有咯血、晕厥或明显咳痰？",
+        "en": "Was there haemoptysis, syncope or prominent sputum?"
+      },
+      "answer": {
+        "zh-CN": "没有咯血或晕厥，咳嗽咳痰不明显，偶有胸骨后隐痛。",
+        "en": "No haemoptysis or syncope, little cough/sputum and occasional dull retrosternal pain were reported."
+      },
+      "keywords": {
+        "zh-CN": [
+          "咯血晕厥",
+          "咳痰情况",
+          "伴随胸痛",
+          "相关症状"
+        ],
+        "en": [
+          "haemoptysis syncope",
+          "sputum history",
+          "associated chest pain",
+          "related symptoms"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "right-heart",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "核对低氧和右心体征",
+        "en": "Review hypoxaemia and right-heart signs"
+      },
+      "finding": {
+        "zh-CN": "口唇发绀，心率108次/分、呼吸26次/分；肺部无干湿啰音，肺动脉瓣区第二心音亢进，双下肢凹陷水肿。",
+        "en": "Cyanotic lips, heart rate 108/min and respiratory rate 26/min; clear lungs, accentuated pulmonary second sound and pitting leg oedema."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "initial",
+      "name": {
+        "zh-CN": "血气与超声记录",
+        "en": "Blood gas and ultrasound records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血气与超声记录"
+        ],
+        "en": [
+          "Blood gas and ultrasound records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "吸氧浓度约33%时PaO2 54.4 mmHg、PaCO2 33.7 mmHg；BNP 2203 ng/L。超声右心增大、右室壁6.4 mm，估算肺动脉收缩压83.5 mmHg，左室EF73%；下肢双侧深静脉血栓。",
+            "en": "At approximately 33% inspired oxygen, PaO2 54.4 mmHg and PaCO2 33.7 mmHg; BNP 2203 ng/L. Echo showed enlarged right heart, wall 6.4 mm and estimated pulmonary systolic pressure 83.5 mmHg with LVEF 73%; bilateral leg DVT was found."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "ctpa",
+      "name": {
+        "zh-CN": "肺动脉CT与诊断边界",
+        "en": "Pulmonary CT angiography and diagnostic limits"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肺动脉CT与诊断边界"
+        ],
+        "en": [
+          "Pulmonary CT angiography and diagnostic limits"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "双肺叶及部分段动脉充盈缺损，左侧偏心附壁；原文诊断慢性血栓栓塞性肺高压。未给右心导管、V/Q或规范抗凝后复评。",
+            "en": "Bilateral lobar/segmental filling defects included eccentric wall-adherent left-sided thrombus; the source diagnosed CTEPH. Right-heart catheterisation, V/Q and reassessment after standard anticoagulation were not supplied."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告给予抗凝及无创通气，一周后症状和呼吸衰竭改善出院，继续华法林并监测凝血；长期结果未提供。",
+            "en": "Anticoagulation and NIV were followed by improvement and discharge after one week, with continued warfarin and coagulation monitoring; long-term results were not provided."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "dyspnoea"
+          },
+          {
+            "asked": "worsening"
+          },
+          {
+            "asked": "vasculitis"
+          },
+          {
+            "asked": "previous-treatment"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "right-heart"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "早期证据最需要关注哪一机制？",
+        "en": "Which mechanism deserves priority from the early evidence?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "initial",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "pulmonary-vascular",
+          "text": {
+            "zh-CN": "肺血管阻塞与右心负荷，不能仅按左心衰或少量肺炎解释",
+            "en": "Pulmonary vascular obstruction and right-heart load rather than left-heart failure or minor pneumonia alone"
+          },
+          "feedback": {
+            "zh-CN": "低氧、右心改变和DVT构成一致方向。",
+            "en": "Hypoxaemia, right-heart changes and DVT form a coherent pattern."
+          },
+          "correct": true
+        },
+        {
+          "id": "left",
+          "text": {
+            "zh-CN": "左室EF正常即可排除所有心肺病",
+            "en": "Normal LVEF excludes all cardiopulmonary disease"
+          },
+          "feedback": {
+            "zh-CN": "右心和肺循环仍有明确异常。",
+            "en": "Right-heart and pulmonary circulation abnormalities remain."
+          },
+          "correct": false
+        },
+        {
+          "id": "pneumonia",
+          "text": {
+            "zh-CN": "少量CT阴影充分解释全部重度低氧",
+            "en": "Minor CT opacities fully explain severe hypoxaemia"
+          },
+          "feedback": {
+            "zh-CN": "影像负荷与临床严重度不匹配。",
+            "en": "The imaging burden does not match clinical severity."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "ctpa",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "chronic",
+          "text": {
+            "zh-CN": "偏心附壁血栓和右室增厚支持慢性过程，但现代CTEPH确认资料不完整",
+            "en": "Eccentric adherent thrombus and right-ventricular thickening support chronicity, while modern CTEPH confirmation remains incomplete"
+          },
+          "feedback": {
+            "zh-CN": "超声估压不是右心导管，不能补造血流动力学。",
+            "en": "Echo pressure estimation is not catheterisation and haemodynamics cannot be invented."
+          },
+          "correct": true
+        },
+        {
+          "id": "cause",
+          "text": {
+            "zh-CN": "已证明血管炎就是唯一血栓原因",
+            "en": "Vasculitis is proven as the sole thrombotic cause"
+          },
+          "feedback": {
+            "zh-CN": "原文只提出关联解释，未完成唯一因果证明。",
+            "en": "The source proposes an association without proving sole causation."
+          },
+          "correct": false
+        },
+        {
+          "id": "acute-only",
+          "text": {
+            "zh-CN": "所有血栓均只能是八天内新发",
+            "en": "All thrombi must have arisen within eight days"
+          },
+          "feedback": {
+            "zh-CN": "一年病程及右室肥厚提示更长过程。",
+            "en": "A year of symptoms and right-wall thickening suggest a longer process."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前长期计划如何避免旧文局限？",
+        "en": "How should a current plan avoid the historical limitation?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "ctpa",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "centre",
+          "text": {
+            "zh-CN": "转肺高压/CTEPH中心完成确认并由多学科评估手术、介入、药物与抗凝",
+            "en": "Refer to a PH/CTEPH centre for confirmation and multidisciplinary surgical, interventional, medical and anticoagulation assessment"
+          },
+          "feedback": {
+            "zh-CN": "年龄或双侧病变不能单独替代现代可手术性判断。",
+            "en": "Age or bilateral disease alone cannot replace modern operability assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "inoperable",
+          "text": {
+            "zh-CN": "因69岁和双侧血栓直接永久判定不可手术",
+            "en": "Permanently declare inoperability from age 69 and bilateral thrombi"
+          },
+          "feedback": {
+            "zh-CN": "需要有经验团队结合可达病变和合并症判断。",
+            "en": "An experienced team must assess accessible lesions and comorbidity."
+          },
+          "correct": false
+        },
+        {
+          "id": "stop",
+          "text": {
+            "zh-CN": "无创通气改善就无需血栓治疗",
+            "en": "Improvement with NIV removes need for thrombotic care"
+          },
+          "feedback": {
+            "zh-CN": "支持改善不等于血管阻塞消失。",
+            "en": "Supportive improvement does not mean vascular obstruction has resolved."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "dyspnoea"
+          },
+          {
+            "asked": "worsening"
+          },
+          {
+            "asked": "vasculitis"
+          },
+          {
+            "asked": "previous-treatment"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "negative-symptoms"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "right-heart"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "initial",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "ctpa",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "由CTEPH专科团队判断可干预性，避免年龄和双侧病变自动排除治疗",
+        "en": "Use expert CTEPH assessment rather than automatically excluding intervention because of age or bilateral disease"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明肺实质轻微改变不足解释整体。；承认右心导管、V/Q、规范疗程后评估及长期结局缺失。，用复述确认理解。",
+        "en": "Explain that Minor parenchymal changes do not explain the whole picture.; acknowledge Right-heart catheterisation, V/Q, post-treatment reassessment and long-term outcomes are missing. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "initial",
+        "ctpa",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "历史影像和长期病程支持慢性血栓栓塞性肺循环病，需保留现代确认缺口。",
+      "en": "Historical imaging and course support chronic thromboembolic pulmonary vascular disease, with gaps in modern confirmation."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "肺实质轻微改变不足解释整体。",
+        "en": "Minor parenchymal changes do not explain the whole picture."
+      },
+      {
+        "zh-CN": "右心肥厚和附壁血栓支持慢性。",
+        "en": "Right-heart thickening and adherent clot support chronicity."
+      },
+      {
+        "zh-CN": "关联疾病不等于唯一因果。",
+        "en": "Associated disease is not sole causation."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "超声估压与导管不同。",
+        "en": "Echo estimates differ from catheter measurements."
+      },
+      {
+        "zh-CN": "治疗选择已超出旧文二分法。",
+        "en": "Treatment choices extend beyond the historical binary."
+      },
+      {
+        "zh-CN": "不模拟无记录的通气反应曲线。",
+        "en": "Do not simulate undocumented ventilation response curves."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "右心导管、V/Q、规范疗程后评估及长期结局缺失。",
+        "en": "Right-heart catheterisation, V/Q, post-treatment reassessment and long-term outcomes are missing."
+      }
+    ],
+    "references": [
+      "王红军, 于洪涛, 贾金广, 徐秋萍. 结节性多动脉炎合并慢性血栓栓塞性肺动脉高压一例. 中华结核和呼吸杂志. 2011;34(10):790-792. doi: 10.3760/cma.j.issn.1001-0939.2011.10.024.",
+      "https://rs.yiigle.com/cmaid/857290",
+      "https://doi.org/10.3760/cma.j.issn.1001-0939.2011.10.024",
+      "2022 ESC/ERS pulmonary hypertension guideline. https://www.escardio.org/guidelines/clinical-practice-guidelines/all-esc-practice-guidelines/pulmonary-hypertension/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "右心导管、V/Q、规范疗程后评估及长期结局缺失。",
+      "en": "Right-heart catheterisation, V/Q, post-treatment reassessment and long-term outcomes are missing."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-857290/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "acbb726cc7ea8d7f62c573e7ac13d7dfa5735ec446977fad0cec3eabe9141593"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "dyspnoea"
+    },
+    {
+      "type": "ask",
+      "itemId": "worsening"
+    },
+    {
+      "type": "ask",
+      "itemId": "vasculitis"
+    },
+    {
+      "type": "ask",
+      "itemId": "previous-treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "negative-symptoms"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "right-heart"
+    },
+    {
+      "type": "order",
+      "investigationId": "initial"
+    },
+    {
+      "type": "read",
+      "investigationId": "initial",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "pulmonary-vascular"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "ctpa"
+    },
+    {
+      "type": "read",
+      "investigationId": "ctpa",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "chronic"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "centre"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "857290",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/857290",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于气短病程，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "dyspnoea"
+        ]
+      },
+      {
+        "text": "Could you tell me about breathlessness course?",
+        "locale": "en",
+        "expect": [
+          "dyspnoea"
+        ]
+      },
+      {
+        "text": "我想了解活动气促。",
+        "locale": "zh-CN",
+        "expect": [
+          "dyspnoea"
+        ]
+      },
+      {
+        "text": "Please explain exertional dyspnoea in more detail.",
+        "locale": "en",
+        "expect": [
+          "dyspnoea"
+        ]
+      },
+      {
+        "text": "关于近期加重，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "worsening"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent worsening?",
+        "locale": "en",
+        "expect": [
+          "worsening"
+        ]
+      },
+      {
+        "text": "我想了解八天变化。",
+        "locale": "zh-CN",
+        "expect": [
+          "worsening"
+        ]
+      },
+      {
+        "text": "Please explain eight day change in more detail.",
+        "locale": "en",
+        "expect": [
+          "worsening"
+        ]
+      },
+      {
+        "text": "关于血管炎病史，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vasculitis"
+        ]
+      },
+      {
+        "text": "Could you tell me about vasculitis history?",
+        "locale": "en",
+        "expect": [
+          "vasculitis"
+        ]
+      },
+      {
+        "text": "我想了解动脉活检史。",
+        "locale": "zh-CN",
+        "expect": [
+          "vasculitis"
+        ]
+      },
+      {
+        "text": "Please explain arterial biopsy history in more detail.",
+        "locale": "en",
+        "expect": [
+          "vasculitis"
+        ]
+      },
+      {
+        "text": "关于此前气短治疗，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "previous-treatment"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous dyspnoea treatment?",
+        "locale": "en",
+        "expect": [
+          "previous-treatment"
+        ]
+      },
+      {
+        "text": "我想了解利尿效果。",
+        "locale": "zh-CN",
+        "expect": [
+          "previous-treatment"
+        ]
+      },
+      {
+        "text": "Please explain diuretic response in more detail.",
+        "locale": "en",
+        "expect": [
+          "previous-treatment"
+        ]
+      },
+      {
+        "text": "关于咯血晕厥，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "negative-symptoms"
+        ]
+      },
+      {
+        "text": "Could you tell me about haemoptysis syncope?",
+        "locale": "en",
+        "expect": [
+          "negative-symptoms"
+        ]
+      },
+      {
+        "text": "我想了解咳痰情况。",
+        "locale": "zh-CN",
+        "expect": [
+          "negative-symptoms"
+        ]
+      },
+      {
+        "text": "Please explain sputum history in more detail.",
+        "locale": "en",
+        "expect": [
+          "negative-symptoms"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/857290"
+    }
+  }
+}

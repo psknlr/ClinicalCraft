@@ -165,11 +165,11 @@ button.link {
 .intro-layout {
   flex: 1 0 auto;
   display: grid;
-  grid-template-columns: minmax(0, 590px) minmax(380px, 470px);
+  grid-template-columns: minmax(280px, 0.8fr) minmax(460px, 1.2fr);
   justify-content: space-between;
   align-items: center;
-  gap: 4vw;
-  padding: 64px 4vw 18px 6vw;
+  gap: 3vw;
+  padding: 64px 4vw 18px;
 }
 html[lang="en"] .intro-card h2 {
   font-size: 19px;
@@ -227,6 +227,12 @@ html[lang="en"] .intro-card h2 {
   line-height: 1.45;
   color: #6e5718;
 }
+.selected-case-summary {
+  margin: 0 0 12px;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #4f5d45;
+}
 .case-review.review-unreviewed {
   color: #7a3426;
 }
@@ -256,13 +262,11 @@ html[lang="en"] .intro-card h2 {
 .case-outcomes li + li {
   margin-top: 3px;
 }
-/* Desktop: the library is a fixed-height column (100vh − 140px). The selected-case summary keeps its natural
-   height, but once it outgrows the room that leaves the case list one card (learning outcomes open) it scrolls in
-   place instead of squeezing the list away. */
+/* Keep the catalogue usable at scale: the selected case has its own scroll area, including expanded outcomes. */
 @media (min-width: 901px) {
   .intro-selected {
     flex-shrink: 0;
-    max-height: max(240px, calc(100vh - 450px));
+    max-height: max(210px, min(280px, calc(100vh - 550px)));
     overflow: auto;
     overscroll-behavior: contain;
   }
@@ -323,7 +327,7 @@ html[lang="en"] .intro-card h2 {
 .library {
   display: flex;
   flex-direction: column;
-  max-height: calc(100vh - 140px);
+  max-height: calc(100vh - 88px);
   min-height: 0;
   background: var(--cream);
   border: 3px solid #7f946c;
@@ -346,13 +350,15 @@ html[lang="en"] .intro-card h2 {
   margin: 4px 0 0;
   font-size: 20px;
 }
-.library-head .count {
-  font: 10px var(--mono);
+.library-total {
+  flex-shrink: 0;
+  font: 11px var(--mono);
   color: var(--muted);
   letter-spacing: 1px;
 }
 .library-filters {
   display: grid;
+  grid-template-columns: minmax(0, 1fr);
   gap: 8px;
   padding: 12px 18px;
   border-bottom: 1px solid #d3d9bf;
@@ -365,7 +371,27 @@ html[lang="en"] .intro-card h2 {
   min-width: 0;
   font-size: 12px;
 }
+.library-filters #filter-collection {
+  flex: 1.6;
+}
+.library-results {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  min-height: 22px;
+  font-size: 11px;
+  line-height: 1.45;
+  color: #576a4d;
+}
+.library-results .link {
+  flex-shrink: 0;
+  padding: 2px 0;
+  font-size: 11px;
+}
 .case-list {
+  min-height: 150px;
+  flex: 1;
   overflow: auto;
   padding: 12px 14px 14px;
   overscroll-behavior: contain;
@@ -381,8 +407,15 @@ html[lang="en"] .intro-card h2 {
   border-color: #c3cdae;
   box-shadow: inset 0 2px #fff9e9, inset 0 -3px #0001;
 }
+.case-card.prov-published-case {
+  background: #f3f0dc;
+}
 .case-card:hover {
   background: #f4f0d9;
+}
+.case-card:focus-visible {
+  outline: 3px solid #476e52;
+  outline-offset: -3px;
 }
 .case-card.active {
   background: #fbf5dc;
@@ -440,6 +473,26 @@ html[lang="en"] .intro-card h2 {
 .case-spec {
   font-size: 11px;
   color: var(--muted);
+}
+.case-summary {
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+  overflow: hidden;
+  font-size: 12px;
+  line-height: 1.6;
+  color: #4f5d45;
+}
+.case-meta .collection-label {
+  color: #476b51;
+}
+.library-empty {
+  padding: 24px 12px;
+  line-height: 1.6;
+}
+.library-empty p {
+  margin: 6px 0 0;
+  font-size: 12px;
 }
 .case-meta {
   display: flex;
@@ -2614,7 +2667,7 @@ details.topic .question {
     background: linear-gradient(180deg, #173a2df0, #163626d0 60%, #132b19b0);
   }
   .intro-layout {
-    grid-template-columns: 1fr;
+    grid-template-columns: minmax(0, 1fr);
     align-items: start;
     padding: 66px 5vw 24px;
     gap: 24px;
@@ -2627,7 +2680,8 @@ details.topic .question {
     max-height: none;
   }
   .case-list {
-    overflow: visible;
+    max-height: min(58vh, 540px);
+    overflow: auto;
   }
   #intro .intro-foot {
     padding: 0 5vw 24px;
@@ -2810,6 +2864,9 @@ details.topic .question {
   }
   .library-filters .row {
     flex-wrap: wrap;
+  }
+  .library-filters #filter-collection {
+    flex-basis: 100%;
   }
   .window-head h2 {
     font-size: 17px;

@@ -18,6 +18,7 @@ import { createWorld } from "../world/index.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
 import { tr } from "../i18n/index.js";
+import { patientAgeText } from "../ui/patient-age.js";
 import type { EmbodiedLink } from "./embodied-link.js";
 import type { AppSession } from "./session.js";
 import { Stations } from "./stations.js";
@@ -34,8 +35,7 @@ export function slotFor(c: Pick<CaseDefinition, "setting">, f: FacilityDefinitio
 
 export function ageText(c: CaseDefinition): string {
   const p = c.patient;
-  const key = p.ageUnit === "months" ? "age.months" : p.ageUnit === "days" ? "age.days" : "age.years";
-  return tr(key, { n: p.age });
+  return patientAgeText(p.age, p.ageUnit);
 }
 
 export function sexText(c: CaseDefinition): string {

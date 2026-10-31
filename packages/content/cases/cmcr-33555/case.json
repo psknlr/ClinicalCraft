@@ -1,0 +1,2014 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33555",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "发热抽搐与意识差 · 8日龄男婴",
+    "en": "Fever, seizure and impaired consciousness · boy aged 8 days"
+  },
+  "summary": {
+    "zh-CN": "新生儿出现发热、异常哭声和抽搐，需整合胆红素、神经状态与迟获的暴露线索。",
+    "en": "A newborn develops fever, an abnormal cry and a seizure; integrate bilirubin, neurological state and exposure information obtained later."
+  },
+  "specialty": [
+    "neonatology",
+    "clinical-toxicology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "黄雪美, 陈继昌, 韦拔, 蒋永江, 符婵, 谢玉泉. 换血疗法成功救治新生儿氯氮平中毒一例. 中华儿科杂志. 2013;51(05):392-393. doi:10.3760/cma.j.issn.0578-1310.2013.05.016.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2013.05.016",
+    "authors": [
+      "黄雪美",
+      "陈继昌",
+      "韦拔",
+      "蒋永江",
+      "符婵",
+      "谢玉泉"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "Royal Children’s Hospital Melbourne. Poisoning: acute guidelines for initial management. Accessed 2026-10-28. https://www.rch.org.au/clinicalguide/guideline_index/Poisoning_Initial_Management/",
+        "Austin Clinical Toxicology Service. Clozapine guideline. August 2024. https://www.austin.org.au/Assets/Files/Clozapine%20Guideline_AUG%202024.pdf"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "在显著黄疸之外识别需补充的药物暴露史",
+      "en": "Identify the need for drug-exposure history despite marked jaundice"
+    },
+    {
+      "zh-CN": "用后续浓度与病史解释中毒证据",
+      "en": "Interpret poisoning evidence from subsequent levels and history"
+    },
+    {
+      "zh-CN": "区分治疗后浓度反弹与临床恢复",
+      "en": "Distinguish concentration rebound from clinical recovery"
+    },
+    {
+      "zh-CN": "提出包含儿童保护的专业支持计划",
+      "en": "Propose specialist support incorporating safeguarding"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "谢知远（化名）",
+      "en": "Xie Zhiyuan (pseudonym)"
+    },
+    "age": 8,
+    "ageUnit": "days",
+    "sex": "male",
+    "weightKg": 3.06,
+    "chiefComplaint": {
+      "zh-CN": "发热、抽搐1天",
+      "en": "One day of fever and a seizure"
+    },
+    "triageNote": {
+      "zh-CN": "转诊男婴，曾发热抽搐，镇静吸氧后仍反应差和进食差。",
+      "en": "A referred male newborn remains poorly responsive and feeds poorly after sedation and oxygen for fever and a seizure."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "昨天先烦躁、偶尔尖叫，之后发热并抽搐。",
+        "en": "Yesterday irritability and occasional screaming preceded fever and a seizure."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "infant",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "any": [
+        {
+          "phase": "initial"
+        },
+        {
+          "phase": "workup"
+        },
+        {
+          "phase": "confirmation"
+        },
+        {
+          "phase": "followup"
+        }
+      ]
+    },
+    "nonVerbalReason": {
+      "zh-CN": "8日龄婴儿且意识障碍，病史来自陪同者与转诊记录。",
+      "en": "The infant is 8 days old with impaired consciousness; history comes from the companion and referral record."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "seizure"
+          },
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "examined": "consciousness"
+          },
+          {
+            "examined": "jaundice"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "最先出现什么症状，后来又怎样？",
+        "en": "What happened first, and what followed?"
+      },
+      "answer": {
+        "zh-CN": "昨天先烦躁、偶尔尖叫，之后发热并抽搐。",
+        "en": "Yesterday irritability and occasional screaming preceded fever and a seizure."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发病顺序",
+          "孩子先发烧还是先不对劲？",
+          "发病那天的变化能按顺序说说吗？",
+          "最先出现什么症状，后来又怎样？"
+        ],
+        "en": [
+          "symptom sequence",
+          "Was fever the first change in the baby?",
+          "Can you describe the order of events that day?",
+          "What happened first, and what followed?"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "seizure",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "抽搐时身体是什么样子的？",
+        "en": "What did the body do during the seizure?"
+      },
+      "answer": {
+        "zh-CN": "有一次四肢发硬的抽搐，处理后不再抽，但反应仍不好。",
+        "en": "There was one episode of stiff limbs; it stopped after treatment but responsiveness remained poor."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽搐表现",
+          "发作时四肢有没有发硬？",
+          "抽了几次，后来还抽吗？",
+          "抽搐时身体是什么样子的？"
+        ],
+        "en": [
+          "seizure features",
+          "Did the limbs become stiff during the episode?",
+          "How many seizures were there, and did they recur?",
+          "What did the body do during the seizure?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "feeding",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "孩子生病后吃奶怎么样？",
+        "en": "How has the baby fed since becoming unwell?"
+      },
+      "answer": {
+        "zh-CN": "这次生病后吃得不好。",
+        "en": "Feeding has been poor during this illness."
+      },
+      "keywords": {
+        "zh-CN": [
+          "进食情况",
+          "吃奶有没有变少？",
+          "孩子还肯吃东西吗？",
+          "孩子生病后吃奶怎么样？"
+        ],
+        "en": [
+          "feeding",
+          "Has feeding decreased?",
+          "Is the baby still willing to feed?",
+          "How has the baby fed since becoming unwell?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "孩子是怎么出生的，出生时需要抢救吗？",
+        "en": "How was the baby delivered, and was resuscitation needed?"
+      },
+      "answer": {
+        "zh-CN": "孕41周加3天剖宫产出生，没有窒息复苏。",
+        "en": "He was born by caesarean at 41 weeks and 3 days without asphyxia resuscitation."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生经过",
+          "足月出生吗，顺产还是剖宫产？",
+          "出生当时有没有窒息抢救？",
+          "孩子是怎么出生的，出生时需要抢救吗？"
+        ],
+        "en": [
+          "birth history",
+          "Was the baby term, and was delivery vaginal or caesarean?",
+          "Was there asphyxia or resuscitation at birth?",
+          "How was the baby delivered, and was resuscitation needed?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "fever",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最高测到多少度？ 这次发烧最严重时多高？",
+        "en": "What was the highest measured temperature? How high was the fever at its worst?"
+      },
+      "answer": {
+        "zh-CN": "当地测到过38.7℃。",
+        "en": "A temperature of 38.7°C was recorded locally."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最高体温",
+          "最高测到多少度？",
+          "这次发烧最严重时多高？",
+          "最高体温情况"
+        ],
+        "en": [
+          "peak temperature",
+          "What was the highest measured temperature?",
+          "How high was the fever at its worst?",
+          "peak temperature information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-treatment",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "转来之前接受过什么治疗？ 前一家医院做过哪些处理？",
+        "en": "What treatment was given before transfer? What was done at the referring hospital?"
+      },
+      "answer": {
+        "zh-CN": "当地给予镇静、吸氧后，抽搐缓解。",
+        "en": "Sedation and oxygen before referral stopped the seizure."
+      },
+      "keywords": {
+        "zh-CN": [
+          "转诊前治疗",
+          "转来之前接受过什么治疗？",
+          "前一家医院做过哪些处理？",
+          "转诊前治疗情况"
+        ],
+        "en": [
+          "referral treatment",
+          "What treatment was given before transfer?",
+          "What was done at the referring hospital?",
+          "referral treatment information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "parental-history",
+      "topic": "family",
+      "question": {
+        "zh-CN": "母亲使用药物的情况有记录吗？ 能查到母亲用药的相关病历吗？",
+        "en": "Is maternal medication use documented? Are records about the mother's medicines available?"
+      },
+      "answer": {
+        "zh-CN": "深入追问后的家庭用药资料在后续病历中，初次转诊时没有及时提供。",
+        "en": "The detailed household medication history was obtained later and had not been provided promptly at referral."
+      },
+      "keywords": {
+        "zh-CN": [
+          "母亲用药线索",
+          "母亲使用药物的情况有记录吗？",
+          "能查到母亲用药的相关病历吗？",
+          "母亲用药线索情况"
+        ],
+        "en": [
+          "maternal medication",
+          "Is maternal medication use documented?",
+          "Are records about the mother's medicines available?",
+          "maternal medication information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "consciousness",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "评估意识和肌张力",
+        "en": "Review consciousness and muscle tone"
+      },
+      "finding": {
+        "zh-CN": "神志不清，刺激后哭声尖，时有呻吟和少量口沫，四肢肌张力增高，原记录GCS 8分。",
+        "en": "Consciousness is impaired, with a high-pitched cry after stimulation, occasional groaning, slight oral froth and increased limb tone; recorded GCS was 8."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "jaundice",
+      "system": "skin",
+      "maneuver": {
+        "zh-CN": "观察黄疸及基础体征",
+        "en": "Review jaundice and basic signs"
+      },
+      "finding": {
+        "zh-CN": "全身中重度黄染；体温37.5℃、心率150次/分、呼吸40次/分、血压68/45 mmHg。",
+        "en": "Moderate-to-marked generalised jaundice; temperature 37.5°C, heart rate 150/min, respiratory rate 40/min and BP 68/45 mmHg."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "bilirubin",
+      "name": {
+        "zh-CN": "胆红素和肝功能",
+        "en": "Bilirubin and liver tests"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胆红素和肝功能"
+        ],
+        "en": [
+          "Bilirubin and liver tests"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "总胆红素334.7 μmol/L，直接12.5、间接322.2 μmol/L；白蛋白35.9 g/L。",
+            "en": "Total bilirubin 334.7 µmol/L, direct 12.5 and indirect 322.2 µmol/L; albumin 35.9 g/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "early-tests",
+      "name": {
+        "zh-CN": "血糖及初始检查",
+        "en": "Glucose and initial investigations"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血糖及初始检查"
+        ],
+        "en": [
+          "Glucose and initial investigations"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "血糖5.7 mmol/L；血气、电解质、凝血及肾功能概述无明显异常，CRP <5 mg/L，超敏CRP <0.5 mg/L。",
+            "en": "Glucose 5.7 mmol/L; blood gas, electrolytes, coagulation and renal function were summarised as unremarkable, CRP <5 mg/L and high-sensitivity CRP <0.5 mg/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "imaging",
+      "name": {
+        "zh-CN": "颅脑超声与胸片",
+        "en": "Cranial ultrasound and chest film"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "颅脑超声与胸片"
+        ],
+        "en": [
+          "Cranial ultrasound and chest film"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "颅脑超声无明显异常；胸片报告新生儿肺炎。",
+            "en": "Cranial ultrasound showed no clear abnormality; chest film was reported as neonatal pneumonia."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "exposure-record",
+      "name": {
+        "zh-CN": "补充家庭用药与血药浓度",
+        "en": "Additional household medication and drug-level record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "补充家庭用药与血药浓度"
+        ],
+        "en": [
+          "Additional household medication and drug-level record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "后续反复问诊得知母亲使用氯氮平，并承认发病前曾给婴儿服药。换血后血药浓度1777.1 μg/L，随后1997.5 μg/L。摄入量为家属推算，并非实测。",
+            "en": "Repeated questioning established maternal clozapine use and an admission that the infant had been given the drug before onset. Post-exchange levels were 1777.1 then 1997.5 µg/L. The amount ingested was estimated by relatives rather than measured."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告在明确暴露前因高胆红素血症等考虑行换血，后续联合多项支持措施。血药浓度一度回升，后降至539.0和197 μg/L；出院前神经行为评分37分，随访称生长发育与同龄儿无明显差异，时长未明确。正文对是否再次换血的时序有不清之处，不自行补正。",
+            "en": "Exchange transfusion was performed before exposure was clarified, partly in the context of hyperbilirubinaemia, followed by multiple supportive measures. Drug levels initially rebounded then fell to 539.0 and 197 µg/L; predischarge neurobehavioural score was 37, and unspecified follow-up described development comparable to peers. The narrative is unclear about the timing of any later exchange and is not silently corrected."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "seizure"
+          },
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "birth"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "consciousness"
+          },
+          {
+            "examined": "jaundice"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "现有早期资料应怎样组织鉴别？",
+        "en": "How should the early differential be organised?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "bilirubin",
+            "phase": "workup"
+          },
+          {
+            "read": "early-tests",
+            "phase": "workup"
+          },
+          {
+            "read": "imaging",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "同时评估胆红素相关脑损伤、感染及中毒，补充照护与用药史",
+            "en": "Assess bilirubin-related neurological injury, infection and poisoning while obtaining caregiving and medication history"
+          },
+          "feedback": {
+            "zh-CN": "黄疸显著但不能单独解释所有意识变化，暴露史可能遗漏。",
+            "en": "Marked jaundice does not alone settle all neurological findings, and exposure may be omitted."
+          },
+          "correct": true
+        },
+        {
+          "id": "jaundice-only",
+          "text": {
+            "zh-CN": "只要胆红素高便无须再追查暴露",
+            "en": "Raised bilirubin removes the need to investigate exposure"
+          },
+          "feedback": {
+            "zh-CN": "并存疾病可能同时存在，不能以一个异常停止病因追查。",
+            "en": "Coexisting causes are possible; one abnormality must not end the aetiological assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "normal-scan",
+          "text": {
+            "zh-CN": "头颅超声正常即可排除严重脑功能问题",
+            "en": "Normal cranial ultrasound excludes serious cerebral dysfunction"
+          },
+          "feedback": {
+            "zh-CN": "结构性超声不能排除代谢性或药物性脑功能异常。",
+            "en": "Structural ultrasound does not exclude metabolic or drug-induced dysfunction."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "exposure-record",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "correct",
+          "text": {
+            "zh-CN": "暴露史和浓度支持中毒，但不证明所有神经症状只有一个原因",
+            "en": "Exposure and levels support poisoning without proving a single cause for all neurological signs"
+          },
+          "feedback": {
+            "zh-CN": "显著胆红素升高及感染记录并存，需保持综合评估。",
+            "en": "Marked bilirubin elevation and the infection record coexist and require integrated assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "level-only",
+          "text": {
+            "zh-CN": "一次血药浓度即可决定全部抢救措施",
+            "en": "One drug concentration determines all resuscitation"
+          },
+          "feedback": {
+            "zh-CN": "意识、呼吸、循环等临床状态优先，报告浓度只能补充证据。",
+            "en": "Clinical consciousness, breathing and circulation take priority; reported levels supplement evidence."
+          },
+          "correct": false
+        },
+        {
+          "id": "rebound-failure",
+          "text": {
+            "zh-CN": "浓度反弹足以证明换血导致患儿进一步服药",
+            "en": "A concentration rebound proves the infant received another dose because of exchange"
+          },
+          "feedback": {
+            "zh-CN": "原报告提出重新分布及持续吸收可能，没有再次摄入的证明。",
+            "en": "The report discusses redistribution and ongoing absorption; it does not establish repeat ingestion."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "药物暴露明确后，什么安全计划最合适？",
+        "en": "Once drug exposure is established, which safety plan is most appropriate?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "exposure-record",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "新生儿重症与中毒团队联合支持气道循环、连续观察，并启动儿童保护及安全照护评估",
+            "en": "Joint neonatal critical-care and toxicology support for airway/circulation and observation, with safeguarding and safe-care assessment"
+          },
+          "feedback": {
+            "zh-CN": "严重药物暴露与意识异常需要专业支持，防止再次暴露同样重要。",
+            "en": "Severe drug exposure and altered consciousness require specialist support, and prevention of repeat exposure is essential."
+          },
+          "correct": true
+        },
+        {
+          "id": "home-detox",
+          "text": {
+            "zh-CN": "让家属自行反复催吐或灌肠清除药物",
+            "en": "Ask relatives to repeat induced vomiting or enemas at home"
+          },
+          "feedback": {
+            "zh-CN": "意识障碍时自行去污有误吸及其他风险，原文历史措施不能照搬。",
+            "en": "Unsupervised decontamination with impaired consciousness risks aspiration and other harm; historical measures cannot simply be copied."
+          },
+          "correct": false
+        },
+        {
+          "id": "exchange-proof",
+          "text": {
+            "zh-CN": "单例恢复足以证明换血对所有氯氮平中毒有效",
+            "en": "Recovery in one case proves exchange transfusion works for every clozapine poisoning"
+          },
+          "feedback": {
+            "zh-CN": "本例同时有高胆红素血症和多项支持治疗，不能分离出单项疗效。",
+            "en": "Concurrent hyperbilirubinaemia and multiple supportive measures prevent attribution to one treatment."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "seizure"
+          },
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "birth"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "prior-treatment"
+          },
+          {
+            "asked": "parental-history"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "consciousness"
+          },
+          {
+            "examined": "jaundice"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "bilirubin",
+            "phase": "workup"
+          },
+          {
+            "read": "early-tests",
+            "phase": "workup"
+          },
+          {
+            "read": "imaging",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "exposure-record",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "首次即选择专业中毒支持及儿童保护评估",
+        "en": "Choose specialist toxicology support and safeguarding assessment on the first attempt"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：迟获的家庭用药史可以改变新生儿脑病的解释。同时解释以下信息仍有缺失或疑问：准确摄入量、完整药代时序、再次换血情况及标准化长期神经发育随访。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: A late household medication history can change the explanation for neonatal encephalopathy. Identify the following as missing or uncertain: Exact ingestion, complete pharmacokinetic timing, any repeat exchange and standardised long-term neurodevelopmental follow-up. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "bilirubin",
+        "early-tests",
+        "imaging",
+        "exposure-record",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "后续照护史及药物浓度证实氯氮平暴露，与高胆红素血症并存；恢复不能单独证明某种清除技术的疗效。",
+      "en": "Subsequent caregiving history and drug levels established clozapine exposure coexisting with hyperbilirubinaemia; recovery cannot prove efficacy of one elimination technique."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "迟获的家庭用药史可以改变新生儿脑病的解释。",
+        "en": "A late household medication history can change the explanation for neonatal encephalopathy."
+      },
+      {
+        "zh-CN": "治疗后的浓度反弹提示单次测值不能替代动态观察。",
+        "en": "Post-treatment concentration rebound shows that one measurement cannot replace serial observation."
+      },
+      {
+        "zh-CN": "儿童保护是后续安全计划的一部分。",
+        "en": "Safeguarding belongs in the subsequent safety plan."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "追问药物可及性及照护过程。",
+        "en": "Ask about medication access and caregiving events."
+      },
+      {
+        "zh-CN": "保留多种脑病原因并存的可能。",
+        "en": "Retain the possibility of coexisting causes of encephalopathy."
+      },
+      {
+        "zh-CN": "不把历史去污措施变成家庭操作建议。",
+        "en": "Do not convert historical decontamination measures into home instructions."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "准确摄入量、完整药代时序、再次换血情况及标准化长期神经发育随访。",
+        "en": "Exact ingestion, complete pharmacokinetic timing, any repeat exchange and standardised long-term neurodevelopmental follow-up."
+      }
+    ],
+    "references": [
+      "黄雪美, 陈继昌, 韦拔, 蒋永江, 符婵, 谢玉泉. 换血疗法成功救治新生儿氯氮平中毒一例. 中华儿科杂志. 2013;51(05):392-393. doi:10.3760/cma.j.issn.0578-1310.2013.05.016.",
+      "https://rs.yiigle.com/cmaid/33555",
+      "Royal Children’s Hospital Melbourne. Poisoning: acute guidelines for initial management. Accessed 2026-10-28. https://www.rch.org.au/clinicalguide/guideline_index/Poisoning_Initial_Management/",
+      "Austin Clinical Toxicology Service. Clozapine guideline. August 2024. https://www.austin.org.au/Assets/Files/Clozapine%20Guideline_AUG%202024.pdf"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "准确摄入量、完整药代时序、再次换血情况及标准化长期神经发育随访。",
+      "en": "Exact ingestion, complete pharmacokinetic timing, any repeat exchange and standardised long-term neurodevelopmental follow-up."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "seizure"
+    },
+    {
+      "type": "ask",
+      "itemId": "feeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "parental-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "examine",
+      "findingId": "consciousness"
+    },
+    {
+      "type": "examine",
+      "findingId": "jaundice"
+    },
+    {
+      "type": "order",
+      "investigationId": "bilirubin"
+    },
+    {
+      "type": "read",
+      "investigationId": "bilirubin",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "early-tests"
+    },
+    {
+      "type": "read",
+      "investigationId": "early-tests",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "imaging",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "exposure-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "exposure-record",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "correct"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "33555",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33555",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2013.05.016",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "孩子先发烧还是先不对劲？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Was fever the first change in the baby?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "发病那天的变化能按顺序说说吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Can you describe the order of events that day?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "发作时四肢有没有发硬？",
+        "locale": "zh-CN",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "Did the limbs become stiff during the episode?",
+        "locale": "en",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "抽了几次，后来还抽吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "How many seizures were there, and did they recur?",
+        "locale": "en",
+        "expect": [
+          "seizure"
+        ]
+      },
+      {
+        "text": "吃奶有没有变少？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Has feeding decreased?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "孩子还肯吃东西吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Is the baby still willing to feed?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "足月出生吗，顺产还是剖宫产？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Was the baby term, and was delivery vaginal or caesarean?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "出生当时有没有窒息抢救？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Was there asphyxia or resuscitation at birth?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "最高测到多少度？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "What was the highest measured temperature?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "这次发烧最严重时多高？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "How high was the fever at its worst?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "转来之前接受过什么治疗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-treatment"
+        ]
+      },
+      {
+        "text": "What treatment was given before transfer?",
+        "locale": "en",
+        "expect": [
+          "prior-treatment"
+        ]
+      },
+      {
+        "text": "前一家医院做过哪些处理？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-treatment"
+        ]
+      },
+      {
+        "text": "What was done at the referring hospital?",
+        "locale": "en",
+        "expect": [
+          "prior-treatment"
+        ]
+      },
+      {
+        "text": "母亲使用药物的情况有记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "parental-history"
+        ]
+      },
+      {
+        "text": "Is maternal medication use documented?",
+        "locale": "en",
+        "expect": [
+          "parental-history"
+        ]
+      },
+      {
+        "text": "能查到母亲用药的相关病历吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "parental-history"
+        ]
+      },
+      {
+        "text": "Are records about the mother's medicines available?",
+        "locale": "en",
+        "expect": [
+          "parental-history"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

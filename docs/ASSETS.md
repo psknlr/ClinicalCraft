@@ -5,7 +5,8 @@ Some content cannot (or should not) live in a public repository:
 | asset | why local-only | source |
 |---|---|---|
 | SMZL case figures `fig1`–`fig7` and the source PDF | © original rights holders (Chinese Medical Association journal) — local teaching use only | Virtual Patient V4 package |
-| CMCR 20-case collection: 20 source PDFs and 23 referenced figures (24 figures downloaded) | © original rights holders — local teaching use only | User's Drive CMCR corpus; [installation and source mapping](CMCR_CASES.md) |
+| CMCR original 20 cases: 20 PDFs and 24 figures downloaded; 17 PDFs and 21 figures approved for display | © original rights holders — local teaching use only | User's Drive CMCR corpus; [installation and source mapping](CMCR_CASES.md) |
+| CMCR additional 105 cases: original PDFs, figures and tables, with only individually approved media displayed | © original rights holders — local teaching use only | User's Drive CMCR corpus; [installation and review boundaries](CMCR_105_CASES.md) |
 | Anatomy model (`anatomy.glb.gz`, 25 MB) + organ catalog | size (Z-Anatomy / BodyParts3D, CC BY-SA 4.0 — attribution kept) | Virtual Patient V4 package |
 
 ## Install

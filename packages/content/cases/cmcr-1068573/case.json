@@ -1,0 +1,1987 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1068573",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "便血便秘与直肠肿块 · 29岁女性",
+    "en": "Rectal bleeding, constipation and a rectal mass · woman aged 29"
+  },
+  "summary": {
+    "zh-CN": "年轻患者有近梗阻直肠病变及肝脏占位，需要病理、分期和可切除性联合评估。",
+    "en": "A young patient has a near-obstructing rectal lesion and liver mass requiring tissue, staging and resectability assessment."
+  },
+  "specialty": [
+    "colorectal-surgery",
+    "oncology",
+    "hepatobiliary-surgery"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "林奇, 叶青海, 刘天舒, 余一祎, 侯英勇, 王健, 周波, 陈漪, 饶圣祥, 丁建勇, 任黎, 韦烨, 许剑民. 多学科协作治疗T4bNxM1期直肠癌患者一例. 中华结直肠疾病电子杂志. 2013;02(03):130-132. doi:10.3877/cma.j.issn.2095-3224.2013.03.09.",
+    "doi": "10.3877/cma.j.issn.2095-3224.2013.03.09",
+    "authors": [
+      "林奇",
+      "叶青海",
+      "刘天舒",
+      "余一祎",
+      "侯英勇",
+      "王健",
+      "周波",
+      "陈漪",
+      "饶圣祥",
+      "丁建勇",
+      "任黎",
+      "韦烨",
+      "许剑民"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "National Cancer Institute. Colon Cancer Treatment (PDQ), professional version; metastatic colorectal liver resectability section. Accessed 2026-10-28. https://www.cancer.gov/types/colorectal/hp/colon-treatment-pdq"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "整合组织与影像形成转移性肿瘤判断。",
+      "en": "Integrate histology and imaging to assess metastatic disease."
+    },
+    {
+      "zh-CN": "区分部分缓解与根治证据。",
+      "en": "Distinguish partial response from evidence of cure."
+    },
+    {
+      "zh-CN": "识别现代分子资料和随访长度缺口。",
+      "en": "Identify missing contemporary molecular data and follow-up duration."
+    },
+    {
+      "zh-CN": "以共同决策及时复评切除机会并识别急性梗阻风险",
+      "en": "Use shared decisions to reassess resection and identify acute obstruction risk"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "郑知远（化名）",
+      "en": "Zheng Zhiyuan (pseudonym)"
+    },
+    "age": 29,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "便血伴便秘4个多月",
+      "en": "Over four months of rectal bleeding and constipation"
+    },
+    "triageNote": {
+      "zh-CN": "便血便秘，体力状况评分2分。",
+      "en": "Rectal bleeding and constipation with performance status 2."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "便血已经4个多月。",
+        "en": "Rectal bleeding has lasted over four months."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "bowel"
+          },
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "family"
+          },
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "bleeding",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "便血持续多长时间了？ 第一次发现大便带血是什么时候？",
+        "en": "How long have you noticed rectal bleeding? When did you first see blood with stool?"
+      },
+      "answer": {
+        "zh-CN": "便血已经4个多月。",
+        "en": "Rectal bleeding has lasted over four months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "便血病程",
+          "便血持续多长时间了？",
+          "第一次发现大便带血是什么时候？",
+          "便血病程情况"
+        ],
+        "en": [
+          "rectal bleeding duration",
+          "How long have you noticed rectal bleeding?",
+          "When did you first see blood with stool?",
+          "rectal bleeding duration information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "bowel",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "排便习惯有什么变化？ 是不是越来越难排便？",
+        "en": "How have your bowel habits changed? Has passing stool become difficult?"
+      },
+      "answer": {
+        "zh-CN": "这段时间还有便秘。",
+        "en": "Constipation has accompanied the bleeding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "排便变化",
+          "排便习惯有什么变化？",
+          "是不是越来越难排便？",
+          "排便变化情况"
+        ],
+        "en": [
+          "bowel habit change",
+          "How have your bowel habits changed?",
+          "Has passing stool become difficult?",
+          "bowel habit change information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有肝炎或心脏病等慢性病吗？ 平时有哪些需要长期治疗的病？",
+        "en": "Have you had hepatitis, heart disease or other chronic illness? What conditions have required long-term treatment?"
+      },
+      "answer": {
+        "zh-CN": "既往无肝炎、高血压、心脏病等慢性病。",
+        "en": "No previous hepatitis, hypertension, heart disease or similar chronic illness was reported."
+      },
+      "keywords": {
+        "zh-CN": [
+          "慢性病背景",
+          "以前有肝炎或心脏病等慢性病吗？",
+          "平时有哪些需要长期治疗的病？",
+          "慢性病背景情况"
+        ],
+        "en": [
+          "chronic disease background",
+          "Have you had hepatitis, heart disease or other chronic illness?",
+          "What conditions have required long-term treatment?",
+          "chronic disease background information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有没有遗传病或类似肠道病？ 亲属的肠癌情况有记录吗？",
+        "en": "Are there inherited disorders or similar bowel diseases in the family? Is there a record of colorectal cancer among relatives?"
+      },
+      "answer": {
+        "zh-CN": "原资料称无家族性遗传病史，未详列结直肠癌家系。",
+        "en": "The source reports no inherited family disorder but does not detail a colorectal cancer pedigree."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族遗传病史",
+          "家里有没有遗传病或类似肠道病？",
+          "亲属的肠癌情况有记录吗？",
+          "家族遗传病史情况"
+        ],
+        "en": [
+          "inherited family history",
+          "Are there inherited disorders or similar bowel diseases in the family?",
+          "Is there a record of colorectal cancer among relatives?",
+          "inherited family history information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "obstetric",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "以前生过几个孩子？ 既往生育情况有记录吗？",
+        "en": "How many children have you delivered previously? Is childbirth history documented?"
+      },
+      "answer": {
+        "zh-CN": "已育有一个孩子。",
+        "en": "She has one child."
+      },
+      "keywords": {
+        "zh-CN": [
+          "生育情况",
+          "以前生过几个孩子？",
+          "既往生育情况有记录吗？",
+          "生育情况情况"
+        ],
+        "en": [
+          "childbirth history",
+          "How many children have you delivered previously?",
+          "Is childbirth history documented?",
+          "childbirth history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "刚发病时体重有没有变化？ 初诊时有没有明显消瘦？",
+        "en": "Did weight change when illness began? Was weight loss present at the first presentation?"
+      },
+      "answer": {
+        "zh-CN": "初诊没有给出体重变化数值。",
+        "en": "No quantified initial weight change is provided."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最初体重变化",
+          "刚发病时体重有没有变化？",
+          "初诊时有没有明显消瘦？",
+          "最初体重变化情况"
+        ],
+        "en": [
+          "initial weight change",
+          "Did weight change when illness began?",
+          "Was weight loss present at the first presentation?",
+          "initial weight change information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对哪些药物过敏？ 用药后出现过什么过敏反应？",
+        "en": "Which medicines have caused allergy? What allergic reactions have occurred after medicines?"
+      },
+      "answer": {
+        "zh-CN": "过敏史未记录。",
+        "en": "Allergy history is not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "对哪些药物过敏？",
+          "用药后出现过什么过敏反应？",
+          "药物过敏情况"
+        ],
+        "en": [
+          "medicine allergies",
+          "Which medicines have caused allergy?",
+          "What allergic reactions have occurred after medicines?",
+          "medicine allergies information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有居住环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "居住环境暴露",
+          "有关居住环境暴露",
+          "居住环境暴露情况",
+          "居住环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有病前日常活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前日常活动",
+          "有关病前日常活动",
+          "病前日常活动情况",
+          "病前日常活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "communication-needs",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有沟通辅助需求吗？",
+        "en": "Is communication support needs documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "沟通辅助需求",
+          "有关沟通辅助需求",
+          "沟通辅助需求情况",
+          "沟通辅助需求记录"
+        ],
+        "en": [
+          "communication support needs",
+          "details of communication support needs",
+          "communication support needs information",
+          "communication support needs record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "评估体力与淋巴结",
+        "en": "Assess performance and lymph nodes"
+      },
+      "finding": {
+        "zh-CN": "体力状况2分，浅表淋巴结无肿大。",
+        "en": "Performance status 2; no superficial lymphadenopathy."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查腹部",
+        "en": "Examine the abdomen"
+      },
+      "finding": {
+        "zh-CN": "初诊腹部未发现明显阳性体征。",
+        "en": "No obvious positive abdominal signs at presentation."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "endoscopy",
+      "name": {
+        "zh-CN": "结肠镜及活检",
+        "en": "Colonoscopy and biopsy"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "结肠镜及活检"
+        ],
+        "en": [
+          "Colonoscopy and biopsy"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "距肛门15 cm肿块，质脆易出血，占腔约4/5且镜不能通过；活检直肠腺癌。",
+            "en": "A friable bleeding mass 15 cm from the anus occupied about four fifths of the lumen and prevented scope passage; biopsy showed rectal adenocarcinoma."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "staging",
+      "name": {
+        "zh-CN": "初始分期影像",
+        "en": "Initial staging imaging"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "初始分期影像"
+        ],
+        "en": [
+          "Initial staging imaging"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "PET-CT示直肠周围脂肪受侵、区域及后腹膜结节，肝约10 cm病灶；原报告分期cT4bNxM1。",
+            "en": "PET-CT showed perirectal fat involvement, regional/retroperitoneal nodes and a roughly 10 cm liver lesion; the source labelled cT4bNxM1."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "markers",
+      "name": {
+        "zh-CN": "肿瘤与分子记录",
+        "en": "Tumour and molecular records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肿瘤与分子记录"
+        ],
+        "en": [
+          "Tumour and molecular records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "CEA302.40 ng/mL；KRAS、BRAF报告野生型，但未给出完整RAS及MMR/MSI。",
+            "en": "CEA 302.40 ng/mL; KRAS and BRAF were reported wild-type, without full RAS or MMR/MSI details."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "response",
+      "name": {
+        "zh-CN": "转化治疗后评估记录",
+        "en": "Post-conversion assessment"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "转化治疗后评估记录"
+        ],
+        "en": [
+          "Post-conversion assessment"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "报告4周期FOLFIRI联合西妥昔单抗后CEA下降、原发和肝病灶缩小，MDT评估部分缓解并建议切除；不是病理完全缓解。",
+            "en": "After four reported cycles of FOLFIRI plus cetuximab, CEA and lesion size decreased; MDT assessed partial response and recommended resection, not pathological complete response."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "患者最初未接受手术，后进展伴梗阻及左附件脓肿，行急诊直肠切除和双附件切除；随后切除肝转移灶，完成后续化疗。报告终点未发现复发或转移，但缺确切随访长度。",
+            "en": "Initial surgery was declined; progression with obstruction and a left adnexal abscess led to emergency rectal and bilateral adnexal surgery. Liver metastasis was later resected with further chemotherapy. No recurrence/metastasis was reported at an endpoint of unspecified duration."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "bowel"
+          },
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "应怎样解释肝病灶与近梗阻原发灶？",
+        "en": "How should the liver lesion and near-obstructing primary be interpreted?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "endoscopy",
+            "phase": "workup"
+          },
+          {
+            "read": "staging",
+            "phase": "workup"
+          },
+          {
+            "read": "markers",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "转移性直肠癌需MDT判断潜在可切除性及梗阻风险",
+            "en": "Metastatic rectal cancer requires MDT assessment of potential resectability and obstruction risk"
+          },
+          "feedback": {
+            "zh-CN": "病理与影像应共同指导治疗目标。",
+            "en": "Tissue and imaging jointly guide treatment goals."
+          },
+          "correct": true
+        },
+        {
+          "id": "benign",
+          "text": {
+            "zh-CN": "年轻年龄支持忽略癌性活检",
+            "en": "Young age justifies dismissing malignant biopsy"
+          },
+          "feedback": {
+            "zh-CN": "年龄不能推翻组织证据。",
+            "en": "Age does not override tissue evidence."
+          },
+          "correct": false
+        },
+        {
+          "id": "never",
+          "text": {
+            "zh-CN": "有肝转移就永不考虑局部治疗",
+            "en": "Liver metastasis always excludes local treatment"
+          },
+          "feedback": {
+            "zh-CN": "需评估分布、反应与可切除性，而非一刀切。",
+            "en": "Distribution, response and resectability need individual assessment."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "response",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "部分缓解创造复评窗口，但不等于治愈",
+            "en": "Partial response creates a reassessment opportunity but does not establish cure"
+          },
+          "feedback": {
+            "zh-CN": "影像缩小仍需局部治疗与系统病情复核。",
+            "en": "Radiological shrinkage still requires local-treatment and systemic reassessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "cured",
+          "text": {
+            "zh-CN": "CEA下降即可宣布治愈",
+            "en": "A CEA fall proves cure"
+          },
+          "feedback": {
+            "zh-CN": "标志物不能代替完整肿瘤评估。",
+            "en": "Markers do not replace complete tumour assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "biology",
+          "text": {
+            "zh-CN": "KRAS野生型已提供全部现代分子信息",
+            "en": "Wild-type KRAS supplies all modern molecular information"
+          },
+          "feedback": {
+            "zh-CN": "扩展RAS及MMR/MSI等未记录，不能补写。",
+            "en": "Extended RAS and MMR/MSI are not documented."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "在治疗反应后如何开展下一步沟通？",
+        "en": "How should care be discussed after a response?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "response",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "及时复评手术窗口并了解患者顾虑，说明梗阻警讯与分子资料缺口",
+            "en": "Promptly reassess surgery, explore patient concerns and explain obstruction warnings and molecular gaps"
+          },
+          "feedback": {
+            "zh-CN": "尊重知情选择，同时提供明确风险和随访计划。",
+            "en": "Respect informed choice while explaining risks and follow-up."
+          },
+          "correct": true
+        },
+        {
+          "id": "blame",
+          "text": {
+            "zh-CN": "拒绝手术即可归责患者并停止随访",
+            "en": "Blame the patient for declining surgery and stop follow-up"
+          },
+          "feedback": {
+            "zh-CN": "需要理解顾虑、共同决策和持续照护。",
+            "en": "Explore concerns, share decisions and maintain care."
+          },
+          "correct": false
+        },
+        {
+          "id": "routine",
+          "text": {
+            "zh-CN": "出现发热梗阻仍等待常规门诊化疗",
+            "en": "Fever with obstruction can wait for routine chemotherapy"
+          },
+          "feedback": {
+            "zh-CN": "急性梗阻或脓肿需要紧急外科评估。",
+            "en": "Acute obstruction or abscess needs urgent surgical assessment."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "bowel"
+          },
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "obstetric"
+          },
+          {
+            "asked": "weight"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "endoscopy",
+            "phase": "workup"
+          },
+          {
+            "read": "staging",
+            "phase": "workup"
+          },
+          {
+            "read": "markers",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "response",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "以共同决策及时复评切除机会并识别急性梗阻风险",
+        "en": "Use shared decisions to reassess resection and identify acute obstruction risk"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：整合组织与影像形成转移性肿瘤判断。同时解释以下信息仍有缺失或疑问：完整RAS、MMR/MSI、遗传咨询、初始拒绝手术原因和确切随访长度。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Integrate histology and imaging to assess metastatic disease. Identify the following as missing or uncertain: Full RAS, MMR/MSI, genetic counselling, reasons for declining initial surgery and exact follow-up duration. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "endoscopy",
+        "staging",
+        "markers",
+        "response",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "病例体现转化治疗后的反复可切除性评估及患者沟通，不能将短期终点等同长期治愈。",
+      "en": "The case illustrates repeated resectability assessment and communication after conversion therapy; short follow-up does not establish cure."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "整合组织与影像形成转移性肿瘤判断。",
+        "en": "Integrate histology and imaging to assess metastatic disease."
+      },
+      {
+        "zh-CN": "区分部分缓解与根治证据。",
+        "en": "Distinguish partial response from evidence of cure."
+      },
+      {
+        "zh-CN": "识别现代分子资料和随访长度缺口。",
+        "en": "Identify missing contemporary molecular data and follow-up duration."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "整合组织与影像形成转移性肿瘤判断。",
+        "en": "Integrate histology and imaging to assess metastatic disease."
+      },
+      {
+        "zh-CN": "区分部分缓解与根治证据。",
+        "en": "Distinguish partial response from evidence of cure."
+      },
+      {
+        "zh-CN": "识别现代分子资料和随访长度缺口。",
+        "en": "Identify missing contemporary molecular data and follow-up duration."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整RAS、MMR/MSI、遗传咨询、初始拒绝手术原因和确切随访长度。",
+        "en": "Full RAS, MMR/MSI, genetic counselling, reasons for declining initial surgery and exact follow-up duration."
+      }
+    ],
+    "references": [
+      "林奇, 叶青海, 刘天舒, 余一祎, 侯英勇, 王健, 周波, 陈漪, 饶圣祥, 丁建勇, 任黎, 韦烨, 许剑民. 多学科协作治疗T4bNxM1期直肠癌患者一例. 中华结直肠疾病电子杂志. 2013;02(03):130-132. doi:10.3877/cma.j.issn.2095-3224.2013.03.09.",
+      "https://rs.yiigle.com/cmaid/1068573",
+      "National Cancer Institute. Colon Cancer Treatment (PDQ), professional version; metastatic colorectal liver resectability section. Accessed 2026-10-28. https://www.cancer.gov/types/colorectal/hp/colon-treatment-pdq"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整RAS、MMR/MSI、遗传咨询、初始拒绝手术原因和确切随访长度。",
+      "en": "Full RAS, MMR/MSI, genetic counselling, reasons for declining initial surgery and exact follow-up duration."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "bowel"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "obstetric"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "communication-needs"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "order",
+      "investigationId": "endoscopy"
+    },
+    {
+      "type": "read",
+      "investigationId": "endoscopy",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "staging"
+    },
+    {
+      "type": "read",
+      "investigationId": "staging",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "markers"
+    },
+    {
+      "type": "read",
+      "investigationId": "markers",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "response"
+    },
+    {
+      "type": "read",
+      "investigationId": "response",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1068573",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1068573",
+    "sourceDoi": "10.3877/cma.j.issn.2095-3224.2013.03.09",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "便血持续多长时间了？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "How long have you noticed rectal bleeding?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "第一次发现大便带血是什么时候？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "When did you first see blood with stool?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "排便习惯有什么变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "How have your bowel habits changed?",
+        "locale": "en",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "是不是越来越难排便？",
+        "locale": "zh-CN",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "Has passing stool become difficult?",
+        "locale": "en",
+        "expect": [
+          "bowel"
+        ]
+      },
+      {
+        "text": "以前有肝炎或心脏病等慢性病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Have you had hepatitis, heart disease or other chronic illness?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "平时有哪些需要长期治疗的病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "What conditions have required long-term treatment?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "家里有没有遗传病或类似肠道病？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Are there inherited disorders or similar bowel diseases in the family?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "亲属的肠癌情况有记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Is there a record of colorectal cancer among relatives?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前生过几个孩子？",
+        "locale": "zh-CN",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "How many children have you delivered previously?",
+        "locale": "en",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "既往生育情况有记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "Is childbirth history documented?",
+        "locale": "en",
+        "expect": [
+          "obstetric"
+        ]
+      },
+      {
+        "text": "刚发病时体重有没有变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Did weight change when illness began?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "初诊时有没有明显消瘦？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Was weight loss present at the first presentation?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "对哪些药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Which medicines have caused allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "用药后出现过什么过敏反应？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What allergic reactions have occurred after medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族遗传病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any inherited family history?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有最初体重变化方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Could you describe any initial weight change?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      }
+    ]
+  }
+}

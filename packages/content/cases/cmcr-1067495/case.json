@@ -1,0 +1,2004 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1067495",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "足月妊娠头痛与重度血小板减少 · 21岁女性",
+    "en": "Term pregnancy, headache and severe thrombocytopenia · woman aged 21"
+  },
+  "summary": {
+    "zh-CN": "妊娠晚期神经症状、贫血与血小板减少，需要动态区别产科疾病与血栓性微血管病。",
+    "en": "Late-pregnancy neurological symptoms, anaemia and thrombocytopenia require evolving distinction between obstetric disease and thrombotic microangiopathy."
+  },
+  "specialty": [
+    "obstetrics",
+    "hematology",
+    "critical-care"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "龚洵, 邓东锐. 妊娠期血栓性血小板减少性紫癜一例. 中华产科急救电子杂志. 2013;02(03):212-214. doi:10.3877/cma.j.issn.2095-3259.2013.03.015.",
+    "doi": "10.3877/cma.j.issn.2095-3259.2013.03.015",
+    "authors": [
+      "龚洵",
+      "邓东锐"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "ISTH. 2025 focused update of the 2020 TTP management guidelines; acute suspected TTP assessment remains urgent. https://pmc.ncbi.nlm.nih.gov/articles/PMC13470878/",
+        "ISTH. Guidelines for diagnosis of TTP. 2020. https://pmc.ncbi.nlm.nih.gov/articles/PMC8146131/"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别分娩后持续神经和血液异常的再评估信号。",
+      "en": "Identify persistent postpartum neurological and haematological abnormalities as reassessment triggers."
+    },
+    {
+      "zh-CN": "区分TMA表型与TTP特异性确证。",
+      "en": "Distinguish a TMA phenotype from TTP-specific confirmation."
+    },
+    {
+      "zh-CN": "解释紧急专科处置不应等待全部检验。",
+      "en": "Explain why urgent specialist care should not await every test."
+    },
+    {
+      "zh-CN": "及时识别疑似TTP急症，不把历史反复输板作为默认正确处置",
+      "en": "Recognise suspected TTP urgently without treating historical repeated platelet transfusions as default care"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "李知远（化名）",
+      "en": "Li Zhiyuan (pseudonym)"
+    },
+    "age": 21,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "孕37周加1天，头痛一天、左侧麻木20分钟",
+      "en": "At 37 weeks 1 day, headache for a day and left-sided numbness for twenty minutes"
+    },
+    "triageNote": {
+      "zh-CN": "头痛眼花，短暂左侧肢体麻木，血小板曾7×10⁹/L。",
+      "en": "Headache, visual disturbance and transient left-sided numbness with platelets previously 7×10⁹/L."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "一天前头痛眼花，无明显诱因。",
+        "en": "Headache and visual disturbance began a day earlier without a clear trigger."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "carer",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述已记录病史。",
+          "en": "Relays documented history only."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "any": [
+        {
+          "phase": "workup"
+        },
+        {
+          "phase": "confirmation"
+        }
+      ]
+    },
+    "nonVerbalReason": {
+      "zh-CN": "后续记录存在意识障碍或插管，改由病历和陪同者叙述。",
+      "en": "Subsequent records include impaired consciousness or intubation; use records and a companion."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "headache"
+          },
+          {
+            "asked": "neuro"
+          },
+          {
+            "asked": "pregnancy"
+          },
+          {
+            "asked": "bp"
+          },
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "obstetric"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "headache",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "头痛和眼花什么时候开始的？ 这次头痛是突然出现的吗？",
+        "en": "When did the headache and visual symptoms begin? How did this headache start?"
+      },
+      "answer": {
+        "zh-CN": "一天前头痛眼花，无明显诱因。",
+        "en": "Headache and visual disturbance began a day earlier without a clear trigger."
+      },
+      "keywords": {
+        "zh-CN": [
+          "头痛眼花",
+          "头痛和眼花什么时候开始的？",
+          "这次头痛是突然出现的吗？",
+          "头痛眼花情况"
+        ],
+        "en": [
+          "headache and visual symptoms",
+          "When did the headache and visual symptoms begin?",
+          "How did this headache start?",
+          "headache and visual symptoms information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "neuro",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "左边麻了多久，后来恢复了吗？ 麻木是一过性还是一直持续？",
+        "en": "How long did the left-sided numbness last, and did it resolve? Was the numbness transient or persistent?"
+      },
+      "answer": {
+        "zh-CN": "左侧肢体麻木约20分钟后自行缓解。",
+        "en": "Left-sided numbness lasted about twenty minutes and resolved."
+      },
+      "keywords": {
+        "zh-CN": [
+          "左侧麻木",
+          "左边麻了多久，后来恢复了吗？",
+          "麻木是一过性还是一直持续？",
+          "左侧麻木情况"
+        ],
+        "en": [
+          "left-sided numbness",
+          "How long did the left-sided numbness last, and did it resolve?",
+          "Was the numbness transient or persistent?",
+          "left-sided numbness information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "pregnancy",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "现在怀孕多少周，是第几次怀孕？ 以前生过孩子吗？",
+        "en": "How many weeks pregnant are you, and is this your first pregnancy? Have you delivered a baby before?"
+      },
+      "answer": {
+        "zh-CN": "第一次妊娠，现37周加1天。",
+        "en": "First pregnancy at 37 weeks and 1 day."
+      },
+      "keywords": {
+        "zh-CN": [
+          "本次孕周",
+          "现在怀孕多少周，是第几次怀孕？",
+          "以前生过孩子吗？",
+          "本次孕周情况"
+        ],
+        "en": [
+          "current gestation",
+          "How many weeks pregnant are you, and is this your first pregnancy?",
+          "Have you delivered a baby before?",
+          "current gestation information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "bp",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "以前产检血压和尿蛋白怎样？ 之前有被告知血压偏高吗？",
+        "en": "What did earlier antenatal BP and urine tests show? Had you previously been told your blood pressure was raised?"
+      },
+      "answer": {
+        "zh-CN": "早先产检血压138/90、尿蛋白阴性，未处理；发病时140/100、尿蛋白++。",
+        "en": "Earlier BP was 138/90 with negative urine protein and no treatment; at symptom onset it was 140/100 with protein ++."
+      },
+      "keywords": {
+        "zh-CN": [
+          "之前血压尿检",
+          "以前产检血压和尿蛋白怎样？",
+          "之前有被告知血压偏高吗？",
+          "之前血压尿检情况"
+        ],
+        "en": [
+          "earlier BP and urine",
+          "What did earlier antenatal BP and urine tests show?",
+          "Had you previously been told your blood pressure was raised?",
+          "earlier BP and urine information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "antenatal",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "孕期有定期检查吗？ 产检以前发现过异常吗？",
+        "en": "Were antenatal checks regular? Had earlier antenatal visits found abnormalities?"
+      },
+      "answer": {
+        "zh-CN": "定期产检，早期未发现异常。",
+        "en": "Regular antenatal visits had initially found no abnormality."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期检查",
+          "孕期有定期检查吗？",
+          "产检以前发现过异常吗？",
+          "孕期检查情况"
+        ],
+        "en": [
+          "antenatal visits",
+          "Were antenatal checks regular?",
+          "Had earlier antenatal visits found abnormalities?",
+          "antenatal visits information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "bleeding",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "有没有鼻出血、牙龈出血或其他出血？ 以前有异常出血记录吗？",
+        "en": "Has there been nose, gum or other bleeding? Are unusual bleeding episodes recorded?"
+      },
+      "answer": {
+        "zh-CN": "原文未详列有无黏膜出血的问诊。",
+        "en": "The source does not detail a history of mucosal bleeding."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出血自诉",
+          "有没有鼻出血、牙龈出血或其他出血？",
+          "以前有异常出血记录吗？",
+          "出血自诉情况"
+        ],
+        "en": [
+          "reported bleeding",
+          "Has there been nose, gum or other bleeding?",
+          "Are unusual bleeding episodes recorded?",
+          "reported bleeding information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对哪些药物过敏？ 用药后出现过什么过敏反应？",
+        "en": "Which medicines have caused allergy? What allergic reactions have occurred after medicines?"
+      },
+      "answer": {
+        "zh-CN": "药物过敏史未记录。",
+        "en": "Drug allergies are not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "用药过敏",
+          "对哪些药物过敏？",
+          "用药后出现过什么过敏反应？",
+          "用药过敏情况"
+        ],
+        "en": [
+          "drug allergy",
+          "Which medicines have caused allergy?",
+          "What allergic reactions have occurred after medicines?",
+          "drug allergy information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有居住环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "居住环境暴露",
+          "有关居住环境暴露",
+          "居住环境暴露情况",
+          "居住环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有病前日常活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前日常活动",
+          "有关病前日常活动",
+          "病前日常活动情况",
+          "病前日常活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对入院神志与皮肤",
+        "en": "Review admission awareness and skin"
+      },
+      "finding": {
+        "zh-CN": "神志清楚、贫血貌，未见皮肤出血点淤斑，体温36.2℃。",
+        "en": "Alert and pale without petechiae or bruises; temperature 36.2°C."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "obstetric",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "核对血压和胎儿评估",
+        "en": "Review BP and fetal assessment"
+      },
+      "finding": {
+        "zh-CN": "入院血压120/79 mmHg，胎心145次/分。",
+        "en": "Admission BP 120/79 mmHg; fetal heart rate 145/min."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "cbc",
+      "name": {
+        "zh-CN": "血常规和凝血",
+        "en": "Blood count and coagulation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血常规和凝血"
+        ],
+        "en": [
+          "Blood count and coagulation"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "Hb66 g/L、血小板6×10⁹/L，凝血常规正常。",
+            "en": "Hb 66 g/L and platelets 6×10⁹/L with normal routine coagulation."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "organ",
+      "name": {
+        "zh-CN": "肾肝和尿液",
+        "en": "Renal, hepatic and urine data"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "肾肝和尿液"
+        ],
+        "en": [
+          "Renal, hepatic and urine data"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "肌酐115 μmol/L、ALT51 U/L，尿红细胞+++、蛋白++。",
+            "en": "Creatinine 115 µmol/L, ALT 51 U/L, urine RBC +++ and protein ++."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "postpartum",
+      "name": {
+        "zh-CN": "分娩后持续恶化记录",
+        "en": "Persistent postpartum deterioration"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "分娩后持续恶化记录"
+        ],
+        "en": [
+          "Persistent postpartum deterioration"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "剖宫产后仍反复意识不清、血小板最低8×10⁹/L，LDH1600后4880 U/L；肌酐最高记录268 μmol/L。",
+            "en": "After caesarean delivery, recurrent altered consciousness continued, with platelets down to 8×10⁹/L, LDH 1600 then 4880 U/L and recorded creatinine up to 268 µmol/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "tma",
+      "name": {
+        "zh-CN": "后续影像和涂片",
+        "en": "Later imaging and smear"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "后续影像和涂片"
+        ],
+        "en": [
+          "Later imaging and smear"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "MRI多发急性缺血病灶；后续大量破碎红细胞。ADAMTS13活性、抑制物和明确溶血全套未记录。",
+            "en": "MRI showed multiple acute ischaemic lesions; a later smear showed many schistocytes. ADAMTS13 activity, inhibitor testing and a complete haemolysis panel were not documented."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告在后期才考虑TTP并输新鲜冰冻血浆，未记录血浆置换。患者发展为心衰、插管、深昏迷和升压药支持，家属最终带离治疗；离院后结局未记录。",
+            "en": "TTP was considered late and fresh frozen plasma given; plasma exchange was not documented. Heart failure, intubation, deep coma and vasopressor support followed; the family withdrew from treatment. Post-discharge outcome was not recorded."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "headache"
+          },
+          {
+            "asked": "neuro"
+          },
+          {
+            "asked": "pregnancy"
+          },
+          {
+            "asked": "bp"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "obstetric"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "分娩后持续恶化要求哪种再评估？",
+        "en": "What reassessment is required by deterioration after delivery?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "cbc",
+            "phase": "workup"
+          },
+          {
+            "read": "organ",
+            "phase": "workup"
+          },
+          {
+            "read": "postpartum",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "血栓性微血管病，包括TTP及其他妊娠相关TMA",
+            "en": "Thrombotic microangiopathy, including TTP and other pregnancy-associated TMAs"
+          },
+          "feedback": {
+            "zh-CN": "重度血小板减少、神经受累及溶血线索不能只归于已终止的妊娠。",
+            "en": "Severe thrombocytopenia, neurological injury and haemolysis clues require more than attribution to the completed pregnancy."
+          },
+          "correct": true
+        },
+        {
+          "id": "resolved",
+          "text": {
+            "zh-CN": "分娩即可保证所有产科相关异常会自行消失",
+            "en": "Delivery guarantees spontaneous resolution of all abnormalities"
+          },
+          "feedback": {
+            "zh-CN": "实际持续恶化需要重新判断。",
+            "en": "Continued deterioration requires reassessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "itp",
+          "text": {
+            "zh-CN": "孤立免疫性血小板减少足以解释全部",
+            "en": "Isolated immune thrombocytopenia explains everything"
+          },
+          "feedback": {
+            "zh-CN": "不能充分解释缺血、破碎红细胞和LDH升高。",
+            "en": "It does not adequately explain ischaemia, schistocytes and LDH elevation."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "tma",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "临床高度疑TMA，报告称TTP但缺ADAMTS13分型证据",
+            "en": "TMA is strongly suspected; the report labels TTP without ADAMTS13 subtype confirmation"
+          },
+          "feedback": {
+            "zh-CN": "应保留TTP与其他TMA之间的确证边界。",
+            "en": "Retain the confirmation boundary between TTP and other TMAs."
+          },
+          "correct": true
+        },
+        {
+          "id": "definite",
+          "text": {
+            "zh-CN": "大量破碎红细胞已特异确证免疫性TTP",
+            "en": "Schistocytes specifically prove immune TTP"
+          },
+          "feedback": {
+            "zh-CN": "它们支持微血管性溶血，不特异确定病因。",
+            "en": "They support microangiopathic haemolysis, not one cause."
+          },
+          "correct": false
+        },
+        {
+          "id": "normal-ct",
+          "text": {
+            "zh-CN": "初始CT正常可排除后续脑缺血",
+            "en": "An initially normal CT excludes later cerebral ischaemia"
+          },
+          "feedback": {
+            "zh-CN": "后续MRI已记录缺血，检查时点和敏感性不同。",
+            "en": "Later MRI documented ischaemia; timing and modality differ."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "今天回顾这种高危组合，应优先什么？",
+        "en": "What should be prioritised when reviewing this high-risk combination today?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "tma",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "立即血液与重症会诊，及时送ADAMTS13并按高度疑TTP急症路径评估血浆置换等，避免常规预防性输板",
+            "en": "Urgent haematology/critical-care review, prompt ADAMTS13 sampling and emergency suspected-TTP assessment including plasma exchange; avoid routine prophylactic platelet transfusion"
+          },
+          "feedback": {
+            "zh-CN": "不能等待全部确证才处理危及生命的TMA；出血或紧急操作另行个体化。",
+            "en": "Life-threatening TMA should not await complete confirmation; bleeding or urgent procedures require individual assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "platelets",
+          "text": {
+            "zh-CN": "唯一目标是反复输板把数值补正常",
+            "en": "Repeated platelet transfusion to normalise the count is the sole goal"
+          },
+          "feedback": {
+            "zh-CN": "忽略病因性微血管血栓且可能不安全。",
+            "en": "This neglects the microthrombotic process and may be unsafe."
+          },
+          "correct": false
+        },
+        {
+          "id": "wait",
+          "text": {
+            "zh-CN": "继续等待一周看分娩是否起效",
+            "en": "Wait another week to see whether delivery works"
+          },
+          "feedback": {
+            "zh-CN": "神经和器官恶化需要立即升级。",
+            "en": "Neurological and organ deterioration require immediate escalation."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "headache"
+          },
+          {
+            "asked": "neuro"
+          },
+          {
+            "asked": "pregnancy"
+          },
+          {
+            "asked": "bp"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "antenatal"
+          },
+          {
+            "asked": "bleeding"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "obstetric"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "cbc",
+            "phase": "workup"
+          },
+          {
+            "read": "organ",
+            "phase": "workup"
+          },
+          {
+            "read": "postpartum",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "tma",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "及时识别疑似TTP急症，不把历史反复输板作为默认正确处置",
+        "en": "Recognise suspected TTP urgently without treating historical repeated platelet transfusions as default care"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：识别分娩后持续神经和血液异常的再评估信号。同时解释以下信息仍有缺失或疑问：ADAMTS13、抑制物、完整溶血资料、是否实际实施血浆置换及离院后结局。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Identify persistent postpartum neurological and haematological abnormalities as reassessment triggers. Identify the following as missing or uncertain: ADAMTS13, inhibitors, complete haemolysis results, whether plasma exchange occurred and post-discharge outcome. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "cbc",
+        "organ",
+        "postpartum",
+        "tma",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "妊娠相关严重TMA的历史不良结局，原报告TTP诊断缺ADAMTS13确证。",
+      "en": "A severe pregnancy-associated TMA with an adverse historical course; the reported TTP diagnosis lacks ADAMTS13 confirmation."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "识别分娩后持续神经和血液异常的再评估信号。",
+        "en": "Identify persistent postpartum neurological and haematological abnormalities as reassessment triggers."
+      },
+      {
+        "zh-CN": "区分TMA表型与TTP特异性确证。",
+        "en": "Distinguish a TMA phenotype from TTP-specific confirmation."
+      },
+      {
+        "zh-CN": "解释紧急专科处置不应等待全部检验。",
+        "en": "Explain why urgent specialist care should not await every test."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "识别分娩后持续神经和血液异常的再评估信号。",
+        "en": "Identify persistent postpartum neurological and haematological abnormalities as reassessment triggers."
+      },
+      {
+        "zh-CN": "区分TMA表型与TTP特异性确证。",
+        "en": "Distinguish a TMA phenotype from TTP-specific confirmation."
+      },
+      {
+        "zh-CN": "解释紧急专科处置不应等待全部检验。",
+        "en": "Explain why urgent specialist care should not await every test."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "ADAMTS13、抑制物、完整溶血资料、是否实际实施血浆置换及离院后结局。",
+        "en": "ADAMTS13, inhibitors, complete haemolysis results, whether plasma exchange occurred and post-discharge outcome."
+      }
+    ],
+    "references": [
+      "龚洵, 邓东锐. 妊娠期血栓性血小板减少性紫癜一例. 中华产科急救电子杂志. 2013;02(03):212-214. doi:10.3877/cma.j.issn.2095-3259.2013.03.015.",
+      "https://rs.yiigle.com/cmaid/1067495",
+      "ISTH. 2025 focused update of the 2020 TTP management guidelines; acute suspected TTP assessment remains urgent. https://pmc.ncbi.nlm.nih.gov/articles/PMC13470878/",
+      "ISTH. Guidelines for diagnosis of TTP. 2020. https://pmc.ncbi.nlm.nih.gov/articles/PMC8146131/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "ADAMTS13、抑制物、完整溶血资料、是否实际实施血浆置换及离院后结局。",
+      "en": "ADAMTS13, inhibitors, complete haemolysis results, whether plasma exchange occurred and post-discharge outcome."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "headache"
+    },
+    {
+      "type": "ask",
+      "itemId": "neuro"
+    },
+    {
+      "type": "ask",
+      "itemId": "pregnancy"
+    },
+    {
+      "type": "ask",
+      "itemId": "bp"
+    },
+    {
+      "type": "ask",
+      "itemId": "antenatal"
+    },
+    {
+      "type": "ask",
+      "itemId": "bleeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "obstetric"
+    },
+    {
+      "type": "order",
+      "investigationId": "cbc"
+    },
+    {
+      "type": "read",
+      "investigationId": "cbc",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "organ"
+    },
+    {
+      "type": "read",
+      "investigationId": "organ",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "postpartum"
+    },
+    {
+      "type": "read",
+      "investigationId": "postpartum",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "tma"
+    },
+    {
+      "type": "read",
+      "investigationId": "tma",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1067495",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1067495",
+    "sourceDoi": "10.3877/cma.j.issn.2095-3259.2013.03.015",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "头痛和眼花什么时候开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "headache"
+        ]
+      },
+      {
+        "text": "When did the headache and visual symptoms begin?",
+        "locale": "en",
+        "expect": [
+          "headache"
+        ]
+      },
+      {
+        "text": "这次头痛是突然出现的吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "headache"
+        ]
+      },
+      {
+        "text": "How did this headache start?",
+        "locale": "en",
+        "expect": [
+          "headache"
+        ]
+      },
+      {
+        "text": "左边麻了多久，后来恢复了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "How long did the left-sided numbness last, and did it resolve?",
+        "locale": "en",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "麻木是一过性还是一直持续？",
+        "locale": "zh-CN",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "Was the numbness transient or persistent?",
+        "locale": "en",
+        "expect": [
+          "neuro"
+        ]
+      },
+      {
+        "text": "现在怀孕多少周，是第几次怀孕？",
+        "locale": "zh-CN",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "How many weeks pregnant are you, and is this your first pregnancy?",
+        "locale": "en",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "以前生过孩子吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "Have you delivered a baby before?",
+        "locale": "en",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "以前产检血压和尿蛋白怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "bp"
+        ]
+      },
+      {
+        "text": "What did earlier antenatal BP and urine tests show?",
+        "locale": "en",
+        "expect": [
+          "bp"
+        ]
+      },
+      {
+        "text": "之前有被告知血压偏高吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bp"
+        ]
+      },
+      {
+        "text": "Had you previously been told your blood pressure was raised?",
+        "locale": "en",
+        "expect": [
+          "bp"
+        ]
+      },
+      {
+        "text": "孕期有定期检查吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "antenatal"
+        ]
+      },
+      {
+        "text": "Were antenatal checks regular?",
+        "locale": "en",
+        "expect": [
+          "antenatal"
+        ]
+      },
+      {
+        "text": "产检以前发现过异常吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "antenatal"
+        ]
+      },
+      {
+        "text": "Had earlier antenatal visits found abnormalities?",
+        "locale": "en",
+        "expect": [
+          "antenatal"
+        ]
+      },
+      {
+        "text": "有没有鼻出血、牙龈出血或其他出血？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "Has there been nose, gum or other bleeding?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "以前有异常出血记录吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "Are unusual bleeding episodes recorded?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "对哪些药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Which medicines have caused allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "用药后出现过什么过敏反应？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What allergic reactions have occurred after medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有出血自诉方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "Could you describe any reported bleeding?",
+        "locale": "en",
+        "expect": [
+          "bleeding"
+        ]
+      },
+      {
+        "text": "以前有没有用药过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any drug allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      }
+    ]
+  }
+}

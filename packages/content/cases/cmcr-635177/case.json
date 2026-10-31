@@ -1,0 +1,1852 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-635177",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "注射后反复局部风团与结节",
+    "en": "Recurrent local wheals and nodules after injections"
+  },
+  "summary": {
+    "zh-CN": "老年患者注射降糖药后反复局部反应，既往试验和再次检查不完全一致，需要结合暴露与实际反应。",
+    "en": "An older patient has recurrent injection-site reactions with differences between earlier and repeat testing."
+  },
+  "specialty": [
+    "endocrinology",
+    "allergy"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "袁涛, 孙祖凤, 段炼, 董颖越, 李乃适, 赵维纲, 王良录. 一例胰岛素过敏患者的诊治经验. 中华糖尿病杂志. 2011;03(04):347-348. doi: 10.3760/cma.j.issn.1674-5809.2011.04.017.",
+    "authors": [
+      "袁涛",
+      "孙祖凤",
+      "段炼",
+      "董颖越",
+      "李乃适",
+      "赵维纲",
+      "王良录"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "WAO 2020 IgE diagnostics position paper and Aberumand/Jeimy 2021 insulin-allergy case and clinical approach, checked 2026-10-29; scope controls, clinical correlation and false-positive skin reactions. The 2021 paper is not labelled a society guideline."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.1674-5809.2011.04.017"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "重建注射与反应时序。",
+      "en": "Reconstruct injection-reaction timing."
+    },
+    {
+      "zh-CN": "解释不一致过敏检测。",
+      "en": "Interpret discordant allergy testing."
+    },
+    {
+      "zh-CN": "评估治疗必要性。",
+      "en": "Assess treatment necessity."
+    },
+    {
+      "zh-CN": "说明监测脱敏的安全边界。",
+      "en": "Explain safety limits of monitored desensitisation."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "钱予宁（化名）",
+      "en": "Qian Yuning (pseudonym)"
+    },
+    "age": 76,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "糖尿病二十年，注射后局部结节十个月",
+      "en": "Diabetes for twenty years with injection-site nodules over ten months"
+    },
+    "triageNote": {
+      "zh-CN": "核对注射时序、过敏背景和治疗必要性。",
+      "en": "Review injection timing, allergic history and treatment necessity."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "一次睡前胰岛素注射数分钟后局部风团瘙痒并融合，没有呼吸困难或头晕，抗组胺后次晨消退。",
+        "en": "Minutes after one bedtime insulin injection, itchy wheals coalesced locally without breathlessness or dizziness; they resolved by morning after an antihistamine."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "reaction"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "desensitisation"
+          },
+          {
+            "asked": "allergies"
+          },
+          {
+            "examined": "general"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "reaction",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "第一次反应发生在注射后多久？",
+        "en": "How soon after injection did the first reaction occur?"
+      },
+      "answer": {
+        "zh-CN": "一次睡前胰岛素注射数分钟后局部风团瘙痒并融合，没有呼吸困难或头晕，抗组胺后次晨消退。",
+        "en": "Minutes after one bedtime insulin injection, itchy wheals coalesced locally without breathlessness or dizziness; they resolved by morning after an antihistamine."
+      },
+      "keywords": {
+        "zh-CN": [
+          "注射反应",
+          "风团经过",
+          "注射后瘙痒",
+          "局部反应时序"
+        ],
+        "en": [
+          "injection reaction",
+          "wheal course",
+          "postinjection itching",
+          "local reaction timing"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "diabetes",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "糖尿病早期怎样控制？",
+        "en": "How was diabetes controlled earlier?"
+      },
+      "answer": {
+        "zh-CN": "二十年前确诊，先饮食运动，后阿卡波糖和二甲双胍；后来因微量白蛋白尿开始胰岛素。",
+        "en": "Diabetes was diagnosed twenty years earlier, initially treated with lifestyle then acarbose/metformin; insulin was later started after microalbuminuria."
+      },
+      "keywords": {
+        "zh-CN": [
+          "降糖病程",
+          "糖尿病治疗史",
+          "胰岛素起始",
+          "血糖旧病"
+        ],
+        "en": [
+          "diabetes course",
+          "glucose treatment history",
+          "insulin initiation",
+          "glycaemic background"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "desensitisation",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "以前是否试过重新使用胰岛素？",
+        "en": "Had insulin reintroduction been attempted?"
+      },
+      "answer": {
+        "zh-CN": "曾在医院逐步试用短效人胰岛素，但加量时出现风团瘙痒而停止，改用口服药。",
+        "en": "Supervised graded short-acting human insulin was stopped after wheals and itching during escalation, with oral treatment substituted."
+      },
+      "keywords": {
+        "zh-CN": [
+          "以前脱敏",
+          "再次试药",
+          "短效试用",
+          "旧脱敏反应"
+        ],
+        "en": [
+          "previous desensitisation",
+          "reintroduction attempt",
+          "short acting trial",
+          "earlier graded response"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "还有哪些过敏或哮喘经历？",
+        "en": "What other allergies or asthma were reported?"
+      },
+      "answer": {
+        "zh-CN": "多种食物及左氧氟沙星过敏，有季节性哮喘，父亲也有哮喘。",
+        "en": "Multiple food and levofloxacin allergies were reported with seasonal asthma; the father also had asthma."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他过敏",
+          "食物过敏史",
+          "左氧过敏",
+          "哮喘背景"
+        ],
+        "en": [
+          "other allergies",
+          "food allergy history",
+          "levofloxacin allergy",
+          "asthma background"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "current-glucose",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "现在口服药时血糖怎样？",
+        "en": "What were glucose readings on oral treatment?"
+      },
+      "answer": {
+        "zh-CN": "空腹约8–10 mmol/L，餐后约10–15 mmol/L，当前用瑞格列奈和阿卡波糖。",
+        "en": "Fasting glucose was about 8–10 mmol/L and postmeal 10–15 mmol/L while taking repaglinide and acarbose."
+      },
+      "keywords": {
+        "zh-CN": [
+          "当前血糖",
+          "口服药控制",
+          "餐后数值",
+          "空腹数值"
+        ],
+        "en": [
+          "current glucose",
+          "oral treatment control",
+          "postmeal readings",
+          "fasting readings"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "除了已记录的情况，日常用药还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about regular medicines?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最近有测过体重吗？",
+        "en": "Has weight been measured recently?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期体重",
+          "称过体重",
+          "体重记录",
+          "最近多重"
+        ],
+        "en": [
+          "recent weight",
+          "weight measurement",
+          "weighed recently",
+          "recorded weight"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对入院检查",
+        "en": "Review admission findings"
+      },
+      "finding": {
+        "zh-CN": "BMI 26.0 kg/m²，血压170/70 mmHg，双下肢轻度水肿；肺腹无明显异常。",
+        "en": "BMI 26.0 kg/m², blood pressure 170/70 mmHg and mild leg oedema; no prominent pulmonary or abdominal abnormality."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "prior-tests",
+      "name": {
+        "zh-CN": "既往过敏检测",
+        "en": "Earlier allergy testing"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "既往过敏检测"
+        ],
+        "en": [
+          "Earlier allergy testing"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "总IgE 211 kU/L，人、猪、牛胰岛素特异IgE均2级，鱼精蛋白0级；多制剂皮内试验存在不同程度反应。",
+            "en": "Total IgE 211 kU/L, human/porcine/bovine insulin-specific IgE class 2 and protamine class 0, with differing intradermal responses to formulations."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "repeat",
+      "name": {
+        "zh-CN": "本次复查与制剂比较",
+        "en": "Repeat testing and formulation comparison"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "本次复查与制剂比较"
+        ],
+        "en": [
+          "Repeat testing and formulation comparison"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "总IgE 266 kU/L，但人、猪、牛胰岛素及鱼精蛋白特异IgE均0级。表1中生理盐水对照10分钟风团记为“＋”，30分钟12 mm、1小时10 mm、2小时6 mm，3–4小时消退；赖脯胰岛素相应为12、12、9 mm。作者据比较选择赖脯胰岛素，但盐水也出现明显风团，不能仅凭绝对直径确证每种制剂过敏。HbA1c 7.3%，肌酐118 µmol/L。",
+            "en": "Total IgE was 266 kU/L but insulin and protamine specific IgE were class 0. Table 1 records a saline-control wheal as “+” at ten minutes, 12 mm at thirty minutes, 10 mm at one hour and 6 mm at two hours, resolving at three to four hours; corresponding lispro measurements were 12, 12 and 9 mm. The authors selected lispro from this comparison, but the marked saline response prevents absolute wheal diameter alone from confirming allergy to every formulation. HbA1c was 7.3% and creatinine 118 µmol/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告赖脯胰岛素泵脱敏后耐受，再逐步试用甘精胰岛素，中途有短暂局部硬结，最终无再发过敏并出院；长期耐受未知。",
+            "en": "The report achieved lispro tolerance through pump desensitisation, then graded glargine use with a transient local nodule, and discharged the patient without recurrent reactions; long-term tolerance is unknown."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "reaction"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "desensitisation"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "general"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "暴露和早期检测最支持什么？",
+        "en": "What do exposure and earlier testing support?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "prior-tests",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "hypersensitivity",
+          "text": {
+            "zh-CN": "注射相关超敏反应需要专科评估，也须考虑制剂辅料和技术",
+            "en": "Injection-related hypersensitivity needs specialist assessment including formulation components and technique"
+          },
+          "feedback": {
+            "zh-CN": "即时风团与检测相关，但不宜忽略其他接触因素。",
+            "en": "Immediate wheals align with testing but other contact factors remain relevant."
+          },
+          "correct": true
+        },
+        {
+          "id": "lipohypertrophy",
+          "text": {
+            "zh-CN": "数分钟风团仅是脂肪增生",
+            "en": "Wheals within minutes are only lipohypertrophy"
+          },
+          "feedback": {
+            "zh-CN": "发生速度和瘙痒不符合单纯慢性脂肪增生。",
+            "en": "Timing and itching do not fit isolated chronic lipohypertrophy."
+          },
+          "correct": false
+        },
+        {
+          "id": "protamine",
+          "text": {
+            "zh-CN": "已证明唯一过敏原是鱼精蛋白",
+            "en": "Protamine is proven as the sole allergen"
+          },
+          "feedback": {
+            "zh-CN": "源中鱼精蛋白特异IgE阴性，不能指定唯一成分。",
+            "en": "Protamine-specific IgE was negative and the sole component cannot be assigned."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "repeat",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "clinical",
+          "text": {
+            "zh-CN": "后一次特异IgE阴性不抹去历史反应；盐水对照有明显风团，使这组皮试不能独立确证各制剂过敏",
+            "en": "Later negative specific IgE does not erase the history; marked saline-control wheals prevent this skin-test panel from independently confirming allergy to each formulation"
+          },
+          "feedback": {
+            "zh-CN": "应核对阴阳性对照、初始皮丘和判读时点，并结合实际暴露反应。非特异刺激或皮肤划痕反应是待评估的解释，原表不能证明具体机制。",
+            "en": "Review controls, initial bleb and reading times alongside exposure reactions. Nonspecific irritation or dermographism are possibilities to assess, not mechanisms established by this table."
+          },
+          "correct": true
+        },
+        {
+          "id": "safe",
+          "text": {
+            "zh-CN": "IgE阴性可直接全量在家试针",
+            "en": "Negative IgE permits a full unsupervised home dose"
+          },
+          "feedback": {
+            "zh-CN": "阴性血清结果不能取消既往即时反应的风险；有问题的皮试也不能作为自行挑战的许可。",
+            "en": "Negative serum testing does not remove risk from earlier immediate reactions; an uncertain skin-test panel does not license self-challenge."
+          },
+          "correct": false
+        },
+        {
+          "id": "all-insulin",
+          "text": {
+            "zh-CN": "只要风团绝对直径大于3 mm，就已确证每种胰岛素过敏，无须看盐水对照",
+            "en": "An absolute wheal diameter above 3 mm confirms allergy to every insulin without considering saline"
+          },
+          "feedback": {
+            "zh-CN": "盐水对照本身达到12 mm，忽视对照会把非特异反应误当作药物特异过敏。原表不能提供这种确证。",
+            "en": "The saline control itself reached 12 mm; ignoring it risks misclassifying nonspecific reactivity as drug-specific allergy. This table cannot provide that confirmation."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "安全的管理讨论应怎样展开？",
+        "en": "How should safe management be discussed?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "repeat",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "specialist",
+          "text": {
+            "zh-CN": "先评估是否必须用胰岛素，由过敏与内分泌团队在监测下选择制剂或脱敏",
+            "en": "Assess insulin necessity and let allergy/endocrine teams select formulation or monitored desensitisation"
+          },
+          "feedback": {
+            "zh-CN": "先复核皮试对照和临床相关性；脱敏同时存在过敏与血糖风险，原文阶梯不能当家用处方。",
+            "en": "First review skin-test controls and clinical correlation; desensitisation carries allergic and glycaemic risks, and historical steps are not a home prescription."
+          },
+          "correct": true
+        },
+        {
+          "id": "home",
+          "text": {
+            "zh-CN": "复制原文全部递增剂量让患者自行尝试",
+            "en": "Copy every historical escalation dose for self-administration"
+          },
+          "feedback": {
+            "zh-CN": "需要具备监测和急救条件的专业团队。",
+            "en": "A team with monitoring and emergency capability is needed."
+          },
+          "correct": false
+        },
+        {
+          "id": "ban",
+          "text": {
+            "zh-CN": "永久禁止一切胰岛素，不评估代谢需要",
+            "en": "Permanently ban all insulin without assessing metabolic need"
+          },
+          "feedback": {
+            "zh-CN": "这可能剥夺必要治疗，应个体化评估。",
+            "en": "This may remove necessary treatment and requires individual assessment."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "reaction"
+          },
+          {
+            "asked": "diabetes"
+          },
+          {
+            "asked": "desensitisation"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "current-glucose"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "prior-tests",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "repeat",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "在专业监测中平衡过敏与血糖风险，避免自行试药",
+        "en": "Balance allergic and glycaemic risks under professional monitoring, avoiding self-challenge"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明时序与风团形态支持超敏评估。；承认缺少所有辅料独立验证和长期再次暴露结果。，用复述确认理解。",
+        "en": "Explain that Timing and wheal morphology support hypersensitivity assessment.; acknowledge Independent testing of every excipient and long-term re-exposure outcomes are lacking. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "prior-tests",
+        "repeat",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告以注射相关超敏反应进行监测脱敏并获得短期耐受；盐水对照也有明显风团，皮试不能单独确证每种胰岛素过敏。",
+      "en": "The source treated injection-related hypersensitivity with monitored desensitisation and reported short-term tolerance; marked saline-control wheals prevent the skin-test panel alone from confirming allergy to every insulin."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "时序与风团形态支持超敏评估。",
+        "en": "Timing and wheal morphology support hypersensitivity assessment."
+      },
+      {
+        "zh-CN": "阴性血清复测与有反应的盐水对照均要求结合临床，不能只按风团绝对大小确诊。",
+        "en": "Both negative repeat serum testing and a reactive saline control require clinical correlation; absolute wheal size alone is not diagnostic."
+      },
+      {
+        "zh-CN": "治疗必要性与安全条件共同决定方案。",
+        "en": "Treatment necessity and safety resources jointly guide planning."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "总IgE或无有效对照的风团大小都不能单独证明具体药物过敏。",
+        "en": "Neither total IgE nor wheal size without valid controls independently proves a specific drug allergy."
+      },
+      {
+        "zh-CN": "不保证脱敏耐受永久持续。",
+        "en": "Do not promise permanent tolerance."
+      },
+      {
+        "zh-CN": "原处方剂量不供自行复制。",
+        "en": "Historical doses are not for self-reproduction."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "缺少初始皮丘、组胺阳性对照、对照异常机制的评估、所有辅料独立验证及长期再次暴露结果。",
+        "en": "Initial bleb measurements, histamine positive-control results, assessment of the abnormal control response, independent excipient testing and long-term re-exposure outcomes are lacking."
+      }
+    ],
+    "references": [
+      "袁涛, 孙祖凤, 段炼, 董颖越, 李乃适, 赵维纲, 王良录. 一例胰岛素过敏患者的诊治经验. 中华糖尿病杂志. 2011;03(04):347-348. doi: 10.3760/cma.j.issn.1674-5809.2011.04.017.",
+      "https://rs.yiigle.com/cmaid/635177",
+      "https://doi.org/10.3760/cma.j.issn.1674-5809.2011.04.017",
+      "Ansotegui IJ, et al. IgE allergy diagnostics and other relevant tests in allergy, a World Allergy Organization position paper. World Allergy Organ J. 2020;13:100080. doi:10.1016/j.waojou.2019.100080. https://pmc.ncbi.nlm.nih.gov/articles/PMC7044795/",
+      "Aberumand B, Jeimy S. The complexities of insulin allergy: a case and approach. Allergy Asthma Clin Immunol. 2021;17:79. doi:10.1186/s13223-021-00554-1. https://pmc.ncbi.nlm.nih.gov/articles/PMC8320219/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "缺少初始皮丘、组胺阳性对照、对照异常机制的评估、所有辅料独立验证及长期再次暴露结果。",
+      "en": "Initial bleb measurements, histamine positive-control results, assessment of the abnormal control response, independent excipient testing and long-term re-exposure outcomes are lacking."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "reaction"
+    },
+    {
+      "type": "ask",
+      "itemId": "diabetes"
+    },
+    {
+      "type": "ask",
+      "itemId": "desensitisation"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "current-glucose"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "order",
+      "investigationId": "prior-tests"
+    },
+    {
+      "type": "read",
+      "investigationId": "prior-tests",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "hypersensitivity"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "repeat"
+    },
+    {
+      "type": "read",
+      "investigationId": "repeat",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "clinical"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "specialist"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "635177",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/635177",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于注射反应，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "reaction"
+        ]
+      },
+      {
+        "text": "Could you tell me about injection reaction?",
+        "locale": "en",
+        "expect": [
+          "reaction"
+        ]
+      },
+      {
+        "text": "我想了解风团经过。",
+        "locale": "zh-CN",
+        "expect": [
+          "reaction"
+        ]
+      },
+      {
+        "text": "Please explain wheal course in more detail.",
+        "locale": "en",
+        "expect": [
+          "reaction"
+        ]
+      },
+      {
+        "text": "关于降糖病程，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "Could you tell me about diabetes course?",
+        "locale": "en",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "我想了解糖尿病治疗史。",
+        "locale": "zh-CN",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "Please explain glucose treatment history in more detail.",
+        "locale": "en",
+        "expect": [
+          "diabetes"
+        ]
+      },
+      {
+        "text": "关于以前脱敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "desensitisation"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous desensitisation?",
+        "locale": "en",
+        "expect": [
+          "desensitisation"
+        ]
+      },
+      {
+        "text": "我想了解再次试药。",
+        "locale": "zh-CN",
+        "expect": [
+          "desensitisation"
+        ]
+      },
+      {
+        "text": "Please explain reintroduction attempt in more detail.",
+        "locale": "en",
+        "expect": [
+          "desensitisation"
+        ]
+      },
+      {
+        "text": "关于其他过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about other allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "我想了解食物过敏史。",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Please explain food allergy history in more detail.",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于当前血糖，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "current-glucose"
+        ]
+      },
+      {
+        "text": "Could you tell me about current glucose?",
+        "locale": "en",
+        "expect": [
+          "current-glucose"
+        ]
+      },
+      {
+        "text": "我想了解口服药控制。",
+        "locale": "zh-CN",
+        "expect": [
+          "current-glucose"
+        ]
+      },
+      {
+        "text": "Please explain oral treatment control in more detail.",
+        "locale": "en",
+        "expect": [
+          "current-glucose"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "关于近期体重，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent weight?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/635177"
+    }
+  }
+}

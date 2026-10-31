@@ -1,0 +1,1972 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-655474",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "11岁5个月女孩骨痛与跛行",
+    "en": "Bone pain and limping in an 11-year-5-month-old girl"
+  },
+  "summary": {
+    "zh-CN": "女孩从膝部疼痛发展为躯干与髋部疼痛，逐渐出现跛行和消瘦，需要整合多发骨病灶。",
+    "en": "Pain spreads from the knees to the trunk and hip with limping and weight loss, requiring assessment of multiple bone lesions."
+  },
+  "specialty": [
+    "pediatrics",
+    "hematology",
+    "orthopaedics"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "文川, 梁青春, 万伍卿, 刘晓艳, 易著文. 儿童Erdheim－Chester病一例. 中华儿科杂志. 2011;49(03):231-232. doi: 10.3760/cma.j.issn.0578-1310.2011.03.017.",
+    "authors": [
+      "文川",
+      "梁青春",
+      "万伍卿",
+      "刘晓艳",
+      "易著文"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "2020 ECD consensus recommendations (Blood), verified 2026-10-28; scope biopsy, molecular testing and organ staging; paediatric application requires specialist review."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.03.017"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别持续骨痛的破坏性红旗。",
+      "en": "Recognise destructive red flags in persistent bone pain."
+    },
+    {
+      "zh-CN": "结合免疫表型区分组织细胞疾病。",
+      "en": "Use immunophenotype to distinguish histiocytic disorders."
+    },
+    {
+      "zh-CN": "列出分子和器官分期缺口。",
+      "en": "Identify molecular and organ-staging gaps."
+    },
+    {
+      "zh-CN": "以现代证据边界讨论治疗。",
+      "en": "Discuss treatment within current evidence limits."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "魏予宁（化名）",
+      "en": "Wei Yuning (pseudonym)"
+    },
+    "age": 11.416666666666666,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "多处骨痛九个月，跛行四个月",
+      "en": "Multifocal bone pain for nine months and limping for four months"
+    },
+    "triageNote": {
+      "zh-CN": "按骨痛病程核对体征、影像与组织记录。",
+      "en": "Review signs, imaging and tissue records in the bone-pain timeline."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "最初双膝疼痛，后来累及腰背、肋骨和髋部，已九个月。",
+        "en": "Pain began in both knees and later involved the back, ribs and hip over nine months."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "limp"
+          },
+          {
+            "asked": "weight-loss"
+          },
+          {
+            "asked": "thirst"
+          },
+          {
+            "examined": "musculoskeletal"
+          },
+          {
+            "examined": "neuro"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "pain",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "疼痛从哪里开始，后来到了哪里？",
+        "en": "Where did pain begin and spread?"
+      },
+      "answer": {
+        "zh-CN": "最初双膝疼痛，后来累及腰背、肋骨和髋部，已九个月。",
+        "en": "Pain began in both knees and later involved the back, ribs and hip over nine months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "骨痛部位",
+          "疼痛扩展",
+          "膝痛经过",
+          "疼痛分布"
+        ],
+        "en": [
+          "bone pain sites",
+          "pain spread",
+          "knee pain course",
+          "pain distribution"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "limp",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "走路从什么时候受影响？",
+        "en": "When did walking become affected?"
+      },
+      "answer": {
+        "zh-CN": "四个月来出现跛行，蹲下时左髋疼痛。",
+        "en": "Limping developed over four months; squatting caused left hip pain."
+      },
+      "keywords": {
+        "zh-CN": [
+          "跛行经过",
+          "行走受限",
+          "蹲下疼痛",
+          "步态变化"
+        ],
+        "en": [
+          "limping course",
+          "walking limitation",
+          "squatting pain",
+          "gait changes"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "weight-loss",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "最近体重和精神状态有什么变化？",
+        "en": "Was there weight loss?"
+      },
+      "answer": {
+        "zh-CN": "这段时间消瘦，具体减重数值未记载。",
+        "en": "Weight loss was reported without a quantified amount."
+      },
+      "keywords": {
+        "zh-CN": [
+          "消瘦情况",
+          "体型变化",
+          "减重经过",
+          "全身变化"
+        ],
+        "en": [
+          "weight loss",
+          "body habitus change",
+          "weight reduction",
+          "constitutional change"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "thirst",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有特别口渴或尿很多？",
+        "en": "Was there excessive thirst or urination?"
+      },
+      "answer": {
+        "zh-CN": "没有烦渴、多饮、多尿。",
+        "en": "There was no reported excessive thirst, drinking or urination."
+      },
+      "keywords": {
+        "zh-CN": [
+          "口渴尿量",
+          "多饮多尿",
+          "饮水变化",
+          "排尿增多"
+        ],
+        "en": [
+          "thirst and urine",
+          "polydipsia polyuria",
+          "drinking changes",
+          "increased urination"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "duration",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "这些不适是否持续很久？",
+        "en": "How long had these symptoms persisted?"
+      },
+      "answer": {
+        "zh-CN": "骨痛九个月、跛行四个月后接受进一步检查。",
+        "en": "Further assessment followed nine months of bone pain and four months of limping."
+      },
+      "keywords": {
+        "zh-CN": [
+          "持续时间",
+          "就诊延迟",
+          "不适多久",
+          "评估时间"
+        ],
+        "en": [
+          "symptom duration",
+          "assessment delay",
+          "length of illness",
+          "timing of evaluation"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家人有类似的疾病吗？",
+        "en": "Have relatives had a similar illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "这次发病以前，身体有什么疾病？",
+        "en": "What illnesses were present before this episode?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "musculoskeletal",
+      "system": "musculoskeletal",
+      "maneuver": {
+        "zh-CN": "核对步态与骨盆检查",
+        "en": "Review gait and pelvic examination"
+      },
+      "finding": {
+        "zh-CN": "躯干和骨盆向左倾，跛行；骶尾部压痛，左侧“4”字试验阳性；无局部红热破溃。",
+        "en": "Leftward trunk and pelvic tilt with limping, sacrococcygeal tenderness and a positive left FABER test; no local redness, warmth or skin breakdown."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "neuro",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "核对肢体神经检查",
+        "en": "Review limb neurological findings"
+      },
+      "finding": {
+        "zh-CN": "四肢肌力、肌张力及反射正常。",
+        "en": "Limb strength, tone and reflexes were normal."
+      },
+      "abnormal": false,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "imaging",
+      "name": {
+        "zh-CN": "骨骼影像",
+        "en": "Skeletal imaging"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "骨骼影像"
+        ],
+        "en": [
+          "Skeletal imaging"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "T2、T10椎体扁平，L3、L5、S2低密度改变，右髂骨溶骨性病变；髋及骶髂关节间隙正常。",
+            "en": "Flattened T2 and T10 vertebrae, low-density changes at L3, L5 and S2, and an osteolytic right iliac lesion; hip and sacroiliac joint spaces were normal."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "labs",
+      "name": {
+        "zh-CN": "炎症及血常规",
+        "en": "Inflammatory markers and blood count"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "炎症及血常规"
+        ],
+        "en": [
+          "Inflammatory markers and blood count"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "Hb 108 g/L，白细胞7.8×10^9/L，血小板324×10^9/L，ESR 38 mm/h，CRP 22.8 mg/L。",
+            "en": "Haemoglobin 108 g/L, white count 7.8×10^9/L, platelets 324×10^9/L, ESR 38 mm/h and CRP 22.8 mg/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "pathology",
+      "name": {
+        "zh-CN": "髂骨活检与免疫组化",
+        "en": "Iliac biopsy and immunohistochemistry"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "髂骨活检与免疫组化"
+        ],
+        "en": [
+          "Iliac biopsy and immunohistochemistry"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "黄色肉芽组织，纤维化和泡沫样组织细胞；CD68、AACT阳性，CD1a和S100阴性，报告诊断Erdheim–Chester病。",
+            "en": "Yellow granulomatous tissue with fibrosis and foamy histiocytes; CD68 and AACT positive, CD1a and S100 negative. The report diagnosed Erdheim–Chester disease."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "家长拒绝进一步治疗；报告未给出后续结局。",
+            "en": "The family declined further treatment; no subsequent outcome was provided."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "limp"
+          },
+          {
+            "asked": "weight-loss"
+          },
+          {
+            "asked": "thirst"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "musculoskeletal"
+          },
+          {
+            "examined": "neuro"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "骨痛与早期记录提示哪条检查方向？",
+        "en": "What investigation direction follows from the pain and early records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "imaging",
+            "phase": "workup"
+          },
+          {
+            "read": "labs",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "tissue",
+          "text": {
+            "zh-CN": "多发骨病变需组织学鉴别，不能按普通生长痛处理",
+            "en": "Multifocal bone lesions require tissue-based differentiation rather than treatment as growing pains"
+          },
+          "feedback": {
+            "zh-CN": "椎体和髂骨破坏是重要器质性证据。",
+            "en": "Vertebral and iliac destruction provide important structural evidence."
+          },
+          "correct": true
+        },
+        {
+          "id": "growth",
+          "text": {
+            "zh-CN": "关节间隙正常说明是生长痛",
+            "en": "Normal joint spaces establish growing pains"
+          },
+          "feedback": {
+            "zh-CN": "正常间隙不能解释骨内破坏。",
+            "en": "Normal joint spaces do not explain destructive bone lesions."
+          },
+          "correct": false
+        },
+        {
+          "id": "arthritis",
+          "text": {
+            "zh-CN": "仅凭CRP升高就能确定化脓性关节炎",
+            "en": "CRP elevation alone proves septic arthritis"
+          },
+          "feedback": {
+            "zh-CN": "病变分布和正常关节间隙不支持直接作此结论。",
+            "en": "Distribution and normal joint spaces do not support that conclusion alone."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "ecd",
+          "text": {
+            "zh-CN": "泡沫样组织细胞及免疫表型支持非朗格汉斯组织细胞病，需结合影像并完善分子评估",
+            "en": "Foamy histiocytes and phenotype support a non-Langerhans histiocytosis, integrated with imaging and molecular evaluation"
+          },
+          "feedback": {
+            "zh-CN": "CD68阳性而CD1a/S100阴性符合报告解释，但未提供分子结果。",
+            "en": "CD68 positivity with CD1a/S100 negativity fits the reported interpretation, without supplied molecular results."
+          },
+          "correct": true
+        },
+        {
+          "id": "lch",
+          "text": {
+            "zh-CN": "CD1a阴性反而确证朗格汉斯细胞组织细胞增生症",
+            "en": "Negative CD1a confirms Langerhans cell histiocytosis"
+          },
+          "feedback": {
+            "zh-CN": "这与该鉴别所需的免疫证据相反。",
+            "en": "This reverses the relevant immunophenotypic distinction."
+          },
+          "correct": false
+        },
+        {
+          "id": "mutation",
+          "text": {
+            "zh-CN": "已证实BRAF V600E阳性",
+            "en": "BRAF V600E is proven positive"
+          },
+          "feedback": {
+            "zh-CN": "源报告没有BRAF检测。",
+            "en": "The source did not report BRAF testing."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前应怎样讨论进一步管理？",
+        "en": "How should further management be discussed today?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "specialist",
+          "text": {
+            "zh-CN": "转组织细胞病专科，完善受累器官与分子评估，再讨论个体化治疗",
+            "en": "Refer to histiocytosis specialists for organ staging and molecular assessment before individualised treatment"
+          },
+          "feedback": {
+            "zh-CN": "2020共识支持组织与分子评估；儿童罕见病例须专科适用性判断。",
+            "en": "The 2020 consensus supports tissue and molecular assessment; rare paediatric cases require specialist judgement."
+          },
+          "correct": true
+        },
+        {
+          "id": "none",
+          "text": {
+            "zh-CN": "旧文疗效不佳，所以目前没有任何治疗可能",
+            "en": "Poor historical results mean no treatment options exist today"
+          },
+          "feedback": {
+            "zh-CN": "现代分子治疗进展使这一推断过时。",
+            "en": "Advances in molecular treatment make that inference outdated."
+          },
+          "correct": false
+        },
+        {
+          "id": "empirical",
+          "text": {
+            "zh-CN": "不查病变范围即可给所有儿童同一靶向药",
+            "en": "Give every child the same targeted drug without staging"
+          },
+          "feedback": {
+            "zh-CN": "器官受累、分子信息和儿童适用性均影响选择。",
+            "en": "Organ involvement, molecular findings and paediatric suitability affect selection."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "limp"
+          },
+          {
+            "asked": "weight-loss"
+          },
+          {
+            "asked": "thirst"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "duration"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "musculoskeletal"
+          },
+          {
+            "examined": "neuro"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "imaging",
+            "phase": "workup"
+          },
+          {
+            "read": "labs",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "先完成专科分期与分子评估，不照搬旧文治疗悲观结论",
+        "en": "Obtain specialist staging and molecular assessment without copying historical therapeutic pessimism"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明多发骨破坏超过普通关节疼痛解释范围。；承认分子结果、系统器官筛查和长期结局未知。，用复述确认理解。",
+        "en": "Explain that Multifocal bone destruction exceeds an ordinary joint-pain explanation.; acknowledge Molecular results, systemic organ screening and long-term outcome are unknown. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "imaging",
+        "labs",
+        "pathology",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "本例组织与免疫表型被原报告归为儿童Erdheim–Chester病。",
+      "en": "The source classified the tissue and immunophenotype as paediatric Erdheim–Chester disease."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "多发骨破坏超过普通关节疼痛解释范围。",
+        "en": "Multifocal bone destruction exceeds an ordinary joint-pain explanation."
+      },
+      {
+        "zh-CN": "组织和免疫组化是关键分类证据。",
+        "en": "Tissue and immunohistochemistry are key classification evidence."
+      },
+      {
+        "zh-CN": "缺少分子和器官分期使治疗判断受限。",
+        "en": "Missing molecular and organ staging limits treatment decisions."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "病理结果必须与临床影像合并。",
+        "en": "Integrate pathology with clinical imaging."
+      },
+      {
+        "zh-CN": "避免从单一染色推出全部诊断。",
+        "en": "Avoid deriving the complete diagnosis from one stain."
+      },
+      {
+        "zh-CN": "现代共识改变了旧文的治疗背景。",
+        "en": "Modern consensus changes the context of historical treatment discussion."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "分子结果、系统器官筛查和长期结局未知。",
+        "en": "Molecular results, systemic organ screening and long-term outcome are unknown."
+      }
+    ],
+    "references": [
+      "文川, 梁青春, 万伍卿, 刘晓艳, 易著文. 儿童Erdheim－Chester病一例. 中华儿科杂志. 2011;49(03):231-232. doi: 10.3760/cma.j.issn.0578-1310.2011.03.017.",
+      "https://rs.yiigle.com/cmaid/655474",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.03.017",
+      "Goyal et al. Blood. 2020;135:1929–1945. https://doi.org/10.1182/blood.2019003507"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "分子结果、系统器官筛查和长期结局未知。",
+      "en": "Molecular results, systemic organ screening and long-term outcome are unknown."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-655474/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "f83bd76c6fb3cd3930c9f5fc7a9ab7b6b0e030737f1ca7645f7a8c8ea45a041b"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "limp"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight-loss"
+    },
+    {
+      "type": "ask",
+      "itemId": "thirst"
+    },
+    {
+      "type": "ask",
+      "itemId": "duration"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "musculoskeletal"
+    },
+    {
+      "type": "examine",
+      "findingId": "neuro"
+    },
+    {
+      "type": "order",
+      "investigationId": "imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "imaging",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "labs"
+    },
+    {
+      "type": "read",
+      "investigationId": "labs",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "tissue"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "pathology"
+    },
+    {
+      "type": "read",
+      "investigationId": "pathology",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "ecd"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "specialist"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "655474",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/655474",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于骨痛部位，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Could you tell me about bone pain sites?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "我想了解疼痛扩展。",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Please explain pain spread in more detail.",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "关于跛行经过，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "limp"
+        ]
+      },
+      {
+        "text": "Could you tell me about limping course?",
+        "locale": "en",
+        "expect": [
+          "limp"
+        ]
+      },
+      {
+        "text": "我想了解行走受限。",
+        "locale": "zh-CN",
+        "expect": [
+          "limp"
+        ]
+      },
+      {
+        "text": "Please explain walking limitation in more detail.",
+        "locale": "en",
+        "expect": [
+          "limp"
+        ]
+      },
+      {
+        "text": "关于消瘦情况，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "Could you tell me about weight loss?",
+        "locale": "en",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "我想了解体型变化。",
+        "locale": "zh-CN",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "Please explain body habitus change in more detail.",
+        "locale": "en",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "关于口渴尿量，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "Could you tell me about thirst and urine?",
+        "locale": "en",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "我想了解多饮多尿。",
+        "locale": "zh-CN",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "Please explain polydipsia polyuria in more detail.",
+        "locale": "en",
+        "expect": [
+          "thirst"
+        ]
+      },
+      {
+        "text": "关于持续时间，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "duration"
+        ]
+      },
+      {
+        "text": "Could you tell me about symptom duration?",
+        "locale": "en",
+        "expect": [
+          "duration"
+        ]
+      },
+      {
+        "text": "我想了解就诊延迟。",
+        "locale": "zh-CN",
+        "expect": [
+          "duration"
+        ]
+      },
+      {
+        "text": "Please explain assessment delay in more detail.",
+        "locale": "en",
+        "expect": [
+          "duration"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/655474"
+    }
+  }
+}

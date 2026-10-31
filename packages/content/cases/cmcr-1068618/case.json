@@ -1,0 +1,1975 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1068618",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "结肠癌治疗后的腹泻发热 · 56岁女性",
+    "en": "Diarrhoea and fever after colon-cancer therapy · woman aged 56"
+  },
+  "summary": {
+    "zh-CN": "延迟性腹泻伴发热低压及中性粒细胞减少，需要整合药物代谢风险和急症处理。",
+    "en": "Delayed diarrhoea with fever, hypotension and neutropenia requires integration of pharmacogenetic risk and emergency care."
+  },
+  "specialty": [
+    "oncology",
+    "clinical-pharmacology",
+    "critical-care"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "蔡炜嵩, 马赛男, 吴荣. 应用伊立替康治疗一例UGT1A1*28纯合变异型大肠癌患者的体会. 中华结直肠疾病电子杂志. 2013;02(05):256-257.",
+    "authors": [
+      "蔡炜嵩",
+      "马赛男",
+      "吴荣"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "DailyMed. Irinotecan hydrochloride prescribing information; reduced UGT1A1 activity, neutropenia and diarrhoea. Accessed 2026-10-28. https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ee45f127-8450-4455-a945-a1f5707f1d39"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "用症状相对给药时间识别延迟毒性。",
+      "en": "Use timing relative to treatment to recognise delayed toxicity."
+    },
+    {
+      "zh-CN": "区分药物基因易感性与个体安全剂量。",
+      "en": "Distinguish pharmacogenetic susceptibility from an individual safe dose."
+    },
+    {
+      "zh-CN": "将发热低压与中性粒细胞减少列为急症证据。",
+      "en": "Identify fever, hypotension and neutropenia as emergency evidence."
+    },
+    {
+      "zh-CN": "对发热低压和中性粒细胞减少及时升级，避免自行复制剂量",
+      "en": "Escalate fever, hypotension and neutropenia without copying doses for self-treatment"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "冯知远（化名）",
+      "en": "Feng Zhiyuan (pseudonym)"
+    },
+    "age": 56,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "化疗后腹泻4天、乏力呕吐",
+      "en": "Four days of diarrhoea with weakness and vomiting after chemotherapy"
+    },
+    "triageNote": {
+      "zh-CN": "本周期第17天就诊，水样便每天6–7次。",
+      "en": "Presentation on cycle day 17 with six to seven watery stools daily."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "本周期第13天开始腹泻，四天后加重至每天6–7次水样便。",
+        "en": "Diarrhoea began on cycle day 13 and worsened over four days to six or seven watery stools daily."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "diarrhoea"
+          },
+          {
+            "asked": "associated"
+          },
+          {
+            "asked": "irinotecan"
+          },
+          {
+            "asked": "home-care"
+          },
+          {
+            "examined": "circulation"
+          },
+          {
+            "examined": "prior-abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "diarrhoea",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "腹泻在化疗后第几天开始，一天几次？ 大便什么时候变成大量水样？",
+        "en": "On which day after chemotherapy did diarrhoea start, and how often? When did stools become profuse and watery?"
+      },
+      "answer": {
+        "zh-CN": "本周期第13天开始腹泻，四天后加重至每天6–7次水样便。",
+        "en": "Diarrhoea began on cycle day 13 and worsened over four days to six or seven watery stools daily."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹泻开始与频次",
+          "腹泻在化疗后第几天开始，一天几次？",
+          "大便什么时候变成大量水样？",
+          "腹泻开始与频次情况"
+        ],
+        "en": [
+          "diarrhoea onset and frequency",
+          "On which day after chemotherapy did diarrhoea start, and how often?",
+          "When did stools become profuse and watery?",
+          "diarrhoea onset and frequency information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "associated",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "拉肚子时有没有呕吐或很虚弱？ 还能吃喝吗，有没有吐？",
+        "en": "Have vomiting or marked weakness accompanied the diarrhoea? Have you been vomiting or struggling with intake?"
+      },
+      "answer": {
+        "zh-CN": "伴乏力和呕吐。",
+        "en": "Weakness and vomiting accompanied the diarrhoea."
+      },
+      "keywords": {
+        "zh-CN": [
+          "乏力呕吐",
+          "拉肚子时有没有呕吐或很虚弱？",
+          "还能吃喝吗，有没有吐？",
+          "乏力呕吐情况"
+        ],
+        "en": [
+          "weakness and vomiting",
+          "Have vomiting or marked weakness accompanied the diarrhoea?",
+          "Have you been vomiting or struggling with intake?",
+          "weakness and vomiting information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "irinotecan",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "本次伊立替康分哪几天使用？ 最近一次化疗距离腹泻多久？",
+        "en": "On which days was irinotecan given this cycle? How long after the latest chemotherapy did diarrhoea appear?"
+      },
+      "answer": {
+        "zh-CN": "本周期伊立替康分第1和第8天给药，联合其他化疗及贝伐单抗。",
+        "en": "Irinotecan was divided between days 1 and 8 with other chemotherapy and bevacizumab."
+      },
+      "keywords": {
+        "zh-CN": [
+          "本次治疗时点",
+          "本次伊立替康分哪几天使用？",
+          "最近一次化疗距离腹泻多久？",
+          "本次治疗时点情况"
+        ],
+        "en": [
+          "current treatment timing",
+          "On which days was irinotecan given this cycle?",
+          "How long after the latest chemotherapy did diarrhoea appear?",
+          "current treatment timing information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "home-care",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "开始腹泻后在家做过什么处理？ 当时有没有按计划联系医院或服药？",
+        "en": "What did you do at home when diarrhoea began? Did you contact the hospital or follow the medicine plan?"
+      },
+      "answer": {
+        "zh-CN": "腹泻后没有按当时医嘱使用止泻药；原因未记录。",
+        "en": "The prescribed antidiarrhoeal was not taken after symptoms began; the reason was not recorded."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出院后处理",
+          "开始腹泻后在家做过什么处理？",
+          "当时有没有按计划联系医院或服药？",
+          "出院后处理情况"
+        ],
+        "en": [
+          "care after discharge",
+          "What did you do at home when diarrhoea began?",
+          "Did you contact the hospital or follow the medicine plan?",
+          "care after discharge information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "cardiac",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前有房颤或高血压吗？ 心脏和血压问题持续多久？",
+        "en": "Has there been atrial fibrillation or hypertension? How long have heart and BP problems existed?"
+      },
+      "answer": {
+        "zh-CN": "间歇房颤六年、高血压五年，本周期早期曾再发房颤。",
+        "en": "Intermittent AF for six years and hypertension for five, with AF recurring early in this cycle."
+      },
+      "keywords": {
+        "zh-CN": [
+          "心脏血压背景",
+          "以前有房颤或高血压吗？",
+          "心脏和血压问题持续多久？",
+          "心脏血压背景情况"
+        ],
+        "en": [
+          "cardiac and BP history",
+          "Has there been atrial fibrillation or hypertension?",
+          "How long have heart and BP problems existed?",
+          "cardiac and BP history information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对哪些药物过敏？ 用药后出现过什么过敏反应？",
+        "en": "Which medicines have caused allergy? What allergic reactions have occurred after medicines?"
+      },
+      "answer": {
+        "zh-CN": "有青霉素过敏史，反应类型未详。",
+        "en": "Penicillin allergy was reported without reaction details."
+      },
+      "keywords": {
+        "zh-CN": [
+          "青霉素过敏",
+          "对哪些药物过敏？",
+          "用药后出现过什么过敏反应？",
+          "青霉素过敏情况"
+        ],
+        "en": [
+          "penicillin allergy",
+          "Which medicines have caused allergy?",
+          "What allergic reactions have occurred after medicines?",
+          "penicillin allergy information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "preferences",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "之前治疗最担心什么？ 选择药物时有什么顾虑？",
+        "en": "What worried you most about earlier treatment? What concerns influenced the treatment choice?"
+      },
+      "answer": {
+        "zh-CN": "此前担心皮疹而拒绝西妥昔单抗，选择其他联合方案。",
+        "en": "Earlier concern about rash led to declining cetuximab and choosing a different combination."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此前治疗顾虑",
+          "之前治疗最担心什么？",
+          "选择药物时有什么顾虑？",
+          "此前治疗顾虑情况"
+        ],
+        "en": [
+          "earlier treatment concern",
+          "What worried you most about earlier treatment?",
+          "What concerns influenced the treatment choice?",
+          "earlier treatment concern information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有居住环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "居住环境暴露",
+          "有关居住环境暴露",
+          "居住环境暴露情况",
+          "居住环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有病前日常活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前日常活动",
+          "有关病前日常活动",
+          "病前日常活动情况",
+          "病前日常活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "circulation",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对发热与灌注",
+        "en": "Review fever and circulation"
+      },
+      "finding": {
+        "zh-CN": "体温39.4℃、血压85/50 mmHg、心率100次/分。",
+        "en": "Temperature 39.4°C, BP 85/50 mmHg and heart rate 100/min."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "调阅本周期前腹部检查",
+        "en": "Review the pre-cycle abdominal examination"
+      },
+      "finding": {
+        "zh-CN": "本周期前中下腹可及包块伴深压痛；本次急诊未详细重复腹部体征。",
+        "en": "Before this cycle a mid/lower abdominal mass with deep tenderness was recorded; current emergency abdominal findings were not detailed."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "counts",
+      "name": {
+        "zh-CN": "急诊血细胞",
+        "en": "Emergency blood count"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "急诊血细胞"
+        ],
+        "en": [
+          "Emergency blood count"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "WBC1.4×10⁹/L、中性粒细胞0.576×10⁹/L；不能把早期正常血象当作本次安全保证。",
+            "en": "WBC 1.4×10⁹/L and neutrophils 0.576×10⁹/L; earlier normal counts do not establish current safety."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "liver",
+      "name": {
+        "zh-CN": "本次肝功能",
+        "en": "Current liver tests"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "本次肝功能"
+        ],
+        "en": [
+          "Current liver tests"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "ALT73、AST79 U/L，总胆红素27.3 μmol/L。",
+            "en": "ALT 73 and AST 79 U/L, total bilirubin 27.3 µmol/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "timeline",
+      "name": {
+        "zh-CN": "原报告药物核对",
+        "en": "Source medication reconciliation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "原报告药物核对"
+        ],
+        "en": [
+          "Source medication reconciliation"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "早期段落列氟尿嘧啶、亚叶酸钙和伊立替康却标mFOLFOX6，名称与组成矛盾；不能推断替换成奥沙利铂。当前周期明确为含伊立替康方案。",
+            "en": "The earlier paragraph lists fluorouracil, folinic acid and irinotecan but labels it mFOLFOX6, an unresolved naming/composition conflict. Do not silently substitute oxaliplatin. The current cycle explicitly contains irinotecan."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "genotype",
+      "name": {
+        "zh-CN": "治疗前UGT1A1记录",
+        "en": "Pretreatment UGT1A1 record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "治疗前UGT1A1记录"
+        ],
+        "en": [
+          "Pretreatment UGT1A1 record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "UGT1A1为7/7型（*28纯合），与伊立替康毒性易感有关；分次给药没有消除风险。",
+            "en": "UGT1A1 was 7/7 (*28 homozygous), relevant to irinotecan toxicity susceptibility; divided dosing did not eliminate risk."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "支持、抗感染和升白等后恢复；下一周期降低伊立替康剂量仍有较轻腹泻、白细胞下降和胆红素升高。两周期后影像稳定，后来继续多种治疗，长期生存未给出。",
+            "en": "Supportive, antimicrobial and growth-factor care was followed by recovery. Reduced irinotecan in the next cycle still caused milder diarrhoea, leukopenia and bilirubin elevation. Imaging was stable after two cycles; later multimodal care continued without long-term survival data."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "diarrhoea"
+          },
+          {
+            "asked": "associated"
+          },
+          {
+            "asked": "irinotecan"
+          },
+          {
+            "asked": "home-care"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "circulation"
+          },
+          {
+            "examined": "prior-abdomen"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前组合应如何定性并分级处理？",
+        "en": "How should the current combination be framed and escalated?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "counts",
+            "phase": "workup"
+          },
+          {
+            "read": "liver",
+            "phase": "workup"
+          },
+          {
+            "read": "timeline",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "化疗后高危腹泻合并发热低压和中性粒细胞减少，需急诊感染与毒性评估",
+            "en": "High-risk post-chemotherapy diarrhoea with fever, hypotension and neutropenia requires urgent infection/toxicity assessment"
+          },
+          "feedback": {
+            "zh-CN": "不能只用普通腹泻解释休克风险。",
+            "en": "Ordinary diarrhoea does not account for shock risk."
+          },
+          "correct": true
+        },
+        {
+          "id": "routine",
+          "text": {
+            "zh-CN": "仅常见轻度副作用，可在家观察",
+            "en": "A routine mild adverse effect suitable for home observation"
+          },
+          "feedback": {
+            "zh-CN": "低压高热和血象异常构成高危组合。",
+            "en": "Hypotension, fever and abnormal counts make this high risk."
+          },
+          "correct": false
+        },
+        {
+          "id": "infection-free",
+          "text": {
+            "zh-CN": "已有药物解释就无需感染评估",
+            "en": "A drug explanation removes the need to assess infection"
+          },
+          "feedback": {
+            "zh-CN": "药物损伤和感染可同时存在。",
+            "en": "Drug injury and infection can coexist."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "genotype",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "基因型增加毒性风险但不提供无需监测的固定安全剂量",
+            "en": "The genotype increases toxicity risk but does not supply a fixed safe dose without monitoring"
+          },
+          "feedback": {
+            "zh-CN": "剂量、合并药、肝功能和病情均须专科综合。",
+            "en": "Dose, co-medication, liver function and clinical state require specialist integration."
+          },
+          "correct": true
+        },
+        {
+          "id": "split",
+          "text": {
+            "zh-CN": "分两次使用即可保证没有严重毒性",
+            "en": "Dividing treatment guarantees no severe toxicity"
+          },
+          "feedback": {
+            "zh-CN": "本例已经反证。",
+            "en": "This case directly contradicts that guarantee."
+          },
+          "correct": false
+        },
+        {
+          "id": "repair",
+          "text": {
+            "zh-CN": "可自行把矛盾历史药名修成预期方案",
+            "en": "The conflicting historical drug list can be silently repaired"
+          },
+          "feedback": {
+            "zh-CN": "原资料无法支持这种事实修正。",
+            "en": "The source does not support that factual correction."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "急诊阶段与后续化疗应如何安排？",
+        "en": "How should emergency care and subsequent chemotherapy be planned?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "genotype",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "立即肿瘤急症/感染团队处理低压与感染风险，暂停复用并复核药物基因和减量计划",
+            "en": "Immediate oncology/emergency infection care for hypotension and infection risk, with treatment held pending pharmacogenetic and dose-plan review"
+          },
+          "feedback": {
+            "zh-CN": "止泻不能代替复苏和中性粒细胞减少性发热评估。",
+            "en": "Antidiarrhoeals do not replace resuscitation and neutropenic-fever assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "repeat",
+          "text": {
+            "zh-CN": "按原分次剂量继续下周期即可",
+            "en": "Repeat the same divided doses next cycle"
+          },
+          "feedback": {
+            "zh-CN": "严重毒性后需系统复核。",
+            "en": "Severe toxicity requires systematic reassessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "blame",
+          "text": {
+            "zh-CN": "仅归责未服止泻药，不再调整方案",
+            "en": "Blame missed antidiarrhoeals and leave the regimen unchanged"
+          },
+          "feedback": {
+            "zh-CN": "需了解障碍并共同改进预警与剂量监测。",
+            "en": "Explore barriers and improve warnings, dosing and monitoring together."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "diarrhoea"
+          },
+          {
+            "asked": "associated"
+          },
+          {
+            "asked": "irinotecan"
+          },
+          {
+            "asked": "home-care"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "cardiac"
+          },
+          {
+            "asked": "allergies"
+          },
+          {
+            "asked": "preferences"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "circulation"
+          },
+          {
+            "examined": "prior-abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "counts",
+            "phase": "workup"
+          },
+          {
+            "read": "liver",
+            "phase": "workup"
+          },
+          {
+            "read": "timeline",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "genotype",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "对发热低压和中性粒细胞减少及时升级，避免自行复制剂量",
+        "en": "Escalate fever, hypotension and neutropenia without copying doses for self-treatment"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：用症状相对给药时间识别延迟毒性。同时解释以下信息仍有缺失或疑问：确切早期方案、感染培养、完整UGT1A1等位基因评估和长期结局；DOI尾点待核。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Use timing relative to treatment to recognise delayed toxicity. Identify the following as missing or uncertain: Exact earlier regimen, infection cultures, full UGT1A1 allele assessment and long-term outcome; trailing DOI punctuation remains unresolved. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "counts",
+        "liver",
+        "timeline",
+        "genotype",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "UGT1A1*28纯合患者的严重延迟毒性；分次用药并不消除风险，历史方案矛盾保留。",
+      "en": "Severe delayed toxicity in UGT1A1*28 homozygosity; split dosing does not remove risk, and the historical regimen inconsistency is retained."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "用症状相对给药时间识别延迟毒性。",
+        "en": "Use timing relative to treatment to recognise delayed toxicity."
+      },
+      {
+        "zh-CN": "区分药物基因易感性与个体安全剂量。",
+        "en": "Distinguish pharmacogenetic susceptibility from an individual safe dose."
+      },
+      {
+        "zh-CN": "将发热低压与中性粒细胞减少列为急症证据。",
+        "en": "Identify fever, hypotension and neutropenia as emergency evidence."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "用症状相对给药时间识别延迟毒性。",
+        "en": "Use timing relative to treatment to recognise delayed toxicity."
+      },
+      {
+        "zh-CN": "区分药物基因易感性与个体安全剂量。",
+        "en": "Distinguish pharmacogenetic susceptibility from an individual safe dose."
+      },
+      {
+        "zh-CN": "将发热低压与中性粒细胞减少列为急症证据。",
+        "en": "Identify fever, hypotension and neutropenia as emergency evidence."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "确切早期方案、感染培养、完整UGT1A1等位基因评估和长期结局；DOI尾点待核。",
+        "en": "Exact earlier regimen, infection cultures, full UGT1A1 allele assessment and long-term outcome; trailing DOI punctuation remains unresolved."
+      }
+    ],
+    "references": [
+      "蔡炜嵩, 马赛男, 吴荣. 应用伊立替康治疗一例UGT1A1*28纯合变异型大肠癌患者的体会. 中华结直肠疾病电子杂志. 2013;02(05):256-257.",
+      "https://rs.yiigle.com/cmaid/1068618",
+      "DailyMed. Irinotecan hydrochloride prescribing information; reduced UGT1A1 activity, neutropenia and diarrhoea. Accessed 2026-10-28. https://dailymed.nlm.nih.gov/dailymed/drugInfo.cfm?setid=ee45f127-8450-4455-a945-a1f5707f1d39"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "确切早期方案、感染培养、完整UGT1A1等位基因评估和长期结局；DOI尾点待核。",
+      "en": "Exact earlier regimen, infection cultures, full UGT1A1 allele assessment and long-term outcome; trailing DOI punctuation remains unresolved."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "diarrhoea"
+    },
+    {
+      "type": "ask",
+      "itemId": "associated"
+    },
+    {
+      "type": "ask",
+      "itemId": "irinotecan"
+    },
+    {
+      "type": "ask",
+      "itemId": "home-care"
+    },
+    {
+      "type": "ask",
+      "itemId": "cardiac"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "preferences"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "circulation"
+    },
+    {
+      "type": "examine",
+      "findingId": "prior-abdomen"
+    },
+    {
+      "type": "order",
+      "investigationId": "counts"
+    },
+    {
+      "type": "read",
+      "investigationId": "counts",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "liver"
+    },
+    {
+      "type": "read",
+      "investigationId": "liver",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "timeline"
+    },
+    {
+      "type": "read",
+      "investigationId": "timeline",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "genotype"
+    },
+    {
+      "type": "read",
+      "investigationId": "genotype",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1068618",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1068618",
+    "sourceDoiPendingVerification": "10.3877/cma.j.issn.2095-3224.2013.05.14.",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "腹泻在化疗后第几天开始，一天几次？",
+        "locale": "zh-CN",
+        "expect": [
+          "diarrhoea"
+        ]
+      },
+      {
+        "text": "On which day after chemotherapy did diarrhoea start, and how often?",
+        "locale": "en",
+        "expect": [
+          "diarrhoea"
+        ]
+      },
+      {
+        "text": "大便什么时候变成大量水样？",
+        "locale": "zh-CN",
+        "expect": [
+          "diarrhoea"
+        ]
+      },
+      {
+        "text": "When did stools become profuse and watery?",
+        "locale": "en",
+        "expect": [
+          "diarrhoea"
+        ]
+      },
+      {
+        "text": "拉肚子时有没有呕吐或很虚弱？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "Have vomiting or marked weakness accompanied the diarrhoea?",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "还能吃喝吗，有没有吐？",
+        "locale": "zh-CN",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "Have you been vomiting or struggling with intake?",
+        "locale": "en",
+        "expect": [
+          "associated"
+        ]
+      },
+      {
+        "text": "本次伊立替康分哪几天使用？",
+        "locale": "zh-CN",
+        "expect": [
+          "irinotecan"
+        ]
+      },
+      {
+        "text": "On which days was irinotecan given this cycle?",
+        "locale": "en",
+        "expect": [
+          "irinotecan"
+        ]
+      },
+      {
+        "text": "最近一次化疗距离腹泻多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "irinotecan"
+        ]
+      },
+      {
+        "text": "How long after the latest chemotherapy did diarrhoea appear?",
+        "locale": "en",
+        "expect": [
+          "irinotecan"
+        ]
+      },
+      {
+        "text": "开始腹泻后在家做过什么处理？",
+        "locale": "zh-CN",
+        "expect": [
+          "home-care"
+        ]
+      },
+      {
+        "text": "What did you do at home when diarrhoea began?",
+        "locale": "en",
+        "expect": [
+          "home-care"
+        ]
+      },
+      {
+        "text": "当时有没有按计划联系医院或服药？",
+        "locale": "zh-CN",
+        "expect": [
+          "home-care"
+        ]
+      },
+      {
+        "text": "Did you contact the hospital or follow the medicine plan?",
+        "locale": "en",
+        "expect": [
+          "home-care"
+        ]
+      },
+      {
+        "text": "以前有房颤或高血压吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "cardiac"
+        ]
+      },
+      {
+        "text": "Has there been atrial fibrillation or hypertension?",
+        "locale": "en",
+        "expect": [
+          "cardiac"
+        ]
+      },
+      {
+        "text": "心脏和血压问题持续多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "cardiac"
+        ]
+      },
+      {
+        "text": "How long have heart and BP problems existed?",
+        "locale": "en",
+        "expect": [
+          "cardiac"
+        ]
+      },
+      {
+        "text": "对哪些药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Which medicines have caused allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "用药后出现过什么过敏反应？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What allergic reactions have occurred after medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "之前治疗最担心什么？",
+        "locale": "zh-CN",
+        "expect": [
+          "preferences"
+        ]
+      },
+      {
+        "text": "What worried you most about earlier treatment?",
+        "locale": "en",
+        "expect": [
+          "preferences"
+        ]
+      },
+      {
+        "text": "选择药物时有什么顾虑？",
+        "locale": "zh-CN",
+        "expect": [
+          "preferences"
+        ]
+      },
+      {
+        "text": "What concerns influenced the treatment choice?",
+        "locale": "en",
+        "expect": [
+          "preferences"
+        ]
+      },
+      {
+        "text": "以前有没有出院后处理方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "home-care"
+        ]
+      },
+      {
+        "text": "Could you describe any care after discharge?",
+        "locale": "en",
+        "expect": [
+          "home-care"
+        ]
+      },
+      {
+        "text": "以前有没有青霉素过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any penicillin allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      }
+    ]
+  }
+}

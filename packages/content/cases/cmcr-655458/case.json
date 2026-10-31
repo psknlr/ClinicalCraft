@@ -1,0 +1,1981 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-655458",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "脐血白细胞明显升高 · 18小时龄男婴",
+    "en": "Markedly raised cord-blood white cells · boy aged 18 hours"
+  },
+  "summary": {
+    "zh-CN": "足月新生儿因储存脐血时发现异常血象转诊，需要区分反应性变化与克隆性疾病。",
+    "en": "A term newborn is referred after an abnormal blood count during cord-blood storage assessment; distinguish reactive changes from clonal disease."
+  },
+  "specialty": [
+    "neonatology",
+    "hematology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "刘兆娥, 陈鲁, 朱学梅. 生后脐血检查发现先天性淋巴细胞白血病一例. 中华儿科杂志. 2011;49(01):72-73. doi: 10.3760/cma.j.issn.0578-1310.2011.01.016.",
+    "authors": [
+      "刘兆娥",
+      "陈鲁",
+      "朱学梅"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "NCI Childhood ALL Treatment PDQ, current online summary checked 2026-10-28"
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.01.016"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别极高白细胞与原始细胞优势的紧急性",
+      "en": "Recognise the urgency of extreme leucocytosis with blast predominance"
+    },
+    {
+      "zh-CN": "由B系免疫表型解释白血病分系",
+      "en": "Explain leukaemia lineage using the B-cell immunophenotype"
+    },
+    {
+      "zh-CN": "说明阴性融合筛查的检测边界",
+      "en": "State the detection limits of negative fusion screening"
+    },
+    {
+      "zh-CN": "以家属可理解的方式说明专科评估和不确定性",
+      "en": "Explain specialist assessment and uncertainty in language understandable to the family"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "王予宁（化名）",
+      "en": "Wang Yuning (pseudonym)"
+    },
+    "age": 0.75,
+    "ageUnit": "days",
+    "sex": "male",
+    "weightKg": 3.08,
+    "chiefComplaint": {
+      "zh-CN": "脐血检查异常10小时",
+      "en": "Abnormal cord-blood results for 10 hours"
+    },
+    "triageNote": {
+      "zh-CN": "出生后哭声响亮、反应尚好，脐血结果异常后转入新生儿病房。",
+      "en": "The infant cried strongly and remained responsive after birth, but an abnormal cord-blood result prompted neonatal admission."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "（患者不能口述；陪同者转述已有病史。）",
+        "en": "(The patient cannot speak; the companion relays the recorded history.)"
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "infant",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "always": true
+    },
+    "nonVerbalReason": {
+      "zh-CN": "18小时龄新生儿尚不能用语言回答。",
+      "en": "An 18-hour-old newborn cannot give a verbal history."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "pregnancy"
+          },
+          {
+            "asked": "family"
+          },
+          {
+            "examined": "liver-spleen"
+          },
+          {
+            "examined": "initial-state"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "presentation",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "为什么带孩子来医院？",
+        "en": "What brought the baby to hospital?"
+      },
+      "answer": {
+        "zh-CN": "为了存脐血做检查，发现白细胞很高，已经10个小时了。",
+        "en": "The cord-blood storage test showed very high white cells about 10 hours ago."
+      },
+      "keywords": {
+        "zh-CN": [
+          "脐血检查",
+          "存脐血",
+          "白细胞异常",
+          "入院原因"
+        ],
+        "en": [
+          "cord blood test",
+          "cord storage",
+          "white cell abnormality",
+          "reason for referral"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "孩子出生时怎么样？",
+        "en": "How was the birth?"
+      },
+      "answer": {
+        "zh-CN": "孕38周剖宫产，出生后哭得响，没有脐带绕颈。",
+        "en": "He was born by caesarean at 38 weeks, cried strongly and had no cord around his neck."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生经过",
+          "孕周",
+          "剖宫产",
+          "出生哭声"
+        ],
+        "en": [
+          "birth history",
+          "gestational age",
+          "caesarean birth",
+          "cry at birth"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "pregnancy",
+      "topic": "social",
+      "question": {
+        "zh-CN": "怀孕期间接触过药物或放射线吗？",
+        "en": "Were there medicines or radiation exposures during pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "母亲说怀孕时没有放射线、药物或毒物接触。",
+        "en": "His mother reported no radiation, medicine or toxic exposure during pregnancy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕期接触",
+          "母亲用药",
+          "孕期放射线",
+          "孕期毒物"
+        ],
+        "en": [
+          "pregnancy exposure",
+          "maternal medication",
+          "antenatal radiation",
+          "maternal toxins"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "父母和兄弟的健康情况怎样？",
+        "en": "How healthy are the parents and siblings?"
+      },
+      "answer": {
+        "zh-CN": "父母身体健康，不是近亲，五岁的哥哥也健康，家里没有遗传病和恶性肿瘤史。",
+        "en": "The parents are healthy and unrelated; his five-year-old brother is healthy, without a family history of genetic disease or malignancy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "父母健康",
+          "哥哥情况",
+          "近亲婚配"
+        ],
+        "en": [
+          "family illnesses",
+          "parental health",
+          "older brother",
+          "consanguinity"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "early-appearance",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "出生后马上有皮疹或明显不舒服吗？",
+        "en": "Was a rash or obvious illness noticed immediately after birth?"
+      },
+      "answer": {
+        "zh-CN": "刚来时精神反应还好，哭声也响，皮肤没有皮疹。",
+        "en": "At arrival he was responsive with a strong cry and no rash."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最初精神",
+          "初次皮疹",
+          "刚出生表现",
+          "早期反应"
+        ],
+        "en": [
+          "initial responsiveness",
+          "initial rash",
+          "early appearance",
+          "first cry"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "这次发病以前，身体有什么疾病？",
+        "en": "What illnesses were present before this episode?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "weight",
+      "topic": "other",
+      "question": {
+        "zh-CN": "最近有测过体重吗？",
+        "en": "Has weight been measured recently?"
+      },
+      "answer": {
+        "zh-CN": "原报告记录体重3.08 kg；其他时间点的体重未提供。",
+        "en": "The source records a weight of 3.08 kg; weights at other times were not supplied."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期体重",
+          "称过体重",
+          "体重记录",
+          "最近多重"
+        ],
+        "en": [
+          "recent weight",
+          "weight measurement",
+          "weighed recently",
+          "recorded weight"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "liver-spleen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "触诊肝脾并观察腹部",
+        "en": "Palpate liver and spleen and inspect the abdomen"
+      },
+      "finding": {
+        "zh-CN": "腹膨隆，肝肋下4 cm、剑下2 cm，脾肋下1.5 cm，质韧，边缘钝。",
+        "en": "Distended abdomen; liver 4 cm below the costal margin and 2 cm below the xiphisternum, spleen 1.5 cm below the margin, firm with blunt edges."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "initial-state",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对入院一般情况",
+        "en": "Review the presenting general examination"
+      },
+      "finding": {
+        "zh-CN": "体温36.8℃，脉搏128次/分，呼吸36次/分；面色欠红润，反应好，浅表淋巴结未触及，未见皮疹。",
+        "en": "Temperature 36.8°C, pulse 128/min and respiration 36/min; mild pallor but good responsiveness, no palpable superficial nodes and no rash."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "counts",
+      "name": {
+        "zh-CN": "连续血常规和血涂片记录",
+        "en": "Serial blood counts and blood films"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "连续血常规和血涂片记录"
+        ],
+        "en": [
+          "Serial blood counts and blood films"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "入院白细胞513.62×10^9/L，血小板94×10^9/L，原幼淋巴细胞95%；次日白细胞556.94×10^9/L，原始细胞90%。",
+            "en": "Admission white cells 513.62 × 10^9/L, platelets 94 × 10^9/L and lymphoblasts 95%; next day white cells 556.94 × 10^9/L and blasts 90%."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "marrow",
+      "name": {
+        "zh-CN": "骨髓细胞学及流式",
+        "en": "Marrow cytology and flow cytometry"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "骨髓细胞学及流式"
+        ],
+        "en": [
+          "Marrow cytology and flow cytometry"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "骨髓原幼淋巴细胞91%，POX阴性；流式异常群89%，表达CD19、cCD79a、CD34、HLA-DR，报告急性B淋巴细胞白血病。",
+            "en": "Marrow lymphoblasts 91%, POX negative; abnormal flow population 89% expressing CD19, cCD79a, CD34 and HLA-DR, reported as acute B-lymphoblastic leukaemia."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "genetics",
+      "name": {
+        "zh-CN": "染色体与融合基因筛查",
+        "en": "Karyotype and fusion-gene screening"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "染色体与融合基因筛查"
+        ],
+        "en": [
+          "Karyotype and fusion-gene screening"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "染色体核型无异常；已实施的多重RT-PCR未发现基因重排，但检测范围有限。",
+            "en": "Karyotype was unremarkable; the multiplex RT-PCR panel found no rearrangement, but its coverage was limited."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "住院后出现出血点，第四天腰骶部紫红结节未获活检，之后低热、反应变差；第9天家属放弃治疗出院，随访得知生后45天死亡。",
+            "en": "Petechiae developed after admission; a violaceous lumbosacral nodule on day 4 was not biopsied, followed by low fever and reduced responsiveness. The family withdrew treatment on day 9; follow-up reported death at 45 days of life."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "pregnancy"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "liver-spleen"
+          },
+          {
+            "examined": "initial-state"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "极高白细胞伴大量原始细胞应优先怎样解释？",
+        "en": "How should extreme leucocytosis with abundant blasts be interpreted?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "counts",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "高度怀疑恶性原始细胞增殖，需紧急血液专科分类",
+            "en": "Strongly suspect malignant blast proliferation requiring urgent haematological classification"
+          },
+          "feedback": {
+            "zh-CN": "持续极高计数、原始细胞优势及肝脾肿大支持这一方向。",
+            "en": "Persistently extreme counts, blast predominance and organ enlargement support this approach."
+          },
+          "correct": true
+        },
+        {
+          "id": "stress",
+          "text": {
+            "zh-CN": "归因于出生应激，无需复查",
+            "en": "Attribute everything to birth stress without further assessment"
+          },
+          "feedback": {
+            "zh-CN": "出生应激不能充分解释持续约500×10^9/L的白细胞和90%以上原始细胞。",
+            "en": "Birth stress does not adequately explain counts around 500 × 10^9/L with over 90% blasts."
+          },
+          "correct": false
+        },
+        {
+          "id": "infection",
+          "text": {
+            "zh-CN": "只凭白细胞高即可确诊细菌感染",
+            "en": "Diagnose bacterial infection from leucocytosis alone"
+          },
+          "feedback": {
+            "zh-CN": "细胞形态和分群信息不能被一个计数替代。",
+            "en": "A count cannot replace cell morphology and population assessment."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "marrow",
+            "phase": "confirmation"
+          },
+          {
+            "read": "genetics",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "B系标记支持B淋巴母细胞白血病，阴性融合筛查不排除所有遗传异常",
+            "en": "B-lineage markers support B-lymphoblastic leukaemia; negative screening does not exclude every genetic abnormality"
+          },
+          "feedback": {
+            "zh-CN": "CD19和胞浆CD79a提供分系依据，筛查阴性只涵盖已测目标。",
+            "en": "CD19 and cytoplasmic CD79a support lineage; negative screening covers only tested targets."
+          },
+          "correct": true
+        },
+        {
+          "id": "aml",
+          "text": {
+            "zh-CN": "POX阴性直接证明急性髓系白血病",
+            "en": "Negative POX proves acute myeloid leukaemia"
+          },
+          "feedback": {
+            "zh-CN": "原报告免疫分型指向B系，不能反向解读POX。",
+            "en": "The immunophenotype indicates B lineage; POX cannot be interpreted in reverse."
+          },
+          "correct": false
+        },
+        {
+          "id": "no-genetics",
+          "text": {
+            "zh-CN": "核型正常便说明没有遗传因素",
+            "en": "A normal karyotype establishes the absence of genetic factors"
+          },
+          "feedback": {
+            "zh-CN": "常规核型与有限融合筛查均有检测边界。",
+            "en": "Conventional karyotyping and limited fusion panels have detection limits."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "如何向家属讨论接下来的安全方向？",
+        "en": "How should the next safe course be discussed with the family?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "marrow",
+            "phase": "confirmation"
+          },
+          {
+            "read": "genetics",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "紧急新生儿血液肿瘤联合评估，同时解释风险、治疗选择与未解决信息",
+            "en": "Urgent neonatal-haematology assessment with clear discussion of risks, options and uncertainties"
+          },
+          "feedback": {
+            "zh-CN": "婴儿年龄和极高白细胞属于高风险特征，需要专科个体化评估。",
+            "en": "Infancy and extreme leucocytosis are high-risk features requiring specialist assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "wait",
+          "text": {
+            "zh-CN": "因暂时精神好而仅常规随访",
+            "en": "Use routine follow-up because responsiveness is initially good"
+          },
+          "feedback": {
+            "zh-CN": "外观相对稳定不能抵消血液学危险信号。",
+            "en": "A relatively stable appearance does not negate the haematological danger signals."
+          },
+          "correct": false
+        },
+        {
+          "id": "futility",
+          "text": {
+            "zh-CN": "依据旧单例结局宣布所有现代治疗均无效",
+            "en": "Declare all modern treatment futile from this old case outcome"
+          },
+          "feedback": {
+            "zh-CN": "原报告未接受完整治疗，其结局不能代表当前婴儿ALL治疗效果。",
+            "en": "The report did not document full treatment; its outcome cannot represent current infant ALL care."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "presentation"
+          },
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "pregnancy"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "early-appearance"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "liver-spleen"
+          },
+          {
+            "examined": "initial-state"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "counts",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "marrow",
+            "phase": "confirmation"
+          },
+          {
+            "read": "genetics",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "首次选择紧急专科评估，避免将历史死亡结局作治疗无效证明",
+        "en": "Choose urgent specialist assessment without treating historical death as proof of treatment futility"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明原始细胞优势比单独白细胞计数更有分类意义。；承认结节病理、完整分子分型、现代方案治疗反应及死因。，用复述确认理解。",
+        "en": "Explain that Blast predominance adds more classification information than the count alone.; acknowledge Nodule histology, comprehensive molecular classification, response to modern therapy and cause of death. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "counts",
+        "marrow",
+        "genetics",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "原报告诊断先天性B淋巴细胞白血病，极高白细胞、肝脾大和B系免疫表型构成关键证据。",
+      "en": "The report diagnosed congenital B-lymphoblastic leukaemia, supported by extreme leucocytosis, hepatosplenomegaly and B-lineage immunophenotyping."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "原始细胞优势比单独白细胞计数更有分类意义。",
+        "en": "Blast predominance adds more classification information than the count alone."
+      },
+      {
+        "zh-CN": "阴性分子筛查不能超出其靶标范围解释。",
+        "en": "A negative molecular screen must be interpreted within its target coverage."
+      },
+      {
+        "zh-CN": "早期外观好不能排除严重血液病。",
+        "en": "A reassuring early appearance cannot exclude severe haematological disease."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "将持续极高白细胞与细胞形态和免疫分型整合。",
+        "en": "Integrate sustained extreme counts with morphology and immunophenotype."
+      },
+      {
+        "zh-CN": "区分诊断依据和未经活检的皮肤浸润推测。",
+        "en": "Distinguish diagnostic evidence from unbiopsied suspected skin infiltration."
+      },
+      {
+        "zh-CN": "现代风险评估不能以历史未完整治疗的结局代替。",
+        "en": "Current risk assessment cannot be replaced by the outcome of historical incomplete treatment."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "结节病理、完整分子分型、现代方案治疗反应及死因。",
+        "en": "Nodule histology, comprehensive molecular classification, response to modern therapy and cause of death."
+      }
+    ],
+    "references": [
+      "刘兆娥, 陈鲁, 朱学梅. 生后脐血检查发现先天性淋巴细胞白血病一例. 中华儿科杂志. 2011;49(01):72-73. doi: 10.3760/cma.j.issn.0578-1310.2011.01.016.",
+      "https://rs.yiigle.com/cmaid/655458",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.01.016",
+      "National Cancer Institute. Childhood Acute Lymphoblastic Leukemia Treatment (PDQ), health professional version. Accessed 2026-10-28. https://www.cancer.gov/types/leukemia/hp/child-all-treatment-pdq"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "结节病理、完整分子分型、现代方案治疗反应及死因。",
+      "en": "Nodule histology, comprehensive molecular classification, response to modern therapy and cause of death."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-655458/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "c5b0b22163790dd9327010c9a4ed33a471fef5fda3550c41d27958a552c7b490"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "presentation"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "pregnancy"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "early-appearance"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight"
+    },
+    {
+      "type": "examine",
+      "findingId": "liver-spleen"
+    },
+    {
+      "type": "examine",
+      "findingId": "initial-state"
+    },
+    {
+      "type": "order",
+      "investigationId": "counts"
+    },
+    {
+      "type": "read",
+      "investigationId": "counts",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "marrow"
+    },
+    {
+      "type": "read",
+      "investigationId": "marrow",
+      "phase": "confirmation"
+    },
+    {
+      "type": "order",
+      "investigationId": "genetics"
+    },
+    {
+      "type": "read",
+      "investigationId": "genetics",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "655458",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/655458",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于脐血检查，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Could you tell me about cord blood test?",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "我想了解存脐血。",
+        "locale": "zh-CN",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "Please explain cord storage in more detail.",
+        "locale": "en",
+        "expect": [
+          "presentation"
+        ]
+      },
+      {
+        "text": "关于出生经过，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Could you tell me about birth history?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "我想了解孕周。",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Please explain gestational age in more detail.",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "关于孕期接触，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "Could you tell me about pregnancy exposure?",
+        "locale": "en",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "我想了解母亲用药。",
+        "locale": "zh-CN",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "Please explain maternal medication in more detail.",
+        "locale": "en",
+        "expect": [
+          "pregnancy"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "我想了解父母健康。",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Please explain parental health in more detail.",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于最初精神，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "early-appearance"
+        ]
+      },
+      {
+        "text": "Could you tell me about initial responsiveness?",
+        "locale": "en",
+        "expect": [
+          "early-appearance"
+        ]
+      },
+      {
+        "text": "我想了解初次皮疹。",
+        "locale": "zh-CN",
+        "expect": [
+          "early-appearance"
+        ]
+      },
+      {
+        "text": "Please explain initial rash in more detail.",
+        "locale": "en",
+        "expect": [
+          "early-appearance"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "关于近期体重，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight"
+        ]
+      },
+      {
+        "text": "Could you tell me about recent weight?",
+        "locale": "en",
+        "expect": [
+          "weight"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/655458"
+    }
+  }
+}

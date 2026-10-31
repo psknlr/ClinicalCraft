@@ -1,0 +1,2001 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33640",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "反复腹痛与黑便 · 7岁5月男孩",
+    "en": "Recurrent pain and melaena · boy aged 7 years 5 months"
+  },
+  "summary": {
+    "zh-CN": "明显贫血与反复黑便，常规内镜没有找到足以解释的出血来源。",
+    "en": "Marked anaemia and recurrent melaena remain unexplained by conventional endoscopy."
+  },
+  "specialty": [
+    "paediatric-gastroenterology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "郭城, 陈琍, 骆金芝, 吴婧, 刘泽玉, 赵翠平. 小肠毛细血管扩张症一例. 中华儿科杂志. 2013;51(09):694-695. doi:10.3760/cma.j.issn.0578-1310.2013.09.013.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2013.09.013",
+    "authors": [
+      "郭城",
+      "陈琍",
+      "骆金芝",
+      "吴婧",
+      "刘泽玉",
+      "赵翠平"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "将贫血严重度与检查解释力比较。",
+      "en": "Compare anaemia severity with the explanatory strength of investigations."
+    },
+    {
+      "zh-CN": "区分间歇出血与检查当时无出血。",
+      "en": "Distinguish intermittent bleeding from no bleeding during a test."
+    },
+    {
+      "zh-CN": "说明影像病灶和组织确证的差异。",
+      "en": "Explain the difference between an imaging lesion and tissue confirmation."
+    },
+    {
+      "zh-CN": "关注失血和儿童检查安全，不照搬原文清肠剂量",
+      "en": "Attend to blood loss and paediatric investigation safety without copying bowel-preparation doses"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "唐知远（化名）",
+      "en": "Tang Zhiyuan (pseudonym)"
+    },
+    "age": 89,
+    "ageUnit": "months",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "腹痛6个月，黑便2个月",
+      "en": "Six months of abdominal pain and two months of melaena"
+    },
+    "triageNote": {
+      "zh-CN": "间断脐周痛、黑便，伴苍白乏力。",
+      "en": "Intermittent periumbilical pain and melaena with pallor and fatigue."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "脐周阵发痛半年，每次数分钟自行缓解。",
+        "en": "Periumbilical pain for six months, lasting minutes and resolving spontaneously."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "melaena"
+          },
+          {
+            "asked": "fatigue"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "pain",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "肚子哪里痛，一次痛多久？ 腹痛是不是几分钟就自己好了？",
+        "en": "Where is the pain, and how long does each episode last? Does each pain episode settle after a few minutes?"
+      },
+      "answer": {
+        "zh-CN": "脐周阵发痛半年，每次数分钟自行缓解。",
+        "en": "Periumbilical pain for six months, lasting minutes and resolving spontaneously."
+      },
+      "keywords": {
+        "zh-CN": [
+          "腹痛规律",
+          "肚子哪里痛，一次痛多久？",
+          "腹痛是不是几分钟就自己好了？",
+          "腹痛规律情况"
+        ],
+        "en": [
+          "pain pattern",
+          "Where is the pain, and how long does each episode last?",
+          "Does each pain episode settle after a few minutes?",
+          "pain pattern information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "melaena",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "黑便什么时候开始，后来又出现了吗？ 最近一共排了几次黑便？",
+        "en": "When did black stools begin, and have they recurred? How many black stools have occurred recently?"
+      },
+      "answer": {
+        "zh-CN": "两个月前两次黑便，20天前又两次。",
+        "en": "Two black stools occurred two months earlier and another two twenty days earlier."
+      },
+      "keywords": {
+        "zh-CN": [
+          "黑便病程",
+          "黑便什么时候开始，后来又出现了吗？",
+          "最近一共排了几次黑便？",
+          "黑便病程情况"
+        ],
+        "en": [
+          "melaena course",
+          "When did black stools begin, and have they recurred?",
+          "How many black stools have occurred recently?",
+          "melaena course information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "fatigue",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "黑便时有没有脸白或没力气？ 活动时是不是比以前容易累？",
+        "en": "Was there pallor or weakness with black stools? Has he seemed more tired during these episodes?"
+      },
+      "answer": {
+        "zh-CN": "黑便时面色苍白、乏力。",
+        "en": "Pallor and fatigue accompanied black stools."
+      },
+      "keywords": {
+        "zh-CN": [
+          "苍白乏力",
+          "黑便时有没有脸白或没力气？",
+          "活动时是不是比以前容易累？",
+          "苍白乏力情况"
+        ],
+        "en": [
+          "pallor and fatigue",
+          "Was there pallor or weakness with black stools?",
+          "Has he seemed more tired during these episodes?",
+          "pallor and fatigue information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "treatment",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前治疗后腹痛黑便有没有再发？ 之前被按什么问题治疗，效果怎样？",
+        "en": "Did pain or black stools recur after earlier treatment? What was previously treated, and did it help?"
+      },
+      "answer": {
+        "zh-CN": "最初抗感染后腹痛没明显减轻，后来止血等治疗短暂好转。",
+        "en": "Initial antibiotics did not materially relieve pain; later haemostatic/supportive care brought temporary improvement."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往治疗效果",
+          "之前治疗后腹痛黑便有没有再发？",
+          "之前被按什么问题治疗，效果怎样？",
+          "既往治疗效果情况"
+        ],
+        "en": [
+          "previous treatment effect",
+          "Did pain or black stools recur after earlier treatment?",
+          "What was previously treated, and did it help?",
+          "previous treatment effect information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "initial-symptoms",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "最开始腹痛时还有什么症状？ 刚发病时有没有发烧呕吐或腹泻？",
+        "en": "What accompanied the first abdominal pain? Was there fever, vomiting or diarrhoea at onset?"
+      },
+      "answer": {
+        "zh-CN": "最初腹痛时无发热、咳嗽、呕吐、腹泻和黑便。",
+        "en": "At the initial pain onset there was no fever, cough, vomiting, diarrhoea or melaena."
+      },
+      "keywords": {
+        "zh-CN": [
+          "最初伴随症状",
+          "最开始腹痛时还有什么症状？",
+          "刚发病时有没有发烧呕吐或腹泻？",
+          "最初伴随症状情况"
+        ],
+        "en": [
+          "initial associated symptoms",
+          "What accompanied the first abdominal pain?",
+          "Was there fever, vomiting or diarrhoea at onset?",
+          "initial associated symptoms information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-diagnosis",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前医生说是什么病？ 之前被按什么疾病治疗？",
+        "en": "What diagnoses were given previously? What condition was treated earlier?"
+      },
+      "answer": {
+        "zh-CN": "曾被诊断肠系膜淋巴结炎及浅表性胃炎。",
+        "en": "Earlier labels included mesenteric lymphadenitis and superficial gastritis."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此前诊断",
+          "以前医生说是什么病？",
+          "之前被按什么疾病治疗？",
+          "此前诊断情况"
+        ],
+        "en": [
+          "earlier diagnoses",
+          "What diagnoses were given previously?",
+          "What condition was treated earlier?",
+          "earlier diagnoses information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "对哪些药物过敏？ 用药后出现过什么过敏反应？",
+        "en": "Which medicines have caused allergy? What allergic reactions have occurred after medicines?"
+      },
+      "answer": {
+        "zh-CN": "过敏史未记录。",
+        "en": "Allergies are not documented."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "对哪些药物过敏？",
+          "用药后出现过什么过敏反应？",
+          "药物过敏情况"
+        ],
+        "en": [
+          "drug allergy",
+          "Which medicines have caused allergy?",
+          "What allergic reactions have occurred after medicines?",
+          "drug allergy information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "general",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对贫血体征",
+        "en": "Review anaemia signs"
+      },
+      "finding": {
+        "zh-CN": "贫血貌、心率100次/分，心尖Ⅱ级收缩期杂音。",
+        "en": "Pallor, heart rate 100/min and a grade II apical systolic murmur."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "abdomen",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "检查腹部",
+        "en": "Examine abdomen"
+      },
+      "finding": {
+        "zh-CN": "腹软无压痛，脾肋下1 cm。",
+        "en": "Soft non-tender abdomen; spleen 1 cm below the costal margin."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "blood",
+      "name": {
+        "zh-CN": "血常规及便潜血",
+        "en": "Blood count and occult blood"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "血常规及便潜血"
+        ],
+        "en": [
+          "Blood count and occult blood"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "Hb从早先130.5降至74，入院72.5 g/L，便潜血阳性；凝血正常。",
+            "en": "Hb fell from 130.5 to 74 and then 72.5 g/L on admission; faecal occult blood positive with normal coagulation."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "conventional",
+      "name": {
+        "zh-CN": "常规内镜和核素检查",
+        "en": "Conventional endoscopy and nuclear study"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "常规内镜和核素检查"
+        ],
+        "en": [
+          "Conventional endoscopy and nuclear study"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "结肠镜未见异常，胃镜浅表性胃炎；异位胃黏膜显像阴性。",
+            "en": "Colonoscopy was unremarkable, gastroscopy showed superficial gastritis and ectopic gastric mucosa scanning was negative."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "小肠CT成像",
+        "en": "Small-bowel CT imaging"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "小肠CT成像"
+        ],
+        "en": [
+          "Small-bowel CT imaging"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "未见明显狭窄、扩张或软组织块影。",
+            "en": "No obvious narrowing, dilatation or soft-tissue mass."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "capsule",
+      "name": {
+        "zh-CN": "胶囊内镜报告",
+        "en": "Capsule endoscopy"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胶囊内镜报告"
+        ],
+        "en": [
+          "Capsule endoscopy"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "回肠上段至末段多发局灶血管增粗迂曲，无活动出血；胶囊48小时排出。未有组织学确证。",
+            "en": "Multiple focal thickened tortuous vessels from proximal to terminal ileum without active bleeding; capsule passed in 48 hours. Histological confirmation was absent."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告抑酸、止血和输血等后腹痛黑便停止，出院好转；长期再出血和贫血随访未提供。",
+            "en": "Pain and melaena resolved after acid suppression, haemostatic care and transfusion, with improvement at discharge. Long-term rebleeding and anaemia outcomes were not provided."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "melaena"
+          },
+          {
+            "asked": "fatigue"
+          },
+          {
+            "asked": "treatment"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "常规检查阴性后，下一步推理应指向哪里？",
+        "en": "Where should reasoning turn after unrevealing conventional investigations?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "conventional",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "继续评估小肠出血源，不把轻微胃炎当成充分解释",
+            "en": "Evaluate a small-bowel source rather than assuming mild gastritis explains the bleeding"
+          },
+          "feedback": {
+            "zh-CN": "贫血程度和反复黑便需要匹配出血证据。",
+            "en": "The anaemia and recurrent melaena need a proportionate source."
+          },
+          "correct": true
+        },
+        {
+          "id": "gastritis",
+          "text": {
+            "zh-CN": "浅表性胃炎已足以停止调查",
+            "en": "Superficial gastritis is sufficient to stop investigation"
+          },
+          "feedback": {
+            "zh-CN": "未提供该处活动出血等支持。",
+            "en": "Bleeding from that site was not established."
+          },
+          "correct": false
+        },
+        {
+          "id": "negative",
+          "text": {
+            "zh-CN": "所有检查阴性证明没有消化道出血",
+            "en": "Negative tests prove no gastrointestinal bleeding"
+          },
+          "feedback": {
+            "zh-CN": "黑便、潜血和Hb下降是真实线索。",
+            "en": "Melaena, occult blood and falling Hb remain evidence."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "capsule",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "胶囊提示回肠血管扩张，可能解释间歇出血但未捕获活动出血",
+            "en": "Capsule suggests ileal vascular ectasia, a plausible intermittent source without captured active bleeding"
+          },
+          "feedback": {
+            "zh-CN": "应区分可疑病灶与直接出血定位。",
+            "en": "Distinguish a plausible lesion from directly observed bleeding."
+          },
+          "correct": true
+        },
+        {
+          "id": "normal",
+          "text": {
+            "zh-CN": "未见活动出血就说明血管没有意义",
+            "en": "No active bleeding means the vessels are irrelevant"
+          },
+          "feedback": {
+            "zh-CN": "间歇出血可在检查时停止。",
+            "en": "Intermittent bleeding may stop during examination."
+          },
+          "correct": false
+        },
+        {
+          "id": "histology",
+          "text": {
+            "zh-CN": "胶囊影像已提供病理组织分型",
+            "en": "Capsule images supply histological classification"
+          },
+          "feedback": {
+            "zh-CN": "未取组织。",
+            "en": "No tissue was obtained."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "怎样安排安全的后续评估？",
+        "en": "What is a safe follow-up approach?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "capsule",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "评估失血稳定性、营养和Hb趋势，专科讨论再出血定位及儿童胶囊风险",
+            "en": "Assess haemodynamic stability, nutrition and Hb trends; specialists should plan recurrent-bleeding localisation and paediatric capsule safety"
+          },
+          "feedback": {
+            "zh-CN": "原文清肠剂量不用于自行复制。",
+            "en": "The historical bowel-preparation doses are not for self-use."
+          },
+          "correct": true
+        },
+        {
+          "id": "prep",
+          "text": {
+            "zh-CN": "直接照搬原文成人样大容量清肠",
+            "en": "Copy the historical large-volume preparation directly"
+          },
+          "feedback": {
+            "zh-CN": "儿童体重、脱水和潴留风险需个体评估。",
+            "en": "Weight, dehydration and retention risks require individual assessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "stop",
+          "text": {
+            "zh-CN": "出院没黑便就不再随访贫血",
+            "en": "Stop anaemia follow-up because stools are no longer black"
+          },
+          "feedback": {
+            "zh-CN": "既往反复发作需要趋势复核。",
+            "en": "Recurrence history warrants trend review."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "pain"
+          },
+          {
+            "asked": "melaena"
+          },
+          {
+            "asked": "fatigue"
+          },
+          {
+            "asked": "treatment"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "initial-symptoms"
+          },
+          {
+            "asked": "prior-diagnosis"
+          },
+          {
+            "asked": "allergies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "general"
+          },
+          {
+            "examined": "abdomen"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "blood",
+            "phase": "workup"
+          },
+          {
+            "read": "conventional",
+            "phase": "workup"
+          },
+          {
+            "read": "ct",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "capsule",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "关注失血和儿童检查安全，不照搬原文清肠剂量",
+        "en": "Attend to blood loss and paediatric investigation safety without copying bowel-preparation doses"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：将贫血严重度与检查解释力比较。同时解释以下信息仍有缺失或疑问：病灶直接出血证据、组织学、长期Hb及再出血。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Compare anaemia severity with the explanatory strength of investigations. Identify the following as missing or uncertain: Direct bleeding evidence, histology, long-term Hb and rebleeding. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "blood",
+        "conventional",
+        "ct",
+        "capsule",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "胶囊提示小肠血管扩张并间歇消化道失血，未直接观察活动出血。",
+      "en": "Capsule suggested small-bowel vascular ectasia with intermittent gastrointestinal blood loss, without direct active-bleeding observation."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "将贫血严重度与检查解释力比较。",
+        "en": "Compare anaemia severity with the explanatory strength of investigations."
+      },
+      {
+        "zh-CN": "区分间歇出血与检查当时无出血。",
+        "en": "Distinguish intermittent bleeding from no bleeding during a test."
+      },
+      {
+        "zh-CN": "说明影像病灶和组织确证的差异。",
+        "en": "Explain the difference between an imaging lesion and tissue confirmation."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "将贫血严重度与检查解释力比较。",
+        "en": "Compare anaemia severity with the explanatory strength of investigations."
+      },
+      {
+        "zh-CN": "区分间歇出血与检查当时无出血。",
+        "en": "Distinguish intermittent bleeding from no bleeding during a test."
+      },
+      {
+        "zh-CN": "说明影像病灶和组织确证的差异。",
+        "en": "Explain the difference between an imaging lesion and tissue confirmation."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "病灶直接出血证据、组织学、长期Hb及再出血。",
+        "en": "Direct bleeding evidence, histology, long-term Hb and rebleeding."
+      }
+    ],
+    "references": [
+      "郭城, 陈琍, 骆金芝, 吴婧, 刘泽玉, 赵翠平. 小肠毛细血管扩张症一例. 中华儿科杂志. 2013;51(09):694-695. doi:10.3760/cma.j.issn.0578-1310.2013.09.013.",
+      "https://rs.yiigle.com/cmaid/33640"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "病灶直接出血证据、组织学、长期Hb及再出血。",
+      "en": "Direct bleeding evidence, histology, long-term Hb and rebleeding."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-33640/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "a9fb1f27943eab98d7f534e9cf82465b1b51d70a96e44d8eea07899dacc087b0"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain"
+    },
+    {
+      "type": "ask",
+      "itemId": "melaena"
+    },
+    {
+      "type": "ask",
+      "itemId": "fatigue"
+    },
+    {
+      "type": "ask",
+      "itemId": "treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "initial-symptoms"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-diagnosis"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "general"
+    },
+    {
+      "type": "examine",
+      "findingId": "abdomen"
+    },
+    {
+      "type": "order",
+      "investigationId": "blood"
+    },
+    {
+      "type": "read",
+      "investigationId": "blood",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "conventional"
+    },
+    {
+      "type": "read",
+      "investigationId": "conventional",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "capsule"
+    },
+    {
+      "type": "read",
+      "investigationId": "capsule",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "33640",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33640",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2013.09.013",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "肚子哪里痛，一次痛多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Where is the pain, and how long does each episode last?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "腹痛是不是几分钟就自己好了？",
+        "locale": "zh-CN",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "Does each pain episode settle after a few minutes?",
+        "locale": "en",
+        "expect": [
+          "pain"
+        ]
+      },
+      {
+        "text": "黑便什么时候开始，后来又出现了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "melaena"
+        ]
+      },
+      {
+        "text": "When did black stools begin, and have they recurred?",
+        "locale": "en",
+        "expect": [
+          "melaena"
+        ]
+      },
+      {
+        "text": "最近一共排了几次黑便？",
+        "locale": "zh-CN",
+        "expect": [
+          "melaena"
+        ]
+      },
+      {
+        "text": "How many black stools have occurred recently?",
+        "locale": "en",
+        "expect": [
+          "melaena"
+        ]
+      },
+      {
+        "text": "黑便时有没有脸白或没力气？",
+        "locale": "zh-CN",
+        "expect": [
+          "fatigue"
+        ]
+      },
+      {
+        "text": "Was there pallor or weakness with black stools?",
+        "locale": "en",
+        "expect": [
+          "fatigue"
+        ]
+      },
+      {
+        "text": "活动时是不是比以前容易累？",
+        "locale": "zh-CN",
+        "expect": [
+          "fatigue"
+        ]
+      },
+      {
+        "text": "Has he seemed more tired during these episodes?",
+        "locale": "en",
+        "expect": [
+          "fatigue"
+        ]
+      },
+      {
+        "text": "之前治疗后腹痛黑便有没有再发？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "Did pain or black stools recur after earlier treatment?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "之前被按什么问题治疗，效果怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "What was previously treated, and did it help?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "最开始腹痛时还有什么症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "initial-symptoms"
+        ]
+      },
+      {
+        "text": "What accompanied the first abdominal pain?",
+        "locale": "en",
+        "expect": [
+          "initial-symptoms"
+        ]
+      },
+      {
+        "text": "刚发病时有没有发烧呕吐或腹泻？",
+        "locale": "zh-CN",
+        "expect": [
+          "initial-symptoms"
+        ]
+      },
+      {
+        "text": "Was there fever, vomiting or diarrhoea at onset?",
+        "locale": "en",
+        "expect": [
+          "initial-symptoms"
+        ]
+      },
+      {
+        "text": "以前医生说是什么病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-diagnosis"
+        ]
+      },
+      {
+        "text": "What diagnoses were given previously?",
+        "locale": "en",
+        "expect": [
+          "prior-diagnosis"
+        ]
+      },
+      {
+        "text": "之前被按什么疾病治疗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-diagnosis"
+        ]
+      },
+      {
+        "text": "What condition was treated earlier?",
+        "locale": "en",
+        "expect": [
+          "prior-diagnosis"
+        ]
+      },
+      {
+        "text": "对哪些药物过敏？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Which medicines have caused allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "用药后出现过什么过敏反应？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "What allergic reactions have occurred after medicines?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any drug allergy?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有既往手术方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you describe any earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      }
+    ]
+  }
+}

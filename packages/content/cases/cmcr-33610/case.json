@@ -1,0 +1,1987 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33610",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "阴茎增大与声音变粗 · 8岁4月男孩",
+    "en": "Penile growth and deepening voice · boy aged 8 years 4 months"
+  },
+  "summary": {
+    "zh-CN": "快速男性化与既往发育落后并存，需要区分中枢和外周激素来源。",
+    "en": "Rapid virilisation accompanies earlier developmental delay; distinguish central from peripheral hormone sources."
+  },
+  "specialty": [
+    "paediatric-endocrinology",
+    "genetics",
+    "thoracic-surgery"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "张红红, 崔继华, 祁建勤, 李梅蕊, 吴建敏, 凌昱. 先天性睾丸发育不全综合征伴纵隔畸胎瘤、外周性性早熟一例. 中华儿科杂志. 2013;51(08):630-630. doi:10.3760/cma.j.issn.0578-1310.2013.08.016.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2013.08.016",
+    "authors": [
+      "张红红",
+      "崔继华",
+      "祁建勤",
+      "李梅蕊",
+      "吴建敏",
+      "凌昱"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "用激素刺激模式区分中枢与外周来源。",
+      "en": "Use stimulation patterns to distinguish central and peripheral sources."
+    },
+    {
+      "zh-CN": "避免染色体诊断导致过早停止定位。",
+      "en": "Avoid premature closure after a chromosomal diagnosis."
+    },
+    {
+      "zh-CN": "解释症状和标志物改善的随访边界。",
+      "en": "Explain the limits of symptomatic and marker improvement."
+    },
+    {
+      "zh-CN": "保护儿童隐私并安排肿瘤和内分泌持续随访",
+      "en": "Protect paediatric privacy and arrange tumour/endocrine follow-up"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "余知远（化名）",
+      "en": "Yu Zhiyuan (pseudonym)"
+    },
+    "age": 100,
+    "ageUnit": "months",
+    "sex": "male",
+    "weightKg": 30,
+    "chiefComplaint": {
+      "zh-CN": "阴茎增大、声音变粗6个月",
+      "en": "Six months of penile growth and voice deepening"
+    },
+    "triageNote": {
+      "zh-CN": "半年长高8 cm，伴明显男性化。",
+      "en": "Eight centimetres of growth over six months with marked virilisation."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "半年前阴茎增粗增长，声音变粗。",
+        "en": "Penile enlargement and voice deepening began six months earlier."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "growth"
+          },
+          {
+            "asked": "puberty"
+          },
+          {
+            "asked": "development"
+          },
+          {
+            "examined": "pubertal-exam"
+          },
+          {
+            "examined": "genital"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "什么时候开始声音变粗、阴茎变大？ 这些青春期变化持续多久？",
+        "en": "When did his voice deepen and penis enlarge? How long have these pubertal changes been present?"
+      },
+      "answer": {
+        "zh-CN": "半年前阴茎增粗增长，声音变粗。",
+        "en": "Penile enlargement and voice deepening began six months earlier."
+      },
+      "keywords": {
+        "zh-CN": [
+          "男性化起病",
+          "什么时候开始声音变粗、阴茎变大？",
+          "这些青春期变化持续多久？",
+          "男性化起病情况"
+        ],
+        "en": [
+          "virilisation onset",
+          "When did his voice deepen and penis enlarge?",
+          "How long have these pubertal changes been present?",
+          "virilisation onset information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "growth",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "最近半年长高多少？ 这段时间身高和体重增加快吗？",
+        "en": "How much has he grown in six months? Have height and weight increased quickly?"
+      },
+      "answer": {
+        "zh-CN": "半年长高8 cm、增重5 kg。",
+        "en": "He grew 8 cm and gained 5 kg over six months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "近期生长速度",
+          "最近半年长高多少？",
+          "这段时间身高和体重增加快吗？",
+          "近期生长速度情况"
+        ],
+        "en": [
+          "recent growth velocity",
+          "How much has he grown in six months?",
+          "Have height and weight increased quickly?",
+          "recent growth velocity information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "puberty",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "除了声音变化，还有长痘或勃起吗？ 有没有其他发育变化或遗精？",
+        "en": "Besides voice change, has he had acne or erections? Have there been other pubertal changes or emissions?"
+      },
+      "answer": {
+        "zh-CN": "出现痘痘、喉结和勃起，没有遗精。",
+        "en": "Acne, laryngeal prominence and erections appeared without nocturnal emissions."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他青春期表现",
+          "除了声音变化，还有长痘或勃起吗？",
+          "有没有其他发育变化或遗精？",
+          "其他青春期表现情况"
+        ],
+        "en": [
+          "other pubertal features",
+          "Besides voice change, has he had acne or erections?",
+          "Have there been other pubertal changes or emissions?",
+          "other pubertal features information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "development",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "以前的发育和学校学习怎么样？ 和同学交流或学习有没有困难？",
+        "en": "How were his earlier development and school learning? Does he struggle with schoolwork or communicating with classmates?"
+      },
+      "answer": {
+        "zh-CN": "从小生长发育落后，学习较差、与同学交流困难。",
+        "en": "Growth/development lagged from infancy, with poor learning and difficulty communicating with peers."
+      },
+      "keywords": {
+        "zh-CN": [
+          "学习发育背景",
+          "以前的发育和学校学习怎么样？",
+          "和同学交流或学习有没有困难？",
+          "学习发育背景情况"
+        ],
+        "en": [
+          "learning and development",
+          "How were his earlier development and school learning?",
+          "Does he struggle with schoolwork or communicating with classmates?",
+          "learning and development information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "developmental",
+      "question": {
+        "zh-CN": "孩子是怎么出生的，出生时需要抢救吗？",
+        "en": "How was the baby delivered, and was resuscitation needed?"
+      },
+      "answer": {
+        "zh-CN": "39周臀位出生，体重2.2 kg，无窘迫史。",
+        "en": "Born breech at 39 weeks weighing 2.2 kg, without reported distress."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生经过",
+          "足月出生吗，顺产还是剖宫产？",
+          "出生当时有没有窒息抢救？",
+          "孩子是怎么出生的，出生时需要抢救吗？"
+        ],
+        "en": [
+          "birth course",
+          "Was the baby term, and was delivery vaginal or caesarean?",
+          "Was there asphyxia or resuscitation at birth?",
+          "How was the baby delivered, and was resuscitation needed?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过什么手术？ 过去有没有手术住院经历？",
+        "en": "What operations were performed previously? Have there been previous surgical admissions?"
+      },
+      "answer": {
+        "zh-CN": "3岁2月做过左腹股沟斜疝修补。",
+        "en": "Left inguinal hernia repair at age 3 years 2 months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "以前做过什么手术？",
+          "过去有没有手术住院经历？",
+          "既往手术情况"
+        ],
+        "en": [
+          "previous surgery",
+          "What operations were performed previously?",
+          "Have there been previous surgical admissions?",
+          "previous surgery information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里有人有类似疾病或遗传病吗？ 父母和兄弟姐妹健康情况怎样？",
+        "en": "Does anyone in the family have similar or inherited illness? How is the health of parents and siblings?"
+      },
+      "answer": {
+        "zh-CN": "父母非近亲且健康，弟弟生长及外生殖器未见异常。",
+        "en": "Parents were healthy and non-consanguineous; his brother had no reported growth or genital abnormality."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族与同胞",
+          "家里有人有类似疾病或遗传病吗？",
+          "父母和兄弟姐妹健康情况怎样？",
+          "家族与同胞情况"
+        ],
+        "en": [
+          "family and sibling",
+          "Does anyone in the family have similar or inherited illness?",
+          "How is the health of parents and siblings?",
+          "family and sibling information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "原资料有既往健康情况吗？",
+        "en": "Is previous health documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康情况",
+          "有关既往健康情况",
+          "既往健康情况情况",
+          "既往健康情况记录"
+        ],
+        "en": [
+          "previous health",
+          "details of previous health",
+          "previous health information",
+          "previous health record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "pubertal-exam",
+      "system": "general",
+      "maneuver": {
+        "zh-CN": "核对发育体征",
+        "en": "Review pubertal signs"
+      },
+      "finding": {
+        "zh-CN": "身高132 cm，面胸背痤疮、腋毛，阴毛Ⅲ–Ⅳ期。",
+        "en": "Height 132 cm; facial/truncal acne, axillary hair and pubic hair stage III–IV."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "genital",
+      "system": "genitourinary",
+      "maneuver": {
+        "zh-CN": "核对原记录生殖器检查",
+        "en": "Review recorded genital examination"
+      },
+      "finding": {
+        "zh-CN": "阴茎长9 cm、周径8 cm，双睾丸5–6 mL；仅调阅既有记录并保护隐私。",
+        "en": "Penile length 9 cm, circumference 8 cm; testes 5–6 mL. Review existing records while respecting privacy."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "hormones",
+      "name": {
+        "zh-CN": "激素和刺激试验",
+        "en": "Hormones and stimulation"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "激素和刺激试验"
+        ],
+        "en": [
+          "Hormones and stimulation"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "睾酮55.5 nmol/L，GnRH刺激LH峰0.1 IU/L、FSH峰2.15 IU/L。",
+            "en": "Testosterone 55.5 nmol/L, GnRH-stimulated LH peak 0.1 IU/L and FSH peak 2.15 IU/L."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "imaging",
+      "name": {
+        "zh-CN": "骨龄与初始定位影像",
+        "en": "Bone age and initial imaging"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "骨龄与初始定位影像"
+        ],
+        "en": [
+          "Bone age and initial imaging"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "骨龄11岁；垂体MRI及肾上腺、睾丸等影像未见异常。",
+            "en": "Bone age 11 years; pituitary MRI and adrenal/testicular imaging were unremarkable."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "karyotype",
+      "name": {
+        "zh-CN": "染色体核型",
+        "en": "Karyotype"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "染色体核型"
+        ],
+        "en": [
+          "Karyotype"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "两次核型均47,XXY；不能单独解释促性腺激素非依赖性男性化。",
+            "en": "Two karyotypes showed 47,XXY, which alone does not explain gonadotropin-independent virilisation."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "chest",
+      "name": {
+        "zh-CN": "后续胸部与肿瘤证据",
+        "en": "Subsequent chest and tumour evidence"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "后续胸部与肿瘤证据"
+        ],
+        "en": [
+          "Subsequent chest and tumour evidence"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "前上纵隔肿物，β-hCG16.0 IU/L（当地上限5.3）；切除约8×5×4 cm肿物，病理囊实性畸胎瘤。",
+            "en": "Anterosuperior mediastinal mass with β-hCG 16.0 IU/L (local upper limit 5.3); resection of an approximately 8×5×4 cm mass showed cystic-solid teratoma."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "一年随访男性化减慢，睾酮8.49 nmol/L、β-hCG0.7 IU/L，胸片未见异常；因这些结果未复查MRI，原文仍强调警惕残留。",
+            "en": "At one year virilisation slowed, testosterone was 8.49 nmol/L and β-hCG 0.7 IU/L, with no radiographic mass. MRI was not repeated; the report still urged vigilance for residual disease."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "growth"
+          },
+          {
+            "asked": "puberty"
+          },
+          {
+            "asked": "development"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "pubertal-exam"
+          },
+          {
+            "examined": "genital"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "高睾酮和低LH反应提示哪种评估路径？",
+        "en": "What evaluation follows high testosterone with a low LH response?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "hormones",
+            "phase": "workup"
+          },
+          {
+            "read": "imaging",
+            "phase": "workup"
+          },
+          {
+            "read": "karyotype",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "外周性性早熟，继续寻找异位激素来源",
+            "en": "Peripheral precocious puberty requiring a search for ectopic hormone production"
+          },
+          "feedback": {
+            "zh-CN": "低LH反应不支持单纯中枢启动。",
+            "en": "The low LH response does not support isolated central activation."
+          },
+          "correct": true
+        },
+        {
+          "id": "central",
+          "text": {
+            "zh-CN": "必为正常提前的中枢青春期",
+            "en": "This must be ordinary early central puberty"
+          },
+          "feedback": {
+            "zh-CN": "需解释高睾酮与抑制的促性腺激素。",
+            "en": "High testosterone with suppressed gonadotropins needs explanation."
+          },
+          "correct": false
+        },
+        {
+          "id": "xxy",
+          "text": {
+            "zh-CN": "47,XXY即可停止病因调查",
+            "en": "47,XXY ends the causal work-up"
+          },
+          "feedback": {
+            "zh-CN": "并存综合征不能取代性早熟病因定位。",
+            "en": "A coexisting syndrome does not localise the cause of precocity."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "chest",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "胸部病理和β-hCG支持肿物相关外周性性早熟",
+            "en": "Chest histology and β-hCG support tumour-associated peripheral precocity"
+          },
+          "feedback": {
+            "zh-CN": "应结合术后趋势，仍不能免除复发监测。",
+            "en": "Postoperative trends help, but surveillance remains necessary."
+          },
+          "correct": true
+        },
+        {
+          "id": "normal-us",
+          "text": {
+            "zh-CN": "睾丸超声正常排除所有生殖细胞肿物",
+            "en": "Normal testicular ultrasound excludes every germ-cell tumour"
+          },
+          "feedback": {
+            "zh-CN": "肿物可以在性腺外。",
+            "en": "Tumours may be extragonadal."
+          },
+          "correct": false
+        },
+        {
+          "id": "cancer",
+          "text": {
+            "zh-CN": "畸胎瘤一词即证明所有组织恶性",
+            "en": "The term teratoma proves all tissue is malignant"
+          },
+          "feedback": {
+            "zh-CN": "需依据完整病理，不能扩大报告结论。",
+            "en": "Full histology is required; do not expand the reported conclusion."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "手术后最合理的持续照护是什么？",
+        "en": "What continuing care is appropriate after resection?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "chest",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "内分泌、肿瘤及遗传团队随访激素、生长骨龄和残留复发风险",
+            "en": "Endocrine, tumour and genetic follow-up of hormones, growth, bone age and residual/recurrent disease"
+          },
+          "feedback": {
+            "zh-CN": "症状改善不等于不需后续监测。",
+            "en": "Improved symptoms do not eliminate surveillance needs."
+          },
+          "correct": true
+        },
+        {
+          "id": "stop",
+          "text": {
+            "zh-CN": "β-hCG一次正常后永不复查",
+            "en": "Stop all follow-up after one normal β-hCG"
+          },
+          "feedback": {
+            "zh-CN": "单次正常不能保证无残留复发。",
+            "en": "One normal result does not guarantee no residual or recurrent disease."
+          },
+          "correct": false
+        },
+        {
+          "id": "dose",
+          "text": {
+            "zh-CN": "仅根据旧报道自行抑制青春期",
+            "en": "Self-treat puberty based solely on the old report"
+          },
+          "feedback": {
+            "zh-CN": "病因和方案需专业个体化。",
+            "en": "Cause and treatment require specialist individualisation."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "growth"
+          },
+          {
+            "asked": "puberty"
+          },
+          {
+            "asked": "development"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "birth"
+          },
+          {
+            "asked": "surgery"
+          },
+          {
+            "asked": "family"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "pubertal-exam"
+          },
+          {
+            "examined": "genital"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "hormones",
+            "phase": "workup"
+          },
+          {
+            "read": "imaging",
+            "phase": "workup"
+          },
+          {
+            "read": "karyotype",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "chest",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "保护儿童隐私并安排肿瘤和内分泌持续随访",
+        "en": "Protect paediatric privacy and arrange tumour/endocrine follow-up"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：用激素刺激模式区分中枢与外周来源。同时解释以下信息仍有缺失或疑问：完整肿瘤组织分级、长期影像和生育内分泌转归；原文部分AFP单位异常未改写为标准值。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Use stimulation patterns to distinguish central and peripheral sources. Identify the following as missing or uncertain: Full tumour grading, long-term imaging and reproductive/endocrine outcomes; questionable source AFP units are not silently normalised. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "hormones",
+        "imaging",
+        "karyotype",
+        "chest",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "47,XXY与纵隔畸胎瘤并存，后者与外周性性早熟相联系。",
+      "en": "47,XXY coexisted with mediastinal teratoma associated with peripheral precocious puberty."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "用激素刺激模式区分中枢与外周来源。",
+        "en": "Use stimulation patterns to distinguish central and peripheral sources."
+      },
+      {
+        "zh-CN": "避免染色体诊断导致过早停止定位。",
+        "en": "Avoid premature closure after a chromosomal diagnosis."
+      },
+      {
+        "zh-CN": "解释症状和标志物改善的随访边界。",
+        "en": "Explain the limits of symptomatic and marker improvement."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "用激素刺激模式区分中枢与外周来源。",
+        "en": "Use stimulation patterns to distinguish central and peripheral sources."
+      },
+      {
+        "zh-CN": "避免染色体诊断导致过早停止定位。",
+        "en": "Avoid premature closure after a chromosomal diagnosis."
+      },
+      {
+        "zh-CN": "解释症状和标志物改善的随访边界。",
+        "en": "Explain the limits of symptomatic and marker improvement."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整肿瘤组织分级、长期影像和生育内分泌转归；原文部分AFP单位异常未改写为标准值。",
+        "en": "Full tumour grading, long-term imaging and reproductive/endocrine outcomes; questionable source AFP units are not silently normalised."
+      }
+    ],
+    "references": [
+      "张红红, 崔继华, 祁建勤, 李梅蕊, 吴建敏, 凌昱. 先天性睾丸发育不全综合征伴纵隔畸胎瘤、外周性性早熟一例. 中华儿科杂志. 2013;51(08):630-630. doi:10.3760/cma.j.issn.0578-1310.2013.08.016.",
+      "https://rs.yiigle.com/cmaid/33610"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整肿瘤组织分级、长期影像和生育内分泌转归；原文部分AFP单位异常未改写为标准值。",
+      "en": "Full tumour grading, long-term imaging and reproductive/endocrine outcomes; questionable source AFP units are not silently normalised."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "growth"
+    },
+    {
+      "type": "ask",
+      "itemId": "puberty"
+    },
+    {
+      "type": "ask",
+      "itemId": "development"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "pubertal-exam"
+    },
+    {
+      "type": "examine",
+      "findingId": "genital"
+    },
+    {
+      "type": "order",
+      "investigationId": "hormones"
+    },
+    {
+      "type": "read",
+      "investigationId": "hormones",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "imaging"
+    },
+    {
+      "type": "read",
+      "investigationId": "imaging",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "karyotype"
+    },
+    {
+      "type": "read",
+      "investigationId": "karyotype",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "chest"
+    },
+    {
+      "type": "read",
+      "investigationId": "chest",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "33610",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33610",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2013.08.016",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "什么时候开始声音变粗、阴茎变大？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "When did his voice deepen and penis enlarge?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "这些青春期变化持续多久？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How long have these pubertal changes been present?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "最近半年长高多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "How much has he grown in six months?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "这段时间身高和体重增加快吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "Have height and weight increased quickly?",
+        "locale": "en",
+        "expect": [
+          "growth"
+        ]
+      },
+      {
+        "text": "除了声音变化，还有长痘或勃起吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "puberty"
+        ]
+      },
+      {
+        "text": "Besides voice change, has he had acne or erections?",
+        "locale": "en",
+        "expect": [
+          "puberty"
+        ]
+      },
+      {
+        "text": "有没有其他发育变化或遗精？",
+        "locale": "zh-CN",
+        "expect": [
+          "puberty"
+        ]
+      },
+      {
+        "text": "Have there been other pubertal changes or emissions?",
+        "locale": "en",
+        "expect": [
+          "puberty"
+        ]
+      },
+      {
+        "text": "以前的发育和学校学习怎么样？",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "How were his earlier development and school learning?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "和同学交流或学习有没有困难？",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "Does he struggle with schoolwork or communicating with classmates?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "足月出生吗，顺产还是剖宫产？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Was the baby term, and was delivery vaginal or caesarean?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "出生当时有没有窒息抢救？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Was there asphyxia or resuscitation at birth?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "以前做过什么手术？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "What operations were performed previously?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "过去有没有手术住院经历？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Have there been previous surgical admissions?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "家里有人有类似疾病或遗传病吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Does anyone in the family have similar or inherited illness?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "父母和兄弟姐妹健康情况怎样？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "How is the health of parents and siblings?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有既往健康情况方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you describe any previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "以前有没有预防接种方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you describe any vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      }
+    ]
+  }
+}

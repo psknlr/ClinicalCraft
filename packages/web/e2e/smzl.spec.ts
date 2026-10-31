@@ -22,9 +22,13 @@ test("SMZL (zh-CN): talk, order, read, decide, debrief", async ({ page }) => {
   await expect(page.locator('.case-card[data-case="smzl-lung-adeno"] .prov')).toHaveText("已发表病例");
   await shot(page, "intro");
 
-  // library filter + search
+  // Broad clinical terms can match several cases as the library grows.
   await page.locator("#library-search").fill("脾");
+  await expect(page.locator('.case-card[data-case="smzl-lung-adeno"]')).toBeVisible();
+  await expect(page.locator('.case-card[data-case="stemi-inferior-rv"]')).toHaveCount(0);
+  await page.locator("#library-search").fill("左上腹痛与脾大");
   await expect(page.locator(".case-card")).toHaveCount(1);
+  await expect(page.locator(".case-card")).toHaveAttribute("data-case", "smzl-lung-adeno");
   await page.locator("#library-search").fill("");
   await page.locator("#filter-setting").selectOption("outpatient");
   await expect(page.locator('.case-card[data-case="smzl-lung-adeno"]')).toBeVisible();

@@ -1,0 +1,2012 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-857887",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "面颈部肿胀与胸闷 · 22岁男性",
+    "en": "Facial and neck swelling with chest tightness · man aged 22"
+  },
+  "summary": {
+    "zh-CN": "青年患者出现逐渐加重的面颈部肿胀和呼吸道症状，需定位静脉回流受阻并比较胸部病变。",
+    "en": "A young adult develops progressive facial/neck swelling and respiratory symptoms; localise venous obstruction and compare thoracic causes."
+  },
+  "specialty": [
+    "hematology",
+    "respiratory-medicine",
+    "oncology"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "牟向东, 熊焰, 陈建, 高莉, 王广发. 原发性纵隔大B细胞淋巴瘤一例. 中华结核和呼吸杂志. 2013;36(05):396-397. doi:10.3760/cma.j.issn.1001-0939.2013.05.030.",
+    "doi": "10.3760/cma.j.issn.1001-0939.2013.05.030",
+    "authors": [
+      "牟向东",
+      "熊焰",
+      "陈建",
+      "高莉",
+      "王广发"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "British Society for Haematology. The management of newly diagnosed large B-cell lymphoma. 2024. https://b-s-h.org.uk/guidelines/guidelines/the-management-of-newly-diagnosed-large-b-cell-lymphoma"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "依据静脉方向和CT定位上腔静脉回流障碍",
+      "en": "Localise superior venous obstruction using venous flow and CT"
+    },
+    {
+      "zh-CN": "指出高ADA及阴性细胞学不能排除淋巴瘤",
+      "en": "Explain why high ADA and negative cytology do not exclude lymphoma"
+    },
+    {
+      "zh-CN": "以B细胞标记和组织形态解释报告诊断",
+      "en": "Use B-cell markers and morphology to explain the reported diagnosis"
+    },
+    {
+      "zh-CN": "提出分期与肿瘤溶解风险评估计划",
+      "en": "Propose staging and tumour-lysis risk assessment"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "金予宁（化名）",
+      "en": "Jin Yuning (pseudonym)"
+    },
+    "age": 22,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "面颈部肿胀一个半月，咳嗽胸闷1个月",
+      "en": "Six weeks of facial/neck swelling and one month of cough and chest tightness"
+    },
+    "triageNote": {
+      "zh-CN": "面颈部肿胀、乏力，近期咳嗽气短并偶有痰中血丝，来院进一步检查。",
+      "en": "Facial/neck swelling and fatigue, with recent cough, breathlessness and occasional blood-streaked sputum, prompt further assessment."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "一个半月前脸和脖子开始肿，还觉得四肢没力气。",
+        "en": "My face and neck started swelling six weeks ago, with weakness in my limbs."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "blood-sputum"
+          },
+          {
+            "asked": "weight-loss"
+          },
+          {
+            "examined": "veins"
+          },
+          {
+            "examined": "chest"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "脸和脖子什么时候开始肿的？",
+        "en": "When did your face and neck start swelling?"
+      },
+      "answer": {
+        "zh-CN": "一个半月前脸和脖子开始肿，还觉得四肢没力气。",
+        "en": "My face and neck started swelling six weeks ago, with weakness in my limbs."
+      },
+      "keywords": {
+        "zh-CN": [
+          "肿胀起病",
+          "脸肿了多久了？",
+          "脖子肿是突然还是慢慢出现的？",
+          "脸和脖子什么时候开始肿的？"
+        ],
+        "en": [
+          "swelling onset",
+          "How long has your face been swollen?",
+          "Was the neck swelling sudden or gradual?",
+          "When did your face and neck start swelling?"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "breathing",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "咳嗽和气短是什么时候出现的？",
+        "en": "When did the cough and breathlessness begin?"
+      },
+      "answer": {
+        "zh-CN": "大约一个月前开始咳嗽、气短。",
+        "en": "Cough and breathlessness began about a month ago."
+      },
+      "keywords": {
+        "zh-CN": [
+          "咳嗽气短",
+          "咳嗽多久了？有没有气短？",
+          "什么时候开始喘不过气的？",
+          "咳嗽和气短是什么时候出现的？"
+        ],
+        "en": [
+          "cough and breathlessness",
+          "How long have you been coughing, and are you short of breath?",
+          "When did breathing become difficult?",
+          "When did the cough and breathlessness begin?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "blood-sputum",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "咳出来的痰里有没有血？",
+        "en": "Have you noticed blood in your sputum?"
+      },
+      "answer": {
+        "zh-CN": "偶尔痰里有血丝。",
+        "en": "Occasionally my sputum is blood-streaked."
+      },
+      "keywords": {
+        "zh-CN": [
+          "痰中血丝",
+          "咳痰有没有带血丝？",
+          "有没有咳出血来？",
+          "咳出来的痰里有没有血？"
+        ],
+        "en": [
+          "blood-streaked sputum",
+          "Any blood-streaked sputum?",
+          "Have you coughed up blood?",
+          "Have you noticed blood in your sputum?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "weight-loss",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "胃口和体重最近有什么变化？",
+        "en": "How have your appetite and weight changed recently?"
+      },
+      "answer": {
+        "zh-CN": "吃得少了，一个半月瘦了7.5公斤。",
+        "en": "My appetite has fallen and I have lost 7.5 kg in six weeks."
+      },
+      "keywords": {
+        "zh-CN": [
+          "食欲体重",
+          "最近吃得怎么样，瘦了吗？",
+          "这段时间体重掉了多少？",
+          "胃口和体重最近有什么变化？"
+        ],
+        "en": [
+          "appetite and weight",
+          "Are you eating less or losing weight?",
+          "How much weight have you lost?",
+          "How have your appetite and weight changed recently?"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "negatives",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "有没有发热或胸痛？ 这次是否胸口痛或发烧？",
+        "en": "Have there been fever or chest pain? Has this episode included chest discomfort or fever?"
+      },
+      "answer": {
+        "zh-CN": "没有发烧，也没有胸痛。",
+        "en": "I have not had fever or chest pain."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热胸痛",
+          "有没有发热或胸痛？",
+          "这次是否胸口痛或发烧？",
+          "发热胸痛情况"
+        ],
+        "en": [
+          "fever or chest pain",
+          "Have there been fever or chest pain?",
+          "Has this episode included chest discomfort or fever?",
+          "fever or chest pain information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前身体怎样，有哪些病？ 既往有没有需要治疗的疾病？",
+        "en": "What was health like before this illness? Were any earlier illnesses treated?"
+      },
+      "answer": {
+        "zh-CN": "以前身体健康。",
+        "en": "I was previously healthy."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往健康",
+          "以前身体怎样，有哪些病？",
+          "既往有没有需要治疗的疾病？",
+          "既往健康情况"
+        ],
+        "en": [
+          "previous health",
+          "What was health like before this illness?",
+          "Were any earlier illnesses treated?",
+          "previous health information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "remedies",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "之前接受过什么治疗或药物？ 此前处理有没有改善症状？",
+        "en": "What earlier medicines or treatments were given? Did previous treatment improve symptoms?"
+      },
+      "answer": {
+        "zh-CN": "自己吃过中药，没有明显效果。",
+        "en": "I tried herbal medicine without clear benefit."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此前治疗",
+          "之前接受过什么治疗或药物？",
+          "此前处理有没有改善症状？",
+          "此前治疗情况"
+        ],
+        "en": [
+          "earlier treatment",
+          "What earlier medicines or treatments were given?",
+          "Did previous treatment improve symptoms?",
+          "earlier treatment information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "有没有接触射线或有毒物质？ 工作生活中有特殊有害接触吗？",
+        "en": "Has there been radiation or toxic exposure? Are there harmful exposures at work or home?"
+      },
+      "answer": {
+        "zh-CN": "没有射线或有毒物质接触史。",
+        "en": "I have no history of radiation or toxic exposure."
+      },
+      "keywords": {
+        "zh-CN": [
+          "射线毒物接触",
+          "有没有接触射线或有毒物质？",
+          "工作生活中有特殊有害接触吗？",
+          "射线毒物接触情况"
+        ],
+        "en": [
+          "radiation and toxins",
+          "Has there been radiation or toxic exposure?",
+          "Are there harmful exposures at work or home?",
+          "radiation and toxins information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有病前日常活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前日常活动",
+          "有关病前日常活动",
+          "病前日常活动情况",
+          "病前日常活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "veins",
+      "system": "neck",
+      "maneuver": {
+        "zh-CN": "检查面颈和胸壁静脉",
+        "en": "Examine face, neck and chest-wall veins"
+      },
+      "finding": {
+        "zh-CN": "面颈轻度水肿，颈静脉充盈，前胸壁静脉曲张且血流自上而下；浅表淋巴结未肿大。",
+        "en": "Mild facial/neck oedema, full neck veins and dilated anterior chest-wall veins with downward flow; no enlarged superficial nodes."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "chest",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "叩诊并听诊双肺",
+        "en": "Percuss and auscultate both lungs"
+      },
+      "finding": {
+        "zh-CN": "右肺呼吸音减弱，右上及右下胸部浊实音，左肺呼吸音增强。",
+        "en": "Right breath sounds are reduced with upper and lower right chest dullness; left breath sounds are increased."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "ct",
+      "name": {
+        "zh-CN": "胸部增强CT",
+        "en": "Contrast chest CT"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胸部增强CT"
+        ],
+        "en": [
+          "Contrast chest CT"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "右前上纵隔12×8.4×10 cm肿块，内有液化坏死，周围肺和纵隔血管受压，右胸腔积液。",
+            "en": "A 12 × 8.4 × 10 cm right anterior-superior mediastinal mass contains liquefactive necrosis and compresses lung and mediastinal vessels, with right pleural fluid."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "fluid",
+      "name": {
+        "zh-CN": "胸腔积液与血清蛋白",
+        "en": "Pleural fluid and serum proteins"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "胸腔积液与血清蛋白"
+        ],
+        "en": [
+          "Pleural fluid and serum proteins"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "胸水蛋白37.4 g/L、LDH 690 IU/L；血清蛋白80 g/L、LDH 387 IU/L。胸水ADA 84 U/L，培养阴性，未见抗酸杆菌或肿瘤细胞。",
+            "en": "Pleural protein 37.4 g/L and LDH 690 IU/L; serum protein 80 g/L and LDH 387 IU/L. Pleural ADA 84 U/L; cultures negative with no acid-fast bacilli or malignant cells seen."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "gas",
+      "name": {
+        "zh-CN": "动脉血气",
+        "en": "Arterial blood gas"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "动脉血气"
+        ],
+        "en": [
+          "Arterial blood gas"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "空气呼吸时pH 7.452，PaCO₂ 39 mmHg，PaO₂ 65 mmHg。",
+            "en": "On room air, pH 7.452, PaCO₂ 39 mmHg and PaO₂ 65 mmHg."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "pathology",
+      "name": {
+        "zh-CN": "纵隔活检与免疫组化",
+        "en": "Mediastinal biopsy and immunohistochemistry"
+      },
+      "category": "pathology",
+      "aliases": {
+        "zh-CN": [
+          "纵隔活检与免疫组化"
+        ],
+        "en": [
+          "Mediastinal biopsy and immunohistochemistry"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "纤维组织内大片大型异形淋巴细胞浸润；CD20、LCA、PAX5、BCL2阳性，CD3/CD10阴性，Ki-67 70%–90%，报告原发性纵隔大B细胞淋巴瘤。",
+            "en": "Sheets of large atypical lymphoid cells infiltrate fibrous tissue; CD20, LCA, PAX5 and BCL2 are positive, CD3/CD10 negative, and Ki-67 70%–90%, supporting the reported primary mediastinal large B-cell lymphoma."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告先接受2次R-CHOP后症状消失、肿物明显缩小，再接受6次治疗后肿物基本消失；电话随访可正常生活工作，明确随访时长未给出。",
+            "en": "Two R-CHOP courses were followed by symptom resolution and marked shrinkage; after six further courses the mass had largely disappeared. Telephone follow-up described normal daily life and work without a specified duration."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "blood-sputum"
+          },
+          {
+            "asked": "weight-loss"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "veins"
+          },
+          {
+            "examined": "chest"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "胸部影像和静脉方向最支持哪种下一步判断？",
+        "en": "What working assessment is best supported by the imaging and venous flow?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "read": "fluid",
+            "phase": "workup"
+          },
+          {
+            "read": "gas",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "纵隔占位造成上腔静脉回流受阻，需组织学分型",
+            "en": "Mediastinal obstruction of superior venous return requiring tissue classification"
+          },
+          "feedback": {
+            "zh-CN": "向下的胸壁侧支血流与面颈肿胀及纵隔血管受压一致。",
+            "en": "Downward chest-wall collateral flow fits facial swelling and compressed mediastinal vessels."
+          },
+          "correct": true
+        },
+        {
+          "id": "tb",
+          "text": {
+            "zh-CN": "胸水ADA升高足以确诊结核",
+            "en": "Elevated pleural ADA alone confirms tuberculosis"
+          },
+          "feedback": {
+            "zh-CN": "ADA不是特异性病理证据，不能覆盖巨大纵隔占位的鉴别。",
+            "en": "ADA is not specific histology and does not resolve the large mediastinal mass differential."
+          },
+          "correct": false
+        },
+        {
+          "id": "renal",
+          "text": {
+            "zh-CN": "主要按肾源性全身水肿解释",
+            "en": "Primarily attribute swelling to generalised renal oedema"
+          },
+          "feedback": {
+            "zh-CN": "局部静脉回流方向和占位提供了更直接的定位证据。",
+            "en": "Local venous flow and the mass provide a more direct anatomical explanation."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "correct",
+          "text": {
+            "zh-CN": "组织B细胞谱系证据比单一胸水指标更有诊断权重",
+            "en": "B-lineage tissue evidence carries more diagnostic weight than one pleural marker"
+          },
+          "feedback": {
+            "zh-CN": "CD20/PAX5及形态来自肿物本身，需与纵隔分布一起解释。",
+            "en": "CD20/PAX5 and morphology come from the mass itself and are interpreted with its mediastinal distribution."
+          },
+          "correct": true
+        },
+        {
+          "id": "nse",
+          "text": {
+            "zh-CN": "NSE升高证明一定是神经内分泌肿瘤",
+            "en": "Raised NSE proves a neuroendocrine tumour"
+          },
+          "feedback": {
+            "zh-CN": "非特异肿瘤标志物不能推翻直接组织证据。",
+            "en": "A non-specific tumour marker cannot overrule direct tissue evidence."
+          },
+          "correct": false
+        },
+        {
+          "id": "negative-fluid",
+          "text": {
+            "zh-CN": "胸水细胞学阴性说明活检是假阳性",
+            "en": "Negative fluid cytology makes the biopsy a false positive"
+          },
+          "feedback": {
+            "zh-CN": "不同样本敏感度和取材部位不同，不能作这种反推。",
+            "en": "Different samples have different sensitivity and sampling sites; this inference is invalid."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "有了组织结果后，最合适的计划原则是什么？",
+        "en": "With tissue results available, what planning principle is most appropriate?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "supported",
+          "text": {
+            "zh-CN": "血液肿瘤团队评估分期、压迫风险及治疗前肿瘤溶解风险",
+            "en": "Haematology-oncology assessment of stage, compressive risk and tumour-lysis risk before treatment"
+          },
+          "feedback": {
+            "zh-CN": "大肿瘤负荷需专科系统治疗计划；处置不能仅按胸水结果决定。",
+            "en": "Bulky disease needs a specialist systemic plan; management cannot rest only on fluid results."
+          },
+          "correct": true
+        },
+        {
+          "id": "resection",
+          "text": {
+            "zh-CN": "将完整手术切除作为唯一根治手段",
+            "en": "Treat complete surgical resection as the only curative strategy"
+          },
+          "feedback": {
+            "zh-CN": "该病理类型需要血液肿瘤治疗路径，非单纯局部切除问题。",
+            "en": "This histology requires a haematological treatment pathway rather than local resection alone."
+          },
+          "correct": false
+        },
+        {
+          "id": "reassure",
+          "text": {
+            "zh-CN": "胸水细胞学阴性即可停止肿瘤评估",
+            "en": "Stop cancer assessment because fluid cytology is negative"
+          },
+          "feedback": {
+            "zh-CN": "胸水阴性不能否定已经阳性的组织活检。",
+            "en": "Negative fluid cytology cannot negate the positive tissue biopsy."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "blood-sputum"
+          },
+          {
+            "asked": "weight-loss"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "negatives"
+          },
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "remedies"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "veins"
+          },
+          {
+            "examined": "chest"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "ct",
+            "phase": "workup"
+          },
+          {
+            "read": "fluid",
+            "phase": "workup"
+          },
+          {
+            "read": "gas",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "首次即选择有分期和肿瘤溶解风险评估的专科计划",
+        "en": "Choose a specialist plan including staging and tumour-lysis assessment on the first attempt"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：静脉侧支方向帮助定位回流障碍。同时解释以下信息仍有缺失或疑问：完整分期、治疗毒性、心功能基线及长期复发状态。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Collateral venous direction helps localise the obstruction. Identify the following as missing or uncertain: Complete staging, treatment toxicity, baseline cardiac function and long-term relapse status. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "ct",
+        "fluid",
+        "gas",
+        "pathology",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告最终诊断原发性纵隔大B细胞淋巴瘤，表现为上腔静脉回流受阻及胸腔积液。",
+      "en": "The report diagnosed primary mediastinal large B-cell lymphoma presenting with impaired superior venous return and pleural effusion."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "静脉侧支方向帮助定位回流障碍。",
+        "en": "Collateral venous direction helps localise the obstruction."
+      },
+      {
+        "zh-CN": "高ADA及阴性胸水细胞学不能替代组织分型。",
+        "en": "High ADA and negative fluid cytology do not replace tissue classification."
+      },
+      {
+        "zh-CN": "体积和组织类型共同影响后续风险评估。",
+        "en": "Bulk and histology together inform subsequent risk assessment."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "将面颈水肿与胸壁侧支循环联系起来。",
+        "en": "Connect facial/neck oedema with chest-wall collaterals."
+      },
+      {
+        "zh-CN": "解释胸水检验的非特异性。",
+        "en": "Explain the non-specificity of pleural tests."
+      },
+      {
+        "zh-CN": "将原报告化疗反应与当前个体治疗选择区分。",
+        "en": "Distinguish the reported chemotherapy response from current individual treatment selection."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整分期、治疗毒性、心功能基线及长期复发状态。",
+        "en": "Complete staging, treatment toxicity, baseline cardiac function and long-term relapse status."
+      }
+    ],
+    "references": [
+      "牟向东, 熊焰, 陈建, 高莉, 王广发. 原发性纵隔大B细胞淋巴瘤一例. 中华结核和呼吸杂志. 2013;36(05):396-397. doi:10.3760/cma.j.issn.1001-0939.2013.05.030.",
+      "https://rs.yiigle.com/cmaid/857887",
+      "British Society for Haematology. The management of newly diagnosed large B-cell lymphoma. 2024. https://b-s-h.org.uk/guidelines/guidelines/the-management-of-newly-diagnosed-large-b-cell-lymphoma"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整分期、治疗毒性、心功能基线及长期复发状态。",
+      "en": "Complete staging, treatment toxicity, baseline cardiac function and long-term relapse status."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-857887/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "9da409251c09a5d9ba73b0b9b4682db2c3db65376d0b7d7ab2586d8045b7def2"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-857887/fig02.png",
+      "title": {
+        "zh-CN": "原文图组 2（含后续病程，仅供复盘）",
+        "en": "Source image group 2 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "f0d727e7cbb10180fc2270854c99fccdf680570b28d585ec313a4c6a287886cc"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "breathing"
+    },
+    {
+      "type": "ask",
+      "itemId": "blood-sputum"
+    },
+    {
+      "type": "ask",
+      "itemId": "weight-loss"
+    },
+    {
+      "type": "ask",
+      "itemId": "negatives"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "remedies"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "examine",
+      "findingId": "veins"
+    },
+    {
+      "type": "examine",
+      "findingId": "chest"
+    },
+    {
+      "type": "order",
+      "investigationId": "ct"
+    },
+    {
+      "type": "read",
+      "investigationId": "ct",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "fluid"
+    },
+    {
+      "type": "read",
+      "investigationId": "fluid",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "gas"
+    },
+    {
+      "type": "read",
+      "investigationId": "gas",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "pathology"
+    },
+    {
+      "type": "read",
+      "investigationId": "pathology",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "correct"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "supported"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "857887",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/857887",
+    "sourceDoi": "10.3760/cma.j.issn.1001-0939.2013.05.030",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "脸肿了多久了？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How long has your face been swollen?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "脖子肿是突然还是慢慢出现的？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Was the neck swelling sudden or gradual?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "咳嗽多久了？有没有气短？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "How long have you been coughing, and are you short of breath?",
+        "locale": "en",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "什么时候开始喘不过气的？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "When did breathing become difficult?",
+        "locale": "en",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "咳痰有没有带血丝？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood-sputum"
+        ]
+      },
+      {
+        "text": "Any blood-streaked sputum?",
+        "locale": "en",
+        "expect": [
+          "blood-sputum"
+        ]
+      },
+      {
+        "text": "有没有咳出血来？",
+        "locale": "zh-CN",
+        "expect": [
+          "blood-sputum"
+        ]
+      },
+      {
+        "text": "Have you coughed up blood?",
+        "locale": "en",
+        "expect": [
+          "blood-sputum"
+        ]
+      },
+      {
+        "text": "最近吃得怎么样，瘦了吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "Are you eating less or losing weight?",
+        "locale": "en",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "这段时间体重掉了多少？",
+        "locale": "zh-CN",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "How much weight have you lost?",
+        "locale": "en",
+        "expect": [
+          "weight-loss"
+        ]
+      },
+      {
+        "text": "有没有发热或胸痛？",
+        "locale": "zh-CN",
+        "expect": [
+          "negatives"
+        ]
+      },
+      {
+        "text": "Have there been fever or chest pain?",
+        "locale": "en",
+        "expect": [
+          "negatives"
+        ]
+      },
+      {
+        "text": "这次是否胸口痛或发烧？",
+        "locale": "zh-CN",
+        "expect": [
+          "negatives"
+        ]
+      },
+      {
+        "text": "Has this episode included chest discomfort or fever?",
+        "locale": "en",
+        "expect": [
+          "negatives"
+        ]
+      },
+      {
+        "text": "以前身体怎样，有哪些病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "What was health like before this illness?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "既往有没有需要治疗的疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Were any earlier illnesses treated?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "之前接受过什么治疗或药物？",
+        "locale": "zh-CN",
+        "expect": [
+          "remedies"
+        ]
+      },
+      {
+        "text": "What earlier medicines or treatments were given?",
+        "locale": "en",
+        "expect": [
+          "remedies"
+        ]
+      },
+      {
+        "text": "此前处理有没有改善症状？",
+        "locale": "zh-CN",
+        "expect": [
+          "remedies"
+        ]
+      },
+      {
+        "text": "Did previous treatment improve symptoms?",
+        "locale": "en",
+        "expect": [
+          "remedies"
+        ]
+      },
+      {
+        "text": "有没有接触射线或有毒物质？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Has there been radiation or toxic exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "工作生活中有特殊有害接触吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Are there harmful exposures at work or home?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      }
+    ]
+  }
+}

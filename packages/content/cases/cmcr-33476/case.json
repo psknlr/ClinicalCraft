@@ -1,0 +1,2016 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-33476",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "突发左侧肢体瘫痪 · 12岁男孩",
+    "en": "Sudden left-sided paralysis · boy aged 12"
+  },
+  "summary": {
+    "zh-CN": "儿童急性偏瘫同时有呼吸和肢体灌注异常，需寻找多部位事件的共同来源。",
+    "en": "A child with acute hemiplegia also has respiratory and limb-perfusion abnormalities; seek a shared source for multiple events."
+  },
+  "specialty": [
+    "paediatric-neurology",
+    "cardiology",
+    "vascular-surgery"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "孙兴珍, 田向阳, 刘娟. 左房黏液瘤并发全身多发性血管栓塞一例. 中华儿科杂志. 2013;51(07):548-548. doi:10.3760/cma.j.issn.0578-1310.2013.07.019.",
+    "doi": "10.3760/cma.j.issn.0578-1310.2013.07.019",
+    "authors": [
+      "孙兴珍",
+      "田向阳",
+      "刘娟"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "联合神经定位和外周脉搏寻找共同来源。",
+      "en": "Combine neurological localisation and peripheral pulses to seek a shared source."
+    },
+    {
+      "zh-CN": "区分肿瘤病理确证与各栓子成分未知。",
+      "en": "Distinguish confirmed tumour histology from unknown embolus composition."
+    },
+    {
+      "zh-CN": "评估动态栓塞和机械梗阻风险。",
+      "en": "Assess evolving embolic and mechanical obstruction risks."
+    },
+    {
+      "zh-CN": "及时协调多部位缺血与手术时机，避免套用成人剂量或历史延迟",
+      "en": "Coordinate multi-territory ischaemia and surgical timing without copying adult doses or historical delays"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "金知远（化名）",
+      "en": "Jin Zhiyuan (pseudonym)"
+    },
+    "age": 12,
+    "ageUnit": "years",
+    "sex": "male",
+    "chiefComplaint": {
+      "zh-CN": "突发左侧肢体瘫痪6小时",
+      "en": "Six hours of sudden left-sided paralysis"
+    },
+    "triageNote": {
+      "zh-CN": "突发左侧无力，无发病前外伤，伴呼吸急促和左侧脉搏异常。",
+      "en": "Sudden left-sided weakness without preceding trauma, accompanied by tachypnoea and abnormal left-sided pulses."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "6小时前突然左边手脚不能动。",
+        "en": "The left arm and leg suddenly stopped moving six hours ago."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "child",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "trauma"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "limb"
+          },
+          {
+            "examined": "neurology"
+          },
+          {
+            "examined": "perfusion"
+          },
+          {
+            "examined": "lungs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "左边手脚不能动是何时开始的？ 无力是突然出现还是慢慢加重？",
+        "en": "When did the left arm and leg stop moving? Was weakness sudden or gradual?"
+      },
+      "answer": {
+        "zh-CN": "6小时前突然左边手脚不能动。",
+        "en": "The left arm and leg suddenly stopped moving six hours ago."
+      },
+      "keywords": {
+        "zh-CN": [
+          "瘫痪起病",
+          "左边手脚不能动是何时开始的？",
+          "无力是突然出现还是慢慢加重？",
+          "瘫痪起病情况"
+        ],
+        "en": [
+          "paralysis onset",
+          "When did the left arm and leg stop moving?",
+          "Was weakness sudden or gradual?",
+          "paralysis onset information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "trauma",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "发病前有没有摔伤或撞伤？ 症状之前受过外伤吗？",
+        "en": "Was there a fall or injury before onset? Was there trauma before symptoms?"
+      },
+      "answer": {
+        "zh-CN": "发病前没有受伤。",
+        "en": "There was no injury before onset."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发病前外伤",
+          "发病前有没有摔伤或撞伤？",
+          "症状之前受过外伤吗？",
+          "发病前外伤情况"
+        ],
+        "en": [
+          "preceding trauma",
+          "Was there a fall or injury before onset?",
+          "Was there trauma before symptoms?",
+          "preceding trauma information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "breathing",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "这次发病时呼吸有什么变化？ 有没有突然呼吸变快？",
+        "en": "How did breathing change during this episode? Did breathing suddenly become rapid?"
+      },
+      "answer": {
+        "zh-CN": "这次发病时呼吸很急。",
+        "en": "Breathing became rapid during this episode."
+      },
+      "keywords": {
+        "zh-CN": [
+          "呼吸变化",
+          "这次发病时呼吸有什么变化？",
+          "有没有突然呼吸变快？",
+          "呼吸变化情况"
+        ],
+        "en": [
+          "breathing change",
+          "How did breathing change during this episode?",
+          "Did breathing suddenly become rapid?",
+          "breathing change information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "limb",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "哪一边胳膊腿没有力气？ 右边的手脚还能动吗？",
+        "en": "Which arm and leg became weak? Could the right arm and leg still move?"
+      },
+      "answer": {
+        "zh-CN": "最初左胳膊和左腿无力，右边还能动。",
+        "en": "Initially the left arm and leg were weak, while the right side could move."
+      },
+      "keywords": {
+        "zh-CN": [
+          "受累肢体",
+          "哪一边胳膊腿没有力气？",
+          "右边的手脚还能动吗？",
+          "受累肢体情况"
+        ],
+        "en": [
+          "affected limbs",
+          "Which arm and leg became weak?",
+          "Could the right arm and leg still move?",
+          "affected limbs information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "later-pain",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "住院后小腿有没有肿痛？ 两边小腿疼痛是第几天出现的？",
+        "en": "Did calf swelling or pain develop in hospital? On which hospital day did pain in both calves appear?"
+      },
+      "answer": {
+        "zh-CN": "住院第3天两侧小腿明显肿痛，后续病历有详细记录。",
+        "en": "Both calves became swollen and painful on hospital day 3, as described in later records."
+      },
+      "keywords": {
+        "zh-CN": [
+          "后续小腿疼痛",
+          "住院后小腿有没有肿痛？",
+          "两边小腿疼痛是第几天出现的？",
+          "后续小腿疼痛情况"
+        ],
+        "en": [
+          "later calf pain",
+          "Did calf swelling or pain develop in hospital?",
+          "On which hospital day did pain in both calves appear?",
+          "later calf pain information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "以前做过心脏检查吗？ 过去心脏方面的病历是否完整？",
+        "en": "Were any earlier cardiac tests performed? Are earlier cardiac records available?"
+      },
+      "answer": {
+        "zh-CN": "原资料没有完整说明既往心脏检查。",
+        "en": "The source does not provide a complete earlier cardiac assessment."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往心脏资料",
+          "以前做过心脏检查吗？",
+          "过去心脏方面的病历是否完整？",
+          "既往心脏资料情况"
+        ],
+        "en": [
+          "previous cardiac information",
+          "Were any earlier cardiac tests performed?",
+          "Are earlier cardiac records available?",
+          "previous cardiac information information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "这次入院前平时吃什么药？ 之前有没有固定服用的药物？",
+        "en": "What medicines were taken before this admission? Were any medicines taken regularly beforehand?"
+      },
+      "answer": {
+        "zh-CN": "原资料没有列出入院前药物。",
+        "en": "Pre-admission medicines are not listed in the source."
+      },
+      "keywords": {
+        "zh-CN": [
+          "入院前药物",
+          "这次入院前平时吃什么药？",
+          "之前有没有固定服用的药物？",
+          "入院前药物情况"
+        ],
+        "en": [
+          "pre-admission medicines",
+          "What medicines were taken before this admission?",
+          "Were any medicines taken regularly beforehand?",
+          "pre-admission medicines information"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "原资料有既往手术吗？",
+        "en": "Is earlier operations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "有关既往手术",
+          "既往手术情况",
+          "既往手术记录"
+        ],
+        "en": [
+          "earlier operations",
+          "details of earlier operations",
+          "earlier operations information",
+          "earlier operations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有照护环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "照护环境暴露",
+          "有关照护环境暴露",
+          "照护环境暴露情况",
+          "照护环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有平时生长和活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "平时生长和活动",
+          "有关平时生长和活动",
+          "平时生长和活动情况",
+          "平时生长和活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "neurology",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "检查面舌及肢体神经功能",
+        "en": "Examine face, tongue and limb function"
+      },
+      "finding": {
+        "zh-CN": "左侧中枢性面舌瘫，左上下肢肌力0级、Babinski阳性；右侧肌力正常。",
+        "en": "Left central facial/tongue weakness, left arm/leg power grade 0 and positive Babinski response; right power normal."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "perfusion",
+      "system": "cardiovascular",
+      "maneuver": {
+        "zh-CN": "检查脉搏和末梢灌注",
+        "en": "Examine pulses and perfusion"
+      },
+      "finding": {
+        "zh-CN": "左桡动脉未触及，双股动脉搏动差，下肢皮温低；右血压110/70 mmHg，左侧测不出。",
+        "en": "Left radial pulse absent, femoral pulses weak and legs cool; right BP 110/70 mmHg, left unmeasurable."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "lungs",
+      "system": "respiratory",
+      "maneuver": {
+        "zh-CN": "检查呼吸和肺部",
+        "en": "Examine breathing and lungs"
+      },
+      "finding": {
+        "zh-CN": "呼吸40次/分，双肺广泛湿啰音。",
+        "en": "Respiratory rate 40/min with widespread bilateral crackles."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "brain",
+      "name": {
+        "zh-CN": "头颅MRI及血管成像",
+        "en": "Brain MRI and vascular imaging"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "头颅MRI及血管成像"
+        ],
+        "en": [
+          "Brain MRI and vascular imaging"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "双侧多发脑异常信号，右侧为主；右大脑中动脉中远段狭窄闭塞及左锁骨下动脉闭塞。",
+            "en": "Multiple bilateral cerebral lesions, predominantly right-sided; mid/distal right MCA stenosis/occlusion and left subclavian occlusion."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "limb-record",
+      "name": {
+        "zh-CN": "下肢血管检查",
+        "en": "Lower-limb vascular studies"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "下肢血管检查"
+        ],
+        "en": [
+          "Lower-limb vascular studies"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "双下肢重度缺血频谱，左腘静脉及股腘动脉血栓；后续血管成像有多处动脉闭塞。",
+            "en": "Severe ischaemic waveforms in both legs, with left popliteal venous and femoropopliteal arterial thrombi; later angiography showed multiple arterial occlusions."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "echo",
+      "name": {
+        "zh-CN": "超声心动图",
+        "en": "Echocardiography"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "超声心动图"
+        ],
+        "en": [
+          "Echocardiography"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "左房面房间隔及二尖瓣附近5.5×3.5 cm有蒂团块，蒂约1.6 cm，舒张期部分突入二尖瓣口，轻中度反流。",
+            "en": "A pedunculated 5.5 × 3.5 cm mass near the left atrial septum and mitral valve, with a roughly 1.6 cm stalk, partly prolapses through the mitral orifice in diastole with mild-to-moderate regurgitation."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "histology",
+      "name": {
+        "zh-CN": "后续手术病理",
+        "en": "Later surgical histology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "后续手术病理"
+        ],
+        "en": [
+          "Later surgical histology"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "手术切除后病理诊断左房黏液瘤。具体各栓塞物组织成分没有提供。",
+            "en": "Resection pathology diagnosed left atrial myxoma; the tissue composition of individual emboli was not provided."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告先行支持与抗凝等治疗，住院40天后出院，约1个月后切除左房肿物。后续左上肢恢复，左下肢近端Ⅴ-、远端Ⅲ级，超声未见复发；随访时长未明。",
+            "en": "The report used supportive and antithrombotic treatment before discharge after forty days and mass resection about a month later. Later left-arm function recovered; left-leg power was near grade V proximally and III distally, with no echocardiographic recurrence during unspecified follow-up."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "trauma"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "limb"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "neurology"
+          },
+          {
+            "examined": "perfusion"
+          },
+          {
+            "examined": "lungs"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "脑和外周多部位事件最应追查哪种来源？",
+        "en": "What source should be prioritised for cerebral and peripheral events?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "brain",
+            "phase": "workup"
+          },
+          {
+            "read": "limb-record",
+            "phase": "workup"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "左心内可栓塞病变及相关梗阻",
+            "en": "An embolic left-heart lesion with associated obstruction"
+          },
+          "feedback": {
+            "zh-CN": "左房活动团块与多部位动脉事件形成可解释的共同来源。",
+            "en": "A mobile left atrial mass provides a plausible shared source for multiple arterial events."
+          },
+          "correct": true
+        },
+        {
+          "id": "isolated",
+          "text": {
+            "zh-CN": "仅孤立脑血管病，不必追查外周灌注",
+            "en": "Isolated cerebral disease without peripheral-perfusion assessment"
+          },
+          "feedback": {
+            "zh-CN": "缺失脉搏和肢冷是独立危急线索。",
+            "en": "Absent pulses and cool limbs are separate urgent findings."
+          },
+          "correct": false
+        },
+        {
+          "id": "murmur",
+          "text": {
+            "zh-CN": "没有心脏杂音即排除心源性病因",
+            "en": "Absence of a murmur excludes a cardiac cause"
+          },
+          "feedback": {
+            "zh-CN": "超声的直接结构证据不能被无杂音否定。",
+            "en": "Direct echocardiographic structural evidence is not negated by absent murmur."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "histology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "病理明确肿瘤类型，但每个栓塞物并未证实都是肿瘤碎片",
+            "en": "Histology establishes tumour type but not that every embolus was tumour tissue"
+          },
+          "feedback": {
+            "zh-CN": "黏液瘤表面血栓与肿瘤碎片均可考虑，报告未取各处栓子。",
+            "en": "Surface thrombus and tumour fragments are both possible; individual emboli were not sampled."
+          },
+          "correct": true
+        },
+        {
+          "id": "all-tumour",
+          "text": {
+            "zh-CN": "所有静脉和动脉血栓都已组织证实为肿瘤",
+            "en": "All venous and arterial clots are histologically proven tumour"
+          },
+          "feedback": {
+            "zh-CN": "原资料没有这种取材，且动静脉机制需区分。",
+            "en": "That sampling is absent, and venous and arterial mechanisms need distinction."
+          },
+          "correct": false
+        },
+        {
+          "id": "resolved",
+          "text": {
+            "zh-CN": "肺水肿改善就说明心内团块已无风险",
+            "en": "Improved pulmonary oedema means the intracardiac mass is risk-free"
+          },
+          "feedback": {
+            "zh-CN": "间歇性梗阻或反复栓塞风险可能持续。",
+            "en": "Intermittent obstruction and repeat embolic risk may persist."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "下一步应怎样兼顾脑和肢体风险？",
+        "en": "How should cerebral and limb risks be balanced next?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "histology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "紧急心外、神经及血管团队评估肿物处理时机、脑出血风险及肢体灌注",
+            "en": "Urgent cardiac-surgical, neurological and vascular assessment of mass treatment timing, cerebral bleeding risk and limb perfusion"
+          },
+          "feedback": {
+            "zh-CN": "单个固定抗凝剂量或历史等待时长不能代替个体风险判断。",
+            "en": "A fixed anticoagulant dose or historical delay cannot replace individual risk assessment."
+          },
+          "correct": true
+        },
+        {
+          "id": "wait",
+          "text": {
+            "zh-CN": "照搬报告等待数周手术，无需复评",
+            "en": "Copy the report’s several-week surgical delay without reassessment"
+          },
+          "feedback": {
+            "zh-CN": "多处栓塞和梗阻具有动态风险，时机需团队判断。",
+            "en": "Multiple emboli and obstruction create evolving risk requiring team judgement."
+          },
+          "correct": false
+        },
+        {
+          "id": "anticoag-only",
+          "text": {
+            "zh-CN": "抗凝可永久取代肿物处理",
+            "en": "Anticoagulation permanently replaces management of the mass"
+          },
+          "feedback": {
+            "zh-CN": "抗凝不能消除肿瘤本身和机械梗阻。",
+            "en": "Anticoagulation cannot remove the tumour or mechanical obstruction."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "trauma"
+          },
+          {
+            "asked": "breathing"
+          },
+          {
+            "asked": "limb"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "later-pain"
+          },
+          {
+            "asked": "prior-health"
+          },
+          {
+            "asked": "regular-medication"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "neurology"
+          },
+          {
+            "examined": "perfusion"
+          },
+          {
+            "examined": "lungs"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "brain",
+            "phase": "workup"
+          },
+          {
+            "read": "limb-record",
+            "phase": "workup"
+          },
+          {
+            "read": "echo",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "histology",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "及时协调多部位缺血与手术时机，避免套用成人剂量或历史延迟",
+        "en": "Coordinate multi-territory ischaemia and surgical timing without copying adult doses or historical delays"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：联合神经定位和外周脉搏寻找共同来源。同时解释以下信息仍有缺失或疑问：各部位栓子病理、完整凝血病因评估、手术延迟决策依据及长期复发。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Combine neurological localisation and peripheral pulses to seek a shared source. Identify the following as missing or uncertain: Individual embolus histology, full coagulation evaluation, rationale for surgical delay and long-term recurrence. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "brain",
+        "limb-record",
+        "echo",
+        "histology",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "左房黏液瘤伴多部位脑和外周血管事件，残余左下肢功能损害。",
+      "en": "Left atrial myxoma accompanied cerebral and peripheral vascular events, with residual left-leg impairment."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "联合神经定位和外周脉搏寻找共同来源。",
+        "en": "Combine neurological localisation and peripheral pulses to seek a shared source."
+      },
+      {
+        "zh-CN": "区分肿瘤病理确证与各栓子成分未知。",
+        "en": "Distinguish confirmed tumour histology from unknown embolus composition."
+      },
+      {
+        "zh-CN": "评估动态栓塞和机械梗阻风险。",
+        "en": "Assess evolving embolic and mechanical obstruction risks."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "联合神经定位和外周脉搏寻找共同来源。",
+        "en": "Combine neurological localisation and peripheral pulses to seek a shared source."
+      },
+      {
+        "zh-CN": "区分肿瘤病理确证与各栓子成分未知。",
+        "en": "Distinguish confirmed tumour histology from unknown embolus composition."
+      },
+      {
+        "zh-CN": "评估动态栓塞和机械梗阻风险。",
+        "en": "Assess evolving embolic and mechanical obstruction risks."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "各部位栓子病理、完整凝血病因评估、手术延迟决策依据及长期复发。",
+        "en": "Individual embolus histology, full coagulation evaluation, rationale for surgical delay and long-term recurrence."
+      }
+    ],
+    "references": [
+      "孙兴珍, 田向阳, 刘娟. 左房黏液瘤并发全身多发性血管栓塞一例. 中华儿科杂志. 2013;51(07):548-548. doi:10.3760/cma.j.issn.0578-1310.2013.07.019.",
+      "https://rs.yiigle.com/cmaid/33476"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "各部位栓子病理、完整凝血病因评估、手术延迟决策依据及长期复发。",
+      "en": "Individual embolus histology, full coagulation evaluation, rationale for surgical delay and long-term recurrence."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "trauma"
+    },
+    {
+      "type": "ask",
+      "itemId": "breathing"
+    },
+    {
+      "type": "ask",
+      "itemId": "limb"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "neurology"
+    },
+    {
+      "type": "examine",
+      "findingId": "perfusion"
+    },
+    {
+      "type": "examine",
+      "findingId": "lungs"
+    },
+    {
+      "type": "ask",
+      "itemId": "later-pain"
+    },
+    {
+      "type": "order",
+      "investigationId": "brain"
+    },
+    {
+      "type": "read",
+      "investigationId": "brain",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "limb-record"
+    },
+    {
+      "type": "read",
+      "investigationId": "limb-record",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "echo"
+    },
+    {
+      "type": "read",
+      "investigationId": "echo",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "histology"
+    },
+    {
+      "type": "read",
+      "investigationId": "histology",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "33476",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/33476",
+    "sourceDoi": "10.3760/cma.j.issn.0578-1310.2013.07.019",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "左边手脚不能动是何时开始的？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "When did the left arm and leg stop moving?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "无力是突然出现还是慢慢加重？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Was weakness sudden or gradual?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "发病前有没有摔伤或撞伤？",
+        "locale": "zh-CN",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "Was there a fall or injury before onset?",
+        "locale": "en",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "症状之前受过外伤吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "Was there trauma before symptoms?",
+        "locale": "en",
+        "expect": [
+          "trauma"
+        ]
+      },
+      {
+        "text": "这次发病时呼吸有什么变化？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "How did breathing change during this episode?",
+        "locale": "en",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "有没有突然呼吸变快？",
+        "locale": "zh-CN",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "Did breathing suddenly become rapid?",
+        "locale": "en",
+        "expect": [
+          "breathing"
+        ]
+      },
+      {
+        "text": "哪一边胳膊腿没有力气？",
+        "locale": "zh-CN",
+        "expect": [
+          "limb"
+        ]
+      },
+      {
+        "text": "Which arm and leg became weak?",
+        "locale": "en",
+        "expect": [
+          "limb"
+        ]
+      },
+      {
+        "text": "右边的手脚还能动吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "limb"
+        ]
+      },
+      {
+        "text": "Could the right arm and leg still move?",
+        "locale": "en",
+        "expect": [
+          "limb"
+        ]
+      },
+      {
+        "text": "住院后小腿有没有肿痛？",
+        "locale": "zh-CN",
+        "expect": [
+          "later-pain"
+        ]
+      },
+      {
+        "text": "Did calf swelling or pain develop in hospital?",
+        "locale": "en",
+        "expect": [
+          "later-pain"
+        ]
+      },
+      {
+        "text": "两边小腿疼痛是第几天出现的？",
+        "locale": "zh-CN",
+        "expect": [
+          "later-pain"
+        ]
+      },
+      {
+        "text": "On which hospital day did pain in both calves appear?",
+        "locale": "en",
+        "expect": [
+          "later-pain"
+        ]
+      },
+      {
+        "text": "以前做过心脏检查吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Were any earlier cardiac tests performed?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "过去心脏方面的病历是否完整？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Are earlier cardiac records available?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "这次入院前平时吃什么药？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "What medicines were taken before this admission?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "之前有没有固定服用的药物？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Were any medicines taken regularly beforehand?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有既往心脏资料方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you describe any previous cardiac information?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "以前有没有入院前药物方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any pre-admission medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      }
+    ]
+  }
+}

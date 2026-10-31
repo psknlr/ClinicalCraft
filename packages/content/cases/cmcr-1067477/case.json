@@ -1,0 +1,2009 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-1067477",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "引产后反复大量流血 · 31岁女性",
+    "en": "Recurrent heavy bleeding after delivery · woman aged 31"
+  },
+  "summary": {
+    "zh-CN": "产后出血反复，短暂好转后再次出现，需复核影像、清宫所见及组织证据。",
+    "en": "Postpartum bleeding recurs after temporary improvement; reassess imaging, evacuation findings and tissue evidence."
+  },
+  "specialty": [
+    "obstetrics",
+    "infectious-disease",
+    "critical-care"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "刘培艳, 肖小敏. 产后坏死性子宫肌炎一例. 中华产科急救电子杂志. 2013;02(02):141-143. doi:10.3877/cma.j.issn.2095-3259.2013.02.013.",
+    "doi": "10.3877/cma.j.issn.2095-3259.2013.02.013",
+    "authors": [
+      "刘培艳",
+      "肖小敏"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "editorial",
+      "reviewedAt": "2026-10-28",
+      "reviewers": [
+        "AI-assisted editorial source and guidance check; not a licensed clinician"
+      ],
+      "guidelines": [
+        "WHO, FIGO, ICM. Consolidated guidelines for prevention, diagnosis and treatment of postpartum haemorrhage. 2025. https://www.who.int/publications/i/item/9789240115637"
+      ],
+      "notes": {
+        "zh-CN": "已对照所列权威资料进行人工智能辅助编辑核对；未由执业医师审核。原报告罕见表现及方案仍需专科确认。",
+        "en": "AI-assisted editorial check against the cited authorities, not licensed-clinician review. Rare presentations and source regimens still require specialist confirmation."
+      }
+    }
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "以复发时间线识别残留组织解释的不足。",
+      "en": "Use recurrence to recognise the limits of a retained-tissue explanation."
+    },
+    {
+      "zh-CN": "以病理而非外观区分肌层坏死和胎盘残留。",
+      "en": "Use histology rather than appearance to distinguish myometrial necrosis from placenta."
+    },
+    {
+      "zh-CN": "解释无高热和培养阴性并不等于无感染。",
+      "en": "Explain why absent high fever and negative cultures do not equal absent infection."
+    },
+    {
+      "zh-CN": "识别反复休克与坏死组织，避免无证据重复清宫",
+      "en": "Recognise recurrent shock and necrotic tissue and avoid unsupported repeat evacuation"
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "孙知远（化名）",
+      "en": "Sun Zhiyuan (pseudonym)"
+    },
+    "age": 31,
+    "ageUnit": "years",
+    "sex": "female",
+    "chiefComplaint": {
+      "zh-CN": "引产后反复阴道多量流血3天",
+      "en": "Three days of recurrent heavy vaginal bleeding after induced delivery"
+    },
+    "triageNote": {
+      "zh-CN": "曾因出血出现休克，经清宫、输血和促宫缩后出血减少，再次转诊评估。",
+      "en": "Previous haemorrhagic shock improved after evacuation, transfusion and uterotonics; the patient is referred for reassessment."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "分娩后约2小时开始大量流血，之后反复。",
+        "en": "Heavy bleeding began about two hours after delivery and has recurred."
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      }
+    },
+    "appearance": {
+      "stature": "adult",
+      "gown": true
+    },
+    "posture": "lying"
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "delivery"
+          },
+          {
+            "asked": "shock"
+          },
+          {
+            "asked": "treatment"
+          },
+          {
+            "examined": "first-exam"
+          },
+          {
+            "examined": "uterus"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "onset",
+      "topic": "presenting-complaint",
+      "question": {
+        "zh-CN": "分娩后多久开始大量流血？ 出血后来有没有反复？",
+        "en": "How soon after delivery did heavy bleeding begin? Did the bleeding recur?"
+      },
+      "answer": {
+        "zh-CN": "分娩后约2小时开始大量流血，之后反复。",
+        "en": "Heavy bleeding began about two hours after delivery and has recurred."
+      },
+      "keywords": {
+        "zh-CN": [
+          "产后出血顺序",
+          "分娩后多久开始大量流血？",
+          "出血后来有没有反复？",
+          "产后出血顺序情况"
+        ],
+        "en": [
+          "postpartum bleeding sequence",
+          "How soon after delivery did heavy bleeding begin?",
+          "Did the bleeding recur?",
+          "postpartum bleeding sequence information"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "delivery",
+      "topic": "obstetric",
+      "question": {
+        "zh-CN": "这次在多少周、什么情况下分娩？ 分娩前有没有破水？",
+        "en": "At what gestation and under what circumstances was delivery? Did membranes rupture before delivery?"
+      },
+      "answer": {
+        "zh-CN": "孕28周多胎膜早破，约10小时后引产分娩。",
+        "en": "Membranes ruptured after 28 weeks and delivery was induced about ten hours later."
+      },
+      "keywords": {
+        "zh-CN": [
+          "本次分娩",
+          "这次在多少周、什么情况下分娩？",
+          "分娩前有没有破水？",
+          "本次分娩情况"
+        ],
+        "en": [
+          "current delivery",
+          "At what gestation and under what circumstances was delivery?",
+          "Did membranes rupture before delivery?",
+          "current delivery information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "shock",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "大量流血时有没有头晕心慌？ 出血的时候会冒汗、手脚冷或喘吗？",
+        "en": "Were you dizzy or aware of a racing heart during bleeding? Were you sweaty, cold or breathless while bleeding?"
+      },
+      "answer": {
+        "zh-CN": "当时头晕、大汗、手脚凉、胸闷、心慌气短。",
+        "en": "I became dizzy, sweaty, cold in my limbs, tight-chested, breathless and aware of a racing heart."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出血时不适",
+          "大量流血时有没有头晕心慌？",
+          "出血的时候会冒汗、手脚冷或喘吗？",
+          "出血时不适情况"
+        ],
+        "en": [
+          "bleeding symptoms",
+          "Were you dizzy or aware of a racing heart during bleeding?",
+          "Were you sweaty, cold or breathless while bleeding?",
+          "bleeding symptoms information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "treatment",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "此前为止血做过哪些处理？ 有没有清宫、缝合或输血？",
+        "en": "What treatments have been used to stop bleeding? Was evacuation, repair or transfusion performed?"
+      },
+      "answer": {
+        "zh-CN": "做过清宫、会阴裂伤缝合，并输血和用促宫缩药。",
+        "en": "I underwent evacuation and repair of a perineal tear, with transfusion and uterotonics."
+      },
+      "keywords": {
+        "zh-CN": [
+          "此前止血处理",
+          "此前为止血做过哪些处理？",
+          "有没有清宫、缝合或输血？",
+          "此前止血处理情况"
+        ],
+        "en": [
+          "previous haemostasis",
+          "What treatments have been used to stop bleeding?",
+          "Was evacuation, repair or transfusion performed?",
+          "previous haemostasis information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过剖宫产或流产手术吗？ 之前子宫做过几次手术？",
+        "en": "Have you had a caesarean or abortion procedure before? How many previous uterine procedures were there?"
+      },
+      "answer": {
+        "zh-CN": "以前剖宫产一次，之后做过4次人工流产。",
+        "en": "I previously had one caesarean and four induced abortions."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往子宫手术",
+          "以前做过剖宫产或流产手术吗？",
+          "之前子宫做过几次手术？",
+          "既往子宫手术情况"
+        ],
+        "en": [
+          "previous uterine surgery",
+          "Have you had a caesarean or abortion procedure before?",
+          "How many previous uterine procedures were there?",
+          "previous uterine surgery information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "fever",
+      "topic": "associated-symptoms",
+      "question": {
+        "zh-CN": "出血时有没有发热或畏寒？ 那时会不会打寒战？",
+        "en": "Was there fever or chills during bleeding? Were you shivering at the time?"
+      },
+      "answer": {
+        "zh-CN": "最初出血时没有发热和畏寒。",
+        "en": "There was no fever or chills when bleeding first began."
+      },
+      "keywords": {
+        "zh-CN": [
+          "发热畏寒",
+          "出血时有没有发热或畏寒？",
+          "那时会不会打寒战？",
+          "发热畏寒情况"
+        ],
+        "en": [
+          "fever and chills",
+          "Was there fever or chills during bleeding?",
+          "Were you shivering at the time?",
+          "fever and chills information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "怀孕以前有哪些长期疾病？ 孕前有没有需要持续治疗的问题？",
+        "en": "What long-term illnesses existed before pregnancy? Did any condition require ongoing care before pregnancy?"
+      },
+      "answer": {
+        "zh-CN": "否认基础病和妊娠糖尿病等并发症。",
+        "en": "I denied underlying illness and complications such as gestational diabetes."
+      },
+      "keywords": {
+        "zh-CN": [
+          "孕前基础病",
+          "怀孕以前有哪些长期疾病？",
+          "孕前有没有需要持续治疗的问题？",
+          "孕前基础病情况"
+        ],
+        "en": [
+          "underlying conditions",
+          "What long-term illnesses existed before pregnancy?",
+          "Did any condition require ongoing care before pregnancy?",
+          "underlying conditions information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "原资料有药物过敏吗？",
+        "en": "Is medicine allergies documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "有关药物过敏",
+          "药物过敏情况",
+          "药物过敏记录"
+        ],
+        "en": [
+          "medicine allergies",
+          "details of medicine allergies",
+          "medicine allergies information",
+          "medicine allergies record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "原资料有家族病史吗？",
+        "en": "Is family illnesses documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族病史",
+          "有关家族病史",
+          "家族病史情况",
+          "家族病史记录"
+        ],
+        "en": [
+          "family illnesses",
+          "details of family illnesses",
+          "family illnesses information",
+          "family illnesses record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "原资料有日常用药清单吗？",
+        "en": "Is regular medicines documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药清单",
+          "有关日常用药清单",
+          "日常用药清单情况",
+          "日常用药清单记录"
+        ],
+        "en": [
+          "regular medicines",
+          "details of regular medicines",
+          "regular medicines information",
+          "regular medicines record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "原资料有预防接种吗？",
+        "en": "Is vaccinations documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "有关预防接种",
+          "预防接种情况",
+          "预防接种记录"
+        ],
+        "en": [
+          "vaccinations",
+          "details of vaccinations",
+          "vaccinations information",
+          "vaccinations record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "原资料有居住环境暴露吗？",
+        "en": "Is environmental exposure documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "居住环境暴露",
+          "有关居住环境暴露",
+          "居住环境暴露情况",
+          "居住环境暴露记录"
+        ],
+        "en": [
+          "environmental exposure",
+          "details of environmental exposure",
+          "environmental exposure information",
+          "environmental exposure record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "原资料有病前日常活动吗？",
+        "en": "Is baseline function documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前日常活动",
+          "有关病前日常活动",
+          "病前日常活动情况",
+          "病前日常活动记录"
+        ],
+        "en": [
+          "baseline function",
+          "details of baseline function",
+          "baseline function information",
+          "baseline function record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "原资料有希望和担忧吗？",
+        "en": "Is concerns documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "希望和担忧",
+          "有关希望和担忧",
+          "希望和担忧情况",
+          "希望和担忧记录"
+        ],
+        "en": [
+          "concerns",
+          "details of concerns",
+          "concerns information",
+          "concerns record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "原资料有其他既往住院吗？",
+        "en": "Is other admissions documented?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他既往住院",
+          "有关其他既往住院",
+          "其他既往住院情况",
+          "其他既往住院记录"
+        ],
+        "en": [
+          "other admissions",
+          "details of other admissions",
+          "other admissions information",
+          "other admissions record"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "原报告未提供此项资料。",
+        "en": "The report does not supply this information."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "first-exam",
+      "system": "vitals",
+      "maneuver": {
+        "zh-CN": "核对首次转入体征",
+        "en": "Review first referral observations"
+      },
+      "finding": {
+        "zh-CN": "首次转入体温37.4℃；先前休克血压曾40/20 mmHg，脉搏细数。",
+        "en": "At first referral temperature was 37.4°C; the earlier shock record documented BP 40/20 mmHg and a weak rapid pulse."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    },
+    {
+      "id": "uterus",
+      "system": "abdomen",
+      "maneuver": {
+        "zh-CN": "复核再次出血时子宫情况",
+        "en": "Review uterine findings at recurrent bleeding"
+      },
+      "finding": {
+        "zh-CN": "再次入院宫底平脐，子宫收缩差。",
+        "en": "At readmission the fundus was at the umbilicus and uterine contraction was poor."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "ultrasound",
+      "name": {
+        "zh-CN": "连续子宫超声",
+        "en": "Serial uterine ultrasound"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "连续子宫超声"
+        ],
+        "en": [
+          "Serial uterine ultrasound"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "初期宫腔约28×18×36 mm不均质团块；再次清宫后宫腔无占位，但子宫增大、实质不均。",
+            "en": "Initially an approximately 28 × 18 × 36 mm heterogeneous cavity mass; after repeat evacuation there was no cavity mass, but the uterus remained enlarged and heterogeneous."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "inflammation",
+      "name": {
+        "zh-CN": "炎症与血液记录",
+        "en": "Inflammatory and blood records"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "炎症与血液记录"
+        ],
+        "en": [
+          "Inflammatory and blood records"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "白细胞先13.04后16.12×10⁹/L，中性粒细胞高；CRP约14.52–15.82 mg/L，凝血检查一度正常。发热并不突出。",
+            "en": "WBC rose from 13.04 to 16.12×10⁹/L with neutrophilia; CRP was about 14.52–15.82 mg/L and coagulation was normal at one assessment. Fever was not prominent."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "recurrence",
+      "name": {
+        "zh-CN": "第三次入院记录",
+        "en": "Third admission record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "第三次入院记录"
+        ],
+        "en": [
+          "Third admission record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "再次大量出血时血压53/34 mmHg、脉搏110次/分，面色苍白、四肢冷；宫颈阴道内团块70×62×51 mm。",
+            "en": "During another heavy bleed BP was 53/34 mmHg and pulse 110/min, with pallor and cold limbs; a 70 × 62 × 51 mm cervical/vaginal mass was seen."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "pathology",
+      "name": {
+        "zh-CN": "排出组织与后续手术病理",
+        "en": "Expelled tissue and later operative pathology"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "排出组织与后续手术病理"
+        ],
+        "en": [
+          "Expelled tissue and later operative pathology"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "宫颈组织为大片子宫肌层坏死及炎性渗出；后续宫底切除未见绒毛。最终子宫病理仍有肌层坏死，并有皮下化脓性炎症；引流培养阴性。",
+            "en": "Cervical tissue contained extensive necrotic myometrium and inflammatory exudate; later fundal resection contained no villi. Final hysterectomy pathology again showed myometrial necrosis, with suppurative subcutaneous inflammation; drainage cultures were negative."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "报告宫腔镜分离时发生穿孔，曾行宫底楔形切除；后又大量出血并发现感染，最终子宫切除，随后治愈出院。历史手术次序不是今天必须照搬的路径。",
+            "en": "Hysteroscopic separation caused perforation and was followed by fundal wedge resection. Further haemorrhage and infection led to hysterectomy, followed by recovery and discharge. That historical sequence is not a required modern pathway."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "delivery"
+          },
+          {
+            "asked": "shock"
+          },
+          {
+            "asked": "treatment"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "first-exam"
+          },
+          {
+            "examined": "uterus"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "反复出血且宫腔清空后，应怎样扩展判断？",
+        "en": "How should the assessment expand when bleeding recurs after cavity clearance?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "ultrasound",
+            "phase": "workup"
+          },
+          {
+            "read": "inflammation",
+            "phase": "workup"
+          },
+          {
+            "read": "recurrence",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "复核坏死感染及肌层病变等继发产后出血原因",
+            "en": "Reassess necrotic/infectious and myometrial causes of secondary postpartum haemorrhage"
+          },
+          "feedback": {
+            "zh-CN": "反复清宫后仍出血和子宫异常需要超越残留物单一解释。",
+            "en": "Bleeding and uterine abnormalities after repeated evacuation require more than a retained-tissue explanation."
+          },
+          "correct": true
+        },
+        {
+          "id": "retained-only",
+          "text": {
+            "zh-CN": "永远按残留胎盘重复清宫即可",
+            "en": "Continue repeated evacuation for presumed retained placenta indefinitely"
+          },
+          "feedback": {
+            "zh-CN": "缺少持续残留证据，脆弱子宫可能面临进一步损伤。",
+            "en": "Persistent retained tissue is not established, and a fragile uterus risks further injury."
+          },
+          "correct": false
+        },
+        {
+          "id": "no-fever",
+          "text": {
+            "zh-CN": "没有高热即排除严重感染",
+            "en": "Absence of high fever excludes serious infection"
+          },
+          "feedback": {
+            "zh-CN": "本例感染和坏死可以缺乏明显发热。",
+            "en": "Infection and necrosis in this case were not accompanied by prominent fever."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "病理证实坏死肌层，阴性培养不否定组织炎症",
+            "en": "Pathology establishes myometrial necrosis; negative cultures do not erase tissue inflammation"
+          },
+          "feedback": {
+            "zh-CN": "病理和培养回答不同问题，不能相互替代。",
+            "en": "Histology and culture answer different questions and are not interchangeable."
+          },
+          "correct": true
+        },
+        {
+          "id": "villi",
+          "text": {
+            "zh-CN": "所有胎盘样组织都是残留胎盘",
+            "en": "All placenta-like material is retained placenta"
+          },
+          "feedback": {
+            "zh-CN": "形似不等于绒毛组织，原报告多次病理未支持这一假设。",
+            "en": "Appearance is not villous histology; repeated pathology did not support that assumption."
+          },
+          "correct": false
+        },
+        {
+          "id": "coagulation",
+          "text": {
+            "zh-CN": "凝血正常可排除危及生命的出血",
+            "en": "Normal coagulation excludes life-threatening haemorrhage"
+          },
+          "feedback": {
+            "zh-CN": "局部出血源和坏死可在正常凝血检查时造成严重失血。",
+            "en": "A local source and necrosis can cause severe blood loss despite normal coagulation tests."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "此时安全的管理原则是什么？",
+        "en": "What is the safe management principle at this stage?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "yes",
+          "text": {
+            "zh-CN": "复苏与产科感染源控制并行，评估脆弱子宫及手术风险并讨论必要手术",
+            "en": "Resuscitation alongside obstetric source control, assessment of uterine fragility and operative risk, and discussion of necessary surgery"
+          },
+          "feedback": {
+            "zh-CN": "反复休克和肌层坏死需有输血及手术资源的专业团队。",
+            "en": "Recurrent shock and myometrial necrosis require a team with transfusion and operative capability."
+          },
+          "correct": true
+        },
+        {
+          "id": "blind-curettage",
+          "text": {
+            "zh-CN": "不顾既有病理继续盲目搔刮",
+            "en": "Continue blind curettage despite the pathology"
+          },
+          "feedback": {
+            "zh-CN": "坏死肌层增加穿孔和出血风险，需重新评估手段。",
+            "en": "Necrotic myometrium increases perforation and bleeding risk and requires reassessment."
+          },
+          "correct": false
+        },
+        {
+          "id": "antibiotics-only",
+          "text": {
+            "zh-CN": "只靠口服抗菌药等待所有出血自行停止",
+            "en": "Wait for all bleeding to stop with oral antibiotics alone"
+          },
+          "feedback": {
+            "zh-CN": "生命威胁性出血和坏死源可能需要即时控制。",
+            "en": "Life-threatening haemorrhage and necrotic tissue may require immediate control."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "onset"
+          },
+          {
+            "asked": "delivery"
+          },
+          {
+            "asked": "shock"
+          },
+          {
+            "asked": "treatment"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "surgery"
+          },
+          {
+            "asked": "fever"
+          },
+          {
+            "asked": "prior-health"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "first-exam"
+          },
+          {
+            "examined": "uterus"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "ultrasound",
+            "phase": "workup"
+          },
+          {
+            "read": "inflammation",
+            "phase": "workup"
+          },
+          {
+            "read": "recurrence",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "pathology",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "识别反复休克与坏死组织，避免无证据重复清宫",
+        "en": "Recognise recurrent shock and necrotic tissue and avoid unsupported repeat evacuation"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "用日常语言说明证据：以复发时间线识别残留组织解释的不足。同时解释以下信息仍有缺失或疑问：具体病原、完整输血总量、影像肌层厚度矛盾及长期心理和手术恢复。请对方复述关键内容以确认理解。",
+        "en": "Explain the evidence in everyday language: Use recurrence to recognise the limits of a retained-tissue explanation. Identify the following as missing or uncertain: Specific pathogen, complete transfusion totals, inconsistent reported myometrial thickness and long-term psychological/surgical recovery. Check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "ultrasound",
+        "inflammation",
+        "recurrence",
+        "pathology",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "报告诊断坏死性子宫肌炎、子宫内膜炎及反复失血性休克，最终切除子宫控制病灶。",
+      "en": "The report diagnosed necrotising myometritis, endometritis and recurrent haemorrhagic shock, ultimately controlled by hysterectomy."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "以复发时间线识别残留组织解释的不足。",
+        "en": "Use recurrence to recognise the limits of a retained-tissue explanation."
+      },
+      {
+        "zh-CN": "以病理而非外观区分肌层坏死和胎盘残留。",
+        "en": "Use histology rather than appearance to distinguish myometrial necrosis from placenta."
+      },
+      {
+        "zh-CN": "解释无高热和培养阴性并不等于无感染。",
+        "en": "Explain why absent high fever and negative cultures do not equal absent infection."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "以复发时间线识别残留组织解释的不足。",
+        "en": "Use recurrence to recognise the limits of a retained-tissue explanation."
+      },
+      {
+        "zh-CN": "以病理而非外观区分肌层坏死和胎盘残留。",
+        "en": "Use histology rather than appearance to distinguish myometrial necrosis from placenta."
+      },
+      {
+        "zh-CN": "解释无高热和培养阴性并不等于无感染。",
+        "en": "Explain why absent high fever and negative cultures do not equal absent infection."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "具体病原、完整输血总量、影像肌层厚度矛盾及长期心理和手术恢复。",
+        "en": "Specific pathogen, complete transfusion totals, inconsistent reported myometrial thickness and long-term psychological/surgical recovery."
+      }
+    ],
+    "references": [
+      "刘培艳, 肖小敏. 产后坏死性子宫肌炎一例. 中华产科急救电子杂志. 2013;02(02):141-143. doi:10.3877/cma.j.issn.2095-3259.2013.02.013.",
+      "https://rs.yiigle.com/cmaid/1067477",
+      "WHO, FIGO, ICM. Consolidated guidelines for prevention, diagnosis and treatment of postpartum haemorrhage. 2025. https://www.who.int/publications/i/item/9789240115637"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "具体病原、完整输血总量、影像肌层厚度矛盾及长期心理和手术恢复。",
+      "en": "Specific pathogen, complete transfusion totals, inconsistent reported myometrial thickness and long-term psychological/surgical recovery."
+    }
+  ],
+  "assets": [
+    {
+      "id": "fig01",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1067477/fig01.png",
+      "title": {
+        "zh-CN": "原文图组 1（含后续病程，仅供复盘）",
+        "en": "Source image group 1 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "8eeee2379b05a1bc438ecf16f27119c75c67badb99aa292068ae02397ca81ec2"
+    },
+    {
+      "id": "fig02",
+      "kind": "image",
+      "path": "/local-assets/cases/cmcr-1067477/fig02.png",
+      "title": {
+        "zh-CN": "原文图组 2（含后续病程，仅供复盘）",
+        "en": "Source image group 2 (may include later findings; for review)"
+      },
+      "credit": {
+        "zh-CN": "原作者及出版方保留版权；来源见本例参考文献。",
+        "en": "Copyright retained by the original authors and publisher; see the case references."
+      },
+      "license": "© original rights holders — local teaching use only",
+      "localOnly": true,
+      "sha256": "3567a62041fa1f6edf52b9e3bbf06eebaca9191c6f1f2fe84bf83a2a906c7ddb"
+    }
+  ],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "onset"
+    },
+    {
+      "type": "ask",
+      "itemId": "delivery"
+    },
+    {
+      "type": "ask",
+      "itemId": "shock"
+    },
+    {
+      "type": "ask",
+      "itemId": "treatment"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "fever"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "first-exam"
+    },
+    {
+      "type": "examine",
+      "findingId": "uterus"
+    },
+    {
+      "type": "order",
+      "investigationId": "ultrasound"
+    },
+    {
+      "type": "read",
+      "investigationId": "ultrasound",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "inflammation"
+    },
+    {
+      "type": "read",
+      "investigationId": "inflammation",
+      "phase": "workup"
+    },
+    {
+      "type": "order",
+      "investigationId": "recurrence"
+    },
+    {
+      "type": "read",
+      "investigationId": "recurrence",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "pathology"
+    },
+    {
+      "type": "read",
+      "investigationId": "pathology",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "yes"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "1067477",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/1067477",
+    "sourceDoi": "10.3877/cma.j.issn.2095-3259.2013.02.013",
+    "doiVerifiedAt": "2026-10-29",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "分娩后多久开始大量流血？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "How soon after delivery did heavy bleeding begin?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "出血后来有没有反复？",
+        "locale": "zh-CN",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "Did the bleeding recur?",
+        "locale": "en",
+        "expect": [
+          "onset"
+        ]
+      },
+      {
+        "text": "这次在多少周、什么情况下分娩？",
+        "locale": "zh-CN",
+        "expect": [
+          "delivery"
+        ]
+      },
+      {
+        "text": "At what gestation and under what circumstances was delivery?",
+        "locale": "en",
+        "expect": [
+          "delivery"
+        ]
+      },
+      {
+        "text": "分娩前有没有破水？",
+        "locale": "zh-CN",
+        "expect": [
+          "delivery"
+        ]
+      },
+      {
+        "text": "Did membranes rupture before delivery?",
+        "locale": "en",
+        "expect": [
+          "delivery"
+        ]
+      },
+      {
+        "text": "大量流血时有没有头晕心慌？",
+        "locale": "zh-CN",
+        "expect": [
+          "shock"
+        ]
+      },
+      {
+        "text": "Were you dizzy or aware of a racing heart during bleeding?",
+        "locale": "en",
+        "expect": [
+          "shock"
+        ]
+      },
+      {
+        "text": "出血的时候会冒汗、手脚冷或喘吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "shock"
+        ]
+      },
+      {
+        "text": "Were you sweaty, cold or breathless while bleeding?",
+        "locale": "en",
+        "expect": [
+          "shock"
+        ]
+      },
+      {
+        "text": "此前为止血做过哪些处理？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "What treatments have been used to stop bleeding?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "有没有清宫、缝合或输血？",
+        "locale": "zh-CN",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "Was evacuation, repair or transfusion performed?",
+        "locale": "en",
+        "expect": [
+          "treatment"
+        ]
+      },
+      {
+        "text": "以前做过剖宫产或流产手术吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Have you had a caesarean or abortion procedure before?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "之前子宫做过几次手术？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "How many previous uterine procedures were there?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "出血时有没有发热或畏寒？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Was there fever or chills during bleeding?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "那时会不会打寒战？",
+        "locale": "zh-CN",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "Were you shivering at the time?",
+        "locale": "en",
+        "expect": [
+          "fever"
+        ]
+      },
+      {
+        "text": "怀孕以前有哪些长期疾病？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "What long-term illnesses existed before pregnancy?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "孕前有没有需要持续治疗的问题？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Did any condition require ongoing care before pregnancy?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "以前有没有药物过敏方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you describe any medicine allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "以前有没有家族病史方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you describe any family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "以前有没有日常用药清单方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you describe any regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "以前有没有预防接种方面的情况？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you describe any vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      }
+    ]
+  }
+}

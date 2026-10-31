@@ -1,0 +1,1876 @@
+{
+  "schema": "clinicalcraft/case@1",
+  "id": "cmcr-44442",
+  "version": "1.0.0",
+  "title": {
+    "zh-CN": "婴儿自出生无力、发育落后并出现抽搐",
+    "en": "Weakness and developmental delay from birth with new seizures"
+  },
+  "summary": {
+    "zh-CN": "婴儿自出生即无力，训练效果不佳，家中曾有类似早发病程，需重新评估病因。",
+    "en": "An infant has weakness from birth, poor response to rehabilitation and a sibling with a similar early course."
+  },
+  "specialty": [
+    "pediatrics",
+    "neurology",
+    "genetics"
+  ],
+  "setting": "inpatient",
+  "facility": "general-hospital",
+  "difficulty": 4,
+  "estimatedMinutes": 30,
+  "locales": [
+    "zh-CN",
+    "en"
+  ],
+  "tags": [
+    "cmcr-105",
+    "published-case",
+    "historical-review"
+  ],
+  "provenance": {
+    "kind": "published-case",
+    "citation": "马艳艳, 吴桐菲, 刘玉鹏, 王峤, 宋金青, 马祎楠, 张尧, 王松涛, 王玉洁, 戚豫, 杨艳玲. ATP6基因8993T>G突变导致的单纯线粒体ATP合成酶缺陷一例. 中华儿科杂志. 2011;49(07):557-558. doi: 10.3760/cma.j.issn.0578-1310.2011.07.018.",
+    "authors": [
+      "马艳艳",
+      "吴桐菲",
+      "刘玉鹏",
+      "王峤",
+      "宋金青",
+      "马祎楠",
+      "张尧",
+      "王松涛",
+      "王玉洁",
+      "戚豫",
+      "杨艳玲"
+    ],
+    "license": "Educational paraphrase; the source publication retains its copyright.",
+    "notes": {
+      "zh-CN": "源自已发表单例报告。临床时间改为相对时间；姓名为化名；医院及身份细节去除。对话、阶段、问题与评分是教学设计。",
+      "en": "Based on one published case. Times are relative, names are pseudonyms, and hospital/identifying details are removed. Dialogue, phases, questions and scoring are educational design."
+    },
+    "review": {
+      "status": "unreviewed",
+      "reviewers": [],
+      "guidelines": [
+        "Current GeneReviews mtDNA-associated Leigh spectrum, checked 2026-10-28; scope molecular interpretation, heteroplasmy and multisystem support; m.8993T>G protein annotation checked against table."
+      ],
+      "notes": {
+        "zh-CN": "人工智能辅助初稿；尚未经独立编辑或执业医师审核。当前指南及来源DOI核验状态见导师指南。",
+        "en": "AI-assisted draft; not independently editorially or clinician reviewed. See the facilitator guide for current-guidance and source-DOI verification status."
+      }
+    },
+    "doi": "10.3760/cma.j.issn.0578-1310.2011.07.018"
+  },
+  "disclaimer": {
+    "zh-CN": "历史病例教学回看；原文处置不是个人治疗建议。未记录的生理反应不作模拟。",
+    "en": "Historical case review for education; reported care is not individual treatment advice. Undocumented physiological responses are not simulated."
+  },
+  "learningOutcomes": [
+    {
+      "zh-CN": "识别进展性低肌张力的红旗。",
+      "en": "Recognise red flags in progressive hypotonia."
+    },
+    {
+      "zh-CN": "结合代谢、MRI和酶学。",
+      "en": "Integrate metabolic, MRI and enzymatic evidence."
+    },
+    {
+      "zh-CN": "解释线粒体家系结果。",
+      "en": "Explain mitochondrial family results."
+    },
+    {
+      "zh-CN": "识别源文注释与单位错误边界。",
+      "en": "Identify source annotation and unit limitations."
+    }
+  ],
+  "patient": {
+    "displayName": {
+      "zh-CN": "蒋清和（化名）",
+      "en": "Jiang Qinghe (pseudonym)"
+    },
+    "age": 10,
+    "ageUnit": "months",
+    "sex": "female",
+    "weightKg": 7,
+    "chiefComplaint": {
+      "zh-CN": "发育落后、全身无力，近一个月反复抽搐",
+      "en": "Developmental delay and generalised weakness with recurrent seizures over the last month"
+    },
+    "triageNote": {
+      "zh-CN": "按发育、喂养、发作和家族时间线评估。",
+      "en": "Assess the developmental, feeding, seizure and family timeline."
+    },
+    "tags": [],
+    "persona": {
+      "personality": {
+        "zh-CN": "按当前阶段记录提供信息；交流方式为教学设定。",
+        "en": "Provides information from the current stage; conversational style is an educational convention."
+      },
+      "speechStyle": {
+        "zh-CN": "用日常语言叙述，检查数值由病历提供。",
+        "en": "Uses everyday language; numerical results come from the records."
+      },
+      "affect": "calm",
+      "openingLine": {
+        "zh-CN": "（患者不能口述；陪同者转述已有病史。）",
+        "en": "(The patient cannot speak; the companion relays the recorded history.)"
+      },
+      "fallbackUnknown": {
+        "zh-CN": "这点我说不清楚，医生。",
+        "en": "I am not sure about that, doctor."
+      },
+      "concerns": [],
+      "actingNotes": {
+        "zh-CN": "仅复述当前阶段已记录事实，不能预告后续结果。",
+        "en": "Use only facts documented for the current phase; do not anticipate later results."
+      },
+      "companion": {
+        "role": "parent",
+        "name": {
+          "zh-CN": "陪同者（教学角色）",
+          "en": "Companion (educational role)"
+        },
+        "persona": {
+          "zh-CN": "仅转述原记录，不新增亲属身份或经历。",
+          "en": "Relays only source-record information without invented relationship details or events."
+        },
+        "answersHistory": true
+      }
+    },
+    "appearance": {
+      "stature": "infant",
+      "gown": true
+    },
+    "posture": "lying",
+    "nonVerbalWhen": {
+      "always": true
+    },
+    "nonVerbalReason": {
+      "zh-CN": "10个月婴儿并有严重发育障碍，不能口述病史。",
+      "en": "A ten-month-old infant with severe developmental impairment cannot give spoken history."
+    }
+  },
+  "phases": [
+    {
+      "id": "initial",
+      "label": {
+        "zh-CN": "初诊病史与查体",
+        "en": "Presenting history and examination"
+      },
+      "learnerSwitchable": true
+    },
+    {
+      "id": "workup",
+      "label": {
+        "zh-CN": "早期检查与鉴别",
+        "en": "Early investigations and differential"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "all": [
+          {
+            "asked": "development"
+          },
+          {
+            "asked": "seizures"
+          },
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "sibling"
+          },
+          {
+            "examined": "neurology"
+          }
+        ]
+      }
+    },
+    {
+      "id": "confirmation",
+      "label": {
+        "zh-CN": "后续验证与计划",
+        "en": "Subsequent evidence and planning"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "diagnosis"
+      }
+    },
+    {
+      "id": "followup",
+      "label": {
+        "zh-CN": "原报告处置与转归",
+        "en": "Reported care and outcome"
+      },
+      "learnerSwitchable": false,
+      "enterWhen": {
+        "decided": "management"
+      }
+    }
+  ],
+  "initialPhase": "initial",
+  "clock": {
+    "mode": "static",
+    "realtimeScale": 0
+  },
+  "history": [
+    {
+      "id": "development",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "从出生后活动和发育怎样？",
+        "en": "How were activity and development from birth?"
+      },
+      "answer": {
+        "zh-CN": "一直全身软、活动少、哭声小，智力运动发育落后。",
+        "en": "The infant was floppy with little activity, a weak cry and delayed mental/motor development from birth."
+      },
+      "keywords": {
+        "zh-CN": [
+          "出生后无力",
+          "发育经过",
+          "自主活动",
+          "哭声情况"
+        ],
+        "en": [
+          "weakness from birth",
+          "developmental course",
+          "spontaneous activity",
+          "cry history"
+        ]
+      },
+      "disclosure": "volunteer",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "seizures",
+      "topic": "hpi",
+      "question": {
+        "zh-CN": "抽搐什么时候开始，多久一次？",
+        "en": "When did seizures start and how often?"
+      },
+      "answer": {
+        "zh-CN": "九个月时开始全身抽搐，每两三天一次。",
+        "en": "Generalised seizures began at nine months, occurring every two or three days."
+      },
+      "keywords": {
+        "zh-CN": [
+          "抽搐起始",
+          "发作频率",
+          "九月龄变化",
+          "惊厥经过"
+        ],
+        "en": [
+          "seizure onset",
+          "seizure frequency",
+          "nine month change",
+          "convulsion course"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "feeding",
+      "topic": "ros",
+      "question": {
+        "zh-CN": "吃奶是否困难？",
+        "en": "Was feeding difficult?"
+      },
+      "answer": {
+        "zh-CN": "吃奶少，时有呛奶，没有明显吐奶。",
+        "en": "Intake was low with occasional choking, without prominent regurgitation."
+      },
+      "keywords": {
+        "zh-CN": [
+          "喂养困难",
+          "呛奶情况",
+          "进奶量",
+          "吸奶表现"
+        ],
+        "en": [
+          "feeding difficulty",
+          "choking feeds",
+          "milk intake",
+          "suckling history"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "sibling",
+      "topic": "family",
+      "question": {
+        "zh-CN": "家里以前有类似的孩子吗？",
+        "en": "Was there a similarly affected sibling?"
+      },
+      "answer": {
+        "zh-CN": "姐姐也从出生全身软、喂养困难和发育落后，六个月时因呼吸衰竭去世。",
+        "en": "An older sister had neonatal hypotonia, feeding difficulty and developmental delay, dying from respiratory failure at six months."
+      },
+      "keywords": {
+        "zh-CN": [
+          "姐姐病史",
+          "同胞类似",
+          "家族早夭",
+          "亲属无力"
+        ],
+        "en": [
+          "sister history",
+          "similar sibling",
+          "family early death",
+          "relative weakness"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": true,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "birth",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "出生和孕期有窒息等异常吗？",
+        "en": "Was there birth asphyxia or a prenatal concern?"
+      },
+      "answer": {
+        "zh-CN": "足月顺产3.5 kg，无窒息；母亲感觉胎动较少。",
+        "en": "Term vaginal birth at 3.5 kg without asphyxia; the mother recalled reduced fetal movement."
+      },
+      "keywords": {
+        "zh-CN": [
+          "分娩背景",
+          "出生窒息",
+          "孕期胎动",
+          "围产信息"
+        ],
+        "en": [
+          "birth background",
+          "birth asphyxia",
+          "fetal movement",
+          "perinatal information"
+        ]
+      },
+      "disclosure": "on-ask",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "allergies",
+      "topic": "allergies",
+      "question": {
+        "zh-CN": "以前吃药或吃东西出现过过敏吗？",
+        "en": "Have medicines or foods ever caused an allergy?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "药物过敏",
+          "过敏经历",
+          "食物过敏",
+          "过敏史"
+        ],
+        "en": [
+          "drug allergies",
+          "allergy history",
+          "food allergies",
+          "allergic reactions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "family",
+      "topic": "family",
+      "question": {
+        "zh-CN": "除了已记录的情况，家族疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about family illnesses?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "家族疾病",
+          "家人患病",
+          "亲属病史",
+          "遗传病史"
+        ],
+        "en": [
+          "family illnesses",
+          "family history",
+          "relatives illnesses",
+          "hereditary illness"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "surgery",
+      "topic": "psh",
+      "question": {
+        "zh-CN": "以前做过哪些手术？",
+        "en": "What operations have you had before?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往手术",
+          "手术经历",
+          "以前手术",
+          "动过手术"
+        ],
+        "en": [
+          "earlier operations",
+          "surgical history",
+          "previous surgery",
+          "past operations"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "regular-medication",
+      "topic": "medications",
+      "question": {
+        "zh-CN": "平时需要长期用哪些药？",
+        "en": "Which medicines are taken regularly?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "日常用药",
+          "长期服药",
+          "平时用药",
+          "常用药物"
+        ],
+        "en": [
+          "regular medicines",
+          "long term medication",
+          "usual medicines",
+          "maintenance drugs"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "prior-health",
+      "topic": "pmh",
+      "question": {
+        "zh-CN": "除了已记录的情况，既往疾病还有其他信息吗？",
+        "en": "Beyond the information already recorded, is there anything else about previous health?"
+      },
+      "answer": {
+        "zh-CN": "前述已记录的情况仍有效；原报告没有提供这一方面的其他细节，不能把未记录内容补成没有或正常。",
+        "en": "The information already recorded remains valid. The report supplies no additional details on this topic; missing information cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "既往疾病",
+          "过去病史",
+          "基础疾病",
+          "以前生病"
+        ],
+        "en": [
+          "previous health",
+          "past medical history",
+          "pre existing illnesses",
+          "prior diagnoses"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "vaccines",
+      "topic": "immunisation",
+      "question": {
+        "zh-CN": "预防接种有没有按时完成？",
+        "en": "Were routine vaccinations completed?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "预防接种",
+          "疫苗记录",
+          "接种情况",
+          "打过疫苗"
+        ],
+        "en": [
+          "vaccinations",
+          "immunisations",
+          "vaccine history",
+          "routine vaccines"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "exposure",
+      "topic": "social",
+      "question": {
+        "zh-CN": "最近生活环境中有特殊接触吗？",
+        "en": "Were there any unusual environmental exposures?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "环境暴露",
+          "接触物质",
+          "居住环境",
+          "特殊接触"
+        ],
+        "en": [
+          "environmental exposure",
+          "living environment",
+          "toxic contact",
+          "unusual exposure"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "function",
+      "topic": "functional",
+      "question": {
+        "zh-CN": "生病以前，平时的活动情况怎样？",
+        "en": "What activities were usual before the illness?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "病前活动",
+          "平时活动",
+          "生活自理",
+          "日常能力"
+        ],
+        "en": [
+          "baseline function",
+          "usual activities",
+          "self care ability",
+          "daily functioning"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "expectations",
+      "topic": "ice",
+      "question": {
+        "zh-CN": "您最担心什么，希望我们帮助解决什么？",
+        "en": "What worries you most, and what help do you hope for?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "个人担忧",
+          "治疗期望",
+          "最担心什么",
+          "希望解决"
+        ],
+        "en": [
+          "concerns",
+          "expectations",
+          "main worries",
+          "hopes for care"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    },
+    {
+      "id": "other-history",
+      "topic": "other",
+      "question": {
+        "zh-CN": "以前还有因其他原因住过院吗？",
+        "en": "Have there been other hospital admissions?"
+      },
+      "answer": {
+        "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+        "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+      },
+      "keywords": {
+        "zh-CN": [
+          "其他住院",
+          "住院经历",
+          "以前入院",
+          "过往住院"
+        ],
+        "en": [
+          "other admissions",
+          "hospital stays",
+          "previous hospitalisation",
+          "past admissions"
+        ]
+      },
+      "disclosure": "unknown",
+      "required": false,
+      "phases": [
+        "initial",
+        "workup",
+        "confirmation"
+      ],
+      "source": {
+        "zh-CN": "回顾初诊时原报告记录；后续阶段补问不代表症状仍持续。",
+        "en": "Retrospective information from the original presentation; later questions do not imply symptoms persist."
+      }
+    }
+  ],
+  "exam": [
+    {
+      "id": "neurology",
+      "system": "neurological",
+      "maneuver": {
+        "zh-CN": "核对发育与肌力",
+        "en": "Review development and strength"
+      },
+      "finding": {
+        "zh-CN": "不能竖头，不追物或逗笑，四肢肌张力低、肌力Ⅲ级，膝反射可引出；营养不良、毛发稀黄。",
+        "en": "Unable to hold the head, track objects or smile socially; low limb tone, grade III strength and elicitable knee reflexes, with poor nutrition and sparse light hair."
+      },
+      "abnormal": true,
+      "phases": [
+        "initial"
+      ],
+      "required": true,
+      "source": {
+        "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+        "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+      }
+    }
+  ],
+  "examNotRecorded": {
+    "zh-CN": "这项情况原病例资料没有说明，不能补成没有或正常。",
+    "en": "The source case does not provide that information; it cannot be assumed absent or normal."
+  },
+  "investigations": [
+    {
+      "id": "metabolic",
+      "name": {
+        "zh-CN": "代谢及MRI记录",
+        "en": "Metabolic and MRI record"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "代谢及MRI记录"
+        ],
+        "en": [
+          "Metabolic and MRI record"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "workup": {
+          "available": true,
+          "text": {
+            "zh-CN": "乳酸6.1 mmol/L、丙酮酸276 µmol/L，HCO3 21.7 mmol/L；常规氨基酸、酰基肉碱和尿有机酸筛查无异常。MRI双侧基底节和大脑脚对称异常。原文丙酮酸参考单位不一致，未照抄为校准范围。",
+            "en": "Lactate 6.1 mmol/L, pyruvate 276 µmol/L and bicarbonate 21.7 mmol/L; routine amino-acid, acylcarnitine and urine organic-acid screening was normal. MRI showed symmetrical basal-ganglia and cerebral-peduncle abnormalities. Inconsistent source pyruvate reference units are not reproduced as a validated interval."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "enzyme-gene",
+      "name": {
+        "zh-CN": "酶学与线粒体DNA",
+        "en": "Enzyme and mitochondrial DNA results"
+      },
+      "category": "record",
+      "aliases": {
+        "zh-CN": [
+          "酶学与线粒体DNA"
+        ],
+        "en": [
+          "Enzyme and mitochondrial DNA results"
+        ]
+      },
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "essential",
+      "results": {
+        "confirmation": {
+          "available": true,
+          "text": {
+            "zh-CN": "白细胞复合物V活性28 nmol/(min·mg线粒体总蛋白)，I–IV正常。MT-ATP6 m.8993T>G在患儿血中约90%、母亲45%，父亲未检出。",
+            "en": "Leucocyte complex V activity was 28 nmol/(min·mg mitochondrial protein), with I–IV normal. Blood MT-ATP6 m.8993T>G heteroplasmy was approximately 90% in the child and 45% in the mother, and not detected in the father."
+          },
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          },
+          "values": [],
+          "figures": [],
+          "note": {
+            "zh-CN": "调阅原报告已完成的检查；不在实景模式中重新施行检查。",
+            "en": "Review of an investigation already completed in the source; it is not repeated in in-world mode."
+          }
+        }
+      }
+    },
+    {
+      "id": "followup",
+      "name": {
+        "zh-CN": "原报告治疗及转归",
+        "en": "Reported treatment and outcome"
+      },
+      "category": "record",
+      "performedAt": "records",
+      "requires": [
+        "records"
+      ],
+      "risk": "none",
+      "value": "useful",
+      "results": {
+        "followup": {
+          "text": {
+            "zh-CN": "原报告补充维生素及辅酶Q10，八个月随访至18个月龄未见好转。",
+            "en": "The report used vitamins and coenzyme Q10; no improvement was seen over eight months to age 18 months."
+          },
+          "available": true,
+          "source": {
+            "zh-CN": "据原报告病例资料整理；对话为去标识化教学改写。",
+            "en": "Adapted from the source case record; dialogue is a de-identified educational paraphrase."
+          }
+        }
+      }
+    }
+  ],
+  "interventions": [],
+  "objectives": [
+    {
+      "id": "obj-1",
+      "title": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "hint": {
+        "zh-CN": "问清主诉、进展、关联症状和关键既往史。",
+        "en": "Clarify presentation, progression, associated symptoms and relevant history."
+      },
+      "guidance": {
+        "zh-CN": "重建当前病史",
+        "en": "Reconstruct the presenting history"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "asked": "development"
+          },
+          {
+            "asked": "seizures"
+          },
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "sibling"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-2",
+      "title": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "hint": {
+        "zh-CN": "关注哪些体征能帮助定位，并保留未记录的信息。",
+        "en": "Identify localising signs and retain missing information as unknown."
+      },
+      "guidance": {
+        "zh-CN": "核对床旁体征",
+        "en": "Review bedside findings"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "examined": "neurology"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
+      "id": "obj-3",
+      "title": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "hint": {
+        "zh-CN": "将检查结果放回时间线；比较能够解释全部证据的方向。",
+        "en": "Place findings in their timeline and compare explanations for the complete evidence."
+      },
+      "guidance": {
+        "zh-CN": "比较检查证据",
+        "en": "Compare investigation evidence"
+      },
+      "completeWhen": {
+        "decided": "diagnosis"
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    },
+    {
+      "id": "obj-4",
+      "title": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "hint": {
+        "zh-CN": "区分已报告处置与当前教学计划，核对后续变化。",
+        "en": "Distinguish reported care from the educational plan and review subsequent changes."
+      },
+      "guidance": {
+        "zh-CN": "制定计划并复盘转归",
+        "en": "Plan care and review the outcome"
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "decided": "management"
+          },
+          {
+            "read": "followup",
+            "phase": "followup"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "board"
+        }
+      ]
+    }
+  ],
+  "decisions": [
+    {
+      "id": "diagnosis",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "哪些线索要求超出静态脑瘫诊断？",
+        "en": "Which clues require assessment beyond a static cerebral palsy label?"
+      },
+      "requires": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先调阅当前阶段的检查记录，再比较不同解释。",
+        "en": "Review the current investigation records before comparing explanations."
+      },
+      "options": [
+        {
+          "id": "metabolic",
+          "text": {
+            "zh-CN": "进展、同胞相似病程、乳酸和对称深部脑损害提示遗传代谢病",
+            "en": "Progression, a similar sibling course, lactate and symmetrical deep-brain lesions suggest inherited metabolic disease"
+          },
+          "feedback": {
+            "zh-CN": "多种证据支持继续病因检查，普通筛查正常不能排除线粒体病。",
+            "en": "Convergent evidence supports further assessment; normal routine screening does not exclude mitochondrial disease."
+          },
+          "correct": true
+        },
+        {
+          "id": "asphyxia",
+          "text": {
+            "zh-CN": "没有出生窒息仍可直接认定窒息脑损伤",
+            "en": "Asphyxial brain injury is established despite no birth asphyxia"
+          },
+          "feedback": {
+            "zh-CN": "原文没有支持这个原因，且病程进展。",
+            "en": "The source does not support that cause and the course is progressive."
+          },
+          "correct": false
+        },
+        {
+          "id": "excluded",
+          "text": {
+            "zh-CN": "代谢筛查正常排除全部遗传病",
+            "en": "Normal screening excludes all genetic disease"
+          },
+          "feedback": {
+            "zh-CN": "筛查并未覆盖所有线粒体功能或基因异常。",
+            "en": "Screening does not cover every mitochondrial function or genetic abnormality."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "evidence",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "后续资料能支持哪一项结论？",
+        "en": "Which conclusion is supported by the subsequent records?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "diagnosis"
+          },
+          {
+            "read": "enzyme-gene",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先核对后续验证资料，再评估它能和不能说明什么。",
+        "en": "Review the subsequent records before judging what they do and do not establish."
+      },
+      "options": [
+        {
+          "id": "mt",
+          "text": {
+            "zh-CN": "酶学和MT-ATP6结果支持复合物V相关Leigh谱系病，异质性比例不能保证个体结局",
+            "en": "Enzyme and MT-ATP6 findings support complex-V-related Leigh spectrum disease; heteroplasmy does not guarantee an individual outcome"
+          },
+          "feedback": {
+            "zh-CN": "这里有实际分子证据；母亲无症状不排除携带。",
+            "en": "Actual molecular evidence is present; an asymptomatic mother can carry the variant."
+          },
+          "correct": true
+        },
+        {
+          "id": "nuclear",
+          "text": {
+            "zh-CN": "父亲阴性证明常染色体显性遗传",
+            "en": "A negative father proves autosomal dominant inheritance"
+          },
+          "feedback": {
+            "zh-CN": "此结果属于线粒体DNA，不能套用该模式。",
+            "en": "These are mitochondrial DNA findings and do not establish that pattern."
+          },
+          "correct": false
+        },
+        {
+          "id": "annotation",
+          "text": {
+            "zh-CN": "应直接沿用原文所有蛋白变异注释",
+            "en": "Every historical protein annotation should be copied"
+          },
+          "feedback": {
+            "zh-CN": "当前GeneReviews将m.8993T>G列为p.Leu156Arg；原文相关注释有冲突。",
+            "en": "Current GeneReviews lists m.8993T>G as p.Leu156Arg, conflicting with the historical annotation."
+          },
+          "correct": false
+        }
+      ]
+    },
+    {
+      "id": "management",
+      "kind": "single",
+      "prompt": {
+        "zh-CN": "当前照护应着重什么？",
+        "en": "What should current care prioritise?"
+      },
+      "requires": {
+        "all": [
+          {
+            "decided": "evidence"
+          },
+          {
+            "read": "enzyme-gene",
+            "phase": "confirmation"
+          }
+        ]
+      },
+      "need": {
+        "zh-CN": "先形成工作判断，再核对后续证据和安全边界。",
+        "en": "Form a working interpretation, then review subsequent evidence and safety limits."
+      },
+      "options": [
+        {
+          "id": "support",
+          "text": {
+            "zh-CN": "代谢遗传与神经专科联合关注吞咽、呼吸、癫痫及家族咨询",
+            "en": "Metabolic/genetic and neurological teams should address swallowing, respiration, seizures and family counselling"
+          },
+          "feedback": {
+            "zh-CN": "实际功能风险和家庭解释重要，不能承诺补充剂逆转病程。",
+            "en": "Functional risks and family counselling matter; supplements cannot be promised to reverse the course."
+          },
+          "correct": true
+        },
+        {
+          "id": "cure",
+          "text": {
+            "zh-CN": "保证维生素和辅酶一定治愈",
+            "en": "Guarantee cure with vitamins and coenzyme"
+          },
+          "feedback": {
+            "zh-CN": "单例和现有证据不支持这种保证。",
+            "en": "Neither this report nor the checked evidence supports that promise."
+          },
+          "correct": false
+        },
+        {
+          "id": "benign",
+          "text": {
+            "zh-CN": "母亲健康说明孩子无需随访",
+            "en": "A healthy mother means the child needs no follow-up"
+          },
+          "feedback": {
+            "zh-CN": "异质性与临床表达可不同，孩子已有显著损害。",
+            "en": "Heteroplasmy and expression differ and the child has established impairment."
+          },
+          "correct": false
+        }
+      ]
+    }
+  ],
+  "rubric": [
+    {
+      "id": "rb-history",
+      "domain": "history",
+      "text": {
+        "zh-CN": "查清首发症状与病程",
+        "en": "Establish presenting symptoms and course"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "asked": "development"
+          },
+          {
+            "asked": "seizures"
+          },
+          {
+            "asked": "feeding"
+          },
+          {
+            "asked": "sibling"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-context",
+      "domain": "history",
+      "text": {
+        "zh-CN": "补充伴随症状及相关病史",
+        "en": "Elicit associated symptoms and relevant background"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "asked": "birth"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-unknown",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "明确过敏资料的证据边界",
+        "en": "Establish the evidence boundary for allergy information"
+      },
+      "weight": 1,
+      "met": {
+        "asked": "allergies"
+      }
+    },
+    {
+      "id": "rb-examination",
+      "domain": "examination",
+      "text": {
+        "zh-CN": "核对与当前表现相关的体征",
+        "en": "Review signs relevant to the presentation"
+      },
+      "weight": 1,
+      "met": {
+        "all": [
+          {
+            "examined": "neurology"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-workup",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "调阅早期关键检查",
+        "en": "Review the key early investigations"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "metabolic",
+            "phase": "workup"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-differential",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次作答即正确整合早期证据",
+        "en": "Integrate the early evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "diagnosis"
+      }
+    },
+    {
+      "id": "rb-confirmation",
+      "domain": "investigations",
+      "text": {
+        "zh-CN": "核对后续验证资料",
+        "en": "Review subsequent corroborating evidence"
+      },
+      "weight": 2,
+      "met": {
+        "all": [
+          {
+            "read": "enzyme-gene",
+            "phase": "confirmation"
+          }
+        ]
+      }
+    },
+    {
+      "id": "rb-evidence",
+      "domain": "diagnosis",
+      "text": {
+        "zh-CN": "首次正确说明后续证据的强度和边界",
+        "en": "State the strength and limits of subsequent evidence correctly on the first attempt"
+      },
+      "weight": 3,
+      "met": {
+        "decidedFirstTry": "evidence"
+      }
+    },
+    {
+      "id": "rb-safety",
+      "domain": "safety",
+      "text": {
+        "zh-CN": "关注呼吸喂养与癫痫风险，诚实解释遗传及治疗边界",
+        "en": "Address breathing, feeding and seizure risks while explaining genetic and treatment limits"
+      },
+      "weight": 4,
+      "critical": true,
+      "met": {
+        "decidedFirstTry": "management"
+      }
+    },
+    {
+      "id": "rb-outcome",
+      "domain": "management",
+      "text": {
+        "zh-CN": "复盘原报告治疗及转归",
+        "en": "Review reported treatment and outcome"
+      },
+      "weight": 1,
+      "met": {
+        "read": "followup",
+        "phase": "followup"
+      }
+    },
+    {
+      "id": "rb-communication",
+      "domain": "communication",
+      "text": {
+        "zh-CN": "清楚说明证据与不确定性",
+        "en": "Explain evidence and uncertainty clearly"
+      },
+      "weight": 1,
+      "judgeGuidance": {
+        "zh-CN": "说明病程和家族史提示进行性病因。；承认完整现代测序、组织异质性及长期呼吸结局未知。，用复述确认理解。",
+        "en": "Explain that Course and family history suggest a progressive cause.; acknowledge Comprehensive modern sequencing, tissue heteroplasmy and long-term respiratory outcomes are unknown. and check understanding through teach-back."
+      }
+    }
+  ],
+  "npcs": [
+    {
+      "role": "attending",
+      "knowledge": {
+        "zh-CN": "帮助比较已经调阅的证据，区分工作诊断、确证资料和未解决问题，不提前透露结局。",
+        "en": "Help compare evidence already reviewed, distinguish working diagnoses from corroboration and unresolved questions, and do not disclose outcomes early."
+      },
+      "interprets": [
+        "metabolic",
+        "enzyme-gene",
+        "followup"
+      ],
+      "revealsDiagnosis": false
+    }
+  ],
+  "debrief": {
+    "title": {
+      "zh-CN": "病例证据复盘",
+      "en": "Case evidence debrief"
+    },
+    "conclusion": {
+      "zh-CN": "实际酶学和分子结果支持MT-ATP6 m.8993T>G相关复合物V缺陷及Leigh表型。",
+      "en": "Enzymatic and molecular findings support MT-ATP6 m.8993T>G-related complex V deficiency with a Leigh phenotype."
+    },
+    "keyReasoning": [
+      {
+        "zh-CN": "病程和家族史提示进行性病因。",
+        "en": "Course and family history suggest a progressive cause."
+      },
+      {
+        "zh-CN": "MRI和代谢资料提供互补线索。",
+        "en": "MRI and metabolic results provide complementary clues."
+      },
+      {
+        "zh-CN": "基因证据比旧文术语更可追溯。",
+        "en": "The nucleotide finding is more traceable than conflicting historical annotation."
+      }
+    ],
+    "teachingPoints": [
+      {
+        "zh-CN": "普通筛查阴性不等于代谢病阴性。",
+        "en": "Negative routine screening is not exclusion of metabolic disease."
+      },
+      {
+        "zh-CN": "不要复制存在冲突的蛋白注释。",
+        "en": "Do not copy conflicting protein annotation."
+      },
+      {
+        "zh-CN": "家系比例不能给出确定预后。",
+        "en": "Family heteroplasmy does not give a certain prognosis."
+      }
+    ],
+    "boundaries": {
+      "zh-CN": "单例报告不能证明疗法的普遍有效性；历史处置只用于复盘。当前安全选项是教学推理，不提供可自行执行的药物剂量。",
+      "en": "A single report cannot establish general treatment efficacy; historical care is reviewed as evidence. Safety options are educational reasoning without self-administered drug doses."
+    },
+    "unknowns": [
+      {
+        "zh-CN": "完整现代测序、组织异质性及长期呼吸结局未知。",
+        "en": "Comprehensive modern sequencing, tissue heteroplasmy and long-term respiratory outcomes are unknown."
+      }
+    ],
+    "references": [
+      "马艳艳, 吴桐菲, 刘玉鹏, 王峤, 宋金青, 马祎楠, 张尧, 王松涛, 王玉洁, 戚豫, 杨艳玲. ATP6基因8993T>G突变导致的单纯线粒体ATP合成酶缺陷一例. 中华儿科杂志. 2011;49(07):557-558. doi: 10.3760/cma.j.issn.0578-1310.2011.07.018.",
+      "https://rs.yiigle.com/cmaid/44442",
+      "https://doi.org/10.3760/cma.j.issn.0578-1310.2011.07.018",
+      "GeneReviews. Mitochondrial DNA-Associated Leigh Syndrome Spectrum. https://www.ncbi.nlm.nih.gov/books/NBK1173/"
+    ],
+    "notice": {
+      "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
+      "en": "A teaching-script measure, not a validated competency score."
+    }
+  },
+  "unknowns": [
+    {
+      "zh-CN": "完整现代测序、组织异质性及长期呼吸结局未知。",
+      "en": "Comprehensive modern sequencing, tissue heteroplasmy and long-term respiratory outcomes are unknown."
+    }
+  ],
+  "assets": [],
+  "solution": [
+    {
+      "type": "start"
+    },
+    {
+      "type": "ask",
+      "itemId": "development"
+    },
+    {
+      "type": "ask",
+      "itemId": "seizures"
+    },
+    {
+      "type": "ask",
+      "itemId": "feeding"
+    },
+    {
+      "type": "ask",
+      "itemId": "sibling"
+    },
+    {
+      "type": "ask",
+      "itemId": "birth"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "surgery"
+    },
+    {
+      "type": "ask",
+      "itemId": "regular-medication"
+    },
+    {
+      "type": "ask",
+      "itemId": "prior-health"
+    },
+    {
+      "type": "ask",
+      "itemId": "vaccines"
+    },
+    {
+      "type": "ask",
+      "itemId": "exposure"
+    },
+    {
+      "type": "ask",
+      "itemId": "function"
+    },
+    {
+      "type": "ask",
+      "itemId": "expectations"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-history"
+    },
+    {
+      "type": "examine",
+      "findingId": "neurology"
+    },
+    {
+      "type": "order",
+      "investigationId": "metabolic"
+    },
+    {
+      "type": "read",
+      "investigationId": "metabolic",
+      "phase": "workup"
+    },
+    {
+      "type": "answer",
+      "decisionId": "diagnosis",
+      "optionIds": [
+        "metabolic"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "enzyme-gene"
+    },
+    {
+      "type": "read",
+      "investigationId": "enzyme-gene",
+      "phase": "confirmation"
+    },
+    {
+      "type": "answer",
+      "decisionId": "evidence",
+      "optionIds": [
+        "mt"
+      ]
+    },
+    {
+      "type": "answer",
+      "decisionId": "management",
+      "optionIds": [
+        "support"
+      ]
+    },
+    {
+      "type": "order",
+      "investigationId": "followup"
+    },
+    {
+      "type": "read",
+      "investigationId": "followup",
+      "phase": "followup"
+    },
+    {
+      "type": "finish"
+    }
+  ],
+  "extensions": {
+    "collection": "cmcr-105",
+    "sourceArticleId": "44442",
+    "sourceUrl": "https://rs.yiigle.com/cmaid/44442",
+    "historicalReview": true,
+    "testUtterances": [
+      {
+        "text": "关于出生后无力，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "Could you tell me about weakness from birth?",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "我想了解发育经过。",
+        "locale": "zh-CN",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "Please explain developmental course in more detail.",
+        "locale": "en",
+        "expect": [
+          "development"
+        ]
+      },
+      {
+        "text": "关于抽搐起始，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "seizures"
+        ]
+      },
+      {
+        "text": "Could you tell me about seizure onset?",
+        "locale": "en",
+        "expect": [
+          "seizures"
+        ]
+      },
+      {
+        "text": "我想了解发作频率。",
+        "locale": "zh-CN",
+        "expect": [
+          "seizures"
+        ]
+      },
+      {
+        "text": "Please explain seizure frequency in more detail.",
+        "locale": "en",
+        "expect": [
+          "seizures"
+        ]
+      },
+      {
+        "text": "关于喂养困难，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Could you tell me about feeding difficulty?",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "我想了解呛奶情况。",
+        "locale": "zh-CN",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "Please explain choking feeds in more detail.",
+        "locale": "en",
+        "expect": [
+          "feeding"
+        ]
+      },
+      {
+        "text": "关于姐姐病史，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "sibling"
+        ]
+      },
+      {
+        "text": "Could you tell me about sister history?",
+        "locale": "en",
+        "expect": [
+          "sibling"
+        ]
+      },
+      {
+        "text": "我想了解同胞类似。",
+        "locale": "zh-CN",
+        "expect": [
+          "sibling"
+        ]
+      },
+      {
+        "text": "Please explain similar sibling in more detail.",
+        "locale": "en",
+        "expect": [
+          "sibling"
+        ]
+      },
+      {
+        "text": "关于分娩背景，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Could you tell me about birth background?",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "我想了解出生窒息。",
+        "locale": "zh-CN",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "Please explain birth asphyxia in more detail.",
+        "locale": "en",
+        "expect": [
+          "birth"
+        ]
+      },
+      {
+        "text": "关于药物过敏，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "Could you tell me about drug allergies?",
+        "locale": "en",
+        "expect": [
+          "allergies"
+        ]
+      },
+      {
+        "text": "关于家族疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "Could you tell me about family illnesses?",
+        "locale": "en",
+        "expect": [
+          "family"
+        ]
+      },
+      {
+        "text": "关于既往手术，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "Could you tell me about earlier operations?",
+        "locale": "en",
+        "expect": [
+          "surgery"
+        ]
+      },
+      {
+        "text": "关于日常用药，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "Could you tell me about regular medicines?",
+        "locale": "en",
+        "expect": [
+          "regular-medication"
+        ]
+      },
+      {
+        "text": "关于既往疾病，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "Could you tell me about previous health?",
+        "locale": "en",
+        "expect": [
+          "prior-health"
+        ]
+      },
+      {
+        "text": "关于预防接种，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "Could you tell me about vaccinations?",
+        "locale": "en",
+        "expect": [
+          "vaccines"
+        ]
+      },
+      {
+        "text": "关于环境暴露，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "Could you tell me about environmental exposure?",
+        "locale": "en",
+        "expect": [
+          "exposure"
+        ]
+      },
+      {
+        "text": "关于病前活动，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "Could you tell me about baseline function?",
+        "locale": "en",
+        "expect": [
+          "function"
+        ]
+      },
+      {
+        "text": "关于个人担忧，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "Could you tell me about concerns?",
+        "locale": "en",
+        "expect": [
+          "expectations"
+        ]
+      },
+      {
+        "text": "关于其他住院，能再说一下吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "other-history"
+        ]
+      },
+      {
+        "text": "Could you tell me about other admissions?",
+        "locale": "en",
+        "expect": [
+          "other-history"
+        ]
+      }
+    ],
+    "sourceDoiVerification": {
+      "verified": true,
+      "checkedAt": "2026-10-29",
+      "url": "https://rs.yiigle.com/cmaid/44442"
+    }
+  }
+}
