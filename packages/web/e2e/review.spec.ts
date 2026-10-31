@@ -36,11 +36,9 @@ const qaPanel = (page: Page) => page.evaluate(() => (window as any).__QA__.panel
  * A strict CSP on the page: no inline scripts, eval or inline event handlers, no style=""
  * attributes (styles go through CSSOM). Vite dev injects CSS as <style> elements, hence
  * style-src-elem 'unsafe-inline' (the production build passes with plain style-src 'self').
- * connect-src allows blob: as `clinicalcraft serve` does: three's GLTFLoader fetches the
- * images embedded in an equipment model (its palette texture) through blob: URLs.
  */
 const CSP =
-  "default-src 'self'; script-src 'self'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'none'; img-src 'self' data: blob:; connect-src 'self' ws: https: blob:; object-src 'none'; base-uri 'self'";
+  "default-src 'self'; script-src 'self'; style-src-elem 'self' 'unsafe-inline'; style-src-attr 'none'; img-src 'self' data: blob:; connect-src 'self' ws: https:; object-src 'none'; base-uri 'self'";
 
 async function withCsp(page: Page): Promise<void> {
   await page.route("**/*", async (route) => {

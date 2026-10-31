@@ -5,7 +5,7 @@
  */
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { Box3, Matrix4, Mesh, type Object3D } from "three";
+import { Box3, Matrix4, Mesh, NearestFilter, type Object3D, type Texture } from "three";
 import { encodeGlb, fitModel } from "@clinicalcraft/core";
 import { instanceModel, MODEL_SHADOW_MIN, ModelCache, modelUrl, objectBounds, placeModel, sha256Hex } from "./models.js";
 
@@ -168,5 +168,62 @@ describe("instanceModel", () => {
     });
     expect(instanceModel(scene, [{ ...placements[0], footprint: { w: 0.16, d: 0.04, h: 0.03 } }], true)!.meshes[0].castShadow).toBe(false);
     cache.dispose();
+  });
+});
+
+describe("embedded images (the palette texture)", () => {
+  it("are decoded from the GLB's bytes — no blob: URL, no fetch — and set up from the sampler", async () => {
+    // a one-triangle mesh whose material samples an embedded PNG (bufferView 2) with a nearest sampler
+    const pos = new Float32Array([0, 0, 0, 1, 0, 0, 0, 1, 0]);
+    const uv = new Float32Array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5]);
+    const png = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 0]);
+    const bin = new Uint8Array(pos.byteLength + uv.byteLength + png.byteLength);
+    bin.set(new Uint8Array(pos.buffer), 0);
+    bin.set(new Uint8Array(uv.buffer), pos.byteLength);
+    bin.set(png, pos.byteLength + uv.byteLength);
+    const bytes = encodeGlb(
+      {
+        asset: { version: "2.0" },
+        scenes: [{ nodes: [0] }],
+        nodes: [{ mesh: 0 }],
+        meshes: [{ primitives: [{ attributes: { POSITION: 0, TEXCOORD_0: 1 }, material: 0 }] }],
+        materials: [{ pbrMetallicRoughness: { metallicRoughnessTexture: { index: 0 } } }],
+        textures: [{ sampler: 0, source: 0 }],
+        samplers: [{ magFilter: 9728, minFilter: 9728 }],
+        images: [{ bufferView: 2, mimeType: "image/png" }],
+        buffers: [{ byteLength: bin.byteLength }],
+        bufferViews: [
+          { buffer: 0, byteOffset: 0, byteLength: pos.byteLength },
+          { buffer: 0, byteOffset: pos.byteLength, byteLength: uv.byteLength },
+          { buffer: 0, byteOffset: pos.byteLength + uv.byteLength, byteLength: png.byteLength },
+        ],
+        accessors: [
+          { bufferView: 0, componentType: 5126, count: 3, type: "VEC3", min: [0, 0, 0], max: [1, 1, 0] },
+          { bufferView: 1, componentType: 5126, count: 3, type: "VEC2" },
+        ],
+      },
+      bin,
+    );
+    const decoded: Blob[] = [];
+    const g = globalThis as Record<string, unknown>;
+    const saved = { createImageBitmap: g.createImageBitmap, createObjectURL: URL.createObjectURL };
+    const objectUrls: unknown[] = [];
+    g.createImageBitmap = async (blob: Blob) => (decoded.push(blob), { width: 1, height: 1, close() {} });
+    URL.createObjectURL = (o: Blob | MediaSource) => (objectUrls.push(o), "blob:never");
+    try {
+      const { fetch, calls } = server({ "/local-assets/palette.glb": bytes });
+      const cache = new ModelCache({ fetch });
+      const mesh = meshes(await cache.load("palette.glb"))[0];
+      const map = (mesh.material as { metalnessMap: Texture | null }).metalnessMap!;
+      expect(map).toBeTruthy();
+      expect([map.magFilter, map.minFilter, map.generateMipmaps, map.flipY]).toEqual([NearestFilter, NearestFilter, false, false]);
+      expect(decoded.map((b) => [b.type, b.size])).toEqual([["image/png", png.byteLength]]);
+      expect(objectUrls).toEqual([]);
+      expect(calls).toEqual(["/local-assets/palette.glb"]);
+      cache.dispose();
+    } finally {
+      g.createImageBitmap = saved.createImageBitmap;
+      URL.createObjectURL = saved.createObjectURL;
+    }
   });
 });
