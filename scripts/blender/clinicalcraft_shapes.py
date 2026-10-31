@@ -2,9 +2,10 @@
 Shapes in the ClinicalCraft frame for building equipment models in Blender (docs/BLENDER.md):
 metres, x right, y up, z front, the origin at the footprint centre on the floor — the frame of
 the voxel parts, so a model can be written straight from a type's parts. Every shape goes into
-one mesh in the model collection (`cc-model`); palette entries that differ only in colour share a
-material (the colour is a vertex colour), so a model costs the renderer a draw call per shading
-class (`shading_class`), however many shapes and colours it has.
+one mesh in the model collection (`cc-model`) with one material for everything opaque (colours as
+vertex colours, roughness, metalness and glow from a palette texture: `palette_material`), so a
+model costs the renderer one draw call — plus one per transparent entry — however many shapes and
+colours it has.
 
     import clinicalcraft_blender as cc
     from clinicalcraft_shapes import Kit
@@ -25,8 +26,8 @@ from __future__ import annotations
 import math
 from typing import Iterable, Sequence
 
+import bpy  # first: with the `bpy` module, bmesh is importable only once bpy is
 import bmesh
-import bpy
 from mathutils import Matrix, Vector
 
 import clinicalcraft_blender as cc
@@ -234,10 +235,10 @@ class Kit:
     def caster(self, x: float, z: float, r: float = 0.04, wheel: str = "rubber", fork: str = "chrome", stem: float = 0.03) -> None:
         """A swivel caster standing on the floor at (x, z): wheel, hub, fork and stem up to y = 2r + stem."""
         w = r * 0.55
-        self.cyl((x, r, z), r, w, wheel, axis="x", seg=20, bevel=r * 0.25)
-        self.cyl((x, r, z), r * 0.45, w * 1.2, fork, axis="x", seg=12)
-        self.box((x, r * 1.6, z - r * 0.2), (w * 1.5, r * 0.6, r * 1.2), fork, r=r * 0.12, seg=2)
-        self.cyl((x, 2 * r + stem / 2, z), r * 0.28, stem + r * 0.2, fork, seg=12)
+        self.cyl((x, r, z), r, w, wheel, axis="x", seg=14, bevel=r * 0.25)
+        self.cyl((x, r, z), r * 0.45, w * 1.2, fork, axis="x", seg=8)
+        self.box((x, r * 1.6, z - r * 0.2), (w * 1.5, r * 0.6, r * 1.2), fork, r=r * 0.12, seg=1)
+        self.cyl((x, 2 * r + stem / 2, z), r * 0.28, stem + r * 0.2, fork, seg=8)
 
     def screen_bezel(self, part: dict, m: str = "sc-matte-black", border: float = 0.02, depth: float = 0.03, r: float = 0.008) -> None:
         """A display housing behind a voxel `screen` part, its front just behind the part's front
@@ -247,50 +248,45 @@ class Kit:
 
     # ---------------------------------------------------------------- done
     def finish(self, name: str | None = None):
-        """The model object: one mesh, smooth-shaded with edges sharper than the kit's angle kept sharp.
-        Materials that differ only in colour share one (`shading_class`): the colour goes to a colour
-        attribute (glTF COLOR_0), so the model costs one draw call per class, not per colour; emissive
-        and transparent materials keep their own."""
+        """The model object: one mesh, smooth-shaded with edges sharper than the kit's angle kept sharp,
+        and **one material** for everything opaque (`palette_material`): the colour of each face is a
+        vertex colour (glTF COLOR_0) and its roughness, metalness and glow come from a palette texture
+        with a texel per palette entry, so a model costs the renderer one draw call (plus one per
+        transparent entry, glass), however many shapes and colours it has."""
         bmesh.ops.recalc_face_normals(self.bm, faces=self.bm.faces)
         me = bpy.data.meshes.new(name or self.eq.id)
         self.bm.to_mesh(me)
         self.bm.free()
         me.shade_smooth()
         me.set_sharp_from_angle(angle=self.smooth)
-        classes: list[tuple] = []
-        slot_class: list[int] = []
-        for m in self.slots:
-            key = shading_class(self._def(m), m)
-            if key not in classes:
-                classes.append(key)
-            slot_class.append(classes.index(key))
-        col = me.color_attributes.new("Col", "BYTE_COLOR", "CORNER")
-        srgb = [_srgb(self._def(m)["color"]) for m in self.slots]
-        loop_colours = [0.0] * (len(me.loops) * 4)
+        defs = [self._def(m) for m in self.slots]
+        glass = [i for i, d in enumerate(defs) if float(d.get("opacity", 1)) < 1]
+        opaque = [i for i in range(len(defs)) if i not in glass]
+        texel = {slot: n for n, slot in enumerate(opaque)}
+        slot_material = {slot: 0 for slot in opaque} | {slot: 1 + n for n, slot in enumerate(glass)}
+        # per-corner colour and palette coordinate
         indices = [0] * len(me.polygons)
         me.polygons.foreach_get("material_index", indices)
+        col = me.color_attributes.new("Col", "BYTE_COLOR", "CORNER")
+        uv = me.uv_layers.new(name="UVMap")
+        srgb = [_srgb(d["color"]) for d in defs]
+        width = max(1, len(opaque))
+        colours = [0.0] * (len(me.loops) * 4)
+        uvs = [0.5] * (len(me.loops) * 2)
         for poly, slot in zip(me.polygons, indices):
+            u = (texel.get(slot, 0) + 0.5) / width
             for li in poly.loop_indices:
-                loop_colours[li * 4:li * 4 + 4] = srgb[slot]
-        col.data.foreach_set("color_srgb", loop_colours)
-        me.polygons.foreach_set("material_index", [slot_class[i] for i in indices])
-        for key in classes:
-            if key[0] == "own":
-                me.materials.append(self._material(key[1]))
-            else:
-                me.materials.append(_class_material(key))
+                colours[li * 4:li * 4 + 4] = srgb[slot]
+                uvs[li * 2] = u
+        col.data.foreach_set("color_srgb", colours)
+        uv.data.foreach_set("uv", uvs)
+        me.polygons.foreach_set("material_index", [slot_material[i] for i in indices])
+        me.materials.append(palette_material(f"cc:{self.eq.id}", [defs[i] for i in opaque]))
+        for slot in glass:
+            me.materials.append(_glass_material(f"cc:{self.eq.id}:{self.slots[slot]}", defs[slot]))
         ob = bpy.data.objects.new(name or self.eq.id, me)
         self.col.objects.link(ob)
         return ob
-
-
-def shading_class(d: dict, m: str) -> tuple:
-    """Materials of one class render alike but for their colour: roughness to the nearest of 0.35 /
-    0.6 / 0.9, metalness 0 or 0.5. Emissive or transparent palette entries are their own class."""
-    if d.get("emissive") or float(d.get("opacity", 1)) < 1:
-        return ("own", m)
-    r = min((0.35, 0.6, 0.9), key=lambda v: abs(v - float(d.get("roughness", 0.93))))
-    return ("pbr", r, 0.5 if float(d.get("metalness", 0)) >= 0.25 else 0.0)
 
 
 def _srgb(hex_color: str) -> list[float]:
@@ -298,21 +294,75 @@ def _srgb(hex_color: str) -> list[float]:
     return [int(h[i:i + 2], 16) / 255 for i in (0, 2, 4)] + [1.0]
 
 
-def _class_material(key: tuple):
-    """A shading class's material: base colour from the colour attribute, the class's roughness and metalness."""
-    _, rough, metal = key
-    name = f"cc:class:r{rough}:m{metal}"
-    mat = bpy.data.materials.get(name)
-    if mat:
-        return mat
-    mat = bpy.data.materials.new(name)
+def _to_srgb(c: float) -> float:
+    c = max(0.0, min(1.0, c))
+    return c * 12.92 if c <= 0.0031308 else 1.055 * c ** (1 / 2.4) - 0.055
+
+
+def _nodes(mat):
     if hasattr(mat, "use_nodes") and not mat.use_nodes:
         mat.use_nodes = True
     nt = mat.node_tree
-    bsdf = next(n for n in nt.nodes if n.type == "BSDF_PRINCIPLED")
+    return nt, next(n for n in nt.nodes if n.type == "BSDF_PRINCIPLED")
+
+
+def palette_material(name: str, entries: list[dict]):
+    """One material for a model's opaque palette entries: base colour from the colour attribute "Col",
+    roughness (G) and metalness (B) from a non-colour palette texture, glow from an emissive palette
+    texture times the largest `emissiveIntensity`; a texel per entry, sampled at texel centres with
+    nearest filtering (the export turns mipmaps off: `clinicalcraft_blender._canonical`)."""
+    width = max(1, len(entries))
+    orm = bpy.data.images.new(f"{name}:orm", width=width, height=1, alpha=False)
+    orm.colorspace_settings.name = "Non-Color"
+    glow = bpy.data.images.new(f"{name}:emissive", width=width, height=1, alpha=False)
+    strength = max([float(d.get("emissiveIntensity", 0.3)) for d in entries if d.get("emissive")] or [1.0])
+    orm_px, glow_px = [], []
+    for d in entries or [{"color": "#000000"}]:
+        orm_px += [1.0, float(d.get("roughness", 0.93)), float(d.get("metalness", 0)), 1.0]
+        if d.get("emissive"):
+            k = float(d.get("emissiveIntensity", 0.3)) / strength
+            glow_px += [_to_srgb(c * k) for c in cc._linear(d["emissive"])] + [1.0]
+        else:
+            glow_px += [0.0, 0.0, 0.0, 1.0]
+    orm.pixels = orm_px
+    glow.pixels = glow_px
+    orm.pack()
+    glow.pack()
+    mat = bpy.data.materials.new(name)
+    mat.use_backface_culling = True
+    nt, bsdf = _nodes(mat)
     attr = nt.nodes.new("ShaderNodeVertexColor")
     attr.layer_name = "Col"
     nt.links.new(attr.outputs["Color"], bsdf.inputs["Base Color"])
-    bsdf.inputs["Roughness"].default_value = rough
-    bsdf.inputs["Metallic"].default_value = metal
+    t_orm = nt.nodes.new("ShaderNodeTexImage")
+    t_orm.image, t_orm.interpolation = orm, "Closest"
+    sep = nt.nodes.new("ShaderNodeSeparateColor")
+    nt.links.new(t_orm.outputs["Color"], sep.inputs["Color"])
+    nt.links.new(sep.outputs["Green"], bsdf.inputs["Roughness"])
+    nt.links.new(sep.outputs["Blue"], bsdf.inputs["Metallic"])
+    if any(d.get("emissive") for d in entries):
+        t_glow = nt.nodes.new("ShaderNodeTexImage")
+        t_glow.image, t_glow.interpolation = glow, "Closest"
+        emit = "Emission Color" if "Emission Color" in bsdf.inputs else "Emission"
+        nt.links.new(t_glow.outputs["Color"], bsdf.inputs[emit])
+        if "Emission Strength" in bsdf.inputs:
+            bsdf.inputs["Emission Strength"].default_value = strength
+    return mat
+
+
+def _glass_material(name: str, d: dict):
+    """A transparent palette entry (glass, acrylic): colour from the colour attribute, its own opacity."""
+    mat = bpy.data.materials.new(name)
+    mat.use_backface_culling = True
+    nt, bsdf = _nodes(mat)
+    attr = nt.nodes.new("ShaderNodeVertexColor")
+    attr.layer_name = "Col"
+    nt.links.new(attr.outputs["Color"], bsdf.inputs["Base Color"])
+    bsdf.inputs["Roughness"].default_value = float(d.get("roughness", 0.93))
+    bsdf.inputs["Metallic"].default_value = float(d.get("metalness", 0))
+    bsdf.inputs["Alpha"].default_value = float(d.get("opacity", 1))
+    if hasattr(mat, "surface_render_method"):
+        mat.surface_render_method = "BLENDED"
+    elif hasattr(mat, "blend_method"):
+        mat.blend_method = "BLEND"
     return mat

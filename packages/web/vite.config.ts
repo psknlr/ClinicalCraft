@@ -50,7 +50,8 @@ const LOCAL_ASSET_CSP = "default-src 'none'; img-src 'self' data: blob:; media-s
 
 export function localAssetRoots(): string[] {
   const home = process.env.CLINICALCRAFT_HOME || path.join(os.homedir(), ".clinicalcraft");
-  return [path.join(repoRoot, "assets", "local"), path.join(home, "assets")];
+  // then the built-in content's own assets (its equipment models), as `clinicalcraft serve` does
+  return [path.join(repoRoot, "assets", "local"), path.join(home, "assets"), path.resolve(here, "../content/assets")];
 }
 
 /** Resolve `/local-assets/<rel>` to an existing file under one of the roots (no traversal, also through symlinks). */

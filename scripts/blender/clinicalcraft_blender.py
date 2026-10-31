@@ -267,14 +267,18 @@ def _uri(path: Path) -> str:
     return f"models/{path.name}"
 
 
-def _canonical_triangles(glb: bytes) -> bytes:
-    """The GLB with every indexed triangle list in a canonical order: each triangle turned to start at
-    its smallest index (winding kept), the triangles sorted. Blender's exporter orders some triangles
-    by hash iteration, so the same scene gave different files (and SHA-256 pins) run to run."""
+def _canonical(glb: bytes) -> bytes:
+    """The GLB as the renderer should get it, the same bytes for the same scene:
+
+    * every indexed triangle list in a canonical order — each triangle turned to start at its
+      smallest index (winding kept), the triangles sorted (Blender's exporter orders some by hash
+      iteration, so one scene gave different files, and SHA-256 pins, run to run);
+    * nearest-filtered textures (the palette texture of `clinicalcraft_shapes`) sampled without
+      mipmaps, which would average neighbouring palette entries at a distance."""
     json_len = struct.unpack_from("<I", glb, 12)[0]
     doc = json.loads(glb[20:20 + json_len])
-    bin_start = 20 + json_len + 8
-    out = bytearray(glb)
+    bin_chunk = glb[20 + json_len:]
+    body = bytearray(bin_chunk[8:])
     fmt = {5121: "B", 5123: "H", 5125: "I"}
     for mesh in doc.get("meshes", []):
         for prim in mesh.get("primitives", []):
@@ -283,16 +287,23 @@ def _canonical_triangles(glb: bytes) -> bytes:
             acc = doc["accessors"][prim["indices"]]
             view = doc["bufferViews"][acc["bufferView"]]
             code = fmt[acc["componentType"]]
-            at = bin_start + view.get("byteOffset", 0) + acc.get("byteOffset", 0)
-            n = acc["count"]
-            idx = struct.unpack_from(f"<{n}{code}", out, at)
+            at = view.get("byteOffset", 0) + acc.get("byteOffset", 0)
+            n = acc["count"] - acc["count"] % 3
+            idx = struct.unpack_from(f"<{n}{code}", body, at)
             tris = []
-            for t in range(0, n - n % 3, 3):
-                a, b, c = idx[t:t + 3]
-                k = (a, b, c).index(min(a, b, c))
-                tris.append(((a, b, c)[k:] + (a, b, c)[:k]))
+            for t in range(0, n, 3):
+                tri = idx[t:t + 3]
+                k = tri.index(min(tri))
+                tris.append(tri[k:] + tri[:k])
             tris.sort()
-            struct.pack_into(f"<{n - n % 3}{code}", out, at, *[v for tri in tris for v in tri])
+            struct.pack_into(f"<{n}{code}", body, at, *[v for tri in tris for v in tri])
+    for sampler in doc.get("samplers", []):
+        if sampler.get("magFilter") == 9728:  # NEAREST
+            sampler["minFilter"] = 9728
+    text = json.dumps(doc, separators=(",", ":")).encode("utf-8")
+    text += b" " * (-len(text) % 4)
+    out = bytearray(glb[:12]) + struct.pack("<I", len(text)) + b"JSON" + text + bin_chunk[:8] + body
+    struct.pack_into("<I", out, 8, len(out))
     return bytes(out)
 
 
@@ -339,7 +350,7 @@ def export_model(
     )
     known = bpy.ops.export_scene.gltf.get_rna_type().properties.keys()
     bpy.ops.export_scene.gltf(**{k: v for k, v in opts.items() if k == "filepath" or k in known})
-    data = _canonical_triangles(out.read_bytes())
+    data = _canonical(out.read_bytes())
     out.write_bytes(data)
     lo, hi = bounds
     size = [hi[k] - lo[k] for k in range(3)]
@@ -354,7 +365,9 @@ def export_model(
         ref["source"] = source
     ref["use"] = use
     fp = eq.footprint
-    for axis, got, want in zip("w h d".split(), size, (fp["w"], fp["h"], fp["d"])):
+    # as the inspector measures it (core checkModelReference): vertically the top as placed
+    placed = (size[0], lo[1] + size[1], size[2])
+    for axis, got, want in zip(("w", "h (top)", "d"), placed, (fp["w"], fp["h"], fp["d"])):
         r = got / want if want else 1
         if want < MIN_FIT_AXIS and got < want:
             continue  # an aim allowance (core MIN_FIT_AXIS): a thinner model fits

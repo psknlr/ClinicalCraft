@@ -147,10 +147,17 @@ export function buildFacility(opts: WorldOptions, stage: Stage, locale: string):
 }
 
 /**
+ * Side (m) of the squares static model placements are instanced in: one instanced mesh per model, level and
+ * square, so frustum culling (camera and shadow pass) skips the squares out of view — a floor-wide instanced
+ * mesh is drawn whole whenever one copy is visible.
+ */
+export const MODEL_CELL = 16;
+
+/**
  * Equipment GLB/glTF models (EMBODIED §11), loaded after the build; a failed one keeps its voxel parts (a
- * warning says why). Static placements of one model on one level are drawn as instances (`instanceModel`:
- * a draw call per primitive however many there are); portable ones (carts, handheld items) as clones in
- * their own group, so they move (`placeModel`).
+ * warning says why). Static placements of one model on one level and in one `MODEL_CELL` square are drawn
+ * as instances (`instanceModel`: a draw call per primitive however many there are); portable ones (carts,
+ * handheld items) as clones in their own group, so they move (`placeModel`).
  */
 export class EquipmentModels {
   readonly cache: ModelCache | null;
@@ -198,7 +205,9 @@ export class EquipmentModels {
         continue;
       }
       const casts = Math.max(req.footprint.w, req.footprint.d, req.footprint.h) >= MODEL_SHADOW_MIN;
-      const key = `${modelUrl(req.model.uri, modelCache!.baseUrl)}|${req.level}|${casts}`;
+      // one instanced mesh per model, level and MODEL_CELL square: the camera and the shadow pass can cull far cells
+      const cell = `${Math.floor(req.at.x / MODEL_CELL)},${Math.floor(req.at.z / MODEL_CELL)}`;
+      const key = `${modelUrl(req.model.uri, modelCache!.baseUrl)}|${req.level}|${cell}|${casts}`;
       const list = groups.get(key);
       if (list) list.push(req);
       else groups.set(key, [req]);

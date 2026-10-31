@@ -64,9 +64,9 @@
   物品递给伸手可及、有空手的人）、佩戴（equipped）的物品不占手、`nearbyState`（操作需要
   附近某台设备处于某状态，并提示去那台设备）、用任一语言请任何同事“递给我……”（对方拿起、
   走过来、递过来），以及浏览器中手持物品设备面板的携带行和背包面板中的“手中物品”（§2.1）。
-- **尚未完成**（§14）：没有任何真实大模型跑过具身工具或基准测试；内置目录没有随附
-  任何 GLB 设备模型（内容包随附了：SurgeryCraft 的 19 个手术室模型）；也没有作为生产
-  服务做过加固、部署或运维。
+- **尚未完成**（§14）：没有任何真实大模型跑过具身工具或基准测试；97 种内置设备类型中
+  仍有 35 种没有 GLB 模型（IMPF 各房间都未使用的：影像、室外……）；也没有作为生产服务
+  做过加固、部署或运维。
 
 ## 目录
 
@@ -1027,8 +1027,10 @@ verification → assessment`——附动作 ID、世界 / 目标版本、临床�
   `behavior`，以及可选的 `model`（GLB/glTF，带 sha256、缩放、偏移、许可证与署名、
   来源 `source` 与使用状态 `use`；体素部件仍是后备，名为 `screen` 的部件继续在模型上
   绘制显示内容，碰撞体始终是语义占地范围——模型本身从不可交互）。同一模型的固定摆放
-  以实例绘制。资源流程见 docs/ASSETS.md（`clinicalcraft assets inspect`；内容包提供
-  自己的 `assets/`），在 Blender 中制作见 docs/BLENDER.md；内置目录中没有任何模型。
+  按楼层和 16 米方格以实例绘制。资源流程见 docs/ASSETS.md（`clinicalcraft assets
+  inspect`；内容包提供自己的 `assets/`），在 Blender 中制作见 docs/BLENDER.md。内置目录
+  为 97 种类型中的 62 种随附模型（`packages/content/assets/models`，由
+  `scripts/blender/build.py` 生成）。
 
 ### 内容规模测量
 
@@ -1455,7 +1457,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 两层的 `teaching-hospital`（22 个模板实例、楼梯 + 电梯、限制区域） | yes（A4） | `facilities validate`：无问题；世界：每个交互设备和床位都可达、经楼梯和电梯去 ICU 的路线、经电梯的无障碍路线、仅限护工和限制区域的规则、碰撞模型快照 | 网页 e2e `teaching-hospital.spec.ts`（上楼梯、乘电梯下楼、地图楼层）；`navigation-icu-upstairs`；在那里的示范接诊：它能容纳的每个病例在两种模式和语言下都得 100 %（38 次运行，2026-10-29） | no——`anaphylaxis-garden` 在那里没有位置（§14.3） |
 | 多楼层碰撞模型与物理（`slab`、`ramp`、`rail` 碰撞体；坡道上的 `stepPlayer`） | yes（A4） | 单元测试：坡面、上台阶 / 下吸附的限制、楼梯段侧面与底面、真实楼梯的上下行、有护栏的楼梯井；单层的固定数据不变 | 在浏览器中走真实楼梯的 QA；e2e | no——Perf、Rel |
 | 多楼层网页世界（楼层、楼梯、乘电梯、楼层剔除、按楼层的灯光 / 瞄准 / 区域、地图楼层选项卡、跨楼层示范接诊） | yes（A4） | 单元测试：楼层与剔除、各楼层区域、电梯轿厢、跨楼层路线；e2e（`clinic-v4` / `general-hospital` 的现有测试不变） | 对两层、楼梯和电梯的视觉 QA | no——帧时间与绘制调用没有预算；只在 Chromium 上运行。Perf |
-| GLB/glTF 设备模型（core `parseGlb` / `checkModelReference` / `fitModel`、`clinicalcraft assets inspect`、网页 `ModelCache` / `instanceModel`；Blender 桥接 `scripts/blender`） | yes（A4） | 用代码生成的 GLB 做单元测试；CLI 测试（使用状态、来源）；渲染器测试（GLTFLoader 加载、按 URL 缓存、哈希 / 404 / 垃圾数据回退、适配、瞄准代理、实例与克隆位置一致、小物件不投影）；服务器测试（内容包的 `assets/`） | 对生成的 GLB 运行 `assets inspect`（带与不带 `--type`）；测试台 QA（`?model=<type>`）；2026-10-31：在 `serve` 下的 IMPF 医院中加载 SurgeryCraft 的 19 个 Blender 模型——173 处摆放全部加载、0 失败，实时屏幕绘制在模型之上；7 号手术室全景常态绘制调用 382 → 554，阴影通道 602 → 789 | no——**内置目录中没有任何模型**；可移动模型（推车、器械）是克隆而非实例；在 `serve` 的 CSP 下 meshopt / DRACO 模型会回退到体素；低端设备的帧时间未测量 |
+| GLB/glTF 设备模型（core `parseGlb` / `checkModelReference` / `fitModel`、`clinicalcraft assets inspect`、网页 `ModelCache` / `instanceModel`；Blender 桥接、形状工具与精修器 `scripts/blender`；内置模型 `packages/content/assets/models`） | yes（A4） | 用代码生成的 GLB 做单元测试；CLI 测试（使用状态、来源）；渲染器测试（GLTFLoader 加载、按 URL 缓存、哈希 / 404 / 垃圾数据回退、适配、瞄准代理、实例与克隆位置一致、小物件不投影）；服务器测试（内容包与内置的 `assets/`）；内容测试：每个内置模型都已固定哈希、可发布并通过检查器 | 对生成的 GLB 运行 `assets inspect`（带与不带 `--type`）；测试台 QA（`?model=<type>`）；2026-10-31：在 `serve` 下的 IMPF 医院中加载 62 个内置模型和 74 个 SurgeryCraft 模型——885 处摆放全部加载、0 失败，实时屏幕绘制在模型之上；7 号手术室全景与全体素相比：常态绘制调用 382 → 637，阴影通道 602 → 1 118，三角形 0.12 M → 0.75 M | partial——35 种内置类型（影像、室外……）仍为体素；可移动模型（推车、器械）是克隆而非实例；单文件构建绘制体素（模型是被服务的文件）；在 `serve` 的 CSP 下 meshopt / DRACO 模型会回退到体素；低端设备的帧时间未测量 |
 | 智能体具身模式（设置 `embodiment` / `perception`、`SessionOptions.embodied`、`world_action` / `world_pose` op、`world_event` / `world_action_result`、`ClinicalView` / `ClinicalPort`、空间闸门 + 提交前复查、18 个世界工具、行走与操作时间、`world()` / `trace()`） | yes（A5；`transport_patient` 来自 FX-T） | 在内置病例上的智能体单元 + 集成测试：审批前带 `hint.goal` 的拒绝、TOCTOU → `SPATIAL_PRECONDITION_CHANGED`、经设备的 `deny: ["intervene(alteplase)"]`、`world_action` op、委派、技能与模型的内联技能、行走只计一次 / 静态时钟从不计时、脚本模型 observe → navigate → order → read、只对视觉模型提供摄像画面、Anthropic / OpenAI 请求体 | CLI `--embodied`（play、exec、eval）与 MCP `start_case {embodied}`；网页（§2.1） | no——**从未有真实模型驱动过具身工具**；未用真实模型测试对提示注入的抵抗力。Sec |
 | 角色权限与执业范围（S3） | yes | 智能体 `scope-review.test.ts`（前台接待、检验技师、药师、放射科医师、护士、急救员、护工；点名职员的审批；作者标注的 `scope`），基准 `audit-scope.test.ts` | 每次基准运行的授权审计（0 / 249 与 0 / 252 个被接受操作越权） | no——这是教学用的简化，不是任何司法辖区的规定；未经临床教师审阅 |
 | 生命体征通道（G3 / G11：`vitalsView`、`learnerVitals`） | yes | 单元测试：临床医生的 `<monitor>` 段、`wait`、技能的 `vital` 谓词、MCP 状态资源、REPL 状态行（`monitor-status.test.ts`） | 远离床旁时 REPL 显示 "vitals: not in view"；网页监护面板显示“看不到屏幕”（e2e） | no——Perf、Rel（§14.4） |
@@ -1488,10 +1490,10 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
    （114.98 vs 114.5 分钟）的具身运行中测得的差异已不再出现：2026-10-29 两种语言都在
    79.7 和 114.5 分钟结束。
 4. **本次工作没有运行过任何真实大模型**：基准测试的真实运行需显式开启、从不在 CI 中
-   运行，也没有任何记录表明有模型驱动过具身工具、MCP 服务或桥接。**内置目录没有随附
-   任何 GLB 模型**：引擎测试使用生成的测试数据；加载过的真实模型只有内容包的
-   （SurgeryCraft，2026-10-31：19 个在 Blender 中制作的手术室模型，173 处摆放，在
-   Chromium 中全部加载）。
+   运行，也没有任何记录表明有模型驱动过具身工具、MCP 服务或桥接。**设备模型按文件检查，
+   并未在每个场馆逐一目视检查**：内置模型在单元测试中通过检查器，并在 IMPF 医院中查看过
+   （2026-10-31：62 个内置模型和 74 个 SurgeryCraft 模型，885 处摆放，在 Chromium 中全部
+   加载）；综合医院、教学医院和 V4 诊所未逐一截图检查。
 5. **`docs/bench/` 中的报告和演示是生成产物。** 其首部写明来源工作区（报告：
    `ddbb594d96df`，带未提交的修改——即后来提交为 cc5f6a7 的那棵树；演示于 2026-10-29
    重新生成：`22c4d6914a38`，带未提交的修改）。重新生成只会改变首部那一行和计时。
