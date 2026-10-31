@@ -1,7 +1,7 @@
 """
-Build the built-in catalogs' equipment models (docs/BLENDER.md): every type in
-builtin_models.MODELLED is built in an empty Blender scene, in its own frame (a builder from
-builtin_models.BUILDERS, else `refine` of its voxel parts), exported to
+Build the built-in catalogs' equipment models (docs/BLENDER.md): every built-in equipment type
+is built in an empty Blender scene, in its own frame (a builder from builtin_models.BUILDERS,
+else `refine` of its voxel parts), exported to
 packages/content/assets/models/<type>.glb, and its catalog reference is written into the
 catalog that defines the type (one `"model"` line after its parts; the rest of the file is kept).
 
@@ -22,7 +22,7 @@ sys.path.insert(0, str(HERE))
 import bpy  # noqa: E402
 
 import clinicalcraft_blender as cc  # noqa: E402
-from builtin_models import BUILDERS, MODELLED  # noqa: E402
+from builtin_models import BUILDERS  # noqa: E402
 from clinicalcraft_refine import refine  # noqa: E402
 from clinicalcraft_shapes import Kit  # noqa: E402
 
@@ -69,11 +69,12 @@ def set_model(text: str, type_id: str, ref: dict) -> str:
 
 
 def main(argv: list[str]) -> None:
-    ids = argv or MODELLED
-    unknown = [i for i in ids if i not in MODELLED]
-    if unknown:
-        raise SystemExit(f"not in builtin_models.MODELLED: {', '.join(unknown)}")
     catalogs = {f: f.read_text(encoding="utf-8") for f in sorted((CONTENT / "catalogs").glob("*.json"))}
+    types = sorted(e["id"] for t in catalogs.values() for e in json.loads(t).get("equipment", []))
+    ids = argv or types
+    unknown = [i for i in ids if i not in types]
+    if unknown:
+        raise SystemExit(f"not a built-in equipment type: {', '.join(unknown)}")
     for type_id in ids:
         ref = build(type_id)
         path = next(f for f, t in catalogs.items() if f'"id": "{type_id}"' in t)

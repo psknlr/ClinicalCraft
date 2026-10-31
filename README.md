@@ -12,7 +12,7 @@
 > 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
 > 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹；
 > 临床医生智能体还能做示范接诊。内置 30 个中英双语教学病例（含新增的中华病例说 20 例）、3 个场馆（含两层的教学医院）、
-> 97 种体素设备，以及 41 个具身智能体基准场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
+> 97 种设备（每种都有三维模型，体素部件为后备），以及 41 个具身智能体基准场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
 > Grok CLI 扮演医生，甚至经 `mcp --attach` 进入你正在浏览器里进行的接诊。本项目仅用于教学
@@ -109,8 +109,9 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
   model/effort, a server-side key proxy for the browser, and a fully
   **offline** deterministic mode that needs no key.
 - **Data-driven content.** 10 bilingual cases, 3 facilities (one with two
-  storeys, built from 15 room templates) and 97 voxel equipment types, all
-  JSON validated by zod schemas; every case is verified by replaying a
+  storeys, built from 15 room templates) and 97 equipment types, each drawn
+  as a 3D model with its voxel parts as the fallback, all JSON validated by
+  zod schemas; every case is verified by replaying a
   reference solution and a matcher regression corpus.
 - **Agent-CLI ergonomics.** Layered settings and profiles, hooks
   (`SessionStart` … `SessionEnd`, shell commands with JSON on stdin),
@@ -265,7 +266,8 @@ are synthetic. The additional 20 CMCR cases are published cases ([docs/CMCR_CASE
 | `general-hospital` · 临床方块综合医院 ClinicalCraft General Hospital | ED with triage, resus and cubicles, ambulance bay, outpatient clinic, radiology (X-ray, CT, MRI, PET-CT, cath lab, ultrasound), laboratory, pathology, endoscopy, pharmacy, ward, ICU, operating theatre, conference room, gardens — 37 rooms, 260 placements, 14 patient slots for every case setting, 10 staff |
 | `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 283 placements, 17 patient slots, 11 staff (a porter among them). Offered as an alternative for compatible cases |
 
-Three equipment catalogs define **97 equipment types** — `core-furniture` (39),
+Three equipment catalogs define **97 equipment types**, each with a 3D model built in
+Blender from its voxel parts ([docs/BLENDER.md](docs/BLENDER.md)) — `core-furniture` (39),
 `core-clinical` (32: monitors, ECG, defibrillator, crash cart, treatment cart, ventilator, a mobile non-invasive ventilator,
 infusion pumps, anaesthesia machine, rehabilitation equipment…),
 `core-diagnostics` (26: CT, MRI, X-ray, C-arm, PET-CT, ultrasound, analysers,

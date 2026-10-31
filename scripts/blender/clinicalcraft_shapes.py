@@ -231,6 +231,37 @@ class Kit:
         _bevel(bm, rims, min(r, 0.45 * thickness), seg)
         self._commit(bm, m, at, rot)
 
+    def gantry(self, centre: Vec, z0: float, z1: float, inner: float, half_w: float, top: float, bottom: float, m: str,
+               seg: int = 64, power: float = 4.0, chamfer: float = 0.03) -> None:
+        """A ring housing around the frame's z axis through `centre` (x, y), from z0 (back) to z1 (front):
+        a squircle outside (`power` 4; 2 is an ellipse) reaching `half_w` sideways, `top` above and
+        `bottom` below the centre, a round bore of radius `inner`, edges chamfered — a CT, MRI or PET
+        gantry, or the trim round a bore."""
+        depth = z1 - z0
+        ch = max(0.0, min(chamfer, depth / 3, (min(half_w, top, bottom) - inner) / 3))
+        cx, cy = centre[0], centre[1]
+        bm = bmesh.new()
+
+        def outer(t: float) -> float:
+            c, s_ = math.cos(t), math.sin(t)
+            b = top if s_ >= 0 else bottom
+            return (abs(c / half_w) ** power + abs(s_ / b) ** power) ** (-1 / power)
+
+        angles = [2 * math.pi * i / seg for i in range(seg)]
+        rings = []
+        for kind, dr, z in (("o", -ch, z1), ("o", 0, z1 - ch), ("o", 0, z0 + ch), ("o", -ch, z0),
+                            ("i", ch, z0), ("i", 0, z0 + ch), ("i", 0, z1 - ch), ("i", ch, z1)):
+            ring = []
+            for t in angles:
+                r = (outer(t) if kind == "o" else inner) + dr
+                ring.append(bm.verts.new(B((cx + r * math.cos(t), cy + r * math.sin(t), z))))
+            rings.append(ring)
+        for a, b_ in zip(rings, rings[1:] + rings[:1]):
+            for i in range(seg):
+                j = (i + 1) % seg
+                bm.faces.new((a[i], a[j], b_[j], b_[i]))
+        self._commit(bm, m)
+
     # ---------------------------------------------------------------- assemblies
     def caster(self, x: float, z: float, r: float = 0.04, wheel: str = "rubber", fork: str = "chrome", stem: float = 0.03) -> None:
         """A swivel caster standing on the floor at (x, z): wheel, hub, fork and stem up to y = 2r + stem."""

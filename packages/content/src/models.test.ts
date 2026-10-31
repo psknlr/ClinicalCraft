@@ -1,8 +1,9 @@
 /**
  * The built-in equipment models (assets/models, built by scripts/blender/build.py; docs/BLENDER.md):
- * every catalog `model` reference points at a shipped file whose SHA-256 it pins, the file passes
- * the inspector against the type's footprint (`checkModelReference`: no errors), it is cleared for
- * redistribution, and no model file is left without a reference.
+ * every built-in type has one; every catalog `model` reference points at a shipped file whose
+ * SHA-256 it pins, the file passes the inspector against the type's footprint
+ * (`checkModelReference`: no errors) and is cleared for redistribution; no model file is left
+ * without a reference.
  */
 import { createHash } from "node:crypto";
 import { readdirSync, readFileSync } from "node:fs";
@@ -16,7 +17,9 @@ const catalogs = readdirSync(new URL("catalogs/", root))
 const modelled = catalogs.flatMap((c) => c.equipment.filter((e) => e.model).map((e) => ({ catalog: c.id, type: e })));
 
 describe("built-in equipment models", () => {
-  it("are referenced by the catalogs", () => {
+  it("cover every built-in equipment type (scripts/blender/build.py builds one for each)", () => {
+    const missing = catalogs.flatMap((c) => c.equipment.filter((e) => !e.model).map((e) => `${c.id}/${e.id}`));
+    expect(missing).toEqual([]);
     expect(modelled.length).toBeGreaterThan(0);
   });
 
