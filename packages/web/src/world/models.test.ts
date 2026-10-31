@@ -5,7 +5,7 @@
  */
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { Box3, Matrix4, Mesh, NearestFilter, type Object3D, type Texture } from "three";
+import { Box3, Matrix4, Mesh, NearestFilter, type MeshStandardMaterial, type Object3D } from "three";
 import { encodeGlb, fitModel } from "@clinicalcraft/core";
 import { instanceModel, MODEL_SHADOW_MIN, ModelCache, modelUrl, objectBounds, placeModel, sha256Hex } from "./models.js";
 
@@ -214,7 +214,7 @@ describe("embedded images (the palette texture)", () => {
       const { fetch, calls } = server({ "/local-assets/palette.glb": bytes });
       const cache = new ModelCache({ fetch });
       const mesh = meshes(await cache.load("palette.glb"))[0];
-      const map = (mesh.material as { metalnessMap: Texture | null }).metalnessMap!;
+      const map = (mesh.material as MeshStandardMaterial).metalnessMap!;
       expect(map).toBeTruthy();
       expect([map.magFilter, map.minFilter, map.generateMipmaps, map.flipY]).toEqual([NearestFilter, NearestFilter, false, false]);
       expect(decoded.map((b) => [b.type, b.size])).toEqual([["image/png", png.byteLength]]);
