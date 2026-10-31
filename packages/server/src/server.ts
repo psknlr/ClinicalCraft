@@ -8,7 +8,7 @@
  */
 import { createServer, type IncomingMessage, type RequestListener, type ServerResponse } from "node:http";
 import type { AddressInfo } from "node:net";
-import { resolve as resolvePath } from "node:path";
+import { join, resolve as resolvePath } from "node:path";
 import { CLINICALCRAFT_VERSION, type LLMProvider, type ProviderConfig, type ResolvedSettings } from "@clinicalcraft/agent";
 import { builtinContentDir, loadContent, localAssetDirs, type Env, type LoadedContent } from "@clinicalcraft/agent/node";
 import { CaseStore, type CachedBody } from "./case-store.js";
@@ -59,7 +59,11 @@ export interface ServerOptions {
   env?: Env;
   /** Working directory used to find `assets/local` (default `process.cwd()`). */
   cwd?: string;
-  /** Local-only asset roots (default `localAssetDirs(cwd, env)`). */
+  /**
+   * Local-only asset roots (default `localAssetDirs(cwd, env)`). Each content
+   * directory's `assets/` folder is searched after them (a pack's own,
+   * redistributable models and figures: docs/ASSETS.md).
+   */
   assetDirs?: string[];
   /** Build upstream providers for the LLM proxy (default `withRetry(createProvider(config))`). */
   providerFactory?: (config: ProviderConfig) => LLMProvider;
@@ -111,7 +115,6 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
   const loopbackOnly = isLoopbackHost(host);
   const maxBody = opts.maxBodyBytes ?? MAX_BODY_BYTES;
   const log = opts.log ?? ((m: string) => void process.stderr.write(`[clinicalcraft serve] ${m}\n`));
-  const assetDirs = opts.assetDirs ?? localAssetDirs(opts.cwd ?? process.cwd(), env);
   // Origins the page may call directly (direct mode); published in /api/health so the web settings
   // panel can tell a custom base URL needs server configuration instead of failing on the CSP.
   const connectOrigins = providerOrigins(settings);
@@ -123,6 +126,8 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
   const shutdown = new AbortController();
   const streams = new Set<Promise<void>>();
   const contentDirs = opts.contentDirs ?? settings.contentDirs;
+  // local-only roots first (a local copy overrides a pack's), then each content pack's own assets/
+  const assetDirs = [...(opts.assetDirs ?? localAssetDirs(opts.cwd ?? process.cwd(), env)), ...contentDirs.map((d) => join(resolvePath(d), "assets"))];
   // Facilities and catalogs (small) are loaded once; cases are indexed and validated on demand (`CaseStore`).
   let contentPromise: Promise<LoadedContent> | null = opts.content ? Promise.resolve(opts.content) : null;
   const content = () => (contentPromise ??= loadContent({ dirs: contentDirs, cases: false, builtin: opts.builtinContent !== false }));

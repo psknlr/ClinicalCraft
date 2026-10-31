@@ -5,9 +5,9 @@
  */
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { Box3, Mesh, type Object3D } from "three";
+import { Box3, Matrix4, Mesh, type Object3D } from "three";
 import { encodeGlb, fitModel } from "@clinicalcraft/core";
-import { ModelCache, modelUrl, objectBounds, placeModel, sha256Hex } from "./models.js";
+import { instanceModel, MODEL_SHADOW_MIN, ModelCache, modelUrl, objectBounds, placeModel, sha256Hex } from "./models.js";
 
 /** A box mesh w × h × d standing on y = 0 (8 vertices, 12 triangles). */
 function boxGlb(w: number, h: number, d: number): Uint8Array {
@@ -132,6 +132,41 @@ describe("placeModel", () => {
     expect((placed.proxy.material as { visible: boolean }).visible).toBe(false);
     // the cached scene itself is untouched (clones per placement)
     expect(scene.scale.x).toBe(1);
+    // a small item (an instrument on the back table) casts no shadow
+    const small = placeModel(scene, {}, { w: 0.16, d: 0.04, h: 0.03 }, { x: 0, y: 0.9, z: 0, rot: 0, id: "or-1.scalpel" }, true)!;
+    expect(MODEL_SHADOW_MIN).toBeGreaterThan(0.16);
+    for (const m of meshes(small.group.children.find((c) => c !== small.proxy)!)) expect(m.castShadow).toBe(false);
+    cache.dispose();
+  });
+});
+
+describe("instanceModel", () => {
+  it("draws static placements as instances where placeModel would put each clone, with an aim proxy each", async () => {
+    const cache = new ModelCache({ fetch: server({ "/local-assets/bed.glb": glb }).fetch });
+    const scene = await cache.load("bed.glb");
+    const footprint = { w: 1, d: 2, h: 0.5 };
+    const placements = [
+      { ref: { scale: 0.5 }, footprint, at: { x: 3, y: 5, z: -2, rot: 90, id: "or-1.bed" } },
+      { ref: { offset: [0, 0.2, 0.1] as [number, number, number] }, footprint, at: { x: -4, y: 5, z: 6, rot: 180, id: "or-2.bed" } },
+    ];
+    const inst = instanceModel(scene, placements, true)!;
+    expect(inst.meshes).toHaveLength(meshes(scene).length);
+    const im = inst.meshes[0];
+    expect(im.count).toBe(2);
+    expect(im.castShadow).toBe(true);
+    const hits: unknown[] = [];
+    im.raycast({} as never, hits as never);
+    expect(hits).toEqual([]);
+    placements.forEach((p, i) => {
+      const clone = placeModel(scene, p.ref, p.footprint, p.at, true)!;
+      const mesh = meshes(clone.group.children.find((c) => c !== clone.proxy)!)[0];
+      const got = new Matrix4();
+      im.getMatrixAt(i, got);
+      got.elements.forEach((v, k) => expect(v).toBeCloseTo(mesh.matrixWorld.elements[k], 6));
+      expect(inst.proxies[i].userData.owner).toBe(p.at.id);
+      expect(inst.proxies[i].matrixWorld.elements.map((v) => +v.toFixed(6))).toEqual(clone.proxy.matrixWorld.elements.map((v) => +v.toFixed(6)));
+    });
+    expect(instanceModel(scene, [{ ...placements[0], footprint: { w: 0.16, d: 0.04, h: 0.03 } }], true)!.meshes[0].castShadow).toBe(false);
     cache.dispose();
   });
 });

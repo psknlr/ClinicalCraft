@@ -152,6 +152,27 @@ describe("static files and local assets", () => {
     expect(((await missing.json()) as { error: { code: string } }).error.code).toBe("asset_not_installed");
   });
 
+  it("serves a content pack's own assets/ after the local roots (a local copy overrides the pack's)", async () => {
+    const pack = join(root, "pack");
+    mkdirSync(join(pack, "assets", "models"), { recursive: true });
+    writeFileSync(join(pack, "assets", "models", "pack-table.glb"), "pack-model");
+    writeFileSync(join(pack, "assets", "models", "page.html"), "<script>alert(1)</script>");
+    mkdirSync(join(assetsA, "models"), { recursive: true });
+    writeFileSync(join(assetsA, "models", "pack-table.glb"), "local-model");
+    writeFileSync(join(pack, "assets", "models", "pack-light.glb"), "pack-light");
+    const s = await startServer(baseOptions({ contentDirs: [pack] }));
+    try {
+      const light = await fetch(new URL("local-assets/models/pack-light.glb", s.url));
+      expect([light.status, light.headers.get("content-type"), await light.text()]).toEqual([200, "model/gltf-binary", "pack-light"]);
+      expect(await (await fetch(new URL("local-assets/models/pack-table.glb", s.url))).text()).toBe("local-model");
+      expect((await fetch(new URL("local-assets/models/page.html", s.url))).status).toBe(404);
+      expect((await fetch(new URL("local-assets/../pack/assets/models/pack-light.glb", s.url))).status).not.toBe(200);
+    } finally {
+      await s.close();
+      rmSync(join(assetsA, "models"), { recursive: true, force: true });
+    }
+  });
+
   it("serves only passive asset types from /local-assets, sandboxed (an SVG/JS/HTML there would run same-origin)", async () => {
     const dir = join(assetsA, "cases", "evil");
     mkdirSync(dir, { recursive: true });

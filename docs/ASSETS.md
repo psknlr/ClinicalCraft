@@ -66,7 +66,9 @@ docs/FACILITIES.md "Equipment models"):
   "offset": [0, 0, 0],
   "rot": 0,
   "license": "CC-BY-4.0",
-  "attribution": { "en": "ICU bed by A. Author (source URL), scaled to 1 m units", "zh-CN": "ICU 病床模型，作者 A. Author（来源链接），已按米制缩放" }
+  "attribution": { "en": "ICU bed by A. Author (source URL), scaled to 1 m units", "zh-CN": "ICU 病床模型，作者 A. Author（来源链接），已按米制缩放" },
+  "source": { "name": "A. Author on Example3D", "url": "https://example.org/icu-bed", "version": "v2", "retrieved": "2026-10-30", "changes": "re-meshed, scaled to metres" },
+  "use": "cleared"
 }
 ```
 
@@ -77,10 +79,30 @@ docs/FACILITIES.md "Equipment models"):
   only when its licence allows redistribution, and never commit one without
   the licence and attribution recorded in the catalog. Prefer single-file
   `.glb` (a `.gltf` with external buffers or images is not served).
+* **A content pack's own assets.** `clinicalcraft serve` also searches each
+  content directory's `assets/` folder (after the local folders, so a local
+  copy overrides a pack's), with the same passive types and sandbox: a pack
+  that ships `content/assets/models/sc-hybrid-table.glb` references it as
+  `"uri": "models/sc-hybrid-table.glb"`. Only `cleared` models belong there.
+  Prefix file names with the pack's type ids (packs share one namespace).
 * **Licence and attribution.** `license` is an SPDX id (`CC0-1.0`,
   `CC-BY-4.0`, `MIT`, …) or the licence text; "unknown", "none",
   "proprietary" and the like are rejected by the inspector. CC-BY-style
   licences need `attribution` (author, source, changes) in both languages.
+* **Sources and use status.** `source` records where the file came from
+  (`name`, and `url` or DOI, `version`, `retrieved` as YYYY-MM-DD,
+  `changes`), enough to find the exact release again. `use` is one of:
+
+  | `use` | meaning | the inspector |
+  |---|---|---|
+  | `cleared` | the licence allows redistribution and this use; its conditions (attribution, share-alike…) are recorded | passes (warns when the licence is non-commercial: "cleared" then holds only where every use is non-commercial) |
+  | `research-only` | non-commercial, scientific-research or custom terms | warns: keep the file local, out of commits, content packs and published builds |
+  | `pending` | licence, release identity, third-party parts or access terms not checked yet | **error** — clear it before the model ships |
+
+  A reference without `use` (or with `use` but no `source`) is noted (info).
+  "Use status" is not "approval": approvals gate actions (GLOSSARY).
+  docs/BLENDER.md lists the 3D sources surveyed for ClinicalCraft with the
+  status each starts from.
 * **Hashes.** Pin `sha256` (the inspector prints it). The web renderer
   checks it with WebCrypto and keeps the voxel parts on a mismatch, so a
   replaced file is never loaded silently.
@@ -90,6 +112,12 @@ docs/FACILITIES.md "Equipment models"):
   `rot` (degrees about Y), centres its bounding box on the footprint, stands
   it on the floor and moves it by `offset` (m, in the equipment's frame).
   The collider stays the footprint, the interaction the equipment type's.
+  A model built in place (in the type's frame, as `scripts/blender` does)
+  takes `scale: 1` and the `offset` of its own bounding box — centre x, z
+  and bottom y — so a ceiling pendant stays at the ceiling.
+* **Screens.** Named `screen` parts keep drawing their display (vitals,
+  PACS, checklists) over a loaded model, at the part's front face: leave it
+  clear. The voxel housing behind the display is hidden with the other parts.
 * **Extensions.** Loaded: `EXT_meshopt_compression` (MeshoptDecoder),
   `KHR_mesh_quantization`, `KHR_texture_transform`, `KHR_materials_*`,
   `KHR_lights_punctual`, `EXT_texture_webp`/`avif`,
@@ -126,7 +154,10 @@ usable licence (error) and attribution for CC-BY (warning), the pinned hash
 cannot load (error), and the size of the model as placed against the
 footprint (more than 25 % off: warning; more than twice or half: error — e.g.
 a model authored in centimetres; without `scale`, the fitted factor is
-reported and very different proportions warn). Exit code 1 on any error.
+reported and very different proportions warn; a footprint axis under 5 cm is
+an aim allowance — a scalpel lying flat in a 3 cm-high footprint — where only
+a larger model is flagged). It also checks the use status and the source.
+Exit code 1 on any error.
 `--draco` assumes a configured DRACO decoder.
 
 Tests generate their models in code (`encodeGlb` in core); no binary model

@@ -87,7 +87,8 @@
   come over and hand it over), and in the browser the carry row of a handheld
   item's device panel and "In your hands" in the inventory panel (§2.1).
 - **Not done** (§14): no live language model has been run through the
-  embodied tools or the benchmark; no GLB equipment model ships; nothing has
+  embodied tools or the benchmark; no built-in catalog ships a GLB equipment
+  model (a content pack does: SurgeryCraft's 19 OR models); nothing has
   been hardened, deployed or operated as a production service.
 
 ## Contents
@@ -1319,10 +1320,13 @@ simulated/real time.
   room **templates** compiled into flat facilities (FACILITIES.md);
   equipment `portable`, `reach`, `interactionPoints`, `behavior`, and an
   optional `model` (GLB/glTF with sha256, scale, offset, licence and
-  attribution; the voxel parts remain the fallback and the collider is always
-  the semantic footprint — a model is never interactive by itself). The
-  pipeline is in docs/ASSETS.md (`clinicalcraft assets inspect`); no built-in
-  catalog ships a model.
+  attribution, provenance `source` and use status `use`; the voxel parts
+  remain the fallback, named `screen` parts keep drawing their display over
+  the model, and the collider is always the semantic footprint — a model is
+  never interactive by itself). Static placements of one model are drawn as
+  instances. The pipeline is in docs/ASSETS.md (`clinicalcraft assets
+  inspect`; a content pack serves its own `assets/`), authoring in Blender in
+  docs/BLENDER.md; no built-in catalog ships a model.
 
 ### Measured content scale
 
@@ -1846,7 +1850,7 @@ the measurements of §4, §7, §11).
 | Two-level `teaching-hospital` (22 template instances, stairs + elevator, access zones) | yes (A4) | `facilities validate`: no issue; world: every interactive placement and slot reachable, stairs and elevator routes to the ICU, the accessible route through the elevator, porter-only and access-zone rules, collision-model snapshot | web e2e `teaching-hospital.spec.ts` (stairs up, elevator down, map floors); `navigation-icu-upstairs`; the autopilot there: 100 % in every case it hosts, both modes and languages (38 runs, 2026-10-29) | no — `anaphylaxis-garden` has no place there (§14.3) |
 | Multi-level collision model and physics (`slab`, `ramp`, `rail` colliders; `stepPlayer` on ramps) | yes (A4) | unit: ramp surface, step-up / snap-down limits, flight sides and underside, the real stairs up and down, guarded stairwell; single-level pins unchanged | browser QA walking the real stairs; e2e | no — Perf, Rel |
 | Multi-level web world (storeys, stairs, elevator ride, level culling, floor-aware lights / aim / region, map floor tabs, cross-level autopilot) | yes (A4) | unit: levels and culling, regions per level, elevator cars, routes across levels; e2e (the existing suite unchanged for `clinic-v4` / `general-hospital`) | visual QA of both levels, the stairs and the elevator | no — frame times and draw calls not budgeted; Chromium only. Perf |
-| GLB/glTF equipment models (core `parseGlb` / `checkModelReference` / `fitModel`, `clinicalcraft assets inspect`, web `ModelCache`) | yes (A4) | unit with GLBs generated in code; CLI tests; renderer tests (GLTFLoader load, per-URL cache, hash / 404 / garbage fallback, fit, aim proxy) | `assets inspect` on a generated GLB, with and without `--type`; harness QA (`?model=<type>`) | no — **no built-in catalog ships a model**; no real-world model has been loaded; meshopt / DRACO models fall back to voxels under `serve`'s CSP |
+| GLB/glTF equipment models (core `parseGlb` / `checkModelReference` / `fitModel`, `clinicalcraft assets inspect`, web `ModelCache` / `instanceModel`; Blender bridge `scripts/blender`) | yes (A4) | unit with GLBs generated in code; CLI tests (use status, source); renderer tests (GLTFLoader load, per-URL cache, hash / 404 / garbage fallback, fit, aim proxy, instances placed as clones, no shadow from small items); server test (a content pack's `assets/`) | `assets inspect` on a generated GLB, with and without `--type`; harness QA (`?model=<type>`); 2026-10-31: SurgeryCraft's 19 Blender-built models in the IMPF hospital under `serve` — 173 placements loaded, 0 failed, live screens drawn over them; OR 7 wide view 382 → 554 steady draw calls, shadow pass 602 → 789 | no — **no built-in catalog ships a model**; portable models (carts, instruments) are clones, not instances; meshopt / DRACO models fall back to voxels under `serve`'s CSP; frame times on low-end devices unmeasured |
 | Agent embodied mode (settings `embodiment` / `perception`, `SessionOptions.embodied`, `world_action` / `world_pose` ops, `world_event` / `world_action_result`, `ClinicalView` / `ClinicalPort`, spatial gate + pre-commit recheck, 18 world tools, travel and procedure time, `world()` / `trace()`) | yes (A5; `transport_patient` FX-T) | agent unit + integration on built-in cases: refusal before the gate with `hint.goal`, TOCTOU → `SPATIAL_PRECONDITION_CHANGED`, `deny: ["intervene(alteplase)"]` through a device, a `world_action` op, delegation, a skill and a model's inline skill, travel charged once / never on static clocks, a scripted model observe → navigate → order → read, camera frames for vision models only, Anthropic / OpenAI request bodies | CLI `--embodied` (play, exec, eval) and MCP `start_case {embodied}`; the web (§2.1) | no — **no live model has driven the embodied tools**; prompt-injection resistance not tested with real models. Sec |
 | Role authority and scope of practice (S3) | yes | agent `scope-review.test.ts` (receptionist, lab technician, pharmacist, radiologist, nurse, paramedic, porter; approvals naming the staff member; authored `scope`), bench `audit-scope.test.ts` | the authorisation audit over every benchmark run (0 / 249 and 0 / 252 accepted acts unauthorised) | no — a teaching simplification, not any jurisdiction's rules; not reviewed by clinical educators |
 | Vitals channels (G3 / G11: `vitalsView`, `learnerVitals`) | yes | unit: the clinician's `<monitor>` section, `wait`, skill `vital` predicates, the MCP state resource, the REPL status line (`monitor-status.test.ts`) | REPL "vitals: not in view" away from the bedside; web monitor panel "out of view" (e2e) | no — Perf, Rel (§14.4) |
@@ -1886,8 +1890,10 @@ Stated as they are; none was changed in this behaviour-preserving release
    114.5 minutes.
 4. **No live language model was exercised** in this work: benchmark live
    runs are opt-in and never run in CI, and nothing records a model driving
-   the embodied tools, the MCP server or the bridge. **No GLB model ships**:
-   the model pipeline is tested with generated fixtures only.
+   the embodied tools, the MCP server or the bridge. **No built-in catalog
+   ships a GLB model**: the engine's tests use generated fixtures; the only
+   real models loaded are a content pack's (SurgeryCraft, 2026-10-31: 19
+   Blender-built OR models, 173 placements, all loaded in Chromium).
 5. **The reports and demonstrations in `docs/bench/` are generated
    artefacts.** Their header names the working tree they came from (the
    reports: `ddbb594d96df` with uncommitted changes — the tree committed as

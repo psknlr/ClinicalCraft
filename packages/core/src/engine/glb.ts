@@ -377,6 +377,14 @@ export function fitModel(bounds: GlbBounds, ref: Pick<EquipmentModel, "scale" | 
 const NO_LICENCE = /^(?:|unknown|none|noassertion|todo|tbd|proprietary|all rights reserved|unlicensed)$/i;
 /** Licences whose terms require attribution. */
 const NEEDS_ATTRIBUTION = /^(?:CC-BY|CC BY|OGL|ODC-By)/i;
+/** Non-commercial licences (CC BY-NC…, "non-commercial" terms). */
+const NON_COMMERCIAL = /(?:^|[-\s])NC(?:[-\s]|$)|non-?commercial/i;
+
+/**
+ * Footprint axes shorter than this (m) are aim and handling allowances of small items (an instrument
+ * lying flat, a pack of swabs): the size check accepts a smaller model there and flags only a larger one.
+ */
+export const MIN_FIT_AXIS = 0.05;
 
 export interface ModelCheckOptions {
   /** Lowercase hex SHA-256 of the file (checked against the reference's pinned hash). */
@@ -391,7 +399,7 @@ export interface ModelCheckOptions {
 /**
  * Check a parsed model against a catalog `model` reference and the
  * equipment's semantic footprint (the collider): licence and attribution,
- * pinned SHA-256, extensions the renderer cannot load, and whether the model
+ * use status and provenance, pinned SHA-256, extensions the renderer cannot load, and whether the model
  * as placed (`fitModel`) matches the footprint's size.
  */
 export function checkModelReference(info: GlbInfo, ref: EquipmentModel, footprint: { w: number; d: number; h: number }, opts: ModelCheckOptions = {}): AssetIssue[] {
@@ -399,6 +407,12 @@ export function checkModelReference(info: GlbInfo, ref: EquipmentModel, footprin
   const licence = (ref.license ?? "").trim();
   if (NO_LICENCE.test(licence)) out.push({ severity: "error", code: "license", message: `no usable licence ("${licence}"): a model needs an SPDX id or licence text that allows reuse` });
   else if (NEEDS_ATTRIBUTION.test(licence) && !ref.attribution) out.push({ severity: "warning", code: "attribution", message: `${licence} requires attribution: add \`attribution\` (author, source, changes)` });
+  // use status and provenance (docs/ASSETS.md "Sources and use status")
+  if (!ref.use) out.push({ severity: "info", code: "use", message: 'no use status: add `use` ("cleared", "research-only" or "pending") and `source`' });
+  else if (ref.use === "pending") out.push({ severity: "error", code: "use", message: 'use status "pending": the licence, release or third-party parts are not checked yet — clear them before the model ships' });
+  else if (ref.use === "research-only") out.push({ severity: "warning", code: "use", message: "research-only: keep the file local (assets/local or ~/.clinicalcraft/assets), out of commits, content packs and published builds" });
+  if (ref.use === "cleared" && NON_COMMERCIAL.test(licence)) out.push({ severity: "warning", code: "use", message: `${licence} is non-commercial: "cleared" holds only where every use is non-commercial — otherwise mark it "research-only"` });
+  if (ref.use && ref.use !== "pending" && !ref.source) out.push({ severity: "info", code: "source", message: "no `source`: record the project, URL or DOI, version and date so the exact release can be found again" });
   if (!ref.sha256) out.push({ severity: "warning", code: "sha256", message: "the reference pins no sha256: a changed file would be loaded silently" });
   else if (opts.sha256 && opts.sha256 !== ref.sha256) out.push({ severity: "error", code: "sha256", message: `sha256 mismatch: file ${opts.sha256}, reference ${ref.sha256}` });
   for (const ext of info.extensionsRequired) {
@@ -412,7 +426,8 @@ export function checkModelReference(info: GlbInfo, ref: EquipmentModel, footprin
     const fp: Vec3 = [footprint.w, footprint.h, footprint.d];
     const tol = opts.tolerance ?? 0.25, err = opts.errorTolerance ?? 1;
     const fmt = (v: Vec3) => v.map((x) => x.toFixed(2)).join(" × ");
-    const ratios = fit.size.map((v, i) => (fp[i] > 0 ? v / fp[i] : 1));
+    // a footprint axis under MIN_FIT_AXIS is an aim and handling allowance (a scalpel lying flat): a thinner model fits it
+    const ratios = fit.size.map((v, i) => (fp[i] > 0 ? (fp[i] < MIN_FIT_AXIS && v < fp[i] ? 1 : v / fp[i]) : 1));
     const worst = Math.max(...ratios.map((r) => (r > 0 ? Math.max(r, 1 / r) : Infinity)));
     if (fit.fitted) {
       out.push({ severity: "info", code: "scale", message: `no scale in the reference: fitted uniformly ×${fit.scale[0].toPrecision(3)} to ${fmt(fit.size)} m inside the footprint ${fmt(fp)} m` });

@@ -12,7 +12,7 @@
  * and the interaction target stays the placement's — the model's own meshes
  * never take the aim; an invisible footprint box carries the placement id.
  */
-import { Box3, BoxGeometry, Group, Mesh, MeshBasicMaterial, type Material, type Object3D, type Texture } from "three";
+import { Box3, BoxGeometry, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Quaternion, Vector3, type Material, type Object3D, type Texture } from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import type { MeshoptDecoder as MeshoptDecoderType } from "three/examples/jsm/libs/meshopt_decoder.module.js";
@@ -146,6 +146,12 @@ export class ModelCache {
   }
 }
 
+/**
+ * Models whose footprint is smaller than this on every side (m) cast no shadow: an instrument's
+ * shadow is a texel or two of the shadow map, and every caster costs the shadow pass a draw call.
+ */
+export const MODEL_SHADOW_MIN = 0.3;
+
 /** An invisible box (the footprint) that carries the aim for a modelled placement: rendered never, ray-tested always. */
 const PROXY_MATERIAL = new MeshBasicMaterial({ visible: false });
 const PROXY_BOX = new BoxGeometry(1, 1, 1);
@@ -159,8 +165,9 @@ export interface PlacedModel {
 
 /**
  * Put a loaded model at a placement: a group at the placement's origin and
- * rotation holding a clone of the scene with the fit transform (shadows on,
- * never ray-tested) and an invisible footprint box owned by the placement.
+ * rotation holding a clone of the scene with the fit transform (shadows on, except
+ * for small items: `MODEL_SHADOW_MIN`; never ray-tested) and an invisible footprint
+ * box owned by the placement.
  */
 export function placeModel(
   scene: Object3D,
@@ -176,10 +183,11 @@ export function placeModel(
   model.scale.set(...fit.scale);
   model.rotation.set(0, fit.rotY, 0);
   model.position.set(...fit.position);
+  const casts = shadows && Math.max(footprint.w, footprint.d, footprint.h) >= MODEL_SHADOW_MIN;
   model.traverse((o) => {
     o.raycast = () => {};
     if ((o as Mesh).isMesh) {
-      o.castShadow = shadows;
+      o.castShadow = casts;
       o.receiveShadow = true;
     }
   });
@@ -195,6 +203,73 @@ export function placeModel(
   group.add(proxy);
   group.updateMatrixWorld(true);
   return { group, proxy, fit };
+}
+
+/** The invisible footprint box carrying the aim for one placement (world transform; owner = the placement). */
+function aimProxy(footprint: { w: number; d: number; h: number }, at: { x: number; y: number; z: number; rot: number; id: string }): Mesh {
+  const proxy = new Mesh(PROXY_BOX, PROXY_MATERIAL);
+  proxy.scale.set(footprint.w, footprint.h, footprint.d);
+  proxy.rotation.y = (at.rot * Math.PI) / 180;
+  proxy.position.set(at.x, at.y + footprint.h / 2, at.z);
+  proxy.userData.owner = at.id;
+  proxy.updateMatrixWorld(true);
+  return proxy;
+}
+
+export interface InstancedModel {
+  /** One instanced mesh per mesh of the model: an instance per placement, at its fitted transform. */
+  meshes: InstancedMesh[];
+  /** The aim proxy of each placement (same order). */
+  proxies: Mesh[];
+  fits: ModelFit[];
+}
+
+/**
+ * Draw the static placements of one model as instances: a draw call per mesh (primitive) of the
+ * model however many placements there are, each instance where `placeModel` would put a clone
+ * (shadows as there, never ray-tested), plus an invisible aim proxy per placement. Portable
+ * placements (carts, handheld items) move one by one and keep `placeModel`.
+ */
+export function instanceModel(
+  scene: Object3D,
+  placements: readonly { ref: Pick<EquipmentModel, "scale" | "rot" | "offset">; footprint: { w: number; d: number; h: number }; at: { x: number; y: number; z: number; rot: number; id: string } }[],
+  shadows: boolean,
+): InstancedModel | null {
+  const bounds = objectBounds(scene);
+  if (!bounds || !placements.length) return null;
+  scene.updateMatrixWorld(true);
+  const sources = meshesOf(scene);
+  const fits: ModelFit[] = [];
+  const frames: Matrix4[] = [];
+  const up = new Vector3(0, 1, 0);
+  for (const p of placements) {
+    const fit = fitModel(bounds, p.ref, p.footprint);
+    fits.push(fit);
+    const place = new Matrix4().compose(new Vector3(p.at.x, p.at.y, p.at.z), new Quaternion().setFromAxisAngle(up, (p.at.rot * Math.PI) / 180), new Vector3(1, 1, 1));
+    const fitted = new Matrix4().compose(new Vector3(...fit.position), new Quaternion().setFromAxisAngle(up, fit.rotY), new Vector3(...fit.scale));
+    frames.push(place.multiply(fitted));
+  }
+  const meshes = sources.map((src) => {
+    const im = new InstancedMesh(src.geometry, src.material, placements.length);
+    im.name = `model:${src.name || "mesh"}`;
+    const m = new Matrix4();
+    frames.forEach((frame, i) => im.setMatrixAt(i, m.multiplyMatrices(frame, src.matrixWorld)));
+    im.instanceMatrix.needsUpdate = true;
+    im.castShadow = shadows && Math.max(placements[0].footprint.w, placements[0].footprint.d, placements[0].footprint.h) >= MODEL_SHADOW_MIN;
+    im.receiveShadow = true;
+    im.raycast = () => {};
+    im.computeBoundingSphere();
+    return im;
+  });
+  return { meshes, proxies: placements.map((p) => aimProxy(p.footprint, p.at)), fits };
+}
+
+function meshesOf(o: Object3D): Mesh[] {
+  const out: Mesh[] = [];
+  o.traverse((c) => {
+    if ((c as Mesh).isMesh) out.push(c as Mesh);
+  });
+  return out;
 }
 
 /** The shared proxy geometry/material are module-level (never disposed with a world). */

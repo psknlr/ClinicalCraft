@@ -374,7 +374,7 @@ rotateLocal(x, z, rot): [number, number]; rotateSide(side, rot); offsetSign(side
 
 // GLB / glTF equipment models without a renderer (glb.ts; docs/ASSETS.md, `clinicalcraft assets inspect`)
 parseGlb(bytes: Uint8Array): GlbInfo                    // container, counts, bounds, extensions, issues; throws GlbError when unreadable
-checkModelReference(info, ref: EquipmentModel, footprint, opts?: { sha256?, draco?, tolerance?, errorTolerance? }): AssetIssue[]   // scale, licence, attribution, pinned hash, loadable extensions
+checkModelReference(info, ref: EquipmentModel, footprint, opts?: { sha256?, draco?, tolerance?, errorTolerance? }): AssetIssue[]   // scale (axes under MIN_FIT_AXIS: aim allowance), licence, attribution, use status + source (MODEL_USE), pinned hash, loadable extensions
 fitModel(bounds, ref, footprint): ModelFit; modelScale(ref): Vec3 | undefined; encodeGlb(json, bin?): Uint8Array   // fitting; GLB writer (test fixtures)
 GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web renderer loads / those that need a decoder (DRACO; KTX2/Basis, not bundled)
 ```

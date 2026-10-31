@@ -327,8 +327,10 @@ export function buildPlacements(ctx: BuildContext): void {
     // a type with a GLB model: its voxel parts get their own group and batch (the fallback, hidden once the model is in)
     let finishFallback: (() => void) | null = null;
     const modelled = !!(ctx.models && type.model);
-    // screens and LEDs of a modelled placement stay in its own group (not in the level-wide atlases)
+    // screens and LEDs of a modelled placement are its own meshes (not in the level-wide atlases); its screens'
+    // displays stay outside the fallback group, drawn over the model (a screen can be a clinical channel: vitals)
     const standalone = modelled;
+    const screenRoot = ctx.root;
     if (modelled) {
       const fallback = new Group();
       fallback.name = `voxels:${p.id}`;
@@ -374,7 +376,7 @@ export function buildPlacements(ctx: BuildContext): void {
         mesh.rotation.y = ry;
         mesh.scale.set(part.s[0], part.s[1], 1);
         mesh.userData.owner = p.id;
-        ctx.root.add(mesh);
+        screenRoot.add(mesh);
         ctx.pickables.push(mesh);
         if (!live) {
           // a modelled placement's static screen: its own quad in its group

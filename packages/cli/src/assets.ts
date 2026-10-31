@@ -72,6 +72,9 @@ export async function assetsInspect(ctx: CliContext, args: ParsedArgs): Promise<
   if (type?.model) {
     const fp = type.footprint;
     rows.push([ctx.t("assets.reference"), `${type.id} (${catalog}) · ${t(type.name, ctx.locale)} · footprint ${fmt3([fp.w, fp.h, fp.d])} m (w × h × d) · ${type.model.license}`]);
+    rows.push([ctx.t("assets.use"), ctx.t(`assets.use.${type.model.use ?? "none"}`)]);
+    const src = type.model.source;
+    if (src) rows.push([ctx.t("assets.source"), sanitizeTerminal([src.name, src.version, src.url, src.retrieved, src.changes].filter(Boolean).join(" · "))]);
   }
   ctx.print(table(rows, { maxCell: 160 }));
   const p = ctx.out;
