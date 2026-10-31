@@ -156,6 +156,19 @@ describe("checkModelReference", () => {
     const cm = boxGlb([16, 0.9, 1.6]);
     expect(codes(checkModelReference(parseGlb(cm), ref({ scale: 1, sha256: sha(cm) }), fp))).toEqual(["error:scale"]);
   });
+  it("measures a lifted model by its top; one short axis warns, a uniformly small or protruding model fails", () => {
+    // a wall clock built in place: 0.42 × 0.42 × 0.05 m with its bottom at 2.14 m, footprint floor to 2.6 m, 0.1 m deep
+    const clock = boxGlb([0.42, 0.42, 0.05]);
+    const fp = { w: 0.45, d: 0.1, h: 2.6 };
+    expect(codes(checkModelReference(parseGlb(clock), ref({ scale: 1, offset: [0, 2.14, 0], sha256: sha(clock) }), fp))).toEqual(["warning:scale"]); // only the depth is short
+    expect(codes(checkModelReference(parseGlb(clock), ref({ scale: 1, sha256: sha(clock) }), fp))).toEqual(["error:scale"]); // without its offset it would stand on the floor
+    expect(codes(checkModelReference(parseGlb(clock), ref({ scale: 1, offset: [0, 2.14, 0], sha256: sha(clock) }), { w: 0.45, d: 0.05, h: 2.6 }))).toEqual([]);
+    // uniformly a third of the footprint (authored too small): an error; one axis 2.5 × the footprint: an error
+    const small = boxGlb([0.3, 0.2, 0.7]);
+    expect(codes(checkModelReference(parseGlb(small), ref({ scale: 1, sha256: sha(small) }), bed))).toEqual(["error:scale"]);
+    const long = boxGlb([0.9, 0.6, 5.3]);
+    expect(codes(checkModelReference(parseGlb(long), ref({ scale: 1, sha256: sha(long) }), bed))).toEqual(["error:scale"]);
+  });
   it("requires a usable licence, attribution for CC-BY, and a pinned, matching sha256", () => {
     expect(codes(checkModelReference(info, ref({ license: "UNKNOWN", scale: 1, sha256: sha(bytes) }), bed))).toEqual(["error:license"]);
     expect(codes(checkModelReference(info, ref({ license: "CC-BY-4.0", scale: 1, sha256: sha(bytes) }), bed))).toEqual(["warning:attribution"]);

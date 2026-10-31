@@ -12,12 +12,18 @@ The parts:
 | piece | where | what it does |
 |---|---|---|
 | Blender bridge | `scripts/blender/clinicalcraft_blender.py` | finds an equipment type in the catalogs, describes it, builds its voxel parts as a blockout, makes palette materials, exports the model and returns its catalog `model` reference |
-| Shape kit | `scripts/blender/clinicalcraft_shapes.py` | boxes, cylinders, tubes, bars, rings, lathes and flat profiles in the type's own frame, into one mesh with one material per shading class |
+| Shape kit | `scripts/blender/clinicalcraft_shapes.py` | boxes, cylinders, tubes, bars, rings, lathes and flat profiles in the type's own frame, into one mesh with one material (colours as vertex colours, roughness, metalness and glow from a palette texture) |
+| Refiner | `scripts/blender/clinicalcraft_refine.py` | a model from a type's own voxel parts: rounded boxes, round bars and poles, casters or glides, discs where the voxels drew a circle, a dark housing behind each screen, blobs for foliage |
+| Built-in models | `scripts/blender/build.py`, `builtin_models.py` | builds the built-in catalogs' models (62 types) into `packages/content/assets/models` and writes each reference into its catalog |
 | blender-mcp | `.mcp.json` (Claude Code project server) | lets Claude Code inspect and change a running Blender (`execute_blender_code`, viewport screenshots, Poly Haven / Sketchfab / generated assets) |
 | Inspector | `clinicalcraft assets inspect <file.glb> --type <id>` | checks the file the way the renderer will load it (ASSETS.md) |
 
-SurgeryCraft's operating-department models (19 types, `tools/blender/` in that
-repository) are built with these and are the worked example.
+The built-in models and SurgeryCraft's (all 74 of its types, `tools/blender/` in that
+repository) are built with these: most are refined from their voxel parts, the most
+seen (the surgical light, the anaesthesia workstation, the instruments…) have their
+own builders. Rebuild the built-in ones with `blender -b -P scripts/blender/build.py`
+(or `python3 scripts/blender/build.py` with the `bpy` module), then `npm run build`
+(the web bundle carries the catalogs and so the pinned hashes).
 
 ## blender-mcp: set-up and privacy
 
@@ -75,6 +81,7 @@ and check it: `clinicalcraft assets inspect content/assets/models/sc-mayo-stand.
 | `blockout(eq)` | the voxel parts as boxes, screens bright cyan, the footprint as a wire box; never exported |
 | `material(eq, id, **over)` | a Principled material from palette entry `id` (colour, roughness, metalness, emissive, opacity) |
 | `Kit(eq)` | `box`, `cyl`, `tube`, `path`, `ball`, `torus`, `lathe`, `slab` (+ `rrect`), `caster`, `screen_bezel`; `finish()` makes the mesh |
+| `refine(k, eq, skip=)` | the type's voxel parts as refined shapes; a builder refines what it does not replace (`skip`) |
 | `export_model(eq, path, license=, use=, source=, attribution=)` | the GLB and its catalog reference; warns when it does not fill the footprint |
 
 ### With Claude Code
@@ -113,11 +120,15 @@ rebuilds every model that way and writes the references its catalog generator re
 * **Surfaces things stand on keep their height** (a set-up table's drape top at
   0.90 m carries the instruments placed on it).
 * **Draw calls.** Each primitive of a model is a draw call. The kit merges every
-  shape into one mesh and puts palette colours that share roughness and metalness
-  into one material (a vertex colour each); emissive and transparent materials keep
-  their own. Static placements of one model are drawn as instances; portable ones
-  (carts, handheld items) cost their primitives each. Items under 0.3 m on every
-  side cast no shadow. Aim for ≤ 10 000 triangles and ≤ 6 materials per model.
+  shape into one mesh with one material: each face's colour is a vertex colour, its
+  roughness, metalness and glow a texel of the model's palette texture (nearest
+  filtering, no mipmaps); only transparent palette entries (glass) get a material of
+  their own. Static placements of one model are drawn as instances, per level and
+  16 m square; portable ones (carts, handheld items) cost their primitives each.
+  Items under 0.3 m on every side cast no shadow.
+* **Triangles.** Instances are drawn whole when any copy is in view, so detail costs
+  everywhere: chamfer small parts, round only what is large, and aim for ≤ 5 000
+  triangles per model (≤ 10 000 for a centrepiece).
 * **Single-file GLB**, no DRACO/meshopt (they fall back to voxels under `serve`'s CSP).
 
 ## Third-party assets and the use status

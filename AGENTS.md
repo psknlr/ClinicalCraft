@@ -11,7 +11,7 @@ This file is for contributors (Claude Code, Codex, Grok CLI, ZCode, humans).
 - `packages/cli`, `packages/server`, `packages/mcp` — front-ends (protocol clients); `server` also routes the live-world bridge, `mcp --attach` uses it.
 - `packages/bench` — embodied agent benchmark (scenarios in `packages/content/bench`, `clinicalcraft bench`).
 - `packages/web` — Vite + three.js voxel world and UI (vanilla TS DOM); embodied by default (`src/app/embodied*.ts`).
-- `scripts/blender` — the Blender side of equipment models (Python inside Blender or with the `bpy` module): `clinicalcraft_blender.py` (catalog lookup, blockout, export to the model contract), `clinicalcraft_shapes.py` (shapes in a type's frame); `.mcp.json` registers blender-mcp, telemetry off (docs/BLENDER.md).
+- `scripts/blender` — the Blender side of equipment models (Python inside Blender or with the `bpy` module): `clinicalcraft_blender.py` (catalog lookup, blockout, export to the model contract), `clinicalcraft_shapes.py` (shapes in a type's frame), `clinicalcraft_refine.py` (a model from a type's voxel parts), `build.py` + `builtin_models.py` (the built-in models in `packages/content/assets/models`); `.mcp.json` registers blender-mcp, telemetry off (docs/BLENDER.md).
 - Contracts: `docs/ARCHITECTURE.md`, `docs/PROTOCOL.md`, `docs/EMBODIED.md` (authoritative; translated in `docs/zh-CN/EMBODIED.md`), `docs/FACILITIES.md`, `docs/CASE_AUTHORING.md`, `docs/ASSETS.md`.
 
 ## Commands
@@ -26,6 +26,7 @@ npm run -s cc -- bench run --agent reference && npm run -s cc -- bench run --age
 npm run dev                # web world at http://localhost:5173
 npm run build              # libraries (packages/*/dist: built binary, `serve`) + web
 npm run test:e2e           # Playwright (web)
+blender -b -P scripts/blender/build.py   # rebuild the built-in equipment models (Blender 4.1+, or `python3` with the `bpy` module), then `npm run build`
 ```
 
 ## Conventions

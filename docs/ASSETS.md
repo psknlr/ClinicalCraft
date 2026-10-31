@@ -79,6 +79,13 @@ docs/FACILITIES.md "Equipment models"):
   only when its licence allows redistribution, and never commit one without
   the licence and attribution recorded in the catalog. Prefer single-file
   `.glb` (a `.gltf` with external buffers or images is not served).
+* **Built-in models.** The built-in catalogs ship models for the types they
+  draw most (62 of 97; `packages/content/assets/models`, MIT, built from the
+  types' voxel parts by `scripts/blender/build.py`: docs/BLENDER.md). Both
+  `clinicalcraft serve` and the Vite dev server search the built-in content's
+  `assets/` last, so a local or pack copy overrides one; a unit test checks
+  that every built-in model is pinned, cleared and passes the inspector. The
+  standalone single file draws voxels (models are served files).
 * **A content pack's own assets.** `clinicalcraft serve` also searches each
   content directory's `assets/` folder (after the local folders, so a local
   copy overrides a pack's), with the same passive types and sandbox: a pack
