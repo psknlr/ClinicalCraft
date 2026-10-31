@@ -18,6 +18,7 @@ import { createWorld } from "../world/index.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
 import { tr } from "../i18n/index.js";
+import { STANDALONE } from "./llm.js";
 import type { EmbodiedLink } from "./embodied-link.js";
 import type { AppSession } from "./session.js";
 import { Stations } from "./stations.js";
@@ -109,6 +110,8 @@ export class WorldHost {
         saved,
         callbacks: this.callbacks,
         vitals: (slotId) => this.vitals(slotId),
+        // equipment models are served files (`/local-assets/models/…`): the single-file build draws voxels
+        ...(STANDALONE ? { models: false as const } : {}),
       });
       this.key = key;
       this.spec = spec;

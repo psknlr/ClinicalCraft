@@ -302,9 +302,11 @@ the reference `scale` — else a uniform fit inside the footprint — then
 `rot`, the bounding box centred on the footprint on the floor, then
 `offset`), casts shadows (except items under `MODEL_SHADOW_MIN` = 0.3 m on
 every side) and is disposed with the world. Static placements of one model
-on one level are drawn as instances (`instanceModel`: a draw call per
-primitive however many placements); portable ones (carts, handheld items)
-are clones in their own group, so they move. Named `screen` parts keep
+on one level and in one 16 m square (`MODEL_CELL`) are drawn as instances
+(`instanceModel`: a draw call per primitive however many placements; the
+squares let the camera and the shadow pass cull what is out of view);
+portable ones (carts, handheld items) are clones in their own group, so they
+move. Named `screen` parts keep
 drawing their display over the model. Any error or a missing file keeps the
 voxel parts. The collider is always the footprint and the interaction target
 always the placement's: the model's meshes never take the aim (an invisible

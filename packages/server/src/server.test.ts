@@ -152,7 +152,7 @@ describe("static files and local assets", () => {
     expect(((await missing.json()) as { error: { code: string } }).error.code).toBe("asset_not_installed");
   });
 
-  it("serves a content pack's own assets/ after the local roots (a local copy overrides the pack's)", async () => {
+  it("serves a content pack's own assets/ after the local roots (a local copy overrides the pack's), then the built-in content's", async () => {
     const pack = join(root, "pack");
     mkdirSync(join(pack, "assets", "models"), { recursive: true });
     writeFileSync(join(pack, "assets", "models", "pack-table.glb"), "pack-model");
@@ -166,6 +166,10 @@ describe("static files and local assets", () => {
       expect([light.status, light.headers.get("content-type"), await light.text()]).toEqual([200, "model/gltf-binary", "pack-light"]);
       expect(await (await fetch(new URL("local-assets/models/pack-table.glb", s.url))).text()).toBe("local-model");
       expect((await fetch(new URL("local-assets/models/page.html", s.url))).status).toBe(404);
+      // the built-in catalogs' models ship in the content package (packages/content/assets/models)
+      const builtin = await fetch(new URL("local-assets/models/surgical-light.glb", s.url));
+      expect([builtin.status, builtin.headers.get("content-type")]).toEqual([200, "model/gltf-binary"]);
+      expect(Buffer.from(await builtin.arrayBuffer()).subarray(0, 4).toString()).toBe("glTF");
       expect((await fetch(new URL("local-assets/../pack/assets/models/pack-light.glb", s.url))).status).not.toBe(200);
     } finally {
       await s.close();

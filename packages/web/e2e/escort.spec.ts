@@ -51,8 +51,11 @@ test.describe("walking with the patient (en)", () => {
     // walk to the waiting room by the world's route: the patient is drawn a step behind the avatar all the way
     const walk = page.evaluate(() => (window as any).__QA__.worldAction({ operation: "navigate", goal: { kind: "room", id: "opd-waiting" } }));
     await page.waitForTimeout(1500);
-    const mid = await drawn(page);
-    const me = await page.evaluate(() => (window as any).__QA__.world.position);
+    // both in one read: a frame between two reads walks the avatar on (up to 0.5 s of its walk on a slow frame)
+    const { mid, me } = await page.evaluate(() => {
+      const qa = (window as any).__QA__;
+      return { mid: qa.world.debug.patientPose(qa.game.slotId), me: qa.world.position };
+    });
     expect(Math.hypot(mid.x - me.x, mid.z - me.z)).toBeLessThan(2.2);
     expect(mid.posture).toBe("standing");
     expect((await walk)?.status).toBe("completed");

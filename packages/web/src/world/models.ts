@@ -12,8 +12,33 @@
  * and the interaction target stays the placement's — the model's own meshes
  * never take the aim; an invisible footprint box carries the placement id.
  */
-import { Box3, BoxGeometry, Group, InstancedMesh, Matrix4, Mesh, MeshBasicMaterial, Quaternion, Vector3, type Material, type Object3D, type Texture } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import {
+  Box3,
+  BoxGeometry,
+  ClampToEdgeWrapping,
+  Group,
+  InstancedMesh,
+  LinearFilter,
+  LinearMipmapLinearFilter,
+  LinearMipmapNearestFilter,
+  Matrix4,
+  Mesh,
+  MeshBasicMaterial,
+  MirroredRepeatWrapping,
+  NearestFilter,
+  NearestMipmapLinearFilter,
+  NearestMipmapNearestFilter,
+  Quaternion,
+  RepeatWrapping,
+  Texture,
+  Vector3,
+  type MagnificationTextureFilter,
+  type Material,
+  type MinificationTextureFilter,
+  type Object3D,
+  type Wrapping,
+} from "three";
+import { GLTFLoader, type GLTFLoaderPlugin, type GLTFParser } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import type { MeshoptDecoder as MeshoptDecoderType } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { fitModel, parseGlb, type EquipmentModel, type GlbBounds, type ModelFit } from "@clinicalcraft/core";
@@ -41,6 +66,50 @@ export interface ModelOptions {
   enabled?: boolean;
   /** Fetch implementation (tests). */
   fetch?: (url: string) => Promise<{ ok: boolean; status: number; arrayBuffer(): Promise<ArrayBuffer> }>;
+}
+
+const FILTERS: Record<number, MagnificationTextureFilter | MinificationTextureFilter> = {
+  9728: NearestFilter,
+  9729: LinearFilter,
+  9984: NearestMipmapNearestFilter,
+  9985: LinearMipmapNearestFilter,
+  9986: NearestMipmapLinearFilter,
+  9987: LinearMipmapLinearFilter,
+};
+const WRAPPINGS: Record<number, Wrapping> = { 33071: ClampToEdgeWrapping, 33648: MirroredRepeatWrapping, 10497: RepeatWrapping };
+
+/**
+ * GLTFLoader plugin: an image embedded in the GLB (a bufferView: the palette texture of
+ * scripts/blender's models) is decoded from its bytes with createImageBitmap — no blob: URL and
+ * no fetch, so a strict `connect-src` allows it and a reload or a disposed world that cuts a
+ * load short logs nothing. The texture is set up as GLTFParser.loadTextureImage does (sampler,
+ * wrapping, mipmaps, flipY). Other images, or no createImageBitmap: three's own path.
+ */
+export function embeddedImages(parser: GLTFParser): GLTFLoaderPlugin {
+  return {
+    name: "clinicalcraft_embedded_images",
+    loadTexture(index: number): Promise<Texture> | null {
+      const json = parser.json;
+      const def = json.textures?.[index];
+      const image = def?.source !== undefined ? json.images?.[def.source] : undefined;
+      if (!image || image.bufferView === undefined || typeof createImageBitmap !== "function") return null;
+      return parser.getDependency("bufferView", image.bufferView).then(async (data: ArrayBuffer) => {
+        const bitmap = await createImageBitmap(new Blob([data], { type: image.mimeType ?? "image/png" }), { premultiplyAlpha: "none", colorSpaceConversion: "none" });
+        const texture = new Texture(bitmap);
+        texture.flipY = false;
+        texture.name = def.name || image.name || "";
+        const sampler = json.samplers?.[def.sampler] ?? {};
+        texture.magFilter = (FILTERS[sampler.magFilter] as MagnificationTextureFilter | undefined) ?? LinearFilter;
+        texture.minFilter = (FILTERS[sampler.minFilter] as MinificationTextureFilter | undefined) ?? LinearMipmapLinearFilter;
+        texture.wrapS = WRAPPINGS[sampler.wrapS] ?? RepeatWrapping;
+        texture.wrapT = WRAPPINGS[sampler.wrapT] ?? RepeatWrapping;
+        texture.generateMipmaps = texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter;
+        texture.needsUpdate = true;
+        parser.associations.set(texture, { textures: index });
+        return texture;
+      });
+    },
+  };
 }
 
 /** URL of a model URI: absolute URLs, data:/blob: URIs and root paths as they are; relative ones under `baseUrl`. */
@@ -100,6 +169,7 @@ export class ModelCache {
   private disposed = false;
 
   constructor(opts: ModelOptions = {}) {
+    this.loader.register(embeddedImages);
     this.baseUrl = opts.baseUrl ?? "/local-assets/";
     if (opts.dracoPath) {
       this.draco = new DRACOLoader();

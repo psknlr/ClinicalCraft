@@ -400,7 +400,10 @@ export interface ModelCheckOptions {
  * Check a parsed model against a catalog `model` reference and the
  * equipment's semantic footprint (the collider): licence and attribution,
  * use status and provenance, pinned SHA-256, extensions the renderer cannot load, and whether the model
- * as placed (`fitModel`) matches the footprint's size.
+ * as placed (`fitModel`; vertically its top, so a wall- or ceiling-mounted model lifted by its offset
+ * counts from the floor) matches the footprint: an error when it is uniformly off by more than
+ * `errorTolerance` (units) or sticks out that far on an axis, a warning when an axis is off by more
+ * than `tolerance`.
  */
 export function checkModelReference(info: GlbInfo, ref: EquipmentModel, footprint: { w: number; d: number; h: number }, opts: ModelCheckOptions = {}): AssetIssue[] {
   const out: AssetIssue[] = [...info.issues];
@@ -426,15 +429,23 @@ export function checkModelReference(info: GlbInfo, ref: EquipmentModel, footprin
     const fp: Vec3 = [footprint.w, footprint.h, footprint.d];
     const tol = opts.tolerance ?? 0.25, err = opts.errorTolerance ?? 1;
     const fmt = (v: Vec3) => v.map((x) => x.toFixed(2)).join(" × ");
+    // vertically the model's top as placed counts: one lifted by its offset (a wall clock, a ceiling
+    // light in a floor-to-ceiling footprint) is measured from the floor like the footprint
+    const placed: Vec3 = [fit.size[0], (ref.offset?.[1] ?? 0) + fit.size[1], fit.size[2]];
     // a footprint axis under MIN_FIT_AXIS is an aim and handling allowance (a scalpel lying flat): a thinner model fits it
-    const ratios = fit.size.map((v, i) => (fp[i] > 0 ? (fp[i] < MIN_FIT_AXIS && v < fp[i] ? 1 : v / fp[i]) : 1));
+    const ratios = placed.map((v, i) => (fp[i] > 0 ? (fp[i] < MIN_FIT_AXIS && v < fp[i] ? 1 : v / fp[i]) : 1));
     const worst = Math.max(...ratios.map((r) => (r > 0 ? Math.max(r, 1 / r) : Infinity)));
+    // an error is a unit mistake (uniformly off: centimetres for metres) or a model sticking far out of its collider;
+    // one axis short of the footprint (a wall panel thinner than its standoff) only warns
+    const uniform = Math.cbrt(ratios.reduce((a, r) => a * Math.max(r, 1e-9), 1));
+    const protrudes = Math.max(...ratios);
+    const msg = `scale mismatch: the model at its reference scale is ${fmt(fit.size)} m${placed[1] !== fit.size[1] ? ` (top at ${placed[1].toFixed(2)} m)` : ""}, the footprint ${fmt(fp)} m (w × h × d)`;
     if (fit.fitted) {
       out.push({ severity: "info", code: "scale", message: `no scale in the reference: fitted uniformly ×${fit.scale[0].toPrecision(3)} to ${fmt(fit.size)} m inside the footprint ${fmt(fp)} m` });
       const fill = Math.min(...ratios);
       if (fill < 0.5) out.push({ severity: "warning", code: "scale", message: `proportions differ from the footprint: fitted ${fmt(fit.size)} m fills ${(fill * 100).toFixed(0)} % of one footprint axis (${fmt(fp)} m)` });
-    } else if (worst > 1 + err) out.push({ severity: "error", code: "scale", message: `scale mismatch: the model at its reference scale is ${fmt(fit.size)} m, the footprint ${fmt(fp)} m (w × h × d)` });
-    else if (worst > 1 + tol) out.push({ severity: "warning", code: "scale", message: `scale mismatch: the model at its reference scale is ${fmt(fit.size)} m, the footprint ${fmt(fp)} m (w × h × d)` });
+    } else if (protrudes > 1 + err || uniform < 1 / (1 + err)) out.push({ severity: "error", code: "scale", message: msg });
+    else if (worst > 1 + tol) out.push({ severity: "warning", code: "scale", message: msg });
   }
   return out;
 }

@@ -185,21 +185,34 @@ test.describe("assets, toasts and the finished HUD", () => {
     await expect(page.locator(".toast.show")).toHaveCount(0, { timeout: 15_000 });
     // The hidden toast still slides out for 220 ms before the toaster is idle again.
     await page.waitForTimeout(400);
-    await page.evaluate(() => {
-      const app = (window as any).__QA__.app;
-      for (let i = 0; i < 8; i++) app.toast(`burst-${i}`, "");
-    });
-    const seen: string[] = [];
-    await expect
-      .poll(
-        async () => {
-          const t = (await page.locator(".toast.show .toast-title").textContent().catch(() => null)) ?? "";
-          if (t.startsWith("burst-") && seen[seen.length - 1] !== t) seen.push(t);
-          return seen[seen.length - 1];
-        },
-        { timeout: 20_000, intervals: [150] },
-      )
-      .toBe("burst-7");
+    // The page records each toast it shows. The sequence takes ≥ 9.7 s of the page's own timers, and
+    // just after entering, a software-rendered world (SwiftShader) can hold them back for many seconds,
+    // so no wall-clock poll decides it; the test timeout bounds it.
+    const seen = await page.evaluate(
+      () =>
+        new Promise<string[]>((resolve) => {
+          const toast = document.querySelector(".toast")!;
+          const title = toast.querySelector(".toast-title")!;
+          const shown: string[] = [];
+          const done = () => {
+            observer.disconnect();
+            clearTimeout(guard);
+            resolve(shown);
+          };
+          const note = () => {
+            const t = title.textContent ?? "";
+            if (toast.classList.contains("show") && t.startsWith("burst-") && shown[shown.length - 1] !== t) shown.push(t);
+            if (shown[shown.length - 1] === "burst-7" || shown.length > 4) done();
+          };
+          // a toaster that never shows burst-7 fails here with what it did show
+          const guard = setTimeout(done, 120_000);
+          const observer = new MutationObserver(note);
+          observer.observe(toast, { attributes: true, attributeFilter: ["class"], childList: true, characterData: true, subtree: true });
+          const app = (window as any).__QA__.app;
+          for (let i = 0; i < 8; i++) app.toast(`burst-${i}`, "");
+          note();
+        }),
+    );
     expect(seen).toEqual(["burst-0", "burst-5", "burst-6", "burst-7"]);
 
     // Report figures: placeholders instead of broken images.

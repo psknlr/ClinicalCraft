@@ -62,7 +62,8 @@ export interface ServerOptions {
   /**
    * Local-only asset roots (default `localAssetDirs(cwd, env)`). Each content
    * directory's `assets/` folder is searched after them (a pack's own,
-   * redistributable models and figures: docs/ASSETS.md).
+   * redistributable models and figures: docs/ASSETS.md), then the built-in
+   * content's (its equipment models).
    */
   assetDirs?: string[];
   /** Build upstream providers for the LLM proxy (default `withRetry(createProvider(config))`). */
@@ -126,12 +127,16 @@ export function createRequestHandler(opts: ServerOptions): RequestHandler {
   const shutdown = new AbortController();
   const streams = new Set<Promise<void>>();
   const contentDirs = opts.contentDirs ?? settings.contentDirs;
-  // local-only roots first (a local copy overrides a pack's), then each content pack's own assets/
-  const assetDirs = [...(opts.assetDirs ?? localAssetDirs(opts.cwd ?? process.cwd(), env)), ...contentDirs.map((d) => join(resolvePath(d), "assets"))];
   // Facilities and catalogs (small) are loaded once; cases are indexed and validated on demand (`CaseStore`).
   let contentPromise: Promise<LoadedContent> | null = opts.content ? Promise.resolve(opts.content) : null;
   const content = () => (contentPromise ??= loadContent({ dirs: contentDirs, cases: false, builtin: opts.builtinContent !== false }));
   const builtin = opts.builtinContent === false ? null : builtinContentDir();
+  // local-only roots first (a local copy overrides), then each content pack's own assets/, then the built-in content's
+  const assetDirs = [
+    ...(opts.assetDirs ?? localAssetDirs(opts.cwd ?? process.cwd(), env)),
+    ...contentDirs.map((d) => join(resolvePath(d), "assets")),
+    ...(builtin ? [join(builtin, "assets")] : []),
+  ];
   const cases = new CaseStore({
     dirs: [...new Set([...(builtin ? [builtin] : []), ...contentDirs.map((d) => resolvePath(d))])],
     ...(opts.content ? { preloaded: opts.content.cases } : {}),
