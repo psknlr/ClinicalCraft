@@ -93,7 +93,7 @@ function catalogDir(model: Record<string, unknown>): string {
           footprint: { w: 1, d: 2.2, h: 1.2 },
           parts: [{ p: [0, 0.3, 0], s: [1, 0.6, 2.2], m: "white" }],
           interaction: { kind: "bed", prompt: L("Bed") },
-          model: { uri: "models/bed.glb", license: "CC0-1.0", ...model },
+          model: { uri: "models/bed.glb", license: "CC0-1.0", use: "cleared", source: { name: "Test bench", version: "1.0", retrieved: "2026-10-30" }, ...model },
         },
       ],
     }),
@@ -127,6 +127,11 @@ describe("assets inspect", () => {
     const ok = await run(["assets", "inspect", file, "--type", "model-bed", "--lang", "en"], sandbox({ contentDirs: [catalogDir({ sha256, scale: 1 })] }));
     expect(ok.code).toBe(0);
     expect(ok.stdout).toContain("matches its catalog reference");
+    expect(ok.stdout).toContain("Use status");
+    expect(ok.stdout).toContain("Test bench · 1.0 · 2026-10-30");
+    const pending = await run(["assets", "inspect", file, "--type", "model-bed", "--lang", "zh-CN"], sandbox({ contentDirs: [catalogDir({ sha256, scale: 1, use: "pending" })] }));
+    expect(pending.code).toBe(1);
+    expect(pending.stdout).toContain("许可待核实（pending）");
     const cm = await run(["assets", "inspect", file, "--type", "model-bed", "--json"], sandbox({ contentDirs: [catalogDir({ sha256, scale: 100 })] }));
     expect(cm.code).toBe(1);
     expect(JSON.parse(cm.stdout).issues).toEqual([expect.objectContaining({ severity: "error", code: "scale" })]);

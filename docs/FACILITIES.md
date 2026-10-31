@@ -112,7 +112,7 @@ Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
 | `reach` | interaction reach in metres from the footprint (≤ 10). Default by interaction kind (core `DEFAULT_REACH`): workstation 1.2, monitor 2, bed 1.5, device 1.2, atlas 1.5, board 2.5, craft 1.2, sink 1, storage 1, none 1 (doors 1.2, staff 2). `oxygen-outlet` declares 2.2 (reached over the bed head) |
 | `interactionPoints: [{ x, z }]` | where an actor stands to use it: local offsets from the footprint centre, rotated with the placement; absent = any free spot within reach with line of sight |
 | `behavior: { initial, states: { id: { name?, available? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select }, durationSeconds?, reserve?, release?, roles? } }, derived? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`) through the session's normal tool path; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
-| `model: { uri, sha256?, scale?, offset?, rot?, license, attribution? }` | optional GLB/glTF model — visual only: the voxel parts stay the fallback, the collider is always the footprint and a model is never interactive by itself |
+| `model: { uri, sha256?, scale?, offset?, rot?, license, attribution?, source?, use? }` | optional GLB/glTF model — visual only: the voxel parts stay the fallback, named `screen` parts keep drawing over it, the collider is always the footprint and a model is never interactive by itself; `source` and `use` (cleared / research-only / pending) are its provenance and use status (ASSETS.md) |
 
 **Patients on the move (EMBODIED §8, review G8).** No new field: the world
 model reads what is there. A patient slot's `bed` of type `hospital-bed` or
@@ -300,10 +300,15 @@ it; DRACO only when a decoder path is configured), once per URL; relative
 It checks the pinned `sha256`, fits the model to the footprint (`fitModel`:
 the reference `scale` — else a uniform fit inside the footprint — then
 `rot`, the bounding box centred on the footprint on the floor, then
-`offset`), casts shadows and is disposed with the world. Any error or a
-missing file keeps the voxel parts. The collider is always the footprint and
-the interaction target always the placement's: the model's meshes never
-take the aim (an invisible footprint box does).
+`offset`), casts shadows (except items under `MODEL_SHADOW_MIN` = 0.3 m on
+every side) and is disposed with the world. Static placements of one model
+on one level are drawn as instances (`instanceModel`: a draw call per
+primitive however many placements); portable ones (carts, handheld items)
+are clones in their own group, so they move. Named `screen` parts keep
+drawing their display over the model. Any error or a missing file keeps the
+voxel parts. The collider is always the footprint and the interaction target
+always the placement's: the model's meshes never take the aim (an invisible
+footprint box does). docs/BLENDER.md has the Blender workflow.
 
 ## Equipment catalogs (ids are a contract — facilities reference them)
 

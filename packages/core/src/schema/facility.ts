@@ -188,9 +188,37 @@ export const DeviceBehaviorSchema = z
 export type DeviceBehavior = z.infer<typeof DeviceBehaviorSchema>;
 
 /**
+ * Use status of a model file (docs/ASSETS.md "Sources and use status"):
+ * `cleared` — its licence allows redistribution and the use intended (attribution
+ * and other conditions recorded); `research-only` — non-commercial or research
+ * terms: keep it local, out of commits and published builds; `pending` — licence,
+ * release or third-party parts not yet checked: `assets inspect` fails.
+ */
+export const MODEL_USE = ["cleared", "research-only", "pending"] as const;
+export type ModelUse = (typeof MODEL_USE)[number];
+
+/** Where a model file came from: enough to find the exact release again and to credit it. */
+export const ModelSourceSchema = z
+  .object({
+    /** Project, dataset, author or tool (e.g. "Poly Haven", "SurgeryCraft tools/blender"). */
+    name: z.string().min(1),
+    /** Page, download URL or DOI of the exact release. */
+    url: z.string().min(1).optional(),
+    /** Release, version or commit. */
+    version: z.string().min(1).optional(),
+    /** Date the file was retrieved or built (YYYY-MM-DD). */
+    retrieved: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD").optional(),
+    /** What was changed from the source (re-meshed, rescaled, parts split, materials…). */
+    changes: z.string().min(1).optional(),
+  })
+  .strict();
+export type ModelSource = z.infer<typeof ModelSourceSchema>;
+
+/**
  * Optional GLB/glTF model of an equipment type — visual only: the voxel
  * parts stay the fallback, the collider is always the semantic footprint
- * and a model is never interactive by itself.
+ * and a model is never interactive by itself. Named `screen` parts keep
+ * drawing their display over the model.
  */
 export const EquipmentModelSchema = z
   .object({
@@ -206,6 +234,10 @@ export const EquipmentModelSchema = z
     /** SPDX id or licence text. */
     license: z.string().min(1),
     attribution: LocalizedTextSchema.optional(),
+    /** Provenance of the file. */
+    source: ModelSourceSchema.optional(),
+    /** Use status (`MODEL_USE`); `assets inspect` notes a reference without one. */
+    use: z.enum(MODEL_USE).optional(),
   })
   .strict();
 export type EquipmentModel = z.infer<typeof EquipmentModelSchema>;

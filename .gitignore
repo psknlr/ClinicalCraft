@@ -23,3 +23,6 @@ dist-standalone/
 bench-results/
 bench-demo/
 grounding-results/
+# Python bytecode (scripts/blender)
+__pycache__/
+*.pyc

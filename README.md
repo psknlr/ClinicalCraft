@@ -39,6 +39,7 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
 [中华病例说 20 例 / CMCR collection](docs/CMCR_CASES.md) ·
 [Facilities & equipment](docs/FACILITIES.md) ·
 [Local assets](docs/ASSETS.md) ·
+[Equipment models in Blender](docs/BLENDER.md) ·
 [Design lineage](docs/DESIGN_PRINCIPLES.md) ·
 [Glossary](docs/GLOSSARY.md) ·
 [CLI reference](packages/cli/README.md)

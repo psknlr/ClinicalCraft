@@ -158,6 +158,8 @@ developer documents use.
 | trace | trace (live trace) | 轨迹（实时轨迹） | episode trace, `--trace` | |
 | transcript | transcript (session record) | 会话记录 | JSONL transcript | |
 | approval | approve, deny, approval | 批准、拒绝、审批 | approval gate | |
+| equipment model | 3D model (of an equipment type) | 设备模型 | `model` (GLB/glTF), `clinicalcraft assets inspect` | visual only: the voxel parts stay the fallback and the footprint the collider ([ASSETS.md](ASSETS.md)) |
+| model use status | cleared; research only; licence check pending | 可发布；仅限研究；许可待核实 | `model.use`: `cleared` / `research-only` / `pending`; `model.source` (provenance) | never "approval" (审批 is the action gate) |
 | grounding | grounded in the case record: facts only from the case | 依据病例：事实只来自病例记录 | grounding rules (ARCHITECTURE §2.1) | "grounding" is technical; learners read what it means |
 | grounding check | grounding check | 事实核验 | `verifyGrounding` | |
 | benchmark | benchmark | 基准测试 | `bench` | |

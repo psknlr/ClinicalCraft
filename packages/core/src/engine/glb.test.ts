@@ -54,7 +54,7 @@ function boxGlb(
 
 const sha = (b: Uint8Array) => createHash("sha256").update(b).digest("hex");
 const close = (v: number[], w: number[]) => v.forEach((x, i) => expect(x).toBeCloseTo(w[i], 6));
-const ref = (over: Partial<EquipmentModel> = {}): EquipmentModel => ({ uri: "models/bed.glb", license: "CC0-1.0", ...over });
+const ref = (over: Partial<EquipmentModel> = {}): EquipmentModel => ({ uri: "models/bed.glb", license: "CC0-1.0", use: "cleared", source: { name: "test" }, ...over });
 
 describe("parseGlb", () => {
   it("reads the container, counts and the accessor bounding box", () => {
@@ -145,12 +145,36 @@ describe("checkModelReference", () => {
     expect(codes(checkModelReference(info, ref({ sha256: sha(bytes) }), bed))).toEqual(["info:scale"]);
     expect(codes(checkModelReference(info, ref({ sha256: sha(bytes) }), { w: 0.9, d: 2.1, h: 3 }))).toEqual(["info:scale", "warning:scale"]);
   });
+  it("treats footprint axes under 5 cm as an aim allowance: a thinner model fits, a thicker one does not", () => {
+    // a scalpel lying flat: 16 × 0.9 × 1.6 cm in a 16 × 3 × 4 cm footprint
+    const flat = boxGlb([0.16, 0.009, 0.016]);
+    const fp = { w: 0.16, d: 0.04, h: 0.03 };
+    expect(codes(checkModelReference(parseGlb(flat), ref({ scale: 1, sha256: sha(flat) }), fp))).toEqual([]);
+    const thick = boxGlb([0.16, 0.07, 0.016]);
+    expect(codes(checkModelReference(parseGlb(thick), ref({ scale: 1, sha256: sha(thick) }), fp))).toEqual(["error:scale"]);
+    // a long axis still catches a model authored in centimetres
+    const cm = boxGlb([16, 0.9, 1.6]);
+    expect(codes(checkModelReference(parseGlb(cm), ref({ scale: 1, sha256: sha(cm) }), fp))).toEqual(["error:scale"]);
+  });
   it("requires a usable licence, attribution for CC-BY, and a pinned, matching sha256", () => {
     expect(codes(checkModelReference(info, ref({ license: "UNKNOWN", scale: 1, sha256: sha(bytes) }), bed))).toEqual(["error:license"]);
     expect(codes(checkModelReference(info, ref({ license: "CC-BY-4.0", scale: 1, sha256: sha(bytes) }), bed))).toEqual(["warning:attribution"]);
     expect(codes(checkModelReference(info, ref({ license: "CC-BY-4.0", attribution: { en: "A. Author", "zh-CN": "作者" }, scale: 1, sha256: sha(bytes) }), bed))).toEqual([]);
     expect(codes(checkModelReference(info, ref({ scale: 1 }), bed))).toEqual(["warning:sha256"]);
     expect(codes(checkModelReference(info, ref({ scale: 1, sha256: "0".repeat(64) }), bed, { sha256: sha(bytes) }))).toEqual(["error:sha256"]);
+  });
+  it("checks the use status and provenance: pending fails, research-only and non-commercial-but-cleared warn", () => {
+    const ok = { scale: 1, sha256: sha(bytes) };
+    expect(codes(checkModelReference(info, ref({ ...ok, use: undefined }), bed))).toEqual(["info:use"]);
+    expect(codes(checkModelReference(info, ref({ ...ok, use: "pending", source: undefined }), bed))).toEqual(["error:use"]);
+    expect(codes(checkModelReference(info, ref({ ...ok, use: "research-only" }), bed))).toEqual(["warning:use"]);
+    expect(codes(checkModelReference(info, ref({ ...ok, source: undefined }), bed))).toEqual(["info:source"]);
+    const by = { en: "A. Author", "zh-CN": "作者" };
+    for (const license of ["CC-BY-NC-4.0", "CC BY-NC-SA 4.0", "CC-BY-NC-ND-4.0", "research and non-commercial use only"]) {
+      expect([license, codes(checkModelReference(info, ref({ ...ok, license, attribution: by }), bed))]).toEqual([license, ["warning:use"]]);
+      expect([license, codes(checkModelReference(info, ref({ ...ok, license, attribution: by, use: "research-only" }), bed))]).toEqual([license, ["warning:use"]]);
+    }
+    expect(codes(checkModelReference(info, ref({ ...ok, license: "CC-BY-4.0", attribution: by }), bed))).toEqual([]);
   });
   it("rejects required extensions the renderer cannot load (DRACO only with a decoder)", () => {
     const draco = parseGlb(boxGlb([0.9, 0.6, 2.1], { used: ["KHR_draco_mesh_compression"], required: ["KHR_draco_mesh_compression"] }));
