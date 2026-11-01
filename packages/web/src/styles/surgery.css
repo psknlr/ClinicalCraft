@@ -1,0 +1,300 @@
+/*
+ * The laparoscopic surgery window (ui/panels/surgery.ts): the atlas window's dark palette, the
+ * laparoscopic screen on the left (round vignette, handle labels over the canvas), the operator's
+ * controls on the right. Labels are placed through CSSOM (no style="" attributes: strict CSP).
+ */
+.window-surgery {
+  width: 96vw;
+  height: 92vh;
+  max-height: 92vh;
+  background: #203a36;
+  border-color: #8caf8a;
+  color: #eff0d5;
+}
+@supports (height: 100dvh) {
+  .window-surgery {
+    height: 92dvh;
+    max-height: 92dvh;
+  }
+}
+.window-surgery .window-head,
+.window-surgery .window-foot {
+  background: #18302c;
+  border-color: #3d5d50;
+}
+.window-surgery .window-head .eyebrow,
+.window-surgery .window-foot {
+  color: #a8c49a;
+}
+.window-surgery .window-body {
+  padding: 0;
+  display: flex;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  line-height: 1.5;
+}
+.window-surgery button {
+  background: #2c4a42;
+  color: #eff0d5;
+  border-color: #6e9378;
+  box-shadow: none;
+  padding: 6px 10px;
+  font-size: 11px;
+}
+.window-surgery button:disabled {
+  opacity: 0.45;
+}
+.window-surgery button.danger {
+  border-color: #c5674c;
+  color: #ffd9c9;
+}
+.window-surgery button[aria-pressed="true"],
+.window-surgery button.selected {
+  background: #e7c36b;
+  color: #2a2208;
+}
+.window-surgery select,
+.window-surgery input[type="number"] {
+  background: #fff9e9;
+  color: #233128;
+  padding: 4px 6px;
+  font-size: 12px;
+  max-width: 100%;
+}
+.window-surgery input[type="number"] {
+  width: 64px;
+  border: 2px solid #b3c09f;
+}
+.window-surgery .muted {
+  color: #b0c4a4;
+}
+.window-surgery .warn {
+  color: #f0d283;
+}
+.window-surgery .bad {
+  color: #ffb4a0;
+}
+.window-surgery .notice {
+  background: #12251f;
+  border-color: #4d6e60;
+  color: #eff0d5;
+}
+
+.surgery {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(320px, 1fr);
+  flex: 1;
+  min-height: 0;
+  width: 100%;
+}
+.lap-stage-wrap {
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 2px solid #3d5d50;
+}
+.lap-top {
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+}
+.lap-stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  display: flex;
+  background: #000;
+  overflow: hidden;
+}
+/* the round image of a laparoscope */
+.lap-stage::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse at 50% 50%, transparent 56%, rgba(0, 0, 0, 0.55) 70%, #000 80%);
+}
+.lap-canvas {
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  flex: 1;
+  display: block;
+}
+.lap-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.window-surgery .lap-label {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin: -26px 0 0 -14px;
+  padding: 1px 6px;
+  font: 700 11px var(--mono);
+  background: #12251fcc;
+  color: #e7c36b;
+  border: 1px solid #e7c36b;
+  pointer-events: auto;
+  white-space: nowrap;
+}
+.window-surgery .lap-label.selected {
+  background: #e7c36b;
+  color: #2a2208;
+}
+.lap-dark {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  max-width: 70%;
+  text-align: center;
+  font-size: 13px;
+  color: #b0c4a4;
+  z-index: 2;
+}
+.lap-status {
+  padding: 8px 14px;
+  font-size: 12px;
+  background: #12251f;
+  border-top: 1px solid #3d5d50;
+}
+.lap-line + .lap-line {
+  margin-top: 3px;
+}
+.lap-note {
+  padding: 8px 14px;
+  font-size: 10.5px;
+  color: #b0c4a4;
+}
+
+.surgery-side {
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 12px 16px 20px;
+  min-height: 0;
+}
+.lap-section {
+  border-bottom: 1px solid #3d5d50;
+  padding: 6px 0 12px;
+}
+.lap-section h4 {
+  margin: 6px 0 8px;
+  font-size: 13px;
+  color: #e7c36b;
+}
+.lap-section h5 {
+  margin: 8px 0 6px;
+  font-size: 12px;
+}
+.lap-section p {
+  margin: 4px 0 8px;
+}
+.lap-card,
+.lap-block,
+.lap-port {
+  background: #18302c;
+  border: 1px solid #3d5d50;
+  padding: 8px 10px;
+  margin: 6px 0;
+}
+.lap-port.active {
+  border-color: #e7c36b;
+}
+.lap-port-head {
+  display: flex;
+  gap: 6px;
+  align-items: baseline;
+  flex-wrap: wrap;
+  cursor: pointer;
+}
+.lap-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  flex-wrap: wrap;
+  margin: 4px 0;
+}
+.lap-inst {
+  min-width: 90px;
+  font-size: 12px;
+}
+.lap-ports,
+.lap-held,
+.lap-regions,
+.lap-tube-list {
+  margin: 4px 0;
+  padding-left: 16px;
+}
+.lap-tube-list {
+  list-style: none;
+  padding: 0;
+}
+.window-surgery .lap-tube {
+  display: grid;
+  grid-template-columns: 34px 1fr;
+  gap: 2px 8px;
+  width: 100%;
+  text-align: left;
+  margin: 3px 0;
+  padding: 6px 8px;
+  font-size: 12px;
+}
+.lap-tube small {
+  grid-column: 2;
+  color: inherit;
+  opacity: 0.85;
+}
+.lap-dirs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 2px 10px;
+  margin: 4px 0;
+}
+.lap-check {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  font-size: 12px;
+}
+.lap-check.block {
+  display: flex;
+  margin: 3px 0;
+}
+.notice-inline {
+  border-left: 3px solid #e7c36b;
+  padding-left: 8px;
+}
+
+/* debrief */
+.assessment .operation {
+  margin-top: 14px;
+}
+.assessment .operation .ok {
+  color: var(--ok);
+}
+.assessment .operation .warn {
+  color: #8a6a1c;
+}
+.assessment .operation .bad {
+  color: var(--danger);
+  font-weight: 700;
+}
+
+@media (max-width: 900px) {
+  .surgery {
+    grid-template-columns: 1fr;
+    grid-template-rows: minmax(240px, 45%) 1fr;
+  }
+  .lap-stage-wrap {
+    border-right: 0;
+    border-bottom: 2px solid #3d5d50;
+  }
+  .window-surgery {
+    width: 98vw;
+    height: 94vh;
+  }
+}

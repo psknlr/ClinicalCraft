@@ -175,7 +175,28 @@ export interface AssessmentReport {
   /** `unread` lists result keys (`${id}@${phase}`) ordered but never read. */
   investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };
   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
-  safety: { contraindicated: { interventionId: string; at: number }[]; criticalAlarms: number };
+  safety: {
+    contraindicated: { interventionId: string; at: number }[];
+    criticalAlarms: number;
+    /**
+     * Case safety gates that hold (docs/PROCEDURE.md §8), and the verdict they give: `safety-critical`
+     * (no score compensates it — the percentage is capped), `complication`, or `clear`. Present when the
+     * case has gates.
+     */
+    gates?: { id: string; verdict: "safety-critical" | "complication" }[];
+    verdict?: "clear" | "complication" | "safety-critical";
+  };
+  /**
+   * What the operation really did (cases with a `procedure`, once it has begun): unsafe acts, injuries and
+   * whether they were recognised, safety pauses with what was claimed against what the field showed, and
+   * the counters. For the debrief — never shown to an operator during the case.
+   */
+  procedure?: {
+    unsafe: { code: string; structure?: string; at: number }[];
+    injuries: { kind: string; structure: string; recognised: boolean; severity: "minor" | "major" }[];
+    pauses: { view: string; at: number; achieved: boolean; claimsMatchField: boolean }[];
+    counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number };
+  };
   /**
    * `met: null` = transcript-judged item (needs the examiner agent). `scored: false` (present only then): the
    * item's `scoredWhen` does not hold, so it counts neither as earned nor as possible. `critical: true`
@@ -183,7 +204,7 @@ export interface AssessmentReport {
    */
   rubric: { id: string; domain: string; weight: number; met: boolean | null; scored?: false; critical?: true }[];
   /** Deterministic rubric items only, scored ones only (`scoredWhen`). */
-  score: { earned: number; possible: number; percent: number };
+  score: { earned: number; possible: number; percent: number; uncapped?: number };
   /**
    * Critical deterministic items missed — scored and not met — in rubric order. Present when the case marks
    * any item `critical` (empty: none missed); every debrief shows them prominently. Judged critical items are

@@ -197,6 +197,7 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     case "flag.changed":
     case "note.added":
     case "action.rejected":
+    case "procedure.step":
       return [];
     default: {
       const never: never = event;

@@ -330,6 +330,30 @@ solution is sent to the browser).
   must say what the learner means *now*: "/give epipen" during anaphylaxis is
   IM adrenaline, not a take-home prescription.
 
+### 6.1 Operations (`procedure`, `safetyGates`)
+
+A surgical case can carry the operation itself: `procedure` (anatomy, regions, port sites and plans,
+instruments, safety views, bail-outs — the contract is [PROCEDURE.md](PROCEDURE.md)) acted on by the
+`operate` action in the phases it lists. Rules for authoring one:
+
+* **Provenance on every structure.** `reference` (adapted reference anatomy), `imaging` (segmented from
+  the patient's own images), `authored`, `published-case`; never present reference anatomy as the
+  patient's. A ductal or arterial variant appears only when the source documents it.
+* **Names stay hidden.** Give every duct and vessel an `appearsAs` description (what it looks like); the
+  operator and agents see handles, not names (`cases validate` warns otherwise).
+* **Gate the operation with the checklist.** Open the operative phase on the Time Out (`enterWhen:
+  {"intervened": "time-out"}`) and gate induction on the Sign In; physiology events may read the field
+  (`{"procedure": {"insufflated": true}}`) — label simulated values as simulated in their message.
+* **Score the operation in the rubric**: the critical view documented and true (`{"procedure": {"documented":
+  "cvs", "valid": true}}`), correct identification, no irreversible step on unconfirmed anatomy (an
+  avoided-harm item with `scoredWhen`), and complication management items `scoredWhen` the complication
+  occurred (the percentage renormalises when it did not).
+* **`safetyGates`**: outcomes no score compensates (a bile duct injury, an irreversible step without a true
+  critical view, an unrecognised injury) are `safety-critical` gates with a `capPercent`; recoverable
+  complications are `complication` gates. Every debrief states the verdict.
+* The reference `solution` performs the operation with `operate` steps; handles are assigned in the order
+  structures come into view (`cases verify` replays them).
+
 ## 7. Learning design
 
 * 4–6 `objectives` (chapters) in logical order with `hint`, `guidance` and

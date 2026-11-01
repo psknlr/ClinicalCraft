@@ -325,6 +325,7 @@ export class PermissionState {
 export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>> = {
   start: null,
   ask: "ask_patient",
+  operate: "operate",
   examine: "examine",
   order: "order_test",
   read: "read_result",

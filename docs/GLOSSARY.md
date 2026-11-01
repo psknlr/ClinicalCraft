@@ -45,6 +45,13 @@ names. Only the words around them follow the glossary.
 | approval mode `bypass` | 跳过 (agent), 绕过 (web) | **绕过** | one word |
 | grounding benchmark (`bench grounding`) | 语义落地基准 | **事实依据基准** | 语义落地 is NLP jargon; the benchmark checks that answers and acts rest on the case record (依据病例) |
 | debrief `boundaries` | 复评边界 / "Boundaries" (web), 证据边界 / "Evidence boundaries" (CLI) | **证据边界** / **evidence boundaries** | what the evidence does and does not show |
+| the operative field of a case's `procedure` | — | **术野** / **operative field** | the surgeon's word for what the laparoscope shows and the instruments act on |
+| `views[]` "cvs" | — | **关键安全视野** / **critical view of safety** (CVS) | the established term (Strasberg; SAGES); never "安全视图" |
+| `safety-pause` | — | **安全暂停** / **safety pause** | a pause before an irreversible step to state the critical view; it records the operator's judgement and is never shown as a verification |
+| `bailout` strategies | — | **补救策略** / **bail-out** (求助、胆囊次全切除、中转开腹) | the safe alternatives when the critical view cannot be reached; not "失败方案" |
+| a duct or vessel handle `T1…` | — | **结构 T1…** / **structure T1…** | what the operator sees before identifying it; the anatomy's name appears only after imaging |
+| the web window that runs the operation (`surgery`) | — | **腹腔镜手术** / **Laparoscopic surgery** (HUD button 手术 / Surgery) | names what the learner does, not the engine part |
+| `portPlans[]` | — | **布孔方案** / **port plan** | the surgical term for where the trocars go |
 | work-up plan | "workup plan" (agent, CLI) | **work-up plan** | British spelling of the noun; the tool keeps its id `update_workup` |
 | operating room (case setting, room kind) | "Operating room" (web, CLI) | **operating theatre** | British usage, as the world and facilities already say; the id stays `operating-room` |
 

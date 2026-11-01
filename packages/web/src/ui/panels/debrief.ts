@@ -3,7 +3,8 @@
  * reasoning, evidence boundaries, unknowns, the case's learning outcomes,
  * teaching points, references, its clinical review status, notice) plus the `AssessmentReport`
  * visualised — objectives, history/exam coverage, investigation stewardship,
- * first-try decisions, safety events, the rubric (deterministic met/unmet,
+ * first-try decisions, safety events, the operation (cases with a `procedure`,
+ * once the case is finished: `debrief-operation.ts`), the rubric (deterministic met/unmet,
  * examiner-judged items with evidence) and the examiner narrative. Scores are
  * formative only (DESIGN_PRINCIPLES §2.6).
  */
@@ -14,6 +15,7 @@ import { ct, joinList, reviewLine, tr, trMaybe } from "../../i18n/index.js";
 import { clear, h, mount } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { investigationName } from "./common.js";
+import { operationSection } from "./debrief-operation.js";
 
 function bar(done: number, total: number): HTMLElement {
   const pct = total ? Math.round((done / total) * 100) : 100;
@@ -136,6 +138,7 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
           : h("p", { class: "small muted" }, tr("debrief.noSafety")),
       ),
     ),
+    operationSection(c, r, state.finished),
     r.rubric.length && final
       ? h(
           "div",
@@ -243,7 +246,8 @@ export function debriefPanel(app: App): () => PanelView {
           h("div", null, h("b", null, String(s.seen.length)), h("small", null, tr("debrief.metric.seen"))),
           h("div", null, h("b", null, `${firstTry}/${decisions}`), h("small", null, tr("debrief.metric.firstTry"))),
           h("div", null, h("b", null, String(s.hints)), h("small", null, tr("debrief.metric.hints"))),
-          h("div", null, h("b", null, report ? `${report.score.percent}%` : "…"), h("small", null, tr("debrief.metric.score"))),
+          // an operation's score mid-case would tell whether a hidden view or injury holds (docs/PROCEDURE.md §7)
+          h("div", null, h("b", null, report ? (c.procedure && !unlocked ? "—" : `${report.score.percent}%`) : "…"), h("small", null, tr("debrief.metric.score"))),
         ),
         c.clock.mode === "simulated" ? h("p", { class: "small muted", style: "text-align:center" }, tr("debrief.minutes", { n: Math.round(s.clock) })) : null,
         unlocked

@@ -9,6 +9,9 @@ export { checkCaseIntegrity } from "./integrity.js";
 export { checkContentStandard, citedDois, caseTestUtterances, CONTENT_MINIMUMS, WELL_FORMED_DOI, type TestUtterance } from "./content-standard.js";
 export { verifyCase } from "./verify.js";
 
+// the operative field (docs/PROCEDURE.md)
+export * from "./procedure/index.js";
+
 // session lifecycle
 export { createSession, reduce, replay } from "./reducer.js";
 

@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { IdSchema, type Vitals, type VitalKey } from "./common.js";
+import { ProcedureOpSchema, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
 
 /**
  * Session — the deterministic, event-sourced state of one learner working
@@ -39,6 +40,8 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("advance-time"), minutes: z.number().positive().max(24 * 60), reason: z.enum(["wait", "travel", "procedure"]).optional(), ...base }).strict(),
   z.object({ type: z.literal("flag"), flag: IdSchema, value: z.boolean().default(true), ...base }).strict(),
   z.object({ type: z.literal("note"), text: z.string().max(4000), ...base }).strict(),
+  /** One step of the case's operation (docs/PROCEDURE.md): the operative field's only way in. */
+  z.object({ type: z.literal("operate"), op: ProcedureOpSchema, ...base }).strict(),
   z.object({ type: z.literal("finish"), ...base }).strict(),
 ]);
 export type ClinicalAction = z.infer<typeof ClinicalActionSchema>;
@@ -107,6 +110,8 @@ export interface SessionState {
    * (on the monitor from the start). See `monitorAttached`.
    */
   monitorAttachedAt?: number;
+  /** The operative field (cases with a `procedure`), from the first accepted `operate`. */
+  procedure?: ProcedureState;
   /** Monotonic count of accepted actions (for transcripts / ordering). */
   seq: number;
 }
@@ -139,6 +144,8 @@ export type DomainEvent =
   | { type: "time.advanced"; from: number; to: number }
   | { type: "flag.changed"; flag: string; value: boolean }
   | { type: "note.added" }
+  /** A step of the operation was carried out; `signals` are what the operator sees or feels (never the hidden anatomy). */
+  | { type: "procedure.step"; op: ProcedureOpType; signals: ProcedureSignal[] }
   | { type: "action.rejected"; action: ClinicalActionType; code: RejectionCode; message: string };
 
 export type RejectionCode =

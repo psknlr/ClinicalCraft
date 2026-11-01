@@ -53,6 +53,7 @@ export type PanelName =
   | "craft"
   | "help"
   | "atlas"
+  | "surgery"
   | "autopilot"
   | "elevator"
   | "confirm-reset";

@@ -5,7 +5,7 @@
  * `updatedInput` comes back as an action (`actionFromToolInput`), resolved the
  * same way the tool itself resolves ids and free-text queries.
  */
-import { historyTwin, matchHistory, t, type CaseDefinition, type ClinicalAction, type LocalizedText } from "@clinicalcraft/core";
+import { historyTwin, matchHistory, ProcedureOpSchema, t, type CaseDefinition, type ClinicalAction, type LocalizedText } from "@clinicalcraft/core";
 import { resolveFinding, resolveHits, resolveIntervention, resolveInvestigation, strArg, unresolvedOutput, type Resolution } from "../tools/clinical.js";
 import { interventionLabel, investigationName } from "../tools/format.js";
 
@@ -30,6 +30,8 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
       return { phase: action.phase };
     case "advance-time":
       return { minutes: action.minutes };
+    case "operate":
+      return { ...action.op };
     case "finish":
     case "start":
     case "hint":
@@ -107,6 +109,10 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
       return { ok: true, action: { ...action, phase: strArg(input, "phase") } };
     case "advance-time":
       return { ok: true, action: { ...action, minutes: Number(input.minutes) } };
+    case "operate": {
+      const op = ProcedureOpSchema.safeParse(input);
+      return op.success ? { ok: true, action: { ...action, op: op.data } } : { ok: true, action };
+    }
     case "finish":
     case "start":
     case "hint":

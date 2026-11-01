@@ -71,6 +71,77 @@ export const VitalsSchema = z
 export type Vitals = z.infer<typeof VitalsSchema>;
 
 /* ------------------------------------------------------------------ */
+/* Procedure condition leaf (docs/PROCEDURE.md §6)                     */
+/* ------------------------------------------------------------------ */
+
+export const BailoutSchema = z.enum([
+  "call-help",
+  "subtotal-fenestrating",
+  "subtotal-reconstituting",
+  "convert-open",
+  "abandon-refer",
+]);
+export type Bailout = z.infer<typeof BailoutSchema>;
+
+export const ImagingSchema = z.enum(["ioc", "lap-us"]);
+
+export const InjuryKindSchema = z.enum([
+  "bile-duct-injury",
+  "vascular-injury",
+  "bleeding",
+  "perforation",
+  "thermal-injury",
+  "bile-leak",
+]);
+export type InjuryKind = z.infer<typeof InjuryKindSchema>;
+
+/**
+ * Unsafe acts the engine records whatever their outcome (docs/PROCEDURE.md §6). An unsafe act is not an
+ * injury: clipping the right duct without a documented view is still unsafe.
+ */
+export const UnsafeCodeSchema = z.enum([
+  "irreversible-without-pause",
+  "irreversible-without-view",
+  "irreversible-on-unidentified",
+  "irreversible-on-misidentified",
+  "blind-in-obscured-field",
+  "energy-near-hidden-hazard",
+  "excessive-traction",
+  "continued-after-injury",
+  "insufflation-over-max",
+]);
+export type UnsafeCode = z.infer<typeof UnsafeCodeSchema>;
+
+const Range = { gte: z.number().optional(), lte: z.number().optional() };
+
+export const ProcedurePredicateSchema = z.union([
+  z.object({ view: IdSchema }).strict(),
+  z.object({ criterion: IdSchema }).strict(),
+  /** A safety pause documented `documented`; `valid`: every criterion claimed true and truly met. */
+  z.object({ documented: IdSchema, valid: z.boolean().optional() }).strict(),
+  z.object({ injury: z.union([InjuryKindSchema, z.literal("any")]), recognised: z.boolean().optional() }).strict(),
+  z.object({ unsafe: z.union([UnsafeCodeSchema, z.literal("any")]) }).strict(),
+  z.object({ clipped: IdSchema, minCount: z.number().int().min(1).optional() }).strict(),
+  z.object({ divided: IdSchema }).strict(),
+  z.object({ isolated: IdSchema }).strict(),
+  /** The operator named a structure (`as` absent: identified it correctly). */
+  z.object({ identified: IdSchema, as: IdSchema.optional() }).strict(),
+  z.object({ specimen: z.enum(["in-situ", "detached", "bagged", "extracted"]) }).strict(),
+  z.object({ bailout: z.union([BailoutSchema, z.literal("any")]) }).strict(),
+  z.object({ imaged: ImagingSchema }).strict(),
+  z.object({ plan: IdSchema }).strict(),
+  z.object({ insufflated: z.boolean(), pressure: z.object(Range).strict().optional() }).strict(),
+  z.object({ bleeding: z.enum(["any", "ooze", "brisk", "major"]), controlled: z.boolean().optional() }).strict(),
+  z.object({ spillage: z.enum(["bile", "stones"]), cleared: z.boolean().optional() }).strict(),
+  z.object({ counter: z.enum(["steps", "exchanges", "clashes", "crossings"]), ...Range }).strict(),
+  z.object({ inspected: z.boolean() }).strict(),
+  /** The region was dissected while its exposure was at least `atLeast` (the best exposure of any dissection step there). */
+  z.object({ dissectedExposed: IdSchema, atLeast: z.number().min(0).max(1) }).strict(),
+  z.object({ closed: z.boolean() }).strict(),
+]);
+export type ProcedurePredicate = z.infer<typeof ProcedurePredicateSchema>;
+
+/* ------------------------------------------------------------------ */
 /* Condition DSL                                                       */
 /* ------------------------------------------------------------------ */
 
@@ -120,7 +191,8 @@ export type Condition =
   /** Simulated minutes elapsed since the case started. */
   | { elapsed: { gte?: number; lte?: number } }
   /** Number of hints used. */
-  | { hints: { gte?: number; lte?: number } };
+  | { hints: { gte?: number; lte?: number } }
+  | { procedure: ProcedurePredicate };
 
 export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
   z.union([
@@ -143,6 +215,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ vital: VitalKeySchema, op: z.enum(["lt", "lte", "gt", "gte", "eq"]), value: z.number() }).strict(),
     z.object({ elapsed: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
     z.object({ hints: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
+    /** The operative field (case `procedure`, docs/PROCEDURE.md §6). */
+    z.object({ procedure: ProcedurePredicateSchema }).strict(),
   ]),
 );
 
