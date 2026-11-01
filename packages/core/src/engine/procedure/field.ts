@@ -59,9 +59,9 @@ export function isVisible(def: ProcedureDefinition, s: ProcedureState, st: Struc
   return clearedFraction(def, s, st.in) >= (st.revealAt ?? 0.5);
 }
 
-/** The appearance rule in force for a structure (the first `when` whose exposure test holds), if any. */
+/** The appearance rule in force for a structure (the first `when` whose exposure or clearance test holds), if any. */
 export function appearanceRule(def: ProcedureDefinition, s: ProcedureState, st: Structure) {
-  return st.appearsAs?.when.find((w) => exposure(def, s, w.exposure) < w.below);
+  return st.appearsAs?.when.find((w) => (w.cleared != null ? clearedFraction(def, s, w.cleared) : exposure(def, s, w.exposure!)) < w.below);
 }
 
 /** Visible tubular structures, in the order their handles were assigned. */

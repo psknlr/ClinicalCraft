@@ -442,7 +442,8 @@
                             "energy-near-hidden-hazard",
                             "excessive-traction",
                             "continued-after-injury",
-                            "insufflation-over-max"
+                            "insufflation-over-max",
+                            "dissection-beyond-safe-plane"
                           ]
                         },
                         {
@@ -714,6 +715,18 @@
                     "closed"
                   ],
                   "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "variant": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "variant"
+                  ],
+                  "additionalProperties": false
                 }
               ]
             }
@@ -733,6 +746,9 @@
             "type": {
               "type": "string",
               "const": "start"
+            },
+            "variant": {
+              "$ref": "#/definitions/Id"
             },
             "by": {
               "type": "string",
@@ -3736,6 +3752,9 @@
                             "exposure": {
                               "$ref": "#/definitions/Id"
                             },
+                            "cleared": {
+                              "$ref": "#/definitions/Id"
+                            },
                             "below": {
                               "type": "number",
                               "minimum": 0,
@@ -3749,7 +3768,6 @@
                             }
                           },
                           "required": [
-                            "exposure",
                             "below",
                             "text"
                           ],
@@ -3762,6 +3780,9 @@
                       "default"
                     ],
                     "additionalProperties": false
+                  },
+                  "crosses": {
+                    "$ref": "#/definitions/Id"
                   },
                   "mesh": {
                     "type": "string"
@@ -3903,6 +3924,27 @@
                   "bed": {
                     "type": "boolean",
                     "default": false
+                  },
+                  "fibrosis": {
+                    "type": "object",
+                    "properties": {
+                      "safeTo": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "exclusiveMaximum": 1
+                      },
+                      "injures": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "finding": {
+                        "$ref": "#/definitions/LocalizedText"
+                      }
+                    },
+                    "required": [
+                      "safeTo",
+                      "finding"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -4243,6 +4285,355 @@
                 "minimum": 0
               },
               "default": {}
+            },
+            "variants": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "summary": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "provenance": {
+                    "type": "string",
+                    "enum": [
+                      "published-case",
+                      "imaging",
+                      "reference",
+                      "guideline",
+                      "authored",
+                      "synthetic"
+                    ]
+                  },
+                  "references": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 400
+                    },
+                    "maxItems": 8,
+                    "default": []
+                  },
+                  "anatomy": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "name": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "kind": {
+                          "type": "string",
+                          "enum": [
+                            "organ",
+                            "duct",
+                            "artery",
+                            "vein",
+                            "ligament",
+                            "plate"
+                          ]
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "specimen",
+                            "target",
+                            "critical",
+                            "organ",
+                            "landmark"
+                          ]
+                        },
+                        "parent": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "joins": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "default": []
+                        },
+                        "enters": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "points": {
+                          "type": "array",
+                          "items": {
+                            "type": "array",
+                            "minItems": 3,
+                            "maxItems": 3,
+                            "items": [
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              },
+                              {
+                                "type": "number"
+                              }
+                            ]
+                          },
+                          "minItems": 1
+                        },
+                        "radius": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "in": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "revealAt": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        },
+                        "appearsAs": {
+                          "type": "object",
+                          "properties": {
+                            "default": {
+                              "$ref": "#/definitions/LocalizedText"
+                            },
+                            "when": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "exposure": {
+                                    "$ref": "#/definitions/Id"
+                                  },
+                                  "cleared": {
+                                    "$ref": "#/definitions/Id"
+                                  },
+                                  "below": {
+                                    "type": "number",
+                                    "minimum": 0,
+                                    "maximum": 1
+                                  },
+                                  "text": {
+                                    "$ref": "#/definitions/LocalizedText"
+                                  },
+                                  "appearsToEnter": {
+                                    "$ref": "#/definitions/Id"
+                                  }
+                                },
+                                "required": [
+                                  "below",
+                                  "text"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "default": []
+                            }
+                          },
+                          "required": [
+                            "default"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "crosses": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "mesh": {
+                          "type": "string"
+                        },
+                        "provenance": {
+                          "type": "string",
+                          "enum": [
+                            "published-case",
+                            "imaging",
+                            "reference",
+                            "guideline",
+                            "authored",
+                            "synthetic"
+                          ]
+                        },
+                        "note": {
+                          "$ref": "#/definitions/LocalizedText"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "kind",
+                        "role",
+                        "points",
+                        "radius",
+                        "provenance"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "default": []
+                  },
+                  "remove": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "default": []
+                  },
+                  "regions": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "name": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "units": {
+                          "type": "integer",
+                          "exclusiveMinimum": 0
+                        },
+                        "centre": {
+                          "type": "array",
+                          "minItems": 3,
+                          "maxItems": 3,
+                          "items": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        "radius": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "after": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "default": []
+                        },
+                        "exposure": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "structure": {
+                                "$ref": "#/definitions/Id"
+                              },
+                              "direction": {
+                                "anyOf": [
+                                  {
+                                    "type": "array",
+                                    "minItems": 3,
+                                    "maxItems": 3,
+                                    "items": [
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "number"
+                                      },
+                                      {
+                                        "type": "number"
+                                      }
+                                    ]
+                                  },
+                                  {
+                                    "type": "array",
+                                    "items": {
+                                      "type": "string",
+                                      "enum": [
+                                        "cephalad",
+                                        "caudal",
+                                        "patient-left",
+                                        "patient-right",
+                                        "anterior",
+                                        "posterior"
+                                      ]
+                                    },
+                                    "minItems": 1
+                                  }
+                                ]
+                              },
+                              "full": {
+                                "type": "number",
+                                "minimum": 0,
+                                "maximum": 1
+                              }
+                            },
+                            "required": [
+                              "structure",
+                              "direction"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "default": []
+                        },
+                        "hazards": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "default": []
+                        },
+                        "bed": {
+                          "type": "boolean",
+                          "default": false
+                        },
+                        "fibrosis": {
+                          "type": "object",
+                          "properties": {
+                            "safeTo": {
+                              "type": "number",
+                              "exclusiveMinimum": 0,
+                              "exclusiveMaximum": 1
+                            },
+                            "injures": {
+                              "$ref": "#/definitions/Id"
+                            },
+                            "finding": {
+                              "$ref": "#/definitions/LocalizedText"
+                            }
+                          },
+                          "required": [
+                            "safeTo",
+                            "finding"
+                          ],
+                          "additionalProperties": false
+                        }
+                      },
+                      "required": [
+                        "id"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "default": []
+                  },
+                  "stones": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "summary",
+                  "provenance"
+                ],
+                "additionalProperties": false
+              },
+              "default": []
             },
             "note": {
               "$ref": "#/definitions/LocalizedText"

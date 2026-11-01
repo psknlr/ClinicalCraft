@@ -9,10 +9,10 @@ This file is for contributors (Claude Code, Codex, Grok CLI, ZCode, humans).
 - `packages/content` — cases, facilities, room templates, equipment catalogs, benchmark scenarios (`bench/<suite>/`), JSON Schemas (data only; loaded by `loadContent` in `@clinicalcraft/agent/node`).
 - `packages/agent` — runtime: Op/Event protocol, ClinicalSession (`src/session/`), providers, tools (clinical, world, scope of practice), approvals, hooks, skills, embodied mode, world-bridge client (`src/bridge/`). `src/node/` is the only place allowed to import `node:*`.
 - `packages/cli`, `packages/server`, `packages/mcp` — front-ends (protocol clients); `server` also routes the live-world bridge, `mcp --attach` uses it.
-- `packages/bench` — embodied agent benchmark (scenarios in `packages/content/bench`, `clinicalcraft bench`).
+- `packages/bench` — embodied agent benchmark (scenarios in `packages/content/bench`, `clinicalcraft bench`), the grounding benchmark and the operative benchmark (`bench operative`: suites in `<content dir>/operative/<suite>/`, anatomy variants hidden; docs/BENCHMARK_OPERATIVE.md).
 - `packages/web` — Vite + three.js voxel world and UI (vanilla TS DOM); embodied by default (`src/app/embodied*.ts`).
 - `scripts/blender` — the Blender side of equipment models (Python inside Blender or with the `bpy` module): `clinicalcraft_blender.py` (catalog lookup, blockout, export to the model contract), `clinicalcraft_shapes.py` (shapes in a type's frame), `clinicalcraft_refine.py` (a model from a type's voxel parts), `build.py` + `builtin_models.py` (the built-in models in `packages/content/assets/models`); `.mcp.json` registers blender-mcp, telemetry off (docs/BLENDER.md).
-- Contracts: `docs/ARCHITECTURE.md`, `docs/PROTOCOL.md`, `docs/PROCEDURE.md`, `docs/EMBODIED.md` (authoritative; translated in `docs/zh-CN/EMBODIED.md`), `docs/FACILITIES.md`, `docs/CASE_AUTHORING.md`, `docs/ASSETS.md`.
+- Contracts: `docs/ARCHITECTURE.md`, `docs/PROTOCOL.md`, `docs/PROCEDURE.md`, `docs/BENCHMARK_OPERATIVE.md`, `docs/EMBODIED.md` (authoritative; translated in `docs/zh-CN/EMBODIED.md`), `docs/FACILITIES.md`, `docs/CASE_AUTHORING.md`, `docs/ASSETS.md`.
 
 ## Commands
 ```bash

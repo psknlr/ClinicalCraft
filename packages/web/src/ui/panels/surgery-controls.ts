@@ -5,7 +5,7 @@
  * offer, never a verdict: what it refuses comes back as its rejection message.
  */
 import type { CaseDefinition, DomainEvent, FieldView, InstrumentId, ProcedureDefinition, ProcedureOp } from "@clinicalcraft/core";
-import { ENERGY_INSTRUMENTS, INSTRUMENT_OPS, t } from "@clinicalcraft/core";
+import { ENERGY_INSTRUMENTS, INSTRUMENT_OPS, t, vocabularyStructures } from "@clinicalcraft/core";
 import { joinList, trMaybe } from "../../i18n/index.js";
 
 /** The surgery window is offered: the case has an operation and the session is in one of its phases. */
@@ -98,12 +98,13 @@ export function safetyPauseOp(def: ProcedureDefinition, viewId: string, ticked: 
 }
 
 /**
- * What a handle can be named as: every duct and vessel of the operation, by its localised name, sorted
- * by that name — never in the anatomy's order, which is the order handles are given out in.
+ * What a handle can be named as: every duct and vessel of the operation and of its anatomical variants
+ * (the same list whatever the patient's anatomy), by its localised name, sorted by that name — never in
+ * the anatomy's order, which is the order handles are given out in.
  */
 export function identifyChoices(def: ProcedureDefinition, locale: string): { id: string; name: string }[] {
   const tubular = new Set(["duct", "artery", "vein"]);
-  return def.anatomy
+  return vocabularyStructures(def)
     .filter((s) => tubular.has(s.kind))
     .map((s) => ({ id: s.id, name: t(s.name, locale) }))
     .sort((a, b) => a.name.localeCompare(b.name, locale) || a.id.localeCompare(b.id));

@@ -338,7 +338,13 @@ instruments, safety views, bail-outs — the contract is [PROCEDURE.md](PROCEDUR
 
 * **Provenance on every structure.** `reference` (adapted reference anatomy), `imaging` (segmented from
   the patient's own images), `authored`, `published-case`; never present reference anatomy as the
-  patient's. A ductal or arterial variant appears only when the source documents it.
+  patient's. A ductal or arterial variant appears in the base anatomy only when the source documents it.
+* **Counterfactual anatomy goes in `procedure.variants`** (PROCEDURE.md §9): a variant the source does not
+  report (an aberrant duct, a second cystic artery, a frozen triangle) is a named variant with
+  `provenance: "authored"`, a debrief `summary` and `references` for the variant itself, never the base.
+  Each variant needs its own reference path (`cases verify` replays the base one; give the variants
+  scenarios in an operative benchmark suite). Rubric items that only make sense in one variant are
+  `scoredWhen` `{"procedure": {"variant": id}}`.
 * **Names stay hidden.** Give every duct and vessel an `appearsAs` description (what it looks like); the
   operator and agents see handles, not names (`cases validate` warns otherwise).
 * **Gate the operation with the checklist.** Open the operative phase on the Time Out (`enterWhen:

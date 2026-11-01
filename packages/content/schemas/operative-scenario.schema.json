@@ -1,0 +1,1950 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ClinicalCraft operative benchmark scenario (clinicalcraft/operative-scenario@1)",
+  "description": "One scenario of the operative benchmark (<content dir>/operative/<suite>/*.json, docs/BENCHMARK_OPERATIVE.md): the case brought to its operative phase, the patient's anatomy (a procedure variant, fixed or drawn from a pool by the run seed, hidden from the agent), the task, the expected behaviour, success predicates on the final authoritative state, limits, and a reference trajectory per anatomy.",
+  "$ref": "#/definitions/OperativeScenario",
+  "definitions": {
+    "Id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 80,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+    },
+    "LocalizedText": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          },
+          "propertyNames": {
+            "pattern": "^[a-z]{2,3}(-[A-Za-z0-9]{2,8})*$"
+          }
+        }
+      ]
+    },
+    "Condition": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Condition"
+              }
+            }
+          },
+          "required": [
+            "all"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "any": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Condition"
+              }
+            }
+          },
+          "required": [
+            "any"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "not": {
+              "$ref": "#/definitions/Condition"
+            }
+          },
+          "required": [
+            "not"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "always": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "always"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asked": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "asked"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "examined": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "examined"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ordered": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "ordered"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "read": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "read"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "resultReady": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "resultReady"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decided": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "decided"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "attempted": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "attempted"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decidedFirstTry": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "decidedFirstTry"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intervened": {
+              "$ref": "#/definitions/Id"
+            },
+            "minCount": {
+              "type": "integer",
+              "minimum": 1
+            }
+          },
+          "required": [
+            "intervened"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "phase"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "flag": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "flag"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "objective": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "objective"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "vital": {
+              "type": "string",
+              "enum": [
+                "hr",
+                "sbp",
+                "dbp",
+                "rr",
+                "spo2",
+                "temp",
+                "gcs",
+                "glucose",
+                "etco2",
+                "pain"
+              ]
+            },
+            "op": {
+              "type": "string",
+              "enum": [
+                "lt",
+                "lte",
+                "gt",
+                "gte",
+                "eq"
+              ]
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "vital",
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "elapsed": {
+              "type": "object",
+              "properties": {
+                "gte": {
+                  "type": "number"
+                },
+                "lte": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "elapsed"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hints": {
+              "type": "object",
+              "properties": {
+                "gte": {
+                  "type": "number"
+                },
+                "lte": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "hints"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "procedure": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "view": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "view"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "criterion": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "criterion"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "documented": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "valid": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "documented"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "injury": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "bile-duct-injury",
+                            "vascular-injury",
+                            "bleeding",
+                            "perforation",
+                            "thermal-injury",
+                            "bile-leak"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    },
+                    "recognised": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "injury"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "unsafe": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "irreversible-without-pause",
+                            "irreversible-without-view",
+                            "irreversible-on-unidentified",
+                            "irreversible-on-misidentified",
+                            "blind-in-obscured-field",
+                            "energy-near-hidden-hazard",
+                            "excessive-traction",
+                            "continued-after-injury",
+                            "insufflation-over-max",
+                            "dissection-beyond-safe-plane"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "unsafe"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "clipped": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "minCount": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": [
+                    "clipped"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "divided": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "divided"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "isolated": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "isolated"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "identified": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "as": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "identified"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "specimen": {
+                      "type": "string",
+                      "enum": [
+                        "in-situ",
+                        "detached",
+                        "bagged",
+                        "extracted"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "specimen"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "bailout": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "call-help",
+                            "subtotal-fenestrating",
+                            "subtotal-reconstituting",
+                            "convert-open",
+                            "abandon-refer"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bailout"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "imaged": {
+                      "type": "string",
+                      "enum": [
+                        "ioc",
+                        "lap-us"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "imaged"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "insufflated": {
+                      "type": "boolean"
+                    },
+                    "pressure": {
+                      "type": "object",
+                      "properties": {
+                        "gte": {
+                          "type": "number"
+                        },
+                        "lte": {
+                          "type": "number"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "insufflated"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "bleeding": {
+                      "type": "string",
+                      "enum": [
+                        "any",
+                        "ooze",
+                        "brisk",
+                        "major"
+                      ]
+                    },
+                    "controlled": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "bleeding"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "spillage": {
+                      "type": "string",
+                      "enum": [
+                        "bile",
+                        "stones"
+                      ]
+                    },
+                    "cleared": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "spillage"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "counter": {
+                      "type": "string",
+                      "enum": [
+                        "steps",
+                        "exchanges",
+                        "clashes",
+                        "crossings"
+                      ]
+                    },
+                    "gte": {
+                      "type": "number"
+                    },
+                    "lte": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "counter"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "inspected": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "inspected"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "dissectedExposed": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "atLeast": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  },
+                  "required": [
+                    "dissectedExposed",
+                    "atLeast"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "closed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "closed"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "variant": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "variant"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "procedure"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ClinicalAction": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "start"
+            },
+            "variant": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "ask"
+            },
+            "itemId": {
+              "$ref": "#/definitions/Id"
+            },
+            "via": {
+              "type": "string",
+              "enum": [
+                "button",
+                "free-text",
+                "agent"
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "itemId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "examine"
+            },
+            "findingId": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "findingId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "order"
+            },
+            "investigationId": {
+              "$ref": "#/definitions/Id"
+            },
+            "at": {
+              "type": "string"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "investigationId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "read"
+            },
+            "investigationId": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "investigationId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "set-phase"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "phase"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "hint"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "answer"
+            },
+            "decisionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "optionIds": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 1
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "decisionId",
+            "optionIds"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "intervene"
+            },
+            "interventionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "interventionId"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "advance-time"
+            },
+            "minutes": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1440
+            },
+            "reason": {
+              "type": "string",
+              "enum": [
+                "wait",
+                "travel",
+                "procedure"
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "minutes"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "flag"
+            },
+            "flag": {
+              "$ref": "#/definitions/Id"
+            },
+            "value": {
+              "type": "boolean",
+              "default": true
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "flag"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "note"
+            },
+            "text": {
+              "type": "string",
+              "maxLength": 4000
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "text"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "operate"
+            },
+            "op": {
+              "$ref": "#/definitions/ProcedureOp"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "finish"
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "ProcedureOp": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "plan-ports"
+            },
+            "plan": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "plan"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "insufflate"
+            },
+            "pressure": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 30
+            }
+          },
+          "required": [
+            "op",
+            "pressure"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "desufflate"
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "insert"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "instrument": {
+              "type": "string",
+              "enum": [
+                "laparoscope",
+                "grasper",
+                "maryland",
+                "hook",
+                "scissors",
+                "clip-applier",
+                "suction",
+                "retrieval-bag",
+                "cholangiocatheter",
+                "lap-us"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "port",
+            "instrument"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "withdraw"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "port"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "retract"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "structure": {
+              "$ref": "#/definitions/Id"
+            },
+            "direction": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "minItems": 3,
+                  "maxItems": 3,
+                  "items": [
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "number"
+                    },
+                    {
+                      "type": "number"
+                    }
+                  ]
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "enum": [
+                      "cephalad",
+                      "caudal",
+                      "patient-left",
+                      "patient-right",
+                      "anterior",
+                      "posterior"
+                    ]
+                  },
+                  "minItems": 1
+                }
+              ]
+            },
+            "force": {
+              "type": "string",
+              "enum": [
+                "gentle",
+                "firm",
+                "excessive"
+              ],
+              "default": "firm"
+            }
+          },
+          "required": [
+            "op",
+            "port",
+            "structure",
+            "direction"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "release"
+            },
+            "structure": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "structure"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "dissect"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "region": {
+              "$ref": "#/definitions/Id"
+            },
+            "energy": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          "required": [
+            "op",
+            "port",
+            "region"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "isolate"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "handle": {
+              "type": "string",
+              "pattern": "^T\\d+$"
+            }
+          },
+          "required": [
+            "op",
+            "port",
+            "handle"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "identify"
+            },
+            "handle": {
+              "type": "string",
+              "pattern": "^T\\d+$"
+            },
+            "as": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "handle",
+            "as"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "safety-pause"
+            },
+            "view": {
+              "$ref": "#/definitions/Id"
+            },
+            "claims": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "boolean"
+              },
+              "propertyNames": {
+                "minLength": 1,
+                "maxLength": 80,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+              }
+            }
+          },
+          "required": [
+            "op",
+            "view",
+            "claims"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "clip"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "handle": {
+              "type": "string",
+              "pattern": "^T\\d+$"
+            },
+            "count": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 3,
+              "default": 1
+            }
+          },
+          "required": [
+            "op",
+            "port",
+            "handle"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "divide"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "handle": {
+              "type": "string",
+              "pattern": "^T\\d+$"
+            }
+          },
+          "required": [
+            "op",
+            "port",
+            "handle"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "coagulate"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "handle": {
+              "type": "string",
+              "pattern": "^T\\d+$"
+            }
+          },
+          "required": [
+            "op",
+            "port",
+            "handle"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "suction"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "port"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "irrigate"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "port"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "image"
+            },
+            "modality": {
+              "type": "string",
+              "enum": [
+                "ioc",
+                "lap-us"
+              ]
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "modality",
+            "port"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "inspect"
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "recognise"
+            },
+            "injury": {
+              "type": "string",
+              "enum": [
+                "bile-duct-injury",
+                "vascular-injury",
+                "bleeding",
+                "perforation",
+                "thermal-injury",
+                "bile-leak"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "injury"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "bag"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "port"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "extract"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "port"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "bailout"
+            },
+            "strategy": {
+              "type": "string",
+              "enum": [
+                "call-help",
+                "subtotal-fenestrating",
+                "subtotal-reconstituting",
+                "convert-open",
+                "abandon-refer"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "strategy"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "close"
+            }
+          },
+          "required": [
+            "op"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "JsonValue": {
+      "anyOf": [
+        {
+          "type": "string",
+          "maxLength": 4000
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/JsonValue"
+          },
+          "maxItems": 64
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/definitions/JsonValue"
+          },
+          "propertyNames": {
+            "maxLength": 80
+          }
+        }
+      ]
+    },
+    "OperativeScenario": {
+      "type": "object",
+      "properties": {
+        "$schema": {
+          "type": "string"
+        },
+        "schema": {
+          "type": "string",
+          "const": "clinicalcraft/operative-scenario@1"
+        },
+        "id": {
+          "$ref": "#/definitions/Id"
+        },
+        "suite": {
+          "$ref": "#/definitions/Id"
+        },
+        "split": {
+          "type": "string",
+          "enum": [
+            "dev",
+            "test"
+          ]
+        },
+        "title": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "instruction": {
+          "$ref": "#/definitions/LocalizedText"
+        },
+        "caseId": {
+          "$ref": "#/definitions/Id"
+        },
+        "locale": {
+          "type": "string",
+          "enum": [
+            "zh-CN",
+            "en"
+          ]
+        },
+        "seed": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 2147483647,
+          "default": 1
+        },
+        "variant": {
+          "anyOf": [
+            {
+              "$ref": "#/definitions/Id"
+            },
+            {
+              "type": "object",
+              "properties": {
+                "pool": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "minItems": 2,
+                  "maxItems": 16
+                }
+              },
+              "required": [
+                "pool"
+              ],
+              "additionalProperties": false
+            }
+          ]
+        },
+        "setup": {
+          "type": "object",
+          "properties": {
+            "preamble": {
+              "type": "string",
+              "enum": [
+                "solution",
+                "none"
+              ],
+              "default": "solution"
+            },
+            "clinical": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/ClinicalAction"
+              },
+              "maxItems": 32
+            },
+            "approvals": {
+              "type": "string",
+              "enum": [
+                "approve",
+                "deny",
+                "headless"
+              ],
+              "default": "approve"
+            },
+            "approvalMode": {
+              "type": "string",
+              "enum": [
+                "default",
+                "strict",
+                "auto",
+                "plan",
+                "bypass"
+              ],
+              "default": "default"
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "expect": {
+          "type": "string",
+          "enum": [
+            "complete",
+            "bailout",
+            "either"
+          ]
+        },
+        "predicates": {
+          "type": "array",
+          "items": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "clinical": {
+                    "$ref": "#/definitions/Condition"
+                  }
+                },
+                "required": [
+                  "clinical"
+                ],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
+                  "verdict": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "clear",
+                        "complication",
+                        "safety-critical"
+                      ]
+                    },
+                    "minItems": 1,
+                    "maxItems": 3
+                  }
+                },
+                "required": [
+                  "verdict"
+                ],
+                "additionalProperties": false
+              }
+            ]
+          },
+          "minItems": 1,
+          "maxItems": 32
+        },
+        "limits": {
+          "type": "object",
+          "properties": {
+            "maxToolCalls": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 200
+            },
+            "maxTurns": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 50,
+              "default": 4
+            },
+            "maxSimMinutes": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1440
+            },
+            "timeoutMs": {
+              "type": "integer",
+              "minimum": 1000,
+              "maximum": 3600000,
+              "default": 300000
+            }
+          },
+          "additionalProperties": false,
+          "default": {}
+        },
+        "reference": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "$ref": "#/definitions/JsonValue"
+              },
+              "propertyNames": {
+                "maxLength": 80
+              }
+            },
+            "minItems": 1,
+            "maxItems": 300
+          },
+          "propertyNames": {
+            "minLength": 1,
+            "maxLength": 80,
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+          }
+        },
+        "scripted": {
+          "type": "object",
+          "properties": {
+            "plans": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "tool": {
+                      "type": "string",
+                      "pattern": "^[a-z][a-z0-9_]{0,59}$"
+                    },
+                    "args": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "$ref": "#/definitions/JsonValue"
+                      },
+                      "propertyNames": {
+                        "maxLength": 80
+                      }
+                    }
+                  },
+                  "required": [
+                    "tool"
+                  ],
+                  "additionalProperties": false
+                },
+                "maxItems": 600
+              },
+              "propertyNames": {
+                "minLength": 1,
+                "maxLength": 80,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+              }
+            },
+            "final": {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          },
+          "additionalProperties": false
+        },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 40
+          },
+          "maxItems": 16
+        },
+        "rationale": {
+          "$ref": "#/definitions/LocalizedText"
+        }
+      },
+      "required": [
+        "schema",
+        "id",
+        "suite",
+        "split",
+        "title",
+        "instruction",
+        "caseId",
+        "locale",
+        "variant",
+        "expect",
+        "predicates",
+        "reference"
+      ],
+      "additionalProperties": false
+    }
+  }
+}

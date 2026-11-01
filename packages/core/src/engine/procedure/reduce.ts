@@ -25,6 +25,7 @@ import {
 } from "./field.js";
 import { directionVector, portReport, reach, shaftsClash } from "./geometry.js";
 import { cloneProcedureState, type Injury, type PortState, type ProcedureState } from "./state.js";
+import { nameVocabulary } from "./variant.js";
 
 export type { ProcedureSignal };
 
@@ -224,6 +225,35 @@ function perforate(x: Step, structure: string): void {
   spill(x);
 }
 
+/** What dividing a duct or vessel does (a deliberate division, or one torn by dissection through its plane). */
+function divisionConsequences(x: Step, st: Structure): void {
+  const secured = (x.s.clips[st.id] ?? 0) >= 2;
+  if (st.role === "target" && !secured) {
+    if (st.kind === "duct") {
+      injure(x, { kind: "bile-leak", structure: st.id, visible: true, severity: "minor" });
+      spill(x);
+    } else {
+      injure(x, { kind: "bleeding", structure: st.id, visible: true, severity: "minor" });
+      bleed(x, st.id, "brisk");
+    }
+  }
+  if (st.role === "critical") {
+    if (st.kind === "duct") {
+      injure(x, { kind: "bile-duct-injury", structure: st.id, visible: true, severity: "major" });
+      spill(x);
+    } else {
+      injure(x, { kind: "vascular-injury", structure: st.id, visible: true, severity: "major" });
+      bleed(x, st.id, "major");
+    }
+  }
+}
+
+/** A structure torn by dissection (fibrosis, or a plane it crosses): visible as bile or blood. */
+function tear(x: Step, st: Structure): void {
+  if (!x.s.divided.includes(st.id)) x.s.divided.push(st.id);
+  divisionConsequences(x, st);
+}
+
 function ended(x: Step): boolean {
   return x.s.closed || x.s.bailouts.includes("convert-open") || x.s.bailouts.includes("abandon-refer");
 }
@@ -309,7 +339,24 @@ function apply(x: Step, op: ProcedureOp): void {
       for (const prior of region.after) if (clearedFraction(def, s, prior) < 0.5) return reject("requirements-unmet", `Open "${prior}" first.`);
       workAt(x, p, region.centre);
       const e = exposure(def, s, region.id);
-      s.cleared[region.id] = Math.min(region.units, (s.cleared[region.id] ?? 0) + (op.energy ? 1.5 : 1) * (e < 0.5 ? 0.5 : 1));
+      const before = s.cleared[region.id] ?? 0;
+      let after = Math.min(region.units, before + (op.energy ? 1.5 : 1) * (e < 0.5 ? 0.5 : 1));
+      if (region.fibrosis) {
+        // dense fibrosis: the step that reaches the safe limit stops there (and is felt); every step beyond tears
+        const safe = region.fibrosis.safeTo * region.units;
+        if (before < safe - 1e-9) {
+          if (after >= safe) {
+            after = safe;
+            x.signals.push("dense-fibrosis");
+          }
+        } else {
+          const tornId = region.fibrosis.injures ?? region.hazards[0];
+          unsafe(x, "dissection-beyond-safe-plane", tornId);
+          const torn = tornId ? structureOf(def, tornId) : undefined;
+          if (torn) tear(x, torn);
+        }
+      }
+      s.cleared[region.id] = after;
       s.exposedMax[region.id] = Math.max(s.exposedMax[region.id] ?? 0, e);
       if (op.energy) {
         for (const hazardId of region.hazards) {
@@ -321,6 +368,8 @@ function apply(x: Step, op: ProcedureOp): void {
         if (region.bed && e < 0.5) perforate(x, def.specimen);
       }
       assignHandles(def, s);
+      // a duct or vessel crossing the plane is divided when the dissection through it is completed
+      if (clearedFraction(def, s, region.id) >= 1) for (const st of def.anatomy) if (st.crosses === region.id && !s.divided.includes(st.id)) tear(x, st);
       if (region.bed && clearedFraction(def, s, region.id) >= 1 && s.specimen === "in-situ") {
         const parts = specimenParts(def);
         const tethers = def.anatomy.filter((st) => st.enters && parts.has(st.enters) && st.role === "target");
@@ -343,7 +392,8 @@ function apply(x: Step, op: ProcedureOp): void {
     }
     case "identify": {
       handleStructure(x, op.handle);
-      if (!structureOf(def, op.as)) return reject("unknown-id", `"${op.as}" is not a structure of this operation.`);
+      // any name of the vocabulary (the base and every variant): naming never reveals which anatomy is real
+      if (!nameVocabulary(def).includes(op.as)) return reject("unknown-id", `"${op.as}" is not a structure of this operation.`);
       s.claims[op.handle] = op.as;
       return;
     }
@@ -380,25 +430,7 @@ function apply(x: Step, op: ProcedureOp): void {
       workAt(x, p, pointOf(st));
       irreversible(x, st, op.handle);
       s.divided.push(st.id);
-      const secured = (s.clips[st.id] ?? 0) >= 2;
-      if (st.role === "target" && !secured) {
-        if (st.kind === "duct") {
-          injure(x, { kind: "bile-leak", structure: st.id, visible: true, severity: "minor" });
-          spill(x);
-        } else {
-          injure(x, { kind: "bleeding", structure: st.id, visible: true, severity: "minor" });
-          bleed(x, st.id, "brisk");
-        }
-      }
-      if (st.role === "critical") {
-        if (st.kind === "duct") {
-          injure(x, { kind: "bile-duct-injury", structure: st.id, visible: true, severity: "major" });
-          spill(x);
-        } else {
-          injure(x, { kind: "vascular-injury", structure: st.id, visible: true, severity: "major" });
-          bleed(x, st.id, "major");
-        }
-      }
+      divisionConsequences(x, st);
       return;
     }
     case "coagulate": {

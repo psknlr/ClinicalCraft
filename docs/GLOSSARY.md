@@ -49,6 +49,8 @@ names. Only the words around them follow the glossary.
 | `views[]` "cvs" | — | **关键安全视野** / **critical view of safety** (CVS) | the established term (Strasberg; SAGES); never "安全视图" |
 | `safety-pause` | — | **安全暂停** / **safety pause** | a pause before an irreversible step to state the critical view; it records the operator's judgement and is never shown as a verification |
 | `bailout` strategies | — | **补救策略** / **bail-out** (求助、胆囊次全切除、中转开腹) | the safe alternatives when the critical view cannot be reached; not "失败方案" |
+| `procedure.variants` | — | **解剖变异** / **anatomical variant** (假设性 / counterfactual when the source does not report it) | the patient's real anatomy in a session, hidden from the operator; never "版本" or "变体" |
+| region `fibrosis` | — | **致密纤维化** / **dense fibrosis**; a frozen triangle: **“冰冻”三角** | what severe chronic inflammation does to the planes; the `dense-fibrosis` signal reads "组织致密，层次已无法分开" |
 | a duct or vessel handle `T1…` | — | **结构 T1…** / **structure T1…** | what the operator sees before identifying it; the anatomy's name appears only after imaging |
 | the web window that runs the operation (`surgery`) | — | **腹腔镜手术** / **Laparoscopic surgery** (HUD button 手术 / Surgery) | names what the learner does, not the engine part |
 | `portPlans[]` | — | **布孔方案** / **port plan** | the surgical term for where the trocars go |
@@ -171,6 +173,7 @@ developer documents use.
 | grounding check | grounding check | 事实核验 | `verifyGrounding` | |
 | benchmark | benchmark | 基准测试 | `bench` | |
 | grounding benchmark | grounding benchmark | 事实依据基准 | `bench grounding`, suite `grounding-v1` | developer-facing |
+| operative benchmark | operative benchmark | 手术基准测试 | `bench operative`, suites in `<content dir>/operative/` | developer-facing; agents operate with the anatomy hidden |
 | embodied agent benchmark | embodied agent benchmark | 具身智能体基准测试 | `bench run`, suite `embodied-v1` | developer-facing technical name |
 | benchmark scenario | scenario | 场景 | `clinicalcraft/bench-scenario@1` | |
 | skill; hook | skill; hook | 技能；钩子 | `execute_skill`; settings `hooks` | |

@@ -159,6 +159,7 @@ export const SURGERY_ZH = {
   "surgery.signal.specimen-detached": "胆囊已游离",
   "surgery.signal.imaging-done": "影像已完成",
   "surgery.signal.pressure-high": "气腹压力超过常用上限",
+  "surgery.signal.dense-fibrosis": "组织致密，层次已无法分开",
   "surgery.finding.bleeding": "出血",
   "surgery.finding.major-bleeding": "大出血",
   "surgery.finding.field-obscured": "术野被遮挡",
@@ -226,6 +227,7 @@ export const SURGERY_ZH = {
   "surgery.unsafe.excessive-traction": "过度牵拉",
   "surgery.unsafe.continued-after-injury": "损伤未说出即继续手术",
   "surgery.unsafe.insufflation-over-max": "气腹压力超过上限",
+  "surgery.unsafe.dissection-beyond-safe-plane": "在致密纤维化中越过安全层面继续解剖",
   /* ---------------- debrief ---------------- */
   "debrief.op.title": "手术",
   "debrief.op.afterFinish": "结束病例后，这里会显示手术复盘（安全结论、损伤、不安全操作与安全暂停）。",
@@ -406,6 +408,7 @@ export const SURGERY_EN: Record<keyof typeof SURGERY_ZH, string> = {
   "surgery.signal.specimen-detached": "the gallbladder is free",
   "surgery.signal.imaging-done": "the images are ready",
   "surgery.signal.pressure-high": "the pressure is above the usual maximum",
+  "surgery.signal.dense-fibrosis": "the tissue is dense and the planes no longer separate",
   "surgery.finding.bleeding": "bleeding",
   "surgery.finding.major-bleeding": "major bleeding",
   "surgery.finding.field-obscured": "the field is obscured",
@@ -473,6 +476,7 @@ export const SURGERY_EN: Record<keyof typeof SURGERY_ZH, string> = {
   "surgery.unsafe.excessive-traction": "excessive traction",
   "surgery.unsafe.continued-after-injury": "carried on without saying a visible injury aloud",
   "surgery.unsafe.insufflation-over-max": "insufflation above the maximum pressure",
+  "surgery.unsafe.dissection-beyond-safe-plane": "dissection carried on beyond the safe plane in dense fibrosis",
   /* ---------------- debrief ---------------- */
   "debrief.op.title": "Operation",
   "debrief.op.afterFinish": "The operation's review (safety verdict, injuries, unsafe acts and safety pauses) shows here once you finish the case.",

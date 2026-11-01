@@ -16,12 +16,13 @@ wrong.
 
 | part | what it is |
 |---|---|
-| `anatomy` | structures, each with `kind`, `role` and `points` (a centreline or a few surface points) and a `radius`. Optional: `parent` (a part of a structure), `joins` (topology), `enters` (the organ a duct or vessel enters), `in`/`revealAt` (the region that hides it and the clearance at which it shows), `appearsAs` (how it looks without its name) and `mesh` (its node in the case's model). `provenance` is required. |
-| `regions` | dissection fields with `units` of work, a `centre`, `after` (regions to open first), `exposure` (the retractions that open the region), `hazards` (critical structures in or next to it) and `bed` (the specimen's bed: dissecting it frees the specimen). |
+| `anatomy` | structures, each with `kind`, `role` and `points` (a centreline or a few surface points) and a `radius`. Optional: `parent` (a part of a structure), `joins` (topology), `enters` (the organ a duct or vessel enters), `in`/`revealAt` (the region that hides it and the clearance at which it shows), `crosses` (a region whose plane it crosses, §3), `appearsAs` (how it looks without its name) and `mesh` (its node in the case's model). `provenance` is required. |
+| `regions` | dissection fields with `units` of work, a `centre`, `after` (regions to open first), `exposure` (the retractions that open the region), `hazards` (critical structures in or next to it), `bed` (the specimen's bed: dissecting it frees the specimen) and optional `fibrosis` (dense inflammation, §3). |
 | `portSites`, `portPlans` | where ports can go, with an outward wall normal. Each plan sets the surgeon's side, every port's role and size, and the hand that works each working port. |
 | `instruments` | which of the engine's instruments are on the table, with optional diameter and length overrides. |
 | `views` | safety views, each a list of criteria. The **critical view of safety** has three criteria: `cleared` (region fully dissected), `cleared` (the plate) and `onlyEntering` (two and only two structures entering the gallbladder). |
 | `bailouts`, `insufflation`, `minutes`, `specimen`, `stones`, `target`, `phases` | the alternatives offered, the usual and maximum pressure, the time a step takes, the organ removed, whether it holds stones, the point port metrics measure to, and the case phases in which `operate` is accepted. |
+| `variants` | anatomical variants a session can be started with (§9). |
 
 Coordinates are in metres in the **patient frame**: +x is the patient's left, +y cranial, +z
 anterior. This is the glTF frame of the case's anatomy model, so the model and the procedure share
@@ -98,6 +99,18 @@ actual pull and the needed direction, divided by `full` (default 0.8), and is 0 
 held. A region dissects at half speed while its exposure is below 0.5. In mirror-image anatomy the
 habitual pull (towards the patient's right) gives exposure 0: the triangle stays closed.
 
+Two region and structure properties model tissue that does not behave like the textbook:
+
+- **Dense fibrosis** (`region.fibrosis`: `safeTo`, `injures`, `finding`). The planes stop separating at
+  `safeTo` of the region. The step that reaches that point stops there and is felt (`dense-fibrosis`).
+  Every step beyond is recorded as `dissection-beyond-safe-plane` and tears `injures` (default: the
+  region's first hazard), with the consequences of dividing it. Nothing in the region can be freed all
+  round below the plane, so a view that needs the region cleared cannot be reached safely. The operator
+  sees `finding` once dissection there has begun.
+- **A structure crossing a plane** (`structure.crosses`), such as a duct in the gallbladder bed or a
+  posterior cystic artery. Completing that region's dissection divides the structure, as `divide` would,
+  unless it was divided before. Two clips first make it safe; otherwise it leaks or bleeds.
+
 Each step costs simulated minutes (`minutes` overrides the defaults in `reduce.ts`). The engine
 returns `signals`, which are what the operator sees or feels: a clash, bleeding, bile in the field,
 the field obscured, the specimen free, imaging ready.
@@ -109,7 +122,9 @@ A criterion is evaluated **on the field**, never on what the operator claims:
 - `cleared` and `exposure` read the dissection and the retractions.
 - `onlyEntering` holds when every structure that truly enters the organ is in view, free all round
   and undivided, and nothing else *appears* to enter it. A common bile duct tented by traction in the
-  wrong direction appears to (`appearsAs.when[].appearsToEnter`).
+  wrong direction appears to (`appearsAs.when[].appearsToEnter`). An appearance rule tests either a
+  region's `exposure` (traction) or how far it is `cleared` (a duct crossing the triangle that only a
+  complete dissection shows running to the liver).
 
 `safety-pause` records the operator's claims together with the field's truth. The claims are the
 surgeon's judgement; the truth is the evaluator. A pause's view is `achieved` only when every
@@ -135,6 +150,7 @@ The following are also recorded as unsafe:
   still hidden.
 - `excessive-traction`.
 - `insufflation-over-max`.
+- `dissection-beyond-safe-plane`: dissection carried on past dense fibrosis's safe limit (§3).
 
 Injuries follow from the anatomy:
 
@@ -148,6 +164,8 @@ Injuries follow from the anatomy:
 | energy with exposure below 0.4 next to a hidden critical structure | thermal injury (not visible) |
 | excessive traction on the specimen, or energy in its bed with poor exposure | perforation: bile, and stones if `stones` |
 | coagulation of a critical structure | thermal injury |
+| dissection beyond dense fibrosis's safe plane | the structure it tears, as if divided (a common bile duct: bile duct injury, bile in the field) |
+| completing a region a structure crosses | that structure divided (target: leak or bleeding unless clipped twice) |
 
 Major bleeding cannot be controlled laparoscopically in this model: it needs `bailout`.
 
@@ -175,8 +193,12 @@ rubric items, objectives, phases, scenario events and safety gates:
 { "imaged": "ioc"|"lap-us" } · { "plan": id } · { "insufflated": bool, "pressure"?: range } ·
 { "bleeding": severity|"any", "controlled"?: bool } · { "spillage": "bile"|"stones", "cleared"?: bool } ·
 { "counter": "steps"|"exchanges"|"clashes"|"crossings", gte?, lte? } · { "inspected": bool } · { "closed": bool } ·
-{ "dissectedExposed": region, "atLeast": 0–1 }
+{ "dissectedExposed": region, "atLeast": 0–1 } · { "variant": id|"reference" }
 ```
+
+`variant` reads the session's anatomical variant (§9). It is hidden truth, like the anatomy. It lets
+rubric items be `scoredWhen` a variant is in force and lets gates depend on it. Structure ids in
+conditions may name a structure of any variant; in the others the condition is simply false.
 
 `view` and `criterion` read the field **now**, so they are false once the laparoscopy has ended. To score
 what was achieved, use `documented` (the safety pause's record) or `dissectedExposed` (the best exposure
@@ -194,8 +216,11 @@ it is free all round, its clips, whether it is divided, what the operator named 
 imaging showed. The view also has organs by name, each region's dissection and exposure as coarse
 bins, the retractions and the findings.
 
-It never contains a safety-view verdict, an injury the field does not show, an unsafe-act record or
-a score.
+It never contains a safety-view verdict, an injury the field does not show, an unsafe-act record, a
+score or the session's variant. `names` lists the ids a duct or vessel can be given with `identify`.
+The list is the same whatever the variant: the ducts and vessels of the base definition and of every
+variant. `identify` accepts any of them, so naming never reveals the anatomy. A region with dense
+fibrosis carries its `finding` once dissection there has begun.
 
 The agent tools are `observe_field` and `operate` (`packages/agent/src/tools/procedure.ts`). They
 give agents this view and nothing else. Clip, divide, coagulate and bail-out are high-risk tool
@@ -225,7 +250,33 @@ The verdict is `safety-critical`, `complication` or `clear`. A rubric item for m
 complication should be `scoredWhen` the complication occurred. When it did not, the item counts
 neither as earned nor as possible, and the percentage renormalises over the rest.
 
-## 9. Fidelity limits
+## 9. Variants
+
+A procedure may list **anatomical variants** (`variants`). Each variant sets out what the patient's
+anatomy really is in a session started with `{ "type": "start", "variant": id }`. The base definition
+is the variant `reference`, and is used when none is given. `SessionState.variant` records the
+choice. `procedureFor(case, state)` resolves the definition every reader uses: the reducer,
+conditions, the operator's view and the surgery window. `resolveProcedure(def, id)` lays the variant
+over the base:
+
+- `anatomy` replaces structures with the same id, or adds new ones;
+- `remove` drops structures (never the specimen);
+- `regions` patch base regions by id (a variant cannot add a region, so the operator's list of regions
+  stays the same);
+- `stones` overrides.
+
+Each variant has a `name`, a `summary` for the debrief and the facilitator, `provenance` and
+`references`. A variant is hidden state. It never appears in the operator's view, its structures show
+only as handles, and the naming vocabulary is shared (§7). `checkCaseIntegrity` checks each variant's
+own references, then checks the resolved definition like the base.
+
+Variants are how a case teaches or benchmarks anatomy the source does not report. They are
+counterfactual unless their provenance says otherwise. The base definition stays what the source
+documents; a variant never replaces it silently. The operative benchmark (`clinicalcraft bench
+operative`, `docs/BENCHMARK_OPERATIVE.md`) draws variants per run, so an agent must work the anatomy
+out from the field.
+
+## 10. Fidelity limits
 
 - The anatomy is whatever the case supplies. Its provenance tags (`reference`, `authored`,
   `imaging`…) must say what it is.
