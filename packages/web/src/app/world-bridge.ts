@@ -4,7 +4,8 @@
  *
  *   WorldHost      creates/recreates the world for a facility + patient (also the intro backdrop)
  *   patientFor     the case's patient in the first facility slot accepting `case.setting`
- *   routeInteraction  E on a target → which panel opens (patient/staff/workstation/device/monitor/board/atlas/craft)
+ *   routeInteraction  E on a target → which panel opens (patient/staff/workstation/device/monitor/board/atlas/craft;
+ *                  the operating table: the surgery window while the case's operation is under way)
  *   GameWorldLink  per game: waypoint beacon from `state_snapshot.waypoint`, NPC speaking (the one who spoke: the
  *                  patient, their companion, the colleague the turn names — a narration moves no mouth), the patient's
  *                  bystander cues (core `patientCues`: distress, oxygen accessory, posture — in embodied mode the
@@ -18,6 +19,7 @@ import { createWorld } from "../world/index.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
 import { tr } from "../i18n/index.js";
+import { surgeryOffered } from "../ui/panels/surgery-controls.js";
 import { STANDALONE } from "./llm.js";
 import type { EmbodiedLink } from "./embodied-link.js";
 import type { AppSession } from "./session.js";
@@ -157,6 +159,7 @@ export type Route =
   | { panel: "monitor"; placementId: string | null }
   | { panel: "board" }
   | { panel: "atlas" }
+  | { panel: "surgery" }
   | { panel: "craft" }
   | { panel: "elevator"; connectorId: string; level: string; name: string; stops: string[] }
   /** Embodied mode: an operation on equipment through the world model (a sink's `wash_hands`). */
@@ -166,7 +169,11 @@ export type Route =
 /** Facility staff role → session agent profile (the session's own mapping: a staff member addressed by name speaks through it). */
 export { STAFF_AGENT };
 
-export function routeInteraction(target: InteractionTarget, ctx: { caseDef: CaseDefinition | null; slotId: string | null; embodied?: boolean }): Route {
+/**
+ * `phase`: the session's phase — equipment with the `surgery` capability (the operating table) opens the
+ * laparoscopic surgery window while the case's operation is under way in that phase.
+ */
+export function routeInteraction(target: InteractionTarget, ctx: { caseDef: CaseDefinition | null; slotId: string | null; embodied?: boolean; phase?: string }): Route {
   switch (target.kind) {
     case "patient":
       if (ctx.caseDef && target.caseId === ctx.caseDef.id) return { panel: "conversation", agent: "patient" };
@@ -179,6 +186,7 @@ export function routeInteraction(target: InteractionTarget, ctx: { caseDef: Case
       // the call panel outside the car is handled by the world (the car door opens); inside: choose a floor
       return { panel: "elevator", connectorId: target.connectorId, level: target.level, name: target.name, stops: target.stops };
     case "equipment":
+      if (target.capabilities.includes("surgery") && surgeryOffered(ctx.caseDef, ctx.phase)) return { panel: "surgery" };
       switch (target.interaction) {
         case "workstation":
           return { panel: "orders", placementId: target.placementId };

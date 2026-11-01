@@ -68,8 +68,8 @@ const MINUTES: Record<string, number> = {
   close: 5,
 };
 
-/** What each instrument can do. */
-const CAN: Record<InstrumentId, readonly ProcedureOpType[]> = {
+/** What each instrument can do (docs/PROCEDURE.md §2); front-ends offer these and nothing else. */
+export const INSTRUMENT_OPS: Readonly<Record<InstrumentId, readonly ProcedureOpType[]>> = {
   laparoscope: [],
   grasper: ["retract"],
   maryland: ["retract", "dissect", "isolate", "coagulate"],
@@ -83,7 +83,9 @@ const CAN: Record<InstrumentId, readonly ProcedureOpType[]> = {
 };
 
 /** Instruments that deliver energy (monopolar hook, Maryland). */
-const ENERGY: ReadonlySet<InstrumentId> = new Set(["hook", "maryland"]);
+export const ENERGY_INSTRUMENTS: ReadonlySet<InstrumentId> = new Set(["hook", "maryland"]);
+const CAN = INSTRUMENT_OPS;
+const ENERGY = ENERGY_INSTRUMENTS;
 
 /** Default instrument diameters (mm). */
 const DIAMETER: Record<InstrumentId, number> = {

@@ -5,6 +5,8 @@
  * Values may contain `{name}` placeholders. Values ending in `.html` keys
  * are trusted markup (our own <kbd>/<br>), never case or model text.
  */
+import { SURGERY_ZH } from "./surgery.js";
+
 const zh = {
   /* ---------------- app & brand ---------------- */
   "app.title": "临床方块世界",
@@ -1159,6 +1161,9 @@ const zh = {
   /* ---------------- learning record ---------------- */
   "record.file": "clinical_learning_record.json",
   "record.saveFile": "clinicalcraft_save.json",
+
+  /* ---------------- laparoscopic surgery (i18n/surgery.ts) ---------------- */
+  ...SURGERY_ZH,
 } as const;
 
 export default zh;

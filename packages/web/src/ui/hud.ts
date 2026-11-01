@@ -3,7 +3,8 @@
  * card with hint, region & coordinates, clickable minimap, crosshair and
  * target tooltip, turn-phase bubble, compact vitals strip, V4 hotbar with
  * block counts, controls legend, status bar (phase, save state, simulated
- * clock, provider pill), autopilot dock and V4 touch controls; in embodied mode the embodiment badge
+ * clock, provider pill), autopilot dock and V4 touch controls, the Surgery button while the case's
+ * operation is under way (`procedure.phases`); in embodied mode the embodiment badge
  * (where the world model has the learner's body, "walking…" while the world moves it) and the slot for
  * action feedback ("Go there"); while external control is on (PROTOCOL §13.6) the external-agent badge —
  * its state, the live-session id and attach key the learner hands to their agent (copyable), the calls
@@ -23,6 +24,7 @@ import type { BlockInfo, InteractionTarget, MoveInfo } from "../contracts.js";
 import { caseDisclaimer, ct, getLocale, tr, trMaybe } from "../i18n/index.js";
 import { append, clear, clockLabel, h } from "./dom.js";
 import { phaseBadge } from "./panels/common.js";
+import { surgeryOffered } from "./panels/surgery-controls.js";
 import { nameLabel } from "./panels/trace-labels.js";
 
 interface SlotDef {
@@ -163,6 +165,8 @@ export class Hud {
           btn("journal-btn", tr("hud.journal"), "J", () => this.app.open("journal")),
           btn("map-btn", tr("hud.map"), "M", () => this.app.open("map")),
           (e.autopilot = h("button", { type: "button", id: "autopilot-btn", onclick: () => this.app.open("autopilot") }, tr("hud.autopilot"))),
+          // the laparoscopic surgery window: only while the case's operation is under way in this phase
+          (e.surgery = h("button", { type: "button", id: "surgery-btn", hidden: true, title: tr("surgery.hudTitle"), onclick: () => this.app.open("surgery") }, tr("surgery.hud"))),
           btn("pause-btn", tr("hud.pause"), "Esc", () => this.app.open("pause")),
         ),
       ),
@@ -369,6 +373,8 @@ export class Hud {
 
     /* status bar */
     e.phase.textContent = phaseBadge(c, s.phase, L);
+    const surgery = surgeryOffered(c, s.phase);
+    if (e.surgery.hidden === surgery) e.surgery.hidden = !surgery;
     if (c.clock.mode === "simulated") {
       e.clock.hidden = false;
       e.clock.textContent = c.clock.startTime ? ` · ${tr("hud.clock", { time: clockLabel(c.clock.startTime, s.clock) })}` : ` · ${tr("hud.elapsed", { min: Math.round(s.clock) })}`;

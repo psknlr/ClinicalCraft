@@ -325,3 +325,78 @@ export type CreateAtlas = (opts: AtlasOptions) => Promise<AtlasApi>;
 export interface MonitorRenderer {
   draw(ctx: CanvasRenderingContext2D, width: number, height: number, snapshot: VitalsSnapshot | null, timeMs: number, locale: string): void;
 }
+
+/* ------------------------------------------------------------------ */
+/* Laparoscopic view (the surgery window, src/laparoscopy)             */
+/* ------------------------------------------------------------------ */
+
+/** A point in the patient frame (m): +x the patient's left, +y cranial, +z anterior. */
+export type LapVec3 = [number, number, number];
+
+/**
+ * What the laparoscope shows, derived by the UI from the case's procedure definition and the operator's
+ * `FieldView` (`ui/panels/surgery-scene.ts`): plain geometry with no anatomy knowledge. Ducts and vessels
+ * are keyed by their handle ("T1"…) — never by a structure id or name.
+ */
+export interface LapSceneSpec {
+  /** A picture: the abdomen is insufflated and the laparoscope is in. */
+  live: boolean;
+  /** The scope: at the camera port, looking at the operative target. */
+  camera: { at: LapVec3; target: LapVec3; up: LapVec3 } | null;
+  /** Organs and parts in view (already displaced by any retraction). */
+  organs: {
+    id: string;
+    points: LapVec3[];
+    radius: number;
+    shape: "blob" | "plate" | "band";
+    tint: "liver" | "gallbladder" | "bowel" | "stomach" | "plate" | "ligament" | "tissue";
+    /** Drawn translucent: it would otherwise hide the operative target. */
+    seeThrough: boolean;
+    /** Node name in the case's anatomy model (GLB), when it has one. */
+    mesh?: string;
+    /** Mean displacement by retraction (applied to a GLB node). */
+    offset: LapVec3;
+  }[];
+  /** Ducts and vessels in view, by handle. */
+  tubes: { handle: string; points: LapVec3[]; radius: number; kind: "duct" | "artery" | "vein"; clips: number; divided: boolean; isolated: boolean }[];
+  /** Tissue not yet dissected over each region (opacity 0 = cleared). */
+  tissue: { id: string; centre: LapVec3; radius: number; opacity: number }[];
+  /** Instrument shafts from their port to their tip. */
+  shafts: { port: string; from: LapVec3; to: LapVec3; radius: number; instrument: string }[];
+  /** Blood in the field: `pool` (bleeding seen), `haze` (the field is obscured), or none. */
+  blood: "none" | "pool" | "haze";
+  bile: boolean;
+  stones: boolean;
+  /** Where fluid collects (the operative target, a little posterior). */
+  pool: LapVec3;
+}
+
+/** What a click in the laparoscopic view picked. */
+export type LapPick = { kind: "tube"; handle: string } | { kind: "organ"; id: string };
+
+export interface LaparoscopeOptions {
+  canvas: HTMLCanvasElement;
+  /** Container laid over the canvas for the handle labels (buttons, positioned through CSSOM). */
+  labels: HTMLElement;
+  /** The case's anatomy model (GLB) — optional: organ nodes named by structure id replace the drawn shapes. */
+  modelUrl: string | null;
+  reducedMotion: () => boolean;
+  onPick(pick: LapPick): void;
+  /** The anatomy model loaded (true) or failed to load (false: the drawn shapes stay). */
+  onModel?(ok: boolean): void;
+  /** Accessible name of a handle label ("T1, free all round"). */
+  labelTitle(handle: string): string;
+}
+
+export interface LaparoscopeApi {
+  /** Redraw from a new scene description (cheap when it did not change). */
+  update(spec: LapSceneSpec): void;
+  /** Highlight a handle (null: none). */
+  select(handle: string | null): void;
+  /** Allow a slight orbit about the target (off: back to the scope's own view). Returns the new state. */
+  setOrbit(on: boolean): boolean;
+  /** Back to the view from the camera port. */
+  resetView(): void;
+  /** Release everything, the WebGL context included (every window gets a fresh canvas). */
+  dispose(): void;
+}

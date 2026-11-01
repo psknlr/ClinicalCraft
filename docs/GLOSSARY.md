@@ -50,6 +50,8 @@ names. Only the words around them follow the glossary.
 | `safety-pause` | — | **安全暂停** / **safety pause** | a pause before an irreversible step to state the critical view; it records the operator's judgement and is never shown as a verification |
 | `bailout` strategies | — | **补救策略** / **bail-out** (求助、胆囊次全切除、中转开腹) | the safe alternatives when the critical view cannot be reached; not "失败方案" |
 | a duct or vessel handle `T1…` | — | **结构 T1…** / **structure T1…** | what the operator sees before identifying it; the anatomy's name appears only after imaging |
+| the web window that runs the operation (`surgery`) | — | **腹腔镜手术** / **Laparoscopic surgery** (HUD button 手术 / Surgery) | names what the learner does, not the engine part |
+| `portPlans[]` | — | **布孔方案** / **port plan** | the surgical term for where the trocars go |
 | work-up plan | "workup plan" (agent, CLI) | **work-up plan** | British spelling of the noun; the tool keeps its id `update_workup` |
 | operating room (case setting, room kind) | "Operating room" (web, CLI) | **operating theatre** | British usage, as the world and facilities already say; the id stays `operating-room` |
 

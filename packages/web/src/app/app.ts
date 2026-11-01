@@ -14,6 +14,7 @@ import { Hud } from "../ui/hud.js";
 import { Intro } from "../ui/intro.js";
 import { PanelHost, type PanelBuilder } from "../ui/panel.js";
 import { atlasPanel } from "../ui/panels/atlas.js";
+import { surgeryPanel } from "../ui/panels/surgery.js";
 import { autopilotPanel } from "../ui/panels/autopilot.js";
 import { elevatorPanel, type ElevatorArgs } from "../ui/panels/elevator.js";
 import { boardPanel, comparePanel } from "../ui/panels/board.js";
@@ -367,6 +368,8 @@ export class ClinicalCraftApp implements App {
         return craftPanel(this);
       case "atlas":
         return atlasPanel(this);
+      case "surgery":
+        return surgeryPanel(this);
       case "autopilot":
         return autopilotPanel(this);
       case "elevator":
@@ -400,6 +403,7 @@ export class ClinicalCraftApp implements App {
         return;
       case "board":
       case "atlas":
+      case "surgery":
       case "craft":
         this.open(route.panel);
         return;
@@ -1008,6 +1012,7 @@ export class ClinicalCraftApp implements App {
             caseDef: game.caseDef,
             slotId: game.slotId,
             embodied: !!game.embodied,
+            phase: (game.session.store.snapshot?.state ?? game.session.session.state).phase,
           }),
         );
       },

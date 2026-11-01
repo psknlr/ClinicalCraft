@@ -199,7 +199,15 @@ a score.
 
 The agent tools are `observe_field` and `operate` (`packages/agent/src/tools/procedure.ts`). They
 give agents this view and nothing else. Clip, divide, coagulate and bail-out are high-risk tool
-calls: the approval gate asks in supervised modes. A front-end may draw the anatomy from the model,
+calls: the approval gate asks in supervised modes. The web's **laparoscopic surgery window** (`packages/web/src/ui/panels/surgery.ts`, view
+`laparoscopy/index.ts`) is offered from the HUD while the session is in one of the procedure's phases.
+In in-world mode it also opens from equipment with the `surgery` capability (the operating table). Its
+picture and controls come from `observeField` (and `portReport` while choosing a plan), and every
+control submits `operate` through the app's action path.
+
+It draws the procedure's shapes, and the case's `anatomy` model asset for the organ surfaces when the
+case lists one. The debrief adds an *Operation* section once the case is finished, and for a case with
+an operation it holds the score back until then. A front-end may draw the anatomy from the model,
 but it must not label a duct or vessel by name unless the view's `imaging` does. An assessment or
 instructor mode may show more, as long as it is never what a benchmark agent receives.
 
