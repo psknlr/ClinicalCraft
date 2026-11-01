@@ -22,7 +22,8 @@ import { currentObjective, progress } from "./queries.js";
 import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
-import { createProcedureState, operate } from "./procedure/index.js";
+import { createProcedureState, operate, procedureFor } from "./procedure/index.js";
+import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
 type Action<T extends ClinicalActionType> = Extract<ClinicalAction, { type: T }>;
@@ -123,8 +124,12 @@ const has = (record: Record<string, unknown>, key: string) => Object.prototype.h
 /* Action handlers                                                     */
 /* ------------------------------------------------------------------ */
 
-function onStart(ctx: Ctx): Outcome {
+function onStart(ctx: Ctx, a: Action<"start">): Outcome {
   if (ctx.s.started) return rejected("invalid", "session already started");
+  if (a.variant != null && a.variant !== BASE_VARIANT) {
+    if (!ctx.c.procedure?.variants.some((v) => v.id === a.variant)) return rejected("unknown-id", `this case has no procedure variant "${a.variant}"`);
+    ctx.s.variant = a.variant;
+  }
   ctx.s.started = true;
   ctx.events.push({ type: "session.started" });
   return accepted();
@@ -287,7 +292,7 @@ function onNote(ctx: Ctx, a: Action<"note">): Outcome {
 
 /** One step of the operation (docs/PROCEDURE.md §5): the field changes only here. */
 function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
-  const def = ctx.c.procedure;
+  const def = procedureFor(ctx.c, ctx.s);
   if (!def) return rejected("invalid", "this case has no operation");
   if (!def.phases.includes(ctx.s.phase)) return rejected("phase-locked", `the operation is not under way in phase "${ctx.s.phase}"`);
   const step = operate(def, ctx.s.procedure ?? createProcedureState(), a.op, ctx.s.clock);
@@ -308,7 +313,7 @@ function onFinish(ctx: Ctx): Outcome {
 function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
   switch (a.type) {
     case "start":
-      return onStart(ctx);
+      return onStart(ctx, a);
     case "ask":
       return onAsk(ctx, a);
     case "examine":

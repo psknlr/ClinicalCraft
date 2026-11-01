@@ -6,3 +6,5 @@ export { observeField, type FieldView } from "./observe.js";
 export { evaluateProcedure } from "./predicates.js";
 export { portReport, reach, segmentDistance, directionVector, describeDirection, angleDeg, type PortReport, type PortMetric } from "./geometry.js";
 export { clearedFraction, exposure, isVisible, viewCriteria, viewHolds, obscured } from "./field.js";
+export { resolveProcedure, procedureFor, baseProcedure, nameVocabulary, tubeVocabulary, vocabularyStructures } from "./variant.js";
+export { checkProcedureRef } from "./check.js";

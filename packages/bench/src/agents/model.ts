@@ -8,7 +8,7 @@
  * Limits abort the turn (`interrupt`).
  */
 import { t } from "@clinicalcraft/core";
-import type { AgentEvent } from "@clinicalcraft/agent";
+import type { AgentEvent, ClinicalSession } from "@clinicalcraft/agent";
 import { bm } from "../i18n.js";
 import { isAnswerTask, type BenchScenario } from "../schema.js";
 import type { BenchAgentContext } from "./types.js";
@@ -31,14 +31,21 @@ function turnEnd(events: readonly AgentEvent[]): "complete" | "max_tool_rounds" 
   return "stopped";
 }
 
-/** Run model turns until the model ends the task, a limit aborts it, or `maxTurns` is spent. */
-export async function driveModel(ctx: BenchAgentContext): Promise<void> {
-  const { session, scenario, locale } = ctx;
-  for (let turn = 0; turn < ctx.limits.maxTurns; turn++) {
-    if (ctx.signal.aborted) return;
-    const text = turn === 0 ? taskInstruction(scenario, locale) : bm(locale, "task.continue");
-    const events = await session.run({ type: "user_message", text, to: "clinician" });
-    if (ctx.signal.aborted) return;
+/**
+ * Send `instruction` to the clinician and run model turns until the model ends the task, a limit aborts
+ * it, or `maxTurns` is spent (a turn cut off at its tool-round limit is continued).
+ */
+export async function driveTurns(o: { session: ClinicalSession; instruction: string; locale: string; maxTurns: number; signal: AbortSignal }): Promise<void> {
+  for (let turn = 0; turn < o.maxTurns; turn++) {
+    if (o.signal.aborted) return;
+    const text = turn === 0 ? o.instruction : bm(o.locale, "task.continue");
+    const events = await o.session.run({ type: "user_message", text, to: "clinician" });
+    if (o.signal.aborted) return;
     if (turnEnd(events) !== "max_tool_rounds") return;
   }
+}
+
+/** Run model turns until the model ends the task, a limit aborts it, or `maxTurns` is spent. */
+export async function driveModel(ctx: BenchAgentContext): Promise<void> {
+  await driveTurns({ session: ctx.session, instruction: taskInstruction(ctx.scenario, ctx.locale), locale: ctx.locale, maxTurns: ctx.limits.maxTurns, signal: ctx.signal });
 }

@@ -109,6 +109,7 @@ export const UnsafeCodeSchema = z.enum([
   "excessive-traction",
   "continued-after-injury",
   "insufflation-over-max",
+  "dissection-beyond-safe-plane",
 ]);
 export type UnsafeCode = z.infer<typeof UnsafeCodeSchema>;
 
@@ -138,6 +139,8 @@ export const ProcedurePredicateSchema = z.union([
   /** The region was dissected while its exposure was at least `atLeast` (the best exposure of any dissection step there). */
   z.object({ dissectedExposed: IdSchema, atLeast: z.number().min(0).max(1) }).strict(),
   z.object({ closed: z.boolean() }).strict(),
+  /** The session's anatomical variant is this one (`reference`: the base definition). Hidden truth: for rubric `scoredWhen` and gates. */
+  z.object({ variant: IdSchema }).strict(),
 ]);
 export type ProcedurePredicate = z.infer<typeof ProcedurePredicateSchema>;
 

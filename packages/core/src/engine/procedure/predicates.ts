@@ -4,14 +4,18 @@
  * happened (the true anatomy), not what the operator claimed — except `identified`, which is the claim.
  */
 import type { ProcedurePredicate } from "../../schema/common.js";
-import type { ProcedureDefinition } from "../../schema/procedure.js";
+import { BASE_VARIANT, type ProcedureDefinition } from "../../schema/procedure.js";
 import { handleOf, viewCriteria, viewHolds } from "./field.js";
 import type { ProcedureState } from "./state.js";
 
 const inRange = (v: number, r: { gte?: number; lte?: number }) => (r.gte == null || v >= r.gte) && (r.lte == null || v <= r.lte);
 
-/** Evaluate a procedure predicate; false when the case has no procedure or the operation has not begun. */
-export function evaluateProcedure(def: ProcedureDefinition | undefined, s: ProcedureState | undefined, p: ProcedurePredicate): boolean {
+/**
+ * Evaluate a procedure predicate; false when the case has no procedure or the operation has not begun.
+ * `variant` is the session's anatomical variant (absent: the base definition, `reference`).
+ */
+export function evaluateProcedure(def: ProcedureDefinition | undefined, s: ProcedureState | undefined, p: ProcedurePredicate, variant?: string): boolean {
+  if ("variant" in p) return !!def && (variant ?? BASE_VARIANT) === p.variant;
   if (!def || !s) {
     // before the first step: only negative facts hold
     if ("insufflated" in p) return p.insufflated === false;

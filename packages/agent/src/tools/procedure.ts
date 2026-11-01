@@ -4,7 +4,7 @@
  * through the session (the only way to change the field). No safety-view verdict, hidden injury,
  * unsafe-act record or score reaches the agent: those are the debrief's.
  */
-import { observeField, portReport, ProcedureOpSchema, createProcedureState, t, type FieldView, type ProcedureOp } from "@clinicalcraft/core";
+import { observeField, portReport, procedureFor, ProcedureOpSchema, createProcedureState, t, type FieldView, type ProcedureOp } from "@clinicalcraft/core";
 import { joinList, rt } from "../session/i18n.js";
 import { procedureLabel } from "../session/i18n-procedure.js";
 import { actorFor, rejectedOutput, type ToolArgs } from "./clinical-resolve.js";
@@ -13,9 +13,10 @@ import type { ToolContext, ToolDefinition } from "./types.js";
 function fieldText(ctx: ToolContext): string {
   const c = ctx.caseDef;
   const L = ctx.locale;
-  const def = c.procedure;
+  const state = ctx.state();
+  const def = procedureFor(c, state);
   if (!def) return rt(L, "field.none");
-  const s = ctx.state().procedure ?? createProcedureState();
+  const s = state.procedure ?? createProcedureState();
   const v: FieldView = observeField(def, s);
   const lab = (x: string) => procedureLabel(L, x);
   if (!v.plan) {
@@ -46,10 +47,11 @@ function fieldText(ctx: ToolContext): string {
       ].filter(Boolean);
       lines.push(rt(L, "field.tube", { handle: tube.handle, appears: tube.appears ? t(tube.appears, L) : "—", state: state.length ? ` [${state.join("; ")}]` : "" }));
     }
-    for (const r of v.regions) lines.push(rt(L, "field.region", { name: `${t(r.name, L)} (${r.id})`, dissection: lab(r.dissection), exposure: lab(r.exposure) }));
+    for (const r of v.regions) lines.push(rt(L, "field.region", { name: `${t(r.name, L)} (${r.id})`, dissection: lab(r.dissection), exposure: lab(r.exposure), finding: r.finding ? ` — ${t(r.finding, L)}` : "" }));
     for (const r of v.retractions) lines.push(rt(L, "field.retraction", { structure: r.structure, port: r.port, direction: r.direction.join(" + "), force: lab(r.force) }));
   }
   if (v.findings.length) lines.push(rt(L, "field.findings", { findings: joinList(L, v.findings.map(lab)) }));
+  if (v.inView && v.names.length) lines.push(rt(L, "field.names", { names: v.names.join(", ") }));
   lines.push(rt(L, "field.specimen", { specimen: lab(v.specimen), bailouts: v.bailouts.length ? ` (${v.bailouts.join(", ")})` : "", pauses: v.pauses }));
   return lines.join("\n");
 }

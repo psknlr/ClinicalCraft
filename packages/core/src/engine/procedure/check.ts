@@ -5,20 +5,56 @@
  */
 import type { CaseDefinition } from "../../schema/case.js";
 import type { ProcedurePredicate } from "../../schema/common.js";
-import { TUBULAR_KINDS } from "../../schema/procedure.js";
+import { BASE_VARIANT, ProcedureDefinitionSchema, TUBULAR_KINDS, type ProcedureDefinition } from "../../schema/procedure.js";
 import { formatPath } from "../parse.js";
 import type { Issue } from "../types.js";
 import { portReport } from "./geometry.js";
+import { nameVocabulary, resolveProcedure } from "./variant.js";
 
 type PathPart = string | number;
 const err = (path: readonly PathPart[], message: string): Issue => ({ path: formatPath(path), message, severity: "error" });
 const warn = (path: readonly PathPart[], message: string): Issue => ({ path: formatPath(path), message, severity: "warning" });
 
-/** The definition's internal references and geometry. */
+/**
+ * The definition's internal references and geometry, then each variant: its own references (removed
+ * structures and patched regions exist in the base) and the resolved definition checked like the base
+ * (issues the base already has are not repeated).
+ */
 export function checkProcedureDefinition(c: CaseDefinition): Issue[] {
   const def = c.procedure;
   if (!def) return [];
-  const base = ["procedure"];
+  const issues = checkResolved(c, def, ["procedure"]);
+  const seen = new Set(issues.map((i) => `${i.path}|${i.message}`));
+  const structures = new Set(def.anatomy.map((s) => s.id));
+  const regions = new Set(def.regions.map((r) => r.id));
+  const ids = new Set<string>();
+  def.variants.forEach((v, i) => {
+    const at = ["procedure", "variants", i];
+    if (v.id === BASE_VARIANT) issues.push(err([...at, "id"], `"${BASE_VARIANT}" names the base definition; a variant needs another id`));
+    if (ids.has(v.id)) issues.push(err([...at, "id"], `duplicate variant "${v.id}"`));
+    ids.add(v.id);
+    v.remove.forEach((id, k) => {
+      if (!structures.has(id)) issues.push(err([...at, "remove", k], `unknown structure "${id}"`));
+      if (id === def.specimen) issues.push(err([...at, "remove", k], "a variant cannot remove the specimen"));
+    });
+    v.regions.forEach((r, k) => {
+      if (!regions.has(r.id)) issues.push(err([...at, "regions", k, "id"], `unknown region "${r.id}" (a variant patches the base regions; it cannot add one)`));
+    });
+    const resolved = resolveProcedure(def, v.id);
+    const parsed = ProcedureDefinitionSchema.safeParse(resolved);
+    if (!parsed.success) {
+      for (const issue of parsed.error.issues.slice(0, 5)) issues.push(err([...at, ...issue.path], `resolved variant: ${issue.message}`));
+      return;
+    }
+    for (const issue of checkResolved(c, resolved, ["procedure"])) {
+      if (seen.has(`${issue.path}|${issue.message}`)) continue;
+      issues.push({ ...issue, path: formatPath(at), message: `variant "${v.id}": ${issue.path}: ${issue.message}` });
+    }
+  });
+  return issues;
+}
+
+function checkResolved(c: CaseDefinition, def: ProcedureDefinition, base: PathPart[]): Issue[] {
   const issues: Issue[] = [];
   const structures = new Set(def.anatomy.map((s) => s.id));
   const regions = new Set(def.regions.map((r) => r.id));
@@ -50,8 +86,11 @@ export function checkProcedureDefinition(c: CaseDefinition): Issue[] {
     if (s.in != null && !regions.has(s.in)) issues.push(err([...at, "in"], `unknown region "${s.in}"`));
     if (TUBULAR_KINDS.includes(s.kind) && s.points.length < 2) issues.push(err([...at, "points"], "a duct or vessel needs a centreline of at least two points"));
     if (TUBULAR_KINDS.includes(s.kind) && !s.appearsAs) issues.push(warn([...at, "appearsAs"], "a duct or vessel should say what it looks like (operators see handles, not names)"));
+    if (s.crosses != null && !regions.has(s.crosses)) issues.push(err([...at, "crosses"], `unknown region "${s.crosses}"`));
+    if (s.crosses != null && !TUBULAR_KINDS.includes(s.kind)) issues.push(err([...at, "crosses"], "only a duct or vessel crosses a plane"));
     s.appearsAs?.when.forEach((w, k) => {
-      if (!regions.has(w.exposure)) issues.push(err([...at, "appearsAs", "when", k, "exposure"], `unknown region "${w.exposure}"`));
+      const region = w.cleared ?? w.exposure!;
+      if (!regions.has(region)) issues.push(err([...at, "appearsAs", "when", k, w.cleared != null ? "cleared" : "exposure"], `unknown region "${region}"`));
       if (w.appearsToEnter != null && !structures.has(w.appearsToEnter)) issues.push(err([...at, "appearsAs", "when", k, "appearsToEnter"], `unknown structure "${w.appearsToEnter}"`));
     });
     if (s.role === "target" && !TUBULAR_KINDS.includes(s.kind)) issues.push(err([...at, "role"], "only ducts and vessels can be targets"));
@@ -67,6 +106,11 @@ export function checkProcedureDefinition(c: CaseDefinition): Issue[] {
     r.hazards.forEach((h, k) => {
       if (!structures.has(h)) issues.push(err([...at, "hazards", k], `unknown structure "${h}"`));
     });
+    if (r.fibrosis) {
+      const torn = r.fibrosis.injures ?? r.hazards[0];
+      if (torn == null) issues.push(err([...at, "fibrosis"], "dense fibrosis needs a structure it tears (`injures`, or a hazard of the region)"));
+      else if (!structures.has(torn)) issues.push(err([...at, "fibrosis", "injures"], `unknown structure "${torn}"`));
+    }
   });
   def.portPlans.forEach((plan, i) => {
     const at = [...base, "portPlans", i];
@@ -93,7 +137,10 @@ export function checkProcedureDefinition(c: CaseDefinition): Issue[] {
 export function checkProcedureRef(c: CaseDefinition, p: ProcedurePredicate, path: PathPart[]): Issue[] {
   const def = c.procedure;
   if (!def) return [err(path, "procedure condition but the case has no procedure")];
-  const structure = (id: string, key: string) => (def.anatomy.some((s) => s.id === id) ? [] : [err([...path, key], `unknown structure "${id}"`)]);
+  // a condition may name a structure of any variant (it is simply false in the others)
+  const names = new Set(nameVocabulary(def));
+  const structure = (id: string, key: string) => (names.has(id) ? [] : [err([...path, key], `unknown structure "${id}"`)]);
+  if ("variant" in p) return p.variant === BASE_VARIANT || def.variants.some((v) => v.id === p.variant) ? [] : [err([...path, "variant"], `unknown procedure variant "${p.variant}"`)];
   const view = (id: string, key: string) => (def.views.some((v) => v.id === id) ? [] : [err([...path, key], `unknown safety view "${id}"`)]);
   if ("view" in p) return view(p.view, "view");
   if ("documented" in p) return view(p.documented, "documented");

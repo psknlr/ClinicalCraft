@@ -4,7 +4,7 @@
  * unsafe acts, each safety pause's claims against what the field showed, and the counters. Shown only
  * once the case is finished: during the case it would tell the operator what the field hides.
  */
-import { t, type AssessmentReport, type CaseDefinition } from "@clinicalcraft/core";
+import { t, vocabularyStructures, type AssessmentReport, type CaseDefinition } from "@clinicalcraft/core";
 import { ct, getLocale, tr, trMaybe } from "../../i18n/index.js";
 import { h } from "../dom.js";
 import { label } from "./surgery-controls.js";
@@ -12,7 +12,7 @@ import { label } from "./surgery-controls.js";
 /** A structure's name for the debrief (the anatomy may be named once the case is over). */
 function structureName(c: CaseDefinition, id: string | undefined): string {
   if (!id) return "";
-  const st = c.procedure?.anatomy.find((s) => s.id === id);
+  const st = c.procedure ? vocabularyStructures(c.procedure).find((s) => s.id === id) : undefined;
   return st ? t(st.name, getLocale()) : id;
 }
 

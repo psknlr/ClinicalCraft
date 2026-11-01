@@ -72,19 +72,28 @@ export const StructureSchema = z
           .array(
             z
               .object({
-                /** Holds while this region's exposure is below `below`. */
-                exposure: IdSchema,
+                /** Holds while this region's exposure is below `below` (traction in the wrong direction). */
+                exposure: IdSchema.optional(),
+                /** Holds while this region is cleared to less than `below` (a structure only dissection resolves). */
+                cleared: IdSchema.optional(),
                 below: z.number().min(0).max(1),
                 text: LocalizedTextSchema,
                 /** While this holds the structure appears to enter this organ (counts against "only two structures"). */
                 appearsToEnter: IdSchema.optional(),
               })
-              .strict(),
+              .strict()
+              .refine((w) => (w.exposure == null) !== (w.cleared == null), { message: "an appearance rule tests exactly one of `exposure` and `cleared`" }),
           )
           .default([]),
       })
       .strict()
       .optional(),
+    /**
+     * A duct or vessel that crosses this region's plane (a subvesical duct in the gallbladder bed, a
+     * posterior cystic artery branch): completing the region's dissection divides it, as `divide` would,
+     * unless it was divided before.
+     */
+    crosses: IdSchema.optional(),
     /** Node name of the structure in the case's anatomy model (GLB), when it has one. */
     mesh: z.string().optional(),
     provenance: ProvenanceTagSchema,
@@ -125,9 +134,27 @@ export const RegionSchema = z
     hazards: z.array(IdSchema).default([]),
     /** Dissecting this region detaches the specimen from its bed (the gallbladder fossa). */
     bed: z.boolean().default(false),
+    /**
+     * Dense fibrosis (severe or chronic inflammation): the planes stop separating at `safeTo` of the
+     * region. The step that reaches it stops there and is felt (`dense-fibrosis`); every step beyond is
+     * unsafe and tears `injures` (default: the region's first hazard). `finding` is what the operator
+     * sees once dissection there has begun.
+     */
+    fibrosis: z
+      .object({
+        safeTo: z.number().gt(0).lt(1),
+        injures: IdSchema.optional(),
+        finding: LocalizedTextSchema,
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 export type Region = z.infer<typeof RegionSchema>;
+
+/** A change to one of the base definition's regions (a variant cannot add regions: the operator's list stays the same). */
+export const RegionPatchSchema = RegionSchema.partial().required({ id: true });
+export type RegionPatch = z.infer<typeof RegionPatchSchema>;
 
 export const PortSiteSchema = z
   .object({
@@ -212,6 +239,33 @@ export const SafetyViewSchema = z
   .strict();
 export type SafetyView = z.infer<typeof SafetyViewSchema>;
 
+/**
+ * An anatomical variant of the procedure (docs/PROCEDURE.md §9): what the patient's anatomy really is
+ * in this session, chosen at `start` and never shown to the operator. It overlays the base definition:
+ * `anatomy` replaces structures with the same id or adds new ones, `remove` drops structures, `regions`
+ * patch the base regions (none can be added), `stones` overrides. Variants are counterfactual teaching
+ * and benchmark material unless their provenance says otherwise.
+ */
+export const ProcedureVariantSchema = z
+  .object({
+    id: IdSchema,
+    name: LocalizedTextSchema,
+    /** What differs and why it matters (debrief and facilitator text; never shown to the operator). */
+    summary: LocalizedTextSchema,
+    provenance: ProvenanceTagSchema,
+    /** Sources describing the variant (its existence and its surgical significance; not its frequency in this patient). */
+    references: z.array(z.string().min(1).max(400)).max(8).default([]),
+    anatomy: z.array(StructureSchema).default([]),
+    remove: z.array(IdSchema).default([]),
+    regions: z.array(RegionPatchSchema).default([]),
+    stones: z.boolean().optional(),
+  })
+  .strict();
+export type ProcedureVariant = z.infer<typeof ProcedureVariantSchema>;
+
+/** The variant id that names the base definition itself (no variant). */
+export const BASE_VARIANT = "reference" as const;
+
 export const ProcedureDefinitionSchema = z
   .object({
     id: IdSchema,
@@ -241,6 +295,8 @@ export const ProcedureDefinitionSchema = z
       .default({}),
     /** Minutes each kind of step takes on a simulated clock (defaults in docs/PROCEDURE.md §5). */
     minutes: z.record(z.string(), z.number().nonnegative()).default({}),
+    /** Anatomical variants a session may be started with (`start {variant}`); the base definition is `reference`. */
+    variants: z.array(ProcedureVariantSchema).default([]),
     note: LocalizedTextSchema.optional(),
   })
   .strict();
@@ -322,7 +378,9 @@ export type ProcedureSignal =
   | "bleeding-controlled"
   | "specimen-detached"
   | "imaging-done"
-  | "pressure-high";
+  | "pressure-high"
+  /** The planes have stopped separating: dense fibrosis (further dissection there tears what lies in it). */
+  | "dense-fibrosis";
 
 export interface PortState {
   /** Port site id (= the port's id in ops). */

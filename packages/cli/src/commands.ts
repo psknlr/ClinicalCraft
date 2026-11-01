@@ -9,6 +9,7 @@ import { runEval } from "./eval.js";
 import { runExec } from "./exec.js";
 import { assetsInspect } from "./assets.js";
 import { benchDemo, benchGrounding, benchList, benchRun } from "./bench.js";
+import { benchOperative } from "./bench-operative.js";
 import { facilitiesCompile, facilitiesList, facilitiesValidate } from "./facilities.js";
 import { EXEC_FLAGS, JSON_FLAG, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
 import { runImportV4 } from "./import-v4.js";
@@ -133,6 +134,34 @@ export const BENCH: CommandSpec = {
         "clinicalcraft bench grounding --split dev --lang en",
         "clinicalcraft bench grounding --split dev --tag negation --lang en",
         "clinicalcraft bench grounding --split test --out grounding-results/after --compare grounding-results/before/grounding-report.json",
+      ],
+    },
+    {
+      name: "operative",
+      summary: {
+        en: "Operative benchmark: agents at the operating table with the anatomy (variant) hidden → operative-report.json + .md",
+        zh: "手术基准测试：智能体在手术台前操作，解剖（变异）对其隐藏 → operative-report.json 与 .md",
+      },
+      flags: [
+        { name: "suite", type: "string", valueName: "<name>", description: { en: "Operative suite, from <content dir>/operative/ (default: the only one)", zh: "手术测试集，来自 <内容目录>/operative/（默认：唯一的那个）" } },
+        { name: "list", type: "boolean", description: { en: "List the suites, or the scenarios of --suite", zh: "列出测试集，或 --suite 的场景" } },
+        { name: "split", type: "string", valueName: "<split>", choices: ["dev", "test", "all"], description: { en: "dev | test (held out) | all (default all)", zh: "dev | test（留出）| all（默认 all）" } },
+        { name: "scenario", type: "list", valueName: "<ids>", description: { en: "Only these scenarios", zh: "只运行这些场景" } },
+        { name: "variant", type: "list", valueName: "<ids>", description: { en: "Only scenarios that can draw these anatomies", zh: "只运行可能抽到这些解剖的场景" } },
+        { name: "agent", type: "string", valueName: "<kind>", choices: ["reference", "scripted-llm", "llm"], description: { en: "reference | scripted-llm (validation) | llm (a real model; needs --live)", zh: "reference | scripted-llm（验证）| llm（真实模型；需 --live）" } },
+        { name: "seeds", type: "string", valueName: "<list>", description: { en: "Run seeds, e.g. 1-5 (default 1-3); a pool scenario draws its anatomy from the seed", zh: "运行种子，如 1-5（默认 1-3）；解剖池场景按种子抽取解剖" } },
+        { name: "out", type: "string", valueName: "<dir>", description: { en: "Report directory (default operative-results)", zh: "报告目录（默认 operative-results）" } },
+        { name: "require", type: "number", valueName: "<percent>", description: { en: "Minimum task success rate (default 100 for reference / scripted-llm)", zh: "最低任务成功率（reference / scripted-llm 默认 100）" } },
+        { name: "live", type: "boolean", description: { en: "Allow the llm agent to call a real model (costs money; never in CI)", zh: "允许 llm 智能体调用真实模型（会产生费用；CI 中禁止）" } },
+        { name: "max-tokens", type: "number", valueName: "<n>", description: { en: "Spending cap: total tokens over the whole run (llm)", zh: "费用上限：整次运行的总 token 数（llm）" } },
+        { name: "max-usd", type: "number", valueName: "<usd>", description: { en: "Spending cap in USD (only for models with a catalogue price)", zh: "以美元计的费用上限（仅限有目录价格的模型）" } },
+        ...SESSION_FLAGS.filter((f) => ["provider", "model", "base-url"].includes(f.name)),
+      ],
+      run: benchOperative,
+      examples: [
+        "clinicalcraft bench operative --list",
+        "clinicalcraft bench operative --suite case126-v1 --agent reference --seeds 1-5",
+        "clinicalcraft bench operative --suite case126-v1 --split test --agent llm --provider anthropic --model claude-opus-5-5 --live --max-tokens 3000000 --seeds 1-3",
       ],
     },
   ],

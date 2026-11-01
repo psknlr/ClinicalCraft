@@ -10,6 +10,7 @@ import type { InstrumentId, ProcedureDefinition } from "../../schema/procedure.j
 import { appearanceRule, clearedFraction, exposure, fieldOpen, isTubular, isVisible, obscured, structureOf } from "./field.js";
 import { describeDirection } from "./geometry.js";
 import type { ProcedureState } from "./state.js";
+import { tubeVocabulary } from "./variant.js";
 
 export interface FieldView {
   plan: string | null;
@@ -36,7 +37,11 @@ export interface FieldView {
     name: LocalizedText;
     dissection: "untouched" | "begun" | "partly" | "mostly" | "cleared";
     exposure: "none" | "poor" | "partial" | "good";
+    /** What the tissue looks like once dissection there has begun (dense fibrosis), if anything unusual. */
+    finding?: LocalizedText;
   }[];
+  /** The names a duct or vessel can be given (`identify … as`): the same list whatever the anatomy. */
+  names: string[];
   retractions: { structure: string; port: string; direction: string[]; force: "gentle" | "firm" | "excessive" }[];
   findings: ("bleeding" | "major-bleeding" | "field-obscured" | "bile" | "stones" | "duct-injury-on-imaging")[];
   specimen: ProcedureState["specimen"];
@@ -100,8 +105,12 @@ export function observeField(def: ProcedureDefinition, s: ProcedureState): Field
         })
       : [],
     regions: open
-      ? def.regions.map((r) => ({ id: r.id, name: r.name, dissection: dissectionBin(clearedFraction(def, s, r.id)), exposure: exposureBin(exposure(def, s, r.id)) }))
+      ? def.regions.map((r) => {
+          const cleared = clearedFraction(def, s, r.id);
+          return { id: r.id, name: r.name, dissection: dissectionBin(cleared), exposure: exposureBin(exposure(def, s, r.id)), ...(r.fibrosis && cleared > 0 ? { finding: r.fibrosis.finding } : {}) };
+        })
       : [],
+    names: tubeVocabulary(def),
     retractions: Object.entries(s.retractions).map(([structure, r]) => ({ structure, port: r.port, direction: describeDirection(r.direction), force: r.force })),
     findings: [...findings],
     specimen: s.specimen,

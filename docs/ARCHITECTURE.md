@@ -380,12 +380,15 @@ fitModel(bounds, ref, footprint): ModelFit; modelScale(ref): Vec3 | undefined; e
 GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web renderer loads / those that need a decoder (DRACO; KTX2/Basis, not bundled)
 ```
 
-**Operative field** (`engine/procedure`, schema `schema/procedure.ts`; contract [PROCEDURE.md](PROCEDURE.md)): `operate(def, state, op, at)` — the pure step behind the `operate` action, whose result lands in `SessionState.procedure`; `observeField(def, state)` — the operator's view (handles, never duct or vessel names); `evaluateProcedure` — the `procedure` condition leaf; `portReport` and `reach` — port ergonomics; `viewCriteria`/`viewHolds` — safety views judged on the field. `assess` adds `procedure` and, from the case's `safetyGates`, `safety.verdict` (a `safety-critical` gate caps the percentage).
+**Operative field** (`engine/procedure`, schema `schema/procedure.ts`; contract [PROCEDURE.md](PROCEDURE.md)): `operate(def, state, op, at)` — the pure step behind the `operate` action, whose result lands in `SessionState.procedure`; `observeField(def, state)` — the operator's view (handles, never duct or vessel names); `evaluateProcedure` — the `procedure` condition leaf; `portReport` and `reach` — port ergonomics; `viewCriteria`/`viewHolds` — safety views judged on the field; `procedureFor(case, state)` — the session's definition with its anatomical variant laid over it (`resolveProcedure`), the one every reader uses. The operative benchmark (`@clinicalcraft/bench` `operative/`, `clinicalcraft bench operative`; [BENCHMARK_OPERATIVE.md](BENCHMARK_OPERATIVE.md)) runs agents on a case's procedure with the variant hidden. `assess` adds `procedure` and, from the case's `safetyGates`, `safety.verdict` (a `safety-critical` gate caps the percentage).
 
 ### 3.1 Reducer semantics
 
 * `start` — sets `started`; emits `session.started`. All other actions before
   `start` are rejected `not-started`, except `set-phase`, `note`, `flag`.
+  `start {variant}` also records the procedure's anatomical variant
+  (`SessionState.variant`, hidden state; an unknown one is rejected
+  `unknown-id`; PROCEDURE.md §9).
   After `finish`, everything is rejected `finished`.
 * Static clock: actions cost 0 minutes; turnaround is ignored (results ready
   immediately). Simulated clock: each action advances `clock` by

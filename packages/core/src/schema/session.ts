@@ -20,7 +20,8 @@ export type Actor = z.infer<typeof ActorSchema>;
 const base = { by: ActorSchema.optional() };
 
 export const ClinicalActionSchema = z.discriminatedUnion("type", [
-  z.object({ type: z.literal("start"), ...base }).strict(),
+  /** `variant`: the procedure's anatomical variant for this session (docs/PROCEDURE.md §9; hidden from the operator). */
+  z.object({ type: z.literal("start"), variant: IdSchema.optional(), ...base }).strict(),
   /** Learner asked a history question (button, free text, or attributed by the patient agent). */
   z.object({ type: z.literal("ask"), itemId: IdSchema, via: z.enum(["button", "free-text", "agent"]).optional(), ...base }).strict(),
   z.object({ type: z.literal("examine"), findingId: IdSchema, ...base }).strict(),
@@ -112,6 +113,8 @@ export interface SessionState {
   monitorAttachedAt?: number;
   /** The operative field (cases with a `procedure`), from the first accepted `operate`. */
   procedure?: ProcedureState;
+  /** The procedure's anatomical variant chosen at `start` (absent: the base definition). Hidden state. */
+  variant?: string;
   /** Monotonic count of accepted actions (for transcripts / ordering). */
   seq: number;
 }

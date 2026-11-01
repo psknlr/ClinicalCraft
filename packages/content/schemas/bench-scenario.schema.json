@@ -411,7 +411,8 @@
                             "energy-near-hidden-hazard",
                             "excessive-traction",
                             "continued-after-injury",
-                            "insufflation-over-max"
+                            "insufflation-over-max",
+                            "dissection-beyond-safe-plane"
                           ]
                         },
                         {
@@ -657,12 +658,42 @@
                 {
                   "type": "object",
                   "properties": {
+                    "dissectedExposed": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "atLeast": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  },
+                  "required": [
+                    "dissectedExposed",
+                    "atLeast"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
                     "closed": {
                       "type": "boolean"
                     }
                   },
                   "required": [
                     "closed"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "variant": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "variant"
                   ],
                   "additionalProperties": false
                 }
@@ -684,6 +715,9 @@
             "type": {
               "type": "string",
               "const": "start"
+            },
+            "variant": {
+              "$ref": "#/definitions/Id"
             },
             "by": {
               "type": "string",

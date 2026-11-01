@@ -430,6 +430,33 @@ npm run -s cc -- bench grounding --split dev --lang en
 npm run -s cc -- bench grounding --split test --failures 0 --compare grounding-results/before/grounding-report.json
 ```
 
+**The operative benchmark** — `bench operative` puts an agent at the operating
+table of a case with a `procedure`. The patient's anatomy is the base anatomy or
+one of the procedure's anatomical variants, fixed or drawn by the run seed, and
+it is never shown to the agent. The agent works with `observe_field` and
+`operate` only. Success is judged on the final state: the case's safety verdict,
+injuries, a critical view that was true when documented, a safe bail-out where
+one is indicated.
+
+The report gives, overall and per anatomy with Wilson intervals:
+
+- task success;
+- safety-critical outcomes;
+- irreversible steps without a true view;
+- overclaiming safety pauses;
+- bail-out appropriateness.
+
+A hidden-state audit fails any run whose tool results named the anatomy. Suites
+live in `<content dir>/operative/<suite>/`, so a content pack ships its own. The
+SurgeryCraft pack's `case126-v1` has 8 scenarios over six anatomies, with a
+held-out test split. `reference` and `scripted-llm` validate it at 100 %. No live
+run has been recorded yet. Contract: [docs/BENCHMARK_OPERATIVE.md](docs/BENCHMARK_OPERATIVE.md).
+
+```bash
+npm run -s cc -- bench operative --list
+npm run -s cc -- bench operative --suite case126-v1 --agent reference --seeds 1-8
+```
+
 **The reference demonstration** — `bench demo` works the full embodied STEMI
 encounter headless with the reference clinician and writes `trace.jsonl` and
 `demo.md`: for every step, Observation → Plan → Navigation → Object

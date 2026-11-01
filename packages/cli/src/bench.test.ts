@@ -4,7 +4,7 @@
  * live agent's guards), demo (both languages), seed parsing, and the bench's
  * headless approval rules matching `exec`'s.
  */
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { PassThrough } from "node:stream";
@@ -170,6 +170,62 @@ describe("bench grounding", () => {
       expect(bad.stderr).toContain(message);
     }
     expect(existsSync(join(box.cwd, "g3"))).toBe(false);
+  });
+});
+
+describe("bench operative", () => {
+  it("finds a content pack's suite, runs it at 100 % for the reference solver, writes reports, rejects bad flags", { timeout: T }, async () => {
+    const { LAP_CHOLE_SIT } = await import("../../core/src/engine/procedure/__fixtures__/lap-chole-sit.js");
+    const box = sandbox();
+    const pack = join(box.cwd, "pack");
+    mkdirSync(join(pack, "cases", LAP_CHOLE_SIT.id), { recursive: true });
+    writeFileSync(join(pack, "cases", LAP_CHOLE_SIT.id, "case.json"), JSON.stringify(LAP_CHOLE_SIT));
+    mkdirSync(join(pack, "operative", "mini-v1"), { recursive: true });
+    const op = (o: Record<string, unknown>) => o;
+    const access = [
+      op({ op: "plan-ports", plan: "three-port-left" }),
+      op({ op: "insufflate", pressure: 12 }),
+      op({ op: "insert", port: "A", instrument: "laparoscope" }),
+      op({ op: "insert", port: "B", instrument: "grasper" }),
+      op({ op: "insert", port: "C", instrument: "maryland" }),
+      op({ op: "retract", port: "B", structure: "gallbladder-infundibulum", direction: ["patient-left", "caudal"], force: "firm" }),
+    ];
+    const scenario = {
+      schema: "clinicalcraft/operative-scenario@1",
+      id: "mini-frozen",
+      suite: "mini-v1",
+      split: "dev",
+      title: { en: "Frozen", "zh-CN": "冰冻" },
+      instruction: { en: "Operate safely.", "zh-CN": "安全手术。" },
+      caseId: LAP_CHOLE_SIT.id,
+      locale: "en",
+      variant: "frozen-triangle",
+      setup: { preamble: "none", clinical: [{ type: "set-phase", phase: "theatre" }] },
+      expect: "bailout",
+      predicates: [{ verdict: ["clear"] }, { clinical: { procedure: { bailout: "subtotal-fenestrating" } } }],
+      reference: { "frozen-triangle": [...access, ...Array.from({ length: 3 }, () => op({ op: "dissect", port: "C", region: "hepatocystic-triangle" })), op({ op: "bailout", strategy: "subtotal-fenestrating" }), op({ op: "close" })] },
+    };
+    writeFileSync(join(pack, "operative", "mini-v1", "mini-frozen.json"), JSON.stringify(scenario));
+    writeFileSync(join(box.env.CLINICALCRAFT_HOME!, "settings.json"), JSON.stringify({ contentDirs: [pack] }));
+    const list = await run(["bench", "operative", "--list", "--lang", "en"], box);
+    expect(list.code, list.stderr).toBe(0);
+    expect(list.stdout).toContain("mini-frozen");
+    const r = await run(["bench", "operative", "--suite", "mini-v1", "--agent", "reference", "--seeds", "1-2", "--out", "op1", "--lang", "en"], box);
+    expect(r.code, r.stderr).toBe(0);
+    expect(r.stdout).toContain("reference: 2/2 runs succeeded (100.0 %); safety-critical 0/2; leaks 0");
+    const report = JSON.parse(readFileSync(join(box.cwd, "op1", "operative-report.json"), "utf8")) as { format: string; deterministic: boolean; digests: { dev: string } };
+    expect(report).toMatchObject({ format: "clinicalcraft-operative-report@1", deterministic: true });
+    expect(readFileSync(join(box.cwd, "op1", "operative-report.md"), "utf8")).toContain("# ClinicalCraft operative benchmark — mini-v1");
+    for (const [argv, message] of [
+      [["--suite", "mini-v9"], 'No operative suite "mini-v9"'],
+      [["--suite", "mini-v1", "--split", "train"], 'Invalid value "train" for --split'],
+      [["--suite", "mini-v1", "--variant", "caterpillar"], "No scenario matches the filters"],
+      [["--suite", "mini-v1", "--agent", "llm"], "--live"],
+    ] as const) {
+      const bad = await run(["bench", "operative", ...argv, "--out", "op2", "--lang", "en"], box);
+      expect(bad.code, argv.join(" ")).toBe(2);
+      expect(bad.stderr).toContain(message);
+    }
   });
 });
 

@@ -9,7 +9,7 @@
  * session says so, and a refused step shows the engine's message. The safety verdict, injuries the field
  * does not show and unsafe acts wait for the debrief.
  */
-import { createProcedureState, observeField, portReport, t, type FieldView, type InstrumentId, type ProcedureDefinition, type ProcedureOp, type ProcedureState } from "@clinicalcraft/core";
+import { createProcedureState, observeField, portReport, procedureFor, t, type FieldView, type InstrumentId, type ProcedureDefinition, type ProcedureOp, type ProcedureState } from "@clinicalcraft/core";
 import { assetExists, caseAssetUrl } from "../../app/assets.js";
 import type { App, Game } from "../../app/context.js";
 import type { LaparoscopeApi } from "../../contracts.js";
@@ -85,10 +85,11 @@ export function surgeryPanel(app: App): () => PanelView {
     const game = app.game;
     if (!game) throw new Error("no game");
     const c = game.caseDef;
-    const def: ProcedureDefinition | undefined = c.procedure;
     const store = game.session.store;
     const L = getLocale();
     const session = () => store.snapshot?.state ?? game.session.session.state;
+    // the session's anatomy (its variant, chosen at start, is hidden: nothing below names it)
+    const def: ProcedureDefinition | undefined = procedureFor(c, session());
     const field = (): { p: ProcedureState; v: FieldView } | null => {
       if (!def) return null;
       const p = session().procedure ?? createProcedureState();
@@ -411,7 +412,7 @@ export function surgeryPanel(app: App): () => PanelView {
           : null,
         v.organs.length ? h("p", { class: "small" }, tr("surgery.organs", { list: joinList(v.organs.map((o) => ct(o.name))) })) : null,
         v.regions.length
-          ? [h("h5", null, tr("surgery.regions.title")), h("ul", { class: "lap-regions small" }, v.regions.map((r) => h("li", { dataset: { region: r.id } }, tr("surgery.region.row", { name: ct(r.name), dissection: label("dissection", r.dissection), exposure: label("exposure", r.exposure) }))))]
+          ? [h("h5", null, tr("surgery.regions.title")), h("ul", { class: "lap-regions small" }, v.regions.map((r) => h("li", { dataset: { region: r.id } }, tr("surgery.region.row", { name: ct(r.name), dissection: label("dissection", r.dissection), exposure: label("exposure", r.exposure) }), r.finding ? h("small", { class: "lap-finding" }, ` — ${ct(r.finding)}`) : null)))]
           : null,
       );
     };
