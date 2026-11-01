@@ -114,7 +114,8 @@
         {"m": "coal", "p": [0.2, 0.77, 1.725], "s": [0.16, 0.06, 0.2]},
         {"m": "led-green", "p": [0.22, 0.8025, 1.725], "s": [0.04, 0.005, 0.04]},
         {"m": "plastic", "p": [0, 0.93, -1.4], "s": [0.26, 0.08, 0.25]}
-      ]
+      ],
+      "model": {"uri":"models/ct-scanner.glb","sha256":"cd41195ee468796d43ef6920770a44619a019e83e4f96b40b2022b5244310510","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "mri-scanner",
@@ -229,7 +230,8 @@
         {"m": "plastic", "p": [0.165, 1.12, -0.07], "s": [0.05, 0.24, 0.4]},
         {"m": "scrubs", "p": [0, 1.265, -0.07], "s": [0.38, 0.05, 0.4]},
         {"m": "plastic", "p": [0, 1.12, -0.25], "s": [0.28, 0.24, 0.04]}
-      ]
+      ],
+      "model": {"uri":"models/mri-scanner.glb","sha256":"9b135312eed0d09d7a1953fe2e05c4d9f521fcca0e0fa00233f378aeee878b5f","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "xray-machine",
@@ -295,7 +297,8 @@
         {"m": "screen", "p": [-0.2, 1.56, 0.4525], "s": [0.22, 0.14, 0.005], "name": "screen"},
         {"m": "coal", "p": [-0.39, 1.55, 0.29], "s": [0.06, 0.1, 0.1]},
         {"m": "coal", "p": [-0.01, 1.55, 0.29], "s": [0.06, 0.1, 0.1]}
-      ]
+      ],
+      "model": {"uri":"models/xray-machine.glb","sha256":"d1fce7fffceb7a65d21b40a7e0327503ae12c0b2aaed177de7d7c1de85aac6b4","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "xray-chest-stand",
@@ -357,7 +360,8 @@
         {"m": "rubber", "p": [0, 0.005, 0.18], "s": [0.6, 0.01, 0.34]},
         {"m": "yellow", "p": [-0.11, 0.0125, 0.19], "s": [0.12, 0.005, 0.2]},
         {"m": "yellow", "p": [0.11, 0.0125, 0.19], "s": [0.12, 0.005, 0.2]}
-      ]
+      ],
+      "model": {"uri":"models/xray-chest-stand.glb","sha256":"d19132788e40057bf22aff4e1eb4f3901363dea82eea2722d715f942c1f1ef5b","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "c-arm",
@@ -550,7 +554,8 @@
         {"m": "mattress", "p": [0, 0.87, -0.425], "s": [0.46, 0.04, 2.9]},
         {"m": "coal", "p": [0.2, 0.77, 2.225], "s": [0.16, 0.06, 0.2]},
         {"m": "led-green", "p": [0.22, 0.8025, 2.225], "s": [0.04, 0.005, 0.04]}
-      ]
+      ],
+      "model": {"uri":"models/pet-ct-scanner.glb","sha256":"400c5c2a974c819800dd2b1ed9d10052e67df804d94826daeb18c7af76ee23f7","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "ultrasound-machine",
@@ -690,7 +695,8 @@
         {"m": "black", "p": [0.16, 0.96, 0.06], "s": [0.08, 0.08, 0.08]},
         {"m": "plastic", "p": [0.16, 1.05, 0.06], "s": [0.04, 0.1, 0.04]},
         {"m": "black", "p": [0.16, 0.77, 0.06], "s": [0.01, 0.3, 0.01]}
-      ]
+      ],
+      "model": {"uri":"models/pocus-cart.glb","sha256":"4c7c6e2eb036c1c03475bb54641989c97415adbe5b0a17146fea015967b8a2eb","scale":1,"offset":[0.0,0.0005,0.0],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "radiology-console",
@@ -819,7 +825,8 @@
         {"m": "chrome", "p": [0.26, 1.67, 0.025], "s": [0.08, 0.06, 0.01]},
         {"m": "black", "p": [0.45, 1.1325, 0.01], "s": [0.1, 0.035, 0.01]},
         {"m": "led-green", "p": [0.37, 1.1325, 0.008], "s": [0.02, 0.015, 0.006]}
-      ]
+      ],
+      "model": {"uri":"models/xray-lightbox.glb","sha256":"dfb59ea3fdf037654a79dd77bac43fb14b2cd362074ed39de497c57ccb80f127","scale":1,"offset":[0.0,1.1,-0.0225],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "hematology-analyzer",
@@ -1774,7 +1781,8 @@
         {"m": "led-amber", "p": [0.415, 0.81, 0.1625], "s": [0.03, 0.02, 0.005]},
         {"m": "scrubs", "p": [0.23, 0.7725, 0.24], "s": [0.06, 0.025, 0.08]},
         {"m": "pink", "p": [0.32, 0.7725, 0.24], "s": [0.06, 0.025, 0.08]}
-      ]
+      ],
+      "model": {"uri":"models/microtome.glb","sha256":"a85f0c834ecfe17a22fc2298a43dc835313178c12fb9bdfecdec94aa938cbf64","scale":1,"offset":[0.0,0.0,-0.0025],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "tissue-processor",
@@ -1839,7 +1847,8 @@
         {"m": "black", "p": [-0.22, 1.33, 0.177], "s": [0.16, 0.04, 0.03]},
         {"m": "steel", "p": [0.26, 1.315, -0.058], "s": [0.4, 0.03, 0.44]},
         {"m": "black", "p": [0.26, 1.335, -0.048], "s": [0.04, 0.01, 0.26]}
-      ]
+      ],
+      "model": {"uri":"models/tissue-processor.glb","sha256":"d7eeea41106ee28f2f9d3d183cb592375e1a81319c53e08d91fb941f231c3ae9","scale":1,"offset":[0.0,0.0,-0.0005],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "endoscopy-tower",
@@ -1920,7 +1929,8 @@
         {"m": "black", "p": [0.39, 0.825, 0.05], "s": [0.02, 0.45, 0.02]},
         {"m": "black", "p": [0.39, 0.61, 0.165], "s": [0.02, 0.02, 0.25]},
         {"m": "black", "p": [0.25, 0.61, 0.28], "s": [0.3, 0.02, 0.02]}
-      ]
+      ],
+      "model": {"uri":"models/endoscopy-tower.glb","sha256":"67a56521b572eea9e1c429c69e2f873c81504ac114f2e14e117a2395f419116b","scale":1,"offset":[0.0,0.0007,0.0],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     }
   ]
 }

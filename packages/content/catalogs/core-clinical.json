@@ -132,7 +132,8 @@
         {"m":"green","p":[0.25,1.125,-0.035],"s":[0.02,0.25,0.02]},
         {"m":"yellow","p":[0.25,1.11,0.01],"s":[0.02,0.28,0.02]},
         {"m":"darkwood","p":[0.25,1.125,0.055],"s":[0.02,0.25,0.02]}
-      ]
+      ],
+      "model": {"uri":"models/ecg-machine.glb","sha256":"e37ce2add9075edfa6cd18f6964efc837a8d3691638feb02acff42b60da5f3bd","scale":1,"offset":[0.0,0.0005,0.015],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "defibrillator",
@@ -412,7 +413,8 @@
         {"m":"coal","p":[0,0.875,0],"s":[0.153,0.046,0.255]},
         {"m":"coal","p":[0,0.875,-0.143],"s":[0.06,0.05,0.045]},
         {"m":"paper","p":[0,0.675,0.123],"s":[0.12,0.25,0.005]}
-      ]
+      ],
+      "model": {"uri":"models/oxygen-cylinder.glb","sha256":"9ee91a8189b04d5ddcf0954d7de6f423ba49c808ba6aa30758b6091d8a4f4f46","scale":1,"offset":[0.0,0.0,-0.02],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "iv-pole",
@@ -646,7 +648,8 @@
         {"m":"plastic","p":[0.183,0.663,0.053],"s":[0.065,0.015,0.015]},
         {"m":"plastic","p":[0.208,0.485,0.053],"s":[0.015,0.37,0.015]},
         {"m":"lead-glass","p":[0.209,0.235,0.053],"s":[0.027,0.13,0.026]}
-      ]
+      ],
+      "model": {"uri":"models/suction-unit.glb","sha256":"0e28a7d9b2e0f9bbac1448c8584bb06d573ea404343aa3f95c9b2ecccbf20a84","scale":1,"offset":[0.0011,0.0005,0.0],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "nebulizer",
@@ -696,7 +699,8 @@
         {"m":"lead-glass","p":[-0.126,1.05,0.075],"s":[0.128,0.14,0.13]},
         {"m":"green","p":[-0.125,1.047,0.005],"s":[0.14,0.015,0.01]},
         {"m":"paper","p":[-0.14,0.855,-0.08],"s":[0.1,0.05,0.1]}
-      ]
+      ],
+      "model": {"uri":"models/nebulizer.glb","sha256":"972f89cc5f260812088102d7341f033ef5a70cb286362ce72847624788b7bf35","scale":1,"offset":[0.0,0.0005,0.0],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "niv-ventilator",
@@ -742,7 +746,8 @@
         {"m":"clin-hose-blue","p":[-0.2,1.16,0.09],"s":[0.11,0.03,0.03]},
         {"m":"plastic","p":[-0.24,1.09,0.12],"s":[0.09,0.08,0.05]},
         {"m":"green","p":[-0.24,1.09,0.148],"s":[0.06,0.05,0.006]}
-      ]
+      ],
+      "model": {"uri":"models/niv-ventilator.glb","sha256":"fa7e80ebf2e5629c7b1795803177e2225c6e5ac964f9d4739699722e0535b4f7","scale":1,"offset":[-0.0275,0.0005,0.0],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "glucometer-station",
@@ -923,7 +928,8 @@
         {"m":"screen-dark","p":[0,1.84,-0.13],"s":[0.42,0.22,0.004],"name":"screen"},
         {"m":"oxygen-green","p":[-0.21,0.525,-0.38],"s":[0.1,0.55,0.04]},
         {"m":"blue","p":[0.21,0.525,-0.38],"s":[0.1,0.55,0.04]}
-      ]
+      ],
+      "model": {"uri":"models/anesthesia-machine.glb","sha256":"fcd06dedac4d01e41fa73def97ae836ab01d17feabc8acdb16e49b6099b69741","scale":1,"offset":[-0.025,0.0007,-0.035],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "operating-table",
@@ -1362,7 +1368,8 @@
         {"m":"plastic","p":[0.1,1.9,-0.27],"s":[0.01,0.02,0.01]},
         {"m":"lead-glass","p":[0.1,1.785,-0.27],"s":[0.08,0.21,0.04]},
         {"m":"chrome","p":[0,1.295,-0.315],"s":[0.36,0.03,0.03]}
-      ]
+      ],
+      "model": {"uri":"models/dialysis-machine.glb","sha256":"8692e6ae2d365414c4919c828b4302aa34c888e394dfbf9dcb949e48dbdd7abc","scale":1,"offset":[-0.015,0.0006,-0.005],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "exam-light",
@@ -1404,7 +1411,8 @@
         {"m":"lightbox","p":[0,1.48,0.163],"s":[0.15,0.09,0.006]},
         {"m":"lightbox","p":[0,1.48,0.162],"s":[0.09,0.15,0.004]},
         {"m":"plastic","p":[0,1.6,0.11],"s":[0.03,0.04,0.04]}
-      ]
+      ],
+      "model": {"uri":"models/exam-light.glb","sha256":"535a1e81a7d025a5bdd0a42a9bca848f847d5dc553fd2b09f66999b993958b8b","scale":1,"offset":[0.0,0.0005,-0.082],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "peak-flow-station",
@@ -1451,7 +1459,8 @@
         {"m":"plastic","p":[0.13,0.895,0.105],"s":[0.1,0.03,0.13]},
         {"m":"screen-dark","p":[0.13,0.911,0.085],"s":[0.06,0.002,0.05]},
         {"m":"paper","p":[-0.05,0.24,0],"s":[0.3,0.12,0.24]}
-      ]
+      ],
+      "model": {"uri":"models/peak-flow-station.glb","sha256":"a75ff9b90bfb925ce18fcc3b589ca9105934e600cb55a387a270e4163d927f8b","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "weighing-scale",
@@ -1584,7 +1593,8 @@
         {"m":"chrome","p":[0.4,1.02,0],"s":[0.05,0.05,2.74]},
         {"m":"coal","p":[0.4,1.02,1.395],"s":[0.06,0.06,0.06]},
         {"m":"coal","p":[0.4,1.02,-1.395],"s":[0.06,0.06,0.06]}
-      ]
+      ],
+      "model": {"uri":"models/parallel-bars.glb","sha256":"e1abc9b8e7b0f34d90f079a91486b1bdb955cc3466b8978762fa4cc3be5ff6e2","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "exercise-bike",
@@ -1629,7 +1639,8 @@
         {"m":"steel","p":[0,0.36,0.06],"s":[0.3,0.04,0.04]},
         {"m":"coal","p":[0.17,0.36,0.06],"s":[0.08,0.03,0.1]},
         {"m":"coal","p":[-0.17,0.36,0.06],"s":[0.08,0.03,0.1]}
-      ]
+      ],
+      "model": {"uri":"models/exercise-bike.glb","sha256":"f25f0eea8765dfc9261d93d3404bba1c0a4f51c0dafd680a4c8d8f69fe3e452a","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "wall-bars",
@@ -1666,7 +1677,8 @@
         {"m":"wood","p":[0,1.75,-0.04],"s":[0.86,0.035,0.035]},
         {"m":"wood","p":[0,2.0,-0.04],"s":[0.86,0.035,0.035]},
         {"m":"wood","p":[0,2.25,-0.04],"s":[0.86,0.035,0.035]}
-      ]
+      ],
+      "model": {"uri":"models/wall-bars.glb","sha256":"b8d745add7446e0069906709987046769f3857fc96e086b9b50cbe4fd2905dab","scale":1,"offset":[0.0,0.0,-0.05],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "exercise-mat",
@@ -1693,7 +1705,8 @@
         {"m":"tile-blue","p":[0,0.025,0],"s":[1.2,0.05,2.0]},
         {"m":"navy","p":[0,0.051,-0.9],"s":[1.2,0.002,0.04]},
         {"m":"navy","p":[0,0.051,0.9],"s":[1.2,0.002,0.04]}
-      ]
+      ],
+      "model": {"uri":"models/exercise-mat.glb","sha256":"e6b5b2fcdf9c74b818ca2cd0a219444cf8ea185e34f1b11bd155bf4429800564","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     }
   ]
 }

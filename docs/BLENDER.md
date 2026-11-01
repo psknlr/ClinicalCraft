@@ -14,14 +14,14 @@ The parts:
 | Blender bridge | `scripts/blender/clinicalcraft_blender.py` | finds an equipment type in the catalogs, describes it, builds its voxel parts as a blockout, makes palette materials, exports the model and returns its catalog `model` reference |
 | Shape kit | `scripts/blender/clinicalcraft_shapes.py` | boxes, cylinders, tubes, bars, rings, lathes and flat profiles in the type's own frame, into one mesh with one material (colours as vertex colours, roughness, metalness and glow from a palette texture) |
 | Refiner | `scripts/blender/clinicalcraft_refine.py` | a model from a type's own voxel parts: rounded boxes, round bars and poles, casters or glides, discs where the voxels drew a circle, a dark housing behind each screen, blobs for foliage |
-| Built-in models | `scripts/blender/build.py`, `builtin_models.py` | builds the built-in catalogs' models (62 types) into `packages/content/assets/models` and writes each reference into its catalog |
+| Built-in models | `scripts/blender/build.py`, `builtin_models.py` | builds a model for every built-in equipment type (97) into `packages/content/assets/models` and writes each reference into its catalog |
 | blender-mcp | `.mcp.json` (Claude Code project server) | lets Claude Code inspect and change a running Blender (`execute_blender_code`, viewport screenshots, Poly Haven / Sketchfab / generated assets) |
 | Inspector | `clinicalcraft assets inspect <file.glb> --type <id>` | checks the file the way the renderer will load it (ASSETS.md) |
 
 The built-in models and SurgeryCraft's (all 74 of its types, `tools/blender/` in that
 repository) are built with these: most are refined from their voxel parts, the most
 seen (the surgical light, the anaesthesia workstation, the instruments…) have their
-own builders. Rebuild the built-in ones with `blender -b -P scripts/blender/build.py`
+own builders, and the CT, MRI and PET-CT gantries are revolved round their bores (`Kit.gantry`). Rebuild the built-in ones with `blender -b -P scripts/blender/build.py`
 (or `python3 scripts/blender/build.py` with the `bpy` module), then `npm run build`
 (the web bundle carries the catalogs and so the pinned hashes).
 
