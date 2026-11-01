@@ -8,10 +8,11 @@
  * does not change them.
  */
 import type { CaseDefinition, Result } from "../schema/case.js";
-import type { Condition } from "../schema/common.js";
+import type { Condition, ProcedurePredicate } from "../schema/common.js";
 import type { OrderRecord, SessionState } from "../schema/session.js";
 import { vitalValue } from "./signal.js";
 import { historyCredited } from "./twins.js";
+import { evaluateProcedure } from "./procedure/predicates.js";
 
 /** Composite key of a result: `${investigationId}@${phase}`. */
 export function resultKey(investigationId: string, phase: string): string {
@@ -108,6 +109,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   }
   if ("elapsed" in cond) return inRange(s.clock, cond.elapsed);
   if ("hints" in cond) return inRange(s.hints, cond.hints);
+  if ("procedure" in cond) return evaluateProcedure(c.procedure, s.procedure, cond.procedure);
   return false;
 }
 
@@ -125,7 +127,9 @@ export type ConditionRef =
   | { kind: "phase"; id: string; path: (string | number)[] }
   | { kind: "flag"; id: string; path: (string | number)[] }
   | { kind: "objective"; id: string; path: (string | number)[] }
-  | { kind: "vital"; id: string; path: (string | number)[] };
+  | { kind: "vital"; id: string; path: (string | number)[] }
+  /** A `procedure` leaf (its ids are checked against the case's procedure by `checkCaseIntegrity`). */
+  | { kind: "procedure"; predicate: ProcedurePredicate; path: (string | number)[] };
 
 /** Collect every id referenced by a condition tree (depth-first, document order). */
 export function conditionRefs(cond: Condition, base: (string | number)[] = []): ConditionRef[] {
@@ -149,6 +153,7 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("flag" in node) out.push({ kind: "flag", id: node.flag, path: [...path, "flag"] });
     else if ("objective" in node) out.push({ kind: "objective", id: node.objective, path: [...path, "objective"] });
     else if ("vital" in node) out.push({ kind: "vital", id: node.vital, path: [...path, "vital"] });
+    else if ("procedure" in node) out.push({ kind: "procedure", predicate: node.procedure, path: [...path, "procedure"] });
   };
   visit(cond, base);
   return out;

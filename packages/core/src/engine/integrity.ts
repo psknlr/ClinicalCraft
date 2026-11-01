@@ -17,6 +17,7 @@ import { formatPath, issuesFromZodError } from "./parse.js";
 import { MONITORED_VITALS, OBSERVED_VITALS } from "./monitor.js";
 import { compactText, tokenize } from "./text.js";
 import { supersededIn } from "./twins.js";
+import { checkProcedureDefinition, checkProcedureRef } from "./procedure/check.js";
 import type { Issue } from "./types.js";
 
 type PathPart = string | number;
@@ -108,6 +109,7 @@ function checkCollections(c: CaseDefinition): Issue[] {
 /* ------------------------------------------------------------------ */
 
 function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef): Issue[] {
+  if (ref.kind === "procedure") return checkProcedureRef(c, ref.predicate, ref.path);
   const missing = (label: string) => [err(ref.path, `unknown ${label} "${ref.id}"`)];
   switch (ref.kind) {
     case "history":
@@ -203,6 +205,7 @@ function checkAllConditions(c: CaseDefinition, ids: Ids): Issue[] {
     issues.push(...checkCondition(c, ids, r.scoredWhen, ["rubric", i, "scoredWhen"]));
   });
   issues.push(...checkCondition(c, ids, c.patient.nonVerbalWhen, ["patient", "nonVerbalWhen"]));
+  c.safetyGates.forEach((g, i) => issues.push(...checkCondition(c, ids, g.when, ["safetyGates", i, "when"])));
   c.orderMatching.warnings.forEach((w, i) => issues.push(...checkCondition(c, ids, w.unless, ["orderMatching", "warnings", i, "unless"])));
   return issues;
 }
@@ -652,5 +655,6 @@ export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
     ...checkPhysiology(c, ids),
     ...checkSolution(c, ids),
     ...checkReachability(c, ids),
+    ...checkProcedureDefinition(c),
   ];
 }

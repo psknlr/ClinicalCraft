@@ -60,6 +60,7 @@ vitest.config.ts            one test runner for every package (src aliases)
 docs/                       ARCHITECTURE (this), PROTOCOL (runtime, providers, front-ends, embodied mode, world bridge),
                             EMBODIED (the embodied layer, its benchmark and status; zh-CN/EMBODIED.md is its translation),
                             CASE_AUTHORING (incl. the clinical content standard), FACILITIES, ASSETS, DESIGN_PRINCIPLES,
+                            PROCEDURE (the operative field: `procedure`, `operate`, safety views and gates),
                             GLOSSARY (product words of both languages, register); bench/ — generated benchmark reports
                             and reference demonstrations (samples, not tests)
 scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA),
@@ -378,6 +379,8 @@ checkModelReference(info, ref: EquipmentModel, footprint, opts?: { sha256?, drac
 fitModel(bounds, ref, footprint): ModelFit; modelScale(ref): Vec3 | undefined; encodeGlb(json, bin?): Uint8Array   // fitting; GLB writer (test fixtures)
 GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web renderer loads / those that need a decoder (DRACO; KTX2/Basis, not bundled)
 ```
+
+**Operative field** (`engine/procedure`, schema `schema/procedure.ts`; contract [PROCEDURE.md](PROCEDURE.md)): `operate(def, state, op, at)` — the pure step behind the `operate` action, whose result lands in `SessionState.procedure`; `observeField(def, state)` — the operator's view (handles, never duct or vessel names); `evaluateProcedure` — the `procedure` condition leaf; `portReport` and `reach` — port ergonomics; `viewCriteria`/`viewHolds` — safety views judged on the field. `assess` adds `procedure` and, from the case's `safetyGates`, `safety.verdict` (a `safety-critical` gate caps the percentage).
 
 ### 3.1 Reducer semantics
 

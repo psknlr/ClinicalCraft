@@ -296,6 +296,8 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
       return rt(L, "clinician.narrate.intervene", { name: interventionLabel(c, action.interventionId, L) });
     case "advance-time":
       return rt(L, "clinician.narrate.wait", { minutes: action.minutes });
+    case "operate":
+      return rt(L, "clinician.narrate.operate", { op: action.op.op });
     case "finish":
       return rt(L, "clinician.narrate.finish");
     case "start":
@@ -333,6 +335,8 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
       return tool("intervene", { intervention_id: action.interventionId });
     case "advance-time":
       return tool("wait", { minutes: action.minutes });
+    case "operate":
+      return tool("operate", { ...action.op });
     case "finish":
       return tool("finish_case", {});
     case "start":
@@ -361,7 +365,7 @@ export function clinicianOfflineSteps(c: CaseDefinition, locale: string): Offlin
     if (!parsed.success) continue;
     const action = parsed.data;
     const step: OfflineClinicianStep = stepForAction(c, action, locale);
-    const key = action.type === "intervene" ? `intervene:${action.interventionId}` : action.type === "hint" ? "hint" : null;
+    const key = action.type === "intervene" ? `intervene:${action.interventionId}` : action.type === "hint" ? "hint" : action.type === "operate" ? "operate" : null;
     if (key) {
       const n = (counts.get(key) ?? 0) + 1;
       counts.set(key, n);
@@ -418,6 +422,8 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
       return state.flags.includes(a.flag) === (a.value !== false);
     case "note":
       return state.notes.some((n) => n.text === a.text);
+    case "operate":
+      return (state.procedure?.counters.steps ?? 0) >= (step.occurrence ?? 1);
     default: {
       const never: never = a;
       return never;

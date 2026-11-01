@@ -350,6 +350,360 @@
             "hints"
           ],
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "procedure": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "view": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "view"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "criterion": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "criterion"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "documented": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "valid": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "documented"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "injury": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "bile-duct-injury",
+                            "vascular-injury",
+                            "bleeding",
+                            "perforation",
+                            "thermal-injury",
+                            "bile-leak"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    },
+                    "recognised": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "injury"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "unsafe": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "irreversible-without-pause",
+                            "irreversible-without-view",
+                            "irreversible-on-unidentified",
+                            "irreversible-on-misidentified",
+                            "blind-in-obscured-field",
+                            "energy-near-hidden-hazard",
+                            "excessive-traction",
+                            "continued-after-injury",
+                            "insufflation-over-max"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "unsafe"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "clipped": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "minCount": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": [
+                    "clipped"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "divided": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "divided"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "isolated": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "isolated"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "identified": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "as": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "identified"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "specimen": {
+                      "type": "string",
+                      "enum": [
+                        "in-situ",
+                        "detached",
+                        "bagged",
+                        "extracted"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "specimen"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "bailout": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "call-help",
+                            "subtotal-fenestrating",
+                            "subtotal-reconstituting",
+                            "convert-open",
+                            "abandon-refer"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bailout"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "imaged": {
+                      "type": "string",
+                      "enum": [
+                        "ioc",
+                        "lap-us"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "imaged"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "insufflated": {
+                      "type": "boolean"
+                    },
+                    "pressure": {
+                      "type": "object",
+                      "properties": {
+                        "gte": {
+                          "type": "number"
+                        },
+                        "lte": {
+                          "type": "number"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "insufflated"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "bleeding": {
+                      "type": "string",
+                      "enum": [
+                        "any",
+                        "ooze",
+                        "brisk",
+                        "major"
+                      ]
+                    },
+                    "controlled": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "bleeding"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "spillage": {
+                      "type": "string",
+                      "enum": [
+                        "bile",
+                        "stones"
+                      ]
+                    },
+                    "cleared": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "spillage"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "counter": {
+                      "type": "string",
+                      "enum": [
+                        "steps",
+                        "exchanges",
+                        "clashes",
+                        "crossings"
+                      ]
+                    },
+                    "gte": {
+                      "type": "number"
+                    },
+                    "lte": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "counter"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "inspected": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "inspected"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "closed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "closed"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "procedure"
+          ],
+          "additionalProperties": false
         }
       ]
     },
@@ -693,6 +1047,553 @@
           "required": [
             "type",
             "text"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "operate"
+            },
+            "op": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "plan-ports"
+                    },
+                    "plan": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "plan"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "insufflate"
+                    },
+                    "pressure": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 30
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "pressure"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "desufflate"
+                    }
+                  },
+                  "required": [
+                    "op"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "insert"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "instrument": {
+                      "type": "string",
+                      "enum": [
+                        "laparoscope",
+                        "grasper",
+                        "maryland",
+                        "hook",
+                        "scissors",
+                        "clip-applier",
+                        "suction",
+                        "retrieval-bag",
+                        "cholangiocatheter",
+                        "lap-us"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "instrument"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "withdraw"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "retract"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "structure": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "direction": {
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "minItems": 3,
+                          "maxItems": 3,
+                          "items": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "cephalad",
+                              "caudal",
+                              "patient-left",
+                              "patient-right",
+                              "anterior",
+                              "posterior"
+                            ]
+                          },
+                          "minItems": 1
+                        }
+                      ]
+                    },
+                    "force": {
+                      "type": "string",
+                      "enum": [
+                        "gentle",
+                        "firm",
+                        "excessive"
+                      ],
+                      "default": "firm"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "structure",
+                    "direction"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "release"
+                    },
+                    "structure": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "structure"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "dissect"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "region": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "energy": {
+                      "type": "boolean",
+                      "default": false
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "region"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "isolate"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "handle"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "identify"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    },
+                    "as": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "handle",
+                    "as"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "safety-pause"
+                    },
+                    "view": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "claims": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "boolean"
+                      },
+                      "propertyNames": {
+                        "minLength": 1,
+                        "maxLength": 80,
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+                      }
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "view",
+                    "claims"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "clip"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 3,
+                      "default": 1
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "handle"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "divide"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "handle"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "coagulate"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "handle"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "suction"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "irrigate"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "image"
+                    },
+                    "modality": {
+                      "type": "string",
+                      "enum": [
+                        "ioc",
+                        "lap-us"
+                      ]
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "modality",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "inspect"
+                    }
+                  },
+                  "required": [
+                    "op"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "recognise"
+                    },
+                    "injury": {
+                      "type": "string",
+                      "enum": [
+                        "bile-duct-injury",
+                        "vascular-injury",
+                        "bleeding",
+                        "perforation",
+                        "thermal-injury",
+                        "bile-leak"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "injury"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "bag"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "extract"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "bailout"
+                    },
+                    "strategy": {
+                      "type": "string",
+                      "enum": [
+                        "call-help",
+                        "subtotal-fenestrating",
+                        "subtotal-reconstituting",
+                        "convert-open",
+                        "abandon-refer"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "strategy"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "close"
+                    }
+                  },
+                  "required": [
+                    "op"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "op"
           ],
           "additionalProperties": false
         },
@@ -2702,6 +3603,683 @@
             "conclusion"
           ],
           "additionalProperties": false
+        },
+        "procedure": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "$ref": "#/definitions/Id"
+            },
+            "name": {
+              "$ref": "#/definitions/LocalizedText"
+            },
+            "phases": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 1
+            },
+            "specimen": {
+              "$ref": "#/definitions/Id"
+            },
+            "stones": {
+              "type": "boolean",
+              "default": false
+            },
+            "anatomy": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "kind": {
+                    "type": "string",
+                    "enum": [
+                      "organ",
+                      "duct",
+                      "artery",
+                      "vein",
+                      "ligament",
+                      "plate"
+                    ]
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "specimen",
+                      "target",
+                      "critical",
+                      "organ",
+                      "landmark"
+                    ]
+                  },
+                  "parent": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "joins": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "default": []
+                  },
+                  "enters": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "points": {
+                    "type": "array",
+                    "items": {
+                      "type": "array",
+                      "minItems": 3,
+                      "maxItems": 3,
+                      "items": [
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "number"
+                        },
+                        {
+                          "type": "number"
+                        }
+                      ]
+                    },
+                    "minItems": 1
+                  },
+                  "radius": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "in": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "revealAt": {
+                    "type": "number",
+                    "minimum": 0,
+                    "maximum": 1
+                  },
+                  "appearsAs": {
+                    "type": "object",
+                    "properties": {
+                      "default": {
+                        "$ref": "#/definitions/LocalizedText"
+                      },
+                      "when": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "exposure": {
+                              "$ref": "#/definitions/Id"
+                            },
+                            "below": {
+                              "type": "number",
+                              "minimum": 0,
+                              "maximum": 1
+                            },
+                            "text": {
+                              "$ref": "#/definitions/LocalizedText"
+                            },
+                            "appearsToEnter": {
+                              "$ref": "#/definitions/Id"
+                            }
+                          },
+                          "required": [
+                            "exposure",
+                            "below",
+                            "text"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "default": []
+                      }
+                    },
+                    "required": [
+                      "default"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "mesh": {
+                    "type": "string"
+                  },
+                  "provenance": {
+                    "type": "string",
+                    "enum": [
+                      "published-case",
+                      "imaging",
+                      "reference",
+                      "guideline",
+                      "authored",
+                      "synthetic"
+                    ]
+                  },
+                  "note": {
+                    "$ref": "#/definitions/LocalizedText"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "kind",
+                  "role",
+                  "points",
+                  "radius",
+                  "provenance"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            },
+            "regions": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "units": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0
+                  },
+                  "centre": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "radius": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "after": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "default": []
+                  },
+                  "exposure": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "structure": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "direction": {
+                          "anyOf": [
+                            {
+                              "type": "array",
+                              "minItems": 3,
+                              "maxItems": 3,
+                              "items": [
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                },
+                                {
+                                  "type": "number"
+                                }
+                              ]
+                            },
+                            {
+                              "type": "array",
+                              "items": {
+                                "type": "string",
+                                "enum": [
+                                  "cephalad",
+                                  "caudal",
+                                  "patient-left",
+                                  "patient-right",
+                                  "anterior",
+                                  "posterior"
+                                ]
+                              },
+                              "minItems": 1
+                            }
+                          ]
+                        },
+                        "full": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 1
+                        }
+                      },
+                      "required": [
+                        "structure",
+                        "direction"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "default": []
+                  },
+                  "hazards": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "default": []
+                  },
+                  "bed": {
+                    "type": "boolean",
+                    "default": false
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "units",
+                  "centre",
+                  "radius"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            },
+            "portSites": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "at": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  },
+                  "normal": {
+                    "type": "array",
+                    "minItems": 3,
+                    "maxItems": 3,
+                    "items": [
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      },
+                      {
+                        "type": "number"
+                      }
+                    ]
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "at"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 2
+            },
+            "portPlans": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "surgeonSide": {
+                    "type": "string",
+                    "enum": [
+                      "left",
+                      "right"
+                    ]
+                  },
+                  "ports": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "site": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "role": {
+                          "type": "string",
+                          "enum": [
+                            "camera",
+                            "working",
+                            "assist"
+                          ]
+                        },
+                        "sizeMm": {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        },
+                        "hand": {
+                          "type": "string",
+                          "enum": [
+                            "left",
+                            "right"
+                          ]
+                        }
+                      },
+                      "required": [
+                        "site",
+                        "role",
+                        "sizeMm"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 2
+                  },
+                  "provenance": {
+                    "type": "string",
+                    "enum": [
+                      "published-case",
+                      "imaging",
+                      "reference",
+                      "guideline",
+                      "authored",
+                      "synthetic"
+                    ]
+                  },
+                  "note": {
+                    "$ref": "#/definitions/LocalizedText"
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "surgeonSide",
+                  "ports",
+                  "provenance"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            },
+            "target": {
+              "type": "array",
+              "minItems": 3,
+              "maxItems": 3,
+              "items": [
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                },
+                {
+                  "type": "number"
+                }
+              ]
+            },
+            "instruments": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "enum": [
+                      "laparoscope",
+                      "grasper",
+                      "maryland",
+                      "hook",
+                      "scissors",
+                      "clip-applier",
+                      "suction",
+                      "retrieval-bag",
+                      "cholangiocatheter",
+                      "lap-us"
+                    ]
+                  },
+                  "diameterMm": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "lengthM": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  }
+                },
+                "required": [
+                  "id"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 1
+            },
+            "views": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "criteria": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "name": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "test": {
+                          "anyOf": [
+                            {
+                              "type": "object",
+                              "properties": {
+                                "cleared": {
+                                  "$ref": "#/definitions/Id"
+                                },
+                                "atLeast": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 1
+                                }
+                              },
+                              "required": [
+                                "cleared",
+                                "atLeast"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "onlyEntering": {
+                                  "$ref": "#/definitions/Id"
+                                }
+                              },
+                              "required": [
+                                "onlyEntering"
+                              ],
+                              "additionalProperties": false
+                            },
+                            {
+                              "type": "object",
+                              "properties": {
+                                "exposure": {
+                                  "$ref": "#/definitions/Id"
+                                },
+                                "atLeast": {
+                                  "type": "number",
+                                  "minimum": 0,
+                                  "maximum": 1
+                                }
+                              },
+                              "required": [
+                                "exposure",
+                                "atLeast"
+                              ],
+                              "additionalProperties": false
+                            }
+                          ]
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "name",
+                        "test"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  },
+                  "gatesIrreversible": {
+                    "type": "boolean",
+                    "default": true
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "criteria"
+                ],
+                "additionalProperties": false
+              },
+              "default": []
+            },
+            "bailouts": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "call-help",
+                  "subtotal-fenestrating",
+                  "subtotal-reconstituting",
+                  "convert-open",
+                  "abandon-refer"
+                ]
+              },
+              "default": [
+                "call-help",
+                "subtotal-fenestrating",
+                "subtotal-reconstituting",
+                "convert-open"
+              ]
+            },
+            "insufflation": {
+              "type": "object",
+              "properties": {
+                "usual": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "default": 12
+                },
+                "max": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "default": 15
+                }
+              },
+              "additionalProperties": false,
+              "default": {}
+            },
+            "minutes": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "number",
+                "minimum": 0
+              },
+              "default": {}
+            },
+            "note": {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          },
+          "required": [
+            "id",
+            "name",
+            "phases",
+            "specimen",
+            "anatomy",
+            "regions",
+            "portSites",
+            "portPlans",
+            "target",
+            "instruments"
+          ],
+          "additionalProperties": false
+        },
+        "safetyGates": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/Id"
+              },
+              "label": {
+                "$ref": "#/definitions/LocalizedText"
+              },
+              "when": {
+                "$ref": "#/definitions/Condition"
+              },
+              "verdict": {
+                "type": "string",
+                "enum": [
+                  "safety-critical",
+                  "complication"
+                ]
+              },
+              "capPercent": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 100
+              }
+            },
+            "required": [
+              "id",
+              "label",
+              "when",
+              "verdict"
+            ],
+            "additionalProperties": false
+          },
+          "default": []
         },
         "unknowns": {
           "type": "array",

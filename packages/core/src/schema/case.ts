@@ -12,6 +12,7 @@ import {
   VitalKeySchema,
   VitalsSchema,
 } from "./common.js";
+import { ProcedureDefinitionSchema } from "./procedure.js";
 // session.ts depends only on common.ts, so importing it here creates no cycle
 import { ClinicalActionSchema } from "./session.js";
 
@@ -835,6 +836,26 @@ export const CaseSchema = z
     rubric: z.array(RubricItemSchema).default([]),
     npcs: z.array(NpcBriefSchema).default([]),
     debrief: DebriefSchema,
+    /** The operation the case's operative phases carry out (docs/PROCEDURE.md); `operate` acts on it. */
+    procedure: ProcedureDefinitionSchema.optional(),
+    /**
+     * Safety gates (docs/PROCEDURE.md §8): outcomes no score compensates. A gate whose `when` holds at the end
+     * sets the assessment's safety verdict; `safety-critical` gates also cap the reported percentage.
+     */
+    safetyGates: z
+      .array(
+        z
+          .object({
+            id: IdSchema,
+            label: LocalizedTextSchema,
+            when: ConditionSchema,
+            verdict: z.enum(["safety-critical", "complication"]),
+            /** Highest percentage reported while this gate holds (safety-critical gates; default 40). */
+            capPercent: z.number().min(0).max(100).optional(),
+          })
+          .strict(),
+      )
+      .default([]),
     /** Facts the source does not contain; agents must never invent them. */
     unknowns: z.array(LocalizedTextSchema).default([]),
     assets: z.array(AssetRefSchema).default([]),

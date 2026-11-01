@@ -11,10 +11,12 @@ import { inScope, parseRule } from "../permissions.js";
 import type { PracticeScope } from "../protocol.js";
 import { clinicalTools, walkToTool, type ToolArgs } from "./clinical.js";
 import { npcTools, type NpcToolOptions } from "./npc.js";
+import { procedureTools } from "./procedure.js";
 import type { ToolDefinition } from "./types.js";
 
 export * from "./clinical.js";
 export * from "./npc.js";
+export { procedureTools } from "./procedure.js";
 export * from "./spatial.js";
 export * from "./scope.js";
 export * from "./world.js";
@@ -50,6 +52,7 @@ export class ToolRegistry {
   constructor(options: ToolRegistryOptions = {}) {
     for (const tool of clinicalTools()) this.tools.set(tool.name, tool);
     for (const tool of npcTools(options.npc)) this.tools.set(tool.name, tool);
+    for (const tool of procedureTools()) this.tools.set(tool.name, tool);
     if (options.dynamicTools?.includes(walkToTool.name)) this.tools.set(walkToTool.name, walkToTool);
     for (const tool of options.extra ?? []) this.tools.set(tool.name, tool);
   }

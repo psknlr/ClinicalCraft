@@ -22,6 +22,7 @@ import { currentObjective, progress } from "./queries.js";
 import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
+import { createProcedureState, operate } from "./procedure/index.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
 type Action<T extends ClinicalActionType> = Extract<ClinicalAction, { type: T }>;
@@ -284,6 +285,18 @@ function onNote(ctx: Ctx, a: Action<"note">): Outcome {
   return accepted();
 }
 
+/** One step of the operation (docs/PROCEDURE.md §5): the field changes only here. */
+function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
+  const def = ctx.c.procedure;
+  if (!def) return rejected("invalid", "this case has no operation");
+  if (!def.phases.includes(ctx.s.phase)) return rejected("phase-locked", `the operation is not under way in phase "${ctx.s.phase}"`);
+  const step = operate(def, ctx.s.procedure ?? createProcedureState(), a.op, ctx.s.clock);
+  if (step.rejected) return rejected(step.rejected.code, step.rejected.message);
+  ctx.s.procedure = step.state;
+  ctx.events.push({ type: "procedure.step", op: a.op.op, signals: step.signals });
+  return accepted(ctx.c.clock.mode === "simulated" ? step.minutes : 0);
+}
+
 function onFinish(ctx: Ctx): Outcome {
   const p = progress(ctx.c, ctx.s);
   if (!p.complete) return rejected("objectives-incomplete", `${p.total - p.done} objective(s) still open`);
@@ -318,6 +331,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onFlag(ctx, a);
     case "note":
       return onNote(ctx, a);
+    case "operate":
+      return onOperate(ctx, a);
     case "finish":
       return onFinish(ctx);
   }
