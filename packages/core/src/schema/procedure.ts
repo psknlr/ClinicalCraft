@@ -381,6 +381,8 @@ export interface ProcedureState {
   retractions: Record<string, Retraction>;
   /** Region id → dissection units done. */
   cleared: Record<string, number>;
+  /** Region id → the best exposure at which it was dissected (latched: the record outlives the retraction). */
+  exposedMax: Record<string, number>;
   isolated: string[];
   /** Handle ("T1"…) → structure id, in the order the structures came into view. */
   handles: { handle: string; structure: string }[];

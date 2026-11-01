@@ -135,6 +135,8 @@ export const ProcedurePredicateSchema = z.union([
   z.object({ spillage: z.enum(["bile", "stones"]), cleared: z.boolean().optional() }).strict(),
   z.object({ counter: z.enum(["steps", "exchanges", "clashes", "crossings"]), ...Range }).strict(),
   z.object({ inspected: z.boolean() }).strict(),
+  /** The region was dissected while its exposure was at least `atLeast` (the best exposure of any dissection step there). */
+  z.object({ dissectedExposed: IdSchema, atLeast: z.number().min(0).max(1) }).strict(),
   z.object({ closed: z.boolean() }).strict(),
 ]);
 export type ProcedurePredicate = z.infer<typeof ProcedurePredicateSchema>;

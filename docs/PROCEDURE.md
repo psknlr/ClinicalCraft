@@ -174,8 +174,13 @@ rubric items, objectives, phases, scenario events and safety gates:
 { "identified": id, "as"?: id } · { "specimen": state } · { "bailout": strategy|"any" } ·
 { "imaged": "ioc"|"lap-us" } · { "plan": id } · { "insufflated": bool, "pressure"?: range } ·
 { "bleeding": severity|"any", "controlled"?: bool } · { "spillage": "bile"|"stones", "cleared"?: bool } ·
-{ "counter": "steps"|"exchanges"|"clashes"|"crossings", gte?, lte? } · { "inspected": bool } · { "closed": bool }
+{ "counter": "steps"|"exchanges"|"clashes"|"crossings", gte?, lte? } · { "inspected": bool } · { "closed": bool } ·
+{ "dissectedExposed": region, "atLeast": 0–1 }
 ```
+
+`view` and `criterion` read the field **now**, so they are false once the laparoscopy has ended. To score
+what was achieved, use `documented` (the safety pause's record) or `dissectedExposed` (the best exposure
+any dissection step in the region had).
 
 Everything except `identified` reads what really happened. `identified` reads the operator's claim:
 without `as` it means named correctly; with `as` it means named as that. The learner's `flag` action

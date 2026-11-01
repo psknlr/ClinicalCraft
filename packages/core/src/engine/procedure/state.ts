@@ -15,6 +15,7 @@ export function createProcedureState(): ProcedureState {
     pressure: 0,
     retractions: {},
     cleared: {},
+    exposedMax: {},
     isolated: [],
     handles: [],
     claims: {},

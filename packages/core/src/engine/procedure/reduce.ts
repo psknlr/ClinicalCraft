@@ -308,6 +308,7 @@ function apply(x: Step, op: ProcedureOp): void {
       workAt(x, p, region.centre);
       const e = exposure(def, s, region.id);
       s.cleared[region.id] = Math.min(region.units, (s.cleared[region.id] ?? 0) + (op.energy ? 1.5 : 1) * (e < 0.5 ? 0.5 : 1));
+      s.exposedMax[region.id] = Math.max(s.exposedMax[region.id] ?? 0, e);
       if (op.energy) {
         for (const hazardId of region.hazards) {
           const hazard = structureOf(def, hazardId);

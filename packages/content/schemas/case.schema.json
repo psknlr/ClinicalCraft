@@ -688,6 +688,24 @@
                 {
                   "type": "object",
                   "properties": {
+                    "dissectedExposed": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "atLeast": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  },
+                  "required": [
+                    "dissectedExposed",
+                    "atLeast"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
                     "closed": {
                       "type": "boolean"
                     }

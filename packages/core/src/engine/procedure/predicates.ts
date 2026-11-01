@@ -60,6 +60,7 @@ export function evaluateProcedure(def: ProcedureDefinition | undefined, s: Proce
   }
   if ("counter" in p) return inRange(s.counters[p.counter], p);
   if ("inspected" in p) return s.inspected === p.inspected;
+  if ("dissectedExposed" in p) return (s.exposedMax[p.dissectedExposed] ?? 0) >= p.atLeast;
   if ("closed" in p) return s.closed === p.closed;
   return false;
 }

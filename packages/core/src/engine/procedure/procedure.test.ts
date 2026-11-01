@@ -116,6 +116,15 @@ describe("the safe path", () => {
     expect(run(safePath()).s).toEqual(run(safePath()).s);
   });
 
+  it("records the exposure the triangle was dissected under, after the retraction is gone", () => {
+    const { s } = run(safePath());
+    expect(evaluate(c, s, { procedure: { dissectedExposed: "hepatocystic-triangle", atLeast: 0.8 } })).toBe(true);
+    expect(evaluate(c, s, { procedure: { criterion: "triangle" } })).toBe(false); // the field is closed now
+    const wrong: ProcedureOp = { op: "retract", port: "B", structure: "gallbladder-infundibulum", direction: ["patient-right", "caudal"], force: "firm" };
+    const habitual = run([...ACCESS, wrong, TRIANGLE[0]]);
+    expect(evaluate(c, habitual.s, { procedure: { dissectedExposed: "hepatocystic-triangle", atLeast: 0.8 } })).toBe(false);
+  });
+
   it("costs simulated minutes", () => {
     expect(run(safePath()).s.clock).toBeGreaterThan(20);
   });

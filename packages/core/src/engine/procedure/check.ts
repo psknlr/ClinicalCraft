@@ -103,6 +103,8 @@ export function checkProcedureRef(c: CaseDefinition, p: ProcedurePredicate, path
   if ("divided" in p) return structure(p.divided, "divided");
   if ("isolated" in p) return structure(p.isolated, "isolated");
   if ("identified" in p) return [...structure(p.identified, "identified"), ...(p.as ? structure(p.as, "as") : [])];
+  if ("dissectedExposed" in p)
+    return def.regions.some((r) => r.id === p.dissectedExposed) ? [] : [err([...path, "dissectedExposed"], `unknown region "${p.dissectedExposed}"`)];
   if ("plan" in p) return def.portPlans.some((x) => x.id === p.plan) ? [] : [err([...path, "plan"], `unknown port plan "${p.plan}"`)];
   if ("bailout" in p && p.bailout !== "any" && !def.bailouts.includes(p.bailout))
     return [warn([...path, "bailout"], `bail-out "${p.bailout}" is not offered by this procedure, so this can never become true`)];
