@@ -108,9 +108,21 @@ test.describe("walking with the patient (en)", () => {
     await toPatientSide(page);
     await page.evaluate(() => (window as any).__QA__.interact({ kind: "staff", staffId: "ed-nurse", role: "nurse", name: "nurse", hint: "" }));
     await expect(page.locator('#panel .window[data-panel="conversation"]')).toBeVisible();
+    // her mouth moves while she speaks, for a few seconds per line (900 ms + 70 ms a character): watch for it in the
+    // page from the click on, so a slow page that sees the chat line late still sees that she spoke
+    await page.evaluate(() => {
+      const w = window as any;
+      w.__nurseSpoke = false;
+      const timer = setInterval(() => {
+        if (w.__QA__.world.debug.npcs.get("staff:ed-nurse")?.speaking) {
+          w.__nurseSpoke = true;
+          clearInterval(timer);
+        }
+      }, 20);
+    });
     await page.locator('#come-chips button[data-ask="come"]').click();
     await expect(page.locator(".chat-log .msg.agent").filter({ hasText: "On my way to the bedside." }).first()).toContainText("Lin Xiao");
-    await expect.poll(() => page.evaluate(() => (window as any).__QA__.world.debug.npcs.get("staff:ed-nurse")?.speaking ?? false), { timeout: 10_000, intervals: [50] }).toBe(true);
+    await expect.poll(() => page.evaluate(() => (window as any).__nurseSpoke === true), { timeout: 10_000, intervals: [50] }).toBe(true);
     await expect.poll(() => page.evaluate(() => (window as any).__QA__.moving.length), { timeout: 120_000 }).toBe(0);
     const nurse = await page.evaluate(() => (window as any).__QA__.worldSnapshot().actors.find((a: any) => a.id === "staff:ed-nurse").pose);
     const bed = await place(page);
