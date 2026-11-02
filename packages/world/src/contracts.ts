@@ -721,14 +721,16 @@ export type SpatialRequirement =
    * at a fixed device — the CT scanner, the C-arm — or a patient-performed test at a station): no walk of the
    * actor fixes it — the patient is brought there (`transport_patient`, review G8).
    */
-  | { kind: "patient-at-provider"; capabilities: string[] }
+  /** `beds`: a bed-kind placement providing the capabilities counts as well (an operating table). */
+  | { kind: "patient-at-provider"; capabilities: string[]; beds?: boolean }
   | { kind: "any-of"; options: SpatialRequirement[] }
   | { kind: "all-of"; options: SpatialRequirement[] };
 
 /** The clinical tool call being checked, in engine terms (no dependency on the agent package). */
 export interface ClinicalIntent {
   tool: string;
-  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "consult" | "delegate" | "cognitive";
+  /** `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic screen. */
+  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive";
   itemId?: string;
   findingId?: string;
   investigationId?: string;

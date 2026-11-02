@@ -5,6 +5,7 @@
  */
 import type { ProcedurePredicate } from "../../schema/common.js";
 import { BASE_VARIANT, type ProcedureDefinition } from "../../schema/procedure.js";
+import { pauseValid } from "./claims.js";
 import { handleOf, viewCriteria, viewHolds } from "./field.js";
 import type { ProcedureState } from "./state.js";
 
@@ -30,7 +31,7 @@ export function evaluateProcedure(def: ProcedureDefinition | undefined, s: Proce
   if ("documented" in p) {
     const pauses = s.pauses.filter((x) => x.view === p.documented);
     if (p.valid == null) return pauses.length > 0;
-    const valid = pauses.some((x) => x.achieved && Object.keys(x.truth).every((k) => x.claims[k] === true));
+    const valid = pauses.some((x) => pauseValid(def, x));
     return p.valid ? valid : pauses.length > 0 && !valid;
   }
   if ("injury" in p) {

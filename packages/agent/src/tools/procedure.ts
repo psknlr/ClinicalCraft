@@ -52,6 +52,11 @@ function fieldText(ctx: ToolContext): string {
   }
   if (v.findings.length) lines.push(rt(L, "field.findings", { findings: joinList(L, v.findings.map(lab)) }));
   if (v.inView && v.names.length) lines.push(rt(L, "field.names", { names: v.names.join(", ") }));
+  // the safety views to pause on, by criterion id (a counting criterion asks how many structures are seen entering)
+  for (const view of def.views) {
+    const criteria = view.criteria.map((c) => ("onlyEntering" in c.test && c.test.count != null ? rt(L, "field.view.count", { id: c.id, name: t(c.name, L) }) : `${c.id} (${t(c.name, L)})`));
+    lines.push(rt(L, "field.view", { view: view.id, name: t(view.name, L), criteria: criteria.join("; ") }));
+  }
   lines.push(rt(L, "field.specimen", { specimen: lab(v.specimen), bailouts: v.bailouts.length ? ` (${v.bailouts.join(", ")})` : "", pauses: v.pauses }));
   return lines.join("\n");
 }
@@ -94,7 +99,8 @@ const operateTool: ToolDefinition<ToolArgs> = {
   description:
     "Carry out one step of the operation, e.g. {op:'plan-ports', plan:'…'}, {op:'insufflate', pressure:12}, {op:'insert', port:'A', instrument:'laparoscope'}, " +
     "{op:'retract', port:'B', structure:'gallbladder-fundus', direction:['cephalad','patient-left']}, {op:'dissect', port:'C', region:'…', energy:true}, " +
-    "{op:'isolate', port:'C', handle:'T1'}, {op:'identify', handle:'T1', as:'cystic-duct'}, {op:'safety-pause', view:'cvs', claims:{…}}, " +
+    "{op:'isolate', port:'C', handle:'T1'}, {op:'identify', handle:'T1', as:'cystic-duct'} (as:'uncertain' when you cannot tell), " +
+    "{op:'safety-pause', view:'cvs', claims:{criterion: true|false, or for a counting criterion the number of structures you see}}, " +
     "{op:'clip', port:'C', handle:'T1', count:2}, {op:'divide', port:'C', handle:'T1'}, {op:'image', modality:'ioc', port:'C'}, " +
     "{op:'bailout', strategy:'subtotal-fenestrating'}, {op:'inspect'}, {op:'recognise', injury:'bleeding'}, {op:'bag'|'extract', port}, {op:'close'}. " +
     "Directions are in the patient's terms (patient-left is the patient's left). Look with observe_field first. Steps: " +
@@ -116,7 +122,8 @@ const operateTool: ToolDefinition<ToolArgs> = {
       handle: { type: "string" },
       as: { type: "string" },
       view: { type: "string" },
-      claims: { type: "object", additionalProperties: { type: "boolean" } },
+      // per criterion: true/false, or for a counting criterion the number of structures seen entering
+      claims: { type: "object", additionalProperties: { anyOf: [{ type: "boolean" }, { type: "integer", minimum: 0, maximum: 9 }] } },
       count: { type: "integer", minimum: 1, maximum: 3 },
       modality: { type: "string", enum: ["ioc", "lap-us"] },
       injury: { type: "string" },

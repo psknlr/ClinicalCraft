@@ -73,6 +73,13 @@ export interface InterventionRecord {
   interventionId: string;
   at: number;
   appropriateness: "indicated" | "neutral" | "contraindicated";
+  /** `SessionState.seq` when it was committed (orders acts of the same minute; absent in sessions saved before). */
+  seq?: number;
+  /**
+   * A checklist step attempted out of order (`checklist: true`, contraindicated when attempted): recorded, but
+   * its effects and flags did not apply and it used none of `maxDoses`.
+   */
+  invalid?: true;
 }
 
 export interface SessionState {
@@ -133,7 +140,8 @@ export type DomainEvent =
   | { type: "result.read"; key: string; investigationId: string; phase: string; firstTime: boolean }
   | { type: "phase.changed"; from: string; to: string; automatic: boolean }
   | { type: "decision.answered"; decisionId: string; correct: boolean; firstTry: boolean; optionIds: string[] }
-  | { type: "intervention.applied"; interventionId: string; appropriateness: "indicated" | "neutral" | "contraindicated" }
+  /** `invalid`: a checklist step attempted out of order — recorded, nothing applied (see `Intervention.checklist`). */
+  | { type: "intervention.applied"; interventionId: string; appropriateness: "indicated" | "neutral" | "contraindicated"; invalid?: true }
   /**
    * A vital newly crossing an alarm limit on the bedside monitor. `unmeasurable`: the monitor has no
    * reading — `value` is the cardiac-arrest placeholder 0 (`VitalsSnapshot.unmeasurable`), never a measurement.

@@ -42,7 +42,7 @@ export interface AgentToolFilter {
   /** Permission deny rules; bare `tool` rules hide the tool. */
   deny?: readonly string[];
   /** Case (used to hide `wait` on static clocks). */
-  caseDef?: Pick<CaseDefinition, "clock">;
+  caseDef?: Pick<CaseDefinition, "clock" | "procedure">;
 }
 
 /** All tools of a session, by name. */
@@ -90,6 +90,8 @@ export class ToolRegistry {
       if (!inScope(tool.scope, filter.scope)) continue;
       if (isHiddenByDeny(tool.name, filter.deny)) continue;
       if (tool.name === "wait" && filter.caseDef && filter.caseDef.clock.mode !== "simulated") continue;
+      // the operative field only in a case with an operation (docs/PROCEDURE.md §7)
+      if ((tool.name === "observe_field" || tool.name === "operate") && filter.caseDef && !filter.caseDef.procedure) continue;
       out.push(tool);
     }
     return out;

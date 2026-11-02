@@ -196,10 +196,30 @@
             "minCount": {
               "type": "integer",
               "minimum": 1
+            },
+            "valid": {
+              "type": "boolean"
             }
           },
           "required": [
             "intervened"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "inOrder": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 2,
+              "maxItems": 8
+            }
+          },
+          "required": [
+            "inOrder"
           ],
           "additionalProperties": false
         },
@@ -1369,7 +1389,16 @@
             "claims": {
               "type": "object",
               "additionalProperties": {
-                "type": "boolean"
+                "anyOf": [
+                  {
+                    "type": "boolean"
+                  },
+                  {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 9
+                  }
+                ]
               },
               "propertyNames": {
                 "minLength": 1,

@@ -2,6 +2,8 @@
  * Deterministic assessment of a session — a teaching-script measure, never a
  * validated competency score (docs/ARCHITECTURE.md §2.1 rule 5).
  */
+import { claimsMatchField } from "./procedure/claims.js";
+import { procedureFor } from "./procedure/variant.js";
 import type { CaseDefinition } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
 import { evaluate, parseResultKey, resultFor } from "./conditions.js";
@@ -153,13 +155,14 @@ function gateSummary(c: CaseDefinition, s: SessionState) {
   return { gates: gates.map((g) => ({ id: g.id, verdict: g.verdict })), verdict, cap };
 }
 
-function procedureSummary(s: SessionState): AssessmentReport["procedure"] {
+function procedureSummary(c: CaseDefinition, s: SessionState): AssessmentReport["procedure"] {
   const p = s.procedure;
-  if (!p) return undefined;
+  const def = procedureFor(c, s);
+  if (!p || !def) return undefined;
   return {
     unsafe: p.unsafe.map((u) => ({ ...u })),
     injuries: p.injuries.map((i) => ({ kind: i.kind, structure: i.structure, recognised: i.recognised, severity: i.severity })),
-    pauses: p.pauses.map((x) => ({ view: x.view, at: x.at, achieved: x.achieved, claimsMatchField: Object.keys(x.truth).every((k) => x.claims[k] === x.truth[k]) })),
+    pauses: p.pauses.map((x) => ({ view: x.view, at: x.at, achieved: x.achieved, claimsMatchField: claimsMatchField(def, x) })),
     counters: { ...p.counters },
   };
 }
@@ -173,7 +176,7 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   const { rubric, score: raw, criticalMissed } = rubricSummary(c, s);
   const gates = c.safetyGates.length ? gateSummary(c, s) : null;
   const score = gates?.cap != null && raw.percent > gates.cap ? { ...raw, percent: gates.cap, uncapped: raw.percent } : raw;
-  const procedure = procedureSummary(s);
+  const procedure = procedureSummary(c, s);
   return {
     caseId: c.id,
     completed: p.complete,

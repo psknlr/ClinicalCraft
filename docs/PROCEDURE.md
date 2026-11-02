@@ -126,6 +126,13 @@ A criterion is evaluated **on the field**, never on what the operator claims:
   region's `exposure` (traction) or how far it is `cleared` (a duct crossing the triangle that only a
   complete dissection shows running to the liver).
 
+An `onlyEntering` criterion with a usual `count` (2 for the gallbladder) is a **counting criterion**: at
+the safety pause the operator reports how many structures they see entering, a number (`true` stands for
+the usual number). The pause records the true number entering (`entering`), and the claim is right only
+when it is that number with the criterion holding: in anatomy with a second cystic artery, "two and only
+two" is not credited and "three" is (`claimMatches`, `pauseValid`). The criterion's wording and its use in
+variants need review by hepatobiliary surgeons.
+
 `safety-pause` records the operator's claims together with the field's truth. The claims are the
 surgeon's judgement; the truth is the evaluator. A pause's view is `achieved` only when every
 criterion truly holds.
@@ -168,6 +175,9 @@ Injuries follow from the anatomy:
 | completing a region a structure crosses | that structure divided (target: leak or bleeding unless clipped twice) |
 
 Major bleeding cannot be controlled laparoscopically in this model: it needs `bailout`.
+
+`identify … as "uncertain"` records that the operator sees a structure and cannot name it: it stays
+unidentified for an irreversible step (`irreversible-on-unidentified`).
 
 `recognise` names an injury aloud: it marks matching injuries recognised, and counts a false alarm
 otherwise. `image` (cholangiography through a free, clipped, undivided cystic duct, or ultrasound)
@@ -222,7 +232,12 @@ The list is the same whatever the variant: the ducts and vessels of the base def
 variant. `identify` accepts any of them, so naming never reveals the anatomy. A region with dense
 fibrosis carries its `finding` once dissection there has begun.
 
-The agent tools are `observe_field` and `operate` (`packages/agent/src/tools/procedure.ts`). They
+The agent tools are `observe_field` and `operate` (`packages/agent/src/tools/procedure.ts`). The built-in
+clinician has them in a case with an operation (they are hidden elsewhere). `observe_field` also lists the
+safety views by criterion id, and asks how many for a counting criterion. In embodied mode both are held to
+the spatial policy (EMBODIED §6): `operate` only with the patient on an operating table and the operator at
+the table, checked again after an approval wait and right before the commit; `observe_field` near the
+patient. They
 give agents this view and nothing else. Clip, divide, coagulate and bail-out are high-risk tool
 calls: the approval gate asks in supervised modes. The web's **laparoscopic surgery window** (`packages/web/src/ui/panels/surgery.ts`, view
 `laparoscopy/index.ts`) is offered from the HUD while the session is in one of the procedure's phases.

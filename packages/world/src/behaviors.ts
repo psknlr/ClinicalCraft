@@ -28,7 +28,7 @@
  * footprint and never below `MIN_RANGE`; an operation without
  * `actorWithin` / `patientWithin` must be done within the entity's reach.
  */
-import { monitorAttached, NEARBY_STATE_RANGE, t, type ClinicalEffect, type LocalizedText } from "@clinicalcraft/core";
+import { evaluate, monitorAttached, NEARBY_STATE_RANGE, t, type CaseDefinition, type ClinicalEffect, type Condition, type LocalizedText } from "@clinicalcraft/core";
 import { permits, rolesFor, operationClass } from "./authority.js";
 import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
 import { listText, metres, operationName, roleName, stateName, worldMessage } from "./i18n.js";
@@ -65,9 +65,44 @@ export interface BehaviorSpec {
   /** Where the state comes from: stored in the world, the door record, derived from the engine, or none. */
   stateSource: "stored" | "door" | "derived" | "none";
   initial: string | null;
-  states: Record<string, { name?: LocalizedText; available?: boolean }>;
-  derived?: "monitor-attachment";
+  states: Record<string, { name?: LocalizedText; available?: boolean; when?: Condition }>;
+  /** `monitor-attachment`: the patient's monitor; `case-record`: a board that shows the case record (WHO checklist). */
+  derived?: "monitor-attachment" | "case-record";
   operations: OperationSpec[];
+}
+
+/** The case items a `case-record` behaviour's operations name (`select: "item"`), by kind. */
+function recordItems(spec: BehaviorSpec): { tool: string; item: string }[] {
+  return spec.operations.flatMap((o) => (o.clinical?.select === "item" && o.clinical.item ? [{ tool: o.clinical.tool, item: o.clinical.item }] : []));
+}
+
+/** Does the case record what this board shows (every item its operations name)? */
+export function recordBacked(spec: BehaviorSpec, c: CaseDefinition): boolean {
+  if (spec.derived !== "case-record") return false;
+  const items = recordItems(spec);
+  const has = (tool: string, id: string) =>
+    tool === "intervene" ? c.interventions.some((i) => i.id === id) : tool === "examine" ? c.exam.some((f) => f.id === id) : c.investigations.some((i) => i.id === id);
+  return items.length > 0 && items.every((x) => has(x.tool, x.item));
+}
+
+const physicalCache = new WeakMap<BehaviorSpec, BehaviorSpec>();
+
+/** A `case-record` board in a case that does not record its items: its own state machine, physical operations. */
+function physical(spec: BehaviorSpec): BehaviorSpec {
+  const hit = physicalCache.get(spec);
+  if (hit) return hit;
+  const out: BehaviorSpec = {
+    stateSource: "stored",
+    initial: spec.initial,
+    states: spec.states,
+    operations: spec.operations.map((o) => {
+      if (o.clinical?.select !== "item") return o;
+      const { clinical: _clinical, ...rest } = o;
+      return rest;
+    }),
+  };
+  physicalCache.set(spec, out);
+  return out;
 }
 
 /** Hand hygiene validity (simulated minutes) after `wash_hands`. */
@@ -276,7 +311,11 @@ export class DeviceRules {
   /** Behaviour of an entity id (none for unknown ids, people, rooms). */
   spec(id: EntityId): BehaviorSpec {
     const e = this.d.locator.registry.entity(id);
-    return e ? behaviorOf(e) : NO_BEHAVIOR;
+    if (!e) return NO_BEHAVIOR;
+    const spec = behaviorOf(e);
+    // a board showing the case record follows the record only in a case that records it
+    if (spec.derived === "case-record" && !recordBacked(spec, this.d.clinical.caseDef)) return physical(spec);
+    return spec;
   }
 
   /** Operation by name, or null when the entity does not offer it. */
@@ -301,6 +340,13 @@ export class DeviceRules {
         return s?.door?.locked ? "locked" : s?.door?.open ? "open" : "closed";
       case "derived": {
         const c = this.d.clinical;
+        if (spec.derived === "case-record") {
+          // the last listed state whose condition holds in the case record, else the initial state
+          const state = c.state();
+          let at = spec.initial;
+          for (const [name, st] of Object.entries(spec.states)) if (st.when && evaluate(c.caseDef, state, st.when)) at = name;
+          return at;
+        }
         return this.d.locator.isPatientMonitor(id) && monitorAttached(c.caseDef, c.state()) ? "attached" : "detached";
       }
       default:

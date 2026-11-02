@@ -494,6 +494,8 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | `read_result` | 无能力要求：任意位置 · 仅需随身器械：`at-patient` · 床旁检查：`any-of` [`at-patient`，`at-provider` `records`，提供这些能力的固定工作站（`fixedOnly`，`providerKinds: ["workstation"]`）]——**从不在设备上** · 化验：`any-of` [`at-provider` `records`，`at-patient`，化验工作站] · 其他：`at-provider`（在控制台读报告——从不在患者处） | 已记录的心电图在纸上或电子病历里看，而不是把推车再推回来；读报告不需要患者在场 |
 | `intervene`，kind 为 `consult` / `disposition` | 任意位置（电话 / 寻呼） | |
 | `intervene`，其他 kind（`medication`、`fluid`、`oxygen`、`procedure`、`positioning`、`airway`、`monitoring`、`other`） | 其所需能力——`requires` 为空时取该 kind 的默认值（`KIND_DEFAULT_CAPABILITIES`：oxygen → `oxygen`，monitoring → `cardiac-monitor`，fluid → `iv-access`，airway → `airway`）——去掉随身器械：不剩任何能力 → `at-patient` 1.5 m；否则对这些能力要求 `bedside-provider`，但**配送类**能力（`DELIVERED_CAPABILITIES`：`medications`、`blood-bank`）只需场馆某处有在用的提供者。`iv-access` 是**患者状态**：`all-of` [`clinical` {intervened: 病例的建立静脉通路操作}，…]——若病例标注了 `extensions.embodied.ivAccessInSitu` 或没有此类操作则跳过；建立静脉通路操作本身需要穿刺包（抢救车或治疗车）在床旁 | 器械必须在床边（在花园里就得带过去）；静脉用药需要患者身上有留置针，而不是床边有输液架 |
+| `operate`（病例手术的一个步骤，PROCEDURE.md） | `all-of` [`patient-at-provider` `surgery` 且 `beds`（患者在手术床上）、`at-patient` 1.5 米] | 术者在手术床旁：手术绝不能在另一个房间或楼层进行——与所有受门控的动作一样，审批等待之后、引擎提交之前会再次检查 |
+| `observe_field`（腹腔镜屏幕） | `near-patient` 3 米 + 视线可及 | 术野要在手术室里、手术床旁才能看到 |
 | `consult`、`delegate_task`、认知类工具（`answer_decision`、`update_workup`、`wait`、`set_phase`、`finish_case`、`list_options`、`case_status`） | 任意位置 | 电话 / 寻呼；思考；被委派的职员会亲自走过去 |
 | 未解析的条目（工具将自行解析或拒绝的自由文本查询） | `ask_patient` / `examine`：同上但不计能力；`order_test` / `read_result` / `intervene`：任意位置 | 工具本身会拒绝它 |
 

@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { AppearanceSchema, CaseSettingSchema } from "./case.js";
-import { CapabilitySchema, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
+import { CapabilitySchema, ConditionSchema, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
 
 /**
  * Virtual environment — facilities, rooms, equipment and materials.
@@ -146,9 +146,12 @@ export const WorldPredicateSchema: z.ZodType<WorldPredicate> = z.lazy(() =>
 export const ClinicalEffectSchema = z
   .object({
     tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine"]),
-    select: z.enum(["param", "capability", "monitoring"]),
+    /** `item`: the case item with id `item` (a WHO board's `sign_in` → the case's `sign-in`). */
+    select: z.enum(["param", "capability", "monitoring", "item"]),
+    item: IdSchema.optional(),
   })
-  .strict();
+  .strict()
+  .refine((e) => (e.select === "item") === (e.item != null), { message: "`item` names the case item exactly when `select` is \"item\"" });
 export type ClinicalEffect = z.infer<typeof ClinicalEffectSchema>;
 
 /** One operation of a device behaviour (offered in the `from` states; `to` = state after success). */
@@ -180,9 +183,26 @@ export type BehaviorOperation = z.infer<typeof BehaviorOperationSchema>;
 export const DeviceBehaviorSchema = z
   .object({
     initial: IdSchema,
-    states: z.record(IdSchema, z.object({ name: LocalizedTextSchema.optional(), available: z.boolean().optional() }).strict()),
+    states: z.record(
+      IdSchema,
+      z
+        .object({
+          name: LocalizedTextSchema.optional(),
+          available: z.boolean().optional(),
+          /** `derived: "case-record"`: the device is in this state while the condition holds (the last listed that holds wins). */
+          when: ConditionSchema.optional(),
+        })
+        .strict(),
+    ),
     operations: z.record(IdSchema, BehaviorOperationSchema),
-    derived: z.enum(["monitor-attachment"]).optional(),
+    /**
+     * `case-record` (a WHO checklist board): in a case that defines every item its operations' clinical effects
+     * name (`select: "item"`), the state is derived from the case record — the last state whose `when` holds, else
+     * `initial` — and an operation's only effect is its clinical act, through the session's tool path (validation,
+     * scope, approvals, the spatial gate); the board follows the record whoever made the entry. In a case without
+     * those items the device keeps its own state machine and its operations are physical.
+     */
+    derived: z.enum(["monitor-attachment", "case-record"]).optional(),
   })
   .strict();
 export type DeviceBehavior = z.infer<typeof DeviceBehaviorSchema>;

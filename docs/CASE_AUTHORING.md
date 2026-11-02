@@ -347,9 +347,17 @@ instruments, safety views, bail-outs — the contract is [PROCEDURE.md](PROCEDUR
   `scoredWhen` `{"procedure": {"variant": id}}`.
 * **Names stay hidden.** Give every duct and vessel an `appearsAs` description (what it looks like); the
   operator and agents see handles, not names (`cases validate` warns otherwise).
-* **Gate the operation with the checklist.** Open the operative phase on the Time Out (`enterWhen:
-  {"intervened": "time-out"}`) and gate induction on the Sign In; physiology events may read the field
-  (`{"procedure": {"insufflated": true}}`) — label simulated values as simulated in their message.
+* **Gate the operation with the checklist.** Mark the WHO steps `checklist: true` and open the operative
+  phase only on a valid Time Out (`enterWhen: {"intervened": "time-out", "valid": true}`): an early
+  attempt is logged as invalid, leaves the operation locked and uses none of the step's doses, so a later
+  attempt in order opens it. Make induction contraindicated before the Sign In, score the order by
+  committed sequence (`{"inOrder": ["sign-in", "induction"]}`) and show a reversed order in the verdict with
+  a safety gate on `{"intervened": "induction", "valid": false}`. Open recovery only on a valid Sign Out.
+  Physiology events may read the field (`{"procedure": {"insufflated": true}}`); label simulated values as
+  simulated in their message.
+* **Count what the operator sees.** Give the "only the structures entering" criterion a usual `count` (2):
+  the operator then reports at the safety pause how many structures they see entering, and only the true
+  number is credited (an anatomical variant with a third structure needs the report "three").
 * **Score the operation in the rubric**: the critical view documented and true (`{"procedure": {"documented":
   "cvs", "valid": true}}`), correct identification, no irreversible step on unconfirmed anatomy (an
   avoided-harm item with `scoredWhen`), and complication management items `scoredWhen` the complication

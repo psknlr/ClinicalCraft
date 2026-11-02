@@ -22,10 +22,14 @@ import {
   structureOf,
   structureOfHandle,
   viewCriteria,
+  entering,
 } from "./field.js";
 import { directionVector, portReport, reach, shaftsClash } from "./geometry.js";
 import { cloneProcedureState, type Injury, type PortState, type ProcedureState } from "./state.js";
 import { nameVocabulary } from "./variant.js";
+
+/** What `identify … as` records when the operator sees a structure and cannot say what it is. */
+export const UNCERTAIN = "uncertain";
 
 export type { ProcedureSignal };
 
@@ -196,7 +200,7 @@ function irreversible(x: Step, st: Structure, handle: string): void {
     else if (!last.achieved) unsafe(x, "irreversible-without-view", st.id);
   }
   const claim = x.s.claims[handle];
-  if (!claim) unsafe(x, "irreversible-on-unidentified", st.id);
+  if (!claim || claim === UNCERTAIN) unsafe(x, "irreversible-on-unidentified", st.id);
   else if (claim !== st.id) unsafe(x, "irreversible-on-misidentified", st.id);
   if (obscured(x.s)) unsafe(x, "blind-in-obscured-field", st.id);
   continuing(x);
@@ -392,8 +396,9 @@ function apply(x: Step, op: ProcedureOp): void {
     }
     case "identify": {
       handleStructure(x, op.handle);
-      // any name of the vocabulary (the base and every variant): naming never reveals which anatomy is real
-      if (!nameVocabulary(def).includes(op.as)) return reject("unknown-id", `"${op.as}" is not a structure of this operation.`);
+      // any name of the vocabulary (the base and every variant): naming never reveals which anatomy is real;
+      // `uncertain`: the operator sees it and cannot name it (still unidentified for an irreversible step)
+      if (op.as !== UNCERTAIN && !nameVocabulary(def).includes(op.as)) return reject("unknown-id", `"${op.as}" is not a structure of this operation.`);
       s.claims[op.handle] = op.as;
       return;
     }
@@ -401,7 +406,21 @@ function apply(x: Step, op: ProcedureOp): void {
       const view = def.views.find((v) => v.id === op.view);
       if (!view) return reject("unknown-id", `There is no safety view "${op.view}".`);
       const truth = viewCriteria(def, s, view.id);
-      s.pauses.push({ at: x.at, view: view.id, claims: { ...op.claims }, truth, achieved: Object.values(truth).every(Boolean), step: s.counters.steps });
+      for (const c of view.criteria) {
+        const claim = op.claims[c.id];
+        if (typeof claim === "number" && !("onlyEntering" in c.test && c.test.count != null)) return reject("invalid", `"${c.id}" is not a count: claim true or false.`);
+      }
+      const counted = view.criteria.filter((c) => "onlyEntering" in c.test && c.test.count != null);
+      const enteringCounts = Object.fromEntries(counted.map((c) => [c.id, entering(def, (c.test as { onlyEntering: string }).onlyEntering).length]));
+      s.pauses.push({
+        at: x.at,
+        view: view.id,
+        claims: { ...op.claims },
+        truth,
+        ...(counted.length ? { entering: enteringCounts } : {}),
+        achieved: Object.values(truth).every(Boolean),
+        step: s.counters.steps,
+      });
       return;
     }
     case "clip": {

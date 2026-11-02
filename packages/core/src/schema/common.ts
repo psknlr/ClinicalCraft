@@ -181,8 +181,16 @@ export type Condition =
    * session — intended for rubric items, not for objectives or `requires`.
    */
   | { decidedFirstTry: string }
-  /** Intervention given at least `minCount` times (default 1). */
-  | { intervened: string; minCount?: number }
+  /**
+   * Intervention given at least `minCount` times (default 1). `valid: true` counts only attempts that were not
+   * contraindicated when made (a checklist step in order); `valid: false` only those that were.
+   */
+  | { intervened: string; minCount?: number; valid?: boolean }
+  /**
+   * Interventions first validly given in this order (by committed action sequence, so two acts in the same
+   * simulated minute keep their order): `{"inOrder": ["sign-in", "induction"]}`. False while one is missing.
+   */
+  | { inOrder: string[] }
   /** Current case phase equals. */
   | { phase: string }
   /** Scenario flag set (by interventions, events or `flag` actions). */
@@ -211,7 +219,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ decided: IdSchema }).strict(),
     z.object({ attempted: IdSchema }).strict(),
     z.object({ decidedFirstTry: IdSchema }).strict(),
-    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional() }).strict(),
+    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional(), valid: z.boolean().optional() }).strict(),
+    z.object({ inOrder: z.array(IdSchema).min(2).max(8) }).strict(),
     z.object({ phase: IdSchema }).strict(),
     z.object({ flag: IdSchema }).strict(),
     z.object({ objective: IdSchema }).strict(),

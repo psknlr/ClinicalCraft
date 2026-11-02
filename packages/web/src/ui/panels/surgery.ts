@@ -27,6 +27,7 @@ import {
   FORCES,
   handleOp,
   identifyChoices,
+  isCounting,
   imageOp,
   imagingFor,
   label,
@@ -71,6 +72,8 @@ interface Draft {
   clips: number;
   identifyAs: string;
   claims: Record<string, Set<string>>;
+  /** Counting criteria: the number entered, per view. */
+  counts: Record<string, Record<string, number>>;
   pressure: number;
   injury: (typeof INJURIES)[number];
   orbit: boolean;
@@ -107,6 +110,7 @@ export function surgeryPanel(app: App): () => PanelView {
       clips: 2,
       identifyAs: "",
       claims: {},
+      counts: {},
       pressure: def?.insufflation.usual ?? 12,
       injury: "bleeding",
       orbit: false,
@@ -373,7 +377,7 @@ export function surgeryPanel(app: App): () => PanelView {
     };
 
     const structuresSection = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
-      const choices = identifyChoices(def, L);
+      const choices = identifyChoices(def, L, tr("surgery.identify.uncertain"));
       if (!choices.some((x) => x.id === d.identifyAs)) d.identifyAs = choices[0]?.id ?? "";
       const nameOf = (id: string) => choices.find((x) => x.id === id)?.name ?? id;
       const identify = h("select", { id: "lap-identify", "aria-label": d.handle ? tr("surgery.identify.label", { handle: d.handle }) : "" }, choices.map((x) => h("option", { value: x.id, selected: x.id === d.identifyAs }, x.name)));
@@ -425,16 +429,23 @@ export function surgeryPanel(app: App): () => PanelView {
         h("p", { class: "small notice-inline" }, tr("surgery.pause.note")),
         def.views.map((view) => {
           const ticked = (d.claims[view.id] ??= new Set());
+          const counts = (d.counts[view.id] ??= {});
           return h(
             "div",
             { class: "lap-block", dataset: { view: view.id } },
             h("h5", null, ct(view.name)),
             view.criteria.map((cr) => {
+              if (isCounting(cr.test)) {
+                // the operator reports how many structures they see entering — never a tick for "two"
+                const n = h("input", { type: "number", min: "0", max: "9", step: "1", value: String(counts[cr.id] ?? 0), class: "lap-count", "aria-label": tr("surgery.pause.countLabel"), dataset: { criterion: `${view.id}:${cr.id}` } });
+                n.addEventListener("change", () => (counts[cr.id] = Math.max(0, Math.min(9, Math.round(Number(n.value) || 0)))));
+                return h("label", { class: "lap-check block" }, ct(cr.name), " · ", tr("surgery.pause.countLabel"), " ", n);
+              }
               const box = h("input", { type: "checkbox", checked: ticked.has(cr.id), dataset: { criterion: `${view.id}:${cr.id}` } });
               box.addEventListener("change", () => (box.checked ? ticked.add(cr.id) : ticked.delete(cr.id)));
               return h("label", { class: "lap-check block" }, box, ct(cr.name));
             }),
-            button(tr("surgery.pause.go", { view: ct(view.name) }), { dataset: { op: "safety-pause", view: view.id } }, () => send(safetyPauseOp(def, view.id, ticked))),
+            button(tr("surgery.pause.go", { view: ct(view.name) }), { dataset: { op: "safety-pause", view: view.id } }, () => send(safetyPauseOp(def, view.id, ticked, counts))),
           );
         }),
         h("p", { class: "small muted" }, tr("surgery.pause.count", { n: v.pauses })),

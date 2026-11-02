@@ -108,6 +108,7 @@ export const SURGERY_ZH = {
   "surgery.identify.label": "将 {handle} 命名为",
   "surgery.identify.go": "命名",
   "surgery.identify.note": "这是你的辨认，按你所说记录；术野不会告诉你哪根管道是哪根。",
+  "surgery.identify.uncertain": "不确定（看到但无法辨认）",
   "surgery.organs": "术野可见：{list}",
   "surgery.regions.title": "解剖与显露",
   "surgery.region.row": "{name}：解剖{dissection}，显露{exposure}",
@@ -116,6 +117,7 @@ export const SURGERY_ZH = {
   "surgery.pause.note": "勾选你判断已经达到的标准。这里记录的是你的判断，并不核验术野。",
   "surgery.pause.go": "记录安全暂停：{view}",
   "surgery.pause.count": "已记录安全暂停：{n} 次",
+  "surgery.pause.countLabel": "看到进入的结构数",
   /* ---------------- complications & ending ---------------- */
   "surgery.events.title": "并发症、补救与结束",
   "surgery.recognise.label": "说出你怀疑的损伤",
@@ -357,6 +359,7 @@ export const SURGERY_EN: Record<keyof typeof SURGERY_ZH, string> = {
   "surgery.identify.label": "Name {handle} as",
   "surgery.identify.go": "Name it",
   "surgery.identify.note": "Your identification, recorded as you state it — the field does not tell you which tube is which.",
+  "surgery.identify.uncertain": "Uncertain (seen, cannot name it)",
   "surgery.organs": "In view: {list}",
   "surgery.regions.title": "Dissection and exposure",
   "surgery.region.row": "{name}: dissection {dissection}, exposure {exposure}",
@@ -365,6 +368,7 @@ export const SURGERY_EN: Record<keyof typeof SURGERY_ZH, string> = {
   "surgery.pause.note": "Tick each criterion you judge to be met. This records your judgement; it does not check the field.",
   "surgery.pause.go": "Record the safety pause: {view}",
   "surgery.pause.count": "Safety pauses recorded: {n}",
+  "surgery.pause.countLabel": "structures seen entering",
   /* ---------------- complications & ending ---------------- */
   "surgery.events.title": "Complications, bail-out and ending",
   "surgery.recognise.label": "Say what injury you suspect",
