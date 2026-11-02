@@ -27,7 +27,7 @@ describe("parseCase", () => {
   });
 
   it("applies schema defaults", () => {
-    expect(V4.clock).toEqual({ mode: "static", realtimeScale: 0, actionCosts: { ask: 1, examine: 2, order: 1, read: 1, intervene: 2, answer: 0 } });
+    expect(V4.clock).toEqual({ mode: "static", realtimeScale: 0, worldTime: "scaled", actionCosts: { ask: 1, examine: 2, order: 1, read: 1, intervene: 2, answer: 0 } });
     expect(V4.history[0].disclosure).toBe("on-ask");
     expect(V4.investigations[0].turnaroundMinutes).toBe(0);
   });

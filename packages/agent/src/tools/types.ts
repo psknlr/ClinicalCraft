@@ -40,8 +40,11 @@ export interface ToolContext {
   state(): SessionState;
   /** Apply a clinical action through the engine; emits clinical_event/state_snapshot events. */
   dispatch(action: ClinicalAction): ReduceResult;
-  /** Run another agent (patient, nurse, consultant…) and return its final text. */
-  ask(agent: AgentRole, utterance: string, signal?: AbortSignal): Promise<{ text: string; grounded: string[] }>;
+  /**
+   * Run another agent (patient, nurse, consultant…) and return its final text. `voice`: the named colleague who
+   * answers (their own name, role and conversation — `consult {staff}`).
+   */
+  ask(agent: AgentRole, utterance: string, signal?: AbortSignal, voice?: { staffId: string; role: string; name: string } | null): Promise<{ text: string; grounded: string[] }>;
   /** Publish a workup/differential plan (Codex update_plan / Claude Code TodoWrite analogue). */
   updatePlan(plan: PlanItem[], explanation?: string): void;
   /** Ask the front-end to execute a world action (walk_to, use_equipment). Resolves with its output. */

@@ -9,7 +9,7 @@
  */
 import type { CaseDefinition, Result } from "../schema/case.js";
 import type { Condition, ProcedurePredicate } from "../schema/common.js";
-import type { OrderRecord, SessionState } from "../schema/session.js";
+import type { HoldRecord, OrderRecord, SessionState } from "../schema/session.js";
 import { vitalValue } from "./signal.js";
 import { historyCredited } from "./twins.js";
 import { evaluateProcedure } from "./procedure/predicates.js";
@@ -76,6 +76,11 @@ function resultReady(c: CaseDefinition, s: SessionState, investigationId: string
   );
 }
 
+/** The holds standing on an intervention (placed, not released), oldest first. */
+export function activeHolds(s: SessionState, interventionId: string): HoldRecord[] {
+  return (s.holds ?? []).filter((h) => h.interventionId === interventionId && !h.released);
+}
+
 /**
  * Evaluate a condition against a session.
  *
@@ -109,6 +114,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
     });
     return firsts.every((x, i) => x !== null && (i === 0 || x > firsts[i - 1]!));
   }
+  if ("held" in cond) return activeHolds(s, cond.held).length > 0;
   if ("phase" in cond) return s.phase === cond.phase;
   if ("flag" in cond) return s.flags.includes(cond.flag);
   if ("objective" in cond) return Object.prototype.hasOwnProperty.call(s.objectivesDone, cond.objective);
@@ -159,6 +165,7 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("intervened" in node)
       out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), path: [...path, "intervened"] });
     else if ("inOrder" in node) node.inOrder.forEach((id, i) => out.push({ kind: "intervention", id, path: [...path, "inOrder", i] }));
+    else if ("held" in node) out.push({ kind: "intervention", id: node.held, path: [...path, "held"] });
     else if ("phase" in node) out.push({ kind: "phase", id: node.phase, path: [...path, "phase"] });
     else if ("flag" in node) out.push({ kind: "flag", id: node.flag, path: [...path, "flag"] });
     else if ("objective" in node) out.push({ kind: "objective", id: node.objective, path: [...path, "objective"] });

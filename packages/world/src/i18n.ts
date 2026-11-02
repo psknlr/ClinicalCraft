@@ -210,6 +210,21 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "pre.noItem": { "zh-CN": "本病例在「{target}」没有可做的项目。", en: 'There is nothing to do with "{target}" in this case.' },
   "pre.cannotProvide": { "zh-CN": "「{target}」不能提供「{item}」（需要：{caps}）。", en: '"{target}" cannot provide "{item}" (needs: {caps}).' },
   "pre.noSpot": { "zh-CN": "附近没有空位放下「{target}」。", en: 'There is no free spot nearby to leave "{target}".' },
+  "pre.cartBlocked": {
+    "zh-CN": "「{target}」只移动了 {displacement} 米，没有到达{destination}（还差 {distance} 米）：被「{blocker}」挡住。",
+    en: '"{target}" moved {displacement} m but is not at {destination} ({distance} m away): "{blocker}" is in the way.',
+  },
+  "pre.cartShort": {
+    "zh-CN": "「{target}」只移动了 {displacement} 米，没有到达{destination}（还差 {distance} 米）。",
+    en: '"{target}" moved {displacement} m but is not at {destination} ({distance} m away).',
+  },
+  "ok.cartAlready": {
+    "zh-CN": "「{target}」已经在{destination}（距 {distance} 米）：已在目的地，没有移动。",
+    en: '"{target}" is already at {destination} ({distance} m): already at its destination, nothing was moved.',
+  },
+  "pre.cartInTheWay": { "zh-CN": "挡在中间的是「{blocker}」。", en: '"{blocker}" is in the way.' },
+  "pre.cartNearest": { "zh-CN": "「{target}」已经停在离那里最近的空位上，再推也不会更近。", en: '"{target}" already stands at the nearest free spot; moving it again would not bring it closer.' },
+  "hint.cartAlternative": { "zh-CN": "改把「{target}」推到 ({x}, {z}) 的空位", en: 'Wheel "{target}" to the free spot at ({x}, {z}) instead' },
   "pre.notPortable": { "zh-CN": "「{target}」不能移动。", en: '"{target}" cannot be moved.' },
   "pre.missingParam": { "zh-CN": "缺少参数 {param}。", en: "Missing parameter {param}." },
   "pre.unknownItem": { "zh-CN": "本病例没有「{item}」。", en: 'This case has no "{item}".' },

@@ -17,7 +17,7 @@ import {
   type SessionState,
 } from "../schema/session.js";
 import { t } from "../i18n.js";
-import { evaluate, resultFor, resultKey } from "./conditions.js";
+import { activeHolds, evaluate, resultFor, resultKey } from "./conditions.js";
 import { currentObjective, progress } from "./queries.js";
 import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
@@ -96,6 +96,7 @@ function cloneState(s: SessionState): SessionState {
     trendStops: { ...s.trendStops },
     objectivesDone: { ...s.objectivesDone },
     baselineOverrides: { ...s.baselineOverrides },
+    ...(s.holds ? { holds: [...s.holds] } : {}),
   };
 }
 
@@ -260,6 +261,14 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
   if (intervention.maxDoses != null && given >= intervention.maxDoses) {
     return rejected("max-doses", `"${intervention.id}" may be given at most ${intervention.maxDoses} time(s)`);
   }
+  // an explicit hold (who placed it, why) stands until its holder records a reassessment and releases it
+  const hold = activeHolds(s, intervention.id)[0];
+  if (hold) {
+    return rejected(
+      "on-hold",
+      `"${intervention.id}" is on hold — placed by ${hold.placedBy}: ${hold.reason}. It needs a recorded reassessment and release by ${hold.placedBy}.`,
+    );
+  }
   const appropriateness =
     intervention.contraindicatedWhen && evaluate(c, before, intervention.contraindicatedWhen)
       ? "contraindicated"
@@ -276,6 +285,40 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
     ctx.events.push({ type: "flag.changed", flag, value: true });
   }
   return accepted(actionCost(c, "intervene"));
+}
+
+const sameHolder = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();
+
+/** An explicit hold on an intervention: who placed it and why (see the `hold` action). */
+function onHold(ctx: Ctx, a: Action<"hold">): Outcome {
+  const { c, s } = ctx;
+  const intervention = c.interventions.find((i) => i.id === a.interventionId);
+  if (!intervention) return rejected("unknown-id", `unknown intervention "${a.interventionId}"`);
+  const given = s.interventions.filter((r) => r.interventionId === intervention.id && !r.invalid).length;
+  if (intervention.maxDoses != null && given >= intervention.maxDoses) return rejected("invalid", `"${intervention.id}" has already been given; there is nothing left to hold`);
+  if (activeHolds(s, intervention.id).some((h) => sameHolder(h.placedBy, a.placedBy))) {
+    return rejected("invalid", `${a.placedBy} already holds "${intervention.id}"`);
+  }
+  s.holds = [...(s.holds ?? []), { interventionId: intervention.id, placedBy: a.placedBy, reason: a.reason, at: s.clock, seq: s.seq + 1 }];
+  ctx.events.push({ type: "hold.placed", interventionId: intervention.id, placedBy: a.placedBy, reason: a.reason });
+  return accepted();
+}
+
+/** Release a hold after a recorded reassessment: only whoever placed it can (another holder's hold still stands). */
+function onReleaseHold(ctx: Ctx, a: Action<"release-hold">): Outcome {
+  const { c, s } = ctx;
+  if (!c.interventions.some((i) => i.id === a.interventionId)) return rejected("unknown-id", `unknown intervention "${a.interventionId}"`);
+  const standing = activeHolds(s, a.interventionId);
+  if (standing.length === 0) return rejected("invalid", `"${a.interventionId}" is not on hold`);
+  const mine = standing.filter((h) => sameHolder(h.placedBy, a.releasedBy));
+  if (mine.length === 0) {
+    const by = [...new Set(standing.map((h) => h.placedBy))].join(", ");
+    return rejected("requirements-unmet", `the hold on "${a.interventionId}" was placed by ${by}; only ${by} can release it, after a recorded reassessment`);
+  }
+  const released = { by: a.releasedBy, reassessment: a.reassessment, at: s.clock, seq: s.seq + 1 };
+  s.holds = (s.holds ?? []).map((h) => (mine.includes(h) ? { ...h, released } : h));
+  ctx.events.push({ type: "hold.released", interventionId: a.interventionId, releasedBy: a.releasedBy, reassessment: a.reassessment });
+  return accepted();
 }
 
 function onAdvanceTime(a: Action<"advance-time">): Outcome {
@@ -345,6 +388,10 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onNote(ctx, a);
     case "operate":
       return onOperate(ctx, a);
+    case "hold":
+      return onHold(ctx, a);
+    case "release-hold":
+      return onReleaseHold(ctx, a);
     case "finish":
       return onFinish(ctx);
   }

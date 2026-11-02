@@ -337,6 +337,8 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   flag: null,
   note: null,
   finish: "finish_case",
+  hold: "place_hold",
+  "release-hold": "release_hold",
 };
 
 /** Equivalent tool name for a learner `clinical_action` (null when the action is not gated). */

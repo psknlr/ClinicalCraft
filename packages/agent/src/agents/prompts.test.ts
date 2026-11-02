@@ -16,7 +16,7 @@ describe("built-in agents", () => {
   it("defines the PROTOCOL §8 roster with tool allow-lists", () => {
     expect(BUILTIN_AGENTS.map((a) => a.name)).toEqual(["patient", "companion", "nurse", "radiologist", "pathologist", "attending", "examiner", "clinician"]);
     expect(builtinAgent("nurse")!.tools).toEqual(["get_vitals", "get_results"]);
-    expect(builtinAgent("attending")!.tools).toEqual(["get_progress", "give_hint"]);
+    expect(builtinAgent("attending")!.tools).toEqual(["get_progress", "give_hint", "place_hold", "release_hold"]);
     expect(builtinAgent("examiner")!.tools).toEqual([]);
     expect(builtinAgent("clinician")!.tools).toEqual(expect.arrayContaining(["ask_patient", "order_test", "update_workup", "finish_case"]));
     expect(builtinAgent("patient")!.injectMemory).toBe(false);

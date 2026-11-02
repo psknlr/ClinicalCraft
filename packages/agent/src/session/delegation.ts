@@ -72,6 +72,10 @@ export interface DelegationResult {
   message?: string;
   /** `not-authorized`: why, localised (the staff member's scope of practice — review S3). */
   refusal?: string;
+  /** `target-not-intervention` / `unknown-intervention`: what was asked for (an entity id, or the text). */
+  asked?: string;
+  /** Equipment delivered (`fetch_equipment`): where it stands now and how far from the patient. */
+  delivered?: { entityId: string; room: string | null; distance: number; x: number; z: number };
 }
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
@@ -270,6 +274,10 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
         const cart = resolved && world.entity(resolved)?.portable ? resolved : cartFor(capability || target);
         if (!cart) return finish("failed", "no-target");
         const ok = await fetch(cart);
+        // where it stands now (the final position, measured — not where it was asked to go)
+        const e = world.entity(cart);
+        const p = world.entity(patient);
+        if (e && p) result.delivered = { entityId: cart, room: e.room, distance: r2(Math.hypot(e.position.x - p.position.x, e.position.z - p.position.z)), x: r2(e.position.x), z: r2(e.position.z) };
         verify(`at bedside ${cart}`, ok && h.atBedside(cart));
         return finish(ok && h.atBedside(cart) ? "completed" : cancelled ? "cancelled" : "failed");
       }
@@ -285,11 +293,20 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
         return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
       }
       case "give_intervention": {
+        const wanted = strArg(params, "intervention") || target;
         const id = interventionOf(h, params, target);
-        if (!id) return finish("failed", "no-target");
-        const before = h.state().interventions.filter((x) => x.interventionId === id).length;
+        if (!id) {
+          // three different failures, said apart: nothing named; an entity named (equipment is not a treatment);
+          // a name the case has no intervention for
+          if (!wanted) return finish("failed", "no-target");
+          result.asked = wanted;
+          return finish("failed", h.resolve(wanted, staff) ? "target-not-intervention" : "unknown-intervention");
+        }
+        // an out-of-order checklist attempt is recorded as invalid: it is not the task done
+        const given = () => h.state().interventions.filter((x) => x.interventionId === id && !x.invalid).length;
+        const before = given();
         if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
-        const ok = (await clinical("intervene", { intervention_id: id })) && h.state().interventions.filter((x) => x.interventionId === id).length > before;
+        const ok = (await clinical("intervene", { intervention_id: id })) && given() > before;
         verify(`intervened ${id}`, ok);
         return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
       }

@@ -32,6 +32,10 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
       return { minutes: action.minutes };
     case "operate":
       return { ...action.op };
+    case "hold":
+      return { intervention_id: action.interventionId, reason: action.reason };
+    case "release-hold":
+      return { intervention_id: action.interventionId, reassessment: action.reassessment };
     case "finish":
     case "start":
     case "hint":
@@ -113,6 +117,10 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
       const op = ProcedureOpSchema.safeParse(input);
       return op.success ? { ok: true, action: { ...action, op: op.data } } : { ok: true, action };
     }
+    case "hold":
+      return { ok: true, action: { ...action, interventionId: strArg(input, "intervention_id") || action.interventionId, reason: strArg(input, "reason") || action.reason } };
+    case "release-hold":
+      return { ok: true, action: { ...action, interventionId: strArg(input, "intervention_id") || action.interventionId, reassessment: strArg(input, "reassessment") || action.reassessment } };
     case "finish":
     case "start":
     case "hint":

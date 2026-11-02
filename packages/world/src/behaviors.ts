@@ -480,6 +480,46 @@ export class DeviceRules {
   }
 
   /**
+   * The checklist board operation that records a case step (a record-backed WHO board's `time_out` → the case's
+   * `time-out`), nearest the patient (in the patient's room first), or null when the facility has none. Its team
+   * prerequisites are the step's own, whichever way the step is taken (`checklistPrerequisite`).
+   */
+  checklistOperation(interventionId: string): { id: EntityId; op: OperationSpec } | null {
+    const loc = this.d.locator;
+    const patient = loc.patientId ? loc.place(loc.patientId) : null;
+    let best: { id: EntityId; op: OperationSpec; key: [number, number, string] } | null = null;
+    for (const e of loc.registry.ofKind("equipment")) {
+      const spec = this.spec(e.id);
+      if (spec.derived !== "case-record") continue;
+      const op = spec.operations.find((o) => o.clinical?.select === "item" && o.clinical.item === interventionId);
+      const p = op ? loc.place(e.id) : null;
+      if (!op || !p) continue;
+      const key: [number, number, string] = patient
+        ? [p.room && p.room === patient.room ? 0 : 1, p.level === patient.level ? Math.hypot(p.position.x - patient.position.x, p.position.z - patient.position.z) : 1e6, e.id]
+        : [1, 0, e.id];
+      if (!best || key[0] < best.key[0] || (key[0] === best.key[0] && (key[1] < best.key[1] || (key[1] === best.key[1] && key[2] < best.key[2])))) best = { id: e.id, op, key };
+    }
+    return best ? { id: best.id, op: best.op } : null;
+  }
+
+  /**
+   * The team prerequisites of a checklist step (the board operation's declared predicates that are not about where
+   * the actor stands or who they are — a baseline count on the count board before the Time Out), or null when they
+   * hold. The board and `intervene` take the same step: one rule (docs/EMBODIED.md §6).
+   */
+  checklistPrerequisite(interventionId: string, actor: ActorState): RuleFailure | null {
+    const found = this.checklistOperation(interventionId);
+    if (!found) return null;
+    const place = this.d.locator.place(found.id);
+    const env = this.env(actor, place, this.state(found.id));
+    for (const p of found.op.requires) {
+      if (isPlacementPredicate(p) || "role" in p || "handsClean" in p || "actorHolding" in p || evaluatePredicate(p, env)) continue;
+      return this.predicateFailure(found.id, p, found.op, place, actor);
+    }
+    return null;
+  }
+
+  /**
    * The nearest in-service equipment providing every capability of `id` that
    * nobody else holds (same type first), or null.
    */
@@ -578,15 +618,25 @@ export class DeviceRules {
       const wanted = (Array.isArray(n.state) ? n.state : [n.state]).map((s) => this.typeStateName(n.type, s));
       const near = this.nearbyOfType(place, n.type, within)[0];
       if (!near) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.nearbyStateNone", L, { operation, device, distance: metres(within) }) };
+      // the first step on that device's way to a wanted state (the count board's baseline count; closing, then the
+      // final count), when this actor may take it: the hint's `then`
+      const step = this.firstStepTowards(near, Array.isArray(n.state) ? n.state : [n.state], actor);
       return {
         code: "PRECONDITION_FAILED",
         message: worldMessage("pre.nearbyState", L, { operation, device, states: listText(wanted, L), state: this.stateLabel(near) ?? "—" }),
         goal: { kind: "interact", id: near },
         label: worldMessage("hint.approach", L, { target: this.d.locator.name(near) }),
+        ...(step ? { then: { operation: step.id, targetId: near } } : {}),
       };
     }
     if ("role" in p) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.role", L, { roles: listText(p.role.map((r) => roleName(r, L)), L), operation }) };
-    if ("state" in p) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id) ?? "—" }) };
+    if ("state" in p) {
+      const message = worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id) ?? "—" });
+      // an item that must be in hand (an RF wand's scan): pick it up first
+      const wanted = Array.isArray(p.state) ? p.state : [p.state];
+      const pick = wanted.includes("held") && !place?.heldBy ? this.operation(id, "pick_up") : null;
+      return pick ? { code: "PRECONDITION_FAILED", message, goal: { kind: "interact", id }, label: worldMessage("hint.approach", L, { target }), then: { operation: pick.id, targetId: id } } : { code: "PRECONDITION_FAILED", message };
+    }
     if ("deviceAtBedside" in p) {
       if (!this.d.locator.patientId) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.noPatient", L) };
       const portable = place?.entity?.portable;
@@ -595,6 +645,28 @@ export class DeviceRules {
         : { code: "PRECONDITION_FAILED", message: worldMessage("pre.notAtBedsideFixed", L, { target }) };
     }
     return { code: "PRECONDITION_FAILED", message: worldMessage("pre.predicate", L, { operation }) };
+  }
+
+  /**
+   * The first operation on a device's shortest way (by its state machine, physical operations only) from its
+   * states now to one of `wanted`, that `actor` may do; null when there is none.
+   */
+  firstStepTowards(id: EntityId, wanted: readonly string[], actor: ActorState): OperationSpec | null {
+    const ops = this.spec(id).operations.filter((o) => !o.clinical && !o.toolByParam && o.to !== undefined && permits(actor.role, o.id, o));
+    const offered = (st: string, o: OperationSpec) => o.from === "*" || o.from.includes(st);
+    const queue: { state: string; first: OperationSpec | null }[] = this.states(id).map((st) => ({ state: st, first: null }));
+    const seen = new Set(queue.map((q) => q.state));
+    while (queue.length) {
+      const { state, first } = queue.shift()!;
+      for (const o of ops) {
+        if (!offered(state, o) || seen.has(o.to!)) continue;
+        const head = first ?? o;
+        if (wanted.includes(o.to!)) return head;
+        seen.add(o.to!);
+        queue.push({ state: o.to!, first: head });
+      }
+    }
+    return null;
   }
 
   /**

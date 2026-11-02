@@ -1,7 +1,8 @@
 /**
  * NPC-only tools (docs/PROTOCOL.md §3): `reveal_facts` (patient/companion),
  * `get_vitals` (nurse), `get_results` (nurse/radiologist/pathologist),
- * `get_progress` and `give_hint` (attending).
+ * `get_progress`, `give_hint`, `place_hold` and `release_hold` (attending: an explicit hold on a step, in the
+ * speaker's own name — docs/PROTOCOL.md §3.1).
  *
  * Need-to-know: `get_results` returns report content only for results the
  * learner has already read (the nurse may additionally report that a result
@@ -22,8 +23,11 @@ import {
   type CaseDefinition,
 } from "@clinicalcraft/core";
 import { isZh, joinList, rt } from "../session/i18n.js";
-import { actorFor, lockedDecisionLabel, strArg, type ToolArgs } from "./clinical.js";
-import { clockTime, formatResult, investigationName, objectiveTitle, phaseLabel, vitalsText } from "./format.js";
+import { actorFor, lockedDecisionLabel, rejectedOutput, resolveIntervention, strArg, type ToolArgs } from "./clinical.js";
+import { resultStatus } from "./clinical-resolve.js";
+import { sentence } from "../session/i18n-checklist.js";
+import { holdLines, objectiveRequirementLines } from "./requirements.js";
+import { clockTime, formatResult, interventionLabel, investigationName, objectiveTitle, phaseLabel, vitalsText } from "./format.js";
 import type { ToolContext, ToolDefinition } from "./types.js";
 
 /** Matcher score a `specific` fact needs from the learner's question (ARCHITECTURE §4.2). */
@@ -142,10 +146,18 @@ export function obtainedResultsText(ctx: Pick<ToolContext, "caseDef" | "locale" 
       lines.push(formatted.text);
       data.push(formatted.data);
     } else if (isNurse) {
+      // the clinician's own status (`resultStatus`): a result the case has none of is never "back"
       const name = investigationName(c, id, L);
       const phase = phaseLabel(c, o.order.phase, L);
-      lines.push(o.ready ? rt(L, "tool.results.ready", { name, phase }) : rt(L, "tool.results.pending", { name, phase, time: clockTime(c, o.order.readyAt, L, "ceil") }));
-      data.push({ investigationId: id, phase: o.order.phase, ready: o.ready, read: false });
+      const status = resultStatus(c, o);
+      lines.push(
+        status === "no-record"
+          ? rt(L, "tool.results.noRecord", { name, phase })
+          : status === "ready"
+            ? rt(L, "tool.results.ready", { name, phase })
+            : rt(L, "tool.results.pending", { name, phase, time: clockTime(c, o.order.readyAt, L, "ceil") }),
+      );
+      data.push({ investigationId: id, phase: o.order.phase, ready: status === "ready", read: false, status });
     }
   }
   if (lines.length === 0) return { ok: false, text: investigationId ? rt(L, "tool.results.notObtained") : rt(L, "tool.results.none"), data };
@@ -184,6 +196,8 @@ export function progressText(ctx: Pick<ToolContext, "caseDef" | "locale" | "stat
     lines.push(`${isZh(L) ? "当前目标提示" : "Current objective hint"}: ${t(objective.hint, L)}`);
     if (objective.guidance) lines.push(`${isZh(L) ? "指引" : "Guidance"}: ${t(objective.guidance, L)}`);
   }
+  // what the current objective still needs, and who holds what (the attending's own holds among them)
+  lines.push(...objectiveRequirementLines(c, s, L, new Set([s.phase])), ...holdLines(c, s, L));
   const decisions = availableDecisions(c, s).filter((d) => !d.decided);
   // A locked decision's prompt may state results not yet obtained: name it, show what it needs.
   for (const d of decisions) lines.push(`- ${d.unlocked ? t(d.decision.prompt, L) : lockedDecisionLabel(c, d.decision.id, L)}: ${d.unlocked ? rt(L, "label.unlocked") : t(d.decision.need, L)}`);
@@ -228,7 +242,83 @@ const giveHint: ToolDefinition<ToolArgs> = {
   },
 };
 
+/**
+ * Who holds: the speaking agent's role ("attending"), never an argument — a model cannot place or release a hold
+ * in someone else's name (docs/PROTOCOL.md §3.1).
+ */
+function holderOf(ctx: Pick<ToolContext, "agent">): string {
+  return ctx.agent;
+}
+
+function holdTarget(args: ToolArgs, ctx: Pick<ToolContext, "caseDef" | "locale">): { id: string; name: string } | null {
+  const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
+  if (r.kind !== "id") return null;
+  return { id: r.id, name: interventionLabel(ctx.caseDef, r.id, ctx.locale) };
+}
+
+const HOLD_SCHEMA = (text: "reason" | "reassessment", what: string) => ({
+  type: "object",
+  properties: {
+    intervention_id: { type: "string", description: "Exact intervention id (e.g. the induction)." },
+    query: { type: "string", maxLength: 300, description: "Free text when the id is unknown." },
+    [text]: { type: "string", minLength: 1, maxLength: 1000, description: what },
+  },
+  required: [text],
+  additionalProperties: false,
+});
+
+const placeHold: ToolDefinition<ToolArgs> = {
+  name: "place_hold",
+  description:
+    "Withhold clearance for a step (e.g. induction) and record it in the case: who you are and why. While the hold stands the step is refused for everyone. " +
+    "Missing information alone is not a reason; hold when you judge it unsafe to proceed now.",
+  inputSchema: HOLD_SCHEMA("reason", "Why you withhold clearance, and what would change your mind."),
+  readOnly: false,
+  sideEffect: "record",
+  scope: "history-only",
+  risk: () => "none",
+  summarize: (args, ctx) => rt(ctx.locale, "sum.place_hold", { name: holdTarget(args, ctx)?.name ?? (strArg(args, "intervention_id") || strArg(args, "query")) }),
+  specifier: (args) => strArg(args, "intervention_id") || strArg(args, "query"),
+  async run(args, ctx) {
+    const L = ctx.locale;
+    const target = holdTarget(args, ctx);
+    if (!target) return { ok: false, output: rt(L, "tool.noMatch", { query: strArg(args, "intervention_id") || strArg(args, "query") }) };
+    const by = holderOf(ctx);
+    const reason = strArg(args, "reason");
+    const result = ctx.dispatch({ type: "hold", interventionId: target.id, placedBy: by, reason, by: actorFor(ctx) });
+    if (result.rejected) return rejectedOutput(L, result, result.rejected.message);
+    return { ok: true, output: rt(L, "hold.placed", { name: target.name, by, reason: sentence(reason) }), data: { interventionId: target.id, placedBy: by, reason } };
+  },
+};
+
+const releaseHold: ToolDefinition<ToolArgs> = {
+  name: "release_hold",
+  description:
+    "Release a hold you placed, after you have reassessed: record the reassessment (it may be a documented decision to proceed under stated uncertainty). " +
+    "You can release only your own hold.",
+  inputSchema: HOLD_SCHEMA("reassessment", "What you reassessed and what you decided."),
+  readOnly: false,
+  sideEffect: "record",
+  scope: "history-only",
+  risk: () => "none",
+  summarize: (args, ctx) => rt(ctx.locale, "sum.release_hold", { name: holdTarget(args, ctx)?.name ?? (strArg(args, "intervention_id") || strArg(args, "query")) }),
+  specifier: (args) => strArg(args, "intervention_id") || strArg(args, "query"),
+  async run(args, ctx) {
+    const L = ctx.locale;
+    const target = holdTarget(args, ctx);
+    if (!target) return { ok: false, output: rt(L, "tool.noMatch", { query: strArg(args, "intervention_id") || strArg(args, "query") }) };
+    const by = holderOf(ctx);
+    const reassessment = strArg(args, "reassessment");
+    const result = ctx.dispatch({ type: "release-hold", interventionId: target.id, releasedBy: by, reassessment, by: actorFor(ctx) });
+    if (result.rejected?.code === "invalid" && !(ctx.state().holds ?? []).some((h) => h.interventionId === target.id && !h.released)) {
+      return { ok: false, output: rt(L, "hold.none", { name: target.name }), data: { rejected: result.rejected } };
+    }
+    if (result.rejected) return rejectedOutput(L, result, result.rejected.message);
+    return { ok: true, output: rt(L, "hold.released", { name: target.name, by, reassessment: sentence(reassessment) }), data: { interventionId: target.id, releasedBy: by, reassessment } };
+  },
+};
+
 /** NPC tools; `options.utterance` feeds the `specific` disclosure gate of reveal_facts. */
 export function npcTools(options: NpcToolOptions = {}): ToolDefinition<ToolArgs>[] {
-  return [revealFacts(options), getVitals, getResults, getProgress, giveHint];
+  return [revealFacts(options), getVitals, getResults, getProgress, giveHint, placeHold, releaseHold];
 }

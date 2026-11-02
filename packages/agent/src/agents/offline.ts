@@ -30,7 +30,9 @@ import {
 } from "@clinicalcraft/core";
 import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from "../session/patient-pipeline.js";
 import { isZh, joinList, joinSentences, rt, type RuntimeKey } from "../session/i18n.js";
+import { sentence } from "../session/i18n-checklist.js";
 import { obtainedResultsText } from "../tools/npc.js";
+import { resultStatus } from "../tools/clinical-resolve.js";
 import { bedsideReadings, formatVitals, interventionLabel, investigationName, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
 
 /** What an offline responder may look at. */
@@ -64,11 +66,14 @@ export function nurseResultsLine(ctx: OfflineContext): string {
   const orders = orderStatus(c, ctx.state());
   if (orders.length === 0) return rt(L, "nurse.offline.noOrders");
   const label = (o: (typeof orders)[number]) => `${investigationName(c, o.order.investigationId, L)} (${phaseLabel(c, o.order.phase, L)})`;
-  const ready = orders.filter((o) => o.ready && !o.read).map(label);
-  const pending = orders.filter((o) => !o.ready).map(label);
+  // the clinician's own status for each (`resultStatus`): "no record" is never "back"
+  const ready = orders.filter((o) => resultStatus(c, o) === "ready").map(label);
+  const pending = orders.filter((o) => resultStatus(c, o) === "pending").map(label);
+  const none = orders.filter((o) => resultStatus(c, o) === "no-record").map(label);
   const parts: string[] = [];
   if (ready.length > 0) parts.push(rt(L, "nurse.offline.ready", { list: joinList(L, ready) }));
   if (pending.length > 0) parts.push(rt(L, "nurse.offline.pending", { list: joinList(L, pending) }));
+  if (none.length > 0) parts.push(rt(L, "nurse.offline.noRecord", { list: joinList(L, none) }));
   if (parts.length === 0) {
     const read = obtainedResultsText({ ...ctx, agent: "nurse" }, null);
     return read.ok ? (isZh(L) ? "已开的检查结果您都看过了。" : "You have reviewed every result that has come back.") : rt(L, "nurse.offline.noOrders");
@@ -298,6 +303,10 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
       return rt(L, "clinician.narrate.wait", { minutes: action.minutes });
     case "operate":
       return rt(L, "clinician.narrate.operate", { op: action.op.op });
+    case "hold":
+      return rt(L, "hold.placed", { name: interventionLabel(c, action.interventionId, L), by: action.placedBy, reason: sentence(action.reason) });
+    case "release-hold":
+      return rt(L, "hold.released", { name: interventionLabel(c, action.interventionId, L), by: action.releasedBy, reassessment: action.reassessment });
     case "finish":
       return rt(L, "clinician.narrate.finish");
     case "start":
@@ -343,6 +352,8 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "hint":
     case "flag":
     case "note":
+    case "hold":
+    case "release-hold":
       return { kind: "action", action, narration: null };
     default: {
       const never: never = action;
@@ -413,7 +424,12 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
     case "set-phase":
       return state.phase === a.phase;
     case "intervene":
-      return state.interventions.filter((r) => r.interventionId === a.interventionId).length >= (step.occurrence ?? 1);
+      // an out-of-order checklist attempt (recorded invalid) is not the step done
+      return state.interventions.filter((r) => r.interventionId === a.interventionId && !r.invalid).length >= (step.occurrence ?? 1);
+    case "hold":
+      return (state.holds ?? []).some((h) => h.interventionId === a.interventionId && h.placedBy === a.placedBy);
+    case "release-hold":
+      return (state.holds ?? []).some((h) => h.interventionId === a.interventionId && h.released?.by === a.releasedBy);
     case "hint":
       return state.hints >= (step.occurrence ?? 1);
     case "advance-time":

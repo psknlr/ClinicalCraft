@@ -226,6 +226,18 @@
         {
           "type": "object",
           "properties": {
+            "held": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "held"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "phase": {
               "$ref": "#/definitions/Id"
             }
@@ -1099,6 +1111,82 @@
           "required": [
             "type",
             "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "hold"
+            },
+            "interventionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "placedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "interventionId",
+            "placedBy",
+            "reason"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "release-hold"
+            },
+            "interventionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "releasedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "reassessment": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "interventionId",
+            "releasedBy",
+            "reassessment"
           ],
           "additionalProperties": false
         },

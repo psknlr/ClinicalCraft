@@ -191,6 +191,8 @@ export type Condition =
    * simulated minute keep their order): `{"inOrder": ["sign-in", "induction"]}`. False while one is missing.
    */
   | { inOrder: string[] }
+  /** An explicit hold stands on this intervention (placed and not yet released; see the `hold` action). */
+  | { held: string }
   /** Current case phase equals. */
   | { phase: string }
   /** Scenario flag set (by interventions, events or `flag` actions). */
@@ -221,6 +223,7 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ decidedFirstTry: IdSchema }).strict(),
     z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional(), valid: z.boolean().optional() }).strict(),
     z.object({ inOrder: z.array(IdSchema).min(2).max(8) }).strict(),
+    z.object({ held: IdSchema }).strict(),
     z.object({ phase: IdSchema }).strict(),
     z.object({ flag: IdSchema }).strict(),
     z.object({ objective: IdSchema }).strict(),

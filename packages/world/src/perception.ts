@@ -100,7 +100,7 @@ interface Row extends Belief {
 const SIDE_NORMAL: Record<DoorSpec["side"], { x: number; z: number }> = { n: { x: 0, z: -1 }, s: { x: 0, z: 1 }, e: { x: 1, z: 0 }, w: { x: -1, z: 0 } };
 
 /** Inspection result (the runtime's `inspect`). */
-export type Inspection = ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string }[] };
+export type Inspection = ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string; code?: string }[] };
 
 /** Room information (the runtime's `roomInfo`). */
 export interface RoomInfo {
@@ -474,8 +474,11 @@ export class Perception {
     const rules = this.d.rules;
     const operations = rules.spec(p.id).operations.map((op) => {
       const fail = rules.precheck(p.id, op, actor) ?? rules.spatial(p.id, op, actor);
-      const row: { op: string; name: string; available: boolean; reason?: string } = { op: op.id, name: operationName(op.id, L, op.name), available: !fail };
-      if (fail) row.reason = fail.message;
+      const row: { op: string; name: string; available: boolean; reason?: string; code?: string } = { op: op.id, name: operationName(op.id, L, op.name), available: !fail };
+      if (fail) {
+        row.reason = fail.message;
+        row.code = fail.code;
+      }
       return row;
     });
     const out: Inspection = { ...base, description: this.describe(p), operations };

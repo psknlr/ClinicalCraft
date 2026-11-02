@@ -233,11 +233,17 @@ variant. `identify` accepts any of them, so naming never reveals the anatomy. A 
 fibrosis carries its `finding` once dissection there has begun.
 
 The agent tools are `observe_field` and `operate` (`packages/agent/src/tools/procedure.ts`). The built-in
-clinician has them in a case with an operation (they are hidden elsewhere). `observe_field` also lists the
+clinician has them in a case with an operation (they are hidden elsewhere); so do external agents — the MCP
+server (`start_case` says the case has an operation; `clip`, `divide`, `coagulate` and `bailout` need the
+two-step confirmation), MCP attach mode and the live-world bridge (PROTOCOL §11, §13). `observe_field` also lists the
 safety views by criterion id, and asks how many for a counting criterion. In embodied mode both are held to
 the spatial policy (EMBODIED §6): `operate` only with the patient on an operating table and the operator at
 the table, checked again after an approval wait and right before the commit; `observe_field` near the
-patient. They
+patient. Before the operation is under way `observe_field` says so and names what still opens it (the
+opening phase's `enterWhen`, requirement by requirement with the next action); an `operate` refusal carries
+the engine's own reason, and a `phase-locked` one the same prerequisites; `intervene` asked for the operation
+itself ("laparoscopic cholecystectomy") points here instead of answering "no match" (PROTOCOL §3.1). Counts
+and device operations (an insufflator, a count board) never change the field: only `operate` does. They
 give agents this view and nothing else. Clip, divide, coagulate and bail-out are high-risk tool
 calls: the approval gate asks in supervised modes. The web's **laparoscopic surgery window** (`packages/web/src/ui/panels/surgery.ts`, view
 `laparoscopy/index.ts`) is offered from the HUD while the session is in one of the procedure's phases.

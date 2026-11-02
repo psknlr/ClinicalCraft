@@ -11,6 +11,7 @@
  * candidate names and perform no action.
  */
 import {
+  activeHolds,
   availableDecisions,
   currentObjective,
   historyAvailable,
@@ -30,6 +31,7 @@ import {
 } from "@clinicalcraft/core";
 import type { PlanItem } from "../protocol.js";
 import { isZh, joinList, rt, type RuntimeKey } from "../session/i18n.js";
+import { sentence } from "../session/i18n-checklist.js";
 import { nonVerbalNarration, nonVerbalReason } from "../session/nonverbal.js";
 import { availableInPhase, clockTime, formatResult, interventionLabel, investigationName, learnerVitals, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit, vitalsText } from "./format.js";
 import {
@@ -39,6 +41,7 @@ import {
   orderStatusText,
   readPhase,
   rejectedOutput,
+  rejectionText,
   resolveFinding,
   resolveIntervention,
   resolveInvestigation,
@@ -46,6 +49,9 @@ import {
   unresolvedOutput,
   type ToolArgs,
 } from "./clinical-resolve.js";
+import { asksForOperation, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay } from "./requirements.js";
+import { resolveConsultStaff } from "./consult-target.js";
+import type { StaffVoice } from "../session/staff-voice.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
 
 export {
@@ -181,8 +187,10 @@ export function listOptionsText(ctx: Pick<ToolContext, "caseDef" | "locale" | "s
       break;
     case "interventions":
       for (const i of c.interventions) {
-        const given = s.interventions.filter((r) => r.interventionId === i.id).length;
-        lines.push(`- [${i.id}] ${interventionLabel(c, i.id, L)}${given > 0 ? ` ×${given}` : ""}`);
+        // a checklist step's out-of-order attempts are recorded as invalid: they are not "given"
+        const given = s.interventions.filter((r) => r.interventionId === i.id && !r.invalid).length;
+        const held = activeHolds(s, i.id).length > 0;
+        lines.push(`- [${i.id}] ${interventionLabel(c, i.id, L)}${given > 0 ? ` ×${given}` : ""}${held ? " ⏸" : ""}`);
         data.push({ id: i.id, name: t(i.name, L), dose: i.dose ? t(i.dose, L) : null, kind: i.kind, risk: i.risk, given });
       }
       break;
@@ -454,6 +462,20 @@ const checkVitals: ToolDefinition<ToolArgs> = {
   },
 };
 
+/** `intervene` asked for the operation itself: point at the operative field and name what still opens it. */
+function operationRedirect(ctx: ToolContext, query: string): ToolOutput {
+  const c = ctx.caseDef;
+  const s = ctx.state();
+  const L = ctx.locale;
+  const lines = [rt(L, "intervene.isOperation", { query })];
+  if (operationUnderWay(c, s)) lines.push(rt(L, "intervene.opUnderWay"));
+  else {
+    const open = operationPrerequisiteLines(c, s, L, visiblePhases(c, s));
+    if (open.length > 0) lines.push(rt(L, "intervene.opLocked"), ...open);
+  }
+  return { ok: false, output: lines.join("\n"), data: { unresolved: "operation", query, underWay: operationUnderWay(c, s) } };
+}
+
 function interventionRisk(args: ToolArgs, ctx: ToolContext) {
   const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
   return r.kind === "id" ? (ctx.caseDef.interventions.find((i) => i.id === r.id)?.risk ?? "low") : "none";
@@ -462,8 +484,9 @@ function interventionRisk(args: ToolArgs, ctx: ToolContext) {
 const intervene: ToolDefinition<ToolArgs> = {
   name: "intervene",
   description:
-    "Give a treatment or perform a procedure (drug, oxygen, fluids, airway, disposition…), by id or free text. " +
-    "High-risk interventions always need the learner's confirmation. Returns the patient's response; contraindicated choices cause harm.",
+    "Give a treatment or perform a bedside procedure (drug, oxygen, fluids, airway, a checklist step, disposition…), by id or free text. " +
+    "High-risk interventions always need the learner's confirmation. Returns the patient's response; contraindicated choices cause harm. " +
+    "An operation is not an intervention: when the case has one, it is done with observe_field and operate at the table.",
   inputSchema: {
     type: "object",
     properties: {
@@ -496,20 +519,36 @@ const intervene: ToolDefinition<ToolArgs> = {
     const c = ctx.caseDef;
     const L = ctx.locale;
     const r = resolveIntervention(c, args, L);
-    if (r.kind !== "id") return unresolvedOutput(L, r, (id) => interventionLabel(c, id, L), ["intervention_id", "query"]);
+    if (r.kind !== "id") {
+      // the operation itself asked for as an intervention: the way in is the operative field, with what it still needs
+      const asked = strArg(args, "query") || strArg(args, "intervention_id");
+      if (asksForOperation(c, ctx.state(), asked)) return operationRedirect(ctx, asked);
+      return unresolvedOutput(L, r, (id) => interventionLabel(c, id, L), ["intervention_id", "query"]);
+    }
     const unavailable = capabilityRefusal(ctx, interventionLabel(c, r.id, L), c.interventions.find((i) => i.id === r.id)?.requires ?? []);
     if (unavailable) return unavailable;
     const result = dispatch(ctx, { type: "intervene", interventionId: r.id });
+    if (result.rejected?.code === "on-hold") {
+      const hold = activeHolds(ctx.state(), r.id)[0];
+      const message = hold ? rt(L, "intervene.onHold", { name: interventionLabel(c, r.id, L), by: hold.placedBy, reason: sentence(hold.reason) }) : rejectionText(L, "on-hold");
+      return { ok: false, output: rt(L, "tool.rejected", { code: "on-hold", message }), data: { rejected: result.rejected, message, hold: hold ?? null } };
+    }
     // Name what the query matched ("give the pump a rest" → the IV insulin infusion), so a refusal is not opaque.
     if (result.rejected) return rejectedOutput(L, result, result.rejected.code === "max-doses" ? rt(L, "tool.rejected.item", { name: t(c.interventions.find((i) => i.id === r.id)!.name, L) }) : undefined);
     const iv = c.interventions.find((i) => i.id === r.id)!;
     const applied = eventsOf(result, "intervention.applied")[0];
     const appropriateness = applied?.appropriateness ?? "neutral";
+    const harm = iv.harm ? t(iv.harm, L) : "";
+    if (applied?.invalid) {
+      // a checklist step out of order: recorded as invalid, nothing applied — never reported as done
+      const output = [rt(L, "intervene.invalid", { harm }).trim(), ...objectiveRequirementLines(c, ctx.state(), L, visiblePhases(c, ctx.state()))].join("\n");
+      return { ok: false, output, data: { interventionId: iv.id, appropriateness, kind: iv.kind, invalid: true, message: rt(L, "intervene.invalid", { harm }).trim() } };
+    }
     const dose = iv.dose ? t(iv.dose, L) : "";
     const name = t(iv.name, L);
     const lines = [rt(L, "tool.intervened", { name, dose: dose && !name.includes(dose) ? ` (${dose})` : "" })];
     if (iv.response) lines.push(rt(L, "tool.intervention.response", { text: t(iv.response, L) }));
-    if (appropriateness === "contraindicated" && iv.harm) lines.push(rt(L, "tool.intervention.harm", { text: t(iv.harm, L) }));
+    if (appropriateness === "contraindicated" && harm) lines.push(rt(L, "tool.intervention.harm", { text: harm }));
     return { ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind } };
   },
 };
@@ -521,32 +560,52 @@ const intervene: ToolDefinition<ToolArgs> = {
 /** Roles reachable through `consult`. */
 export const CONSULT_ROLES = ["nurse", "radiologist", "pathologist", "attending"] as const;
 
+/** The recipient of a consult call, resolved before anything is said (shown in the approval and the result). */
+function consultRecipient(args: ToolArgs, ctx: Pick<ToolContext, "caseDef" | "facility" | "locale">): { ok: true; agent: string; voice: StaffVoice | null; label: string } | { ok: false; output: string } {
+  const L = ctx.locale;
+  const staff = strArg(args, "staff");
+  if (staff) {
+    const r = resolveConsultStaff(ctx.caseDef, ctx.facility, staff, L);
+    if (!r.ok) return { ok: false, output: rt(L, "tool.consult.unknownStaff", { staff, candidates: r.candidates.join(isZh(L) ? "；" : "; ") || "—" }) };
+    return { ok: true, ...r.target };
+  }
+  const role = strArg(args, "role");
+  if (!(CONSULT_ROLES as readonly string[]).includes(role)) return { ok: false, output: rt(L, "tool.consult.unknownRole", { role }) };
+  return { ok: true, agent: role, voice: null, label: rt(L, `speaker.${role}` as RuntimeKey) };
+}
+
 const consult: ToolDefinition<ToolArgs> = {
   name: "consult",
   description:
     "Ask a team member a question: the nurse (handover, vitals, logistics), radiologist or pathologist (interpretation of results you already obtained), " +
-    "or the attending (Socratic teaching; asking for help costs a hint).",
+    "or the attending (Socratic teaching; asking for help costs a hint). To ask one named colleague — the anaesthetist, the receptionist, Nurse Aisyah — " +
+    "pass staff (their name, title or staff id) instead of role; the result names who answered.",
   inputSchema: {
     type: "object",
-    properties: { role: { type: "string", enum: [...CONSULT_ROLES] }, question: { type: "string", minLength: 1, maxLength: 2000 } },
-    required: ["role", "question"],
+    properties: {
+      role: { type: "string", enum: [...CONSULT_ROLES] },
+      staff: { type: "string", minLength: 1, maxLength: 120, description: "A named colleague: name, title (\"anaesthetist\") or staff id." },
+      question: { type: "string", minLength: 1, maxLength: 2000 },
+    },
+    required: ["question"],
     additionalProperties: false,
   },
   readOnly: true,
   sideEffect: "conversation",
   scope: "workup",
   risk: () => "none",
+  // the recipient is named before the call runs (approvals, tool_call events)
   summarize: (args, ctx) => {
-    const role = strArg(args, "role");
-    const key = `speaker.${role}` as RuntimeKey;
-    return rt(ctx.locale, "sum.consult", { role: (CONSULT_ROLES as readonly string[]).includes(role) ? rt(ctx.locale, key) : role, question: strArg(args, "question") });
+    const to = consultRecipient(args, ctx);
+    return rt(ctx.locale, "sum.consult", { role: to.ok ? to.label : strArg(args, "staff") || strArg(args, "role"), question: strArg(args, "question") });
   },
-  specifier: (args) => strArg(args, "role"),
+  specifier: (args) => strArg(args, "staff") || strArg(args, "role"),
   async run(args, ctx) {
-    const role = strArg(args, "role");
-    if (!(CONSULT_ROLES as readonly string[]).includes(role)) return { ok: false, output: rt(ctx.locale, "tool.consult.unknownRole", { role }) };
-    const reply = await ctx.ask(role, strArg(args, "question"), ctx.signal);
-    return { ok: true, output: reply.text, data: { role, text: reply.text } };
+    const to = consultRecipient(args, ctx);
+    if (!to.ok) return { ok: false, output: to.output };
+    const reply = await ctx.ask(to.agent, strArg(args, "question"), ctx.signal, to.voice);
+    const output = `${rt(ctx.locale, "tool.consult.to", { to: to.label })}\n${reply.text}`;
+    return { ok: true, output, data: { role: to.agent, staffId: to.voice?.staffId ?? null, recipient: to.label, text: reply.text } };
   },
 };
 
@@ -801,6 +860,9 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
       else lines.push(`  - [${d.decision.id}] ${t(d.decision.prompt, L)} (${rt(L, d.decided ? "label.decided" : "label.unlocked")})`);
     }
   }
+  // what the current objective still needs (named, with the next action), standing holds, and the operation
+  const visible = visiblePhases(c, s);
+  lines.push(...objectiveRequirementLines(c, s, L, visible), ...holdLines(c, s, L), ...operationLines(c, s, L, visible));
   const objective = currentObjective(c, s);
   return {
     text: lines.join("\n"),
@@ -813,6 +875,7 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
       currentObjective: objective?.id ?? null,
       orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
       decisions: decisions.map((d) => ({ id: d.decision.id, unlocked: d.unlocked, decided: d.decided })),
+      holds: (s.holds ?? []).filter((h) => !h.released),
       hints: s.hints,
     },
   };
@@ -820,7 +883,8 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
 
 const caseStatus: ToolDefinition<ToolArgs> = {
   name: "case_status",
-  description: "Review the case status: objectives, pending and ready orders, which decisions are open, phase and clock.",
+  description:
+    "Review the case status: objectives, what the current objective still needs (each requirement met or open, with the next available action), holds, the operation's status, pending and ready orders, which decisions are open, phase and clock.",
   inputSchema: EMPTY_SCHEMA,
   readOnly: true,
   sideEffect: "none",
