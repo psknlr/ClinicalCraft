@@ -15,6 +15,7 @@ import { Intro } from "../ui/intro.js";
 import { PanelHost, type PanelBuilder } from "../ui/panel.js";
 import { atlasPanel } from "../ui/panels/atlas.js";
 import { surgeryPanel } from "../ui/panels/surgery.js";
+import { teamPanel } from "../ui/panels/team.js";
 import { autopilotPanel } from "../ui/panels/autopilot.js";
 import { elevatorPanel, type ElevatorArgs } from "../ui/panels/elevator.js";
 import { boardPanel, comparePanel } from "../ui/panels/board.js";
@@ -370,6 +371,8 @@ export class ClinicalCraftApp implements App {
         return atlasPanel(this);
       case "surgery":
         return surgeryPanel(this);
+      case "team":
+        return teamPanel(this);
       case "autopilot":
         return autopilotPanel(this);
       case "elevator":
@@ -787,6 +790,8 @@ export class ClinicalCraftApp implements App {
         staffFor: (agent) => staffForAgent(agent, { facility, slotId: slot?.id ?? null, world: session.world() })?.staffId ?? null,
         agentDriving: () => this.game?.embodied?.agentDriving() ?? false,
         embodied: () => this.game?.embodied ?? null,
+        // the team keeps working while its own panel is open (the learner watching), not while paused or asked to approve
+        teamClock: () => !!this.game?.entered && !this.approval.isOpen && (!this.panels.isOpen || this.panels.current === "team"),
       });
       const embodied =
         session.embodiment === "embodied"

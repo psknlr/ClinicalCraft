@@ -15,7 +15,9 @@ export const PROCEDURE_EN = {
   "field.organs": "In view: {organs}.",
   "field.tube": "  {handle}: {appears}{state}",
   "field.region": "  {name}: dissection {dissection}, exposure {exposure}{finding}",
-  "field.names": "Names you can give a duct or vessel (identify … as): {names}.",
+  "field.names": "Names you can give a duct or vessel (identify … as): {names}; or uncertain.",
+  "field.view": "Safety view {view} ({name}) — claims: {criteria}.",
+  "field.view.count": "{id} ({name}: how many structures do you see? give a number)",
   "field.retraction": "  {structure} held by port {port}, pulled {direction} ({force})",
   "field.findings": "Findings: {findings}.",
   "field.specimen": "Specimen: {specimen}{bailouts}. Safety pauses documented: {pauses}.",
@@ -24,6 +26,11 @@ export const PROCEDURE_EN = {
   "op.done": "Done: {op}.",
   "op.signals": "You notice: {signals}.",
   "op.invalid": "That operative step is not well formed: {message}",
+  // the care team (docs/TEAM.md)
+  "team.none": "This case has no care team that works on its own (it needs a case team and in-world mode).",
+  "team.off": "The team is switched off for this session.",
+  "team.notNow": "The team works on its own only during: {phases}.",
+  "team.invalid": "That team request is not well formed: {reason}",
 } as const;
 
 export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
@@ -37,7 +44,9 @@ export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
   "field.organs": "术野可见：{organs}。",
   "field.tube": "  {handle}：{appears}{state}",
   "field.region": "  {name}：解剖{dissection}，显露{exposure}{finding}",
-  "field.names": "可用于命名管道或血管的名称（identify … as）：{names}。",
+  "field.names": "可用于命名管道或血管的名称（identify … as）：{names}；或 uncertain（不确定）。",
+  "field.view": "安全视野 {view}（{name}）——声明项：{criteria}。",
+  "field.view.count": "{id}（{name}：你看到几根结构？请填数字）",
   "field.retraction": "  {structure} 由 {port} 孔牵拉，方向 {direction}（{force}）",
   "field.findings": "所见：{findings}。",
   "field.specimen": "标本：{specimen}{bailouts}。已记录安全暂停：{pauses} 次。",
@@ -46,6 +55,10 @@ export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
   "op.done": "已完成：{op}。",
   "op.signals": "你注意到：{signals}。",
   "op.invalid": "手术步骤格式不正确：{message}",
+  "team.none": "本病例没有能自主协作的手术团队（需要病例团队设置和实景模式）。",
+  "team.off": "本次会话的团队自主协作已关闭。",
+  "team.notNow": "团队只在以下阶段自主协作：{phases}。",
+  "team.invalid": "团队请求格式不正确：{reason}",
 };
 
 /** Labels of the field view's enumerations (dissection, exposure, findings, signals…), per language. */

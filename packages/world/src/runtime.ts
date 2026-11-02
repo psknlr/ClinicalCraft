@@ -188,6 +188,7 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
 
     setObstacle: (o, present) => actions.setObstacle(o, present),
     setAvailability: (id, available) => actions.setAvailability(id, available),
+    placeItem: (id, beside, opts) => actions.placeItem(id, beside, opts),
     setDoor: (id, state) => actions.setDoor(id, state),
 
     subscribe: (listener) => store.subscribe(listener),

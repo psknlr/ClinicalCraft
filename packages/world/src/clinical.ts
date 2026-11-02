@@ -200,6 +200,11 @@ export function selectClinical(opts: {
   const unknown = (id: string): SelectionResult => ({ ok: false, code: "INVALID_REQUEST", message: worldMessage("INVALID_REQUEST", L, { reason: worldMessage("pre.unknownItem", L, { item: id }) }) });
   const provides = (i: Item) => i.requires.length > 0 && i.requires.every((r) => caps.includes(r));
 
+  if (opts.effect.select === "item" && opts.effect.item) {
+    // a fixed case item (a WHO board's `sign_in` → the case's `sign-in`)
+    const item = all.find((i) => i.id === opts.effect.item);
+    return item ? done(item) : unknown(opts.effect.item);
+  }
   if (opts.effect.select === "monitoring" && kind === "intervention") {
     const monitoring = c.interventions.filter((i) => i.kind === "monitoring").map((i) => i.id);
     const id = wanted ?? monitoringIntervention(c, caps);

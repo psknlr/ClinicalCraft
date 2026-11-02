@@ -10,6 +10,7 @@ import { runExec } from "./exec.js";
 import { assetsInspect } from "./assets.js";
 import { benchDemo, benchGrounding, benchList, benchRun } from "./bench.js";
 import { benchOperative } from "./bench-operative.js";
+import { benchTeam } from "./bench-team.js";
 import { facilitiesCompile, facilitiesList, facilitiesValidate } from "./facilities.js";
 import { EXEC_FLAGS, JSON_FLAG, RESUME_FLAGS, SESSION_FLAGS } from "./flags.js";
 import { runImportV4 } from "./import-v4.js";
@@ -163,6 +164,20 @@ export const BENCH: CommandSpec = {
         "clinicalcraft bench operative --suite case126-v1 --agent reference --seeds 1-5",
         "clinicalcraft bench operative --suite case126-v1 --split test --agent llm --provider anthropic --model claude-opus-5-5 --live --max-tokens 3000000 --seeds 1-3",
       ],
+    },
+    {
+      name: "team",
+      summary: {
+        en: "Team benchmark: a case's care team on its own in each team scenario (handoffs, counts) → team-report.json + .md",
+        zh: "团队协作基准测试：病例的手术团队在每个团队情境中自主协作（器械传递、清点）→ team-report.json 与 .md",
+      },
+      flags: [
+        { name: "case", type: "list", valueName: "<ids>", description: { en: "Only these cases (default: every case with team scenarios)", zh: "只运行这些病例（默认：所有带团队情境的病例）" } },
+        { name: "scenario", type: "list", valueName: "<ids>", description: { en: "Only these team scenarios", zh: "只运行这些团队情境" } },
+        { name: "out", type: "string", valueName: "<dir>", description: { en: "Report directory (default team-results)", zh: "报告目录（默认 team-results）" } },
+      ],
+      run: benchTeam,
+      examples: ["clinicalcraft bench team", "clinicalcraft bench team --case cmcr-1654623 --scenario swab-on-floor,swab-in-wound"],
     },
   ],
 };

@@ -347,6 +347,7 @@ export class EmbodiedSession {
       cancel: (actorId) => w().cancel(actorId),
       setObstacle: (o, present) => self.control(() => w().setObstacle(o, present)),
       setAvailability: (id, available) => self.control(() => w().setAvailability(id, available)),
+      placeItem: (item, beside, opts) => self.control(() => w().placeItem(item, beside, opts)),
       setDoor: (id, state) => self.control(() => w().setDoor(id, state)),
       subscribe: (listener) => {
         self.listeners.add(listener);

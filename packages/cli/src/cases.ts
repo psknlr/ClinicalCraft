@@ -17,6 +17,7 @@ import {
   parseCase,
   supersededIn,
   t,
+  teamFacilityIssues,
   verifyCase,
   type CaseDefinition,
   type Issue,
@@ -384,11 +385,15 @@ export function facilityIssues(c: CaseDefinition, content: Pick<LoadedContent, "
   if (!f) return [];
   const listed = (f.catalogs ?? []).map((id) => content.catalogs.get(id)?.def).filter((x): x is NonNullable<typeof x> => !!x);
   const catalogs = listed.length > 0 ? listed : [...content.catalogs.values()].map((e) => e.def);
-  return caseCapabilityGaps(c, f, catalogs).map((g) => ({
-    path: "facility",
-    message: `facility "${f.id}" lacks ${g.missing.join(", ")} for ${g.kind} "${g.id}" (needed by ${g.neededBy.join(", ")})${g.blocking ? ": the case cannot be completed there" : ""}`,
-    severity: g.blocking ? ("error" as const) : ("warning" as const),
-  }));
+  return [
+    ...caseCapabilityGaps(c, f, catalogs).map((g) => ({
+      path: "facility",
+      message: `facility "${f.id}" lacks ${g.missing.join(", ")} for ${g.kind} "${g.id}" (needed by ${g.neededBy.join(", ")})${g.blocking ? ": the case cannot be completed there" : ""}`,
+      severity: g.blocking ? ("error" as const) : ("warning" as const),
+    })),
+    // the care team in that facility (docs/TEAM.md §6)
+    ...teamFacilityIssues(c, f, catalogs),
+  ];
 }
 
 /**

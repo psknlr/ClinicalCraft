@@ -394,7 +394,8 @@ export function capabilityRefusal(ctx: Pick<ToolContext, "facility" | "catalogs"
 export function maxDosesRefusal(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, iv: Intervention): ToolOutput | null {
   const s = ctx.state();
   if (iv.maxDoses == null || s.finished) return null;
-  if (s.interventions.filter((r) => r.interventionId === iv.id).length < iv.maxDoses) return null;
+  // a checklist step's out-of-order attempts are logged but use none of its doses (the reducer counts the same way)
+  if (s.interventions.filter((r) => r.interventionId === iv.id && !r.invalid).length < iv.maxDoses) return null;
   const L = ctx.locale;
   const message = `${rejectionText(L, "max-doses")} ${rt(L, "tool.rejected.item", { name: t(iv.name, L) })}`;
   return { ok: false, output: rt(L, "tool.rejected", { code: "max-doses", message }), data: { rejected: { code: "max-doses", message: `"${iv.id}" may be given at most ${iv.maxDoses} time(s)` }, message } };

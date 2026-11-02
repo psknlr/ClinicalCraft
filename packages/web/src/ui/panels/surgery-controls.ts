@@ -5,7 +5,7 @@
  * offer, never a verdict: what it refuses comes back as its rejection message.
  */
 import type { CaseDefinition, DomainEvent, FieldView, InstrumentId, ProcedureDefinition, ProcedureOp } from "@clinicalcraft/core";
-import { ENERGY_INSTRUMENTS, INSTRUMENT_OPS, t, vocabularyStructures } from "@clinicalcraft/core";
+import { ENERGY_INSTRUMENTS, INSTRUMENT_OPS, t, UNCERTAIN, vocabularyStructures } from "@clinicalcraft/core";
 import { joinList, trMaybe } from "../../i18n/index.js";
 
 /** The surgery window is offered: the case has an operation and the session is in one of its phases. */
@@ -88,13 +88,22 @@ export function imageOp(port: string, instrument: InstrumentId | null): Procedur
 
 /**
  * The safety pause the operator records for a view: one claim per criterion — ticked true, unticked
- * false (the operator's judgement; the engine records it next to what the field shows). Null for an
- * unknown view.
+ * false; for a counting criterion the number of structures the operator sees entering (the operator's
+ * judgement; the engine records it next to what the field shows). Null for an unknown view.
  */
-export function safetyPauseOp(def: ProcedureDefinition, viewId: string, ticked: ReadonlySet<string>): ProcedureOp | null {
+export function safetyPauseOp(def: ProcedureDefinition, viewId: string, ticked: ReadonlySet<string>, counts: Readonly<Record<string, number>> = {}): ProcedureOp | null {
   const view = def.views.find((v) => v.id === viewId);
   if (!view) return null;
-  return { op: "safety-pause", view: view.id, claims: Object.fromEntries(view.criteria.map((c) => [c.id, ticked.has(c.id)])) };
+  return {
+    op: "safety-pause",
+    view: view.id,
+    claims: Object.fromEntries(view.criteria.map((c) => [c.id, isCounting(c.test) ? (counts[c.id] ?? 0) : ticked.has(c.id)])),
+  };
+}
+
+/** A criterion the operator answers with a number (how many structures they see entering). */
+export function isCounting(test: ProcedureDefinition["views"][number]["criteria"][number]["test"]): boolean {
+  return "onlyEntering" in test && test.count != null;
 }
 
 /**
@@ -102,12 +111,14 @@ export function safetyPauseOp(def: ProcedureDefinition, viewId: string, ticked: 
  * (the same list whatever the patient's anatomy), by its localised name, sorted by that name — never in
  * the anatomy's order, which is the order handles are given out in.
  */
-export function identifyChoices(def: ProcedureDefinition, locale: string): { id: string; name: string }[] {
+export function identifyChoices(def: ProcedureDefinition, locale: string, uncertainLabel?: string): { id: string; name: string }[] {
   const tubular = new Set(["duct", "artery", "vein"]);
-  return vocabularyStructures(def)
+  const named = vocabularyStructures(def)
     .filter((s) => tubular.has(s.kind))
     .map((s) => ({ id: s.id, name: t(s.name, locale) }))
     .sort((a, b) => a.name.localeCompare(b.name, locale) || a.id.localeCompare(b.id));
+  // last: seen, but cannot be named (still unidentified for a clip or a division)
+  return uncertainLabel ? [...named, { id: UNCERTAIN, name: uncertainLabel }] : named;
 }
 
 /** The port to work with: `current` while it is in the plan, else the first working port holding an instrument, else the first port. */

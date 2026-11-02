@@ -487,6 +487,9 @@ export class EventRenderer {
         this.line(this.p.dim(`  ${mark} ${truncate(text, 160)}${msg.result.errorCode ? ` [${msg.result.errorCode}]` : ""}`));
         return;
       }
+      case "team_event":
+        // the care team's speech is heard as each member's own line (agent_message); receipts and tasks stay in the record
+        return;
       default: {
         const never: never = msg;
         void never;

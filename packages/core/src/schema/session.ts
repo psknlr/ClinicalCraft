@@ -21,7 +21,13 @@ const base = { by: ActorSchema.optional() };
 
 export const ClinicalActionSchema = z.discriminatedUnion("type", [
   /** `variant`: the procedure's anatomical variant for this session (docs/PROCEDURE.md §9; hidden from the operator). */
-  z.object({ type: z.literal("start"), variant: IdSchema.optional(), ...base }).strict(),
+  z.object({
+    type: z.literal("start"),
+    variant: IdSchema.optional(),
+    /** `team`: the team scenario for this session (docs/TEAM.md; hidden from the team's policies). */
+    team: IdSchema.optional(),
+    ...base,
+  }).strict(),
   /** Learner asked a history question (button, free text, or attributed by the patient agent). */
   z.object({ type: z.literal("ask"), itemId: IdSchema, via: z.enum(["button", "free-text", "agent"]).optional(), ...base }).strict(),
   z.object({ type: z.literal("examine"), findingId: IdSchema, ...base }).strict(),
@@ -73,6 +79,13 @@ export interface InterventionRecord {
   interventionId: string;
   at: number;
   appropriateness: "indicated" | "neutral" | "contraindicated";
+  /** `SessionState.seq` when it was committed (orders acts of the same minute; absent in sessions saved before). */
+  seq?: number;
+  /**
+   * A checklist step attempted out of order (`checklist: true`, contraindicated when attempted): recorded, but
+   * its effects and flags did not apply and it used none of `maxDoses`.
+   */
+  invalid?: true;
 }
 
 export interface SessionState {
@@ -115,6 +128,8 @@ export interface SessionState {
   procedure?: ProcedureState;
   /** The procedure's anatomical variant chosen at `start` (absent: the base definition). Hidden state. */
   variant?: string;
+  /** The team scenario chosen at `start` (docs/TEAM.md). Hidden state. */
+  teamScenario?: string;
   /** Monotonic count of accepted actions (for transcripts / ordering). */
   seq: number;
 }
@@ -133,7 +148,8 @@ export type DomainEvent =
   | { type: "result.read"; key: string; investigationId: string; phase: string; firstTime: boolean }
   | { type: "phase.changed"; from: string; to: string; automatic: boolean }
   | { type: "decision.answered"; decisionId: string; correct: boolean; firstTry: boolean; optionIds: string[] }
-  | { type: "intervention.applied"; interventionId: string; appropriateness: "indicated" | "neutral" | "contraindicated" }
+  /** `invalid`: a checklist step attempted out of order — recorded, nothing applied (see `Intervention.checklist`). */
+  | { type: "intervention.applied"; interventionId: string; appropriateness: "indicated" | "neutral" | "contraindicated"; invalid?: true }
   /**
    * A vital newly crossing an alarm limit on the bedside monitor. `unmeasurable`: the monitor has no
    * reading — `value` is the cardiac-arrest placeholder 0 (`VitalsSnapshot.unmeasurable`), never a measurement.

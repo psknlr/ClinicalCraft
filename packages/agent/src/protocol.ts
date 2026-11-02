@@ -8,6 +8,7 @@
  *
  * Tags are snake_case so the JSON wire format is stable across languages.
  */
+import type { ActionReceipt, TeamMessage, TeamTask } from "./session/team/types.js";
 import type {
   AssessmentReport,
   ClinicalAction,
@@ -105,6 +106,24 @@ export type Op =
    * Refused (`error`, code `not_embodied`) in a clinical-mode session.
    */
   | { type: "world_action"; request: WorldActionRequest }
+  /**
+   * The care team (docs/TEAM.md), in a case with a `team`: `step` (one round), `run` (until the team is idle, or
+   * `rounds`), `pause` (autonomy `step`: the team waits for `step`), `resume` (autonomy `auto`: the team acts after
+   * each of the learner's acts), `surgeon` (who answers as the surgeon: the learner, or the simulated surgeon of
+   * observer mode), `reply` (the learner, as the surgeon, answers a team message: a read-back, a confirmation, a
+   * decline), `need` (the learner says what they need: the team takes it from there). Answered by `team_event`s.
+   */
+  | {
+      type: "team";
+      action: "step" | "run" | "pause" | "resume" | "surgeon" | "reply" | "need";
+      rounds?: number;
+      surgeon?: "learner" | "simulated";
+      message?: string;
+      kind?: "readback" | "confirm" | "decline" | "report";
+      text?: string;
+      item?: string;
+      for?: string;
+    }
   /**
    * Embodied mode: a sensor pose update of a human-driven body (the browser avatar, ~10 Hz). Out-of-band: applied
    * at once, never queued behind a turn, never transcribed; bumps only that actor's own version (EMBODIED R4).
@@ -258,6 +277,8 @@ export type EventMsg =
   | { type: "world_event"; event: WorldEvent; version: number }
   /** Embodied mode: the outcome of a world action (any actor; world tools, `world_action` ops, skills, delegations, the embodied autopilot). */
   | { type: "world_action_result"; result: WorldActionResult }
+  /** The care team (docs/TEAM.md): a message said, an act's receipt, a task changed, or the scheduler's round and autonomy. */
+  | { type: "team_event"; event: TeamEvent }
   | { type: "command_output"; name: string; text: string; data?: unknown }
   | { type: "config_changed"; patch: RuntimeConfigPatch }
   | { type: "compacted"; agent: AgentRole; beforeTokens: number; afterTokens: number }
@@ -275,3 +296,10 @@ export interface AgentEvent {
 }
 
 export type EventType = EventMsg["type"];
+
+/** What the care team did (docs/TEAM.md §3). */
+export type TeamEvent =
+  | { kind: "message"; message: TeamMessage }
+  | { kind: "receipt"; receipt: ActionReceipt }
+  | { kind: "task"; task: TeamTask }
+  | { kind: "status"; round: number; autonomy: "auto" | "step" | "off"; surgeon: "learner" | "simulated" };

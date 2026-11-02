@@ -18,6 +18,7 @@ import { MONITORED_VITALS, OBSERVED_VITALS } from "./monitor.js";
 import { compactText, tokenize } from "./text.js";
 import { supersededIn } from "./twins.js";
 import { checkProcedureDefinition, checkProcedureRef } from "./procedure/check.js";
+import { checkTeamDefinition } from "./team.js";
 import type { Issue } from "./types.js";
 
 type PathPart = string | number;
@@ -207,6 +208,7 @@ function checkAllConditions(c: CaseDefinition, ids: Ids): Issue[] {
   issues.push(...checkCondition(c, ids, c.patient.nonVerbalWhen, ["patient", "nonVerbalWhen"]));
   c.safetyGates.forEach((g, i) => issues.push(...checkCondition(c, ids, g.when, ["safetyGates", i, "when"])));
   c.orderMatching.warnings.forEach((w, i) => issues.push(...checkCondition(c, ids, w.unless, ["orderMatching", "warnings", i, "unless"])));
+  issues.push(...checkCondition(c, ids, c.team?.count?.when, ["team", "count", "when"]));
   return issues;
 }
 
@@ -656,5 +658,6 @@ export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
     ...checkSolution(c, ids),
     ...checkReachability(c, ids),
     ...checkProcedureDefinition(c),
+    ...checkTeamDefinition(c),
   ];
 }

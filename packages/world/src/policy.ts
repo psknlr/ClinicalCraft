@@ -14,6 +14,8 @@
  * | `order_test` / `read_result` of a record review (`performedAt: "records"`: an existing report retrieved from the chart) | `any-of` `at-provider` `records` (a records terminal) · `at-patient` (`why: "notes"`: the notes at the bedside) — never a transport, a sample or a device, whatever `requires` says |
  * | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) |
  * | `intervene` other kinds | its capabilities (empty `requires`: the kind's defaults, `KIND_DEFAULT_CAPABILITIES`) beyond the personal kit at the bedside (`bedside-provider`; nothing: `at-patient`); delivered capabilities (`DELIVERED_CAPABILITIES`) only need an in-service provider in the facility; `iv-access` is patient state — the case's IV-access procedure done first (`clinical`), unless the patient has a line in situ — except for that procedure itself, which needs the cannulation kit at the bedside |
+ * | `operate` (a step of the case's operation) | `all-of` `patient-at-provider` `surgery` (the patient on an operating table) · `at-patient` 1.5 m — checked again after an approval wait and right before the engine commits, like every gated act |
+ * | `observe_field` (the laparoscopic screen) | `near-patient` 3 m + line of sight (in the theatre, at the table) |
  * | `consult`, `delegate_task`, cognitive tools | anywhere |
  * | unresolved items (a free-text query the tool will resolve or refuse) | `ask` / `examine`: as above without capabilities; order/read/intervene: anywhere |
  *
@@ -62,6 +64,9 @@ import type { Placed, StateView, WorldLocator } from "./locate.js";
 import { MIN_RANGE } from "./nav/backend.js";
 import { areaGap, rankedPatientProviders, type TargetDeps } from "./patient.js";
 import type { Reachability } from "./reach.js";
+
+/** The capability of an operating table: where an operation is done (`operate`). */
+export const SURGERY_CAPABILITY = "surgery";
 
 /** Intervention kinds done by phone or pager, from anywhere. */
 export const REMOTE_INTERVENTION_KINDS: readonly string[] = ["consult", "disposition"];
@@ -171,6 +176,11 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
         const base: SpatialRequirement = caps.length ? { kind: "bedside-provider", capabilities: bedside, patientRange: POLICY_RANGES.contact, ...(delivered.length ? { delivered } : {}) } : atPatient;
         return prerequisite ? { kind: "all-of", options: [prerequisite, base] } : base;
       }
+      case "operate":
+        // the operator at the table and the patient on it: an operation is never done from another room or floor
+        return { kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: [SURGERY_CAPABILITY], beds: true }, { kind: "at-patient", range: POLICY_RANGES.contact }] };
+      case "observe":
+        return { kind: "near-patient", range: POLICY_RANGES.talk, lineOfSight: true };
       default:
         return ANYWHERE;
     }
@@ -333,7 +343,7 @@ export class SpatialChecker {
       case "clinical":
         return this.clinicalOutcome(r);
       case "patient-at-provider":
-        return this.patientAtProviderOutcome(actor, r.capabilities);
+        return this.patientAtProviderOutcome(actor, r.capabilities, !!r.beds);
       case "any-of": {
         const failures: Failure[] = [];
         for (const option of r.options) {
@@ -537,14 +547,14 @@ export class SpatialChecker {
    * a station — terminals only where no device provides them (`patientProviders`). Away: go to the patient,
    * then take them to the nearest one (`transport_patient`).
    */
-  private patientAtProviderOutcome(actor: ActorState, caps: readonly string[]): Outcome {
+  private patientAtProviderOutcome(actor: ActorState, caps: readonly string[], beds = false): Outcome {
     const loc = this.d.locator;
     const L = this.d.locale;
     const patient = loc.patient();
     const deps = this.targetDeps();
     if (!patient || !deps) return this.noPatient();
     const capsText = this.caps(caps);
-    const all = rankedPatientProviders(deps, caps);
+    const all = rankedPatientProviders(deps, caps, beds);
     if (!all.length) return { ok: false, failures: [{ reason: "no-provider-in-facility", details: { capabilities: [...caps] }, candidates: [], message: () => worldMessage("spatial.no-provider-in-facility", L, { caps: capsText }) }] };
     const free = all.filter((id) => !this.busyBy(actor, id));
     // a study done ON the patient needs them positioned on the device (brought there: on its table, by the C-arm) —

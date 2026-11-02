@@ -87,7 +87,7 @@ export function handleOf(s: ProcedureState, structureId: string): string | undef
 }
 
 /** The structures that truly enter `organ` (or one of its parts). */
-function entering(def: ProcedureDefinition, organ: string): Structure[] {
+export function entering(def: ProcedureDefinition, organ: string): Structure[] {
   const parts = new Set([organ, ...def.anatomy.filter((x) => x.parent === organ).map((x) => x.id)]);
   return def.anatomy.filter((x) => x.enters != null && parts.has(x.enters));
 }

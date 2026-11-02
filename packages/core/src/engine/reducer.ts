@@ -130,6 +130,10 @@ function onStart(ctx: Ctx, a: Action<"start">): Outcome {
     if (!ctx.c.procedure?.variants.some((v) => v.id === a.variant)) return rejected("unknown-id", `this case has no procedure variant "${a.variant}"`);
     ctx.s.variant = a.variant;
   }
+  if (a.team != null) {
+    if (!ctx.c.team?.scenarios.some((x) => x.id === a.team)) return rejected("unknown-id", `this case has no team scenario "${a.team}"`);
+    ctx.s.teamScenario = a.team;
+  }
   ctx.s.started = true;
   ctx.events.push({ type: "session.started" });
   return accepted();
@@ -251,7 +255,8 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
   const { c, s, before } = ctx;
   const intervention = c.interventions.find((i) => i.id === a.interventionId);
   if (!intervention) return rejected("unknown-id", `unknown intervention "${a.interventionId}"`);
-  const given = s.interventions.filter((r) => r.interventionId === intervention.id).length;
+  // a checklist step's out-of-order attempts are logged but use none of its doses
+  const given = s.interventions.filter((r) => r.interventionId === intervention.id && !r.invalid).length;
   if (intervention.maxDoses != null && given >= intervention.maxDoses) {
     return rejected("max-doses", `"${intervention.id}" may be given at most ${intervention.maxDoses} time(s)`);
   }
@@ -261,8 +266,10 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
       : intervention.indicatedWhen && evaluate(c, before, intervention.indicatedWhen)
         ? "indicated"
         : "neutral";
-  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness });
-  ctx.events.push({ type: "intervention.applied", interventionId: intervention.id, appropriateness });
+  const invalid = intervention.checklist === true && appropriateness === "contraindicated";
+  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, ...(invalid ? { invalid: true as const } : {}) });
+  ctx.events.push({ type: "intervention.applied", interventionId: intervention.id, appropriateness, ...(invalid ? { invalid: true as const } : {}) });
+  if (invalid) return accepted(actionCost(c, "intervene"));
   for (const flag of intervention.setFlags) {
     if (s.flags.includes(flag)) continue;
     s.flags.push(flag);

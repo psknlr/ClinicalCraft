@@ -250,7 +250,12 @@ export interface GameWorldLinkOptions {
   agentDriving?: () => boolean;
   /** The embodied controller (null: clinical mode). */
   embodied?: () => EmbodiedLink | null;
+  /** The care team may take its steps now (the encounter running and not paused; docs/TEAM.md). */
+  teamClock?: () => boolean;
 }
+
+/** Real milliseconds between the care team's steps while it acts on its own (autonomy `auto`). */
+export const TEAM_STEP_MS = 2000;
 
 export class GameWorldLink {
   readonly stations: Stations;
@@ -417,10 +422,32 @@ export class GameWorldLink {
     }
   }
 
+  private teamWait = 0;
+  private teamBusy = false;
+
+  /**
+   * The care team's clock (docs/TEAM.md §2): in autonomy `auto`, one `team step` op every `TEAM_STEP_MS` while the
+   * encounter runs — the same op a headless run uses, queued with the learner's own, so a learner who only watches
+   * still sees the team work. Never while an agent drives a body or a step is still running.
+   */
+  private teamTick(dt: number): void {
+    const session = this.o.app.session;
+    if (this.teamBusy || !(this.o.teamClock?.() ?? this.o.playing()) || this.o.agentDriving?.()) return;
+    const team = this.o.caseDef.team;
+    if (!team || !team.phases.includes(session.state.phase) || session.state.finished) return;
+    if (session.team()?.autonomy !== "auto") return;
+    this.teamWait += dt;
+    if (this.teamWait < TEAM_STEP_MS) return;
+    this.teamWait = 0;
+    this.teamBusy = true;
+    void session.run({ type: "team", action: "step" }).finally(() => (this.teamBusy = false));
+  }
+
   private onTick(): void {
     const now = performance.now();
     const dt = now - this.lastTick;
     this.lastTick = now;
+    this.teamTick(dt);
     if (!this.o.playing()) return;
     // an agent drives a body: the world charges that time (travel, procedures) — real time would count it twice
     if (this.o.agentDriving?.()) return;

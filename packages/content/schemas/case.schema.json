@@ -227,10 +227,30 @@
             "minCount": {
               "type": "integer",
               "minimum": 1
+            },
+            "valid": {
+              "type": "boolean"
             }
           },
           "required": [
             "intervened"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "inOrder": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 2,
+              "maxItems": 8
+            }
+          },
+          "required": [
+            "inOrder"
           ],
           "additionalProperties": false
         },
@@ -748,6 +768,9 @@
               "const": "start"
             },
             "variant": {
+              "$ref": "#/definitions/Id"
+            },
+            "team": {
               "$ref": "#/definitions/Id"
             },
             "by": {
@@ -1357,7 +1380,16 @@
                     "claims": {
                       "type": "object",
                       "additionalProperties": {
-                        "type": "boolean"
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9
+                          }
+                        ]
                       },
                       "propertyNames": {
                         "minLength": 1,
@@ -3029,6 +3061,9 @@
                 "type": "integer",
                 "exclusiveMinimum": 0
               },
+              "checklist": {
+                "type": "boolean"
+              },
               "indicatedWhen": {
                 "$ref": "#/definitions/Condition"
               },
@@ -4191,6 +4226,11 @@
                               "properties": {
                                 "onlyEntering": {
                                   "$ref": "#/definitions/Id"
+                                },
+                                "count": {
+                                  "type": "integer",
+                                  "minimum": 1,
+                                  "maximum": 9
                                 }
                               },
                               "required": [
@@ -4650,6 +4690,253 @@
             "portPlans",
             "target",
             "instruments"
+          ],
+          "additionalProperties": false
+        },
+        "team": {
+          "type": "object",
+          "properties": {
+            "room": {
+              "$ref": "#/definitions/Id"
+            },
+            "phases": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 1
+            },
+            "members": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "staff": {
+                    "type": "string",
+                    "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                  },
+                  "duties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "circulate",
+                        "instruments",
+                        "count",
+                        "surgeon",
+                        "anaesthesia"
+                      ]
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "staff",
+                  "duties"
+                ],
+                "additionalProperties": false
+              },
+              "minItems": 2
+            },
+            "waitRounds": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 3
+            },
+            "count": {
+              "type": "object",
+              "properties": {
+                "item": {
+                  "$ref": "#/definitions/Id"
+                },
+                "name": {
+                  "$ref": "#/definitions/LocalizedText"
+                },
+                "when": {
+                  "$ref": "#/definitions/Condition"
+                },
+                "searchPlaces": {
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "minLength": 1
+                  },
+                  "minItems": 1,
+                  "maxItems": 12
+                }
+              },
+              "required": [
+                "item",
+                "when",
+                "searchPlaces"
+              ],
+              "additionalProperties": false
+            },
+            "scenarios": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "summary": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "provenance": {
+                    "type": "string",
+                    "enum": [
+                      "published-case",
+                      "imaging",
+                      "reference",
+                      "guideline",
+                      "authored",
+                      "synthetic"
+                    ]
+                  },
+                  "needs": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "id": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "item": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "name": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "for": {
+                          "type": "string",
+                          "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                        },
+                        "noticedBy": {
+                          "type": "string",
+                          "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                        },
+                        "text": {
+                          "$ref": "#/definitions/LocalizedText"
+                        }
+                      },
+                      "required": [
+                        "id",
+                        "item",
+                        "for"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "default": []
+                  },
+                  "absent": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                    },
+                    "default": []
+                  },
+                  "relief": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "staff": {
+                          "type": "string",
+                          "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                        },
+                        "duties": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "circulate",
+                              "instruments",
+                              "count",
+                              "surgeon",
+                              "anaesthesia"
+                            ]
+                          },
+                          "minItems": 1
+                        }
+                      },
+                      "required": [
+                        "staff",
+                        "duties"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "default": []
+                  },
+                  "expect": {
+                    "type": "object",
+                    "properties": {
+                      "delivered": {
+                        "type": "boolean"
+                      },
+                      "count": {
+                        "type": "string",
+                        "enum": [
+                          "correct",
+                          "reconciled",
+                          "unresolved"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  },
+                  "items": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "placement": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "beside": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "concealed": {
+                          "type": "boolean"
+                        },
+                        "inside": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "placement",
+                        "beside"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "default": []
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "summary",
+                  "provenance"
+                ],
+                "additionalProperties": false
+              },
+              "default": []
+            },
+            "note": {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          },
+          "required": [
+            "room",
+            "phases",
+            "members"
           ],
           "additionalProperties": false
         },

@@ -208,8 +208,16 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     such place the patient stays where they are).
 * **Condition DSL** — `schema/common.ts`: `all/any/not/always`, `asked`,
   `examined`, `ordered`, `read`, `resultReady`, `decided`, `attempted`,
-  `decidedFirstTry`, `intervened`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`. `asked: id` also holds when a history item that
+  `decidedFirstTry`, `intervened`, `inOrder`, `phase`, `flag`, `objective`, `vital`,
+  `elapsed`, `hints`, `procedure`. `intervened` takes `valid`: `true` counts only
+  attempts that were not contraindicated when made, `false` only those that
+  were. `inOrder: [id…]` holds when those interventions were first validly
+  given in that order, compared by committed action sequence
+  (`InterventionRecord.seq`), so two acts in the same simulated minute keep
+  their order. An intervention with `checklist: true` (a WHO checklist step)
+  records an out-of-order attempt (`invalid: true`): it is logged and shown,
+  but its effects and flags do not apply and it uses none of `maxDoses`, so a
+  later attempt in order still counts. `asked: id` also holds when a history item that
   supersedes `id` (phase twins, transitively) was asked. `decidedFirstTry: decisionId` is true iff the first
   recorded (i.e. accepted) attempt at that decision was correct — once the
   first answer is wrong it stays false, so it belongs in rubric items rather
@@ -713,6 +721,12 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   `CaseDefinition` + `SessionState` (via core `reduce`), NPC conversations,
   the approval gate, hooks, transcript sink. Processes submissions serially.
   Deterministic `clinical_action` ops work with no LLM at all.
+* **The care team** (`packages/agent/src/session/team/`, docs/TEAM.md) — in in-world mode, a case's room staff work
+  on their own: a `TeamScheduler` per session wakes members by rounds; pure role policies (`policy.ts`) decide from
+  each member's own view (what their body perceives, what was said to them, their tasks); their acts are world
+  actions on a nurse's tool path. Driven by the `team` op (the browser's team clock and headless runs alike), saved as
+  a `TeamCheckpoint`, scored by `bench team`. Concealed items and `search` live in the world
+  (`packages/world/src/conceal.ts`).
 * **Agents** — markdown + frontmatter definitions (Claude Code subagents):
   `patient` and `companion` (portrayed like standardised patients),
   `nurse` (ISBAR / SBAR), `radiologist`, `pathologist`, `attending`

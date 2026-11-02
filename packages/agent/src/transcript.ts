@@ -12,6 +12,8 @@ import type { WorldStateSnapshot } from "@clinicalcraft/world";
 import type { AgentRole, ApprovalMode, Op, PlanItem, PracticeScope } from "./protocol.js";
 import type { ChatMessage, ChatPart } from "./providers/types.js";
 import { canonicalLocale, type Embodiment } from "./settings/schema.js";
+import { validTeamCheckpoint } from "./session/team/checkpoint.js";
+import type { TeamCheckpoint } from "./session/team/types.js";
 import type { DialogueEntry, TranscriptItem, TranscriptSink } from "./session/types.js";
 
 /** In-memory transcript sink. */
@@ -59,6 +61,8 @@ export interface ReplayedTranscript {
   dialogue: DialogueEntry[];
   /** Embodied mode: the last `world` snapshot (resume restores the physical state from it), or null. */
   world: WorldStateSnapshot | null;
+  /** The last `team` checkpoint (docs/TEAM.md; resume restores the care team from it), or null. */
+  team: TeamCheckpoint | null;
 }
 
 const PART_TYPES = new Set(["text", "image", "tool_call", "tool_result", "provider_raw"]);
@@ -104,7 +108,7 @@ export function orderTranscriptItems(items: readonly TranscriptItem[]): Transcri
 export function replayTranscript(items: readonly TranscriptItem[]): ReplayedTranscript {
   const sorted = orderTranscriptItems(items);
 
-  const result: ReplayedTranscript = { sessionMeta: null, actions: [], messages: {}, summaries: {}, ops: [], lastOrdinal: -1, dialogue: [], world: null };
+  const result: ReplayedTranscript = { sessionMeta: null, actions: [], messages: {}, summaries: {}, ops: [], lastOrdinal: -1, dialogue: [], world: null, team: null };
   for (const item of sorted) {
     if (typeof item.ordinal === "number" && item.ordinal > result.lastOrdinal) result.lastOrdinal = item.ordinal;
     switch (item.type) {
@@ -117,6 +121,11 @@ export function replayTranscript(items: readonly TranscriptItem[]): ReplayedTran
       case "world": {
         const snapshot = item.payload?.snapshot;
         if (snapshot && typeof snapshot === "object" && snapshot.format === "clinicalcraft-world@1") result.world = snapshot;
+        break;
+      }
+      case "team": {
+        const checkpoint = validTeamCheckpoint(item.payload?.checkpoint);
+        if (checkpoint) result.team = checkpoint;
         break;
       }
       case "action":

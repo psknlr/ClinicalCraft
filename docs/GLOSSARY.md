@@ -140,6 +140,16 @@ developer documents use.
 | equipment operation | operate the equipment (device operations) | 设备操作 | world action / 世界动作: `world_action`, `interact_object` |
 | refusal | "Not here: …" with the reason and the way | “此处无法进行：……”及原因与去路 | spatial refusal: `SPATIAL_REQUIREMENT_UNMET`, `hint.goal` |
 | Go there | Go there | 前往 | a `navigate` to `hint.goal` |
+| care team | care team (Team button, the team panel) | 手术团队（“团队”按钮、团队面板） | `case.team`, `TeamScheduler`, docs/TEAM.md | the staff of a room working on their own; learner text never says "agent" or "scheduler" for them |
+| circulating nurse / scrub nurse | circulating nurse; scrub nurse | 巡回护士；洗手护士 | duties `circulate`, `instruments`, `count` | named by the facility ("Nurse Aisyah (circulating)" / 阿伊莎护士（巡回）) |
+| surgeon | surgeon (the learner in the team's words) | 术者 | member `surgeon`, `PRIMARY_ACTOR` | 术者, not 主刀 or 外科医生, in team speech |
+| read-back (check-back) | read back; "A needle holder to the surgeon — confirm?" | 复述确认；“持针器递给术者——确认吗？” | message kinds `request` → `readback` → `confirm` (TeamSTEPPS check-back) | |
+| escalate | tell the surgeon why ("… hasn't arrived — …") | 上报（向术者说明原因） | message kind `escalate` | always with the reason |
+| relief colleague | relief colleague (called by phone) | 顶班同事（电话联系） | scenario `relief` | |
+| count; hold on closure | count (closing count); "please hold closure and check the wound"; recount | 清点（关闭前清点）；“请暂停关闭，检查术野”；复点 | `team.count`, `about.hold`, `about.recount`, `CountLedger` | an unresolved count ends with an X-ray before the patient leaves |
+| search | Search within reach; Check the wound | 在身边仔细查找；检查术野 | world operation `search` (`targetId`: the patient), concealed items (EMBODIED §8.6) | |
+| learner mode / observer mode (team) | I am the surgeon; Observe | 我来当术者；观察 | `team surgeon learner \| simulated` (observer mode = the simulated surgeon) | |
+| team pace | Team pace: Auto / Step / Next step | 团队节奏：自动 / 单步 / 下一步 | autonomy `auto` / `step` (`team resume` / `pause` / `step`) | |
 
 ### Assessment and debrief
 

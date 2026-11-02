@@ -347,9 +347,17 @@ instruments, safety views, bail-outs — the contract is [PROCEDURE.md](PROCEDUR
   `scoredWhen` `{"procedure": {"variant": id}}`.
 * **Names stay hidden.** Give every duct and vessel an `appearsAs` description (what it looks like); the
   operator and agents see handles, not names (`cases validate` warns otherwise).
-* **Gate the operation with the checklist.** Open the operative phase on the Time Out (`enterWhen:
-  {"intervened": "time-out"}`) and gate induction on the Sign In; physiology events may read the field
-  (`{"procedure": {"insufflated": true}}`) — label simulated values as simulated in their message.
+* **Gate the operation with the checklist.** Mark the WHO steps `checklist: true` and open the operative
+  phase only on a valid Time Out (`enterWhen: {"intervened": "time-out", "valid": true}`): an early
+  attempt is logged as invalid, leaves the operation locked and uses none of the step's doses, so a later
+  attempt in order opens it. Make induction contraindicated before the Sign In, score the order by
+  committed sequence (`{"inOrder": ["sign-in", "induction"]}`) and show a reversed order in the verdict with
+  a safety gate on `{"intervened": "induction", "valid": false}`. Open recovery only on a valid Sign Out.
+  Physiology events may read the field (`{"procedure": {"insufflated": true}}`); label simulated values as
+  simulated in their message.
+* **Count what the operator sees.** Give the "only the structures entering" criterion a usual `count` (2):
+  the operator then reports at the safety pause how many structures they see entering, and only the true
+  number is credited (an anatomical variant with a third structure needs the report "three").
 * **Score the operation in the rubric**: the critical view documented and true (`{"procedure": {"documented":
   "cvs", "valid": true}}`), correct identification, no irreversible step on unconfirmed anatomy (an
   avoided-harm item with `scoredWhen`), and complication management items `scoredWhen` the complication
@@ -359,6 +367,34 @@ instruments, safety views, bail-outs — the contract is [PROCEDURE.md](PROCEDUR
   complications are `complication` gates. Every debrief states the verdict.
 * The reference `solution` performs the operation with `operate` steps; handles are assigned in the order
   structures come into view (`cases verify` replays them).
+
+### 6.2 The care team (`team`)
+
+A theatre case can give its room a care team that works on its own in in-world mode (contract:
+[TEAM.md](TEAM.md)):
+- the room;
+- the phases in which the team acts;
+- the members and their duties (`circulate`, `instruments`, `count`, `surgeon`);
+- optionally, the count it keeps item by item (`count`: the counted handheld type, when it falls due, and the places
+  the circulating nurse searches).
+
+* **Members are the room's own staff** (`teamFacilityIssues`: they work in `team.room`); the surgeon is `surgeon` (the
+  learner). Somebody must circulate.
+* **Team scenarios set up conditions, never steps.** A scenario can:
+  - post a need (an item for a member, with what the team calls it aloud);
+  - put a member on a break (`absent`), with a relief colleague from another room (`relief`);
+  - move an item beside another placement (in the room, or elsewhere in the hospital), or conceal it (`concealed`:
+    where it lies; `inside` + `beside: "patient"`: in the wound).
+
+  The summary is facilitator text and is never shown to the team. Mark scenarios `provenance: "authored"`: they are
+  teaching material, not the case report.
+* **Search places are the same for every scenario** (the room's usual places: the Mayo stand, the back table…). Never
+  list a place because a scenario hides something there; that would point the team to it.
+* **Give each scenario an `expect`** (`delivered: true | false`, `count: "correct" | "reconciled" | "unresolved"`) and
+  keep one control with nothing set up: `clinicalcraft bench team` scores every scenario against it (all must pass),
+  and the control measures false holds.
+* The counted items are placed one by one in the room (a facility's placements); the baseline is every one in the room
+  before incision.
 
 ## 7. Learning design
 

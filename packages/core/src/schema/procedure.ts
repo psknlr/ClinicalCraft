@@ -222,8 +222,13 @@ export const InstrumentSchema = z
 /** A safety criterion, evaluated on the field (never on what the operator claims). */
 export const CriterionTestSchema = z.union([
   z.object({ cleared: IdSchema, atLeast: z.number().min(0).max(1) }).strict(),
-  /** Exactly the structures that truly enter `organ` are isolated, and nothing else appears to enter it. */
-  z.object({ onlyEntering: IdSchema }).strict(),
+  /**
+   * Exactly the structures that truly enter `organ` are isolated, and nothing else appears to enter it. With
+   * `count` (the usual number, 2 for the gallbladder), the operator reports at the safety pause how many structures
+   * they see entering (a number claim; `true` means `count`): a report is right only when it is the true number —
+   * so in anatomy with a third structure, "two and only two" is not credited and "three" is.
+   */
+  z.object({ onlyEntering: IdSchema, count: z.number().int().min(1).max(9).optional() }).strict(),
   z.object({ exposure: IdSchema, atLeast: z.number().min(0).max(1) }).strict(),
 ]);
 export type CriterionTest = z.infer<typeof CriterionTestSchema>;
@@ -340,7 +345,7 @@ export const ProcedureOpSchema = z.discriminatedUnion("op", [
    * Safety pause before an irreversible step: the operator states, per criterion of `view`, whether it
    * holds. The engine records the claims with what the field really shows.
    */
-  z.object({ op: z.literal("safety-pause"), view: IdSchema, claims: z.record(IdSchema, z.boolean()) }).strict(),
+  z.object({ op: z.literal("safety-pause"), view: IdSchema, claims: z.record(IdSchema, z.union([z.boolean(), z.number().int().min(0).max(9)])) }).strict(),
   z.object({ op: z.literal("clip"), port: IdSchema, handle: HandleSchema, count: z.number().int().min(1).max(3).default(1) }).strict(),
   z.object({ op: z.literal("divide"), port: IdSchema, handle: HandleSchema }).strict(),
   z.object({ op: z.literal("coagulate"), port: IdSchema, handle: HandleSchema }).strict(),
@@ -414,7 +419,10 @@ export interface Injury {
 export interface SafetyPause {
   at: number;
   view: string;
-  claims: Record<string, boolean>;
+  /** Per criterion: holds (true/false), or for a counting criterion how many structures the operator sees entering. */
+  claims: Record<string, boolean | number>;
+  /** Counting criteria: how many structures truly enter the organ (hidden from the operator). */
+  entering?: Record<string, number>;
   /** What the field really showed for each criterion at the pause (hidden from the operator). */
   truth: Record<string, boolean>;
   /** Every criterion truly met. */

@@ -30,7 +30,7 @@ import type { ToolContext, ToolDefinition, ToolOutput, VitalsView } from "./type
 import { hintLines } from "./world-format.js";
 
 /** Clinical tools held to the spatial policy (EMBODIED §6). */
-export const SPATIALLY_GATED_TOOLS: readonly string[] = ["ask_patient", "examine", "check_vitals", "order_test", "read_result", "intervene"];
+export const SPATIALLY_GATED_TOOLS: readonly string[] = ["ask_patient", "examine", "check_vitals", "order_test", "read_result", "intervene", "operate", "observe_field"];
 
 /** Stable codes of spatial refusals. */
 export const SPATIAL_CODES = ["SPATIAL_REQUIREMENT_UNMET", "SPATIAL_PRECONDITION_CHANGED"] as const;
@@ -64,6 +64,10 @@ export function clinicalIntent(tool: string, args: Record<string, unknown>, ctx:
     }
     case "consult":
       return { tool, kind: "consult", agent: strArg(args, "role") };
+    case "operate":
+      return ctx.caseDef.procedure ? { tool, kind: "operate" } : null;
+    case "observe_field":
+      return ctx.caseDef.procedure ? { tool, kind: "observe" } : null;
     default:
       return null;
   }
@@ -82,6 +86,8 @@ export function actionIntent(action: ClinicalAction): ClinicalIntent | null {
       return { tool: "read_result", kind: "read", investigationId: action.investigationId, itemId: action.investigationId };
     case "intervene":
       return { tool: "intervene", kind: "intervene", interventionId: action.interventionId, itemId: action.interventionId };
+    case "operate":
+      return { tool: "operate", kind: "operate" };
     default:
       return null;
   }

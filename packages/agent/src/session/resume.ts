@@ -36,6 +36,7 @@ export function sessionSnapshot(k: SessionKernel): SessionSnapshot {
     ...(k.recorder ? { nextOrdinal: k.recorder.nextOrdinal } : {}),
     dialogue: k.conversations.dialogue.map((d) => ({ ...d })),
     ...(k.embodied ? { embodiment: "embodied" as const, world: k.embodied.persistentSnapshot() } : {}),
+    ...((cp) => (cp ? { team: cp } : {}))(k.team.checkpoint()),
   };
 }
 

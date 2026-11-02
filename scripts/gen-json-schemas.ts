@@ -99,7 +99,7 @@ const targets: Target[] = [
     title: "ClinicalCraft equipment catalog (clinicalcraft/equipment-catalog@1)",
     description: "Materials (procedural pixel textures) and equipment types (voxel parts, footprint, capabilities, interaction, embodiment: portable, reach, interaction points, behaviour, model).",
     schema: EquipmentCatalogSchema,
-    definitions: { ...common, Material: MaterialSchema, VoxelPart: VoxelPartSchema, EquipmentType: EquipmentTypeSchema, WorldPredicate: WorldPredicateSchema },
+    definitions: { ...common, Material: MaterialSchema, VoxelPart: VoxelPartSchema, EquipmentType: EquipmentTypeSchema, WorldPredicate: WorldPredicateSchema, Condition: ConditionSchema },
   },
   {
     file: "room-template.schema.json",

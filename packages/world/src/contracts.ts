@@ -309,6 +309,12 @@ export interface EntityRuntimeState {
   door?: { open: boolean; locked: boolean };
   /** Scenario-controlled availability (`out-of-service` devices). */
   available?: boolean;
+  /**
+   * Out of everyone's sight until found (`conceal.ts`): `true` — where it lies (a swab dropped under the Mayo stand),
+   * found by searching within reach; an entity id — inside that (a swab in the wound: the patient), found only by
+   * searching it.
+   */
+  concealed?: true | EntityId;
   /** The patient (`patient:<slot>`): where the body is once it moved (EMBODIED §8, patient transport). */
   patient?: PatientPlaceState;
 }
@@ -450,6 +456,8 @@ export type WorldEvent = (
   | { id: string; type: "actor.discovered"; actorId: ActorId; entities: EntityId[] }
   | { id: string; type: "entity.state"; entityId: EntityId; from: string | null; to: string | null; operation: string; actorId: ActorId }
   | { id: string; type: "entity.moved"; entityId: EntityId; to: Vec3 & { level: string }; actorId: ActorId }
+  /** An item concealed by a scenario (`actorId` "scenario"), or revealed by someone's search (`concealed: false`). */
+  | { id: string; type: "entity.concealed"; entityId: EntityId; concealed: boolean; actorId: ActorId }
   | { id: string; type: "item.held"; entityId: EntityId; actorId: ActorId; held: boolean }
   | { id: string; type: "door.changed"; entityId: EntityId; open: boolean; locked: boolean; actorId: ActorId | null }
   | { id: string; type: "reservation.changed"; entityId: EntityId; reservedBy: ActorId | null }
@@ -721,14 +729,16 @@ export type SpatialRequirement =
    * at a fixed device — the CT scanner, the C-arm — or a patient-performed test at a station): no walk of the
    * actor fixes it — the patient is brought there (`transport_patient`, review G8).
    */
-  | { kind: "patient-at-provider"; capabilities: string[] }
+  /** `beds`: a bed-kind placement providing the capabilities counts as well (an operating table). */
+  | { kind: "patient-at-provider"; capabilities: string[]; beds?: boolean }
   | { kind: "any-of"; options: SpatialRequirement[] }
   | { kind: "all-of"; options: SpatialRequirement[] };
 
 /** The clinical tool call being checked, in engine terms (no dependency on the agent package). */
 export interface ClinicalIntent {
   tool: string;
-  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "consult" | "delegate" | "cognitive";
+  /** `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic screen. */
+  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive";
   itemId?: string;
   findingId?: string;
   investigationId?: string;
@@ -826,6 +836,8 @@ export type WorldOperation =
   | "equip"
   | "move_to"
   | "wash_hands"
+  /** Search within reach of where the actor stands, or a thing within reach (`targetId`: the wound): what is concealed there is revealed. */
+  | "search"
   | "cancel"
   | (string & {});
 
@@ -1081,6 +1093,12 @@ export interface WorldRuntime {
   /* scenario / instructor controls (benchmark, tests) */
   setObstacle(obstacle: DynamicObstacle, present: boolean): void;
   setAvailability(id: EntityId, available: boolean): void;
+  /** Put a handheld item beside another placement at once (scenario initial conditions; nobody carries it). */
+  /**
+   * Put a handheld item beside a placement (or the patient) at once (a scenario's initial conditions); `concealed`:
+   * out of sight until searched for; `inside`: concealed in that placement (the wound), found only by searching it.
+   */
+  placeItem(id: EntityId, besideId: EntityId, opts?: { concealed?: boolean; inside?: boolean }): void;
   setDoor(id: EntityId, state: { open?: boolean; locked?: boolean }): void;
 
   /* events & persistence */

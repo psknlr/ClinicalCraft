@@ -4,6 +4,7 @@
 import "./styles/v4.css";
 import "./styles/app.css";
 import "./styles/surgery.css";
+import "./styles/team.css";
 import { ClinicalCraftApp } from "./app/app.js";
 
 function el<T extends HTMLElement>(id: string): T {

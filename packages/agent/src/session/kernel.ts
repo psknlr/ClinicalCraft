@@ -61,6 +61,8 @@ import { reactToDomainEvent, type EventReaction } from "./notifications.js";
 import { OpDispatcher } from "./op-dispatch.js";
 import { initialAffectIntensity, type PatientMemory } from "./patient-pipeline.js";
 import type { CreateSessionOptions } from "./session.js";
+import { SessionTeam } from "./team/session-team.js";
+import { validTeamCheckpoint } from "./team/checkpoint.js";
 import { ToolPath } from "./tool-path.js";
 
 /** A session-unique id: a random UUID where the platform has one. */
@@ -100,6 +102,8 @@ export class SessionKernel {
   readonly skillList: SkillDefinition[];
   /** Embodied mode (settings `embodiment: "embodied"`): the encounter's world and everything wired to it; null in clinical mode. */
   readonly embodied: EmbodiedSession | null;
+  /** The care team of a case with a `team` (embodied mode; docs/TEAM.md). */
+  readonly team: SessionTeam;
 
   settings: ResolvedSettings;
   /** The engine state (core `reduce`). */
@@ -169,6 +173,7 @@ export class SessionKernel {
     this.ops = new OpDispatcher(this);
     // Embodied mode (EMBODIED R3): the session builds the world; the clinical tools are spatially gated, world tools are added.
     this.embodied = this.settings.embodiment === "embodied" ? new EmbodiedSession(embodiedHost(this), opts.embodied ?? {}) : null;
+    this.team = new SessionTeam(this, validTeamCheckpoint(opts.embodied?.team));
     if (this.embodied) {
       for (const tool of this.embodied.gatedTools((name) => this.registry.get(name))) this.registry.replace(tool);
       for (const tool of this.embodied.worldTools()) this.registry.replace(tool);

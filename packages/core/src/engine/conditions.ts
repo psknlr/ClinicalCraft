@@ -98,8 +98,16 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("attempted" in cond) return s.attempts.some((a) => a.decisionId === cond.attempted);
   if ("decidedFirstTry" in cond) return s.attempts.find((a) => a.decisionId === cond.decidedFirstTry)?.correct === true;
   if ("intervened" in cond) {
-    const count = s.interventions.filter((r) => r.interventionId === cond.intervened).length;
+    const count = s.interventions.filter((r) => r.interventionId === cond.intervened && (cond.valid == null || (r.appropriateness !== "contraindicated") === cond.valid)).length;
     return count >= (cond.minCount ?? 1);
+  }
+  if ("inOrder" in cond) {
+    // the first valid attempt of each, by committed sequence (records saved before `seq` fall back to their index)
+    const firsts = cond.inOrder.map((id) => {
+      const i = s.interventions.findIndex((r) => r.interventionId === id && r.appropriateness !== "contraindicated");
+      return i < 0 ? null : (s.interventions[i]!.seq ?? i);
+    });
+    return firsts.every((x, i) => x !== null && (i === 0 || x > firsts[i - 1]!));
   }
   if ("phase" in cond) return s.phase === cond.phase;
   if ("flag" in cond) return s.flags.includes(cond.flag);
@@ -150,6 +158,7 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("decidedFirstTry" in node) out.push({ kind: "decision", id: node.decidedFirstTry, path: [...path, "decidedFirstTry"] });
     else if ("intervened" in node)
       out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), path: [...path, "intervened"] });
+    else if ("inOrder" in node) node.inOrder.forEach((id, i) => out.push({ kind: "intervention", id, path: [...path, "inOrder", i] }));
     else if ("phase" in node) out.push({ kind: "phase", id: node.phase, path: [...path, "phase"] });
     else if ("flag" in node) out.push({ kind: "flag", id: node.flag, path: [...path, "flag"] });
     else if ("objective" in node) out.push({ kind: "objective", id: node.objective, path: [...path, "objective"] });

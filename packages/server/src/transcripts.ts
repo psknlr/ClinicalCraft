@@ -18,10 +18,10 @@ import type { TranscriptItem } from "@clinicalcraft/agent";
 import { JsonlTranscript, sessionsDir, type Env } from "@clinicalcraft/agent/node";
 
 /**
- * Every `TranscriptItem` type a session records (embodied encounters add `world` snapshots). Exhaustive by type:
+ * Every `TranscriptItem` type a session records (embodied encounters add `world` snapshots, a care team `team` checkpoints). Exhaustive by type:
  * a new item type must be listed here, or an upload containing it would fail and the browser stop uploading.
  */
-const ITEM_TYPE_LIST: Record<TranscriptItem["type"], true> = { session_meta: true, op: true, action: true, message: true, event: true, compacted: true, dialogue: true, diagnostic: true, world: true };
+const ITEM_TYPE_LIST: Record<TranscriptItem["type"], true> = { session_meta: true, op: true, action: true, message: true, event: true, compacted: true, dialogue: true, diagnostic: true, world: true, team: true };
 const ITEM_TYPES: ReadonlySet<string> = new Set(Object.keys(ITEM_TYPE_LIST));
 const SESSION_ID = /^[A-Za-z0-9_-]{1,128}$/;
 /** Open writers kept per server (least recently used beyond this are dropped). */

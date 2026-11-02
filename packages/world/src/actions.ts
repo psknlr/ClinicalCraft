@@ -39,6 +39,7 @@
  * Failed actions change no version. Results are recorded whatever their
  * status: retry with a new action id after a transient failure.
  */
+import { search, isConcealed } from "./conceal.js";
 import type { CaseDefinition, FacilityDefinition } from "@clinicalcraft/core";
 import { permits } from "./authority.js";
 import type { DeviceRules } from "./behaviors.js";
@@ -363,6 +364,32 @@ export class ActionBus implements EffectsHost, TransportHost {
     this.emit({ type: "obstacle.changed", obstacle: { ...o, rect: { ...o.rect } }, present });
   }
 
+  /**
+   * Put a handheld item beside another placement at once (a scenario's initial conditions: the needle holder left
+   * on the anaesthesia trolley, a swab outside the room). Nobody carries it; whoever held it no longer does.
+   */
+  placeItem(idOrAlias: EntityId, besideIdOrAlias: EntityId, opts: { concealed?: boolean; inside?: boolean } = {}): void {
+    const id = this.resolve(idOrAlias);
+    const beside = this.resolve(besideIdOrAlias);
+    const e = id ? this.d.registry.entity(id) : null;
+    if (!id || !e || e.kind !== "equipment" || e.portable !== "handheld") throw new Error(`placeItem: no handheld item "${idOrAlias}"`);
+    const at = beside ? this.d.locator.place(beside) : null;
+    if (!beside || !at) throw new Error(`placeItem: unknown placement "${besideIdOrAlias}"`);
+    const holder = this.d.store.entity(id)?.heldBy;
+    if (holder) {
+      const a = this.d.store.actor(holder);
+      if (a) this.d.store.setHolding(holder, a.holding.filter((h) => h !== id));
+    }
+    const spot = { x: at.position.x + 0.25, y: at.position.y, z: at.position.z + 0.25, level: at.level };
+    const concealed = opts.inside ? beside : opts.concealed ? true : undefined;
+    this.d.store.patchEntity(id, { heldBy: undefined, position: spot, concealed });
+    // concealed first: nobody perceives where a hidden item went (`conceal.ts`)
+    if (concealed) this.emit({ type: "entity.concealed", entityId: id, concealed: true, actorId: "scenario" });
+    this.emit({ type: "entity.moved", entityId: id, to: { x: spot.x, y: spot.y, z: spot.z, level: spot.level }, actorId: "scenario" });
+    this.invalidate({ level: spot.level, minX: spot.x - 1, maxX: spot.x + 1, minZ: spot.z - 1, maxZ: spot.z + 1 });
+    this.d.mover?.placeEntity?.(id, concealed ? null : spot);
+  }
+
   setAvailability(idOrAlias: EntityId, available: boolean): void {
     const id = this.resolve(idOrAlias);
     if (!id || this.d.registry.entity(id)?.kind !== "equipment") throw new Error(`setAvailability: unknown equipment "${idOrAlias}"`);
@@ -435,12 +462,17 @@ export class ActionBus implements EffectsHost, TransportHost {
     let targetId: EntityId | undefined;
     if (request.targetId !== undefined) {
       const id = this.resolve(request.targetId);
-      if (!id) return failed("TARGET_NOT_FOUND", navMessage("TARGET_NOT_FOUND", L, { target: request.targetId }));
+      // a concealed item is not there for anyone until it is found (`conceal.ts`)
+      if (!id || isConcealed(this, id)) return failed("TARGET_NOT_FOUND", navMessage("TARGET_NOT_FOUND", L, { target: request.targetId }));
       targetId = id;
       const v = store.entityVersion(id);
       if (request.expectedTargetVersion !== undefined && request.expectedTargetVersion !== v) {
         return failed("STALE_STATE", worldMessage("STALE_STATE", L, { target: this.d.locator.name(id), expected: request.expectedTargetVersion, actual: v }));
       }
+    }
+    if (request.operation === "search") {
+      if (!permits(actor.role, "search")) return failed("NOT_AUTHORIZED", worldMessage("NOT_AUTHORIZED", L, { role: roleName(actor.role, L), target: targetId ? this.d.locator.name(targetId) : "—", operation: operationName("search", L) }));
+      return search(this, request, actor, targetId);
     }
     if (MOVE_OPS.includes(request.operation)) {
       if (!permits(actor.role, request.operation)) return failed("NOT_AUTHORIZED", worldMessage("NOT_AUTHORIZED", L, { role: roleName(actor.role, L), target: targetId ? this.d.locator.name(targetId) : "—", operation: operationName(request.operation, L) }));
@@ -487,6 +519,10 @@ export class ActionBus implements EffectsHost, TransportHost {
 
   private async navigate(request: WorldActionRequest, actor: ActorState, goal: NavGoal, signal: AbortSignal): Promise<Outcome> {
     const L = this.d.locale;
+    // a goal at a concealed item leads nowhere (it is not there for anyone until it is found)
+    const goalIds = (g: NavGoal): string[] => (g.kind === "any" ? g.goals.flatMap(goalIds) : "id" in g ? [g.id] : []);
+    const hidden = goalIds(goal).find((id) => { const r = this.resolve(id); return !!r && isConcealed(this, r); });
+    if (hidden) return failed("TARGET_NOT_FOUND", navMessage("TARGET_NOT_FOUND", L, { target: hidden }));
     const plan = this.d.backend.plan({ actorId: actor.id, from: actor.pose, goal, role: actor.role });
     if (!plan.ok) {
       const record = { actionId: request.actionId, actorId: actor.id, goal, ok: false, code: plan.code, length: 0, replans: 0, travelSeconds: 0, arrivalError: 0, path: [] };
