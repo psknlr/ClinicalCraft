@@ -130,6 +130,10 @@ function onStart(ctx: Ctx, a: Action<"start">): Outcome {
     if (!ctx.c.procedure?.variants.some((v) => v.id === a.variant)) return rejected("unknown-id", `this case has no procedure variant "${a.variant}"`);
     ctx.s.variant = a.variant;
   }
+  if (a.team != null) {
+    if (!ctx.c.team?.scenarios.some((x) => x.id === a.team)) return rejected("unknown-id", `this case has no team scenario "${a.team}"`);
+    ctx.s.teamScenario = a.team;
+  }
   ctx.s.started = true;
   ctx.events.push({ type: "session.started" });
   return accepted();

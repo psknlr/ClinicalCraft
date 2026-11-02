@@ -13,6 +13,7 @@ import {
   VitalsSchema,
 } from "./common.js";
 import { ProcedureDefinitionSchema } from "./procedure.js";
+import { CaseTeamSchema } from "./team.js";
 // session.ts depends only on common.ts, so importing it here creates no cycle
 import { ClinicalActionSchema } from "./session.js";
 
@@ -845,6 +846,8 @@ export const CaseSchema = z
     debrief: DebriefSchema,
     /** The operation the case's operative phases carry out (docs/PROCEDURE.md); `operate` acts on it. */
     procedure: ProcedureDefinitionSchema.optional(),
+    /** The care team of the case's room, who work on their own in its phases (docs/TEAM.md). */
+    team: CaseTeamSchema.optional(),
     /**
      * Safety gates (docs/PROCEDURE.md §8): outcomes no score compensates. A gate whose `when` holds at the end
      * sets the assessment's safety verdict; `safety-critical` gates also cap the reported percentage.

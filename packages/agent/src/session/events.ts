@@ -55,6 +55,7 @@ export function isDurableEvent(msg: EventMsg): boolean {
     case "error":
     case "shutdown_complete":
     case "world_action_result":
+    case "team_event":
       return true;
     default: {
       const never: never = msg;

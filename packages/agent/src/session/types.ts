@@ -8,6 +8,7 @@
  */
 import type { CaseDefinition, ClinicalAction, EquipmentCatalog, FacilityDefinition, ReduceResult, SessionState } from "@clinicalcraft/core";
 import type { CameraSensor, EpisodeTrace, Mover, Pose, WorldRuntime, WorldStateSnapshot } from "@clinicalcraft/world";
+import type { TeamCheckpoint } from "./team/types.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import type { CommandHookExecutor, HookHandler } from "../hooks/types.js";
 import type { AgentEvent, AgentRole, Op, PlanItem } from "../protocol.js";
@@ -60,7 +61,9 @@ export type TranscriptItem =
    * state comes from the replayed actions (device states that mirror clinical facts are derived from it).
    * The idempotency window is trimmed (`results` without paths and events).
    */
-  | { type: "world"; ordinal: number; ts: string; payload: { snapshot: WorldStateSnapshot } };
+  | { type: "world"; ordinal: number; ts: string; payload: { snapshot: WorldStateSnapshot } }
+  /** Embodied mode, a case with a `team` (docs/TEAM.md): the care team after a round that changed it — a resume restores the last one (`SessionOptions.embodied.team`). */
+  | { type: "team"; ordinal: number; ts: string; payload: { checkpoint: TeamCheckpoint } };
 
 export interface SessionOptions {
   caseDef: CaseDefinition;
@@ -98,9 +101,10 @@ export interface SessionOptions {
    * (facility, catalogs, the case bound to its slot with core `assignPatientSlot`); a facility is required
    * (`EmbodimentError`, code `embodiment_requires_facility`). `mover` animates bodies (browser; default instant),
    * `camera` gives camera frames (`get_camera_frame`, vision models only), `spawn` the learner's start pose,
-   * `snapshot` the physical state to restore (resume: the last transcript `world` item).
+   * `snapshot` the physical state to restore (resume: the last transcript `world` item), `team` the care team to
+   * restore with it (the last transcript `team` item; docs/TEAM.md).
    */
-  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose; snapshot?: WorldStateSnapshot };
+  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose; snapshot?: WorldStateSnapshot; team?: TeamCheckpoint };
   /**
    * Project skills (`.clinicalcraft/skills/*.json`, validated; embodied mode) — they extend the built-in skills,
    * registered as `project:<id>` (they never shadow a built-in; `execute_skill {skill_id: "<id>"}` finds them when
@@ -192,4 +196,6 @@ export interface SessionSnapshot {
   /** Embodied mode: the encounter's mode and its physical world (resume with `SessionOptions.embodied.snapshot`). */
   embodiment?: Embodiment;
   world?: WorldStateSnapshot;
+  /** A case with a care team (docs/TEAM.md): the team mid-task (resume with `SessionOptions.embodied.team`). */
+  team?: TeamCheckpoint;
 }

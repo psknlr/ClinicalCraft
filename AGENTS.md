@@ -7,12 +7,12 @@ This file is for contributors (Claude Code, Codex, Grok CLI, ZCode, humans).
 - `packages/core` — zod schemas + pure deterministic engine (also room templates, GLB inspection, bystander cues, the operative field of a case's `procedure`: docs/PROCEDURE.md). No I/O, no `Date.now()`/`Math.random()`.
 - `packages/world` — embodied world model (registry, collision, navigation, visibility, spatial policy, perception, device behaviours, action bus, patient transport, traces). Same purity rules as core: no DOM, no three.js, no `node:*`.
 - `packages/content` — cases, facilities, room templates, equipment catalogs, benchmark scenarios (`bench/<suite>/`), JSON Schemas (data only; loaded by `loadContent` in `@clinicalcraft/agent/node`).
-- `packages/agent` — runtime: Op/Event protocol, ClinicalSession (`src/session/`), providers, tools (clinical, world, scope of practice), approvals, hooks, skills, embodied mode, world-bridge client (`src/bridge/`). `src/node/` is the only place allowed to import `node:*`.
+- `packages/agent` — runtime: Op/Event protocol, ClinicalSession (`src/session/`), providers, tools (clinical, world, scope of practice), approvals, hooks, skills, embodied mode, world-bridge client (`src/bridge/`), the care team (`src/session/team/`: scheduler + offline role policies, docs/TEAM.md). `src/node/` is the only place allowed to import `node:*`.
 - `packages/cli`, `packages/server`, `packages/mcp` — front-ends (protocol clients); `server` also routes the live-world bridge, `mcp --attach` uses it.
-- `packages/bench` — embodied agent benchmark (scenarios in `packages/content/bench`, `clinicalcraft bench`), the grounding benchmark and the operative benchmark (`bench operative`: suites in `<content dir>/operative/<suite>/`, anatomy variants hidden; docs/BENCHMARK_OPERATIVE.md).
+- `packages/bench` — embodied agent benchmark (scenarios in `packages/content/bench`, `clinicalcraft bench`), the grounding benchmark and the operative benchmark (`bench operative`: suites in `<content dir>/operative/<suite>/`, anatomy variants hidden; docs/BENCHMARK_OPERATIVE.md) and the team benchmark (`bench team`: a case's care-team scenarios in observer mode; docs/TEAM.md).
 - `packages/web` — Vite + three.js voxel world and UI (vanilla TS DOM); embodied by default (`src/app/embodied*.ts`).
 - `scripts/blender` — the Blender side of equipment models (Python inside Blender or with the `bpy` module): `clinicalcraft_blender.py` (catalog lookup, blockout, export to the model contract), `clinicalcraft_shapes.py` (shapes in a type's frame), `clinicalcraft_refine.py` (a model from a type's voxel parts), `build.py` + `builtin_models.py` (the built-in models in `packages/content/assets/models`); `.mcp.json` registers blender-mcp, telemetry off (docs/BLENDER.md).
-- Contracts: `docs/ARCHITECTURE.md`, `docs/PROTOCOL.md`, `docs/PROCEDURE.md`, `docs/BENCHMARK_OPERATIVE.md`, `docs/EMBODIED.md` (authoritative; translated in `docs/zh-CN/EMBODIED.md`), `docs/FACILITIES.md`, `docs/CASE_AUTHORING.md`, `docs/ASSETS.md`.
+- Contracts: `docs/ARCHITECTURE.md`, `docs/PROTOCOL.md`, `docs/PROCEDURE.md`, `docs/BENCHMARK_OPERATIVE.md`, `docs/TEAM.md` (the care team working on its own), `docs/EMBODIED.md` (authoritative; translated in `docs/zh-CN/EMBODIED.md`), `docs/FACILITIES.md`, `docs/CASE_AUTHORING.md`, `docs/ASSETS.md`.
 
 ## Commands
 ```bash
@@ -23,6 +23,7 @@ npm run cc -- cases validate --all --strict && npm run cc -- cases verify --all 
 npm run cc -- facilities validate --all
 npx tsx scripts/gen-json-schemas.ts --check   # JSON Schemas in step with the zod schemas (`npm run schemas` rewrites them)
 npm run -s cc -- bench run --agent reference && npm run -s cc -- bench run --agent scripted-llm   # must stay 100 %
+npm run -s cc -- bench team          # the care team's scenarios (cases with a `team`, e.g. a content pack's): must stay 100 %
 npm run dev                # web world at http://localhost:5173
 npm run build              # libraries (packages/*/dist: built binary, `serve`) + web
 npm run test:e2e           # Playwright (web)

@@ -73,6 +73,8 @@ export * from "./session/examiner.js";
 export * from "./session/autopilot.js";
 export * from "./session/trace.js";
 export * from "./session/embodied-types.js";
+export type { ActionReceipt, MemberId, MessageKind, SurgeonMode, TaskStatus, TeamAutonomy, TeamCheckpoint, TeamMessage, TeamState, TeamTask } from "./session/team/types.js";
+export { validTeamCheckpoint } from "./session/team/checkpoint.js";
 export * from "./session/device-ops.js";
 export * from "./session/delegation.js";
 export * from "./session/embodied.js";

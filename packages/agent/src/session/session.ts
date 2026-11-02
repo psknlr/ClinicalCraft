@@ -28,6 +28,7 @@ import { SessionKernel } from "./kernel.js";
 import { restoreRuntime, restoreSession, sessionSnapshot } from "./resume.js";
 import { emptyTrace } from "./trace.js";
 import type { ClinicalSessionApi, SessionOptions, SessionSnapshot } from "./types.js";
+import type { TeamCheckpoint } from "./team/types.js";
 
 /** Runtime version stamped into transcripts. */
 export const CLINICALCRAFT_VERSION = "5.0.0";
@@ -102,6 +103,14 @@ export class ClinicalSession implements ClinicalSessionApi {
   /** The encounter's world (embodied mode), or null. */
   world(): WorldRuntime | null {
     return this.k.embodied?.world() ?? null;
+  }
+
+  /**
+   * The care team as it stands (docs/TEAM.md): messages, tasks, receipts, the count's record, autonomy and who answers
+   * as the surgeon — null when the case has no team (or clinical mode), or before the encounter starts.
+   */
+  team(): TeamCheckpoint | null {
+    return this.k.team.available() ? (this.k.team.get()?.checkpoint() ?? null) : null;
   }
 
   /** The episode trace (empty in clinical mode). */

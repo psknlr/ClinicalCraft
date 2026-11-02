@@ -5,7 +5,7 @@
  * `{format: "clinicalcraft-v5", session, world, inventory, settings}` with
  * V4-like validation (size cap, format, known ids, sane inventory).
  */
-import type { SessionSnapshot } from "@clinicalcraft/agent";
+import { validTeamCheckpoint, type SessionSnapshot } from "@clinicalcraft/agent";
 import type { WorldSave } from "../contracts.js";
 import { cleanActions, restoredPlan } from "./session.js";
 import { sanitizeSettings, type UiPrefs } from "./settings.js";
@@ -115,6 +115,8 @@ function validSnapshot(v: unknown): SessionSnapshot | null {
     // the world model refuses a snapshot of another facility itself).
     ...(s.embodiment === "embodied" ? { embodiment: "embodied" as const } : {}),
     ...(s.embodiment === "embodied" && validWorldSnapshot(s.world, typeof s.facilityId === "string" ? s.facilityId : null) ? { world: s.world } : {}),
+    // the care team mid-task (docs/TEAM.md), kept only with the world it acted in
+    ...(s.embodiment === "embodied" && validWorldSnapshot(s.world, typeof s.facilityId === "string" ? s.facilityId : null) && validTeamCheckpoint(s.team) ? { team: s.team } : {}),
   };
 }
 

@@ -167,6 +167,8 @@ export class Hud {
           (e.autopilot = h("button", { type: "button", id: "autopilot-btn", onclick: () => this.app.open("autopilot") }, tr("hud.autopilot"))),
           // the laparoscopic surgery window: only while the case's operation is under way in this phase
           (e.surgery = h("button", { type: "button", id: "surgery-btn", hidden: true, title: tr("surgery.hudTitle"), onclick: () => this.app.open("surgery") }, tr("surgery.hud"))),
+          // the care team (docs/TEAM.md): while the case's team works on its own in this phase
+          (e.team = h("button", { type: "button", id: "team-btn", hidden: true, title: tr("team.hudTitle"), onclick: () => this.app.open("team") }, tr("team.hud"))),
           btn("pause-btn", tr("hud.pause"), "Esc", () => this.app.open("pause")),
         ),
       ),
@@ -375,6 +377,8 @@ export class Hud {
     e.phase.textContent = phaseBadge(c, s.phase, L);
     const surgery = surgeryOffered(c, s.phase);
     if (e.surgery.hidden === surgery) e.surgery.hidden = !surgery;
+    const team = !!game.embodied && !!c.team?.phases.includes(s.phase);
+    if (e.team.hidden === team) e.team.hidden = !team;
     if (c.clock.mode === "simulated") {
       e.clock.hidden = false;
       e.clock.textContent = c.clock.startTime ? ` · ${tr("hud.clock", { time: clockLabel(c.clock.startTime, s.clock) })}` : ` · ${tr("hud.elapsed", { min: Math.round(s.clock) })}`;

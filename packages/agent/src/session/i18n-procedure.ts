@@ -26,6 +26,11 @@ export const PROCEDURE_EN = {
   "op.done": "Done: {op}.",
   "op.signals": "You notice: {signals}.",
   "op.invalid": "That operative step is not well formed: {message}",
+  // the care team (docs/TEAM.md)
+  "team.none": "This case has no care team that works on its own (it needs a case team and in-world mode).",
+  "team.off": "The team is switched off for this session.",
+  "team.notNow": "The team works on its own only during: {phases}.",
+  "team.invalid": "That team request is not well formed: {reason}",
 } as const;
 
 export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
@@ -50,6 +55,10 @@ export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
   "op.done": "已完成：{op}。",
   "op.signals": "你注意到：{signals}。",
   "op.invalid": "手术步骤格式不正确：{message}",
+  "team.none": "本病例没有能自主协作的手术团队（需要病例团队设置和实景模式）。",
+  "team.off": "本次会话的团队自主协作已关闭。",
+  "team.notNow": "团队只在以下阶段自主协作：{phases}。",
+  "team.invalid": "团队请求格式不正确：{reason}",
 };
 
 /** Labels of the field view's enumerations (dissection, exposure, findings, signals…), per language. */

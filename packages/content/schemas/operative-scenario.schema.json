@@ -739,6 +739,9 @@
             "variant": {
               "$ref": "#/definitions/Id"
             },
+            "team": {
+              "$ref": "#/definitions/Id"
+            },
             "by": {
               "type": "string",
               "enum": [

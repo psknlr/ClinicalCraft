@@ -1208,6 +1208,40 @@ facility the heparin comes at minute 31.4. On 2026-10-20 the same run scored
 and languages (38 runs, 2026-10-29); `anaphylaxis-garden` cannot be played
 embodied there (no place for a `community` patient — `embodiment_no_slot`).
 
+### 8.5 The care team
+
+A case with a `team` (contract: [TEAM.md](TEAM.md)) has staff who work on their own in its team phases. They do not
+wait to be told each step:
+- the circulating nurse notices what is needed, asks the colleague whose duty it is, checks the read-back, and sees
+  for herself that the person holds the item;
+- the scrub nurse reads the request back, finds the instrument she can see, and hands it over;
+- the team keeps the count item by item, holds closure when it is short, searches, and recounts.
+
+Every act is that member's own world action, through the action bus on a nurse's tool path: authority and scope of
+practice apply, and the act is done `onBehalfOf` the colleague who asked. They rely only on what that member's body
+perceives and what was said to them. It is driven by the `team` op: the same step in the browser (a team clock, 2 s,
+while the encounter runs) and headless. It is saved with the world (`SessionSnapshot.team`, `team` transcript items),
+and on restore a completed act never runs again. The learner answers as the surgeon (read-backs, "wound checked"), or
+watches a simulated surgeon (observer mode). `clinicalcraft bench team` scores every authored team scenario from the
+record.
+
+### 8.6 Concealed items and search
+
+A scenario can put a handheld item **out of everyone's sight** (`placeItem … { concealed: true }` — a swab dropped
+under the Mayo stand; `{ inside: true }` — a swab in the wound, concealed in the patient). The item is in the world:
+it has a place, and snapshots and physics keep it. But no one perceives it:
+- observations, `find`, `canSee` and recent events leave it out, and it is not even remembered where it was seen;
+- acting on it by id, or navigating to it, is refused `TARGET_NOT_FOUND`;
+- the browser does not draw it.
+
+`search` (a built-in operation, physical class, 20 simulated seconds) is how it is found:
+- without a target, the body's hands go through what is within reach of where it stands (`RANGES.interact`), and
+  every loose concealed item there is revealed where it lies;
+- with `targetId`, it searches one thing within reach (the patient's wound) and brings out what is concealed inside
+  it, into the searcher's hand, or at their feet when both hands are full.
+
+A revealed item is an ordinary item again (`entity.concealed` with `concealed: false`; "You found …").
+
 ## 9. Skills
 
 Skills are declarative workflows (`clinicalcraft/skill@1`; zod `SkillSchema`
@@ -1872,6 +1906,8 @@ the measurements of §4, §7, §11).
 | Reference demonstration (`clinicalcraft bench demo`) | yes (A7) | STEMI in both languages: every step confirmed by engine + world state, the per-step chain with ids and versions, the assessment span; an encounter cut short fails | `docs/bench/demo.en.md` / `demo.zh-CN.md` regenerated on 2026-10-29: 50 steps, 26 world actions, 0 violations, 22 / 22; the trace is byte-identical when regenerated | no — demonstrates the infrastructure (a replay), not clinical reasoning |
 | Content scale (case index, lazy per-case chunks, paginated ETag'd server API, `CaseLibrary` in the CLI and MCP) | yes | unit: indexer, case store, server content API, the web index plugin | measured with 100–1 000 synthetic cases (§11) | no — browser start-up and case switching with a large catalogue unmeasured; first-load validation ≈ 150–230 ms per case. Perf |
 | Operative field (`procedure`, `operate`, docs/PROCEDURE.md): anatomy, regions, ports and instruments, safety views judged on the field, unsafe acts and injuries that follow from the anatomy, the operator's view (handles, never duct names), `observe_field` / `operate` tools, `safetyGates` | yes (procedure round) | core unit tests: a safe path, adversarial paths (habitual traction, a misidentified common bile duct clipped and divided, clipping without a pause, a claimed but untrue view, a bleed managed, hidden-hazard energy, a torn gallbladder), bail-outs, reach and port ergonomics, determinism | not validated: no surgical, anaesthetic or radiological review; the one case using it (SurgeryCraft cmcr-1654623) runs on reference anatomy | no — rule-based tissue states, not calibrated mechanics; the web panel is a first version. Rel, Val |
+| Care team (docs/TEAM.md; §8.5): `case.team`, team scenarios chosen at `start` (hidden), `TeamScheduler` (rounds, autonomy auto / step / off), offline role policies (circulating nurse, scrub nurse, the count, the simulated surgeon), messages with check-back, action receipts with the true initiator, claims, exactly-once action ids, `team` op / `team_event`, `team` transcript items and `SessionSnapshot.team`, web Team panel and team clock, `bench team` | yes (team round) | core `team.test.ts` (consistency, facility fit, start); agent `team/policy.test.ts` (17 rules on hand-built views), `team/session-team.test.ts`; SurgeryCraft `tools/case126-team.test.ts` (13: the two-nurse handoff while the learner watches, relief, moved and missing instruments, the surgeon away, one owner for two requests, save / restore mid-handoff with one hand-over, every count ending in learner and observer mode, closing on a hold) | `bench team` over Case 126: 8 / 8 scenarios, every one exactly once; the browser (2026-11-02, Case 126 under `serve`, Chromium + SwiftShader): the team clock carried a needle-holder handoff through to "seen to be done", and the autosave kept the team | no — rule-based policies for two duties and the count; no language model drives a team member; one case; not reviewed by perioperative nurses. Rel |
+| Concealed items and `search` (§8.6) | yes (team round) | world `conceal.test.ts` (out of observations, `find`, `canSee`, memory and events; refused by id and as a goal; revealed within reach or from inside the patient into the hand; kept by a snapshot) | the Case 126 count scenarios (a swab under the Mayo stand, in the wound, gone from the room) | no — concealment is set by a scenario only; nothing hides an item during play. Rel |
 
 ### 14.3 Known limitations
 

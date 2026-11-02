@@ -33,6 +33,7 @@ export type PanelId =
   | "help"
   | "atlas"
   | "surgery"
+  | "team"
   | "autopilot"
   | "elevator"
   | "confirm";

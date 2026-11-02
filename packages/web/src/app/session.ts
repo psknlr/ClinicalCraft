@@ -11,6 +11,7 @@
  */
 import {
   createSession,
+  validTeamCheckpoint,
   type ClinicalSession,
   type Op,
   type PlanItem,
@@ -273,9 +274,11 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
   // Embodied: the world is built by the session (resume: its saved physical state; a snapshot that does not
   // fit this facility is dropped — the world starts afresh, the clinical record is still replayed).
   const savedWorld = embodiment === "embodied" && resume ? validWorldSnapshot(resume.world, o.facility?.id) : null;
+  // the care team mid-task (docs/TEAM.md) comes back only with the world it acted in
+  const savedTeam = savedWorld ? validTeamCheckpoint(resume?.team) : null;
   const embodiedOption = (withSnapshot: boolean) =>
     embodiment === "embodied"
-      ? { embodied: { ...(o.embodied?.mover ? { mover: o.embodied.mover } : {}), ...(o.embodied?.camera ? { camera: o.embodied.camera } : {}), ...(withSnapshot && savedWorld ? { snapshot: savedWorld } : {}) } }
+      ? { embodied: { ...(o.embodied?.mover ? { mover: o.embodied.mover } : {}), ...(o.embodied?.camera ? { camera: o.embodied.camera } : {}), ...(withSnapshot && savedWorld ? { snapshot: savedWorld, ...(savedTeam ? { team: savedTeam } : {}) } : {}) } }
       : {};
   const options = (withSnapshot: boolean): Parameters<typeof createSession>[0] => ({
     caseDef: o.caseDef,

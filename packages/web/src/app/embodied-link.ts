@@ -168,7 +168,8 @@ export class EmbodiedLink {
       if (!e.portable && !st?.position) continue;
       const pid = placementIdOf(e.id);
       if (!pid) continue;
-      if (st?.heldBy) api.placeEquipment(pid, null);
+      // in someone's hands, or concealed (out of everyone's sight until searched for): not drawn where it lies
+      if (st?.heldBy || st?.concealed) api.placeEquipment(pid, null);
       else if (st?.position) api.placeEquipment(pid, { x: st.position.x, y: st.position.y, z: st.position.z, level: st.position.level, ...(st.position.rot !== undefined ? { rot: st.position.rot } : {}) });
       else api.placeEquipment(pid, "home");
     }

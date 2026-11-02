@@ -721,6 +721,12 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   `CaseDefinition` + `SessionState` (via core `reduce`), NPC conversations,
   the approval gate, hooks, transcript sink. Processes submissions serially.
   Deterministic `clinical_action` ops work with no LLM at all.
+* **The care team** (`packages/agent/src/session/team/`, docs/TEAM.md) — in in-world mode, a case's room staff work
+  on their own: a `TeamScheduler` per session wakes members by rounds; pure role policies (`policy.ts`) decide from
+  each member's own view (what their body perceives, what was said to them, their tasks); their acts are world
+  actions on a nurse's tool path. Driven by the `team` op (the browser's team clock and headless runs alike), saved as
+  a `TeamCheckpoint`, scored by `bench team`. Concealed items and `search` live in the world
+  (`packages/world/src/conceal.ts`).
 * **Agents** — markdown + frontmatter definitions (Claude Code subagents):
   `patient` and `companion` (portrayed like standardised patients),
   `nurse` (ISBAR / SBAR), `radiologist`, `pathologist`, `attending`

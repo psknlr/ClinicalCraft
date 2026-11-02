@@ -6,6 +6,7 @@
 // validation & loading
 export { parseCase, parseFacility, parseCatalog, issuesFromZodError, contentWarnings, formatPath } from "./parse.js";
 export { checkCaseIntegrity } from "./integrity.js";
+export { checkTeamDefinition, teamFacilityIssues } from "./team.js";
 export { checkContentStandard, citedDois, caseTestUtterances, CONTENT_MINIMUMS, WELL_FORMED_DOI, type TestUtterance } from "./content-standard.js";
 export { verifyCase } from "./verify.js";
 
