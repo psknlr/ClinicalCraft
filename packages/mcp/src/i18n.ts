@@ -17,6 +17,8 @@ const EN = {
   "start.next":
     "Pass session_id \"{session}\" to every clinical tool. Talk with ask_patient, find ids with list_options, then examine / order_test / read_result / answer_decision; " +
     "case_status shows objectives and open decisions; finish_case when every objective is complete; get_debrief for the assessment.",
+  "start.operation":
+    "This case has an operation ({name}). It is not an intervention: once case_status says it is under way (after the checklist steps it names), look with observe_field and do one step at a time with operate — ports, dissection, the critical view, clips, the specimen, closure, or a safe bail-out. Counts and equipment never perform it. Clip, divide, coagulate and bail-out steps need confirm: true.",
   "start.failed": "Could not start the case: {message}",
   "start.embodied":
     "In-world mode (embodied): you have a body in the hospital and are at {place}. Clinical tools need you in the right place (the patient's bedside, a workstation, a device): " +
@@ -89,6 +91,8 @@ const ZH: Record<McpMessageKey, string> = {
   "start.next":
     "每个临床工具都要传入 session_id \"{session}\"。用 ask_patient 问诊，用 list_options 查找 id，然后 examine / order_test / read_result / answer_decision；" +
     "case_status 显示目标与待作答的决策；所有目标完成后调用 finish_case；get_debrief 获取评估。",
+  "start.operation":
+    "本病例包含手术（{name}）。手术不是一项处置：当 case_status 显示手术已开始（先完成它列出的核查步骤）后，用 observe_field 观察术野，用 operate 一步一步操作——布孔、解剖、关键安全视野、夹闭、标本、关腹，或安全的替代方式。清点和设备操作都不能代替手术。夹闭、离断、电凝和替代方式需要 confirm: true。",
   "start.failed": "无法开始病例：{message}",
   "start.embodied":
     "实景模式（embodied）：你在医院里有一个身体，现在位于{place}。临床工具要求你身处正确的位置（患者床旁、工作站、设备旁）：" +

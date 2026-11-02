@@ -471,7 +471,8 @@ npm run -s cc -- bench demo --case stemi-inferior-rv --lang zh-CN --out bench-de
 
 ### Connect Claude Code / Codex / Grok CLI to a live world (`mcp --attach`)
 
-`clinicalcraft mcp --attach <server>` gives your agent the same clinical and
+`clinicalcraft mcp --attach <server>` gives your agent the same clinical,
+operative (`observe_field`, `operate` — in a case with an operation) and
 world tools, but in an encounter **you** are playing in the browser — you
 watch the avatar walk and act, and you answer every approval. It is paired
 with one encounter by the live-session id and the attach key that encounter

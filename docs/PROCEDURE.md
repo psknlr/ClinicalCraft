@@ -233,7 +233,9 @@ variant. `identify` accepts any of them, so naming never reveals the anatomy. A 
 fibrosis carries its `finding` once dissection there has begun.
 
 The agent tools are `observe_field` and `operate` (`packages/agent/src/tools/procedure.ts`). The built-in
-clinician has them in a case with an operation (they are hidden elsewhere). `observe_field` also lists the
+clinician has them in a case with an operation (they are hidden elsewhere); so do external agents — the MCP
+server (`start_case` says the case has an operation; `clip`, `divide`, `coagulate` and `bailout` need the
+two-step confirmation), MCP attach mode and the live-world bridge (PROTOCOL §11, §13). `observe_field` also lists the
 safety views by criterion id, and asks how many for a counting criterion. In embodied mode both are held to
 the spatial policy (EMBODIED §6): `operate` only with the patient on an operating table and the operator at
 the table, checked again after an approval wait and right before the commit; `observe_field` near the
