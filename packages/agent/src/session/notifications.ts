@@ -4,8 +4,9 @@
  * announcements). Results are never quoted — the learner must read them.
  */
 import { t, type CaseDefinition, type DomainEvent, type VitalKey } from "@clinicalcraft/core";
-import { investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
+import { interventionLabel, investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
 import { rt, type RuntimeKey } from "./i18n.js";
+import { sentence } from "./i18n-checklist.js";
 
 /** Who voices a reaction line. */
 export type LineSpeaker = "nurse" | "monitor" | "patient" | "companion" | "narrator";
@@ -179,6 +180,10 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     }
     case "objective.completed":
       return [{ notification: { level: "info", title: rt(L, "notify.objective.title"), body: objectiveTitle(c, event.objectiveId, L) } }];
+    case "hold.placed":
+      return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by: event.placedBy, reason: sentence(event.reason) }) } }];
+    case "hold.released":
+      return [{ notification: { level: "info", title: rt(L, "status.holds"), body: rt(L, "hold.released", { name: interventionLabel(c, event.interventionId, L), by: event.releasedBy, reassessment: event.reassessment }) } }];
     case "case.completed":
       return [{ notification: { level: "info", title: rt(L, "notify.caseCompleted.title"), body: rt(L, "notify.caseCompleted.body") } }];
     case "case.finished":

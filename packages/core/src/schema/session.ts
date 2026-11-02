@@ -19,6 +19,12 @@ export type Actor = z.infer<typeof ActorSchema>;
 
 const base = { by: ActorSchema.optional() };
 
+/**
+ * Who placed or released a hold: a role or staff id as the session knows them ("attending", "anaesthetist",
+ * "staff:or-7.anaesthetist"). Compared trimmed and case-insensitively.
+ */
+export const HolderSchema = z.string().trim().min(1).max(80);
+
 export const ClinicalActionSchema = z.discriminatedUnion("type", [
   /** `variant`: the procedure's anatomical variant for this session (docs/PROCEDURE.md §9; hidden from the operator). */
   z.object({
@@ -49,6 +55,17 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("note"), text: z.string().max(4000), ...base }).strict(),
   /** One step of the case's operation (docs/PROCEDURE.md): the operative field's only way in. */
   z.object({ type: z.literal("operate"), op: ProcedureOpSchema, ...base }).strict(),
+  /**
+   * An explicit hold on an intervention (docs/PROTOCOL.md §3.1) — an anaesthetist or attending withholding
+   * clearance for induction: who placed it and why. While it stands, the intervention is refused (`on-hold`);
+   * missing information alone never places one.
+   */
+  z.object({ type: z.literal("hold"), interventionId: IdSchema, placedBy: HolderSchema, reason: z.string().trim().min(1).max(1000), ...base }).strict(),
+  /**
+   * Release a hold after a recorded reassessment — by whoever placed it. `reassessment` is the documented
+   * decision (it may be to proceed under stated uncertainty).
+   */
+  z.object({ type: z.literal("release-hold"), interventionId: IdSchema, releasedBy: HolderSchema, reassessment: z.string().trim().min(1).max(1000), ...base }).strict(),
   z.object({ type: z.literal("finish"), ...base }).strict(),
 ]);
 export type ClinicalAction = z.infer<typeof ClinicalActionSchema>;
@@ -86,6 +103,16 @@ export interface InterventionRecord {
    * its effects and flags did not apply and it used none of `maxDoses`.
    */
   invalid?: true;
+}
+
+/** An explicit hold on an intervention (see the `hold` action): placed, and later released after a reassessment. */
+export interface HoldRecord {
+  interventionId: string;
+  placedBy: string;
+  reason: string;
+  at: number;
+  seq: number;
+  released?: { by: string; reassessment: string; at: number; seq: number };
 }
 
 export interface SessionState {
@@ -130,6 +157,8 @@ export interface SessionState {
   variant?: string;
   /** The team scenario chosen at `start` (docs/TEAM.md). Hidden state. */
   teamScenario?: string;
+  /** Holds placed on interventions, in order (absent until the first; sessions saved before have none). */
+  holds?: HoldRecord[];
   /** Monotonic count of accepted actions (for transcripts / ordering). */
   seq: number;
 }
@@ -165,6 +194,8 @@ export type DomainEvent =
   | { type: "note.added" }
   /** A step of the operation was carried out; `signals` are what the operator sees or feels (never the hidden anatomy). */
   | { type: "procedure.step"; op: ProcedureOpType; signals: ProcedureSignal[] }
+  | { type: "hold.placed"; interventionId: string; placedBy: string; reason: string }
+  | { type: "hold.released"; interventionId: string; releasedBy: string; reassessment: string }
   | { type: "action.rejected"; action: ClinicalActionType; code: RejectionCode; message: string };
 
 export type RejectionCode =
@@ -181,6 +212,8 @@ export type RejectionCode =
   | "objectives-incomplete"
   /** `ask`: the patient cannot speak now (`patient.nonVerbalWhen`) and the case has no companion to answer. */
   | "cannot-answer"
+  /** `intervene`: an explicit hold stands on this intervention (see the `hold` action); it is not carried out. */
+  | "on-hold"
   | "invalid";
 
 export interface ReduceResult {

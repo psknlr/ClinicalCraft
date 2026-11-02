@@ -20,6 +20,8 @@
  *   `intervened` id of `physiology.monitor.attachedWhen` that is a
  *   monitoring intervention, else the first monitoring intervention whose
  *   requires this device provides, else the first monitoring intervention.
+ *   A checklist step (`checklist: true`) is never selected: attaching the
+ *   monitor is one task and records no WHO Sign In.
  *
  * Tool arguments use the agent tools' names: `order_test` /
  * `read_result {investigation_id, phase?}`, `intervene {intervention_id}`,
@@ -85,9 +87,13 @@ function intervenedIds(cond: Condition | undefined, out: string[] = []): string[
   return out;
 }
 
-/** The case's monitoring intervention for a device with these capabilities (see module docs), or null. */
+/**
+ * The case's monitoring intervention for a device with these capabilities (see module docs), or null. A checklist
+ * step (`checklist: true`, e.g. a WHO Sign In) is never one: attaching a monitor is one task, it does not record
+ * the team's check.
+ */
 export function monitoringIntervention(c: CaseDefinition, caps: readonly string[]): string | null {
-  const monitoring = c.interventions.filter((i) => i.kind === "monitoring");
+  const monitoring = c.interventions.filter((i) => i.kind === "monitoring" && i.checklist !== true);
   for (const id of intervenedIds(c.physiology?.monitor?.attachedWhen)) if (monitoring.some((i) => i.id === id)) return id;
   return monitoring.find((i) => i.requires.length > 0 && i.requires.every((r) => caps.includes(r)))?.id ?? monitoring[0]?.id ?? null;
 }
@@ -206,7 +212,8 @@ export function selectClinical(opts: {
     return item ? done(item) : unknown(opts.effect.item);
   }
   if (opts.effect.select === "monitoring" && kind === "intervention") {
-    const monitoring = c.interventions.filter((i) => i.kind === "monitoring").map((i) => i.id);
+    // never a checklist step: the monitor attaches, the team's check is made on its own (the WHO board, intervene)
+    const monitoring = c.interventions.filter((i) => i.kind === "monitoring" && i.checklist !== true).map((i) => i.id);
     const id = wanted ?? monitoringIntervention(c, caps);
     if (!id) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.noItem", L, { target }) };
     const item = all.find((i) => i.id === id);

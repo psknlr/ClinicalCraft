@@ -147,7 +147,7 @@ export class MovementRequests {
     const k = this.k;
     const L = k.locale;
     const c = k.caseDef;
-    const given = new Set(k.state.interventions.map((r) => r.interventionId));
+    const given = new Set(k.state.interventions.filter((r) => !r.invalid).map((r) => r.interventionId));
     const positioning = c.interventions.filter((i) => i.kind === "positioning" && i.posture === posture && !given.has(i.id));
     if (positioning.length === 1) {
       const item = positioning[0]!;

@@ -106,7 +106,7 @@
 | R5 | `SpatialClinicalActionGate` | **空间要求是数据**（`SpatialRequirement`），由内容中已有的语义推导：检查 / 处置的 `requires` 能力、处置的 `kind`、网页世界的床旁规则（FACILITIES.md “Interaction semantics”）。场馆可覆盖。每次拒绝都带稳定的错误码和**导航提示**（智能体可直接传给 `navigate_to` 的目标）。 | 网页 UI 原先零散地实现这些规则（`app/stations.ts`）；改为共享规则后，CLI / MCP / 大模型路径遵守同样的规则，智能体也能得到可执行的失败信息（mineflayer-pathfinder 风格）。 |
 | R6 | 设备状态机 | 设备行为是**声明式的**（目录 JSON，无代码）。**与临床事实对应的设备状态由引擎推导，从不存储**（例如“监护仪已连接” ⇐ `monitorAttached(case, state)`）；世界中只存物理状态（电源、导联、推车位置、门是否打开、预约占用）。 | 同一事实存两份，会在恢复、重放和被拒绝时出现分歧。引擎对一切临床结果保持权威（§4.3）。 |
 | R7 | 可见性与信息边界 | 观察结果为每个实体标注**认知等级**——`visible`（视野 + 视线 + 距离）、`nearby`、`remembered`（该行动者之前见过）、`mapped`（在公开的医院指引图上）。患者只暴露旁观者能看到的内容（姓名牌、体位、明显痛苦、氧气面罩）；监护仪的屏幕只有在可读且已连接时才暴露（与 `check_vitals` 同一检查）。 | 将接地规则（ARCHITECTURE §2.1）推广到空间：可以*知道* CT 在放射科而在急诊看不到它；看得见的患者也从不泄露未读的结果。 |
-| R8 | 移动时间与临床时间（§8.5） | **行走明确消耗模拟时间**：一次完成的导航按步行时间 × `clock.realtimeScale` 派发 `advance-time { reason: "travel" }`（静态时钟不计时）。在浏览器中，当*智能体*驱动身体时暂停实时计时，因此两种运行时中行走的耗时相同。 | 网页原先只在没有面板打开时按实时计时推进时钟——打开示范接诊面板时，示范接诊的行走不耗时。 |
+| R8 | 移动时间与临床时间（§8.5） | **行走明确消耗模拟时间**：一次完成的导航按步行时间 × `clock.realtimeScale` 派发 `advance-time { reason: "travel" }`（静态时钟不计时；`clock.worldTime: "actual"` 的病例无论倍率多少，行走和设备操作都按其实际时长计入）。在浏览器中，当*智能体*驱动身体时暂停实时计时，因此两种运行时中行走的耗时相同。 | 网页原先只在没有面板打开时按实时计时推进时钟——打开示范接诊面板时，示范接诊的行走不耗时。 |
 | R9 | 技能库（Voyager） | **技能是声明式工作流**（JSON），步骤是工具调用，成功与否由**现有条件 DSL 中的后置条件**加上世界谓词判定。模型提出的技能是经过校验的数据，从不是代码，并经由正常工具路径执行。 | 天然可核验；不用 `eval`；适用同一闸门。 |
 | R10 | 房间模板、多楼层 | **模板是编写期的宏**，经 `compileFacility` 编译成扁平的场馆格式，渲染器、导航和工具都无需了解模板。楼层（`levels`、`level`）与 `connectors`（楼梯、电梯、坡道）是**增量可选字段**——现有场馆无需迁移即保持有效；若有破坏性变更，将升级为 `clinicalcraft/facility@2` 并提供纯函数迁移。 | `clinic-v4` 与 `general-hospital` 逐字节不变，现有工具全部照常工作。（`floor` 已被占用：它表示地面*材质*。） |
 | R11 | 基准测试 | 基准测试**把基础设施验证**（reference 重放、脚本智能体——必须 100 %）与**模型能力**（真实模型，按种子报告 Wilson 95 % 区间）**分开**。真实模型运行需要显式参数和费用上限，从不在 CI 中运行。 | 离线重放证明的是管道，不是推理（§16.3）。 |
@@ -423,7 +423,10 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 * **提示**（`ActionHint`）：`goal`（传给 `navigate_to`）、本地化的 `label`，以及
   `then`——到达后、重试前要执行的操作（取设备：`{ operation: "move_to", targetId:
   <推车>, goal: <患者> }`；把患者送到某处：`transport_patient {destination}`；
-  洗手：在最近的水槽 `wash_hands`）。涉及患者的设备操作从不在设备和患者之间来回
+  洗手：在最近的水槽 `wash_hands`；附近设备状态不对：通往所需状态路上的第一步操作——
+  清点板的 `baseline_count`，或先 `closing_count` 再 `final_count`；必须拿在手里的物品：
+  `pick_up`）。`then` 本身也可能被拒绝并带有自己的提示（最终清点需要 RF 检测棒扫描过，
+  扫描需要先拿起检测棒）：具身示范接诊会沿这样的链条最多跟进几层。涉及患者的设备操作从不在设备和患者之间来回
   给提示：当设备的交互距离与患者的距离（或规则要求的贴近患者距离）能同时满足时，
   提示是指向最近的此类位置的 `point` 目标；不能同时满足时（心电图车停在病房另
   一头），返回 `PRECONDITION_FAILED` 和取设备提示——心电图机的准备、连接和记录都
@@ -449,9 +452,18 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   （3.9 m/s，化身步行速度）折算，加上每段已完成乘坐的连接设施秒数（在楼梯前停下
   的行走从不分摊楼梯时间）；记录的 `length` 与规划器一样，加上每段已完成楼梯的
   爬升距离。
+* **推车的目的地在推之前和推之后都要核对**（`move_to`）：推车已经和推一次后一样近
+  （离目标 1.25 m 以内且在其房间内；对患者按床旁规则在床旁）时不再移动——结果为
+  `completed`，说明“已在目的地，没有移动”，并带 `moved.alreadyAtDestination`；推完后推车
+  必须满足目的地（离目标 2.5 m 以内且在其房间内或在床旁；房间目标要在房间内——停放时
+  优先选该房间的栅格；点目标在其 range 以内，默认 1.5 m），否则移动为 `failed`
+  `PATH_BLOCKED`，说明推车与目的地之间挡着什么，并给出一个走得到的替代位置
+  （`hint.then: move_to` 离目的地最近的空位）——推车若已停在那个空位上，就直接说明，
+  不带提示。结果的 `moved` 报告推车实际移动的距离和现在的位置（不是行动者走了多远）。
 * **时间**：物理操作计入其 `durationSeconds`（`elapse(…, "procedure")`）；带临床
   效果的操作本身不计时——引擎的动作耗时（`clock.actionCosts`）就是临床操作的时间。
-  失败的动作不改变任何版本，也不计时。
+  模拟时钟下，这些秒数乘以 `clock.realtimeScale`（`clock.worldTime: "scaled"`，默认），
+  或按其实际时长计入（`"actual"`）。失败的动作不改变任何版本，也不计时。
 * **结果**无论成败都会被记录（窗口为 128 条）：暂时性失败（`DEVICE_BUSY`）请用
   新的动作 ID 重试。可以靠行走解决的拒绝附带经规划验证的 `hint`；没有路线可达时
   提示为 null，消息中给出规划器的错误码。
@@ -493,6 +505,7 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | **病历查阅**（`performedAt: "records"`：从病历中调阅已有的报告——外院影像、既往超声心动图、手术记录、用药记录）的 `order_test` / `read_result` | `any-of` [`at-provider` `records`（电子病历终端或护士站工作台），`at-patient` 1.5 m（`why: "notes"`：在床旁查阅病历记录）]——无论 `requires` 写了什么，都从不需要转运、采样或设备；不产生能力缺口（`caseCapabilityGaps`），审批闸门处也没有操作风险 | 已有的报告是在电子病历或床旁病历里查到的，不必再做一遍 |
 | `read_result` | 无能力要求：任意位置 · 仅需随身器械：`at-patient` · 床旁检查：`any-of` [`at-patient`，`at-provider` `records`，提供这些能力的固定工作站（`fixedOnly`，`providerKinds: ["workstation"]`）]——**从不在设备上** · 化验：`any-of` [`at-provider` `records`，`at-patient`，化验工作站] · 其他：`at-provider`（在控制台读报告——从不在患者处） | 已记录的心电图在纸上或电子病历里看，而不是把推车再推回来；读报告不需要患者在场 |
 | `intervene`，kind 为 `consult` / `disposition` | 任意位置（电话 / 寻呼） | |
+| 以病例记录为准的核查板（`derived: "case-record"`）也能完成的核查步骤，用 `intervene` 完成时 | 还要满足该核查板操作的团队前提（除站位和身份以外声明的条件——WHO 核查板的 Time Out 需要清点板上已完成切皮前清点）；不满足时拒绝为 `SPATIAL_REQUIREMENT_UNMET`，原因 `checklist-prerequisite`，附核查板的说明和去该设备的路线 | 同一个核查动作，两种做法：核查板和 `intervene` 以同一规则记录同一步骤 |
 | `intervene`，其他 kind（`medication`、`fluid`、`oxygen`、`procedure`、`positioning`、`airway`、`monitoring`、`other`） | 其所需能力——`requires` 为空时取该 kind 的默认值（`KIND_DEFAULT_CAPABILITIES`：oxygen → `oxygen`，monitoring → `cardiac-monitor`，fluid → `iv-access`，airway → `airway`）——去掉随身器械：不剩任何能力 → `at-patient` 1.5 m；否则对这些能力要求 `bedside-provider`，但**配送类**能力（`DELIVERED_CAPABILITIES`：`medications`、`blood-bank`）只需场馆某处有在用的提供者。`iv-access` 是**患者状态**：`all-of` [`clinical` {intervened: 病例的建立静脉通路操作}，…]——若病例标注了 `extensions.embodied.ivAccessInSitu` 或没有此类操作则跳过；建立静脉通路操作本身需要穿刺包（抢救车或治疗车）在床旁 | 器械必须在床边（在花园里就得带过去）；静脉用药需要患者身上有留置针，而不是床边有输液架 |
 | `operate`（病例手术的一个步骤，PROCEDURE.md） | `all-of` [`patient-at-provider` `surgery` 且 `beds`（患者在手术床上）、`at-patient` 1.5 米] | 术者在手术床旁：手术绝不能在另一个房间或楼层进行——与所有受门控的动作一样，审批等待之后、引擎提交之前会再次检查 |
 | `observe_field`（腹腔镜屏幕） | `near-patient` 3 米 + 视线可及 | 术野要在手术室里、手术床旁才能看到 |
@@ -701,7 +714,7 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | 类型 | 状态 | 操作 |
 |---|---|---|
 | workstation | — | `order` / `read`——对参数 `investigation`（也可用 `investigation_id`）执行临床的 `order_test` / `read_result`；工作站必须提供该条目所需的全部能力（`investigationsAt`），或者是 `records` 终端——化验的医嘱录入、化验与床旁检查结果的查看器；`read` 可选 `phase` |
-| monitor（`patient-monitor`） | `attached` / `detached`，派生：患者的监护仪（患者当前所在床位关联的监护仪，否则为患者所在处床旁的监护仪）在 `monitorAttached(case, state)` 成立时为已连接；其他监护仪始终为未连接且不提供任何操作 | `attach`（未连接时；设备在床旁，行动者距患者 1.5 m 以内；对病例的监护处置执行 `intervene`——取 `physiology.monitor.attachedWhen` 中第一个 `intervened` ID，否则取该设备能提供的第一个监护处置；耗时按引擎的动作耗时，而非其声明的 60 s）、`read`（已连接时；唯一的屏幕规则：6 m 以内、从监护仪所在房间有视线）、`cycle_nibp`（已连接时；1.5 m 以内；物理操作，45 s） |
+| monitor（`patient-monitor`） | `attached` / `detached`，派生：患者的监护仪（患者当前所在床位关联的监护仪，否则为患者所在处床旁的监护仪）在 `monitorAttached(case, state)` 成立时为已连接；其他监护仪始终为未连接且不提供任何操作 | `attach`（未连接时；设备在床旁，行动者距患者 1.5 m 以内；对病例的监护处置执行 `intervene`——取 `physiology.monitor.attachedWhen` 中第一个 `intervened` ID，否则取该设备能提供的第一个监护处置，从不取核查步骤（连接监护仪不会记录 WHO 麻醉前核查）；耗时按引擎的动作耗时，而非其声明的 60 s）、`read`（已连接时；唯一的屏幕规则：6 m 以内、从监护仪所在房间有视线）、`cycle_nibp`（已连接时；1.5 m 以内；物理操作，45 s） |
 | 心电图机（`ecg-machine`，目录行为） | `idle` → `prepared` → `connected` → `completed`（存储） | `prepare`（设备在床旁，行动者距推车和患者都在 1.5 m 以内；占用推车；30 s）、`connect`（距两者 1.5 m 以内；120 s）、`record`（对推车能提供的第一个病例条目——十二导联心电图——执行 `order_test`；按引擎的动作耗时）、`reset`（从之后任一状态；释放推车；30 s） |
 | device | — | `use`——参数 `investigation` → `order_test`，或 `intervention` → `intervene`；条目的 `requires` 必须与设备能力有交集（`deviceActions`）；在哪里做由 §6 规则决定 |
 | door | `open` / `closed` / `locked`（门记录） | `open`（关闭时）、`close`（打开时；门洞区域无人）、`lock`（closed → locked）、`unlock`（locked → closed） |

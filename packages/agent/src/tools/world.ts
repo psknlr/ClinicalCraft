@@ -237,6 +237,39 @@ function targetGoal(host: WorldToolHost, actorId: ActorId, target: string, range
   return { kind: "interact", id };
 }
 
+/** A goal with a top-level `range` applied (entity, look, follow, point goals), or a note saying why it is not. */
+function withRange(goal: NavGoal, range: number | undefined, locale: string): { goal: NavGoal; note: string | null } {
+  if (range === undefined) return { goal, note: null };
+  if (goal.kind === "entity" || goal.kind === "look" || goal.kind === "follow" || goal.kind === "point") {
+    if (goal.range === undefined) return { goal: { ...goal, range }, note: rt(locale, "world.rangeApplied", { range: range.toFixed(1) }) };
+    return goal.range === range ? { goal, note: null } : { goal, note: rt(locale, "world.rangeConflict", { range: range.toFixed(1), own: goal.range.toFixed(1) }) };
+  }
+  return { goal, note: rt(locale, "world.rangeIgnored", { kind: goal.kind }) };
+}
+
+/**
+ * After a walk to an entity: how far it is, whether it is in view, and what can be operated from here — "in view"
+ * is never "within operating range". `ok: false` when an explicit range was asked and the walk ended outside it.
+ */
+function arrivalReport(host: WorldToolHost, actorId: ActorId, goal: NavGoal, locale: string): { ok: boolean; text: string; data: Record<string, unknown> } | null {
+  if (!("id" in goal) || goal.kind === "room") return null;
+  const world = host.world();
+  const seen = world.inspect(actorId, goal.id);
+  const e = world.entity(goal.id);
+  if (!seen || !e || e.kind === "room" || e.kind === "level") return null;
+  const asked = "range" in goal && goal.range !== undefined ? goal.range : null;
+  const short = asked !== null && seen.distance > Math.max(asked, 0.88) + 0.25;
+  const fromHere = seen.operations.filter((o) => o.available).map((o) => o.op);
+  const notHere = seen.operations.filter((o) => !o.available && (o.code === "NOT_IN_RANGE" || o.code === "NOT_VISIBLE")).map((o) => o.op);
+  const parts = [
+    rt(locale, seen.inReach ? "world.arrival.inReach" : seen.visible ? "world.arrival.inView" : "world.arrival.notInView", { target: seen.name, distance: seen.distance.toFixed(1), reach: e.reach.toFixed(1) }),
+  ];
+  if (fromHere.length) parts.push(rt(locale, "world.arrival.ops", { ops: fromHere.slice(0, 8).join(", ") }));
+  if (notHere.length) parts.push(rt(locale, "world.arrival.opsFar", { ops: notHere.slice(0, 8).join(", "), target: goal.id }));
+  if (short) parts.unshift(rt(locale, "world.arrival.short", { distance: seen.distance.toFixed(1), range: asked!.toFixed(1), target: seen.name }));
+  return { ok: !short, text: parts.join(" "), data: { target: goal.id, distance: seen.distance, inReach: seen.inReach, visible: seen.visible, reach: e.reach, operationsHere: fromHere, operationsOutOfRange: notHere } };
+}
+
 /** The room (`room:<id>`) containing a point of the facility, or null. */
 function roomContaining(world: WorldRuntime, level: string, x: number, z: number): string | null {
   let best: string | null = null;
@@ -519,16 +552,24 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
       (args, ctx) => rt(ctx.locale, "sum.navigate", { target: strArg(args, "target") ? targetName(ctx, strArg(args, "target")) : JSON.stringify(args.goal ?? {}) }),
       async (args, ctx) => {
         const actorId = host.actorOf(ctx);
+        const range = typeof args.range === "number" ? args.range : undefined;
         let goal: NavGoal | null = null;
+        let note: string | null = null;
         if (args.goal !== undefined) {
           const problem = goalProblem(args.goal);
           if (problem) return failedOutput(ctx, "world.badGoal", { reason: problem });
-          goal = args.goal as NavGoal;
+          // a top-level range is never silently dropped: it is the goal's range, or the reply says why it does not apply
+          const combined = withRange(args.goal as NavGoal, range, L(ctx));
+          goal = combined.goal;
+          note = combined.note;
         } else if (strArg(args, "target")) {
-          goal = targetGoal(host, actorId, strArg(args, "target"), typeof args.range === "number" ? args.range : undefined);
+          goal = targetGoal(host, actorId, strArg(args, "target"), range);
           if (!goal) return failedOutput(ctx, "world.unknownTarget", { target: strArg(args, "target") });
         } else return failedOutput(ctx, "world.needTarget");
-        return resultOutput(await host.act(ctx, { operation: "navigate", goal }), L(ctx));
+        const out = resultOutput(await host.act(ctx, { operation: "navigate", goal }), L(ctx));
+        const arrival = out.ok ? arrivalReport(host, actorId, goal, L(ctx)) : null;
+        const lines = [out.output, ...(note ? [note] : []), ...(arrival ? [arrival.text] : [])];
+        return { ...out, ok: out.ok && arrival?.ok !== false, output: lines.join("\n"), data: { ...(out.data as object), ...(arrival ? { arrival: arrival.data } : {}), ...(note ? { corrected: goal } : {}) } };
       },
       {
         // Rules see canonical ids (review S6): the target resolved as the walk resolves it; every leaf of a goal.

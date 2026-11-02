@@ -150,6 +150,10 @@ developer documents use.
 | search | Search within reach; Check the wound | 在身边仔细查找；检查术野 | world operation `search` (`targetId`: the patient), concealed items (EMBODIED §8.6) | |
 | learner mode / observer mode (team) | I am the surgeon; Observe | 我来当术者；观察 | `team surgeon learner \| simulated` (observer mode = the simulated surgeon) | |
 | team pace | Team pace: Auto / Step / Next step | 团队节奏：自动 / 单步 / 下一步 | autonomy `auto` / `step` (`team resume` / `pause` / `step`) | |
+| checklist step; invalid (out of order) | WHO Sign In / Time Out / Sign Out; "Recorded as INVALID — out of order" | WHO 麻醉前核查 / 切皮前暂停核查 / 离室前核查；“已记为无效——顺序不对” | `checklist: true`, `InterventionRecord.invalid` | never "given" or "done" when invalid |
+| hold (withheld clearance); release after reassessment | "Induction is on hold — placed by the attending: …"; "released after reassessment: …" | 暂缓（不同意继续）；“诱导已被上级医师暂缓：……”；重新评估后解除 | `hold` / `release-hold` actions, `place_hold` / `release_hold`, `held`, code `on-hold` | 暂缓, not 禁止 or 冻结: a decision that waits on a reassessment |
+| what is still needed; next | "· WHO Time Out … → next: intervene …" | 仍需；下一步 | `case_status` requirements (`explainCondition`) | met ✓ / open · |
+| teaching correction | "Correction: …" | 纠正：…… | `npcs[].corrections` | authored teaching, said by the colleague who catches the error |
 
 ### Assessment and debrief
 

@@ -431,11 +431,25 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   already decided → `already-decided`. Correct iff (single) the chosen option
   is correct; (multiple) the chosen set equals the set of correct options.
   Appends to `attempts`; on correct sets `decisions[id] = clock`.
-* `intervene` — `maxDoses` exceeded → `max-doses`. Appropriateness:
+* `intervene` — `maxDoses` exceeded → `max-doses`. A hold standing on the
+  intervention (see `hold`) → `on-hold`, naming who placed it and why; nothing
+  is recorded. Appropriateness:
   `contraindicated` if `contraindicatedWhen` true (evaluated **before**
   applying), else `indicated` if `indicatedWhen` true, else `neutral`.
   Applies `setFlags`; effects are applied lazily by `vitalsAt` from the
-  intervention records.
+  intervention records. A checklist step (`checklist: true`) attempted while
+  contraindicated is recorded `invalid`: nothing applied, no dose used.
+* `hold {interventionId, placedBy, reason}` — an explicit hold (an
+  anaesthetist or attending withholding clearance): appended to `holds` with
+  the minute and sequence. Unknown id → `unknown-id`; an intervention already
+  given, or a second hold by the same holder → `invalid`. Costs no time.
+* `release-hold {interventionId, releasedBy, reassessment}` — releases the
+  holds of that intervention placed by `releasedBy` (compared trimmed and
+  case-insensitively), recording who and the reassessment. Nothing held →
+  `invalid`; every standing hold placed by someone else →
+  `requirements-unmet` ("only <holder> can release it"). Missing information
+  never places a hold by itself; the `held` condition leaf reads a standing
+  hold (PROTOCOL.md §3.1).
 * `finish` — rejected `objectives-incomplete` unless `progress().complete`
   (V4 behaviour); sets `finished`; emits `case.finished`.
 * After **every accepted** action: newly completed objectives (in order of

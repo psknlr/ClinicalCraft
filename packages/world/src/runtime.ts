@@ -16,7 +16,7 @@ import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
 import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
 import { buildCollisionModel } from "./collision.js";
-import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type WorldDynamics, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
 import { worldMessage } from "./i18n.js";
 import { levelInfos } from "./levels.js";
 import { WorldLocator } from "./locate.js";
@@ -156,7 +156,23 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
       return backend.plan({ actorId, from: a.pose, goal, role: a.role });
     },
 
-    checkSpatial: (actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }) => checker.check(actorId, intent, opts),
+    checkSpatial(actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }): SpatialCheck {
+      const base = checker.check(actorId, intent, opts);
+      // a checklist step's team prerequisites (the WHO board's count before a Time Out) hold on every path to it
+      const actor = store.actor(actorId);
+      if (!base.ok || intent.kind !== "intervene" || !intent.interventionId || !actor) return base;
+      const fail = rules.checklistPrerequisite(intent.interventionId, actor);
+      if (!fail) return base;
+      return {
+        ok: false,
+        code: opts?.recheck ? "SPATIAL_PRECONDITION_CHANGED" : "SPATIAL_REQUIREMENT_UNMET",
+        requirement: base.requirement,
+        reason: "checklist-prerequisite",
+        message: fail.message,
+        hint: fail.goal ? { goal: fail.goal, label: fail.label ?? "", ...(fail.then ? { then: fail.then } : {}) } : null,
+        details: { board: rules.checklistOperation(intent.interventionId)?.id ?? null, code: fail.code },
+      };
+    },
     atBedside(id: EntityId) {
       const resolved = actions.resolve(id);
       const p = resolved ? locator.place(resolved) : null;

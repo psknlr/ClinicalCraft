@@ -177,6 +177,12 @@ export const ClockSchema = z
     startTime: z.string().regex(/^\d{2}:\d{2}$/).optional(),
     /** Simulated minutes that pass per real minute in the 3D world (0 = only actions advance time). */
     realtimeScale: z.number().min(0).max(60).default(0),
+    /**
+     * What a world action costs on a simulated clock (docs/EMBODIED.md R8): `scaled` — its seconds × `realtimeScale`
+     * (0: walking and device operations are free); `actual` — its own duration (a 60 s insufflation is one clinical
+     * minute; a walk its travel time), whatever `realtimeScale` is. Observations made afterwards carry that time.
+     */
+    worldTime: z.enum(["scaled", "actual"]).default("scaled"),
     /** Minutes each action type consumes in `simulated` mode. */
     actionCosts: z
       .object({
@@ -753,6 +759,26 @@ export const DebriefSchema = z
 /* NPC knowledge (nurse / consultants)                                 */
 /* ------------------------------------------------------------------ */
 
+/**
+ * A misconception this colleague always corrects (docs/CASE_AUTHORING.md §7.3): when a message to them matches
+ * `match` (at least one phrase of every group, case-insensitive, any locale), their reply must make the correction —
+ * a model is told to, and a reply that contains none of `marks` gets `say` appended; the offline responder says it.
+ * Authored teaching (a regression for unsafe advice a model once endorsed), never a case fact.
+ */
+export const NpcCorrectionSchema = z
+  .object({
+    id: IdSchema,
+    /** The misconception, for authors and reviewers. */
+    misconception: LocalizedTextSchema,
+    match: z.array(z.array(z.string().trim().min(1)).min(1)).min(1).max(6),
+    /** The correction, in the colleague's voice. */
+    say: LocalizedTextSchema,
+    /** Words that show a reply made the correction (any one, any locale; case-insensitive). */
+    marks: z.array(z.string().trim().min(1)).min(1),
+  })
+  .strict();
+export type NpcCorrection = z.infer<typeof NpcCorrectionSchema>;
+
 export const NpcBriefSchema = z
   .object({
     role: z.enum(["nurse", "radiologist", "pathologist", "lab-tech", "attending", "pharmacist", "consultant", "receptionist", "paramedic"]),
@@ -762,6 +788,8 @@ export const NpcBriefSchema = z
     /** Investigation ids this NPC may interpret once the learner has the result. */
     interprets: z.array(IdSchema).default([]),
     revealsDiagnosis: z.boolean().default(false),
+    /** Misconceptions this colleague always corrects (see `NpcCorrectionSchema`). */
+    corrections: z.array(NpcCorrectionSchema).default([]),
   })
   .strict();
 

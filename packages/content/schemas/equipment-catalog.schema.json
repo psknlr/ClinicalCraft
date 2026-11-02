@@ -1022,6 +1022,18 @@
         {
           "type": "object",
           "properties": {
+            "held": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "held"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "phase": {
               "$ref": "#/definitions/Id"
             }

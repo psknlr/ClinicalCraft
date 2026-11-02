@@ -603,6 +603,7 @@ export class ActionBus implements EffectsHost, TransportHost {
     if (o.clinical) result.clinical = o.clinical;
     if (o.clinicalEventIds) result.clinicalEventIds = o.clinicalEventIds;
     if (o.hint !== undefined) result.hint = o.hint;
+    if (o.moved) result.moved = o.moved;
     if (actionId && record) {
       const done = this.emit({ type: "action.completed", actionId, actorId: typeof request.actorId === "string" ? request.actorId : "", operation: typeof request.operation === "string" ? request.operation : "", status: o.status, ...(o.errorCode ? { errorCode: o.errorCode } : {}) });
       result.events.push(done);

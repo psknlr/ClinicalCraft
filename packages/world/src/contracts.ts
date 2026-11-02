@@ -898,6 +898,11 @@ export interface WorldActionResult {
   events: WorldEvent[];
   /** Where to go / what to do next when the failure is recoverable (`then`: an operation to do on arrival, e.g. a fetch). */
   hint?: ActionHint | null;
+  /**
+   * A moved item (`move_to`): how far it actually moved and where it stands now, and `already_at_destination` when
+   * it already satisfied the destination and nothing was moved (docs/EMBODIED.md §5).
+   */
+  moved?: { entityId: EntityId; displacement: number; at: { x: number; z: number; level: string }; satisfied: boolean; alreadyAtDestination?: true };
 }
 
 /** Result of running a clinical tool through the session's tool path (hooks → precheck → approval → engine). */
@@ -1022,7 +1027,7 @@ export interface WorldRuntime {
   /* perception (read-only) */
   observe(actorId: ActorId, opts?: Partial<PerceptionOptions>): WorldObservation;
   find(actorId: ActorId, query: EntityQuery): ObservedEntity[];
-  inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string }[] }) | null;
+  inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string; code?: string }[] }) | null;
   /**
    * In-service devices of an equipment type near an entity — the same level, footprint to footprint within `within` m
    * (default the `nearbyState` range), itself excluded — with their behaviour state, nearest first: what a

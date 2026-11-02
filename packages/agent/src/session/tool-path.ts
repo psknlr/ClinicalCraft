@@ -50,7 +50,7 @@ export class ToolPath {
       agent,
       state: () => k.state,
       dispatch: (action) => k.dispatch(action, id),
-      ask: async (target, utterance, sig) => {
+      ask: async (target, utterance, sig, voice) => {
         if (this.askDepth >= MAX_NESTED_ASKS) return { text: rt(k.locale, "tool.nestedLimit", { agent: target }), grounded: [] };
         // The examiner judges the encounter from this dialogue: keep the asker's words with the reply.
         if (utterance.trim()) {
@@ -60,7 +60,7 @@ export class ToolPath {
         }
         this.askDepth++;
         try {
-          const reply = await k.agents.runAgent(id, target, utterance, sig ?? signal);
+          const reply = await k.agents.runAgent(id, target, utterance, sig ?? signal, [], "message", voice ?? null);
           return { text: reply.text, grounded: reply.grounded };
         } finally {
           this.askDepth--;

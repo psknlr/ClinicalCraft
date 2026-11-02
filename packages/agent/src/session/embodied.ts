@@ -471,7 +471,7 @@ export class EmbodiedSession {
       const changes = captured.filter((e) => e.type !== "action.rejected");
       if (changes.length) this.engineChanges.set(actionId, [...(this.engineChanges.get(actionId) ?? []), ...changes]);
     }
-    const data = call.output.data as { rejected?: unknown; code?: unknown; hint?: unknown } | undefined;
+    const data = call.output.data as { rejected?: unknown; invalid?: unknown; code?: unknown; hint?: unknown } | undefined;
     const spatial = spatialCodeOf(call.output);
     const outcome: ClinicalInvokeResult["outcome"] =
       call.ok && call.status === "ok"
@@ -484,7 +484,7 @@ export class EmbodiedSession {
               ? "spatial"
               : data?.code === "NOT_AUTHORIZED"
                 ? "unauthorized"
-                : data?.rejected
+                : data?.rejected || data?.invalid === true
                   ? "rejected"
                   : "error";
     const firstLine = call.output.output.split("\n")[0] ?? "";
@@ -498,12 +498,16 @@ export class EmbodiedSession {
     };
   }
 
-  /** `ClinicalPort.elapse` (EMBODIED R8): simulated clocks only; minutes × realtimeScale, dispatched in hundredths. */
+  /**
+   * `ClinicalPort.elapse` (EMBODIED R8): simulated clocks only; minutes × realtimeScale (`clock.worldTime: "scaled"`)
+   * or the action's own duration (`"actual"`), dispatched in hundredths.
+   */
   private elapse(seconds: number, reason: "travel" | "procedure"): void {
     const c = this.host.caseDef;
     const s = this.host.state();
-    if (c.clock.mode !== "simulated" || !(c.clock.realtimeScale > 0) || !s.started || s.finished || !(seconds > 0)) return;
-    this.carry += (seconds / 60) * c.clock.realtimeScale;
+    const scale = c.clock.worldTime === "actual" ? 1 : c.clock.realtimeScale;
+    if (c.clock.mode !== "simulated" || !(scale > 0) || !s.started || s.finished || !(seconds > 0)) return;
+    this.carry += (seconds / 60) * scale;
     const minutes = Math.min(Math.floor(this.carry * 100 + 1e-9) / 100, 24 * 60);
     if (minutes < 0.01) return;
     this.carry = Math.max(0, this.carry - minutes);
@@ -953,8 +957,19 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   if (r.message === "not-authorized") return rt(locale, "delegate.notAuthorized", { message: r.refusal ?? "" });
   const staff = r.staffId ? (world.entity(r.staffId) ? t(world.entity(r.staffId)!.name, locale) : r.staffId) : r.role;
   const task = taskLabel(locale, r.task);
-  if (r.message === "no-item" || r.message === "no-target") return rt(locale, r.message === "no-item" ? "delegate.noItem" : "delegate.needTarget", { task, what: task, param: "target" });
+  if (r.message === "no-item") return rt(locale, "delegate.noItem", { task, what: task });
+  if (r.message === "no-target") return rt(locale, "delegate.needTarget", { task, param: rt(locale, r.task === "give_intervention" ? "delegate.param.intervention" : "delegate.param.target") });
+  if (r.message === "target-not-intervention") {
+    const id = world.resolveId(r.asked ?? "");
+    const e = id ? world.entity(id) : null;
+    return rt(locale, "delegate.notIntervention", { target: e ? `${t(e.name, locale)} (${e.id})` : (r.asked ?? "") });
+  }
+  if (r.message === "unknown-intervention") return rt(locale, "delegate.unknownIntervention", { asked: r.asked ?? "" });
   const lines = [rt(locale, "delegate.result", { staff, task, status: rt(locale, `delegate.status.${r.status}` as RuntimeKey), steps: r.steps.length, seconds: Math.round(r.elapsedSeconds) })];
+  if (r.delivered) {
+    const room = r.delivered.room ? (world.entity(`room:${r.delivered.room}`) ? t(world.entity(`room:${r.delivered.room}`)!.name, locale) : r.delivered.room) : "—";
+    lines.push(rt(locale, "delegate.delivered", { target: nameOf(world, r.delivered.entityId, locale), room, distance: r.delivered.distance.toFixed(1), x: r.delivered.x.toFixed(1), z: r.delivered.z.toFixed(1) }));
+  }
   r.steps.forEach((s, i) => {
     const words = stepWords(s, locale, world, caseDef);
     lines.push(

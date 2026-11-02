@@ -212,7 +212,11 @@ solution is sent to the browser).
 ## 6. Interventions & physiology (acute cases)
 
 * `clock.mode: "simulated"`, `startTime`, sensible `actionCosts`, optional
-  `realtimeScale` (0–2), optional `limitMinutes`.
+  `realtimeScale` (0–2), optional `limitMinutes`. In in-world mode a walk or a
+  device operation costs its seconds × `realtimeScale` (`worldTime: "scaled"`,
+  the default) — or its own duration with `worldTime: "actual"`, for a case
+  where a device's time matters clinically (a 60 s insufflation is a clinical
+  minute; the vital signs read afterwards carry it).
 * `physiology.baseline` consistent with the presentation; `trends` for untreated
   deterioration that stop (`until`) when the right treatment is given (and
   `recoverPerMinute` for improvement); `events` for scripted turns (VF arrest if
@@ -353,6 +357,16 @@ instruments, safety views, bail-outs — the contract is [PROCEDURE.md](PROCEDUR
   attempt in order opens it. Make induction contraindicated before the Sign In, score the order by
   committed sequence (`{"inOrder": ["sign-in", "induction"]}`) and show a reversed order in the verdict with
   a safety gate on `{"intervened": "induction", "valid": false}`. Open recovery only on a valid Sign Out.
+  Keep tasks and checks apart: attaching the monitor is its own `monitoring` intervention (the monitor's
+  `attach` and a delegated nurse record it; `physiology.monitor.attachedWhen` reads it); a checklist step is
+  never `kind: "monitoring"` and is valid only once its own checks are addressed (`contraindicatedWhen` on the
+  monitor and the questions it asks). Make the Time Out need a valid Sign In as well as induction. A WHO
+  board marked `derived: "case-record"` shows these steps; its operations' team prerequisites (a baseline
+  count) hold for `intervene` on the same step too.
+* **Holds are explicit.** An attending or anaesthetist who withholds clearance places a hold (`hold`, their
+  `place_hold` tool) and releases it after a recorded reassessment; give them knowledge that says when, and
+  that missing information alone is no universal prohibition. `{"held": "induction"}` reads a standing hold
+  (for a gate or a debrief line, not to block — the engine refuses a held step itself).
   Physiology events may read the field (`{"procedure": {"insufflated": true}}`); label simulated values as
   simulated in their message.
 * **Count what the operator sees.** Give the "only the structures entering" criterion a usual `count` (2):
@@ -361,7 +375,10 @@ instruments, safety views, bail-outs — the contract is [PROCEDURE.md](PROCEDUR
 * **Score the operation in the rubric**: the critical view documented and true (`{"procedure": {"documented":
   "cvs", "valid": true}}`), correct identification, no irreversible step on unconfirmed anatomy (an
   avoided-harm item with `scoredWhen`), and complication management items `scoredWhen` the complication
-  occurred (the percentage renormalises when it did not).
+  occurred (the percentage renormalises when it did not). Credit the outcome from the field — the specimen
+  out, the abdomen closed, or a bail-out through its own items — and score those items from the moment the
+  operation opens (`scoredWhen` including the valid Time Out), so a run that never operates (counts, devices,
+  the wrong tool) loses them instead of leaving them unscored.
 * **`safetyGates`**: outcomes no score compensates (a bile duct injury, an irreversible step without a true
   critical view, an unrecognised injury) are `safety-critical` gates with a `capPercent`; recoverable
   complications are `complication` gates. Every debrief states the verdict.
@@ -420,8 +437,8 @@ A theatre case can give its room a care team that works on its own in in-world m
   presented in a seeded shuffle, so list them in any order.
 * Conditions available everywhere: `all/any/not/always`, `asked`, `examined`,
   `ordered`, `read`, `resultReady`, `decided`, `decidedFirstTry` (rubric: first
-  attempt correct), `attempted`, `intervened`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`.
+  attempt correct), `attempted`, `intervened`, `inOrder`, `held` (a hold stands),
+  `phase`, `flag`, `objective`, `vital`, `elapsed`, `hints`.
 * `rubric`: 8–15 deterministic items across domains (history, examination,
   investigations, diagnosis, management, safety, efficiency) + 1–3
   communication items judged by the examiner (`judgeGuidance`, no `met`).
@@ -457,7 +474,12 @@ A theatre case can give its room a care team that works on its own in in-world m
   and must not contain result findings or derived values (another study's
   report, a creatinine clearance, a score total): model-backed NPCs get it in
   their prompt, and results reach them through `get_results` only once read.
-  Keep it to interpretive/teaching knowledge and boundaries.
+  Keep it to interpretive/teaching knowledge and boundaries. A named
+  `consultant` (the anaesthetist) is reached by `consult {staff}` and speaks
+  through the attending's profile; a facility staff member with the same title
+  ("Dr Tanaka (anaesthesia)") brings that consultant's knowledge.
+* `npcs[].corrections` (§7.3 below) for misconceptions a colleague must always
+  correct.
 * `debrief`: conclusion, 3–6 key reasoning points, boundaries, unknowns, 3–6
   teaching points, guideline references, and the formative-assessment notice.
 * `solution`: an array of typed `ClinicalAction`s — the reference action path (start → … → finish) that completes all
@@ -481,6 +503,24 @@ A theatre case can give its room a care team that works on its own in in-world m
   phrases learners use ("量过血压", "以前有什么病"). A particle the learner adds
   is skipped ("吸过毒吗" finds 吸毒) but a keyword's own particles are kept
   ("吃了啥药" is about just now, not 吃的啥药), and 痛 matches 疼.
+
+### 7.3 Teaching corrections (`npcs[].corrections`)
+
+A model-backed colleague can endorse a confident but wrong plan. When a case knows such an error — paralysis
+with little or no hypnotic, end-tidal CO₂ as the measure of preoxygenation, a swallow test before extubation, a
+hypothetical turned into history — author it as a correction on the colleagues who must catch it:
+
+```json
+{ "id": "preox-etco2", "misconception": {"en": "EtCO₂ > 40 shows adequate preoxygenation", "zh-CN": "…"},
+  "match": [["etco2", "end-tidal co2", "呼末二氧化碳"], ["preoxygen", "预充氧"]],
+  "say": {"en": "Correction: preoxygenation is judged by end-tidal OXYGEN …", "zh-CN": "纠正：…"},
+  "marks": ["end-tidal oxygen", "呼气末氧"] }
+```
+
+A message matches when it contains a phrase of every `match` group (case-insensitive, any locale). The model
+gets a `<must_correct>` part; a reply with none of the `marks` gets `say` appended as the same speaker's next line;
+the offline responder says it first. It is teaching design, never a case fact: cite the guidance in
+`debrief.references`, and test it (a regression in which the colleague corrects the error).
 
 ## 8. Facilities
 

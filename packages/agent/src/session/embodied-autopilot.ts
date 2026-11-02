@@ -202,6 +202,29 @@ function stepVerified(step: OfflineClinicianStep, state: SessionState, clockBefo
 }
 
 /** Carry out one tool step with the body (see the module docs). */
+/** The world request a hint's `then` names. */
+function thenRequest(then: NonNullable<ActionHint["then"]>) {
+  return { operation: then.operation, targetId: then.targetId, ...(then.goal ? { goal: then.goal } : {}), ...(then.parameters ? { parameters: then.parameters } : {}) };
+}
+
+/** Prerequisite chains followed by `achieve` (the count board's final count → the RF wand's scan → picking it up). */
+const MAX_PREREQUISITE_DEPTH = 4;
+
+/**
+ * Do a world operation, following its refusals: walk to the hint's goal, do the hint's `then` first (recursively),
+ * then try again — a few attempts, a few levels deep. True when it was done.
+ */
+async function achieve(e: EmbodiedAutopilotHost, request: Parameters<EmbodiedAutopilotHost["act"]>[0], turnId: string, signal?: AbortSignal, depth = 0): Promise<boolean> {
+  for (let attempt = 0; attempt < 3 && !signal?.aborted; attempt++) {
+    const r = await e.act(request, turnId, signal);
+    if (r.status === "completed") return true;
+    if (r.status === "cancelled" || !r.hint || depth >= MAX_PREREQUISITE_DEPTH) return false;
+    if ((await e.act({ operation: "navigate", goal: r.hint.goal }, turnId, signal)).status !== "completed") return false;
+    if (r.hint.then && !(await achieve(e, thenRequest(r.hint.then), turnId, signal, depth + 1))) return false;
+  }
+  return false;
+}
+
 async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, step: Extract<OfflineClinicianStep, { kind: "tool" }>, turnId: string, signal?: AbortSignal): Promise<StepRun> {
   const intent = actionIntent(step.action as ClinicalAction);
   const actor = PRIMARY_ACTOR;
@@ -229,6 +252,11 @@ async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, st
             } else if (check.reason === "provider-not-at-bedside" && goal.kind === "interact" && patient) {
               if ((await e.act({ operation: "navigate", goal }, turnId, signal)).status !== "completed") break;
               if ((await e.act({ operation: "move_to", targetId: goal.id, goal: { kind: "interact", id: patient } }, turnId, signal)).status !== "completed") break;
+            } else if (then) {
+              // walk there, then do what the hint names — a checklist step's prerequisite (the count board's counts,
+              // the RF wand's scan first), following each refusal's own hint a few levels deep
+              if ((await e.act({ operation: "navigate", goal }, turnId, signal)).status !== "completed") break;
+              if (!(await achieve(e, thenRequest(then), turnId, signal))) break;
             } else if ((await e.act({ operation: "navigate", goal }, turnId, signal)).status !== "completed") break;
             check = world.checkSpatial(actor, intent);
           }

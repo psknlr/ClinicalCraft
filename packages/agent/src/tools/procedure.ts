@@ -8,6 +8,8 @@ import { observeField, portReport, procedureFor, ProcedureOpSchema, createProced
 import { joinList, rt } from "../session/i18n.js";
 import { procedureLabel } from "../session/i18n-procedure.js";
 import { actorFor, rejectedOutput, type ToolArgs } from "./clinical-resolve.js";
+import { visiblePhases } from "./clinical.js";
+import { operationPrerequisiteLines, operationUnderWay } from "./requirements.js";
 import type { ToolContext, ToolDefinition } from "./types.js";
 
 function fieldText(ctx: ToolContext): string {
@@ -72,6 +74,13 @@ const observe: ToolDefinition<ToolArgs> = {
   risk: () => "none",
   summarize: (_args, ctx) => rt(ctx.locale, "sum.observe_field"),
   async run(_args, ctx) {
+    const c = ctx.caseDef;
+    const s = ctx.state();
+    // before the operation is under way there is no field to look at: say what still opens it
+    if (procedureFor(c, s) && !operationUnderWay(c, s) && !s.procedure) {
+      const L = ctx.locale;
+      return { ok: false, output: [rt(L, "status.op.locked"), ...operationPrerequisiteLines(c, s, L, visiblePhases(c, s))].join("\n"), data: { underWay: false } };
+    }
     return { ok: true, output: fieldText(ctx) };
   },
 };
@@ -144,7 +153,15 @@ const operateTool: ToolDefinition<ToolArgs> = {
     if (!parsed.success) return { ok: false, output: rt(L, "op.invalid", { message: parsed.error.issues[0]?.message ?? "" }) };
     const op: ProcedureOp = parsed.data;
     const result = ctx.dispatch({ type: "operate", op, by: actorFor(ctx) });
-    if (result.rejected) return rejectedOutput(L, result);
+    if (result.rejected) {
+      // the engine's own reason ("Insufflate before inserting instruments."), and before the operation is under
+      // way, what still opens it — never a bare "not available"
+      const c = ctx.caseDef;
+      const s = ctx.state();
+      const open = result.rejected.code === "phase-locked" ? operationPrerequisiteLines(c, s, L, visiblePhases(c, s)) : [];
+      const out = rejectedOutput(L, result, result.rejected.message);
+      return open.length > 0 ? { ...out, output: [out.output, rt(L, "intervene.opLocked"), ...open].join("\n") } : out;
+    }
     const step = result.events.find((e) => e.type === "procedure.step");
     const signals = step && step.type === "procedure.step" ? step.signals : [];
     const lines = [rt(L, "op.done", { op: op.op })];

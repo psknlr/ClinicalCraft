@@ -257,6 +257,18 @@
         {
           "type": "object",
           "properties": {
+            "held": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "held"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "phase": {
               "$ref": "#/definitions/Id"
             }
@@ -1668,6 +1680,82 @@
           "properties": {
             "type": {
               "type": "string",
+              "const": "hold"
+            },
+            "interventionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "placedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "interventionId",
+            "placedBy",
+            "reason"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "release-hold"
+            },
+            "interventionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "releasedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "reassessment": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "interventionId",
+            "releasedBy",
+            "reassessment"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
               "const": "finish"
             },
             "by": {
@@ -2388,6 +2476,14 @@
               "minimum": 0,
               "maximum": 60,
               "default": 0
+            },
+            "worldTime": {
+              "type": "string",
+              "enum": [
+                "scaled",
+                "actual"
+              ],
+              "default": "scaled"
             },
             "actionCosts": {
               "type": "object",
@@ -3613,6 +3709,53 @@
               "revealsDiagnosis": {
                 "type": "boolean",
                 "default": false
+              },
+              "corrections": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "misconception": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "match": {
+                      "type": "array",
+                      "items": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "minItems": 1
+                      },
+                      "minItems": 1,
+                      "maxItems": 6
+                    },
+                    "say": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "marks": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "minItems": 1
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "misconception",
+                    "match",
+                    "say",
+                    "marks"
+                  ],
+                  "additionalProperties": false
+                },
+                "default": []
               }
             },
             "required": [
