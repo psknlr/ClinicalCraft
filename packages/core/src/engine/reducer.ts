@@ -479,8 +479,10 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
 /* reduce / replay                                                     */
 /* ------------------------------------------------------------------ */
 
-function rejection(s: SessionState, action: ClinicalActionType, code: RejectionCode, message: string): ReduceResult {
-  return { state: s, events: [{ type: "action.rejected", action, code, message }], rejected: { code, message } };
+function rejection(s: SessionState, action: ClinicalActionType, code: RejectionCode, message: string, a?: ClinicalAction): ReduceResult {
+  // a refused operative step carries what was asked and where in the record (the scope shows it in order)
+  const op = a?.type === "operate" ? { at: s.clock, after: s.seq, detail: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}) } : {};
+  return { state: s, events: [{ type: "action.rejected", action, code, message, ...op }], rejected: { code, message } };
 }
 
 function guard(s: SessionState, type: ClinicalActionType): { code: RejectionCode; message: string } | null {
@@ -510,11 +512,11 @@ export function reduce(c: CaseDefinition, s: SessionState, a: ClinicalAction): R
   }
   const action = parsed.data;
   const blocked = guard(s, action.type);
-  if (blocked) return rejection(s, action.type, blocked.code, blocked.message);
+  if (blocked) return rejection(s, action.type, blocked.code, blocked.message, action);
 
   const ctx: Ctx = { c, before: s, s: cloneState(s), events: [] };
   const outcome = dispatch(ctx, action);
-  if (outcome.kind === "rejected") return rejection(s, action.type, outcome.code, outcome.message);
+  if (outcome.kind === "rejected") return rejection(s, action.type, outcome.code, outcome.message, action);
   if (outcome.kind === "unchanged") return { state: s, events: ctx.events };
 
   ctx.s.seq += 1;

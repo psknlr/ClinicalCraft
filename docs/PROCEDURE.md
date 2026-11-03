@@ -279,17 +279,18 @@ control submits `operate` through the app's action path.
 **The scope dock** (`packages/web/src/ui/scope-dock.ts`) keeps the laparoscopic picture beside the theatre
 from the moment a port plan is chosen, whatever window is open (it steps aside only while the surgery window
 shows the same picture full size): the world canvas is the theatre — people, equipment, hand-overs —, the dock
-is what the operator sees. It follows the session's record whoever acted (the learner's controls, a
-demonstration, a colleague at the table, an external agent). **One presentation queue**
-(`scope-presenter.ts`): the steps are shown one at a time in the record's order, each from its recorded
-`detail` replayed through the pure engine — the clips of an accelerated demonstration one by one — and a
-step with a signal stays longer; the last frame is the session's own field, and a first look (a reload) shows
-the field as it is without replaying the operation. A refused step is shown with the engine's reason and the
-field unchanged. The picture keeps the dissection done (`tissue`) apart from the window the traction holds
-open now (`windows`, from each region's exposure): let go, the tissue falls back over the region and the
-window narrows — said in words too ("Hepatocystic triangle: exposure none (dissected: partly done)") — while the cleared tissue stays
-cleared. With the scope out of the patient the dock says so; after a conversion to open the laparoscopic feed
-has ended and the theatre view goes on (the open field has no view of its own yet).
+is what the operator sees. **One operative playback** (`operative-playback.ts`, `App.playback`) feeds both the
+dock and the surgery window: neither works out the latest state on its own. It owns the queue of the record's
+operative events in order — each accepted step replayed from its recorded `detail` through the pure engine (the
+clips of a fast demonstration one by one), each refused step a frame of its own with the engine's reason and the
+field unchanged (the refusal event carries the step asked, `at` and `after`) — the frame on screen and its time
+(a step with a signal, and a refusal, stay longer; a frame keeps its time when the next step arrives late). Opening
+the surgery window while step 38 is on screen goes on from step 38. The last frame is the session's own field, and a
+first look (a reload) shows the field as it is without replaying the operation. The picture keeps the dissection
+done (`tissue`) apart from the window the traction holds open now (`windows`, from each region's exposure): let
+go, the tissue falls back over the region and the window narrows — said in words too ("Hepatocystic triangle:
+exposure none (dissected: partly done)") — while the cleared tissue stays cleared. With the scope out of the
+patient the dock says so; after a conversion to open the laparoscopic feed has ended and the theatre view goes on.
 
 It draws the procedure's shapes, and the case's `anatomy` model asset for the organ surfaces when the
 case lists one. The debrief adds an *Operation* section once the case is finished, and for a case with

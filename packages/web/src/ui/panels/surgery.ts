@@ -43,6 +43,7 @@ import {
   type HandleControl,
 } from "./surgery-controls.js";
 import { lapScene } from "./surgery-scene.js";
+import { frameCaption } from "../scope-dock.js";
 
 /** Injuries the operator can say aloud (the `recognise` op). */
 const INJURIES = ["bile-duct-injury", "vascular-injury", "bleeding", "perforation", "thermal-injury", "bile-leak"] as const;
@@ -145,9 +146,17 @@ export function surgeryPanel(app: App): () => PanelView {
       const waiting = d.sent && p.counters.steps <= d.sent.steps ? d.sent : null;
       const failed = waiting ? store.failureOf(waiting.id) : undefined;
       const step = lastStep(store.domainEvents("procedure.step"));
+      // the frame the one playback shows (the scope dock shows the same): a step, or a refusal with its reason
+      const frame = app.playback.frame().item;
+      const caption = frameCaption(frame, (sid) => {
+        const staff = game.facility.staff.find((x) => x.id === sid);
+        return staff ? t(staff.name, L) : sid;
+      });
+      if (caption) lines.push(h("div", { class: ["lap-line", caption.status === "rejected" ? "bad" : ""], dataset: { status: caption.status === "rejected" ? "frame-rejected" : "frame", op: caption.op, id: caption.id } }, caption.text));
+      if (app.playback.pending()) lines.push(h("div", { class: "lap-line muted" }, tr("scope.queue", { n: app.playback.pending() })));
       if (waiting && failed !== undefined) lines.push(h("div", { class: "lap-line bad", dataset: { status: "rejected" } }, tr("surgery.status.rejected", { message: failed })));
       else if (waiting) lines.push(h("div", { class: "lap-line", dataset: { status: "sent" } }, tr("surgery.status.sent", { op: label("op", waiting.op.op) })));
-      else if (step)
+      else if (step && !caption)
         lines.push(
           h(
             "div",
@@ -484,7 +493,7 @@ export function surgeryPanel(app: App): () => PanelView {
       const { p, v } = f;
       d.port = activePort(v, d.port);
       d.handle = selectedHandle(v, d.handle);
-      lap?.update(lapScene(def, p, v));
+      drawFrame();
       lap?.select(d.handle);
       dark.hidden = v.inView;
       renderStatus(v, p);
@@ -504,6 +513,23 @@ export function surgeryPanel(app: App): () => PanelView {
       side.scrollTop = scroll;
       if (key) side.querySelector<HTMLElement>(key)?.focus({ preventScroll: true });
     }
+
+    /**
+     * The picture is the one playback's frame (`App.playback`): the same frame as the scope dock — opened on step 38
+     * it goes on from step 38, a fast burst is shown step by step, a refusal stays with its reason. The controls work on
+     * the session's own field.
+     */
+    function drawFrame(): void {
+      if (!def) return;
+      const shown = app.playback.frame().state ?? field()?.p ?? null;
+      if (shown) lap?.update(lapScene(def, shown, observeField(def, shown)));
+    }
+    const offPlayback = app.playback.subscribe(() => {
+      if (disposed) return;
+      drawFrame();
+      const f = field();
+      if (f) renderStatus(f.v, f.p);
+    });
 
     render();
     /** Start the view (after the window is in the document) — with the case's anatomy model when it is there. */
@@ -561,6 +587,7 @@ export function surgeryPanel(app: App): () => PanelView {
       },
       dispose() {
         disposed = true;
+        offPlayback();
         lap?.dispose();
         lap = null;
       },

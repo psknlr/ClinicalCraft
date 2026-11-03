@@ -308,7 +308,11 @@ export type DomainEvent =
   | { type: "anaesthesia.recorded"; op: AnaesthesiaOp["op"]; responsible: string; relief?: string }
   /** Closure while the count was not settled (`CountUnsafe`): recorded for the debrief. */
   | { type: "count.unsafe"; what: "closure"; status: CountStatus; missing: string[]; unexpected: string[] }
-  | { type: "action.rejected"; action: ClinicalActionType; code: RejectionCode; message: string };
+  /**
+   * A refused operative step also carries `at` (the clock), `after` (the action sequence it came after: the record's
+   * order), `detail` (the step as asked) and `actor`: the scope shows it with its reason, the field unchanged.
+   */
+  | { type: "action.rejected"; action: ClinicalActionType; code: RejectionCode; message: string; at?: number; after?: number; detail?: ProcedureOp; actor?: string };
 
 export type RejectionCode =
   | "not-started"

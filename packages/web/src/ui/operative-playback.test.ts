@@ -1,0 +1,151 @@
+/**
+ * The operation on screen, step by step (the engineering recommendations' visual acceptance test, headless):
+ * at the neck retraction the window opens; when the grasper is withdrawn the neck falls back and the window narrows
+ * before the next energy step — the tissue already cleared stays cleared (the picture's dissection layer and its
+ * exposure window are apart); several steps committed at once (an accelerated demonstration) are shown one by one,
+ * each clip on its own, and the last frame is the session's own field; a refused step is a frame of its own and keeps
+ * its time; a first look shows the field as it is.
+ */
+import { createSession, observeField, reduce, type ClinicalAction, type DomainEvent, type ProcedureOp, type SessionState } from "@clinicalcraft/core";
+import { describe, expect, it } from "vitest";
+import { lapCholeCase } from "./panels/__fixtures__/lap-chole-sit.js";
+import { lapScene } from "./panels/surgery-scene.js";
+import { OperativePlayback, type OperativeEvent } from "./operative-playback.js";
+
+const c = lapCholeCase();
+const def = c.procedure!;
+
+function run(ops: ProcedureOp[], from?: { s: SessionState; events: OperativeEvent[] }) {
+  let s = from?.s ?? reduce(c, reduce(c, createSession(c), { type: "start" }).state, { type: "set-phase", phase: "theatre" }).state;
+  const events: OperativeEvent[] = [...(from?.events ?? [])];
+  for (const op of ops) {
+    const r = reduce(c, s, { type: "operate", op } as ClinicalAction);
+    if (r.rejected) throw new Error(`${op.op}: ${r.rejected.message}`);
+    events.push(...r.events.filter((e): e is OperativeEvent => e.type === "procedure.step"));
+    s = r.state;
+  }
+  return { s, events };
+}
+const ACCESS: ProcedureOp[] = [
+  { op: "plan-ports", plan: "three-port-left" },
+  { op: "insufflate", pressure: 12 },
+  { op: "insert", port: "A", instrument: "laparoscope" },
+  { op: "insert", port: "B", instrument: "grasper" },
+  { op: "insert", port: "C", instrument: "maryland" },
+];
+const NECK: ProcedureOp = { op: "retract", port: "B", structure: "gallbladder-infundibulum", direction: ["patient-left", "caudal"], force: "firm" };
+const dissect = (n: number): ProcedureOp[] => Array.from({ length: n }, () => ({ op: "dissect", port: "C", region: "hepatocystic-triangle", energy: false }) as ProcedureOp);
+const windowOf = (s: SessionState) => lapScene(def, s.procedure!, observeField(def, s.procedure!)).windows.find((w) => w.id === "hepatocystic-triangle");
+const tissueOf = (s: SessionState) => lapScene(def, s.procedure!, observeField(def, s.procedure!)).tissue.find((w) => w.id === "hepatocystic-triangle");
+
+describe("the scope's picture: exposure apart from dissection", () => {
+  it("retracted, the window is open; the grasper withdrawn, it narrows at once while the cleared tissue stays cleared", () => {
+    const held = run([...ACCESS, NECK, ...dissect(3)]).s;
+    expect(windowOf(held)?.exposure).toBe(1);
+    const dropped = run([{ op: "withdraw", port: "B" }], { s: held, events: [] }).s;
+    expect(windowOf(dropped)!.exposure).toBeLessThan(1);
+    // the dissection layer did not change: the tissue over the region is as thin as it was
+    expect(tissueOf(dropped)?.opacity).toBe(tissueOf(held)?.opacity);
+    // nothing about the window before the region is begun
+    expect(windowOf(run([...ACCESS, NECK]).s)).toBeUndefined();
+  });
+});
+
+/** Manual timers: the test moves the clock and runs what is due. */
+function manualTimers() {
+  let now = 0;
+  const due: { at: number; fn: () => void }[] = [];
+  return {
+    timers: { now: () => now, schedule: (fn: () => void, ms: number) => due.push({ at: now + ms, fn }), cancel: () => undefined },
+    advance(ms: number) {
+      now += ms;
+      for (let x = due.findIndex((d) => d.at <= now); x >= 0; x = due.findIndex((d) => d.at <= now)) due.splice(x, 1)[0]!.fn();
+    },
+  };
+}
+
+/** The record's operative events, steps and refusals, in order (as the session emits them). */
+function record(ops: ProcedureOp[], from?: { s: SessionState; events: OperativeEvent[] }) {
+  let s = from?.s ?? reduce(c, reduce(c, createSession(c), { type: "start" }).state, { type: "set-phase", phase: "theatre" }).state;
+  const events: OperativeEvent[] = [...(from?.events ?? [])];
+  for (const op of ops) {
+    const r = reduce(c, s, { type: "operate", op } as ClinicalAction);
+    events.push(...r.events.filter((e): e is OperativeEvent => e.type === "procedure.step" || (e.type === "action.rejected" && e.action === "operate")));
+    s = r.state;
+  }
+  return { s, events };
+}
+
+describe("one operative playback for every view", () => {
+  it("a first look shows the field as it is, without replaying the operation", () => {
+    const { s, events } = record([...ACCESS, NECK]);
+    const p = new OperativePlayback(manualTimers().timers);
+    p.attach("k", def);
+    p.sync(events, s.procedure!);
+    expect(p.pending()).toBe(0);
+    expect(p.frame().state).toEqual(s.procedure);
+    expect(p.frame().item).toMatchObject({ kind: "step", operation: "retract" });
+  });
+
+  it("six steps submitted at once are six frames in order; a refused cholangiogram in between is a frame of its own, the field unchanged", () => {
+    const clock = manualTimers();
+    const start = record([...ACCESS, NECK, ...dissect(6)]);
+    const p = new OperativePlayback(clock.timers);
+    p.attach("k", def);
+    p.sync(start.events, start.s.procedure!);
+    const handle = start.s.procedure!.handles[0]!.handle;
+    const burst = record(
+      [
+        { op: "retract", port: "B", structure: "gallbladder-infundibulum", direction: ["patient-left", "caudal"], force: "firm" },
+        { op: "withdraw", port: "B" },
+        { op: "image", modality: "ioc", port: "C" },
+        { op: "insert", port: "B", instrument: "maryland" },
+        { op: "dissect", port: "C", region: "hepatocystic-triangle", energy: false },
+        { op: "isolate", port: "C", handle },
+        { op: "withdraw", port: "C" },
+        { op: "insert", port: "C", instrument: "clip-applier" },
+        { op: "clip", port: "C", handle, count: 1 },
+        { op: "clip", port: "C", handle, count: 1 },
+      ],
+      start,
+    );
+    const frames: { kind: string; op: string; clips: number; steps: number }[] = [];
+    p.subscribe(() => {
+      const f = p.frame();
+      const structure = f.state!.handles.find((x) => x.handle === handle)!.structure;
+      frames.push({ kind: f.item!.kind, op: f.item!.operation, clips: f.state!.clips[structure] ?? 0, steps: f.state!.counters.steps });
+    });
+    p.sync(burst.events, burst.s.procedure!);
+    for (let i = 0; i < 40; i++) clock.advance(2000);
+    expect(frames.map((f) => `${f.kind}:${f.op}`)).toEqual(["step:retract", "step:withdraw", "rejected:image", "step:insert", "step:dissect", "step:isolate", "step:withdraw", "step:insert", "step:clip", "step:clip"]);
+    // the refusal changed nothing: the same field as the frame before it
+    const ioc = frames.findIndex((f) => f.kind === "rejected");
+    expect(frames[ioc]!.steps).toBe(frames[ioc - 1]!.steps);
+    // each clip its own frame
+    expect(frames.filter((f) => f.op === "clip").map((f) => f.clips)).toEqual([1, 2]);
+    expect(p.frame().state).toBe(burst.s.procedure);
+  });
+
+  it("a refusal stays on screen: the next accepted step waits for its time; a second view reads the same frame", () => {
+    const clock = manualTimers();
+    const start = record([...ACCESS, NECK, ...dissect(3)]);
+    const p = new OperativePlayback(clock.timers);
+    p.attach("k", def);
+    p.sync(start.events, start.s.procedure!);
+    const refused = record([{ op: "image", modality: "ioc", port: "C" }], start);
+    p.sync(refused.events, refused.s.procedure!);
+    expect(p.frame().item).toMatchObject({ kind: "rejected", accepted: false, rejectionReason: expect.any(String) });
+    // the next step arrives at once: the refusal keeps its time on screen
+    const next = record([{ op: "dissect", port: "C", region: "hepatocystic-triangle", energy: false }], refused);
+    p.sync(next.events, next.s.procedure!);
+    expect(p.frame().item?.kind).toBe("rejected");
+    clock.advance(1000);
+    expect(p.frame().item?.kind).toBe("rejected");
+    // the dock and the surgery window are two readers of one frame: whichever opens now shows this same refusal
+    const dock = p.frame();
+    const surgeryWindow = p.frame();
+    expect(surgeryWindow).toEqual(dock);
+    clock.advance(2000);
+    expect(p.frame().item).toMatchObject({ kind: "step", operation: "dissect" });
+  });
+});

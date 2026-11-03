@@ -5,7 +5,7 @@
  * this object; the world only talks to it through `WorldCallbacks`.
  */
 import type { Op } from "@clinicalcraft/agent";
-import { historyVoice, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
+import { createProcedureState, historyVoice, procedureFor, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
 import type { BlockInfo, InteractionTarget, SoundKind, WorldCallbacks, WorldSave } from "../contracts.js";
 import { ct, getLocale, initLocale, onLocaleChange, setLocale as setUiLocale, tr, type UiLocale } from "../i18n/index.js";
 import { ApprovalDialog } from "../ui/approval.js";
@@ -15,6 +15,7 @@ import { Intro } from "../ui/intro.js";
 import { PanelHost, type PanelBuilder } from "../ui/panel.js";
 import { atlasPanel } from "../ui/panels/atlas.js";
 import { ScopeDock } from "../ui/scope-dock.js";
+import { OperativePlayback } from "../ui/operative-playback.js";
 import { surgeryPanel } from "../ui/panels/surgery.js";
 import { teamPanel } from "../ui/panels/team.js";
 import { autopilotPanel } from "../ui/panels/autopilot.js";
@@ -94,6 +95,7 @@ export class ClinicalCraftApp implements App {
   readonly feedback: ActionFeedback;
   /** External control of the running encounter (`clinicalcraft mcp --attach`): per encounter, never persisted. */
   readonly scope: ScopeDock;
+  readonly playback = new OperativePlayback();
   readonly external: ExternalControl;
   private _slot = 0;
   private lastTalk: ConversationArgs = { agent: "patient" };
@@ -106,10 +108,20 @@ export class ClinicalCraftApp implements App {
   /** The encounter finished: external control ends once no external call is running. */
   private externalEnding: ReturnType<typeof setTimeout> | null = null;
   private readonly refresh = throttleFrame(() => {
+    this.syncPlayback();
     this.hud.update();
     this.panels.update();
     this.scope.update();
   });
+
+  /** The operation's record into the one playback every laparoscope view shows. */
+  private syncPlayback(): void {
+    const game = this.game;
+    const state = game ? (game.session.store.snapshot?.state ?? game.session.session.state) : null;
+    const def = game && state ? (procedureFor(game.caseDef, state) ?? null) : null;
+    this.playback.attach(game ? `${game.caseDef.id}:${game.session.session.id}` : "", def);
+    if (game && def && state) this.playback.sync(game.session.store.operativeEvents(), state.procedure ?? createProcedureState());
+  }
 
   constructor(dom: AppDom) {
     this.dom = dom;

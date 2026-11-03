@@ -245,6 +245,17 @@ export class SessionStore {
     return [...this.approvals.values()];
   }
 
+  /** The operation's events — accepted steps and refused operative steps — in the order the session emitted them. */
+  operativeEvents(): Extract<DomainEvent, { type: "procedure.step" | "action.rejected" }>[] {
+    const out: Extract<DomainEvent, { type: "procedure.step" | "action.rejected" }>[] = [];
+    for (const e of this.log) {
+      if (e.kind !== "event" || e.event.msg.type !== "clinical_event") continue;
+      const d = e.event.msg.event;
+      if (d.type === "procedure.step" || (d.type === "action.rejected" && d.action === "operate")) out.push(d);
+    }
+    return out;
+  }
+
   /** Last `n` domain events of a type (newest last). */
   domainEvents<T extends DomainEvent["type"]>(type: T): Extract<DomainEvent, { type: T }>[] {
     const out: Extract<DomainEvent, { type: T }>[] = [];
