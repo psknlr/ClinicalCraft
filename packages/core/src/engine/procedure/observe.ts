@@ -68,8 +68,9 @@ function exposureBin(e: number): FieldView["regions"][number]["exposure"] {
 }
 
 /** The operator's view of the field. */
-export function observeField(def: ProcedureDefinition, s: ProcedureState): FieldView {
-  const open = fieldOpen(s);
+export function observeField(def: ProcedureDefinition, s: ProcedureState, view: "scope" | "open" = "scope"): FieldView {
+  // `open`: the field seen with the eye after a conversion — what the laparoscope would show, without it
+  const open = view === "open" ? (s.bailouts ?? []).includes("convert-open") || fieldOpen(s) : fieldOpen(s);
   const imagedDucts = s.imaged.includes("ioc") || s.imaged.includes("lap-us");
   const imagedVessels = s.imaged.includes("lap-us");
   const findings = new Set<FieldView["findings"][number]>();
@@ -85,7 +86,7 @@ export function observeField(def: ProcedureDefinition, s: ProcedureState): Field
     ports: s.ports.map((p) => ({ port: p.site, role: p.role, sizeMm: p.sizeMm, ...(p.hand ? { hand: p.hand } : {}), instrument: p.instrument, ...(p.holder ? { holder: p.holder } : {}) })),
     insufflated: s.insufflated,
     pressure: s.pressure,
-    inView: open,
+    inView: fieldOpen(s),
     organs: open ? def.anatomy.filter((st) => !isTubular(st) && isVisible(def, s, st)).map((st) => ({ id: st.id, name: st.name })) : [],
     tubes: open
       ? s.handles.flatMap((h) => {

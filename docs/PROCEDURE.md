@@ -93,7 +93,14 @@ the hand-over, there is nothing to hand over: the traction has already fallen. A
 traction go (release, withdraw, an exchange, a new retraction, conversion) and drops a region being
 dissected below half exposure carries the signal `exposure-lost`. In-world, a colleague takes a port
 with their own body (`delegate_task hold_traction`, EMBODIED §8): they walk to the table first, and
-when their body leaves the table the traction falls with their hands.
+when their body leaves the table the traction falls with their hands. A colleague's own steps are also
+counted apart (`counters.colleague`): the operator's place in the operation is `steps − colleague`.
+The offline demonstration (the autopilot's walkthrough, clinical and in-world) knows its place by that
+count, and before an instrument step (dissect, isolate, identify, the safety pause, clip, divide,
+coagulate) it checks the field: a traction the reference run set up — and never let go — that is no
+longer held (a colleague left the table with it) is re-grasped first, once, and said ("The traction on
+gallbladder-infundibulum has gone: re-grasping before the next step."); the re-grasp is not a reference
+step, so the walkthrough goes on from where it was (`lostTraction`, `session/autopilot.ts`).
 
 A step that is **physically impossible** is rejected, with nothing changed. For example:
 
@@ -290,7 +297,12 @@ first look (a reload) shows the field as it is without replaying the operation. 
 done (`tissue`) apart from the window the traction holds open now (`windows`, from each region's exposure): let
 go, the tissue falls back over the region and the window narrows — said in words too ("Hepatocystic triangle:
 exposure none (dissected: partly done)") — while the cleared tissue stays cleared. With the scope out of the
-patient the dock says so; after a conversion to open the laparoscopic feed has ended and the theatre view goes on.
+patient the dock says so. **After a conversion to open** the laparoscopic feed has ended and both views show the
+**open field** instead of a scope picture (`open-field.ts`): core `observeField(def, s, "open")` observes the field as
+seen with the eye (`inView` still says whether the laparoscope shows it — false now), and the views list each
+dissection field and how far it is cleared, and each tubular structure with its clips, its division and the name the
+operator gave it ("Open field (converted to open surgery)", "Hepatocystic triangle: mostly done", "T2 (identified as
+cystic duct): 3 clip(s), divided").
 
 It draws the procedure's shapes, and the case's `anatomy` model asset for the organ surfaces when the
 case lists one. The debrief adds an *Operation* section once the case is finished, and for a case with

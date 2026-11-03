@@ -191,4 +191,6 @@ The responsible clinician stays the requester throughout; the service never orde
 
 A benchmark freezes the case version and each profile's `version`. Runs that use new investigations are reported
 apart from source-only runs: a score from an expanded encounter is never compared with one from the published record
-alone. The export (`AssessmentReport`) carries `caseVersion`, `engine` (`ENGINE_VERSION`) and `finished`.
+alone. The export (`AssessmentReport`) carries `caseVersion`, `engine` (`ENGINE_VERSION`) and `finished`. In the
+embodied benchmark every run records its `evidence` (`source-only`, or `expanded` once it ordered a study) and the
+report's `metrics.byEvidence` scores the two apart ("By evidence (scored apart)").

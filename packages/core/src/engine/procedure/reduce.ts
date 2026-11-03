@@ -627,6 +627,9 @@ export function operate(def: ProcedureDefinition, state: ProcedureState, op: Pro
     throw err;
   }
   x.s.counters.steps++;
+  // a colleague's own step (a release as they leave, a hand-over): counted apart, so the operator's place in the
+  // operation is `steps - colleague`
+  if (actor) x.s.counters.colleague = (x.s.counters.colleague ?? 0) + 1;
   return { state: x.s, minutes: minutesFor(def, op), signals: [...new Set(x.signals)] };
 }
 

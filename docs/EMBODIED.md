@@ -1668,7 +1668,9 @@ them) and a sha256 of the canonical final engine state + world snapshot.
   before it.
 - *Clinical safety* — interventions the engine applied as contraindicated.
 
-**Metrics** (`metrics.ts`, `stats.ts`), overall and per category; every
+**Metrics** (`metrics.ts`, `stats.ts`), overall, per category and per evidence (`metrics.byEvidence`: a run's
+`evidence` is `source-only`, or `expanded` once it ordered a new — simulated — investigation; the two are scored
+apart, docs/STUDIES.md §7); every
 proportion carries a Wilson 95 % score interval —
 centre = (p̂ + z²/2n)/(1 + z²/n), half-width = z·√(p̂(1−p̂)/n + z²/4n²)/(1 + z²/n),
 z = 1.959964, clamped to [0, 1], exactly 0 / 1 at k = 0 / n (checked

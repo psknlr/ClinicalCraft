@@ -34,7 +34,7 @@ import type { ToolCallStatus } from "../loop.js";
 import { actionIntent } from "../tools/spatial.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { nameOf } from "../tools/world-format.js";
-import { walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
+import { lostTraction, walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
 import { clinicalOperation, heldBy, operationPath, releaseHeld, releaseOperation, type DeviceRoute } from "./device-ops.js";
 import { rt } from "./i18n.js";
 import type { SessionTrace } from "./trace.js";
@@ -168,7 +168,7 @@ async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, step
   if (home) return;
   for (let i = host.cursor.value; i < steps.length; i++) {
     const step = steps[i]!;
-    if (step.kind !== "tool" || stepAlreadySatisfied(step, host.state())) continue;
+    if (step.kind !== "tool" || stepAlreadySatisfied(step, host.state(), host.cursor.extraOps)) continue;
     const intent = actionIntent(step.action as ClinicalAction);
     if (!intent) continue;
     if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return;
@@ -352,6 +352,7 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
   const steps = clinicianOfflineSteps(host.caseDef, host.locale);
   let executed = 0;
   let last = "";
+  const regrasped = new Set<number>();
   host.ensureStarted();
   while (executed < Math.max(1, maxSteps)) {
     if (signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
@@ -362,7 +363,7 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
       return { status: "end_turn", text: last, grounded: [], done: true, toolCalls: executed };
     }
     const step = steps[host.cursor.value]!;
-    if (stepAlreadySatisfied(step, host.state())) {
+    if (stepAlreadySatisfied(step, host.state(), host.cursor.extraOps)) {
       host.cursor.value++;
       continue;
     }
@@ -386,6 +387,23 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
     if (run.kind !== "tool") {
       host.cursor.value++;
       continue;
+    }
+    // a traction the reference set up and never let go has gone (a colleague left the table): re-grasp first, once
+    const regrasp = run === step && !regrasped.has(host.cursor.value) ? lostTraction(host.state(), steps, host.cursor.value) : null;
+    if (regrasp) {
+      regrasped.add(host.cursor.value);
+      const again = stepForAction(host.caseDef, regrasp.action, host.locale);
+      if (again.kind === "tool") {
+        last = rt(host.locale, "clinician.narrate.regrasp", { structure: regrasp.structure });
+        host.narrate(turnId, last);
+        const stepsBefore = host.state().procedure?.counters.steps ?? 0;
+        const o = await runEmbodiedStep(host, e, again, turnId, signal);
+        executed++;
+        if ((host.state().procedure?.counters.steps ?? 0) > stepsBefore) host.cursor.extraOps = (host.cursor.extraOps ?? 0) + 1;
+        if (o.status === "interrupted" || signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
+        if (o.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
+        continue;
+      }
     }
     const clockBefore = host.state().clock;
     if (run === step) {

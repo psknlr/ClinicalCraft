@@ -447,7 +447,7 @@ export function clinicianOfflineSteps(c: CaseDefinition, locale: string): Offlin
  * dose in the solution still happens, but never twice after a resume); a wait
  * when the clock already reaches the reference run's clock after it.
  */
-export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionState): boolean {
+export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionState, extraOps = 0): boolean {
   const a = step.action;
   switch (a.type) {
     case "start":
@@ -482,7 +482,8 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
     case "note":
       return state.notes.some((n) => n.text === a.text);
     case "operate":
-      return (state.procedure?.counters.steps ?? 0) >= (step.occurrence ?? 1);
+      // the operator's place in the operation: neither a colleague's own steps nor the walkthrough's re-grasps
+      return (state.procedure?.counters.steps ?? 0) - (state.procedure?.counters.colleague ?? 0) - extraOps >= (step.occurrence ?? 1);
     case "count":
       return (state.count?.entries.filter((e) => e.op === a.count.op).length ?? 0) >= (step.occurrence ?? 1);
     case "study":

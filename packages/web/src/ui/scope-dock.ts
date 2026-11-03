@@ -16,7 +16,8 @@ import { createLaparoscope } from "../laparoscopy/index.js";
 import { getLocale, tr } from "../i18n/index.js";
 import { h, mount, prefersReducedMotion } from "./dom.js";
 import type { PlaybackItem } from "./operative-playback.js";
-import { label, labelList } from "./panels/surgery-controls.js";
+import { openFieldText } from "./open-field.js";
+import { identifyChoices, label, labelList } from "./panels/surgery-controls.js";
 import { lapScene } from "./panels/surgery-scene.js";
 
 /** The caption of a frame: the step (with who did it and what it signalled) or the refusal and its reason. */
@@ -105,7 +106,9 @@ export class ScopeDock {
     this.chip.textContent = converted ? tr("scope.converted").split(/[:：]/u)[0]! : v.inView ? tr("scope.live") : tr("scope.outside");
     this.chip.dataset.state = converted ? "converted" : v.inView ? "live" : "outside";
     this.dark.hidden = v.inView;
-    this.dark.textContent = converted ? tr("scope.converted") : tr("scope.outside");
+    // converted: the open field in words instead of a scope picture (the same lines as the surgery window)
+    if (converted) mount(this.dark, h("div", { class: "open-field", dataset: { view: "open" } }, h("strong", null, tr("scope.converted")), ...openFieldText(observeField(def, p, "open"), getLocale(), tr, label, (id) => identifyChoices(def, getLocale(), "").find((x) => x.id === id)?.name ?? id).slice(1).map((line) => h("div", { class: "open-line" }, line))));
+    else this.dark.textContent = tr("scope.outside");
     this.el.dataset.step = String(p.counters.steps);
     this.el.dataset.frame = item?.id ?? "";
     const lines = [];

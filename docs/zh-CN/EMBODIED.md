@@ -1295,7 +1295,8 @@ sha256。
   在它之前存在针对该工具与限定符的已批准审批时才算授权。
 - *临床安全*——引擎按禁忌证判定后仍被执行的处置。
 
-**指标**（`metrics.ts`、`stats.ts`），整体及按类别统计；每个比例都带 Wilson 95 %
+**指标**（`metrics.ts`、`stats.ts`），整体、按类别及按证据来源统计（`metrics.byEvidence`：运行的 `evidence` 为
+`source-only`，一旦开具新的（模拟）检查即为 `expanded`；二者分开评分，见 docs/STUDIES.md §7）；每个比例都带 Wilson 95 %
 得分区间——
 中心 = (p̂ + z²/2n)/(1 + z²/n)，半宽 = z·√(p̂(1−p̂)/n + z²/4n²)/(1 + z²/n)，
 z = 1.959964，截断到 [0, 1]，k = 0 / n 时恰为 0 / 1（已对照 Newcombe 1998 验证）；

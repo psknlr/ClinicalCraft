@@ -484,6 +484,7 @@ export interface ProcedureState {
   superseded?: Bailout[];
   inspected: boolean;
   closed: boolean;
-  counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number };
+  /** `colleague`: the steps a colleague did themselves (absent: none) — the operator's are `steps - colleague`. */
+  counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number; colleague?: number };
 }
 
