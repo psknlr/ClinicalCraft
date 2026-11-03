@@ -47,6 +47,7 @@ import {
   type WorldActionRequest,
   type WorldActionResult,
   type WorldEvent,
+  type WorldJourney,
   type WorldRuntime,
   type WorldStateSnapshot,
 } from "@clinicalcraft/world";
@@ -235,7 +236,24 @@ export class EmbodiedSession {
     this.worldLocale = host.locale();
     this.carry = carryOf(options.snapshot);
     this.inner = this.build(options.snapshot, this.worldLocale, true);
+    // a transport the saved world was in the middle of: carried out once the session has started (`resumeJourney`)
+    this.journey = this.inner.restoredJourney();
     this.facade = this.makeFacade();
+  }
+
+  /** The transport a restored snapshot was taken in the middle of, until `resumeJourney` carries it out. */
+  private journey: WorldJourney | null = null;
+
+  /**
+   * A resumed session: the saved world was taken while a body wheeled the patient (`WorldStateSnapshot.journey`). The
+   * same walker carries the journey out to the same destination — one transfer, its walk charged once (the walk
+   * interrupted by the save never committed or charged anything). Null: there was none.
+   */
+  async resumeJourney(signal: AbortSignal): Promise<WorldActionResult | null> {
+    const j = this.journey;
+    this.journey = null;
+    if (!j || !this.inner.actor(j.by)) return null;
+    return this.act({ agent: "learner", submission: "resume", signal }, { actionId: `${j.actionId}-resumed`, actorId: j.by, operation: "transport_patient", targetId: j.patient, parameters: j.parameters, onBehalfOf: PRIMARY_ACTOR }, signal);
   }
 
   /* ---------------------------------------------------------------- */
@@ -336,6 +354,7 @@ export class EmbodiedSession {
       recordBound: (id) => w().recordBound(id),
       roomOf: (id) => w().roomOf(id),
       atBedside: (id) => w().atBedside(id),
+      restoredJourney: () => w().restoredJourney(),
       bedsideProviders: (capability) => w().bedsideProviders(capability),
       patientPlace: () => w().patientPlace(),
       patientMonitor: () => w().patientMonitor(),

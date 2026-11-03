@@ -101,7 +101,8 @@ After every learner act and every demonstration step (like the care team), the s
 1. **Resolve and check capability.** The profile's `requires` against the facility's devices; none: `wait` "no
    device in this hospital provides …".
 2. **Staff and device** (in-world mode, with bodies):
-   - `bedside-device`: a free device (not reserved or held by someone else; otherwise `wait` "in use by <holder>").
+   - `bedside-device`: a device in service (all out of service: `wait` "the Mobile ECG machine is out of service")
+     and free (not reserved or held by someone else; otherwise `wait` "in use by <holder>").
      If none is at the patient, the case team's circulating nurse fetches it — a delegation `fetch_equipment` with
      their own body: locate, reserve, walk, bring; the world keeps the device's custody, so everyone sees who holds
      it and where it is. A failed fetch waits with its reason and is retried after the next act.

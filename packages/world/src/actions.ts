@@ -260,6 +260,8 @@ export class ActionBus implements EffectsHost, TransportHost {
   patientStamp: { key: string; posture: BodyPosture | null; body: { level: string; area: Area } | null };
   /** The transport walking now (`PatientPlace.transit`). */
   transit: TransportHost["transit"] = null;
+  /** The same transport as a snapshot keeps it. */
+  journey: TransportHost["journey"] = null;
   private readonly connectors: ConnectorInfo[];
   private readonly pending = new Map<string, Promise<WorldActionResult>>();
   private readonly tails = new Map<ActorId, Promise<void>>();

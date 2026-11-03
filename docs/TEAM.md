@@ -31,7 +31,11 @@ nurse (洗手护士), surgeon (术者), read-back (复述确认), count (清点)
   "members": [
     { "staff": "or-7.circulating-nurse", "duties": ["circulate"] },
     { "staff": "or-7.scrub-nurse", "duties": ["instruments", "count"] },
+    { "staff": "or-7.anaesthetist", "duties": ["anaesthesia"] },
     { "staff": "surgeon", "duties": ["surgeon"] }      // the learner (or the simulated surgeon, observer mode)
+  ],
+  "cover": [                             // optional: who takes over a member's duty when they must leave (§5)
+    { "staff": "l1-anaesthetist", "duties": ["anaesthesia"] }
   ],
   "count": {                             // optional: the count the team keeps, item by item (§4.3)
     "item": "sc-gauze-swab", "name": { "zh-CN": "纱布", "en": "swabs" },
@@ -49,7 +53,8 @@ Duties:
 - `instruments`: the scrub nurse. She locates, carries and hands over instruments.
 - `count`: the member who counts.
 - `surgeon`: the surgeon.
-- `anaesthesia`: declared only; no policy acts on it yet.
+- `anaesthesia`: the room's anaesthetist. No team policy acts on it; asked to leave the room while the patient is
+  under anaesthesia, they hand over first (§5, "leaving an anaesthetised patient").
 
 `checkTeamDefinition` (part of `checkCaseIntegrity`) checks the team on its own:
 - known phases;
@@ -57,14 +62,14 @@ Duties:
 - somebody circulates;
 - needs are for members;
 - absent members are members, and the surgeon is never absent;
-- relief colleagues are not members;
+- relief and cover colleagues are not members (and nobody covers the surgeon);
 - the solution's `start {team}` names a scenario;
 - `expect` matches what is set up.
 
 `teamFacilityIssues` (run by `cases validate`) checks the team against its facility:
 - the room exists;
 - the members are staff of that room;
-- relief colleagues exist;
+- relief and cover colleagues exist;
 - the needed items and the counted item are handheld types;
 - the count's search places and the scenarios' placements exist.
 
@@ -227,6 +232,7 @@ searcher's hand, recorded as recovered.
 | `ClinicalSession.team()` | the team as it stands (a `TeamCheckpoint`), for front-ends |
 | acts | through `EmbodiedSession.act` on a nurse's tool path: the role's authority and scope of practice apply, as for any staff member |
 | browser | the HUD's **Team** button (in the team's phases) opens the panel: pace (Auto / Step / Next step), the surgeon (I am the surgeon / Observe), Search within reach / Check the wound, what was said (lines to the learner marked, with their answers), the tasks (with "seen to be done"), the count. The team clock (`TEAM_STEP_MS`) runs while the encounter runs, or while the panel is open |
+| leaving an anaesthetised patient | a member with the `anaesthesia` duty asked to go out of the patient's room (back to a post elsewhere, to show the way) while `patient.nonVerbalWhen` holds first calls a colleague from `team.cover` covering `anaesthesia`; that colleague walks to the patient with their own body, the hand-over is recorded (a `note`: "Anaesthesia handed over at 08:43: Dr Tanaka → Dr Wang, the patient under anaesthesia") and said in the new anaesthetist's voice, and only then does the first one go. Nobody covers, or they cannot come: the anaesthetist stays and says why. Before induction or after emergence they just go (`staff-requests.ts`) |
 | saves | the web's save keeps `team` with the world (`persistence.ts`); a resume restores both. The scenario's lifecycle is saved with it — `pending` (the team's phases not begun, nothing set up in the world), `active` (set up once: `setup {round, at, worldVersion}`), `completed` — so a save before the operation sets the scenario up when the operation begins, exactly as a run never interrupted, and a save after it never sets anything up twice; holds, requests, hand-overs and item positions are in the checkpoint and the world snapshot |
 
 ## 6. Team scenarios (authored)

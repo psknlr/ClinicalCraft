@@ -14,6 +14,7 @@ import {
   BufferGeometry,
   CatmullRomCurve3,
   CircleGeometry,
+  RingGeometry,
   Clock,
   Color,
   CylinderGeometry,
@@ -56,6 +57,8 @@ const TINT: Record<LapSceneSpec["organs"][number]["tint"], number> = {
 };
 const TUBE: Record<LapSceneSpec["tubes"][number]["kind"], number> = { duct: 0xd6cd93, artery: 0xc04e3d, vein: 0x5b4f8a };
 const FAT = 0xe8c66a;
+/** Tissue fallen back over a window the traction no longer holds open (apart from the dissection layer). */
+const FALLEN = 0x8e4a3c;
 const CLIP = 0x3b4046;
 const SHAFT = 0x2a2e33;
 const BACKGROUND = 0x1b0907;
@@ -301,6 +304,19 @@ export function createLaparoscope(opts: LaparoscopeOptions): LaparoscopeApi {
     m.renderOrder = 1;
   }
 
+  /** A window the traction no longer holds fully open: a ring of fallen tissue whose opening shrinks with the exposure. */
+  function buildWindow(w: LapSceneSpec["windows"][number]): void {
+    if (w.exposure >= 0.99) return;
+    const outer = w.radius * 1.1;
+    const inner = Math.max(w.radius * 0.04, w.radius * 0.9 * w.exposure);
+    // drawn over whatever lies in front (the window is what the operator looks through)
+    const m = add(new Mesh(new RingGeometry(inner, outer, 40), new MeshStandardMaterial({ color: FALLEN, roughness: 0.6, transparent: true, opacity: 0.45 + 0.4 * (1 - w.exposure), depthWrite: false, depthTest: false, side: DoubleSide })));
+    m.position.copy(v3(w.centre));
+    m.lookAt(camera.position);
+    m.renderOrder = 2;
+    m.userData.window = w.id;
+  }
+
   function buildShaft(s: LapSceneSpec["shafts"][number]): void {
     const from = v3(s.from);
     const to = v3(s.to);
@@ -392,6 +408,7 @@ export function createLaparoscope(opts: LaparoscopeOptions): LaparoscopeApi {
     for (const o of sp.organs) buildOrgan(o);
     for (const t of sp.tubes) buildTube(t);
     for (const r of sp.tissue) buildTissue(r);
+    for (const w of sp.windows ?? []) buildWindow(w);
     for (const s of sp.shafts) buildShaft(s);
     buildFluids(sp);
     highlight();

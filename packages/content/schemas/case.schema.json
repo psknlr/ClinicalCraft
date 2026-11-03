@@ -5853,6 +5853,38 @@
               ],
               "additionalProperties": false
             },
+            "cover": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "staff": {
+                    "type": "string",
+                    "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                  },
+                  "duties": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "circulate",
+                        "instruments",
+                        "count",
+                        "surgeon",
+                        "anaesthesia"
+                      ]
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "staff",
+                  "duties"
+                ],
+                "additionalProperties": false
+              },
+              "default": []
+            },
             "scenarios": {
               "type": "array",
               "items": {

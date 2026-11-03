@@ -140,6 +140,13 @@ export const CaseTeamSchema = z
     waitRounds: z.number().int().min(1).max(20).default(3),
     /** The count the team keeps (a member with the `count` duty counts; the circulating nurse searches). */
     count: TeamCountSchema.optional(),
+    /**
+     * Colleagues outside the room who take over a member's duty when that member has to leave during the case (the
+     * duty anaesthetist relieving the room's anaesthetist): a member with the `anaesthesia` duty asked to go while
+     * the patient is under anaesthesia (`patient.nonVerbalWhen` holds) leaves only once a colleague covering
+     * `anaesthesia` has come to the patient and taken over, and the hand-over is recorded (docs/TEAM.md §5).
+     */
+    cover: z.array(TeamMemberSchema).default([]),
     scenarios: z.array(TeamScenarioSchema).default([]),
     note: LocalizedTextSchema.optional(),
   })

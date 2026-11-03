@@ -6,6 +6,7 @@
  * submissions serially (one turn at a time); `interrupt` and
  * `approval_response` are handled out-of-band so they stay responsive.
  */
+import type { ReportWriter } from "./studies.js";
 import type { CaseDefinition, ClinicalAction, EquipmentCatalog, FacilityDefinition, ReduceResult, SessionState } from "@clinicalcraft/core";
 import type { CameraSensor, EpisodeTrace, Mover, Pose, WorldRuntime, WorldStateSnapshot } from "@clinicalcraft/world";
 import type { TeamCheckpoint } from "./team/types.js";
@@ -115,6 +116,13 @@ export interface SessionOptions {
   skillIssues?: string[];
   /** The project's skill files left out because the project is not trusted (a bilingual startup `warning`). */
   skillsUntrusted?: { dir: string; files: number };
+  /**
+   * New investigations (docs/STUDIES.md §5): a writer of report text (a model). Its text is validated before release;
+   * one that fails, returns nothing or takes longer than `reportWriterTimeoutMs` (default 8000) is replaced by the
+   * deterministic template — never an invented report. Absent: the template only.
+   */
+  reportWriter?: ReportWriter;
+  reportWriterTimeoutMs?: number;
   /** Restore from a previous session (resume). */
   resume?: {
     sessionId: string;

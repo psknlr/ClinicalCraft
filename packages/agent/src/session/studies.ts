@@ -195,10 +195,13 @@ export class SessionStudies {
     const collector = this.collectorRef();
     if (profile.acquisition === "bedside-device") {
       const snapshot = w.snapshot().entities;
+      // out of service: waits until it is back (recoverable; the requester keeps the order)
+      const inService = devices.filter((d) => snapshot[d]?.available !== false);
+      if (!inService.length) return this.wait(id, o.id, rt(L, "study.wait.outOfService", { device: name(devices[0]!) }));
       const holder = (d: string) => snapshot[d]?.reservedBy ?? snapshot[d]?.heldBy ?? null;
-      const free = devices.filter((d) => !holder(d) || holder(d) === collector);
+      const free = inService.filter((d) => !holder(d) || holder(d) === collector);
       if (!free.length) {
-        const d = devices[0]!;
+        const d = inService[0]!;
         return this.wait(id, o.id, rt(L, "study.wait.busy", { device: name(d), holder: name(holder(d)!) }));
       }
       const atPatient = patient ? free.find((d) => e.atBedside(d)) : undefined;

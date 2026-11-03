@@ -178,6 +178,8 @@ export class SessionKernel {
     this.embodied = this.settings.embodiment === "embodied" ? new EmbodiedSession(embodiedHost(this), opts.embodied ?? {}) : null;
     this.team = new SessionTeam(this, validTeamCheckpoint(opts.embodied?.team));
     this.studies = new SessionStudies(this);
+    if (opts.reportWriter) this.studies.writer = opts.reportWriter;
+    if (opts.reportWriterTimeoutMs != null) this.studies.writerTimeoutMs = opts.reportWriterTimeoutMs;
     if (this.embodied) {
       for (const tool of this.embodied.gatedTools((name) => this.registry.get(name))) this.registry.replace(tool);
       for (const tool of this.embodied.worldTools()) this.registry.replace(tool);

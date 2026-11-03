@@ -29,6 +29,10 @@ export function checkTeamDefinition(c: CaseDefinition): Issue[] {
     if ((m.staff === "surgeon") !== m.duties.includes("surgeon")) issues.push(err(["team", "members", i, "duties"], `the surgeon (and only the surgeon) has the duty "surgeon"`));
   });
   if (!team.members.some((m) => m.duties.includes("circulate"))) issues.push(err(["team", "members"], `no member circulates (someone has to notice needs and ask)`));
+  (team.cover ?? []).forEach((m, i) => {
+    if (members.has(m.staff)) issues.push(err(["team", "cover", i, "staff"], `"${m.staff}" is already a member of the team`));
+    if (m.duties.includes("surgeon")) issues.push(err(["team", "cover", i, "duties"], `the surgeon is the learner: nobody covers "surgeon"`));
+  });
   const scenarios = new Set<string>();
   team.scenarios.forEach((s, i) => {
     const at = ["team", "scenarios", i];
@@ -88,6 +92,9 @@ export function teamFacilityIssues(c: CaseDefinition, f: FacilityDefinition, cat
       else if (p.room !== team.room) issues.push(err(["team", "count", "searchPlaces", j], `"${id}" is in "${p.room}", not in the team's room "${team.room}"`));
     });
   }
+  (team.cover ?? []).forEach((m, i) => {
+    if (!staff.has(m.staff)) issues.push(err(["team", "cover", i, "staff"], `facility "${f.id}" has no staff "${m.staff}"`));
+  });
   team.scenarios.forEach((s, i) => {
     const at = ["team", "scenarios", i];
     s.relief.forEach((r, j) => {

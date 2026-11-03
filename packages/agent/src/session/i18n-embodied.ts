@@ -182,6 +182,11 @@ export const EMBODIED_EN = {
   "assist.gaveBack": "{who} handed the {instrument} in port {port} back to the operator.",
   "assist.exposureLost": "The traction has gone: the window has closed.",
   "assist.title": "At the table",
+  "relief.none": "I can't leave the patient under anaesthesia — there's nobody to take over from me. I'm staying.",
+  "relief.calling": "The patient is under anaesthesia: I'll hand over first. Calling {name} to take over.",
+  "relief.notComing": "{name} can't come: {reason}. I'm staying with the patient.",
+  "relief.record": "Anaesthesia handed over at {time}: {from} → {to}, the patient under anaesthesia.",
+  "relief.taken": "I've taken over the anaesthetic from {from}.",
   "assist.handEntry": "a colleague's step at the table is done with their own hands: ask them (delegate_task hold_traction / release_traction).",
 
   // skills
@@ -433,6 +438,11 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "assist.gaveBack": "{who}把 {port} 孔的{instrument}交回给术者。",
   "assist.exposureLost": "牵引已松开：术野窗口已闭合。",
   "assist.title": "手术台旁",
+  "relief.none": "患者在麻醉中，我不能离开——没有人可以接替我。我留下。",
+  "relief.calling": "患者在麻醉中：我先交接。请{name}来接替。",
+  "relief.notComing": "{name}来不了：{reason}。我留在患者身边。",
+  "relief.record": "{time} 麻醉交接：{from} → {to}，患者处于麻醉中。",
+  "relief.taken": "我已从{from}手里接过麻醉管理。",
   "assist.handEntry": "同事在手术台旁的操作由其本人完成：请让他们去做（delegate_task hold_traction / release_traction）。",
 
   "skill.unknown": "未知技能“{id}”。可用技能：{skills}。",
