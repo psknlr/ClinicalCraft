@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility } from "./anaesthesia.js";
 import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
 import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
@@ -104,6 +105,8 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("release-hold"), interventionId: IdSchema, releasedBy: HolderSchema, reassessment: z.string().trim().min(1).max(1000), ...base }).strict(),
   /** A new investigation (`StudyOpSchema`; docs/STUDIES.md): order, wait, acquire, release, review. */
   z.object({ type: z.literal("study"), study: StudyOpSchema, ...base }).strict(),
+  /** A step of anaesthesia responsibility (docs/TEAM.md §5): a relief requested, arrived, the hand-over accepted. */
+  z.object({ type: z.literal("anaesthesia"), anaesthesia: AnaesthesiaOpSchema, ...base }).strict(),
   /** The surgical count's record (`CountOpSchema`; cases whose team keeps a count). */
   z.object({ type: z.literal("count"), count: CountOpSchema, ...base }).strict(),
   z.object({ type: z.literal("finish"), ...base }).strict(),
@@ -241,6 +244,8 @@ export interface SessionState {
   count?: CountRecord;
   /** New investigations ordered in this encounter (docs/STUDIES.md), from the first order on. */
   studies?: StudyRecord;
+  /** Who is responsible for the anaesthetised patient, and the hand-overs (absent: the case team's anaesthetist). */
+  anaesthesia?: AnaesthesiaResponsibility;
   /** Monotonic count of accepted actions (for transcripts / ordering). */
   seq: number;
 }
@@ -300,6 +305,7 @@ export type DomainEvent =
     }
   /** A study op recorded: the order, acquisition or report it concerns (`id`). */
   | { type: "study.recorded"; op: StudyOp["op"]; code: string; id: string; reason?: string }
+  | { type: "anaesthesia.recorded"; op: AnaesthesiaOp["op"]; responsible: string; relief?: string }
   /** Closure while the count was not settled (`CountUnsafe`): recorded for the debrief. */
   | { type: "count.unsafe"; what: "closure"; status: CountStatus; missing: string[]; unexpected: string[] }
   | { type: "action.rejected"; action: ClinicalActionType; code: RejectionCode; message: string };

@@ -1081,6 +1081,8 @@ export interface WorldRuntime {
    * does it show and write the case record (a session re-checks it right before committing a board's clinical act).
    */
   recordBound(id: EntityId): boolean;
+  /** The room at a point (null: outdoors, a corridor without a room, or off the plan). */
+  roomAt(at: { level: string; x: number; z: number }): string | null;
   /** The room an entity or actor is in now (a moved, dropped or carried item: where it is, not where it was placed); null outdoors or unknown. */
   roomOf(id: EntityId): string | null;
   /**

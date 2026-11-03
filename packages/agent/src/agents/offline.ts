@@ -315,6 +315,7 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "note":
     case "count":
     case "study":
+    case "anaesthesia":
       return null;
     default: {
       const never: never = action;
@@ -358,6 +359,7 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "release-hold":
     case "count":
     case "study":
+    case "anaesthesia":
       return { kind: "action", action, narration: null };
     default: {
       const never: never = action;
@@ -448,6 +450,8 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
       return (state.count?.entries.filter((e) => e.op === a.count.op).length ?? 0) >= (step.occurrence ?? 1);
     case "study":
       return a.study.op === "order" ? (state.studies?.orders.some((o) => o.key === (a.study as { key: string }).key) ?? false) : false;
+    case "anaesthesia":
+      return false;
     default: {
       const never: never = a;
       return never;

@@ -26,6 +26,7 @@ import { createProcedureState, operate, procedureFor } from "./procedure/index.j
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
 import { applyStudy } from "./study.js";
 import { reachPhase, recordAvailability } from "./records.js";
+import { applyAnaesthesia } from "./anaesthesia.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -396,6 +397,15 @@ function onStudy(ctx: Ctx, a: Action<"study">): Outcome {
   return accepted();
 }
 
+/** A step of anaesthesia responsibility: a relief requested or arrived, a hand-over accepted (`engine/anaesthesia.ts`). */
+function onAnaesthesia(ctx: Ctx, a: Action<"anaesthesia">): Outcome {
+  const r = applyAnaesthesia(ctx.c, ctx.s, a.anaesthesia);
+  if (!r.ok) return rejected(r.code, r.message);
+  ctx.s.anaesthesia = r.record;
+  ctx.events.push({ type: "anaesthesia.recorded", op: a.anaesthesia.op, responsible: r.record.responsible, ...(r.record.relief ? { relief: r.record.relief } : {}) });
+  return accepted();
+}
+
 /** An entry of the surgical count's record (docs/TEAM.md §4.3), by item identity. */
 function onCount(ctx: Ctx, a: Action<"count">): Outcome {
   const { c, s } = ctx;
@@ -458,6 +468,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onCount(ctx, a);
     case "study":
       return onStudy(ctx, a);
+    case "anaesthesia":
+      return onAnaesthesia(ctx, a);
     case "finish":
       return onFinish(ctx);
   }

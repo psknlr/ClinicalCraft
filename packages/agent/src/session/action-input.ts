@@ -45,6 +45,8 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
       return {};
     case "study":
       return action.study.op === "order" ? { code: action.study.code, ...(action.study.indication ? { indication: action.study.indication } : {}) } : {};
+    case "anaesthesia":
+      return {};
     default: {
       const never: never = action;
       return never;
@@ -131,6 +133,7 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
     case "note":
     case "count":
     case "study":
+    case "anaesthesia":
       return { ok: true, action };
     default: {
       const never: never = action;

@@ -214,6 +214,7 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     subscribe: (listener) => store.subscribe(listener),
     // a transport walking now goes into the snapshot with its destination (a resumed session carries it out)
     snapshot: () => (actions.journey ? { ...store.snapshot(), journey: structuredClone(actions.journey) } : store.snapshot()),
+    roomAt: (at) => registry.roomAt(at.level, at.x, at.z),
     restoredJourney: () => {
       const j = restored;
       restored = null;
