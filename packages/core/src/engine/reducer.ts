@@ -353,11 +353,11 @@ function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
   if (!def.phases.includes(ctx.s.phase)) return rejected("phase-locked", `the operation is not under way in phase "${ctx.s.phase}"`);
   const open = a.op.op === "close" ? closureOnOpenCount(ctx.c, ctx.s) : null;
   if (open?.policy === "refuse") return rejected("requirements-unmet", openCountMessage(open));
-  const step = operate(def, ctx.s.procedure ?? createProcedureState(), a.op, ctx.s.clock);
+  const step = operate(def, ctx.s.procedure ?? createProcedureState(), a.op, ctx.s.clock, a.actor);
   if (step.rejected) return rejected(step.rejected.code, step.rejected.message);
   ctx.s.procedure = step.state;
   const n = step.state.counters.steps;
-  ctx.events.push({ type: "procedure.step", op: a.op.op, signals: step.signals, id: `op-${n}`, step: n, seq: ctx.s.seq + 1, at: ctx.s.clock, ...(a.by ? { by: a.by } : {}), detail: structuredClone(a.op) });
+  ctx.events.push({ type: "procedure.step", op: a.op.op, signals: step.signals, id: `op-${n}`, step: n, seq: ctx.s.seq + 1, at: ctx.s.clock, ...(a.by ? { by: a.by } : {}), ...(a.actor ? { actor: a.actor } : {}), detail: structuredClone(a.op) });
   if (open && ctx.s.count) {
     ctx.s.count = { ...ctx.s.count, unsafe: [...ctx.s.count.unsafe, { what: "closure", status: open.status, missing: open.missing, unexpected: open.unexpected, at: ctx.s.clock, seq: ctx.s.seq + 1 }] };
     ctx.events.push({ type: "count.unsafe", what: "closure", status: open.status, missing: open.missing, unexpected: open.unexpected });

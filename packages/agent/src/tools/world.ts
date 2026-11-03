@@ -75,7 +75,7 @@ function tooDeep(ctx: ToolContext): ToolOutput | null {
 }
 
 /** Tasks staff can be delegated (`delegate_task`). */
-export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient"] as const;
+export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient", "hold_traction", "release_traction"] as const;
 
 const GOAL_SCHEMA = {
   type: "object",
@@ -178,7 +178,7 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
   {
     name: "delegate_task",
     description:
-      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there). They walk there and act; approvals still apply. Returns status, steps and simulated time.",
+      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
     inputSchema: obj(
       {
         role: { type: "string", minLength: 1, maxLength: 40, description: "nurse, porter, paramedic… (or a staff id staff:<id>)." },

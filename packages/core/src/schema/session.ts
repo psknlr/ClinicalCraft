@@ -84,7 +84,13 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("flag"), flag: IdSchema, value: z.boolean().default(true), ...base }).strict(),
   z.object({ type: z.literal("note"), text: z.string().max(4000), ...base }).strict(),
   /** One step of the case's operation (docs/PROCEDURE.md): the operative field's only way in. */
-  z.object({ type: z.literal("operate"), op: ProcedureOpSchema, ...base }).strict(),
+  z.object({
+    type: z.literal("operate"),
+    op: ProcedureOpSchema,
+    /** A colleague who does this step (a staff id: the assistant holding a port); absent: the operator. */
+    actor: z.string().min(1).max(80).optional(),
+    ...base,
+  }).strict(),
   /**
    * An explicit hold on an intervention (docs/PROTOCOL.md §3.1) — an anaesthetist or attending withholding
    * clearance for induction: who placed it and why. While it stands, the intervention is refused (`on-hold`);
@@ -272,7 +278,7 @@ export type DomainEvent =
    * the session's action sequence, `at` the clock, `by` who acted, `detail` the op as committed) — what a
    * presentation queue animates in order, once.
    */
-  | { type: "procedure.step"; op: ProcedureOpType; signals: ProcedureSignal[]; id?: string; step?: number; seq?: number; at?: number; by?: Actor; detail?: ProcedureOp }
+  | { type: "procedure.step"; op: ProcedureOpType; signals: ProcedureSignal[]; id?: string; step?: number; seq?: number; at?: number; by?: Actor; actor?: string; detail?: ProcedureOp }
   | { type: "hold.placed"; interventionId: string; placedBy: string; reason: string }
   | { type: "hold.released"; interventionId: string; releasedBy: string; reassessment: string }
   /** An entry of the count's record; `status` after it; a count's `missing` / `unexpected` items. */

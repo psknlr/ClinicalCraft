@@ -78,10 +78,22 @@ An instrument wider than its port does not pass.
 applies one step:
 
 ```
-plan-ports · insufflate · desufflate · insert · withdraw · retract · release · dissect · isolate ·
-identify · safety-pause · clip · divide · coagulate · suction · irrigate · image · inspect ·
+plan-ports · insufflate · desufflate · insert · withdraw · retract · release · hand-over · dissect ·
+isolate · identify · safety-pause · clip · divide · coagulate · suction · irrigate · image · inspect ·
 recognise · bag · extract · bailout · close
 ```
+
+**Who does a step.** The operator does every step, unless the `operate` action names an `actor` — a
+colleague's staff id. `hand-over {port, to?}` passes the instrument in a port, with the traction it
+holds, to a colleague (`to`), or takes it back (no `to`); it is done by the one who holds it or the one
+who takes it. While a colleague holds a port (`PortState.holder`), only they work it — `retract`,
+`release`, `withdraw`, `suction`, `irrigate` — and they do nothing else; the operator's step on that
+port is refused ("… holds the grasper in port B: ask them to hand it back first"). Withdrawn before
+the hand-over, there is nothing to hand over: the traction has already fallen. A step that lets
+traction go (release, withdraw, an exchange, a new retraction, conversion) and drops a region being
+dissected below half exposure carries the signal `exposure-lost`. In-world, a colleague takes a port
+with their own body (`delegate_task hold_traction`, EMBODIED §8): they walk to the table first, and
+when their body leaves the table the traction falls with their hands.
 
 A step that is **physically impossible** is rejected, with nothing changed. For example:
 

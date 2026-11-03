@@ -256,6 +256,12 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "count.handEntry") }), code: "permission_denied" });
       return null;
     }
+    // a colleague's operative step is done with their body (delegate_task hold_traction / release_traction), never
+    // entered in their name
+    if (requested.type === "operate" && requested.actor) {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "assist.handEntry") }), code: "permission_denied" });
+      return null;
+    }
     // who holds or releases is the caller, never a name the caller supplies (docs/PROTOCOL.md §3.1): a learner who
     // writes `releasedBy: "attending"` releases as the learner — refused unless the learner placed that hold
     let action: ClinicalAction =

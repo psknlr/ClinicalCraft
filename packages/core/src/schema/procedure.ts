@@ -335,6 +335,12 @@ export const ProcedureOpSchema = z.discriminatedUnion("op", [
     })
     .strict(),
   z.object({ op: z.literal("release"), structure: IdSchema }).strict(),
+  /**
+   * Pass the instrument in `port` — and the traction it holds — to a colleague (`to`: their staff id), or take it
+   * back (no `to`). Done by the one who holds it or the one who takes it; while a colleague holds a port, only they
+   * work it (retract, release, withdraw, suction, irrigate). Withdrawn before the hand-over, the traction falls.
+   */
+  z.object({ op: z.literal("hand-over"), port: IdSchema, to: z.string().min(1).max(80).optional() }).strict(),
   /** One dissection step in a region (with energy for the hook). */
   z.object({ op: z.literal("dissect"), port: IdSchema, region: IdSchema, energy: z.boolean().default(false) }).strict(),
   /** Dissect round a seen tubular structure until it is free all round. */
@@ -390,7 +396,9 @@ export type ProcedureSignal =
   | "imaging-done"
   | "pressure-high"
   /** The planes have stopped separating: dense fibrosis (further dissection there tears what lies in it). */
-  | "dense-fibrosis";
+  | "dense-fibrosis"
+  /** Traction let go (released, withdrawn, exchanged): a region being dissected fell below half exposure. */
+  | "exposure-lost";
 
 export interface PortState {
   /** Port site id (= the port's id in ops). */
@@ -401,6 +409,8 @@ export interface PortState {
   instrument: InstrumentId | null;
   /** Where its instrument's tip last worked (patient frame), for shaft clashes. */
   tip: Vec3 | null;
+  /** A colleague who holds its instrument (a staff id: the assistant keeping traction); absent: the operator. */
+  holder?: string;
 }
 
 export interface Retraction {

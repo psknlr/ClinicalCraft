@@ -98,3 +98,67 @@ describe("the presentation record", () => {
     expect(ENGINE_VERSION).toBe(pkg.version);
   });
 });
+
+/** Steps with an actor: the assistant (a staff id) or the operator (none). */
+function runAs(steps: { op: ProcedureOp; actor?: string }[]) {
+  let s = reduce(c, createSession(c), { type: "start" }).state;
+  s = reduce(c, s, { type: "set-phase", phase: "theatre" }).state;
+  const rejected: { op: string; message: string }[] = [];
+  const events: DomainEvent[] = [];
+  for (const { op, actor } of steps) {
+    const r = reduce(c, s, { type: "operate", op, by: "agent", ...(actor ? { actor } : {}) } as ClinicalAction);
+    if (r.rejected) rejected.push({ op: op.op, message: r.rejected.message });
+    events.push(...r.events);
+    s = r.state;
+  }
+  return { s, p: s.procedure!, rejected, events };
+}
+
+describe("the assistant holds the traction (a hand-over)", () => {
+  const ME = (op: ProcedureOp) => ({ op });
+  const AS = (op: ProcedureOp) => ({ op, actor: "or-7.assistant" });
+  const triangle = () => observeField(def, runAs([...ACCESS, NECK, ...TRIANGLE].map(ME)).p).regions.find((r) => r.id === "hepatocystic-triangle")!;
+
+  it("taken over, the grasper keeps its traction; only the assistant works that port, the operator dissects on", () => {
+    const r = runAs([...ACCESS.map(ME), ME(NECK), ...TRIANGLE.map(ME), AS({ op: "hand-over", port: "B", to: "or-7.assistant" })]);
+    expect(r.rejected).toEqual([]);
+    expect(r.p.ports.find((p) => p.site === "B")).toMatchObject({ instrument: "grasper", holder: "or-7.assistant" });
+    expect(r.p.retractions["gallbladder-infundibulum"]).toMatchObject({ port: "B" });
+    // the operator cannot work a port the assistant holds; the assistant cannot dissect
+    const busy = runAs([...ACCESS.map(ME), ME(NECK), AS({ op: "hand-over", port: "B", to: "or-7.assistant" }), ME({ op: "withdraw", port: "B" }), AS({ op: "dissect", port: "C", region: "hepatocystic-triangle", energy: false })]);
+    expect(busy.rejected.map((x) => x.op)).toEqual(["withdraw", "dissect"]);
+    expect(busy.rejected[0]!.message).toMatch(/or-7\.assistant holds the grasper in port "B"/);
+    expect(busy.rejected[1]!.message).toMatch(/Only the operator does "dissect"/);
+    // the edges: the operator dissects with port C while the assistant holds B
+    const on = runAs([...ACCESS.map(ME), ME(NECK), AS({ op: "hand-over", port: "B", to: "or-7.assistant" }), ...TRIANGLE.map(ME)]);
+    expect(on.rejected).toEqual([]);
+  });
+
+  it("the assistant lets go: the exposure falls at once (exposure-lost), the cleared tissue stays cleared", () => {
+    const held = triangle();
+    const r = runAs([...ACCESS.map(ME), ME(NECK), ...TRIANGLE.map(ME), AS({ op: "hand-over", port: "B", to: "or-7.assistant" }), AS({ op: "release", structure: "gallbladder-infundibulum" })]);
+    expect(r.rejected).toEqual([]);
+    const step = r.events.filter((e) => e.type === "procedure.step").at(-1) as Extract<DomainEvent, { type: "procedure.step" }>;
+    expect(step).toMatchObject({ op: "release", actor: "or-7.assistant", signals: ["exposure-lost"] });
+    const now = observeField(def, r.p).regions.find((x) => x.id === "hepatocystic-triangle")!;
+    expect(now.cleared).toBe(held.cleared);
+    expect(now.exposure).not.toBe(held.exposure);
+    // the operator cannot let go of what the assistant holds
+    const notMine = runAs([...ACCESS.map(ME), ME(NECK), AS({ op: "hand-over", port: "B", to: "or-7.assistant" }), ME({ op: "release", structure: "gallbladder-infundibulum" })]);
+    expect(notMine.rejected[0]!.message).toMatch(/holds the grasper/);
+  });
+
+  it("withdrawn before the assistant takes it: nothing to hold, and the window already fell", () => {
+    const r = runAs([...ACCESS.map(ME), ME(NECK), ...TRIANGLE.map(ME), ME({ op: "withdraw", port: "B" }), AS({ op: "hand-over", port: "B", to: "or-7.assistant" })]);
+    expect(r.rejected).toEqual([{ op: "hand-over", message: expect.stringMatching(/nothing to hand over/) }]);
+    const withdraw = r.events.find((e) => e.type === "procedure.step" && e.op === "withdraw") as Extract<DomainEvent, { type: "procedure.step" }>;
+    expect(withdraw.signals).toContain("exposure-lost");
+  });
+
+  it("handed back, the operator works the port again; conversion clears every holder", () => {
+    const back = runAs([...ACCESS.map(ME), ME(NECK), AS({ op: "hand-over", port: "B", to: "or-7.assistant" }), AS({ op: "hand-over", port: "B" }), ME({ op: "withdraw", port: "B" })]);
+    expect(back.rejected).toEqual([]);
+    const open = runAs([...ACCESS.map(ME), ME(NECK), AS({ op: "hand-over", port: "B", to: "or-7.assistant" }), ME({ op: "bailout", strategy: "convert-open" })]);
+    expect(open.p.ports.every((p) => p.holder === undefined && p.instrument === null)).toBe(true);
+  });
+});

@@ -1190,6 +1190,11 @@
             "op": {
               "$ref": "#/definitions/ProcedureOp"
             },
+            "actor": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
             "by": {
               "type": "string",
               "enum": [
@@ -2006,6 +2011,28 @@
           "required": [
             "op",
             "structure"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "hand-over"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "to": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            }
+          },
+          "required": [
+            "op",
+            "port"
           ],
           "additionalProperties": false
         },

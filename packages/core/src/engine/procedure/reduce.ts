@@ -123,6 +123,20 @@ interface Step {
   s: ProcedureState;
   at: number;
   signals: ProcedureSignal[];
+  /** A colleague doing this step (a staff id); undefined: the operator. */
+  actor?: string;
+}
+
+/** What a colleague holding a port may do with it (the operator does everything else). */
+const ASSIST_OPS: ReadonlySet<ProcedureOpType> = new Set(["hand-over", "retract", "release", "withdraw", "suction", "irrigate"]);
+
+/** Only the one who holds a port works it: the operator, or the colleague it was handed to. */
+function mine(x: Step, p: PortState): void {
+  const holder = p.holder ?? null;
+  const actor = x.actor ?? null;
+  if (holder === actor) return;
+  if (holder) reject("requirements-unmet", `${holder} holds the ${p.instrument ?? "instrument"} in port "${p.site}": ask them to hand it back first.`);
+  reject("requirements-unmet", `Port "${p.site}" is the operator's: it has not been handed to ${actor}.`);
 }
 
 function unsafe(x: Step, code: UnsafeCode, structure?: string): void {
@@ -140,13 +154,20 @@ function portOf(x: Step, id: string): PortState {
   return p!;
 }
 
+/** A port worked by this step (not a hand-over): it must be the actor's. */
+function ownPort(x: Step, id: string): PortState {
+  const p = portOf(x, id);
+  mine(x, p);
+  return p;
+}
+
 function siteOf(x: Step, id: string) {
   return x.def.portSites.find((p) => p.id === id)!;
 }
 
 /** The instrument in `port`, which must be able to do `op`. */
 function working(x: Step, port: string, op: ProcedureOpType): { p: PortState; instrument: InstrumentId } {
-  const p = portOf(x, port);
+  const p = ownPort(x, port);
   if (!p.instrument) reject("requirements-unmet", `No instrument is in port "${port}".`);
   if (!CAN[p.instrument!].includes(op)) reject("invalid", `The ${p.instrument} in port "${port}" cannot ${op}.`);
   if (!fieldOpen(x.s)) reject("requirements-unmet", "The field is not in view: insufflate and put the laparoscope in.");
@@ -266,6 +287,7 @@ const DISSECTION_OPS: ReadonlySet<ProcedureOpType> = new Set(["dissect", "isolat
 
 function apply(x: Step, op: ProcedureOp): void {
   const { def, s } = x;
+  if (x.actor && !ASSIST_OPS.has(op.op)) reject("invalid", `Only the operator does "${op.op}": ${x.actor} assists (hand-over, retract, release, withdraw, suction, irrigate).`);
   if (ended(x) && op.op !== "inspect" && op.op !== "recognise") reject("requirements-unmet", s.closed ? "The operation is closed." : "The laparoscopic operation has ended.");
   if (s.bailouts.some((b) => b.startsWith("subtotal")) && DISSECTION_OPS.has(op.op)) reject("requirements-unmet", "A subtotal cholecystectomy was chosen: no further dissection.");
   switch (op.op) {
@@ -294,7 +316,7 @@ function apply(x: Step, op: ProcedureOp): void {
       s.pressure = 0;
       return;
     case "insert": {
-      const p = portOf(x, op.port);
+      const p = ownPort(x, op.port);
       if (!def.instruments.some((i) => i.id === op.instrument)) return reject("unknown-id", `No ${op.instrument} is on the instrument table.`);
       const diameter = def.instruments.find((i) => i.id === op.instrument)?.diameterMm ?? DIAMETER[op.instrument];
       if (diameter > p.sizeMm) return reject("invalid", `A ${diameter} mm ${op.instrument} does not pass a ${p.sizeMm} mm port.`);
@@ -310,10 +332,23 @@ function apply(x: Step, op: ProcedureOp): void {
       return;
     }
     case "withdraw": {
-      const p = portOf(x, op.port);
+      const p = ownPort(x, op.port);
       for (const [k, r] of Object.entries(s.retractions)) if (r.port === p.site) delete s.retractions[k];
       p.instrument = null;
       p.tip = null;
+      delete p.holder;
+      return;
+    }
+    case "hand-over": {
+      const p = portOf(x, op.port);
+      if (!p.instrument) return reject("requirements-unmet", `No instrument is in port "${op.port}": there is nothing to hand over.`);
+      const from = p.holder ?? null;
+      const to = op.to ?? null;
+      if (from === to) return reject("invalid", `${to ?? "The operator"} already holds the ${p.instrument} in port "${op.port}".`);
+      const actor = x.actor ?? null;
+      if (actor !== from && actor !== to) return reject("invalid", `Only the one who holds the ${p.instrument} in port "${op.port}" or the one who takes it can hand it over.`);
+      if (to) p.holder = to;
+      else delete p.holder;
       return;
     }
     case "retract": {
@@ -331,9 +366,12 @@ function apply(x: Step, op: ProcedureOp): void {
       assignHandles(def, s);
       return;
     }
-    case "release":
+    case "release": {
+      const r = s.retractions[op.structure];
+      if (r) mine(x, portOf(x, r.port));
       delete s.retractions[op.structure];
       return;
+    }
     case "dissect": {
       const { p, instrument } = working(x, op.port, "dissect");
       const region = regionOf(def, op.region);
@@ -535,6 +573,7 @@ function apply(x: Step, op: ProcedureOp): void {
         for (const p of s.ports) {
           p.instrument = null;
           p.tip = null;
+          delete p.holder;
         }
       }
       return;
@@ -550,6 +589,7 @@ function apply(x: Step, op: ProcedureOp): void {
       for (const p of s.ports) {
         p.instrument = null;
         p.tip = null;
+        delete p.holder;
       }
       return;
     }
@@ -562,11 +602,26 @@ function minutesFor(def: ProcedureDefinition, op: ProcedureOp): number {
   return def.minutes[key] ?? def.minutes[op.op] ?? MINUTES[key] ?? MINUTES[op.op] ?? 0;
 }
 
-/** Apply one operator step to the field (pure: the input state is never mutated). */
-export function operate(def: ProcedureDefinition, state: ProcedureState, op: ProcedureOp, at: number): ProcedureStepResult {
-  const x: Step = { def, s: cloneProcedureState(state), at, signals: [] };
+/** Steps that can let traction go. */
+const TRACTION_OPS: ReadonlySet<ProcedureOpType> = new Set(["release", "withdraw", "insert", "retract", "bailout"]);
+
+/** The exposure of every region begun and not yet complete (the ones being worked). */
+function openExposures(def: ProcedureDefinition, s: ProcedureState): Map<string, number> {
+  const out = new Map<string, number>();
+  for (const r of def.regions) {
+    const f = clearedFraction(def, s, r.id);
+    if (f > 0 && f < 1) out.set(r.id, exposure(def, s, r.id));
+  }
+  return out;
+}
+
+/** Apply one step to the field (pure: the input state is never mutated); `actor`: a colleague doing it (default: the operator). */
+export function operate(def: ProcedureDefinition, state: ProcedureState, op: ProcedureOp, at: number, actor?: string): ProcedureStepResult {
+  const x: Step = { def, s: cloneProcedureState(state), at, signals: [], ...(actor ? { actor } : {}) };
+  const before = TRACTION_OPS.has(op.op) ? openExposures(def, state) : null;
   try {
     apply(x, op);
+    if (before && [...before].some(([id, e]) => e >= 0.5 && exposure(def, x.s, id) < 0.5)) x.signals.push("exposure-lost");
   } catch (err) {
     if (err instanceof Rejection) return { state, minutes: 0, signals: [], rejected: { code: err.code, message: err.message } };
     throw err;

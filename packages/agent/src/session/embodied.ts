@@ -66,6 +66,7 @@ import { runDelegation, type DelegationResult } from "./delegation.js";
 import { heldBy, releaseHeld } from "./device-ops.js";
 import type { ClinicalCaller } from "./embodied-types.js";
 import { rt, type RuntimeKey } from "./i18n.js";
+import { procedureLabel } from "./i18n-procedure.js";
 import { nonVerbalReason } from "./nonverbal.js";
 import { anySignal } from "./signals.js";
 import { SessionTrace } from "./trace.js";
@@ -1010,6 +1011,9 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   }
   if (r.message === "unknown-intervention") return rt(locale, "delegate.unknownIntervention", { asked: r.asked ?? "" });
   const lines = [rt(locale, "delegate.result", { staff, task, status: rt(locale, `delegate.status.${r.status}` as RuntimeKey), steps: r.steps.length, seconds: Math.round(r.elapsedSeconds) })];
+  // traction let go (before the task, or as it) and an instrument taken: what the operator sees change on the screen
+  for (const g of r.letGo ?? []) lines.push(rt(locale, "assist.letGo", { who: staff, instrument: procedureLabel(locale, g.instrument), port: g.port, why: r.task === "release_traction" ? "" : rt(locale, "assist.letGo.task", { task }) }));
+  if (r.holding) lines.push(rt(locale, "assist.took", { who: staff, instrument: procedureLabel(locale, r.holding.instrument), port: r.holding.port }));
   if (r.delivered) {
     const room = r.delivered.room ? (world.entity(`room:${r.delivered.room}`) ? t(world.entity(`room:${r.delivered.room}`)!.name, locale) : r.delivered.room) : "—";
     lines.push(rt(locale, "delegate.delivered", { target: nameOf(world, r.delivered.entityId, locale), room, distance: r.delivered.distance.toFixed(1), x: r.delivered.x.toFixed(1), z: r.delivered.z.toFixed(1) }));
