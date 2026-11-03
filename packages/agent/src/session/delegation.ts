@@ -17,6 +17,7 @@
  * a device, a bed space or room, `home` — or `params.capability`: the staff
  * member walks to the patient and wheels them there; porters and nurses).
  */
+import { lookupStaff } from "../tools/consult-target.js";
 import { monitorAttached, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { SkillToolCall } from "../skills/interpreter.js";
@@ -85,7 +86,11 @@ export function pickStaff(world: WorldRuntime, role: string, patientId: string |
   const direct = role.startsWith("staff:") ? world.actor(role) : world.actor(`staff:${role}`);
   if (direct && direct.id.startsWith("staff:")) return direct.id;
   const candidates = world.actors().filter((a) => a.id.startsWith("staff:") && a.role === role);
-  if (!candidates.length) return null;
+  if (!candidates.length) {
+    // a colleague by name or title ("Nurse Lim", "洗手护士"): the one room-aware resolver, in the patient's room
+    const named = lookupStaff(world.facility, role, patientId ? world.roomOf(patientId) : null);
+    return named.kind === "one" && world.actor(`staff:${named.staff.id}`) ? `staff:${named.staff.id}` : null;
+  }
   const place = patientId ? world.patientPlace() : null;
   const entity = patientId && !place ? world.entity(patientId) : null;
   const at = place ? { level: place.level, x: place.x, z: place.z } : entity ? { level: entity.level, x: entity.position.x, z: entity.position.z } : null;

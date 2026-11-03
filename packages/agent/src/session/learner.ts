@@ -23,8 +23,12 @@ import type { SessionKernel } from "./kernel.js";
 import { spokenAnswer } from "./nonverbal.js";
 import { MovementRequests } from "./movement.js";
 import { sessionSnapshot } from "./resume.js";
-import { parseLearnerInput, resolveAgentAlias } from "./router.js";
-import { staffVoice, type StaffVoice } from "./staff-voice.js";
+import { parseLearnerInput, parseMention, resolveAgentAlias } from "./router.js";
+import { staffAgent, staffVoice, type StaffVoice } from "./staff-voice.js";
+import { encounterRoom, lookupStaff, staffChoice } from "../tools/consult-target.js";
+
+/** The learner as the holder of a hold they place or release themselves. */
+const LEARNER_HOLDER = "learner";
 import type { ToolPathExtra } from "./tool-path.js";
 
 /** The learner's side of one session. */
@@ -52,7 +56,29 @@ export class LearnerPath {
     }
     let target: string;
     let body = text;
-    if (to === null) {
+    // a colleague named — in an `@` mention or the staff picker (id or name) — through the one room-aware resolver
+    const room = encounterRoom(k.caseDef, k.facility);
+    const lookup = (name: string) => {
+      const r = lookupStaff(k.facility, name, room);
+      return r.kind === "none" ? null : r;
+    };
+    let named = staff ? lookup(staff) : null;
+    if (to === null && !named) {
+      const mention = parseMention(text, lookup, k.availableAgents());
+      if (mention) {
+        named = mention.found;
+        body = mention.text;
+      }
+    }
+    if (named?.kind === "ambiguous") {
+      const choices = named.staff.map((s) => staffChoice(s, k.locale)).join(k.locale === "zh-CN" ? "；" : "; ");
+      k.emit(id, { type: "error", message: rt(k.locale, "tool.consult.ambiguousStaff", { staff: staff ?? text.trim().split(/\s+/u).slice(0, 3).join(" "), candidates: choices }), code: "ambiguous_staff" });
+      return;
+    }
+    if (named?.kind === "one") {
+      target = to === null ? staffAgent(named.staff.role) : resolveAgentAlias(String(to));
+      staff = named.staff.id;
+    } else if (to === null) {
       const parsed = parseLearnerInput(text, k.availableAgents());
       if (parsed.kind === "command") return this.handleCommand(id, parsed.name, parsed.args);
       target = parsed.to ?? k.interlocutor;
@@ -225,7 +251,10 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "count.handEntry") }), code: "permission_denied" });
       return null;
     }
-    let action: ClinicalAction = requested;
+    // who holds or releases is the caller, never a name the caller supplies (docs/PROTOCOL.md §3.1): a learner who
+    // writes `releasedBy: "attending"` releases as the learner — refused unless the learner placed that hold
+    let action: ClinicalAction =
+      requested.type === "hold" ? { ...requested, placedBy: LEARNER_HOLDER } : requested.type === "release-hold" ? { ...requested, releasedBy: LEARNER_HOLDER } : requested;
     const toolName = actionToolName(action);
     const tool = toolName ? k.registry.get(toolName) : undefined;
     let args = tool ? actionToolArgs(k.caseDef, action, L) : null;

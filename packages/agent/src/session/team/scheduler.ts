@@ -364,9 +364,10 @@ export class TeamScheduler {
       delivered,
       read: false,
     };
-    // check-back bookkeeping on the request a read-back or a confirmation answers
+    // check-back bookkeeping on the request a read-back or a confirmation answers: a read-back counts only from the
+    // person the request was said to, about the same item for the same person
     const req = p.message.replyTo ? this.state.messages.find((m) => m.id === p.message.replyTo) : undefined;
-    if (req && message.kind === "readback") req.readBack = true;
+    if (req && message.kind === "readback" && req.to === member.id && (message.about.item ?? null) === (req.about.item ?? null) && (message.about.for ?? null) === (req.about.for ?? null)) req.readBack = true;
     if (req && message.kind === "confirm") {
       const original = this.state.messages.find((m) => m.thread === message.thread && m.kind === "request");
       if (original) original.verified = true;
@@ -409,17 +410,44 @@ export class TeamScheduler {
   /* Learner as the surgeon                                            */
   /* ---------------------------------------------------------------- */
 
-  /** The surgeon (the learner) answers a message: a read-back, a confirmation or a decline, recorded like any member's. */
-  reply(messageId: string, kind: TeamMessage["kind"], text?: string): TeamMessage | null {
+  /**
+   * The surgeon (the learner) answers a message said to them — a read-back, a confirmation or a decline, recorded
+   * like any member's. A message said to someone else is theirs to answer (refused: `notYours`). A read-back is about
+   * what it names: an instrument named (`item`, or in its words) other than the one asked for reads back nothing —
+   * the request is not read back, and the sender asks again.
+   */
+  reply(messageId: string, kind: TeamMessage["kind"], text?: string, item?: string): { message: TeamMessage } | { refused: "unknown" } | { refused: "notYours"; to: MemberId } {
     const to = this.state.messages.find((m) => m.id === messageId);
-    if (!to) return null;
+    if (!to) return { refused: "unknown" };
+    if (to.to !== PRIMARY_ACTOR) return { refused: "notYours", to: to.to };
     const surgeon = this.member(PRIMARY_ACTOR) ?? ({ id: PRIMARY_ACTOR, staff: "surgeon", duties: ["surgeon"], inbox: [], memory: [], relief: false, absent: false } satisfies MemberState);
     const said: Bilingual = text ? { en: text, "zh-CN": text } : to.text;
     // the reply is about the same thing (item, person); a count — its items, what was set aside — is only ever the counter's to report
     const { count: _count, of: _of, ids: _ids, stage: _stage, setAside: _setAside, ...about } = to.about;
+    const named = item?.trim() || (text ? this.itemNamedIn(text) : null);
+    if (named) about.item = named;
     this.send(surgeon, { kind: "say", to: to.from, message: { thread: to.thread, kind, text: said, about, evidence: [], replyTo: to.id } });
     to.read = true;
-    return this.state.messages.at(-1) ?? null;
+    return { message: this.state.messages.at(-1)! };
+  }
+
+  /** The equipment type a reply names in its words (the longest name of a type in the room's hospital), or null. */
+  private itemNamedIn(text: string): string | null {
+    const said = text.toLowerCase();
+    let best: { type: string; length: number } | null = null;
+    for (const e of this.host.world().entities()) {
+      const type = e.equipmentType;
+      if (!type || e.portable !== "handheld") continue;
+      const plain = this.itemName(type.id);
+      const words = plain.en.trim().split(/\s+/u);
+      // what people call it: its name, without an eponym ("Mayo-Hegar needle holder" → "needle holder", "持针器")
+      const spoken = [plain.en, plain["zh-CN"], words.length >= 3 ? words.slice(-2).join(" ") : "", plain["zh-CN"].replace(/^[A-Za-z0-9 .\-]+/u, "")];
+      for (const n of [both(type.name).en, both(type.name)["zh-CN"], ...spoken]) {
+        const name = n.toLowerCase().trim();
+        if (name.length >= 2 && said.includes(name) && (!best || name.length > best.length)) best = { type: type.id, length: name.length };
+      }
+    }
+    return best?.type ?? null;
   }
 
   /* ---------------------------------------------------------------- */

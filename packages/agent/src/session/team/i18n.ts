@@ -34,6 +34,7 @@ const PHRASES = {
   countHold: { en: "Count incorrect — {n} of {of} {item}. Please hold closure and check the wound.", "zh-CN": "清点不符——{item}只有{n}/{of}。请暂停关闭，检查术野。" },
   holdReadback: { en: "Holding closure — checking the wound.", "zh-CN": "暂停关闭——我检查术野。" },
   holdConfirm: { en: "Yes — hold closure.", "zh-CN": "对，暂停关闭。" },
+  holdClarify: { en: "Not that — please hold closure and check the wound for the missing {item}.", "zh-CN": "不是那个——请暂停关闭，检查术野里缺少的{item}。" },
   recount: { en: "{to}, please recount the {item}.", "zh-CN": "{to}，请重新清点{item}。" },
   woundChecked: { en: "Wound checked.", "zh-CN": "术野已检查。" },
   countReconciled: { en: "Recount correct: {n} of {of} {item} — you may close.", "zh-CN": "复点无误：{item}{n}/{of}——可以关闭。" },

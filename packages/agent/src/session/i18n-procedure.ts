@@ -31,6 +31,7 @@ export const PROCEDURE_EN = {
   "team.off": "The team is switched off for this session.",
   "team.notNow": "The team works on its own only during: {phases}.",
   "team.invalid": "That team request is not well formed: {reason}",
+  "team.notYours": "That message was said to {to}, not to you: only they can read it back or answer it.",
 } as const;
 
 export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
@@ -59,6 +60,7 @@ export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
   "team.off": "本次会话的团队自主协作已关闭。",
   "team.notNow": "团队只在以下阶段自主协作：{phases}。",
   "team.invalid": "团队请求格式不正确：{reason}",
+  "team.notYours": "这句话是对{to}说的，不是对你：只有{to}能复述或回答。",
 };
 
 /** Labels of the field view's enumerations (dissection, exposure, findings, signals…), per language. */

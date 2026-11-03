@@ -566,7 +566,7 @@ function consultRecipient(args: ToolArgs, ctx: Pick<ToolContext, "caseDef" | "fa
   const staff = strArg(args, "staff");
   if (staff) {
     const r = resolveConsultStaff(ctx.caseDef, ctx.facility, staff, L);
-    if (!r.ok) return { ok: false, output: rt(L, "tool.consult.unknownStaff", { staff, candidates: r.candidates.join(isZh(L) ? "；" : "; ") || "—" }) };
+    if (!r.ok) return { ok: false, output: rt(L, r.ambiguous ? "tool.consult.ambiguousStaff" : "tool.consult.unknownStaff", { staff, candidates: r.candidates.join(isZh(L) ? "；" : "; ") || "—" }) };
     return { ok: true, ...r.target };
   }
   const role = strArg(args, "role");

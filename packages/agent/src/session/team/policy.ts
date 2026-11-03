@@ -367,6 +367,11 @@ function countReported(v: MemberView, m: TeamMessage): Proposal {
 /** The surgeon answers in the check's thread: the hold read back (confirmed: check-back), or the wound checked. */
 function checkMessage(v: MemberView, check: TeamTask, m: TeamMessage): Proposal {
   const c = check.count!;
+  // a read-back about another item reads back nothing: the request is said again, clearly
+  if (m.kind === "readback" && m.about.item && check.item && m.about.item !== check.item) {
+    const name = v.count?.name ?? v.itemName(check.item);
+    return { kind: "say", to: m.from, message: { thread: check.thread, kind: "request", text: phrase("holdClarify", { item: name }), about: { item: check.item }, evidence: [], replyTo: m.id }, patch: [{ read: m.id }] };
+  }
   if (m.kind === "readback") return { kind: "say", to: m.from, message: { thread: check.thread, kind: "confirm", text: phrase("holdConfirm"), about: m.about, evidence: [], replyTo: m.id }, patch: [{ read: m.id }, { id: check.id, set: { count: { ...c, held: true } } }] };
   if (m.kind === "report" || m.kind === "decline") return { kind: "update", patch: [{ read: m.id }, { id: check.id, set: { count: { ...c, wound: true } } }] };
   return { kind: "update", patch: [{ read: m.id }] };
