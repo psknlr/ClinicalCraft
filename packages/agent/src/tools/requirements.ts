@@ -14,9 +14,11 @@ import {
   currentObjective,
   explainCondition,
   procedureFor,
+  reduce,
   requirementLeaves,
   t,
   type CaseDefinition,
+  type ClinicalAction,
   type Condition,
   type CountPredicate,
   type ProcedurePredicate,
@@ -137,9 +139,84 @@ export function nextAction(c: CaseDefinition, s: SessionState, r: Requirement, L
   return null;
 }
 
+/** Operative steps that need no arguments: they can be tried as they are named. */
+const BARE_OPS = new Set(["close", "inspect", "desufflate"]);
+
+/** The clinical action a requirement's next step names (to try it, never shown), or null when it cannot be built. */
+export function candidateAction(c: CaseDefinition, s: SessionState, r: Requirement): ClinicalAction | null {
+  if (r.met) return null;
+  // one of several: the same child whose next step is named (`nextAction`)
+  if (r.kind === "any") {
+    const child = r.children.find((x) => nextAction(c, s, x, "en") != null);
+    return child ? candidateAction(c, s, child) : null;
+  }
+  if (r.kind !== "leaf") return null;
+  const cond = r.cond;
+  if ("intervened" in cond) return activeHolds(s, cond.intervened).length ? null : { type: "intervene", interventionId: cond.intervened };
+  if ("inOrder" in cond) {
+    const missing = cond.inOrder.find((id: string) => !s.interventions.some((x) => x.interventionId === id && x.appropriateness !== "contraindicated"));
+    return missing ? { type: "intervene", interventionId: missing } : null;
+  }
+  if ("decided" in cond) {
+    const d = c.decisions.find((x) => x.id === cond.decided);
+    return d ? { type: "answer", decisionId: d.id, optionIds: d.options.filter((o) => o.correct).map((o) => o.id) } : null;
+  }
+  if ("procedure" in cond) {
+    const step = procedureStep(cond.procedure);
+    return step && BARE_OPS.has(step) ? ({ type: "operate", op: { op: step } } as ClinicalAction) : null;
+  }
+  return null;
+}
+
 /**
- * Lines for a condition: each named requirement met (✓) or open (·) with its next action, and the open work-up
- * items as a count. Empty when the condition has no named requirement.
+ * Would this action run now? The engine's own reducer decides — the same function that executes it — on a copy (pure:
+ * nothing is recorded, nothing is shown of how it would be judged). An intervention it would record as invalid (a
+ * checklist step out of order) is not runnable either.
+ */
+export function tryAction(c: CaseDefinition, s: SessionState, action: ClinicalAction, L = "en"): { allowed: true } | { allowed: false; blockedBy: string } {
+  const r = reduce(c, s, { ...action, by: "system" } as ClinicalAction);
+  if (r.rejected) {
+    // a locked decision says what it needs in the learner's language (the engine words it in the case's first)
+    const d = action.type === "answer" && r.rejected.code === "requirements-unmet" ? c.decisions.find((x) => x.id === action.decisionId) : undefined;
+    return { allowed: false, blockedBy: d?.need ? t(d.need, L) : r.rejected.message };
+  }
+  if (action.type === "intervene" && r.state.interventions.length > s.interventions.length && r.state.interventions.at(-1)!.invalid) {
+    // out of order: what has to come first (the step's own indication, requirement by requirement)
+    const iv = c.interventions.find((x) => x.id === action.interventionId);
+    const visible = new Set(c.phases.map((p) => p.id));
+    // the prerequisites: what its contraindication says is missing (`not: {all: [...]}`), else its indication
+    const cw = iv?.contraindicatedWhen as Condition | undefined;
+    const needed: Condition | undefined = cw && "not" in cw ? (cw.not as Condition) : iv?.indicatedWhen;
+    const first = needed ? requirementLeaves(explainCondition(c, s, needed)).filter((x) => !x.met).map((x) => requirementText(c, s, x, L, visible)) : [];
+    return { allowed: false, blockedBy: first.length ? rt(L, "req.outOfOrder", { first: joinList(L, first) }) : rt(L, "req.outOfOrderBare", { harm: iv?.harm ? t(iv.harm, L) : "—" }) };
+  }
+  return { allowed: true };
+}
+
+/** A recommendation as data: the next step, whether it would run now, and what blocks it. */
+export interface Recommendation {
+  action: string;
+  available: boolean;
+  blockedBy: string[];
+}
+
+/** The current objective's open requirements as recommendations (`case_status` data): only runnable ones are "next". */
+export function recommendations(c: CaseDefinition, s: SessionState, L: string): Recommendation[] {
+  const o = currentObjective(c, s);
+  if (!o) return [];
+  return requirementLeaves(explainCondition(c, s, o.completeWhen)).flatMap((r) => {
+    const next = nextAction(c, s, r, L);
+    if (!next || (r.kind === "leaf" && isWorkup(r.cond))) return [];
+    const cand = candidateAction(c, s, r);
+    const tried = cand ? tryAction(c, s, cand, L) : ({ allowed: true } as const);
+    return [{ action: next, available: tried.allowed, blockedBy: tried.allowed ? [] : [tried.blockedBy] }];
+  });
+}
+
+/**
+ * Lines for a condition: each named requirement met (✓) or open (·) with its next action — "next" only when the
+ * engine would run it now, else "not yet" with what blocks it — and the open work-up items as a count. Empty when
+ * the condition has no named requirement.
  */
 export function requirementLines(c: CaseDefinition, s: SessionState, cond: Condition, L: string, visible: ReadonlySet<string>, opts: { onlyOpen?: boolean } = {}): string[] {
   const leaves = requirementLeaves(explainCondition(c, s, cond));
@@ -153,7 +230,11 @@ export function requirementLines(c: CaseDefinition, s: SessionState, cond: Condi
     if (r.met && opts.onlyOpen) continue;
     lines.push(rt(L, r.met ? "req.met" : "req.open", { text: requirementText(c, s, r, L, visible) }));
     const next = nextAction(c, s, r, L);
-    if (next) lines.push(rt(L, "req.next", { action: next }));
+    if (next) {
+      const cand = candidateAction(c, s, r);
+      const tried = cand ? tryAction(c, s, cand, L) : ({ allowed: true } as const);
+      lines.push(tried.allowed ? rt(L, "req.next", { action: next }) : rt(L, "req.notYet", { action: next, reason: tried.blockedBy }));
+    }
   }
   if (workup > 0) lines.push(rt(L, "req.workup", { count: workup }));
   return lines;

@@ -50,7 +50,7 @@ import {
   type ToolArgs,
 } from "./clinical-resolve.js";
 import { studyLines } from "./studies.js";
-import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay } from "./requirements.js";
+import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay, recommendations } from "./requirements.js";
 import { resolveConsultStaff } from "./consult-target.js";
 import type { StaffVoice } from "../session/staff-voice.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
@@ -874,6 +874,8 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
       finished: s.finished,
       progress: p,
       currentObjective: objective?.id ?? null,
+      // the next steps of the current objective, each with whether the engine would run it now and what blocks it
+      recommendations: recommendations(c, s, L),
       orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
       decisions: decisions.map((d) => ({ id: d.decision.id, unlocked: d.unlocked, decided: d.decided })),
       holds: (s.holds ?? []).filter((h) => !h.released),
