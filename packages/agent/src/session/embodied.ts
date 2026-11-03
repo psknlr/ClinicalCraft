@@ -23,6 +23,7 @@
  * delegated staff act with their `staff:*` body. `world()` is a stable handle:
  * a language switch rebuilds the runtime from its snapshot behind it.
  */
+import { COUNT_TOOL, SurgicalCount } from "./count.js";
 import { assignPatientSlot, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   behaviorOf,
@@ -183,6 +184,8 @@ export class EmbodiedSession {
   /** Staff carrying out a delegation right now (their whereabouts are the delegating clinician's to know — G13). */
   private readonly delegates = new Map<ActorId, number>();
   private readonly captures = new Set<{ id: string; type: DomainEvent["type"] }[]>();
+  /** The device each world action in flight operates (its clinical effect re-checks the board's binding before commit). */
+  private readonly targets = new Map<string, string>();
   /** Engine changes of a world action's clinical effect (action id → events), for its `state_change` span. */
   private readonly engineChanges = new Map<string, { id: string; type: DomainEvent["type"] }[]>();
   private carry = 0;
@@ -196,6 +199,8 @@ export class EmbodiedSession {
   private readonly facade: WorldRuntime;
   readonly view: ClinicalView;
   readonly port: ClinicalPort;
+  /** The surgical count (docs/TEAM.md §4.3): the one writer of the case's count record from the world. */
+  readonly count: SurgicalCount;
 
   constructor(
     private readonly host: EmbodiedHost,
@@ -225,6 +230,7 @@ export class EmbodiedSession {
       invoke: (actorId, tool, args, signal, context) => this.invoke(actorId, tool, args, signal, context),
       elapse: (seconds, reason) => this.elapse(seconds, reason),
     };
+    this.count = new SurgicalCount({ caseDef: c, world: () => this.inner, state: () => host.state(), dispatch: (a) => host.dispatch(a), locale: () => host.locale() });
     this.worldLocale = host.locale();
     this.carry = carryOf(options.snapshot);
     this.inner = this.build(options.snapshot, this.worldLocale, true);
@@ -326,6 +332,8 @@ export class EmbodiedSession {
       regionName: (at, locale) => w().regionName(at, locale),
       plan: (actorId, goal) => w().plan(actorId, goal),
       checkSpatial: (actorId, intent, opts) => w().checkSpatial(actorId, intent, opts),
+      recordBound: (id) => w().recordBound(id),
+      roomOf: (id) => w().roomOf(id),
       atBedside: (id) => w().atBedside(id),
       bedsideProviders: (capability) => w().bedsideProviders(capability),
       patientPlace: () => w().patientPlace(),
@@ -384,6 +392,7 @@ export class EmbodiedSession {
     const actorId = input.actorId ?? PRIMARY_ACTOR;
     const actionId = input.actionId ?? `wa-${this.host.newId()}`;
     const request: WorldActionRequest = { ...input, actorId, actionId };
+    if (request.targetId) this.targets.set(actionId, request.targetId);
     // A retry of an action id still in flight shares that run, and its caller.
     const entry = { caller, actorId };
     const owned = !this.callers.has(actionId);
@@ -398,8 +407,13 @@ export class EmbodiedSession {
       try {
         result = await inner.execute(request, signal ?? caller.signal);
       } finally {
-        if (owned && this.callers.get(actionId) === entry) this.callers.delete(actionId);
+        if (owned && this.callers.get(actionId) === entry) {
+          this.callers.delete(actionId);
+          this.targets.delete(actionId);
+        }
       }
+      // a swab searched out of the wound is recorded as recovered, by whoever took it out (the count's evidence)
+      this.count.afterAct(request, result);
       this.traceEngineChanges(actionId, actorId);
       this.host.emit({ type: "world_action_result", result }, caller.submission);
       if (inner.version !== before) this.record();
@@ -441,6 +455,23 @@ export class EmbodiedSession {
     });
   }
 
+  /** A count device operation's effect (`surgical_count {step}`): recorded from the world by the count service. */
+  private countEffect(actorId: ActorId, args: Record<string, unknown>, actionId?: string): ClinicalInvokeResult {
+    const captured: { id: string; type: DomainEvent["type"] }[] = [];
+    this.captures.add(captured);
+    let r: ReturnType<SurgicalCount["perform"]>;
+    try {
+      r = this.count.perform(actorId, typeof args.step === "string" ? args.step : "");
+    } finally {
+      this.captures.delete(captured);
+    }
+    if (actionId) {
+      const changes = captured.filter((e) => e.type !== "action.rejected");
+      if (changes.length) this.engineChanges.set(actionId, [...(this.engineChanges.get(actionId) ?? []), ...changes]);
+    }
+    return { ok: r.ok, output: r.output, outcome: r.ok ? "ok" : "rejected", clinicalEventIds: captured.map((e) => e.id) };
+  }
+
   /** The caller of the most recent world action of `actorId` still in flight (a port called without an action id). */
   private lastCallerOf(actorId: ActorId): ClinicalCaller | null {
     let found: ClinicalCaller | null = null;
@@ -458,6 +489,8 @@ export class EmbodiedSession {
   private async invoke(actorId: ActorId, tool: string, args: Record<string, unknown>, signal?: AbortSignal, context?: ClinicalInvokeContext): Promise<ClinicalInvokeResult> {
     const actionId = context?.actionId;
     const caller = (actionId ? this.callers.get(actionId)?.caller : undefined) ?? this.lastCallerOf(actorId) ?? { agent: "learner" as const };
+    // the count board and the RF wand record what the world holds (never a caller's word): the count's own writer
+    if (tool === COUNT_TOOL) return this.countEffect(actorId, args, actionId);
     const combined = anySignal([caller.signal, signal]);
     const captured: { id: string; type: DomainEvent["type"] }[] = [];
     this.captures.add(captured);
@@ -603,7 +636,18 @@ export class EmbodiedSession {
       rhythm: () => rhythmAtBedside(this.inner),
       staff: (actorId, locale) => this.staffActor(actorId, locale),
       vitals: (actorId) => this.vitalsView(actorId),
+      device: (ctx) => this.deviceBinding(ctx.worldActionId),
     };
+  }
+
+  /** The board a world action operates, if it is a record-backed one no longer bound to the encounter (see `SpatialGate.device`). */
+  private deviceBinding(actionId: string | undefined): SpatialCheck | null {
+    const target = actionId ? this.targets.get(actionId) : undefined;
+    if (!target || this.inner.recordBound(target)) return null;
+    const e = this.inner.entity(target);
+    if (!e || e.kind !== "equipment" || behaviorOf(e).derived !== "case-record") return null;
+    const L = this.host.locale();
+    return { ok: false, code: "SPATIAL_PRECONDITION_CHANGED", requirement: { kind: "anywhere" }, reason: "record-unbound", message: rt(L, "board.unbound", { board: t(e.name, L) }), hint: null, details: { board: target } } as SpatialCheck;
   }
 
   /** A body other than the learner's avatar, as its scope of practice sees it (review S3); null for the avatar. */

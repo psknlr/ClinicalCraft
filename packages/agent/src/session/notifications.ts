@@ -123,6 +123,34 @@ export function caseSpeakerNames(c: CaseDefinition): SpeakerNames {
 }
 
 /** Who calls a critical result through, by investigation category. */
+/** " — missing: …; — not in the count: …" for a count's open items (ids without the `eq:` prefix). */
+export function openItemsText(L: string, open: { missing?: readonly string[]; unexpected?: readonly string[] }, name: (id: string) => string = (id) => id.replace(/^eq:/u, "")): string {
+  const list = (ids: readonly string[]) => ids.map(name).join(L === "zh-CN" ? "、" : ", ");
+  return [open.missing?.length ? rt(L, "count.open.missing", { items: list(open.missing) }) : "", open.unexpected?.length ? rt(L, "count.open.unexpected", { items: list(open.unexpected) }) : ""].join("");
+}
+
+/** What the team calls the counted items ("swabs"). */
+export function countItemName(c: CaseDefinition, L: string): string {
+  const count = c.team?.count;
+  return count ? (count.name ? t(count.name, L) : count.item) : "";
+}
+
+/** A count, a scan or an escalation as the learner is told of it (a discrepancy is a warning). */
+function countNotification(c: CaseDefinition, L: string, event: Extract<DomainEvent, { type: "count.recorded" }>): EventReaction[] {
+  const status = rt(L, `count.status.${event.status}` as RuntimeKey);
+  const open = (event.missing?.length ?? 0) + (event.unexpected?.length ?? 0) + (event.detected?.length ?? 0) > 0;
+  const level = event.status === "discrepancy" || event.status === "unresolved" || open ? "warning" : "info";
+  const title = rt(L, "count.title");
+  const item = countItemName(c, L);
+  if (event.op === "count") {
+    const stage = rt(L, `count.stage.${event.stage ?? "recount"}` as RuntimeKey);
+    return [{ notification: { level, title, body: rt(L, "count.result", { stage, item, n: event.accounted ?? 0, of: event.of ?? 0, open: openItemsText(L, event), status }) } }];
+  }
+  if (event.op === "scan") return [{ notification: { level, title, body: event.detected?.length ? rt(L, "count.scan.detected", { items: event.detected.map((id) => id.replace(/^eq:/u, "")).join(", "), status }) : rt(L, "count.scan.clear", { status }) } }];
+  if (event.op === "escalate") return [{ notification: { level: "warning", title, body: rt(L, "count.line", { item, status, open: "" }) } }];
+  return [];
+}
+
 function criticalResultKeys(c: CaseDefinition, investigationId: string): { body: RuntimeKey; line: RuntimeKey } {
   const category = c.investigations.find((i) => i.id === investigationId)?.category;
   switch (category) {
@@ -184,6 +212,10 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
       return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by: event.placedBy, reason: sentence(event.reason) }) } }];
     case "hold.released":
       return [{ notification: { level: "info", title: rt(L, "status.holds"), body: rt(L, "hold.released", { name: interventionLabel(c, event.interventionId, L), by: event.releasedBy, reassessment: event.reassessment }) } }];
+    case "count.recorded":
+      return countNotification(c, L, event);
+    case "count.unsafe":
+      return [{ notification: { level: "critical", title: rt(L, "count.title"), body: rt(L, "count.unsafe", { status: rt(L, `count.status.${event.status}` as RuntimeKey), open: openItemsText(L, event) }) } }];
     case "case.completed":
       return [{ notification: { level: "info", title: rt(L, "notify.caseCompleted.title"), body: rt(L, "notify.caseCompleted.body") } }];
     case "case.finished":

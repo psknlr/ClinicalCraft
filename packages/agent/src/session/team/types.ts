@@ -38,9 +38,25 @@ export interface TeamMessage {
   text: Bilingual;
   /**
    * What it is about: the need, the item type, the person it is for; a decline's reason code; a count (`count` of
-   * `of`), a hold on closure (`hold`), a recount asked for (`recount`).
+   * `of` accounted for, by item: the `ids` counted at `stage`, what was `missing` or not in the count —
+   * `unexpected`), a hold on closure (`hold`), a recount asked for (`recount`), an item set aside off the field
+   * (`setAside`: not in the count).
    */
-  about: { need?: string; item?: string; for?: MemberId; reason?: string; count?: number; of?: number; hold?: boolean; recount?: boolean };
+  about: {
+    need?: string;
+    item?: string;
+    for?: MemberId;
+    reason?: string;
+    count?: number;
+    of?: number;
+    ids?: string[];
+    missing?: string[];
+    unexpected?: string[];
+    stage?: "closing" | "recount";
+    setAside?: string[];
+    hold?: boolean;
+    recount?: boolean;
+  };
   room: string;
   patient: string | null;
   /** Simulated minute and scheduler round when it was said. */
@@ -95,6 +111,11 @@ export interface CountCheck {
   /** Search places done, in order; the one being walked to. */
   searched: string[];
   at?: string;
+  /** The latest count's missing items and items not in the count (by id). */
+  missing?: string[];
+  unexpected?: string[];
+  /** Items not in the count the circulating nurse took off the field (documented). */
+  setAside?: string[];
 }
 
 export interface TeamTask {
@@ -163,11 +184,23 @@ export interface MemberState {
   absent: boolean;
 }
 
-export const TEAM_STATE_VERSION = 1 as const;
+export const TEAM_STATE_VERSION = 2 as const;
+
+/**
+ * Where the assigned scenario is (docs/TEAM.md §5): `pending` — the team's phases have not begun, nothing is set up
+ * in the world yet (a session saved before the operation); `active` — set up once in the world, the team working;
+ * `completed` — everything it set in motion has ended. Saved and restored with the team: a restore sets the scenario
+ * up only while it is still pending, so a reload before the operation activates the same obligations as a run that
+ * was never interrupted, and one after it never sets anything up twice.
+ */
+export type TeamLifecycle = "pending" | "active" | "completed";
 
 export interface TeamState {
   version: typeof TEAM_STATE_VERSION;
   scenario: string | null;
+  lifecycle: TeamLifecycle;
+  /** When the scenario was set up in the world: the round, the simulated minute and the world version after it. */
+  setup?: { round: number; at: number; worldVersion: number };
   round: number;
   /** Next id number (messages, observations, tasks). */
   seq: number;
@@ -187,10 +220,14 @@ export interface TeamState {
   count?: CountLedger;
 }
 
-/** The count's record (docs/TEAM.md §4.3). */
+/**
+ * The team's own record of its work on the count (docs/TEAM.md §4.3) — the timing and the holds, for the benchmark.
+ * The count itself (which items, missing, not in the count, escalated, settled) is the case's count record
+ * (`SessionState.count`); `outcome` and `closedOnHold` are read from it.
+ */
 export interface CountLedger {
   item: string;
-  /** Items in the room before incision. */
+  /** Items in the count (the baseline). */
   baseline: number;
   /** Round the count fell due; a discrepancy was raised (the hold asked for); the count was settled. */
   dueRound?: number;

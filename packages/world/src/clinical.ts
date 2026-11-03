@@ -127,6 +127,8 @@ export function ivAccessInSitu(c: CaseDefinition): boolean {
 /** The clinical intent of a tool call on a case item (what `checkSpatial` evaluates). */
 export function intentFor(tool: ClinicalEffect["tool"], itemId: string | null): ClinicalIntent {
   switch (tool) {
+    case "surgical_count":
+      return itemId ? { tool, kind: "count", itemId } : { tool, kind: "count" };
     case "order_test":
       return itemId ? { tool, kind: "order", investigationId: itemId } : { tool, kind: "order" };
     case "read_result":
@@ -197,6 +199,11 @@ export function selectClinical(opts: {
     if (paramOf(parameters, "investigation")) tool = "order_test";
     else if (paramOf(parameters, "intervention")) tool = "intervene";
     else return { ok: false, code: "INVALID_REQUEST", message: worldMessage("INVALID_REQUEST", L, { reason: worldMessage("pre.missingParam", L, { param: "investigation | intervention" }) }) };
+  }
+  if (tool === "surgical_count") {
+    // an entry of the count record (the step is the effect's item): the session records it from the world
+    const step = opts.effect.item ?? "";
+    return { ok: true, value: { tool, args: { step }, intent: intentFor(tool, step), itemId: step, itemName: step } };
   }
   const kind = itemKindOf(tool);
   if (!kind) return { ok: true, value: { tool, args: {}, intent: intentFor(tool, null), itemId: null, itemName: "" } };

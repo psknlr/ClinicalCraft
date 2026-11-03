@@ -365,6 +365,8 @@ export class SessionKernel {
       // A `vitals.alarm` says itself whether its value is an arrest placeholder (`unmeasurable`, set at the minute it fired).
       for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale)) this.react(id, reaction);
     }
+    // in-world: the items opened onto the field are recorded at the start, before a scenario moves anything (the count)
+    if (accepted && action.type === "start") this.embodied?.count.ensureBaseline("system");
     if (accepted) {
       this.emitSnapshot(id);
       if (action.type === "note") {

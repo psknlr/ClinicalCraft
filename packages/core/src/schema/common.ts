@@ -149,6 +149,46 @@ export type ProcedurePredicate = z.infer<typeof ProcedurePredicateSchema>;
 /* ------------------------------------------------------------------ */
 
 /**
+ * The surgical count's status (docs/TEAM.md §4.3, `engine/count.ts`), from its record: `none` (no record: the count is
+ * kept in in-world mode), `baseline` (the items opened onto the field recorded, no count since but the one before
+ * incision), `correct` (every expected item accounted for by
+ * identity, no discrepancy ever), `discrepancy` (an item missing, one not in the count, or a retained item detected —
+ * not escalated yet), `unresolved` (the discrepancy escalated, still open), `excluded` (escalated, and a clear scan
+ * after the last count excludes a retained item), `reconciled` (accounted for again after a discrepancy).
+ */
+export const COUNT_STATUSES = ["none", "baseline", "correct", "discrepancy", "unresolved", "excluded", "reconciled"] as const;
+export const CountStatusSchema = z.enum(COUNT_STATUSES);
+export type CountStatus = z.infer<typeof CountStatusSchema>;
+/** The statuses in which every counted item is accounted for (or a retained item is excluded): closure may follow. */
+export const COUNT_SETTLED: readonly CountStatus[] = ["correct", "reconciled", "excluded"];
+
+/**
+ * When a count was taken (the count board's columns): `baseline` — before incision, against the items opened onto
+ * the field (it settles nothing about closure); then before cavity and skin closure, the final count, a recount after
+ * a search, a staff hand-over.
+ */
+export const COUNT_STAGES = ["baseline", "cavity", "closing", "final", "recount", "handover"] as const;
+export const CountStageSchema = z.enum(COUNT_STAGES);
+export type CountStage = z.infer<typeof CountStageSchema>;
+
+/**
+ * A condition on the count's record; every given field must hold (`{}`: a baseline was counted). `status`: the
+ * status now (one of); `stage`: the latest count was taken at this stage; `scan`: the latest scan with the detection
+ * wand found nothing (`clear`) or a retained item (`detected`); `escalated`: a discrepancy was escalated (ever: the
+ * credit stays); `unsafe`: an unsafe progression was recorded (closure on an open count — permanent).
+ */
+export const CountPredicateSchema = z
+  .object({
+    status: z.union([CountStatusSchema, z.array(CountStatusSchema).min(1)]).optional(),
+    stage: CountStageSchema.optional(),
+    scan: z.enum(["clear", "detected"]).optional(),
+    escalated: z.boolean().optional(),
+    unsafe: z.boolean().optional(),
+  })
+  .strict();
+export type CountPredicate = z.infer<typeof CountPredicateSchema>;
+
+/**
  * Declarative predicates over a session's state. Used by objectives,
  * decisions (`requires`), waypoints, physiology trends/events,
  * intervention appropriateness and rubric items.
@@ -205,7 +245,9 @@ export type Condition =
   | { elapsed: { gte?: number; lte?: number } }
   /** Number of hints used. */
   | { hints: { gte?: number; lte?: number } }
-  | { procedure: ProcedurePredicate };
+  | { procedure: ProcedurePredicate }
+  /** The surgical count's record (docs/TEAM.md §4.3; `engine/count.ts`): every given field must hold. */
+  | { count: CountPredicate };
 
 export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
   z.union([
@@ -232,6 +274,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ hints: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
     /** The operative field (case `procedure`, docs/PROCEDURE.md §6). */
     z.object({ procedure: ProcedurePredicateSchema }).strict(),
+    /** The surgical count's record (docs/TEAM.md §4.3). */
+    z.object({ count: CountPredicateSchema }).strict(),
   ]),
 );
 

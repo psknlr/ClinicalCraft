@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { AppearanceSchema, CaseSettingSchema } from "./case.js";
-import { CapabilitySchema, ConditionSchema, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
+import { CapabilitySchema, ConditionSchema, COUNT_STAGES, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
 
 /**
  * Virtual environment — facilities, rooms, equipment and materials.
@@ -143,15 +143,25 @@ export const WorldPredicateSchema: z.ZodType<WorldPredicate> = z.lazy(() =>
  * the first case item whose `requires` this device provides (`capability`),
  * or is the case's monitoring intervention (`monitoring`).
  */
+/**
+ * The steps of a `surgical_count` effect (its `item`; docs/TEAM.md §4.3): the baseline before incision, a count at
+ * a stage, an RF scan of the patient, an escalation of a discrepancy. The session records them from the world.
+ */
+export const COUNT_EFFECT_STEPS = ["baseline", ...COUNT_STAGES, "scan", "escalate"] as const;
+
 export const ClinicalEffectSchema = z
   .object({
-    tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine"]),
-    /** `item`: the case item with id `item` (a WHO board's `sign_in` → the case's `sign-in`). */
+    /** `surgical_count`: an entry of the case's count record (a count board, an RF wand), `item` naming the step. */
+    tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine", "surgical_count"]),
+    /** `item`: the case item with id `item` (a WHO board's `sign_in` → the case's `sign-in`; a count's step). */
     select: z.enum(["param", "capability", "monitoring", "item"]),
     item: IdSchema.optional(),
   })
   .strict()
-  .refine((e) => (e.select === "item") === (e.item != null), { message: "`item` names the case item exactly when `select` is \"item\"" });
+  .refine((e) => (e.select === "item") === (e.item != null), { message: "`item` names the case item exactly when `select` is \"item\"" })
+  .refine((e) => e.tool !== "surgical_count" || (e.select === "item" && (COUNT_EFFECT_STEPS as readonly string[]).includes(e.item ?? "")), {
+    message: `a surgical_count effect names its step: select "item", item one of ${COUNT_EFFECT_STEPS.join(", ")}`,
+  });
 export type ClinicalEffect = z.infer<typeof ClinicalEffectSchema>;
 
 /** One operation of a device behaviour (offered in the `from` states; `to` = state after success). */

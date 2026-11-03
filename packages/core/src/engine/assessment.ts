@@ -3,6 +3,7 @@
  * validated competency score (docs/ARCHITECTURE.md §2.1 rule 5).
  */
 import { claimsMatchField } from "./procedure/claims.js";
+import { countSummary } from "./count.js";
 import { procedureFor } from "./procedure/variant.js";
 import type { CaseDefinition } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
@@ -177,6 +178,7 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   const gates = c.safetyGates.length ? gateSummary(c, s) : null;
   const score = gates?.cap != null && raw.percent > gates.cap ? { ...raw, percent: gates.cap, uncapped: raw.percent } : raw;
   const procedure = procedureSummary(c, s);
+  const count = countSummary(s);
   return {
     caseId: c.id,
     completed: p.complete,
@@ -193,6 +195,7 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
       ...(gates ? { gates: gates.gates, verdict: gates.verdict } : {}),
     },
     ...(procedure ? { procedure } : {}),
+    ...(count ? { count } : {}),
     rubric,
     score,
     ...(criticalMissed ? { criticalMissed } : {}),

@@ -23,6 +23,7 @@ import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
 import { createProcedureState, operate, procedureFor } from "./procedure/index.js";
+import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -340,16 +341,57 @@ function onNote(ctx: Ctx, a: Action<"note">): Outcome {
   return accepted();
 }
 
-/** One step of the operation (docs/PROCEDURE.md §5): the field changes only here. */
+/**
+ * One step of the operation (docs/PROCEDURE.md §5): the field changes only here. Closure reads the count (docs/TEAM.md
+ * §4.3): while it is not settled, closure is refused (`team.count.closure: "refuse"`) or carried out and recorded as
+ * an unsafe progression — kept for the debrief whatever is pressed later.
+ */
 function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
   const def = procedureFor(ctx.c, ctx.s);
   if (!def) return rejected("invalid", "this case has no operation");
   if (!def.phases.includes(ctx.s.phase)) return rejected("phase-locked", `the operation is not under way in phase "${ctx.s.phase}"`);
+  const open = a.op.op === "close" ? closureOnOpenCount(ctx.c, ctx.s) : null;
+  if (open?.policy === "refuse") return rejected("requirements-unmet", openCountMessage(open));
   const step = operate(def, ctx.s.procedure ?? createProcedureState(), a.op, ctx.s.clock);
   if (step.rejected) return rejected(step.rejected.code, step.rejected.message);
   ctx.s.procedure = step.state;
   ctx.events.push({ type: "procedure.step", op: a.op.op, signals: step.signals });
+  if (open && ctx.s.count) {
+    ctx.s.count = { ...ctx.s.count, unsafe: [...ctx.s.count.unsafe, { what: "closure", status: open.status, missing: open.missing, unexpected: open.unexpected, at: ctx.s.clock, seq: ctx.s.seq + 1 }] };
+    ctx.events.push({ type: "count.unsafe", what: "closure", status: open.status, missing: open.missing, unexpected: open.unexpected });
+  }
   return accepted(ctx.c.clock.mode === "simulated" ? step.minutes : 0);
+}
+
+function openCountMessage(open: { status: string; missing: string[]; unexpected: string[] }): string {
+  const parts = [open.missing.length ? `missing: ${open.missing.join(", ")}` : "", open.unexpected.length ? `not in the count: ${open.unexpected.join(", ")}` : ""].filter(Boolean);
+  return `the count is ${open.status}${parts.length ? ` (${parts.join("; ")})` : ""}: closure waits for a reconciled count, or an escalation and a clear scan of the patient`;
+}
+
+/** A count's figures for its event: stage, accounted for of the items in the count, missing, not in the count. */
+function countFigures(r: NonNullable<SessionState["count"]>, e: Extract<NonNullable<SessionState["count"]>["entries"][number], { op: "count" }>) {
+  const { expected, transferred } = countLedger(r);
+  const of = expected.filter((id) => !transferred.includes(id)).length;
+  const missing = e.missing ?? [];
+  return { stage: e.stage, accounted: of - missing.length, of, missing, unexpected: e.unexpected ?? [] };
+}
+
+/** An entry of the surgical count's record (docs/TEAM.md §4.3), by item identity. */
+function onCount(ctx: Ctx, a: Action<"count">): Outcome {
+  const { c, s } = ctx;
+  const r = applyCount(c, s.count, a.count, s.clock, s.seq + 1);
+  if (!r.ok) return rejected(r.code, r.message);
+  s.count = r.record;
+  const e = r.entry;
+  ctx.events.push({
+    type: "count.recorded",
+    op: e.op,
+    staff: e.staff,
+    status: countStatus(r.record),
+    ...(e.op === "count" ? countFigures(r.record, e) : {}),
+    ...(e.op === "scan" ? { detected: e.detected } : {}),
+  });
+  return accepted();
 }
 
 function onFinish(ctx: Ctx): Outcome {
@@ -392,6 +434,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onHold(ctx, a);
     case "release-hold":
       return onReleaseHold(ctx, a);
+    case "count":
+      return onCount(ctx, a);
     case "finish":
       return onFinish(ctx);
   }

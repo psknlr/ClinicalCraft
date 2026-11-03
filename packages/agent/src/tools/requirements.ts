@@ -1,6 +1,6 @@
 /**
  * What the case still needs, in words (docs/PROTOCOL.md §3.1): the current objective's requirements met and
- * open, with the next available action for each open one; standing holds; and the way into the operation. One
+ * open, with the next available action for each open one; standing holds; the surgical count; and the way into the operation. One
  * renderer for `case_status`, `intervene` (an operation asked for as an intervention), `observe_field` and
  * `operate` refusals, so every surface names the same unmet requirement.
  *
@@ -8,6 +8,8 @@
  */
 import {
   activeHolds,
+  countOpenItems,
+  countStatus,
   createProcedureState,
   currentObjective,
   explainCondition,
@@ -16,11 +18,13 @@ import {
   t,
   type CaseDefinition,
   type Condition,
+  type CountPredicate,
   type ProcedurePredicate,
   type Requirement,
   type SessionState,
 } from "@clinicalcraft/core";
-import { joinList, rt } from "../session/i18n.js";
+import { joinList, rt, type RuntimeKey } from "../session/i18n.js";
+import { countItemName, openItemsText } from "../session/notifications.js";
 import { sentence } from "../session/i18n-checklist.js";
 import { procedureLabel } from "../session/i18n-procedure.js";
 import { interventionLabel, objectiveTitle, phaseLabel } from "./format.js";
@@ -50,6 +54,30 @@ function procedureWords(p: ProcedurePredicate, L: string): string {
   if ("documented" in p) return rt(L, "proc.documented", { value: p.documented });
   const [key, value] = Object.entries(p)[0] ?? ["?", ""];
   return rt(L, "proc.generic", { key, value: typeof value === "object" ? JSON.stringify(value) : String(value) });
+}
+
+/** A count condition in words: the statuses (one of), the stage, the scan, an escalation, an unsafe progression. */
+function countWords(p: CountPredicate, L: string): string {
+  const parts: string[] = [];
+  if (p.status !== undefined) parts.push((Array.isArray(p.status) ? p.status : [p.status]).map((x) => rt(L, `count.status.${x}` as RuntimeKey)).join(" / "));
+  if (p.stage !== undefined) parts.push(rt(L, `count.stage.${p.stage}` as RuntimeKey));
+  if (p.scan !== undefined) parts.push(rt(L, "req.count.scan", { result: p.scan }));
+  if (p.escalated) parts.push(rt(L, "req.count.escalated"));
+  if (p.unsafe) parts.push(rt(L, "req.count.unsafe"));
+  return parts.join(", ") || rt(L, "count.status.baseline");
+}
+
+/** The count's lines for `case_status` (docs/TEAM.md §4.3): its status, what is open, escalations, unsafe progression. */
+export function countLines(c: CaseDefinition, s: SessionState, L: string): string[] {
+  if (!c.team?.count) return [];
+  const r = s.count;
+  const status = countStatus(r);
+  const item = countItemName(c, L);
+  const open = r && status !== "correct" && status !== "reconciled" ? countOpenItems(r) : { missing: [], unexpected: [] };
+  const lines = [rt(L, "count.line", { item, status: rt(L, `count.status.${status}` as RuntimeKey), open: openItemsText(L, open) })];
+  for (const e of r?.entries ?? []) if (e.op === "escalate") lines.push(rt(L, "count.line.escalated", { who: e.staff, to: e.to }));
+  for (const u of r?.unsafe ?? []) lines.push(rt(L, "count.line.unsafe", { status: rt(L, `count.status.${u.status}` as RuntimeKey), open: openItemsText(L, u) }));
+  return lines;
 }
 
 function decisionLabel(c: CaseDefinition, s: SessionState, id: string, L: string): string {
@@ -82,6 +110,7 @@ export function requirementText(c: CaseDefinition, s: SessionState, r: Requireme
   if ("phase" in cond && cond.phase) return rt(L, "req.phase", { label: visible.has(cond.phase) ? phaseLabel(c, cond.phase, L) : rt(L, "req.laterPhase") });
   if ("flag" in cond) return rt(L, "req.flag", { flag: cond.flag });
   if ("procedure" in cond) return rt(L, "req.procedure", { what: procedureWords(cond.procedure, L) });
+  if ("count" in cond) return rt(L, "req.count", { what: countWords(cond.count, L) });
   return rt(L, "req.other", { what: Object.keys(cond)[0] ?? "?" });
 }
 

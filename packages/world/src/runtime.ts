@@ -156,6 +156,8 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
       return backend.plan({ actorId, from: a.pose, goal, role: a.role });
     },
 
+    recordBound: (id: EntityId) => rules.recordBound(id),
+    roomOf: (id: EntityId) => locator.place(id)?.room ?? null,
     checkSpatial(actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }): SpatialCheck {
       const base = checker.check(actorId, intent, opts);
       // a checklist step's team prerequisites (the WHO board's count before a Time Out) hold on every path to it

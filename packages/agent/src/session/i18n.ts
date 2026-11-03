@@ -11,6 +11,7 @@
 import { EMBODIED_EN, EMBODIED_ZH } from "./i18n-embodied.js";
 import { PROCEDURE_EN, PROCEDURE_ZH } from "./i18n-procedure.js";
 import { CHECKLIST_EN, CHECKLIST_ZH } from "./i18n-checklist.js";
+import { COUNT_EN, COUNT_ZH } from "./i18n-count.js";
 
 /** Runtime languages shipped with ClinicalCraft. */
 export type RuntimeLang = "zh-CN" | "en";
@@ -185,6 +186,7 @@ const EN = {
   "tool.hint.none": "All objectives are complete — no further hints.",
   "tool.consult.unknownRole": "Unknown consultant role \"{role}\".",
   "tool.consult.unknownStaff": "Nobody here answers to “{staff}”. You can ask: {candidates}.",
+  "tool.consult.ambiguousStaff": "More than one colleague answers to “{staff}”: {candidates}. Say which one (a name or staff id).",
   "tool.consult.to": "To: {to}",
   "tool.nestedLimit": "{agent} is not available right now (too many nested consultations).",
   "tool.dynamic.unsupported": "The front-end does not support {tool}.",
@@ -480,6 +482,7 @@ const EN = {
   ...EMBODIED_EN,
   ...PROCEDURE_EN,
   ...CHECKLIST_EN,
+  ...COUNT_EN,
 } as const;
 
 export type RuntimeKey = keyof typeof EN;
@@ -632,6 +635,7 @@ const ZH: Record<RuntimeKey, string> = {
   "tool.hint.none": "所有目标均已完成——没有更多提示。",
   "tool.consult.unknownRole": "未知会诊角色“{role}”。",
   "tool.consult.unknownStaff": "这里没有“{staff}”。可以询问：{candidates}。",
+  "tool.consult.ambiguousStaff": "有不止一位同事对应“{staff}”：{candidates}。请说明是哪一位（姓名或员工编号）。",
   "tool.consult.to": "对象：{to}",
   "tool.nestedLimit": "{agent} 暂时无法回应（嵌套会诊次数过多）。",
   "tool.dynamic.unsupported": "前端不支持 {tool}。",
@@ -915,6 +919,7 @@ const ZH: Record<RuntimeKey, string> = {
   ...EMBODIED_ZH,
   ...PROCEDURE_ZH,
   ...CHECKLIST_ZH,
+  ...COUNT_ZH,
 };
 
 const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };

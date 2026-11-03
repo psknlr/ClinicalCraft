@@ -199,6 +199,11 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "pre.doorway": { "zh-CN": "门口有人，不能关门。", en: "Someone is standing in the doorway." },
   "pre.notPatientMonitor": { "zh-CN": "「{target}」不是该患者的监护仪。", en: '"{target}" is not this patient\'s monitor.' },
   "pre.heldByOther": { "zh-CN": "「{target}」在{holder}手里。", en: '"{target}" is held by {holder}.' },
+  "pre.otherRoom": {
+    "zh-CN": "不能「{operation}」：「{target}」不在患者{patient}所在的房间（{room}）——它不记录这位患者的病历。请用{room}里的那块。",
+    en: 'Cannot "{operation}": {target} is not in the room of the patient {patient} ({room}) — it records nothing of this patient. Use the one in {room}.',
+  },
+  "pre.betweenRooms": { "zh-CN": "转运途中", en: "between rooms" },
   "pre.equipped": { "zh-CN": "「{target}」已佩戴。", en: '"{target}" is already equipped.' },
   "pre.handOverWorn": { "zh-CN": "「{target}」正穿戴着，先脱下（放下）再递给别人。", en: '"{target}" is being worn: take it off (put it down) before handing it to someone.' },
   "pre.handOverTo": { "zh-CN": "「{target}」不是在场的人，东西只能递给人。", en: '"{target}" is not a person here: items are handed to people.' },

@@ -13,6 +13,7 @@ import type { HoldRecord, OrderRecord, SessionState } from "../schema/session.js
 import { vitalValue } from "./signal.js";
 import { historyCredited } from "./twins.js";
 import { evaluateProcedure } from "./procedure/predicates.js";
+import { evaluateCount } from "./count.js";
 import { procedureFor } from "./procedure/variant.js";
 
 /** Composite key of a result: `${investigationId}@${phase}`. */
@@ -125,6 +126,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("elapsed" in cond) return inRange(s.clock, cond.elapsed);
   if ("hints" in cond) return inRange(s.hints, cond.hints);
   if ("procedure" in cond) return evaluateProcedure(procedureFor(c, s), s.procedure, cond.procedure, s.variant);
+  if ("count" in cond) return evaluateCount(s, cond.count);
   return false;
 }
 

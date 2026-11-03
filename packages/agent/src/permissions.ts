@@ -339,6 +339,8 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   finish: "finish_case",
   hold: "place_hold",
   "release-hold": "release_hold",
+  // a count is recorded from the world (the count board, the RF wand, the team), never entered by hand
+  count: null,
 };
 
 /** Equivalent tool name for a learner `clinical_action` (null when the action is not gated). */

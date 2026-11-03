@@ -19,7 +19,7 @@ const APPROVAL_DECISIONS: ReadonlySet<string> = new Set(["approved", "approved_f
 const CANCELLABLE_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "autopilot", "compact", "assess", "world_action", "external_tool_call", "team"]);
 
 /** Ops of the learner after which the care team acts on its own (autonomy `auto`, docs/TEAM.md). */
-const LEARNER_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "world_action", "external_tool_call"]);
+const LEARNER_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "world_action", "external_tool_call", "autopilot"]);
 
 /** Remove anything that looks like a credential from an op before it is transcribed. */
 export function sanitizeOp(op: Op): Op {

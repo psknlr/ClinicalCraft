@@ -64,6 +64,12 @@ export interface AutopilotHost {
    * walkthrough with the body (`embodiedOfflineTurn`).
    */
   offlineTurn?(turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome>;
+  /**
+   * After each step of the walkthrough: the session's care team takes its turn (docs/TEAM.md §2) — the same path the
+   * browser, the learner and external agents drive after their own acts, so a headless run works the assigned team
+   * scenario too and never runs ahead of it.
+   */
+  afterStep?(signal?: AbortSignal): Promise<void>;
 }
 
 /**

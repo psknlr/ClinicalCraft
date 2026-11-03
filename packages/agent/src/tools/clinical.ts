@@ -49,7 +49,7 @@ import {
   unresolvedOutput,
   type ToolArgs,
 } from "./clinical-resolve.js";
-import { asksForOperation, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay } from "./requirements.js";
+import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay } from "./requirements.js";
 import { resolveConsultStaff } from "./consult-target.js";
 import type { StaffVoice } from "../session/staff-voice.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
@@ -566,7 +566,7 @@ function consultRecipient(args: ToolArgs, ctx: Pick<ToolContext, "caseDef" | "fa
   const staff = strArg(args, "staff");
   if (staff) {
     const r = resolveConsultStaff(ctx.caseDef, ctx.facility, staff, L);
-    if (!r.ok) return { ok: false, output: rt(L, "tool.consult.unknownStaff", { staff, candidates: r.candidates.join(isZh(L) ? "；" : "; ") || "—" }) };
+    if (!r.ok) return { ok: false, output: rt(L, r.ambiguous ? "tool.consult.ambiguousStaff" : "tool.consult.unknownStaff", { staff, candidates: r.candidates.join(isZh(L) ? "；" : "; ") || "—" }) };
     return { ok: true, ...r.target };
   }
   const role = strArg(args, "role");
@@ -862,7 +862,7 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
   }
   // what the current objective still needs (named, with the next action), standing holds, and the operation
   const visible = visiblePhases(c, s);
-  lines.push(...objectiveRequirementLines(c, s, L, visible), ...holdLines(c, s, L), ...operationLines(c, s, L, visible));
+  lines.push(...objectiveRequirementLines(c, s, L, visible), ...holdLines(c, s, L), ...operationLines(c, s, L, visible), ...countLines(c, s, L));
   const objective = currentObjective(c, s);
   return {
     text: lines.join("\n"),

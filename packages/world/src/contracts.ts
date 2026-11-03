@@ -737,8 +737,12 @@ export type SpatialRequirement =
 /** The clinical tool call being checked, in engine terms (no dependency on the agent package). */
 export interface ClinicalIntent {
   tool: string;
-  /** `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic screen. */
-  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive";
+  /**
+   * `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic
+   * screen; `count`: an entry of the surgical count (docs/TEAM.md §4.3) — where it is made is the device operation's
+   * own requirement (at the count board, the wand at the table).
+   */
+  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count";
   itemId?: string;
   findingId?: string;
   investigationId?: string;
@@ -1055,6 +1059,13 @@ export interface WorldRuntime {
    * then carry `SPATIAL_PRECONDITION_CHANGED`) immediately before the engine commit.
    */
   checkSpatial(actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }): SpatialCheck;
+  /**
+   * Is a record-backed board (`derived: "case-record"`) bound to the encounter now — in the patient's room? Only then
+   * does it show and write the case record (a session re-checks it right before committing a board's clinical act).
+   */
+  recordBound(id: EntityId): boolean;
+  /** The room an entity or actor is in now (a moved, dropped or carried item: where it is, not where it was placed); null outdoors or unknown. */
+  roomOf(id: EntityId): string | null;
   /**
    * THE bedside rule (EMBODIED §6), where the entity stands now (a moved cart
    * where it was parked, a carried item with its holder): on the patient

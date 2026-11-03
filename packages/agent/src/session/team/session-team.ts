@@ -59,6 +59,8 @@ export class SessionTeam {
       },
       emit: (msg) => k.emit(k.currentSubmission, msg),
       holds: (cond) => evaluate(k.caseDef, k.state, cond),
+      count: () => k.embodied?.count ?? null,
+      record: () => k.state.count,
       say: (speaker, text) => {
         k.speakLine(k.currentSubmission, { agent: "nurse", speaker, text, grounded: [] });
         k.conversations.addDialogue({ who: "nurse", speaker, text });
@@ -112,7 +114,13 @@ export class SessionTeam {
       case "reply": {
         const kinds = new Set(["readback", "confirm", "decline", "report"]);
         if (typeof op.message !== "string" || !op.kind || !kinds.has(op.kind)) return this.invalid(id, "reply needs message and kind (readback, confirm, decline, report)");
-        if (!s.reply(op.message, op.kind, typeof op.text === "string" && op.text.trim() ? op.text.trim() : undefined)) return this.invalid(id, `no team message "${op.message}"`);
+        const r = s.reply(op.message, op.kind, typeof op.text === "string" && op.text.trim() ? op.text.trim() : undefined, typeof op.item === "string" ? op.item : undefined);
+        if ("refused" in r && r.refused === "unknown") return this.invalid(id, `no team message "${op.message}"`);
+        if ("refused" in r && r.refused === "notYours") {
+          const to = t(k.embodied!.world().entity(r.to)?.name ?? r.to, k.locale);
+          k.emit(id, { type: "error", message: rt(k.locale, "team.notYours", { to }), code: "permission_denied" });
+          return;
+        }
         break;
       }
       case "need": {

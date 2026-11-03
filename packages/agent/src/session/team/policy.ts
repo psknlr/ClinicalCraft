@@ -55,19 +55,21 @@ export interface ColleagueView {
   distance: number;
 }
 
-/** The count as a member can know it (docs/TEAM.md §4.3). */
+/** The count as a member can know it (docs/TEAM.md §4.3): by item identity, from the case's count record. */
 export interface CountView {
   /** Equipment type counted. */
   item: string;
-  /** The baseline: items in the room before incision. */
+  /** Items in the count: the baseline, plus documented additions, less documented transfers off the field. */
   of: number;
   /** The count is due now. */
   due: boolean;
   /** Where the circulating nurse searches, in order (entity ids). */
   places: readonly string[];
   name: Bilingual;
-  /** Items of the type the member perceives in the room now (lying, or in anyone's hands). */
-  seen(): number;
+  /** The items of the type the team in the room can account for now (lying in the room, or in anyone's hands there), by id. */
+  seen(): string[];
+  /** Compared with the count record: expected items not there (`missing`), items there that are not in the count (`unexpected`). */
+  check(ids: readonly string[]): { missing: string[]; unexpected: string[] };
 }
 
 /** What one member knows and can do now (built by the scheduler from the world, role-scoped). */
@@ -297,62 +299,106 @@ function countTo(v: MemberView): MemberId {
   return v.colleagues.find((c) => has(c.duties, "circulate") && c.present)?.id ?? SURGEON;
 }
 
-/** The counter counts what she can see, and says it. */
+/**
+ * A count by item identity, as the counter says it: how many of the items in the count are accounted for, the ids
+ * (the scheduler records them in the case's count — `stage`), and what is missing or not in the count.
+ */
+function countMessage(count: CountView, stage: "closing" | "recount"): { text: Bilingual; about: TeamMessage["about"]; n: number } {
+  const ids = count.seen();
+  const open = count.check(ids);
+  const n = count.of - open.missing.length;
+  const k = open.unexpected.length;
+  const text = k ? phrase("countReportExtra", { item: count.name, n: num(n), of: num(count.of), k: num(k) }) : phrase("countReport", { item: count.name, n: num(n), of: num(count.of) });
+  return { text, n, about: { item: count.item, count: n, of: count.of, ids, missing: open.missing, unexpected: open.unexpected, stage } };
+}
+
+/** The counter counts what the team can account for, item by item, and says it. */
 function firstCount(v: MemberView, count: CountView): Proposal {
-  const n = count.seen();
-  const task: TeamTask = { id: v.newId("task"), kind: "count", need: "count", item: count.item, for: v.me.id, owner: v.me.id, initiator: v.me.id, thread: v.newId("thread"), status: "done", since: v.round, tried: [], acts: 0, counted: n };
-  return { kind: "say", to: countTo(v), message: { thread: task.thread, kind: "report", text: phrase("countReport", { item: count.name, n: num(n), of: num(count.of) }), about: { item: count.item, count: n, of: count.of }, evidence: [] }, patch: [{ create: task }] };
+  const m = countMessage(count, "closing");
+  const task: TeamTask = { id: v.newId("task"), kind: "count", need: "count", item: count.item, for: v.me.id, owner: v.me.id, initiator: v.me.id, thread: v.newId("thread"), status: "done", since: v.round, tried: [], acts: 0, counted: m.n };
+  return { kind: "say", to: countTo(v), message: { thread: task.thread, kind: "report", text: m.text, about: m.about, evidence: [] }, patch: [{ create: task }] };
 }
 
 /** Asked to recount: count again, and say it in the same thread. */
 function recount(v: MemberView, m: TeamMessage): Proposal {
-  const count = v.count!;
-  const n = count.seen();
+  const said = countMessage(v.count!, "recount");
   const mine = v.tasks.find((t) => t.kind === "count");
   return {
     kind: "say",
     to: m.from,
-    message: { thread: m.thread, kind: "report", text: phrase("countReport", { item: count.name, n: num(n), of: num(count.of) }), about: { item: count.item, count: n, of: count.of }, evidence: [], replyTo: m.id },
-    patch: [{ read: m.id }, ...(mine ? [{ id: mine.id, set: { counted: n } }] : [])],
+    message: { thread: m.thread, kind: "report", text: said.text, about: said.about, evidence: [], replyTo: m.id },
+    patch: [{ read: m.id }, ...(mine ? [{ id: mine.id, set: { counted: said.n } }] : [])],
   };
 }
 
-/** The circulating nurse hears a count: correct — said to the surgeon; short — the hold, then the search. */
+/**
+ * The circulating nurse hears a count — by item identity, never a bare number: every expected item there and none
+ * that is not in the count — correct, said to the surgeon; otherwise (short, or six of five, or five of five made up
+ * with an item that is not in the count) — the hold, then the search and the recount.
+ */
 function countReported(v: MemberView, m: TeamMessage): Proposal {
   const n = m.about.count!;
   const of = m.about.of!;
+  const missing = m.about.missing ?? [];
+  const unexpected = m.about.unexpected ?? [];
+  const clean = missing.length === 0 && unexpected.length === 0;
   const name = v.count?.name ?? v.itemName(m.about.item ?? "");
   const surgeon = SURGEON;
   const check = v.tasks.find((t) => t.kind === "check" && !TERMINAL.has(t.status));
-  const params = { item: name, n: num(n), of: num(of) };
-  const about = { item: m.about.item ?? "", count: n, of };
+  const params = { item: name, n: num(n), of: num(of), k: num(unexpected.length) };
+  // my own recount (nobody else counts) carries its items, recorded with what I say
+  const own = m.id === "self" && m.about.ids && m.about.stage ? { ids: m.about.ids, stage: m.about.stage } : {};
+  const about = { item: m.about.item ?? "", count: n, of, missing, unexpected, ...own };
   if (check) {
-    const c = { ...check.count!, counted: [...check.count!.counted, n] };
-    if (n >= of) return { kind: "say", to: surgeon, message: { thread: check.thread, kind: "report", text: phrase("countReconciled", params), about, evidence: [m.id] }, patch: [{ read: m.id }, { id: check.id, set: { status: "done", verified: true, since: v.round, count: c } }] };
-    return { kind: "say", to: surgeon, message: { thread: check.thread, kind: "escalate", text: phrase("countUnresolved", params), about, evidence: [m.id] }, patch: [{ read: m.id }, { id: check.id, set: { status: "escalated", since: v.round, reason: "count-unresolved", count: c } }] };
+    const c = { ...check.count!, counted: [...check.count!.counted, n], missing, unexpected };
+    if (clean) return { kind: "say", to: surgeon, message: { thread: check.thread, kind: "report", text: phrase("countReconciled", params), about, evidence: [m.id] }, patch: [{ read: m.id }, { id: check.id, set: { status: "done", verified: true, since: v.round, count: c } }] };
+    const text = missing.length ? phrase("countUnresolved", params) : phrase("countUnresolvedExtra", params);
+    return { kind: "say", to: surgeon, message: { thread: check.thread, kind: "escalate", text, about, evidence: [m.id] }, patch: [{ read: m.id }, { id: check.id, set: { status: "escalated", since: v.round, reason: "count-unresolved", count: c } }] };
   }
   // a count already settled (the same report again): taken in
   if (v.tasks.some((t) => t.kind === "check")) return { kind: "update", patch: [{ read: m.id }] };
-  const task: TeamTask = { id: v.newId("task"), kind: "check", need: "count", item: m.about.item ?? "", for: surgeon, owner: v.me.id, initiator: v.me.id, thread: v.newId("thread"), status: n >= of ? "done" : "open", since: v.round, tried: [], acts: 0, count: { of, counted: [n], searched: [] } };
-  if (n >= of) return { kind: "say", to: surgeon, message: { thread: task.thread, kind: "report", text: phrase("countCorrect", params), about, evidence: [m.id] }, patch: [{ read: m.id }, { create: { ...task, verified: true } }] };
-  // short: stop the line — the surgeon holds closure and checks the wound (a read-back is expected)
-  return { kind: "say", to: surgeon, message: { thread: task.thread, kind: "request", text: phrase("countHold", params), about: { ...about, hold: true }, evidence: [m.id] }, patch: [{ read: m.id }, { create: task }] };
+  const task: TeamTask = { id: v.newId("task"), kind: "check", need: "count", item: m.about.item ?? "", for: surgeon, owner: v.me.id, initiator: v.me.id, thread: v.newId("thread"), status: clean ? "done" : "open", since: v.round, tried: [], acts: 0, count: { of, counted: [n], searched: [], missing, unexpected } };
+  if (clean) return { kind: "say", to: surgeon, message: { thread: task.thread, kind: "report", text: phrase("countCorrect", params), about, evidence: [m.id] }, patch: [{ read: m.id }, { create: { ...task, verified: true } }] };
+  // not reconciled: stop the line — the surgeon holds closure and checks the wound (a read-back is expected)
+  const text = missing.length ? phrase("countHold", params) : phrase("countHoldExtra", params);
+  return { kind: "say", to: surgeon, message: { thread: task.thread, kind: "request", text, about: { ...about, hold: true }, evidence: [m.id] }, patch: [{ read: m.id }, { create: task }] };
 }
 
 /** The surgeon answers in the check's thread: the hold read back (confirmed: check-back), or the wound checked. */
 function checkMessage(v: MemberView, check: TeamTask, m: TeamMessage): Proposal {
   const c = check.count!;
+  // a read-back about another item reads back nothing: the request is said again, clearly
+  if (m.kind === "readback" && m.about.item && check.item && m.about.item !== check.item) {
+    const name = v.count?.name ?? v.itemName(check.item);
+    return { kind: "say", to: m.from, message: { thread: check.thread, kind: "request", text: phrase("holdClarify", { item: name }), about: { item: check.item }, evidence: [], replyTo: m.id }, patch: [{ read: m.id }] };
+  }
   if (m.kind === "readback") return { kind: "say", to: m.from, message: { thread: check.thread, kind: "confirm", text: phrase("holdConfirm"), about: m.about, evidence: [], replyTo: m.id }, patch: [{ read: m.id }, { id: check.id, set: { count: { ...c, held: true } } }] };
   if (m.kind === "report" || m.kind === "decline") return { kind: "update", patch: [{ read: m.id }, { id: check.id, set: { count: { ...c, wound: true } } }] };
   return { kind: "update", patch: [{ read: m.id }] };
 }
 
-/** The search of the room, place by place (the same places whatever happened), then the recount. */
+/**
+ * The search of the room, place by place (the same places whatever happened), then the recount. An item that is not
+ * in the count is first taken off the field and set aside, said aloud (the scheduler documents it in the count).
+ */
 function searchStep(v: MemberView, check: TeamTask): Proposal | null {
   const count = v.count;
   const c = check.count!;
   if (!count) return null;
-  const foundAll = count.seen() >= c.of;
+  const now = count.check(count.seen());
+  const extra = now.unexpected.find((id) => !(c.setAside ?? []).includes(id));
+  if (extra) {
+    const sighting = v.items(count.item).find((s) => s.id === extra);
+    // lying where I can see it: I take it off the field first (my hands free)
+    if (sighting && sighting.perceived && !sighting.holder && v.me.holding.length < 2) {
+      if (check.goal) return { kind: "act", task: check.id, operation: "navigate", goal: check.goal, patch: [{ id: check.id, set: { goal: undefined } }] };
+      return { kind: "act", task: check.id, operation: sighting.inReach ? "pick_up" : "approach", targetId: extra };
+    }
+    const what = { en: `${count.name.en} ${extra.replace(/^eq:/u, "")}`, "zh-CN": `${count.name["zh-CN"]} ${extra.replace(/^eq:/u, "")}` };
+    const counter = v.colleagues.find((x) => has(x.duties, "count") && x.present)?.id ?? SURGEON;
+    return { kind: "say", to: counter, message: { thread: check.thread, kind: "report", text: phrase("setAside", { what }), about: { item: count.item, setAside: [extra] }, evidence: [] }, patch: [{ id: check.id, set: { count: { ...c, setAside: [...(c.setAside ?? []), extra] } } }] };
+  }
+  const foundAll = now.missing.length === 0 && now.unexpected.length === 0;
   const next = foundAll ? undefined : count.places.find((p) => !c.searched.includes(p));
   if (next) {
     if (check.goal) return { kind: "act", task: check.id, operation: "navigate", goal: check.goal, patch: [{ id: check.id, set: { goal: undefined } }] };
@@ -364,8 +410,8 @@ function searchStep(v: MemberView, check: TeamTask): Proposal | null {
   const counter = v.colleagues.find((x) => has(x.duties, "count") && x.present);
   if (!counter) {
     // nobody else counts: I count again myself
-    const n = count.seen();
-    return countReported(v, { id: "self", thread: check.thread, from: v.me.id, to: v.me.id, kind: "report", text: phrase("countReport", { item: count.name, n: num(n), of: num(c.of) }), about: { item: count.item, count: n, of: c.of }, room: v.room, patient: null, at: 0, round: v.round, evidence: [], delivered: true, read: false });
+    const said = countMessage(count, "recount");
+    return countReported(v, { id: "self", thread: check.thread, from: v.me.id, to: v.me.id, kind: "report", text: said.text, about: said.about, room: v.room, patient: null, at: 0, round: v.round, evidence: [], delivered: true, read: false });
   }
   return { kind: "say", to: counter.id, message: { thread: check.thread, kind: "request", text: phrase("recount", { to: v.name(counter.id), item: count.name }), about: { item: count.item, recount: true }, evidence: [] }, patch: [{ id: check.id, set: { status: "asked", since: v.round } }] };
 }

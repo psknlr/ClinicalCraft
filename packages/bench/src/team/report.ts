@@ -5,7 +5,8 @@ const TEXT = {
   en: {
     title: "Team benchmark",
     summary: "{passed} of {total} team scenarios passed.",
-    cols: ["Case", "Scenario", "Expected", "Needs: delivered / verified / escalated", "Count: outcome · holds · latency", "Exactly once", "Rounds · messages · acts", "Seconds", "Result"],
+    counts: "Scenarios assigned {assigned} · activated {activated} · completed {completed} · appropriately escalated {escalated} · invalid (never activated) {invalid}. Obligations {obligations}, unfinished when their run stopped {unfinished}.",
+    cols: ["Case", "Scenario", "Expected", "Obligations: met / escalated / unfinished / failed", "Needs: delivered / verified / escalated", "Count: outcome · holds · latency", "Exactly once", "Rounds · messages · acts", "Seconds", "Result"],
     pass: "pass",
     fail: "FAIL",
     yes: "yes",
@@ -19,7 +20,8 @@ const TEXT = {
   "zh-CN": {
     title: "团队协作基准测试",
     summary: "{total} 个团队情境中通过 {passed} 个。",
-    cols: ["病例", "情境", "预期", "需求：送达 / 核实 / 上报", "清点：结果 · 暂停 · 发现延迟", "恰好一次", "轮次 · 消息 · 动作", "秒", "结果"],
+    counts: "情境：分配 {assigned} · 已激活 {activated} · 已完成 {completed} · 恰当上报 {escalated} · 无效（从未激活）{invalid}。职责共 {obligations} 项，运行结束时未完成 {unfinished} 项。",
+    cols: ["病例", "情境", "预期", "职责：完成 / 上报 / 未完成 / 失败", "需求：送达 / 核实 / 上报", "清点：结果 · 暂停 · 发现延迟", "恰好一次", "轮次 · 消息 · 动作", "秒", "结果"],
     pass: "通过",
     fail: "未通过",
     yes: "是",
@@ -42,11 +44,14 @@ function expected(r: TeamRunResult, L: (typeof TEXT)[keyof typeof TEXT]): string
 /** The report as Markdown. */
 export function teamMarkdown(report: TeamReport, locale: string): string {
   const L = locale.startsWith("zh") ? TEXT["zh-CN"] : TEXT.en;
-  const lines = [`# ${L.title}`, "", L.summary.replace("{passed}", String(report.passed)).replace("{total}", String(report.total)), "", L.note, "", `| ${L.cols.join(" | ")} |`, `|${L.cols.map(() => "---").join("|")}|`];
+  const counts = Object.entries(report.counts).reduce((text, [k, v]) => text.replace(`{${k}}`, String(v)), L.counts as string);
+  const lines = [`# ${L.title}`, "", L.summary.replace("{passed}", String(report.passed)).replace("{total}", String(report.total)), "", counts, "", L.note, "", `| ${L.cols.join(" | ")} |`, `|${L.cols.map(() => "---").join("|")}|`];
   for (const r of report.runs) {
+    const by = (s: string) => r.obligations.filter((o) => o.status === s).length;
+    const owed = r.obligations.length ? `${by("met")} / ${by("escalated")} / ${by("unfinished")} / ${by("failed")}` : L.none;
     const needs = r.needs ? `${r.delivered} / ${r.verified} / ${r.escalated}` : L.none;
     const count = r.count ? `${r.count.outcome ?? L.none} · ${r.count.holds} · ${r.count.detectionLatency ?? L.none}` : L.none;
-    lines.push(`| ${r.caseId} | ${r.scenario} | ${expected(r, L)} | ${needs} | ${count} | ${r.exactlyOnce ? L.yes : L.no} | ${r.rounds} · ${r.messages} · ${r.acts} | ${r.seconds} | ${r.pass ? L.pass : L.fail} |`);
+    lines.push(`| ${r.caseId} | ${r.scenario} | ${expected(r, L)} | ${owed} | ${needs} | ${count} | ${r.exactlyOnce ? L.yes : L.no} | ${r.rounds} · ${r.messages} · ${r.acts} | ${r.seconds} | ${r.pass ? L.pass : L.fail} |`);
   }
   const failed = report.runs.filter((r) => !r.pass);
   if (failed.length) {

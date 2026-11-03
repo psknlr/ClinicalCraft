@@ -146,7 +146,9 @@ developer documents use.
 | read-back (check-back) | read back; "A needle holder to the surgeon — confirm?" | 复述确认；“持针器递给术者——确认吗？” | message kinds `request` → `readback` → `confirm` (TeamSTEPPS check-back) | |
 | escalate | tell the surgeon why ("… hasn't arrived — …") | 上报（向术者说明原因） | message kind `escalate` | always with the reason |
 | relief colleague | relief colleague (called by phone) | 顶班同事（电话联系） | scenario `relief` | |
-| count; hold on closure | count (closing count); "please hold closure and check the wound"; recount | 清点（关闭前清点）；“请暂停关闭，检查术野”；复点 | `team.count`, `about.hold`, `about.recount`, `CountLedger` | an unresolved count ends with an X-ray before the patient leaves |
+| count; hold on closure | count (closing count); "please hold closure and check the wound"; recount | 清点（关闭前清点）；“请暂停关闭，检查术野”；复点 | `team.count`, `about.hold`, `about.recount`, `CountLedger`; the count record `SessionState.count` (`count` action) | an unresolved count ends with an X-ray before the patient leaves; the count is kept item by item (逐件), never as a bare number |
+| count discrepancy; not in the count; set aside | "Count incorrect — 4 of 5 swabs"; "1 not in the count"; "set aside off the field" | 清点不符；“不在清点内”；“移出手术野另放” | count statuses `discrepancy` / `unresolved` / `excluded` / `reconciled`; `missing`, `unexpected`; `transfer` | a swab from another room is not in this count: six of five is a discrepancy, not "correct" |
+| unsafe progression | "Closed while the count was not settled: recorded as an unsafe progression for the debrief" | 不安全推进（“在清点未相符时关闭：已记为不安全推进，供复盘”） | `CountRecord.unsafe`, `{ "count": { "unsafe": true } }` | recorded, never erased; not 违规 (a rule broken) — a step taken on an unsafe basis |
 | search | Search within reach; Check the wound | 在身边仔细查找；检查术野 | world operation `search` (`targetId`: the patient), concealed items (EMBODIED §8.6) | |
 | learner mode / observer mode (team) | I am the surgeon; Observe | 我来当术者；观察 | `team surgeon learner \| simulated` (observer mode = the simulated surgeon) | |
 | team pace | Team pace: Auto / Step / Next step | 团队节奏：自动 / 单步 / 下一步 | autonomy `auto` / `step` (`team resume` / `pause` / `step`) | |

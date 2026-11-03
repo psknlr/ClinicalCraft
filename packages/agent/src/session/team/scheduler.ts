@@ -16,11 +16,13 @@
  * awareness), what was said to them and their own tasks. The scenario's hidden set-up (where an item really
  * is, who is on a break) reaches the policies only through the world.
  */
-import { t, type CaseTeam, type Condition, type TeamNeed, type TeamScenario } from "@clinicalcraft/core";
+import { compareCount, countLedger, countStatus, t, type CaseTeam, type Condition, type CountRecord, type TeamNeed, type TeamScenario } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, RANGES, type ActorState, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { EventMsg } from "../../protocol.js";
+import type { SurgicalCount } from "../count.js";
 import { both, SURGEON_NAME, type Bilingual } from "./i18n.js";
 import { afterAct, propose, type ColleagueView, type ItemSighting, type MemberView } from "./policy.js";
+import { validTeamCheckpoint } from "./checkpoint.js";
 import { TEAM_STATE_VERSION, type ActionReceipt, type KnownNeed, type MemberId, type MemberState, type Proposal, type SurgeonMode, type TaskPatch, type TeamAutonomy, type TeamCheckpoint, type TeamMessage, type TeamState, type TeamTask } from "./types.js";
 
 /** What the scheduler needs from the session. */
@@ -36,6 +38,10 @@ export interface TeamHost {
   say(speaker: string, text: string): void;
   /** Does a condition hold on the case record now (a count falls due; closure has begun)? */
   holds(cond: Condition): boolean;
+  /** The session's surgical count (the one writer of the case's count record), or null. */
+  count(): SurgicalCount | null;
+  /** The case's count record now. */
+  record(): CountRecord | undefined;
 }
 
 /** Closure has begun (the count's hold is broken when this holds before the count is settled). */
@@ -68,7 +74,7 @@ export class TeamScheduler {
       ...config.members.map((m) => ({ id: memberActor(m.staff), staff: m.staff, duties: [...m.duties], inbox: [], memory: [], relief: false, absent: absent.has(m.staff) })),
       ...(this.scenario?.relief ?? []).map((m) => ({ id: memberActor(m.staff), staff: m.staff, duties: [...m.duties], inbox: [], memory: [], relief: true, absent: absent.has(m.staff) })),
     ];
-    this.state = { version: TEAM_STATE_VERSION, scenario: this.scenario?.id ?? null, round: 0, seq: 0, members, messages: [], receipts: [], tasks: [], claims: {}, completed: [], posted: [], extra: [] };
+    this.state = { version: TEAM_STATE_VERSION, scenario: this.scenario?.id ?? null, lifecycle: "pending", round: 0, seq: 0, members, messages: [], receipts: [], tasks: [], claims: {}, completed: [], posted: [], extra: [] };
   }
 
   /* ---------------------------------------------------------------- */
@@ -77,16 +83,22 @@ export class TeamScheduler {
 
   /** The whole team state (JSON): round, inboxes, tasks, claims, receipts, completed action ids. */
   checkpoint(): TeamCheckpoint {
+    // closure on an open count is the case record's (its unsafe progression): the team's record follows it
+    if (this.state.count && (this.record()?.unsafe.length ?? 0) > 0) this.state.count.closedOnHold = true;
     return structuredClone({ format: "clinicalcraft-team@1" as const, state: this.state, autonomy: this.autonomy, surgeon: this.surgeon });
   }
 
-  /** Restore a checkpoint: outstanding work resumes; completed actions are never run again. */
+  /**
+   * Restore a checkpoint: outstanding work resumes; completed actions are never run again. The scenario is set up
+   * in the world only if it was still pending when saved (the world restored with an active one already holds it).
+   */
   restore(cp: TeamCheckpoint): void {
-    if (cp.format !== "clinicalcraft-team@1" || cp.state?.version !== TEAM_STATE_VERSION) throw new Error(`not a team checkpoint (clinicalcraft-team@1, state version ${TEAM_STATE_VERSION})`);
-    this.state = structuredClone(cp.state);
-    this.autonomy = cp.autonomy;
-    this.surgeon = cp.surgeon;
-    this.setUp = true; // the world restored with it already holds the scenario's set-up
+    const valid = validTeamCheckpoint(cp);
+    if (!valid) throw new Error(`not a team checkpoint (clinicalcraft-team@1, state version ${TEAM_STATE_VERSION})`);
+    this.state = structuredClone(valid.state);
+    this.autonomy = valid.autonomy;
+    this.surgeon = valid.surgeon;
+    this.setUp = this.state.lifecycle !== "pending";
   }
 
   /* ---------------------------------------------------------------- */
@@ -98,19 +110,28 @@ export class TeamScheduler {
     return this.autonomy !== "off" && this.config.phases.includes(this.host.phase());
   }
 
-  /** The scenario's set-up in the world (items moved) and its needs, once, when the team's phases begin. */
+  /**
+   * The scenario's set-up in the world (items moved) and its needs, once, when the team's phases begin. The count's
+   * baseline is taken first — the items opened onto the field, by identity, before anything is moved — and a
+   * documented transfer of the scenario is recorded in the count as it is set up.
+   */
   private prepare(): void {
     if (!this.setUp) {
       this.setUp = true;
       const w = this.host.world();
-      // the count's baseline: every item of the type the room holds, counted before incision (before anything went missing)
+      this.state.lifecycle = "active";
       const count = this.config.count;
-      if (count && !this.state.count) this.state.count = { item: count.item, baseline: w.facility.placements.filter((p) => p.type === count.item && p.room === this.config.room).length, holds: 0 };
+      const counter = this.state.members.find((m) => m.duties.includes("count") && !m.relief)?.staff ?? this.circulator()?.staff ?? "surgeon";
+      if (count) this.host.count()?.ensureBaseline(counter);
+      if (count && !this.state.count) this.state.count = { item: count.item, baseline: this.record() ? countLedger(this.record()!).expected.length : 0, holds: 0 };
       const patient = w.find(PRIMARY_ACTOR, { kind: "patient", limit: 1 })[0]?.id ?? null;
       for (const item of this.scenario?.items ?? []) {
         const beside = item.beside === "patient" ? patient : `eq:${item.beside}`;
         if (beside) w.placeItem(`eq:${item.placement}`, beside, { ...(item.concealed ? { concealed: true } : {}), ...(item.inside ? { inside: true } : {}) });
+        if (item.transfer) this.host.count()?.transfer(item.transfer.by ?? this.circulator()?.staff ?? counter, [`eq:${item.placement}`], t(item.transfer.to, "en"), t(item.transfer.reason, "en"));
       }
+      this.state.setup = { round: this.state.round, at: this.host.clock(), worldVersion: w.version };
+      this.host.emit({ type: "team_event", event: { kind: "status", round: this.state.round, autonomy: this.autonomy, surgeon: this.surgeon } });
     }
     for (const need of this.scenario?.needs ?? []) {
       if (this.state.posted.includes(need.id)) continue;
@@ -124,9 +145,20 @@ export class TeamScheduler {
   postNeed(need: TeamNeed): void {
     if (this.state.posted.includes(need.id)) return;
     this.state.posted.push(need.id);
+    if (this.state.lifecycle === "completed") this.state.lifecycle = "active";
     this.state.extra.push(structuredClone(need));
     const by = this.noticer(need);
     if (by) this.observe(by, "need", need.id, `${need.for} needs ${need.item}`);
+  }
+
+  /** The case's count record (the session's), if any. */
+  private record(): CountRecord | undefined {
+    return this.host.record();
+  }
+
+  /** The member who circulates (in the room, not on a break). */
+  private circulator(): MemberState | undefined {
+    return this.state.members.find((m) => m.duties.includes("circulate") && !m.relief && !m.absent);
   }
 
   private needs(): TeamNeed[] {
@@ -183,36 +215,43 @@ export class TeamScheduler {
       busy = (await this.carryOut(member, p, signal)) || busy;
     }
     this.state.round++;
+    if (this.state.lifecycle === "active" && this.settled()) this.state.lifecycle = "completed";
     this.host.emit({ type: "team_event", event: { kind: "status", round: this.state.round, autonomy: this.autonomy, surgeon: this.surgeon } });
     return busy;
   }
 
-  /** The count's record: when it fell due; closure begun while a discrepancy was unresolved. */
+  /** The count's timing: when it fell due; closure on an open count (read from the case's count record: its unsafe progression). */
   private watchCount(): void {
     const ledger = this.state.count;
     const count = this.config.count;
     if (!ledger || !count) return;
     if (ledger.dueRound === undefined && this.host.holds(count.when)) ledger.dueRound = this.state.round;
-    if (ledger.detectedRound !== undefined && ledger.settledRound === undefined && !ledger.closedOnHold && this.host.holds(CLOSURE)) ledger.closedOnHold = true;
+    if (!ledger.closedOnHold && ((this.record()?.unsafe.length ?? 0) > 0 || (ledger.detectedRound !== undefined && ledger.settledRound === undefined && this.host.holds(CLOSURE)))) ledger.closedOnHold = true;
   }
 
-  /** The count's record follows what was said: a hold asked for, the count settled (correct, reconciled, unresolved). */
+  /**
+   * What was said goes into the case's count record first — a count (the ids, at its stage, by who counted), an
+   * escalation (by who raised it), an item set aside off the field — then the team's timing follows: a hold asked
+   * for, the count settled. The outcome is the record's status, never the team's say-so.
+   */
   private noteCount(m: TeamMessage): void {
     const ledger = this.state.count;
-    if (!ledger) return;
+    const count = this.host.count();
+    if (!ledger || !count) return;
+    const staff = this.member(m.from)?.staff ?? count.staffOf(m.from);
+    if (m.about.ids && m.about.stage) count.record({ op: "count", ids: m.about.ids, staff, stage: m.about.stage });
+    if (m.about.setAside?.length) count.transfer(staff, m.about.setAside, "set aside off the field", "not in this count");
+    if (m.kind === "escalate" && m.about.count !== undefined) count.record({ op: "escalate", staff, to: m.to === PRIMARY_ACTOR ? "surgeon" : (this.member(m.to)?.staff ?? m.to), reason: m.text.en });
     if (m.kind === "request" && m.about.hold) {
       ledger.holds++;
       ledger.detectedRound ??= this.state.round;
       return;
     }
     if (m.to !== PRIMARY_ACTOR || m.about.count === undefined || m.about.of === undefined || ledger.settledRound !== undefined) return;
-    if (m.kind === "report" && m.about.count >= m.about.of) {
-      ledger.outcome = ledger.holds > 0 ? "reconciled" : "correct";
-      ledger.settledRound = this.state.round;
-    } else if (m.kind === "escalate") {
-      ledger.outcome = "unresolved";
-      ledger.settledRound = this.state.round;
-    }
+    if (m.kind !== "report" && m.kind !== "escalate") return;
+    const status = countStatus(this.record());
+    ledger.outcome = status === "correct" ? "correct" : status === "reconciled" ? "reconciled" : "unresolved";
+    ledger.settledRound = this.state.round;
   }
 
   /** Awake members in order: answering, then work under way, then noticing; oldest message; stable id. */
@@ -325,9 +364,10 @@ export class TeamScheduler {
       delivered,
       read: false,
     };
-    // check-back bookkeeping on the request a read-back or a confirmation answers
+    // check-back bookkeeping on the request a read-back or a confirmation answers: a read-back counts only from the
+    // person the request was said to, about the same item for the same person
     const req = p.message.replyTo ? this.state.messages.find((m) => m.id === p.message.replyTo) : undefined;
-    if (req && message.kind === "readback") req.readBack = true;
+    if (req && message.kind === "readback" && req.to === member.id && (message.about.item ?? null) === (req.about.item ?? null) && (message.about.for ?? null) === (req.about.for ?? null)) req.readBack = true;
     if (req && message.kind === "confirm") {
       const original = this.state.messages.find((m) => m.thread === message.thread && m.kind === "request");
       if (original) original.verified = true;
@@ -370,17 +410,44 @@ export class TeamScheduler {
   /* Learner as the surgeon                                            */
   /* ---------------------------------------------------------------- */
 
-  /** The surgeon (the learner) answers a message: a read-back, a confirmation or a decline, recorded like any member's. */
-  reply(messageId: string, kind: TeamMessage["kind"], text?: string): TeamMessage | null {
+  /**
+   * The surgeon (the learner) answers a message said to them — a read-back, a confirmation or a decline, recorded
+   * like any member's. A message said to someone else is theirs to answer (refused: `notYours`). A read-back is about
+   * what it names: an instrument named (`item`, or in its words) other than the one asked for reads back nothing —
+   * the request is not read back, and the sender asks again.
+   */
+  reply(messageId: string, kind: TeamMessage["kind"], text?: string, item?: string): { message: TeamMessage } | { refused: "unknown" } | { refused: "notYours"; to: MemberId } {
     const to = this.state.messages.find((m) => m.id === messageId);
-    if (!to) return null;
+    if (!to) return { refused: "unknown" };
+    if (to.to !== PRIMARY_ACTOR) return { refused: "notYours", to: to.to };
     const surgeon = this.member(PRIMARY_ACTOR) ?? ({ id: PRIMARY_ACTOR, staff: "surgeon", duties: ["surgeon"], inbox: [], memory: [], relief: false, absent: false } satisfies MemberState);
     const said: Bilingual = text ? { en: text, "zh-CN": text } : to.text;
-    // the reply is about the same thing (item, person); a count is only ever the counter's to report
-    const { count: _count, of: _of, ...about } = to.about;
+    // the reply is about the same thing (item, person); a count — its items, what was set aside — is only ever the counter's to report
+    const { count: _count, of: _of, ids: _ids, stage: _stage, setAside: _setAside, ...about } = to.about;
+    const named = item?.trim() || (text ? this.itemNamedIn(text) : null);
+    if (named) about.item = named;
     this.send(surgeon, { kind: "say", to: to.from, message: { thread: to.thread, kind, text: said, about, evidence: [], replyTo: to.id } });
     to.read = true;
-    return this.state.messages.at(-1) ?? null;
+    return { message: this.state.messages.at(-1)! };
+  }
+
+  /** The equipment type a reply names in its words (the longest name of a type in the room's hospital), or null. */
+  private itemNamedIn(text: string): string | null {
+    const said = text.toLowerCase();
+    let best: { type: string; length: number } | null = null;
+    for (const e of this.host.world().entities()) {
+      const type = e.equipmentType;
+      if (!type || e.portable !== "handheld") continue;
+      const plain = this.itemName(type.id);
+      const words = plain.en.trim().split(/\s+/u);
+      // what people call it: its name, without an eponym ("Mayo-Hegar needle holder" → "needle holder", "持针器")
+      const spoken = [plain.en, plain["zh-CN"], words.length >= 3 ? words.slice(-2).join(" ") : "", plain["zh-CN"].replace(/^[A-Za-z0-9 .\-]+/u, "")];
+      for (const n of [both(type.name).en, both(type.name)["zh-CN"], ...spoken]) {
+        const name = n.toLowerCase().trim();
+        if (name.length >= 2 && said.includes(name) && (!best || name.length > best.length)) best = { type: type.id, length: name.length };
+      }
+    }
+    return best?.type ?? null;
   }
 
   /* ---------------------------------------------------------------- */
@@ -420,19 +487,26 @@ export class TeamScheduler {
         .sort((a, b) => a.distance - b.distance || (a.id < b.id ? -1 : 1));
     const count = this.config.count;
     const ledger = this.state.count;
+    const record = this.record();
+    const counting = this.host.count();
+    const inCount = record ? (() => {
+      const l = countLedger(record);
+      return l.expected.filter((id) => !l.transferred.includes(id)).length;
+    })() : (ledger?.baseline ?? 0);
     return {
       me: { ...me, holding: body?.holding ?? [], inRoom: body?.room === room },
       room,
       count:
-        count && ledger
+        count && ledger && counting && record
           ? {
               item: count.item,
-              of: ledger.baseline,
+              of: inCount,
               due: ledger.dueRound !== undefined,
               places: count.searchPlaces.map((p) => `eq:${p}`),
               name: count.name ? both(count.name) : this.itemName(count.item),
-              // what my eyes can count now: the items of the type I perceive in the room (lying, or in anyone's hands)
-              seen: () => items(count.item).filter((s) => s.perceived && s.inRoom).length,
+              // what the team in the room can account for now, item by item (lying in the room, or in anyone's hands there)
+              seen: () => counting.accounted(),
+              check: (ids) => compareCount(this.record() ?? record, ids),
             }
           : null,
       patient: w.find(me.id, { kind: "patient", limit: 1 })[0]?.id ?? null,
