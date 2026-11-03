@@ -78,6 +78,8 @@ interface Draft {
   pressure: number;
   injury: (typeof INJURIES)[number];
   orbit: boolean;
+  /** A subtotal technique the learner is about to change to (awaiting confirmation). */
+  revise: string | null;
   /** The learner's last submission: its id, op and how many steps the field had taken then. */
   sent: { id: string; op: ProcedureOp; steps: number } | null;
 }
@@ -115,6 +117,7 @@ export function surgeryPanel(app: App): () => PanelView {
       pressure: def?.insufflation.usual ?? 12,
       injury: "bleeding",
       orbit: false,
+      revise: null,
       sent: null,
     };
 
@@ -461,7 +464,60 @@ export function surgeryPanel(app: App): () => PanelView {
       );
     };
 
-    const eventsSection = (def: ProcedureDefinition): HTMLElement => {
+    /**
+     * Bail-outs as the engine sees them (PROCEDURE.md §5): one under way is not offered again; a committed subtotal
+     * shows as the current strategy, and changing it is an explicit, confirmed revision (`revise: true`).
+     */
+    const bailoutControls = (def: ProcedureDefinition, v: FieldView): Child[] => {
+      const underWay = new Set(v.bailouts);
+      const committed = v.bailouts.find((b) => b.startsWith("subtotal")) ?? null;
+      const rows: Child[] = [h("h5", null, tr("surgery.bailout.title"))];
+      if (committed) {
+        rows.push(h("p", { class: "small", id: "lap-bailout-current", dataset: { strategy: committed } }, tr("surgery.bailout.current", { name: label("bailout", committed) })));
+        const others = def.bailouts.filter((b) => b.startsWith("subtotal") && b !== committed);
+        const target = others.find((b) => b === d.revise);
+        if (target) {
+          const to = target;
+          rows.push(
+            h(
+              "div",
+              { class: "lap-card", id: "lap-bailout-confirm", role: "alertdialog", "aria-label": tr("surgery.bailout.revise") },
+              h("p", { class: "small" }, tr("surgery.bailout.confirm", { from: label("bailout", committed), to: label("bailout", to) })),
+              h(
+                "div",
+                { class: "lap-row" },
+                button(tr("surgery.bailout.confirmGo"), { class: "danger", dataset: { op: "bailout", strategy: to, revise: "true" } }, () => {
+                  d.revise = null;
+                  send({ op: "bailout", strategy: to, revise: true });
+                }),
+                button(tr("surgery.bailout.keep", { from: label("bailout", committed) }), { dataset: { op: "bailout-keep" } }, () => {
+                  d.revise = null;
+                  rerender();
+                }),
+              ),
+            ),
+          );
+        } else if (others.length)
+          rows.push(
+            h(
+              "div",
+              { class: "lap-row", id: "lap-bailout-revise" },
+              h("span", { class: "small" }, tr("surgery.bailout.revise")),
+              others.map((b) =>
+                button(label("bailout", b), { dataset: { op: "bailout-revise", strategy: b } }, () => {
+                  d.revise = b;
+                  rerender();
+                }),
+              ),
+            ),
+          );
+      }
+      const plain = def.bailouts.filter((b) => !(committed && b.startsWith("subtotal")));
+      rows.push(h("div", { class: "lap-row" }, plain.map((b) => (underWay.has(b) ? button(tr("surgery.bailout.underWay", { name: label("bailout", b) }), { disabled: true, dataset: { op: "bailout", strategy: b, state: "under-way" } }, () => undefined) : button(label("bailout", b), { dataset: { op: "bailout", strategy: b } }, () => send({ op: "bailout", strategy: b }))))));
+      return rows;
+    };
+
+    const eventsSection = (def: ProcedureDefinition, v: FieldView): HTMLElement => {
       const injury = h("select", { id: "lap-injury", "aria-label": tr("surgery.recognise.label") }, INJURIES.map((i) => h("option", { value: i, selected: i === d.injury }, label("injury", i))));
       injury.addEventListener("change", () => (d.injury = injury.value as Draft["injury"]));
       return section(
@@ -469,7 +525,7 @@ export function surgeryPanel(app: App): () => PanelView {
         "lap-events",
         h("div", { class: "lap-row" }, h("label", { class: "small", for: "lap-injury" }, tr("surgery.recognise.label")), injury, button(tr("surgery.recognise.go"), { dataset: { op: "recognise" } }, () => send({ op: "recognise", injury: d.injury }))),
         h("div", { class: "lap-row" }, button(tr("surgery.inspect"), { dataset: { op: "inspect" } }, () => send({ op: "inspect" }))),
-        def.bailouts.length ? [h("h5", null, tr("surgery.bailout.title")), h("div", { class: "lap-row" }, def.bailouts.map((b) => button(label("bailout", b), { dataset: { op: "bailout", strategy: b } }, () => send({ op: "bailout", strategy: b }))))] : null,
+        def.bailouts.length ? bailoutControls(def, v) : null,
         h("div", { class: "lap-row" }, button(tr("surgery.close"), { class: "danger", dataset: { op: "close" } }, () => send({ op: "close" }))),
       );
     };
@@ -501,7 +557,7 @@ export function surgeryPanel(app: App): () => PanelView {
         mount(side, h("p", { class: "notice", id: "surgery-phase" }, tr("surgery.notThisPhase")));
         return;
       }
-      mount(side, planSection(def, v), v.plan ? [pneumoSection(def, v), portsSection(def, v), actionsSection(v), structuresSection(def, v), pauseSection(def, v), eventsSection(def)] : null);
+      mount(side, planSection(def, v), v.plan ? [pneumoSection(def, v), portsSection(def, v), actionsSection(v), structuresSection(def, v), pauseSection(def, v), eventsSection(def, v)] : null);
     };
 
     /** Re-render after a local change, keeping the keyboard focus on "the same" control. */
