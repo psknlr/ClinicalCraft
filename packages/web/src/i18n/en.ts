@@ -381,6 +381,7 @@ const en: Messages = {
   "orders.nowhere": "{name} · no equipment for it here",
   "orders.pending": "{name} · sent, result in about {min} min",
   "orders.noRecord": "{name} · no record in this phase",
+  "orders.notYet": "{name} · record not yet created",
   "orders.acquired": "Evidence gathered",
   "orders.none": "Nothing gathered yet. Walk to the right workstation and type a test name.",
   "orders.read": "Read",

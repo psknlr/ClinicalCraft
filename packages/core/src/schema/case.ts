@@ -404,6 +404,20 @@ export const InvestigationSchema = z
     alternativeTo: z.array(IdSchema).default([]),
     /** Results keyed by phase id. A phase without a key is "no record in this phase". */
     results: z.record(IdSchema, ResultSchema),
+    /**
+     * When the document exists in the simulated timeline (`recordAvailability`): never before `earliestPhase` (default:
+     * its first result's phase) has been reached, nor while `when` does not hold; `historical` — it predates the
+     * encounter (a prior report), else it is made during the encounter (the operation record, the pathology report,
+     * the follow-up). A document existing in the case is not a document visible to the learner now.
+     */
+    availability: z
+      .object({
+        earliestPhase: IdSchema.optional(),
+        when: ConditionSchema.optional(),
+        historical: z.boolean().optional(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 export type Investigation = z.infer<typeof InvestigationSchema>;

@@ -97,7 +97,12 @@ export function resolveStudy(profiles: readonly StudyProfile[], query: string): 
   const q = query.trim().toLowerCase();
   if (!q) return null;
   const names = (p: StudyProfile) => [p.code, ...Object.values(typeof p.name === "string" ? { x: p.name } : p.name), ...Object.values(p.aliases ?? {}).flat()].map((x) => String(x).toLowerCase());
-  return profiles.find((p) => names(p).some((n) => n === q)) ?? profiles.find((p) => names(p).some((n) => n.length >= 2 && (q.includes(n) || n.includes(q)))) ?? null;
+  // a name inside the request, or the request inside a name — as whole words in Latin script ("CT" is not in
+  // "electrocardiogram"); Chinese has no word breaks, so a substring there
+  const cjk = (x: string) => /[\u3400-\u9fff]/u.test(x);
+  const esc = (x: string) => x.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+  const within = (part: string, whole: string) => (cjk(part) ? whole.includes(part) : new RegExp(`(^|[^\\p{L}\\p{N}])${esc(part)}($|[^\\p{L}\\p{N}])`, "u").test(whole));
+  return profiles.find((p) => names(p).some((n) => n === q)) ?? profiles.find((p) => names(p).some((n) => n.length >= 2 && (within(n, q) || within(q, n)))) ?? null;
 }
 
 /** Does this request ask for an operative study? */

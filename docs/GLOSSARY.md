@@ -129,6 +129,7 @@ developer documents use.
 | simulated investigation | Simulated investigation (a study done in this encounter, from the case's teaching profile) | 模拟检查（本次接诊中完成，依据病例的教学配置生成） | `SessionState.studies`, `read_study`; never shown as the patient's record |
 | published source record | Published source record | 原始病例记录 | `investigations[]` results |
 | historical material unavailable | Historical material unavailable (the published case has no such record) | 原始病例中无此资料 | a record result `available: false`, or none |
+| record not yet created | Record not yet created (written later in the encounter) | 该记录尚未产生 | `recordAvailability` `not-yet`, `investigations[].availability` |
 | accession | accession (one acquisition of an ordered study: a tracing, a sample) | 检查号（一次采集：一份描记或一份标本） | `StudyAccession.id`, e.g. `ecg-12lead-1` |
 | cannot speak, cannot answer | "<name> cannot speak: <reason>" (approach), "<name> cannot answer: <reason>" (a question) — narrated | “<姓名>无法说话：<原因>”（走近时）、“<姓名>无法回答：<原因>”（提问时）——以旁白呈现 | `patient.nonVerbalWhen`, `nonVerbalReason`, rejection `cannot-answer` |
 | work-up plan | work-up plan | 诊疗计划 | `update_workup` |

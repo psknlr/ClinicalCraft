@@ -189,6 +189,15 @@ solution is sent to the browser).
   absent (the UI says "no record").
 * `alternativeTo: [ids]` marks interchangeable essentials (e.g. abdominal CT ↔
   ultrasound): reading either satisfies "essential investigations" in the assessment.
+* **Records in the simulated timeline.** A document in the case is not a
+  document the learner can see now. A record is read from the current phase or
+  one already reached, never a later one: the operation record, the histology
+  and the follow-up of a case's review phase do not exist before it (ordering
+  one is refused, `retrieve_report` says "Record not yet created" and gives no
+  text). `availability: {earliestPhase?, when?, historical?}` holds a record back
+  further — not before `earliestPhase` is reached, nor while `when` does not
+  hold — and says whether it predates the encounter (`historical: true`: a prior
+  report) or is written during it (core `recordAvailability`).
 * A report that already exists — an outside scan, an old echo, the operative
   note, the drug chart, a referral letter — is a **record review**:
   `performedAt: "records"`, `requires` at most `["records"]`, `risk: "none"`.

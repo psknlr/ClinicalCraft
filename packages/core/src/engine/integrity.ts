@@ -660,7 +660,16 @@ export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
     ...checkProcedureDefinition(c),
     ...checkTeamDefinition(c),
     ...checkStudies(c),
+    ...checkRecordAvailability(c),
   ];
+}
+
+/** A record's availability names phases of the case (docs/CASE_AUTHORING.md: records in the simulated timeline). */
+function checkRecordAvailability(c: CaseDefinition): Issue[] {
+  const phases = new Set(c.phases.map((p) => p.id));
+  return c.investigations.flatMap((inv, i) =>
+    inv.availability?.earliestPhase && !phases.has(inv.availability.earliestPhase) ? [{ path: formatPath(["investigations", i, "availability", "earliestPhase"]), message: `unknown phase "${inv.availability.earliestPhase}"`, severity: "error" as const }] : [],
+  );
 }
 
 /** The case's test profiles (docs/STUDIES.md): unique codes, a historical record that exists, sound intervals. */

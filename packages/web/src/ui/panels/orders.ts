@@ -14,7 +14,7 @@
  * side), and its click shows the way. "Sent" is said once the engine has the
  * order, never for a refused one.
  */
-import { matchOrders, orderWarnings, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
+import { matchOrders, orderWarnings, recordAvailability, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import type { Verdict } from "../../app/embodied-link.js";
 import { ct, getLocale, tr } from "../../i18n/index.js";
@@ -117,6 +117,11 @@ export function testButton(app: App, game: Game, inv: Investigation, placementId
   const order = s.orders.find((o) => o.key === `${inv.id}@${s.phase}`);
   const left = order ? minutesLeft(c, s, order) : 0;
   const hasRecord = resultFor(c, inv.id, s.phase) !== null;
+  // a record of the chart in the simulated timeline (core `recordAvailability`): a document written later in the
+  // encounter is "not yet created" — never opened, never ordered
+  const record = inv.performedAt === "records" ? recordAvailability(c, s, inv.id) : null;
+  if (record?.kind === "not-yet")
+    return h("button", { type: "button", class: ["candidate", "no-record", "not-yet"], disabled: true, dataset: { investigation: inv.id, record: "not-yet" } }, h("span", null, tr("orders.notYet", { name })));
   // Say what a click does: without an order for this phase it places one (time, approval, assessment) —
   // "Open" only once the test has been ordered.
   const label = order && left > 0 ? tr("orders.pending", { name, min: left }) : !hasRecord ? tr("orders.noRecord", { name }) : order ? tr("orders.open", { name }) : tr("orders.order", { name });
@@ -125,7 +130,7 @@ export function testButton(app: App, game: Game, inv: Investigation, placementId
     {
       type: "button",
       class: ["candidate", !hasRecord ? "no-record" : ""],
-      dataset: { investigation: inv.id },
+      dataset: { investigation: inv.id, ...(record ? { record: record.kind } : {}) },
       onclick: () => {
         const before = game.session.store.snapshot?.state ?? game.session.session.state;
         for (const w of orderNotices(c, query, inv.id, L, before)) app.toast(tr("orders.warning"), w, "warning");

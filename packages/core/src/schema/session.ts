@@ -200,6 +200,8 @@ export interface SessionState {
   /** Simulated minutes since start (0 in static cases unless advanced explicitly). */
   clock: number;
   phase: string;
+  /** Every phase the encounter has been in, in the order first reached (a record of a later phase does not exist yet). */
+  phasesReached?: string[];
   asked: string[];
   examined: string[];
   orders: OrderRecord[];

@@ -16,13 +16,14 @@ record** (原始病例记录), **historical material unavailable** (原始病例
 
 ## 1. Three kinds of evidence
 
-The chart keeps three things apart and labels each one:
+The chart keeps four things apart and labels each one:
 
 | label | what it is | where it comes from |
 |---|---|---|
 | **Published source record** · 原始病例记录 | what the published case reported | `investigations[]` (`order_test`, `read_result`; `performedAt: "records"` is read from the notes) |
 | **Simulated investigation** · 模拟检查 | a study done in this encounter | a test profile (`case.studies[]`), acquired and reported by the simulated hospital |
 | **Historical material unavailable** · 原始病例中无此资料 | the source has no such record | a profile's `historical` investigation that the case marks unavailable, or none at all |
+| **Record not yet created** · 该记录尚未产生 | a document written later in the encounter (the operation record, the histology, the follow-up) | `recordAvailability` `not-yet`: its phase not reached, or its `availability.when` not holding — never another phase's text |
 
 A simulated value is never shown as the patient's record, and a request for the record never creates a study.
 

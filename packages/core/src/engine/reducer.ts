@@ -25,6 +25,7 @@ import { supersededIn } from "./twins.js";
 import { createProcedureState, operate, procedureFor } from "./procedure/index.js";
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
 import { applyStudy } from "./study.js";
+import { reachPhase, recordAvailability } from "./records.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -63,6 +64,7 @@ export function createSession(c: CaseDefinition): SessionState {
     finished: false,
     clock: 0,
     phase: c.initialPhase ?? c.phases[0].id,
+    phasesReached: [c.initialPhase ?? c.phases[0].id],
     asked: [],
     examined: [],
     orders: [],
@@ -86,6 +88,7 @@ function cloneState(s: SessionState): SessionState {
   return {
     ...s,
     asked: [...s.asked],
+    ...(s.phasesReached ? { phasesReached: [...s.phasesReached] } : {}),
     examined: [...s.examined],
     orders: [...s.orders],
     seen: [...s.seen],
@@ -174,6 +177,9 @@ function onOrder(ctx: Ctx, a: Action<"order">): Outcome {
   const { c, s } = ctx;
   const investigation = c.investigations.find((i) => i.id === a.investigationId);
   if (!investigation) return rejected("unknown-id", `unknown investigation "${a.investigationId}"`);
+  // a document written later in the encounter (the operation record, the pathology report) does not exist yet
+  if (investigation.performedAt === "records" && recordAvailability(c, s, investigation.id).kind === "not-yet")
+    return rejected("not-ready", `"${investigation.id}" does not exist yet at this stage of care: nothing was retrieved`);
   const key = resultKey(investigation.id, s.phase);
   if (s.orders.some((o) => o.key === key)) {
     ctx.events.push({ type: "order.duplicate", investigationId: investigation.id, phase: s.phase, key });
@@ -219,6 +225,7 @@ function onSetPhase(ctx: Ctx, a: Action<"set-phase">): Outcome {
   if (s.phase !== phase.id) {
     ctx.events.push({ type: "phase.changed", from: s.phase, to: phase.id, automatic: false });
     s.phase = phase.id;
+    reachPhase(s, phase.id);
   }
   return accepted();
 }

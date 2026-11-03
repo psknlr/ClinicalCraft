@@ -384,6 +384,7 @@ const zh = {
   "orders.nowhere": "{name} · 本场馆没有相应设备",
   "orders.pending": "{name} · 已送检，约 {min} 分钟后出结果",
   "orders.noRecord": "{name} · 本阶段无记录",
+  "orders.notYet": "{name} · 该记录尚未产生",
   "orders.acquired": "已获取资料",
   "orders.none": "尚未获取资料。走到相应工作站，输入检查名称。",
   "orders.read": "已读",

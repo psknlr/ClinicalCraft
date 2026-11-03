@@ -4,14 +4,14 @@
  * case's test profiles, acquired and reported by the simulated hospital); and `read_study`, the released report of a
  * new investigation, labelled simulated. An operative study is never ordered here: it is acquired at the table.
  */
-import { resultFor, studyProfile, t, type CaseDefinition, type FacilityDefinition, type SessionState, type StudyProfile } from "@clinicalcraft/core";
+import { recordAvailability, studyProfile, t, type CaseDefinition, type FacilityDefinition, type SessionState, type StudyProfile } from "@clinicalcraft/core";
 import { rt } from "../session/i18n.js";
 import { asksOperativeStudy, resolveStudy } from "../session/studies.js";
 import { actorFor, rejectedOutput, strArg, type ToolArgs } from "./clinical-resolve.js";
 import { clockTime, formatResult, investigationName } from "./format.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
 
-const label = (key: "simulated" | "source" | "unavailable", L: string) => rt(L, `study.label.${key}`);
+const label = (key: "simulated" | "source" | "unavailable" | "notYet", L: string) => rt(L, `study.label.${key}`);
 const choices = (c: CaseDefinition, L: string) => (c.studies ?? []).map((p) => `${t(p.name, L)} [${p.code}]`).join(L === "zh-CN" ? "；" : "; ") || "—";
 
 /** The device or room that provides a profile, as the facility names it (for the order's next step). */
@@ -180,12 +180,23 @@ const retrieveReport: ToolDefinition<ToolArgs> = {
     const q = query.toLowerCase();
     const viaStudy = resolveStudy(c.studies ?? [], query)?.historical;
     const records = c.investigations.filter((i) => i.performedAt === "records");
-    const inv = records.find((i) => i.id === viaStudy) ?? records.find((i) => i.id.toLowerCase().includes(q) || investigationName(c, i.id, L).toLowerCase().includes(q) || Object.values(i.aliases ?? {}).flat().some((a) => String(a).toLowerCase().includes(q)));
+    // every word of the request in the record's id, name (either language) or an alias ("operation record" ~ operation-record)
+    const norm = (x: string) => x.toLowerCase().replace(/[-_/·.,]+/gu, " ").replace(/\s+/gu, " ").trim();
+    const words = norm(q).split(" ").filter((w) => w.length > 1 || /[\u3400-\u9fff]/u.test(w));
+    const texts = (i: (typeof records)[number]) => [i.id, investigationName(c, i.id, "en"), investigationName(c, i.id, "zh-CN"), ...Object.values(i.aliases ?? {}).flat().map(String)].map(norm);
+    // whole words in Latin script ("ct" is not in "electrocardiogram"); a substring in Chinese
+    const has = (x: string, w: string) => (/[\u3400-\u9fff]/u.test(w) ? x.includes(w) : ` ${x} `.includes(` ${w} `));
+    const matches = (i: (typeof records)[number]) => texts(i).some((x) => has(x, norm(q))) || (words.length > 0 && words.every((w) => texts(i).some((x) => has(x, w))));
+    const inv = records.find((i) => i.id === viaStudy) ?? records.find(matches);
     if (!inv) return { ok: true, output: rt(L, "study.retrieve.none", { label: label("unavailable", L), query }), data: { source: "none" } };
     const s = ctx.state();
-    const phase = Object.keys(inv.results).includes(s.phase) ? s.phase : Object.keys(inv.results)[0]!;
-    const result = resultFor(c, inv.id, phase);
-    if (!result) return { ok: true, output: rt(L, "study.retrieve.none", { label: label("unavailable", L), query }), data: { source: "none" } };
+    const name = investigationName(c, inv.id, L);
+    // when the document exists in the simulated timeline: never another phase's text (core `recordAvailability`)
+    const st = recordAvailability(c, s, inv.id);
+    if (st.kind === "none") return { ok: true, output: rt(L, "study.retrieve.none", { label: label("unavailable", L), query }), data: { source: "none" } };
+    if (st.kind === "not-yet") return { ok: true, output: rt(L, "study.retrieve.notYet", { label: label("notYet", L), name }), data: { source: "not-yet", investigationId: inv.id } };
+    const phase = st.phase;
+    const result = st.result;
     if (phase === s.phase) {
       // the record retrieved through the chart, as an order and a read of it
       if (!s.orders.some((o) => o.investigationId === inv.id && o.phase === s.phase)) {
@@ -195,8 +206,7 @@ const retrieveReport: ToolDefinition<ToolArgs> = {
       const read = ctx.dispatch({ type: "read", investigationId: inv.id, by: actorFor(ctx) });
       if (read.rejected && read.rejected.code !== "not-ready") return rejectedOutput(L, read, read.rejected.message);
     }
-    const name = investigationName(c, inv.id, L);
-    if (result.available === false) return { ok: true, output: rt(L, "study.retrieve.unavailable", { label: label("unavailable", L), name, text: t(result.text, L) }), data: { source: "unavailable", investigationId: inv.id } };
+    if (st.kind === "not-present") return { ok: true, output: rt(L, "study.retrieve.unavailable", { label: label("unavailable", L), name, text: t(result.text, L) }), data: { source: "unavailable", investigationId: inv.id } };
     return { ok: true, output: rt(L, "study.retrieve.source", { label: label("source", L), name, text: formatResult(c, inv.id, phase, L).text }), data: { source: "record", investigationId: inv.id } };
   },
 };

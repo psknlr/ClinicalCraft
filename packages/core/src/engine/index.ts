@@ -90,6 +90,7 @@ export { assess, countCriticalAlarms } from "./assessment.js";
 export { ENGINE_VERSION } from "./version.js";
 
 // new investigations (docs/STUDIES.md)
+export { phaseReached, reachPhase, recordAvailability, type RecordState } from "./records.js";
 export { applyStudy, evaluateStudy, seeded, studyObservations, studyProfile, studyStatus, type StudyResult } from "./study.js";
 
 // the surgical count (docs/TEAM.md §4.3)
