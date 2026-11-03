@@ -7,6 +7,7 @@
  * the patient, not the bedside: an unattached monitor or an unread glucose
  * does not change them.
  */
+import { datumStatus } from "./datum.js";
 import type { CaseDefinition, Result } from "../schema/case.js";
 import type { Condition, ProcedurePredicate } from "../schema/common.js";
 import type { HoldRecord, OrderRecord, SessionState } from "../schema/session.js";
@@ -129,6 +130,10 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("procedure" in cond) return evaluateProcedure(procedureFor(c, s), s.procedure, cond.procedure, s.variant);
   if ("count" in cond) return evaluateCount(s, cond.count);
   if ("study" in cond) return evaluateStudy(s, cond.study, cond.status);
+  if ("datum" in cond) {
+    const st = datumStatus(c, s, cond.datum);
+    return !!st && cond.status.includes(st);
+  }
   return false;
 }
 

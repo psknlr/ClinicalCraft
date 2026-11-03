@@ -250,6 +250,12 @@ export const HistoryItemSchema = z
      * unknown   — the source does not record this; the patient must not invent it.
      */
     disclosure: z.enum(["volunteer", "on-ask", "specific", "unknown"]).default("on-ask"),
+    /**
+     * A safety-critical datum this answer establishes (`datumStatus`): which (`allergy`, `fasting`, `airway`…) and
+     * what it shows — `unknown` (the default for a `disclosure: "unknown"` answer), `negative` or `positive`. Asking
+     * does not confirm: an unknown stays unknown until verified or mitigated.
+     */
+    safety: z.object({ datum: IdSchema, finding: z.enum(["unknown", "negative", "positive"]).optional() }).strict().optional(),
     /** Counts towards history-taking completeness. */
     required: z.boolean().default(false),
     /** Restrict availability to phases (default: all). */
@@ -536,6 +542,10 @@ export const InterventionSchema = z
      * `{"intervened": id, "valid": true}`.
      */
     checklist: z.boolean().optional(),
+    /** Safety data this step states (a Sign In: allergy, fasting…): shown as their status, an unknown as unknown. */
+    reports: z.array(IdSchema).default([]),
+    /** Safety data whose unknown this step manages (a documented precaution: allergy unknown, aspiration risk). */
+    mitigates: z.array(IdSchema).default([]),
     /** When given while this is true it is appropriate (scored positively). */
     indicatedWhen: ConditionSchema.optional(),
     /** When given while this is true it is unsafe (scored as a safety event; effects still apply). */

@@ -189,6 +189,18 @@ solution is sent to the browser).
   absent (the UI says "no record").
 * `alternativeTo: [ids]` marks interchangeable essentials (e.g. abdominal CT ↔
   ultrasound): reading either satisfies "essential investigations" in the assessment.
+* **Safety data: asking is not confirming.** Tag the history items that
+  establish a safety-critical datum: `safety: {datum: "allergy" | "fasting" |
+  "airway" | …, finding?: "unknown" | "negative" | "positive"}` (an `unknown`
+  disclosure defaults to `unknown`). Core `datumStatus` derives not asked /
+  asked-unknown / verified-negative / verified-positive / mitigated (an
+  intervention with `mitigates: [datum]`, a documented precaution). A checklist
+  step lists the data it states in `reports` (a Sign In: allergy, fasting): the
+  learner reads each as the record knows it — "Allergy status remains unknown
+  (asked; not recorded)", "The team has acknowledged these unresolved items" —
+  never "confirmed". Score recognised uncertainty and its management with the
+  condition leaf `{datum, status: [...]}`, never fabricated certainty; and never
+  write a step's text as if an unknown had been confirmed.
 * **Records in the simulated timeline.** A document in the case is not a
   document the learner can see now. A record is read from the current phase or
   one already reached, never a later one: the operation record, the histology

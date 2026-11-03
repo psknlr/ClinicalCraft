@@ -291,6 +291,7 @@
                   "update_workup",
                   "case_status",
                   "finish_case",
+                  "request_hint",
                   "observe_field",
                   "operate",
                   "retrieve_report",

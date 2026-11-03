@@ -123,6 +123,8 @@ developer documents use.
 | test | test (formal: investigation) | 检查（正式：辅助检查） | `order_test`, `investigations[]` |
 | treatment | treatment; give (formal: intervention) | 处置；给予 | `intervene`, `interventions[]` |
 | result, critical result | result, critical result | 结果、危急值 | `read_result`, `critical` |
+| consultation vs teaching hint | a consultation (consult a colleague: their specialty, from the record); a teaching hint (asked for explicitly: /hint, request_hint — counts against the score) | 会诊（向同事咨询：按其专科、依据病历）；教学提示（须明确申请：/hint、request_hint——计入评分） | `consult` never records a hint; `request_hint`, `/hint` | never inferred from the words of a consultation |
+| safety datum status | not asked; remains unknown (asked; not recorded); verified — none / present; managed by a documented precaution | 未询问；仍不明（已询问，记录中没有）；已核实——无 / 有；已按记录的预防措施处理 | `history[].safety`, `datumStatus`, intervention `reports` / `mitigates` | asking is not confirming |
 | record review | record review (an existing report read from the notes or the EHR) | 病历查阅（在病历或电子病历中调阅已有报告） | `investigations[].performedAt: "records"` |
 | retrieve an existing report | Retrieve an existing report | 调阅已有报告 | `retrieve_report` (the published case only; never orders) |
 | order a new investigation | Order a new investigation | 开具新检查 | `order_study`, `case.studies[]` test profiles ([STUDIES.md](STUDIES.md)) |

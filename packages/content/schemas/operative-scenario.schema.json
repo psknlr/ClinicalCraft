@@ -828,6 +828,33 @@
             "study"
           ],
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "datum": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "not-asked",
+                  "asked-unknown",
+                  "verified-negative",
+                  "verified-positive",
+                  "mitigated"
+                ]
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "datum",
+            "status"
+          ],
+          "additionalProperties": false
         }
       ]
     },

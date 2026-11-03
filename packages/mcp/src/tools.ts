@@ -104,6 +104,7 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   update_workup: { title: "Update the work-up plan", ...RECORDS, idempotentHint: true },
   case_status: { title: "Case status", ...READ_ONLY },
   finish_case: { title: "Finish the case", ...RECORDS, idempotentHint: true },
+  request_hint: { title: "Ask for a teaching hint (counts against the score)", ...RECORDS },
   // The operative field (docs/PROCEDURE.md §7): looking only reads; every step acts on the patient (clip, divide,
   // coagulate and bail-out are high-risk and need confirmation).
   observe_field: { title: "Look at the operative field", ...READ_ONLY },

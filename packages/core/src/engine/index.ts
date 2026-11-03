@@ -91,6 +91,7 @@ export { ENGINE_VERSION } from "./version.js";
 
 // new investigations (docs/STUDIES.md)
 export { phaseReached, reachPhase, recordAvailability, type RecordState } from "./records.js";
+export { caseData, datumStatus, type DatumStatus } from "./datum.js";
 export { anaesthetised, applyAnaesthesia, canLeaveAnaesthetisedPatient, responsibleAnaesthetist, type AnaesthesiaResult } from "./anaesthesia.js";
 export { applyStudy, evaluateStudy, seeded, studyObservations, studyProfile, studyStatus, type StudyResult } from "./study.js";
 

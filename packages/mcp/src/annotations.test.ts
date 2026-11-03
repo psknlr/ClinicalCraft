@@ -47,8 +47,8 @@ describe("tools/list annotations", () => {
     const s = server();
     await call(s, "initialize", { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } });
     const { tools } = (await call(s, "tools/list")) as { tools: McpToolSpec[] };
-    // 17 clinical-mode tools + the operative field's 2 + 17 world tools (get_camera_frame needs a browser: never listed headless).
-    expect(tools.length).toBe(36);
+    // 18 clinical-mode tools (with request_hint) + the operative field's 2 + 17 world tools (get_camera_frame needs a browser: never listed headless).
+    expect(tools.length).toBe(37);
     expect(tools.map((t) => t.name)).not.toContain("get_camera_frame");
     for (const name of ["navigate_to", "interact_object"]) expect(tools.find((t) => t.name === name)!.annotations.readOnlyHint, name).toBe(false);
     for (const tool of tools) {

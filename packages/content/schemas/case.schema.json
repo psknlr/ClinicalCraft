@@ -859,6 +859,33 @@
             "study"
           ],
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "datum": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "not-asked",
+                  "asked-unknown",
+                  "verified-negative",
+                  "verified-positive",
+                  "mitigated"
+                ]
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "datum",
+            "status"
+          ],
+          "additionalProperties": false
         }
       ]
     },
@@ -3441,6 +3468,26 @@
                 ],
                 "default": "on-ask"
               },
+              "safety": {
+                "type": "object",
+                "properties": {
+                  "datum": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "finding": {
+                    "type": "string",
+                    "enum": [
+                      "unknown",
+                      "negative",
+                      "positive"
+                    ]
+                  }
+                },
+                "required": [
+                  "datum"
+                ],
+                "additionalProperties": false
+              },
               "required": {
                 "type": "boolean",
                 "default": false
@@ -4319,6 +4366,20 @@
               },
               "checklist": {
                 "type": "boolean"
+              },
+              "reports": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "default": []
+              },
+              "mitigates": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "default": []
               },
               "indicatedWhen": {
                 "$ref": "#/definitions/Condition"

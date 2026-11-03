@@ -9,7 +9,8 @@
  */
 import { dropTractionAwayFromTable } from "./assist.js";
 import { assess, correctionMade, correctionsFor, patientNonVerbal, t, type NpcCorrection } from "@clinicalcraft/core";
-import { attendingOffline, consultantOffline, examinerOffline, nurseOffline, staffOffline } from "../agents/offline.js";
+import { attendingOffline,
+  specialistOffline, consultantOffline, examinerOffline, nurseOffline, staffOffline } from "../agents/offline.js";
 import { agentKind, buildSystemSections, npcDisplayName, patientLocation } from "../agents/prompts.js";
 import type { AgentProfile } from "../agents/types.js";
 import { executeToolCall, runAgentTurn } from "../loop.js";
@@ -248,7 +249,10 @@ export class AgentTurns {
     const parts: ChatPart[] = [{ type: "text", text: utterance.trim() || rt(k.locale, "npc.approach") }];
     // a colleague with a body acts on the learner's request with it (embodied mode; never in a nested ask)
     const who = fromLearner && STAFF_KINDS.has(agentKind(profile)) ? colleagueOf(k, profile.name, voice) : null;
-    const tools = who ? [...k.toolsFor(profile.name), staffTaskTool(k, id, who)] : k.toolsFor(profile.name);
+    // a named colleague is consulted, never the teaching preceptor: no scored hint in their turn (a hint is asked for
+    // explicitly — /hint, request_hint)
+    const own = voice ? k.toolsFor(profile.name).filter((tool) => tool.name !== "give_hint") : k.toolsFor(profile.name);
+    const tools = who ? [...own, staffTaskTool(k, id, who)] : own;
     for (const extra of extraContext) parts.push({ type: "text", text: extra });
     // a misconception in the message this colleague must correct (authored; checked on the reply below)
     if (due.length > 0) parts.push({ type: "text", text: `<must_correct>\nThe message contains a misconception you must correct explicitly in this reply, before anything else:\n${due.map((c) => `- ${t(c.say, k.locale)}`).join("\n")}\n</must_correct>` });
@@ -310,7 +314,8 @@ export class AgentTurns {
         text = other ?? consultantOffline(kind, ctx, utterance);
         break;
       case "attending":
-        text = attendingOffline(ctx, (action) => k.dispatch(action, id), utterance).text;
+        // a named colleague (Dr Tanaka) answers from their specialty and the record — the preceptor only without one
+        text = voice ? specialistOffline(ctx, voice, k.facility) : attendingOffline(ctx, (action) => k.dispatch(action, id), utterance).text;
         break;
       case "examiner":
         text = examinerOffline(k.caseDef, assess(k.caseDef, k.state), k.locale).narrative;
