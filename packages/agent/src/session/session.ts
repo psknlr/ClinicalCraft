@@ -25,13 +25,14 @@ import { learnerVitals } from "../tools/format.js";
 import type { ToolDefinition, VitalsView } from "../tools/types.js";
 import { rt } from "./i18n.js";
 import { SessionKernel } from "./kernel.js";
-import { restoreRuntime, restoreSession, sessionSnapshot } from "./resume.js";
+import { provenanceNow, restoreRuntime, restoreSession, sessionSnapshot } from "./resume.js";
 import { emptyTrace } from "./trace.js";
-import type { ClinicalSessionApi, SessionOptions, SessionSnapshot } from "./types.js";
+import type { ClinicalSessionApi, RecordProvenance, ReplayIssue, SessionOptions, SessionSnapshot } from "./types.js";
 import type { TeamCheckpoint } from "./team/types.js";
 
 /** Runtime version stamped into transcripts. */
-export const CLINICALCRAFT_VERSION = "5.0.0";
+export { CLINICALCRAFT_VERSION } from "./version.js";
+import { CLINICALCRAFT_VERSION } from "./version.js";
 
 /** Smallest real-time clock step dispatched by `advanceRealTime` (simulated minutes). */
 export const REALTIME_MIN_STEP = 0.25;
@@ -148,6 +149,12 @@ export class ClinicalSession implements ClinicalSessionApi {
     const resume = k.opts.resume;
     const derivedDialogue = resume ? restoreSession(k, resume) : [];
     restoreRuntime(k, k.opts.restore);
+    // a record made with other content or another engine: said, with what could not be replayed exactly
+    const report = resume ? this.replayReport() : null;
+    if (report?.createdWith && (report.issues.length || report.createdWith.caseVersion !== report.current.caseVersion || report.createdWith.engineVersion !== report.current.engineVersion)) {
+      const params = { case: report.current.caseId, old: report.createdWith.caseVersion, new: report.current.caseVersion, oldEngine: report.createdWith.engineVersion, newEngine: report.current.engineVersion, n: report.issues.length };
+      k.emit("", { type: "warning", message: rt(this.locale, report.issues.length ? "resume.migrated" : "resume.versionChanged", params) });
+    } else if (report?.issues.length) k.emit("", { type: "warning", message: rt(this.locale, "resume.issues", { n: report.issues.length }) });
     if (k.opts.writeSessionMeta !== false) {
       k.recorder?.record("session_meta", {
         sessionId: this.id,
@@ -180,6 +187,18 @@ export class ClinicalSession implements ClinicalSessionApi {
   }
 
   private journeyRun: Promise<WorldActionResult | null> = Promise.resolve(null);
+
+  /**
+   * The restore's migration report (null: a fresh session): what the record was made with, what it runs on now, the
+   * original actions (never edited), the migrated ones (what replays now) and each original action the current engine
+   * could not replay exactly, with its index and reason.
+   */
+  replayReport(): { createdWith: RecordProvenance | null; current: RecordProvenance; originalActions: number; migratedActions: number; issues: ReplayIssue[] } | null {
+    const r = this.k.restore;
+    if (!r) return null;
+    const original = r.original ? r.original.length : r.acceptedAtRestore;
+    return { createdWith: r.createdWith, current: provenanceNow(this.k), originalActions: original, migratedActions: r.acceptedAtRestore, issues: r.issues.map((x) => ({ ...x })) };
+  }
 
   /** A resumed session's transport carried on from the save (null: none was in progress), once it has arrived. */
   resumedJourney(): Promise<WorldActionResult | null> {

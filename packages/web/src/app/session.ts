@@ -293,7 +293,8 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
     // Handled by the web UI itself (see ui/panels/conversation.ts webCommand): hidden from /help.
     disabledCommands: WEB_HANDLED_COMMANDS,
     resolveProvider: browserResolveProvider(() => settings, () => mode),
-    ...(resume ? { resume: { sessionId, actions: cleanActions(resume.actions), messages: resume.messages ?? {}, ...(resume.dialogue?.length ? { dialogue: resume.dialogue } : {}) } } : {}),
+    // the record's provenance and its unedited original actions (a @2 save): the restore reports what no longer replays
+    ...(resume ? { resume: { sessionId, actions: cleanActions(resume.actions), messages: resume.messages ?? {}, ...(resume.dialogue?.length ? { dialogue: resume.dialogue } : {}), ...(resume.createdWith ? { createdWith: resume.createdWith } : {}), ...(resume.originalActions ? { originalActions: cleanActions(resume.originalActions) } : {}) } } : {}),
     // A snapshot keeps no plan explanation (SessionSnapshot.plan is items only).
     ...(plan.length ? { restore: { plan: { items: plan, explanation: null } } } : {}),
     // Same transcript file (served: sessions/web/<id>.jsonl): continue its ordinal sequence.

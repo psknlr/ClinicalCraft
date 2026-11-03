@@ -112,6 +112,11 @@ export class SessionKernel {
   /** The engine state (core `reduce`). */
   state: SessionState;
   acceptedActions: ClinicalAction[] = [];
+  /**
+   * A restored record (resume.ts): what it was made with, the original actions when the current engine replays them
+   * differently (kept unedited, reported), the replay's issues, and how many actions were accepted at the restore.
+   */
+  restore: { createdWith: import("./types.js").RecordProvenance | null; original: ClinicalAction[] | null; issues: import("./types.js").ReplayIssue[]; acceptedAtRestore: number } | null = null;
   plan: PlanItem[] = [];
   planExplanation: string | null = null;
   interlocutor: AgentRole = "patient";

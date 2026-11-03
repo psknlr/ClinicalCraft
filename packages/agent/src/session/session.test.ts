@@ -769,7 +769,7 @@ describe("transcript, snapshot and resume", () => {
     const events = await t.session.run({ type: "user_message", text: "plan?", to: "clinician" });
     expect(msgsOf(events, "plan_updated")[0]).toMatchObject({ agent: "clinician", explanation: "ACS likely" });
     const snap = t.session.snapshot();
-    expect(snap.format).toBe("clinicalcraft-session@1");
+    expect(snap.format).toBe("clinicalcraft-session@2");
     expect(snap.plan).toEqual([{ text: "ECG now", status: "in_progress" }]);
     expect(Object.keys(snap.messages)).toContain("clinician");
   });

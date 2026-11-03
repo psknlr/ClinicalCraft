@@ -189,7 +189,7 @@ describe("built-in commands", () => {
     await command(t, "/order ecg");
     const exp = await command(t, "/export run.json");
     expect(exp.out.text).toMatch(/2 actions\) → run\.json/);
-    expect((exp.out.data as { snapshot: { format: string } }).snapshot.format).toBe("clinicalcraft-session@1");
+    expect((exp.out.data as { snapshot: { format: string } }).snapshot.format).toBe("clinicalcraft-session@2");
     expect((await command(t, "/permissions")).out.text).toMatch(/Allow\s+-/);
     expect((await command(t, "/frobnicate")).out.text).toMatch(/Unknown command \/frobnicate/);
   });
