@@ -18,6 +18,7 @@
  *      assistant message is dropped; calls not yet run get "cancelled" results
  *      so tool calls and results always stay paired.
  */
+import { actionIdsBetween } from "./session/action-ids.js";
 import type { AgentProfile } from "./agents/types.js";
 import type { HookInput, HookInputBase, HookResult } from "./hooks/types.js";
 import type { AgentRole, EventMsg, TokenUsage } from "./protocol.js";
@@ -235,9 +236,12 @@ export async function executeToolCall(params: ExecuteToolCallParams): Promise<To
   const now = p.now ?? (() => Date.now());
   const L = p.ctx.locale;
   const startedAt = now();
+  // the clinical actions this call commits are those after this sequence number (nested calls included)
+  const seqBefore = p.ctx.state().seq;
   p.emit({ type: "tool_call_begin", turnId: p.turnId, agent: p.agent, callId: p.call.id, tool: p.call.name, args: p.call.args });
 
   const finish = (status: ToolCallStatus, output: ToolOutput): ToolCallOutcome => {
+    const actionIds = actionIdsBetween(seqBefore, p.ctx.state().seq);
     p.emit({
       type: "tool_call_end",
       turnId: p.turnId,
@@ -247,6 +251,7 @@ export async function executeToolCall(params: ExecuteToolCallParams): Promise<To
       ok: output.ok,
       output: output.output,
       ...(output.data !== undefined ? { data: output.data } : {}),
+      ...(actionIds.length ? { actionIds } : {}),
       durationMs: Math.max(0, now() - startedAt),
     });
     return {

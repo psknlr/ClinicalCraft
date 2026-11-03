@@ -323,7 +323,7 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
         const { output, notices } = outcome;
         const warnings = outcome.warnings ?? [];
         const text = [output.output, notices.length > 0 ? notices.map((n) => `! ${n}`).join("\n") : "", noticeLines(entry.session.locale, warnings)].filter(Boolean).join("\n\n");
-        return textResult(text, { session_id: entry.id, tool: name, ok: output.ok, data: output.data ?? null, ...(notices.length ? { notices } : {}), ...(warnings.length ? { warnings } : {}) }, !output.ok);
+        return textResult(text, { session_id: entry.id, tool: name, ok: output.ok, data: output.data ?? null, ...(outcome.actionIds?.length ? { actionIds: outcome.actionIds } : {}), ...(notices.length ? { notices } : {}), ...(warnings.length ? { warnings } : {}) }, !output.ok);
       });
     }
   }

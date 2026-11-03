@@ -16,6 +16,7 @@
  */
 import { SessionStudies } from "./studies.js";
 import { StaffAutonomy } from "./staff-autonomy.js";
+import { actionIdOf } from "./action-ids.js";
 import {
   createSession as createEngineState,
   currentWaypoint,
@@ -368,13 +369,15 @@ export class SessionKernel {
   dispatch(action: ClinicalAction, id: string): ReduceResult {
     const result = reduce(this.caseDef, this.state, action);
     const accepted = !result.rejected;
+    // a committed action's persistent id (`act-<seq>`): the same in a replay, after a reload, in every front-end
+    const actionId = accepted && result.state.seq !== this.state.seq ? actionIdOf(result.state.seq) : null;
     if (accepted) {
       this.state = result.state;
       this.acceptedActions.push(action);
     }
     this.recorder?.record("action", { action, accepted });
     for (const event of result.events) {
-      this.emit(id, { type: "clinical_event", event });
+      this.emit(id, { type: "clinical_event", event, ...(actionId ? { actionId } : {}) });
       this.embodied?.noteClinicalEvent(this.hub.lastSeq, event);
       this.queueHook({ hook_event_name: "ClinicalEvent", event }, id);
       // A `vitals.alarm` says itself whether its value is an arrest placeholder (`unmeasurable`, set at the minute it fired).

@@ -23,6 +23,7 @@
  * delegated staff act with their `staff:*` body. `world()` is a stable handle:
  * a language switch rebuilds the runtime from its snapshot behind it.
  */
+import type { ClinicalActionFeedback } from "./action-ids.js";
 import { COUNT_TOOL, SurgicalCount } from "./count.js";
 import { assignPatientSlot, canLeaveAnaesthetisedPatient, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
@@ -137,6 +138,8 @@ export interface EmbodiedHost {
   clockText(): string;
   /** Built-in + project skills. */
   skills(): readonly SkillDefinition[];
+  /** A committed clinical action by its persistent id (`act-<seq>` / `op-<n>`), from the accepted record. */
+  actionFeedback?(id: string): ClinicalActionFeedback | null;
 }
 
 export interface EmbodiedOptions {
@@ -816,6 +819,7 @@ export class EmbodiedSession {
       skillSpecifier: (args) => (args.skill !== undefined ? inlineSkillSpecifier(args.skill) : strArg(args, "skill_id") || "inline"),
       camera: () => this.options.camera ?? null,
       isDelegate: (actorId) => this.delegates.has(actorId),
+      clinicalFeedback: (id) => this.host.actionFeedback?.(id) ?? null,
     };
   }
 

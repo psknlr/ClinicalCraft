@@ -76,6 +76,7 @@ export * from "./session/embodied-types.js";
 export type { ActionReceipt, MemberId, MessageKind, SurgeonMode, TaskStatus, TeamAutonomy, TeamCheckpoint, TeamMessage, TeamState, TeamTask } from "./session/team/types.js";
 export { validTeamCheckpoint } from "./session/team/checkpoint.js";
 export type { RoleState } from "./session/staff-autonomy.js";
+export { actionIdOf, actionIdsBetween, clinicalActionFeedback, type ClinicalActionFeedback } from "./session/action-ids.js";
 export * from "./session/device-ops.js";
 export * from "./session/delegation.js";
 export * from "./session/embodied.js";

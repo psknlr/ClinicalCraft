@@ -250,6 +250,8 @@ export type EventMsg =
       output: string;
       /** Typed payload for UIs (finding, result, vitals…). */
       data?: unknown;
+      /** The clinical actions this call committed (`act-<seq>`, in order): `get_action_feedback` resolves each. */
+      actionIds?: string[];
       durationMs: number;
     }
   | {
@@ -271,7 +273,8 @@ export type EventMsg =
   /** A request for the front-end to perform a world action (Codex dynamic tools). */
   | { type: "dynamic_tool_call"; callId: string; tool: string; args: unknown }
   /** Engine domain events (objective completed, result ready, alarm…). */
-  | { type: "clinical_event"; event: DomainEvent }
+  /** `actionId`: the committed action it came from (`act-<seq>`, stable across replays and reloads); absent on a refusal. */
+  | { type: "clinical_event"; event: DomainEvent; actionId?: string }
   /** Full snapshot after any state change (cheap enough to send each time). */
   | { type: "state_snapshot"; state: SessionState; progress: ObjectiveProgress; vitals: VitalsSnapshot; waypoint: string | null }
   | { type: "plan_updated"; agent: AgentRole; explanation?: string; plan: PlanItem[] }

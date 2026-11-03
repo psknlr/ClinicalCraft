@@ -41,6 +41,7 @@ import {
   clinicalTools,
   procedureTools,
   studyTools,
+  actionIdsBetween,
   formatRule,
   HookRunner,
   PermissionState,
@@ -76,6 +77,8 @@ export type ToolRunOutcome =
        * refusal) or a reply replaced by the authored answer. Never silent.
        */
       warnings?: string[];
+      /** The clinical actions this call committed (`act-<seq>`, persistent: `get_action_feedback` resolves them). */
+      actionIds?: string[];
     }
   | {
       status: "refused";
@@ -354,6 +357,7 @@ export class SessionToolRunner {
       }
     });
     let output: ToolOutput;
+    const seqBefore = this.session.state.seq;
     try {
       output = await tool.run(input, ctx);
     } catch (err) {
@@ -361,6 +365,7 @@ export class SessionToolRunner {
     } finally {
       off();
     }
+    const actionIds = actionIdsBetween(seqBefore, this.session.state.seq);
     // the staff's own round follows a state-changing act, as on the session's op path (docs/TEAM.md §5): an
     // investigation's next stage, traction against where hands are, an alarm answered — what they say is a notice
     if (!tool.readOnly && !signal?.aborted && this.session.state.started && !this.session.state.finished) {
@@ -396,7 +401,7 @@ export class SessionToolRunner {
     }
     // Done: the confirmation (and the record of this call's attempts) is used up.
     this.pending.delete(key);
-    return { status: "done", output, notices, ...(warnings.length > 0 ? { warnings } : {}) };
+    return { status: "done", output, notices, ...(warnings.length > 0 ? { warnings } : {}), ...(actionIds.length ? { actionIds } : {}) };
   }
 
   /** Talk to an NPC through the session (UserPromptSubmit hooks, patient pipeline, transcript). */
