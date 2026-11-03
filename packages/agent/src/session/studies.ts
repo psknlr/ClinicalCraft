@@ -16,7 +16,7 @@
  * - **Review**: the order's reviewer (the anaesthetist for a preoperative ECG) reviews the released report in their
  *   own name (`study review`) and says so.
  */
-import { studyProfile, t, type ClinicalAction, type StudyAccession, type StudyObservation, type StudyProfile } from "@clinicalcraft/core";
+import { studyCollectors, studyProfile, t, unmetPrerequisites, type ClinicalAction, type StudyAccession, type StudyObservation, type StudyProfile } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type WorldRuntime } from "@clinicalcraft/world";
 import { encounterRoom, lookupStaff } from "../tools/consult-target.js";
 import { rt } from "./i18n.js";
@@ -133,9 +133,6 @@ export function validateReport(a: StudyAccession, text: ReportText): string[] {
   return problems;
 }
 
-/** Words of a request that ask for the operative cholangiogram (never ordered from the chart). */
-const OPERATIVE = /cholangio|\bioc\b|胆道造影|胆管造影/iu;
-
 /** The case's study a request names (code, name, alias — either language), or null. */
 export function resolveStudy(profiles: readonly StudyProfile[], query: string): StudyProfile | null {
   const q = query.trim().toLowerCase();
@@ -149,10 +146,6 @@ export function resolveStudy(profiles: readonly StudyProfile[], query: string): 
   return profiles.find((p) => names(p).some((n) => n === q)) ?? profiles.find((p) => names(p).some((n) => n.length >= 2 && (within(n, q) || within(q, n)))) ?? null;
 }
 
-/** Does this request ask for an operative study? */
-export function asksOperativeStudy(query: string): boolean {
-  return OPERATIVE.test(query);
-}
 
 /** Facility devices that provide every capability of a profile (entity ids), in facility order. */
 function providers(w: WorldRuntime, caps: readonly string[]): string[] {
@@ -161,9 +154,6 @@ function providers(w: WorldRuntime, caps: readonly string[]): string[] {
     .filter((e) => e.kind === "equipment" && caps.length > 0 && caps.every((c) => e.capabilities.includes(c)))
     .map((e) => e.id);
 }
-
-/** Roles that may take a sample or record a tracing at the patient (a porter or a receptionist never does). */
-const COLLECTORS: ReadonlySet<string> = new Set(["nurse", "paramedic", "attending", "clinician"]);
 
 export class SessionStudies {
   /** A model writer for report text (validated; the template is the fallback). Null: the template only. */
@@ -254,8 +244,11 @@ export class SessionStudies {
     const profile = studyProfile(k.caseDef, o.code);
     if (!profile) return;
     const L = k.locale;
+    // a prerequisite that does not hold (intravenous access, the patient at the device): the order waits with its reason
+    const unmet = unmetPrerequisites(k.caseDef, k.state, profile);
+    if (unmet.length) return this.wait(id, o.id, unmet.map((u) => t(u.reason, L)).join("; "));
     const e = k.embodied;
-    if (!e) return this.collectWithoutWorld(id, o.id, profile.acquisition === "department" ? "radiographer" : "nurse", o.configuration);
+    if (!e) return this.collectWithoutWorld(id, o.id, studyCollectors(profile)[0] ?? "nurse", o.configuration);
     const w = e.world();
     const devices = providers(w, profile.requires);
     const name = (eid: string) => t(w.entity(eid)?.name ?? eid, L);
@@ -266,15 +259,15 @@ export class SessionStudies {
       const room = w.roomOf(patient);
       const here = devices.find((d) => w.roomOf(d) === room);
       if (!here) return this.wait(id, o.id, rt(L, "study.wait.transfer", { device: name(devices[0]!), room: w.roomOf(devices[0]!) ?? "—" }));
-      // the patient at the device: the radiographer of that department acquires it there
-      return this.collectWithoutWorld(id, o.id, "radiographer", o.configuration);
+      // the patient at the device: the department's own staff (a radiographer) acquire it there
+      return this.collectWithoutWorld(id, o.id, studyCollectors(profile)[0] ?? "radiographer", o.configuration);
     }
     // the collector: the case team's circulating nurse, else the nurse nearest the patient — their role may take it
     const ref = this.collectorRef();
     const collector = ref.startsWith("staff:") ? ref : pickStaff(w, "nurse", patient);
     const actor = collector ? w.actor(collector) : null;
     if (!collector || !actor) return this.wait(id, o.id, rt(L, "study.wait.noStaff"));
-    if (!COLLECTORS.has(actor.role)) return this.wait(id, o.id, rt(L, "study.wait.notAuthorized", { who: name(collector) }));
+    if (!studyCollectors(profile).includes(actor.role)) return this.wait(id, o.id, rt(L, "study.wait.notAuthorized", { who: name(collector) }));
     if (o.assignee !== collector.replace(/^staff:/u, "")) this.assign(id, o.id, collector);
     // a blocked order tries again quietly: its stages change only when something does (no repeated "en route")
     const blocked = () => k.state.studies?.orders.find((x) => x.id === o.id)?.stage === "blocked";

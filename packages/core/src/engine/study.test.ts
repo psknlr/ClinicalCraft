@@ -11,6 +11,7 @@ import { evaluate } from "./conditions.js";
 import { checkCaseIntegrity } from "./integrity.js";
 import { parseCase } from "./parse.js";
 import { createSession, reduce, replay } from "./reducer.js";
+import { operativeImagingAsked, studyCategory, studyCollectors, studyOrderBlock, studyProfile, unmetPrerequisites } from "./study.js";
 import { LAP_CHOLE_SIT } from "./procedure/__fixtures__/lap-chole-sit.js";
 
 const L = (en: string) => ({ en, "zh-CN": en });
@@ -138,4 +139,60 @@ describe("new investigations", () => {
     // someone else's collection of an assigned order is refused
     expect(play([study({ op: "progress", order: "ord-1", stage: "en-route" }), study({ op: "progress", order: "ord-1", stage: "at-patient" }), study({ op: "acquire", order: "ord-1", collector: "porter", quality: "good" })], blocked.s).rejected[0]?.code).toBe("invalid");
   });
+
+  it("one definition for every kind of study: category, when orderable, safety restrictions, prerequisites, who acquires it", () => {
+    const raw = structuredClone(LAP_CHOLE_SIT) as unknown as Record<string, any>;
+    raw.interventions = [...(raw.interventions ?? []), { id: "iv", name: L("Intravenous access"), kind: "procedure", setFlags: ["iv"] }, { id: "open", name: L("The abdomen opened"), kind: "procedure", setFlags: ["open"] }];
+    raw.studies = [
+      { code: "lactate", name: L("Lactate"), acquisition: "sample", prerequisites: [{ when: { flag: "iv" }, reason: L("no intravenous access yet") }], model: { kind: "lab", analytes: [{ id: "lac", name: L("Lactate"), unit: "mmol/L", low: 0.5, high: 2, base: 1.1 }] } },
+      { code: "poc-glucose", name: L("Capillary glucose"), acquisition: "bedside-device", category: "bedside", collectors: ["nurse"], model: { kind: "lab", analytes: [{ id: "glu", name: L("Glucose"), unit: "mmol/L", low: 3.9, high: 7.8, base: 6 }] } },
+      { code: "ct-abdomen", name: L("CT abdomen"), acquisition: "department", requires: ["ct"], orderableWhen: { flag: "iv" }, restrictions: [{ when: { flag: "open" }, reason: L("the abdomen is open: a transfer to CT is not safe") }], model: { kind: "imaging", technique: L("CT"), findings: [{ id: "f", text: L("No free fluid") }] } },
+    ];
+    const parsed = parseCase(raw);
+    if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues.slice(0, 3)));
+    const k = parsed.value;
+    const profile = (code: string) => studyProfile(k, code)!;
+    // the category: its own, else from the acquisition
+    expect(["lactate", "poc-glucose", "ct-abdomen"].map((x) => studyCategory(profile(x)))).toEqual(["lab", "bedside", "imaging"]);
+    // who acquires it: the profile's, else the acquisition's defaults
+    expect(studyCollectors(profile("poc-glucose"))).toEqual(["nurse"]);
+    expect(studyCollectors(profile("lactate"))).toContain("nurse");
+    expect(studyCollectors(profile("lactate"))).not.toContain("porter");
+    expect(studyCollectors(profile("ct-abdomen"))).toContain("radiographer");
+    const go = (s: SessionState, a: ClinicalAction) => reduce(k, s, a);
+    let s = go(createSession(k), { type: "start" }).state;
+    // not orderable yet: refused as not ready, and no order exists
+    const early = go(s, study({ op: "order", code: "ct-abdomen", key: "ct", requester: "learner", priority: "routine" }));
+    expect(early.rejected?.code).toBe("not-ready");
+    expect(studyOrderBlock(k, s, profile("ct-abdomen"))).toEqual({ kind: "not-yet" });
+    s = go(s, { type: "intervene", interventionId: "iv" }).state;
+    expect(studyOrderBlock(k, s, profile("ct-abdomen"))).toBeNull();
+    // a safety restriction that holds: refused with its reason
+    const opened = go(s, { type: "intervene", interventionId: "open" }).state;
+    const unsafe = go(opened, study({ op: "order", code: "ct-abdomen", key: "ct", requester: "learner", priority: "routine" }));
+    expect(unsafe.rejected).toMatchObject({ code: "requirements-unmet", message: expect.stringMatching(/the abdomen is open/) });
+    expect(opened.studies?.orders ?? []).toEqual([]);
+    // a prerequisite that does not hold: the order is accepted but nothing is acquired until it holds
+    let t = go(createSession(k), { type: "start" }).state;
+    t = go(t, study({ op: "order", code: "lactate", key: "lac", requester: "learner", priority: "routine" })).state;
+    expect(unmetPrerequisites(k, t, profile("lactate")).map((u) => u.reason)).toEqual([L("no intravenous access yet")]);
+    for (const a of collect("ord-1", "nurse").slice(0, 3)) t = go(t, a).state;
+    const tooSoon = go(t, collect("ord-1", "nurse")[3]!);
+    expect(tooSoon.rejected).toMatchObject({ code: "requirements-unmet", message: expect.stringMatching(/no intravenous access yet/) });
+    t = go(t, { type: "intervene", interventionId: "iv" }).state;
+    const drawn = go(t, collect("ord-1", "nurse")[3]!);
+    expect(drawn.rejected).toBeUndefined();
+    expect(drawn.state.studies!.accessions.map((a) => a.code)).toEqual(["lactate"]);
+  });
+
+  it("operative imaging is named by the engine, never a study of the chart", () => {
+    expect(operativeImagingAsked("intraoperative cholangiogram")).toBe("ioc");
+    expect(operativeImagingAsked("Please do an IOC")).toBe("ioc");
+    expect(operativeImagingAsked("术中胆道造影")).toBe("ioc");
+    expect(operativeImagingAsked("laparoscopic ultrasound of the CBD")).toBe("lap-us");
+    expect(operativeImagingAsked("a 12-lead ECG")).toBeNull();
+    expect(operativeImagingAsked("a lustrous image")).toBeNull();
+    expect(operativeImagingAsked("bioconjugate")).toBeNull();
+  });
 });
+

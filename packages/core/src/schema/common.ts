@@ -84,6 +84,7 @@ export const BailoutSchema = z.enum([
 export type Bailout = z.infer<typeof BailoutSchema>;
 
 export const ImagingSchema = z.enum(["ioc", "lap-us"]);
+export type Imaging = z.infer<typeof ImagingSchema>;
 
 export const InjuryKindSchema = z.enum([
   "bile-duct-injury",

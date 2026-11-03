@@ -16,6 +16,7 @@
 import { vitalsAt, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type EpisodeTrace, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
+import type { RoleState } from "./staff-autonomy.js";
 import type { HookRunner } from "../hooks/runner.js";
 import type { AgentEvent, AgentRole, Op, PlanItem } from "../protocol.js";
 import type { RetryPolicy } from "../providers/factory.js";
@@ -112,6 +113,14 @@ export class ClinicalSession implements ClinicalSessionApi {
    */
   team(): TeamCheckpoint | null {
     return this.k.team.available() ? (this.k.team.get()?.checkpoint() ?? null) : null;
+  }
+
+  /**
+   * Every staff member's role state now (docs/TEAM.md §5): goal, task, place, responsibility, held items,
+   * reservations, pending requests, what blocks them — derived from the record and the world (empty in clinical mode).
+   */
+  staffStates(): RoleState[] {
+    return this.k.staff.states();
   }
 
   /** The episode trace (empty in clinical mode). */

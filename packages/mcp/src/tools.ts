@@ -109,6 +109,12 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   // coagulate and bail-out are high-risk and need confirmation).
   observe_field: { title: "Look at the operative field", ...READ_ONLY },
   operate: { title: "Operative step", ...RECORDS, destructiveHint: true },
+  // New investigations (docs/STUDIES.md): the published record is looked up (recorded as a read); an order is a new
+  // simulated study (the same request_key again is the same order); its status and reports only read.
+  retrieve_report: { title: "Retrieve an existing report", ...RECORDS, idempotentHint: true },
+  order_study: { title: "Order a new investigation", ...RECORDS, idempotentHint: true },
+  read_study: { title: "Read a new investigation", ...READ_ONLY },
+  list_studies: { title: "List new investigations", ...READ_ONLY },
   // Embodied mode (§12). Perception only reads (the body's memory of what it saw is not encounter state);
   // walking moves the body and spends simulated time; operations with a clinical effect (a device giving a
   // drug, delegated or skill steps) act on the patient through the approval gate.

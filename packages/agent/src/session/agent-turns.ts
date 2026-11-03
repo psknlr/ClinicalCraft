@@ -7,7 +7,6 @@
  * else — and when a model call fails or refuses with nothing said — its deterministic offline responder.
  * Also the autopilot's host: the clinician driving the case through the same tool path.
  */
-import { dropTractionAwayFromTable } from "./assist.js";
 import { assess, correctionMade, correctionsFor, patientNonVerbal, t, type NpcCorrection } from "@clinicalcraft/core";
 import { attendingOffline,
   specialistOffline, consultantOffline, examinerOffline, nurseOffline, staffOffline } from "../agents/offline.js";
@@ -460,8 +459,7 @@ export class AgentTurns {
       cursor: k.offlineCursor,
       afterStep: async (signal) => {
         if (k.team.available()) await k.team.afterLearner(signal ?? new AbortController().signal);
-        dropTractionAwayFromTable(k, id);
-        if (k.studies.available()) await k.studies.afterLearner(id, signal ?? new AbortController().signal);
+        await k.staff.step(id, signal ?? new AbortController().signal);
       },
       ...(k.embodied && embodied
         ? {

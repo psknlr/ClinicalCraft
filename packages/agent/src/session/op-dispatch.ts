@@ -6,7 +6,6 @@
  * before an interrupt or a shutdown is cancelled before it starts. Also the session-level ops: `configure`
  * (only the known `RuntimeConfigPatch` fields: `cleanConfigPatch`) and the shutdown sequence.
  */
-import { dropTractionAwayFromTable } from "./assist.js";
 import type { ActorId, Pose, WorldActionRequest } from "@clinicalcraft/world";
 import type { ApprovalMode, Op, PracticeScope, RuntimeConfigPatch } from "../protocol.js";
 import { canonicalLocale, type ResolvedSettings } from "../settings/schema.js";
@@ -151,10 +150,8 @@ export class OpDispatcher {
       await this.handle(id, op);
       // the care team acts after each act of the learner (autonomy `auto`), in the same submission
       if (LEARNER_OPS.has(op.type) && k.team.available() && !k.closing) await this.withTurn(id, (signal) => k.team.afterLearner(signal));
-      // hands go where the body goes: a colleague no longer at the table has let go of their traction
-      if (LEARNER_OPS.has(op.type) && !k.closing) dropTractionAwayFromTable(k, id);
-      // the hospital's work on new investigations follows too: a device fetched, a study acquired, a report released
-      if (LEARNER_OPS.has(op.type) && k.studies.available() && !k.closing) await this.withTurn(id, (signal) => k.studies.afterLearner(id, signal));
+      // the staff's own round follows too: traction against where bodies are, investigations, a new alarm answered
+      if (LEARNER_OPS.has(op.type) && !k.closing) await this.withTurn(id, (signal) => k.staff.step(id, signal));
     } finally {
       k.currentSubmission = previous;
     }
@@ -185,6 +182,9 @@ export class OpDispatcher {
         return void (await this.withTurn(id, (signal) => k.agents.runAssessment(id, signal)));
       case "team":
         return await this.withTurn(id, (signal) => k.team.op(id, op, signal));
+      case "staff_step":
+        if (k.closing || !k.state.started) return;
+        return await this.withTurn(id, (signal) => k.staff.step(id, signal));
       case "shutdown":
         return await this.shutdownSequence(id);
       case "interrupt":

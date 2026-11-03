@@ -40,6 +40,7 @@ import {
   checkPermission,
   clinicalTools,
   procedureTools,
+  studyTools,
   formatRule,
   HookRunner,
   PermissionState,
@@ -165,10 +166,11 @@ type HookSpec =
 
 /**
  * Every bridged tool by name: the clinical tools of PROTOCOL §3 (without the dynamic `walk_to`) and the operative
- * field's `observe_field` / `operate` (docs/PROCEDURE.md §7 — they answer "this case has no operation" elsewhere).
+ * field's `observe_field` / `operate` (docs/PROCEDURE.md §7 — they answer "this case has no operation" elsewhere) and
+ * the new investigations' `retrieve_report` / `order_study` / `read_study` / `list_studies` (docs/STUDIES.md).
  */
 export function bridgedTools(): Map<string, ToolDefinition<Record<string, unknown>>> {
-  return new Map([...clinicalTools(), ...procedureTools()].map((t) => [t.name, t]));
+  return new Map([...clinicalTools(), ...procedureTools(), ...studyTools()].map((t) => [t.name, t]));
 }
 
 /** Runs tools as the learner on one session. Not re-entrant: callers serialise calls per session. */
@@ -358,6 +360,12 @@ export class SessionToolRunner {
       output = { ok: false, output: signal?.aborted ? mm(L, "tool.aborted", { tool: name }) : mm(L, "tool.failed", { tool: name, message: err instanceof Error ? err.message : String(err) }) };
     } finally {
       off();
+    }
+    // the staff's own round follows a state-changing act, as on the session's op path (docs/TEAM.md §5): an
+    // investigation's next stage, traction against where hands are, an alarm answered — what they say is a notice
+    if (!tool.readOnly && !signal?.aborted && this.session.state.started && !this.session.state.finished) {
+      const round = await this.session.run({ type: "staff_step" });
+      for (const e of round) if (e.msg.type === "agent_message") notices.push(`${e.msg.speaker ?? e.msg.agent}: ${e.msg.text}`);
     }
     await this.runHook({ hook_event_name: "PostToolUse", agent: "learner", tool_name: name, tool_input: input, tool_response: { ok: output.ok, output: output.output } }, signal);
     for (const w of warnings) this.opts.log?.(w);

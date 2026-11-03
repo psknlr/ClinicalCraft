@@ -93,7 +93,7 @@ export { ENGINE_VERSION } from "./version.js";
 export { phaseReached, reachPhase, recordAvailability, type RecordState } from "./records.js";
 export { caseData, datumStatus, type DatumStatus } from "./datum.js";
 export { anaesthetised, applyAnaesthesia, canLeaveAnaesthetisedPatient, responsibleAnaesthetist, type AnaesthesiaResult } from "./anaesthesia.js";
-export { applyStudy, evaluateStudy, seeded, studyObservations, studyProfile, studyStatus, type StudyResult } from "./study.js";
+export { applyStudy, BEDSIDE_COLLECTORS, DEPARTMENT_COLLECTORS, evaluateStudy, OPERATIVE_IMAGING, operativeImagingAsked, seeded, studyCategory, studyCollectors, studyObservations, studyOrderBlock, studyProfile, studyStatus, unmetPrerequisites, type StudyResult } from "./study.js";
 
 // the surgical count (docs/TEAM.md §4.3)
 export { applyCount, closureOnOpenCount, compareCount, countLedger, countOpenItems, countSettled, countStatus, countSummary, evaluateCount, type CountLedgerView, type CountReport, type CountResult } from "./count.js";

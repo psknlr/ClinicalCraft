@@ -4,9 +4,9 @@
  * case's test profiles, acquired and reported by the simulated hospital); and `read_study`, the released report of a
  * new investigation, labelled simulated. An operative study is never ordered here: it is acquired at the table.
  */
-import { recordAvailability, studyProfile, t, type CaseDefinition, type FacilityDefinition, type SessionState, type StudyProfile } from "@clinicalcraft/core";
+import { OPERATIVE_IMAGING, operativeImagingAsked, recordAvailability, studyOrderBlock, studyProfile, t, type CaseDefinition, type FacilityDefinition, type SessionState, type StudyProfile } from "@clinicalcraft/core";
 import { rt } from "../session/i18n.js";
-import { asksOperativeStudy, resolveStudy } from "../session/studies.js";
+import { resolveStudy } from "../session/studies.js";
 import { actorFor, rejectedOutput, strArg, type ToolArgs } from "./clinical-resolve.js";
 import { clockTime, formatResult, investigationName } from "./format.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
@@ -68,11 +68,16 @@ const orderStudy: ToolDefinition<ToolArgs> = {
     const L = ctx.locale;
     const c = ctx.caseDef;
     const query = strArg(args, "code") || strArg(args, "query");
-    if (asksOperativeStudy(query)) return { ok: false, output: rt(L, "study.operative", { query }), data: { code: "OPERATIVE_STUDY" } };
+    const operative = operativeImagingAsked(query);
+    if (operative) return { ok: false, output: rt(L, "study.operative", { query, name: t(OPERATIVE_IMAGING[operative].name, L), modality: operative }), data: { code: "OPERATIVE_STUDY", modality: operative } };
     if (!(c.studies ?? []).length) return { ok: false, output: rt(L, "study.none") };
     const p = studyProfile(c, strArg(args, "code")) ?? resolveStudy(c.studies ?? [], query);
     if (!p) return { ok: false, output: rt(L, "study.unknown", { query, choices: choices(c, L) }) };
     const s = ctx.state();
+    // when it may be ordered, and what makes it unsafe now: the profile's (the reducer refuses such an order too)
+    const block = studyOrderBlock(c, s, p);
+    if (block?.kind === "not-yet") return { ok: false, output: rt(L, "study.notOrderable", { name: t(p.name, L) }), data: { code: "NOT_ORDERABLE_NOW" } };
+    if (block) return { ok: false, output: rt(L, "study.restricted", { name: t(p.name, L), reason: t(block.reason, L) }), data: { code: "STUDY_RESTRICTED" } };
     const key = strArg(args, "request_key") || `${p.code}:${(s.studies?.orders.filter((o) => o.code === p.code).length ?? 0) + 1}`;
     const placement = strArg(args, "lead_placement");
     const priority = strArg(args, "priority") === "urgent" ? "urgent" : "routine";

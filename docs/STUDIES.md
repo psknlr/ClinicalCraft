@@ -38,11 +38,13 @@ A simulated value is never shown as the patient's record, and a request for the 
   deliberate repeat (a new key) is a new order and a new accession.
 - `read_study {code|query}`: the order's status, or the released report, labelled *simulated investigation*.
 
-The three are session tools: the learner's chart and the built-in agents (the clinician agent of a demonstration) use
-them. MCP and the world bridge do not serve them yet.
+These are session tools: the learner's chart and the built-in agents (the clinician agent of a demonstration) use
+them, and MCP (`clinicalcraft mcp`, and `--attach` for a live browser session through the world bridge) serves them
+with the other clinical tools (`retrieve_report` and `order_study` record; `read_study`, `list_studies` only read).
 
-An **operative study is never ordered from the chart**: a request for a cholangiogram is refused with how it is done
-(`operate {op: "image", modality: "ioc"}` at the table, once the anatomy allows it). A request alone produces no image
+An **operative study is never ordered from the chart**: a request naming operative imaging (core `OPERATIVE_IMAGING`
+and `operativeImagingAsked`: a cholangiogram, laparoscopic ultrasound — either language) is refused with how it is
+done (`operate {op: "image", modality: "ioc" | "lap-us"}` at the table, once the anatomy allows it). A request alone produces no image
 and nothing to report — a generic report request never bypasses an operative prerequisite.
 
 ## 3. Test profiles (`case.studies[]`)
@@ -58,9 +60,31 @@ and nothing to report — a generic report request never bypasses an operative p
   "reviewer": "anaesthetist",             // who reviews the released report (staff id or role; default: the requester)
   "historical": "ecg-record",             // the case's own record of this kind, looked up, never invented
   "version": "1",                         // frozen with the case for a benchmark
+  "category": "bedside",                  // lab | bedside | imaging (default from acquisition: sample → lab, bedside-device → bedside, department → imaging)
+  "orderableWhen": { "phase": "preop" },  // when it may be ordered (absent: while the encounter runs)
+  "restrictions": [{ "when": {…}, "reason": {…} }],   // safety restrictions: while one holds, the order is refused with its reason
+  "prerequisites": [{ "when": {…}, "reason": {…} }],  // what the acquisition needs: while one does not hold, the order waits (blocked) with its reason
+  "collectors": ["nurse"],                // roles that may acquire it (default: nurse, paramedic, attending, clinician at the bedside; radiographer, radiologist, lab technician for a department)
   "model": { "kind": "ecg", "rhythm": {…}, "prMs": [160, 196], "qrsMs": [84, 104], "qtcMs": [412, 444], "dextrocardia": true, "findings": [] }
 }
 ```
+
+**One definition for every new investigation.** A lab panel (blood count, chemistry, coagulation, group and screen,
+lactate), a bedside study (ECG, point-of-care ultrasound, capillary glucose, blood gas) and an imaging study
+(radiograph, CT, ultrasound) are the same kind of profile: its code and names, its category, when it may be ordered
+(`orderableWhen`), the people (`collectors`) and equipment (`requires`) it needs, where it is acquired
+(`acquisition`), its turnaround, its prerequisites, the patient-state inputs of its model (`effects`, finding
+conditions), the result generator (the model), the report template (from the observations, §6), its reviewer and
+its safety restrictions. Adding one is content, not code: the ordering service, fulfilment, the report, its
+validation and the chart are the same for all (core `studyCategory`, `studyCollectors`, `studyOrderBlock`,
+`unmetPrerequisites`). `cases validate` checks every condition of a profile against the case's own ids.
+
+| refusal / wait | when | how it reads |
+|---|---|---|
+| `NOT_ORDERABLE_NOW` (reducer `not-ready`) | `orderableWhen` does not hold | "CT abdomen cannot be ordered at this point of the encounter." — no order |
+| `STUDY_RESTRICTED` (reducer `requirements-unmet`) | a restriction holds | "CT abdomen is not safe to order now: the abdomen is open — a transfer to CT is not safe" — no order |
+| `blocked` | a prerequisite does not hold | the order waits with the prerequisite's reason (once, not on every round); nothing is acquired until it holds, then it goes on |
+| `OPERATIVE_STUDY` | the request names operative imaging (core `OPERATIVE_IMAGING`: an intraoperative cholangiogram, laparoscopic ultrasound) | refused with how it is done at the table — never a study of the chart, never fabricated |
 
 The **model** owns what the test can reveal:
 

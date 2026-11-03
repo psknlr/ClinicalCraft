@@ -125,6 +125,13 @@ export type Op =
       for?: string;
     }
   /**
+   * The staff's own clock (docs/TEAM.md §5, "working on their own"): one round of what staff do without being asked —
+   * investigations fetched, acquired, reported and reviewed, a colleague's traction checked against where their body
+   * is, the responsible anaesthetist answering a new alarm. A front-end sends it on a timer, whatever the learner is
+   * looking at; a learner's act runs the same round after it.
+   */
+  | { type: "staff_step" }
+  /**
    * Embodied mode: a sensor pose update of a human-driven body (the browser avatar, ~10 Hz). Out-of-band: applied
    * at once, never queued behind a turn, never transcribed; bumps only that actor's own version (EMBODIED R4).
    */

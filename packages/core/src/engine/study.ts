@@ -7,8 +7,10 @@
  * observations, and the release records its text.
  */
 import type { CaseDefinition } from "../schema/case.js";
+import type { Imaging } from "../schema/common.js";
 import type { SessionState } from "../schema/session.js";
-import type { StudyAccession, StudyObservation, StudyOp, StudyOrder, StudyProfile, StudyRecord, StudyStage } from "../schema/study.js";
+import type { StudyAccession, StudyCategory, StudyObservation, StudyOp, StudyOrder, StudyProfile, StudyRecord, StudyRule, StudyStage } from "../schema/study.js";
+import { t } from "../i18n.js";
 import { evaluate } from "./conditions.js";
 import { vitalValue } from "./signal.js";
 
@@ -34,6 +36,60 @@ const within = (range: readonly [number, number], u: number) => Math.round(range
 /** The case's test profile of `code`, or undefined. */
 export function studyProfile(c: CaseDefinition, code: string): StudyProfile | undefined {
   return (c.studies ?? []).find((p) => p.code === code);
+}
+
+/**
+ * The operative field's imaging (schema `ImagingSchema`): acquired at the table — `operate {op: "image", modality}`,
+ * once the anatomy allows it — and never ordered from the chart: a request alone produces no image, no report.
+ */
+export const OPERATIVE_IMAGING: Readonly<Record<Imaging, { name: { en: string; "zh-CN": string }; aliases: readonly string[] }>> = {
+  ioc: { name: { en: "intraoperative cholangiogram", "zh-CN": "术中胆道造影" }, aliases: ["ioc", "cholangio", "intraoperative cholangiogram", "胆道造影", "胆管造影"] },
+  "lap-us": { name: { en: "laparoscopic ultrasound", "zh-CN": "腹腔镜超声" }, aliases: ["lap-us", "lap us", "lus", "laparoscopic ultrasound", "laparoscopic ultrasonography", "腹腔镜超声"] },
+};
+
+/**
+ * The operative imaging a request names (null: none) — Latin aliases at a word's start (whole words when short),
+ * Chinese ones anywhere.
+ */
+export function operativeImagingAsked(query: string): Imaging | null {
+  const q = query.toLowerCase();
+  const esc = (x: string) => x.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+  for (const [modality, { aliases }] of Object.entries(OPERATIVE_IMAGING) as [Imaging, (typeof OPERATIVE_IMAGING)[Imaging]][]) {
+    for (const a of aliases) {
+      if (/[\u3400-\u9fff]/u.test(a) ? q.includes(a) : new RegExp(`(^|[^\\p{L}\\p{N}])${esc(a)}${a.length < 5 ? "($|[^\\p{L}\\p{N}])" : ""}`, "u").test(q)) return modality;
+    }
+  }
+  return null;
+}
+
+/** A study's category: its own, else from how it is acquired (sample → lab, bedside device → bedside, department → imaging). */
+export function studyCategory(p: StudyProfile): StudyCategory {
+  return p.category ?? (p.acquisition === "sample" ? "lab" : p.acquisition === "bedside-device" ? "bedside" : "imaging");
+}
+
+/** Roles that acquire a study at the bedside unless its profile names others (a porter or a receptionist never does). */
+export const BEDSIDE_COLLECTORS: readonly string[] = ["nurse", "paramedic", "attending", "clinician"];
+/** Roles that acquire a department's study unless its profile names others. */
+export const DEPARTMENT_COLLECTORS: readonly string[] = ["radiographer", "radiologist", "lab-tech"];
+
+/** Who may acquire this study: its profile's `collectors`, else the defaults of its acquisition. */
+export function studyCollectors(p: StudyProfile): readonly string[] {
+  return p.collectors?.length ? p.collectors : p.acquisition === "department" ? DEPARTMENT_COLLECTORS : BEDSIDE_COLLECTORS;
+}
+
+/**
+ * Why this study cannot be ordered now (null: it can): `not-yet` — its `orderableWhen` does not hold;
+ * `restricted` — a safety restriction holds (with the restriction's reason). The reducer refuses such an order.
+ */
+export function studyOrderBlock(c: CaseDefinition, s: SessionState, p: StudyProfile): { kind: "not-yet" | "restricted"; reason?: StudyRule["reason"] } | null {
+  if (p.orderableWhen && !evaluate(c, s, p.orderableWhen)) return { kind: "not-yet" };
+  const r = (p.restrictions ?? []).find((x) => evaluate(c, s, x.when));
+  return r ? { kind: "restricted", reason: r.reason } : null;
+}
+
+/** The prerequisites of the acquisition that do not hold now (empty: it may be acquired). */
+export function unmetPrerequisites(c: CaseDefinition, s: SessionState, p: StudyProfile): StudyRule[] {
+  return (p.prerequisites ?? []).filter((x) => !evaluate(c, s, x.when));
 }
 
 /**
@@ -105,6 +161,9 @@ export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): Stu
       if (!profile) return { ok: false, code: "unknown-id", message: `no study "${op.code}" in this case's test profiles` };
       const same = r.orders.find((o) => o.key === op.key);
       if (same) return { ok: true, record: r, changed: false, id: same.id };
+      const block = studyOrderBlock(c, s, profile);
+      if (block?.kind === "not-yet") return { ok: false, code: "not-ready", message: `"${op.code}" cannot be ordered at this point of the encounter` };
+      if (block) return { ok: false, code: "requirements-unmet", message: `"${op.code}" is not safe to order now: ${block.reason ? t(block.reason, "en") : "a restriction holds"}` };
       const id = `ord-${r.orders.length + 1}`;
       r.orders.push({ id, code: op.code, key: op.key, ...(op.indication ? { indication: op.indication } : {}), priority: op.priority, requester: op.requester, ...(op.reviewer ?? profile.reviewer ? { reviewer: op.reviewer ?? profile.reviewer } : {}), ...(op.configuration ? { configuration: op.configuration } : {}), at: s.clock, seq: s.seq + 1, accessions: [], stage: "ordered", stages: [{ stage: "ordered", at: s.clock, seq: s.seq + 1 }] });
       return { ok: true, record: r, changed: true, id };
@@ -145,6 +204,8 @@ export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): Stu
       if (o.assignee && o.assignee !== op.collector) return { ok: false, code: "invalid", message: `"${o.id}" is assigned to ${o.assignee}, not ${op.collector}` };
       const profile = studyProfile(c, o.code);
       if (!profile) return { ok: false, code: "unknown-id", message: `no study "${o.code}"` };
+      const unmet = unmetPrerequisites(c, s, profile);
+      if (unmet.length) return { ok: false, code: "requirements-unmet", message: `"${o.id}" cannot be acquired yet: ${unmet.map((u) => t(u.reason, "en")).join("; ")}` };
       // a deliberate repeat collection: a new accession, whatever the phase
       const id = `${o.code}-${r.accessions.filter((a) => a.code === o.code).length + 1}`;
       const a: StudyAccession = {

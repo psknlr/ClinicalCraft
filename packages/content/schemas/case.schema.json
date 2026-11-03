@@ -3828,6 +3828,66 @@
                   "department"
                 ]
               },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "lab",
+                  "bedside",
+                  "imaging"
+                ]
+              },
+              "orderableWhen": {
+                "$ref": "#/definitions/Condition"
+              },
+              "restrictions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "when": {
+                      "$ref": "#/definitions/Condition"
+                    },
+                    "reason": {
+                      "$ref": "#/definitions/LocalizedText"
+                    }
+                  },
+                  "required": [
+                    "when",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                "default": []
+              },
+              "prerequisites": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "when": {
+                      "$ref": "#/definitions/Condition"
+                    },
+                    "reason": {
+                      "$ref": "#/definitions/LocalizedText"
+                    }
+                  },
+                  "required": [
+                    "when",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                "default": []
+              },
+              "collectors": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 40
+                },
+                "default": []
+              },
               "requires": {
                 "type": "array",
                 "items": {
