@@ -18,7 +18,7 @@ import type { ToolDefinition } from "./types.js";
 export * from "./clinical.js";
 export * from "./npc.js";
 export { procedureTools } from "./procedure.js";
-export { studyLines, studyText, studyTools } from "./studies.js";
+export { orderText, studyLines, studyText, studyTools } from "./studies.js";
 export * from "./spatial.js";
 export * from "./scope.js";
 export * from "./world.js";
@@ -96,7 +96,7 @@ export class ToolRegistry {
       // the operative field only in a case with an operation (docs/PROCEDURE.md §7)
       if ((tool.name === "observe_field" || tool.name === "operate") && filter.caseDef && !filter.caseDef.procedure) continue;
       // new investigations only in a case with test profiles (docs/STUDIES.md)
-      if ((tool.name === "order_study" || tool.name === "read_study") && filter.caseDef && !(filter.caseDef.studies ?? []).length) continue;
+      if ((tool.name === "order_study" || tool.name === "read_study" || tool.name === "list_studies") && filter.caseDef && !(filter.caseDef.studies ?? []).length) continue;
       out.push(tool);
     }
     return out;

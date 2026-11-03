@@ -124,11 +124,23 @@ After every learner act and every demonstration step (like the care team), the s
    the engine takes the snapshot). A walk that fails (a locked door, no route) blocks the order with the reason —
    no specimen, no result; a blocked order tries again quietly after each act and resumes once it clears, the same
    order, one accession.
-4. **Report**, once due: the **reporting agent** writes the findings and impression from the observations. A model
-   writer (`SessionStudies.writer`) may word it; `validateReport` checks every number against an observation's value
-   or interval, every side named against an observation's side, and refuses findings the observations do not make. A
-   writer that fails, times out (`writerTimeoutMs`) or does not validate is replaced by the deterministic template
-   (`templateReport`) — never an invented report. The release records the generator.
+4. **Report**, once due: the **reporting agent** writes the narrative; it never owns the values. The pipeline is
+   clinical engine → structured observations → deterministic structured report (`templateReport`) → a model's
+   narrative (`SessionStudies.writer`, optional) → **semantic validation** (`validateReport`) → release:
+   - a writer returns `bindings` — the phrase stating each observation, in each language — and `supportedBy`, the
+     observations the impression rests on;
+   - every number in a bound phrase must be that observation's own value or interval (a heart rate of 78 and a PR
+     interval of 169 written as 169 and 78 are refused, though both numbers occur), every number of the findings
+     must lie in a bound phrase, every number of the impression must belong to an observation it rests on, and each
+     of those must be a real observation; a side named must be a side an observation shows; no finding the
+     observations do not make;
+   - a writer that fails, times out (`writerTimeoutMs`) or does not validate is replaced by the template — never an
+     invented report. The template passes the same check (its phrases are bound).
+   The engine refuses a release whose `supportedBy` names an observation the acquisition does not have, and records
+   the report's **provenance**, machine-readable: `{kind: "simulated-investigation", source: "case-teaching-profile",
+   profile, profileVersion, observations, generator}`; the report's text says "Generated within the training
+   environment; not present in the original source report." A front-end plugs a writer in with the session options
+   `reportWriter` and `reportWriterTimeoutMs`.
 5. **Review**: the order's reviewer (Case 126: the anaesthetist) reviews the report in their own name
    (`study review`) and says so in their voice ("I've reviewed the simulated 12-lead ECG: …").
 

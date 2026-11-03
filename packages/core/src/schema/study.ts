@@ -170,6 +170,10 @@ export interface StudyReport {
   generator: string;
   at: number;
   seq: number;
+  /** The observations the impression rests on (each one of this accession's). */
+  supportedBy?: string[];
+  /** Where it comes from, machine-readable: a simulated investigation of the case's teaching profile — never the source's. */
+  provenance: { kind: "simulated-investigation"; source: "case-teaching-profile"; profile: string; profileVersion: string; observations: string[]; generator: string };
 }
 
 /** The encounter's studies. */
@@ -204,7 +208,7 @@ export const StudyOpSchema = z.discriminatedUnion("op", [
   /** The acquisition under way: the collector on the way, at the patient (confirmed by the world), starting. */
   z.object({ op: z.literal("progress"), order: z.string().min(1), stage: z.enum(["en-route", "at-patient", "acquisition-started"]) }).strict(),
   z.object({ op: z.literal("acquire"), order: z.string().min(1), collector: z.string().min(1).max(80), configuration: z.string().max(40).optional(), quality: z.enum(["good", "limited"]).default("good") }).strict(),
-  z.object({ op: z.literal("release"), accession: z.string().min(1), findings: Bilingual, impression: Bilingual, limitations: Bilingual.optional(), generator: z.string().min(1).max(80) }).strict(),
+  z.object({ op: z.literal("release"), accession: z.string().min(1), findings: Bilingual, impression: Bilingual, limitations: Bilingual.optional(), generator: z.string().min(1).max(80), supportedBy: z.array(z.string().min(1).max(80)).max(50).optional() }).strict(),
   z.object({ op: z.literal("review"), accession: z.string().min(1), by: z.string().min(1).max(80) }).strict(),
 ]);
 export type StudyOp = z.infer<typeof StudyOpSchema>;

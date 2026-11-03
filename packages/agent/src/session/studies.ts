@@ -26,12 +26,19 @@ import { pickStaff } from "./delegation.js";
 
 type Bi = { en: string; "zh-CN": string };
 
-/** A report's words, from the observations. */
+/**
+ * A report's words, from the observations. A writer never owns the values: `bindings` says where each observation is
+ * stated (the phrase in each language), and `supportedBy` which observations the impression rests on — the validator
+ * checks every number against the observation it is bound to (a heart rate and a PR interval swapped are refused),
+ * not merely that it occurs somewhere.
+ */
 export interface ReportText {
   findings: Bi;
   impression: Bi;
   limitations: Bi;
   generator: string;
+  bindings?: { observation: string; en: string; "zh-CN": string }[];
+  supportedBy?: string[];
 }
 
 /** A writer of report text (a model): null when it has nothing; its text is validated before release. */
@@ -41,9 +48,12 @@ const sep = (L: "en" | "zh-CN") => (L === "zh-CN" ? "；" : "; ");
 const range = (o: StudyObservation) => (o.low != null && o.high != null ? ` (${o.low}–${o.high})` : "");
 const flagWord = (o: StudyObservation, L: "en" | "zh-CN") => (o.flag === "high" ? (L === "zh-CN" ? " 偏高" : " high") : o.flag === "low" ? (L === "zh-CN" ? " 偏低" : " low") : "");
 
-/** The deterministic report: every observation in words, the abnormal ones named in the impression. */
+/** How the template states one observation. */
+const phrase = (o: StudyObservation, L: "en" | "zh-CN") => (o.value != null ? `${o.label[L]} ${o.value} ${o.unit ?? ""}${range(o)}${flagWord(o, L)}`.replace(/\s+/gu, " ").trim() : `${o.label[L]}: ${o.text?.[L] ?? ""}`);
+
+/** The deterministic report: every observation in words (each bound to its observation), the abnormal ones named in the impression. */
 export function templateReport(profile: StudyProfile, a: StudyAccession): ReportText {
-  const text = (L: "en" | "zh-CN") => a.observations.map((o) => (o.value != null ? `${o.label[L]} ${o.value} ${o.unit ?? ""}${range(o)}${flagWord(o, L)}`.replace(/\s+/gu, " ").trim() : `${o.label[L]}: ${o.text?.[L] ?? ""}`)).join(sep(L));
+  const text = (L: "en" | "zh-CN") => a.observations.map((o) => phrase(o, L)).join(sep(L));
   const abnormal = a.observations.filter((o) => o.flag === "high" || o.flag === "low");
   const pattern = a.observations.filter((o) => o.id === "lead-i" || o.id === "progression" || o.id === "morphology");
   const imaging = profile.model.kind === "imaging" ? a.observations.filter((o) => o.id !== "technique") : [];
@@ -61,25 +71,58 @@ export function templateReport(profile: StudyProfile, a: StudyAccession): Report
     impression: { en: impression("en"), "zh-CN": impression("zh-CN") },
     limitations: { en: rt("en", "study.limitations"), "zh-CN": rt("zh-CN", "study.limitations") },
     generator: "template",
+    bindings: a.observations.map((o) => ({ observation: o.id, en: phrase(o, "en"), "zh-CN": phrase(o, "zh-CN") })),
+    supportedBy: [...abnormal, ...pattern, ...imaging].map((o) => o.id),
   };
 }
 
 /** Claims a report may make only when an observation makes them. */
 const UNSUPPORTED = /infarct|ischaem|ischem|st elevation|st-elevation|pneumon|effusion|fracture|malignan|tumou?r|fibrillation|flutter|heart block|梗死|缺血|肺炎|积液|骨折|肿瘤|房颤|房扑|传导阻滞/iu;
+const NUMBER = /\d+(?:\.\d+)?/gu;
+const nums = (x: string): string[] => x.match(NUMBER) ?? [];
 
 /**
- * What is wrong with a written report (empty: it may be released): every number is an observation's (its value or
- * interval); a side named is a side an observation shows; no finding the observations do not make.
+ * What is wrong with a written report (empty: it may be released) — a semantic check against the structured
+ * observations, never token overlap:
+ * - each `bindings` phrase states a real observation, appears in the findings, and every number in it is that
+ *   observation's own value or interval (a rate and a PR interval swapped are refused);
+ * - every number of the findings lies inside a bound phrase; every number of the impression is an observation's
+ *   it rests on (`supportedBy`), and each of those is a real observation;
+ * - a side named is a side an observation shows; no finding the observations do not make.
  */
 export function validateReport(a: StudyAccession, text: ReportText): string[] {
   const problems: string[] = [];
-  const allowed = new Set<string>();
-  const words = a.observations.map((o) => `${o.label.en} ${o.label["zh-CN"]} ${o.text?.en ?? ""} ${o.text?.["zh-CN"] ?? ""}`).join(" ");
-  for (const o of a.observations) for (const n of [o.value, o.low, o.high]) if (n != null) allowed.add(String(n));
-  for (const n of words.match(/\d+(?:\.\d+)?/gu) ?? []) allowed.add(n);
+  const obs = new Map(a.observations.map((o) => [o.id, o]));
+  const own = (o: StudyObservation) => new Set([o.value, o.low, o.high].filter((n): n is number => n != null).map(String));
+  const ownWords = (o: StudyObservation) => `${o.label.en} ${o.label["zh-CN"]} ${o.text?.en ?? ""} ${o.text?.["zh-CN"] ?? ""}`;
+  const words = a.observations.map(ownWords).join(" ");
+  const bindings = text.bindings ?? [];
+  for (const b of bindings) if (!obs.has(b.observation)) problems.push(`a binding to "${b.observation}", which is no observation of this study`);
+  const support = text.supportedBy ?? [];
+  for (const id of support) if (!obs.has(id)) problems.push(`the impression rests on "${id}", which is no observation of this study`);
   for (const L of ["en", "zh-CN"] as const) {
-    const all = `${text.findings[L]} ${text.impression[L]}`;
-    for (const n of all.match(/\d+(?:\.\d+)?/gu) ?? []) if (!allowed.has(n)) problems.push(`${L}: the number ${n} is not an observation`);
+    const findings = text.findings[L];
+    // each bound phrase: in the findings, its numbers its own observation's
+    const spans: [number, number][] = [];
+    for (const b of bindings) {
+      const o = obs.get(b.observation);
+      if (!o) continue;
+      const at = findings.indexOf(b[L]);
+      if (at < 0) problems.push(`${L}: the statement of "${b.observation}" is not in the findings`);
+      else spans.push([at, at + b[L].length]);
+      const allowed = new Set([...own(o), ...nums(ownWords(o))]);
+      for (const n of nums(b[L])) if (!allowed.has(n)) problems.push(`${L}: ${n} stated for "${b.observation}" is not its value (${o.value ?? "—"})`);
+      if (o.value != null && !nums(b[L]).includes(String(o.value))) problems.push(`${L}: the statement of "${b.observation}" does not give its value ${o.value}`);
+    }
+    // every number of the findings bound to an observation (the label words' own digits — "12-lead", "V1" — aside)
+    for (const m of findings.matchAll(NUMBER)) {
+      const i = m.index ?? 0;
+      if (!spans.some(([x, y]) => i >= x && i < y) && !nums(words).includes(m[0])) problems.push(`${L}: the number ${m[0]} is bound to no observation`);
+    }
+    // the impression's numbers: those of the observations it rests on
+    const supported = new Set(support.flatMap((id) => (obs.get(id) ? [...own(obs.get(id)!), ...nums(ownWords(obs.get(id)!))] : [])));
+    for (const n of nums(text.impression[L])) if (!supported.has(n)) problems.push(`${L}: the impression's ${n} rests on no observation it names`);
+    const all = `${findings} ${text.impression[L]}`;
     const sides = new Set(a.observations.flatMap((o) => (o.side ? [o.side] : [])));
     const says = (re: RegExp) => re.test(all) && !re.test(words);
     if (says(/\bleft\b|左/iu) && !sides.has("left")) problems.push(`${L}: a left side no observation shows`);
@@ -298,7 +341,7 @@ export class SessionStudies {
       }
     }
     text ??= templateReport(profile, a);
-    this.dispatch({ type: "study", study: { op: "release", accession: a.id, findings: text.findings, impression: text.impression, limitations: text.limitations, generator: text.generator }, by: "system" }, id);
+    this.dispatch({ type: "study", study: { op: "release", accession: a.id, findings: text.findings, impression: text.impression, limitations: text.limitations, generator: text.generator, ...(text.supportedBy ? { supportedBy: text.supportedBy } : {}) }, by: "system" }, id);
   }
 
   /** The reviewer reviews the released report in their own name, and says so. */

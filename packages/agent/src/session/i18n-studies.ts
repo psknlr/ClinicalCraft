@@ -39,7 +39,7 @@ export const STUDIES_EN = {
   "study.status.acquired": "{name} ({accession}): acquired by {who} at {at}; the report is due at {due}.",
   "study.acquired": "{who} recorded the {name} ({accession}).",
   "study.released": "{label} — {name} ({accession}) reported.",
-  "study.report": "{label} · {name} · {accession}\nAcquired {at} by {who}{config} · reported {released} ({generator})\nFindings: {findings}\nImpression: {impression}\nLimitations: {limitations}",
+  "study.report": "{label} · {name} · {accession}\nGenerated within the training environment; not present in the original source report.\nAcquired {at} by {who}{config} · reported {released} ({generator})\nFindings: {findings}\nImpression: {impression}\nLimitations: {limitations}",
   "study.reviewed": "{who} reviewed the {name} ({accession}): {impression}",
   "study.reviewLine": "I've reviewed the simulated {name}: {impression}",
   "study.limitations": "Simulated from the case's teaching profile, not the patient's record; values are labelled simulated.",
@@ -51,6 +51,8 @@ export const STUDIES_EN = {
   "study.handEntry": "A study is acquired, reported and reviewed by the hospital, not entered by hand: order it (order_study) and read it (read_study).",
   "study.line": "{name} ({id}): {status}",
   "study.header": "New investigations (simulated):",
+  "study.instances": "{name}: {n} orders, each on its own:",
+  "study.instancesHint": "Read one with read_study and its accession (e.g. ecg-12lead-1) or its order (e.g. ord-2).",
   "sum.order_study": "Order a new investigation: {name}",
 } as const;
 
@@ -88,7 +90,7 @@ export const STUDIES_ZH: Record<keyof typeof STUDIES_EN, string> = {
   "study.status.acquired": "{name}（{accession}）：{who}于 {at} 完成采集；报告预计 {due}。",
   "study.acquired": "{who}完成了{name}（{accession}）。",
   "study.released": "{label}——{name}（{accession}）已出报告。",
-  "study.report": "{label} · {name} · {accession}\n{at} 由{who}采集{config} · {released} 出报告（{generator}）\n所见：{findings}\n印象：{impression}\n局限：{limitations}",
+  "study.report": "{label} · {name} · {accession}\n在培训环境中生成；原始病例报告中没有这份检查。\n{at} 由{who}采集{config} · {released} 出报告（{generator}）\n所见：{findings}\n印象：{impression}\n局限：{limitations}",
   "study.reviewed": "{who}已审阅{name}（{accession}）：{impression}",
   "study.reviewLine": "我看过这份模拟{name}了：{impression}",
   "study.limitations": "根据病例的教学配置模拟生成，并非患者本人的记录；数值均标为模拟。",
@@ -100,5 +102,7 @@ export const STUDIES_ZH: Record<keyof typeof STUDIES_EN, string> = {
   "study.handEntry": "检查由医院完成采集、出报告和审阅，不能手工录入：请开具（order_study）并查看（read_study）。",
   "study.line": "{name}（{id}）：{status}",
   "study.header": "新开检查（模拟）：",
+  "study.instances": "{name}：共 {n} 次开具，逐次列出：",
+  "study.instancesHint": "用 read_study 加检查号（如 ecg-12lead-1）或开单号（如 ord-2）查看其中一次。",
   "sum.order_study": "开具新检查：{name}",
 };

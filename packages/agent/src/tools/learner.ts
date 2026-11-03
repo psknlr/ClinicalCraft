@@ -57,6 +57,7 @@ export const LEARNER_CLINICAL_TOOLS = [
   "retrieve_report",
   "order_study",
   "read_study",
+  "list_studies",
 ] as const;
 
 /** Every tool a learner (and a skill or delegated step) may call, in a stable order. */

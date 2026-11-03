@@ -170,8 +170,13 @@ export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): Stu
       const a = r.accessions.find((x) => x.id === op.accession);
       if (!a) return { ok: false, code: "requirements-unmet", message: `no acquisition "${op.accession}": a report is released only from an acquired study` };
       if (c.clock.mode === "simulated" && s.clock + 1e-9 < a.dueAt) return { ok: false, code: "not-ready", message: `"${a.id}" is not due until minute ${a.dueAt}` };
+      // what the impression rests on must be this acquisition's observations (a report never adds a finding)
+      const ids = new Set(a.observations.map((o) => o.id));
+      const stray = (op.supportedBy ?? []).filter((id) => !ids.has(id));
+      if (stray.length) return { ok: false, code: "invalid", message: `"${a.id}" has no observation ${stray.join(", ")}: a report rests only on what was acquired` };
       const revision = r.reports.filter((x) => x.accession === a.id).length + 1;
-      r.reports.push({ accession: a.id, revision, findings: op.findings, impression: op.impression, ...(op.limitations ? { limitations: op.limitations } : {}), generator: op.generator, at: s.clock, seq: s.seq + 1 });
+      const provenance = { kind: "simulated-investigation" as const, source: "case-teaching-profile" as const, profile: a.code, profileVersion: a.profileVersion, observations: a.observations.map((o) => o.id), generator: op.generator };
+      r.reports.push({ accession: a.id, revision, findings: op.findings, impression: op.impression, ...(op.limitations ? { limitations: op.limitations } : {}), generator: op.generator, at: s.clock, seq: s.seq + 1, ...(op.supportedBy ? { supportedBy: [...op.supportedBy] } : {}), provenance });
       const ro = order(a.order);
       if (ro) stage(ro, "reported");
       return { ok: true, record: r, changed: true, id: a.id };

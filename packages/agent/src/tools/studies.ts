@@ -101,22 +101,19 @@ const orderStudy: ToolDefinition<ToolArgs> = {
   },
 };
 
-/** A study's status or released report, in words. */
-export function studyText(c: CaseDefinition, s: SessionState, code: string, L: string, facility?: FacilityDefinition | null): string | null {
+/** The status of one order, or the released report of its latest accession, in words (null: no such order). */
+export function orderText(c: CaseDefinition, s: SessionState, orderId: string, L: string, facility?: FacilityDefinition | null): string | null {
   const r = s.studies;
+  const o = r?.orders.find((x) => x.id === orderId);
+  const p = o ? studyProfile(c, o.code) : undefined;
+  if (!r || !o || !p) return null;
   const person = (id: string) => {
     const staff = facility?.staff.find((x) => x.id === id);
     return staff ? t(staff.name, L) : id;
   };
-  const p = studyProfile(c, code);
-  if (!r || !p) return null;
-  const orders = r.orders.filter((o) => o.code === code);
-  if (!orders.length) return null;
   const name = t(p.name, L);
-  const accessions = r.accessions.filter((a) => a.code === code);
-  const a = accessions.at(-1);
+  const a = r.accessions.filter((x) => x.order === o.id).at(-1);
   if (!a) {
-    const o = orders.at(-1)!;
     if (o.waiting) return rt(L, "study.status.waiting", { name, order: o.id, reason: o.waiting.reason });
     const who = o.assignee ? person(o.assignee) : "";
     if (o.stage === "assigned") return rt(L, "study.status.assigned", { name, order: o.id, who });
@@ -144,26 +141,85 @@ export function studyText(c: CaseDefinition, s: SessionState, code: string, L: s
   return reviewed.length ? `${text}\n${rt(L, "study.reviewed", { who: reviewed.join(", "), name, accession: a.id, impression: report.impression[lang] })}` : text;
 }
 
+/** One line per order of a study: its order, accession, time and where it stands — every instance apart. */
+function instanceLines(c: CaseDefinition, s: SessionState, code: string, L: string, facility?: FacilityDefinition | null): string[] {
+  return (s.studies?.orders ?? []).filter((o) => o.code === code).map((o) => `  ${o.id} · ${clockTime(c, o.at, L)} · ${(orderText(c, s, o.id, L, facility) ?? "").split("\n")[0]}`);
+}
+
+/**
+ * A study's status or released report, in words: one order — its text; several — each instance on its own line (a
+ * reviewed first ECG never hides a second one waiting), and how to read one.
+ */
+export function studyText(c: CaseDefinition, s: SessionState, code: string, L: string, facility?: FacilityDefinition | null): string | null {
+  const p = studyProfile(c, code);
+  const orders = (s.studies?.orders ?? []).filter((o) => o.code === code);
+  if (!p || !orders.length) return null;
+  if (orders.length === 1) return orderText(c, s, orders[0]!.id, L, facility);
+  return [rt(L, "study.instances", { name: t(p.name, L), n: orders.length }), ...instanceLines(c, s, code, L, facility), rt(L, "study.instancesHint")].join("\n");
+}
+
 const readStudy: ToolDefinition<ToolArgs> = {
   name: "read_study",
-  description: "Read a new investigation you ordered in this encounter (order_study): its status, or its released report — labelled a simulated investigation.",
+  description:
+    "Read a new investigation you ordered in this encounter (order_study): one instance by accession (\"ecg-12lead-1\") or order (\"ord-2\"), or a study by code or name — with several orders of it, each instance is listed apart. The report is labelled a simulated investigation.",
   inputSchema: {
     type: "object",
-    properties: { code: { type: "string" }, query: { type: "string", maxLength: 200 } },
+    properties: { accession: { type: "string", maxLength: 80 }, order: { type: "string", maxLength: 80 }, code: { type: "string" }, query: { type: "string", maxLength: 200 } },
     additionalProperties: false,
   },
   readOnly: true,
   sideEffect: "none",
   scope: "workup",
   risk: () => "none",
-  summarize: (args) => strArg(args, "code") || strArg(args, "query"),
+  summarize: (args) => strArg(args, "accession") || strArg(args, "order") || strArg(args, "code") || strArg(args, "query"),
   async run(args, ctx) {
     const L = ctx.locale;
     const c = ctx.caseDef;
+    const s = ctx.state();
+    // one instance, by its accession or its order
+    const accession = strArg(args, "accession");
+    const orderId = strArg(args, "order") || (accession ? (s.studies?.orders.find((o) => o.accessions.includes(accession))?.id ?? "") : "");
+    if (accession || strArg(args, "order")) {
+      const text = orderId ? orderText(c, s, orderId, L, ctx.facility) : null;
+      const o = s.studies?.orders.find((x) => x.id === orderId);
+      // an accession reads that accession's report, not the order's latest
+      if (text && o && accession && o.accessions.at(-1) !== accession) return { ok: true, output: accessionText(c, s, accession, L, ctx.facility) ?? text, data: { order: o } };
+      return text && o ? { ok: true, output: text, data: { order: o } } : { ok: false, output: rt(L, "study.read.none", { query: accession || orderId }) };
+    }
     const query = strArg(args, "code") || strArg(args, "query");
     const p = studyProfile(c, strArg(args, "code")) ?? resolveStudy(c.studies ?? [], query);
-    const text = p ? studyText(c, ctx.state(), p.code, L, ctx.facility) : null;
-    return text ? { ok: true, output: text, data: { studies: ctx.state().studies?.orders.filter((o) => o.code === p!.code) ?? [] } } : { ok: false, output: rt(L, "study.read.none", { query }) };
+    const text = p ? studyText(c, s, p.code, L, ctx.facility) : null;
+    return text ? { ok: true, output: text, data: { studies: s.studies?.orders.filter((o) => o.code === p!.code) ?? [] } } : { ok: false, output: rt(L, "study.read.none", { query }) };
+  },
+};
+
+/** The released report of one accession (an earlier one of an order), in words. */
+function accessionText(c: CaseDefinition, s: SessionState, accession: string, L: string, facility?: FacilityDefinition | null): string | null {
+  const a = s.studies?.accessions.find((x) => x.id === accession);
+  if (!a) return null;
+  // the order's text as if this were its latest accession
+  const only: SessionState = { ...s, studies: { ...s.studies!, accessions: s.studies!.accessions.filter((x) => x.order !== a.order || x.id === a.id) } };
+  return orderText(c, only, a.order, L, facility);
+}
+
+const listStudies: ToolDefinition<ToolArgs> = {
+  name: "list_studies",
+  description: "List the new investigations ordered in this encounter, every order apart (order, accession, time, status) — all of them, or one study by code or name.",
+  inputSchema: { type: "object", properties: { code: { type: "string" }, query: { type: "string", maxLength: 200 } }, additionalProperties: false },
+  readOnly: true,
+  sideEffect: "none",
+  scope: "workup",
+  risk: () => "none",
+  summarize: (args) => strArg(args, "code") || strArg(args, "query") || "*",
+  async run(args, ctx) {
+    const L = ctx.locale;
+    const c = ctx.caseDef;
+    const s = ctx.state();
+    const query = strArg(args, "code") || strArg(args, "query");
+    const p = query ? (studyProfile(c, strArg(args, "code")) ?? resolveStudy(c.studies ?? [], query)) : null;
+    const codes = p ? [p.code] : [...new Set((s.studies?.orders ?? []).map((o) => o.code))];
+    const lines = codes.flatMap((code) => [t(studyProfile(c, code)!.name, L), ...instanceLines(c, s, code, L, ctx.facility)]);
+    return lines.length ? { ok: true, output: [rt(L, "study.header"), ...lines].join("\n"), data: { orders: (s.studies?.orders ?? []).filter((o) => codes.includes(o.code)) } } : { ok: false, output: rt(L, "study.read.none", { query: query || "*" }) };
   },
 };
 
@@ -218,12 +274,12 @@ const retrieveReport: ToolDefinition<ToolArgs> = {
 
 /** The investigation tools of a case with test profiles (registered always; hidden without profiles). */
 export function studyTools(): ToolDefinition<ToolArgs>[] {
-  return [retrieveReport, orderStudy, readStudy];
+  return [retrieveReport, orderStudy, readStudy, listStudies];
 }
 
-/** The status lines of the encounter's new investigations (`case_status`). */
+/** The status lines of the encounter's new investigations (`case_status`): every order apart. */
 export function studyLines(c: CaseDefinition, s: SessionState, L: string, facility?: FacilityDefinition | null): string[] {
   const codes = [...new Set((s.studies?.orders ?? []).map((o) => o.code))];
   if (!codes.length) return [];
-  return [rt(L, "study.header"), ...codes.map((code) => `  ${(studyText(c, s, code, L, facility) ?? "").split("\n")[0]}`)];
+  return [rt(L, "study.header"), ...codes.flatMap((code) => instanceLines(c, s, code, L, facility))];
 }
