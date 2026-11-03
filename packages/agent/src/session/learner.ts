@@ -219,7 +219,13 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "action.flagOwned", { flag: requested.flag }) }), code: "permission_denied" });
       return null;
     }
-    let action = requested;
+    // the count is a record of what is in the room (docs/TEAM.md §4.3): written from the world, never typed in —
+    // whatever `by` the caller claims
+    if (requested.type === "count") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "count.handEntry") }), code: "permission_denied" });
+      return null;
+    }
+    let action: ClinicalAction = requested;
     const toolName = actionToolName(action);
     const tool = toolName ? k.registry.get(toolName) : undefined;
     let args = tool ? actionToolArgs(k.caseDef, action, L) : null;

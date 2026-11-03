@@ -41,6 +41,7 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
     case "hint":
     case "flag":
     case "note":
+    case "count":
       return {};
     default: {
       const never: never = action;
@@ -126,6 +127,7 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
     case "hint":
     case "flag":
     case "note":
+    case "count":
       return { ok: true, action };
     default: {
       const never: never = action;

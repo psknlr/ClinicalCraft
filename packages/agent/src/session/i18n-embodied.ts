@@ -9,6 +9,7 @@
 export const EMBODIED_EN = {
   // session / configuration
   "embodied.requiresFacility": "In-world mode needs a facility (a world to act in); this session has none.",
+  "board.unbound": "Not recorded: the patient is no longer in the room of {board}, so it records nothing of them (checked again before the record was written).",
   "embodied.noSlot": "{facility} has no place for this case (its setting: {setting}): an in-world encounter needs a bed or spot for the patient there. Choose another facility, or play the case in clinical mode.",
   "embodied.notEmbodied": "This session is in clinical mode (embodiment: clinical): world actions need in-world mode.",
   "embodied.fixed": "the mode (in-world or clinical; setting embodiment) is fixed for an encounter (this one: embodiment {mode})",
@@ -254,6 +255,7 @@ export type EmbodiedKey = keyof typeof EMBODIED_EN;
 
 export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "embodied.requiresFacility": "实景模式需要一个场馆（可以行动的世界）；本会话没有场馆。",
+  "board.unbound": "未记录：患者已不在{board}所在的房间，它不记录这位患者的任何内容（写入病历前再次核对）。",
   "embodied.noSlot": "{facility}中没有适合本病例的位置（病例场景：{setting}）：实景接诊需要在那里为患者安排床位或地点。请选择其他场馆，或以临床模式进行本病例。",
   "embodied.notEmbodied": "本会话为临床模式（embodiment: clinical）：世界动作需要实景模式。",
   "embodied.fixed": "接诊模式（实景或临床，设置项 embodiment）在本次接诊中固定不变（本次接诊：embodiment {mode}）",

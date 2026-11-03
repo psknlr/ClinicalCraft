@@ -313,6 +313,7 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "hint":
     case "flag":
     case "note":
+    case "count":
       return null;
     default: {
       const never: never = action;
@@ -354,6 +355,7 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "note":
     case "hold":
     case "release-hold":
+    case "count":
       return { kind: "action", action, narration: null };
     default: {
       const never: never = action;
@@ -440,6 +442,8 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
       return state.notes.some((n) => n.text === a.text);
     case "operate":
       return (state.procedure?.counters.steps ?? 0) >= (step.occurrence ?? 1);
+    case "count":
+      return (state.count?.entries.filter((e) => e.op === a.count.op).length ?? 0) >= (step.occurrence ?? 1);
     default: {
       const never: never = a;
       return never;

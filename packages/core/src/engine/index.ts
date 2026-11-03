@@ -88,6 +88,9 @@ export {
 // assessment
 export { assess, countCriticalAlarms } from "./assessment.js";
 
+// the surgical count (docs/TEAM.md §4.3)
+export { applyCount, closureOnOpenCount, compareCount, countLedger, countOpenItems, countSettled, countStatus, countSummary, evaluateCount, type CountLedgerView, type CountReport, type CountResult } from "./count.js";
+
 // facility helpers
 export {
   mergeCatalogs,

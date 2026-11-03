@@ -61,13 +61,6 @@ export const TeamScenarioSchema = z
     /** Colleagues outside the room the team may call on when a member is unavailable (staff id → duties). */
     relief: z.array(TeamMemberSchema).default([]),
     /**
-     * Items not where the room keeps them: put beside another placement (or `patient`) at the start — another table
-     * in the room, or a placement elsewhere in the hospital (then the team will not find it in the room).
-     * `concealed`: out of everyone's sight where it lies until someone searches within reach (a swab dropped under
-     * the Mayo stand); `inside`: concealed in what it is beside, found only by searching that (a swab in the wound:
-     * beside `patient`).
-     */
-    /**
      * What should come of it (the team benchmark's ground truth; never shown to the team): `delivered` — every need
      * ends with the person holding the item, verified (false: it ends escalated, with the reason); `count` — the
      * count's outcome.
@@ -79,6 +72,13 @@ export const TeamScenarioSchema = z
       })
       .strict()
       .optional(),
+    /**
+     * Items not where the room keeps them: put beside another placement (or `patient`) at the start — another table
+     * in the room, or a placement elsewhere in the hospital (then the team will not find it in the room).
+     * `concealed`: out of everyone's sight where it lies until someone searches within reach (a swab dropped under
+     * the Mayo stand); `inside`: concealed in what it is beside, found only by searching that (a swab in the wound:
+     * beside `patient`). Items are moved after the count's baseline is taken (the expected items by identity).
+     */
     items: z
       .array(
         z
@@ -87,6 +87,12 @@ export const TeamScenarioSchema = z
             beside: z.string().min(1),
             concealed: z.boolean().optional(),
             inside: z.boolean().optional(),
+            /**
+             * A documented transfer off the field (a counted item sent with the specimen): recorded in the count by
+             * `by` (default: the member who circulates) when the scenario is set up — the positive control: an item
+             * that left legitimately is neither missing nor a discrepancy.
+             */
+            transfer: z.object({ to: LocalizedTextSchema, reason: LocalizedTextSchema, by: MemberRef.optional() }).strict().optional(),
           })
           .strict(),
       )
@@ -113,6 +119,12 @@ export const TeamCountSchema = z
     when: ConditionSchema,
     /** Placements the circulating nurse searches, in order (the floor round them, within reach). */
     searchPlaces: z.array(z.string().min(1)).min(1).max(12),
+    /**
+     * Closure while the count is not settled (an item missing or not in the count, no clear scan after an
+     * escalation): `record` — allowed, and recorded as an unsafe progression for the debrief (it is never erased);
+     * `refuse` — refused until the count is settled.
+     */
+    closure: z.enum(["record", "refuse"]).default("record"),
   })
   .strict();
 export type TeamCount = z.infer<typeof TeamCountSchema>;

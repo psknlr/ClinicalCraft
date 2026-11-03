@@ -452,6 +452,9 @@ export class AgentTurns {
           now: k.now,
         }),
       cursor: k.offlineCursor,
+      afterStep: async (signal) => {
+        if (k.team.available()) await k.team.afterLearner(signal ?? new AbortController().signal);
+      },
       ...(k.embodied && embodied
         ? {
             offlineTurn: (turnId: string, maxSteps: number, signal?: AbortSignal) => {

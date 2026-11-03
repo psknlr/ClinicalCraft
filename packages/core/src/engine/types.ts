@@ -2,6 +2,7 @@
  * Engine-level types shared by the validation, simulation, matching and
  * assessment modules (see docs/ARCHITECTURE.md §3).
  */
+import type { CountReport } from "./count.js";
 import type { z } from "zod";
 import type { Decision } from "../schema/case.js";
 import type { VitalKey, Vitals } from "../schema/common.js";
@@ -197,6 +198,12 @@ export interface AssessmentReport {
     pauses: { view: string; at: number; achieved: boolean; claimsMatchField: boolean }[];
     counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number };
   };
+  /**
+   * The surgical count (cases whose team keeps one; docs/TEAM.md §4.3), by item identity: its status, the items
+   * still missing or not in the count, documented transfers and additions, escalations, recoveries and scans, and
+   * every unsafe progression (closure on an open count) — the debrief's record, never erased.
+   */
+  count?: CountReport;
   /**
    * `met: null` = transcript-judged item (needs the examiner agent). `scored: false` (present only then): the
    * item's `scoredWhen` does not hold, so it counts neither as earned nor as possible. `critical: true`

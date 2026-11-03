@@ -59,6 +59,8 @@ export class SessionTeam {
       },
       emit: (msg) => k.emit(k.currentSubmission, msg),
       holds: (cond) => evaluate(k.caseDef, k.state, cond),
+      count: () => k.embodied?.count ?? null,
+      record: () => k.state.count,
       say: (speaker, text) => {
         k.speakLine(k.currentSubmission, { agent: "nurse", speaker, text, grounded: [] });
         k.conversations.addDialogue({ who: "nurse", speaker, text });
