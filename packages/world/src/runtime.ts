@@ -16,7 +16,7 @@ import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
 import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
 import { buildCollisionModel } from "./collision.js";
-import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
 import { worldMessage } from "./i18n.js";
 import { levelInfos } from "./levels.js";
 import { WorldLocator } from "./locate.js";
@@ -43,6 +43,8 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
   const collision = buildCollisionModel(facility, catalogs, { patients: slot ? [{ slotId: slot.id, posture: bindingPosture(binding, facility) }] : [] });
   const registry = buildRegistry(facility, catalogs, binding, collision);
   const store = new WorldStateStore({ facility, registry, newId: options.newId, spawn: options.spawn, snapshot: options.snapshot });
+  /** The transport the snapshot was taken in the middle of, until the session takes it (`restoredJourney`). */
+  let restored: WorldJourney | null = options.snapshot?.journey ? structuredClone(options.snapshot.journey) : null;
   const rotOf = (id: string) => registry.entity(id)?.rot ?? 0;
   // the patient's body (EMBODIED §8): where it is now, its posture (the place's, else clinical state's), its collider
   const staticBody = slot ? collision.colliders.find((c) => c.id === `patient:${slot.id}`) : undefined;
@@ -210,6 +212,12 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     setDoor: (id, state) => actions.setDoor(id, state),
 
     subscribe: (listener) => store.subscribe(listener),
-    snapshot: () => store.snapshot(),
+    // a transport walking now goes into the snapshot with its destination (a resumed session carries it out)
+    snapshot: () => (actions.journey ? { ...store.snapshot(), journey: structuredClone(actions.journey) } : store.snapshot()),
+    restoredJourney: () => {
+      const j = restored;
+      restored = null;
+      return j;
+    },
   };
 }

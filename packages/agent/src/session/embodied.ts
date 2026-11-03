@@ -47,6 +47,7 @@ import {
   type WorldActionRequest,
   type WorldActionResult,
   type WorldEvent,
+  type WorldJourney,
   type WorldRuntime,
   type WorldStateSnapshot,
 } from "@clinicalcraft/world";
@@ -66,6 +67,7 @@ import { runDelegation, type DelegationResult } from "./delegation.js";
 import { heldBy, releaseHeld } from "./device-ops.js";
 import type { ClinicalCaller } from "./embodied-types.js";
 import { rt, type RuntimeKey } from "./i18n.js";
+import { procedureLabel } from "./i18n-procedure.js";
 import { nonVerbalReason } from "./nonverbal.js";
 import { anySignal } from "./signals.js";
 import { SessionTrace } from "./trace.js";
@@ -234,7 +236,24 @@ export class EmbodiedSession {
     this.worldLocale = host.locale();
     this.carry = carryOf(options.snapshot);
     this.inner = this.build(options.snapshot, this.worldLocale, true);
+    // a transport the saved world was in the middle of: carried out once the session has started (`resumeJourney`)
+    this.journey = this.inner.restoredJourney();
     this.facade = this.makeFacade();
+  }
+
+  /** The transport a restored snapshot was taken in the middle of, until `resumeJourney` carries it out. */
+  private journey: WorldJourney | null = null;
+
+  /**
+   * A resumed session: the saved world was taken while a body wheeled the patient (`WorldStateSnapshot.journey`). The
+   * same walker carries the journey out to the same destination — one transfer, its walk charged once (the walk
+   * interrupted by the save never committed or charged anything). Null: there was none.
+   */
+  async resumeJourney(signal: AbortSignal): Promise<WorldActionResult | null> {
+    const j = this.journey;
+    this.journey = null;
+    if (!j || !this.inner.actor(j.by)) return null;
+    return this.act({ agent: "learner", submission: "resume", signal }, { actionId: `${j.actionId}-resumed`, actorId: j.by, operation: "transport_patient", targetId: j.patient, parameters: j.parameters, onBehalfOf: PRIMARY_ACTOR }, signal);
   }
 
   /* ---------------------------------------------------------------- */
@@ -335,6 +354,7 @@ export class EmbodiedSession {
       recordBound: (id) => w().recordBound(id),
       roomOf: (id) => w().roomOf(id),
       atBedside: (id) => w().atBedside(id),
+      restoredJourney: () => w().restoredJourney(),
       bedsideProviders: (capability) => w().bedsideProviders(capability),
       patientPlace: () => w().patientPlace(),
       patientMonitor: () => w().patientMonitor(),
@@ -1010,6 +1030,9 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   }
   if (r.message === "unknown-intervention") return rt(locale, "delegate.unknownIntervention", { asked: r.asked ?? "" });
   const lines = [rt(locale, "delegate.result", { staff, task, status: rt(locale, `delegate.status.${r.status}` as RuntimeKey), steps: r.steps.length, seconds: Math.round(r.elapsedSeconds) })];
+  // traction let go (before the task, or as it) and an instrument taken: what the operator sees change on the screen
+  for (const g of r.letGo ?? []) lines.push(rt(locale, "assist.letGo", { who: staff, instrument: procedureLabel(locale, g.instrument), port: g.port, why: r.task === "release_traction" ? "" : rt(locale, "assist.letGo.task", { task }) }));
+  if (r.holding) lines.push(rt(locale, "assist.took", { who: staff, instrument: procedureLabel(locale, r.holding.instrument), port: r.holding.port }));
   if (r.delivered) {
     const room = r.delivered.room ? (world.entity(`room:${r.delivered.room}`) ? t(world.entity(`room:${r.delivered.room}`)!.name, locale) : r.delivered.room) : "—";
     lines.push(rt(locale, "delegate.delivered", { target: nameOf(world, r.delivered.entityId, locale), room, distance: r.delivered.distance.toFixed(1), x: r.delivered.x.toFixed(1), z: r.delivered.z.toFixed(1) }));

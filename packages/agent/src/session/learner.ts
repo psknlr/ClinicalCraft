@@ -247,8 +247,19 @@ export class LearnerPath {
     }
     // the count is a record of what is in the room (docs/TEAM.md §4.3): written from the world, never typed in —
     // whatever `by` the caller claims
+    // a study is acquired, reported and reviewed by the hospital (docs/STUDIES.md): a learner orders it, nothing more
+    if (requested.type === "study" && requested.study.op !== "order") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "study.handEntry") }), code: "permission_denied" });
+      return null;
+    }
     if (requested.type === "count") {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "count.handEntry") }), code: "permission_denied" });
+      return null;
+    }
+    // a colleague's operative step is done with their body (delegate_task hold_traction / release_traction), never
+    // entered in their name
+    if (requested.type === "operate" && requested.actor) {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "assist.handEntry") }), code: "permission_denied" });
       return null;
     }
     // who holds or releases is the caller, never a name the caller supplies (docs/PROTOCOL.md §3.1): a learner who

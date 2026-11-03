@@ -229,6 +229,10 @@ export const BUILTIN_AGENTS: readonly AgentProfile[] = Object.freeze([
       // a case with an operation only (docs/PROCEDURE.md §7): the laparoscopic screen and one operative step at a time
       "observe_field",
       "operate",
+      // the chart's two commands for investigations (docs/STUDIES.md): the source's record, or a new simulated study
+      "retrieve_report",
+      "order_study",
+      "read_study",
       // embodied mode only (registered only in embodied sessions)
       "observe_world",
       "get_agent_state",

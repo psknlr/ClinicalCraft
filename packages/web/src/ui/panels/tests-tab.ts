@@ -12,6 +12,7 @@ import { ct, tr } from "../../i18n/index.js";
 import { h } from "../dom.js";
 import { evidenceGrid } from "./common.js";
 import { refusedCandidate, testButton, testVerdict } from "./orders.js";
+import { studiesSection } from "./studies-section.js";
 import { distanceNotice, onlyDistance } from "./verdicts.js";
 
 export function bedsideTests(app: App, game: Game): HTMLElement {
@@ -40,5 +41,8 @@ export function bedsideTests(app: App, game: Game): HTMLElement {
       ),
     );
   wrap.append(evidenceGrid(game, () => true, (o) => app.open("report", { investigationId: o.investigationId, phase: o.phase, back })));
+  // the chart's second command: a new, simulated investigation (docs/STUDIES.md)
+  const studies = studiesSection(app, game);
+  if (studies) wrap.append(studies);
   return wrap;
 }

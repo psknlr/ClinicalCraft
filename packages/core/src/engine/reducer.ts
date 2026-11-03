@@ -24,6 +24,7 @@ import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
 import { createProcedureState, operate, procedureFor } from "./procedure/index.js";
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
+import { applyStudy } from "./study.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -352,10 +353,11 @@ function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
   if (!def.phases.includes(ctx.s.phase)) return rejected("phase-locked", `the operation is not under way in phase "${ctx.s.phase}"`);
   const open = a.op.op === "close" ? closureOnOpenCount(ctx.c, ctx.s) : null;
   if (open?.policy === "refuse") return rejected("requirements-unmet", openCountMessage(open));
-  const step = operate(def, ctx.s.procedure ?? createProcedureState(), a.op, ctx.s.clock);
+  const step = operate(def, ctx.s.procedure ?? createProcedureState(), a.op, ctx.s.clock, a.actor);
   if (step.rejected) return rejected(step.rejected.code, step.rejected.message);
   ctx.s.procedure = step.state;
-  ctx.events.push({ type: "procedure.step", op: a.op.op, signals: step.signals });
+  const n = step.state.counters.steps;
+  ctx.events.push({ type: "procedure.step", op: a.op.op, signals: step.signals, id: `op-${n}`, step: n, seq: ctx.s.seq + 1, at: ctx.s.clock, ...(a.by ? { by: a.by } : {}), ...(a.actor ? { actor: a.actor } : {}), detail: structuredClone(a.op) });
   if (open && ctx.s.count) {
     ctx.s.count = { ...ctx.s.count, unsafe: [...ctx.s.count.unsafe, { what: "closure", status: open.status, missing: open.missing, unexpected: open.unexpected, at: ctx.s.clock, seq: ctx.s.seq + 1 }] };
     ctx.events.push({ type: "count.unsafe", what: "closure", status: open.status, missing: open.missing, unexpected: open.unexpected });
@@ -374,6 +376,17 @@ function countFigures(r: NonNullable<SessionState["count"]>, e: Extract<NonNulla
   const of = expected.filter((id) => !transferred.includes(id)).length;
   const missing = e.missing ?? [];
   return { stage: e.stage, accounted: of - missing.length, of, missing, unexpected: e.unexpected ?? [] };
+}
+
+/** A new investigation's order, acquisition, release or review (docs/STUDIES.md). A retried order is unchanged. */
+function onStudy(ctx: Ctx, a: Action<"study">): Outcome {
+  const r = applyStudy(ctx.c, ctx.s, a.study);
+  if (!r.ok) return rejected(r.code, r.message);
+  if (!r.changed) return { kind: "unchanged" };
+  ctx.s.studies = r.record;
+  const code = a.study.op === "order" ? a.study.code : (r.record.orders.find((o) => o.id === r.id || o.accessions.includes(r.id ?? ""))?.code ?? "");
+  ctx.events.push({ type: "study.recorded", op: a.study.op, code, id: r.id ?? "", ...(a.study.op === "wait" ? { reason: a.study.reason } : {}) });
+  return accepted();
 }
 
 /** An entry of the surgical count's record (docs/TEAM.md §4.3), by item identity. */
@@ -436,6 +449,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onReleaseHold(ctx, a);
     case "count":
       return onCount(ctx, a);
+    case "study":
+      return onStudy(ctx, a);
     case "finish":
       return onFinish(ctx);
   }

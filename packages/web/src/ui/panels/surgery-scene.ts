@@ -14,6 +14,9 @@ export const PULL_M: Record<"gentle" | "firm" | "excessive", number> = { gentle:
 /** Opacity of the tissue still over a region, by how far it is dissected. */
 export const TISSUE_OPACITY: Record<FieldView["regions"][number]["dissection"], number> = { untouched: 0.82, begun: 0.62, partly: 0.4, mostly: 0.18, cleared: 0 };
 
+/** How open a region's window is, by its exposure bin (the traction held now, PROCEDURE.md §3). */
+export const WINDOW_OPEN: Record<FieldView["regions"][number]["exposure"], number> = { none: 0, poor: 0.3, partial: 0.65, good: 1 };
+
 /** Thinnest tube drawn (m): a 1 mm artery stays visible at 15 cm. */
 const MIN_TUBE_RADIUS = 0.0012;
 
@@ -145,6 +148,16 @@ export function lapScene(def: ProcedureDefinition, state: ProcedureState, field:
       })
     : [];
 
+  // the window over each region being dissected: how far the traction held now keeps it open (not the dissection)
+  const windows: LapSceneSpec["windows"] =
+    live && field.specimen === "in-situ"
+      ? field.regions.flatMap((r) => {
+          const region = def.regions.find((x) => x.id === r.id);
+          if (!region || r.dissection === "untouched") return [];
+          return [{ id: region.id, centre: [...region.centre] as LapVec3, radius: region.radius, exposure: WINDOW_OPEN[r.exposure] }];
+        })
+      : [];
+
   const shafts: LapSceneSpec["shafts"] = live
     ? state.ports.flatMap((p) => {
         const site = sites.get(p.site);
@@ -161,6 +174,7 @@ export function lapScene(def: ProcedureDefinition, state: ProcedureState, field:
     organs,
     tubes,
     tissue,
+    windows,
     shafts,
     blood: !live ? "none" : f.has("field-obscured") ? "haze" : f.has("bleeding") || f.has("major-bleeding") ? "pool" : "none",
     bile: live && f.has("bile"),

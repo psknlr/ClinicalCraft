@@ -4,6 +4,7 @@
  */
 import { claimsMatchField } from "./procedure/claims.js";
 import { countSummary } from "./count.js";
+import { ENGINE_VERSION } from "./version.js";
 import { procedureFor } from "./procedure/variant.js";
 import type { CaseDefinition } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
@@ -11,8 +12,16 @@ import { evaluate, parseResultKey, resultFor } from "./conditions.js";
 import { patientAlarmsAt } from "./physiology.js";
 import { progress } from "./queries.js";
 import { creditedHistory } from "./twins.js";
+import { studyStatus } from "./study.js";
 import { unique } from "./text.js";
 import type { AssessmentReport } from "./types.js";
+
+/** Source-only or expanded (new investigations ordered), and how far each new investigation got (docs/STUDIES.md §7). */
+function studySummary(s: SessionState): Pick<AssessmentReport, "evidence" | "studies"> {
+  const codes = [...new Set((s.studies?.orders ?? []).map((o) => o.code))];
+  if (!codes.length) return { evidence: "source-only" };
+  return { evidence: "expanded", studies: codes.map((code) => ({ code, status: studyStatus(s, code)!, accessions: s.studies!.accessions.filter((a) => a.code === code).length })) };
+}
 
 /** `count` = distinct known ids in `done`; required items count as done when `credited` (default `done`) has them. */
 function coverage(items: { id: string; required: boolean }[], done: string[], credited: string[] = done) {
@@ -181,7 +190,11 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   const count = countSummary(s);
   return {
     caseId: c.id,
+    caseVersion: c.version,
+    engine: ENGINE_VERSION,
     completed: p.complete,
+    finished: s.finished,
+    ...studySummary(s),
     minutes: s.clock,
     hints: s.hints,
     objectives: p.objectives.map((o) => (o.done ? { id: o.id, done: true, at: o.doneAt } : { id: o.id, done: false })),

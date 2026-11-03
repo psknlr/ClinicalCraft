@@ -53,6 +53,7 @@ names. Only the words around them follow the glossary.
 | region `fibrosis` | — | **致密纤维化** / **dense fibrosis**; a frozen triangle: **“冰冻”三角** | what severe chronic inflammation does to the planes; the `dense-fibrosis` signal reads "组织致密，层次已无法分开" |
 | a duct or vessel handle `T1…` | — | **结构 T1…** / **structure T1…** | what the operator sees before identifying it; the anatomy's name appears only after imaging |
 | the web window that runs the operation (`surgery`) | — | **腹腔镜手术** / **Laparoscopic surgery** (HUD button 手术 / Surgery) | names what the learner does, not the engine part |
+| the laparoscopic picture kept beside the theatre (`scope-dock`) | — | **腹腔镜画面** / **Laparoscope**; its states 实时 / Live, 腹腔镜在体外 / Scope outside the patient, 已中转开腹 / Converted to open | the picture, not a window: it stays in view whatever window is open |
 | `portPlans[]` | — | **布孔方案** / **port plan** | the surgical term for where the trocars go |
 | work-up plan | "workup plan" (agent, CLI) | **work-up plan** | British spelling of the noun; the tool keeps its id `update_workup` |
 | operating room (case setting, room kind) | "Operating room" (web, CLI) | **operating theatre** | British usage, as the world and facilities already say; the id stays `operating-room` |
@@ -123,6 +124,12 @@ developer documents use.
 | treatment | treatment; give (formal: intervention) | 处置；给予 | `intervene`, `interventions[]` |
 | result, critical result | result, critical result | 结果、危急值 | `read_result`, `critical` |
 | record review | record review (an existing report read from the notes or the EHR) | 病历查阅（在病历或电子病历中调阅已有报告） | `investigations[].performedAt: "records"` |
+| retrieve an existing report | Retrieve an existing report | 调阅已有报告 | `retrieve_report` (the published case only; never orders) |
+| order a new investigation | Order a new investigation | 开具新检查 | `order_study`, `case.studies[]` test profiles ([STUDIES.md](STUDIES.md)) |
+| simulated investigation | Simulated investigation (a study done in this encounter, from the case's teaching profile) | 模拟检查（本次接诊中完成，依据病例的教学配置生成） | `SessionState.studies`, `read_study`; never shown as the patient's record |
+| published source record | Published source record | 原始病例记录 | `investigations[]` results |
+| historical material unavailable | Historical material unavailable (the published case has no such record) | 原始病例中无此资料 | a record result `available: false`, or none |
+| accession | accession (one acquisition of an ordered study: a tracing, a sample) | 检查号（一次采集：一份描记或一份标本） | `StudyAccession.id`, e.g. `ecg-12lead-1` |
 | cannot speak, cannot answer | "<name> cannot speak: <reason>" (approach), "<name> cannot answer: <reason>" (a question) — narrated | “<姓名>无法说话：<原因>”（走近时）、“<姓名>无法回答：<原因>”（提问时）——以旁白呈现 | `patient.nonVerbalWhen`, `nonVerbalReason`, rejection `cannot-answer` |
 | work-up plan | work-up plan | 诊疗计划 | `update_workup` |
 | bedside | bedside | 床旁 | the bedside rule (EMBODIED §6) |
@@ -146,6 +153,8 @@ developer documents use.
 | read-back (check-back) | read back; "A needle holder to the surgeon — confirm?" | 复述确认；“持针器递给术者——确认吗？” | message kinds `request` → `readback` → `confirm` (TeamSTEPPS check-back) | |
 | escalate | tell the surgeon why ("… hasn't arrived — …") | 上报（向术者说明原因） | message kind `escalate` | always with the reason |
 | relief colleague | relief colleague (called by phone) | 顶班同事（电话联系） | scenario `relief` | |
+| assistant (at the operating table); hold the traction; let go | assistant surgeon; "Please hold the grasper in port B."; the traction has gone: the window has closed | 助手；“请拉住 B 孔的抓钳。”；牵引已松开：术野窗口已闭合 | `delegate_task hold_traction` / `release_traction`, `operate {op: "hand-over"}` with `actor`, `PortState.holder`, signal `exposure-lost` | the assistant holds with their own hands: when they leave the table, the traction falls |
+| hand over the anaesthetic (relief) | "I'll hand over first."; "I've taken over the anaesthetic from …"; Anaesthesia handed over at 08:43: … | 麻醉交接；“我先交接。”；“我已从……手里接过麻醉管理。” | `team.cover`, duty `anaesthesia`, a `note` recording it (TEAM.md §5) | an anaesthetised patient is never left without an anaesthetist |
 | count; hold on closure | count (closing count); "please hold closure and check the wound"; recount | 清点（关闭前清点）；“请暂停关闭，检查术野”；复点 | `team.count`, `about.hold`, `about.recount`, `CountLedger`; the count record `SessionState.count` (`count` action) | an unresolved count ends with an X-ray before the patient leaves; the count is kept item by item (逐件), never as a bare number |
 | count discrepancy; not in the count; set aside | "Count incorrect — 4 of 5 swabs"; "1 not in the count"; "set aside off the field" | 清点不符；“不在清点内”；“移出手术野另放” | count statuses `discrepancy` / `unresolved` / `excluded` / `reconciled`; `missing`, `unexpected`; `transfer` | a swab from another room is not in this count: six of five is a discrepancy, not "correct" |
 | unsafe progression | "Closed while the count was not settled: recorded as an unsafe progression for the debrief" | 不安全推进（“在清点未相符时关闭：已记为不安全推进，供复盘”） | `CountRecord.unsafe`, `{ "count": { "unsafe": true } }` | recorded, never erased; not 违规 (a rule broken) — a step taken on an unsafe basis |

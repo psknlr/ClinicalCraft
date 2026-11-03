@@ -78,10 +78,22 @@ An instrument wider than its port does not pass.
 applies one step:
 
 ```
-plan-ports · insufflate · desufflate · insert · withdraw · retract · release · dissect · isolate ·
-identify · safety-pause · clip · divide · coagulate · suction · irrigate · image · inspect ·
+plan-ports · insufflate · desufflate · insert · withdraw · retract · release · hand-over · dissect ·
+isolate · identify · safety-pause · clip · divide · coagulate · suction · irrigate · image · inspect ·
 recognise · bag · extract · bailout · close
 ```
+
+**Who does a step.** The operator does every step, unless the `operate` action names an `actor` — a
+colleague's staff id. `hand-over {port, to?}` passes the instrument in a port, with the traction it
+holds, to a colleague (`to`), or takes it back (no `to`); it is done by the one who holds it or the one
+who takes it. While a colleague holds a port (`PortState.holder`), only they work it — `retract`,
+`release`, `withdraw`, `suction`, `irrigate` — and they do nothing else; the operator's step on that
+port is refused ("… holds the grasper in port B: ask them to hand it back first"). Withdrawn before
+the hand-over, there is nothing to hand over: the traction has already fallen. A step that lets
+traction go (release, withdraw, an exchange, a new retraction, conversion) and drops a region being
+dissected below half exposure carries the signal `exposure-lost`. In-world, a colleague takes a port
+with their own body (`delegate_task hold_traction`, EMBODIED §8): they walk to the table first, and
+when their body leaves the table the traction falls with their hands.
 
 A step that is **physically impossible** is rejected, with nothing changed. For example:
 
@@ -187,8 +199,21 @@ Bail-outs work as follows:
 
 - `call-help` changes nothing in the field.
 - `subtotal-*` ends the dissection.
-- `convert-open` ends the laparoscopy and controls the bleeding.
+- `convert-open` ends the laparoscopy and controls the bleeding. It clears what belonged to the
+  laparoscopy together: the pneumoperitoneum (pressure 0), every port's instrument and tip, and every
+  retraction. The theatre stays live; the scope feed ends (the web shows the scope outside the patient).
 - `abandon-refer` ends the laparoscopy.
+
+A bail-out already under way is refused (`invalid`, "already under way: nothing more was done") and
+records nothing: a duplicated request has no second effect and spends no time. Changing a committed
+subtotal technique (`subtotal-fenestrating` ↔ `subtotal-reconstituting`) needs an explicit revision,
+`bailout {strategy, revise: true}`: the earlier technique moves to `superseded` and stays in the record.
+
+Every accepted step is one `procedure.step` event with a stable identity: `id` (`op-<n>`), `step` (`n`,
+the field's own step count), `seq` (the session's action sequence), `at` (the clock), `by` (the actor)
+and `detail` (the operation as accepted). A front-end presents the steps in that order, one by one —
+each accepted clip on its own, even when a demonstration runs fast — and a rejected step changes
+nothing and is shown with its reason.
 
 ## 6. Conditions
 
@@ -250,6 +275,21 @@ calls: the approval gate asks in supervised modes. The web's **laparoscopic surg
 In in-world mode it also opens from equipment with the `surgery` capability (the operating table). Its
 picture and controls come from `observeField` (and `portReport` while choosing a plan), and every
 control submits `operate` through the app's action path.
+
+**The scope dock** (`packages/web/src/ui/scope-dock.ts`) keeps the laparoscopic picture beside the theatre
+from the moment a port plan is chosen, whatever window is open (it steps aside only while the surgery window
+shows the same picture full size): the world canvas is the theatre — people, equipment, hand-overs —, the dock
+is what the operator sees. It follows the session's record whoever acted (the learner's controls, a
+demonstration, a colleague at the table, an external agent). **One presentation queue**
+(`scope-presenter.ts`): the steps are shown one at a time in the record's order, each from its recorded
+`detail` replayed through the pure engine — the clips of an accelerated demonstration one by one — and a
+step with a signal stays longer; the last frame is the session's own field, and a first look (a reload) shows
+the field as it is without replaying the operation. A refused step is shown with the engine's reason and the
+field unchanged. The picture keeps the dissection done (`tissue`) apart from the window the traction holds
+open now (`windows`, from each region's exposure): let go, the tissue falls back over the region and the
+window narrows — said in words too ("Hepatocystic triangle: exposure none (dissected: partly done)") — while the cleared tissue stays
+cleared. With the scope out of the patient the dock says so; after a conversion to open the laparoscopic feed
+has ended and the theatre view goes on (the open field has no view of its own yet).
 
 It draws the procedure's shapes, and the case's `anatomy` model asset for the organ surfaces when the
 case lists one. The debrief adds an *Operation* section once the case is finished, and for a case with

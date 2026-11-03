@@ -49,6 +49,7 @@ import {
   unresolvedOutput,
   type ToolArgs,
 } from "./clinical-resolve.js";
+import { studyLines } from "./studies.js";
 import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay } from "./requirements.js";
 import { resolveConsultStaff } from "./consult-target.js";
 import type { StaffVoice } from "../session/staff-voice.js";
@@ -836,7 +837,7 @@ const updateWorkup: ToolDefinition<ToolArgs> = {
 };
 
 /** Learner-visible status: objectives, orders, decisions, phase, clock. */
-export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">): { text: string; data: unknown } {
+export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "state"> & Partial<Pick<ToolContext, "facility">>): { text: string; data: unknown } {
   const c = ctx.caseDef;
   const s = ctx.state();
   const L = ctx.locale;
@@ -862,7 +863,7 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
   }
   // what the current objective still needs (named, with the next action), standing holds, and the operation
   const visible = visiblePhases(c, s);
-  lines.push(...objectiveRequirementLines(c, s, L, visible), ...holdLines(c, s, L), ...operationLines(c, s, L, visible), ...countLines(c, s, L));
+  lines.push(...objectiveRequirementLines(c, s, L, visible), ...holdLines(c, s, L), ...operationLines(c, s, L, visible), ...countLines(c, s, L), ...studyLines(c, s, L, ctx.facility));
   const objective = currentObjective(c, s);
   return {
     text: lines.join("\n"),

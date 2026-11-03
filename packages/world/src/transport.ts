@@ -16,7 +16,7 @@
  */
 import { capabilityLabels } from "@clinicalcraft/core";
 import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
-import type { ActorState, BodyPosture, EntityId, PatientDestination, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, WorldActionRequest, WorldEvent } from "./contracts.js";
+import type { ActorState, BodyPosture, EntityId, PatientDestination, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, WorldActionRequest, WorldEvent, WorldJourney } from "./contracts.js";
 import { failed, type EffectsHost, type Outcome, type Walk } from "./effects.js";
 import { endEscortIfUnable } from "./escort.js";
 import { listText, metres, worldMessage } from "./i18n.js";
@@ -30,6 +30,8 @@ export interface TransportHost extends EffectsHost {
   patientStamp: { key: string; posture: BodyPosture | null; body: { level: string; area: Area } | null };
   /** The transport walking now (`PatientPlace.transit`), or null. */
   transit: NonNullable<PatientPlace["transit"]> | null;
+  /** The same transport as a snapshot keeps it (who, whom, where to), or null. */
+  journey: WorldJourney | null;
 }
 
 /** The resolution context of destinations (`patient.ts`) over the bus's services. */
@@ -233,11 +235,13 @@ export async function transportPatient(host: TransportHost, request: WorldAction
   if (trolley) host.busy.set(trolley, actor.id);
   // lying only on the trolley the walker pushes; otherwise upright beside them (the place's posture comes on arrival)
   host.transit = { by: actor.id, trolley, posture: trolley ? "lying" : "standing" };
+  host.journey = { by: actor.id, patient: patientId, actionId: request.actionId, parameters: structuredClone(request.parameters ?? {}) };
   let walk: Walk;
   try {
     walk = await host.walk(actor, plan, signal, request);
   } finally {
     host.transit = null;
+    host.journey = null;
     host.busy.delete(patientId);
     if (trolley) host.busy.delete(trolley);
   }

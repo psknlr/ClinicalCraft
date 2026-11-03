@@ -1,3 +1,4 @@
+import { StudyProfileSchema } from "./study.js";
 import { z } from "zod";
 import {
   AssetRefSchema,
@@ -864,6 +865,12 @@ export const CaseSchema = z
     /** What to say when an exam maneuver is not recorded in the source. */
     examNotRecorded: LocalizedTextSchema.optional(),
     investigations: z.array(InvestigationSchema).default([]),
+    /**
+     * New investigations the simulated hospital can perform in this encounter, beyond the published case
+     * (docs/STUDIES.md): test profiles — what each can reveal, how it is acquired, its turnaround. Their results
+     * are labelled simulated, never the source's.
+     */
+    studies: z.array(StudyProfileSchema).default([]),
     orderMatching: OrderMatchingSchema.default({}),
     interventions: z.array(InterventionSchema).default([]),
     physiology: PhysiologySchema.optional(),

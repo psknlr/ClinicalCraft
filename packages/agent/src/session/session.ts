@@ -14,7 +14,7 @@
  * gate, agent models, conversations, external calls, the embodied wiring, resume.
  */
 import { vitalsAt, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition, type ReduceResult, type SessionState } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, type EpisodeTrace, type WorldRuntime } from "@clinicalcraft/world";
+import { PRIMARY_ACTOR, type EpisodeTrace, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import type { HookRunner } from "../hooks/runner.js";
 import type { AgentEvent, AgentRole, Op, PlanItem } from "../protocol.js";
@@ -170,6 +170,20 @@ export class ClinicalSession implements ClinicalSessionApi {
     k.sessionContext.push(...hook.additionalContext);
     k.emitConfigured("");
     k.emitSnapshot("");
+    // a transport saved in the middle of its walk: the same walker carries it out now (one transfer, charged once),
+    // while the session is already open to the learner
+    if (resume && k.embodied)
+      this.journeyRun = k.embodied.resumeJourney(new AbortController().signal).catch((err: unknown) => {
+        k.emit("", { type: "warning", message: `journey: ${err instanceof Error ? err.message : String(err)}` });
+        return null;
+      });
+  }
+
+  private journeyRun: Promise<WorldActionResult | null> = Promise.resolve(null);
+
+  /** A resumed session's transport carried on from the save (null: none was in progress), once it has arrived. */
+  resumedJourney(): Promise<WorldActionResult | null> {
+    return this.journeyRun;
   }
 
   submit(op: Op): string {

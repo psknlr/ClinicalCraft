@@ -15,7 +15,12 @@
  * `give_intervention` (`params.intervention`, fetching what must stand at
  * the bedside), `transport_patient` (the target or `params.destination` —
  * a device, a bed space or room, `home` — or `params.capability`: the staff
- * member walks to the patient and wheels them there; porters and nurses).
+ * member walks to the patient and wheels them there; porters and nurses),
+ * `hold_traction` (`params.port`: a doctor walks to the operating table and
+ * takes the instrument in that port, keeping its traction — PROCEDURE.md §3
+ * `hand-over`), `release_traction` (lets go and hands it back). Someone who
+ * holds traction lets go before any other task (`letGo` in the result): the
+ * window closes, and the operator sees it.
  */
 import { lookupStaff } from "../tools/consult-target.js";
 import { monitorAttached, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
@@ -77,6 +82,10 @@ export interface DelegationResult {
   asked?: string;
   /** Equipment delivered (`fetch_equipment`): where it stands now and how far from the patient. */
   delivered?: { entityId: string; room: string | null; distance: number; x: number; z: number };
+  /** Traction let go: the instruments this colleague held at the table, handed back before this task or as it. */
+  letGo?: { port: string; instrument: string }[];
+  /** `hold_traction`: the port taken and its instrument. */
+  holding?: { port: string; instrument: string };
 }
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
@@ -160,6 +169,9 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
   h.onStaff?.(staff);
   // What the staff member holds already is not this task's to release.
   const heldBefore = new Set(heldBy(world, staff));
+  const staffRef = staff.replace(/^staff:/u, "");
+  /** The ports whose instruments this colleague holds at the operating table. */
+  const holding = () => (h.state().procedure?.ports ?? []).filter((p) => p.holder === staffRef && p.instrument);
 
   const span = h.trace.start("plan", `delegate:${task}`, { actorId: staff, refs: { entities: [patient] }, data: { role, task, ...(target ? { target } : {}) } });
   let cancelled = false;
@@ -238,8 +250,35 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
   };
 
   const verify = (name: string, ok: boolean) => h.trace.start("verification", name, { actorId: staff, refs: { entities: [patient] } }).end({ ok, worldVersion: world.version });
+  /** Let go of every traction this colleague holds and hand the instruments back (their own steps, at the table). */
+  const letGo = async (): Promise<boolean> => {
+    for (const p of holding()) {
+      const held = { port: p.site, instrument: p.instrument! };
+      for (const [structure, r] of Object.entries(h.state().procedure?.retractions ?? {})) if (r.port === p.site && !(await clinical("operate", { op: "release", structure }))) return false;
+      if (!(await clinical("operate", { op: "hand-over", port: p.site }))) return false;
+      (result.letGo ??= []).push(held);
+    }
+    return true;
+  };
   const run = async (): Promise<DelegationResult> => {
+    // traction is let go before anything else is done with these hands
+    if (task !== "hold_traction" && task !== "release_traction" && holding().length && !(await letGo())) return finish(cancelled ? "cancelled" : "failed");
     switch (task as DelegationTask) {
+      case "hold_traction": {
+        const port = strArg(params, "port") || target;
+        if (!port) return finish("failed", "no-target");
+        if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
+        const ok = (await clinical("operate", { op: "hand-over", port, to: staffRef })) && holding().some((p) => p.site === port);
+        const p = holding().find((x) => x.site === port);
+        if (p) result.holding = { port, instrument: p.instrument! };
+        verify(`holding port ${port}`, ok);
+        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
+      }
+      case "release_traction": {
+        const ok = (await letGo()) && holding().length === 0;
+        verify("traction let go", ok);
+        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
+      }
       case "attach_monitor": {
         const monitor = h.patientMonitorId();
         if (!monitor) return finish("failed", "no-item");

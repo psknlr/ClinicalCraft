@@ -444,6 +444,23 @@ export interface WorldStateSnapshot {
   obstacles: DynamicObstacle[];
   /** Last results by action id (idempotency window). */
   results: WorldActionResult[];
+  /**
+   * A patient transport walking when the snapshot was taken (EMBODIED §8.4): who wheels whom where. A walk's poses
+   * are committed when it ends, so the bodies are saved where the journey started; a session restored from the
+   * snapshot has the same walker carry it out (`restoredJourney`) — one transfer, its walk charged once.
+   */
+  journey?: WorldJourney;
+}
+
+/** A patient transport in progress (`WorldStateSnapshot.journey`). */
+export interface WorldJourney {
+  /** The walker. */
+  by: ActorId;
+  patient: EntityId;
+  /** The transport's action id. */
+  actionId: string;
+  /** The `transport_patient` parameters (the destination). */
+  parameters: Record<string, unknown>;
 }
 
 /* ------------------------------------------------------------------ */
@@ -1119,6 +1136,11 @@ export interface WorldRuntime {
 
   /* events & persistence */
   subscribe(listener: (event: WorldEvent, version: number) => void): () => void;
+  /**
+   * The transport a restored snapshot was taken in the middle of (`WorldStateSnapshot.journey`), once: the session
+   * resumes it with the same walker; null otherwise (and on every later call).
+   */
+  restoredJourney(): WorldJourney | null;
   snapshot(): WorldStateSnapshot;
 }
 

@@ -14,7 +14,8 @@ import { tubeVocabulary } from "./variant.js";
 
 export interface FieldView {
   plan: string | null;
-  ports: { port: string; role: "camera" | "working" | "assist"; sizeMm: number; hand?: "left" | "right"; instrument: InstrumentId | null }[];
+  /** `holder`: the colleague holding the port's instrument (absent: the operator). */
+  ports: { port: string; role: "camera" | "working" | "assist"; sizeMm: number; hand?: "left" | "right"; instrument: InstrumentId | null; holder?: string }[];
   insufflated: boolean;
   pressure: number;
   /** The laparoscope shows the field. */
@@ -81,7 +82,7 @@ export function observeField(def: ProcedureDefinition, s: ProcedureState): Field
   }
   return {
     plan: s.plan,
-    ports: s.ports.map((p) => ({ port: p.site, role: p.role, sizeMm: p.sizeMm, ...(p.hand ? { hand: p.hand } : {}), instrument: p.instrument })),
+    ports: s.ports.map((p) => ({ port: p.site, role: p.role, sizeMm: p.sizeMm, ...(p.hand ? { hand: p.hand } : {}), instrument: p.instrument, ...(p.holder ? { holder: p.holder } : {}) })),
     insufflated: s.insufflated,
     pressure: s.pressure,
     inView: open,

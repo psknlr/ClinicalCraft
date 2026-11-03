@@ -361,6 +361,11 @@ export interface LapSceneSpec {
   tubes: { handle: string; points: LapVec3[]; radius: number; kind: "duct" | "artery" | "vein"; clips: number; divided: boolean; isolated: boolean }[];
   /** Tissue not yet dissected over each region (opacity 0 = cleared). */
   tissue: { id: string; centre: LapVec3; radius: number; opacity: number }[];
+  /**
+   * The window the traction holds open now over each region being dissected (`exposure` 0–1), apart from the
+   * dissection done: let go, the tissue falls back and the window narrows; the tissue already cleared stays cleared.
+   */
+  windows: { id: string; centre: LapVec3; radius: number; exposure: number }[];
   /** Instrument shafts from their port to their tip. */
   shafts: { port: string; from: LapVec3; to: LapVec3; radius: number; instrument: string }[];
   /** Blood in the field: `pool` (bleeding seen), `haze` (the field is obscured), or none. */

@@ -1,6 +1,7 @@
 import { z } from "zod";
 import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
-import { ProcedureOpSchema, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
+import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
+import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
 
 /**
  * Session — the deterministic, event-sourced state of one learner working
@@ -83,7 +84,13 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("flag"), flag: IdSchema, value: z.boolean().default(true), ...base }).strict(),
   z.object({ type: z.literal("note"), text: z.string().max(4000), ...base }).strict(),
   /** One step of the case's operation (docs/PROCEDURE.md): the operative field's only way in. */
-  z.object({ type: z.literal("operate"), op: ProcedureOpSchema, ...base }).strict(),
+  z.object({
+    type: z.literal("operate"),
+    op: ProcedureOpSchema,
+    /** A colleague who does this step (a staff id: the assistant holding a port); absent: the operator. */
+    actor: z.string().min(1).max(80).optional(),
+    ...base,
+  }).strict(),
   /**
    * An explicit hold on an intervention (docs/PROTOCOL.md §3.1) — an anaesthetist or attending withholding
    * clearance for induction: who placed it and why. While it stands, the intervention is refused (`on-hold`);
@@ -95,6 +102,8 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
    * decision (it may be to proceed under stated uncertainty).
    */
   z.object({ type: z.literal("release-hold"), interventionId: IdSchema, releasedBy: HolderSchema, reassessment: z.string().trim().min(1).max(1000), ...base }).strict(),
+  /** A new investigation (`StudyOpSchema`; docs/STUDIES.md): order, wait, acquire, release, review. */
+  z.object({ type: z.literal("study"), study: StudyOpSchema, ...base }).strict(),
   /** The surgical count's record (`CountOpSchema`; cases whose team keeps a count). */
   z.object({ type: z.literal("count"), count: CountOpSchema, ...base }).strict(),
   z.object({ type: z.literal("finish"), ...base }).strict(),
@@ -228,6 +237,8 @@ export interface SessionState {
   holds?: HoldRecord[];
   /** The surgical count (cases whose team keeps one), from the baseline on. */
   count?: CountRecord;
+  /** New investigations ordered in this encounter (docs/STUDIES.md), from the first order on. */
+  studies?: StudyRecord;
   /** Monotonic count of accepted actions (for transcripts / ordering). */
   seq: number;
 }
@@ -262,7 +273,12 @@ export type DomainEvent =
   | { type: "flag.changed"; flag: string; value: boolean }
   | { type: "note.added" }
   /** A step of the operation was carried out; `signals` are what the operator sees or feels (never the hidden anatomy). */
-  | { type: "procedure.step"; op: ProcedureOpType; signals: ProcedureSignal[] }
+  /**
+   * A committed operative step (`id` `op-<step>`: stable across replays; `step` its number in the operation, `seq`
+   * the session's action sequence, `at` the clock, `by` who acted, `detail` the op as committed) — what a
+   * presentation queue animates in order, once.
+   */
+  | { type: "procedure.step"; op: ProcedureOpType; signals: ProcedureSignal[]; id?: string; step?: number; seq?: number; at?: number; by?: Actor; actor?: string; detail?: ProcedureOp }
   | { type: "hold.placed"; interventionId: string; placedBy: string; reason: string }
   | { type: "hold.released"; interventionId: string; releasedBy: string; reassessment: string }
   /** An entry of the count's record; `status` after it; a count's `missing` / `unexpected` items. */
@@ -280,6 +296,8 @@ export type DomainEvent =
       /** `scan`: what the wand detected in the patient. */
       detected?: string[];
     }
+  /** A study op recorded: the order, acquisition or report it concerns (`id`). */
+  | { type: "study.recorded"; op: StudyOp["op"]; code: string; id: string; reason?: string }
   /** Closure while the count was not settled (`CountUnsafe`): recorded for the debrief. */
   | { type: "count.unsafe"; what: "closure"; status: CountStatus; missing: string[]; unexpected: string[] }
   | { type: "action.rejected"; action: ClinicalActionType; code: RejectionCode; message: string };

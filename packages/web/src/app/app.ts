@@ -14,6 +14,7 @@ import { Hud } from "../ui/hud.js";
 import { Intro } from "../ui/intro.js";
 import { PanelHost, type PanelBuilder } from "../ui/panel.js";
 import { atlasPanel } from "../ui/panels/atlas.js";
+import { ScopeDock } from "../ui/scope-dock.js";
 import { surgeryPanel } from "../ui/panels/surgery.js";
 import { teamPanel } from "../ui/panels/team.js";
 import { autopilotPanel } from "../ui/panels/autopilot.js";
@@ -92,6 +93,7 @@ export class ClinicalCraftApp implements App {
   /** Refusals of the learner's actions with "Go there" (embodied mode). */
   readonly feedback: ActionFeedback;
   /** External control of the running encounter (`clinicalcraft mcp --attach`): per encounter, never persisted. */
+  readonly scope: ScopeDock;
   readonly external: ExternalControl;
   private _slot = 0;
   private lastTalk: ConversationArgs = { agent: "patient" };
@@ -106,6 +108,7 @@ export class ClinicalCraftApp implements App {
   private readonly refresh = throttleFrame(() => {
     this.hud.update();
     this.panels.update();
+    this.scope.update();
   });
 
   constructor(dom: AppDom) {
@@ -123,6 +126,9 @@ export class ClinicalCraftApp implements App {
       (slotId) => this.vitalsFor(slotId),
     );
     this.hud = new Hud(dom.hud, this);
+    // the laparoscopic picture beside the theatre, above any window (below an approval)
+    this.scope = new ScopeDock(this);
+    dom.approval.before(this.scope.el);
     this.intro = new Intro(dom.intro, this);
     this.mover = new BrowserMover({
       renderer: () => this.world.api,

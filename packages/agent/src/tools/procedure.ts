@@ -34,7 +34,12 @@ function fieldText(ctx: ToolContext): string {
       pressure: v.insufflated ? `${v.pressure} mmHg` : lab("off"),
       scope: v.ports.some((p) => p.instrument === "laparoscope") ? lab("in") : lab("out"),
     }),
-    ...v.ports.map((p) => rt(L, "field.port", { port: p.port, role: lab(p.role), size: p.sizeMm, hand: p.hand ? `, ${lab(p.hand)}` : "", instrument: p.instrument ?? lab("empty") })),
+    ...v.ports.map((p) => {
+      const line = rt(L, "field.port", { port: p.port, role: lab(p.role), size: p.sizeMm, hand: p.hand ? `, ${lab(p.hand)}` : "", instrument: p.instrument ?? lab("empty") });
+      // a colleague holds it (the assistant keeping traction): named, as the operator sees them at the table
+      const holder = p.holder ? ctx.facility?.staff.find((x) => x.id === p.holder) : undefined;
+      return p.holder ? line + rt(L, "field.heldBy", { who: holder ? t(holder.name, L) : p.holder }) : line;
+    }),
   ];
   if (!v.inView) lines.push(rt(L, "field.notInView"));
   else {
@@ -111,7 +116,7 @@ const operateTool: ToolDefinition<ToolArgs> = {
     "{op:'isolate', port:'C', handle:'T1'}, {op:'identify', handle:'T1', as:'cystic-duct'} (as:'uncertain' when you cannot tell), " +
     "{op:'safety-pause', view:'cvs', claims:{criterion: true|false, or for a counting criterion the number of structures you see}}, " +
     "{op:'clip', port:'C', handle:'T1', count:2}, {op:'divide', port:'C', handle:'T1'}, {op:'image', modality:'ioc', port:'C'}, " +
-    "{op:'bailout', strategy:'subtotal-fenestrating'}, {op:'inspect'}, {op:'recognise', injury:'bleeding'}, {op:'bag'|'extract', port}, {op:'close'}. " +
+    "{op:'bailout', strategy:'subtotal-fenestrating'} (changing a committed subtotal technique: revise:true), {op:'hand-over', port:'B'} (take back what a colleague holds), {op:'inspect'}, {op:'recognise', injury:'bleeding'}, {op:'bag'|'extract', port}, {op:'close'}. " +
     "Directions are in the patient's terms (patient-left is the patient's left). Look with observe_field first. Steps: " +
     OP_NAMES.join(", ") +
     ".",
@@ -137,6 +142,10 @@ const operateTool: ToolDefinition<ToolArgs> = {
       modality: { type: "string", enum: ["ioc", "lap-us"] },
       injury: { type: "string" },
       strategy: { type: "string" },
+      // bailout: an explicit change of a committed subtotal technique
+      revise: { type: "boolean" },
+      // hand-over: the colleague who takes the port's instrument (a staff id); absent: back to the operator
+      to: { type: "string", maxLength: 80 },
     },
     required: ["op"],
     additionalProperties: false,
@@ -152,7 +161,9 @@ const operateTool: ToolDefinition<ToolArgs> = {
     const parsed = ProcedureOpSchema.safeParse(opFrom(args));
     if (!parsed.success) return { ok: false, output: rt(L, "op.invalid", { message: parsed.error.issues[0]?.message ?? "" }) };
     const op: ProcedureOp = parsed.data;
-    const result = ctx.dispatch({ type: "operate", op, by: actorFor(ctx) });
+    // done with a colleague's body (an assistant at the table): their step, by their staff id
+    const actor = ctx.actorId?.startsWith("staff:") ? ctx.actorId.slice("staff:".length) : undefined;
+    const result = ctx.dispatch({ type: "operate", op, by: actorFor(ctx), ...(actor ? { actor } : {}) });
     if (result.rejected) {
       // the engine's own reason ("Insufflate before inserting instruments."), and before the operation is under
       // way, what still opens it — never a bare "not available"
