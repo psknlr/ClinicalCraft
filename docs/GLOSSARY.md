@@ -123,6 +123,12 @@ developer documents use.
 | treatment | treatment; give (formal: intervention) | 处置；给予 | `intervene`, `interventions[]` |
 | result, critical result | result, critical result | 结果、危急值 | `read_result`, `critical` |
 | record review | record review (an existing report read from the notes or the EHR) | 病历查阅（在病历或电子病历中调阅已有报告） | `investigations[].performedAt: "records"` |
+| retrieve an existing report | Retrieve an existing report | 调阅已有报告 | `retrieve_report` (the published case only; never orders) |
+| order a new investigation | Order a new investigation | 开具新检查 | `order_study`, `case.studies[]` test profiles ([STUDIES.md](STUDIES.md)) |
+| simulated investigation | Simulated investigation (a study done in this encounter, from the case's teaching profile) | 模拟检查（本次接诊中完成，依据病例的教学配置生成） | `SessionState.studies`, `read_study`; never shown as the patient's record |
+| published source record | Published source record | 原始病例记录 | `investigations[]` results |
+| historical material unavailable | Historical material unavailable (the published case has no such record) | 原始病例中无此资料 | a record result `available: false`, or none |
+| accession | accession (one acquisition of an ordered study: a tracing, a sample) | 检查号（一次采集：一份描记或一份标本） | `StudyAccession.id`, e.g. `ecg-12lead-1` |
 | cannot speak, cannot answer | "<name> cannot speak: <reason>" (approach), "<name> cannot answer: <reason>" (a question) — narrated | “<姓名>无法说话：<原因>”（走近时）、“<姓名>无法回答：<原因>”（提问时）——以旁白呈现 | `patient.nonVerbalWhen`, `nonVerbalReason`, rejection `cannot-answer` |
 | work-up plan | work-up plan | 诊疗计划 | `update_workup` |
 | bedside | bedside | 床旁 | the bedside rule (EMBODIED §6) |

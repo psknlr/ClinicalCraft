@@ -87,6 +87,10 @@ export {
 
 // assessment
 export { assess, countCriticalAlarms } from "./assessment.js";
+export { ENGINE_VERSION } from "./version.js";
+
+// new investigations (docs/STUDIES.md)
+export { applyStudy, evaluateStudy, seeded, studyObservations, studyProfile, studyStatus, type StudyResult } from "./study.js";
 
 // the surgical count (docs/TEAM.md §4.3)
 export { applyCount, closureOnOpenCount, compareCount, countLedger, countOpenItems, countSettled, countStatus, countSummary, evaluateCount, type CountLedgerView, type CountReport, type CountResult } from "./count.js";

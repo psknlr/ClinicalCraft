@@ -14,6 +14,7 @@
  * - `embodied-wiring.ts` — what embodied mode needs of the session (`EmbodiedHost`, a caller's tool path);
  * - `resume.ts` — snapshots, and restoring a resumed session.
  */
+import { SessionStudies } from "./studies.js";
 import {
   createSession as createEngineState,
   currentWaypoint,
@@ -104,6 +105,8 @@ export class SessionKernel {
   readonly embodied: EmbodiedSession | null;
   /** The care team of a case with a `team` (embodied mode; docs/TEAM.md). */
   readonly team: SessionTeam;
+  /** New investigations: ordering, fulfilment, reporting, review (docs/STUDIES.md). */
+  readonly studies: SessionStudies;
 
   settings: ResolvedSettings;
   /** The engine state (core `reduce`). */
@@ -174,6 +177,7 @@ export class SessionKernel {
     // Embodied mode (EMBODIED R3): the session builds the world; the clinical tools are spatially gated, world tools are added.
     this.embodied = this.settings.embodiment === "embodied" ? new EmbodiedSession(embodiedHost(this), opts.embodied ?? {}) : null;
     this.team = new SessionTeam(this, validTeamCheckpoint(opts.embodied?.team));
+    this.studies = new SessionStudies(this);
     if (this.embodied) {
       for (const tool of this.embodied.gatedTools((name) => this.registry.get(name))) this.registry.replace(tool);
       for (const tool of this.embodied.worldTools()) this.registry.replace(tool);

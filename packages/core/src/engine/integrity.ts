@@ -659,5 +659,23 @@ export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
     ...checkReachability(c, ids),
     ...checkProcedureDefinition(c),
     ...checkTeamDefinition(c),
+    ...checkStudies(c),
   ];
+}
+
+/** The case's test profiles (docs/STUDIES.md): unique codes, a historical record that exists, sound intervals. */
+function checkStudies(c: CaseDefinition): Issue[] {
+  const issues: Issue[] = [];
+  const codes = new Set<string>();
+  (c.studies ?? []).forEach((p, i) => {
+    const at = ["studies", i];
+    if (codes.has(p.code)) issues.push({ path: formatPath([...at, "code"]), message: `duplicate study code "${p.code}"`, severity: "error" });
+    codes.add(p.code);
+    if (c.investigations.some((x) => x.id === p.code)) issues.push({ path: formatPath([...at, "code"]), message: `"${p.code}" is also an investigation id: a new study and the source's record need different ids`, severity: "error" });
+    if (p.historical && !c.investigations.some((x) => x.id === p.historical)) issues.push({ path: formatPath([...at, "historical"]), message: `no investigation "${p.historical}"`, severity: "error" });
+    if (p.model.kind === "lab") p.model.analytes.forEach((a, j) => {
+      if (a.low >= a.high) issues.push({ path: formatPath([...at, "model", "analytes", j]), message: `reference interval of "${a.id}" is empty (low ≥ high)`, severity: "error" });
+    });
+  });
+  return issues;
 }

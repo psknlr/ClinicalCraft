@@ -838,6 +838,27 @@
             "count"
           ],
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "study": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "ordered",
+                "acquired",
+                "released",
+                "reviewed"
+              ]
+            }
+          },
+          "required": [
+            "study"
+          ],
+          "additionalProperties": false
         }
       ]
     },
@@ -1707,6 +1728,9 @@
                         "convert-open",
                         "abandon-refer"
                       ]
+                    },
+                    "revise": {
+                      "type": "boolean"
                     }
                   },
                   "required": [
@@ -1819,6 +1843,253 @@
             "interventionId",
             "releasedBy",
             "reassessment"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "study"
+            },
+            "study": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "order"
+                    },
+                    "code": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "key": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 120
+                    },
+                    "indication": {
+                      "type": "string",
+                      "maxLength": 500
+                    },
+                    "priority": {
+                      "type": "string",
+                      "enum": [
+                        "routine",
+                        "urgent"
+                      ],
+                      "default": "routine"
+                    },
+                    "requester": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "reviewer": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "configuration": {
+                      "type": "string",
+                      "maxLength": 40
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "code",
+                    "key",
+                    "requester"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "wait"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "acquire"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "collector": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "configuration": {
+                      "type": "string",
+                      "maxLength": 40
+                    },
+                    "quality": {
+                      "type": "string",
+                      "enum": [
+                        "good",
+                        "limited"
+                      ],
+                      "default": "good"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "collector"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "release"
+                    },
+                    "accession": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "findings": {
+                      "type": "object",
+                      "properties": {
+                        "en": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        },
+                        "zh-CN": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        }
+                      },
+                      "required": [
+                        "en",
+                        "zh-CN"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "impression": {
+                      "type": "object",
+                      "properties": {
+                        "en": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        },
+                        "zh-CN": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        }
+                      },
+                      "required": [
+                        "en",
+                        "zh-CN"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "limitations": {
+                      "type": "object",
+                      "properties": {
+                        "en": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        },
+                        "zh-CN": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        }
+                      },
+                      "required": [
+                        "en",
+                        "zh-CN"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "generator": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "accession",
+                    "findings",
+                    "impression",
+                    "generator"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "review"
+                    },
+                    "accession": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "accession",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "study"
           ],
           "additionalProperties": false
         },
@@ -3224,6 +3495,294 @@
               "name",
               "category",
               "results"
+            ],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "studies": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "code": {
+                "$ref": "#/definitions/Id"
+              },
+              "name": {
+                "$ref": "#/definitions/LocalizedText"
+              },
+              "aliases": {
+                "$ref": "#/definitions/LocalizedList",
+                "default": []
+              },
+              "acquisition": {
+                "type": "string",
+                "enum": [
+                  "bedside-device",
+                  "sample",
+                  "department"
+                ]
+              },
+              "requires": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Capability"
+                },
+                "default": []
+              },
+              "turnaroundMinutes": {
+                "type": "number",
+                "minimum": 0,
+                "default": 0
+              },
+              "reviewer": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80
+              },
+              "historical": {
+                "$ref": "#/definitions/Id"
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 20,
+                "default": "1"
+              },
+              "model": {
+                "anyOf": [
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "ecg"
+                      },
+                      "rhythm": {
+                        "$ref": "#/definitions/LocalizedText"
+                      },
+                      "prMs": {
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "qrsMs": {
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "qtcMs": {
+                        "type": "array",
+                        "minItems": 2,
+                        "maxItems": 2,
+                        "items": [
+                          {
+                            "type": "number"
+                          },
+                          {
+                            "type": "number"
+                          }
+                        ]
+                      },
+                      "dextrocardia": {
+                        "type": "boolean",
+                        "default": false
+                      },
+                      "findings": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "$ref": "#/definitions/Id"
+                            },
+                            "text": {
+                              "$ref": "#/definitions/LocalizedText"
+                            },
+                            "when": {
+                              "$ref": "#/definitions/Condition"
+                            },
+                            "side": {
+                              "type": "string",
+                              "enum": [
+                                "left",
+                                "right"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "text"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "default": []
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "rhythm",
+                      "prMs",
+                      "qrsMs",
+                      "qtcMs"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "lab"
+                      },
+                      "analytes": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "$ref": "#/definitions/Id"
+                            },
+                            "name": {
+                              "$ref": "#/definitions/LocalizedText"
+                            },
+                            "unit": {
+                              "type": "string",
+                              "minLength": 1,
+                              "maxLength": 20
+                            },
+                            "low": {
+                              "type": "number"
+                            },
+                            "high": {
+                              "type": "number"
+                            },
+                            "base": {
+                              "type": "number"
+                            },
+                            "spread": {
+                              "type": "number",
+                              "minimum": 0,
+                              "default": 0
+                            },
+                            "decimals": {
+                              "type": "integer",
+                              "minimum": 0,
+                              "maximum": 3,
+                              "default": 1
+                            },
+                            "effects": {
+                              "type": "array",
+                              "items": {
+                                "type": "object",
+                                "properties": {
+                                  "when": {
+                                    "$ref": "#/definitions/Condition"
+                                  },
+                                  "delta": {
+                                    "type": "number"
+                                  }
+                                },
+                                "required": [
+                                  "when",
+                                  "delta"
+                                ],
+                                "additionalProperties": false
+                              },
+                              "default": []
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "name",
+                            "unit",
+                            "low",
+                            "high",
+                            "base"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 1
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "analytes"
+                    ],
+                    "additionalProperties": false
+                  },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "kind": {
+                        "type": "string",
+                        "const": "imaging"
+                      },
+                      "technique": {
+                        "$ref": "#/definitions/LocalizedText"
+                      },
+                      "findings": {
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "id": {
+                              "$ref": "#/definitions/Id"
+                            },
+                            "text": {
+                              "$ref": "#/definitions/LocalizedText"
+                            },
+                            "when": {
+                              "$ref": "#/definitions/Condition"
+                            },
+                            "side": {
+                              "type": "string",
+                              "enum": [
+                                "left",
+                                "right"
+                              ]
+                            }
+                          },
+                          "required": [
+                            "id",
+                            "text"
+                          ],
+                          "additionalProperties": false
+                        },
+                        "minItems": 1
+                      }
+                    },
+                    "required": [
+                      "kind",
+                      "technique",
+                      "findings"
+                    ],
+                    "additionalProperties": false
+                  }
+                ]
+              }
+            },
+            "required": [
+              "code",
+              "name",
+              "acquisition",
+              "model"
             ],
             "additionalProperties": false
           },

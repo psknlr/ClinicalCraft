@@ -167,7 +167,19 @@ export interface MatchOptions {
  */
 export interface AssessmentReport {
   caseId: string;
+  /** The case version and the engine that scored it (a score is only comparable with both frozen). */
+  caseVersion: string;
+  engine: string;
+  /** Every objective met (`completed`); the encounter ended with `finish` (`finished`). */
   completed: boolean;
+  finished: boolean;
+  /**
+   * `source-only`: the encounter used the published record alone; `expanded`: it ordered new investigations
+   * (simulated, docs/STUDIES.md) — scores of the two are reported apart, never compared.
+   */
+  evidence: "source-only" | "expanded";
+  /** The new investigations of an expanded encounter and how far each got (docs/STUDIES.md §4). */
+  studies?: { code: string; status: "ordered" | "waiting" | "acquired" | "released" | "reviewed"; accessions: number }[];
   minutes: number;
   hints: number;
   objectives: { id: string; done: boolean; at?: number }[];

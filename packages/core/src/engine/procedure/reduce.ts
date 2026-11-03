@@ -515,11 +515,23 @@ function apply(x: Step, op: ProcedureOp): void {
     }
     case "bailout": {
       if (!def.bailouts.includes(op.strategy)) return reject("invalid", `"${op.strategy}" is not available in this operation.`);
+      // asked again: nothing more happens and no time passes
+      if (s.bailouts.includes(op.strategy)) return reject("invalid", `"${op.strategy}" is already under way: nothing more was done.`);
       if (op.strategy.startsWith("subtotal") && s.specimen !== "in-situ") return reject("requirements-unmet", "The gallbladder is already free: a subtotal is no longer the question.");
-      if (!s.bailouts.includes(op.strategy)) s.bailouts.push(op.strategy);
+      const committed = s.bailouts.find((b) => b.startsWith("subtotal"));
+      if (op.strategy.startsWith("subtotal") && committed) {
+        // a change of subtotal technique is a revision of the plan, made explicitly
+        if (!op.revise) return reject("requirements-unmet", `A ${committed} subtotal is committed: changing the technique needs an explicit revision (bailout {strategy, revise: true}).`);
+        s.bailouts = s.bailouts.filter((b) => b !== committed);
+        s.superseded = [...(s.superseded ?? []), committed];
+      }
+      s.bailouts.push(op.strategy);
       if (op.strategy === "convert-open") {
+        // the laparoscopy ends at once: pressure released, every instrument out, every traction let go
         for (const b of s.bleeding) b.controlled = true;
         s.insufflated = false;
+        s.pressure = 0;
+        s.retractions = {};
         for (const p of s.ports) {
           p.instrument = null;
           p.tip = null;

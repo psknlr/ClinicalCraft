@@ -150,6 +150,8 @@ export class OpDispatcher {
       await this.handle(id, op);
       // the care team acts after each act of the learner (autonomy `auto`), in the same submission
       if (LEARNER_OPS.has(op.type) && k.team.available() && !k.closing) await this.withTurn(id, (signal) => k.team.afterLearner(signal));
+      // the hospital's work on new investigations follows too: a device fetched, a study acquired, a report released
+      if (LEARNER_OPS.has(op.type) && k.studies.available() && !k.closing) await this.withTurn(id, (signal) => k.studies.afterLearner(id, signal));
     } finally {
       k.currentSubmission = previous;
     }

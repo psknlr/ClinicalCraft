@@ -187,8 +187,21 @@ Bail-outs work as follows:
 
 - `call-help` changes nothing in the field.
 - `subtotal-*` ends the dissection.
-- `convert-open` ends the laparoscopy and controls the bleeding.
+- `convert-open` ends the laparoscopy and controls the bleeding. It clears what belonged to the
+  laparoscopy together: the pneumoperitoneum (pressure 0), every port's instrument and tip, and every
+  retraction. The theatre stays live; the scope feed ends (the web shows the scope outside the patient).
 - `abandon-refer` ends the laparoscopy.
+
+A bail-out already under way is refused (`invalid`, "already under way: nothing more was done") and
+records nothing: a duplicated request has no second effect and spends no time. Changing a committed
+subtotal technique (`subtotal-fenestrating` ↔ `subtotal-reconstituting`) needs an explicit revision,
+`bailout {strategy, revise: true}`: the earlier technique moves to `superseded` and stays in the record.
+
+Every accepted step is one `procedure.step` event with a stable identity: `id` (`op-<n>`), `step` (`n`,
+the field's own step count), `seq` (the session's action sequence), `at` (the clock), `by` (the actor)
+and `detail` (the operation as accepted). A front-end presents the steps in that order, one by one —
+each accepted clip on its own, even when a demonstration runs fast — and a rejected step changes
+nothing and is shown with its reason.
 
 ## 6. Conditions
 

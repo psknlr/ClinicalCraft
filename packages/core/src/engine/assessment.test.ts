@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
 import type { ClinicalAction } from "../schema/session.js";
+import { ENGINE_VERSION } from "./version.js";
 import { assess, countCriticalAlarms, createSession, parseCase, reduce, replay } from "./index.js";
 
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), "utf8"));
@@ -20,7 +21,11 @@ describe("assess", () => {
     const { state } = replay(V4, V4.solution as ClinicalAction[]);
     expect(assess(V4, state)).toEqual({
       caseId: "v4-smzl-mini",
+      caseVersion: V4.version,
+      engine: ENGINE_VERSION,
       completed: true,
+      finished: state.finished,
+      evidence: "source-only",
       minutes: 0,
       hints: 0,
       objectives: ["history", "pattern", "evidence", "diagnosis", "safety"].map((id) => ({ id, done: true, at: 0 })),

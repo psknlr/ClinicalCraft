@@ -247,6 +247,11 @@ export class LearnerPath {
     }
     // the count is a record of what is in the room (docs/TEAM.md §4.3): written from the world, never typed in —
     // whatever `by` the caller claims
+    // a study is acquired, reported and reviewed by the hospital (docs/STUDIES.md): a learner orders it, nothing more
+    if (requested.type === "study" && requested.study.op !== "order") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "study.handEntry") }), code: "permission_denied" });
+      return null;
+    }
     if (requested.type === "count") {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "count.handEntry") }), code: "permission_denied" });
       return null;

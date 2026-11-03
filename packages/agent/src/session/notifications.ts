@@ -129,6 +129,16 @@ export function openItemsText(L: string, open: { missing?: readonly string[]; un
   return [open.missing?.length ? rt(L, "count.open.missing", { items: list(open.missing) }) : "", open.unexpected?.length ? rt(L, "count.open.unexpected", { items: list(open.unexpected) }) : ""].join("");
 }
 
+/** A study's released report or a wait, as the learner is told of it (the rest is the chart's). */
+function studyNotification(c: CaseDefinition, L: string, event: Extract<DomainEvent, { type: "study.recorded" }>): EventReaction[] {
+  const profile = (c.studies ?? []).find((p) => p.code === event.code);
+  const name = profile ? t(profile.name, L) : event.code;
+  if (event.op === "release") return [{ notification: { level: "info", title: rt(L, "study.label.simulated"), body: rt(L, "study.released", { label: rt(L, "study.label.simulated"), name, accession: event.id }) } }];
+  // an order that cannot proceed now, with what would let it (recorded once per reason)
+  if (event.op === "wait" && event.reason) return [{ notification: { level: "warning", title: rt(L, "study.label.simulated"), body: rt(L, "study.status.waiting", { name, order: event.id, reason: event.reason }) } }];
+  return [];
+}
+
 /** What the team calls the counted items ("swabs"). */
 export function countItemName(c: CaseDefinition, L: string): string {
   const count = c.team?.count;
@@ -212,6 +222,8 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
       return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by: event.placedBy, reason: sentence(event.reason) }) } }];
     case "hold.released":
       return [{ notification: { level: "info", title: rt(L, "status.holds"), body: rt(L, "hold.released", { name: interventionLabel(c, event.interventionId, L), by: event.releasedBy, reassessment: event.reassessment }) } }];
+    case "study.recorded":
+      return studyNotification(c, L, event);
     case "count.recorded":
       return countNotification(c, L, event);
     case "count.unsafe":

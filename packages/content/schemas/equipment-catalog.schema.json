@@ -1604,6 +1604,27 @@
             "count"
           ],
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "study": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "ordered",
+                "acquired",
+                "released",
+                "reviewed"
+              ]
+            }
+          },
+          "required": [
+            "study"
+          ],
+          "additionalProperties": false
         }
       ]
     },

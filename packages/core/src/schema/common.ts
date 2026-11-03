@@ -247,7 +247,9 @@ export type Condition =
   | { hints: { gte?: number; lte?: number } }
   | { procedure: ProcedurePredicate }
   /** The surgical count's record (docs/TEAM.md §4.3; `engine/count.ts`): every given field must hold. */
-  | { count: CountPredicate };
+  | { count: CountPredicate }
+  /** A new investigation (docs/STUDIES.md) reached at least `status` (default `ordered`). */
+  | { study: string; status?: "ordered" | "acquired" | "released" | "reviewed" };
 
 export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
   z.union([
@@ -276,6 +278,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ procedure: ProcedurePredicateSchema }).strict(),
     /** The surgical count's record (docs/TEAM.md §4.3). */
     z.object({ count: CountPredicateSchema }).strict(),
+    /** A new investigation (docs/STUDIES.md). */
+    z.object({ study: IdSchema, status: z.enum(["ordered", "acquired", "released", "reviewed"]).optional() }).strict(),
   ]),
 );
 

@@ -359,7 +359,12 @@ export const ProcedureOpSchema = z.discriminatedUnion("op", [
   z.object({ op: z.literal("recognise"), injury: z.enum(["bile-duct-injury", "vascular-injury", "bleeding", "perforation", "thermal-injury", "bile-leak"]) }).strict(),
   z.object({ op: z.literal("bag"), port: IdSchema }).strict(),
   z.object({ op: z.literal("extract"), port: IdSchema }).strict(),
-  z.object({ op: z.literal("bailout"), strategy: BailoutSchema }).strict(),
+  /**
+   * A change of approach or a call for help. Asked twice, it is refused (no second effect, no second minute). A
+   * different subtotal technique once one is committed needs `revise: true` (the earlier one is superseded, kept in
+   * the record).
+   */
+  z.object({ op: z.literal("bailout"), strategy: BailoutSchema, revise: z.boolean().optional() }).strict(),
   /** End the laparoscopy: instruments out, pneumoperitoneum released, ports closed. */
   z.object({ op: z.literal("close") }).strict(),
 ]);
@@ -465,6 +470,8 @@ export interface ProcedureState {
   imaged: ("ioc" | "lap-us")[];
   specimen: "in-situ" | "detached" | "bagged" | "extracted";
   bailouts: Bailout[];
+  /** Subtotal techniques superseded by an explicit revision (absent until one). */
+  superseded?: Bailout[];
   inspected: boolean;
   closed: boolean;
   counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number };
