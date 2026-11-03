@@ -87,11 +87,11 @@ export function observeField(def: ProcedureDefinition, s: ProcedureState, view: 
     insufflated: s.insufflated,
     pressure: s.pressure,
     inView: fieldOpen(s),
-    organs: open ? def.anatomy.filter((st) => !isTubular(st) && isVisible(def, s, st)).map((st) => ({ id: st.id, name: st.name })) : [],
+    organs: open ? def.anatomy.filter((st) => !isTubular(st) && isVisible(def, s, st, open)).map((st) => ({ id: st.id, name: st.name })) : [],
     tubes: open
       ? s.handles.flatMap((h) => {
           const st = structureOf(def, h.structure);
-          if (!st || !isVisible(def, s, st)) return [];
+          if (!st || !isVisible(def, s, st, open)) return [];
           const shown = (st.kind === "duct" && imagedDucts) || (st.kind !== "duct" && imagedVessels);
           return [
             {
