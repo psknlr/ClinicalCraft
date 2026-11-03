@@ -8,7 +8,7 @@
  */
 import type { CaseDefinition } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
-import type { StudyAccession, StudyObservation, StudyOp, StudyProfile, StudyRecord } from "../schema/study.js";
+import type { StudyAccession, StudyObservation, StudyOp, StudyOrder, StudyProfile, StudyRecord, StudyStage } from "../schema/study.js";
 import { evaluate } from "./conditions.js";
 import { vitalValue } from "./signal.js";
 
@@ -86,10 +86,19 @@ const empty = (): StudyRecord => ({ orders: [], accessions: [], reports: [], rev
 
 export type StudyResult = { ok: true; record: StudyRecord; changed: boolean; id?: string } | { ok: false; code: "invalid" | "unknown-id" | "requirements-unmet" | "not-ready"; message: string };
 
+/** Move an order to a stage, recorded in its own stage list. */
+function stageAt(s: SessionState) {
+  return (o: StudyOrder, next: StudyStage, reason?: string) => {
+    o.stage = next;
+    o.stages = [...(o.stages ?? []), { stage: next, at: s.clock, seq: s.seq + 1, ...(reason ? { reason } : {}) }];
+  };
+}
+
 /** Apply one study op (pure): the new record, or why not. `changed: false`: a retried order (the same key) — nothing new. */
 export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): StudyResult {
   const r: StudyRecord = s.studies ? structuredClone(s.studies) : empty();
   const order = (id: string) => r.orders.find((o) => o.id === id);
+  const stage = stageAt(s);
   switch (op.op) {
     case "order": {
       const profile = studyProfile(c, op.code);
@@ -97,18 +106,43 @@ export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): Stu
       const same = r.orders.find((o) => o.key === op.key);
       if (same) return { ok: true, record: r, changed: false, id: same.id };
       const id = `ord-${r.orders.length + 1}`;
-      r.orders.push({ id, code: op.code, key: op.key, ...(op.indication ? { indication: op.indication } : {}), priority: op.priority, requester: op.requester, ...(op.reviewer ?? profile.reviewer ? { reviewer: op.reviewer ?? profile.reviewer } : {}), ...(op.configuration ? { configuration: op.configuration } : {}), at: s.clock, seq: s.seq + 1, accessions: [] });
+      r.orders.push({ id, code: op.code, key: op.key, ...(op.indication ? { indication: op.indication } : {}), priority: op.priority, requester: op.requester, ...(op.reviewer ?? profile.reviewer ? { reviewer: op.reviewer ?? profile.reviewer } : {}), ...(op.configuration ? { configuration: op.configuration } : {}), at: s.clock, seq: s.seq + 1, accessions: [], stage: "ordered", stages: [{ stage: "ordered", at: s.clock, seq: s.seq + 1 }] });
       return { ok: true, record: r, changed: true, id };
     }
     case "wait": {
       const o = order(op.order);
       if (!o) return { ok: false, code: "unknown-id", message: `no order "${op.order}"` };
       o.waiting = { reason: op.reason, at: s.clock };
+      stage(o, "blocked", op.reason);
+      return { ok: true, record: r, changed: true, id: o.id };
+    }
+    case "assign": {
+      const o = order(op.order);
+      if (!o) return { ok: false, code: "unknown-id", message: `no order "${op.order}"` };
+      if (o.accessions.length) return { ok: false, code: "invalid", message: `"${o.id}" is acquired already` };
+      if (o.assignee === op.to) return { ok: true, record: r, changed: false, id: o.id };
+      o.assignee = op.to;
+      stage(o, "assigned");
+      return { ok: true, record: r, changed: true, id: o.id };
+    }
+    case "progress": {
+      const o = order(op.order);
+      if (!o) return { ok: false, code: "unknown-id", message: `no order "${op.order}"` };
+      if (!o.assignee) return { ok: false, code: "requirements-unmet", message: `"${o.id}" is not assigned to anyone` };
+      if (o.accessions.length) return { ok: false, code: "invalid", message: `"${o.id}" is acquired already` };
+      if (op.stage === "acquisition-started" && o.stage !== "at-patient") return { ok: false, code: "requirements-unmet", message: `"${o.id}": the acquisition starts only at the patient` };
+      if (o.stage === op.stage) return { ok: true, record: r, changed: false, id: o.id };
+      // on the way again, or there: the block is over
+      delete o.waiting;
+      stage(o, op.stage);
       return { ok: true, record: r, changed: true, id: o.id };
     }
     case "acquire": {
       const o = order(op.order);
       if (!o) return { ok: false, code: "unknown-id", message: `no order "${op.order}"` };
+      // no specimen, no tracing without the collector at the patient (the world confirmed it: `progress at-patient`)
+      if (o.stage !== "at-patient" && o.stage !== "acquisition-started") return { ok: false, code: "requirements-unmet", message: `"${o.id}" cannot be acquired: nobody has reached the patient for it` };
+      if (o.assignee && o.assignee !== op.collector) return { ok: false, code: "invalid", message: `"${o.id}" is assigned to ${o.assignee}, not ${op.collector}` };
       const profile = studyProfile(c, o.code);
       if (!profile) return { ok: false, code: "unknown-id", message: `no study "${o.code}"` };
       // a deliberate repeat collection: a new accession, whatever the phase
@@ -129,6 +163,7 @@ export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): Stu
       r.accessions.push(a);
       o.accessions.push(id);
       delete o.waiting;
+      stage(o, "acquired");
       return { ok: true, record: r, changed: true, id };
     }
     case "release": {
@@ -137,11 +172,15 @@ export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): Stu
       if (c.clock.mode === "simulated" && s.clock + 1e-9 < a.dueAt) return { ok: false, code: "not-ready", message: `"${a.id}" is not due until minute ${a.dueAt}` };
       const revision = r.reports.filter((x) => x.accession === a.id).length + 1;
       r.reports.push({ accession: a.id, revision, findings: op.findings, impression: op.impression, ...(op.limitations ? { limitations: op.limitations } : {}), generator: op.generator, at: s.clock, seq: s.seq + 1 });
+      const ro = order(a.order);
+      if (ro) stage(ro, "reported");
       return { ok: true, record: r, changed: true, id: a.id };
     }
     case "review": {
       if (!r.reports.some((x) => x.accession === op.accession)) return { ok: false, code: "requirements-unmet", message: `"${op.accession}" has no released report to review` };
       r.reviews.push({ accession: op.accession, by: op.by, at: s.clock, seq: s.seq + 1 });
+      const vo = r.orders.find((x) => x.accessions.includes(op.accession));
+      if (vo) stage(vo, "reviewed");
       return { ok: true, record: r, changed: true, id: op.accession };
     }
   }

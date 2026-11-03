@@ -111,6 +111,13 @@ export interface StudyObservation {
   side?: "left" | "right";
 }
 
+/**
+ * Where an order is in its workflow (docs/STUDIES.md §4): ordered → assigned (to the person who will acquire it) →
+ * en route → at the patient → acquisition started → acquired → reported → reviewed; `blocked` (with `waiting`) when it
+ * cannot proceed now. Nothing is acquired before `at-patient`: a nurse who cannot reach the patient takes no sample.
+ */
+export type StudyStage = "ordered" | "assigned" | "en-route" | "at-patient" | "acquisition-started" | "blocked" | "acquired" | "reported" | "reviewed";
+
 /** An order of a study (`study-order`): what, why, how urgent, by whom; idempotent by `key`. */
 export interface StudyOrder {
   id: string;
@@ -126,6 +133,12 @@ export interface StudyOrder {
   /** A fulfilment that cannot proceed now, and why (recoverable: the device frees, the patient is moved). */
   waiting?: { reason: string; at: number };
   accessions: string[];
+  /** Who acquires it (a staff id or role), once assigned. */
+  assignee?: string;
+  /** Its workflow stage now (absent: ordered). */
+  stage?: StudyStage;
+  /** Every stage it went through, in order: the order's own event stream. */
+  stages?: { stage: StudyStage; at: number; seq: number; reason?: string }[];
 }
 
 /** One acquisition (`study-acquire`): the specimen or the tracing, who took it, when, at which state revision. */
@@ -186,6 +199,10 @@ export const StudyOpSchema = z.discriminatedUnion("op", [
     })
     .strict(),
   z.object({ op: z.literal("wait"), order: z.string().min(1), reason: z.string().min(1).max(300) }).strict(),
+  /** The person who will acquire it (a staff id or role). */
+  z.object({ op: z.literal("assign"), order: z.string().min(1), to: z.string().min(1).max(80) }).strict(),
+  /** The acquisition under way: the collector on the way, at the patient (confirmed by the world), starting. */
+  z.object({ op: z.literal("progress"), order: z.string().min(1), stage: z.enum(["en-route", "at-patient", "acquisition-started"]) }).strict(),
   z.object({ op: z.literal("acquire"), order: z.string().min(1), collector: z.string().min(1).max(80), configuration: z.string().max(40).optional(), quality: z.enum(["good", "limited"]).default("good") }).strict(),
   z.object({ op: z.literal("release"), accession: z.string().min(1), findings: Bilingual, impression: Bilingual, limitations: Bilingual.optional(), generator: z.string().min(1).max(80) }).strict(),
   z.object({ op: z.literal("review"), accession: z.string().min(1), by: z.string().min(1).max(80) }).strict(),

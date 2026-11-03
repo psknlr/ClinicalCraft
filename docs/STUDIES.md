@@ -84,10 +84,17 @@ its event. The engine is pure and deterministic (`applyStudy`):
 | op | records | notes |
 |---|---|---|
 | `order` | `{id: ord-n, code, key, indication?, priority, requester, reviewer?, configuration?, at, seq}` | idempotent by `key`: the same key returns the existing order, unchanged |
-| `wait` | the order's `waiting {reason, at}` | recoverable: "the Mobile ECG machine is in use by …", "transfer required …", "no device in this hospital provides …" |
-| `acquire` | an accession `{id: <code>-n, order, collector, at, revision, configuration?, quality, observations, dueAt, profileVersion}` | **the acquisition snapshot**: observations computed once, from the state now and a seed of case, profile version and accession — a sample drawn before a bleed keeps its values whenever it is reported, and a replay reproduces every number |
+| `wait` | the order's `waiting {reason, at}`, stage `blocked` | recoverable: "the Mobile ECG machine is in use by …", "transfer required …", "no device in this hospital provides …", "Nurse Aisyah could not reach the patient: …" |
+| `assign` | the order's `assignee` (who acquires it), stage `assigned` | once per person; not after the acquisition |
+| `progress` | stage `en-route`, `at-patient` or `acquisition-started` | `at-patient` only after the world confirmed the collector there; `acquisition-started` only from `at-patient` |
+| `acquire` | an accession `{id: <code>-n, order, collector, at, revision, configuration?, quality, observations, dueAt, profileVersion}` | refused unless the order is `at-patient` (or `acquisition-started`) and the collector is its assignee — no specimen, no tracing without someone at the patient. **The acquisition snapshot**: observations computed once, from the state now and a seed of case, profile version and accession — a sample drawn before a bleed keeps its values whenever it is reported, and a replay reproduces every number |
 | `release` | a report `{accession, revision, findings, impression, limitations?, generator, at, seq}` | only from an acquisition, only once due; the text is recorded, so a reload, a language change or a retry never changes it; an amendment is a new revision of the same accession |
 | `review` | `{accession, by, at, seq}` | only a released report |
+
+Every order keeps its **stages** (`StudyOrder.stage` and `stages[]`, each with `at`, `seq` and a block's `reason`):
+ordered → assigned → en route → at the patient → acquisition started → acquired → reported → reviewed, or blocked
+(and back on the way when it clears). They are the order's own event stream: a reload restores them, and the chart
+shows where an order is ("Nurse Aisyah is on the way", "blocked — …").
 
 `studyStatus(state, code)` is the latest of ordered → waiting → acquired → released → reviewed; the condition leaf
 `{study: code, status?}` reads it (default `ordered`) for objectives, rubric items and events.
@@ -110,7 +117,13 @@ After every learner act and every demonstration step (like the care team), the s
    - `sample`: the nurse walks to the patient and takes it.
    - `department`: acquired only with the patient in the device's room; otherwise `wait` "transfer required".
    In clinical (text) mode the hospital acquires at once.
-3. **Acquisition**: `study acquire` with the collector and the configuration; the engine takes the snapshot.
+3. **At the patient, then the acquisition.** The order is assigned to the collector (`assign`); the collector walks
+   to the patient with their own body (`progress en-route`); only when the world confirms them at the patient —
+   within reach and in sight (the examination rule), the study's device at the bedside, their role one that may
+   take it (nurse, paramedic, doctor) — is `progress at-patient` recorded and the study acquired (`study acquire`:
+   the engine takes the snapshot). A walk that fails (a locked door, no route) blocks the order with the reason —
+   no specimen, no result; a blocked order tries again quietly after each act and resumes once it clears, the same
+   order, one accession.
 4. **Report**, once due: the **reporting agent** writes the findings and impression from the observations. A model
    writer (`SessionStudies.writer`) may word it; `validateReport` checks every number against an observation's value
    or interval, every side named against an observation's side, and refuses findings the observations do not make. A

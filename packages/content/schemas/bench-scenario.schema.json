@@ -1930,6 +1930,57 @@
                   "properties": {
                     "op": {
                       "type": "string",
+                      "const": "assign"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "progress"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "stage": {
+                      "type": "string",
+                      "enum": [
+                        "en-route",
+                        "at-patient",
+                        "acquisition-started"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "stage"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
                       "const": "acquire"
                     },
                     "order": {

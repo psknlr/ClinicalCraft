@@ -117,7 +117,12 @@ export function studyText(c: CaseDefinition, s: SessionState, code: string, L: s
   const a = accessions.at(-1);
   if (!a) {
     const o = orders.at(-1)!;
-    return o.waiting ? rt(L, "study.status.waiting", { name, order: o.id, reason: o.waiting.reason }) : rt(L, "study.status.ordered", { name, order: o.id });
+    if (o.waiting) return rt(L, "study.status.waiting", { name, order: o.id, reason: o.waiting.reason });
+    const who = o.assignee ? person(o.assignee) : "";
+    if (o.stage === "assigned") return rt(L, "study.status.assigned", { name, order: o.id, who });
+    if (o.stage === "en-route") return rt(L, "study.status.enRoute", { name, order: o.id, who });
+    if (o.stage === "at-patient" || o.stage === "acquisition-started") return rt(L, "study.status.atPatient", { name, order: o.id, who });
+    return rt(L, "study.status.ordered", { name, order: o.id });
   }
   const report = r.reports.filter((x) => x.accession === a.id).at(-1);
   if (!report) return rt(L, "study.status.acquired", { name, accession: a.id, who: person(a.collector), at: clockTime(c, a.at, L), due: clockTime(c, a.dueAt, L, "ceil") });

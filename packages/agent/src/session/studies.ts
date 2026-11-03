@@ -22,6 +22,7 @@ import { encounterRoom, lookupStaff } from "../tools/consult-target.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 import { staffAgent } from "./staff-voice.js";
+import { pickStaff } from "./delegation.js";
 
 type Bi = { en: string; "zh-CN": string };
 
@@ -118,6 +119,9 @@ function providers(w: WorldRuntime, caps: readonly string[]): string[] {
     .map((e) => e.id);
 }
 
+/** Roles that may take a sample or record a tracing at the patient (a porter or a receptionist never does). */
+const COLLECTORS: ReadonlySet<string> = new Set(["nurse", "paramedic", "attending", "clinician"]);
+
 export class SessionStudies {
   /** A model writer for report text (validated; the template is the fallback). Null: the template only. */
   writer: ReportWriter | null = null;
@@ -173,10 +177,34 @@ export class SessionStudies {
     this.dispatch({ type: "study", study: { op: "wait", order, reason }, by: "system" }, id);
   }
 
-  private acquire(id: string, order: string, collector: string, configuration?: string): void {
-    this.dispatch({ type: "study", study: { op: "acquire", order, collector: collector.replace(/^staff:/u, ""), ...(configuration ? { configuration } : {}), quality: "good" }, by: "system" }, id);
+  private acquire(id: string, order: string, collector: string, configuration?: string): boolean {
+    const r = this.dispatch({ type: "study", study: { op: "acquire", order, collector: collector.replace(/^staff:/u, ""), ...(configuration ? { configuration } : {}), quality: "good" }, by: "system" }, id);
+    return !r.rejected;
   }
 
+  private assign(id: string, order: string, to: string): void {
+    this.dispatch({ type: "study", study: { op: "assign", order, to: to.replace(/^staff:/u, "") }, by: "system" }, id);
+  }
+
+  private progress(id: string, order: string, stage: "en-route" | "at-patient" | "acquisition-started"): void {
+    this.dispatch({ type: "study", study: { op: "progress", order, stage }, by: "system" }, id);
+  }
+
+  /** Text mode: the hospital's staff without bodies — assigned, at the patient, acquired. */
+  private collectWithoutWorld(id: string, order: string, who: string, configuration?: string): void {
+    this.assign(id, order, who);
+    this.progress(id, order, "at-patient");
+    this.progress(id, order, "acquisition-started");
+    this.acquire(id, order, who, configuration);
+  }
+
+  /**
+   * Fulfil an order (docs/STUDIES.md §5): assigned to the person who acquires it, who goes to the patient with their
+   * own body — fetching the device first for a bedside study — and only once the world confirms them at the patient
+   * (within reach, a device of the study at the bedside, their role allowed to take it) is it acquired. A walk that
+   * fails, a door that is locked, a device that cannot come: the order is blocked with the reason, no specimen and no
+   * tracing are made, and the same order resumes after a later act.
+   */
   private async fulfil(id: string, orderId: string, signal: AbortSignal): Promise<void> {
     const k = this.k;
     const o = k.state.studies!.orders.find((x) => x.id === orderId)!;
@@ -184,20 +212,33 @@ export class SessionStudies {
     if (!profile) return;
     const L = k.locale;
     const e = k.embodied;
-    // text mode: no room to walk in — the hospital acquires it at once
-    if (!e) return this.acquire(id, o.id, profile.acquisition === "department" ? "radiographer" : "nurse", o.configuration);
+    if (!e) return this.collectWithoutWorld(id, o.id, profile.acquisition === "department" ? "radiographer" : "nurse", o.configuration);
     const w = e.world();
     const devices = providers(w, profile.requires);
     const name = (eid: string) => t(w.entity(eid)?.name ?? eid, L);
     if (profile.requires.length && devices.length === 0) return this.wait(id, o.id, rt(L, "study.wait.noDevice", { caps: profile.requires.join(", ") }));
     const patient = e.patientId();
+    if (!patient) return this.wait(id, o.id, rt(L, "study.wait.noPatient"));
     if (profile.acquisition === "department") {
-      const room = patient ? w.roomOf(patient) : null;
+      const room = w.roomOf(patient);
       const here = devices.find((d) => w.roomOf(d) === room);
       if (!here) return this.wait(id, o.id, rt(L, "study.wait.transfer", { device: name(devices[0]!), room: w.roomOf(devices[0]!) ?? "—" }));
-      return this.acquire(id, o.id, "radiographer", o.configuration);
+      // the patient at the device: the radiographer of that department acquires it there
+      return this.collectWithoutWorld(id, o.id, "radiographer", o.configuration);
     }
-    const collector = this.collectorRef();
+    // the collector: the case team's circulating nurse, else the nurse nearest the patient — their role may take it
+    const ref = this.collectorRef();
+    const collector = ref.startsWith("staff:") ? ref : pickStaff(w, "nurse", patient);
+    const actor = collector ? w.actor(collector) : null;
+    if (!collector || !actor) return this.wait(id, o.id, rt(L, "study.wait.noStaff"));
+    if (!COLLECTORS.has(actor.role)) return this.wait(id, o.id, rt(L, "study.wait.notAuthorized", { who: name(collector) }));
+    if (o.assignee !== collector.replace(/^staff:/u, "")) this.assign(id, o.id, collector);
+    // a blocked order tries again quietly: its stages change only when something does (no repeated "en route")
+    const blocked = () => k.state.studies?.orders.find((x) => x.id === o.id)?.stage === "blocked";
+    const onTheWay = () => {
+      if (!blocked()) this.progress(id, o.id, "en-route");
+    };
+    let device: string | null = null;
     if (profile.acquisition === "bedside-device") {
       const snapshot = w.snapshot().entities;
       // out of service: waits until it is back (recoverable; the requester keeps the order)
@@ -209,17 +250,34 @@ export class SessionStudies {
         const d = inService[0]!;
         return this.wait(id, o.id, rt(L, "study.wait.busy", { device: name(d), holder: name(holder(d)!) }));
       }
-      const atPatient = patient ? free.find((d) => e.atBedside(d)) : undefined;
-      if (!atPatient) {
-        // the circulating nurse fetches it to the patient with their own body (the world keeps its custody)
+      device = free.find((d) => e.atBedside(d)) ?? null;
+      if (!device) {
+        // the collector fetches it to the patient with their own body (the world keeps its custody)
+        onTheWay();
         const r = await e.delegate(k.tools.context("nurse", id, signal), { role: collector, task: "fetch_equipment", params: { capability: profile.requires[0] } });
         if (!r.ok) return this.wait(id, o.id, rt(L, "study.wait.fetchFailed", { who: name(collector), device: name(free[0]!), reason: r.output.split("\n")[0] ?? "" }));
+        device = free.find((d) => e.atBedside(d)) ?? null;
+        if (!device) return this.wait(id, o.id, rt(L, "study.wait.fetchFailed", { who: name(collector), device: name(free[0]!), reason: rt(L, "study.wait.notAtBedside") }));
       }
-      return this.acquire(id, o.id, collector, o.configuration);
     }
-    // a sample: taken at the bedside by the nurse who walks there
-    if (patient) await e.act({ agent: "nurse", submission: id, signal }, { actorId: collector.startsWith("staff:") ? collector : PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: patient } });
+    // to the patient, with their own body; the world says whether they got there
+    if (!this.atPatient(collector)) {
+      onTheWay();
+      const walked = await e.act({ agent: "nurse", submission: id, signal }, { actorId: collector, operation: "navigate", goal: { kind: "interact", id: patient }, onBehalfOf: PRIMARY_ACTOR });
+      if (!this.atPatient(collector)) return this.wait(id, o.id, rt(L, "study.wait.cannotReach", { who: name(collector), reason: (walked.status === "completed" ? rt(L, "study.wait.notInReach") : walked.message.split("\n")[0] ?? "").replace(/[.。]\s*$/u, "") }));
+    }
+    if (device && !e.atBedside(device)) return this.wait(id, o.id, rt(L, "study.wait.fetchFailed", { who: name(collector), device: name(device), reason: rt(L, "study.wait.notAtBedside") }));
+    // got there after a block: on the way again, then at the patient
+    if (blocked()) this.progress(id, o.id, "en-route");
+    this.progress(id, o.id, "at-patient");
+    this.progress(id, o.id, "acquisition-started");
     this.acquire(id, o.id, collector, o.configuration);
+  }
+
+  /** Is this body at the patient now — within reach and in sight (the world's examination rule)? */
+  private atPatient(actorId: string): boolean {
+    const e = this.k.embodied;
+    return !!e && e.world().checkSpatial(actorId, { tool: "examine", kind: "examine" }).ok;
   }
 
   /** The report of a due acquisition: the writer's when it validates, else the template; released once. */

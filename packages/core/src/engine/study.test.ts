@@ -59,6 +59,14 @@ function play(actions: ClinicalAction[], from?: SessionState) {
   return { s, rejected };
 }
 
+/** The acquisition as the session records it: assigned, at the patient (the world confirmed it), acquired. */
+const collect = (o: string, collector: string, extra: Record<string, unknown> = {}): ClinicalAction[] => [
+  study({ op: "assign", order: o, to: collector }),
+  study({ op: "progress", order: o, stage: "en-route" }),
+  study({ op: "progress", order: o, stage: "at-patient" }),
+  study({ op: "acquire", order: o, collector, quality: "good", ...extra }),
+];
+
 describe("new investigations", () => {
   it("a case with test profiles passes the integrity checks", () => {
     expect(checkCaseIntegrity(c).filter((i) => i.severity === "error")).toEqual([]);
@@ -74,19 +82,21 @@ describe("new investigations", () => {
   });
 
   it("an ECG shows what its lead placement shows; its rate is the patient's at acquisition", () => {
-    const standard = play([order(), study({ op: "acquire", order: "ord-1", collector: "or-7.circulating-nurse", quality: "good" })]).s.studies!.accessions[0]!;
+    const standard = play([order(), ...collect("ord-1", "or-7.circulating-nurse")]).s.studies!.accessions[0]!;
     expect(standard).toMatchObject({ id: "ecg-new-1", collector: "or-7.circulating-nurse", dueAt: standard.at + 10 });
     expect(standard.observations.find((o) => o.id === "rate")).toMatchObject({ value: 78, unit: "/min", flag: "normal" });
     expect(standard.observations.map((o) => o.id)).toEqual(expect.arrayContaining(["lead-i", "progression"]));
-    const mirrored = play([order(), study({ op: "acquire", order: "ord-1", collector: "nurse", configuration: "mirror", quality: "good" })]).s.studies!.accessions[0]!;
+    const mirrored = play([order(), ...collect("ord-1", "nurse", { configuration: "mirror" })]).s.studies!.accessions[0]!;
     expect(mirrored.observations.map((o) => o.id)).toContain("morphology");
     expect(mirrored.observations.map((o) => o.id)).not.toContain("lead-i");
   });
 
   it("a sample keeps the state it was drawn in; a deliberate repeat is a new accession", () => {
-    const first = play([order("cbc-new"), study({ op: "acquire", order: "ord-1", collector: "nurse", quality: "good" })]);
+    const first = play([order("cbc-new"), ...collect("ord-1", "nurse")]);
     const hb1 = first.s.studies!.accessions[0]!.observations[0]!.value!;
-    const later = play([{ type: "intervene", interventionId: "bleed" }, study({ op: "acquire", order: "ord-1", collector: "nurse", quality: "good" })], first.s);
+    // the same order cannot be collected twice; a deliberate repeat is a new order
+    expect(play([study({ op: "acquire", order: "ord-1", collector: "nurse", quality: "good" })], first.s).rejected[0]?.code).toBe("requirements-unmet");
+    const later = play([{ type: "intervene", interventionId: "bleed" }, order("cbc-new", "k2"), ...collect("ord-2", "nurse")], first.s);
     const [a1, a2] = later.s.studies!.accessions;
     expect(a1!.observations[0]!.value).toBe(hb1);
     expect(a2!.id).toBe("cbc-new-2");
@@ -95,7 +105,7 @@ describe("new investigations", () => {
   });
 
   it("a report only from an acquired study, not before it is due; a review needs a released report", () => {
-    const acquired = play([order(), study({ op: "acquire", order: "ord-1", collector: "nurse", quality: "good" })]);
+    const acquired = play([order(), ...collect("ord-1", "nurse")]);
     const text = { findings: L("Sinus rhythm, rate 78/min."), impression: L("Dextrocardia pattern."), generator: "template" };
     expect(play([study({ op: "release", accession: "nope", ...text })], acquired.s).rejected[0]?.code).toBe("requirements-unmet");
     expect(play([study({ op: "release", accession: "ecg-new-1", ...text })], acquired.s).rejected[0]?.code).toBe("not-ready");
@@ -108,7 +118,24 @@ describe("new investigations", () => {
   });
 
   it("the record replays to the same numbers", () => {
-    const actions: ClinicalAction[] = [{ type: "start" }, order("cbc-new"), study({ op: "acquire", order: "ord-1", collector: "nurse", quality: "good" })];
+    const actions: ClinicalAction[] = [{ type: "start" }, order("cbc-new"), ...collect("ord-1", "nurse")];
     expect(replay(c, actions).state.studies).toEqual(replay(c, actions).state.studies);
+  });
+
+  it("nothing is acquired before someone has reached the patient: blocked with its reason, then resumed once", () => {
+    // no collector, or one still on the way: refused, no specimen
+    expect(play([order("cbc-new"), study({ op: "acquire", order: "ord-1", collector: "nurse", quality: "good" })]).rejected[0]?.message).toMatch(/nobody has reached the patient/);
+    const blocked = play([order("cbc-new"), study({ op: "assign", order: "ord-1", to: "nurse" }), study({ op: "progress", order: "ord-1", stage: "en-route" }), study({ op: "wait", order: "ord-1", reason: "the nurse cannot reach the patient: the door is locked" }), study({ op: "acquire", order: "ord-1", collector: "nurse", quality: "good" })]);
+    expect(blocked.rejected.map((x) => x.code)).toEqual(["requirements-unmet"]);
+    expect(blocked.s.studies!.accessions).toEqual([]);
+    expect(blocked.s.studies!.orders[0]).toMatchObject({ stage: "blocked", waiting: { reason: expect.stringMatching(/door is locked/) } });
+    // the way open again: the same order resumes, one accession
+    const resumed = play([study({ op: "progress", order: "ord-1", stage: "en-route" }), study({ op: "progress", order: "ord-1", stage: "at-patient" }), study({ op: "acquire", order: "ord-1", collector: "nurse", quality: "good" })], blocked.s);
+    expect(resumed.rejected).toEqual([]);
+    expect(resumed.s.studies!.accessions.map((a) => a.order)).toEqual(["ord-1"]);
+    expect(resumed.s.studies!.orders[0]!.waiting).toBeUndefined();
+    expect(resumed.s.studies!.orders[0]!.stages!.map((x) => x.stage)).toEqual(["ordered", "assigned", "en-route", "blocked", "en-route", "at-patient", "acquired"]);
+    // someone else's collection of an assigned order is refused
+    expect(play([study({ op: "progress", order: "ord-1", stage: "en-route" }), study({ op: "progress", order: "ord-1", stage: "at-patient" }), study({ op: "acquire", order: "ord-1", collector: "porter", quality: "good" })], blocked.s).rejected[0]?.code).toBe("invalid");
   });
 });
