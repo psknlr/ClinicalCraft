@@ -714,6 +714,12 @@ export class ClinicalCraftApp implements App {
   /* Game lifecycle                                                    */
   /* ---------------------------------------------------------------- */
 
+  /**
+   * The team scenario a facilitator chose for the next new encounter (`?team=<scenario id>`, or `__QA__.start`'s
+   * `team`): set at `start` when the case has it (docs/TEAM.md §6), otherwise the encounter starts without one.
+   */
+  private teamScenario: string | null = new URLSearchParams(location.search).get("team");
+
   async startCase(caseId: string, facilityId: string, resume: boolean): Promise<void> {
     if (this.starting) return;
     this.starting = true;
@@ -833,7 +839,10 @@ export class ClinicalCraftApp implements App {
           this.refresh();
         }),
       );
-      if (!session.session.state.started && !session.session.state.finished) session.act({ type: "start" });
+      if (!session.session.state.started && !session.session.state.finished) {
+        const team = this.teamScenario && caseDef.team?.scenarios.some((x) => x.id === this.teamScenario) ? this.teamScenario : null;
+        session.act(team ? { type: "start", team } : { type: "start" });
+      }
       this.enter(!!save);
     } catch (err) {
       console.error(err);
@@ -1142,9 +1151,10 @@ export class ClinicalCraftApp implements App {
       say: (text: string, to = "patient", staff?: string) => app.say(text, to, staff ?? null),
       /** Deterministic engine action without the approval gate (test set-up only). */
       dispatch: (action: ClinicalAction) => app.game?.session.session.dispatch(action) ?? null,
-      start: (caseId: string, facilityId?: string, resume = false) => {
+      start: (caseId: string, facilityId?: string, resume = false, team?: string) => {
         const card = app.content.cards.find((c) => c.id === caseId);
         const fid = facilityId ?? (card ? app.content.defaultFacility(card)?.id : undefined) ?? "general-hospital";
+        if (team !== undefined) app.teamScenario = team || null;
         return app.startCase(caseId, fid, resume);
       },
       /** Load a full case (its lazy chunk, or the server document); resolves true when it is valid. */

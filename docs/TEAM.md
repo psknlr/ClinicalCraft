@@ -14,11 +14,12 @@ a swab out of sight) and never the steps.
 
 This is the contract (code: `packages/agent/src/session/team/`, `packages/core/src/schema/team.ts`,
 `packages/core/src/engine/team.ts`, `packages/world/src/conceal.ts`, `packages/bench/src/team/`,
-`packages/web/src/ui/panels/team.ts`). If code and this page disagree, fix one of them in the same change.
+`packages/web/src/ui/panels/team.ts`; the count record: `packages/core/src/engine/count.ts`,
+`packages/agent/src/session/count.ts`). If code and this page disagree, fix one of them in the same change.
 
 Learner-facing words follow [GLOSSARY.md](GLOSSARY.md): the care team (手术团队), circulating nurse (巡回护士), scrub
-nurse (洗手护士), surgeon (术者), read-back (复述确认), count (清点), hold on closure (暂停关闭), observer mode
-(观察模式).
+nurse (洗手护士), surgeon (术者), read-back (复述确认), count (清点), count discrepancy (清点不符), hold on closure
+(暂停关闭), unsafe progression (不安全推进), observer mode (观察模式).
 
 ## 1. What a case declares
 
@@ -35,7 +36,8 @@ nurse (洗手护士), surgeon (术者), read-back (复述确认), count (清点)
   "count": {                             // optional: the count the team keeps, item by item (§4.3)
     "item": "sc-gauze-swab", "name": { "zh-CN": "纱布", "en": "swabs" },
     "when": { "procedure": { "specimen": "extracted" } },
-    "searchPlaces": ["or-7.mayo", "or-7.back-table", "or-7.lap-tower"]
+    "searchPlaces": ["or-7.mayo", "or-7.back-table", "or-7.lap-tower"],
+    "closure": "record"                  // closure on an open count: "record" (an unsafe progression) or "refuse"
   },
   "scenarios": [ … ]                     // §6
 }
@@ -161,21 +163,45 @@ The scenario's hidden set-up reaches a policy only through the world.
 
 ### 4.3 The count, item by item
 
-When the count's `when` holds (Case 126: the specimen is out), the member who **counts**:
-- counts the items of the type she perceives in the room, lying or in anyone's hands;
-- reports the number against the baseline, which is every one in the room before incision ("Count of swabs: 4 of 5.").
+The count is **one record per encounter and operating room**, kept by the engine (`SessionState.count`,
+`core/src/engine/count.ts`) **by item identity**, never by a bare number. Everyone reads it: the count board and the
+RF wand (record-backed boards, [EMBODIED.md](EMBODIED.md) §8.1), the closure (`operate close`), the case's WHO Sign Out
+(through `{ "count": … }` conditions), the team, `case_status` and the assessment (`AssessmentReport.count`).
 
-The circulating nurse then:
+| entry (`count` action) | what it records | who writes it |
+|---|---|---|
+| `baseline` | the items opened onto the field: the operating room's placements of the counted type, by entity id — taken at the start of an in-world encounter, before a scenario moves anything | the session (`system`) |
+| `count {stage}` | the items the team in the room can account for now — lying in the room or in the hands of someone in it, never one concealed — and, against the expected set, what is `missing` and what is `unexpected` (not in the count) | the count board's operations; the member who counts |
+| `scan` | what the RF wand finds inside the patient | the RF wand's `scan` |
+| `recover` | an item searched out of the patient (the wound), and who took it out | the world (`search` of the patient) |
+| `add` / `transfer` | documented additions; documented removals off the field (a swab sent with the specimen; an item not in the count set aside) | a scenario's `transfer`; the circulating nurse |
+| `escalate` | a discrepancy raised, to whom, why (credited apart from settling it) | the circulating nurse; the board's escalation |
+
+No caller supplies the ids: the session computes them from the world (`agent/src/session/count.ts`), and a learner's
+`clinical_action` of type `count` is refused whatever it claims. **Six of five** (an item not in the count) and
+**five of five made up with another room's swab** (one missing, one not in the count) are discrepancies, never
+"correct". The status (`countStatus`): `baseline` → `correct`, or `discrepancy` → (`unresolved` once escalated →
+`excluded` once a clear scan after the escalation excludes a retained item) → `reconciled` once a clean count
+accounts for every item again. A scan that detects an item keeps the count open until it is recovered (or a clear
+scan follows). **Closure** while the count is not settled (`correct`, `reconciled`, `excluded`) is refused
+(`closure: "refuse"`) or carried out and recorded as an **unsafe progression** (`closure: "record"`, teaching mode):
+kept for the debrief, never erased by a later count. A case without a world (text mode) keeps no record and does not
+judge closure on it.
+
+When the count's `when` holds (Case 126: the specimen is out), the member who **counts** counts the items the team in
+the room can account for and says it ("Count of swabs: 4 of 5.", "Count of swabs: 5 of 5, and 1 not in the count."):
+the scheduler records it in the case's count. The circulating nurse then:
 
 | the count | what follows |
 |---|---|
-| correct | told to the surgeon ("Count of swabs correct: 5 of 5."), with no hold |
-| short | **the line stops**: she asks the surgeon to *hold closure and check the wound* (a `request` with `hold`). The surgeon reads it back and she confirms (check-back). She **searches the room** — she walks to each place in `searchPlaces`, in order, and `search`es within reach. The places are the same whatever happened, so nothing points to where an item is. She stops early once she can see them all. She waits a while for the surgeon's wound check, then asks for a **recount** |
-| recount correct | the surgeon may close ("Recount correct: 5 of 5 swabs — you may close.") |
-| recount still short | **escalated** ("Still 4 of 5 swabs after searching the room — an X-ray before the patient leaves."), never pretended solved |
+| every expected item, nothing else | told to the surgeon ("Count of swabs correct: 5 of 5."), with no hold |
+| an item missing, or one not in the count | **the line stops**: she asks the surgeon to *hold closure and check the wound* (a `request` with `hold`). The surgeon reads it back and she confirms (check-back). An item not in the count she takes off the field and documents as set aside. She **searches the room** — she walks to each place in `searchPlaces`, in order, and `search`es within reach. The places are the same whatever happened, so nothing points to where an item is. She stops early once every item is accounted for. She waits a while for the surgeon's wound check, then asks for a **recount** |
+| recount reconciled | the surgeon may close ("Recount correct: 5 of 5 swabs — you may close.") |
+| recount still not reconciled | **escalated** ("Still 4 of 5 swabs after searching the room — an X-ray before the patient leaves."), never pretended solved; the escalation is the nurse's in the record — and the count stays open until a clear scan excludes a retained swab |
 
 Every member searches with their own body (`search`, [EMBODIED.md](EMBODIED.md) §8.6). A swab in the wound is found
-only by a search *of the wound* (the patient), which brings it out into the searcher's hand.
+only by a search *of the wound* (the patient), or detected by the RF wand; the search brings it out into the
+searcher's hand, recorded as recovered.
 
 ### 4.4 The surgeon
 
@@ -194,12 +220,14 @@ only by a search *of the wound* (the patient), which brings it out into the sear
 
 | piece | what it is |
 |---|---|
-| `team` op | `step`, `run {rounds?}` (until settled), `pause` (autonomy `step`), `resume` (`auto`), `surgeon {learner \| simulated}`, `reply {message, kind, text?}`, `need {item, for?}` (the surgeon says what they need; the team takes it from there). A case without a team: `error` `no_team` |
+| `team` op | `step`, `run {rounds?}` (until settled), `pause` (autonomy `step`), `resume` (`auto`), `surgeon {learner \| simulated}`, `reply {message, kind, text?, item?}`, `need {item, for?}` (the surgeon says what they need; the team takes it from there). A case without a team: `error` `no_team` |
+| replies | the learner answers only what was said to them (else `permission_denied`); a read-back about another item than asked (`item`, or named in its words) reads back nothing — the sender asks again |
+| one scheduling path | the team takes its turn after every act of the learner (`user_message`, `clinical_action`, `world_action`, `external_tool_call`, `autopilot`) and after every step of the offline autopilot (`AutopilotHost.afterStep`): the browser, the learner, external agents and a headless run drive it the same way, and an autopilot never runs ahead of a team it is waiting for |
 | `team_event` | a message, a receipt, a task changed, or the scheduler's status (round, autonomy, surgeon) |
 | `ClinicalSession.team()` | the team as it stands (a `TeamCheckpoint`), for front-ends |
 | acts | through `EmbodiedSession.act` on a nurse's tool path: the role's authority and scope of practice apply, as for any staff member |
 | browser | the HUD's **Team** button (in the team's phases) opens the panel: pace (Auto / Step / Next step), the surgeon (I am the surgeon / Observe), Search within reach / Check the wound, what was said (lines to the learner marked, with their answers), the tasks (with "seen to be done"), the count. The team clock (`TEAM_STEP_MS`) runs while the encounter runs, or while the panel is open |
-| saves | the web's save keeps `team` with the world (`persistence.ts`); a resume restores both |
+| saves | the web's save keeps `team` with the world (`persistence.ts`); a resume restores both. The scenario's lifecycle is saved with it — `pending` (the team's phases not begun, nothing set up in the world), `active` (set up once: `setup {round, at, worldVersion}`), `completed` — so a save before the operation sets the scenario up when the operation begins, exactly as a run never interrupted, and a save after it never sets anything up twice; holds, requests, hand-overs and item positions are in the checkpoint and the world snapshot |
 
 ## 6. Team scenarios (authored)
 
@@ -212,13 +240,14 @@ only by a search *of the wound* (the patient), which brings it out into the sear
   "absent": ["or-7.scrub-nurse"],              // on a break
   "relief": [{ "staff": "or-6.scrub-nurse", "duties": ["instruments"] }],
   "items": [{ "placement": "or-7-swab-5", "beside": "or-7.mayo", "concealed": true }],   // or beside "patient", "inside": true
+  // a documented transfer off the field: { "placement": …, "beside": …, "transfer": { "to": { … }, "reason": { … } } }
   "expect": { "count": "reconciled" }          // the team benchmark's ground truth (delivered: true | false; count)
 }
 ```
 
 A scenario is chosen at `start` (`{ "type": "start", "team": "swab-on-floor" }`) and recorded as hidden state
-(`SessionState.teamScenario`). A start without `team` sets nothing up: the team still works on what is asked of it
-(`team need`) and keeps the count. Case 126 (SurgeryCraft) has eight team scenarios:
+(`SessionState.teamScenario`); in the browser a facilitator chooses it for the next encounter with `?team=<id>`. A start without `team` sets nothing up: the team still works on what is asked of it
+(`team need`) and keeps the count. Case 126 (SurgeryCraft) has eleven team scenarios:
 - the needle holder needed;
 - the scrub nurse on a break (relief from OR 6);
 - the needle holder on the Mayo stand;
@@ -226,7 +255,10 @@ A scenario is chosen at `start` (`{ "type": "start", "team": "swab-on-floor" }`)
 - the count correct (the control);
 - a swab under the Mayo stand;
 - a swab in the wound;
-- a swab gone from the room.
+- a swab gone from the room;
+- six of five (OR 6's swab on the Mayo tray);
+- five of five made up with OR 6's swab while the fifth is in the wound;
+- a swab sent with the specimen, documented (the positive control: no hold).
 
 ## 7. The team benchmark
 
@@ -237,15 +269,25 @@ them, headless, in **observer mode**:
 2. the surgeon's body goes to the table;
 3. the team then works alone (`team run`) until what was set in motion has ended.
 
-The score comes from the session's own record (the team checkpoint), never from the team's say-so, checked against
-the scenario's `expect`. The report (`team-report.json`, `team-report.md`) gives, per scenario:
+The score comes from the session's own record (the team checkpoint, the case's count record, what bodies hold), never
+from the team's say-so, checked against the scenario's `expect`. Its denominator is the scenario's **obligations**,
+enumerated by id at the start (`obligations`): every need — its recipient, the physical outcome (they hold an item of
+the type, one no other need was credited with), whether the circulating nurse verified it — and the count, when the
+scenario expects an outcome. Each ends `met`, `escalated` (with its reason; appropriate when expected), `failed`, or
+`unfinished` when the run stopped — a run with an unfinished obligation never passes, however many rounds it ran. A
+scenario is `activated` when it was set up in the world and its work began; one assigned and never activated is
+**invalid** (nothing about the team can be concluded from it). The report publishes the denominators apart: scenarios
+assigned, activated, completed, appropriately escalated and invalid; obligations, and those unfinished. The nurse
+who escalates a missing swab keeps that credit even when the run then fails because closure went ahead on it.
+The report (`team-report.json`, `team-report.md`) gives, per scenario:
 
 | metric | meaning |
 |---|---|
 | needs: delivered / verified / escalated | each need ended with the person holding the item, seen to be done by the circulating nurse; or escalated with a reason |
 | count: outcome · holds · detection latency | correct / reconciled / unresolved; holds on closure asked for; rounds from the count falling due to the hold |
 | false hold | a hold when every item was there (the control) |
-| inappropriate progression | closure began while the count was short (`closedOnHold`) |
+| obligations: met / escalated / unfinished / failed | the scenario's obligations as they ended |
+| inappropriate progression | closure began while the count was not settled (the count record's unsafe progression; `closedOnHold`) |
 | exactly once | no action id carried out twice; no more hand-overs than needs |
 | rounds · messages · acts · seconds | the work it took (simulated seconds) |
 
@@ -259,22 +301,32 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   reach or of what they are in, kept by a snapshot.
 - `agent/src/session/team/policy.test.ts`: every rule above on hand-built views.
 - `agent/src/session/team/session-team.test.ts`: the op without a team, the transcript replay, checkpoint validation.
+- `core/src/engine/count.test.ts`: the count record — clean, recoverable, unresolved (closure recorded, never
+  erased; or refused), excluded, six of five, a false five of five, a documented transfer.
+- `bench/src/team/score.test.ts`: obligations — two requests with one delivery is not a pass; one item cannot answer
+  two requests; a scenario never activated is invalid; an escalation credited while closure on it fails the run.
 - SurgeryCraft `tools/case126-team.test.ts`, run by its `tools/check.sh` against this repository:
   - the two-nurse handoff while the learner watches;
   - relief, moved and missing instruments;
   - the surgeon away from the table;
   - two requests for one needle holder (one owner);
   - save and restore mid-handoff (one hand-over);
-  - every count ending, in learner and observer mode, and closing on a hold.
-- `bench team` over Case 126: 8 / 8.
+  - every count ending, in learner and observer mode, and closing on a hold;
+  - who a reply is for and what it reads back.
+- SurgeryCraft `tools/case126-count.test.ts`: the field, the board, the RF wand, the Sign Out, the team and the score
+  agree on every count ending; a save before the operation activates the same obligations as a run never interrupted;
+  the headless autopilot works the assigned scenario.
+- `bench team` over Case 126: 11 / 11 (11 activated, 11 completed, 2 appropriately escalated, 0 invalid).
 
 ## 9. Limits (stated as they are)
 
 - The policies are **rules**, written for the instrument handoff and the count. No language model drives a team
   member, and no live model has been asked to work with this team.
 - **Time is logical.** A round is not a clock interval, and a member does one thing per round.
-- **Perception stands in for a glance round the room.** Verification and counting use what the body perceives (line
-  of sight within 8 m counts, whatever the facing). A member outside the room knows whether someone is in it.
+- **Perception stands in for a glance round the room.** Verification uses what the body perceives (line of sight
+  within 8 m counts, whatever the facing); a count is what the team in the room can account for (every item in the
+  room or in hands there, never a concealed one) — not a model of a nurse miscounting. A member outside the room
+  knows whether someone is in it.
 - **The surgeon is the learner's body.** In observer mode the simulated surgeon acts with it.
 - **Only the duties above have policies.** `anaesthesia` is declared only. Relief colleagues are reached "by phone";
   nobody walks to fetch an instrument from another room.

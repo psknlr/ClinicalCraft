@@ -424,7 +424,8 @@
                           "read_result",
                           "intervene",
                           "check_vitals",
-                          "examine"
+                          "examine",
+                          "surgical_count"
                         ]
                       },
                       "select": {
@@ -1530,6 +1531,77 @@
           },
           "required": [
             "procedure"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "count": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "baseline",
+                        "correct",
+                        "discrepancy",
+                        "unresolved",
+                        "excluded",
+                        "reconciled"
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "baseline",
+                          "correct",
+                          "discrepancy",
+                          "unresolved",
+                          "excluded",
+                          "reconciled"
+                        ]
+                      },
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "stage": {
+                  "type": "string",
+                  "enum": [
+                    "baseline",
+                    "cavity",
+                    "closing",
+                    "final",
+                    "recount",
+                    "handover"
+                  ]
+                },
+                "scan": {
+                  "type": "string",
+                  "enum": [
+                    "clear",
+                    "detected"
+                  ]
+                },
+                "escalated": {
+                  "type": "boolean"
+                },
+                "unsafe": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "count"
           ],
           "additionalProperties": false
         }

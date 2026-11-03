@@ -410,8 +410,15 @@ A theatre case can give its room a care team that works on its own in in-world m
 * **Give each scenario an `expect`** (`delivered: true | false`, `count: "correct" | "reconciled" | "unresolved"`) and
   keep one control with nothing set up: `clinicalcraft bench team` scores every scenario against it (all must pass),
   and the control measures false holds.
-* The counted items are placed one by one in the room (a facility's placements); the baseline is every one in the room
-  before incision.
+* The counted items are placed one by one in the room (a facility's placements); the baseline is every one in the room,
+  by entity id, recorded at the start of an in-world encounter. The count is the case's record (docs/TEAM.md §4.3):
+  read it with `{ "count": {…} }` conditions — make the Sign Out contraindicated while it is open
+  (`{"count": {"status": ["baseline", "discrepancy", "unresolved"]}}`), and give closure on an open count a
+  safety-critical gate (`{"count": {"unsafe": true}}`). `team.count.closure` chooses whether closure on an open count is
+  recorded (teaching mode, the default) or refused.
+* Exercise the count by identity, not only by number: keep a scenario with an item **not in the count** (another room's
+  item moved in: six of five, or five of five with one still in the wound), and a positive control with a **documented
+  transfer** (`items[].transfer`: a swab sent with the specimen — no hold expected).
 
 ## 7. Learning design
 

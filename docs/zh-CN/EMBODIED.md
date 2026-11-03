@@ -751,6 +751,17 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   `available` 和原因（包括空间原因）。
 * 职员的移动是确定性的路径跟随（不会每帧调用大模型）。
 
+**显示病历记录的看板**（`derived: "case-record"`，例如 WHO 核查板、手术清点板、RF 检测棒）：在病例记录其操作所指内容的
+情况下——核查步骤（`clinical: {tool: "intervene", select: "item"}`），或手术清点（`clinical: {tool: "surgical_count",
+select: "item", item: <步骤>}`，步骤为 `baseline`、`cavity`、`closing`、`final`、`recount`、`handover`、`scan`、
+`escalate`；docs/TEAM.md §4.3）——其状态是记录中 `when` 成立的最后一个列出的状态，其操作写入记录（清点取自手术间里团队能
+核对到的物品，扫描取自患者体内的物品——绝不取调用方给出的数字或编号）；在其他病例中它们是有自身存储状态的普通看板。
+记录看板**绑定到本次接诊**：只有患者此刻所在房间里的看板显示并写入记录（`recordBound`）。其他房间的看板显示初始状态并
+拒绝操作——"它不记录这位患者的任何内容"，并指向患者所在房间里的同类看板——因此 1 号手术间的看板绝不会为 7 号手术间的
+患者完成 Sign In。每次显示都读取这一绑定，写入引擎前再次核对（审批等待或患者转运之后：`SPATIAL_PRECONDITION_CHANGED`，
+不记录任何内容）。随身携带的记录型手持设备（RF 检测棒）在 `held` 之外也显示其记录状态。为满足前置条件而推进看板状态的
+路径（`firstStepTowards`）可以使用清点自身的操作（清点、扫描），绝不使用核查步骤或治疗。
+
 ### 8.2 权限
 
 每个操作属于一个类别；每个角色拥有若干类别；操作自己的 `roles` 还可进一步收窄
@@ -1519,7 +1530,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 参考演示（`clinicalcraft bench demo`） | yes（A7） | 两种语言的 STEMI：每一步都由引擎 + 世界状态确认，带 ID 与版本的逐步链条，评估跨度；中途中断的接诊判为失败 | 2026-10-29 重新生成的 `docs/bench/demo.en.md` / `demo.zh-CN.md`：50 步、26 个世界动作、0 违规、22 / 22；重新生成时轨迹逐字节相同 | no——演示的是基础设施（一次重放），不是临床推理 |
 | 内容规模（病例索引、按病例懒加载的分块、分页带 ETag 的服务器 API、CLI 与 MCP 中的 `CaseLibrary`） | yes | 单元测试：索引器、病例存储、服务器内容 API、网页索引插件 | 用 100–1 000 个合成病例测量（§11） | no——大型病例目录下浏览器的启动与切换病例未测量；首次加载校验每个病例约 150–230 ms。Perf |
 | 术野模型（`procedure`、`operate`，见 docs/PROCEDURE.md）：解剖、区域、穿刺孔与器械、按术野判定的安全视野、由解剖导致的不安全操作与损伤、操作者视角（结构编号，从不显示胆管名称）、`observe_field` / `operate` 工具、`safetyGates` | yes（术野轮次） | core 单元测试：安全路径；对抗路径（习惯性牵拉、把胆总管误认为胆囊管并夹闭离断、未暂停即夹闭、声称但未真实建立的视野、出血处理、隐藏结构旁使用能量、胆囊撕破）；补救策略；可及性与布孔人体工学；确定性 | 未验证：没有外科、麻醉或影像专家审核；唯一使用它的病例（SurgeryCraft cmcr-1654623）基于参考解剖 | no — 组织为规则状态，并非标定的力学模型；网页面板为第一版。Rel, Val |
-| 手术团队（docs/TEAM.md；§8.5）：`case.team`，在 `start` 时选定且隐藏的团队情境，`TeamScheduler`（轮次，自主程度 auto / step / off），离线角色策略（巡回护士、洗手护士、清点、模拟术者），带复述确认的消息，记录真实发起人的动作回执，占用，恰好一次的动作 id，`team` 操作 / `team_event`，`team` 记录项与 `SessionSnapshot.team`，网页团队面板与团队时钟，`bench team` | yes（团队轮次） | core `team.test.ts`（一致性、与场馆相符、开始时选择）；agent `team/policy.test.ts`（在手工构造的视图上验证 17 条规则）、`team/session-team.test.ts`；SurgeryCraft `tools/case126-team.test.ts`（13 项：学员观看时两名护士传递器械、顶班、器械被挪动或缺失、术者不在台旁、两个请求争一把持针器只有一个占用者、传递中途保存 / 恢复只递交一次、学员与观察模式下每种清点结局、清点未解决时关闭） | `bench team` 在病例 126 上：8 / 8 个情境，全部恰好一次；浏览器（2026-11-02，`serve` 下的病例 126，Chromium + SwiftShader）：团队时钟把一次持针器传递推进到“已亲眼核实”，自动存档保留了团队 | no — 规则策略，只覆盖两种职责与清点；没有语言模型驱动团队成员；只有一个病例；未经围术期护理人员审核。Rel |
+| 手术团队（docs/TEAM.md；§8.5）：`case.team`，在 `start` 时选定且隐藏的团队情境，`TeamScheduler`（轮次，自主程度 auto / step / off），离线角色策略（巡回护士、洗手护士、清点、模拟术者），带复述确认的消息，记录真实发起人的动作回执，占用，恰好一次的动作 id，`team` 操作 / `team_event`，`team` 记录项与 `SessionSnapshot.team`（含团队情境的生命周期：pending / active / completed 及其设置事件），网页团队面板与团队时钟，统一的调度路径（学员的动作、外部智能体、示范接诊的每一步），按职责计分的 `bench team`（分配 / 激活 / 完成 / 上报 / 无效）；手术清点作为按物品身份记录的唯一病历记录（`SessionState.count`，§8.1 绑定到患者所在房间的记录看板） | yes（团队轮次） | core `team.test.ts`（一致性、与场馆相符、开始时选择）、`count.test.ts`（11 项：每种清点结局、6/5、假 5/5、有记录的转移、关闭被记录或被拒绝）；agent `team/policy.test.ts`（在手工构造的视图上验证 17 条规则）、`team/session-team.test.ts`、`session/identity.test.ts`；bench `team/score.test.ts`（职责）；SurgeryCraft `tools/case126-team.test.ts`（16 项：学员观看时两名护士传递器械、顶班、器械被挪动或缺失、术者不在台旁、两个请求争一把持针器只有一个占用者、传递中途保存 / 恢复只递交一次、学员与观察模式下每种清点结局、清点未解决时关闭、回复对象、点名同事、麻醉中不能说话）与 `tools/case126-count.test.ts`（11 项：术野、清点板、RF 检测棒、Sign Out、团队与评分在每种清点结局上一致；术前存档；无界面示范接诊） | `bench team` 在病例 126 上：11 / 11 个情境（激活 11、完成 11、恰当上报 2、无效 0），全部恰好一次；浏览器（2026-11-02，`serve` 下的病例 126，Chromium + SwiftShader）：团队时钟把一次持针器传递推进到“已亲眼核实”，自动存档保留了团队——清点记录、看板绑定与待初始化情境的重新加载尚未在浏览器中演示 | no — 规则策略，只覆盖两种职责与清点；没有语言模型驱动团队成员；只有一个病例；未经围术期护理人员审核。Rel |
 | 藏匿物品与 `search`（§8.6） | yes（团队轮次） | world `conceal.test.ts`（不出现在观察、`find`、`canSee`、记忆与事件中；按 id 或作为目标都被拒绝；在伸手可及处显现，或从患者身上取出到手中；快照保留） | 病例 126 的清点情境（纱布在 Mayo 托盘下、在术野里、已离开手术间） | no — 只有情境能藏匿物品；接诊过程中没有东西会把物品藏起来。Rel |
 
 ### 14.3 已知局限
