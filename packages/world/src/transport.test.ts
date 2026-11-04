@@ -379,6 +379,32 @@ describe("how the patient travels: on foot, or lying on the trolley that comes a
     expect(restored.runtime.restoredJourney()).toBeNull();
   });
 
+  it("a bedbound patient's trolley marked out of service never carries them: the transport waits for a usable one, nobody moves (the round 3 audit)", async () => {
+    let travelling = false;
+    const seen: unknown[] = [];
+    const w = makeWorld("pulmonary-embolism-postop", { mover: steppingMover(() => void (travelling && seen.push(place(w).transit ?? null))) });
+    await toPatient(w);
+    const trolley = place(w).trolley!;
+    expect(trolley).toBeTruthy();
+    const before = structuredClone(place(w));
+    w.runtime.setAvailability(trolley, false);
+    travelling = true;
+    const go = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+    travelling = false;
+    expect(go).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
+    expect(go.message).toMatch(/is out of service, so .+ cannot be taken on it: a usable trolley or bed is needed/u);
+    // nobody walked, nothing rode on the broken trolley; the patient is where they were
+    expect(seen).toEqual([]);
+    expect(place(w)).toEqual(before);
+    // back in service: the same request takes them, lying on it the whole way
+    w.runtime.setAvailability(trolley, true);
+    travelling = true;
+    const again = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+    travelling = false;
+    expect(again.status, again.message).toBe("completed");
+    for (const x of seen.filter(Boolean)) expect(x).toMatchObject({ trolley, posture: "lying" });
+  });
+
   it("a patient who cannot respond but lies on a trolley at hand goes lying on it, every step of the way", async () => {
     let armed = false;
     const seen: unknown[] = [];

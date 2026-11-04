@@ -115,14 +115,24 @@ capability is not limited by it. Without a picture the field is dark (`inView` f
 the laparoscopic camera or light source is not working (switched off or out of service) …"; a step that needs sight
 is refused with the same reason); without gas insufflation is refused ("There is no CO₂ supply …") and a
 pneumoperitoneum already made is lost at once (`deflated`). Supply changes are in the record but are not operative
-steps (they number no `op-<n>`). **Once the operation has begun** (a port plan chosen), the circulating nurse keeps
+steps (they number no `op-<n>`), and **equipment is recorded apart from the operation** (`SessionState.equipment`): a
+tower failing before the Time Out is an equipment fault — `case_status` and `observe_field` still name the Time Out
+that opens the operation, and the fault beside it — never the start of the operation; the operation takes the
+equipment over when it opens (`procedureStateOf`). A device's **gas controls are the operation's own steps**
+(`clinical: {tool: "operate", select: "item", item: "insufflate" | "desufflate"}`, docs/FACILITIES.md): SurgeryCraft's
+tower "Start insufflation" makes the pneumoperitoneum at the procedure's pressure and "Stop insufflation and
+desufflate" lets it down, through the session's tool path — a step the operation refuses (no port plan yet, the Time
+Out not done) leaves the tower as it was. **Once the operation has begun** (a port plan chosen), the circulating nurse keeps
 it running: a device in the room that the operation lacks and that is only switched off — a spare brought in from the
 store, a tower someone powered down — is switched on by them with their own body (the device's own operation, its
 roles and its time) and they say what it gives back; never a sterile member of the team, and never a device out of
 service (a backup is fetched instead). **Every view shows the equipment as it is now**: the web's operative playback
 applies the current supply to whatever frame is on screen, so the scope dock and the surgery window go dark ("No
 picture") at the next render after a failure — also while older steps are still playing or with nothing queued — and
-say "Abdomen down" while the scope is in a deflated abdomen; a reload shows the same. SurgeryCraft's OR 7 tower is set
+say "Abdomen down" while the scope is in a deflated abdomen; a reload shows the same. An abdomen the equipment let
+down stays down on every frame shown afterwards: older steps still queued play in order with their own captions,
+deflated, until the record holds a new accepted insufflation — a tower restored with a backlog never shows "Live" or
+a pressure the session does not have. SurgeryCraft's OR 7 tower is set
 up before the list (`Placement.state: "balanced"`); the spare in the equipment store is off until the circulating
 nurse brings it and switches it on.
 

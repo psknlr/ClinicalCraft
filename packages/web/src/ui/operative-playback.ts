@@ -9,7 +9,9 @@
  * The equipment is not a frame: what the tower supplies now (`ProcedureState.supply`) applies to whatever frame is on
  * screen — a camera, light source or insufflator that fails darkens (or deflates) the picture at the next render,
  * also while an older step is still playing or when nothing is queued, and a working backup brings it back the same
- * way.
+ * way. An abdomen the equipment let down stays down on every frame shown afterwards — the older steps still waiting
+ * play in order with their own captions, deflated — until the record holds a new accepted insufflation: a tower
+ * restored with steps still queued never shows a pneumoperitoneum the session does not have.
  * No DOM, no three.js: timers are injected.
  */
 import { operate, type DomainEvent, type ProcedureDefinition, type ProcedureSignal, type ProcedureState, type ProcedureSupply } from "@clinicalcraft/core";
@@ -63,6 +65,9 @@ function sameSupply(a: ProcedureSupply | undefined, b: ProcedureSupply | undefin
   return (a?.image ?? true) === (b?.image ?? true) && (a?.gas ?? true) === (b?.gas ?? true);
 }
 
+/** The abdomen let down (the frame's field otherwise as it was). */
+const deflated = (s: ProcedureState): ProcedureState => (s.insufflated || s.pressure ? { ...s, insufflated: false, pressure: 0 } : s);
+
 /** A frame under the equipment as it is now: the supply of `live`; without gas, the abdomen as `live` has it. */
 export function underSupply(frame: ProcedureState, live: ProcedureState): ProcedureState {
   if (sameSupply(frame.supply, live.supply)) return frame;
@@ -87,7 +92,14 @@ export class OperativePlayback {
   private readonly queue: PlaybackItem[] = [];
   private latest: ProcedureState | null = null;
   /** The frame on screen under the current supply (kept while neither changes: views compare by identity). */
-  private lit: { frame: ProcedureState; live: ProcedureState; state: ProcedureState } | null = null;
+  private lit: { frame: ProcedureState; live: ProcedureState; item: PlaybackItem | null; state: ProcedureState } | null = null;
+  /**
+   * The operative events (by sequence) that happened before the equipment let the abdomen down — shown deflated
+   * whenever they play (0: none). A later accepted insufflation (a higher sequence) is shown as it was.
+   */
+  private deflatedThrough = 0;
+  /** The next replay starts from a deflated abdomen (the equipment let it down after the last step taken in). */
+  private deflateBase = false;
   private timer: unknown = null;
   private until = 0;
   private readonly listeners = new Set<() => void>();
@@ -115,6 +127,7 @@ export class OperativePlayback {
     const def = this.def;
     if (!def) return;
     const supplyChanged = !!this.latest && !sameSupply(this.latest.supply, field.supply);
+    const before = this.latest;
     this.latest = field;
     if (!this.shown || events.length < this.seen) {
       // a first look, or a record that went back: the field as it is, the last thing that happened as its caption
@@ -122,12 +135,23 @@ export class OperativePlayback {
       this.seen = events.length;
       this.rejections = events.filter((e) => e.type === "action.rejected").length;
       this.queue.length = 0;
+      this.deflatedThrough = 0;
+      this.deflateBase = false;
       const last = events.at(-1);
       this.item = last ? this.itemOf(last, events.length, field, field) : null;
       this.emit();
       return;
     }
     let base = this.queue.at(-1)?.after ?? this.shown;
+    // the equipment let the abdomen down since the last step taken in: what follows is replayed from there
+    if (this.deflateBase) {
+      base = deflated(base);
+      this.deflateBase = false;
+    }
+    // the abdomen came down now, and not by an operative step taken in now (a desufflation replays by itself): the
+    // equipment did it — everything taken in so far is from before
+    const byStep = events.slice(this.seen).some((e) => e.type === "procedure.step" && e.op === "desufflate");
+    const letDown = !!before?.insufflated && !field.insufflated && !byStep;
     for (let i = this.seen; i < events.length; i++) {
       const e = events[i]!;
       let after = base;
@@ -142,7 +166,15 @@ export class OperativePlayback {
       base = after;
     }
     this.seen = events.length;
-    if (this.queue.length) this.play();
+    if (letDown) {
+      this.deflatedThrough = events.length;
+      this.deflateBase = true;
+      this.lit = null;
+    }
+    if (this.queue.length) {
+      this.play();
+      if (letDown) this.emit();
+    }
     else if (this.shown !== field && !this.timer) {
       // nothing to play: the field changed without a step (a tower failing, a backup connected, the abdomen
       // deflating) — the frame on screen is the session's own field, now
@@ -195,7 +227,12 @@ export class OperativePlayback {
     const shown = this.shown;
     const live = this.latest;
     if (!shown || !live) return { state: shown, item: this.item };
-    if (this.lit?.frame !== shown || this.lit.live !== live) this.lit = { frame: shown, live, state: underSupply(shown, live) };
+    if (this.lit?.frame !== shown || this.lit.live !== live || this.lit.item !== this.item) {
+      const lit = underSupply(shown, live);
+      // a frame from before the equipment let the abdomen down is shown down (its step and caption as they were)
+      const stale = this.deflatedThrough > 0 && (this.item?.sequence ?? 0) <= this.deflatedThrough;
+      this.lit = { frame: shown, live, item: this.item, state: stale ? deflated(lit) : lit };
+    }
     return { state: this.lit.state, item: this.item };
   }
 

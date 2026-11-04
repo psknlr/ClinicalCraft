@@ -1124,7 +1124,10 @@ on no bed and no trolley, nobody walking them from that moment — and the actio
 fails with the reason, where they stopped and that going on needs a trolley
 ("… Stopped in … and laid … down safely where they were. Taking … anywhere
 needs a trolley or a bed …"). A new transport makes the same assessment before
-it starts; a save at the stop restores the same place with nothing in progress.
+it starts; a save at the stop restores the same place with nothing in progress. A trolley carries the patient only
+when it is free **and in service**: a patient who cannot walk whose trolley is marked out of service is not moved at
+all — the transport fails naming it ("… is out of service, so … cannot be taken on it: a usable trolley or bed is
+needed …") — and goes once a usable one is there.
 
 **Walking with the patient** (`escort_patient` / `release_patient`;
 `escort.ts`). "Follow me": a patient who can walk — not lying by clinical

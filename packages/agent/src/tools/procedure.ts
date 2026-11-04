@@ -4,12 +4,12 @@
  * through the session (the only way to change the field). No safety-view verdict, hidden injury,
  * unsafe-act record or score reaches the agent: those are the debrief's.
  */
-import { observeField, portReport, procedureFor, ProcedureOpSchema, createProcedureState, t, type FieldView, type ProcedureOp } from "@clinicalcraft/core";
+import { observeField, portReport, procedureFor, procedureStateOf, ProcedureOpSchema, t, type FieldView, type ProcedureOp } from "@clinicalcraft/core";
 import { joinList, rt } from "../session/i18n.js";
 import { procedureLabel } from "../session/i18n-procedure.js";
 import { actorFor, rejectedOutput, type ToolArgs } from "./clinical-resolve.js";
 import { visiblePhases } from "./clinical.js";
-import { operationPrerequisiteLines, operationUnderWay } from "./requirements.js";
+import { equipmentLines, operationPrerequisiteLines, operationUnderWay } from "./requirements.js";
 import type { ToolContext, ToolDefinition } from "./types.js";
 
 function fieldText(ctx: ToolContext): string {
@@ -18,7 +18,7 @@ function fieldText(ctx: ToolContext): string {
   const state = ctx.state();
   const def = procedureFor(c, state);
   if (!def) return rt(L, "field.none");
-  const s = state.procedure ?? createProcedureState();
+  const s = procedureStateOf(state);
   const v: FieldView = observeField(def, s);
   const lab = (x: string) => procedureLabel(L, x);
   if (!v.plan) {
@@ -26,7 +26,7 @@ function fieldText(ctx: ToolContext): string {
       const r = portReport(def, p);
       return `${p.id} — ${t(p.name, L)} [${rt(L, "field.ports.report", { plan: p.id, side: lab(p.surgeonSide), angle: r.manipulationAngle == null ? "—" : `${Math.round(r.manipulationAngle)}°`, warnings: r.warnings.length ? r.warnings.join(", ") : "—" })}]`;
     });
-    return rt(L, "field.notStarted", { plans: plans.join("; ") });
+    return [rt(L, "field.notStarted", { plans: plans.join("; ") }), ...equipmentLines(state, L)].join("\n");
   }
   const lines = [
     rt(L, "field.plan", {
@@ -87,7 +87,7 @@ const observe: ToolDefinition<ToolArgs> = {
     // before the operation is under way there is no field to look at: say what still opens it
     if (procedureFor(c, s) && !operationUnderWay(c, s) && !s.procedure) {
       const L = ctx.locale;
-      return { ok: false, output: [rt(L, "status.op.locked"), ...operationPrerequisiteLines(c, s, L, visiblePhases(c, s))].join("\n"), data: { underWay: false } };
+      return { ok: false, output: [rt(L, "status.op.locked"), ...operationPrerequisiteLines(c, s, L, visiblePhases(c, s)), ...equipmentLines(s, L)].join("\n"), data: { underWay: false } };
     }
     return { ok: true, output: fieldText(ctx) };
   },

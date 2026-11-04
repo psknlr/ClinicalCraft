@@ -431,7 +431,8 @@
                           "intervene",
                           "check_vitals",
                           "examine",
-                          "surgical_count"
+                          "surgical_count",
+                          "operate"
                         ]
                       },
                       "select": {

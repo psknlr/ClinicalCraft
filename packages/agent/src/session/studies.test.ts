@@ -92,6 +92,31 @@ describe("the report validator binds every number to its observation", () => {
     expect(validateReport(accession, templateReport(profile, accession), templateReport(profile, accession), true)).toEqual([]);
   });
 
+  it("a phrase bound to an observation says that observation, in each language: no other finding under a genuine id, no negation, both languages alike (the round 3 audit)", () => {
+    const withRhythm = (en: string, zh: string): ReportText => {
+      const base = written("Rate 78/min", "PR 169 ms");
+      return { ...base, findings: L(`Rate 78/min. PR 169 ms. ${en}`, `Rate 78/min. PR 169 ms. ${zh}`), bindings: [...base.bindings!, { observation: "rhythm", en, "zh-CN": zh }] };
+    };
+    // the genuine statement, both languages
+    expect(validateReport(accession, withRhythm("Rhythm: sinus rhythm", "节律：窦性心律"))).toEqual([]);
+    // the opposite finding under the rhythm's own id, in English only: refused — it leaves out the finding and says
+    // what the observation does not, and the languages no longer agree
+    const vt = validateReport(accession, withRhythm("Rhythm: ventricular tachycardia", "节律：窦性心律"));
+    expect(vt).toEqual(expect.arrayContaining([
+      expect.stringMatching(/en: the statement of "rhythm" leaves out its finding \("sinus/u),
+      expect.stringMatching(/en: the statement of "rhythm" says "tachycardia/u),
+    ]));
+    // the same in Chinese only
+    expect(validateReport(accession, withRhythm("Rhythm: sinus rhythm", "节律：室性心动过速"))).toEqual(expect.arrayContaining([expect.stringMatching(/zh-CN: the statement of "rhythm" leaves out its finding/u)]));
+    // a negation the observation does not have
+    expect(validateReport(accession, withRhythm("Rhythm: not sinus rhythm", "节律：非窦性心律"))).toEqual(expect.arrayContaining([
+      expect.stringMatching(/en: the statement of "rhythm" negates what the observation shows/u),
+      expect.stringMatching(/zh-CN: the statement of "rhythm" negates what the observation shows/u),
+    ]));
+    // another real observation named inside a phrase is fine, as long as the phrase says its own
+    expect(validateReport(accession, written("Sinus rhythm at 78/min", "PR interval 169 ms"))).toEqual([]);
+  });
+
   it("numbers bound to nothing, a binding to no observation, an impression resting on nothing, an unsupported finding", () => {
     const loose: ReportText = { findings: L("Rate 78, PR 169."), impression: L("Normal."), limitations: L("x"), generator: "a-model" };
     expect(validateReport(accession, loose)).toEqual(expect.arrayContaining([expect.stringMatching(/the number 78 is bound to no observation/)]));

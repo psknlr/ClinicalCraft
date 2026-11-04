@@ -39,8 +39,9 @@ export function suppliedByWorld(k: SessionKernel): (ProcedureSupply & { source: 
 export function syncProcedureSupply(k: SessionKernel, id: string): void {
   const now = suppliedByWorld(k);
   if (!now) return;
-  const p = k.state.procedure;
-  if ((p?.supply?.image !== false) === now.image && (p?.supply?.gas !== false) === now.gas) return;
+  // what the record holds: the operation's, else the equipment's own (before the operation opens)
+  const held = k.state.procedure?.supply ?? k.state.equipment;
+  if ((held?.image !== false) === now.image && (held?.gas !== false) === now.gas) return;
   k.dispatch({ type: "procedure-supply", supply: { image: now.image, gas: now.gas, ...(now.source ? { source: now.source } : {}) }, by: "system" }, id);
 }
 

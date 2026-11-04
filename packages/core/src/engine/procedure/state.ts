@@ -39,3 +39,14 @@ export function createProcedureState(): ProcedureState {
 export function cloneProcedureState(s: ProcedureState): ProcedureState {
   return structuredClone(s);
 }
+
+/**
+ * The operation's field now: the recorded one, else the field before the first incision with the equipment as
+ * recorded so far (`SessionState.equipment` — a fault before the operation opens is carried into it, never a start).
+ */
+export function procedureStateOf(s: { procedure?: ProcedureState | undefined; equipment?: { image: boolean; gas: boolean } | undefined }): ProcedureState {
+  if (s.procedure) return s.procedure;
+  const p = createProcedureState();
+  const e = s.equipment;
+  return e && (!e.image || !e.gas) ? { ...p, supply: { image: e.image, gas: e.gas } } : p;
+}

@@ -256,6 +256,12 @@ export interface SessionState {
   anaesthesia?: AnaesthesiaResponsibility;
   /** Critical alarms and the responses to them (docs/TEAM.md §5), one episode per alarm. */
   alarms?: AlarmEpisode[];
+  /**
+   * What the operation's equipment supplies, recorded apart from the operation (`procedure-supply`): a tower failing
+   * before the Time Out is an equipment fault, never the start of the operation. The operation takes it over when it
+   * opens (`ProcedureState.supply`). Absent: everything supplied.
+   */
+  equipment?: { image: boolean; gas: boolean; source?: string };
   /** Monotonic count of accepted actions (for transcripts / ordering). */
   seq: number;
 }

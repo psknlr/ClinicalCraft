@@ -148,11 +148,18 @@ export const WorldPredicateSchema: z.ZodType<WorldPredicate> = z.lazy(() =>
  * a stage, an RF scan of the patient, an escalation of a discrepancy. The session records them from the world.
  */
 export const COUNT_EFFECT_STEPS = ["baseline", ...COUNT_STAGES, "scan", "escalate"] as const;
+/** The operative steps a device's operation may be (`ClinicalEffect.tool: "operate"`): its gas controls. */
+export const DEVICE_OPERATIVE_STEPS = ["insufflate", "desufflate"] as const;
 
 export const ClinicalEffectSchema = z
   .object({
-    /** `surgical_count`: an entry of the case's count record (a count board, an RF wand), `item` naming the step. */
-    tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine", "surgical_count"]),
+    /**
+     * `surgical_count`: an entry of the case's count record (a count board, an RF wand), `item` naming the step.
+     * `operate`: a step of the operation itself, `item` naming it (`insufflate` — at the procedure's usual pressure,
+     * or the operation's `pressure` parameter — or `desufflate`): a laparoscopy tower's gas controls are the
+     * operation's own pneumoperitoneum, so the device, the record and the field never disagree.
+     */
+    tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine", "surgical_count", "operate"]),
     /** `item`: the case item with id `item` (a WHO board's `sign_in` → the case's `sign-in`; a count's step). */
     select: z.enum(["param", "capability", "monitoring", "item"]),
     item: IdSchema.optional(),
@@ -161,6 +168,9 @@ export const ClinicalEffectSchema = z
   .refine((e) => (e.select === "item") === (e.item != null), { message: "`item` names the case item exactly when `select` is \"item\"" })
   .refine((e) => e.tool !== "surgical_count" || (e.select === "item" && (COUNT_EFFECT_STEPS as readonly string[]).includes(e.item ?? "")), {
     message: `a surgical_count effect names its step: select "item", item one of ${COUNT_EFFECT_STEPS.join(", ")}`,
+  })
+  .refine((e) => e.tool !== "operate" || (e.select === "item" && (DEVICE_OPERATIVE_STEPS as readonly string[]).includes(e.item ?? "")), {
+    message: `an operate effect names its step: select "item", item one of ${DEVICE_OPERATIVE_STEPS.join(", ")}`,
   });
 export type ClinicalEffect = z.infer<typeof ClinicalEffectSchema>;
 

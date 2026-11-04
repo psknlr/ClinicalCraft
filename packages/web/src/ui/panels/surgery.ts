@@ -9,7 +9,7 @@
  * session says so, and a refused step shows the engine's message. The safety verdict, injuries the field
  * does not show and unsafe acts wait for the debrief.
  */
-import { createProcedureState, observeField, portReport, procedureFor, t, type FieldView, type InstrumentId, type ProcedureDefinition, type ProcedureOp, type ProcedureState } from "@clinicalcraft/core";
+import { observeField, portReport, procedureFor, procedureStateOf, t, type FieldView, type InstrumentId, type ProcedureDefinition, type ProcedureOp, type ProcedureState } from "@clinicalcraft/core";
 import { assetExists, caseAssetUrl } from "../../app/assets.js";
 import type { App, Game } from "../../app/context.js";
 import type { LaparoscopeApi } from "../../contracts.js";
@@ -99,7 +99,7 @@ export function surgeryPanel(app: App): () => PanelView {
     const def: ProcedureDefinition | undefined = procedureFor(c, session());
     const field = (): { p: ProcedureState; v: FieldView } | null => {
       if (!def) return null;
-      const p = session().procedure ?? createProcedureState();
+      const p = procedureStateOf(session());
       return { p, v: observeField(def, p) };
     };
     const d: Draft = {

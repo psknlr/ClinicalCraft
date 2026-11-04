@@ -143,6 +143,43 @@ function findingsProblems(a: StudyAccession, text: ReportText, L: "en" | "zh-CN"
   return problems;
 }
 
+/** A negation (a finding said not to be there). */
+const NEGATION = { en: /\b(?:no|not|non|without|absent|absence|never|neither|nor)\b/iu, "zh-CN": /无|未|非|不|没有|否/u } as const;
+
+/**
+ * Why a phrase bound to an observation does not say that observation (empty: it does), in one language: a term of
+ * the observation's categorical finding (`text`) missing from it; a negation the finding does not have; a term that
+ * no observation of the study uses (English stems, Chinese characters; report wording that states no finding aside —
+ * a phrase may name another observation of the study, "sinus rhythm at 78/min", but always says its own).
+ */
+function meaningProblems(o: StudyObservation, phrase: string, L: "en" | "zh-CN", study: readonly StudyObservation[]): string[] {
+  const problems: string[] = [];
+  const words = (x: StudyObservation) => `${x.label[L]} ${x.text?.[L] ?? ""} ${x.unit ?? ""} ${x.flag ?? ""}`;
+  const own = study.map(words).join(" ");
+  if (NEGATION[L].test(phrase) && !NEGATION[L].test(words(o))) problems.push(`${L}: the statement of "${o.id}" negates what the observation shows`);
+  if (L === "en") {
+    const said = new Set(wordsOf(phrase).map(stem));
+    const known = new Set(wordsOf(own).map(stem));
+    const generic = (w: string) => GENERIC_EN.has(w) || GENERIC_EN.has(w.replace(/s$/u, ""));
+    const missing = o.text ? [...new Set(wordsOf(o.text.en).filter((w) => !generic(w) && !said.has(stem(w))))] : [];
+    if (missing.length) problems.push(`en: the statement of "${o.id}" leaves out its finding ("${missing.slice(0, 4).join(", ")}")`);
+    const stray = [...new Set(wordsOf(phrase).filter((w) => !generic(w) && !known.has(stem(w))))];
+    if (stray.length) problems.push(`en: the statement of "${o.id}" says "${stray.slice(0, 4).join(", ")}", which the observation does not`);
+  } else {
+    const cjk = (x: string) => [...x].filter((ch) => /[\u3400-\u9fff]/u.test(ch) && !GENERIC_ZH.has(ch));
+    const said = new Set(cjk(phrase));
+    const known = new Set(cjk(own));
+    const missing = o.text ? [...new Set(cjk(o.text["zh-CN"]).filter((ch) => !said.has(ch)))] : [];
+    if (missing.length) problems.push(`zh-CN: the statement of "${o.id}" leaves out its finding ("${missing.slice(0, 6).join("")}")`);
+    const stray = [...new Set(cjk(phrase).filter((ch) => !known.has(ch)))];
+    if (stray.length) problems.push(`zh-CN: the statement of "${o.id}" says "${stray.slice(0, 6).join("")}", which the observation does not`);
+  }
+  return problems;
+}
+
+/** A writer's own name for itself, as the chart shows it (anything else is recorded as `writer`). */
+const WRITER_LABEL = /^[a-z0-9][a-z0-9 ._-]{0,39}$/iu;
+
 /** An order's reviewer that names the anaesthesia role rather than a person ("anaesthetist", 麻醉医生). */
 const ANAESTHESIA = /^(?:the\s+)?(?:an(?:a)?esthet(?:h)?ist|an(?:a)?esthesi(?:a|ologist)|an(?:a)?esthesia(?:\s+team)?|麻醉(?:医生|医师|科)?)$/iu;
 
@@ -205,6 +242,10 @@ export function validateReport(a: StudyAccession, text: ReportText, template?: R
       const allowed = new Set([...own(o), ...nums(ownWords(o))]);
       for (const n of nums(b[L])) if (!allowed.has(n)) problems.push(`${L}: ${n} stated for "${b.observation}" is not its value (${o.value ?? "—"})`);
       if (o.value != null && !nums(b[L]).includes(String(o.value))) problems.push(`${L}: the statement of "${b.observation}" does not give its value ${o.value}`);
+      // what the phrase says is what the observation is, in this language: every term of its finding is there, and
+      // nothing that is not — a genuine observation id never carries another finding ("ventricular tachycardia"
+      // bound to a sinus rhythm), and the two languages say the same because both say the observation's own words
+      problems.push(...meaningProblems(o, b[L], L, a.observations));
     }
     // every number of the findings bound to an observation (the label words' own digits — "12-lead", "V1" — aside)
     for (const m of findings.matchAll(NUMBER)) {
@@ -429,9 +470,15 @@ export class SessionStudies {
         if (written) {
           // provenance is the service's: a writer's text is a writer's, whatever it calls itself ("template" is
           // reserved for the text this service generates) — validated as written text against the original
-          const generator = !written.generator || written.generator === "template" ? "writer" : written.generator;
-          const candidate: ReportText = { ...structuredClone(written), generator };
-          const problems = validateReport(a, candidate, templateReport(profile, a), true);
+          // and every field the learner reads is checked or the service's own: the label is a plain name (never a
+          // claim), and the limitations are the service's (a writer does not state what the simulation cannot do)
+          const label = written.generator?.trim() ?? "";
+          const generator = !label || label === "template" || !WRITER_LABEL.test(label) || CERTAINTY.test(label) || UNSUPPORTED.test(label) ? "writer" : label;
+          const template = templateReport(profile, a);
+          const { limitations: _theirs, ...body } = structuredClone(written);
+          void _theirs;
+          const candidate: ReportText = { ...body, limitations: template.limitations, generator };
+          const problems = validateReport(a, candidate, template, true);
           if (problems.length === 0) text = candidate;
           // refused: the template is released instead, and why the writer's text was refused is on the record
           else k.recorder?.record("diagnostic", { agent: "pathologist", source: "grounding", detail: [`report ${a.id} by ${written.generator || "writer"} refused: ${problems.join("; ")}`] });

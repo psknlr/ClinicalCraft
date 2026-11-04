@@ -10,7 +10,7 @@ import {
   activeHolds,
   countOpenItems,
   countStatus,
-  createProcedureState,
+  procedureStateOf,
   currentObjective,
   explainCondition,
   procedureFor,
@@ -269,7 +269,7 @@ export function operationUnderWay(c: CaseDefinition, s: SessionState): boolean {
 
 /** "ports three-port-left, insufflated, specimen in situ" — the operation's state in a few words. */
 function operationState(c: CaseDefinition, s: SessionState, L: string): string {
-  const p = s.procedure ?? createProcedureState();
+  const p = procedureStateOf(s);
   const parts = [
     p.plan ? rt(L, "op.state.plan", { plan: p.plan }) : rt(L, "op.state.noPlan"),
     p.insufflated ? rt(L, "op.state.insufflated") : "",
@@ -289,7 +289,18 @@ export function operationLines(c: CaseDefinition, s: SessionState, L: string, vi
   if (operationUnderWay(c, s)) return [rt(L, "status.op.underWay", { state: operationState(c, s, L) })];
   if (s.procedure) return [rt(L, "status.op.done", { state: operationState(c, s, L) })];
   const opens = operationOpens(c, s);
-  return [rt(L, "status.op.locked"), ...(opens ? requirementLines(c, s, opens, L, visible) : [])];
+  return [rt(L, "status.op.locked"), ...(opens ? requirementLines(c, s, opens, L, visible) : []), ...equipmentLines(s, L)];
+}
+
+/**
+ * The operation's equipment fault, apart from its progress (`SessionState.equipment`): what does not work now, and
+ * which devices supply what does. [] when everything works.
+ */
+export function equipmentLines(s: SessionState, L: string): string[] {
+  const e = s.procedure?.supply ?? s.equipment;
+  if (!e || (e.image !== false && e.gas !== false)) return [];
+  const missing = [e.image === false ? rt(L, "status.equipment.image") : "", e.gas === false ? rt(L, "status.equipment.gas") : ""].filter(Boolean);
+  return [rt(L, "status.equipment.fault", { missing: joinList(L, missing) })];
 }
 
 /** What still opens the operation, as lines (for refusals): [] when it is under way or nothing is named. */

@@ -137,6 +137,8 @@ export function intentFor(tool: ClinicalEffect["tool"], itemId: string | null): 
       return itemId ? { tool, kind: "intervene", interventionId: itemId } : { tool, kind: "intervene" };
     case "examine":
       return itemId ? { tool, kind: "examine", findingId: itemId } : { tool, kind: "examine" };
+    case "operate":
+      return { tool, kind: "operate" };
     default:
       return { tool, kind: "vitals" };
   }
@@ -199,6 +201,12 @@ export function selectClinical(opts: {
     if (paramOf(parameters, "investigation")) tool = "order_test";
     else if (paramOf(parameters, "intervention")) tool = "intervene";
     else return { ok: false, code: "INVALID_REQUEST", message: worldMessage("INVALID_REQUEST", L, { reason: worldMessage("pre.missingParam", L, { param: "investigation | intervention" }) }) };
+  }
+  if (tool === "operate") {
+    // a step of the operation itself (a tower's gas controls): through the session's tool path, like at the table
+    const op = opts.effect.item ?? "";
+    const pressure = typeof parameters?.["pressure"] === "number" ? (parameters["pressure"] as number) : (c.procedure?.insufflation?.usual ?? 12);
+    return { ok: true, value: { tool, args: op === "insufflate" ? { op, pressure } : { op }, intent: intentFor(tool, op), itemId: op, itemName: op } };
   }
   if (tool === "surgical_count") {
     // an entry of the count record (the step is the effect's item): the session records it from the world

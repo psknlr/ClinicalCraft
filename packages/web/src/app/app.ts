@@ -6,7 +6,7 @@
  */
 import { encounterClockRuns } from "./clocks.js";
 import type { Op } from "@clinicalcraft/agent";
-import { createProcedureState, historyVoice, procedureFor, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
+import { historyVoice, procedureFor, procedureStateOf, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
 import type { BlockInfo, InteractionTarget, SoundKind, WorldCallbacks, WorldSave } from "../contracts.js";
 import { ct, getLocale, initLocale, onLocaleChange, setLocale as setUiLocale, tr, type UiLocale } from "../i18n/index.js";
 import { ApprovalDialog } from "../ui/approval.js";
@@ -126,7 +126,7 @@ export class ClinicalCraftApp implements App {
     const state = game ? (game.session.store.snapshot?.state ?? game.session.session.state) : null;
     const def = game && state ? (procedureFor(game.caseDef, state) ?? null) : null;
     this.playback.attach(game ? `${game.caseDef.id}:${game.session.session.id}` : "", def);
-    if (game && def && state) this.playback.sync(game.session.store.operativeEvents(), state.procedure ?? createProcedureState());
+    if (game && def && state) this.playback.sync(game.session.store.operativeEvents(), procedureStateOf(state));
   }
 
   constructor(dom: AppDom) {
