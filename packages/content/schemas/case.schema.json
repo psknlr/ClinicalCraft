@@ -2368,6 +2368,180 @@
           "properties": {
             "type": {
               "type": "string",
+              "const": "procedure-supply"
+            },
+            "supply": {
+              "type": "object",
+              "properties": {
+                "image": {
+                  "type": "boolean"
+                },
+                "gas": {
+                  "type": "boolean"
+                },
+                "source": {
+                  "type": "string",
+                  "maxLength": 200
+                }
+              },
+              "required": [
+                "image",
+                "gas"
+              ],
+              "additionalProperties": false
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "supply"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "alarm-response"
+            },
+            "alarm": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "detect"
+                    },
+                    "vital": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "value": {
+                      "type": "number"
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "vital",
+                    "value",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "blocked"
+                    },
+                    "vital": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "vital",
+                    "by",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "arrived"
+                    },
+                    "vital": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "vital",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "cleared"
+                    },
+                    "vital": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "vital"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "alarm"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
               "const": "count"
             },
             "count": {

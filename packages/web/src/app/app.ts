@@ -4,6 +4,7 @@
  * keyboard, language switching and the `?qa` hooks. UI modules only talk to
  * this object; the world only talks to it through `WorldCallbacks`.
  */
+import { encounterClockRuns } from "./clocks.js";
 import type { Op } from "@clinicalcraft/agent";
 import { createProcedureState, historyVoice, procedureFor, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
 import type { BlockInfo, InteractionTarget, SoundKind, WorldCallbacks, WorldSave } from "../contracts.js";
@@ -816,6 +817,7 @@ export class ClinicalCraftApp implements App {
         embodied: () => this.game?.embodied ?? null,
         // the team keeps working while its own panel is open (the learner watching), not while paused or asked to approve
         teamClock: () => !!this.game?.entered && !this.approval.isOpen && (!this.panels.isOpen || this.panels.current === "team"),
+        clockRunning: () => encounterClockRuns({ entered: !!this.game?.entered, approvalOpen: this.approval.isOpen, panel: this.panels.isOpen ? (this.panels.current as PanelName | null) : null }),
       });
       const embodied =
         session.embodiment === "embodied"

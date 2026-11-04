@@ -104,11 +104,11 @@ export class ScopeDock {
     this.lap?.update(lapScene(def, p, v));
     const converted = v.bailouts.includes("convert-open");
     this.chip.textContent = converted ? tr("scope.converted").split(/[:：]/u)[0]! : v.inView ? tr("scope.live") : tr("scope.outside");
-    this.chip.dataset.state = converted ? "converted" : v.inView ? "live" : "outside";
+    this.chip.dataset.state = converted ? "converted" : v.inView ? "live" : v.supply.image ? "outside" : "no-image";
     this.dark.hidden = v.inView;
     // converted: the open field in words instead of a scope picture (the same lines as the surgery window)
     if (converted) mount(this.dark, h("div", { class: "open-field", dataset: { view: "open" } }, h("strong", null, tr("scope.converted")), ...openFieldText(observeField(def, p, "open"), getLocale(), tr, label, (id) => identifyChoices(def, getLocale(), "").find((x) => x.id === id)?.name ?? id).slice(1).map((line) => h("div", { class: "open-line" }, line))));
-    else this.dark.textContent = tr("scope.outside");
+    else this.dark.textContent = v.supply.image ? tr("scope.outside") : tr("scope.noImage");
     this.el.dataset.step = String(p.counters.steps);
     this.el.dataset.frame = item?.id ?? "";
     const lines = [];

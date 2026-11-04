@@ -252,6 +252,8 @@ export interface GameWorldLinkOptions {
   embodied?: () => EmbodiedLink | null;
   /** The care team may take its steps now (the encounter running and not paused; docs/TEAM.md). */
   teamClock?: () => boolean;
+  /** The encounter's time runs now (`encounterClockRuns`: open and not paused — a chart or panel open does not stop it). */
+  clockRunning?: () => boolean;
 }
 
 /** Real milliseconds between the care team's steps while it acts on its own (autonomy `auto`). */
@@ -456,7 +458,7 @@ export class GameWorldLink {
    */
   private staffTick(dt: number): void {
     const session = this.o.app.session;
-    if (this.staffBusy || !this.o.playing() || this.o.agentDriving?.()) return;
+    if (this.staffBusy || !(this.o.clockRunning?.() ?? this.o.playing()) || this.o.agentDriving?.()) return;
     if (!session.state.started || session.state.finished) return;
     this.staffWait += dt;
     if (this.staffWait < STAFF_STEP_MS) return;
@@ -471,7 +473,8 @@ export class GameWorldLink {
     this.lastTick = now;
     this.teamTick(dt);
     this.staffTick(dt);
-    if (!this.o.playing()) return;
+    // a real-time case clock runs while the encounter is open and not paused (reading the chart does not stop it)
+    if (!(this.o.clockRunning?.() ?? this.o.playing())) return;
     // an agent drives a body: the world charges that time (travel, procedures) — real time would count it twice
     if (this.o.agentDriving?.()) return;
     const c = this.o.caseDef;

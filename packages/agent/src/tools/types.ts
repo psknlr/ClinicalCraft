@@ -71,6 +71,8 @@ export interface ToolContext {
   readonly skillDepth?: number;
   /** See `CallProgress` (set by a front-end that repeats a refused call: the MCP bridge). */
   readonly progress?: CallProgress;
+  /** Embodied mode: record what the operation's equipment supplies now, before the field is looked at (docs/PROCEDURE.md). */
+  readonly syncProcedureSupply?: () => void;
   /** Embodied mode: the vitals the acting body can see now (`wait` reports only these — review G11). */
   readonly vitalsView?: () => VitalsView;
 }

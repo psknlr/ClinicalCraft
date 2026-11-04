@@ -555,7 +555,7 @@ export function surgeryPanel(app: App): () => PanelView {
       dark.hidden = v.inView;
       // converted: the open-surgery view — the field in words, not "put the laparoscope in"
       if (convertedToOpen(v)) mount(dark, h("div", { class: "open-field", dataset: { view: "open" } }, ...openFieldText(observeField(def, p, "open"), getLocale(), tr, label, (id) => identifyChoices(def, getLocale(), "").find((x) => x.id === id)?.name ?? id).map((line, i) => h(i === 0 ? "strong" : "div", { class: i === 0 ? "" : "open-line" }, line))));
-      else dark.textContent = tr("surgery.dark");
+      else dark.textContent = v.supply.image ? tr("surgery.dark") : tr("scope.noImage");
       renderStatus(v, p);
       if (!surgeryOffered(c, session().phase)) {
         mount(side, h("p", { class: "notice", id: "surgery-phase" }, tr("surgery.notThisPhase")));

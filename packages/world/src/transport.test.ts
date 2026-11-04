@@ -321,6 +321,40 @@ describe("how the patient travels: on foot, or lying on the trolley that comes a
     expect(place(w)).toMatchObject({ slot: null, provider: null, posture: "standing", support: null });
   });
 
+  it("one mobility assessment for a walk together and a transport: a patient who cannot respond is never walked upright (the audit's counterexample)", async () => {
+    let armed = false;
+    const seen: unknown[] = [];
+    const w = makeWorld("smzl-lung-adeno", { mover: steppingMover(() => void (armed && seen.push(place(w).transit))) });
+    await toPatient(w);
+    const before = structuredClone(place(w));
+    w.harness.cues.cannotSpeak = "unconscious";
+    armed = true;
+    const follow = await w.act({ actorId: PRIMARY_ACTOR, operation: "escort_patient", targetId: w.patientId });
+    expect(follow).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
+    expect(follow.message).toMatch(/cannot respond and cannot walk with you/u);
+    // no trolley at hand (an outpatient on a couch): the transport is refused with the same reason and what it needs
+    const go = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+    expect(go).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
+    expect(go.message).toMatch(/cannot respond and cannot walk with you\. Taking .+ anywhere needs a trolley or a bed, and none is at hand/u);
+    // nobody walked: no journey began, the patient is where they were
+    expect(seen).toEqual([]);
+    expect(place(w)).toEqual(before);
+  });
+
+  it("a patient who cannot respond but lies on a trolley at hand goes lying on it, every step of the way", async () => {
+    let armed = false;
+    const seen: unknown[] = [];
+    const w = makeWorld("acute-ischemic-stroke", { mover: steppingMover(() => void (armed && seen.push(place(w).transit))) });
+    await toPatient(w);
+    w.harness.cues.cannotSpeak = "unconscious";
+    armed = true;
+    const r = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+    expect(r.status, r.message).toBe("completed");
+    expect(seen.length).toBeGreaterThan(1);
+    for (const t of seen.filter(Boolean)) expect(t).toMatchObject({ by: PRIMARY_ACTOR, trolley: "eq:resus1-bed", posture: "lying" });
+    expect(place(w)).toMatchObject({ provider: "eq:ct-scanner" });
+  });
+
   it("a patient lying on their own trolley still goes on it (bed-bound: unchanged)", async () => {
     let armed = false;
     const seen: unknown[] = [];

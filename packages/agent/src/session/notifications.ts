@@ -249,6 +249,8 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     case "note.added":
     case "action.rejected":
     case "procedure.step":
+    case "alarm.response":
+    case "procedure.supply":
       return [];
     default: {
       const never: never = event;

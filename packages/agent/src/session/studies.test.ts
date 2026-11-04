@@ -58,6 +58,21 @@ describe("the report validator binds every number to its observation", () => {
     expect(problems).toEqual(expect.arrayContaining([expect.stringMatching(/169 stated for "rate" is not its value \(78\)/), expect.stringMatching(/78 stated for "pr" is not its value \(169\)/)]));
   });
 
+  it("every conclusion is an inference from the observations it cites: no certainty, no term they do not support (the audit's \"pulmonary embolism confirmed\")", () => {
+    const pe = validateReport(accession, written("Rate 78/min", "PR 169 ms", { impression: L("Acute pulmonary embolism confirmed.", "急性肺栓塞已确诊。"), supportedBy: [] }));
+    expect(pe).toEqual(expect.arrayContaining([
+      expect.stringMatching(/en: "confirm…" claims a certainty a simulated study cannot give/),
+      expect.stringMatching(/en: the impression's "acute, pulmonary, embolism[^"]*" rests on no observation it cites/),
+      expect.stringMatching(/zh-CN: "确诊…" claims a certainty/),
+      expect.stringMatching(/zh-CN: the impression's "[^"]*肺[^"]*" rests on no observation it cites/),
+    ]));
+    // a term the cited observation does support passes; the same term with nothing cited does not
+    expect(validateReport(accession, written("Rate 78/min", "PR 169 ms", { impression: L("Sinus rhythm.", "窦性心律。"), supportedBy: ["rhythm"] }))).toEqual([]);
+    expect(validateReport(accession, written("Rate 78/min", "PR 169 ms", { impression: L("Sinus rhythm.", "窦性心律。"), supportedBy: [] }))).toEqual(expect.arrayContaining([expect.stringMatching(/en: the impression's "sinus, rhythm" rests on no observation/)]));
+    // wording that states no finding stands without a citation
+    expect(validateReport(accession, written("Rate 78/min", "PR 169 ms", { impression: L("Within the reference intervals.", "在参考范围内。"), supportedBy: [] }))).toEqual([]);
+  });
+
   it("numbers bound to nothing, a binding to no observation, an impression resting on nothing, an unsupported finding", () => {
     const loose: ReportText = { findings: L("Rate 78, PR 169."), impression: L("Normal."), limitations: L("x"), generator: "a-model" };
     expect(validateReport(accession, loose)).toEqual(expect.arrayContaining([expect.stringMatching(/the number 78 is bound to no observation/)]));

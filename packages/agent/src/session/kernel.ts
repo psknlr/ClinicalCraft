@@ -16,6 +16,7 @@
  */
 import { SessionStudies } from "./studies.js";
 import { StaffAutonomy } from "./staff-autonomy.js";
+import { syncProcedureSupply } from "./procedure-supply.js";
 import { actionIdOf } from "./action-ids.js";
 import {
   createSession as createEngineState,
@@ -367,6 +368,8 @@ export class SessionKernel {
 
   /** Dispatch an engine action: transcript, events, hooks, staff reactions, the examiner's dialogue. */
   dispatch(action: ClinicalAction, id: string): ReduceResult {
+    // an operative step works with the equipment the room supplies now (a tower out of service: no picture, no gas)
+    if (action.type === "operate") syncProcedureSupply(this, id);
     const result = reduce(this.caseDef, this.state, action);
     const accepted = !result.rejected;
     // a committed action's persistent id (`act-<seq>`): the same in a replay, after a reload, in every front-end

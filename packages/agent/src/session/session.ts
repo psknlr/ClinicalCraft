@@ -13,7 +13,7 @@
  * op dispatch, the learner's tool path, agent turns, the tool path and approval
  * gate, agent models, conversations, external calls, the embodied wiring, resume.
  */
-import { vitalsAt, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition, type ReduceResult, type SessionState } from "@clinicalcraft/core";
+import { nextEvent, vitalsAt, type PendingEvent, type CaseDefinition, type ClinicalAction, type EquipmentCatalog, type FacilityDefinition, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type EpisodeTrace, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import type { RoleState } from "./staff-autonomy.js";
@@ -121,6 +121,15 @@ export class ClinicalSession implements ClinicalSessionApi {
    */
   staffStates(): RoleState[] {
     return this.k.staff.states();
+  }
+
+  /**
+   * What the encounter is waiting for next (docs/PROTOCOL.md "Case time"): the soonest result or simulated report
+   * ready at a known minute, and how many minutes away it is (null: nothing is waiting on time).
+   */
+  nextEvent(): (PendingEvent & { inMinutes: number }) | null {
+    const e = nextEvent(this.k.caseDef, this.k.state);
+    return e ? { ...e, inMinutes: Math.round((e.at - this.k.state.clock) * 100) / 100 } : null;
   }
 
   /** The episode trace (empty in clinical mode). */

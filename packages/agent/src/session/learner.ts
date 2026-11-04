@@ -259,7 +259,7 @@ export class LearnerPath {
     // a colleague's operative step is done with their body (delegate_task hold_traction / release_traction), never
     // entered in their name
     // anaesthesia responsibility moves with people (a relief at the patient, a hand-over accepted), never by typing it
-    if (requested.type === "anaesthesia") {
+    if (requested.type === "anaesthesia" || requested.type === "alarm-response" || requested.type === "procedure-supply") {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "relief.handEntry") }), code: "permission_denied" });
       return null;
     }

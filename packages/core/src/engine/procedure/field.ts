@@ -23,9 +23,16 @@ export function clearedFraction(def: ProcedureDefinition, s: ProcedureState, reg
   return r ? Math.min(1, (s.cleared[regionId] ?? 0) / r.units) : 0;
 }
 
-/** The laparoscope is in and the abdomen is insufflated: the operator sees the field. */
+/** The laparoscope is in, the abdomen is insufflated and the camera and light source work: the operator sees the field. */
 export function fieldOpen(s: ProcedureState): boolean {
-  return s.insufflated && s.ports.some((p) => p.instrument === "laparoscope");
+  return s.insufflated && s.ports.some((p) => p.instrument === "laparoscope") && s.supply?.image !== false;
+}
+
+/** Why the operator does not see the field (null: they do). */
+export function fieldClosedReason(s: ProcedureState): string | null {
+  if (fieldOpen(s)) return null;
+  if (s.supply?.image === false) return "There is no picture: the laparoscopic camera or light source is out of service. Connect a working tower (or convert).";
+  return "The field is not in view: insufflate and put the laparoscope in.";
 }
 
 /** The structure is held by a retraction on it or on a part of it (`parent` chain). */

@@ -13,7 +13,7 @@ import {
   assignHandles,
   clearedFraction,
   exposure,
-  fieldOpen,
+  fieldClosedReason, fieldOpen,
   isTubular,
   isVisible,
   obscured,
@@ -170,7 +170,7 @@ function working(x: Step, port: string, op: ProcedureOpType): { p: PortState; in
   const p = ownPort(x, port);
   if (!p.instrument) reject("requirements-unmet", `No instrument is in port "${port}".`);
   if (!CAN[p.instrument!].includes(op)) reject("invalid", `The ${p.instrument} in port "${port}" cannot ${op}.`);
-  if (!fieldOpen(x.s)) reject("requirements-unmet", "The field is not in view: insufflate and put the laparoscope in.");
+  if (!fieldOpen(x.s)) reject("requirements-unmet", fieldClosedReason(x.s)!);
   return { p, instrument: p.instrument! };
 }
 
@@ -302,6 +302,8 @@ function apply(x: Step, op: ProcedureOp): void {
     }
     case "insufflate": {
       if (!s.plan) return reject("requirements-unmet", "Choose the port plan first.");
+      // no gas, no pneumoperitoneum: the insufflator must work (a backup connected restores it)
+      if (s.supply?.gas === false) return reject("requirements-unmet", "There is no CO₂ supply: the insufflator is out of service. Connect a working insufflator first.");
       if (op.pressure > def.insufflation.max) {
         unsafe(x, "insufflation-over-max");
         x.signals.push("pressure-high");
@@ -529,7 +531,7 @@ function apply(x: Step, op: ProcedureOp): void {
       return;
     }
     case "inspect":
-      if (!fieldOpen(s) && !ended(x)) return reject("requirements-unmet", "The field is not in view.");
+      if (!fieldOpen(s) && !ended(x)) return reject("requirements-unmet", fieldClosedReason(s)!);
       s.inspected = true;
       return;
     case "recognise": {

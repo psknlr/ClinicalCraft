@@ -76,6 +76,41 @@ export function templateReport(profile: StudyProfile, a: StudyAccession): Report
   };
 }
 
+/** A simulated study never confirms a diagnosis: certainty belongs to the clinicians who weigh the whole picture. */
+const CERTAINTY = /\bconfirm|\bdiagnos|\bdefinite|\bproven\b|\bpathognomonic|确诊|诊断为|明确诊断|证实/iu;
+/** Report words that state no finding of their own (a conclusion's terms must come from the observations it cites). */
+const GENERIC_EN = new Set(
+  "within outside above below reference interval intervals range ranges limit limits normal normally value values study tracing recorded shows shown seen noted there these this that with without from both each other further overall pattern positions position standard leads lead placed placement mirrored mirror repeat readable reads reading heart sided reversed chest configuration acquired acquisition quality good limited simulated teaching profile report findings impression clinical correlation correlate review change changes significant evident apparent present absent unremarkable high higher low lower abnormal elevated reduced raised mildly mild moderate marked otherwise noted from also only none which their when where then they them have been were show showing appear appears looks".split(" "),
+);
+const GENERIC_ZH = new Set("在参考范围内外异常正常偏高低值区间本次检查结果报告未见明显提示符合各项均可的为有无与和及或但其中、，。；：（）此图形波形导联位置".split(""));
+const wordsOf = (x: string): string[] => x.toLowerCase().match(/[a-z]{4,}/gu) ?? [];
+const stem = (w: string) => w.slice(0, 5);
+
+/**
+ * Why a conclusion is not a verifiable inference from the observations it cites (empty: it is): a certainty claim;
+ * an English term no cited observation (nor the deterministic template for this study) uses; a Chinese character
+ * none of them uses. With nothing cited, only report wording that states no finding may stand ("within the
+ * reference intervals").
+ */
+function impressionProblems(a: StudyAccession, text: ReportText, L: "en" | "zh-CN", template: ReportText | undefined): string[] {
+  const problems: string[] = [];
+  const impression = text.impression[L];
+  const certain = impression.match(CERTAINTY)?.[0];
+  if (certain) problems.push(`${L}: "${certain}…" claims a certainty a simulated study cannot give`);
+  const cited = (text.supportedBy ?? []).flatMap((id) => a.observations.filter((o) => o.id === id));
+  const grounds = [...cited.map((o) => `${o.label[L]} ${o.text?.[L] ?? ""} ${o.unit ?? ""} ${o.flag ?? ""}`), template?.impression[L] ?? ""].join(" ");
+  if (L === "en") {
+    const known = new Set(wordsOf(grounds).map(stem));
+    const stray = [...new Set(wordsOf(impression).filter((w) => !GENERIC_EN.has(w) && !GENERIC_EN.has(w.replace(/s$/u, "")) && !known.has(stem(w))))];
+    if (stray.length) problems.push(`en: the impression's "${stray.slice(0, 4).join(", ")}" rests on no observation it cites`);
+  } else {
+    const known = new Set([...grounds]);
+    const stray = [...new Set([...impression].filter((ch) => /[\u3400-\u9fff]/u.test(ch) && !known.has(ch) && !GENERIC_ZH.has(ch)))];
+    if (stray.length) problems.push(`zh-CN: the impression's "${stray.slice(0, 6).join("")}" rests on no observation it cites`);
+  }
+  return problems;
+}
+
 /** Claims a report may make only when an observation makes them. */
 const UNSUPPORTED = /infarct|ischaem|ischem|st elevation|st-elevation|pneumon|effusion|fracture|malignan|tumou?r|fibrillation|flutter|heart block|梗死|缺血|肺炎|积液|骨折|肿瘤|房颤|房扑|传导阻滞/iu;
 const NUMBER = /\d+(?:\.\d+)?/gu;
@@ -90,7 +125,7 @@ const nums = (x: string): string[] => x.match(NUMBER) ?? [];
  *   it rests on (`supportedBy`), and each of those is a real observation;
  * - a side named is a side an observation shows; no finding the observations do not make.
  */
-export function validateReport(a: StudyAccession, text: ReportText): string[] {
+export function validateReport(a: StudyAccession, text: ReportText, template?: ReportText): string[] {
   const problems: string[] = [];
   const obs = new Map(a.observations.map((o) => [o.id, o]));
   const own = (o: StudyObservation) => new Set([o.value, o.low, o.high].filter((n): n is number => n != null).map(String));
@@ -129,6 +164,8 @@ export function validateReport(a: StudyAccession, text: ReportText): string[] {
     if (says(/\bright\b|右/iu) && !sides.has("right")) problems.push(`${L}: a right side no observation shows`);
     const claim = all.match(UNSUPPORTED)?.[0];
     if (claim && !UNSUPPORTED.test(words)) problems.push(`${L}: "${claim}" is not a finding of this study`);
+    // every conclusion rests on the observations it cites (a written report; the template is the reference)
+    if (text.generator !== "template") problems.push(...impressionProblems(a, text, L, template));
   }
   return problems;
 }
@@ -328,7 +365,12 @@ export class SessionStudies {
         let timer: ReturnType<typeof setTimeout> | undefined;
         const timeout = new Promise<null>((resolve) => (timer = setTimeout(() => resolve(null), this.writerTimeoutMs)));
         const written = await Promise.race([this.writer({ profile, accession: a, ...(order?.indication ? { indication: order.indication } : {}) }), timeout]).finally(() => clearTimeout(timer));
-        if (written && validateReport(a, written).length === 0) text = written;
+        if (written) {
+          const problems = validateReport(a, written, templateReport(profile, a));
+          if (problems.length === 0) text = written;
+          // refused: the template is released instead, and why the writer's text was refused is on the record
+          else k.recorder?.record("diagnostic", { agent: "pathologist", source: "grounding", detail: [`report ${a.id} by ${written.generator} refused: ${problems.join("; ")}`] });
+        }
       } catch {
         text = null;
       }

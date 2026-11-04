@@ -122,6 +122,8 @@ const zh = {
   "hud.savedNow": "进度与建造已保存在本机",
   "hud.saveFailed": "当前环境禁止本地保存；可在暂停菜单导出存档",
   "hud.clock": "模拟时间 {time}",
+  "hud.next": "⏭ {min} 分钟后：{what}",
+  "hud.nextTitle": "等待至其就绪：病例时钟前进，医护人员继续各自的工作",
   "hud.elapsed": "T+{min} 分钟",
   "hud.controls.html": "<kbd>W A S D</kbd> 移动　<kbd>Space</kbd> 跳跃　<kbd>Shift</kbd> 冲刺　<kbd>E</kbd> 交互　<kbd>T</kbd> 交谈　<kbd>B</kbd> 背包",
   "hud.vitalsTitle": "生命体征 · 按 V 打开监护仪",

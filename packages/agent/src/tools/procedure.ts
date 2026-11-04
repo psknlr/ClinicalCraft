@@ -41,7 +41,8 @@ function fieldText(ctx: ToolContext): string {
       return p.holder ? line + rt(L, "field.heldBy", { who: holder ? t(holder.name, L) : p.holder }) : line;
     }),
   ];
-  if (!v.inView) lines.push(rt(L, "field.notInView"));
+  if (!v.inView) lines.push(rt(L, !v.supply.image ? "field.noImage" : "field.notInView"));
+  if (!v.supply.gas) lines.push(rt(L, "field.noGas"));
   else {
     lines.push(rt(L, "field.organs", { organs: joinList(L, v.organs.map((o) => `${t(o.name, L)} (${o.id})`)) }));
     for (const tube of v.tubes) {
@@ -79,6 +80,8 @@ const observe: ToolDefinition<ToolArgs> = {
   risk: () => "none",
   summarize: (_args, ctx) => rt(ctx.locale, "sum.observe_field"),
   async run(_args, ctx) {
+    // the picture is what the equipment supplies now
+    ctx.syncProcedureSupply?.();
     const c = ctx.caseDef;
     const s = ctx.state();
     // before the operation is under way there is no field to look at: say what still opens it

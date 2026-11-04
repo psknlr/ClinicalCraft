@@ -158,15 +158,24 @@ After every learner act and every demonstration step (like the care team), the s
      must lie in a bound phrase, every number of the impression must belong to an observation it rests on, and each
      of those must be a real observation; a side named must be a side an observation shows; no finding the
      observations do not make;
+   - **every conclusion is an inference from the observations it cites**: an impression that claims certainty
+     ("confirmed", "diagnostic of", "definite", 确诊, 证实 …) is refused — a simulated study never confirms a
+     diagnosis —, and every term of a written impression must come from the observations its `supportedBy` cites (or
+     the deterministic template's own wording for this study); with nothing cited, only wording that states no finding
+     may stand ("within the reference intervals"). So "Acute pulmonary embolism confirmed." with no `supportedBy` is
+     refused twice over. The check is lexical (English stems, Chinese characters), like the rest of this one;
    - a writer that fails, times out (`writerTimeoutMs`) or does not validate is replaced by the template — never an
-     invented report. The template passes the same check (its phrases are bound).
+     invented report — and a refusal is on the record (a `diagnostic` transcript item, `source: "grounding"`, naming
+     each problem). The template passes the same check (its phrases are bound).
    The engine refuses a release whose `supportedBy` names an observation the acquisition does not have, and records
    the report's **provenance**, machine-readable: `{kind: "simulated-investigation", source: "case-teaching-profile",
    profile, profileVersion, observations, generator}`; the report's text says "Generated within the training
    environment; not present in the original source report." A front-end plugs a writer in with the session options
    `reportWriter` and `reportWriterTimeoutMs`.
 5. **Review**: the order's reviewer (Case 126: the anaesthetist) reviews the report in their own name
-   (`study review`) and says so in their voice ("I've reviewed the simulated 12-lead ECG: …").
+   (`study review`) and says so in their voice ("I've reviewed the simulated 12-lead ECG: …"). Release and review are
+   two actions on the record, by two parties: the reporting agent releases, a clinician reviews — a released report
+   is not a reviewed one.
 
 The responsible clinician stays the requester throughout; the service never orders on its own.
 
