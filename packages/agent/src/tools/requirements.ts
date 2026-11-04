@@ -12,6 +12,7 @@ import {
   countStatus,
   procedureStateOf,
   currentObjective,
+  evaluate,
   explainCondition,
   procedureFor,
   reduce,
@@ -86,7 +87,8 @@ function decisionLabel(c: CaseDefinition, s: SessionState, id: string, L: string
   const d = c.decisions.find((x) => x.id === id);
   const n = c.decisions.findIndex((x) => x.id === id) + 1;
   // a decision's prompt may state results not yet obtained: shown only once it was answered or is unlocked
-  return d && Object.prototype.hasOwnProperty.call(s.decisions, id) ? `[${id}] ${t(d.prompt, L)}` : `[${id}] ${rt(L, "label.decisionN", { n })}`;
+  const shown = d !== undefined && (Object.prototype.hasOwnProperty.call(s.decisions, id) || evaluate(c, s, d.requires));
+  return shown ? `[${id}] ${t(d.prompt, L)}` : `[${id}] ${rt(L, "label.decisionN", { n })}`;
 }
 
 /** One requirement in words (a leaf, or an `any` / `not` kept whole). */
