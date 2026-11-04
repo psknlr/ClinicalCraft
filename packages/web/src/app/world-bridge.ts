@@ -250,9 +250,10 @@ export interface GameWorldLinkOptions {
   agentDriving?: () => boolean;
   /** The embodied controller (null: clinical mode). */
   embodied?: () => EmbodiedLink | null;
-  /** The care team may take its steps now (the encounter running and not paused; docs/TEAM.md). */
-  teamClock?: () => boolean;
-  /** The encounter's time runs now (`encounterClockRuns`: open and not paused — a chart or panel open does not stop it). */
+  /**
+   * The encounter's time runs now (`encounterClockRuns`: open and not paused — a chart, the surgery window or any
+   * other panel open does not stop it). The one clock of the real-time tick, the staff's round and the care team's.
+   */
   clockRunning?: () => boolean;
 }
 
@@ -431,12 +432,13 @@ export class GameWorldLink {
 
   /**
    * The care team's clock (docs/TEAM.md §2): in autonomy `auto`, one `team step` op every `TEAM_STEP_MS` while the
-   * encounter runs — the same op a headless run uses, queued with the learner's own, so a learner who only watches
-   * still sees the team work. Never while an agent drives a body or a step is still running.
+   * encounter runs (the same clock as the staff's round: the learner operating or reading the chart does not stop it)
+   * — the same op a headless run uses, queued with the learner's own, so a learner who only watches still sees the
+   * team work. Never while an agent drives a body or a step is still running.
    */
   private teamTick(dt: number): void {
     const session = this.o.app.session;
-    if (this.teamBusy || !(this.o.teamClock?.() ?? this.o.playing()) || this.o.agentDriving?.()) return;
+    if (this.teamBusy || !(this.o.clockRunning?.() ?? this.o.playing()) || this.o.agentDriving?.()) return;
     const team = this.o.caseDef.team;
     if (!team || !team.phases.includes(session.state.phase) || session.state.finished) return;
     if (session.team()?.autonomy !== "auto") return;

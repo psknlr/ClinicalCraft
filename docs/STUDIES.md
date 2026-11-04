@@ -164,6 +164,14 @@ After every learner act and every demonstration step (like the care team), the s
      the deterministic template's own wording for this study); with nothing cited, only wording that states no finding
      may stand ("within the reference intervals"). So "Acute pulmonary embolism confirmed." with no `supportedBy` is
      refused twice over. The check is lexical (English stems, Chinese characters), like the rest of this one;
+   - **the findings are held to the observations too**: outside the phrases bound to observations, every term of a
+     written report's findings must be one the study's observations (or the template's findings) use, and no
+     certainty is claimed there either — a diagnosis appended to genuine findings is refused like one in the
+     impression;
+   - **the writer works on copies and the service owns the provenance**: the writer is given copies of the profile and
+     the acquisition (whatever it does to them, the engine's acquisition — so the template, the release and a replay —
+     is unchanged), its text is validated as written text whatever it calls itself, and `generator: "template"` is
+     reserved for the text this service generates (a writer's label "template" is recorded as `writer`);
    - a writer that fails, times out (`writerTimeoutMs`) or does not validate is replaced by the template — never an
      invented report — and a refusal is on the record (a `diagnostic` transcript item, `source: "grounding"`, naming
      each problem). The template passes the same check (its phrases are bound).
@@ -173,7 +181,14 @@ After every learner act and every demonstration step (like the care team), the s
    environment; not present in the original source report." A front-end plugs a writer in with the session options
    `reportWriter` and `reportWriterTimeoutMs`.
 5. **Review**: the order's reviewer (Case 126: the anaesthetist) reviews the report in their own name
-   (`study review`) and says so in their voice ("I've reviewed the simulated 12-lead ECG: …"). Release and review are
+   (`study review`) and says so in their voice ("I've reviewed the simulated 12-lead ECG: …"). The reviewer is
+   resolved **when the report is ready**, not when it was ordered (`resolveReviewer`), and the record keeps why
+   (`review.basis`): a colleague the order names by name or staff id reviews it wherever they are (`named` — a
+   consultant asked to look at it remotely); the anaesthesia role means the anaesthetist **responsible now** by the
+   anaesthesia record (`responsible` — after an accepted hand-over, the one who took over, never the one who left);
+   another role or title, the colleague of it where the patient is (`on-duty`); nobody to resolve, the report waits for
+   its review. The chart says "(the reviewer named on the order)" or, once responsibility has changed hands, "(the
+   anaesthetist responsible now)"; a save and resume keeps the reviewer and the basis. Release and review are
    two actions on the record, by two parties: the reporting agent releases, a clinician reviews — a released report
    is not a reviewed one.
 

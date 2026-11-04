@@ -16,9 +16,9 @@
  * - **Review**: the order's reviewer (the anaesthetist for a preoperative ECG) reviews the released report in their
  *   own name (`study review`) and says so.
  */
-import { studyCollectors, studyProfile, t, unmetPrerequisites, type ClinicalAction, type StudyAccession, type StudyObservation, type StudyProfile } from "@clinicalcraft/core";
+import { responsibleAnaesthetist, studyCollectors, studyProfile, t, unmetPrerequisites, type CaseDefinition, type ClinicalAction, type FacilityDefinition, type ReviewBasis, type SessionState, type StudyAccession, type StudyObservation, type StudyProfile } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type WorldRuntime } from "@clinicalcraft/world";
-import { encounterRoom, lookupStaff } from "../tools/consult-target.js";
+import { encounterRoom, lookupStaff, namedStaff } from "../tools/consult-target.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 import { staffAgent } from "./staff-voice.js";
@@ -111,6 +111,60 @@ function impressionProblems(a: StudyAccession, text: ReportText, L: "en" | "zh-C
   return problems;
 }
 
+/**
+ * Why a written report's findings say more than its observations (empty: they do not): a certainty claim anywhere in
+ * them; outside the phrases bound to observations, a term (English) or character (Chinese) that no observation of the
+ * study — nor the deterministic template's findings — uses. An unsupported diagnosis appended to genuine findings is
+ * refused like one in the impression.
+ */
+function findingsProblems(a: StudyAccession, text: ReportText, L: "en" | "zh-CN", spans: readonly [number, number][], template: ReportText | undefined): string[] {
+  const problems: string[] = [];
+  const findings = text.findings[L];
+  const certain = findings.match(CERTAINTY)?.[0];
+  if (certain) problems.push(`${L}: the findings' "${certain}…" claims a certainty a simulated study cannot give`);
+  // what the findings say outside the bound phrases (those are checked against their observations already)
+  let rest = "";
+  let from = 0;
+  for (const [x, y] of [...spans].sort((p, q) => p[0] - q[0])) {
+    if (x > from) rest += ` ${findings.slice(from, x)}`;
+    from = Math.max(from, y);
+  }
+  rest += ` ${findings.slice(from)}`;
+  const grounds = [...a.observations.map((o) => `${o.label[L]} ${o.text?.[L] ?? ""} ${o.unit ?? ""} ${o.flag ?? ""}`), template?.findings[L] ?? "", template?.limitations?.[L] ?? ""].join(" ");
+  if (L === "en") {
+    const known = new Set(wordsOf(grounds).map(stem));
+    const stray = [...new Set(wordsOf(rest).filter((w) => !GENERIC_EN.has(w) && !GENERIC_EN.has(w.replace(/s$/u, "")) && !known.has(stem(w))))];
+    if (stray.length) problems.push(`en: the findings' "${stray.slice(0, 4).join(", ")}" is no observation of this study`);
+  } else {
+    const known = new Set([...grounds]);
+    const stray = [...new Set([...rest].filter((ch) => /[\u3400-\u9fff]/u.test(ch) && !known.has(ch) && !GENERIC_ZH.has(ch)))];
+    if (stray.length) problems.push(`zh-CN: the findings' "${stray.slice(0, 6).join("")}" is no observation of this study`);
+  }
+  return problems;
+}
+
+/** An order's reviewer that names the anaesthesia role rather than a person ("anaesthetist", 麻醉医生). */
+const ANAESTHESIA = /^(?:the\s+)?(?:an(?:a)?esthet(?:h)?ist|an(?:a)?esthesi(?:a|ologist)|an(?:a)?esthesia(?:\s+team)?|麻醉(?:医生|医师|科)?)$/iu;
+
+/**
+ * Who reviews a released report, resolved when it is ready (never when it was ordered): a colleague the order names
+ * by name or staff id reviews it (`named`: a consultant asked to review, wherever they are); the anaesthesia role
+ * means the anaesthetist responsible for the patient now, by the anaesthesia record (`responsible`: after an accepted
+ * handover, the one who took over — not the one who left); any other role or title, the colleague of it where the
+ * patient is (`on-duty`). Null: nobody — the report waits for its review.
+ */
+export function resolveReviewer(c: CaseDefinition, facility: FacilityDefinition | null | undefined, s: SessionState, reviewer: string): { staff: FacilityDefinition["staff"][number]; basis: ReviewBasis } | null {
+  const named = namedStaff(facility, reviewer);
+  if (named) return { staff: named, basis: "named" };
+  if (ANAESTHESIA.test(reviewer.trim())) {
+    const id = responsibleAnaesthetist(c, s);
+    const staff = id ? facility?.staff.find((x) => x.id === id) : undefined;
+    if (staff) return { staff, basis: "responsible" };
+  }
+  const found = lookupStaff(facility, reviewer, encounterRoom(c, facility));
+  return found.kind === "one" ? { staff: found.staff, basis: "on-duty" } : null;
+}
+
 /** Claims a report may make only when an observation makes them. */
 const UNSUPPORTED = /infarct|ischaem|ischem|st elevation|st-elevation|pneumon|effusion|fracture|malignan|tumou?r|fibrillation|flutter|heart block|梗死|缺血|肺炎|积液|骨折|肿瘤|房颤|房扑|传导阻滞/iu;
 const NUMBER = /\d+(?:\.\d+)?/gu;
@@ -123,9 +177,12 @@ const nums = (x: string): string[] => x.match(NUMBER) ?? [];
  *   observation's own value or interval (a rate and a PR interval swapped are refused);
  * - every number of the findings lies inside a bound phrase; every number of the impression is an observation's
  *   it rests on (`supportedBy`), and each of those is a real observation;
- * - a side named is a side an observation shows; no finding the observations do not make.
+ * - a side named is a side an observation shows; no finding the observations do not make;
+ * - written text (`written`, default: anything not labelled "template"; the service passes it for every writer's
+ *   text, whatever it calls itself) claims no certainty, and its findings and its conclusions say nothing their
+ *   observations do not (`findingsProblems`, `impressionProblems`).
  */
-export function validateReport(a: StudyAccession, text: ReportText, template?: ReportText): string[] {
+export function validateReport(a: StudyAccession, text: ReportText, template?: ReportText, written: boolean = text.generator !== "template"): string[] {
   const problems: string[] = [];
   const obs = new Map(a.observations.map((o) => [o.id, o]));
   const own = (o: StudyObservation) => new Set([o.value, o.low, o.high].filter((n): n is number => n != null).map(String));
@@ -164,8 +221,9 @@ export function validateReport(a: StudyAccession, text: ReportText, template?: R
     if (says(/\bright\b|右/iu) && !sides.has("right")) problems.push(`${L}: a right side no observation shows`);
     const claim = all.match(UNSUPPORTED)?.[0];
     if (claim && !UNSUPPORTED.test(words)) problems.push(`${L}: "${claim}" is not a finding of this study`);
-    // every conclusion rests on the observations it cites (a written report; the template is the reference)
-    if (text.generator !== "template") problems.push(...impressionProblems(a, text, L, template));
+    // a written report: every finding is one of the study's observations, every conclusion rests on those it cites
+    // (the template is the reference)
+    if (written) problems.push(...findingsProblems(a, text, L, spans, template), ...impressionProblems(a, text, L, template));
   }
   return problems;
 }
@@ -364,12 +422,19 @@ export class SessionStudies {
       try {
         let timer: ReturnType<typeof setTimeout> | undefined;
         const timeout = new Promise<null>((resolve) => (timer = setTimeout(() => resolve(null), this.writerTimeoutMs)));
-        const written = await Promise.race([this.writer({ profile, accession: a, ...(order?.indication ? { indication: order.indication } : {}) }), timeout]).finally(() => clearTimeout(timer));
+        // the writer works on copies: whatever it does to them, the acquisition (and so the template and a replay) is
+        // the engine's own
+        const input = { profile: structuredClone(profile), accession: structuredClone(a), ...(order?.indication ? { indication: order.indication } : {}) };
+        const written = await Promise.race([this.writer(input), timeout]).finally(() => clearTimeout(timer));
         if (written) {
-          const problems = validateReport(a, written, templateReport(profile, a));
-          if (problems.length === 0) text = written;
+          // provenance is the service's: a writer's text is a writer's, whatever it calls itself ("template" is
+          // reserved for the text this service generates) — validated as written text against the original
+          const generator = !written.generator || written.generator === "template" ? "writer" : written.generator;
+          const candidate: ReportText = { ...structuredClone(written), generator };
+          const problems = validateReport(a, candidate, templateReport(profile, a), true);
+          if (problems.length === 0) text = candidate;
           // refused: the template is released instead, and why the writer's text was refused is on the record
-          else k.recorder?.record("diagnostic", { agent: "pathologist", source: "grounding", detail: [`report ${a.id} by ${written.generator} refused: ${problems.join("; ")}`] });
+          else k.recorder?.record("diagnostic", { agent: "pathologist", source: "grounding", detail: [`report ${a.id} by ${written.generator || "writer"} refused: ${problems.join("; ")}`] });
         }
       } catch {
         text = null;
@@ -379,14 +444,18 @@ export class SessionStudies {
     this.dispatch({ type: "study", study: { op: "release", accession: a.id, findings: text.findings, impression: text.impression, limitations: text.limitations, generator: text.generator, ...(text.supportedBy ? { supportedBy: text.supportedBy } : {}) }, by: "system" }, id);
   }
 
-  /** The reviewer reviews the released report in their own name, and says so. */
+  /**
+   * The reviewer reviews the released report in their own name, and says so — the reviewer resolved now, when the
+   * report is ready (`resolveReviewer`); nobody to resolve: the report waits for its review.
+   */
   private review(id: string, reviewer: string, accession: string): void {
     const k = this.k;
     const L = k.locale;
-    const found = lookupStaff(k.facility, reviewer, encounterRoom(k.caseDef, k.facility));
-    const staff = found.kind === "one" ? found.staff : null;
-    const by = staff?.id ?? reviewer;
-    const r = this.dispatch({ type: "study", study: { op: "review", accession, by }, by: "system" }, id);
+    const who = resolveReviewer(k.caseDef, k.facility, k.state, reviewer);
+    if (!who) return;
+    const staff = who.staff;
+    const by = staff.id;
+    const r = this.dispatch({ type: "study", study: { op: "review", accession, by, basis: who.basis }, by: "system" }, id);
     if (r.rejected) return;
     const report = k.state.studies?.reports.filter((x) => x.accession === accession).at(-1);
     const a = k.state.studies?.accessions.find((x) => x.id === accession);

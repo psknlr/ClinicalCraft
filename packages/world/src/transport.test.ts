@@ -341,6 +341,44 @@ describe("how the patient travels: on foot, or lying on the trolley that comes a
     expect(place(w)).toEqual(before);
   });
 
+  it("walking to CT, the patient becomes unresponsive on the way: the transport stops there, they are laid down, and going on needs a trolley — also after a save at the stop (the follow-up audit)", async () => {
+    let enRoute = false;
+    const seen: unknown[] = [];
+    const w = makeWorld("smzl-lung-adeno", {
+      mover: steppingMover((i) => {
+        if (!enRoute) return;
+        if (i === 1) {
+          // clinical state changes mid-walk; the session refreshes the body as it does after every clinical event
+          w.harness.cues.cannotSpeak = "unconscious";
+          w.runtime.refreshPatient();
+        }
+        seen.push(place(w).transit ?? null);
+      }),
+    });
+    await toPatient(w);
+    enRoute = true;
+    const r = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+    enRoute = false;
+    expect(r).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
+    expect(r.message).toMatch(/cannot respond and cannot walk with you\. Stopped in .+ and laid .+ down safely where they were\. Taking .+ anywhere needs a trolley or a bed/u);
+    // walked upright only until the change: from then on nobody walks them
+    expect(seen[0]).toMatchObject({ trolley: null, posture: "standing" });
+    expect(seen.slice(1).every((x) => x === null)).toBe(true);
+    // the last safe position: not at CT, lying where they stopped, on no bed and no trolley
+    const stopped = place(w);
+    expect(stopped).toMatchObject({ provider: null, slot: null, posture: "lying", trolley: null });
+    expect(stopped.transit).toBeUndefined();
+    // going on without a trolley is refused with the same assessment; nobody walks them
+    const again = await w.act({ actorId: PRIMARY_ACTOR, operation: "transport_patient", targetId: w.patientId, parameters: { destination: "eq:ct-scanner" } });
+    expect(again).toMatchObject({ status: "failed", errorCode: "PRECONDITION_FAILED" });
+    expect(again.message).toMatch(/needs a trolley or a bed/u);
+    // saved at the stop and restored: the same place, nothing in progress
+    const restored = makeWorld("smzl-lung-adeno", { extra: { snapshot: w.runtime.snapshot() } });
+    restored.harness.cues.cannotSpeak = "unconscious";
+    expect(restored.runtime.patientPlace()).toMatchObject({ provider: null, posture: "lying", x: stopped.x, z: stopped.z, level: stopped.level });
+    expect(restored.runtime.restoredJourney()).toBeNull();
+  });
+
   it("a patient who cannot respond but lies on a trolley at hand goes lying on it, every step of the way", async () => {
     let armed = false;
     const seen: unknown[] = [];

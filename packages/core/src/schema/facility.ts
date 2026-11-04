@@ -201,6 +201,12 @@ export const DeviceBehaviorSchema = z
           available: z.boolean().optional(),
           /** `derived: "case-record"`: the device is in this state while the condition holds (the last listed that holds wins). */
           when: ConditionSchema.optional(),
+          /**
+           * The device's capabilities that work in this state (omit: all of them). A laparoscopy tower `off`
+           * supplies none — no picture, no gas — and powered on supplies its camera, light source and insufflator;
+           * the world's capability rule (bedside providers, the operation's equipment) follows it.
+           */
+          supplies: z.array(CapabilitySchema).optional(),
         })
         .strict(),
     ),
@@ -546,6 +552,11 @@ export const PlacementSchema = z
      * right). Out-of-range indices are `checkFacility` errors.
      */
     hideParts: z.array(z.number().int().min(0)).optional(),
+    /**
+     * The device's behaviour state at the start (default: its type's `initial`) — a theatre set up before the list
+     * has its laparoscopy tower on and white-balanced, while the spare in the store is off. One of the type's states.
+     */
+    state: IdSchema.optional(),
   })
   .strict();
 export type Placement = z.infer<typeof PlacementSchema>;

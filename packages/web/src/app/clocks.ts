@@ -1,10 +1,11 @@
 /**
- * When the encounter's time runs in the browser (docs/PROTOCOL.md "Case time"): the staff's own round
- * (`staff_step`) and a real-time case clock run whenever the encounter is open and not paused — reading the chart,
- * the orders, the surgery window or the team's panel does not stop them, as it would not in a real encounter. They
- * stop while the learner has paused (the pause menu and what opens from it: settings, help, a reset confirmation)
- * and while an approval waits for the learner's answer. A case whose clock moves only with what is done (no real
- * time) shows what it waits for next instead, with a control to wait until it (the HUD's next-event button).
+ * When the encounter's time runs in the browser (docs/PROTOCOL.md "Case time"): one policy for the staff's own
+ * round (`staff_step`), the care team's round (`team step`) and a real-time case clock. They run whenever the
+ * encounter is open and not paused — operating in the surgery window, reading the chart or the orders, or watching
+ * the team does not stop them, as it would not in a real theatre. They stop while the learner has paused (the pause
+ * menu and what opens from it: settings, help, a reset confirmation) and while an approval waits for the learner's
+ * answer. A case whose clock moves only with what is done (no real time) shows what it waits for next instead, with a
+ * control to wait until it (the HUD's next-event button).
  */
 import type { PanelName } from "./context.js";
 

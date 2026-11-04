@@ -12,7 +12,7 @@ import type { ColleagueView, MemberView } from "../session/team/policy.js";
 import type { MemberState, Proposal, TeamMessage, TeamTask } from "../session/team/types.js";
 import { positionOf, ROLE_CARDS, roleSection, SHARED_PROTOCOL } from "./roles.js";
 import { lineProblem, ModelTeamMind, type MindHost } from "./team-mind.js";
-import { wordLine } from "./voice.js";
+import { placeClaimProblem, wordLine } from "./voice.js";
 
 const CIRC = "staff:or.circulating";
 const SCRUB = "staff:or.scrub";
@@ -204,6 +204,26 @@ describe("grounded lines", () => {
     const bad = new ScriptedProvider([textScript("Pressure's 60 — giving 10 of ephedrine.")]);
     expect(await wordLine({ ...base, model: { provider: bad, agent: "attending", request: {} } })).toMatchObject({ text: base.template, source: "template", refused: expect.stringMatching(/numbers/u) });
     expect(await wordLine({ ...base, model: null })).toMatchObject({ text: base.template, source: "template" });
+  });
+
+  it("a line never claims a place the record contradicts: shut out, no \"at the bedside\" in either language; arrived, no \"can't get there\" (the follow-up audit)", async () => {
+    // away (the alarm's walk blocked): every arrival or bedside-action claim is refused, in English and in Chinese
+    for (const claim of ["I am at the bedside and checking the patient.", "I'm with the patient now.", "I've arrived — on it.", "I'm here, checking.", "I'm examining him now.", "我已经在床旁，正在检查病人。", "我到了，马上处理。"])
+      expect(placeClaimProblem(claim, "away"), claim).toMatch(/claims to be at the patient/u);
+    // what a shut-out responder may truthfully say
+    for (const truthful of ["I can't get out of the workroom — the door's locked; someone go to the bedside now.", "I am in the anaesthesia workroom and the door is locked.", "门锁了，我过不去——请人马上到床旁。"])
+      expect(placeClaimProblem(truthful, "away"), truthful).toBeNull();
+    // at the patient: never "I can't get there"
+    expect(placeClaimProblem("I can't get through, the door's locked.", "at-patient")).toMatch(/claims not to be at the patient/u);
+    expect(placeClaimProblem("I'm at the patient, checking the line.", "at-patient")).toBeNull();
+    // in wordLine: the audit's scripted reply, blocked — the template is said, and why
+    const blocked = { speaker: "Dr Tanaka (anaesthesia)", card: ROLE_CARDS.anaesthetist, intent: "a new alarm; you cannot get to the patient", facts: ["critical alarm: SBP 72", "you cannot get to the patient: the door is locked"], template: "Alarm: SBP 72 — I can't get to the patient: the door is locked. I need someone at the bedside now.", locale: "en", timeoutMs: 2000, staffNames: o.staffNames, where: "away" as const };
+    const liar = new ScriptedProvider([textScript("I am at the bedside and checking the patient.")]);
+    expect(await wordLine({ ...blocked, model: { provider: liar, agent: "attending", request: {} } })).toMatchObject({ text: blocked.template, source: "template", refused: expect.stringMatching(/claims to be at the patient \("I am at the bedside/u) });
+    const zh = new ScriptedProvider([textScript("我已经在床旁了，正在检查病人。")]);
+    expect(await wordLine({ ...blocked, locale: "zh-CN", template: "报警：SBP 72——我过不去：门锁了。需要有人马上到床旁。", model: { provider: zh, agent: "attending", request: {} } })).toMatchObject({ source: "template", refused: expect.stringMatching(/claims to be at the patient/u) });
+    const honest = new ScriptedProvider([textScript("SBP 72 and the door's locked — I can't get out, someone get to the bedside now!")]);
+    expect(await wordLine({ ...blocked, model: { provider: honest, agent: "attending", request: {} } })).toMatchObject({ source: "model" });
   });
 });
 

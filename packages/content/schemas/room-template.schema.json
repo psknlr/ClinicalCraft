@@ -417,6 +417,9 @@
                   "type": "integer",
                   "minimum": 0
                 }
+              },
+              "state": {
+                "$ref": "#/definitions/Id"
               }
             },
             "required": [

@@ -244,7 +244,7 @@ export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): Stu
     }
     case "review": {
       if (!r.reports.some((x) => x.accession === op.accession)) return { ok: false, code: "requirements-unmet", message: `"${op.accession}" has no released report to review` };
-      r.reviews.push({ accession: op.accession, by: op.by, at: s.clock, seq: s.seq + 1 });
+      r.reviews.push({ accession: op.accession, by: op.by, ...(op.basis ? { basis: op.basis } : {}), at: s.clock, seq: s.seq + 1 });
       const vo = r.orders.find((x) => x.accessions.includes(op.accession));
       if (vo) stage(vo, "reviewed");
       return { ok: true, record: r, changed: true, id: op.accession };

@@ -36,7 +36,7 @@ describe("the laparoscopic equipment", () => {
     s = step.s;
     const dark = observeField(def, s.procedure!);
     expect(dark).toMatchObject({ inView: false, supply: { image: false, gas: true }, regions: [] });
-    expect(run(s, op({ op: "dissect", port: "C", region: "hepatocystic-triangle", energy: false })).r.rejected?.message).toMatch(/^There is no picture: the laparoscopic camera or light source is out of service/u);
+    expect(run(s, op({ op: "dissect", port: "C", region: "hepatocystic-triangle", energy: false })).r.rejected?.message).toMatch(/^There is no picture: the laparoscopic camera or light source is not working \(switched off or out of service\)/u);
     // the same supply again changes nothing
     expect(run(s, supply(false, true)).r.events).toEqual([]);
 
@@ -45,7 +45,7 @@ describe("the laparoscopic equipment", () => {
     expect(step.r.events).toContainEqual(expect.objectContaining({ type: "procedure.supply", gas: false, deflated: true }));
     s = step.s;
     expect(s.procedure).toMatchObject({ insufflated: false, pressure: 0 });
-    expect(run(s, op({ op: "insufflate", pressure: 12 })).r.rejected?.message).toMatch(/^There is no CO₂ supply: the insufflator is out of service/u);
+    expect(run(s, op({ op: "insufflate", pressure: 12 })).r.rejected?.message).toMatch(/^There is no CO₂ supply: the insufflator is not working \(switched off or out of service\)/u);
 
     // a stand-alone insufflator is connected: gas, but still no picture
     s = run(s, supply(false, true)).s;

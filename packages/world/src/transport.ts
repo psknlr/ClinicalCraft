@@ -21,7 +21,7 @@ import { failed, type EffectsHost, type Outcome, type Walk } from "./effects.js"
 import { endEscortIfUnable } from "./escort.js";
 import { listText, metres, worldMessage } from "./i18n.js";
 import { levelElevation } from "./levels.js";
-import { freeCellNear, patientProviders, resolveTarget, sameTarget, trolleySpot, type PatientTarget, type TargetDeps } from "./patient.js";
+import { freeCellNear, patientProviders, resolveTarget, sameTarget, trolleySpot, type PatientTarget, type TargetDeps, type WalkProblem } from "./patient.js";
 import { footprintArea, type Area } from "./raster.js";
 
 /** The bus side transports need: the patient's body as last stamped on the grids, the transport in progress. */
@@ -32,6 +32,11 @@ export interface TransportHost extends EffectsHost {
   transit: NonNullable<PatientPlace["transit"]> | null;
   /** The same transport as a snapshot keeps it (who, whom, where to), or null. */
   journey: WorldJourney | null;
+  /**
+   * Stop the transport walking now because the patient can no longer walk (`why`: the mobility assessment's
+   * reason) — set only while a patient walks with the transporter (no trolley); `refreshPatient` calls it.
+   */
+  transitStop: ((why: WalkProblem) => void) | null;
 }
 
 /** The resolution context of destinations (`patient.ts`) over the bus's services. */
@@ -242,16 +247,42 @@ export async function transportPatient(host: TransportHost, request: WorldAction
   // lying only on the trolley the walker pushes; otherwise upright beside them (the place's posture comes on arrival)
   host.transit = { by: actor.id, trolley, posture: trolley ? "lying" : "standing" };
   host.journey = { by: actor.id, patient: patientId, actionId: request.actionId, parameters: structuredClone(request.parameters ?? {}) };
+  // walking beside the transporter, the patient is reassessed on the way: one who can no longer walk stops the walk
+  let collapsed: WalkProblem | null = null;
+  const own = new AbortController();
+  const follow = () => own.abort();
+  if (signal.aborted) own.abort();
+  else signal.addEventListener("abort", follow, { once: true });
+  if (!trolley)
+    host.transitStop = (why) => {
+      collapsed ??= why;
+      // nobody walks them from this moment: not "standing beside the walker" while the walk winds down
+      host.transit = null;
+      own.abort();
+    };
   let walk: Walk;
   try {
-    walk = await host.walk(actor, plan, signal, request);
+    walk = await host.walk(actor, plan, own.signal, request);
   } finally {
+    signal.removeEventListener("abort", follow);
     host.transit = null;
     host.journey = null;
+    host.transitStop = null;
     host.busy.delete(patientId);
     if (trolley) host.busy.delete(trolley);
   }
   const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
+  if (collapsed) {
+    // the last safe position: laid down where the walk stopped (their clinical posture), no trolley, no bed; going
+    // on needs a trolley (the same assessment a new transport makes before it starts)
+    const now = host.d.store.actor(actor.id)!;
+    const stop = stopTarget(host, now.pose, null);
+    // unresponsive or to be kept lying: lying; too unwell to walk on: sat down
+    const posture = collapsed === "unwell" && body.clinicalPostureOf(body.state()!) !== "lying" ? "sitting" : "lying";
+    const events = [...walk.events, ...commitPatient(host, { ...stop, posture }, null, "keep", actor.id, walk.record.path, walk.walked)];
+    const message = `${worldMessage(`pre.cannotWalk.${collapsed}`, L, { patient: name })} ${worldMessage("pre.stoppedEnRoute", L, { patient: name, place: stop.name })} ${worldMessage("pre.needsTrolley", L, { patient: name })}`;
+    return { status: "failed", errorCode: "PRECONDITION_FAILED", message, events, hint: null, ...base };
+  }
   if (walk.interrupted) {
     const now = host.d.store.actor(actor.id)!;
     const stop = stopTarget(host, now.pose, trolley);
@@ -297,6 +328,10 @@ export function refreshPatient(host: TransportHost): boolean {
   const body = host.d.patient;
   if (!body.id) return false;
   if (endEscortIfUnable(host)) return true;
+  // walking to a place with someone and no longer able to: the transport stops at once (it lays them down)
+  const walking = body.state();
+  const why = host.transitStop && walking ? body.walkProblem(walking) : null;
+  if (why) host.transitStop!(why);
   // a posture taken when asked lapses once clinical state positions the patient otherwise: forget it
   const st = body.state();
   if (st?.asked && st.asked.over !== body.clinicalPostureOf(st)) {

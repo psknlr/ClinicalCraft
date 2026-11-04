@@ -73,6 +73,25 @@ describe("the report validator binds every number to its observation", () => {
     expect(validateReport(accession, written("Rate 78/min", "PR 169 ms", { impression: L("Within the reference intervals.", "在参考范围内。"), supportedBy: [] }))).toEqual([]);
   });
 
+  it("the findings are held to the observations too, and a writer's text is written text whatever it calls itself (the follow-up audit)", () => {
+    // a genuine report with an unsupported diagnosis appended to its findings
+    const base = written("Rate 78/min", "PR 169 ms", { supportedBy: ["rhythm"] });
+    const appended = { ...base, findings: L(`${base.findings.en} Acute pulmonary embolism confirmed.`, `${base.findings["zh-CN"]} 急性肺栓塞已确诊。`) };
+    expect(validateReport(accession, appended)).toEqual(expect.arrayContaining([
+      expect.stringMatching(/en: the findings' "confirm…" claims a certainty/),
+      expect.stringMatching(/en: the findings' "acute, pulmonary, embolism[^"]*" is no observation of this study/),
+      expect.stringMatching(/zh-CN: the findings' "确诊…" claims a certainty/),
+      expect.stringMatching(/zh-CN: the findings' "[^"]*肺[^"]*" is no observation of this study/),
+    ]));
+    // the same report without the claim passes: its findings are its observations
+    expect(validateReport(accession, base)).toEqual([]);
+    // a writer labelling its text "template": checked as written text (the service always says so)
+    const disguised = { ...written("Rate 78/min", "PR 169 ms"), generator: "template", impression: L("Acute pulmonary embolism confirmed.", "急性肺栓塞已确诊。") };
+    expect(validateReport(accession, disguised, templateReport(profile, accession), true)).toEqual(expect.arrayContaining([expect.stringMatching(/claims a certainty/)]));
+    // the template itself, written by the service, passes either way
+    expect(validateReport(accession, templateReport(profile, accession), templateReport(profile, accession), true)).toEqual([]);
+  });
+
   it("numbers bound to nothing, a binding to no observation, an impression resting on nothing, an unsupported finding", () => {
     const loose: ReportText = { findings: L("Rate 78, PR 169."), impression: L("Normal."), limitations: L("x"), generator: "a-model" };
     expect(validateReport(accession, loose)).toEqual(expect.arrayContaining([expect.stringMatching(/the number 78 is bound to no observation/)]));

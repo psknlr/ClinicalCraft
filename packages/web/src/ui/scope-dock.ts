@@ -103,12 +103,16 @@ export class ScopeDock {
     const v = observeField(def, p);
     this.lap?.update(lapScene(def, p, v));
     const converted = v.bailouts.includes("convert-open");
-    this.chip.textContent = converted ? tr("scope.converted").split(/[:：]/u)[0]! : v.inView ? tr("scope.live") : tr("scope.outside");
-    this.chip.dataset.state = converted ? "converted" : v.inView ? "live" : v.supply.image ? "outside" : "no-image";
+    // the chip says what the equipment and the abdomen give now — never "Live" over a dead camera, never "outside"
+    // with the scope in a deflated abdomen
+    const scopeIn = v.ports.some((x) => x.instrument === "laparoscope");
+    const chip = converted ? "converted" : v.inView ? "live" : !v.supply.image ? "no-image" : scopeIn && !v.insufflated ? "deflated" : "outside";
+    this.chip.textContent = { converted: tr("scope.converted").split(/[:：]/u)[0]!, live: tr("scope.live"), "no-image": tr("scope.noImageChip"), deflated: tr("scope.deflatedChip"), outside: tr("scope.outside") }[chip];
+    this.chip.dataset.state = chip;
     this.dark.hidden = v.inView;
     // converted: the open field in words instead of a scope picture (the same lines as the surgery window)
     if (converted) mount(this.dark, h("div", { class: "open-field", dataset: { view: "open" } }, h("strong", null, tr("scope.converted")), ...openFieldText(observeField(def, p, "open"), getLocale(), tr, label, (id) => identifyChoices(def, getLocale(), "").find((x) => x.id === id)?.name ?? id).slice(1).map((line) => h("div", { class: "open-line" }, line))));
-    else this.dark.textContent = v.supply.image ? tr("scope.outside") : tr("scope.noImage");
+    else this.dark.textContent = chip === "no-image" ? tr("scope.noImage") : chip === "deflated" ? tr("scope.deflated") : tr("scope.outside");
     this.el.dataset.step = String(p.counters.steps);
     this.el.dataset.frame = item?.id ?? "";
     const lines = [];
@@ -117,6 +121,7 @@ export class ScopeDock {
     // the window over a region being dissected that the traction no longer holds open, in words
     if (v.inView && v.specimen === "in-situ")
       for (const r of v.regions) if (r.dissection !== "untouched" && r.exposure !== "good") lines.push(h("div", { class: "lap-line warn", dataset: { window: r.id, exposure: r.exposure } }, tr("scope.window", { region: t(r.name, getLocale()), exposure: label("exposure", r.exposure), dissection: label("dissection", r.dissection) })));
+    if (!converted && !v.supply.gas) lines.push(h("div", { class: "lap-line warn", dataset: { supply: "no-gas" } }, tr("scope.noGas")));
     const pending = this.app.playback.pending();
     if (pending) lines.push(h("div", { class: "lap-line muted" }, tr("scope.queue", { n: pending })));
     mount(this.caption, lines);

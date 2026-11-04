@@ -202,13 +202,21 @@ export interface StudyReport {
   provenance: { kind: "simulated-investigation"; source: "case-teaching-profile"; profile: string; profileVersion: string; observations: string[]; generator: string };
 }
 
+/**
+ * Why a colleague reviewed a report, resolved when it was ready: `named` — the reviewer the order named by name or
+ * staff id (a consultant asked to review, wherever they are); `responsible` — the anaesthetist responsible for the
+ * patient now, by the anaesthesia record (after a handover, the one who took over); `on-duty` — the colleague of that
+ * role where the patient is.
+ */
+export type ReviewBasis = "named" | "responsible" | "on-duty";
+
 /** The encounter's studies. */
 export interface StudyRecord {
   orders: StudyOrder[];
   accessions: StudyAccession[];
   reports: StudyReport[];
-  /** Who reviewed which released report, when. */
-  reviews: { accession: string; by: string; at: number; seq: number }[];
+  /** Who reviewed which released report, when, and why them (`basis`). */
+  reviews: { accession: string; by: string; basis?: ReviewBasis; at: number; seq: number }[];
 }
 
 const Bilingual = z.object({ en: z.string().trim().min(1).max(4000), "zh-CN": z.string().trim().min(1).max(4000) }).strict();
@@ -235,6 +243,6 @@ export const StudyOpSchema = z.discriminatedUnion("op", [
   z.object({ op: z.literal("progress"), order: z.string().min(1), stage: z.enum(["en-route", "at-patient", "acquisition-started"]) }).strict(),
   z.object({ op: z.literal("acquire"), order: z.string().min(1), collector: z.string().min(1).max(80), configuration: z.string().max(40).optional(), quality: z.enum(["good", "limited"]).default("good") }).strict(),
   z.object({ op: z.literal("release"), accession: z.string().min(1), findings: Bilingual, impression: Bilingual, limitations: Bilingual.optional(), generator: z.string().min(1).max(80), supportedBy: z.array(z.string().min(1).max(80)).max(50).optional() }).strict(),
-  z.object({ op: z.literal("review"), accession: z.string().min(1), by: z.string().min(1).max(80) }).strict(),
+  z.object({ op: z.literal("review"), accession: z.string().min(1), by: z.string().min(1).max(80), basis: z.enum(["named", "responsible", "on-duty"]).optional() }).strict(),
 ]);
 export type StudyOp = z.infer<typeof StudyOpSchema>;

@@ -182,6 +182,10 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
       const p = resolved ? locator.place(resolved) : null;
       return !!p && locator.atBedside(p);
     },
+    provides: (id: EntityId) => {
+      const resolved = actions.resolve(id);
+      return resolved ? locator.capabilities(resolved) : [];
+    },
     bedsideProviders: (capability: string) =>
       registry
         .ofKind("equipment")

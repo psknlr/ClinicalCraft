@@ -81,6 +81,15 @@ export function lookupStaff(facility: FacilityDefinition | null | undefined, ask
   return { kind: "none" };
 }
 
+/** The one colleague a reviewer or request names by staff id or by name — never by a role or title (null: none). */
+export function namedStaff(facility: FacilityDefinition | null | undefined, asked: string): Staff | null {
+  const q = norm(asked.replace(/^staff:/u, ""));
+  if (!q) return null;
+  const staff = facility?.staff ?? [];
+  const hits = staff.filter((s) => norm(s.id) === q || names(s.name).some((n) => norm(n) === q || core(n) === core(asked)));
+  return hits.length === 1 ? hits[0]! : null;
+}
+
 /** A colleague as the choice lists them: name, staff id, role (and room). */
 export function staffChoice(s: Staff, locale: string): string {
   return `${t(s.name, locale)} [staff:${s.id}, ${s.role}${s.room ? `, ${s.room}` : ""}]`;
