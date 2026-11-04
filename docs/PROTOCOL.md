@@ -51,6 +51,12 @@ src/tools/clinical.ts        clinicalTools(): ToolDefinition[] (see §3); clinic
 src/tools/npc.ts             npcTools(options?): npc tools (reveal_facts, get_vitals, get_results, get_progress, give_hint)
 src/tools/index.ts           ToolRegistry / createToolRegistry(options) (scope + deny filtering), DYNAMIC_TOOLS = ["walk_to"]; validate.ts validateArgs(schema, value); format.ts labels
 src/tools/learner.ts         the learner's tool set (§3): LEARNER_TOOLS, LEARNER_TOOL_NAMES, LEARNER_CLINICAL_TOOLS, isLearnerTool(name); WORLD_TOOL_NAMES
+src/tools/consult-target.ts  resolveConsultStaff / lookupStaff / namedStaff / consultantsFor (internal): ONE room-aware resolver for every way the learner names a
+                             colleague (`@` mention, `consult {staff}`, `delegate_task`, the staff picker); nothing unresolved goes to the nurse — refused with who can be asked (§3)
+src/tools/requirements.ts    what the case still needs, in words (§3.1), internal: requirementLines / holdLines / countLines / operationLines / equipmentLines — one renderer for
+                             `case_status`, `intervene` (an operation asked for as an intervention), `observe_field` and `operate` refusals
+src/tools/procedure.ts       procedureTools(): `observe_field` / `operate` (docs/PROCEDURE.md §7: handles, never names; no verdict, hidden injury or score reaches the agent)
+src/tools/studies.ts         studyTools(), studyLines, studyText, orderText: `retrieve_report` / `order_study` / `read_study` (docs/STUDIES.md)
 src/agents/types.ts          (contract)
 src/agents/builtin.ts        BUILTIN_AGENTS: AgentProfile[] (prompts as template strings)
 src/agents/markdown.ts       parseAgentMarkdown(text, source, defaultName?): AgentProfile; parseCommandMarkdown(name, text, source): SlashCommand
@@ -88,6 +94,21 @@ src/skills/                  schema.ts SkillSchema / parseSkill(value) (`clinica
 src/session/embodied.ts      EmbodiedSession (world, ClinicalView/ClinicalPort, spatial gate, world tools, delegation, skills, trace, transcript snapshots), EmbodimentError, mergeSkills;
                              embodied-autopilot.ts embodiedOfflineTurn; delegation.ts runDelegation; device-ops.ts clinicalOperation/operationPath/releaseOperation; trace.ts SessionTrace, traceJsonl, emptyTrace;
                              i18n-embodied.ts (runtime strings of embodied mode, merged into i18n.ts)
+src/session/action-ids.ts    actionIdOf / actionIdsBetween / clinicalActionFeedback: the stable ids of committed clinical actions and what an act changed
+src/session/answer-polarity.ts  answerPolarity / isPolarQuestion / polarityViolation / deniedDetailViolation: yes/no polarity for the grounding verifier (ARCHITECTURE §4.2)
+src/session/count.ts         SurgicalCount (internal): the one writer of the case's count record from the world — board, RF wand, care team, an item searched out (docs/TEAM.md §4.3)
+src/session/studies.ts       SessionStudies (internal): ordering, acquisition and the reporting agent of new investigations; templateReport / validateReport (docs/STUDIES.md)
+src/session/procedure-supply.ts  syncProcedureSupply (internal): the operation's equipment as the world supplies it (docs/PROCEDURE.md "Equipment")
+src/session/assist.ts        dropTractionAwayFromTable (internal): traction held by a colleague falls when their body leaves the table (docs/PROCEDURE.md §3)
+src/session/handover.ts      handoverFromRecord / handoverText (internal): the anaesthetic hand-over taken from the record, never made up (docs/TEAM.md §5)
+src/session/nonverbal.ts     patients who cannot speak (`patient.nonVerbalWhen`, internal): the companion relays, or an honest narration — no fact revealed
+src/session/staff-autonomy.ts  StaffAutonomy (internal; `RoleState` exported): staff working on their own clock (`staff_step`) and after every act (docs/TEAM.md §5)
+src/session/character-models.ts  characterModel (internal): the model a character is driven by — its facility role's agent (docs/CHARACTERS.md)
+src/session/team/            the care team (docs/TEAM.md), internal but for its record types and validTeamCheckpoint: types.ts (records, TeamCheckpoint), scheduler.ts TeamScheduler,
+                             policy.ts propose (the offline role policies, pure), session-team.ts SessionTeam (wiring, the `team` op, save/restore), checkpoint.ts, i18n.ts
+src/session/version.ts       CLINICALCRAFT_VERSION (re-exported through session.ts; snapshots and transcripts record it)
+src/characters/              docs/CHARACTERS.md: roles.ts ROLE_CARDS / roleCardOf / positionOf / PROFILE_POSITION / SHARED_PROTOCOL; team-mind.ts ModelTeamMind, lineProblem (a
+                             model-driven team member); voice.ts wordLine (a staff line worded by the speaker's model, accepted only when grounded)
 src/commands-world.ts        EMBODIED_COMMANDS + executeEmbodiedCommand (`/look` `/where` `/find` `/go` `/inspect` `/use` `/map` `/skill` `/delegate` `/transport`, §9)
 src/bridge/                  world bridge (§13, isomorphic): protocol.ts (contract: routes, shapes, limits, validators, BRIDGE_TOOLS, caseHandle);
                              world-client.ts connectWorldBridge (the browser's side), bridgeResultOf; attach-client.ts WorldAttachClient (mcp --attach)
@@ -96,12 +117,14 @@ src/library.ts               libraryOrder(cases) / compareLibraryOrder: publishe
                              (id, version, title, summary, specialty, difficulty, setting, facility, locales, estimatedMinutes, provenance kind, tags, physiology presence, objectives count,
                              labelPrefix — the V4 label's "CASE 01", never the diagnosis-bearing rest —, disclaimer, contentHash, capabilityNeeds), read from the raw JSON without validating it;
                              canCompleteWith(entry, facilityCapabilities): the verdict of core's caseCapabilityGaps without the full case; normalizeIndexEntry(untrusted) for entries from a server
+src/case-source.ts           caseSource / citesSource / withoutSource: a published case's source, kept back until the case is complete (docs/GLOSSARY.md §4)
+src/critical.ts              criticalMisses / criticalMissLines: the critical rubric items missed, shown in every debrief once the case is complete (never a score cap)
 src/concurrency.ts           createLimiter(max) / mapLimit(items, max, fn): bounded concurrency (indexing content directories, loading cases)
 src/terminal.ts              sanitizeTerminal(text, {keepColors?}): strip C0/C1 controls and escape sequences (CLI output, MCP stderr diagnostics)
 src/node/index.ts            node-only exports (§7)
 ```
 
-`src/index.ts` re-exports these modules except `node/` and a few internal ones: the session's own parts (above), `tools/clinical-resolve.ts` (its public names come through `tools/clinical.ts`), `commands-world.ts` (the session registers the embodied commands itself), `skills/risk.ts`, `session/signals.ts`, and the string tables `session/i18n-embodied.ts` (merged into `rt`) and `bridge/i18n.ts`.
+`src/index.ts` re-exports these modules except `node/` and a few internal ones: the session's own parts (above), `tools/clinical-resolve.ts` (its public names come through `tools/clinical.ts`), `commands-world.ts` (the session registers the embodied commands itself), `skills/risk.ts`, `session/signals.ts`, and the string tables `session/i18n-embodied.ts`, `i18n-procedure.ts`, `i18n-checklist.ts`, `i18n-count.ts`, `i18n-studies.ts` (merged into `rt`) and `bridge/i18n.ts`.
 
 ## 3. Tools
 
