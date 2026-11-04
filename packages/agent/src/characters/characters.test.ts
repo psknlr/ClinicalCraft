@@ -206,3 +206,18 @@ describe("grounded lines", () => {
     expect(await wordLine({ ...base, model: null })).toMatchObject({ text: base.template, source: "template" });
   });
 });
+
+describe("the switch at runtime", () => {
+  it("configure {characters: {engine}} changes how the characters are driven; anything else is refused", async () => {
+    const { makeSession, msgsOf } = await import("../__fixtures__/harness.js");
+    const t = await makeSession();
+    expect(t.session.settings.characters).toEqual({ engine: "rules", timeoutMs: 8000 });
+    const on = await t.session.run({ type: "configure", patch: { characters: { engine: "llm" } } });
+    expect(t.session.settings.characters.engine).toBe("llm");
+    expect(msgsOf(on, "config_changed")[0]?.patch).toMatchObject({ characters: { engine: "llm" } });
+    const bad = await t.session.run({ type: "configure", patch: { characters: { engine: "telepathy" } } } as never);
+    expect(msgsOf(bad, "error")[0]).toMatchObject({ code: "invalid_config" });
+    expect(t.session.settings.characters.engine).toBe("llm");
+    await t.session.close();
+  });
+});

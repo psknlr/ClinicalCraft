@@ -75,7 +75,10 @@ holdings, reservations, pending requests and what blocks them (docs/TEAM.md §5)
 | a staff line the engine decides is said (the anaesthetist answering an alarm) | the template | the speaker's model words it, grounded in the facts (§4) |
 
 Set it in any settings layer (`"characters": {"engine": "llm", "timeoutMs": 8000}`), with `clinicalcraft
---characters llm`, or at runtime with `configure {characters: {engine}}`. A character's model is the one their
+--characters llm`, in the browser (Settings → Agents → **Model-driven characters** / 大模型驱动的角色: saved with the
+other settings and sent to the running encounter at once — `configurePatch`; with no model chosen it says the
+characters follow the rules until one is), or at runtime with `configure {characters: {engine}}` (an unknown value is
+refused, `invalid_config`). A character's model is the one their
 facility role speaks through (`STAFF_AGENT`: a nurse's is `agents.nurse`, an anaesthetist's or assistant surgeon's
 `agents.attending`), with that agent's provider, model, temperature, effort and retries. `timeoutMs` (default 8000,
 500–60000) is how long a model may take before the rules decide.
