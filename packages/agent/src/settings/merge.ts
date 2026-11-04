@@ -73,6 +73,7 @@ export interface SettingsLayerData {
   defaultFacility?: string;
   transcripts?: { enabled?: boolean; dir?: string };
   patient?: { pipeline?: ResolvedSettings["patient"]["pipeline"]; strictGrounding?: boolean; offlineFallback?: boolean };
+  characters?: { engine?: ResolvedSettings["characters"]["engine"]; timeoutMs?: number };
   server?: { host?: string; port?: number; token?: string };
   [key: string]: unknown;
 }
@@ -154,6 +155,7 @@ export const DEFAULT_SETTINGS: Readonly<ResolvedSettings> = deepFreeze({
   defaultFacility: null,
   transcripts: { enabled: true, dir: null },
   patient: { pipeline: "select-voice", strictGrounding: true, offlineFallback: true },
+  characters: { engine: "rules", timeoutMs: 8000 },
   server: { host: "127.0.0.1", port: 5178, token: null },
   sources: {},
 } satisfies ResolvedSettings);

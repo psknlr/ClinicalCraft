@@ -84,6 +84,7 @@ export const BailoutSchema = z.enum([
 export type Bailout = z.infer<typeof BailoutSchema>;
 
 export const ImagingSchema = z.enum(["ioc", "lap-us"]);
+export type Imaging = z.infer<typeof ImagingSchema>;
 
 export const InjuryKindSchema = z.enum([
   "bile-duct-injury",
@@ -249,7 +250,8 @@ export type Condition =
   /** The surgical count's record (docs/TEAM.md §4.3; `engine/count.ts`): every given field must hold. */
   | { count: CountPredicate }
   /** A new investigation (docs/STUDIES.md) reached at least `status` (default `ordered`). */
-  | { study: string; status?: "ordered" | "acquired" | "released" | "reviewed" };
+  | { study: string; status?: "ordered" | "acquired" | "released" | "reviewed" }
+  | { datum: string; status: ("not-asked" | "asked-unknown" | "verified-negative" | "verified-positive" | "mitigated")[] };
 
 export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
   z.union([
@@ -280,6 +282,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ count: CountPredicateSchema }).strict(),
     /** A new investigation (docs/STUDIES.md). */
     z.object({ study: IdSchema, status: z.enum(["ordered", "acquired", "released", "reviewed"]).optional() }).strict(),
+    /** A safety datum's status is one of these (`datumStatus`: not asked, asked but unknown, verified, mitigated). */
+    z.object({ datum: IdSchema, status: z.array(z.enum(["not-asked", "asked-unknown", "verified-negative", "verified-positive", "mitigated"])).min(1) }).strict(),
   ]),
 );
 

@@ -39,6 +39,14 @@ const StudyFindingSchema = z
   })
   .strict();
 
+/** A study's category (docs/STUDIES.md §1). */
+export const StudyCategorySchema = z.enum(["lab", "bedside", "imaging"]);
+export type StudyCategory = z.infer<typeof StudyCategorySchema>;
+
+/** A condition with the reason said when it stops a study (a restriction that holds, a prerequisite that does not). */
+export const StudyRuleSchema = z.object({ when: ConditionSchema, reason: LocalizedTextSchema }).strict();
+export type StudyRule = z.infer<typeof StudyRuleSchema>;
+
 /** What the test can reveal, from the acquisition snapshot. */
 export const StudyModelSchema = z.discriminatedUnion("kind", [
   z
@@ -83,6 +91,24 @@ export const StudyProfileSchema = z
      * device (a chest radiograph in radiology).
      */
     acquisition: z.enum(["bedside-device", "sample", "department"]),
+    /**
+     * `lab` (a specimen analysed in the laboratory: blood count, chemistry, coagulation, group and screen, lactate),
+     * `bedside` (at the patient with a device: ECG, point-of-care ultrasound, glucose, blood gas) or `imaging` (a
+     * radiograph, CT, ultrasound in a department). Default from `acquisition`: sample → lab, bedside-device →
+     * bedside, department → imaging.
+     */
+    category: StudyCategorySchema.optional(),
+    /** When it may be ordered (absent: while the encounter runs); otherwise the order is refused as not yet possible. */
+    orderableWhen: ConditionSchema.optional(),
+    /** Safety restrictions: while one holds the order is refused with its reason (no transfer to CT with the abdomen open). */
+    restrictions: z.array(StudyRuleSchema).default([]),
+    /**
+     * Prerequisites of the acquisition: while one does not hold the order is accepted but waits (`blocked`, with its
+     * reason) — recoverable, it goes on once it holds (intravenous access for a sample, the patient at the device).
+     */
+    prerequisites: z.array(StudyRuleSchema).default([]),
+    /** Roles that may acquire it (default: nurse, paramedic, attending, clinician at the bedside; a department's radiographer). */
+    collectors: z.array(z.string().min(1).max(40)).default([]),
     /** Capabilities the facility must provide (the device, the analyser, the X-ray room). */
     requires: z.array(CapabilitySchema).default([]),
     /** Simulated minutes from acquisition to the report. */
@@ -111,6 +137,13 @@ export interface StudyObservation {
   side?: "left" | "right";
 }
 
+/**
+ * Where an order is in its workflow (docs/STUDIES.md §4): ordered → assigned (to the person who will acquire it) →
+ * en route → at the patient → acquisition started → acquired → reported → reviewed; `blocked` (with `waiting`) when it
+ * cannot proceed now. Nothing is acquired before `at-patient`: a nurse who cannot reach the patient takes no sample.
+ */
+export type StudyStage = "ordered" | "assigned" | "en-route" | "at-patient" | "acquisition-started" | "blocked" | "acquired" | "reported" | "reviewed";
+
 /** An order of a study (`study-order`): what, why, how urgent, by whom; idempotent by `key`. */
 export interface StudyOrder {
   id: string;
@@ -126,6 +159,12 @@ export interface StudyOrder {
   /** A fulfilment that cannot proceed now, and why (recoverable: the device frees, the patient is moved). */
   waiting?: { reason: string; at: number };
   accessions: string[];
+  /** Who acquires it (a staff id or role), once assigned. */
+  assignee?: string;
+  /** Its workflow stage now (absent: ordered). */
+  stage?: StudyStage;
+  /** Every stage it went through, in order: the order's own event stream. */
+  stages?: { stage: StudyStage; at: number; seq: number; reason?: string }[];
 }
 
 /** One acquisition (`study-acquire`): the specimen or the tracing, who took it, when, at which state revision. */
@@ -157,6 +196,10 @@ export interface StudyReport {
   generator: string;
   at: number;
   seq: number;
+  /** The observations the impression rests on (each one of this accession's). */
+  supportedBy?: string[];
+  /** Where it comes from, machine-readable: a simulated investigation of the case's teaching profile — never the source's. */
+  provenance: { kind: "simulated-investigation"; source: "case-teaching-profile"; profile: string; profileVersion: string; observations: string[]; generator: string };
 }
 
 /** The encounter's studies. */
@@ -186,8 +229,12 @@ export const StudyOpSchema = z.discriminatedUnion("op", [
     })
     .strict(),
   z.object({ op: z.literal("wait"), order: z.string().min(1), reason: z.string().min(1).max(300) }).strict(),
+  /** The person who will acquire it (a staff id or role). */
+  z.object({ op: z.literal("assign"), order: z.string().min(1), to: z.string().min(1).max(80) }).strict(),
+  /** The acquisition under way: the collector on the way, at the patient (confirmed by the world), starting. */
+  z.object({ op: z.literal("progress"), order: z.string().min(1), stage: z.enum(["en-route", "at-patient", "acquisition-started"]) }).strict(),
   z.object({ op: z.literal("acquire"), order: z.string().min(1), collector: z.string().min(1).max(80), configuration: z.string().max(40).optional(), quality: z.enum(["good", "limited"]).default("good") }).strict(),
-  z.object({ op: z.literal("release"), accession: z.string().min(1), findings: Bilingual, impression: Bilingual, limitations: Bilingual.optional(), generator: z.string().min(1).max(80) }).strict(),
+  z.object({ op: z.literal("release"), accession: z.string().min(1), findings: Bilingual, impression: Bilingual, limitations: Bilingual.optional(), generator: z.string().min(1).max(80), supportedBy: z.array(z.string().min(1).max(80)).max(50).optional() }).strict(),
   z.object({ op: z.literal("review"), accession: z.string().min(1), by: z.string().min(1).max(80) }).strict(),
 ]);
 export type StudyOp = z.infer<typeof StudyOpSchema>;

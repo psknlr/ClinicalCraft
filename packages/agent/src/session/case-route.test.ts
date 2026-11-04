@@ -109,7 +109,8 @@ describe("the way through a theatre case", () => {
     expect(asked.ok).toBe(false);
     expect(asked.data).toMatchObject({ unresolved: "operation" });
     expect(asked.output).toMatch(/is the operation itself, not an intervention/);
-    expect(asked.output).toMatch(/It is not under way yet\. Still needed:\n  · WHO Time Out — a valid attempt, in order\n    → next: intervene/);
+    // the next step is recommended only when the engine would run it: the Time Out now would be out of order
+    expect(asked.output).toMatch(/It is not under way yet\. Still needed:\n  · WHO Time Out — a valid attempt, in order\n    → not yet: intervene \{intervention_id: "time-out"\} — out of order — first: WHO Sign In — a valid attempt, in order, Induction/);
     expect((await tool(t, "observe_field")).output).toMatch(/^Operation: not under way in this phase/);
     const op = await tool(t, "operate", { op: "plan-ports", plan: "three-port-left" });
     expect(op.output).toMatch(/Rejected \(phase-locked\): Not available in the current phase\. the operation is not under way in phase "theatre"/);

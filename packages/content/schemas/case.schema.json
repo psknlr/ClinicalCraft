@@ -859,6 +859,33 @@
             "study"
           ],
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "datum": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "not-asked",
+                  "asked-unknown",
+                  "verified-negative",
+                  "verified-positive",
+                  "mitigated"
+                ]
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "datum",
+            "status"
+          ],
+          "additionalProperties": false
         }
       ]
     },
@@ -1961,6 +1988,57 @@
                   "properties": {
                     "op": {
                       "type": "string",
+                      "const": "assign"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "progress"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "stage": {
+                      "type": "string",
+                      "enum": [
+                        "en-route",
+                        "at-patient",
+                        "acquisition-started"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "stage"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
                       "const": "acquire"
                     },
                     "order": {
@@ -2067,6 +2145,15 @@
                       "type": "string",
                       "minLength": 1,
                       "maxLength": 80
+                    },
+                    "supportedBy": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      },
+                      "maxItems": 50
                     }
                   },
                   "required": [
@@ -2117,6 +2204,162 @@
           "required": [
             "type",
             "study"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "anaesthesia"
+            },
+            "anaesthesia": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "request-relief"
+                    },
+                    "from": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "from",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "relief-arrived"
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "handover"
+                    },
+                    "from": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "airway": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 80
+                      },
+                      "maxItems": 20,
+                      "default": []
+                    },
+                    "ventilation": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "propertyNames": {
+                        "maxLength": 20
+                      },
+                      "default": {}
+                    },
+                    "haemodynamics": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "propertyNames": {
+                        "maxLength": 20
+                      },
+                      "default": {}
+                    },
+                    "drugs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "at": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "at"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 50,
+                      "default": []
+                    },
+                    "unresolved": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 200
+                      },
+                      "maxItems": 20,
+                      "default": []
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "from",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "anaesthesia"
           ],
           "additionalProperties": false
         },
@@ -3225,6 +3468,26 @@
                 ],
                 "default": "on-ask"
               },
+              "safety": {
+                "type": "object",
+                "properties": {
+                  "datum": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "finding": {
+                    "type": "string",
+                    "enum": [
+                      "unknown",
+                      "negative",
+                      "positive"
+                    ]
+                  }
+                },
+                "required": [
+                  "datum"
+                ],
+                "additionalProperties": false
+              },
               "required": {
                 "type": "boolean",
                 "default": false
@@ -3515,6 +3778,21 @@
                   "maxLength": 80,
                   "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
                 }
+              },
+              "availability": {
+                "type": "object",
+                "properties": {
+                  "earliestPhase": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "when": {
+                    "$ref": "#/definitions/Condition"
+                  },
+                  "historical": {
+                    "type": "boolean"
+                  }
+                },
+                "additionalProperties": false
               }
             },
             "required": [
@@ -3549,6 +3827,66 @@
                   "sample",
                   "department"
                 ]
+              },
+              "category": {
+                "type": "string",
+                "enum": [
+                  "lab",
+                  "bedside",
+                  "imaging"
+                ]
+              },
+              "orderableWhen": {
+                "$ref": "#/definitions/Condition"
+              },
+              "restrictions": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "when": {
+                      "$ref": "#/definitions/Condition"
+                    },
+                    "reason": {
+                      "$ref": "#/definitions/LocalizedText"
+                    }
+                  },
+                  "required": [
+                    "when",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                "default": []
+              },
+              "prerequisites": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "when": {
+                      "$ref": "#/definitions/Condition"
+                    },
+                    "reason": {
+                      "$ref": "#/definitions/LocalizedText"
+                    }
+                  },
+                  "required": [
+                    "when",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                "default": []
+              },
+              "collectors": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 40
+                },
+                "default": []
               },
               "requires": {
                 "type": "array",
@@ -4088,6 +4426,20 @@
               },
               "checklist": {
                 "type": "boolean"
+              },
+              "reports": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "default": []
+              },
+              "mitigates": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Id"
+                },
+                "default": []
               },
               "indicatedWhen": {
                 "$ref": "#/definitions/Condition"

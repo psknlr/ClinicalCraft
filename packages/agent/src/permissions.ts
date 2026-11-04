@@ -343,6 +343,7 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   count: null,
   // a learner orders a study with order_study; its acquisition, report and review are the hospital's
   study: "order_study",
+  anaesthesia: null,
 };
 
 /** Equivalent tool name for a learner `clinical_action` (null when the action is not gated). */

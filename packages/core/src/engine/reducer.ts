@@ -25,6 +25,8 @@ import { supersededIn } from "./twins.js";
 import { createProcedureState, operate, procedureFor } from "./procedure/index.js";
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
 import { applyStudy } from "./study.js";
+import { reachPhase, recordAvailability } from "./records.js";
+import { applyAnaesthesia } from "./anaesthesia.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -63,6 +65,7 @@ export function createSession(c: CaseDefinition): SessionState {
     finished: false,
     clock: 0,
     phase: c.initialPhase ?? c.phases[0].id,
+    phasesReached: [c.initialPhase ?? c.phases[0].id],
     asked: [],
     examined: [],
     orders: [],
@@ -86,6 +89,7 @@ function cloneState(s: SessionState): SessionState {
   return {
     ...s,
     asked: [...s.asked],
+    ...(s.phasesReached ? { phasesReached: [...s.phasesReached] } : {}),
     examined: [...s.examined],
     orders: [...s.orders],
     seen: [...s.seen],
@@ -174,6 +178,9 @@ function onOrder(ctx: Ctx, a: Action<"order">): Outcome {
   const { c, s } = ctx;
   const investigation = c.investigations.find((i) => i.id === a.investigationId);
   if (!investigation) return rejected("unknown-id", `unknown investigation "${a.investigationId}"`);
+  // a document written later in the encounter (the operation record, the pathology report) does not exist yet
+  if (investigation.performedAt === "records" && recordAvailability(c, s, investigation.id).kind === "not-yet")
+    return rejected("not-ready", `"${investigation.id}" does not exist yet at this stage of care: nothing was retrieved`);
   const key = resultKey(investigation.id, s.phase);
   if (s.orders.some((o) => o.key === key)) {
     ctx.events.push({ type: "order.duplicate", investigationId: investigation.id, phase: s.phase, key });
@@ -219,6 +226,7 @@ function onSetPhase(ctx: Ctx, a: Action<"set-phase">): Outcome {
   if (s.phase !== phase.id) {
     ctx.events.push({ type: "phase.changed", from: s.phase, to: phase.id, automatic: false });
     s.phase = phase.id;
+    reachPhase(s, phase.id);
   }
   return accepted();
 }
@@ -389,6 +397,15 @@ function onStudy(ctx: Ctx, a: Action<"study">): Outcome {
   return accepted();
 }
 
+/** A step of anaesthesia responsibility: a relief requested or arrived, a hand-over accepted (`engine/anaesthesia.ts`). */
+function onAnaesthesia(ctx: Ctx, a: Action<"anaesthesia">): Outcome {
+  const r = applyAnaesthesia(ctx.c, ctx.s, a.anaesthesia);
+  if (!r.ok) return rejected(r.code, r.message);
+  ctx.s.anaesthesia = r.record;
+  ctx.events.push({ type: "anaesthesia.recorded", op: a.anaesthesia.op, responsible: r.record.responsible, ...(r.record.relief ? { relief: r.record.relief } : {}) });
+  return accepted();
+}
+
 /** An entry of the surgical count's record (docs/TEAM.md §4.3), by item identity. */
 function onCount(ctx: Ctx, a: Action<"count">): Outcome {
   const { c, s } = ctx;
@@ -451,6 +468,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onCount(ctx, a);
     case "study":
       return onStudy(ctx, a);
+    case "anaesthesia":
+      return onAnaesthesia(ctx, a);
     case "finish":
       return onFinish(ctx);
   }
@@ -460,8 +479,10 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
 /* reduce / replay                                                     */
 /* ------------------------------------------------------------------ */
 
-function rejection(s: SessionState, action: ClinicalActionType, code: RejectionCode, message: string): ReduceResult {
-  return { state: s, events: [{ type: "action.rejected", action, code, message }], rejected: { code, message } };
+function rejection(s: SessionState, action: ClinicalActionType, code: RejectionCode, message: string, a?: ClinicalAction): ReduceResult {
+  // a refused operative step carries what was asked and where in the record (the scope shows it in order)
+  const op = a?.type === "operate" ? { at: s.clock, after: s.seq, detail: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}) } : {};
+  return { state: s, events: [{ type: "action.rejected", action, code, message, ...op }], rejected: { code, message } };
 }
 
 function guard(s: SessionState, type: ClinicalActionType): { code: RejectionCode; message: string } | null {
@@ -491,11 +512,11 @@ export function reduce(c: CaseDefinition, s: SessionState, a: ClinicalAction): R
   }
   const action = parsed.data;
   const blocked = guard(s, action.type);
-  if (blocked) return rejection(s, action.type, blocked.code, blocked.message);
+  if (blocked) return rejection(s, action.type, blocked.code, blocked.message, action);
 
   const ctx: Ctx = { c, before: s, s: cloneState(s), events: [] };
   const outcome = dispatch(ctx, action);
-  if (outcome.kind === "rejected") return rejection(s, action.type, outcome.code, outcome.message);
+  if (outcome.kind === "rejected") return rejection(s, action.type, outcome.code, outcome.message, action);
   if (outcome.kind === "unchanged") return { state: s, events: ctx.events };
 
   ctx.s.seq += 1;

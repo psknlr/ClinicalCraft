@@ -16,6 +16,7 @@
  * inspection or the `WorldActionResult` (with `hint` when a failure can be
  * fixed by walking).
  */
+import type { ClinicalActionFeedback } from "../session/action-ids.js";
 import { roomLevel } from "@clinicalcraft/core";
 import type { ActorId, CameraSensor, EntityKind, EntityQuery, NavGoal, WorldActionRequest, WorldActionResult, WorldRuntime } from "@clinicalcraft/world";
 import { goalProblem, ivAccessIntervention, monitoringIntervention } from "@clinicalcraft/world";
@@ -30,6 +31,12 @@ import { actionResultText, entitiesText, inspectionText, nameOf, observationText
 export type WorldRequestInput = Omit<WorldActionRequest, "actionId" | "actorId"> & { actorId?: ActorId; actionId?: string };
 
 /** What the world tools need from the embodied session. */
+/** One committed clinical action in words: its id, what it was, who, when, what it produced. */
+export function clinicalFeedbackText(f: ClinicalActionFeedback, locale: string): string {
+  const what = f.action.type === "operate" ? `operate ${f.action.op.op}` : f.action.type === "intervene" ? `intervene ${f.action.interventionId}` : f.type;
+  return rt(locale, "world.feedback.clinical", { id: f.actionId, what, by: f.actor ? `${f.by} (${f.actor})` : f.by, minute: Math.round(f.at * 100) / 100, step: f.step ? ` · ${f.step}` : "", events: f.events.length ? f.events.join(", ") : "—" });
+}
+
 export interface WorldToolHost {
   /** The encounter's world. */
   world(): WorldRuntime;
@@ -57,6 +64,8 @@ export interface WorldToolHost {
   camera(): CameraSensor | null;
   /** Is this staff member carrying out the caller's delegation right now (G13: the clinician knows where they are)? */
   isDelegate(actorId: ActorId): boolean;
+  /** A committed clinical action by its persistent id (`act-<seq>`, or an operative step's `op-<n>`), from the record. */
+  clinicalFeedback?(id: string): ClinicalActionFeedback | null;
 }
 
 const ENTITY_KINDS: readonly EntityKind[] = ["patient", "staff", "actor", "equipment", "door", "room", "level", "connector", "item"];
@@ -543,7 +552,12 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
       () => "get_action_feedback",
       async (args, ctx) => {
         const result = host.world().feedback(strArg(args, "action_id"));
-        if (!result) return failedOutput(ctx, "world.feedback.none", { id: strArg(args, "action_id") });
+        if (!result) {
+          // a clinical action's own id (a tool result's `actionIds`, a clinical event's `actionId`, an `op-<n>`)
+          const clinical = host.clinicalFeedback?.(strArg(args, "action_id")) ?? null;
+          if (clinical) return { ok: true, output: clinicalFeedbackText(clinical, ctx.locale), data: { clinical } };
+          return failedOutput(ctx, "world.feedback.none", { id: strArg(args, "action_id") });
+        }
         return { ok: true, output: actionResultText(result, L(ctx)), data: { result } };
       },
     ),

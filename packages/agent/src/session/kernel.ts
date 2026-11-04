@@ -15,6 +15,8 @@
  * - `resume.ts` — snapshots, and restoring a resumed session.
  */
 import { SessionStudies } from "./studies.js";
+import { StaffAutonomy } from "./staff-autonomy.js";
+import { actionIdOf } from "./action-ids.js";
 import {
   createSession as createEngineState,
   currentWaypoint,
@@ -107,11 +109,18 @@ export class SessionKernel {
   readonly team: SessionTeam;
   /** New investigations: ordering, fulfilment, reporting, review (docs/STUDIES.md). */
   readonly studies: SessionStudies;
+  /** What staff do on their own, round by round (`staff_step`, and after every act). */
+  readonly staff: StaffAutonomy;
 
   settings: ResolvedSettings;
   /** The engine state (core `reduce`). */
   state: SessionState;
   acceptedActions: ClinicalAction[] = [];
+  /**
+   * A restored record (resume.ts): what it was made with, the original actions when the current engine replays them
+   * differently (kept unedited, reported), the replay's issues, and how many actions were accepted at the restore.
+   */
+  restore: { createdWith: import("./types.js").RecordProvenance | null; original: ClinicalAction[] | null; issues: import("./types.js").ReplayIssue[]; acceptedAtRestore: number } | null = null;
   plan: PlanItem[] = [];
   planExplanation: string | null = null;
   interlocutor: AgentRole = "patient";
@@ -178,6 +187,7 @@ export class SessionKernel {
     this.embodied = this.settings.embodiment === "embodied" ? new EmbodiedSession(embodiedHost(this), opts.embodied ?? {}) : null;
     this.team = new SessionTeam(this, validTeamCheckpoint(opts.embodied?.team));
     this.studies = new SessionStudies(this);
+    this.staff = new StaffAutonomy(this);
     if (opts.reportWriter) this.studies.writer = opts.reportWriter;
     if (opts.reportWriterTimeoutMs != null) this.studies.writerTimeoutMs = opts.reportWriterTimeoutMs;
     if (this.embodied) {
@@ -359,13 +369,15 @@ export class SessionKernel {
   dispatch(action: ClinicalAction, id: string): ReduceResult {
     const result = reduce(this.caseDef, this.state, action);
     const accepted = !result.rejected;
+    // a committed action's persistent id (`act-<seq>`): the same in a replay, after a reload, in every front-end
+    const actionId = accepted && result.state.seq !== this.state.seq ? actionIdOf(result.state.seq) : null;
     if (accepted) {
       this.state = result.state;
       this.acceptedActions.push(action);
     }
     this.recorder?.record("action", { action, accepted });
     for (const event of result.events) {
-      this.emit(id, { type: "clinical_event", event });
+      this.emit(id, { type: "clinical_event", event, ...(actionId ? { actionId } : {}) });
       this.embodied?.noteClinicalEvent(this.hub.lastSeq, event);
       this.queueHook({ hook_event_name: "ClinicalEvent", event }, id);
       // A `vitals.alarm` says itself whether its value is an arrest placeholder (`unmeasurable`, set at the minute it fired).

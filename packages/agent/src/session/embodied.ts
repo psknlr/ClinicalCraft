@@ -23,8 +23,9 @@
  * delegated staff act with their `staff:*` body. `world()` is a stable handle:
  * a language switch rebuilds the runtime from its snapshot behind it.
  */
+import type { ClinicalActionFeedback } from "./action-ids.js";
 import { COUNT_TOOL, SurgicalCount } from "./count.js";
-import { assignPatientSlot, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
+import { assignPatientSlot, canLeaveAnaesthetisedPatient, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   behaviorOf,
   createWorldRuntime,
@@ -40,6 +41,7 @@ import {
   type ClinicalPort,
   type ClinicalView,
   type Mover,
+  type NavGoal,
   type PatientDestination,
   type PatientRelocation,
   type Pose,
@@ -136,6 +138,8 @@ export interface EmbodiedHost {
   clockText(): string;
   /** Built-in + project skills. */
   skills(): readonly SkillDefinition[];
+  /** A committed clinical action by its persistent id (`act-<seq>` / `op-<n>`), from the accepted record. */
+  actionFeedback?(id: string): ClinicalActionFeedback | null;
 }
 
 export interface EmbodiedOptions {
@@ -239,6 +243,27 @@ export class EmbodiedSession {
     // a transport the saved world was in the middle of: carried out once the session has started (`resumeJourney`)
     this.journey = this.inner.restoredJourney();
     this.facade = this.makeFacade();
+  }
+
+  /**
+   * Why this request would take the responsible anaesthetist away from an anaesthetised patient (null: it would not):
+   * a movement whose destination is outside the patient's room. Moving with the patient (a transport) is staying.
+   */
+  private leavesAnaesthetisedPatient(request: WorldActionRequest): string | null {
+    if (!request.actorId.startsWith("staff:") || request.operation === "transport_patient") return null;
+    const staff = request.actorId.slice("staff:".length);
+    const c = this.host.caseDef;
+    const s = this.host.state();
+    if (canLeaveAnaesthetisedPatient(c, s, staff)) return null;
+    const params = (request.parameters ?? {}) as { goal?: NavGoal };
+    const goal = request.goal ?? params.goal;
+    if (!goal) return null;
+    const plan = this.inner.plan(request.actorId, goal);
+    if (!plan.ok) return null;
+    const patient = this.patientId();
+    const here = patient ? this.inner.roomOf(patient) : null;
+    const there = this.inner.roomAt(plan.target);
+    return here && there !== here ? rt(this.host.locale(), "relief.required") : null;
   }
 
   /** The transport a restored snapshot was taken in the middle of, until `resumeJourney` carries it out. */
@@ -355,6 +380,7 @@ export class EmbodiedSession {
       roomOf: (id) => w().roomOf(id),
       atBedside: (id) => w().atBedside(id),
       restoredJourney: () => w().restoredJourney(),
+      roomAt: (at) => w().roomAt(at),
       bedsideProviders: (capability) => w().bedsideProviders(capability),
       patientPlace: () => w().patientPlace(),
       patientMonitor: () => w().patientMonitor(),
@@ -412,6 +438,14 @@ export class EmbodiedSession {
     const actorId = input.actorId ?? PRIMARY_ACTOR;
     const actionId = input.actionId ?? `wa-${this.host.newId()}`;
     const request: WorldActionRequest = { ...input, actorId, actionId };
+    // continuous anaesthesia responsibility (docs/TEAM.md §5): whoever asks and by whatever path — a walk, a fetch, a
+    // delegated task, the team's own move — the responsible anaesthetist of an anaesthetised patient does not leave
+    const leaving = this.leavesAnaesthetisedPatient(request);
+    if (leaving) {
+      const refused: WorldActionResult = { actionId, status: "failed", errorCode: "NOT_AUTHORIZED", message: leaving, worldVersion: this.inner.version, events: [] };
+      this.host.emit({ type: "world_action_result", result: refused }, caller.submission);
+      return refused;
+    }
     if (request.targetId) this.targets.set(actionId, request.targetId);
     // A retry of an action id still in flight shares that run, and its caller.
     const entry = { caller, actorId };
@@ -785,6 +819,7 @@ export class EmbodiedSession {
       skillSpecifier: (args) => (args.skill !== undefined ? inlineSkillSpecifier(args.skill) : strArg(args, "skill_id") || "inline"),
       camera: () => this.options.camera ?? null,
       isDelegate: (actorId) => this.delegates.has(actorId),
+      clinicalFeedback: (id) => this.host.actionFeedback?.(id) ?? null,
     };
   }
 

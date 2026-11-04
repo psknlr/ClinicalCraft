@@ -7,9 +7,10 @@
  * else — and when a model call fails or refuses with nothing said — its deterministic offline responder.
  * Also the autopilot's host: the clinician driving the case through the same tool path.
  */
-import { dropTractionAwayFromTable } from "./assist.js";
+import { PROFILE_POSITION, ROLE_CARDS, roleCardOf, type RoleCard } from "../characters/roles.js";
 import { assess, correctionMade, correctionsFor, patientNonVerbal, t, type NpcCorrection } from "@clinicalcraft/core";
-import { attendingOffline, consultantOffline, examinerOffline, nurseOffline, staffOffline } from "../agents/offline.js";
+import { attendingOffline,
+  specialistOffline, consultantOffline, examinerOffline, nurseOffline, staffOffline } from "../agents/offline.js";
 import { agentKind, buildSystemSections, npcDisplayName, patientLocation } from "../agents/prompts.js";
 import type { AgentProfile } from "../agents/types.js";
 import { executeToolCall, runAgentTurn } from "../loop.js";
@@ -36,6 +37,17 @@ export type AgentTurnMode = "message" | "prompt";
 const TOP_AGENT_ROLES = new Set(["patient", "companion"]);
 
 /** The agent turns of one session. */
+/**
+ * The speaker's role card (docs/CHARACTERS.md): a colleague by name speaks from their position's card (a scrub nurse
+ * is not a ward nurse, an anaesthetist is not the learner's preceptor); an agent answering as itself from its
+ * profile's default position. None for the patient, the companion, the examiner or the clinician.
+ */
+function roleCardContext(k: SessionKernel, agent: string, voice: StaffVoice | null): { roleCard?: { card: RoleCard; name: string } } {
+  const card = voice ? roleCardOf(k.caseDef, k.facility, voice.staffId) : PROFILE_POSITION[agent] ? ROLE_CARDS[PROFILE_POSITION[agent]!] : null;
+  if (!card) return {};
+  return { roleCard: { card, name: voice?.name ?? npcDisplayName(k.caseDef, k.facility, agent, k.locale) } };
+}
+
 export class AgentTurns {
   constructor(private readonly k: SessionKernel) {}
 
@@ -248,7 +260,10 @@ export class AgentTurns {
     const parts: ChatPart[] = [{ type: "text", text: utterance.trim() || rt(k.locale, "npc.approach") }];
     // a colleague with a body acts on the learner's request with it (embodied mode; never in a nested ask)
     const who = fromLearner && STAFF_KINDS.has(agentKind(profile)) ? colleagueOf(k, profile.name, voice) : null;
-    const tools = who ? [...k.toolsFor(profile.name), staffTaskTool(k, id, who)] : k.toolsFor(profile.name);
+    // a named colleague is consulted, never the teaching preceptor: no scored hint in their turn (a hint is asked for
+    // explicitly — /hint, request_hint)
+    const own = voice ? k.toolsFor(profile.name).filter((tool) => tool.name !== "give_hint") : k.toolsFor(profile.name);
+    const tools = who ? [...own, staffTaskTool(k, id, who)] : own;
     for (const extra of extraContext) parts.push({ type: "text", text: extra });
     // a misconception in the message this colleague must correct (authored; checked on the reply below)
     if (due.length > 0) parts.push({ type: "text", text: `<must_correct>\nThe message contains a misconception you must correct explicitly in this reply, before anything else:\n${due.map((c) => `- ${t(c.say, k.locale)}`).join("\n")}\n</must_correct>` });
@@ -256,7 +271,7 @@ export class AgentTurns {
       host: k.tools.loopHost(id),
       agent: profile,
       provider: m.provider,
-      system: buildSystemSections(profile, { ...k.promptContext(), ...(voice ? { speakingAs: { name: voice.name, role: voice.role } } : {}) }),
+      system: buildSystemSections(profile, { ...k.promptContext(), ...(voice ? { speakingAs: { name: voice.name, role: voice.role } } : {}), ...roleCardContext(k, profile.name, voice) }),
       history: k.conversations.of(key),
       userParts: parts,
       tools,
@@ -310,7 +325,8 @@ export class AgentTurns {
         text = other ?? consultantOffline(kind, ctx, utterance);
         break;
       case "attending":
-        text = attendingOffline(ctx, (action) => k.dispatch(action, id), utterance).text;
+        // a named colleague (Dr Tanaka) answers from their specialty and the record — the preceptor only without one
+        text = voice ? specialistOffline(ctx, voice, k.facility) : attendingOffline(ctx, (action) => k.dispatch(action, id), utterance).text;
         break;
       case "examiner":
         text = examinerOffline(k.caseDef, assess(k.caseDef, k.state), k.locale).narrative;
@@ -455,8 +471,7 @@ export class AgentTurns {
       cursor: k.offlineCursor,
       afterStep: async (signal) => {
         if (k.team.available()) await k.team.afterLearner(signal ?? new AbortController().signal);
-        dropTractionAwayFromTable(k, id);
-        if (k.studies.available()) await k.studies.afterLearner(id, signal ?? new AbortController().signal);
+        await k.staff.step(id, signal ?? new AbortController().signal);
       },
       ...(k.embodied && embodied
         ? {

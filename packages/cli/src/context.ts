@@ -190,6 +190,8 @@ export async function sessionFlagsLayer(ctx: CliContext, args: ParsedArgs, extra
     layer.provider = provider;
   }
   if (model) layer.model = model;
+  const characters = flagString(args, "characters");
+  if (characters === "rules" || characters === "llm") layer.characters = { engine: characters };
   if (approval) {
     if (!(APPROVAL_MODES as readonly string[]).includes(approval)) throw new UsageError(ctx.t("flags.badApproval", { value: approval, choices: APPROVAL_MODES.join(" | ") }));
     layer.approvalMode = approval;

@@ -53,8 +53,9 @@ export function exposure(def: ProcedureDefinition, s: ProcedureState, regionId: 
 }
 
 /** The structure is in view: the field is open and its region (if any) is cleared to `revealAt`. Divided parts stay in view. */
-export function isVisible(def: ProcedureDefinition, s: ProcedureState, st: Structure): boolean {
-  if (!fieldOpen(s)) return false;
+export function isVisible(def: ProcedureDefinition, s: ProcedureState, st: Structure, seen: boolean = fieldOpen(s)): boolean {
+  // `seen`: the field is seen at all — through the laparoscope, or with the eye after a conversion
+  if (!seen) return false;
   if (!st.in) return true;
   return clearedFraction(def, s, st.in) >= (st.revealAt ?? 0.5);
 }

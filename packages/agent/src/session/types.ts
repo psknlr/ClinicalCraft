@@ -55,7 +55,7 @@ export type TranscriptItem =
    * unasked fact or a diagnosis; the learner's `warning` names only their
    * categories). Ignored by resume.
    */
-  | { type: "diagnostic"; ordinal: number; ts: string; payload: { agent: AgentRole; source: "grounding" | "corrections"; detail: string[] } }
+  | { type: "diagnostic"; ordinal: number; ts: string; payload: { agent: AgentRole; source: "grounding" | "corrections" | "characters"; detail: string[] } }
   /**
    * Embodied mode: the physical world after a committed state-changing world action (and at shutdown when a
    * sensor pose moved since) — a resume restores the last one (`SessionOptions.embodied.snapshot`); the engine
@@ -127,6 +127,9 @@ export interface SessionOptions {
   resume?: {
     sessionId: string;
     actions: ClinicalAction[];
+    /** The record's provenance and its original actions (a `@2` snapshot): kept, never edited, by the restore. */
+    createdWith?: RecordProvenance;
+    originalActions?: ClinicalAction[];
     messages?: Partial<Record<AgentRole, unknown[]>>;
     /**
      * The examiner's dialogue (transcript `dialogue` items / `SessionSnapshot.dialogue`).
@@ -182,8 +185,37 @@ export interface ClinicalSessionApi {
   close(): Promise<void>;
 }
 
+/** A historical action the current engine cannot replay exactly (the restore's migration report). */
+export interface ReplayIssue {
+  /** Its index in the original record. */
+  originalIndex: number;
+  type: string;
+  status: "rejected-under-current-engine";
+  reason: string;
+}
+
+/** What a session's record was made with (case content and engine), for an auditable restore. */
+export interface RecordProvenance {
+  caseId: string;
+  caseVersion: string;
+  /** A hash of the case definition: two contents of one version told apart. */
+  contentRevision: string;
+  engineVersion: string;
+  clinicalcraftVersion: string;
+}
+
 export interface SessionSnapshot {
-  format: "clinicalcraft-session@1";
+  /** `@2` adds the record's provenance and its migration; `@1` saves are read as before. */
+  format: "clinicalcraft-session@1" | "clinicalcraft-session@2";
+  /** What the record was made with first, and what this snapshot was taken with (`@2`). */
+  createdWith?: RecordProvenance;
+  savedWith?: RecordProvenance;
+  /**
+   * The original record, never edited, when the current engine replays it differently: `actions` is then the
+   * migrated record (what replays now) and `replayIssues` says which original actions did not, and why.
+   */
+  originalActions?: ClinicalAction[];
+  replayIssues?: ReplayIssue[];
   sessionId: string;
   caseId: string;
   caseVersion: string;

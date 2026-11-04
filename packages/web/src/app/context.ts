@@ -3,6 +3,7 @@
  * implementation lives in app.ts). Panels never touch three.js or the agent
  * internals directly: they read the store and call these methods.
  */
+import type { OperativePlayback } from "../ui/operative-playback.js";
 import type { CaseDefinition, ClinicalAction, EquipmentCatalog, FacilityDefinition } from "@clinicalcraft/core";
 import type { Op } from "@clinicalcraft/agent";
 import type { SoundKind } from "../contracts.js";
@@ -64,6 +65,8 @@ export interface App {
   readonly prefs: Prefs;
   readonly saves: SaveStore;
   readonly panels: PanelHost;
+  /** The operation as every laparoscope view shows it: one queue, one frame (scope dock and surgery window alike). */
+  readonly playback: OperativePlayback;
   readonly world: WorldHost;
   readonly inventory: Inventory;
   /** `?qa` mode (window.__QA__, deterministic helpers). */

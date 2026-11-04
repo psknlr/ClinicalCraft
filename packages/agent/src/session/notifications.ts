@@ -224,6 +224,8 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
       return [{ notification: { level: "info", title: rt(L, "status.holds"), body: rt(L, "hold.released", { name: interventionLabel(c, event.interventionId, L), by: event.releasedBy, reassessment: event.reassessment }) } }];
     case "study.recorded":
       return studyNotification(c, L, event);
+    case "anaesthesia.recorded":
+      return [];
     case "count.recorded":
       return countNotification(c, L, event);
     case "count.unsafe":

@@ -12,6 +12,7 @@
  */
 import {
   activeHolds,
+  datumStatus,
   availableDecisions,
   currentObjective,
   historyAvailable,
@@ -50,7 +51,7 @@ import {
   type ToolArgs,
 } from "./clinical-resolve.js";
 import { studyLines } from "./studies.js";
-import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay } from "./requirements.js";
+import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay, recommendations } from "./requirements.js";
 import { resolveConsultStaff } from "./consult-target.js";
 import type { StaffVoice } from "../session/staff-voice.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "./types.js";
@@ -549,8 +550,11 @@ const intervene: ToolDefinition<ToolArgs> = {
     const name = t(iv.name, L);
     const lines = [rt(L, "tool.intervened", { name, dose: dose && !name.includes(dose) ? ` (${dose})` : "" })];
     if (iv.response) lines.push(rt(L, "tool.intervention.response", { text: t(iv.response, L) }));
+    // the safety data this step states, as the record knows them — an unknown stays unknown (never "confirmed")
+    const data = safetyDataLines(c, ctx.state(), iv.reports, L);
+    lines.push(...data);
     if (appropriateness === "contraindicated" && harm) lines.push(rt(L, "tool.intervention.harm", { text: harm }));
-    return { ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind } };
+    return { ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind, ...(iv.reports.length ? { safetyData: Object.fromEntries(iv.reports.map((d) => [d, datumStatus(c, ctx.state(), d)])) } : {}) } };
   },
 };
 
@@ -836,6 +840,22 @@ const updateWorkup: ToolDefinition<ToolArgs> = {
   },
 };
 
+/**
+ * Each safety datum as the record knows it (the engineering recommendations, P1-9): "Allergy status remains unknown",
+ * never turned into a normal finding; unresolved ones are said to be acknowledged by the team.
+ */
+export function safetyDataLines(c: CaseDefinition, s: SessionState, data: readonly string[], L: string): string[] {
+  const known = data.flatMap((d) => {
+    const st = datumStatus(c, s, d);
+    return st ? [{ d, st }] : [];
+  });
+  if (!known.length) return [];
+  const name = (d: string) => rt(L, `datum.name.${d}` as RuntimeKey) || d;
+  const lines = known.map(({ d, st }) => rt(L, `datum.status.${st}` as RuntimeKey, { datum: name(d) }));
+  if (known.some(({ st }) => st === "asked-unknown" || st === "not-asked")) lines.push(rt(L, "datum.acknowledged"));
+  return lines.map((x) => `  ${x}`);
+}
+
 /** Learner-visible status: objectives, orders, decisions, phase, clock. */
 export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "state"> & Partial<Pick<ToolContext, "facility">>): { text: string; data: unknown } {
   const c = ctx.caseDef;
@@ -874,6 +894,8 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
       finished: s.finished,
       progress: p,
       currentObjective: objective?.id ?? null,
+      // the next steps of the current objective, each with whether the engine would run it now and what blocks it
+      recommendations: recommendations(c, s, L),
       orders: orders.map((o) => ({ key: o.order.key, investigationId: o.order.investigationId, phase: o.order.phase, ready: o.ready, read: o.read, readyAt: o.order.readyAt, record: resultFor(c, o.order.investigationId, o.order.phase) !== null })),
       decisions: decisions.map((d) => ({ id: d.decision.id, unlocked: d.unlocked, decided: d.decided })),
       holds: (s.holds ?? []).filter((h) => !h.released),
@@ -941,9 +963,33 @@ export const walkToTool: ToolDefinition<ToolArgs> = {
 };
 
 /** Every clinical tool of PROTOCOL §3 except the dynamic `walk_to`. */
+/**
+ * The teaching hint, asked for explicitly (the engineering recommendations, P1-8): the one tool that records a scored
+ * hint — a consultation of a colleague never does.
+ */
+const requestHint: ToolDefinition<ToolArgs> = {
+  name: "request_hint",
+  description: "Ask for a teaching hint on the current objective. It is recorded and counts against the score — consulting a colleague (consult) never does.",
+  inputSchema: { type: "object", properties: {}, additionalProperties: false },
+  readOnly: false,
+  sideEffect: "record",
+  scope: "history-only",
+  risk: () => "none",
+  summarize: (_args, ctx) => rt(ctx.locale, "sum.hint"),
+  async run(_args, ctx) {
+    const c = ctx.caseDef;
+    const L = ctx.locale;
+    const objective = currentObjective(c, ctx.state());
+    if (!objective) return { ok: true, output: rt(L, "tool.hint.none"), data: { objectiveId: null } };
+    const r = dispatch(ctx, { type: "hint" });
+    if (r.rejected) return rejectedOutput(L, r);
+    return { ok: true, output: rt(L, "cmd.hint.text", { hint: t(objective.hint, L) }), data: { objectiveId: objective.id, hint: t(objective.hint, L), hints: ctx.state().hints } };
+  },
+};
+
 export function clinicalTools(): ToolDefinition<ToolArgs>[] {
-  return [askPatient, listOptions, examine, orderTest, readResult, checkVitals, intervene, consult, answerDecision, setPhase, wait, updateWorkup, caseStatus, finishCase];
+  return [askPatient, listOptions, examine, orderTest, readResult, checkVitals, intervene, consult, answerDecision, setPhase, wait, updateWorkup, caseStatus, finishCase, requestHint];
 }
 
 /** Names of the clinical tools (the clinician's default allow-list). */
-export const CLINICAL_TOOL_NAMES: readonly string[] = [...clinicalTools().map((tool) => tool.name), walkToTool.name];
+export const CLINICAL_TOOL_NAMES: readonly string[] = [...clinicalTools().map((tool) => tool.name).filter((n) => n !== "request_hint"), walkToTool.name];

@@ -125,6 +125,13 @@ export type Op =
       for?: string;
     }
   /**
+   * The staff's own clock (docs/TEAM.md §5, "working on their own"): one round of what staff do without being asked —
+   * investigations fetched, acquired, reported and reviewed, a colleague's traction checked against where their body
+   * is, the responsible anaesthetist answering a new alarm. A front-end sends it on a timer, whatever the learner is
+   * looking at; a learner's act runs the same round after it.
+   */
+  | { type: "staff_step" }
+  /**
    * Embodied mode: a sensor pose update of a human-driven body (the browser avatar, ~10 Hz). Out-of-band: applied
    * at once, never queued behind a turn, never transcribed; bumps only that actor's own version (EMBODIED R4).
    */
@@ -169,6 +176,8 @@ export interface RuntimeConfigPatch {
   agents?: Record<string, { provider?: string; model?: string; effort?: string; temperature?: number }>;
   approvalMode?: ApprovalMode;
   practiceScope?: PracticeScope;
+  /** How the characters are driven (docs/CHARACTERS.md): `llm` — every character model-driven; `rules` — the care team by its policies. */
+  characters?: { engine?: "rules" | "llm" };
   /** A supported language ("zh-CN", "en"); aliases such as "zh" or "en-US" are normalised, anything else is refused (`invalid_config`). */
   locale?: string;
   interlocutor?: AddressTarget;
@@ -243,6 +252,8 @@ export type EventMsg =
       output: string;
       /** Typed payload for UIs (finding, result, vitals…). */
       data?: unknown;
+      /** The clinical actions this call committed (`act-<seq>`, in order): `get_action_feedback` resolves each. */
+      actionIds?: string[];
       durationMs: number;
     }
   | {
@@ -264,7 +275,8 @@ export type EventMsg =
   /** A request for the front-end to perform a world action (Codex dynamic tools). */
   | { type: "dynamic_tool_call"; callId: string; tool: string; args: unknown }
   /** Engine domain events (objective completed, result ready, alarm…). */
-  | { type: "clinical_event"; event: DomainEvent }
+  /** `actionId`: the committed action it came from (`act-<seq>`, stable across replays and reloads); absent on a refusal. */
+  | { type: "clinical_event"; event: DomainEvent; actionId?: string }
   /** Full snapshot after any state change (cheap enough to send each time). */
   | { type: "state_snapshot"; state: SessionState; progress: ObjectiveProgress; vitals: VitalsSnapshot; waypoint: string | null }
   | { type: "plan_updated"; agent: AgentRole; explanation?: string; plan: PlanItem[] }

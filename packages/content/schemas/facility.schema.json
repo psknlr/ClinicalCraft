@@ -979,6 +979,30 @@
                   "porter"
                 ]
               },
+              "position": {
+                "type": "string",
+                "enum": [
+                  "surgeon",
+                  "assistant-surgeon",
+                  "anaesthetist",
+                  "scrub-nurse",
+                  "circulating-nurse",
+                  "ward-nurse",
+                  "recovery-nurse",
+                  "theatre-coordinator",
+                  "physician",
+                  "educator",
+                  "radiologist",
+                  "radiographer",
+                  "pathologist",
+                  "lab-technician",
+                  "transfusion-scientist",
+                  "pharmacist",
+                  "receptionist",
+                  "porter",
+                  "paramedic"
+                ]
+              },
               "name": {
                 "$ref": "#/definitions/LocalizedText"
               },
@@ -1711,6 +1735,30 @@
                             "receptionist",
                             "paramedic",
                             "porter"
+                          ]
+                        },
+                        "position": {
+                          "type": "string",
+                          "enum": [
+                            "surgeon",
+                            "assistant-surgeon",
+                            "anaesthetist",
+                            "scrub-nurse",
+                            "circulating-nurse",
+                            "ward-nurse",
+                            "recovery-nurse",
+                            "theatre-coordinator",
+                            "physician",
+                            "educator",
+                            "radiologist",
+                            "radiographer",
+                            "pathologist",
+                            "lab-technician",
+                            "transfusion-scientist",
+                            "pharmacist",
+                            "receptionist",
+                            "porter",
+                            "paramedic"
                           ]
                         },
                         "greeting": {

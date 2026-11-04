@@ -205,11 +205,15 @@ describe("NPC agents offline", () => {
     expect(read).not.toContain("Interprets only reports already reviewed.");
   });
 
-  it("attending: Socratic hint for the current objective (records a hint)", async () => {
+  it("attending: a consultation is Socratic guidance, never a scored hint — request_hint is the hint channel", async () => {
     const t = await makeSession();
     const text = msgsOf(await t.session.run({ type: "user_message", text: "@attending I'm stuck" }), "agent_message")[0]!.text;
-    expect(text).toContain("Ask when the pain started and what it feels like.");
-    expect(text).toMatch(/\?$/);
+    expect(text).not.toContain("Ask when the pain started and what it feels like.");
+    expect(text).toMatch(/\/hint/);
+    expect(t.session.state.hints).toBe(0);
+    // the explicit channel: the request_hint tool (the learner's; MCP serves it too)
+    const r = await t.session.tool("request_hint")!.run({}, { caseDef: t.session.caseDef, facility: null, catalogs: [], locale: "en", agent: "learner", state: () => t.session.state, dispatch: (a) => t.session.dispatch({ ...a, by: "learner" }), ask: async () => ({ text: "", grounded: [] }), updatePlan: () => undefined } as never);
+    expect(r.output).toContain("Ask when the pain started and what it feels like.");
     expect(t.session.state.hints).toBe(1);
   });
 
@@ -765,7 +769,7 @@ describe("transcript, snapshot and resume", () => {
     const events = await t.session.run({ type: "user_message", text: "plan?", to: "clinician" });
     expect(msgsOf(events, "plan_updated")[0]).toMatchObject({ agent: "clinician", explanation: "ACS likely" });
     const snap = t.session.snapshot();
-    expect(snap.format).toBe("clinicalcraft-session@1");
+    expect(snap.format).toBe("clinicalcraft-session@2");
     expect(snap.plan).toEqual([{ text: "ECG now", status: "in_progress" }]);
     expect(Object.keys(snap.messages)).toContain("clinician");
   });

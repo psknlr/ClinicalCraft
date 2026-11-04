@@ -82,13 +82,22 @@ function validWorld(v: unknown): WorldSave | null {
 function validSnapshot(v: unknown): SessionSnapshot | null {
   if (!v || typeof v !== "object") return null;
   const s = v as Partial<SessionSnapshot>;
-  if (s.format !== "clinicalcraft-session@1" || typeof s.caseId !== "string" || typeof s.sessionId !== "string" || !Array.isArray(s.actions)) return null;
+  if ((s.format !== "clinicalcraft-session@1" && s.format !== "clinicalcraft-session@2") || typeof s.caseId !== "string" || typeof s.sessionId !== "string" || !Array.isArray(s.actions)) return null;
   const messages: Record<string, unknown[]> = {};
   if (s.messages && typeof s.messages === "object") {
     for (const [agent, list] of Object.entries(s.messages)) if (Array.isArray(list) && /^[\w-]{1,40}$/.test(agent)) messages[agent] = list.slice(0, 2000);
   }
+  const provenance = (p: unknown) => {
+    const x = p as Record<string, unknown> | undefined;
+    return x && ["caseId", "caseVersion", "contentRevision", "engineVersion", "clinicalcraftVersion"].every((k) => typeof x[k] === "string") ? (x as unknown as NonNullable<SessionSnapshot["createdWith"]>) : undefined;
+  };
+  const createdWith = provenance(s.createdWith);
   return {
-    format: "clinicalcraft-session@1",
+    // a @1 save is read as before (no provenance: it was made before records carried one)
+    format: "clinicalcraft-session@2",
+    ...(createdWith ? { createdWith } : {}),
+    ...(provenance(s.savedWith) ? { savedWith: provenance(s.savedWith)! } : {}),
+    ...(Array.isArray(s.originalActions) ? { originalActions: cleanActions(s.originalActions) } : {}),
     sessionId: s.sessionId.slice(0, 80),
     caseId: s.caseId,
     caseVersion: typeof s.caseVersion === "string" ? s.caseVersion : "0.0.0",

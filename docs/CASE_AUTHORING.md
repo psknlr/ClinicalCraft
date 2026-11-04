@@ -189,6 +189,27 @@ solution is sent to the browser).
   absent (the UI says "no record").
 * `alternativeTo: [ids]` marks interchangeable essentials (e.g. abdominal CT ↔
   ultrasound): reading either satisfies "essential investigations" in the assessment.
+* **Safety data: asking is not confirming.** Tag the history items that
+  establish a safety-critical datum: `safety: {datum: "allergy" | "fasting" |
+  "airway" | …, finding?: "unknown" | "negative" | "positive"}` (an `unknown`
+  disclosure defaults to `unknown`). Core `datumStatus` derives not asked /
+  asked-unknown / verified-negative / verified-positive / mitigated (an
+  intervention with `mitigates: [datum]`, a documented precaution). A checklist
+  step lists the data it states in `reports` (a Sign In: allergy, fasting): the
+  learner reads each as the record knows it — "Allergy status remains unknown
+  (asked; not recorded)", "The team has acknowledged these unresolved items" —
+  never "confirmed". Score recognised uncertainty and its management with the
+  condition leaf `{datum, status: [...]}`, never fabricated certainty; and never
+  write a step's text as if an unknown had been confirmed.
+* **Records in the simulated timeline.** A document in the case is not a
+  document the learner can see now. A record is read from the current phase or
+  one already reached, never a later one: the operation record, the histology
+  and the follow-up of a case's review phase do not exist before it (ordering
+  one is refused, `retrieve_report` says "Record not yet created" and gives no
+  text). `availability: {earliestPhase?, when?, historical?}` holds a record back
+  further — not before `earliestPhase` is reached, nor while `when` does not
+  hold — and says whether it predates the encounter (`historical: true`: a prior
+  report) or is written during it (core `recordAvailability`).
 * A report that already exists — an outside scan, an old echo, the operative
   note, the drug chart, a referral letter — is a **record review**:
   `performedAt: "records"`, `requires` at most `["records"]`, `risk: "none"`.

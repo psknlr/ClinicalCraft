@@ -256,6 +256,8 @@ export interface GameWorldLinkOptions {
 
 /** Real milliseconds between the care team's steps while it acts on its own (autonomy `auto`). */
 export const TEAM_STEP_MS = 2000;
+/** The staff's own round (`staff_step`), ms. */
+export const STAFF_STEP_MS = 2000;
 
 export class GameWorldLink {
   readonly stations: Stations;
@@ -443,11 +445,32 @@ export class GameWorldLink {
     void session.run({ type: "team", action: "step" }).finally(() => (this.teamBusy = false));
   }
 
+  private staffWait = 0;
+  private staffBusy = false;
+
+  /**
+   * The staff's own clock (docs/TEAM.md §5): one `staff_step` op every `STAFF_STEP_MS` while the encounter runs —
+   * whatever the learner is looking at, so a nurse sent for a device gets there, the study is acquired and the
+   * anaesthetist answers an alarm without the learner acting. Never while an agent drives a body (its own acts run
+   * the same round) or a step is still running.
+   */
+  private staffTick(dt: number): void {
+    const session = this.o.app.session;
+    if (this.staffBusy || !this.o.playing() || this.o.agentDriving?.()) return;
+    if (!session.state.started || session.state.finished) return;
+    this.staffWait += dt;
+    if (this.staffWait < STAFF_STEP_MS) return;
+    this.staffWait = 0;
+    this.staffBusy = true;
+    void session.run({ type: "staff_step" }).finally(() => (this.staffBusy = false));
+  }
+
   private onTick(): void {
     const now = performance.now();
     const dt = now - this.lastTick;
     this.lastTick = now;
     this.teamTick(dt);
+    this.staffTick(dt);
     if (!this.o.playing()) return;
     // an agent drives a body: the world charges that time (travel, procedures) — real time would count it twice
     if (this.o.agentDriving?.()) return;

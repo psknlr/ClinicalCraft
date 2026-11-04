@@ -17,7 +17,7 @@ import type { BenchAgent, ProviderTap } from "./agents/types.js";
 import { Auditor, type AuditResult } from "./audit.js";
 import { benchEnvironment, type BenchEnvironment } from "./environment.js";
 import { bm } from "./i18n.js";
-import { metricsByCategory, type Metrics, type RunFacts } from "./metrics.js";
+import { computeMetrics, metricsByCategory, type Metrics, type RunFacts } from "./metrics.js";
 import { evaluatePredicates, type FinalView, type PredicateClass } from "./predicates.js";
 import type { Budget } from "./pricing.js";
 import { RunRecorder, type RecordedCall, type RecordedRefusal } from "./recorder.js";
@@ -49,6 +49,11 @@ export interface BenchRun {
   trace: { spans: number; setupSpans: number; digest: string };
   /** sha256 of the canonical final engine state + world snapshot. */
   stateDigest: string;
+  /**
+   * `source-only`: the run used the published record alone; `expanded`: it ordered new (simulated) investigations
+   * (docs/STUDIES.md §7) — a report scores the two apart (`metrics.byEvidence`).
+   */
+  evidence: "source-only" | "expanded";
   audit: {
     spatial: { audited: number; violations: AuditResult["spatial"]["violations"] };
     authorisation: { audited: number; unauthorised: AuditResult["authorisation"]["unauthorised"] };
@@ -68,7 +73,7 @@ export interface BenchReport {
   disclaimer: { en: string; "zh-CN": string };
   scenarios: { id: string; category: BenchCategory; caseId: string; facilityId: string | null; locale: string; title: BenchScenario["title"]; deterministic: boolean | null }[];
   runs: BenchRun[];
-  metrics: { overall: Metrics; byCategory: Partial<Record<BenchCategory, Metrics>> };
+  metrics: { overall: Metrics; byCategory: Partial<Record<BenchCategory, Metrics>>; byEvidence: Partial<Record<BenchRun["evidence"], Metrics>> };
   budget?: { maxTokens: number | null; maxUsd: number | null; usedTokens: number; costUsd: number | null; skipped: number };
 }
 
@@ -93,7 +98,7 @@ export interface RunScenarioOptions {
 export async function runScenario(scenario: BenchScenario, agent: BenchAgent, seed: number, o: RunScenarioOptions): Promise<BenchRun> {
   const t0 = performance.now();
   const answers = new AnswerStore();
-  const base: Omit<BenchRun, "success" | "status" | "predicates" | "calls" | "refusals" | "answer" | "usage" | "wallMs" | "simMinutes" | "trace" | "stateDigest" | "audit"> = {
+  const base: Omit<BenchRun, "success" | "status" | "predicates" | "calls" | "refusals" | "answer" | "usage" | "wallMs" | "simMinutes" | "trace" | "stateDigest" | "evidence" | "audit"> = {
     scenarioId: scenario.id,
     category: scenario.category,
     caseId: scenario.caseId,
@@ -101,7 +106,7 @@ export async function runScenario(scenario: BenchScenario, agent: BenchAgent, se
     locale: scenario.locale,
     seed,
   };
-  const empty = { predicates: [], calls: [], refusals: [], answer: null, usage: { inputTokens: 0, outputTokens: 0 }, simMinutes: 0, trace: { spans: 0, setupSpans: 0, digest: "" }, stateDigest: "", audit: { spatial: { audited: 0, violations: [] }, authorisation: { audited: 0, unauthorised: [] }, contraindicated: [] } };
+  const empty = { predicates: [], calls: [], refusals: [], answer: null, usage: { inputTokens: 0, outputTokens: 0 }, simMinutes: 0, trace: { spans: 0, setupSpans: 0, digest: "" }, stateDigest: "", evidence: "source-only" as const, audit: { spatial: { audited: 0, violations: [] }, authorisation: { audited: 0, unauthorised: [] }, contraindicated: [] } };
   if (o.budget?.exhausted()) {
     o.budget.skipped++;
     return { ...base, ...empty, success: false, status: "skipped", limit: "budget", wallMs: 0 };
@@ -194,6 +199,7 @@ export async function runScenario(scenario: BenchScenario, agent: BenchAgent, se
       simMinutes: Math.round((s.state.clock - clockStart) * 100) / 100,
       trace: { spans: trace.spans.length, setupSpans, digest: sha256(jsonl) },
       stateDigest,
+      evidence: (s.state.studies?.orders.length ?? 0) > 0 ? "expanded" : "source-only",
       audit: { spatial: audit.spatial, authorisation: audit.authorisation, contraindicated: audit.safety.contraindicated },
     };
     o.onTrace?.(run, jsonl);
@@ -203,6 +209,16 @@ export async function runScenario(scenario: BenchScenario, agent: BenchAgent, se
   } finally {
     await session?.close().catch(() => undefined);
   }
+}
+
+/** The runs' metrics apart by evidence: the published record alone, or with new (simulated) investigations. */
+export function metricsByEvidence(runs: readonly BenchRun[]): Partial<Record<BenchRun["evidence"], Metrics>> {
+  const out: Partial<Record<BenchRun["evidence"], Metrics>> = {};
+  for (const e of ["source-only", "expanded"] as const) {
+    const subset = runs.filter((r) => (r.evidence ?? "source-only") === e);
+    if (subset.length) out[e] = computeMetrics(subset.map(runFacts));
+  }
+  return out;
 }
 
 /** The facts a metric needs from a run. */
@@ -270,7 +286,7 @@ export async function runSuite(o: RunSuiteOptions): Promise<BenchReport> {
     },
     scenarios,
     runs,
-    metrics: metricsByCategory(runs.map(runFacts), BENCH_CATEGORIES),
+    metrics: { ...metricsByCategory(runs.map(runFacts), BENCH_CATEGORIES), byEvidence: metricsByEvidence(runs) },
   };
   if (o.budget) {
     const b = o.budget;

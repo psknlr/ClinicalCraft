@@ -24,6 +24,16 @@ export const SESSION_FLAGS: FlagSpec[] = [
   { name: "model", type: "string", valueName: "<id>", description: { en: "Model id", zh: "模型 ID" } },
   { name: "base-url", type: "string", valueName: "<url>", description: { en: "Override the provider's base URL", zh: "覆盖服务商的 Base URL" } },
   { name: "approval", type: "string", valueName: "<mode>", choices: APPROVAL_CHOICES, description: { en: "Approval mode: default | strict | auto | plan | bypass", zh: "审批模式：default | strict | auto | plan | bypass" } },
+  {
+    name: "characters",
+    type: "string",
+    valueName: "<engine>",
+    choices: ["rules", "llm"],
+    description: {
+      en: "How characters are driven: rules (default) | llm — every character model-driven within its role card (docs/CHARACTERS.md)",
+      zh: "角色驱动方式：rules（默认）| llm——每个角色都由大模型在其岗位职责卡内驱动（docs/CHARACTERS.md）",
+    },
+  },
   { name: "scope", type: "string", valueName: "<scope>", choices: SCOPE_CHOICES, description: { en: "Practice scope: history-only | workup | full", zh: "操作范围：history-only | workup | full" } },
   { name: "facility", type: "string", valueName: "<id>", description: { en: "Facility (world) to place the case in", zh: "病例所在的场馆" } },
   { name: "max-tool-rounds", type: "number", valueName: "<n>", description: { en: "Tool rounds per agent turn", zh: "每个智能体回合的工具调用轮数上限" } },

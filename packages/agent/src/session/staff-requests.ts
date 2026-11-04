@@ -21,11 +21,11 @@
  * A thing, a treatment or a place the world (or the case) does not know leaves the words as talk for the colleague's
  * own agent to answer.
  */
-import { evaluate, t } from "@clinicalcraft/core";
+import { canLeaveAnaesthetisedPatient, t } from "@clinicalcraft/core";
+import { handoverFromRecord, handoverText } from "./handover.js";
 import { MAX_HELD, PRIMARY_ACTOR, roleName, type ActorId, type ActorState, type NavGoal, type ObservedEntity, type WorldActionResult } from "@clinicalcraft/world";
 import { npcDisplayName } from "../agents/prompts.js";
 import { resolveIntervention } from "../tools/clinical.js";
-import { clockTime } from "../tools/format.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { checkTaskScope, scopeOf } from "../tools/scope.js";
 import { rt, type RuntimeKey } from "./i18n.js";
@@ -215,14 +215,17 @@ export class StaffRequests {
   private async relieved(id: string, say: Say, who: Colleague, signal: AbortSignal): Promise<boolean> {
     const k = this.k;
     const L = k.locale;
-    const team = k.caseDef.team;
-    if (!team?.members.some((m) => m.staff === who.staffId && m.duties.includes("anaesthesia"))) return true;
-    const when = k.caseDef.patient.nonVerbalWhen;
-    if (!when || !evaluate(k.caseDef, k.state, when)) return true;
+    const c = k.caseDef;
+    // not the responsible anaesthetist of an anaesthetised patient: free to go
+    if (canLeaveAnaesthetisedPatient(c, k.state, who.staffId)) return true;
     const e = k.embodied!;
     const world = e.world();
     const patient = e.patientId();
-    const cover = team.cover.filter((m) => m.duties.includes("anaesthesia")).map((m) => world.actor(`staff:${m.staff}`)).find((a): a is ActorState => !!a);
+    // who can take over: the colleagues covering anaesthesia, then the team's own anaesthetist (back from elsewhere)
+    const team = c.team;
+    const candidates = [...(team?.cover ?? []), ...(team?.members ?? [])].filter((m) => m.duties.includes("anaesthesia") && m.staff !== who.staffId).map((m) => m.staff);
+    const coverId = candidates.find((sid) => world.actor(`staff:${sid}`));
+    const cover = coverId ? world.actor(`staff:${coverId}`) : null;
     if (!cover || !patient) {
       say(rt(L, "relief.none"));
       return false;
@@ -230,16 +233,24 @@ export class StaffRequests {
     const ent = world.entity(cover.id);
     const relief: Colleague = { actor: cover, staffId: cover.id.slice("staff:".length), name: ent ? t(ent.name, L) : cover.id };
     say(rt(L, "relief.calling", { name: relief.name }));
-    const r = await k.embodied!.act({ agent: "learner", submission: id, signal }, { actorId: relief.actor.id, operation: "navigate", goal: { kind: "interact", id: patient }, onBehalfOf: PRIMARY_ACTOR }, signal);
-    if (r.status !== "completed") {
-      say(rt(L, "relief.notComing", { name: relief.name, reason: r.message.split("\n")[0]!.replace(/[.。]\s*$/u, "") }));
+    k.dispatch({ type: "anaesthesia", anaesthesia: { op: "request-relief", from: who.staffId, to: relief.staffId }, by: "system" }, id);
+    const r = await e.act({ agent: "learner", submission: id, signal }, { actorId: relief.actor.id, operation: "navigate", goal: { kind: "interact", id: patient }, onBehalfOf: PRIMARY_ACTOR }, signal);
+    // in person: the world says whether the colleague is at the patient
+    if (!world.checkSpatial(relief.actor.id, { tool: "examine", kind: "examine" }).ok) {
+      say(rt(L, "relief.notComing", { name: relief.name, reason: (r.status === "completed" ? rt(L, "study.wait.notInReach") : r.message.split("\n")[0]!).replace(/[.。]\s*$/u, "") }));
       return false;
     }
-    // the hand-over, recorded in the encounter's record, then said by the colleague who takes over
-    const text = rt(L, "relief.record", { from: who.name, to: relief.name, time: clockTime(k.caseDef, k.state.clock, L) });
-    k.dispatch({ type: "note", text, by: "system" }, id);
-    k.speakLine(id, { agent: "attending", speaker: relief.name, text: rt(L, "relief.taken", { from: who.name }), grounded: [], staffId: relief.staffId });
-    k.conversations.addDialogue({ who: "attending", speaker: relief.name, text: rt(L, "relief.taken", { from: who.name }) });
+    k.dispatch({ type: "anaesthesia", anaesthesia: { op: "relief-arrived", by: relief.staffId }, by: "system" }, id);
+    // the structured hand-over: what the record holds now, nothing composed for it
+    const h = handoverFromRecord(c, k.state);
+    const done = k.dispatch({ type: "anaesthesia", anaesthesia: { op: "handover", from: who.staffId, to: relief.staffId, ...h }, by: "system" }, id);
+    if (done.rejected) {
+      say(rt(L, "relief.notComing", { name: relief.name, reason: done.rejected.message }));
+      return false;
+    }
+    const line = `${rt(L, "relief.taken", { from: who.name })} ${handoverText(c, h, L)}`;
+    k.speakLine(id, { agent: "attending", speaker: relief.name, text: line, grounded: [], staffId: relief.staffId });
+    k.conversations.addDialogue({ who: "attending", speaker: relief.name, text: line });
     return true;
   }
 

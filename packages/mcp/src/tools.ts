@@ -104,10 +104,17 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   update_workup: { title: "Update the work-up plan", ...RECORDS, idempotentHint: true },
   case_status: { title: "Case status", ...READ_ONLY },
   finish_case: { title: "Finish the case", ...RECORDS, idempotentHint: true },
+  request_hint: { title: "Ask for a teaching hint (counts against the score)", ...RECORDS },
   // The operative field (docs/PROCEDURE.md §7): looking only reads; every step acts on the patient (clip, divide,
   // coagulate and bail-out are high-risk and need confirmation).
   observe_field: { title: "Look at the operative field", ...READ_ONLY },
   operate: { title: "Operative step", ...RECORDS, destructiveHint: true },
+  // New investigations (docs/STUDIES.md): the published record is looked up (recorded as a read); an order is a new
+  // simulated study (the same request_key again is the same order); its status and reports only read.
+  retrieve_report: { title: "Retrieve an existing report", ...RECORDS, idempotentHint: true },
+  order_study: { title: "Order a new investigation", ...RECORDS, idempotentHint: true },
+  read_study: { title: "Read a new investigation", ...READ_ONLY },
+  list_studies: { title: "List new investigations", ...READ_ONLY },
   // Embodied mode (§12). Perception only reads (the body's memory of what it saw is not encounter state);
   // walking moves the body and spends simulated time; operations with a clinical effect (a device giving a
   // drug, delegated or skill steps) act on the patient through the approval gate.
@@ -316,7 +323,7 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
         const { output, notices } = outcome;
         const warnings = outcome.warnings ?? [];
         const text = [output.output, notices.length > 0 ? notices.map((n) => `! ${n}`).join("\n") : "", noticeLines(entry.session.locale, warnings)].filter(Boolean).join("\n\n");
-        return textResult(text, { session_id: entry.id, tool: name, ok: output.ok, data: output.data ?? null, ...(notices.length ? { notices } : {}), ...(warnings.length ? { warnings } : {}) }, !output.ok);
+        return textResult(text, { session_id: entry.id, tool: name, ok: output.ok, data: output.data ?? null, ...(outcome.actionIds?.length ? { actionIds: outcome.actionIds } : {}), ...(notices.length ? { notices } : {}), ...(warnings.length ? { warnings } : {}) }, !output.ok);
       });
     }
   }

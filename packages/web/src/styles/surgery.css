@@ -156,6 +156,15 @@
   color: #b0c4a4;
   z-index: 2;
 }
+/* the open-surgery view after a conversion: the field in words, where the scope picture was */
+.lap-dark .open-field {
+  text-align: left;
+  display: grid;
+  gap: 4px;
+}
+.lap-dark .open-field strong {
+  color: #e8efe3;
+}
 .lap-status {
   padding: 8px 14px;
   font-size: 12px;

@@ -16,21 +16,29 @@
  * - **Review**: the order's reviewer (the anaesthetist for a preoperative ECG) reviews the released report in their
  *   own name (`study review`) and says so.
  */
-import { studyProfile, t, type ClinicalAction, type StudyAccession, type StudyObservation, type StudyProfile } from "@clinicalcraft/core";
+import { studyCollectors, studyProfile, t, unmetPrerequisites, type ClinicalAction, type StudyAccession, type StudyObservation, type StudyProfile } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type WorldRuntime } from "@clinicalcraft/world";
 import { encounterRoom, lookupStaff } from "../tools/consult-target.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 import { staffAgent } from "./staff-voice.js";
+import { pickStaff } from "./delegation.js";
 
 type Bi = { en: string; "zh-CN": string };
 
-/** A report's words, from the observations. */
+/**
+ * A report's words, from the observations. A writer never owns the values: `bindings` says where each observation is
+ * stated (the phrase in each language), and `supportedBy` which observations the impression rests on — the validator
+ * checks every number against the observation it is bound to (a heart rate and a PR interval swapped are refused),
+ * not merely that it occurs somewhere.
+ */
 export interface ReportText {
   findings: Bi;
   impression: Bi;
   limitations: Bi;
   generator: string;
+  bindings?: { observation: string; en: string; "zh-CN": string }[];
+  supportedBy?: string[];
 }
 
 /** A writer of report text (a model): null when it has nothing; its text is validated before release. */
@@ -40,9 +48,12 @@ const sep = (L: "en" | "zh-CN") => (L === "zh-CN" ? "；" : "; ");
 const range = (o: StudyObservation) => (o.low != null && o.high != null ? ` (${o.low}–${o.high})` : "");
 const flagWord = (o: StudyObservation, L: "en" | "zh-CN") => (o.flag === "high" ? (L === "zh-CN" ? " 偏高" : " high") : o.flag === "low" ? (L === "zh-CN" ? " 偏低" : " low") : "");
 
-/** The deterministic report: every observation in words, the abnormal ones named in the impression. */
+/** How the template states one observation. */
+const phrase = (o: StudyObservation, L: "en" | "zh-CN") => (o.value != null ? `${o.label[L]} ${o.value} ${o.unit ?? ""}${range(o)}${flagWord(o, L)}`.replace(/\s+/gu, " ").trim() : `${o.label[L]}: ${o.text?.[L] ?? ""}`);
+
+/** The deterministic report: every observation in words (each bound to its observation), the abnormal ones named in the impression. */
 export function templateReport(profile: StudyProfile, a: StudyAccession): ReportText {
-  const text = (L: "en" | "zh-CN") => a.observations.map((o) => (o.value != null ? `${o.label[L]} ${o.value} ${o.unit ?? ""}${range(o)}${flagWord(o, L)}`.replace(/\s+/gu, " ").trim() : `${o.label[L]}: ${o.text?.[L] ?? ""}`)).join(sep(L));
+  const text = (L: "en" | "zh-CN") => a.observations.map((o) => phrase(o, L)).join(sep(L));
   const abnormal = a.observations.filter((o) => o.flag === "high" || o.flag === "low");
   const pattern = a.observations.filter((o) => o.id === "lead-i" || o.id === "progression" || o.id === "morphology");
   const imaging = profile.model.kind === "imaging" ? a.observations.filter((o) => o.id !== "technique") : [];
@@ -60,25 +71,58 @@ export function templateReport(profile: StudyProfile, a: StudyAccession): Report
     impression: { en: impression("en"), "zh-CN": impression("zh-CN") },
     limitations: { en: rt("en", "study.limitations"), "zh-CN": rt("zh-CN", "study.limitations") },
     generator: "template",
+    bindings: a.observations.map((o) => ({ observation: o.id, en: phrase(o, "en"), "zh-CN": phrase(o, "zh-CN") })),
+    supportedBy: [...abnormal, ...pattern, ...imaging].map((o) => o.id),
   };
 }
 
 /** Claims a report may make only when an observation makes them. */
 const UNSUPPORTED = /infarct|ischaem|ischem|st elevation|st-elevation|pneumon|effusion|fracture|malignan|tumou?r|fibrillation|flutter|heart block|梗死|缺血|肺炎|积液|骨折|肿瘤|房颤|房扑|传导阻滞/iu;
+const NUMBER = /\d+(?:\.\d+)?/gu;
+const nums = (x: string): string[] => x.match(NUMBER) ?? [];
 
 /**
- * What is wrong with a written report (empty: it may be released): every number is an observation's (its value or
- * interval); a side named is a side an observation shows; no finding the observations do not make.
+ * What is wrong with a written report (empty: it may be released) — a semantic check against the structured
+ * observations, never token overlap:
+ * - each `bindings` phrase states a real observation, appears in the findings, and every number in it is that
+ *   observation's own value or interval (a rate and a PR interval swapped are refused);
+ * - every number of the findings lies inside a bound phrase; every number of the impression is an observation's
+ *   it rests on (`supportedBy`), and each of those is a real observation;
+ * - a side named is a side an observation shows; no finding the observations do not make.
  */
 export function validateReport(a: StudyAccession, text: ReportText): string[] {
   const problems: string[] = [];
-  const allowed = new Set<string>();
-  const words = a.observations.map((o) => `${o.label.en} ${o.label["zh-CN"]} ${o.text?.en ?? ""} ${o.text?.["zh-CN"] ?? ""}`).join(" ");
-  for (const o of a.observations) for (const n of [o.value, o.low, o.high]) if (n != null) allowed.add(String(n));
-  for (const n of words.match(/\d+(?:\.\d+)?/gu) ?? []) allowed.add(n);
+  const obs = new Map(a.observations.map((o) => [o.id, o]));
+  const own = (o: StudyObservation) => new Set([o.value, o.low, o.high].filter((n): n is number => n != null).map(String));
+  const ownWords = (o: StudyObservation) => `${o.label.en} ${o.label["zh-CN"]} ${o.text?.en ?? ""} ${o.text?.["zh-CN"] ?? ""}`;
+  const words = a.observations.map(ownWords).join(" ");
+  const bindings = text.bindings ?? [];
+  for (const b of bindings) if (!obs.has(b.observation)) problems.push(`a binding to "${b.observation}", which is no observation of this study`);
+  const support = text.supportedBy ?? [];
+  for (const id of support) if (!obs.has(id)) problems.push(`the impression rests on "${id}", which is no observation of this study`);
   for (const L of ["en", "zh-CN"] as const) {
-    const all = `${text.findings[L]} ${text.impression[L]}`;
-    for (const n of all.match(/\d+(?:\.\d+)?/gu) ?? []) if (!allowed.has(n)) problems.push(`${L}: the number ${n} is not an observation`);
+    const findings = text.findings[L];
+    // each bound phrase: in the findings, its numbers its own observation's
+    const spans: [number, number][] = [];
+    for (const b of bindings) {
+      const o = obs.get(b.observation);
+      if (!o) continue;
+      const at = findings.indexOf(b[L]);
+      if (at < 0) problems.push(`${L}: the statement of "${b.observation}" is not in the findings`);
+      else spans.push([at, at + b[L].length]);
+      const allowed = new Set([...own(o), ...nums(ownWords(o))]);
+      for (const n of nums(b[L])) if (!allowed.has(n)) problems.push(`${L}: ${n} stated for "${b.observation}" is not its value (${o.value ?? "—"})`);
+      if (o.value != null && !nums(b[L]).includes(String(o.value))) problems.push(`${L}: the statement of "${b.observation}" does not give its value ${o.value}`);
+    }
+    // every number of the findings bound to an observation (the label words' own digits — "12-lead", "V1" — aside)
+    for (const m of findings.matchAll(NUMBER)) {
+      const i = m.index ?? 0;
+      if (!spans.some(([x, y]) => i >= x && i < y) && !nums(words).includes(m[0])) problems.push(`${L}: the number ${m[0]} is bound to no observation`);
+    }
+    // the impression's numbers: those of the observations it rests on
+    const supported = new Set(support.flatMap((id) => (obs.get(id) ? [...own(obs.get(id)!), ...nums(ownWords(obs.get(id)!))] : [])));
+    for (const n of nums(text.impression[L])) if (!supported.has(n)) problems.push(`${L}: the impression's ${n} rests on no observation it names`);
+    const all = `${findings} ${text.impression[L]}`;
     const sides = new Set(a.observations.flatMap((o) => (o.side ? [o.side] : [])));
     const says = (re: RegExp) => re.test(all) && !re.test(words);
     if (says(/\bleft\b|左/iu) && !sides.has("left")) problems.push(`${L}: a left side no observation shows`);
@@ -89,21 +133,19 @@ export function validateReport(a: StudyAccession, text: ReportText): string[] {
   return problems;
 }
 
-/** Words of a request that ask for the operative cholangiogram (never ordered from the chart). */
-const OPERATIVE = /cholangio|\bioc\b|胆道造影|胆管造影/iu;
-
 /** The case's study a request names (code, name, alias — either language), or null. */
 export function resolveStudy(profiles: readonly StudyProfile[], query: string): StudyProfile | null {
   const q = query.trim().toLowerCase();
   if (!q) return null;
   const names = (p: StudyProfile) => [p.code, ...Object.values(typeof p.name === "string" ? { x: p.name } : p.name), ...Object.values(p.aliases ?? {}).flat()].map((x) => String(x).toLowerCase());
-  return profiles.find((p) => names(p).some((n) => n === q)) ?? profiles.find((p) => names(p).some((n) => n.length >= 2 && (q.includes(n) || n.includes(q)))) ?? null;
+  // a name inside the request, or the request inside a name — as whole words in Latin script ("CT" is not in
+  // "electrocardiogram"); Chinese has no word breaks, so a substring there
+  const cjk = (x: string) => /[\u3400-\u9fff]/u.test(x);
+  const esc = (x: string) => x.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+  const within = (part: string, whole: string) => (cjk(part) ? whole.includes(part) : new RegExp(`(^|[^\\p{L}\\p{N}])${esc(part)}($|[^\\p{L}\\p{N}])`, "u").test(whole));
+  return profiles.find((p) => names(p).some((n) => n === q)) ?? profiles.find((p) => names(p).some((n) => n.length >= 2 && (within(n, q) || within(q, n)))) ?? null;
 }
 
-/** Does this request ask for an operative study? */
-export function asksOperativeStudy(query: string): boolean {
-  return OPERATIVE.test(query);
-}
 
 /** Facility devices that provide every capability of a profile (entity ids), in facility order. */
 function providers(w: WorldRuntime, caps: readonly string[]): string[] {
@@ -168,31 +210,71 @@ export class SessionStudies {
     this.dispatch({ type: "study", study: { op: "wait", order, reason }, by: "system" }, id);
   }
 
-  private acquire(id: string, order: string, collector: string, configuration?: string): void {
-    this.dispatch({ type: "study", study: { op: "acquire", order, collector: collector.replace(/^staff:/u, ""), ...(configuration ? { configuration } : {}), quality: "good" }, by: "system" }, id);
+  private acquire(id: string, order: string, collector: string, configuration?: string): boolean {
+    const r = this.dispatch({ type: "study", study: { op: "acquire", order, collector: collector.replace(/^staff:/u, ""), ...(configuration ? { configuration } : {}), quality: "good" }, by: "system" }, id);
+    return !r.rejected;
   }
 
+  private assign(id: string, order: string, to: string): void {
+    this.dispatch({ type: "study", study: { op: "assign", order, to: to.replace(/^staff:/u, "") }, by: "system" }, id);
+  }
+
+  private progress(id: string, order: string, stage: "en-route" | "at-patient" | "acquisition-started"): void {
+    this.dispatch({ type: "study", study: { op: "progress", order, stage }, by: "system" }, id);
+  }
+
+  /** Text mode: the hospital's staff without bodies — assigned, at the patient, acquired. */
+  private collectWithoutWorld(id: string, order: string, who: string, configuration?: string): void {
+    this.assign(id, order, who);
+    this.progress(id, order, "at-patient");
+    this.progress(id, order, "acquisition-started");
+    this.acquire(id, order, who, configuration);
+  }
+
+  /**
+   * Fulfil an order (docs/STUDIES.md §5): assigned to the person who acquires it, who goes to the patient with their
+   * own body — fetching the device first for a bedside study — and only once the world confirms them at the patient
+   * (within reach, a device of the study at the bedside, their role allowed to take it) is it acquired. A walk that
+   * fails, a door that is locked, a device that cannot come: the order is blocked with the reason, no specimen and no
+   * tracing are made, and the same order resumes after a later act.
+   */
   private async fulfil(id: string, orderId: string, signal: AbortSignal): Promise<void> {
     const k = this.k;
     const o = k.state.studies!.orders.find((x) => x.id === orderId)!;
     const profile = studyProfile(k.caseDef, o.code);
     if (!profile) return;
     const L = k.locale;
+    // a prerequisite that does not hold (intravenous access, the patient at the device): the order waits with its reason
+    const unmet = unmetPrerequisites(k.caseDef, k.state, profile);
+    if (unmet.length) return this.wait(id, o.id, unmet.map((u) => t(u.reason, L)).join("; "));
     const e = k.embodied;
-    // text mode: no room to walk in — the hospital acquires it at once
-    if (!e) return this.acquire(id, o.id, profile.acquisition === "department" ? "radiographer" : "nurse", o.configuration);
+    if (!e) return this.collectWithoutWorld(id, o.id, studyCollectors(profile)[0] ?? "nurse", o.configuration);
     const w = e.world();
     const devices = providers(w, profile.requires);
     const name = (eid: string) => t(w.entity(eid)?.name ?? eid, L);
     if (profile.requires.length && devices.length === 0) return this.wait(id, o.id, rt(L, "study.wait.noDevice", { caps: profile.requires.join(", ") }));
     const patient = e.patientId();
+    if (!patient) return this.wait(id, o.id, rt(L, "study.wait.noPatient"));
     if (profile.acquisition === "department") {
-      const room = patient ? w.roomOf(patient) : null;
+      const room = w.roomOf(patient);
       const here = devices.find((d) => w.roomOf(d) === room);
       if (!here) return this.wait(id, o.id, rt(L, "study.wait.transfer", { device: name(devices[0]!), room: w.roomOf(devices[0]!) ?? "—" }));
-      return this.acquire(id, o.id, "radiographer", o.configuration);
+      // the patient at the device: the department's own staff (a radiographer) acquire it there
+      return this.collectWithoutWorld(id, o.id, studyCollectors(profile)[0] ?? "radiographer", o.configuration);
     }
-    const collector = this.collectorRef();
+    // the collector: the case team's circulating nurse, else the nurse nearest the patient — their role may take it
+    const ref = this.collectorRef();
+    const collector = ref.startsWith("staff:") ? ref : pickStaff(w, "nurse", patient);
+    const actor = collector ? w.actor(collector) : null;
+    if (!collector || !actor) return this.wait(id, o.id, rt(L, "study.wait.noStaff"));
+    if (!studyCollectors(profile).includes(actor.role)) return this.wait(id, o.id, rt(L, "study.wait.notAuthorized", { who: name(collector) }));
+    if (o.assignee !== collector.replace(/^staff:/u, "")) this.assign(id, o.id, collector);
+    // a blocked order tries again quietly: its stages change only when something does (no repeated "en route")
+    const blocked = () => k.state.studies?.orders.find((x) => x.id === o.id)?.stage === "blocked";
+    const onTheWay = () => {
+      if (!blocked()) this.progress(id, o.id, "en-route");
+    };
+    let device: string | null = null;
     if (profile.acquisition === "bedside-device") {
       const snapshot = w.snapshot().entities;
       // out of service: waits until it is back (recoverable; the requester keeps the order)
@@ -204,17 +286,34 @@ export class SessionStudies {
         const d = inService[0]!;
         return this.wait(id, o.id, rt(L, "study.wait.busy", { device: name(d), holder: name(holder(d)!) }));
       }
-      const atPatient = patient ? free.find((d) => e.atBedside(d)) : undefined;
-      if (!atPatient) {
-        // the circulating nurse fetches it to the patient with their own body (the world keeps its custody)
+      device = free.find((d) => e.atBedside(d)) ?? null;
+      if (!device) {
+        // the collector fetches it to the patient with their own body (the world keeps its custody)
+        onTheWay();
         const r = await e.delegate(k.tools.context("nurse", id, signal), { role: collector, task: "fetch_equipment", params: { capability: profile.requires[0] } });
         if (!r.ok) return this.wait(id, o.id, rt(L, "study.wait.fetchFailed", { who: name(collector), device: name(free[0]!), reason: r.output.split("\n")[0] ?? "" }));
+        device = free.find((d) => e.atBedside(d)) ?? null;
+        if (!device) return this.wait(id, o.id, rt(L, "study.wait.fetchFailed", { who: name(collector), device: name(free[0]!), reason: rt(L, "study.wait.notAtBedside") }));
       }
-      return this.acquire(id, o.id, collector, o.configuration);
     }
-    // a sample: taken at the bedside by the nurse who walks there
-    if (patient) await e.act({ agent: "nurse", submission: id, signal }, { actorId: collector.startsWith("staff:") ? collector : PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: patient } });
+    // to the patient, with their own body; the world says whether they got there
+    if (!this.atPatient(collector)) {
+      onTheWay();
+      const walked = await e.act({ agent: "nurse", submission: id, signal }, { actorId: collector, operation: "navigate", goal: { kind: "interact", id: patient }, onBehalfOf: PRIMARY_ACTOR });
+      if (!this.atPatient(collector)) return this.wait(id, o.id, rt(L, "study.wait.cannotReach", { who: name(collector), reason: (walked.status === "completed" ? rt(L, "study.wait.notInReach") : walked.message.split("\n")[0] ?? "").replace(/[.。]\s*$/u, "") }));
+    }
+    if (device && !e.atBedside(device)) return this.wait(id, o.id, rt(L, "study.wait.fetchFailed", { who: name(collector), device: name(device), reason: rt(L, "study.wait.notAtBedside") }));
+    // got there after a block: on the way again, then at the patient
+    if (blocked()) this.progress(id, o.id, "en-route");
+    this.progress(id, o.id, "at-patient");
+    this.progress(id, o.id, "acquisition-started");
     this.acquire(id, o.id, collector, o.configuration);
+  }
+
+  /** Is this body at the patient now — within reach and in sight (the world's examination rule)? */
+  private atPatient(actorId: string): boolean {
+    const e = this.k.embodied;
+    return !!e && e.world().checkSpatial(actorId, { tool: "examine", kind: "examine" }).ok;
   }
 
   /** The report of a due acquisition: the writer's when it validates, else the template; released once. */
@@ -235,7 +334,7 @@ export class SessionStudies {
       }
     }
     text ??= templateReport(profile, a);
-    this.dispatch({ type: "study", study: { op: "release", accession: a.id, findings: text.findings, impression: text.impression, limitations: text.limitations, generator: text.generator }, by: "system" }, id);
+    this.dispatch({ type: "study", study: { op: "release", accession: a.id, findings: text.findings, impression: text.impression, limitations: text.limitations, generator: text.generator, ...(text.supportedBy ? { supportedBy: text.supportedBy } : {}) }, by: "system" }, id);
   }
 
   /** The reviewer reviews the released report in their own name, and says so. */

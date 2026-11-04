@@ -123,12 +123,18 @@ developer documents use.
 | test | test (formal: investigation) | 检查（正式：辅助检查） | `order_test`, `investigations[]` |
 | treatment | treatment; give (formal: intervention) | 处置；给予 | `intervene`, `interventions[]` |
 | result, critical result | result, critical result | 结果、危急值 | `read_result`, `critical` |
+| consultation vs teaching hint | a consultation (consult a colleague: their specialty, from the record); a teaching hint (asked for explicitly: /hint, request_hint — counts against the score) | 会诊（向同事咨询：按其专科、依据病历）；教学提示（须明确申请：/hint、request_hint——计入评分） | `consult` never records a hint; `request_hint`, `/hint` | never inferred from the words of a consultation |
+| position (a staff member's job) | the job a member of staff holds, finer than their facility role: scrub, circulating, ward or recovery nurse; surgeon, assistant surgeon, anaesthetist, physician… | 岗位（洗手护士、巡回护士、病房护士、复苏室护士；主刀医生、助手医生、麻醉医生…） | `StaffPositionSchema`, `staff.position`, `positionOf` | never "role" for this: `role` is what a body may do in the world |
+| role card | a position's job description: mission, responsibilities, what it may and never does, how it communicates, whom it escalates to, what it knows | 岗位职责卡 | `ROLE_CARDS`, `roleSection` (`<role>`), docs/CHARACTERS.md | a card never grants an act the world or the scope of practice refuses |
+| character engine | how the characters are driven: by the rules, or by each character's model within its role card | 角色驱动方式：规则驱动 / 大模型驱动 | `characters.engine: "rules" \| "llm"`, `--characters` | learner-facing "model-driven characters" / 大模型驱动的角色; the rules always stand in when a model is missing, slow or off-script |
+| safety datum status | not asked; remains unknown (asked; not recorded); verified — none / present; managed by a documented precaution | 未询问；仍不明（已询问，记录中没有）；已核实——无 / 有；已按记录的预防措施处理 | `history[].safety`, `datumStatus`, intervention `reports` / `mitigates` | asking is not confirming |
 | record review | record review (an existing report read from the notes or the EHR) | 病历查阅（在病历或电子病历中调阅已有报告） | `investigations[].performedAt: "records"` |
 | retrieve an existing report | Retrieve an existing report | 调阅已有报告 | `retrieve_report` (the published case only; never orders) |
 | order a new investigation | Order a new investigation | 开具新检查 | `order_study`, `case.studies[]` test profiles ([STUDIES.md](STUDIES.md)) |
 | simulated investigation | Simulated investigation (a study done in this encounter, from the case's teaching profile) | 模拟检查（本次接诊中完成，依据病例的教学配置生成） | `SessionState.studies`, `read_study`; never shown as the patient's record |
 | published source record | Published source record | 原始病例记录 | `investigations[]` results |
 | historical material unavailable | Historical material unavailable (the published case has no such record) | 原始病例中无此资料 | a record result `available: false`, or none |
+| record not yet created | Record not yet created (written later in the encounter) | 该记录尚未产生 | `recordAvailability` `not-yet`, `investigations[].availability` |
 | accession | accession (one acquisition of an ordered study: a tracing, a sample) | 检查号（一次采集：一份描记或一份标本） | `StudyAccession.id`, e.g. `ecg-12lead-1` |
 | cannot speak, cannot answer | "<name> cannot speak: <reason>" (approach), "<name> cannot answer: <reason>" (a question) — narrated | “<姓名>无法说话：<原因>”（走近时）、“<姓名>无法回答：<原因>”（提问时）——以旁白呈现 | `patient.nonVerbalWhen`, `nonVerbalReason`, rejection `cannot-answer` |
 | work-up plan | work-up plan | 诊疗计划 | `update_workup` |

@@ -233,6 +233,7 @@ export const BUILTIN_AGENTS: readonly AgentProfile[] = Object.freeze([
       "retrieve_report",
       "order_study",
       "read_study",
+      "list_studies",
       // embodied mode only (registered only in embodied sessions)
       "observe_world",
       "get_agent_state",

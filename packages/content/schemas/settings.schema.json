@@ -676,6 +676,26 @@
           },
           "additionalProperties": false
         },
+        "characters": {
+          "type": "object",
+          "properties": {
+            "engine": {
+              "type": "string",
+              "enum": [
+                "rules",
+                "llm"
+              ],
+              "default": "rules"
+            },
+            "timeoutMs": {
+              "type": "integer",
+              "minimum": 500,
+              "maximum": 60000,
+              "default": 8000
+            }
+          },
+          "additionalProperties": false
+        },
         "server": {
           "type": "object",
           "properties": {
@@ -1366,6 +1386,26 @@
             "offlineFallback": {
               "type": "boolean",
               "default": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "characters": {
+          "type": "object",
+          "properties": {
+            "engine": {
+              "type": "string",
+              "enum": [
+                "rules",
+                "llm"
+              ],
+              "default": "rules"
+            },
+            "timeoutMs": {
+              "type": "integer",
+              "minimum": 500,
+              "maximum": 60000,
+              "default": 8000
             }
           },
           "additionalProperties": false

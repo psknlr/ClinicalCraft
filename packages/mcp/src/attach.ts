@@ -24,7 +24,7 @@
  *   a short notice that it is the learner's simulation output, not
  *   instructions (`structuredContent.untrusted: true`).
  */
-import { CLINICALCRAFT_VERSION, clinicalTools, isLiveSessionId, procedureTools, WORLD_TOOL_SPECS, WorldAttachClient, type AttachFailure, type BridgeToolResult, type LiveSessionInfo } from "@clinicalcraft/agent";
+import { CLINICALCRAFT_VERSION, clinicalTools, isLiveSessionId, procedureTools, studyTools, WORLD_TOOL_SPECS, WorldAttachClient, type AttachFailure, type BridgeToolResult, type LiveSessionInfo } from "@clinicalcraft/agent";
 import { normalizeLocale } from "@clinicalcraft/core";
 import { mm } from "./i18n.js";
 import { classifyMessage, RPC_ERRORS, RpcError, rpcError, rpcResult, type JsonRpcId, type JsonRpcRequest, type JsonRpcResponse } from "./jsonrpc.js";
@@ -64,7 +64,7 @@ function liveSpec(name: string, description: string, inputSchema: Record<string,
 /** The tools of attach mode: `list_live_sessions`, then every clinical and world tool, forwarded (no `confirm`: the learner approves). */
 export function attachTools(): McpToolSpec[] {
   // the clinical tools and the operative field's (a live session offers these only in a case with an operation)
-  const clinical = [...clinicalTools(), ...procedureTools()].map((tool) => liveSpec(tool.name, tool.description, tool.inputSchema));
+  const clinical = [...clinicalTools(), ...procedureTools(), ...studyTools()].map((tool) => liveSpec(tool.name, tool.description, tool.inputSchema));
   const world = WORLD_TOOL_SPECS.filter((spec) => MCP_WORLD_TOOLS.includes(spec.name)).map((spec) => liveSpec(spec.name, `${spec.description} Embodied encounters only.`, spec.inputSchema));
   const title = "Live sessions";
   return [

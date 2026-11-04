@@ -5,7 +5,7 @@
  * transcript that predates `dialogue` items) — and `restoreRuntime` for the runtime state beyond them
  * (interlocutor, workup plan, patient/companion affect: `resumedRuntimeConfig`).
  */
-import { replay } from "@clinicalcraft/core";
+import { ENGINE_VERSION, replay } from "@clinicalcraft/core";
 import { narrateAction } from "../agents/offline.js";
 import type { ChatMessage, ChatPart } from "../providers/types.js";
 import { normaliseContent } from "../transcript.js";
@@ -13,7 +13,8 @@ import { RESERVED_DIALOGUE_LABEL, type DialogueEntry } from "./examiner.js";
 import type { SessionKernel } from "./kernel.js";
 import type { PatientMemory } from "./patient-pipeline.js";
 import type { CreateSessionOptions } from "./session.js";
-import type { SessionOptions, SessionSnapshot } from "./types.js";
+import type { RecordProvenance, ReplayIssue, SessionOptions, SessionSnapshot } from "./types.js";
+import { CLINICALCRAFT_VERSION as CLINICALCRAFT_VERSION_ } from "./version.js";
 
 /** A valid patient affect intensity (0 calm … 3 most intense). */
 function isAffectIntensity(value: unknown): value is PatientMemory["affectIntensity"] {
@@ -21,9 +22,31 @@ function isAffectIntensity(value: unknown): value is PatientMemory["affectIntens
 }
 
 /** The session as a serializable snapshot (save, export, resume). */
+/** A stable hash of the case definition (FNV-1a over its JSON): the content revision of a record. */
+export function contentRevision(c: unknown): string {
+  const text = JSON.stringify(c);
+  let h = 0x811c9dc5;
+  for (let i = 0; i < text.length; i++) {
+    h ^= text.charCodeAt(i);
+    h = Math.imul(h, 0x01000193) >>> 0;
+  }
+  return h.toString(16).padStart(8, "0");
+}
+
+/** This session's provenance now (the case content and engine it runs on). */
+export function provenanceNow(k: SessionKernel): RecordProvenance {
+  return { caseId: k.caseDef.id, caseVersion: k.caseDef.version, contentRevision: contentRevision(k.caseDef), engineVersion: ENGINE_VERSION, clinicalcraftVersion: CLINICALCRAFT_VERSION_ };
+}
+
 export function sessionSnapshot(k: SessionKernel): SessionSnapshot {
+  const now = provenanceNow(k);
+  // the original record, unedited, when the restore could not replay all of it: what came before, then what since
+  const original = k.restore?.original ? [...k.restore.original, ...structuredClone(k.acceptedActions.slice(k.restore.acceptedAtRestore))] : null;
   return {
-    format: "clinicalcraft-session@1",
+    format: "clinicalcraft-session@2",
+    createdWith: k.restore?.createdWith ?? now,
+    savedWith: now,
+    ...(original ? { originalActions: original, replayIssues: k.restore!.issues.map((x) => ({ ...x })) } : {}),
     sessionId: k.id,
     caseId: k.caseDef.id,
     caseVersion: k.caseDef.version,
@@ -77,10 +100,19 @@ function trustedDialogue(k: SessionKernel, entries: readonly unknown[]): Dialogu
  * that predates `dialogue` items (recorded by `start` after `session_meta`).
  */
 export function restoreSession(k: SessionKernel, resume: NonNullable<SessionOptions["resume"]>): DialogueEntry[] {
-  const replayed = replay(k.caseDef, resume.actions);
+  // the original record is replayed (never edited): what the current engine refuses is reported, not silently dropped
+  const original = resume.originalActions ?? resume.actions;
+  const replayed = replay(k.caseDef, original);
   const rejected = new Set(replayed.rejections.map((r) => r.index));
   k.state = replayed.state;
-  k.acceptedActions = resume.actions.filter((_, i) => !rejected.has(i));
+  k.acceptedActions = original.filter((_, i) => !rejected.has(i));
+  const issues: ReplayIssue[] = replayed.rejections.map((r) => ({ originalIndex: r.index, type: original[r.index]?.type ?? "?", status: "rejected-under-current-engine", reason: r.message }));
+  k.restore = {
+    createdWith: resume.createdWith ?? null,
+    original: issues.length || resume.originalActions ? structuredClone(original) : null,
+    issues,
+    acceptedAtRestore: k.acceptedActions.length,
+  };
   const recorded = trustedDialogue(k, resume.dialogue ?? []);
   const dialogue = k.conversations.dialogue;
   // Already in the transcript (or the snapshot): restored, not re-recorded.

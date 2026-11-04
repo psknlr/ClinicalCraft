@@ -42,9 +42,33 @@ function theatreCase() {
   return parsed.value;
 }
 
+/** The same theatre case with a new investigation the hospital can do (a blood count: a sample, 30 minutes). */
+function studiesCase() {
+  const raw = structuredClone(theatreCase()) as unknown as Record<string, any>;
+  raw.id = "mcp-lap-chole-studies";
+  raw.clock = { mode: "simulated", startTime: "08:00", actionCosts: { ask: 1, examine: 1, order: 1, read: 1, intervene: 0, answer: 0 } };
+  raw.studies = [
+    {
+      code: "cbc-new",
+      name: L("Blood count"),
+      aliases: { en: ["FBC", "CBC"], "zh-CN": ["血常规"] },
+      acquisition: "sample",
+      turnaroundMinutes: 30,
+      model: { kind: "lab", analytes: [{ id: "hb", name: L("Haemoglobin"), unit: "g/dL", low: 13, high: 17, base: 14, spread: 0, decimals: 1 }] },
+    },
+  ];
+  const parsed = parseCase(raw);
+  if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues.slice(0, 3)));
+  return parsed.value;
+}
+
 const builtin = await loadContent();
 const operative = theatreCase();
-const content = { ...builtin, cases: new Map([...builtin.cases, [operative.id, { def: operative, dir: root, file: join(root, "case.json") }]]) };
+const withStudies = studiesCase();
+const content = {
+  ...builtin,
+  cases: new Map([...builtin.cases, [operative.id, { def: operative, dir: root, file: join(root, "case.json") }], [withStudies.id, { def: withStudies, dir: root, file: join(root, "case-studies.json") }]]),
+};
 const CASE = caseHandle(operative.id);
 
 type ToolResult = { content: { type: string; text: string }[]; structuredContent?: Record<string, any>; isError?: boolean };
@@ -143,8 +167,34 @@ describe("MCP: external agents operate", () => {
     await c.close();
   });
 
-  it("attach mode and the world bridge forward the operative tools", () => {
-    expect(BRIDGE_TOOLS).toEqual(expect.arrayContaining(["observe_field", "operate"]));
-    expect(attachTools().map((t) => t.name)).toEqual(expect.arrayContaining(["observe_field", "operate"]));
+  it("attach mode and the world bridge forward the operative and investigation tools", () => {
+    const tools = ["observe_field", "operate", "retrieve_report", "order_study", "read_study", "list_studies"];
+    expect(BRIDGE_TOOLS).toEqual(expect.arrayContaining(tools));
+    expect(attachTools().map((t) => t.name)).toEqual(expect.arrayContaining(tools));
+  });
+
+  it("new investigations over MCP: the record looked up, a study ordered once, its report by accession; an operative cholangiogram never ordered", async () => {
+    const c = new Client(mergeSettings([{ source: "flag", settings: { locale: "en" } }]));
+    await c.request("initialize", { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "test", version: "1" } });
+    const tools = new Map((await c.request<{ tools: { name: string; annotations: Record<string, unknown> }[] }>("tools/list")).tools.map((t) => [t.name, t]));
+    expect(tools.get("order_study")?.annotations).toMatchObject({ title: "Order a new investigation", readOnlyHint: false, idempotentHint: true });
+    expect(tools.get("read_study")?.annotations).toMatchObject({ readOnlyHint: true });
+    const started = await c.call("start_case", { case_id: caseHandle(withStudies.id) });
+    const session_id = started.structuredContent!.session_id as string;
+    const ioc = await c.call("order_study", { session_id, query: "intraoperative cholangiogram" });
+    expect(ioc.isError).toBe(true);
+    expect(text(ioc)).toMatch(/done at the table, not ordered from the chart: the intraoperative cholangiogram is acquired with operate \{op: "image", modality: "ioc"\}/);
+    const ordered = await c.call("order_study", { session_id, query: "FBC", request_key: "fbc-1" });
+    expect(ordered.isError, text(ordered)).not.toBe(true);
+    expect(text(ordered)).toMatch(/Blood count/);
+    // the same key again: the same order, nothing new
+    expect(text(await c.call("order_study", { session_id, query: "FBC", request_key: "fbc-1" }))).toMatch(/already/i);
+    expect(text(await c.call("list_studies", { session_id }))).toMatch(/cbc-new-1/);
+    expect(text(await c.call("read_study", { session_id, accession: "cbc-new-1" }))).toMatch(/not (yet )?(ready|due|reported)|due|pending|awaiting/i);
+    await c.call("wait", { session_id, minutes: 30 });
+    const report = text(await c.call("read_study", { session_id, accession: "cbc-new-1" }));
+    expect(report).toMatch(/Haemoglobin 14(\.0)? g\/dL/);
+    expect(report).toMatch(/simulated/i);
+    await c.close();
   });
 });

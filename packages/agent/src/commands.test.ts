@@ -189,7 +189,7 @@ describe("built-in commands", () => {
     await command(t, "/order ecg");
     const exp = await command(t, "/export run.json");
     expect(exp.out.text).toMatch(/2 actions\) → run\.json/);
-    expect((exp.out.data as { snapshot: { format: string } }).snapshot.format).toBe("clinicalcraft-session@1");
+    expect((exp.out.data as { snapshot: { format: string } }).snapshot.format).toBe("clinicalcraft-session@2");
     expect((await command(t, "/permissions")).out.text).toMatch(/Allow\s+-/);
     expect((await command(t, "/frobnicate")).out.text).toMatch(/Unknown command \/frobnicate/);
   });
@@ -256,7 +256,7 @@ describe("commands never repeat or spoil what the learner sees (offline)", () =>
     expect((await command(zh, "/osce-checklist")).out.text).toMatch(/需要语言模型/);
   });
 
-  it("consulting the offline attending counts as a hint only when it gives the objective's hint", async () => {
+  it("consulting the offline attending never counts as a hint — a hint is asked for explicitly (/hint)", async () => {
     const t = await makeSession();
     const socratic = await command(t, "/consult attending what next?");
     const reply = msgsOf(socratic.events, "agent_message").find((m) => m.agent === "attending")!.text;
@@ -264,11 +264,16 @@ describe("commands never repeat or spoil what the learner sees (offline)", () =>
     expect(reply).not.toContain("Ask when the pain started");
     expect(reply).toContain("/hint");
     expect(t.session.state.hints).toBe(0);
+    // words that sound like a hint request are still a consultation: no hint recorded, the way to ask one said
     const asked = await command(t, "/consult attending I'm stuck, can I have a hint?");
-    expect(msgsOf(asked.events, "agent_message").find((m) => m.agent === "attending")!.text).toContain("Ask when the pain started");
-    expect(t.session.state.hints).toBe(1);
+    const said = msgsOf(asked.events, "agent_message").find((m) => m.agent === "attending")!.text;
+    expect(said).not.toContain("Ask when the pain started");
+    expect(said).toMatch(/\/hint/);
     await command(t, "@上级 给我一点提示");
-    expect(t.session.state.hints).toBe(2);
+    expect(t.session.state.hints).toBe(0);
+    // the explicit channel
+    await command(t, "/hint");
+    expect(t.session.state.hints).toBe(1);
   });
 });
 

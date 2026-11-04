@@ -7,8 +7,10 @@
  * observations, and the release records its text.
  */
 import type { CaseDefinition } from "../schema/case.js";
+import type { Imaging } from "../schema/common.js";
 import type { SessionState } from "../schema/session.js";
-import type { StudyAccession, StudyObservation, StudyOp, StudyProfile, StudyRecord } from "../schema/study.js";
+import type { StudyAccession, StudyCategory, StudyObservation, StudyOp, StudyOrder, StudyProfile, StudyRecord, StudyRule, StudyStage } from "../schema/study.js";
+import { t } from "../i18n.js";
 import { evaluate } from "./conditions.js";
 import { vitalValue } from "./signal.js";
 
@@ -34,6 +36,60 @@ const within = (range: readonly [number, number], u: number) => Math.round(range
 /** The case's test profile of `code`, or undefined. */
 export function studyProfile(c: CaseDefinition, code: string): StudyProfile | undefined {
   return (c.studies ?? []).find((p) => p.code === code);
+}
+
+/**
+ * The operative field's imaging (schema `ImagingSchema`): acquired at the table — `operate {op: "image", modality}`,
+ * once the anatomy allows it — and never ordered from the chart: a request alone produces no image, no report.
+ */
+export const OPERATIVE_IMAGING: Readonly<Record<Imaging, { name: { en: string; "zh-CN": string }; aliases: readonly string[] }>> = {
+  ioc: { name: { en: "intraoperative cholangiogram", "zh-CN": "术中胆道造影" }, aliases: ["ioc", "cholangio", "intraoperative cholangiogram", "胆道造影", "胆管造影"] },
+  "lap-us": { name: { en: "laparoscopic ultrasound", "zh-CN": "腹腔镜超声" }, aliases: ["lap-us", "lap us", "lus", "laparoscopic ultrasound", "laparoscopic ultrasonography", "腹腔镜超声"] },
+};
+
+/**
+ * The operative imaging a request names (null: none) — Latin aliases at a word's start (whole words when short),
+ * Chinese ones anywhere.
+ */
+export function operativeImagingAsked(query: string): Imaging | null {
+  const q = query.toLowerCase();
+  const esc = (x: string) => x.replace(/[.*+?^${}()|[\]\\]/gu, "\\$&");
+  for (const [modality, { aliases }] of Object.entries(OPERATIVE_IMAGING) as [Imaging, (typeof OPERATIVE_IMAGING)[Imaging]][]) {
+    for (const a of aliases) {
+      if (/[\u3400-\u9fff]/u.test(a) ? q.includes(a) : new RegExp(`(^|[^\\p{L}\\p{N}])${esc(a)}${a.length < 5 ? "($|[^\\p{L}\\p{N}])" : ""}`, "u").test(q)) return modality;
+    }
+  }
+  return null;
+}
+
+/** A study's category: its own, else from how it is acquired (sample → lab, bedside device → bedside, department → imaging). */
+export function studyCategory(p: StudyProfile): StudyCategory {
+  return p.category ?? (p.acquisition === "sample" ? "lab" : p.acquisition === "bedside-device" ? "bedside" : "imaging");
+}
+
+/** Roles that acquire a study at the bedside unless its profile names others (a porter or a receptionist never does). */
+export const BEDSIDE_COLLECTORS: readonly string[] = ["nurse", "paramedic", "attending", "clinician"];
+/** Roles that acquire a department's study unless its profile names others. */
+export const DEPARTMENT_COLLECTORS: readonly string[] = ["radiographer", "radiologist", "lab-tech"];
+
+/** Who may acquire this study: its profile's `collectors`, else the defaults of its acquisition. */
+export function studyCollectors(p: StudyProfile): readonly string[] {
+  return p.collectors?.length ? p.collectors : p.acquisition === "department" ? DEPARTMENT_COLLECTORS : BEDSIDE_COLLECTORS;
+}
+
+/**
+ * Why this study cannot be ordered now (null: it can): `not-yet` — its `orderableWhen` does not hold;
+ * `restricted` — a safety restriction holds (with the restriction's reason). The reducer refuses such an order.
+ */
+export function studyOrderBlock(c: CaseDefinition, s: SessionState, p: StudyProfile): { kind: "not-yet" | "restricted"; reason?: StudyRule["reason"] } | null {
+  if (p.orderableWhen && !evaluate(c, s, p.orderableWhen)) return { kind: "not-yet" };
+  const r = (p.restrictions ?? []).find((x) => evaluate(c, s, x.when));
+  return r ? { kind: "restricted", reason: r.reason } : null;
+}
+
+/** The prerequisites of the acquisition that do not hold now (empty: it may be acquired). */
+export function unmetPrerequisites(c: CaseDefinition, s: SessionState, p: StudyProfile): StudyRule[] {
+  return (p.prerequisites ?? []).filter((x) => !evaluate(c, s, x.when));
 }
 
 /**
@@ -86,31 +142,70 @@ const empty = (): StudyRecord => ({ orders: [], accessions: [], reports: [], rev
 
 export type StudyResult = { ok: true; record: StudyRecord; changed: boolean; id?: string } | { ok: false; code: "invalid" | "unknown-id" | "requirements-unmet" | "not-ready"; message: string };
 
+/** Move an order to a stage, recorded in its own stage list. */
+function stageAt(s: SessionState) {
+  return (o: StudyOrder, next: StudyStage, reason?: string) => {
+    o.stage = next;
+    o.stages = [...(o.stages ?? []), { stage: next, at: s.clock, seq: s.seq + 1, ...(reason ? { reason } : {}) }];
+  };
+}
+
 /** Apply one study op (pure): the new record, or why not. `changed: false`: a retried order (the same key) — nothing new. */
 export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): StudyResult {
   const r: StudyRecord = s.studies ? structuredClone(s.studies) : empty();
   const order = (id: string) => r.orders.find((o) => o.id === id);
+  const stage = stageAt(s);
   switch (op.op) {
     case "order": {
       const profile = studyProfile(c, op.code);
       if (!profile) return { ok: false, code: "unknown-id", message: `no study "${op.code}" in this case's test profiles` };
       const same = r.orders.find((o) => o.key === op.key);
       if (same) return { ok: true, record: r, changed: false, id: same.id };
+      const block = studyOrderBlock(c, s, profile);
+      if (block?.kind === "not-yet") return { ok: false, code: "not-ready", message: `"${op.code}" cannot be ordered at this point of the encounter` };
+      if (block) return { ok: false, code: "requirements-unmet", message: `"${op.code}" is not safe to order now: ${block.reason ? t(block.reason, "en") : "a restriction holds"}` };
       const id = `ord-${r.orders.length + 1}`;
-      r.orders.push({ id, code: op.code, key: op.key, ...(op.indication ? { indication: op.indication } : {}), priority: op.priority, requester: op.requester, ...(op.reviewer ?? profile.reviewer ? { reviewer: op.reviewer ?? profile.reviewer } : {}), ...(op.configuration ? { configuration: op.configuration } : {}), at: s.clock, seq: s.seq + 1, accessions: [] });
+      r.orders.push({ id, code: op.code, key: op.key, ...(op.indication ? { indication: op.indication } : {}), priority: op.priority, requester: op.requester, ...(op.reviewer ?? profile.reviewer ? { reviewer: op.reviewer ?? profile.reviewer } : {}), ...(op.configuration ? { configuration: op.configuration } : {}), at: s.clock, seq: s.seq + 1, accessions: [], stage: "ordered", stages: [{ stage: "ordered", at: s.clock, seq: s.seq + 1 }] });
       return { ok: true, record: r, changed: true, id };
     }
     case "wait": {
       const o = order(op.order);
       if (!o) return { ok: false, code: "unknown-id", message: `no order "${op.order}"` };
       o.waiting = { reason: op.reason, at: s.clock };
+      stage(o, "blocked", op.reason);
+      return { ok: true, record: r, changed: true, id: o.id };
+    }
+    case "assign": {
+      const o = order(op.order);
+      if (!o) return { ok: false, code: "unknown-id", message: `no order "${op.order}"` };
+      if (o.accessions.length) return { ok: false, code: "invalid", message: `"${o.id}" is acquired already` };
+      if (o.assignee === op.to) return { ok: true, record: r, changed: false, id: o.id };
+      o.assignee = op.to;
+      stage(o, "assigned");
+      return { ok: true, record: r, changed: true, id: o.id };
+    }
+    case "progress": {
+      const o = order(op.order);
+      if (!o) return { ok: false, code: "unknown-id", message: `no order "${op.order}"` };
+      if (!o.assignee) return { ok: false, code: "requirements-unmet", message: `"${o.id}" is not assigned to anyone` };
+      if (o.accessions.length) return { ok: false, code: "invalid", message: `"${o.id}" is acquired already` };
+      if (op.stage === "acquisition-started" && o.stage !== "at-patient") return { ok: false, code: "requirements-unmet", message: `"${o.id}": the acquisition starts only at the patient` };
+      if (o.stage === op.stage) return { ok: true, record: r, changed: false, id: o.id };
+      // on the way again, or there: the block is over
+      delete o.waiting;
+      stage(o, op.stage);
       return { ok: true, record: r, changed: true, id: o.id };
     }
     case "acquire": {
       const o = order(op.order);
       if (!o) return { ok: false, code: "unknown-id", message: `no order "${op.order}"` };
+      // no specimen, no tracing without the collector at the patient (the world confirmed it: `progress at-patient`)
+      if (o.stage !== "at-patient" && o.stage !== "acquisition-started") return { ok: false, code: "requirements-unmet", message: `"${o.id}" cannot be acquired: nobody has reached the patient for it` };
+      if (o.assignee && o.assignee !== op.collector) return { ok: false, code: "invalid", message: `"${o.id}" is assigned to ${o.assignee}, not ${op.collector}` };
       const profile = studyProfile(c, o.code);
       if (!profile) return { ok: false, code: "unknown-id", message: `no study "${o.code}"` };
+      const unmet = unmetPrerequisites(c, s, profile);
+      if (unmet.length) return { ok: false, code: "requirements-unmet", message: `"${o.id}" cannot be acquired yet: ${unmet.map((u) => t(u.reason, "en")).join("; ")}` };
       // a deliberate repeat collection: a new accession, whatever the phase
       const id = `${o.code}-${r.accessions.filter((a) => a.code === o.code).length + 1}`;
       const a: StudyAccession = {
@@ -129,19 +224,29 @@ export function applyStudy(c: CaseDefinition, s: SessionState, op: StudyOp): Stu
       r.accessions.push(a);
       o.accessions.push(id);
       delete o.waiting;
+      stage(o, "acquired");
       return { ok: true, record: r, changed: true, id };
     }
     case "release": {
       const a = r.accessions.find((x) => x.id === op.accession);
       if (!a) return { ok: false, code: "requirements-unmet", message: `no acquisition "${op.accession}": a report is released only from an acquired study` };
       if (c.clock.mode === "simulated" && s.clock + 1e-9 < a.dueAt) return { ok: false, code: "not-ready", message: `"${a.id}" is not due until minute ${a.dueAt}` };
+      // what the impression rests on must be this acquisition's observations (a report never adds a finding)
+      const ids = new Set(a.observations.map((o) => o.id));
+      const stray = (op.supportedBy ?? []).filter((id) => !ids.has(id));
+      if (stray.length) return { ok: false, code: "invalid", message: `"${a.id}" has no observation ${stray.join(", ")}: a report rests only on what was acquired` };
       const revision = r.reports.filter((x) => x.accession === a.id).length + 1;
-      r.reports.push({ accession: a.id, revision, findings: op.findings, impression: op.impression, ...(op.limitations ? { limitations: op.limitations } : {}), generator: op.generator, at: s.clock, seq: s.seq + 1 });
+      const provenance = { kind: "simulated-investigation" as const, source: "case-teaching-profile" as const, profile: a.code, profileVersion: a.profileVersion, observations: a.observations.map((o) => o.id), generator: op.generator };
+      r.reports.push({ accession: a.id, revision, findings: op.findings, impression: op.impression, ...(op.limitations ? { limitations: op.limitations } : {}), generator: op.generator, at: s.clock, seq: s.seq + 1, ...(op.supportedBy ? { supportedBy: [...op.supportedBy] } : {}), provenance });
+      const ro = order(a.order);
+      if (ro) stage(ro, "reported");
       return { ok: true, record: r, changed: true, id: a.id };
     }
     case "review": {
       if (!r.reports.some((x) => x.accession === op.accession)) return { ok: false, code: "requirements-unmet", message: `"${op.accession}" has no released report to review` };
       r.reviews.push({ accession: op.accession, by: op.by, at: s.clock, seq: s.seq + 1 });
+      const vo = r.orders.find((x) => x.accessions.includes(op.accession));
+      if (vo) stage(vo, "reviewed");
       return { ok: true, record: r, changed: true, id: op.accession };
     }
   }
