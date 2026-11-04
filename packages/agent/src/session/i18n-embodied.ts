@@ -13,6 +13,7 @@ export const EMBODIED_EN = {
   "embodied.noSlot": "{facility} has no place for this case (its setting: {setting}): an in-world encounter needs a bed or spot for the patient there. Choose another facility, or play the case in clinical mode.",
   "embodied.notEmbodied": "This session is in clinical mode (embodiment: clinical): world actions need in-world mode.",
   "embodied.fixed": "the mode (in-world or clinical; setting embodiment) is fixed for an encounter (this one: embodiment {mode})",
+  "embodied.notOwnBody": "Not carried out: a learner's world action moves only the learner's own body, not \"{actor}\". Ask a colleague in words or with delegate_task instead.",
   "embodied.skillIssue": "Project skill not loaded: {issue}",
   "embodied.skillsUntrusted": "{files} project skill file(s) in {dir} were not loaded: this project is not trusted. Review them, then run `clinicalcraft trust` in the project to use them.",
 
@@ -278,6 +279,7 @@ export const EMBODIED_ZH: Record<EmbodiedKey, string> = {
   "embodied.noSlot": "{facility}中没有适合本病例的位置（病例场景：{setting}）：实景接诊需要在那里为患者安排床位或地点。请选择其他场馆，或以临床模式进行本病例。",
   "embodied.notEmbodied": "本会话为临床模式（embodiment: clinical）：世界动作需要实景模式。",
   "embodied.fixed": "接诊模式（实景或临床，设置项 embodiment）在本次接诊中固定不变（本次接诊：embodiment {mode}）",
+  "embodied.notOwnBody": "未执行：学员的世界动作只能驱动学员自己的身体，不能驱动“{actor}”。请直接开口请同事去做，或使用 delegate_task。",
   "embodied.skillIssue": "项目技能未加载：{issue}",
   "embodied.skillsUntrusted": "{dir} 中的 {files} 个项目技能文件未加载：此项目未被信任。请先审阅，然后在项目中运行 `clinicalcraft trust` 再使用。",
 

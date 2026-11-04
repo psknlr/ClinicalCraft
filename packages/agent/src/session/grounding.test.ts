@@ -172,3 +172,20 @@ describe("grounding benchmark, dev split: units, sides, dates, habits, lexicon a
     expect(verifyGrounding("Yes, and the leg pumps too.", [stockings], { question: "Have you been wearing stockings?", answered: [stockings] }).violations).toEqual(['denied detail "pump"']);
   });
 });
+
+describe("English number words", () => {
+  it("counts \"one\" with a unit, and reads a compound number as one number", () => {
+    expect(verifyGrounding("About one week, I think.", ["I've had this cough for two weeks.", "How long have you had the cough?"]).ok).toBe(false);
+    expect(verifyGrounding("I take one tablet of metformin 500 mg.", ["I take metformin 500 mg twice a day.", "What medicines do you take?"]).ok).toBe(false);
+    expect(verifyGrounding("I've smoked for twenty-five years.", ["I've smoked for 25 years."]).ok).toBe(true);
+    expect(verifyGrounding("I've smoked for twenty five years.", ["I've smoked for 25 years."]).ok).toBe(true);
+    expect(verifyGrounding("I've smoked for twenty-five years.", ["I've smoked for 5 years."]).ok).toBe(false);
+  });
+
+  it("lets \"one\" restate \"a\" / \"an\" in the sources, and never counts a story's \"one day\"", () => {
+    expect(verifyGrounding("It started one week ago.", ["It started a week ago."]).ok).toBe(true);
+    expect(verifyGrounding("One day I just collapsed at work.", ["I collapsed at work."]).ok).toBe(true);
+    // the reply's own "a day" claims no number
+    expect(verifyGrounding("Three times a day.", ["Three times daily."]).ok).toBe(true);
+  });
+});

@@ -144,6 +144,39 @@ describe("embodied mode — contracts (PROTOCOL §12)", () => {
     expect(msgsOf(refused, "world_action_result")).toEqual([]);
     await c.session.close();
   });
+
+  it("world_action and world_pose move only the learner's own body: another body is refused (invalid_op), nothing moves or is committed", async () => {
+    const t = await makeEmbodiedSession();
+    answerAll(t);
+    const w = t.session.world()!;
+    const op = (actionId: string, request: Record<string, unknown>) => t.session.run({ type: "world_action", request: { actionId, ...request } as never });
+    const door = "door:main:s:0";
+    // The learner's own role holds no keys (only porters and receptionists lock doors) …
+    await walk(t, { kind: "interact", id: door });
+    expect(msgsOf(await op("own-lock", { actorId: PRIMARY_ACTOR, operation: "lock", targetId: door }), "world_action_result")[0]!.result.errorCode).toBe("NOT_AUTHORIZED");
+    // … and cannot borrow the receptionist's body to lock it.
+    const receptionist = w.actor("staff:receptionist")!.pose;
+    for (const [id, request] of [
+      ["r-go", { actorId: "staff:receptionist", operation: "navigate", goal: { kind: "interact", id: door } }],
+      ["r-lock", { actorId: "staff:receptionist", operation: "lock", targetId: door }],
+    ] as const) {
+      const events = await op(id, request);
+      expect(msgsOf(events, "error")[0]).toMatchObject({ code: "invalid_op", message: expect.stringContaining("staff:receptionist") });
+      expect(msgsOf(events, "world_action_result")).toEqual([]);
+    }
+    expect(w.actor("staff:receptionist")!.pose).toMatchObject({ x: receptionist.x, z: receptionist.z });
+    expect(w.inspect(PRIMARY_ACTOR, door)?.state).not.toBe("locked");
+    // Nor a nurse's body to attach the monitor at a bedside the learner's own body is far from.
+    const nurse = w.actor("staff:ed-nurse")!.pose;
+    await op("n-attach", { actorId: "staff:ed-nurse", operation: "attach", targetId: w.patientMonitor()! });
+    expect(t.session.state.interventions.map((i) => i.interventionId)).not.toContain("cardiac-monitoring");
+    // A sensor pose of another body moves nothing (reported once).
+    t.session.submit({ type: "world_pose", actorId: "staff:ed-nurse", pose: { ...FAR, x: 30, z: -15 } });
+    t.session.submit({ type: "world_pose", actorId: "staff:ed-nurse", pose: { ...FAR, x: 30, z: -15 } });
+    expect(w.actor("staff:ed-nurse")!.pose).toMatchObject({ x: nurse.x, z: nurse.z });
+    expect(t.msgs("error").filter((e) => e.code === "invalid_op" && e.message.includes("staff:ed-nurse"))).toHaveLength(2);
+    await t.session.close();
+  });
 });
 
 describe("spatial gating of the clinical tools (EMBODIED §6)", () => {

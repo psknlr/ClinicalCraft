@@ -3,7 +3,7 @@
  */
 import { describe, expect, it } from "vitest";
 import type { TeamDuty } from "@clinicalcraft/core";
-import { afterAct, propose, type ColleagueView, type ItemSighting, type MemberView } from "./policy.js";
+import { afterAct, propose, type ColleagueView, type CountView, type ItemSighting, type MemberView } from "./policy.js";
 import type { MemberState, Proposal, TeamMessage, TeamTask } from "./types.js";
 
 const CIRC = "staff:or.circulating";
@@ -177,6 +177,60 @@ describe("scrub nurse", () => {
     expect(propose(view(me, { tasks: [deliver], items: holding, inRoom: () => false }))).toMatchObject({ kind: "update" });
     expect(propose(view(me, { tasks: [{ ...deliver, status: "waiting", since: 4 }], items: holding, inRoom: () => false }))).toBeNull();
     expect(say(propose(view(me, { round: 8, tasks: [{ ...deliver, status: "waiting", since: 4 }], items: holding, inRoom: () => false })))).toMatchObject({ message: { kind: "decline", about: { reason: "recipient-absent" } } });
+  });
+
+  it("her own hands full when she picks it up: said as hers, never the surgeon's — another colleague may bring it", () => {
+    const deliver = task({ id: "task-4", kind: "deliver", itemId: "eq:nh-1", owner: SCRUB, initiator: CIRC, status: "accepted" });
+    const p = afterAct(view(me, { tasks: [deliver] }), deliver, { status: "failed", code: "HANDS_FULL", message: "Your hands are full (at most 2 items).", operation: "pick_up" });
+    expect(say(p)).toMatchObject({ to: CIRC, message: { kind: "decline", text: { en: "My hands are full — I can't take the needle holder." }, about: { reason: "own-hands-full" } } });
+    // the circulating nurse asks someone else (no escalation: the reason is not the person's)
+    const circ = member(CIRC, ["circulate"]);
+    const asked = task({ status: "asked", assignee: SCRUB, tried: [SCRUB] });
+    const back = propose(view(circ, { tasks: [asked], inbox: [message({ kind: "decline", about: { need: "n1", item: NH, for: SURGEON, reason: "own-hands-full" } })] }));
+    expect(back).toMatchObject({ kind: "update" });
+    expect(sets(back)).toContainEqual(expect.objectContaining({ status: "open", reason: "own-hands-full" }));
+  });
+
+  it("a delivery that ends releases its claim (the item is free for the next request)", () => {
+    const deliver = task({ id: "task-4", kind: "deliver", itemId: "eq:nh-1", owner: SCRUB, initiator: CIRC, status: "accepted" });
+    const v = view(me, { tasks: [deliver] });
+    for (const operation of ["pick_up", "hand_over"]) expect(afterAct(v, deliver, { status: "failed", code: "HANDS_FULL", message: "full", operation })?.patch).toContainEqual({ release: "eq:nh-1" });
+    const away = propose(view(me, { round: 8, tasks: [{ ...deliver, status: "waiting", since: 4 }], items: [sighting({ holder: SCRUB })], inRoom: () => false }));
+    expect(away?.patch).toContainEqual({ release: "eq:nh-1" });
+  });
+});
+
+describe("the count", () => {
+  const circ = member(CIRC, ["circulate"]);
+  const swabs = (seen: string[], missing: string[], unexpected: string[] = []): CountView => ({ item: "swab", of: 5, due: true, places: ["eq:or.mayo", "eq:or.back-table"], name: { en: "swabs", "zh-CN": "纱布" }, seen: () => seen, check: () => ({ missing, unexpected }) });
+  const check = (extra: Partial<TeamTask> = {}) => task({ id: "task-7", kind: "check", need: "count", item: "swab", thread: "thread-7", count: { of: 5, counted: [4], searched: [] }, ...extra });
+
+  it("a circulating nurse who counts herself holds closure on a short count, her count recorded with it", () => {
+    const short = swabs(["eq:s1", "eq:s2", "eq:s3", "eq:s4"], ["eq:s5"]);
+    const p = propose(view(member(CIRC, ["circulate", "count"]), { count: short, colleagues: [colleague(SURGEON, ["surgeon"])] }));
+    expect(say(p)).toMatchObject({ to: SURGEON, message: { kind: "request", about: { hold: true, count: 4, of: 5, ids: ["eq:s1", "eq:s2", "eq:s3", "eq:s4"], stage: "closing" } } });
+    expect(p!.patch).toContainEqual({ create: expect.objectContaining({ kind: "count", owner: CIRC }) });
+    expect(p!.patch).toContainEqual({ create: expect.objectContaining({ kind: "check", status: "open" }) });
+    const clean = propose(view(member(CIRC, ["circulate", "count"]), { count: swabs(["eq:s1", "eq:s2", "eq:s3", "eq:s4", "eq:s5"], []), colleagues: [colleague(SURGEON, ["surgeon"])] }));
+    expect(say(clean)).toMatchObject({ to: SURGEON, message: { kind: "report", text: { en: "Count of swabs correct: 5 of 5." } } });
+  });
+
+  it("a surgeon who declines the hold has not checked the wound", () => {
+    const decline = message({ thread: "thread-7", from: SURGEON, kind: "decline", about: { item: "swab" } });
+    const p = propose(view(circ, { tasks: [check()], inbox: [decline] }));
+    expect(p).toEqual({ kind: "update", patch: [{ read: "msg-9" }] });
+    const report = propose(view(circ, { tasks: [check()], inbox: [message({ thread: "thread-7", from: SURGEON, kind: "report", about: { item: "swab" } })] }));
+    expect(sets(report)).toContainEqual({ count: expect.objectContaining({ wound: true }) });
+  });
+
+  it("a search place the world will not let her reach is skipped, never declined to herself — the search goes on", () => {
+    const walking = check({ count: { of: 5, counted: [4], searched: [], at: "eq:or.mayo" } });
+    const p = afterAct(view(circ, { tasks: [walking] }), walking, { status: "failed", code: "PATH_BLOCKED", message: 'The way to "Mayo stand" is blocked (door).', operation: "approach", target: "eq:or.mayo" });
+    expect(p).toEqual({ kind: "update", patch: [{ id: "task-7", set: { count: { of: 5, counted: [4], searched: [], at: "eq:or.mayo", unreachable: ["eq:or.mayo"] } } }] });
+    const next = propose(view(circ, { tasks: [check({ count: { of: 5, counted: [4], searched: [], at: "eq:or.mayo", unreachable: ["eq:or.mayo"] } })], count: swabs([], ["eq:s5"]) }));
+    expect(next).toMatchObject({ kind: "act", operation: "approach", targetId: "eq:or.back-table" });
+    // interrupted: the step is tried again
+    expect(afterAct(view(circ), walking, { status: "cancelled", code: "CANCELLED", message: "Cancelled.", operation: "approach", target: "eq:or.mayo" })).toBeNull();
   });
 });
 

@@ -25,7 +25,8 @@
  *   timed out; the session gets the deadline too, in its own clock;
  * - acknowledges each call and posts its result by correlation id; a command
  *   delivered twice (a reconnect) never runs twice — the stored result is
- *   posted again;
+ *   posted again, when it is the same call (tool and arguments; the same id
+ *   for another call is a new call, and runs);
  * - sends heartbeats (on a timer, and when a server ping arrives — background
  *   tabs throttle timers, not network events), reconnects with backoff,
  *   re-registers when the server forgot the session (expiry, restart) and
@@ -54,6 +55,7 @@ import {
   BRIDGE_LIMITS,
   BRIDGE_TOOLS,
   boundBridgeResult,
+  bridgeCallFingerprint,
   bridgeErrorOf,
   caseHandle,
   CHANNEL_SECRET_HEADER,
@@ -321,7 +323,8 @@ class WorldBridgeClient implements WorldBridge {
   private wake: (() => void) | null = null;
   private unsubscribe: () => void = () => undefined;
   private readonly running = new Map<string, Running>();
-  private readonly done = new Map<string, BridgeToolResult>();
+  /** Final results by correlation id, with the call they answer (`fingerprint`; null: a cancel for a call never seen). */
+  private readonly done = new Map<string, { fingerprint: string | null; result: BridgeToolResult }>();
   private readonly submissions = new Set<string>();
   private lastReported = "";
   /** This opt-in's attach key (the same for every re-registration). */
@@ -642,8 +645,9 @@ class WorldBridgeClient implements WorldBridge {
   }
 
   private onCommand(command: BridgeCommand, reg: BridgeRegistered): void {
-    const stored = this.done.get(command.correlationId);
+    const entry = this.done.get(command.correlationId);
     if (command.type === "cancel") {
+      const stored = entry?.result;
       const running = this.running.get(command.correlationId);
       if (running) {
         this.cancelRunning(running);
@@ -651,19 +655,24 @@ class WorldBridgeClient implements WorldBridge {
       }
       // Unknown here: finished already (post it again), or the call never arrived — it did not run, and it never
       // will: should it arrive after all (a re-delivery), it is answered from here.
-      const result = stored ?? this.remember(command.correlationId, { ok: false, status: "cancelled", output: rt(this.session.locale, "bridge.notRun") });
+      const result = stored ?? this.remember(command.correlationId, null, { ok: false, status: "cancelled", output: rt(this.session.locale, "bridge.notRun") });
       void this.postResult(reg, command.correlationId, result);
       return;
     }
-    if (stored) {
-      void this.postResult(reg, command.correlationId, stored); // delivered again after a reconnect: never run twice
+    // Delivered again after a reconnect: answered from the stored result, never run twice — but only when it IS
+    // that call (or one cancelled before it arrived). The same id for another tool or arguments is a new call
+    // (the server forgot the old one: its result store expired), so it runs.
+    const fingerprint = bridgeCallFingerprint(command.tool, command.args);
+    if (entry && (entry.fingerprint === null || entry.fingerprint === fingerprint)) {
+      void this.postResult(reg, command.correlationId, entry.result);
       return;
     }
     if (this.running.has(command.correlationId)) return;
+    if (entry) this.done.delete(command.correlationId);
     const deadline = this.localDeadline(command.deadline);
     if (deadline !== null && Date.now() >= deadline) {
       // The caller has stopped waiting (and was told the call timed out): never start it.
-      const result = this.remember(command.correlationId, { ok: false, status: "cancelled", output: bt(this.session.locale, "bridge.deadlinePassed", { tool: command.tool }) });
+      const result = this.remember(command.correlationId, fingerprint, { ok: false, status: "cancelled", output: bt(this.session.locale, "bridge.deadlinePassed", { tool: command.tool }) });
       void this.postResult(reg, command.correlationId, result);
       return;
     }
@@ -679,11 +688,11 @@ class WorldBridgeClient implements WorldBridge {
     return serverDeadline > 0 ? serverDeadline - this.skew : null;
   }
 
-  /** Keep a call's final result: a command delivered again is answered from it, never run. */
-  private remember(correlationId: string, result: BridgeToolResult): BridgeToolResult {
+  /** Keep a call's final result with the call it answers: the same command delivered again is answered from it, never run. */
+  private remember(correlationId: string, fingerprint: string | null, result: BridgeToolResult): BridgeToolResult {
     const bounded = boundBridgeResult(result);
     this.done.delete(correlationId);
-    this.done.set(correlationId, bounded);
+    this.done.set(correlationId, { fingerprint, result: bounded });
     while (this.done.size > RESULTS_KEPT) this.done.delete(this.done.keys().next().value!);
     return bounded;
   }
@@ -739,7 +748,7 @@ class WorldBridgeClient implements WorldBridge {
       }
     }
     this.running.delete(correlationId);
-    result = this.remember(correlationId, result);
+    result = this.remember(correlationId, bridgeCallFingerprint(tool, args), result);
     this.report();
     this.activity({ phase: "finished", correlationId, tool, result });
     await this.postResult(reg, correlationId, result);

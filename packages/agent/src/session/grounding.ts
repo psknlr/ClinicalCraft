@@ -134,11 +134,29 @@ export function parseChineseNumber(text: string): number | null {
 }
 
 const EN_NUMBER_WORDS: Record<string, number> = {
-  two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14,
+  one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10, eleven: 11, twelve: 12, thirteen: 13, fourteen: 14,
   fifteen: 15, sixteen: 16, seventeen: 17, eighteen: 18, nineteen: 19, twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60,
   seventy: 70, eighty: 80, ninety: 90, hundred: 100,
 };
-const EN_WORD_RE = new RegExp(`\\b(${Object.keys(EN_NUMBER_WORDS).join("|")})\\s+(${ASCII_UNIT_RE})\\b`, "giu");
+const EN_TENS = "twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety";
+const EN_ONES = "one|two|three|four|five|six|seven|eight|nine";
+/** A number in words before a unit: "two weeks", "twenty-five years", "twenty five years" (one number, not five). */
+const EN_WORD_RE = new RegExp(`\\b((?:${EN_TENS})(?:[\\s-]+(?:${EN_ONES}))?|${Object.keys(EN_NUMBER_WORDS).join("|")})\\s+(${ASCII_UNIT_RE})\\b`, "giu");
+/** "a week", "an hour": one, in the sources only (so "one week" may restate "a week ago"). */
+const EN_ARTICLE_RE = new RegExp(`\\b(?:a|an)\\s+(${ASCII_UNIT_RE})\\b`, "giu");
+/**
+ * Units that "one" (and, in the sources, "a" / "an") counts with: not "day" or "time", whose "one day…" and
+ * "at one time" tell a story, not a number.
+ */
+const EN_ONE_EXCLUDED = new Set(["day", "time"]);
+
+/** The value of a number phrase ("twenty-five" → 25). */
+function englishNumber(phrase: string): number {
+  return phrase
+    .toLowerCase()
+    .split(/[\s-]+/)
+    .reduce((sum, word) => sum + (EN_NUMBER_WORDS[word] ?? 0), 0);
+}
 
 function normaliseValue(raw: string): string {
   const n = Number(raw);
@@ -151,8 +169,12 @@ function normaliseUnit(raw: string | undefined): string | null {
   return UNIT_MAP[key] ?? UNIT_MAP[raw] ?? key;
 }
 
-/** Extract every numeric token (Arabic, Chinese numerals, English number words + unit). */
-export function extractNumericTokens(text: string): NumericToken[] {
+/**
+ * Extract every numeric token (Arabic, Chinese numerals, English number words + unit). `articles`: read "a week" /
+ * "an hour" as one too — for the sources a reply is checked against, never for the reply itself ("three times a
+ * day" claims no "1").
+ */
+export function extractNumericTokens(text: string, articles = false): NumericToken[] {
   const source = toAsciiDigits(text);
   const tokens: NumericToken[] = [];
   for (const m of source.matchAll(ARABIC_RE)) {
@@ -173,7 +195,16 @@ export function extractNumericTokens(text: string): NumericToken[] {
     tokens.push({ value: String(value), unit: normaliseUnit(unit), raw: m[0] });
   }
   for (const m of source.matchAll(EN_WORD_RE)) {
-    tokens.push({ value: String(EN_NUMBER_WORDS[m[1]!.toLowerCase()]), unit: normaliseUnit(m[2]), raw: m[0] });
+    const value = englishNumber(m[1]!);
+    const unit = normaliseUnit(m[2]);
+    if (value === 1 && (unit === null || EN_ONE_EXCLUDED.has(unit))) continue;
+    tokens.push({ value: String(value), unit, raw: m[0] });
+  }
+  if (articles) {
+    for (const m of source.matchAll(EN_ARTICLE_RE)) {
+      const unit = normaliseUnit(m[1]);
+      if (unit !== null && !EN_ONE_EXCLUDED.has(unit)) tokens.push({ value: "1", unit, raw: m[0] });
+    }
   }
   return tokens;
 }
@@ -468,6 +499,12 @@ export interface VerifyOptions {
    * there are none (`answer-polarity.ts`).
    */
   answered?: readonly string[];
+  /**
+   * The answers among `answered` that answer `question` (default: all of
+   * them): a fact cited for another topic ("Have you used cocaine?" — "No,
+   * never.") does not stand behind a yes or no to this one.
+   */
+  answering?: readonly string[];
 }
 
 /**
@@ -480,7 +517,7 @@ export function verifyGrounding(say: string, sources: readonly string[], options
   const list = new ViolationList();
   collectGroundingViolations(say, sources, options, list);
   if (options.answered !== undefined) {
-    const flip = options.question !== undefined ? polarityViolation(say, options.question, options.answered) : null;
+    const flip = options.question !== undefined ? polarityViolation(say, options.question, options.answering ?? options.answered) : null;
     const denied = deniedDetailViolation(say, options.answered, sources);
     for (const detail of [flip, denied]) if (detail) list.add("polarity", detail);
   }
@@ -489,7 +526,7 @@ export function verifyGrounding(say: string, sources: readonly string[], options
 
 function collectGroundingViolations(say: string, sources: readonly string[], options: VerifyOptions, list: ViolationList): void {
   const allowedText = sources.join("\n");
-  const allowed = extractNumericTokens(allowedText);
+  const allowed = extractNumericTokens(allowedText, true);
   const values = new Set(allowed.map((t) => t.value));
   const pairs = new Set(allowed.map((t) => `${t.value}|${t.unit ?? ""}`));
   for (const token of extractNumericTokens(say)) {

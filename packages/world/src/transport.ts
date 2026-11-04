@@ -226,6 +226,19 @@ function stopTarget(host: EffectsHost, pose: Pose, trolley: EntityId | null): Pa
   };
 }
 
+/**
+ * Where a `transport_patient` with these parameters would take the patient now (`WorldRuntime.transportTarget`):
+ * the provider, else the bed space — resolved exactly as the transport resolves it (a capability: the provider
+ * the patient is at when it provides it, else the ranked first). Read only; null: no patient, or nowhere known.
+ */
+export function transportTarget(host: EffectsHost, parameters: Record<string, unknown>): { provider: EntityId | null; slot: string | null } | null {
+  const st = host.d.patient.state();
+  if (!st) return null;
+  const dest = destinationOf(host, { actionId: "", actorId: "", operation: "transport_patient", parameters });
+  const target = dest ? resolveTarget(targetDeps(host), dest, st.trolley) : null;
+  return target ? { provider: target.provider, slot: target.slot } : null;
+}
+
 /** `transport_patient`: run (see the module docs). The body is at the patient's side (the spatial phase checked it). */
 export async function transportPatient(host: TransportHost, request: WorldActionRequest, actor: ActorState, patientId: EntityId, signal: AbortSignal): Promise<Outcome> {
   const { patient: body, backend, locale: L, locator } = host.d;

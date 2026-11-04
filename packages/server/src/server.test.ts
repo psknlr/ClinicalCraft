@@ -8,10 +8,14 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   mergeSettings,
   ProxyProvider,
+  runAgentTurn,
   ScriptedProvider,
   textScript,
+  toAnthropicMessages,
   type ChatRequest,
   type LLMProvider,
+  type LoopHost,
+  type ToolDefinition,
   type ProviderConfig,
   type ResolvedSettings,
   type StreamEvent,
@@ -441,6 +445,57 @@ describe("POST /api/llm/stream", () => {
 
   const endpoint = () => new URL("api/llm/stream", server.url).toString();
   const chat: ChatRequest = { model: "", system: [{ id: "s", text: "Be brief.", cache: "stable" }], messages: [{ role: "user", content: [{ type: "text", text: "Hi" }] }] };
+
+  it("echoes the provider-native blocks the browser relayed (Claude's thinking in a tool loop) to the server's default upstream", async () => {
+    const upstream = new ScriptedProvider(
+      [
+        [
+          { type: "start", model: "claude-opus-5-5" },
+          { type: "text_delta", text: "Checking." },
+          { type: "tool_call", id: "toolu_1", name: "probe", args: {}, index: 0 },
+          {
+            type: "finish",
+            stopReason: "tool_use",
+            usage: { inputTokens: 10, outputTokens: 5 },
+            raw: [
+              { type: "thinking", thinking: "", signature: "sig-abc" },
+              { type: "text", text: "Checking." },
+              { type: "tool_use", id: "toolu_1", name: "probe", input: {} },
+            ],
+          },
+        ],
+        textScript("Done."),
+      ],
+      { id: "anthropic", wire: "anthropic-messages", model: "claude-opus-5-5" },
+    );
+    const s = await startServer(baseOptions({ settings: settings({ provider: "anthropic" }), env: { ...env, ANTHROPIC_API_KEY: "sk-ant-test-key-0123456789" }, providerFactory: () => upstream }));
+    try {
+      // no `proxyProvider`: the server's default upstream answers, the browser does not know its wire
+      const browser = new ProxyProvider({ id: "proxy", wire: "proxy", model: "", proxyUrl: new URL("api/llm/stream", s.url).toString() });
+      const host: LoopHost = {
+        toolContext: () => ({ locale: "en", agent: "clinician", state: () => ({ seq: 0 }) }) as never,
+        authorize: async () => ({ kind: "allow" }),
+      };
+      const probe: ToolDefinition = {
+        name: "probe",
+        description: "probe",
+        inputSchema: { type: "object", properties: {}, additionalProperties: false },
+        readOnly: true,
+        sideEffect: "none",
+        scope: "history-only",
+        risk: () => "none",
+        summarize: () => "probe",
+        run: async () => ({ ok: true, output: "probe ok" }),
+      };
+      const turn = await runAgentTurn({ host, agent: { name: "clinician" }, provider: browser, system: [], history: [], userParts: [{ type: "text", text: "go" }], tools: [probe], maxToolRounds: 3, turnId: "t", emit: () => undefined, retry: false });
+      expect(turn.stopReason).toBe("end_turn");
+      expect(upstream.requests).toHaveLength(2);
+      const echoed = toAnthropicMessages(upstream.requests[1]!.messages).find((m) => m.role === "assistant")!;
+      expect((echoed.content as { type: string }[]).map((b) => b.type)).toEqual(["thinking", "text", "tool_use"]);
+    } finally {
+      await s.close();
+    }
+  });
 
   it("relays StreamEvents as SSE and ends with event: done (ProxyProvider round trip)", async () => {
     const provider = new ProxyProvider({ id: "proxy", wire: "proxy", model: "gpt-5-mini", proxyUrl: endpoint(), proxyProvider: "openai" });

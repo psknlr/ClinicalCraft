@@ -99,6 +99,11 @@ describe("parseAgentMarkdown", () => {
     expect(() => parseAgentMarkdown("---\nname: x\nmaxToolRounds: 1.5\n---\n", "user")).toThrow(/maxToolRounds/);
     expect(() => parseAgentMarkdown("---\nname: ../evil\n---\n", "user")).toThrow(/name/);
   });
+
+  it("lower-cases agent names (frontmatter or file name), as agents are addressed", () => {
+    expect(parseAgentMarkdown("---\nname: Nurse\n---\nCharge nurse.", "project").name).toBe("nurse");
+    expect(parseAgentMarkdown("---\nrole: npc\n---\nTriage desk.", "project", "Triage").name).toBe("triage");
+  });
 });
 
 describe("slash commands", () => {
@@ -112,6 +117,7 @@ describe("slash commands", () => {
       agent: "attending",
     });
     expect(parseCommandMarkdown("review", "# Review my workup\nCheck: $ARGUMENTS", "user").description).toBe("Review my workup");
+    expect(parseCommandMarkdown("OSCE:Start", "Start $1", "project").name).toBe("osce:start"); // typed names are lower-cased
   });
 
   it("expands $ARGUMENTS and $1..$9 with quote-aware splitting", () => {

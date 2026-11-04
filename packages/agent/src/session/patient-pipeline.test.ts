@@ -3,7 +3,8 @@ import { describe, expect, it } from "vitest";
 import { loadMiniCase, makeSession, msgsOf } from "../__fixtures__/harness.js";
 import { textScript, toolCallScript } from "../providers/scripted.js";
 import { MemoryTranscript } from "../transcript.js";
-import { classifyUtterance, clarifyText, isOpenQuestion, offlineRerank, parseVoiceReply, selectFacts } from "./patient-pipeline.js";
+import { verifyGrounding } from "./grounding.js";
+import { classifyUtterance, clarifyText, isOpenQuestion, offlineRerank, parseVoiceReply, selectFacts, voiceGroundingInputs } from "./patient-pipeline.js";
 
 const voice = (say: string, usedFactIds: string[], extra: Record<string, unknown> = {}) =>
   textScript(JSON.stringify({ say, nonverbal: null, usedFactIds, affectHint: "same", ...extra }));
@@ -319,5 +320,40 @@ describe("patient agent — select → voice with a model", () => {
     const system = t.provider!.requests[0]!.system.map((s) => s.text).join("\n");
     expect(system).toContain("<fact_index>");
     expect(system).not.toContain("pack a day");
+  });
+});
+
+describe("the voiced reply's yes or no", () => {
+  const voice = (say: string, usedFactIds: string[]) => textScript(JSON.stringify({ say, nonverbal: null, usedFactIds, affectHint: "same" }));
+
+  it("never voices a denial the record contradicts, asked as a negated question", async () => {
+    const t = await makeSession({ scripts: [voice("That's right, I don't smoke.", ["smoking"])] });
+    await t.session.run({ type: "user_message", text: "You don't smoke, do you?" });
+    expect(t.msgs("agent_message").at(-1)!.text).not.toBe("That's right, I don't smoke.");
+  });
+
+  it("never lets a fact cited for another topic stand behind a yes or no", async () => {
+    const t = await makeSession({ scripts: [voice("No, never.", ["cocaine"]), voice("No, I don't.", ["cocaine"])] });
+    await t.session.run({ type: "user_message", text: "Have you used cocaine recently?" });
+    await t.session.run({ type: "user_message", text: "Do you have diabetes?" });
+    // no fact answers diabetes (he takes metformin): the earlier cocaine answer does not either
+    expect(t.msgs("agent_message").at(-1)!.text).not.toBe("No, I don't.");
+  });
+
+  it("checks the tool pipeline's reply like a voiced one: no yes or no that no fact gives", async () => {
+    const t = await makeSession({ settingsPatch: { patient: { pipeline: "tool" } }, scripts: [textScript("No, I don't have diabetes.")] });
+    await t.session.run({ type: "user_message", text: "Do you have diabetes?" });
+    expect(t.msgs("agent_message").at(-1)!.text).not.toBe("No, I don't have diabetes.");
+  });
+
+  it("blocks a 吧 question answered with a default the case never recorded", () => {
+    const c = loadMiniCase();
+    const s = createEngineState(c);
+    const ask = (utterance: string, used: string[], say: string) => {
+      const { sources, options } = voiceGroundingInputs(c, s, used, new Set(used), utterance, null, "zh-CN");
+      return verifyGrounding(say, sources, options).ok;
+    };
+    expect(ask("你没有糖尿病吧？", [], "没有，我没有糖尿病。")).toBe(false);
+    expect(ask("你不抽烟吧？", ["smoking"], "没有，我不抽烟。")).toBe(false);
   });
 });

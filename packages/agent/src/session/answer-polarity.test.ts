@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { answerPolarity, deniedDetailViolation, isPolarQuestion, polarityViolation } from "./answer-polarity.js";
+import { answerPolarity, deniedDetailViolation, isPolarQuestion, namesQuestionTopic, polarityViolation } from "./answer-polarity.js";
 
 describe("isPolarQuestion", () => {
   it("reads yes/no questions in English and Chinese", () => {
@@ -88,5 +88,50 @@ describe("deniedDetailViolation", () => {
     expect(deniedDetailViolation("It started this morning.", ["I haven't eaten anything since this morning."], [])).toBe(null);
     expect(deniedDetailViolation("The pain is in my back.", ["No pain in my chest."], [])).toBe(null);
     expect(deniedDetailViolation("Yes, there's pain in my chest.", ["No pain in my chest."], [])).toBe('denied detail "pain"');
+  });
+});
+
+describe("negatively phrased and 吧 questions", () => {
+  it("reads a Chinese 吧 confirmation question as a yes/no question, not a suggestion", () => {
+    for (const q of ["你没有糖尿病吧？", "你不抽烟吧？", "你抽烟，对吧", "疼得厉害吧？"]) expect(isPolarQuestion(q), q).toBe(true);
+    expect(isPolarQuestion("我们去做个检查吧")).toBe(false);
+  });
+
+  it("reads an agreement word to a negated question as agreeing with the negation", () => {
+    expect(answerPolarity("Correct.", "You don't smoke, do you?")).toBe("no");
+    expect(answerPolarity("That's right, I don't smoke.", "You don't smoke, do you?")).toBe("no");
+    expect(answerPolarity("是的。", "你不抽烟吧？")).toBe("no");
+    expect(answerPolarity("对，我没有过敏。", "你是不是没有药物过敏？")).toBe("no");
+    // what the reply says about the topic decides, whatever the lead word
+    expect(answerPolarity("No, I smoke a pack a day.", "You don't smoke, do you?")).toBe("yes");
+    // a Chinese disagreement word alone says neither
+    expect(answerPolarity("不是。", "你不抽烟吧？")).toBe(null);
+  });
+
+  it("leaves a negative interrogative and a tag question as asked", () => {
+    expect(answerPolarity("Correct.", "Don't you smoke?")).toBe("yes");
+    expect(answerPolarity("Correct.", "You smoke, don't you?")).toBe("yes");
+    expect(answerPolarity("Correct.", "Any chest pain?")).toBe("yes");
+  });
+
+  it("blocks a confirmed denial the facts contradict, and lets a faithful one through", () => {
+    expect(polarityViolation("That's right, I don't smoke.", "You don't smoke, do you?", ["I've smoked a pack a day for 30 years."])).not.toBe(null);
+    expect(polarityViolation("Correct, I'm not allergic to anything.", "You're not allergic to anything, are you?", ["I'm allergic to penicillin — I came out in a rash."])).not.toBe(null);
+    expect(polarityViolation("是的，我没有过敏。", "你是不是没有药物过敏？", ["对青霉素过敏，起过皮疹。"])).not.toBe(null);
+    expect(polarityViolation("Correct, no allergies.", "You don't have any allergies, do you?", ["No known drug allergies."])).toBe(null);
+    expect(polarityViolation("没有，我没有糖尿病。", "你没有糖尿病吧？", [])).not.toBe(null);
+  });
+
+  it("asks nothing of a feelings question ending in 吧", () => {
+    expect(polarityViolation("嗯，没事。", "你没事吧？", [])).toBe(null);
+  });
+});
+
+describe("namesQuestionTopic", () => {
+  it("tells a fact about the question's topic from one about another", () => {
+    expect(namesQuestionTopic("I've smoked a pack a day for 30 years.", "Do you smoke?")).toBe(true);
+    expect(namesQuestionTopic("No, never.", "Do you have diabetes?")).toBe(false);
+    expect(namesQuestionTopic("Have you used cocaine recently?", "Do you have diabetes?")).toBe(false);
+    expect(namesQuestionTopic("没有糖尿病。", "你有糖尿病吗？")).toBe(true);
   });
 });

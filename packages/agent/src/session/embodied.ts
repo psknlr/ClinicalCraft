@@ -396,6 +396,7 @@ export class EmbodiedSession {
         self.control(() => (changed = w().refreshPatient()));
         return changed;
       },
+      transportTarget: (parameters) => w().transportTarget(parameters),
       // The learner's world action (a `world_action` op does the same, queued with the turns).
       execute: (request, signal) => self.act({ agent: "learner" }, request, signal),
       feedback: (actionId) => w().feedback(actionId),

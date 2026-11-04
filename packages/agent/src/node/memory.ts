@@ -12,7 +12,9 @@
  *     the project root for project files; an import inherits its importer's
  *     root and must stay inside it — and outside any other root nested in it
  *     (so project memory can never read `~/.clinicalcraft/settings.json`);
- *   - project memory files that are symlinks leaving the project are skipped;
+ *   - project memory files are held to the same rules: one that is a symlink
+ *     leaving the project, into another root nested in it, or onto a file that
+ *     is not a text document is skipped;
  *   - only text documents can be imported (`.md`, `.markdown`, `.mdx`, `.txt`).
  */
 import { closeSync, openSync, readSync, realpathSync, statSync } from "node:fs";
@@ -96,6 +98,8 @@ export async function loadMemory(cwd: string = process.cwd(), env: Env = process
   const homeRoot = canonical(clinicalcraftHome(env));
   const projectRoot = canonical(findProjectRoot(absCwd, env) ?? absCwd);
   const allRoots = [...new Set([homeRoot, projectRoot])];
+  /** A real path inside `root` and outside any other root nested in it (project memory never reads the home). */
+  const confined = (real: string, root: string) => isInside(real, root) && !allRoots.some((other) => other !== root && isInside(other, root) && isInside(real, other));
   /** Confinement root of every file read so far (keyed by the path handed to assembleMemory). */
   const rootOf = new Map<string, string>();
 
@@ -106,7 +110,12 @@ export async function loadMemory(cwd: string = process.cwd(), env: Env = process
       if (rootOf.has(path)) break; // same file as an earlier group (home inside the project): keep the first (home) root
       const text = await readOptional(path);
       if (text === null) continue;
-      if (!isHomeFile && !isInside(canonical(path), projectRoot)) continue; // a symlink out of the project
+      if (!isHomeFile) {
+        // A project memory file is held to the import rules: a symlink out of the project, into the ClinicalCraft
+        // home nested in it, or onto a file that is not a text document is skipped.
+        const real = canonical(path);
+        if (!confined(real, projectRoot) || !IMPORTABLE_EXTENSIONS.has(extname(real).toLowerCase())) continue;
+      }
       files.push({ path, text });
       rootOf.set(path, isHomeFile ? homeRoot : projectRoot);
       break; // first existing file of the group (CLINICALCRAFT.md before AGENTS.md)
@@ -119,9 +128,7 @@ export async function loadMemory(cwd: string = process.cwd(), env: Env = process
     const expanded = expandHome(importPath, env);
     const path = isAbsolute(expanded) ? expanded : resolve(dirname(fromPath), expanded);
     if (!IMPORTABLE_EXTENSIONS.has(extname(path).toLowerCase())) return null;
-    const real = canonical(path);
-    if (!isInside(real, root)) return null;
-    if (allRoots.some((other) => other !== root && isInside(other, root) && isInside(real, other))) return null;
+    if (!confined(canonical(path), root)) return null;
     const content = readSyncCapped(path);
     if (content === null) return null;
     rootOf.set(path, root);

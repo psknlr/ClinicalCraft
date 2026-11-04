@@ -64,6 +64,13 @@ const orderStudy: ToolDefinition<ToolArgs> = {
   risk: () => "none",
   summarize: (args, ctx) => rt(ctx.locale, "sum.order_study", { name: strArg(args, "code") || strArg(args, "query") }),
   specifier: (args) => strArg(args, "code") || strArg(args, "query"),
+  // Rules match the study the request resolves to (its code, PROTOCOL §6), then the spelling: `order_study(cbc-new)`
+  // also covers `{query: "FBC"}`.
+  specifiers: (args, ctx) => {
+    const query = strArg(args, "code") || strArg(args, "query");
+    const p = studyProfile(ctx.caseDef, strArg(args, "code")) ?? resolveStudy(ctx.caseDef.studies ?? [], query);
+    return [[...new Set([...(p ? [p.code] : []), query])]];
+  },
   async run(args, ctx): Promise<ToolOutput> {
     const L = ctx.locale;
     const c = ctx.caseDef;

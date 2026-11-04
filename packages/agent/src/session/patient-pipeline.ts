@@ -41,6 +41,7 @@ import type { EventMsg, TokenUsage } from "../protocol.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatMessage, ChatPart, ChatRequest, LLMProvider, ProviderErrorInfo, SystemSection } from "../providers/types.js";
 import { availableInPhase } from "../tools/format.js";
+import { namesQuestionTopic } from "./answer-polarity.js";
 import { checkNonverbal, verifyGrounding, type GroundingCheck, type VerifyOptions } from "./grounding.js";
 import { isZh, joinSentences, languageName, rt, type RuntimeKey } from "./i18n.js";
 import { narratedLine, nonVerbalNarration, nonVerbalReason, plainName, spokenAnswer } from "./nonverbal.js";
@@ -329,6 +330,12 @@ function answerOf(c: CaseDefinition, id: string, locale: string): string {
   return h ? t(h.answer, locale) : "";
 }
 
+/** The authored question of a history item ("" when none). */
+function questionOf(c: CaseDefinition, id: string, locale: string): string {
+  const h = c.history.find((x) => x.id === id);
+  return h?.question ? t(h.question, locale) : "";
+}
+
 function facts(c: CaseDefinition, ids: readonly string[], locale: string): { id: string; answer: string }[] {
   return ids.map((id) => ({ id, answer: answerOf(c, id, locale) })).filter((f) => f.answer);
 }
@@ -406,7 +413,9 @@ function personaSources(c: CaseDefinition, locale: string, s?: SessionState): st
  * (`state.asked`), allowed this turn nor used (`unrevealed`); and the
  * learner's words with the answers of the facts used (`question`,
  * `answered`), so a yes/no answer agrees with them — and is not given when
- * no fact was used.
+ * no fact was used. Only the facts `selected` for this question, or used
+ * facts that name its topic, answer it (`answering`): an earlier fact cited
+ * for another topic stands behind no yes or no (default: every fact used).
  */
 export function voiceGroundingInputs(
   c: CaseDefinition,
@@ -416,8 +425,13 @@ export function voiceGroundingInputs(
   utterance: string,
   clarify: string | null,
   locale: string,
+  selected: readonly string[] = used,
 ): { sources: string[]; options: VerifyOptions } {
   const answered = used.map((id) => answerOf(c, id, locale)).filter(Boolean);
+  const answering = used
+    .filter((id) => selected.includes(id) || [answerOf(c, id, locale), questionOf(c, id, locale)].some((text) => text && namesQuestionTopic(text, utterance)))
+    .map((id) => answerOf(c, id, locale))
+    .filter(Boolean);
   const sources = [...answered, ...personaSources(c, locale, state), utterance, clarify ?? ""];
   return {
     sources,
@@ -427,6 +441,7 @@ export function voiceGroundingInputs(
       unrevealed: unrevealedAnswers(c, state, new Set([...allowed, ...used]), locale),
       question: utterance,
       answered,
+      answering,
     },
   };
 }
@@ -758,7 +773,7 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
   // 4. Verify.
   const reply = parseVoiceReply(voiced.text, allowedIds);
   const used = [...new Set([...reply.usedFactIds, ...spokenIds.filter((id) => allowedIds.has(id))])];
-  const { sources, options: grounding } = voiceGroundingInputs(c, input.state(), used, allowedIds, utterance, clarify, L);
+  const { sources, options: grounding } = voiceGroundingInputs(c, input.state(), used, allowedIds, utterance, clarify, L, spokenIds);
   const empty = voiced.stopReason === "max_tokens" ? rt(L, "reason.truncated", { agent: input.speaker, maxTokens: request.maxTokens ?? "?" }) : "empty reply";
   const check: GroundingCheck = reply.say ? verifyGrounding(reply.say, sources, grounding) : { ok: false, violations: [empty], kinds: ["empty"] };
   if (reply.affectHint === "calmer") input.memory.affectIntensity = Math.max(0, input.memory.affectIntensity - 1) as PatientMemory["affectIntensity"];
@@ -816,8 +831,10 @@ async function runToolPipeline(input: PatientTurnInput, usage: TokenUsage, warni
   const revealed = turn.grounded;
   const newlyRevealed = revealed.filter((id) => !before.has(id));
   const known = [...new Set([...input.state().asked, ...revealed])];
-  const sources = [...known.map((id) => answerOf(c, id, L)), ...personaSources(c, L, input.state()), input.utterance];
-  const check = verifyGrounding(turn.text, sources, { drugLexicon: caseDrugLexicon(c) });
+  // The same checks as a voiced reply (yes/no included): every fact known so far is a source, the facts revealed
+  // this turn (and known facts naming the question's topic) answer the question.
+  const { sources, options } = voiceGroundingInputs(c, input.state(), known, new Set(known), input.utterance, null, L, revealed);
+  const check = verifyGrounding(turn.text, sources, options);
   if (!check.ok && input.strictGrounding) {
     const answers = revealed.map((id) => answerOf(c, id, L)).filter(Boolean);
     const text = answers.length > 0 ? joinSentences(L, answers) : t(c.patient.persona.fallbackUnknown, L);

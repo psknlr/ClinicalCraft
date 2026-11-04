@@ -6,7 +6,9 @@
  *   - any `block` wins (reasons joined); `approve` only counts without a block;
  *   - `updatedInput`: last one wins (PreToolUse);
  *   - `additionalContext`: each capped at 10 000 chars and wrapped as data;
- *   - handler exceptions / non-zero non-2 exits become warnings.
+ *   - handler exceptions / non-zero non-2 exits become warnings;
+ *   - an abort (interrupt) never waits on an in-process handler: it is
+ *     abandoned with a warning (command hooks are killed by the executor).
  *
  * Command protocol: HookInput JSON on stdin; exit 0 → success (stdout may be
  * a HookOutput JSON; plain stdout is context for UserPromptSubmit and
@@ -139,6 +141,37 @@ class Aggregator {
   }
 }
 
+/**
+ * `promise`'s outcome, or `{aborted: true}` as soon as `signal` aborts (the promise is then left to settle on its
+ * own, a late rejection swallowed).
+ */
+function untilAborted<T>(promise: Promise<T>, signal?: AbortSignal): Promise<{ aborted: false; value: T } | { aborted: true }> {
+  if (!signal) return promise.then((value) => ({ aborted: false as const, value }));
+  return new Promise((resolve, reject) => {
+    const onAbort = () => {
+      promise.catch(() => undefined);
+      resolve({ aborted: true });
+    };
+    if (signal.aborted) return onAbort();
+    signal.addEventListener("abort", onAbort, { once: true });
+    promise.then(
+      (value) => {
+        signal.removeEventListener("abort", onAbort);
+        resolve({ aborted: false, value });
+      },
+      (err: unknown) => {
+        signal.removeEventListener("abort", onAbort);
+        reject(err);
+      },
+    );
+  });
+}
+
+/** Warning for an in-process handler abandoned by an interrupt (the learner sees it: zh-CN + en). */
+function handlerCancelled(locale: string, event: HookEventName, n: number): string {
+  return locale.toLowerCase().startsWith("zh") ? `${event} 钩子处理函数 #${n} 未完成：本轮已被中断，不再等待。` : `${event} hook handler #${n} did not finish: the turn was interrupted, so it is no longer awaited.`;
+}
+
 /** Registry of in-process handlers + command-hook execution. */
 export class HookRunner {
   private readonly handlers = new Map<HookEventName, HookHandler[]>();
@@ -169,8 +202,13 @@ export class HookRunner {
     for (const [i, handler] of [...(this.handlers.get(event) ?? [])].entries()) {
       if (signal?.aborted) break;
       try {
-        const output = await handler(input);
-        agg.apply(normaliseOutput(output), `handler#${i + 1}`);
+        const settled = await untilAborted((async () => handler(input))(), signal);
+        if (settled.aborted) {
+          // An interrupt never waits on a handler: it is abandoned (its late result ignored) with a warning.
+          agg.warn(handlerCancelled(input.locale, event, i + 1));
+          break;
+        }
+        agg.apply(normaliseOutput(settled.value), `handler#${i + 1}`);
       } catch (err) {
         agg.warn(`${event} hook handler #${i + 1} failed: ${err instanceof Error ? err.message : String(err)}`);
       }

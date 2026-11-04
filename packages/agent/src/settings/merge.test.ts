@@ -106,6 +106,18 @@ describe("mergeSettings", () => {
     expect(issues.some((i) => i.path.startsWith("agents.patient"))).toBe(true);
   });
 
+  it("reports permission rules that do not parse (an error for deny, a warning for allow/ask) and drops them", () => {
+    const { settings, issues } = mergeSettingsDetailed([
+      { source: "user", file: "/u/settings.json", settings: { permissions: { deny: ["intervene(alteplase", "order_test(ct-*)"], ask: ["(x)"], allow: ["examine"] } } },
+      { source: "project", settings: { profiles: { osce: { permissions: { deny: ["consult)"] } } } } },
+    ]);
+    expect(settings.permissions).toEqual({ allow: ["examine"], ask: [], deny: ["order_test(ct-*)"] });
+    expect(issues.find((i) => i.path === "permissions.deny.0")).toMatchObject({ severity: "error", source: "user", file: "/u/settings.json" });
+    expect(issues.find((i) => i.path === "permissions.deny.0")!.message).toContain("intervene(alteplase");
+    expect(issues.find((i) => i.path === "permissions.ask.0")).toMatchObject({ severity: "warning" });
+    expect(issues.find((i) => i.path === "profiles.osce.permissions.deny.0")).toMatchObject({ severity: "error", source: "project" });
+  });
+
   it("drops API keys from project settings (but honours user ones, and local ones of a trusted project)", () => {
     const layers = [
       { source: "user" as const, settings: { providers: { openai: { apiKey: "user-key" } } } },

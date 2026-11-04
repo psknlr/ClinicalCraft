@@ -266,6 +266,19 @@ function writeSse(res: ServerResponse, chunk: string): boolean {
 }
 
 /**
+ * The browser's `ProxyProvider` stores the provider-native blocks it relayed (`provider_raw`, e.g. Claude's thinking)
+ * under its own wire, "proxy". They came from this server's upstream, so they are re-tagged with the upstream's wire
+ * — the one resolved here, also when the browser named no provider — and the upstream echoes them back verbatim.
+ */
+export function retagProxyRaw(messages: readonly ChatMessage[], wire: WireApi): ChatMessage[] {
+  return messages.map((m) =>
+    m.content.some((p) => p.type === "provider_raw" && p.provider === "proxy")
+      ? { ...m, content: m.content.map((p): ChatPart => (p.type === "provider_raw" && p.provider === "proxy" ? { ...p, provider: wire } : p)) }
+      : m,
+  );
+}
+
+/**
  * Stream one model response as SSE. Resolves when the stream ended (normally,
  * upstream error, or client disconnect — which aborts the upstream call).
  */
@@ -288,7 +301,7 @@ export async function streamProxy(res: ServerResponse, opts: StreamProxyOptions)
   const heartbeat = setInterval(() => writeSse(res, ": ping\n\n"), opts.heartbeatMs ?? 15_000);
   heartbeat.unref?.();
 
-  const request: ChatRequest = { ...opts.request, model: opts.config.model };
+  const request: ChatRequest = { ...opts.request, model: opts.config.model, messages: retagProxyRaw(opts.request.messages, opts.config.wire) };
   // Upstream error text can echo keys, gateway credentials or other secrets: mask them (as the CLI does).
   const secrets = opts.secrets ?? proxySecrets(opts.config, {});
   const clean = (message: string) => redactSecrets(message, secrets);

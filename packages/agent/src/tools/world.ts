@@ -361,6 +361,22 @@ function delegatedItem(host: Pick<WorldToolHost, "resolve">, ctx: ToolContext, a
   }
 }
 
+/**
+ * Every name of where a transport takes the patient (review S6): the destination as asked (`home`, the id as
+ * resolved, or the capability) and where the world would take the patient now (`WorldRuntime.transportTarget`) —
+ * the provider, prefixed and bare, or the bed space.
+ */
+function transportSpellings(host: Pick<WorldToolHost, "world">, asked: string, parameters: Record<string, unknown>): string[] {
+  let target: { provider: string | null; slot: string | null } | null = null;
+  try {
+    target = host.world().transportTarget(parameters);
+  } catch {
+    target = null;
+  }
+  const where = target?.provider ? [target.provider, target.provider.replace(/^[a-z]+:/, "")] : target?.slot ? [target.slot] : [];
+  return [...new Set([asked, ...where].filter(Boolean))];
+}
+
 /** Build the world tools over a host (registered only in embodied sessions). */
 export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<string, unknown>>[] {
   const L = (ctx: ToolContext) => ctx.locale;
@@ -413,6 +429,20 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
     if (!target) return [""];
     const id = targetEntity(host, actorId, target);
     return [id ?? target];
+  };
+
+  /** The world parameters of a `transport_patient` call: an alias resolved as the world resolves it ("ct-scanner" → eq:ct-scanner); home, bed spaces and rooms as given; else the capability. */
+  const transportParameters = (args: Record<string, unknown>, actorId: ActorId): Record<string, unknown> => {
+    const destination = strArg(args, "destination");
+    const resolved = destination && destination !== "home" && destination !== "back" ? (host.resolve(destination, actorId) ?? destination) : destination;
+    return resolved ? { destination: resolved } : { capability: strArg(args, "capability") };
+  };
+
+  /** Where a `transport_patient` call asks to go, as its rule specifier: `home`, the destination as resolved, or the capability. */
+  const transportAsked = (args: Record<string, unknown>, ctx: ToolContext): string => {
+    const destination = strArg(args, "destination");
+    if (!destination) return strArg(args, "capability");
+    return destination === "home" || destination === "back" ? "home" : (host.resolve(destination, host.actorOf(ctx)) ?? destination);
   };
 
   const tools: ToolDefinition<Record<string, unknown>>[] = [
@@ -637,21 +667,15 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         const actorId = host.actorOf(ctx);
         const patient = host.resolve("patient", actorId);
         if (!patient) return failedOutput(ctx, "world.noPatient");
-        const destination = strArg(args, "destination");
-        const capability = strArg(args, "capability");
-        if (!destination && !capability) return failedOutput(ctx, "world.transport.needDestination");
-        // an alias resolves as the world resolves it ("ct-scanner" → eq:ct-scanner); home, bed spaces and rooms as given
-        const resolved = destination && destination !== "home" && destination !== "back" ? (host.resolve(destination, actorId) ?? destination) : destination;
-        const parameters: Record<string, unknown> = resolved ? { destination: resolved } : { capability };
-        return resultOutput(await host.act(ctx, { operation: "transport_patient", targetId: patient, parameters }), L(ctx));
+        if (!strArg(args, "destination") && !strArg(args, "capability")) return failedOutput(ctx, "world.transport.needDestination");
+        return resultOutput(await host.act(ctx, { operation: "transport_patient", targetId: patient, parameters: transportParameters(args, actorId) }), L(ctx));
       },
       {
-        // Rules name where the patient is taken (`transport_patient(eq:ct-scanner)`, `transport_patient(home)`).
-        specifier: (args, ctx) => {
-          const destination = strArg(args, "destination");
-          if (!destination) return strArg(args, "capability");
-          return destination === "home" || destination === "back" ? "home" : (host.resolve(destination, host.actorOf(ctx)) ?? destination);
-        },
+        // Rules name where the patient is taken (`transport_patient(eq:ct-scanner)`, `transport_patient(home)`, `transport_patient(ct)`).
+        specifier: (args, ctx) => transportAsked(args, ctx),
+        // …by every name (review S6): as asked, and the provider (or bed space) the world would take the patient to now —
+        // a rule on the CT scanner also holds for `{capability: "ct"}`, and a rule on `ct` for the scanner by id.
+        specifiers: (args, ctx) => [transportSpellings(host, transportAsked(args, ctx), transportParameters(args, host.actorOf(ctx)))],
       },
     ),
     acting(
@@ -674,6 +698,15 @@ export function createWorldTools(host: WorldToolHost): ToolDefinition<Record<str
         specifier: (args, ctx) => {
           const item = delegatedItem(host, ctx, args, host.actorOf(ctx));
           return `${strArg(args, "task")}${item ? ` ${item}` : ""}`;
+        },
+        // a transport by every name of where the patient is taken (as `transport_patient`'s own rules see it)
+        specifiers: (args, ctx) => {
+          const task = strArg(args, "task");
+          const item = delegatedItem(host, ctx, args, host.actorOf(ctx));
+          if (task !== "transport_patient" || !item) return [[`${task}${item ? ` ${item}` : ""}`]];
+          const params = (args.params && typeof args.params === "object" && !Array.isArray(args.params) ? args.params : {}) as Record<string, unknown>;
+          const named = item === "home" || strArg(params, "destination") || strArg(args, "target");
+          return [transportSpellings(host, item, named ? { destination: item } : { capability: item }).map((where) => `${task} ${where}`)];
         },
       },
     ),

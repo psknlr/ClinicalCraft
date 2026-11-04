@@ -125,17 +125,23 @@ export class ConversationLog {
     const before = estimateTokens(history);
     const profile = agentOfKey(agent);
     const provider = k.profiles.has(profile) ? k.models.model(profile, false).provider : null;
+    const length = history.length;
     const result = await compactConversation({ provider, messages: history, locale: k.locale, ...(signal ? { signal } : {}) });
-    if (result.compactedCount === 0) return;
-    if (provider && result.deterministic && !signal?.aborted) k.emit(id, { type: "warning", message: rt(k.locale, "warning.compactFallback", { agent }) });
+    // the summary request is a model call of this agent's: it counts in `token_usage` (spent even when interrupted)
+    if (result.usage.inputTokens > 0 || result.usage.outputTokens > 0) k.models.trackUsage(id, profile, result.usage);
+    // interrupted while the summary was written: the conversation stays as it was (no stand-in summary applied)
+    if (result.compactedCount === 0 || signal?.aborted) return;
+    if (provider && result.deterministic) k.emit(id, { type: "warning", message: rt(k.locale, "warning.compactFallback", { agent }) });
+    // lines appended meanwhile (a staff call from the real-time clock) follow the compacted conversation
+    const late = history.slice(length);
     history.length = 0;
-    history.push(...result.messages);
+    history.push(...result.messages, ...late);
     const [first, ...rest] = result.messages;
     const block = first?.content[0]?.type === "text" ? first.content[0].text : result.summary;
     k.recorder?.record("compacted", { agent, summary: block });
     const tail: ChatMessage[] = [];
     if (first && first.content.length > 1) tail.push({ role: first.role, content: first.content.slice(1) });
-    tail.push(...rest);
+    tail.push(...rest, ...late);
     for (const m of tail) this.recordMessage(agent, m);
     k.emit(id, { type: "compacted", agent, beforeTokens: before, afterTokens: estimateTokens(history) });
   }

@@ -170,7 +170,9 @@ export class SessionKernel {
     this.profiles = new Map(mergeAgentProfiles(BUILTIN_AGENTS, opts.agents).map((p) => [p.name, p]));
     const builtinNames = new Set(BUILTIN_COMMANDS.map((c) => c.name));
     const disabled = new Set((opts.disabledCommands ?? []).map((n) => n.toLowerCase()));
-    this.slash = [...BUILTIN_COMMANDS.filter((c) => !disabled.has(c.name)), ...(opts.commands ?? []).filter((c) => !builtinNames.has(c.name))];
+    // Custom command names in lower case: the router lower-cases typed names (`/OSCE` runs `OSCE.md`).
+    const custom = (opts.commands ?? []).map((c) => ({ ...c, name: c.name.toLowerCase() }));
+    this.slash = [...BUILTIN_COMMANDS.filter((c) => !disabled.has(c.name)), ...custom.filter((c) => !builtinNames.has(c.name))];
     const affect = initialAffectIntensity(this.caseDef.patient.persona.affect);
     this.patientMemory = { patient: { approached: false, affectIntensity: affect }, companion: { approached: false, affectIntensity: Math.min(affect, 1) as 0 | 1 } };
     this.ownedFlags = new Set([...this.caseDef.interventions.flatMap((i) => i.setFlags), ...(this.caseDef.physiology?.events ?? []).flatMap((e) => e.setFlags)]);

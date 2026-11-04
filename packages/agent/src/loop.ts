@@ -504,6 +504,9 @@ export async function runAgentTurn(p: RunAgentTurnParams): Promise<TurnResult> {
     if (stopReason !== "interrupted") phase("completing");
     return { text, messages, appended, grounded: [...grounded], usage, stopReason, ...(error ? { error } : {}), toolCalls, rounds };
   };
+  // The prefix of every request of the turn stays byte-identical (the current turn's thinking blocks are bound to
+  // it): the system sections and tools are fixed when the turn starts, whatever a caller does to its arrays meanwhile.
+  const system: SystemSection[] = p.system.map((s) => ({ ...s }));
   const toolSpecs = p.tools.map(toToolSpec);
 
   for (;;) {
@@ -511,7 +514,7 @@ export async function runAgentTurn(p: RunAgentTurnParams): Promise<TurnResult> {
     phase("awaiting_model");
     const request: ChatRequest = {
       model: p.request?.model ?? p.provider.model,
-      system: p.system,
+      system,
       messages: [...messages],
       ...(toolSpecs.length > 0 ? { tools: toolSpecs } : {}),
       ...(p.request?.maxTokens !== undefined ? { maxTokens: p.request.maxTokens } : {}),

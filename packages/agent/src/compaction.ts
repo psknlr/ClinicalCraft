@@ -7,6 +7,8 @@
  * separated from its tool result. Without a provider (offline) the summary is
  * a deterministic digest of message snippets.
  */
+import { addUsage, emptyUsage, replyBudget } from "./loop.js";
+import type { TokenUsage } from "./protocol.js";
 import type { ChatMessage, ChatPart, ChatRequest, LLMProvider } from "./providers/types.js";
 
 /* ------------------------------------------------------------------ */
@@ -36,7 +38,8 @@ function estimatePart(part: ChatPart): number {
     case "tool_call":
       return estimateText(part.name) + estimateText(safeJson(part.args)) + 8;
     case "tool_result":
-      return estimateText(part.content) + 8;
+      // camera frames travel inside the result (embodied vision)
+      return estimateText(part.content) + 8 + (part.images?.length ?? 0) * IMAGE_TOKEN_ESTIMATE;
     case "provider_raw":
       // Echoed provider blocks (thinking signatures etc.) cost tokens too, but
       // the text/tool parts already carry the visible content: count a quarter.
@@ -226,19 +229,31 @@ export interface CompactOptions {
   signal?: AbortSignal;
   /** Model override for the summary request. */
   model?: string;
+  /** Output budget of the summary request (default: `replyBudget(provider, 2000, 8000)` — reasoning models think within it). */
   maxSummaryTokens?: number;
 }
+
+/** Output budget of a summary (visible text). */
+export const SUMMARY_MAX_TOKENS = 2_000;
+/** Output budget of a summary for a reasoning model (its thinking counts against the same limit). */
+export const SUMMARY_REASONING_MAX_TOKENS = 8_000;
 
 export interface CompactResult {
   messages: ChatMessage[];
   summary: string;
-  /** True when the deterministic digest was used (offline or the model failed). */
+  /** True when the deterministic digest was used (offline, or the model failed, refused or was cut off by `max_tokens`). */
   deterministic: boolean;
   /** Number of messages replaced by the summary. */
   compactedCount: number;
+  /** Tokens the summary request used (zero without one); the caller adds them to the agent's usage. */
+  usage: TokenUsage;
 }
 
-async function llmSummary(provider: LLMProvider, head: readonly ChatMessage[], opts: CompactOptions): Promise<string | null> {
+/**
+ * The model's summary, or null (an error, a refusal, nothing written, or a reply cut off by `max_tokens` — a
+ * truncated summary would silently lose its later headings); with the tokens the request used either way.
+ */
+async function llmSummary(provider: LLMProvider, head: readonly ChatMessage[], opts: CompactOptions): Promise<{ text: string | null; usage: TokenUsage }> {
   const t = textFor(opts.locale);
   const request: ChatRequest = {
     model: opts.model ?? provider.model,
@@ -249,21 +264,25 @@ async function llmSummary(provider: LLMProvider, head: readonly ChatMessage[], o
         content: [{ type: "text", text: `<conversation>\n${renderTranscript(head)}\n</conversation>\n\n${t.instruction}\n${t.headings.map((h) => `## ${h}`).join("\n")}` }],
       },
     ],
-    maxTokens: opts.maxSummaryTokens ?? 2_000,
+    maxTokens: opts.maxSummaryTokens ?? replyBudget(provider, SUMMARY_MAX_TOKENS, SUMMARY_REASONING_MAX_TOKENS),
     effort: "low",
     conversationId: "compaction",
   };
+  const usage = emptyUsage();
   let text = "";
   try {
     for await (const event of provider.stream(request, opts.signal)) {
       if (event.type === "text_delta") text += event.text;
-      else if (event.type === "error") return null;
-      else if (event.type === "finish" && event.stopReason === "refusal") return null;
+      else if (event.type === "error") return { text: null, usage };
+      else if (event.type === "finish") {
+        addUsage(usage, event.usage);
+        if (event.stopReason === "refusal" || event.stopReason === "max_tokens") return { text: null, usage };
+      }
     }
   } catch {
-    return null;
+    return { text: null, usage };
   }
-  return text.trim() || null;
+  return { text: text.trim() || null, usage };
 }
 
 /**
@@ -274,12 +293,13 @@ async function llmSummary(provider: LLMProvider, head: readonly ChatMessage[], o
 export async function compactConversation(options: CompactOptions): Promise<CompactResult> {
   const messages = options.messages;
   const split = compactionSplitIndex(messages, options.keepRecent ?? 6);
-  if (split === 0) return { messages: [...messages], summary: "", deterministic: options.provider === null, compactedCount: 0 };
+  if (split === 0) return { messages: [...messages], summary: "", deterministic: options.provider === null, compactedCount: 0, usage: emptyUsage() };
   const head = messages.slice(0, split);
   const tail = messages.slice(split);
 
   let summary: string | null = null;
-  if (options.provider && !options.signal?.aborted) summary = await llmSummary(options.provider, head, options);
+  let usage = emptyUsage();
+  if (options.provider && !options.signal?.aborted) ({ text: summary, usage } = await llmSummary(options.provider, head, options));
   const deterministic = summary === null;
   if (summary === null) summary = deterministicSummary(head, options.locale);
 
@@ -287,5 +307,5 @@ export async function compactConversation(options: CompactOptions): Promise<Comp
   const block = `${t.intro}\n<conversation_summary>\n${summary}\n</conversation_summary>`;
   const first = tail[0]!;
   const merged: ChatMessage = { role: "user", content: [{ type: "text", text: block }, ...foldOrphanResults(first, head)] };
-  return { messages: [merged, ...tail.slice(1)], summary, deterministic, compactedCount: head.length };
+  return { messages: [merged, ...tail.slice(1)], summary, deterministic, compactedCount: head.length, usage };
 }

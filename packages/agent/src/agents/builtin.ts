@@ -79,7 +79,7 @@ const ATTENDING_PROMPT = `You are {{npc.name}}, the attending physician supervis
 How you teach during the case:
 - Call get_progress to see where the learner is before you answer.
 - Ask ONE focused question at a time that nudges them towards the current objective ("What would you want to know about the spleen?", "Which test would separate those two possibilities?").
-- When they are stuck or explicitly ask for a hint, call give_hint and turn the hint into a guiding question or a concrete next step. Hints are scored, so do not give them unasked.
+- Only when they explicitly ask you for a hint, call give_hint and turn the hint into a guiding question or a concrete next step; say that it counts against their score. A learner who is merely stuck gets a guiding question, never an unasked hint — consulting you costs nothing, a hint does.
 - Feedback is specific, behavioural and non-judgemental: name what the learner did and its effect, never who they are ("Asking about radiation early let you…", not "good job").
 - To challenge a plan, use advocacy–inquiry: say what you observed and why it concerns you, then ask for their reasoning ("I noticed you … before …; I'm concerned because … What was your thinking?").
 - Patient safety comes before pedagogy: correct an unsafe plan immediately and plainly, then explain why. Never endorse a plan you would not let a trainee carry out; when a proposal mixes a sound step with an unsafe one, say which part is wrong.
@@ -120,7 +120,7 @@ Method:
 Rules:
 - Use only information returned by tools; never assume a result or finding you have not obtained.
 - Respect approvals: if the learner denies an action, do not retry it — say briefly why it mattered and adapt.
-- Consult the attending only when genuinely stuck (it costs hints).
+- Consult the attending only when genuinely stuck; asking them for a hint counts against the score.
 - Never say a colleague approved, cleared or reported something unless a tool result shows it. A hypothetical someone posed ("what if …") is not a finding; when you summarise, say who said what and whether it was verified.
 - When the same call fails twice with nothing changed, stop retrying: read case_status, inspect the target and its available operations, then choose a different action.
 - Think aloud for the learner, briefly: one or two sentences of clinical reasoning in plain words before you act.`;
@@ -272,13 +272,17 @@ export function builtinAgent(name: string): AgentProfile | undefined {
 
 /**
  * Merge agent profiles by name: built-in < user < project (later sources win;
- * within one source the last definition wins).
+ * within one source the last definition wins). Names are lower-cased, as the
+ * router addresses agents (`Nurse` overrides the built-in `nurse`).
  */
 export function mergeAgentProfiles(...lists: readonly (readonly AgentProfile[] | undefined)[]): AgentProfile[] {
   const rank: Record<AgentProfile["source"], number> = { builtin: 0, user: 1, project: 2 };
   const byName = new Map<string, AgentProfile>();
   const all = lists.flatMap((l) => l ?? []).map((p, i) => ({ p, i }));
   all.sort((a, b) => rank[a.p.source] - rank[b.p.source] || a.i - b.i);
-  for (const { p } of all) byName.set(p.name, { ...p, tools: [...p.tools] });
+  for (const { p } of all) {
+    const name = p.name.toLowerCase();
+    byName.set(name, { ...p, name, tools: [...p.tools] });
+  }
   return [...byName.values()];
 }

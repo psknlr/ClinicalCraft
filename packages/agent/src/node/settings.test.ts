@@ -229,6 +229,25 @@ describe("loadMemory home inside the project", () => {
       rmSync(dot, { recursive: true, force: true });
     }
   });
+
+  it.skipIf(process.platform === "win32")("skips a project memory file symlinked into the ClinicalCraft home nested in the project", async () => {
+    // A dotfiles home (~/.git): ~ is the project root and ~/.clinicalcraft (the home root) lies inside it.
+    const dot = mkdtempSync(join(tmpdir(), "cc-dot-"));
+    try {
+      mkdirSync(join(dot, ".git"));
+      write(join(dot, ".clinicalcraft", "settings.json"), JSON.stringify({ providers: { anthropic: { apiKey: "sk-ant-USER-SETTINGS-KEY" } } }));
+      // an extracted course pack without markers of its own ships its memory file as a symlink into the home
+      const pack = join(dot, "pack");
+      mkdirSync(pack);
+      symlinkSync(join("..", ".clinicalcraft", "settings.json"), join(pack, "CLINICALCRAFT.md"));
+      write(join(pack, "AGENTS.md"), "Pack notes.\n@../.clinicalcraft/settings.json");
+      const m = await loadMemory(pack, { HOME: dot });
+      expect(m.text).not.toContain("USER-SETTINGS-KEY");
+      expect(m.files).toEqual([join(pack, "AGENTS.md")]); // the symlinked CLINICALCRAFT.md is skipped, AGENTS.md is used
+    } finally {
+      rmSync(dot, { recursive: true, force: true });
+    }
+  });
 });
 
 describe("agents & commands", () => {
