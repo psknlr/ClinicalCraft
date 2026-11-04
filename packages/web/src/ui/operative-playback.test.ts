@@ -149,3 +149,67 @@ describe("one operative playback for every view", () => {
     expect(p.frame().item).toMatchObject({ kind: "step", operation: "dissect" });
   });
 });
+
+describe("the picture follows the equipment, whatever frame is on screen (the follow-up audit)", () => {
+  const supply = (s: SessionState, image: boolean, gas: boolean) => reduce(c, s, { type: "procedure-supply", supply: { image, gas, source: "test tower" } } as ClinicalAction).state;
+  const live = (p: OperativePlayback) => observeField(def, p.frame().state!);
+
+  it("a working tower fails with nothing queued: the next render is dark and deflated; a backup brings the picture back", () => {
+    const clock = manualTimers();
+    const { s, events } = record([...ACCESS, NECK]);
+    const p = new OperativePlayback(clock.timers);
+    p.attach("k", def);
+    p.sync(events, s.procedure!);
+    expect(live(p)).toMatchObject({ inView: true, supply: { image: true, gas: true } });
+    let renders = 0;
+    p.subscribe(() => renders++);
+    const failed = supply(s, false, false);
+    p.sync(events, failed.procedure!);
+    expect(p.pending()).toBe(0);
+    expect(renders).toBe(1);
+    expect(live(p)).toMatchObject({ inView: false, supply: { image: false, gas: false } });
+    expect(p.frame().state).toMatchObject({ insufflated: false, pressure: 0 });
+    // the caption is still the last step: the darkness is the equipment's, not a new step's
+    expect(p.frame().item).toMatchObject({ kind: "step", operation: "retract" });
+    // a spare tower: the picture back, the abdomen still to be insufflated again
+    const backup = supply(failed, true, true);
+    p.sync(events, backup.procedure!);
+    expect(renders).toBe(2);
+    // the camera works again, but the abdomen is down: no view until the pneumoperitoneum is made again
+    expect(live(p)).toMatchObject({ inView: false, supply: { image: true, gas: true } });
+    expect(p.frame().state).toMatchObject({ insufflated: false });
+    const again = record([{ op: "insufflate", pressure: 12 }], { s: backup, events });
+    p.sync(again.events, again.s.procedure!);
+    for (let i = 0; i < 3; i++) clock.advance(2000);
+    expect(live(p)).toMatchObject({ inView: true, supply: { image: true, gas: true } });
+    // a reload (a first look) under the failed tower is dark from its first frame
+    const reloaded = new OperativePlayback(manualTimers().timers);
+    reloaded.attach("k2", def);
+    reloaded.sync(events, failed.procedure!);
+    expect(observeField(def, reloaded.frame().state!).inView).toBe(false);
+  });
+
+  it("the tower fails while older steps are still playing: every frame from then on is dark; the steps still play in order", () => {
+    const clock = manualTimers();
+    const start = record([...ACCESS, NECK]);
+    const p = new OperativePlayback(clock.timers);
+    p.attach("k", def);
+    p.sync(start.events, start.s.procedure!);
+    const burst = record(dissect(4), start);
+    p.sync(burst.events, burst.s.procedure!);
+    expect(p.pending()).toBeGreaterThan(0);
+    expect(live(p).inView).toBe(true);
+    const failed = supply(burst.s, false, true);
+    p.sync(burst.events, failed.procedure!);
+    // the older step on screen is shown without a picture at once, not after the queue drains
+    expect(live(p)).toMatchObject({ inView: false, supply: { image: false } });
+    const ops: string[] = [];
+    p.subscribe(() => {
+      ops.push(p.frame().item!.operation);
+      expect(live(p).inView).toBe(false);
+    });
+    for (let i = 0; i < 10; i++) clock.advance(2000);
+    expect(ops.every((op) => op === "dissect")).toBe(true);
+    expect(p.frame().state).toBe(failed.procedure);
+  });
+});

@@ -6,9 +6,13 @@
  * own, with its reason and the field unchanged: never dropped because the next step arrived) — in the record's order,
  * the frame on screen and how long it stays. Switching views keeps the frame: the surgery window opened on step 38
  * goes on from step 38. A first look (a reload) shows the field as it is without replaying the operation.
+ * The equipment is not a frame: what the tower supplies now (`ProcedureState.supply`) applies to whatever frame is on
+ * screen — a camera, light source or insufflator that fails darkens (or deflates) the picture at the next render,
+ * also while an older step is still playing or when nothing is queued, and a working backup brings it back the same
+ * way.
  * No DOM, no three.js: timers are injected.
  */
-import { operate, type DomainEvent, type ProcedureDefinition, type ProcedureSignal, type ProcedureState } from "@clinicalcraft/core";
+import { operate, type DomainEvent, type ProcedureDefinition, type ProcedureSignal, type ProcedureState, type ProcedureSupply } from "@clinicalcraft/core";
 
 export type StepEvent = Extract<DomainEvent, { type: "procedure.step" }>;
 export type RejectedEvent = Extract<DomainEvent, { type: "action.rejected" }>;
@@ -54,6 +58,18 @@ const browserTimers: PlaybackTimers = {
   cancel: (h) => clearTimeout(h as ReturnType<typeof setTimeout>),
 };
 
+/** Whether two supplies give the same picture and gas (absent: supplied). */
+function sameSupply(a: ProcedureSupply | undefined, b: ProcedureSupply | undefined): boolean {
+  return (a?.image ?? true) === (b?.image ?? true) && (a?.gas ?? true) === (b?.gas ?? true);
+}
+
+/** A frame under the equipment as it is now: the supply of `live`; without gas, the abdomen as `live` has it. */
+export function underSupply(frame: ProcedureState, live: ProcedureState): ProcedureState {
+  if (sameSupply(frame.supply, live.supply)) return frame;
+  const { supply: _old, ...rest } = frame;
+  return { ...rest, ...(live.supply ? { supply: live.supply } : {}), ...(live.supply?.gas === false ? { insufflated: live.insufflated, pressure: live.pressure } : {}) };
+}
+
 function targetOf(op: Record<string, unknown> | undefined): string | null {
   if (!op) return null;
   for (const k of ["handle", "structure", "region", "port", "strategy", "modality", "view", "plan"]) if (typeof op[k] === "string") return op[k] as string;
@@ -70,6 +86,8 @@ export class OperativePlayback {
   private rejections = 0;
   private readonly queue: PlaybackItem[] = [];
   private latest: ProcedureState | null = null;
+  /** The frame on screen under the current supply (kept while neither changes: views compare by identity). */
+  private lit: { frame: ProcedureState; live: ProcedureState; state: ProcedureState } | null = null;
   private timer: unknown = null;
   private until = 0;
   private readonly listeners = new Set<() => void>();
@@ -88,6 +106,7 @@ export class OperativePlayback {
     this.rejections = 0;
     this.queue.length = 0;
     this.latest = null;
+    this.lit = null;
     this.until = 0;
   }
 
@@ -95,6 +114,7 @@ export class OperativePlayback {
   sync(events: readonly OperativeEvent[], field: ProcedureState): void {
     const def = this.def;
     if (!def) return;
+    const supplyChanged = !!this.latest && !sameSupply(this.latest.supply, field.supply);
     this.latest = field;
     if (!this.shown || events.length < this.seen) {
       // a first look, or a record that went back: the field as it is, the last thing that happened as its caption
@@ -112,7 +132,9 @@ export class OperativePlayback {
       const e = events[i]!;
       let after = base;
       if (e.type === "procedure.step") {
-        const replayed = e.detail ? operate(def, base, e.detail, e.at ?? 0, e.actor) : null;
+        // an accepted step was accepted under the supply of its time: the replay does not re-ask the equipment
+        const { supply: _supply, ...unsupplied } = base;
+        const replayed = e.detail ? operate(def, unsupplied, e.detail, e.at ?? 0, e.actor) : null;
         // a step that cannot be replayed (a record without its detail): its frame is the session's field
         after = replayed && !replayed.rejected ? replayed.state : field;
       } else this.rejections++;
@@ -121,6 +143,13 @@ export class OperativePlayback {
     }
     this.seen = events.length;
     if (this.queue.length) this.play();
+    else if (this.shown !== field && !this.timer) {
+      // nothing to play: the field changed without a step (a tower failing, a backup connected, the abdomen
+      // deflating) — the frame on screen is the session's own field, now
+      const was = this.shown;
+      this.shown = field;
+      if (supplyChanged || was.insufflated !== field.insufflated || was.pressure !== field.pressure) this.emit();
+    }
   }
 
   private itemOf(e: OperativeEvent, sequence: number, before: ProcedureState, after: ProcedureState): PlaybackItem {
@@ -163,7 +192,11 @@ export class OperativePlayback {
 
   /** The frame on screen: the field shown, and the step or refusal that led to it (null: none yet). */
   frame(): { state: ProcedureState | null; item: PlaybackItem | null } {
-    return { state: this.shown, item: this.item };
+    const shown = this.shown;
+    const live = this.latest;
+    if (!shown || !live) return { state: shown, item: this.item };
+    if (this.lit?.frame !== shown || this.lit.live !== live) this.lit = { frame: shown, live, state: underSupply(shown, live) };
+    return { state: this.lit.state, item: this.item };
   }
 
   /** Frames waiting to be shown. */

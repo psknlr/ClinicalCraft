@@ -117,7 +117,12 @@ A line a model wrote is said only if it is:
 
 - one line, at most 240 characters, in the session's language (Chinese for `zh-CN`, otherwise no Chinese);
 - free of any number that is not in what the speaker perceives (the situation and the options, or the facts given);
-- free of any member of staff the speaker cannot address (by full name, name without its title, or surname).
+- free of any member of staff the speaker cannot address (by full name, name without its title, or surname);
+- for a line the engine gives a place (`where`: the record has the speaker at the patient, or away from them —
+  `placeClaimProblem`), free of a claim to be elsewhere, in either language: a responder whose walk is blocked never
+  says "I'm at the bedside", "I've arrived", "checking the patient", 我在床旁 or 正在检查病人; one at the patient never
+  says they cannot get there or are on the way. The anaesthetist's alarm lines carry it (`blocked` → `away`,
+  `arrived` → `at-patient`), so a model's wording can never put them at a bedside the record does not.
 
 Otherwise the template is said. `wordLine` applies the same check to a staff line the engine decides is said: it gives
 the speaker's model the intent ("a new critical alarm … you are now at the patient"), the facts the line may state
@@ -130,18 +135,24 @@ the speaker's model the intent ("a new critical alarm … you are now at the pat
   facility, the team's duties and the facility role; the role section; a model-driven member does the protocol's move
   in its own words, refuses ungrounded lines (a stray number, a colleague not in view, the wrong language), waits at
   most once and never on a read-back it owes, falls back to the rules on an option not offered, an unreadable answer,
-  no model or a slow model (one warning), notices to a colleague and escalates its stuck task; grounded staff lines.
+  no model or a slow model (one warning), notices to a colleague and escalates its stuck task; grounded staff lines;
+  a line never claims a place the record contradicts (shut out: no "I'm at the bedside" in English or Chinese; at the
+  patient: no "I can't get there").
 - SurgeryCraft `tools/case126-characters.test.ts`: every member of staff in the IMPF hospital holds a position; Nurse
   Lim, Dr Tanaka and Dr Mori each speak from their own card; with `llm`, the two nurses hand the surgeon a needle
   holder with every move decided by their models — the same closed loop and world acts as the rules, in their own
-  words — and a line stating what nobody perceived is refused while the loop still closes.
+  words — and a line stating what nobody perceived is refused while the loop still closes. SurgeryCraft
+  `tools/case126-staff.test.ts`: with `llm`, the anaesthetist's model saying "I am at the bedside" while shut out of
+  OR 7 is refused (the record's blocked line is said), and the same words are said once they are there.
 
 ## 6. Limits (stated as they are)
 
 - The options are the policy's move plus `wait`, `notice` and `escalate`: a model reorders the team's priorities only
   within them (a member cannot invent a new kind of act). New kinds of moves come from the policy, where the engine can
   check them.
-- The grounding check is lexical (numbers, names, language, one line): it does not judge tone or clinical register.
+- The grounding check is lexical (numbers, names, language, one line, first-person place claims): it does not judge
+  tone or clinical register, and a place claim worded in a way the patterns do not know is not caught (the record
+  stays right; only the words could be wrong).
 - Lines worded by a model are in the session's language only; the other language keeps the template.
 - Only the care team's decisions and the anaesthetist's alarm call are model-driven beyond conversation; the staff's
   other fixed lines (a study's progress, a hand-over summary) still use their templates.

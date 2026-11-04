@@ -157,7 +157,9 @@ export class StaffRequests {
         if (!place) return false;
         const world = this.k.embodied!.world();
         if (this.leavesPatient(place.kind === "room" ? place.id.replace(/^room:/u, "") : world.roomOf(place.id)) && !(await this.relieved(id, say, who, signal))) return true;
-        say(rt(L, "req.guide", { place: place.name, room: this.roomOf(place) }));
+        // a place that is its own room is just "that way" (never "the control desk is in the control desk")
+        const room = this.roomOf(place);
+        say(room === place.name ? rt(L, "req.guideRoom", { place: place.name }) : rt(L, "req.guide", { place: place.name, room }));
         const goal: NavGoal = place.kind === "room" ? { kind: "room", id: place.id.replace(/^room:/, "") } : { kind: "interact", id: place.id };
         await this.walk(id, say, who, goal, signal);
         return true;

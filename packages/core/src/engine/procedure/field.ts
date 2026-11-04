@@ -31,7 +31,7 @@ export function fieldOpen(s: ProcedureState): boolean {
 /** Why the operator does not see the field (null: they do). */
 export function fieldClosedReason(s: ProcedureState): string | null {
   if (fieldOpen(s)) return null;
-  if (s.supply?.image === false) return "There is no picture: the laparoscopic camera or light source is out of service. Connect a working tower (or convert).";
+  if (s.supply?.image === false) return "There is no picture: the laparoscopic camera or light source is not working (switched off or out of service). Switch the tower on, or connect a working one (or convert).";
   return "The field is not in view: insufflate and put the laparoscope in.";
 }
 

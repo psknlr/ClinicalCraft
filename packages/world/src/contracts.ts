@@ -240,6 +240,8 @@ export interface SemanticEntity {
   public?: Record<string, string>;
   /** Equipment type (for equipment entities). */
   equipmentType?: EquipmentType;
+  /** A device's behaviour state at the start when its placement sets one (`Placement.state`; else its type's `initial`). */
+  initialState?: string;
 }
 
 /** Binding of the encounter to the world: the case's patient in its slot. */
@@ -1098,6 +1100,12 @@ export interface WorldRuntime {
   atBedside(id: EntityId): boolean;
   /** In-service equipment providing `capability` that is at the bedside now (`atBedside`), in registry order. */
   bedsideProviders(capability: string): EntityId[];
+  /**
+   * THE capability rule: what a device provides now — nothing out of service; in a behaviour state that declares
+   * `supplies`, only those (a laparoscopy tower switched off gives no picture and no gas); otherwise all of its
+   * capabilities. Empty for anything that is not equipment.
+   */
+  provides(id: EntityId): string[];
 
   /* the patient's body (EMBODIED §8, patient transport) */
   /** Where the patient is now (bed space or provider, posture, support, trolley, home); null without a patient. */

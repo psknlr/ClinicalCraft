@@ -115,6 +115,11 @@ export class ClinicalCraftApp implements App {
     this.scope.update();
   });
 
+  /** Does the encounter's time run now (`encounterClockRuns`: the case clock, the staff's round and the team's)? */
+  encounterClock(): boolean {
+    return encounterClockRuns({ entered: !!this.game?.entered, approvalOpen: this.approval.isOpen, panel: this.panels.isOpen ? (this.panels.current as PanelName | null) : null });
+  }
+
   /** The operation's record into the one playback every laparoscope view shows. */
   private syncPlayback(): void {
     const game = this.game;
@@ -815,9 +820,10 @@ export class ClinicalCraftApp implements App {
         staffFor: (agent) => staffForAgent(agent, { facility, slotId: slot?.id ?? null, world: session.world() })?.staffId ?? null,
         agentDriving: () => this.game?.embodied?.agentDriving() ?? false,
         embodied: () => this.game?.embodied ?? null,
-        // the team keeps working while its own panel is open (the learner watching), not while paused or asked to approve
-        teamClock: () => !!this.game?.entered && !this.approval.isOpen && (!this.panels.isOpen || this.panels.current === "team"),
-        clockRunning: () => encounterClockRuns({ entered: !!this.game?.entered, approvalOpen: this.approval.isOpen, panel: this.panels.isOpen ? (this.panels.current as PanelName | null) : null }),
+        // one pause policy for the encounter's time, the staff's round and the care team's: the team works on while the
+        // learner operates, reads the chart or watches the team — only the pause menu (and what opens from it) or an
+        // approval waiting for the learner stops them
+        clockRunning: () => this.encounterClock(),
       });
       const embodied =
         session.embodiment === "embodied"

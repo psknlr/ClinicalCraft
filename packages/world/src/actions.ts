@@ -262,6 +262,8 @@ export class ActionBus implements EffectsHost, TransportHost {
   transit: TransportHost["transit"] = null;
   /** The same transport as a snapshot keeps it. */
   journey: TransportHost["journey"] = null;
+  /** Stops the walking transport now (the patient can no longer walk); null when none walks. */
+  transitStop: TransportHost["transitStop"] = null;
   private readonly connectors: ConnectorInfo[];
   private readonly pending = new Map<string, Promise<WorldActionResult>>();
   private readonly tails = new Map<ActorId, Promise<void>>();

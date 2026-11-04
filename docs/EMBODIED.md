@@ -1115,7 +1115,16 @@ unconscious), too unwell. A patient who cannot walk travels only lying on a
 trolley at hand, every step of the way; with none, the transport is refused
 before anyone moves (`PRECONDITION_FAILED`: "… cannot respond and cannot walk
 with you. Taking … anywhere needs a trolley or a bed, and none is at hand:
-bring one (or ask a porter for one) first.") — never walked upright.
+bring one (or ask a porter for one) first.") — never walked upright. The
+assessment goes on **during** a walking transport: when the patient's state is
+refreshed on the way (`refreshPatient`, after every clinical event) and they can
+no longer walk, the transport stops at once (`TransportHost.transitStop`) — the
+patient is laid down where the walk stopped (sat down when only too unwell),
+on no bed and no trolley, nobody walking them from that moment — and the action
+fails with the reason, where they stopped and that going on needs a trolley
+("… Stopped in … and laid … down safely where they were. Taking … anywhere
+needs a trolley or a bed …"). A new transport makes the same assessment before
+it starts; a save at the stop restores the same place with nothing in progress.
 
 **Walking with the patient** (`escort_patient` / `release_patient`;
 `escort.ts`). "Follow me": a patient who can walk — not lying by clinical

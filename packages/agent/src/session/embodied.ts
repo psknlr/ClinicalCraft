@@ -382,6 +382,7 @@ export class EmbodiedSession {
       restoredJourney: () => w().restoredJourney(),
       roomAt: (at) => w().roomAt(at),
       bedsideProviders: (capability) => w().bedsideProviders(capability),
+      provides: (id) => w().provides(id),
       patientPlace: () => w().patientPlace(),
       patientMonitor: () => w().patientMonitor(),
       screenInView: (actorId) => w().screenInView(actorId),

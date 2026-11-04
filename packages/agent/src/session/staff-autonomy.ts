@@ -12,13 +12,13 @@
  * agrees by construction): goal, task, location, responsibility, held items, reservations, pending requests and
  * what blocks them.
  */
-import { anaesthetised, openAlarm, responsibleAnaesthetist, t, vitalsAt, type StaffPosition } from "@clinicalcraft/core";
+import { anaesthetised, capabilityLabel, openAlarm, responsibleAnaesthetist, t, vitalsAt, type StaffPosition } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { dropTractionAwayFromTable } from "./assist.js";
 import { positionOf, roleCardOf } from "../characters/roles.js";
 import { wordLine } from "../characters/voice.js";
 import { characterModel } from "./character-models.js";
-import { syncProcedureSupply } from "./procedure-supply.js";
+import { idleSupplier, syncProcedureSupply } from "./procedure-supply.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 
@@ -45,7 +45,12 @@ export interface RoleState {
 
 const DONE = new Set(["done", "declined", "escalated"]);
 
+/** Who never touches a non-sterile device during the operation (they keep the sterile field). */
+const STERILE: ReadonlySet<StaffPosition> = new Set<StaffPosition>(["scrub-nurse", "surgeon", "assistant-surgeon"]);
+
 export class StaffAutonomy {
+  /** Equipment a colleague could not switch on, by `device:reason` (said once each). */
+  private readonly notReady = new Set<string>();
 
   constructor(private readonly k: SessionKernel) {}
 
@@ -57,11 +62,59 @@ export class StaffAutonomy {
       dropTractionAwayFromTable(k, id);
       // equipment failing or brought in changes what the operator sees, whoever is looking
       syncProcedureSupply(k, id);
+      await this.readyEquipment(id, signal);
       if (k.studies.available()) await k.studies.afterLearner(id, signal);
       await this.answerAlarm(id, signal);
     } catch (err) {
       k.emit(id, { type: "warning", message: `staff: ${err instanceof Error ? err.message : String(err)}` });
     }
+  }
+
+  /**
+   * The circulating nurse keeps the operation's equipment running: a device in the patient's room that the operation
+   * lacks and that is only switched off (a spare tower just brought in, a tower someone powered down) is switched on
+   * by them with their own body — the world's own operation, its roles and its time — and they say what it gives
+   * back. Never a sterile member of the team; nobody suitable in the room: the field says why, and the learner (or a
+   * colleague asked by name) does it. A device out of service is not theirs to fix (a backup is fetched instead).
+   */
+  private async readyEquipment(id: string, signal: AbortSignal): Promise<void> {
+    const k = this.k;
+    const e = k.embodied;
+    const need = e ? idleSupplier(k) : null;
+    if (!e || !need) return;
+    const w = e.world();
+    const room = w.roomOf(need.device);
+    const here = (k.facility?.staff ?? []).filter((s) => w.actor(`staff:${s.id}`) && w.roomOf(`staff:${s.id}`) === room && (!need.roles.length || need.roles.includes(s.role)));
+    const position = (s: { id: string }) => positionOf(k.caseDef, k.facility, s.id);
+    const who = here.find((s) => position(s) === "circulating-nurse") ?? here.find((s) => s.role === "nurse" && !STERILE.has(position(s) as StaffPosition));
+    if (!who) return;
+    const actorId = `staff:${who.id}`;
+    const L = k.locale;
+    const name = t(who.name, L);
+    const device = w.entity(need.device);
+    const deviceName = device ? t(device.name, L) : need.device;
+    const caller = { agent: "nurse", submission: id, signal };
+    let r = await e.act(caller, { actorId, operation: "navigate", goal: { kind: "interact", id: need.device }, onBehalfOf: PRIMARY_ACTOR }, signal);
+    if (signal.aborted) return;
+    if (r.status === "completed") r = await e.act(caller, { actorId, operation: need.operation, targetId: need.device, onBehalfOf: PRIMARY_ACTOR }, signal);
+    if (signal.aborted) return;
+    const labels = need.capabilities.map((c) => capabilityLabel(c, L));
+    const supplies = L === "zh-CN" ? labels.join("、") : labels.length > 1 ? `${labels.slice(0, -1).join(", ")} and ${labels.at(-1)}` : (labels[0] ?? "");
+    if (r.status !== "completed") {
+      const reason = (r.message || "").split("\n")[0]!;
+      const key = `${need.device}:${reason}`;
+      if (this.notReady.has(key)) return;
+      this.notReady.add(key);
+      const text = await this.line(who.id, name, rt(L, "staff.equipment.notOn", { device: deviceName, reason }), "the operation needs a device in the room that is switched off, and you could not switch it on", [`${deviceName} is switched off`, `why it failed: ${reason}`], signal);
+      k.speakLine(id, { agent: "nurse", speaker: name, text, grounded: [], staffId: who.id });
+      k.conversations.addDialogue({ who: "nurse", speaker: name, text });
+      return;
+    }
+    // the record follows the device at once, so the field and every view agree before anyone looks
+    syncProcedureSupply(k, id);
+    const text = await this.line(who.id, name, rt(L, "staff.equipment.on", { device: deviceName, supplies }), "you have just switched on a device the operation needs", [`${deviceName} is now switched on`, `it now supplies: ${supplies}`], signal);
+    k.speakLine(id, { agent: "nurse", speaker: name, text, grounded: [], staffId: who.id });
+    k.conversations.addDialogue({ who: "nurse", speaker: name, text });
   }
 
   /**
@@ -106,7 +159,7 @@ export class StaffAutonomy {
       const fresh = pending.filter((a) => openAlarm(k.state, a.vital)?.reason !== reason);
       for (const a of fresh) k.dispatch({ type: "alarm-response", alarm: { op: "blocked", vital: a.vital, by: staffId, reason }, by: "system" }, id);
       if (fresh.length) {
-        const text = await this.line(staffId, name, rt(L, "staff.alarm.blocked", { vitals, reason }), "a new critical alarm on the monitor of the anaesthetised patient you are responsible for; you cannot get to the patient", [`critical alarm: ${vitals}`, `you cannot get to the patient: ${reason}`], signal);
+        const text = await this.line(staffId, name, rt(L, "staff.alarm.blocked", { vitals, reason }), "a new critical alarm on the monitor of the anaesthetised patient you are responsible for; you cannot get to the patient", [`critical alarm: ${vitals}`, `you cannot get to the patient: ${reason}`], signal, "away");
         k.speakLine(id, { agent: "attending", speaker: name, text, grounded: [], staffId });
         k.conversations.addDialogue({ who: "attending", speaker: name, text });
       }
@@ -114,13 +167,13 @@ export class StaffAutonomy {
     }
     // the world has them at the patient: now, and only now, it is said
     for (const a of pending) k.dispatch({ type: "alarm-response", alarm: { op: "arrived", vital: a.vital, by: staffId }, by: "system" }, id);
-    const text = await this.line(staffId, name, rt(L, "staff.alarm.answered", { vitals }), "a new critical alarm on the monitor of the anaesthetised patient you are responsible for; you are now at the patient", [`critical alarm: ${vitals}`, "you are at the patient, checking"], signal);
+    const text = await this.line(staffId, name, rt(L, "staff.alarm.answered", { vitals }), "a new critical alarm on the monitor of the anaesthetised patient you are responsible for; you are now at the patient", [`critical alarm: ${vitals}`, "you are at the patient, checking"], signal, "at-patient");
     k.speakLine(id, { agent: "attending", speaker: name, text, grounded: [], staffId });
     k.conversations.addDialogue({ who: "attending", speaker: name, text });
   }
 
   /** A staff line: the template, or the speaker's own words when characters are model-driven and grounded. */
-  private async line(staffId: string, name: string, template: string, intent: string, facts: string[], signal: AbortSignal): Promise<string> {
+  private async line(staffId: string, name: string, template: string, intent: string, facts: string[], signal: AbortSignal, where?: "at-patient" | "away"): Promise<string> {
     const k = this.k;
     const staff = k.facility?.staff.find((s) => s.id === staffId);
     const worded = await wordLine({
@@ -129,6 +182,7 @@ export class StaffAutonomy {
       intent,
       facts,
       template,
+      ...(where ? { where } : {}),
       locale: k.locale,
       model: characterModel(k, staff?.role ?? "attending"),
       timeoutMs: k.settings.characters.timeoutMs,

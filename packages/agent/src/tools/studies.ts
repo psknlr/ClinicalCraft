@@ -129,7 +129,11 @@ export function orderText(c: CaseDefinition, s: SessionState, orderId: string, L
   const report = r.reports.filter((x) => x.accession === a.id).at(-1);
   if (!report) return rt(L, "study.status.acquired", { name, accession: a.id, who: person(a.collector), at: clockTime(c, a.at, L), due: clockTime(c, a.dueAt, L, "ceil") });
   const lang = L === "zh-CN" ? "zh-CN" : "en";
-  const reviewed = r.reviews.filter((x) => x.accession === a.id).map((x) => person(x.by));
+  // who reviewed it, and why them when it explains something: the reviewer the order named, or — once
+  // responsibility has been handed over — the anaesthetist responsible now
+  const handedOver = (s.anaesthesia?.handovers.length ?? 0) > 0;
+  const basisText = (basis: string | undefined) => (basis === "named" ? ` ${rt(L, "study.basis.named")}` : basis === "responsible" && handedOver ? ` ${rt(L, "study.basis.responsible")}` : "");
+  const reviewed = r.reviews.filter((x) => x.accession === a.id).map((x) => `${person(x.by)}${basisText(x.basis)}`);
   const text = rt(L, "study.report", {
     label: label("simulated", L),
     name,

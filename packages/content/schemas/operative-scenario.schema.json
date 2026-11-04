@@ -1594,6 +1594,14 @@
                       "type": "string",
                       "minLength": 1,
                       "maxLength": 80
+                    },
+                    "basis": {
+                      "type": "string",
+                      "enum": [
+                        "named",
+                        "responsible",
+                        "on-duty"
+                      ]
                     }
                   },
                   "required": [

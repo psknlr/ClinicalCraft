@@ -240,6 +240,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "pre.alreadyEscorted": { "zh-CN": "{patient}已经跟着你了。", en: "{patient} is already walking with you." },
   "pre.cannotWalk.lying": { "zh-CN": "{patient}现在需要卧床，不能走动：请连床一起转运。", en: "{patient} has to stay lying down and cannot walk: take them on their bed." },
   "pre.cannotWalk.unresponsive": { "zh-CN": "{patient}无法回应，不能跟你走。", en: "{patient} cannot respond and cannot walk with you." },
+  "pre.stoppedEnRoute": { "zh-CN": "已在{place}停下，让{patient}就地安全躺下。", en: "Stopped in {place} and laid {patient} down safely where they were." },
   "pre.needsTrolley": { "zh-CN": "转运{patient}需要推床或病床，身边没有：先推一张来（或请护工带来），再转运。", en: "Taking {patient} anywhere needs a trolley or a bed, and none is at hand: bring one (or ask a porter for one) first." },
   "pre.cannotWalk.unwell": { "zh-CN": "{patient}情况不稳定，现在不宜走动。", en: "{patient} is too unwell to walk now." },
   "pre.cannotStand.lying": { "zh-CN": "{patient}现在需要卧床，不能站起来。", en: "{patient} has to stay lying down and cannot stand up." },

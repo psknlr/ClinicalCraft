@@ -341,7 +341,7 @@ export class DeviceRules {
     if (s?.heldBy) return s.data?.equipped ? "equipped" : "held";
     switch (spec.stateSource) {
       case "stored":
-        return s?.state ?? spec.initial;
+        return s?.state ?? this.d.locator.registry.entity(id)?.initialState ?? spec.initial;
       case "door":
         return s?.door?.locked ? "locked" : s?.door?.open ? "open" : "closed";
       case "derived": {
@@ -375,7 +375,7 @@ export class DeviceRules {
     const spec = this.spec(id);
     const s = this.d.store.entity(id);
     if (!s?.heldBy) return null;
-    if (spec.stateSource === "stored") return s.state ?? spec.initial;
+    if (spec.stateSource === "stored") return s.state ?? this.d.locator.registry.entity(id)?.initialState ?? spec.initial;
     if (spec.stateSource === "derived" && spec.derived === "case-record") return this.recordBound(id) ? this.recordState(spec) : spec.initial;
     return null;
   }

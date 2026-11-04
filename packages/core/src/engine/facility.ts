@@ -481,6 +481,8 @@ function checkPlacements(f: FacilityDefinition, catalogs: EquipmentCatalog[]): I
       if (!(cap in CAPABILITIES)) issues.push(warn(`placements.${i}.capabilities.${j}`, `non-canonical capability "${cap}"`));
     });
     if (!type) return;
+    if (p.state !== undefined && !(type.behavior && !type.behavior.derived && p.state in type.behavior.states))
+      issues.push(err(`placements.${i}.state`, `"${type.id}" has no state "${p.state}"${type.behavior ? ` (states: ${Object.keys(type.behavior.states).join(", ")})` : " (it has no behaviour)"}`));
     (p.hideParts ?? []).forEach((index, j) => {
       if (index >= type.parts.length) issues.push(err(`placements.${i}.hideParts.${j}`, `"${type.id}" has no part ${index} (it has ${type.parts.length})`));
     });
@@ -777,6 +779,9 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
   const states = new Set(Object.keys(b.states));
   if (states.size === 0) issues.push(err(`${path}.states`, `behaviour of "${e.id}" declares no states`));
   if (!states.has(b.initial)) issues.push(err(`${path}.initial`, `initial state "${b.initial}" is not one of the states of "${e.id}"`));
+  for (const [id, st] of Object.entries(b.states))
+    for (const [k, cap] of (st.supplies ?? []).entries())
+      if (!e.capabilities.includes(cap)) issues.push(err(`${path}.states.${id}.supplies.${k}`, `"${e.id}" in "${id}" cannot supply "${cap}": it is not one of its capabilities`));
   if (b.derived === "monitor-attachment") {
     for (const needed of ["attached", "detached"]) if (!states.has(needed)) issues.push(err(`${path}.states`, `derived "monitor-attachment" needs a "${needed}" state`));
     if (e.interaction.kind !== "monitor") issues.push(warn(`${path}.derived`, `"monitor-attachment" on "${e.id}", whose interaction kind is "${e.interaction.kind}" (expected "monitor")`));

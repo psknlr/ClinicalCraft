@@ -104,17 +104,27 @@ step, so the walkthrough goes on from where it was (`lostTraction`, `session/aut
 
 **Equipment.** The picture and the pneumoperitoneum depend on the equipment (`ProcedureState.supply`,
 `PROCEDURE_SUPPLY`): the image needs a working camera and light source (`endoscopic-camera`, `light-source`), the
-gas a working insufflator (`insufflator`). In an embodied session the session records what the equipment in the
-patient's room supplies (the `procedure-supply` action, by the system; event `procedure.supply`) — before every
-operative step, when the field is looked at and on the staff's own round (`session/procedure-supply.ts`). A device
-out of service supplies nothing; a backup brought into the room supplies exactly the capabilities it has (a
-stand-alone insufflator restores the gas, not the picture); a facility that does not model a capability is not
-limited by it. Without a picture the field is dark (`inView` false; `observe_field`: "No picture: the laparoscopic
-camera or light source is out of service …"; a step that needs sight is refused with the same reason); without
-gas insufflation is refused ("There is no CO₂ supply …") and a pneumoperitoneum already made is lost at once
-(`deflated`). Supply changes are in the record but are not operative steps (they number no `op-<n>`). SurgeryCraft's
-OR towers provide all three; the spare tower in the equipment store, fetched by the circulating nurse, brings
-them back.
+gas a working insufflator (`insufflator`). *Working* is the world's one capability rule (`WorldRuntime.provides`):
+a device out of service provides nothing, and a device in a behaviour state that declares `supplies` provides only
+those — a laparoscopy tower `off` gives no picture and no gas, powered on all three (docs/FACILITIES.md). In an
+embodied session the session records what the equipment in the patient's room supplies (the `procedure-supply`
+action, by the system; event `procedure.supply`) — before every operative step, when the field is looked at and on
+the staff's own round (`session/procedure-supply.ts`). A backup brought into the room supplies exactly the
+capabilities it has (a stand-alone insufflator restores the gas, not the picture); a facility that does not model a
+capability is not limited by it. Without a picture the field is dark (`inView` false; `observe_field`: "No picture:
+the laparoscopic camera or light source is not working (switched off or out of service) …"; a step that needs sight
+is refused with the same reason); without gas insufflation is refused ("There is no CO₂ supply …") and a
+pneumoperitoneum already made is lost at once (`deflated`). Supply changes are in the record but are not operative
+steps (they number no `op-<n>`). **Once the operation has begun** (a port plan chosen), the circulating nurse keeps
+it running: a device in the room that the operation lacks and that is only switched off — a spare brought in from the
+store, a tower someone powered down — is switched on by them with their own body (the device's own operation, its
+roles and its time) and they say what it gives back; never a sterile member of the team, and never a device out of
+service (a backup is fetched instead). **Every view shows the equipment as it is now**: the web's operative playback
+applies the current supply to whatever frame is on screen, so the scope dock and the surgery window go dark ("No
+picture") at the next render after a failure — also while older steps are still playing or with nothing queued — and
+say "Abdomen down" while the scope is in a deflated abdomen; a reload shows the same. SurgeryCraft's OR 7 tower is set
+up before the list (`Placement.state: "balanced"`); the spare in the equipment store is off until the circulating
+nurse brings it and switches it on.
 
 A step that is **physically impossible** is rejected, with nothing changed. For example:
 
