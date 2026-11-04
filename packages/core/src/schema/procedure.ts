@@ -454,11 +454,29 @@ export interface Bleeding {
   suctioned: boolean;
 }
 
+/**
+ * What the operation's equipment supplies now (docs/PROCEDURE.md "Equipment"): `image` — a working camera and light
+ * source (no picture without both), `gas` — a working insufflator (no pneumoperitoneum without it). Absent: both, as
+ * in a facility that does not model the equipment.
+ */
+export interface ProcedureSupply {
+  image: boolean;
+  gas: boolean;
+}
+
+/** The capabilities each supply needs from the equipment in the patient's room (all of them, from any in-service device). */
+export const PROCEDURE_SUPPLY: Readonly<Record<keyof ProcedureSupply, readonly string[]>> = {
+  image: ["endoscopic-camera", "light-source"],
+  gas: ["insufflator"],
+};
+
 export interface ProcedureState {
   plan: string | null;
   ports: PortState[];
   insufflated: boolean;
   pressure: number;
+  /** What the equipment supplies (absent: everything). */
+  supply?: ProcedureSupply;
   retractions: Record<string, Retraction>;
   /** Region id → dissection units done. */
   cleared: Record<string, number>;

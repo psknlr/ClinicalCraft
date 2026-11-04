@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility } from "./anaesthesia.js";
+import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "./alarm.js";
 import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
 import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
@@ -107,6 +108,13 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("study"), study: StudyOpSchema, ...base }).strict(),
   /** A step of anaesthesia responsibility (docs/TEAM.md §5): a relief requested, arrived, the hand-over accepted. */
   z.object({ type: z.literal("anaesthesia"), anaesthesia: AnaesthesiaOpSchema, ...base }).strict(),
+  /**
+   * What the operation's equipment supplies changed (docs/PROCEDURE.md "Equipment"): the session records it when the
+   * equipment in the patient's room fails, is repaired, or a backup is connected. Not an operative step.
+   */
+  z.object({ type: z.literal("procedure-supply"), supply: z.object({ image: z.boolean(), gas: z.boolean(), source: z.string().max(200).optional() }).strict(), ...base }).strict(),
+  /** A step of a staff member's response to a critical alarm (`AlarmResponseOpSchema`; docs/TEAM.md §5). */
+  z.object({ type: z.literal("alarm-response"), alarm: AlarmResponseOpSchema, ...base }).strict(),
   /** The surgical count's record (`CountOpSchema`; cases whose team keeps a count). */
   z.object({ type: z.literal("count"), count: CountOpSchema, ...base }).strict(),
   z.object({ type: z.literal("finish"), ...base }).strict(),
@@ -246,6 +254,8 @@ export interface SessionState {
   studies?: StudyRecord;
   /** Who is responsible for the anaesthetised patient, and the hand-overs (absent: the case team's anaesthetist). */
   anaesthesia?: AnaesthesiaResponsibility;
+  /** Critical alarms and the responses to them (docs/TEAM.md §5), one episode per alarm. */
+  alarms?: AlarmEpisode[];
   /** Monotonic count of accepted actions (for transcripts / ordering). */
   seq: number;
 }
@@ -306,6 +316,10 @@ export type DomainEvent =
   /** A study op recorded: the order, acquisition or report it concerns (`id`). */
   | { type: "study.recorded"; op: StudyOp["op"]; code: string; id: string; reason?: string }
   | { type: "anaesthesia.recorded"; op: AnaesthesiaOp["op"]; responsible: string; relief?: string }
+  /** The operation's equipment supply changed (`deflated`: the pneumoperitoneum was lost with the gas). */
+  | { type: "procedure.supply"; image: boolean; gas: boolean; source?: string; deflated?: true }
+  /** An alarm response step (`id`: the episode). */
+  | { type: "alarm.response"; op: AlarmResponseOp["op"]; id: string; vital: string; by?: string; reason?: string }
   /** Closure while the count was not settled (`CountUnsafe`): recorded for the debrief. */
   | { type: "count.unsafe"; what: "closure"; status: CountStatus; missing: string[]; unexpected: string[] }
   /**

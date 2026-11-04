@@ -1108,6 +1108,15 @@ is taken on arrival. `smzl-lung-adeno` in `clinic-v4` (an outpatient, the
 couch is no trolley) walks to the CT and back; the bed-bound patients of the
 other built-in transports go on their beds as before.
 
+**One mobility assessment** decides for a walk together (`escort_patient`)
+and a transport (`transport_patient`) alike: `PatientBody.walkProblem` — lying
+by clinical state, unable to respond (`cannotSpeak`: intubated, sedated,
+unconscious), too unwell. A patient who cannot walk travels only lying on a
+trolley at hand, every step of the way; with none, the transport is refused
+before anyone moves (`PRECONDITION_FAILED`: "… cannot respond and cannot walk
+with you. Taking … anywhere needs a trolley or a bed, and none is at hand:
+bring one (or ask a porter for one) first.") — never walked upright.
+
 **Walking with the patient** (`escort_patient` / `release_patient`;
 `escort.ts`). "Follow me": a patient who can walk — not lying by clinical
 state, able to respond (`cannotSpeak`), not in distress (`distressed`) — gets

@@ -144,6 +144,8 @@ export class Hud {
     e.phase = h("b", { id: "phase-label" });
     e.saved = h("span", { id: "saved" });
     e.clock = h("span", { id: "sim-clock", class: "sim-clock" });
+    // what the case waits for next, and a control to wait until it (docs/PROTOCOL.md "Case time")
+    e.next = h("button", { type: "button", id: "next-event", class: "small-pill next-event", hidden: true, onclick: () => this.waitForNext() });
     e.pill = h("button", { type: "button", id: "hud-llm", class: "llm-pill small-pill", onclick: () => this.app.open("settings", { section: "llm" }) });
     e.vitals = h("button", { type: "button", id: "vitals-strip", class: "vitals-strip", hidden: true, title: tr("hud.vitalsTitle"), "aria-label": tr("hud.vitalsTitle"), onclick: () => this.app.open("monitor") });
     e.dock = h("div", { id: "autopilot-dock", class: "autopilot-dock", hidden: true });
@@ -194,7 +196,7 @@ export class Hud {
       e.finished,
       e.feedback,
       h("div", { class: "bottom" }, e.selected, e.hotbar, h("div", { class: "controls", html: tr("hud.controls.html") })),
-      h("div", { class: "statusbar" }, e.phase, e.clock, h("br"), e.saved, h("br"), e.pill),
+      h("div", { class: "statusbar" }, e.phase, e.clock, h("br"), e.next, h("br"), e.saved, h("br"), e.pill),
       e.dock,
       ...this.touchControls(),
     );
@@ -383,6 +385,13 @@ export class Hud {
       e.clock.hidden = false;
       e.clock.textContent = c.clock.startTime ? ` · ${tr("hud.clock", { time: clockLabel(c.clock.startTime, s.clock) })}` : ` · ${tr("hud.elapsed", { min: Math.round(s.clock) })}`;
     } else e.clock.hidden = true;
+    const next = c.clock.mode === "simulated" && !s.finished ? game.session.session.nextEvent() : null;
+    e.next.hidden = !next;
+    if (next) {
+      const label = tr("hud.next", { what: ct(next.name), min: Math.max(1, Math.ceil(next.inMinutes)) });
+      if (e.next.textContent !== label) e.next.textContent = label;
+      e.next.title = tr("hud.nextTitle");
+    }
 
     /* vitals strip */
     this.renderVitals(c);
@@ -534,6 +543,14 @@ export class Hud {
   /** Embodied: "readable" / "monitor-not-in-view" / other — whether the strip may show the monitor's live values. */
   private readableKey(): string {
     return this.app.game?.embodied?.screenKey() ?? "";
+  }
+
+  /** Wait until what the case waits for next (the learner's own wait: the clock moves, the staff's round follows). */
+  private waitForNext(): void {
+    const game = this.app.game;
+    const next = game?.session.session.nextEvent();
+    if (!game || !next || next.inMinutes <= 0) return;
+    game.session.act({ type: "advance-time", minutes: Math.ceil(next.inMinutes * 100) / 100 });
   }
 
   private renderVitals(c: CaseDefinition): void {

@@ -12,12 +12,13 @@
  * agrees by construction): goal, task, location, responsibility, held items, reservations, pending requests and
  * what blocks them.
  */
-import { anaesthetised, responsibleAnaesthetist, t, vitalsAt, type StaffPosition } from "@clinicalcraft/core";
+import { anaesthetised, openAlarm, responsibleAnaesthetist, t, vitalsAt, type StaffPosition } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { dropTractionAwayFromTable } from "./assist.js";
 import { positionOf, roleCardOf } from "../characters/roles.js";
 import { wordLine } from "../characters/voice.js";
 import { characterModel } from "./character-models.js";
+import { syncProcedureSupply } from "./procedure-supply.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 
@@ -45,8 +46,6 @@ export interface RoleState {
 const DONE = new Set(["done", "declined", "escalated"]);
 
 export class StaffAutonomy {
-  /** Alarms already answered (by `minute:vital`). */
-  private readonly answered = new Set<string>();
 
   constructor(private readonly k: SessionKernel) {}
 
@@ -56,6 +55,8 @@ export class StaffAutonomy {
     if (!k.state.started || k.state.finished) return;
     try {
       dropTractionAwayFromTable(k, id);
+      // equipment failing or brought in changes what the operator sees, whoever is looking
+      syncProcedureSupply(k, id);
       if (k.studies.available()) await k.studies.afterLearner(id, signal);
       await this.answerAlarm(id, signal);
     } catch (err) {
@@ -63,47 +64,79 @@ export class StaffAutonomy {
     }
   }
 
-  /** The responsible anaesthetist answers a new critical alarm of the anaesthetised patient: at the patient, said. */
+  /**
+   * The responsible anaesthetist's response to critical alarms, one episode each in the record (`alarm-response`):
+   * a new alarm is detected; they go to the patient with their own body; the world must confirm them there before
+   * anyone hears "I'm at the patient" (`arrived`). A walk that fails — a locked door, no route — is recorded with its
+   * reason (`blocked`) and said once, and the walk is tried again every round until it succeeds; an alarm that is no
+   * longer critical closes its episode (`cleared`). A save and resume replays the episodes: an arrival already said is
+   * never said again, and a blocked responder keeps trying.
+   */
   private async answerAlarm(id: string, signal: AbortSignal): Promise<void> {
     const k = this.k;
     const c = k.caseDef;
     const e = k.embodied;
-    if (!e || !anaesthetised(c, k.state)) return;
+    if (!e) return;
+    const v = vitalsAt(c, k.state);
+    const critical = v.alarms.filter((a) => a.level === "critical");
+    // an alarm no longer critical ends its episode (a recurrence is a new one)
+    for (const ep of k.state.alarms ?? []) if (ep.stage !== "cleared" && !critical.some((a) => a.vital === ep.vital)) k.dispatch({ type: "alarm-response", alarm: { op: "cleared", vital: ep.vital }, by: "system" }, id);
+    if (!anaesthetised(c, k.state)) return;
     const staffId = responsibleAnaesthetist(c, k.state);
     const patient = e.patientId();
     if (!staffId || !patient) return;
     const actorId = `staff:${staffId}`;
     if (!e.world().actor(actorId)) return;
-    const v = vitalsAt(c, k.state);
-    const critical = v.alarms.filter((a) => a.level === "critical");
-    const fresh = critical.filter((a) => !this.answered.has(`${a.vital}`));
-    // an alarm that has cleared may be answered again when it recurs
-    for (const key of [...this.answered]) if (!critical.some((a) => a.vital === key)) this.answered.delete(key);
-    if (!fresh.length) return;
-    for (const a of fresh) this.answered.add(a.vital);
-    if (!e.world().checkSpatial(actorId, { tool: "examine", kind: "examine" }).ok) await e.act({ agent: "attending", submission: id, signal }, { actorId, operation: "navigate", goal: { kind: "interact", id: patient }, onBehalfOf: PRIMARY_ACTOR }, signal);
+    for (const a of critical) if (!openAlarm(k.state, a.vital)) k.dispatch({ type: "alarm-response", alarm: { op: "detect", vital: a.vital, value: Math.round(a.value), by: staffId }, by: "system" }, id);
+    const pending = critical.filter((a) => openAlarm(k.state, a.vital)?.stage !== "arrived");
+    if (!pending.length) return;
     const L = k.locale;
     const staff = k.facility?.staff.find((s) => s.id === staffId);
     const name = staff ? t(staff.name, L) : staffId;
-    const vitals = fresh.map((a) => `${a.vital.toUpperCase()} ${Math.round(a.value)}`).join(", ");
-    const template = rt(L, "staff.alarm.answered", { vitals });
-    // the anaesthetist's own words when characters are model-driven (grounded in the alarm; else the template)
+    const vitals = pending.map((a) => `${a.vital.toUpperCase()} ${Math.round(a.value)}`).join(", ");
+    const atPatient = () => e.world().checkSpatial(actorId, { tool: "examine", kind: "examine" }).ok;
+    let reason: string | null = null;
+    if (!atPatient()) {
+      const r = await e.act({ agent: "attending", submission: id, signal }, { actorId, operation: "navigate", goal: { kind: "interact", id: patient }, onBehalfOf: PRIMARY_ACTOR }, signal);
+      if (signal.aborted) return;
+      if (r.status !== "completed" || !atPatient()) reason = (r.message || rt(L, "staff.alarm.noWay")).split("\n")[0]!;
+    }
+    if (reason) {
+      // not there: recorded with its reason, said once per new reason; the walk is tried again next round
+      const fresh = pending.filter((a) => openAlarm(k.state, a.vital)?.reason !== reason);
+      for (const a of fresh) k.dispatch({ type: "alarm-response", alarm: { op: "blocked", vital: a.vital, by: staffId, reason }, by: "system" }, id);
+      if (fresh.length) {
+        const text = await this.line(staffId, name, rt(L, "staff.alarm.blocked", { vitals, reason }), "a new critical alarm on the monitor of the anaesthetised patient you are responsible for; you cannot get to the patient", [`critical alarm: ${vitals}`, `you cannot get to the patient: ${reason}`], signal);
+        k.speakLine(id, { agent: "attending", speaker: name, text, grounded: [], staffId });
+        k.conversations.addDialogue({ who: "attending", speaker: name, text });
+      }
+      return;
+    }
+    // the world has them at the patient: now, and only now, it is said
+    for (const a of pending) k.dispatch({ type: "alarm-response", alarm: { op: "arrived", vital: a.vital, by: staffId }, by: "system" }, id);
+    const text = await this.line(staffId, name, rt(L, "staff.alarm.answered", { vitals }), "a new critical alarm on the monitor of the anaesthetised patient you are responsible for; you are now at the patient", [`critical alarm: ${vitals}`, "you are at the patient, checking"], signal);
+    k.speakLine(id, { agent: "attending", speaker: name, text, grounded: [], staffId });
+    k.conversations.addDialogue({ who: "attending", speaker: name, text });
+  }
+
+  /** A staff line: the template, or the speaker's own words when characters are model-driven and grounded. */
+  private async line(staffId: string, name: string, template: string, intent: string, facts: string[], signal: AbortSignal): Promise<string> {
+    const k = this.k;
+    const staff = k.facility?.staff.find((s) => s.id === staffId);
     const worded = await wordLine({
       speaker: name,
-      card: roleCardOf(c, k.facility, staffId),
-      intent: "a new critical alarm on the monitor of the anaesthetised patient you are responsible for; you are now at the patient",
-      facts: [`critical alarm: ${vitals}`, "you are at the patient, checking"],
+      card: roleCardOf(k.caseDef, k.facility, staffId),
+      intent,
+      facts,
       template,
-      locale: L,
+      locale: k.locale,
       model: characterModel(k, staff?.role ?? "attending"),
       timeoutMs: k.settings.characters.timeoutMs,
-      staffNames: (k.facility?.staff ?? []).map((s) => t(s.name, L)),
+      staffNames: (k.facility?.staff ?? []).map((s) => t(s.name, k.locale)),
       signal,
     });
     if (worded.refused && k.settings.characters.engine === "llm") k.recorder?.record("diagnostic", { agent: "attending", source: "characters", detail: [JSON.stringify({ source: "line", speaker: staffId, refused: worded.refused })] });
-    const text = worded.text;
-    k.speakLine(id, { agent: "attending", speaker: name, text, grounded: [], staffId });
-    k.conversations.addDialogue({ who: "attending", speaker: name, text });
+    return worded.text;
   }
 
   /** Every staff member's role state now (derived: a reload agrees). */

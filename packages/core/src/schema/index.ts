@@ -6,3 +6,4 @@ export * from "./procedure.js";
 export * from "./team.js";
 export * from "./study.js";
 export * from "./anaesthesia.js";
+export * from "./alarm.js";

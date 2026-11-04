@@ -92,6 +92,8 @@ export { ENGINE_VERSION } from "./version.js";
 // new investigations (docs/STUDIES.md)
 export { phaseReached, reachPhase, recordAvailability, type RecordState } from "./records.js";
 export { caseData, datumStatus, type DatumStatus } from "./datum.js";
+export { applyAlarm, openAlarm, type AlarmResult } from "./alarm.js";
+export { nextEvent, pendingEvents, type PendingEvent } from "./next-event.js";
 export { anaesthetised, applyAnaesthesia, canLeaveAnaesthetisedPatient, responsibleAnaesthetist, type AnaesthesiaResult } from "./anaesthesia.js";
 export { applyStudy, BEDSIDE_COLLECTORS, DEPARTMENT_COLLECTORS, evaluateStudy, OPERATIVE_IMAGING, operativeImagingAsked, seeded, studyCategory, studyCollectors, studyObservations, studyOrderBlock, studyProfile, studyStatus, unmetPrerequisites, type StudyResult } from "./study.js";
 

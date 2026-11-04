@@ -92,14 +92,17 @@ export function destinationOf(host: EffectsHost, request: WorldActionRequest): P
 
 /**
  * How the patient travels (EMBODIED §8.4): the trolley they lie on while they go (returned), or on foot (null).
- * The patient's posture now, where they go and their posture there are three different things: a patient whom
- * clinical state has standing (an outpatient, `walks()`) gets up from a scanner table or a couch and walks
- * there upright, lying down only on arrival; anyone else travels lying on their own trolley when they lie now
- * or will lie there — and walks when there is no trolley free to lie on (a couch is no trolley): a body is never
- * carried lying through the air.
+ * One mobility assessment decides, the same as for a walk together (`walkProblem`, `escortProblem`): a patient who
+ * cannot walk — lying by clinical state, unable to respond, too unwell — travels only lying on a trolley at hand
+ * (`transportPatient` refuses without one: never upright). A patient who can walk and whom clinical state has
+ * standing (an outpatient, `walks()`) gets up from a scanner table or a couch and walks there upright, lying down
+ * only on arrival; anyone else travels lying on their own trolley when they lie now or will lie there, and walks
+ * when there is no trolley free to lie on (a couch is no trolley): a body is never carried lying through the air.
  */
 function trolleyFor(host: EffectsHost, st: PatientPlaceState, target: PatientTarget): EntityId | null {
   const body = host.d.patient;
+  // cannot walk: a trolley at hand, or nothing (the transport waits for one)
+  if (body.walkProblem(st)) return trolleyAtHand(host, st) && st.trolley && !host.busy.get(st.trolley) ? st.trolley : null;
   if (body.walks(st) || !trolleyAtHand(host, st)) return null;
   // lying now, or lying where they go (a bed space: the clinical posture there)
   const lying = body.posture(st) === "lying" || (target.posture ? target.posture === "lying" : body.clinicalPostureOf(st) === "lying");
@@ -228,6 +231,9 @@ export async function transportPatient(host: TransportHost, request: WorldAction
   if (!target) return failed("TARGET_NOT_FOUND", worldMessage("pre.unknownDestination", L, { destination: body.describe(dest) }));
   if (sameTarget(st, target)) return { status: "completed", message: worldMessage("ok.patientThere", L, { patient: name, place: target.name }), events: [] };
   const trolley = trolleyFor(host, st, target);
+  // the same mobility assessment as a walk together: a patient who cannot walk goes lying on a trolley, or not at all
+  const unable = body.walkProblem(st);
+  if (unable && !trolley) return failed("PRECONDITION_FAILED", `${worldMessage(`pre.cannotWalk.${unable}`, L, { patient: name })} ${worldMessage("pre.needsTrolley", L, { patient: name })}`, { hint: null });
   if (trolley !== st.trolley) target = resolveTarget(deps, dest, trolley) ?? target;
   const plan = backend.plan({ actorId: actor.id, from: actor.pose, goal: target.stand, role: actor.role, accessibleOnly: true });
   if (!plan.ok) return failed(plan.code, plan.message, { hint: null });

@@ -20,6 +20,8 @@ export interface FieldView {
   pressure: number;
   /** The laparoscope shows the field. */
   inView: boolean;
+  /** What the equipment supplies (a picture, gas): the reason a field is dark when it is the equipment's. */
+  supply: { image: boolean; gas: boolean };
   /** Organs and parts in view, by name (a liver is recognisable; which duct is which is not). */
   organs: { id: string; name: LocalizedText }[];
   tubes: {
@@ -87,6 +89,7 @@ export function observeField(def: ProcedureDefinition, s: ProcedureState, view: 
     insufflated: s.insufflated,
     pressure: s.pressure,
     inView: fieldOpen(s),
+    supply: { image: s.supply?.image !== false, gas: s.supply?.gas !== false },
     organs: open ? def.anatomy.filter((st) => !isTubular(st) && isVisible(def, s, st, open)).map((st) => ({ id: st.id, name: st.name })) : [],
     tubes: open
       ? s.handles.flatMap((h) => {

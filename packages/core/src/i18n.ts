@@ -129,6 +129,9 @@ export const CAPABILITY_LABELS: Readonly<Record<string, { "zh-CN": string; en: s
   surgery: { "zh-CN": "手术室", en: "an operating theatre" },
   anesthesia: { "zh-CN": "麻醉机", en: "an anaesthesia machine" },
   endoscopy: { "zh-CN": "内镜室", en: "an endoscopy suite" },
+  "endoscopic-camera": { "zh-CN": "腹腔镜摄像系统", en: "a laparoscopic camera" },
+  "light-source": { "zh-CN": "冷光源", en: "a light source" },
+  insufflator: { "zh-CN": "气腹机", en: "an insufflator" },
   dialysis: { "zh-CN": "血液透析", en: "haemodialysis" },
   // Teaching & records
   "anatomy-atlas": { "zh-CN": "解剖图谱", en: "the anatomy atlas" },

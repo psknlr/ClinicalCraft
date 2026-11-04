@@ -102,6 +102,20 @@ longer held (a colleague left the table with it) is re-grasped first, once, and 
 gallbladder-infundibulum has gone: re-grasping before the next step."); the re-grasp is not a reference
 step, so the walkthrough goes on from where it was (`lostTraction`, `session/autopilot.ts`).
 
+**Equipment.** The picture and the pneumoperitoneum depend on the equipment (`ProcedureState.supply`,
+`PROCEDURE_SUPPLY`): the image needs a working camera and light source (`endoscopic-camera`, `light-source`), the
+gas a working insufflator (`insufflator`). In an embodied session the session records what the equipment in the
+patient's room supplies (the `procedure-supply` action, by the system; event `procedure.supply`) — before every
+operative step, when the field is looked at and on the staff's own round (`session/procedure-supply.ts`). A device
+out of service supplies nothing; a backup brought into the room supplies exactly the capabilities it has (a
+stand-alone insufflator restores the gas, not the picture); a facility that does not model a capability is not
+limited by it. Without a picture the field is dark (`inView` false; `observe_field`: "No picture: the laparoscopic
+camera or light source is out of service …"; a step that needs sight is refused with the same reason); without
+gas insufflation is refused ("There is no CO₂ supply …") and a pneumoperitoneum already made is lost at once
+(`deflated`). Supply changes are in the record but are not operative steps (they number no `op-<n>`). SurgeryCraft's
+OR towers provide all three; the spare tower in the equipment store, fetched by the circulating nurse, brings
+them back.
+
 A step that is **physically impossible** is rejected, with nothing changed. For example:
 
 - out of reach, or the wrong instrument;

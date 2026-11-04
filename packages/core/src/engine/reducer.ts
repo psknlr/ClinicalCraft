@@ -27,6 +27,7 @@ import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./coun
 import { applyStudy } from "./study.js";
 import { reachPhase, recordAvailability } from "./records.js";
 import { applyAnaesthesia } from "./anaesthesia.js";
+import { applyAlarm } from "./alarm.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -406,6 +407,37 @@ function onAnaesthesia(ctx: Ctx, a: Action<"anaesthesia">): Outcome {
   return accepted();
 }
 
+/**
+ * The operation's equipment supply (docs/PROCEDURE.md "Equipment"): no picture without a working camera and light
+ * source; without gas the pneumoperitoneum is lost at once. The same supply again changes nothing.
+ */
+function onProcedureSupply(ctx: Ctx, a: Action<"procedure-supply">): Outcome {
+  const p = ctx.s.procedure ?? createProcedureState();
+  const now = { image: p.supply?.image !== false, gas: p.supply?.gas !== false };
+  if (now.image === a.supply.image && now.gas === a.supply.gas) return { kind: "unchanged" };
+  const next = structuredClone(p);
+  next.supply = { image: a.supply.image, gas: a.supply.gas };
+  const deflated = !a.supply.gas && next.insufflated;
+  if (deflated) {
+    next.insufflated = false;
+    next.pressure = 0;
+  }
+  ctx.s.procedure = next;
+  ctx.events.push({ type: "procedure.supply", image: a.supply.image, gas: a.supply.gas, ...(a.supply.source ? { source: a.supply.source } : {}), ...(deflated ? { deflated: true as const } : {}) });
+  return accepted();
+}
+
+/** A step of a staff member's response to a critical alarm (`engine/alarm.ts`); an unchanged one changes nothing. */
+function onAlarmResponse(ctx: Ctx, a: Action<"alarm-response">): Outcome {
+  const r = applyAlarm(ctx.s, a.alarm);
+  if (!r.ok) return rejected(r.code, r.message);
+  if (!r.changed) return { kind: "unchanged" };
+  ctx.s.alarms = r.alarms;
+  const by = "by" in a.alarm ? a.alarm.by : undefined;
+  ctx.events.push({ type: "alarm.response", op: a.alarm.op, id: r.id, vital: a.alarm.vital, ...(by ? { by } : {}), ...(a.alarm.op === "blocked" ? { reason: a.alarm.reason } : {}) });
+  return accepted();
+}
+
 /** An entry of the surgical count's record (docs/TEAM.md §4.3), by item identity. */
 function onCount(ctx: Ctx, a: Action<"count">): Outcome {
   const { c, s } = ctx;
@@ -470,6 +502,10 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onStudy(ctx, a);
     case "anaesthesia":
       return onAnaesthesia(ctx, a);
+    case "alarm-response":
+      return onAlarmResponse(ctx, a);
+    case "procedure-supply":
+      return onProcedureSupply(ctx, a);
     case "finish":
       return onFinish(ctx);
   }

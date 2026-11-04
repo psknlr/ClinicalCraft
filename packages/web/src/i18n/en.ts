@@ -119,6 +119,8 @@ const en: Messages = {
   "hud.savedNow": "Progress and builds saved on this device",
   "hud.saveFailed": "Local saving is blocked here; export a save from the pause menu",
   "hud.clock": "Sim time {time}",
+  "hud.next": "⏭ {what} in {min} min",
+  "hud.nextTitle": "Wait until it is ready: the case clock moves on, and the staff carry on their work",
   "hud.elapsed": "T+{min} min",
   "hud.controls.html": "<kbd>W A S D</kbd> move　<kbd>Space</kbd> jump　<kbd>Shift</kbd> sprint　<kbd>E</kbd> interact　<kbd>T</kbd> talk　<kbd>B</kbd> bag",
   "hud.vitalsTitle": "Vital signs · press V for the monitor",
