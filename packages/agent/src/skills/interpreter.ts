@@ -18,7 +18,8 @@
  *   inside a world operation (`APPROVAL_DENIED`, `HOOK_BLOCKED`) — is final:
  *   never retried or recovered (the step's `onError` still decides whether
  *   the skill goes on, e.g. to reset a device); a cancellation stops the
- *   skill (C9);
+ *   skill (C9) — the same for a recovery's own walk or cart move: refused,
+ *   it is never asked again by another strategy or a later round;
  * - the interpreter yields to the event loop before every step, so an interrupt
  *   or a timer is never starved by a long or recursive skill (C10);
  * - predicates see only what the learner can see: `vital` is evaluated
@@ -537,14 +538,23 @@ async function runStep(skill: SkillDefinition, step: SkillStep, scope: Scope, r:
     if (recoveries >= 3) return { record };
     const recovered = await recover(skill, step, failure, r);
     if (!recovered) return { record };
+    // A recovery act refused by a person or a hook, or cancelled, is final too (C9): never asked again, the
+    // skill stops on a cancellation; the step's `onError` decides after a refusal.
+    if ("final" in recovered) return { record, final: recovered.final };
     recoveries++;
     (record.recovery ??= []).push(`${recovered.strategy}@${failure.code}`);
     if (recovered.rebind) return { record, rebind: recovered.rebind };
   }
 }
 
-/** Apply the first applicable recovery strategy: retry the same call, or rebind a device for the rest of the skill; null when none applies. */
-async function recover(skill: SkillDefinition, step: SkillStep, f: FailureInfo, r: SkillRunner): Promise<{ strategy: string; rebind?: StepOutcome["rebind"] } | null> {
+/**
+ * Apply the first applicable recovery strategy: retry the same call, or rebind a device for the rest of the skill;
+ * null when none applies. A recovery call refused by a person or a hook, or cancelled, ends the recovery at once
+ * (`final`): no other strategy, and no later round, asks for it again (C9).
+ */
+async function recover(skill: SkillDefinition, step: SkillStep, f: FailureInfo, r: SkillRunner): Promise<{ strategy: string; rebind?: StepOutcome["rebind"] } | { final: "denied" | "cancelled" } | null> {
+  /** The final kind of a recovery call that failed (null: an ordinary failure, the next strategy may apply). */
+  const finalOf = (call: SkillToolCall, args: Record<string, unknown>) => (call.ok ? null : r.signal?.aborted ? "cancelled" : finalKind(call, failureOf(call, args)));
   for (const rec of skill.recovery ?? []) {
     if (!rec.on.includes(f.code) && !rec.on.includes("*")) continue;
     switch (rec.strategy) {
@@ -553,15 +563,24 @@ async function recover(skill: SkillDefinition, step: SkillStep, f: FailureInfo, 
         const cart = f.hint?.goal.kind === "interact" ? f.hint.goal.id : null;
         const patient = r.patientId();
         if (!cart || !patient || (f.reason !== "provider-not-at-bedside" && f.code !== "PRECONDITION_FAILED") || cart === patient) break;
-        const go = await r.callTool("navigate_to", { goal: f.hint!.goal });
+        const walk = { goal: f.hint!.goal };
+        const go = await r.callTool("navigate_to", walk);
+        const goFinal = finalOf(go, walk);
+        if (goFinal) return { final: goFinal };
         if (!go.ok) break;
-        const moved = await r.callTool("interact_object", { target: cart, operation: "move_to", parameters: { goal: { kind: "interact", id: patient } } });
+        const wheel = { target: cart, operation: "move_to", parameters: { goal: { kind: "interact", id: patient } } };
+        const moved = await r.callTool("interact_object", wheel);
+        const movedFinal = finalOf(moved, wheel);
+        if (movedFinal) return { final: movedFinal };
         if (moved.ok) return { strategy: rec.strategy };
         break;
       }
       case "replan": {
         if (!f.hint) break;
-        const go = await r.callTool("navigate_to", { goal: f.hint.goal });
+        const walk = { goal: f.hint.goal };
+        const go = await r.callTool("navigate_to", walk);
+        const goFinal = finalOf(go, walk);
+        if (goFinal) return { final: goFinal };
         if (go.ok) return { strategy: rec.strategy };
         break;
       }

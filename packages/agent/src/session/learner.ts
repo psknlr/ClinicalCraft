@@ -276,7 +276,7 @@ export class LearnerPath {
     let args = tool ? actionToolArgs(k.caseDef, action, L) : null;
     if (tool && args) {
       const pre = await this.preToolUse(id, tool, args, signal);
-      if (!pre.ok) return null;
+      if (!pre.ok || this.interrupted(id, signal)) return null;
       if (pre.updated) {
         const mapped = actionFromToolInput(k.caseDef, action, pre.input, L, k.state.phase);
         if (!mapped.ok) {
@@ -292,7 +292,7 @@ export class LearnerPath {
         k.emit(id, code ? { type: "error", message: early.output, code } : { type: "warning", message: early.output });
         return null;
       }
-      if (await this.authorizeTool(id, tool, args, pre.approved, signal)) return null;
+      if ((await this.authorizeTool(id, tool, args, pre.approved, signal)) || this.interrupted(id, signal)) return null;
     }
     if (!["start", "set-phase", "note", "flag"].includes(action.type)) k.ensureStarted(id);
     // Embodied: the body may have moved while the approval was pending — re-check right before the engine commit.
@@ -392,6 +392,16 @@ export class LearnerPath {
     return { ok: true, input: validated.value as Record<string, unknown>, updated: true, approved: pre.approved };
   }
 
+  /**
+   * Was the learner's act interrupted while its hooks ran or the gate decided? Then nothing is committed (as on a
+   * model's tool path, `executeToolCall`) and the learner is told it was cancelled.
+   */
+  private interrupted(id: string, signal?: AbortSignal): boolean {
+    if (!signal?.aborted) return false;
+    this.k.emit(id, { type: "warning", message: rt(this.k.locale, "action.cancelled") });
+    return true;
+  }
+
   /** The approval gate for a learner tool use; returns a refusal output or null when allowed. */
   private async authorizeTool(id: string, tool: ToolDefinition<any>, args: Record<string, unknown>, hookApproved: boolean, signal?: AbortSignal): Promise<ToolOutput | null> {
     return (await this.authorizeToolDetailed(id, tool, args, hookApproved, signal))?.refusal ?? null;
@@ -442,6 +452,9 @@ export class LearnerPath {
     if (!validated.ok) return { output: { ok: false, output: rt(L, "tool.invalidArgs", { tool: name, errors: validated.errors.join("; ") }) }, status: "invalid" };
     const pre = await this.preToolUse(id, tool, validated.value as Record<string, unknown>, signal);
     if (!pre.ok) return { output: pre.refusal, status: "blocked" };
+    // interrupted while the hooks ran (or, below, while the gate decided): the tool never runs — as on a model's tool path
+    const aborted = { output: { ok: false, output: rt(L, "tool.aborted") }, status: "interrupted" } as const;
+    if (signal?.aborted) return aborted;
     const input = pre.input;
     const ctx = () => k.tools.context("learner", id, signal, extra);
     // Refused before the gate (no approval prompt for a call that cannot run, e.g. a locked decision).
@@ -449,6 +462,7 @@ export class LearnerPath {
     if (early) return { output: early, status: "error" };
     const refused = await this.authorizeToolDetailed(id, tool, input, pre.approved, signal, ctx());
     if (refused) return { output: refused.refusal, status: refused.status };
+    if (signal?.aborted) return aborted;
     if (!tool.readOnly) k.ensureStarted(id);
     let out: ToolOutput;
     try {

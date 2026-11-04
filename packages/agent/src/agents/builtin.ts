@@ -272,13 +272,17 @@ export function builtinAgent(name: string): AgentProfile | undefined {
 
 /**
  * Merge agent profiles by name: built-in < user < project (later sources win;
- * within one source the last definition wins).
+ * within one source the last definition wins). Names are lower-cased, as the
+ * router addresses agents (`Nurse` overrides the built-in `nurse`).
  */
 export function mergeAgentProfiles(...lists: readonly (readonly AgentProfile[] | undefined)[]): AgentProfile[] {
   const rank: Record<AgentProfile["source"], number> = { builtin: 0, user: 1, project: 2 };
   const byName = new Map<string, AgentProfile>();
   const all = lists.flatMap((l) => l ?? []).map((p, i) => ({ p, i }));
   all.sort((a, b) => rank[a.p.source] - rank[b.p.source] || a.i - b.i);
-  for (const { p } of all) byName.set(p.name, { ...p, tools: [...p.tools] });
+  for (const { p } of all) {
+    const name = p.name.toLowerCase();
+    byName.set(name, { ...p, name, tools: [...p.tools] });
+  }
   return [...byName.values()];
 }

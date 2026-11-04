@@ -168,11 +168,13 @@ export class DefinitionError extends Error {
 /**
  * Parse an agent profile. Defaults: role `npc`, tools `[]`, model/provider
  * `inherit`, maxToolRounds 4, injectMemory = role !== "npc". `defaultName`
- * (e.g. the file's basename) is used when the frontmatter has no `name`.
+ * (e.g. the file's basename) is used when the frontmatter has no `name`; the
+ * name is lower-cased.
  */
 export function parseAgentMarkdown(text: string, source: AgentProfile["source"], defaultName?: string): AgentProfile {
   const { data, body } = parseFrontmatter(text);
-  const name = asString(data.name)?.trim() || defaultName;
+  // Lower-cased: `@`, `/talk` and the router address agents in lower case (`Nurse.md` overrides the built-in nurse).
+  const name = (asString(data.name)?.trim() || defaultName)?.toLowerCase();
   if (!name) throw new DefinitionError("agent definition is missing `name`");
   if (!NAME_RE.test(name)) throw new DefinitionError(`invalid agent name "${name}" (letters, digits, "-" and "_" only)`);
   const roleRaw = asString(data.role)?.trim() ?? "npc";
@@ -217,13 +219,15 @@ export function parseAgentMarkdown(text: string, source: AgentProfile["source"],
 /**
  * Parse a custom slash command. Frontmatter: `description`, `argument-hint`
  * (or `argumentHint`), `agent`. Without a description the first body line is used.
+ * The name is lower-cased.
  */
 export function parseCommandMarkdown(name: string, text: string, source: SlashCommand["source"]): SlashCommand {
   const { data, body } = parseFrontmatter(text);
   const template = body.trim();
   const firstLine = template.split("\n").find((l) => l.trim())?.replace(/^#+\s*/, "").trim() ?? "";
   const command: SlashCommand = {
-    name,
+    // Lower-cased: typed command names are (`/OSCE` runs `OSCE.md`).
+    name: name.toLowerCase(),
     description: asString(data.description)?.trim() || (firstLine.length > 80 ? `${firstLine.slice(0, 77)}...` : firstLine),
     source,
     template,

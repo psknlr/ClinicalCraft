@@ -145,6 +145,32 @@ describe("interpreter mechanics (a scripted tool path)", () => {
     expect(log).toEqual([`examine {"finding_id":"heart"}`, `navigate_to {"goal":${JSON.stringify(goal)}}`, `examine {"finding_id":"heart"}`]);
   });
 
+  it("a recovery's own act refused or cancelled is final: never asked again by another strategy or round; a cancel stops the skill", async () => {
+    // administer_treatment's shape: the drug needs a cart at the bedside; recovery fetch-equipment, then replan
+    const s = def({
+      steps: [{ id: "give", tool: "intervene", args: { intervention_id: "aspirin" } }],
+      recovery: [
+        { on: ["SPATIAL_REQUIREMENT_UNMET", "PRECONDITION_FAILED"], strategy: "fetch-equipment" },
+        { on: ["SPATIAL_REQUIREMENT_UNMET"], strategy: "replan" },
+      ],
+    });
+    const hint = { goal: { kind: "interact", id: "eq:defib" }, label: "the defibrillator" };
+    const notAtBedside = () => fail("SPATIAL_REQUIREMENT_UNMET", "error", { reason: "provider-not-at-bedside", hint });
+    const walked = (): SkillToolCall => ({ ok: true, output: { ok: true, output: "walked" }, status: "ok" });
+    const wheel = `interact_object {"target":"eq:defib","operation":"move_to","parameters":{"goal":{"kind":"interact","id":"patient:bay-1"}}}`;
+    // the learner refused wheeling the cart over: the step fails (onError decides), nothing is asked again
+    const denied: string[] = [];
+    const refused = await runSkill(s, {}, runner([notAtBedside, walked, () => fail("DENIED", "denied")], denied));
+    expect(refused.status).toBe("aborted");
+    expect(denied.filter((l) => l === wheel)).toHaveLength(1);
+    expect(denied).toHaveLength(3);
+    // the learner cancelled it: the skill stops, cancelled
+    const cancelled: string[] = [];
+    const stopped = await runSkill(s, {}, runner([notAtBedside, walked, () => fail("CANCELLED", "cancelled")], cancelled));
+    expect(stopped.status).toBe("cancelled");
+    expect(cancelled).toHaveLength(3);
+  });
+
   it("skips a step whose `when` does not hold, continues after onError: continue, and fails on an unmet postcondition", async () => {
     const s = def({
       params: { finding: { type: "finding" } },

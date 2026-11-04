@@ -28,6 +28,11 @@ describe("built-in agents", () => {
     const merged = mergeAgentProfiles(BUILTIN_AGENTS, [project, user]);
     expect(merged.find((a) => a.name === "nurse")!.description).toBe("project nurse");
   });
+
+  it("merges profile names case-insensitively: a project `Nurse` overrides the built-in nurse", () => {
+    const merged = mergeAgentProfiles(BUILTIN_AGENTS, [{ ...builtinAgent("nurse")!, name: "Nurse", source: "project" as const, description: "project Nurse" }]);
+    expect(merged.filter((a) => a.name.toLowerCase() === "nurse").map((a) => [a.name, a.description])).toEqual([["nurse", "project Nurse"]]);
+  });
 });
 
 describe("buildSystemSections", () => {

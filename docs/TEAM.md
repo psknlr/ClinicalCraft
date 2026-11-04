@@ -59,7 +59,7 @@ Duties:
 `checkTeamDefinition` (part of `checkCaseIntegrity`) checks the team on its own:
 - known phases;
 - each member listed once, with exactly one surgeon;
-- somebody circulates;
+- somebody circulates, and a team that keeps a count has a member who counts;
 - needs are for members;
 - absent members are members, and the surgeon is never absent;
 - relief and cover colleagues are not members (and nobody covers the surgeon);
@@ -118,7 +118,7 @@ Everything is plain JSON (`TeamState`), saved as a whole: `TeamCheckpoint`, form
 - **Tasks**, per member: `supply` (see that someone gets an item), `deliver`, `count`, `check` (a count discrepancy
   seen through), `wound` (the simulated surgeon checks the wound). Each has a status, the round it last changed, the
   colleagues already asked, the act counter, whether the result was verified, and the reason.
-- **Claims** map an item to the task carrying it. Two tasks never carry one item: the first claim holds.
+- **Claims** map an item to the task carrying it. Two tasks never carry one item: the first claim holds, and a task that ends releases its claim.
 - **The count's record** (`CountLedger`): the baseline, when the count fell due, when a hold was asked for, when it
   was settled, the outcome, the holds asked for, and whether closure began on a hold.
 - **Observations**, per member, each with an evidence reference.
@@ -163,8 +163,9 @@ The scenario's hidden set-up reaches a policy only through the world.
    to it or picks it up. Called in from outside (a relief colleague), she walks to the room first, then looks.
 3. **Holding it:** the person must be at the table. If they are not, she waits (`waitRounds`), then declines
    (`recipient-absent`). Otherwise she reaches them (`navigate` follow) and does `hand_over {to}`. A refusal for reach
-   sends her where the world points; full hands become a decline (`hands-full`). She then reports ("Needle holder
-   passed to the surgeon.").
+   sends her where the world points; the person's full hands become a decline (`hands-full`); her own, when she picks
+   it up, a decline another colleague can answer (`own-hands-full`). She then reports ("Needle holder passed to the
+   surgeon.").
 
 ### 4.3 The count, item by item
 
@@ -195,12 +196,13 @@ judge closure on it.
 
 When the count's `when` holds (Case 126: the specimen is out), the member who **counts** counts the items the team in
 the room can account for and says it ("Count of swabs: 4 of 5.", "Count of swabs: 5 of 5, and 1 not in the count."):
-the scheduler records it in the case's count. The circulating nurse then:
+the scheduler records it in the case's count. The circulating nurse then (one who counts herself hears her own count
+the same way):
 
 | the count | what follows |
 |---|---|
 | every expected item, nothing else | told to the surgeon ("Count of swabs correct: 5 of 5."), with no hold |
-| an item missing, or one not in the count | **the line stops**: she asks the surgeon to *hold closure and check the wound* (a `request` with `hold`). The surgeon reads it back and she confirms (check-back). An item not in the count she takes off the field and documents as set aside. She **searches the room** — she walks to each place in `searchPlaces`, in order, and `search`es within reach. The places are the same whatever happened, so nothing points to where an item is. She stops early once every item is accounted for. She waits a while for the surgeon's wound check, then asks for a **recount** |
+| an item missing, or one not in the count | **the line stops**: she asks the surgeon to *hold closure and check the wound* (a `request` with `hold`). The surgeon reads it back and she confirms (check-back). An item not in the count she takes off the field and documents as set aside. She **searches the room** — she walks to each place in `searchPlaces`, in order, and `search`es within reach. The places are the same whatever happened, so nothing points to where an item is. She stops early once every item is accounted for. A place (or an item not in the count) the world will not let her get to is skipped, never reported searched: the recount decides. She waits a while for the surgeon's wound check (a declined hold is no wound check), then asks for a **recount** |
 | recount reconciled | the surgeon may close ("Recount correct: 5 of 5 swabs — you may close.") |
 | recount still not reconciled | **escalated** ("Still 4 of 5 swabs after searching the room — an X-ray before the patient leaves."), never pretended solved; the escalation is the nurse's in the record — and the count stays open until a clear scan excludes a retained swab |
 
@@ -226,7 +228,7 @@ searcher's hand, recorded as recovered.
 | piece | what it is |
 |---|---|
 | `team` op | `step`, `run {rounds?}` (until settled), `pause` (autonomy `step`), `resume` (`auto`), `surgeon {learner \| simulated}`, `reply {message, kind, text?, item?}`, `need {item, for?}` (the surgeon says what they need; the team takes it from there). A case without a team: `error` `no_team` |
-| replies | the learner answers only what was said to them (else `permission_denied`); a read-back about another item than asked (`item`, or named in its words) reads back nothing — the sender asks again |
+| replies | the learner answers only what was said to them (else `permission_denied`); a read-back about another item than asked (`item`, or named in its words) reads back nothing — the sender asks again; an answer is taken in, so the simulated surgeon (observer mode) never answers it again |
 | one scheduling path | the team takes its turn after every act of the learner (`user_message`, `clinical_action`, `world_action`, `external_tool_call`, `autopilot`) and after every step of the offline autopilot (`AutopilotHost.afterStep`): the browser, the learner, external agents and a headless run drive it the same way, and an autopilot never runs ahead of a team it is waiting for |
 | `team_event` | a message, a receipt, a task changed, or the scheduler's status (round, autonomy, surgeon) |
 | `ClinicalSession.team()` | the team as it stands (a `TeamCheckpoint`), for front-ends |

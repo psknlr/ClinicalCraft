@@ -1126,6 +1126,12 @@ export interface WorldRuntime {
   relocatePatient(destination: PatientDestination): PatientRelocation;
   /** Re-read the patient's clinical posture (after an intervention): the body's collider follows; true when the body changed. */
   refreshPatient(): boolean;
+  /**
+   * Where `transport_patient` with these parameters (`destination` / `capability`) would take the patient now — the
+   * provider (an equipment id), else the bed space — resolved as the transport resolves it; null: no patient, or
+   * nowhere known. Read only (permission rules name where the patient is taken).
+   */
+  transportTarget(parameters: Record<string, unknown>): { provider: EntityId | null; slot: string | null } | null;
 
   /* actions */
   execute(request: WorldActionRequest, signal?: AbortSignal): Promise<WorldActionResult>;

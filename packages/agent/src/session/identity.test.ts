@@ -92,4 +92,19 @@ describe("one room-aware resolver for a named colleague", () => {
     expect(parseMention("@nurse is the CBC back?", lookup, ["nurse", "patient"])).toBeNull();
     expect(parseMention("no mention here", lookup)).toBeNull();
   });
+
+  it("an @ mention by title keeps every word after the title as the message (English, Chinese without a space)", () => {
+    const lookup = (name: string) => {
+      const r = lookupStaff(facility, name, "or-7");
+      return r.kind === "one" ? r.staff.id : null;
+    };
+    expect(parseMention("@anaesthetist please give 2 mg midazolam", lookup)).toEqual({ found: "or-7.anaesthetist", text: "please give 2 mg midazolam" });
+    expect(parseMention("@the anesthesiologist, is the patient asleep?", lookup)).toEqual({ found: "or-7.anaesthetist", text: "is the patient asleep?" });
+    expect(parseMention("@scrub nurse, pass me the needle holder", lookup)).toEqual({ found: "or-7.scrub-nurse", text: "pass me the needle holder" });
+    expect(parseMention("@麻醉医生请给咪达唑仑2毫克", lookup)).toEqual({ found: "or-7.anaesthetist", text: "请给咪达唑仑2毫克" });
+    expect(parseMention("@洗手护士请把持针器递给我", lookup)).toEqual({ found: "or-7.scrub-nurse", text: "请把持针器递给我" });
+    expect(parseMention("@Nurse Lim pass me the needle holder", lookup)).toEqual({ found: "or-7.scrub-nurse", text: "pass me the needle holder" });
+    // a title opening a longer request is not a name
+    expect(lookupStaff(facility, "anaesthetist please give", "or-7").kind).toBe("none");
+  });
 });

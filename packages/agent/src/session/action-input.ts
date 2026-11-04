@@ -8,6 +8,7 @@
 import { historyTwin, matchHistory, ProcedureOpSchema, t, type CaseDefinition, type ClinicalAction, type LocalizedText } from "@clinicalcraft/core";
 import { resolveFinding, resolveHits, resolveIntervention, resolveInvestigation, strArg, unresolvedOutput, type Resolution } from "../tools/clinical.js";
 import { interventionLabel, investigationName } from "../tools/format.js";
+import { rt } from "./i18n.js";
 
 /** Tool arguments equivalent to a learner clinical action (for hooks and the approval gate). */
 export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale: string): Record<string, unknown> {
@@ -121,8 +122,18 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
     case "advance-time":
       return { ok: true, action: { ...action, minutes: Number(input.minutes) } };
     case "operate": {
+      // input the engine cannot read is refused — never the original step run after the gate judged this input
       const op = ProcedureOpSchema.safeParse(input);
-      return op.success ? { ok: true, action: { ...action, op: op.data } } : { ok: true, action };
+      return op.success ? { ok: true, action: { ...action, op: op.data } } : { ok: false, detail: rt(L, "op.invalid", { message: op.error.issues[0]?.message ?? "" }) };
+    }
+    case "study": {
+      if (action.study.op !== "order") return { ok: true, action };
+      // the study the gate judged (`order_study {code}`) is the one ordered
+      const code = strArg(input, "code");
+      if (!code) return refuse({ kind: "missing" }, (id) => id, ["code", "query"]);
+      const { indication: _previous, ...order } = action.study;
+      const indication = strArg(input, "indication");
+      return { ok: true, action: { ...action, study: { ...order, code, ...(indication ? { indication } : {}) } } };
     }
     case "hold":
       return { ok: true, action: { ...action, interventionId: strArg(input, "intervention_id") || action.interventionId, reason: strArg(input, "reason") || action.reason } };
@@ -134,7 +145,6 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
     case "flag":
     case "note":
     case "count":
-    case "study":
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":

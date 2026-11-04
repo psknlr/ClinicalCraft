@@ -29,6 +29,7 @@ export function checkTeamDefinition(c: CaseDefinition): Issue[] {
     if ((m.staff === "surgeon") !== m.duties.includes("surgeon")) issues.push(err(["team", "members", i, "duties"], `the surgeon (and only the surgeon) has the duty "surgeon"`));
   });
   if (!team.members.some((m) => m.duties.includes("circulate"))) issues.push(err(["team", "members"], `no member circulates (someone has to notice needs and ask)`));
+  if (team.count && !team.members.some((m) => m.duties.includes("count"))) issues.push(err(["team", "members"], `the team keeps a count but no member counts (the duty "count")`));
   (team.cover ?? []).forEach((m, i) => {
     if (members.has(m.staff)) issues.push(err(["team", "cover", i, "staff"], `"${m.staff}" is already a member of the team`));
     if (m.duties.includes("surgeon")) issues.push(err(["team", "cover", i, "duties"], `the surgeon is the learner: nobody covers "surgeon"`));

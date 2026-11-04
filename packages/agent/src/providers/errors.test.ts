@@ -43,6 +43,17 @@ describe("classifyHttpError", () => {
     expect(classifyHttpError(429, JSON.stringify({ error: { message: "slow down", code: "rate_limit_exceeded" } }))).toMatchObject({ kind: "rate_limit", retryable: true });
   });
 
+  it("keeps a 429 rate limit whose message links the billing page a retryable rate limit", () => {
+    const freeTier =
+      "Rate limit reached for gpt-4o-mini in organization org-abc on requests per min (RPM): Limit 3, Used 3, Requested 1. Please try again in 20s. " +
+      "Visit https://platform.openai.com/account/rate-limits to learn more. You can increase your rate limit by adding a payment method to your account at https://platform.openai.com/account/billing.";
+    expect(classifyHttpError(429, JSON.stringify({ error: { message: freeTier, type: "requests", code: "rate_limit_exceeded" } }))).toMatchObject({ kind: "rate_limit", retryable: true });
+    expect(classifyHttpError(429, JSON.stringify({ error: { message: freeTier } }))).toMatchObject({ kind: "rate_limit", retryable: true });
+    // the word itself still means a billing problem
+    expect(classifyHttpError(429, JSON.stringify({ error: { message: "Your account has a billing issue.", code: "rate_limit_exceeded" } }))).toMatchObject({ kind: "quota", retryable: false });
+    expect(classifyHttpError(403, JSON.stringify({ error: { message: "Check your billing details." } }))).toMatchObject({ kind: "quota", retryable: false });
+  });
+
   it("detects context-length errors from the message", () => {
     expect(classifyHttpError(400, JSON.stringify({ error: { message: "This model's maximum context length is 128000 tokens" } })).kind).toBe("context_exceeded");
     expect(classifyHttpError(400, JSON.stringify({ type: "error", error: { type: "invalid_request_error", message: "prompt is too long: 210000 tokens > 200000 maximum" } })).kind).toBe(

@@ -256,6 +256,12 @@ function holdTarget(args: ToolArgs, ctx: Pick<ToolContext, "caseDef" | "locale">
   return { id: r.id, name: interventionLabel(ctx.caseDef, r.id, ctx.locale) };
 }
 
+/** Rule spellings of a hold call: the intervention it resolves to (PROTOCOL §6), then the caller's spelling. */
+function holdSpecifiers(args: ToolArgs, ctx: Pick<ToolContext, "caseDef" | "locale">): string[][] {
+  const target = holdTarget(args, ctx);
+  return [[...new Set([...(target ? [target.id] : []), strArg(args, "intervention_id") || strArg(args, "query")])]];
+}
+
 const HOLD_SCHEMA = (text: "reason" | "reassessment", what: string) => ({
   type: "object",
   properties: {
@@ -279,6 +285,7 @@ const placeHold: ToolDefinition<ToolArgs> = {
   risk: () => "none",
   summarize: (args, ctx) => rt(ctx.locale, "sum.place_hold", { name: holdTarget(args, ctx)?.name ?? (strArg(args, "intervention_id") || strArg(args, "query")) }),
   specifier: (args) => strArg(args, "intervention_id") || strArg(args, "query"),
+  specifiers: holdSpecifiers,
   async run(args, ctx) {
     const L = ctx.locale;
     const target = holdTarget(args, ctx);
@@ -303,6 +310,7 @@ const releaseHold: ToolDefinition<ToolArgs> = {
   risk: () => "none",
   summarize: (args, ctx) => rt(ctx.locale, "sum.release_hold", { name: holdTarget(args, ctx)?.name ?? (strArg(args, "intervention_id") || strArg(args, "query")) }),
   specifier: (args) => strArg(args, "intervention_id") || strArg(args, "query"),
+  specifiers: holdSpecifiers,
   async run(args, ctx) {
     const L = ctx.locale;
     const target = holdTarget(args, ctx);

@@ -3,6 +3,7 @@ import { fileURLToPath } from "node:url";
 import { parseCase, type CaseDefinition, type CaseInput } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
 import { makeSession, msgsOf } from "./__fixtures__/harness.js";
+import { parseAgentMarkdown } from "./agents/markdown.js";
 import { loadMiniCase as loadMiniCaseWith } from "./__fixtures__/mini-case.js";
 import { BUILTIN_COMMANDS, commandDescription } from "./commands.js";
 import type { ApprovalDecision } from "./protocol.js";
@@ -200,6 +201,21 @@ describe("built-in commands", () => {
     const reply = msgsOf(events, "agent_message")[0]!;
     expect(reply.agent).toBe("nurse");
     expect(t.session.conversationOf("nurse")[0]!.content[0]).toEqual({ type: "text", text: "Please give me an SBAR handover about vitals now (vitals)." });
+  });
+
+  it("custom command and agent names are case-insensitive: /OSCE runs OSCE.md, @Triage reaches the Triage agent", async () => {
+    const triage = parseAgentMarkdown("---\ndescription: Triage desk\nrole: npc\n---\nYou are the triage nurse.", "project", "Triage");
+    const t = await makeSession({
+      agents: [triage],
+      commands: [{ name: "OSCE", description: "OSCE handover", source: "project", template: "Give me an SBAR about $ARGUMENTS.", agent: "nurse" }],
+    });
+    const run = await t.session.run({ type: "user_message", text: "/OSCE vitals" });
+    expect(msgsOf(run, "command_output").map((o) => (o.data as { error?: string } | undefined)?.error)).not.toContain("unknown-command");
+    expect(msgsOf(run, "agent_message")[0]?.agent).toBe("nurse");
+    const said = await t.session.run({ type: "user_message", text: "@Triage what is the wait?" });
+    expect(msgsOf(said, "error").map((e) => e.code)).not.toContain("unknown_agent");
+    const talk = await command(t, "/talk Triage");
+    expect((talk.out.data as { interlocutor?: string }).interlocutor).toBe("triage");
   });
 
   it("/consult sends to the role", async () => {
@@ -415,6 +431,20 @@ describe("locked decisions stay hidden on every /answer path (F0/F1)", () => {
     });
     await command(t, "/answer dx a");
     expect(summaries.join("\n")).toContain("Most likely diagnosis?");
+  });
+
+  it("an ask rule asks on every call: its prompt never offers approval for the session", async () => {
+    const t = await makeSession({ settingsPatch: { permissions: { ask: ["examine"] } } });
+    const offered: boolean[] = [];
+    t.session.subscribe((e) => {
+      if (e.msg.type !== "approval_request") return;
+      offered.push(e.msg.allowSession);
+      t.session.submit({ type: "approval_response", requestId: e.msg.requestId, decision: "approved_for_session" });
+    });
+    await command(t, "/exam heart");
+    await command(t, "/exam heart");
+    expect(offered).toEqual([false, false]);
+    expect(t.session.snapshot().actions.filter((a) => a.type === "examine")).toHaveLength(2);
   });
 });
 

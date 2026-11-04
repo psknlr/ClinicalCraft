@@ -6,7 +6,7 @@
  * before an interrupt or a shutdown is cancelled before it starts. Also the session-level ops: `configure`
  * (only the known `RuntimeConfigPatch` fields: `cleanConfigPatch`) and the shutdown sequence.
  */
-import type { ActorId, Pose, WorldActionRequest } from "@clinicalcraft/world";
+import { PRIMARY_ACTOR, type ActorId, type Pose, type WorldActionRequest } from "@clinicalcraft/world";
 import type { ApprovalMode, Op, PracticeScope, RuntimeConfigPatch } from "../protocol.js";
 import { canonicalLocale, type ResolvedSettings } from "../settings/schema.js";
 import { rt } from "./i18n.js";
@@ -69,6 +69,8 @@ export class OpDispatcher {
   private active: { id: string; controller: AbortController } | null = null;
   /** `world_pose` refusals already reported (once per session in clinical mode). */
   private poseRefused = false;
+  /** `world_pose` bodies refused as not the learner's own (each reported once). */
+  private readonly posesRefused = new Set<string>();
 
   constructor(private readonly k: SessionKernel) {}
 
@@ -234,6 +236,12 @@ export class OpDispatcher {
       k.emit(id, { type: "error", message: rt(k.locale, "error.internal", { message: "world_action.request must be an object" }), code: "invalid_op" });
       return;
     }
+    // The learner acts with the learner's own body only (PROTOCOL §12.3): a staff member's body is moved by a
+    // delegation (`delegate_task`, a request in words), never driven by the learner's op — refused, never rewritten.
+    if (request.actorId !== undefined && request.actorId !== PRIMARY_ACTOR) {
+      k.emit(id, { type: "error", message: rt(k.locale, "embodied.notOwnBody", { actor: String(request.actorId).slice(0, 80) }), code: "invalid_op" });
+      return;
+    }
     await k.embodied.act({ agent: "learner", submission: id, signal }, request, signal);
   }
 
@@ -243,6 +251,12 @@ export class OpDispatcher {
     if (!k.embodied) {
       if (!this.poseRefused) k.emit(id, { type: "error", message: rt(k.locale, "embodied.notEmbodied"), code: "not_embodied" });
       this.poseRefused = true;
+      return;
+    }
+    // Sensor data of the learner's own (human-driven) body only: another body is never moved by a pose (reported once).
+    if (actorId !== PRIMARY_ACTOR) {
+      if (!this.posesRefused.has(String(actorId))) k.emit(id, { type: "error", message: rt(k.locale, "embodied.notOwnBody", { actor: String(actorId).slice(0, 80) }), code: "invalid_op" });
+      this.posesRefused.add(String(actorId));
       return;
     }
     k.embodied.updatePose(actorId, pose);
@@ -269,11 +283,17 @@ export class OpDispatcher {
     if (patch.model !== undefined) next.model = patch.model || null;
     if (patch.approvalMode !== undefined) {
       if (modes.includes(patch.approvalMode)) next.approvalMode = patch.approvalMode;
-      else issues.push(`approvalMode "${String(patch.approvalMode)}"`);
+      else {
+        issues.push(`approvalMode "${String(patch.approvalMode)}"`);
+        delete patch.approvalMode;
+      }
     }
     if (patch.practiceScope !== undefined) {
       if (scopes.includes(patch.practiceScope)) next.practiceScope = patch.practiceScope;
-      else issues.push(`practiceScope "${String(patch.practiceScope)}"`);
+      else {
+        issues.push(`practiceScope "${String(patch.practiceScope)}"`);
+        delete patch.practiceScope;
+      }
     }
     if (patch.locale !== undefined && patch.locale.trim()) {
       // Only a supported language ("zh", "en-US"… normalised); anything else is reported and ignored.
@@ -286,7 +306,10 @@ export class OpDispatcher {
     }
     if (patch.characters?.engine !== undefined) {
       if (patch.characters.engine === "rules" || patch.characters.engine === "llm") next.characters = { ...next.characters, engine: patch.characters.engine };
-      else issues.push(`characters.engine "${String(patch.characters.engine)}"`);
+      else {
+        issues.push(`characters.engine "${String(patch.characters.engine)}"`);
+        delete patch.characters;
+      }
     }
     for (const [agent, override] of Object.entries(patch.agents ?? {})) {
       const merged = { ...(next.agents[agent] ?? {}) } as Record<string, unknown>;
@@ -295,13 +318,17 @@ export class OpDispatcher {
     }
     if (patch.interlocutor !== undefined) {
       const target = patch.interlocutor.replace(/^@/, "").toLowerCase();
-      if (k.availableAgents().includes(target)) k.interlocutor = target;
-      else issues.push(`interlocutor "${patch.interlocutor}"`);
+      if (k.availableAgents().includes(target)) k.interlocutor = patch.interlocutor = target;
+      else {
+        issues.push(`interlocutor "${patch.interlocutor}"`);
+        delete patch.interlocutor;
+      }
     }
     k.settings = next;
     k.models.reset();
     k.embodied?.setLocale(k.settings.locale);
     if (issues.length > 0) k.emit(id, { type: "error", message: rt(k.locale, "error.config", { issues: issues.join(", ") }), code: "invalid_config" });
+    // what was applied, never a refused value (a resume continues from these patches: `resumedRuntimeConfig`)
     k.emit(id, { type: "config_changed", patch: cleanConfigPatch(patch) });
   }
 
@@ -318,7 +345,8 @@ export class OpDispatcher {
     k.embodied?.flush();
     k.emit(id, { type: "shutdown_complete" });
     k.closed = true;
-    await k.recorder?.flush();
+    // the last event: the stream ends now, not after the transcript's flush (an op arriving meanwhile emits nothing)
     k.hub.close();
+    await k.recorder?.flush();
   }
 }

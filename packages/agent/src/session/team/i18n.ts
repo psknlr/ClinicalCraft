@@ -19,6 +19,7 @@ const PHRASES = {
   notFound: { en: "I can't find a {item} here.", "zh-CN": "这里找不到{item}。" },
   notHere: { en: "{for} isn't at the table — I can't pass the {item}.", "zh-CN": "{for}不在手术床旁，{item}没法递过去。" },
   handsFull: { en: "{for}'s hands are full — I can't pass the {item}.", "zh-CN": "{for}手里拿满了，{item}递不过去。" },
+  ownHandsFull: { en: "My hands are full — I can't take the {item}.", "zh-CN": "我手里拿满了，拿不了{item}。" },
   failedAct: { en: "I couldn't pass the {item}: {reason}.", "zh-CN": "{item}没能递过去：{reason}。" },
   nobody: { en: "Nobody is free to bring a {item} for {for}.", "zh-CN": "没有人能把{item}拿给{for}。" },
   unresolved: { en: "The {item} for {for} hasn't arrived — {reason}.", "zh-CN": "给{for}的{item}还没送到——{reason}。" },
@@ -37,6 +38,9 @@ const PHRASES = {
   holdClarify: { en: "Not that — please hold closure and check the wound for the missing {item}.", "zh-CN": "不是那个——请暂停关闭，检查术野里缺少的{item}。" },
   recount: { en: "{to}, please recount the {item}.", "zh-CN": "{to}，请重新清点{item}。" },
   woundChecked: { en: "Wound checked.", "zh-CN": "术野已检查。" },
+  woundNotChecked: { en: "I couldn't check the wound: {reason}.", "zh-CN": "没能检查术野：{reason}。" },
+  // a model-worded remark (docs/CHARACTERS.md §3): the session's language has the words, the other this template
+  remark: { en: "A word to {to}.", "zh-CN": "跟{to}说了一句。" },
   countReconciled: { en: "Recount correct: {n} of {of} {item} — you may close.", "zh-CN": "复点无误：{item}{n}/{of}——可以关闭。" },
   countUnresolved: { en: "Still {n} of {of} {item} after searching the room — an X-ray before the patient leaves.", "zh-CN": "全面查找后{item}仍只有{n}/{of}——患者离开前需拍 X 线片。" },
   // why a task could not be done, as a colleague tells it (escalations)
@@ -44,6 +48,7 @@ const PHRASES = {
   "why.notFound": { en: "{to} can't find one in the room", "zh-CN": "{to}在手术间里找不到" },
   "why.notHere": { en: "{for} isn't at the table", "zh-CN": "{for}不在手术床旁" },
   "why.handsFull": { en: "{for}'s hands are full", "zh-CN": "{for}手里拿满了" },
+  "why.ownHandsFull": { en: "{to}'s hands are full", "zh-CN": "{to}手里拿满了" },
   "why.failed": { en: "{to} couldn't pass it", "zh-CN": "{to}没能递过去" },
   "why.nobody": { en: "nobody is free to bring it", "zh-CN": "没有人能去拿" },
 } as const;

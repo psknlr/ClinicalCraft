@@ -7,7 +7,7 @@
  *   3 mode.plan.state-changing  deny  non-read-only tool in plan mode
  *   4 tool.read-only            allow read-only tools
  *   5 tool.always-ask           ask   tool says alwaysAsk (unless bypass); no "approve for session"
- *   6 rule.ask                  ask   an ask rule matches
+ *   6 rule.ask                  ask   an ask rule matches; no "approve for session" (an ask rule always asks)
  *   7 session.allow             allow an "approved for session" rule matches
  *   8 rule.allow                allow an allow rule matches
  *   9 mode.<mode>               per approval-mode × risk table (ARCHITECTURE §4.1)
@@ -240,9 +240,9 @@ export function checkPermission<A>(
   if (mode !== "bypass" && safe(() => tool.alwaysAsk?.(args, ctx) ?? false, true)) {
     return result("ask", PERMISSION_RULE_IDS.alwaysAsk, say("perm.alwaysAsk"), false);
   }
-  // 6. ask rules
+  // 6. ask rules — always ask (Claude Code): no "approve for session", which step 7 could never honour after this step
   const ask = findRuleForAny(rules.ask, tool.name, things);
-  if (ask) return result("ask", PERMISSION_RULE_IDS.ask, say("perm.ask", { rule: ask }), risk !== "high");
+  if (ask) return result("ask", PERMISSION_RULE_IDS.ask, say("perm.ask", { rule: ask }), false);
   // 7. session approvals
   const sessionRule = findRuleForAll(session, tool.name, things);
   if (sessionRule) return result("allow", PERMISSION_RULE_IDS.sessionAllow, say("perm.session", { rule: sessionRule }));

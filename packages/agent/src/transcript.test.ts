@@ -1,6 +1,6 @@
 import { describe, expect, it } from "vitest";
 import type { TranscriptItem } from "./session/types.js";
-import { MemoryTranscript, redactSecrets, replayTranscript, TranscriptRecorder } from "./transcript.js";
+import { MemoryTranscript, redactSecrets, redactValue, replayTranscript, resumedRuntimeConfig, TranscriptRecorder } from "./transcript.js";
 
 const meta = {
   sessionId: "s1",
@@ -62,6 +62,19 @@ describe("replayTranscript", () => {
   });
 });
 
+describe("resumedRuntimeConfig", () => {
+  it("ignores an approval mode or scope no session accepts (an older recording echoed refused values)", () => {
+    const ts = "2026-10-14T12:00:00.000Z";
+    const changed = (ordinal: number, patch: Record<string, unknown>): TranscriptItem => ({ type: "event", ordinal, ts, payload: { id: `c${ordinal}`, seq: ordinal, msg: { type: "config_changed", patch } } });
+    const items: TranscriptItem[] = [
+      { type: "session_meta", ordinal: 0, ts, payload: meta },
+      changed(1, { approvalMode: "strict", practiceScope: "history-only", interlocutor: "nurse" }),
+      changed(2, { approvalMode: "yolo", practiceScope: "everything", interlocutor: 42 }),
+    ];
+    expect(resumedRuntimeConfig(items)).toMatchObject({ approvalMode: "strict", practiceScope: "history-only", interlocutor: "nurse" });
+  });
+});
+
 describe("transcript hardening", () => {
   it("redactSecrets masks key formats, bearer tokens and listed secrets but leaves clinical text alone", () => {
     const text =
@@ -75,6 +88,22 @@ describe("transcript hardening", () => {
     }
     expect(out).toContain("Bearer [REDACTED]");
     expect(out).toContain("risk-stratification (TIMI 3), task-1 ok, 患者胸痛 2 小时");
+  });
+
+  it("redactValue never rewrites image payloads (base64 that happens to contain a key-like run)", () => {
+    const data = `${"Q".repeat(40)}/AIza${"b".repeat(35)}${"Q".repeat(40)}`;
+    const message = {
+      role: "user",
+      content: [
+        { type: "tool_result", callId: "c1", content: "frame AIzaSyA1234567890abcdefghijklmnopqrstuv", images: [{ mediaType: "image/jpeg", data }] },
+        { type: "image", mediaType: "image/png", data },
+      ],
+    };
+    const out = redactValue(message) as { content: { content?: string; data?: string; images?: { data: string }[] }[] };
+    expect(out.content[0]!.images![0]!.data).toBe(data);
+    expect(out.content[1]!.data).toBe(data);
+    // the text around them is still redacted
+    expect(out.content[0]!.content).toBe("frame [REDACTED]");
   });
 
   it("TranscriptRecorder never throws when a sink fails synchronously or asynchronously", () => {

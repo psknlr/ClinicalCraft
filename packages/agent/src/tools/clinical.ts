@@ -605,6 +605,13 @@ const consult: ToolDefinition<ToolArgs> = {
     return rt(ctx.locale, "sum.consult", { role: to.ok ? to.label : strArg(args, "staff") || strArg(args, "role"), question: strArg(args, "question") });
   },
   specifier: (args) => strArg(args, "staff") || strArg(args, "role"),
+  // Rules match whom the call reaches (PROTOCOL §6): the staff member (`ed-nurse`, `staff:ed-nurse`), their role and
+  // the agent answering for them — `deny: ["consult(nurse)"]` also stops `consult {staff: "ed-nurse"}` —, then the spelling.
+  specifiers: (args, ctx) => {
+    const to = consultRecipient(args, ctx);
+    const reached = to.ok ? [...(to.voice ? [to.voice.staffId, `staff:${to.voice.staffId}`, to.voice.role] : []), to.agent] : [];
+    return [[...new Set([...reached, strArg(args, "staff") || strArg(args, "role")])]];
+  },
   async run(args, ctx) {
     const to = consultRecipient(args, ctx);
     if (!to.ok) return { ok: false, output: to.output };

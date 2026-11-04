@@ -93,7 +93,7 @@ own proposal first and hands it to the member's model as one of the **options**:
 | `act` | the protocol's move — the policy's proposal (notice a need, ask the colleague whose duty it is, read back, confirm, hand over, report, count, search, escalate), in the member's own words when it speaks | the policy has a move; an **owed** move — a closed-loop reply (read-back, confirmation, report, decline, escalation) or anything about the count — is then the only option |
 | `wait` | not now | the move is not owed, and was not deferred last round (a member never waits twice in a row on one move) |
 | `notice` | tell a colleague in the room what you see or are doing (`to`), creating no obligation | a colleague is in the room |
-| `escalate` | raise your own task, stuck waiting, to the person it is for, saying what was tried | the member owns a task in `waiting` |
+| `escalate` | raise your own task, stuck waiting, saying what was tried: back to the colleague who asked for it (as the policy's decline, `recipient-absent`: they raise it on), or, one of your own, to the person it is for | the member owns a task in `waiting` whose person is away |
 
 The model sees its role card, a `<deciding>` instruction and its **situation** — only what the member perceives
 (`MemberView`): where they are and what they hold, the unread messages said to them, their own tasks, the needs they
@@ -104,7 +104,8 @@ never the hidden state. It answers JSON (`team_decision`: `option`, `to`, `line`
 - for `act`, keeps the policy's move — its addressee, its kind, its thread, its task changes — and only replaces the
   words in the session's language with `line` when the line is grounded (the other language keeps the team's
   wording, so a change of language never shows a stale line);
-- builds `notice` and `escalate` itself (an escalation ends the task `escalated`, as the policy's would);
+- builds `notice` and `escalate` itself, in the session's language — the other keeps the team's template (an escalation
+  ends the task `escalated`, or declined back to whoever asked, as the policy's would);
 - records every decision (`diagnostic` transcript item, `source: "characters"`: option, accepted or refused and why,
   the line, the model's private `why`) — never an event.
 

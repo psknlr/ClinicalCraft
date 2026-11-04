@@ -8,7 +8,8 @@
  * (deduplicated); everything else (scalars, other arrays): last wins.
  *
  * Every layer is validated key-by-key with the zod schemas; invalid keys are
- * skipped and reported as issues instead of crashing.
+ * skipped and reported as issues instead of crashing (so are permission rules
+ * that do not parse: an error for a deny rule, a warning for allow/ask).
  *
  * Repository layers (`project` = `.clinicalcraft/settings.json`, `local` =
  * `.clinicalcraft/settings.local.json`; both live in a directory the user may
@@ -28,6 +29,7 @@
  *   `code: "untrusted-project"` so front-ends show them (not only in debug).
  */
 import type { z } from "zod";
+import { parseRule } from "../permissions.js";
 import type { ApprovalMode, PracticeScope } from "../protocol.js";
 import { findProviderTemplate } from "../providers/catalog.js";
 import {
@@ -343,6 +345,7 @@ export function validateSettingsLayer(
       continue;
     }
     const copy = clone(value);
+    if (key === "permissions" && isPlainObject(copy)) dropMalformedRules(copy, push);
     if (key === "server" && restrictSecrets && isPlainObject(copy)) {
       for (const field of ["host", "token"] as const) {
         if (field in copy) {
@@ -355,6 +358,23 @@ export function validateSettingsLayer(
     data[key] = copy;
   }
   return { data, issues };
+}
+
+/**
+ * Rules that are neither `tool` nor `tool(specifier)` match nothing: each is dropped and reported — an error for a
+ * deny rule (it would deny nothing), a warning for an allow or ask rule.
+ */
+function dropMalformedRules(permissions: Record<string, unknown>, push: IssuePush): void {
+  for (const list of ["allow", "ask", "deny"] as const) {
+    const rules = permissions[list];
+    if (!Array.isArray(rules)) continue;
+    permissions[list] = rules.filter((rule: unknown, i) => {
+      if (typeof rule === "string" && parseRule(rule)) return true;
+      const effect = list === "deny" ? "it denies nothing" : "ignored";
+      push(`permissions.${list}.${i}`, `malformed permission rule ${JSON.stringify(rule)} (expected tool or tool(specifier)): ${effect}`, list === "deny" ? "error" : "warning");
+      return false;
+    });
+  }
 }
 
 /** True for http(s) URLs on the local machine. */

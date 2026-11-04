@@ -115,6 +115,8 @@ export class EventHub {
       this.backlog.push(event);
       if (this.backlog.length > STARTUP_BACKLOG_LIMIT) this.backlog.shift();
     }
+    // the iterators open now: one a listener opens below starts from the backlog, which already holds this event
+    const iterators = [...this.iterators];
     for (const listener of [...this.listeners]) {
       try {
         listener(event);
@@ -122,7 +124,8 @@ export class EventHub {
         /* a failing listener never breaks the session */
       }
     }
-    for (const it of this.iterators) {
+    for (const it of iterators) {
+      if (it.done) continue;
       it.queue.push(event);
       it.wake?.();
     }

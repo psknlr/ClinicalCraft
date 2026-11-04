@@ -20,8 +20,9 @@ import { completeText, parseJsonObject } from "../loop.js";
 import type { RetryPolicy } from "../providers/factory.js";
 import type { ChatRequest, LLMProvider } from "../providers/types.js";
 import type { TokenUsage } from "../protocol.js";
-import { escalateTask, type MemberView } from "../session/team/policy.js";
-import type { MemberId, MemberState, Proposal, TeamMessage } from "../session/team/types.js";
+import { phrase } from "../session/team/i18n.js";
+import { declineAbsent, escalateTask, type MemberView } from "../session/team/policy.js";
+import type { MemberId, MemberState, Proposal, TeamMessage, TeamTask } from "../session/team/types.js";
 import { ROLE_CARDS, roleSection, type RoleCard } from "./roles.js";
 
 /** A member's model, resolved by the session. */
@@ -210,17 +211,25 @@ export class ModelTeamMind {
           return this.fallback(member, rules, problem ?? "notice without a colleague or a line", false);
         }
         record(true, { to, line });
-        return { kind: "say", to, message: { thread: view.newId("thread"), kind: "notice", text: { en: line, "zh-CN": line }, about: {}, evidence: [] } };
+        // the words in the session's language; the other language keeps the team's template
+        return { kind: "say", to, message: { thread: view.newId("thread"), kind: "notice", text: { ...phrase("remark", { to: view.name(to) }), [L]: line }, about: {}, evidence: [] } };
       }
       case "escalate": {
-        const task = view.tasks.find((x) => x.owner === member.id && x.status === "waiting");
+        const task = stuck(member, view);
         if (!task || !line || problem) {
           record(false, { refused: problem ?? "nothing to escalate", ...(line ? { line } : {}) });
           return this.fallback(member, rules, problem ?? "escalation without a waiting task", false);
         }
         this.waited.delete(member.id);
         record(true, { task: task.id, line });
-        return escalateTask(view, task, { en: line, "zh-CN": line });
+        // a task a colleague asked for goes back to them, as the protocol's decline (they raise it on: one escalation,
+        // its true reason); a task of one's own is raised to the person it is for. The other language keeps the template.
+        if (task.initiator !== member.id) {
+          const back = declineAbsent(view, task);
+          return back.kind === "say" ? { ...back, message: { ...back.message, text: { ...back.message.text, [L]: line } } } : back;
+        }
+        const template = task.reasonText ?? phrase("why.notHere", { for: view.name(task.for) });
+        return escalateTask(view, task, { ...template, [L]: line });
       }
     }
     return this.fallback(member, rules, "unknown option");
@@ -258,7 +267,7 @@ export class ModelTeamMind {
     const deferred = this.waited.get(member.id) === digest(rules);
     if (!rules || (!owed && !countWork && !deferred)) out.push({ id: "wait", text: rules ? "not now — this round you do nothing (you cannot wait twice in a row on the same move)" : "nothing to do now" });
     if (this.addressable(view).length) out.push({ id: "notice", text: "tell a colleague in the room something you see or are doing (`to`: who; no request, no obligation)" });
-    if (view.tasks.some((x) => x.owner === member.id && x.status === "waiting") && !(rules?.kind === "say" && rules.message.kind === "escalate")) out.push({ id: "escalate", text: "raise your task that is stuck waiting to the person it is for (`line`: what was tried and why it failed)" });
+    if (stuck(member, view) && !(rules?.kind === "say" && rules.message.kind === "escalate")) out.push({ id: "escalate", text: "raise your task that is stuck waiting (the person it is for is away): back to the colleague who asked for it, or to that person when it is your own (`line`: what was tried and why it failed)" });
     return out;
   }
 
@@ -300,10 +309,18 @@ export class ModelTeamMind {
   }
 }
 
-/** A move's identity (the same move deferred again is the same digest). */
+/** The member's own task stuck waiting: the person it is for is away from the team's room. */
+function stuck(member: MemberState, view: MemberView): TeamTask | undefined {
+  return view.tasks.find((x) => x.owner === member.id && x.status === "waiting" && !view.inRoom(x.for));
+}
+
+/**
+ * A move's identity (the same move deferred again is the same digest): a reply by what it answers, else by the need it
+ * is about — never by a thread id freshly drawn for it (a need noticed again next round is the same move).
+ */
 function digest(p: Proposal | null): string {
   if (!p) return "none";
-  if (p.kind === "say") return `say:${p.to}:${p.message.kind}:${p.message.thread}`;
+  if (p.kind === "say") return `say:${p.to}:${p.message.kind}:${p.message.replyTo ?? p.message.about.need ?? p.message.thread}`;
   if (p.kind === "act") return `act:${p.task}:${p.operation}:${p.targetId ?? ""}`;
   return "update";
 }

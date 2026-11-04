@@ -120,6 +120,8 @@ const WHY: Readonly<Record<string, { phrase: TeamPhrase; escalate: boolean }>> =
   "not-found": { phrase: "why.notFound", escalate: false },
   "recipient-absent": { phrase: "why.notHere", escalate: true },
   "hands-full": { phrase: "why.handsFull", escalate: true },
+  // the colleague's own hands: another colleague may bring it
+  "own-hands-full": { phrase: "why.ownHandsFull", escalate: false },
 };
 
 const has = (d: readonly TeamDuty[], duty: TeamDuty) => d.includes(duty);
@@ -317,11 +319,19 @@ function countMessage(count: CountView, stage: "closing" | "recount"): { text: B
   return { text, n, about: { item: count.item, count: n, of: count.of, ids, missing: open.missing, unexpected: open.unexpected, stage } };
 }
 
-/** The counter counts what the team can account for, item by item, and says it. */
+/**
+ * The counter counts what the team can account for, item by item, and says it. A circulating nurse who counts herself
+ * (no other circulator to tell) hears her own count as she would anyone's: correct, said to the surgeon; else the hold.
+ */
 function firstCount(v: MemberView, count: CountView): Proposal {
   const m = countMessage(count, "closing");
   const task: TeamTask = { id: v.newId("task"), kind: "count", need: "count", item: count.item, for: v.me.id, owner: v.me.id, initiator: v.me.id, thread: v.newId("thread"), status: "done", since: v.round, tried: [], acts: 0, counted: m.n };
-  return { kind: "say", to: countTo(v), message: { thread: task.thread, kind: "report", text: m.text, about: m.about, evidence: [] }, patch: [{ create: task }] };
+  const to = countTo(v);
+  if (to === SURGEON && has(v.me.duties, "circulate")) {
+    const own = countReported(v, { id: "self", thread: task.thread, from: v.me.id, to: v.me.id, kind: "report", text: m.text, about: m.about, room: v.room, patient: null, at: 0, round: v.round, evidence: [], delivered: true, read: false });
+    return { ...own, patch: [{ create: task }, ...(own.patch ?? [])] };
+  }
+  return { kind: "say", to, message: { thread: task.thread, kind: "report", text: m.text, about: m.about, evidence: [] }, patch: [{ create: task }] };
 }
 
 /** Asked to recount: count again, and say it in the same thread. */
@@ -378,7 +388,8 @@ function checkMessage(v: MemberView, check: TeamTask, m: TeamMessage): Proposal 
     return { kind: "say", to: m.from, message: { thread: check.thread, kind: "request", text: phrase("holdClarify", { item: name }), about: { item: check.item }, evidence: [], replyTo: m.id }, patch: [{ read: m.id }] };
   }
   if (m.kind === "readback") return { kind: "say", to: m.from, message: { thread: check.thread, kind: "confirm", text: phrase("holdConfirm"), about: m.about, evidence: [], replyTo: m.id }, patch: [{ read: m.id }, { id: check.id, set: { count: { ...c, held: true } } }] };
-  if (m.kind === "report" || m.kind === "decline") return { kind: "update", patch: [{ read: m.id }, { id: check.id, set: { count: { ...c, wound: true } } }] };
+  if (m.kind === "report") return { kind: "update", patch: [{ read: m.id }, { id: check.id, set: { count: { ...c, wound: true } } }] };
+  // a decline (the hold refused, or the wound could not be checked) is no wound check: she waits, then the recount decides
   return { kind: "update", patch: [{ read: m.id }] };
 }
 
@@ -391,7 +402,9 @@ function searchStep(v: MemberView, check: TeamTask): Proposal | null {
   const c = check.count!;
   if (!count) return null;
   const now = count.check(count.seen());
-  const extra = now.unexpected.find((id) => !(c.setAside ?? []).includes(id));
+  // what the world would not let her get to is skipped (never "searched", never "set aside"): the recount still decides
+  const skipped = c.unreachable ?? [];
+  const extra = now.unexpected.find((id) => !(c.setAside ?? []).includes(id) && !skipped.includes(id));
   if (extra) {
     const sighting = v.items(count.item).find((s) => s.id === extra);
     // lying where I can see it: I take it off the field first (my hands free)
@@ -404,7 +417,7 @@ function searchStep(v: MemberView, check: TeamTask): Proposal | null {
     return { kind: "say", to: counter, message: { thread: check.thread, kind: "report", text: phrase("setAside", { what }), about: { item: count.item, setAside: [extra] }, evidence: [] }, patch: [{ id: check.id, set: { count: { ...c, setAside: [...(c.setAside ?? []), extra] } } }] };
   }
   const foundAll = now.missing.length === 0 && now.unexpected.length === 0;
-  const next = foundAll ? undefined : count.places.find((p) => !c.searched.includes(p));
+  const next = foundAll ? undefined : count.places.find((p) => !c.searched.includes(p) && !skipped.includes(p));
   if (next) {
     if (check.goal) return { kind: "act", task: check.id, operation: "navigate", goal: check.goal, patch: [{ id: check.id, set: { goal: undefined } }] };
     if (c.at !== next) return { kind: "act", task: check.id, operation: "approach", targetId: next, patch: [{ id: check.id, set: { count: { ...c, at: next } } }] };
@@ -440,7 +453,7 @@ function deliver(v: MemberView, task: TeamTask): Proposal | null {
   // holding it: the person must be at the table; then reach them and hand it over
   if (!v.inRoom(task.for)) {
     if (task.status !== "waiting") return { kind: "update", patch: [{ id: task.id, set: { status: "waiting", since: v.round } }] };
-    if (v.round - task.since >= v.waitRounds) return say(v, task.initiator, "decline", "notHere", task, { reason: "recipient-absent", patch: [{ id: task.id, set: { status: "declined", since: v.round, reason: "recipient-absent" } }] });
+    if (v.round - task.since >= v.waitRounds) return declineAbsent(v, task);
     return null;
   }
   if (task.status === "waiting") return { kind: "update", patch: [{ id: task.id, set: { status: "accepted", since: v.round } }] };
@@ -449,19 +462,48 @@ function deliver(v: MemberView, task: TeamTask): Proposal | null {
   return { kind: "act", task: task.id, operation: "hand_over", targetId: mine.id, parameters: { to: task.for }, recipient: task.for };
 }
 
-/** After an act: what the member does with its outcome (a refusal they cannot recover from is said, with the reason). */
-export function afterAct(v: MemberView, task: TeamTask, outcome: { status: string; code?: string; message: string; operation: string; hint?: NavGoal }): Proposal | null {
+/** A delivery the person never came to the table for, given back to whoever asked (`recipient-absent`; the claim released). */
+export function declineAbsent(v: MemberView, task: TeamTask): Proposal {
+  const release = task.itemId ? [{ release: task.itemId }] : [];
+  return say(v, task.initiator, "decline", "notHere", task, { reason: "recipient-absent", patch: [{ id: task.id, set: { status: "declined", since: v.round, reason: "recipient-absent" } }, ...release] });
+}
+
+/**
+ * After an act: what the member does with its outcome (a refusal they cannot recover from is said, with the reason).
+ * `target`: what the act was on.
+ */
+export function afterAct(v: MemberView, task: TeamTask, outcome: { status: string; code?: string; message: string; operation: string; hint?: NavGoal; target?: string }): Proposal | null {
   const release = task.itemId ? [{ release: task.itemId }] : [];
   if (outcome.status === "completed") {
     if (outcome.operation === "search" && task.kind === "wound") return { kind: "update", patch: [{ id: task.id, set: { step: "searched" } }] };
     if (outcome.operation === "hand_over") return say(v, task.initiator, "report", "handed", task, { patch: [{ id: task.id, set: { status: "done", since: v.round } }, ...release] });
     return null;
   }
-  if (outcome.code === "HANDS_FULL") return say(v, task.initiator, "decline", "handsFull", task, { reason: "hands-full", patch: [{ id: task.id, set: { status: "declined", since: v.round, reason: "hands-full" } }] });
+  // the count's search goes on whatever one step meets: never declined to herself
+  if (task.kind === "check") return searchStepRefused(task, outcome);
+  if (outcome.code === "HANDS_FULL") {
+    // the person's hands are full (theirs: escalated), or her own when she picks it up (another colleague may bring it)
+    const own = outcome.operation !== "hand_over";
+    const reason = own ? "own-hands-full" : "hands-full";
+    return say(v, task.initiator, "decline", own ? "ownHandsFull" : "handsFull", task, { reason, patch: [{ id: task.id, set: { status: "declined", since: v.round, reason } }, ...release] });
+  }
   // reach and sight: walk where the world points (if it does), then try again from a fresh view
   if (outcome.code === "NOT_IN_RANGE" || outcome.code === "NOT_VISIBLE" || outcome.code === "MOVEMENT_INTERRUPTED") return outcome.hint ? { kind: "update", patch: [{ id: task.id, set: { goal: outcome.hint } }] } : null;
   const reason = outcome.message.split("\n")[0]!.replace(/[.。]\s*$/u, "");
-  return say(v, task.initiator, "decline", "failedAct", task, { extra: { reason: { en: reason, "zh-CN": reason } }, reason: outcome.code ?? "failed", patch: [{ id: task.id, set: { status: "declined", since: v.round, reason: outcome.code ?? "failed" } }, ...release] });
+  const said = { reason: { en: reason, "zh-CN": reason } };
+  return say(v, task.initiator, "decline", task.kind === "wound" ? "woundNotChecked" : "failedAct", task, { extra: said, reason: outcome.code ?? "failed", patch: [{ id: task.id, set: { status: "declined", since: v.round, reason: outcome.code ?? "failed" } }, ...release] });
+}
+
+/**
+ * A step of the count's search the world did not carry out: interrupted, or refused for reach or sight — tried again
+ * (where the world points); refused otherwise — what it was on (a search place, an item not in the count) is skipped as
+ * out of her reach, never reported searched: the recount still decides, and an open count is escalated.
+ */
+function searchStepRefused(task: TeamTask, outcome: { status: string; code?: string; hint?: NavGoal; target?: string }): Proposal | null {
+  if (outcome.status === "cancelled" || outcome.code === "NOT_IN_RANGE" || outcome.code === "NOT_VISIBLE") return outcome.hint ? { kind: "update", patch: [{ id: task.id, set: { goal: outcome.hint } }] } : null;
+  const c = task.count;
+  if (!c || !outcome.target || (c.unreachable ?? []).includes(outcome.target)) return null;
+  return { kind: "update", patch: [{ id: task.id, set: { count: { ...c, unreachable: [...(c.unreachable ?? []), outcome.target] } } }] };
 }
 
 /* ------------------------------------------------------------------ */

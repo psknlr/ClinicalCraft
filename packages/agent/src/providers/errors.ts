@@ -9,7 +9,9 @@ type Kind = ProviderErrorInfo["kind"];
 
 const CONTEXT_RE =
   /context[_ ]?length|context window|maximum context|too many tokens|prompt is too long|input is too long|input too long|exceeds? the (?:model'?s )?(?:maximum|context)|reduce the length|token limit|max_prompt_tokens|string_above_max_length/i;
-const QUOTA_RE = /insufficient[_ ]quota|insufficient balance|exceeded your current quota|billing|credit balance|余额不足|欠费|arrear|quota exceeded|payment required/i;
+// "billing" as a word, never inside a URL or an identifier: OpenAI's free-tier rate-limit message links
+// https://platform.openai.com/account/billing and is still a (retryable) rate limit.
+const QUOTA_RE = /insufficient[_ ]quota|insufficient balance|exceeded your current quota|(?<![\w/.-])billing(?![\w/-])|credit balance|余额不足|欠费|arrear|quota exceeded|payment required/i;
 
 /** Zhipu (open.bigmodel.cn / api.z.ai) business error codes. */
 const ZHIPU_CODES: Record<number, { kind: Kind; retryable: boolean }> = {
