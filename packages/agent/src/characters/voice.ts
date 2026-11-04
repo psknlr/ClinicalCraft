@@ -40,18 +40,51 @@ const AT_PATIENT = [
   /我(?:已经|现在|已)?(?:到了|到床旁|到床边|在床旁|在床边|在(?:病人|患者)(?:身边|旁边)|在手术室|就在这)/u,
   /(?:正在|在)(?:检查|查看|评估|处理)(?:病人|患者)/u,
 ];
+/**
+ * A claim of having touched the patient or done something at the bedside — completed or under way, in any person or
+ * none ("I have just palpated the patient's pulse", "pulse feels thready", 刚摸了脉搏, 正在给他吸氧): only someone
+ * who is there can say it, and the record must hold it (either language).
+ */
+const CONTACT = [
+  /\b(?:palpat\w*|auscultat\w*|percuss\w*|examin(?:ed|ing))\b/iu,
+  /\b(?:felt|feel(?:s|ing)?|checked|checking|took|taken|taking|got|have)\s+(?:a\s+|the\s+|his\s+|her\s+|their\s+)?(?:pulse|carotid|radial|femoral|pressure|airway|chest|abdomen|belly|pupils?|skin|breathing|cannula|line|drip|tube)\b/iu,
+  /\b(?:pulse|carotid|radial)\s+(?:is\s+|feels\s+|felt\s+)?(?:thready|weak|strong|bounding|present|absent|palpable)\b/iu,
+  /\blisten(?:ed|ing)\s+to\s+(?:the\s+|his\s+|her\s+|their\s+)?(?:chest|heart|lungs|breath)/iu,
+  /\b(?:touch(?:ed|ing)|holding|held|squeez(?:ed|ing)|bagg(?:ed|ing)|ventilat(?:ed|ing)|suction(?:ed|ing)|reposition(?:ed|ing)|intubat(?:ed|ing))\b/iu,
+  /\bI(?:'ve| have)\s+(?:just\s+)?(?:given|pushed|administered|started|run|bolused|flushed|turned up|checked|looked at|seen)\b/iu,
+  /(?:摸了|摸到|摸着|触诊|叩诊|听诊|听了|按压|测了|量了|检查了|查看了|看了看|握着|扶着|托着|吸痰|插管|给了|推了|注射了|用了药|加了|开大了|调高了|正在给|刚给|刚摸|刚测|刚查)/u,
+  /(?:脉搏|颈动脉|桡动脉|股动脉)(?:搏动)?(?:细|弱|有力|摸不到|可及|很快|很慢)/u,
+];
+/** A treatment claimed as given (either language): the record must hold it — the responder's line never does. */
+const TREATMENT = [
+  /\bI(?:'ve| have)\s+(?:just\s+)?(?:given|pushed|administered|started|run|bolused|intubated|re-?intubated|defibrillated|shocked|cardioverted)\b/iu,
+  /我(?:已经|刚|刚刚)?(?:给了|推了|用了|注射了|静推了|插管了|电击了|除颤了|复律了)/u,
+];
+
 /** A claim of not being able to get to the patient, or of being still on the way (either language). */
 const AWAY = [/\b(?:can't|cannot|can not|unable to)\s+(?:get|reach|come)\b|\b(?:locked|stuck|blocked)\b|\bon my way\b/iu, /过不去|进不去|被锁|门锁|在路上|马上到|赶过去/u];
 
 /**
- * Why a line claims a place the speaker is not in (null: it does not): `away` — shut out, on the way — never says
- * they are at the patient or acting on them; `at-patient` never says they cannot get there or are still coming.
+ * Why a line claims a place or an act the record does not have (null: it does not): `away` — shut out, on the way —
+ * never says they are at the patient, nor that they touched the patient or did anything at the bedside (palpated,
+ * listened, bagged, "the pulse is thready"); `at-patient` never says they cannot get there or are still coming; and
+ * neither claims a treatment given ("I've given…", 我推了…) — that is an intervention, in the record or not at all.
  */
 export function placeClaimProblem(text: string, where: "at-patient" | "away"): string | null {
-  const claims = where === "away" ? AT_PATIENT : AWAY;
-  const hit = claims.map((re) => text.match(re)?.[0]).find(Boolean);
-  if (!hit) return null;
-  return where === "away" ? `claims to be at the patient ("${hit}") while away from them` : `claims not to be at the patient ("${hit}") while there`;
+  const first = (claims: readonly RegExp[]) => claims.map((re) => text.match(re)?.[0]).find(Boolean);
+  if (where === "away") {
+    const there = first(AT_PATIENT);
+    if (there) return `claims to be at the patient ("${there}") while away from them`;
+    // away, nobody touches the patient: no contact, no bedside act, done or under way, however it is worded
+    const touched = first(CONTACT);
+    if (touched) return `claims contact with the patient ("${touched}") while away from them`;
+  } else {
+    const away = first(AWAY);
+    if (away) return `claims not to be at the patient ("${away}") while there`;
+  }
+  // a treatment is the record's (an intervention), never a line's
+  const treated = first(TREATMENT);
+  return treated ? `claims a treatment ("${treated}") the record does not hold` : null;
 }
 
 export interface WordedLine {

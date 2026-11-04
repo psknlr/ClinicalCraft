@@ -164,6 +164,10 @@ After every learner act and every demonstration step (like the care team), the s
      the deterministic template's own wording for this study); with nothing cited, only wording that states no finding
      may stand ("within the reference intervals"). So "Acute pulmonary embolism confirmed." with no `supportedBy` is
      refused twice over. The check is lexical (English stems, Chinese characters), like the rest of this one;
+   - **a bound phrase says its own observation**, in each language: every term of the observation's categorical
+     finding (`text`) is in it, nothing no observation of the study uses, and no negation the finding lacks — a
+     genuine observation id never carries another finding ("ventricular tachycardia" bound to a sinus rhythm), and
+     the two languages agree because both are checked against the same observation;
    - **the findings are held to the observations too**: outside the phrases bound to observations, every term of a
      written report's findings must be one the study's observations (or the template's findings) use, and no
      certainty is claimed there either — a diagnosis appended to genuine findings is refused like one in the
@@ -171,7 +175,9 @@ After every learner act and every demonstration step (like the care team), the s
    - **the writer works on copies and the service owns the provenance**: the writer is given copies of the profile and
      the acquisition (whatever it does to them, the engine's acquisition — so the template, the release and a replay —
      is unchanged), its text is validated as written text whatever it calls itself, and `generator: "template"` is
-     reserved for the text this service generates (a writer's label "template" is recorded as `writer`);
+     reserved for the text this service generates (a writer's label "template" — or one that is not a plain name, or
+     states a claim — is recorded as `writer`); the **limitations are the service's** (a writer's own are dropped), so
+     every field the chart shows is the service's or checked;
    - a writer that fails, times out (`writerTimeoutMs`) or does not validate is replaced by the template — never an
      invented report — and a refusal is on the record (a `diagnostic` transcript item, `source: "grounding"`, naming
      each problem). The template passes the same check (its phrases are bound).

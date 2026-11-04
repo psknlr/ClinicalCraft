@@ -213,3 +213,66 @@ describe("the picture follows the equipment, whatever frame is on screen (the fo
     expect(p.frame().state).toBe(failed.procedure);
   });
 });
+
+describe("an abdomen the equipment let down stays down on every frame shown after it (the round 3 audit)", () => {
+  const supply = (s: SessionState, on: boolean) => reduce(c, s, { type: "procedure-supply", supply: { image: on, gas: on }, by: "system" } as ClinicalAction).state;
+
+  it("the tower fails and is restored while older dissection frames wait: they play in order, deflated, until a new insufflation", () => {
+    const clock = manualTimers();
+    const base = record([...ACCESS, NECK]);
+    const p = new OperativePlayback(clock.timers);
+    p.attach("k", def);
+    p.sync(base.events, base.s.procedure!);
+    const burst = record(dissect(4), base);
+    p.sync(burst.events, burst.s.procedure!);
+    const queued = p.pending();
+    expect(queued).toBeGreaterThan(0);
+    // fails: dark; restored with no reinflation: the engine has 0 mmHg and no view — so has every frame shown
+    const failure = supply(burst.s, false);
+    p.sync(burst.events, failure.procedure!);
+    expect(observeField(def, p.frame().state!).inView).toBe(false);
+    const repaired = supply(failure, true);
+    p.sync(burst.events, repaired.procedure!);
+    expect(repaired.procedure).toMatchObject({ insufflated: false, pressure: 0 });
+    expect(p.frame().state).toMatchObject({ insufflated: false, pressure: 0 });
+    expect(observeField(def, p.frame().state!).inView).toBe(false);
+    // the older steps still play, each its own caption, in order — every one of them down
+    const shown: { op: string; steps: number; pressure: number; inView: boolean }[] = [];
+    p.subscribe(() => {
+      const f = p.frame();
+      shown.push({ op: f.item!.operation, steps: f.state!.counters.steps, pressure: f.state!.pressure, inView: observeField(def, f.state!).inView });
+    });
+    for (let i = 0; i < 20; i++) clock.advance(2000);
+    expect(shown.length).toBeGreaterThan(0);
+    expect(shown.every((x) => x.op === "dissect" && x.pressure === 0 && !x.inView)).toBe(true);
+    expect(shown.map((x) => x.steps)).toEqual([...shown.map((x) => x.steps)].sort((a, b) => a - b));
+    expect(p.pending()).toBe(0);
+    expect(p.frame().state).toBe(repaired.procedure);
+    // a new accepted insufflation: from then on the frames have the pneumoperitoneum again
+    const again = record([{ op: "insufflate", pressure: 12 }, ...dissect(1)], { s: repaired, events: burst.events });
+    shown.length = 0;
+    p.sync(again.events, again.s.procedure!);
+    for (let i = 0; i < 6; i++) clock.advance(2000);
+    expect(shown.map((x) => [x.op, x.pressure, x.inView])).toEqual([["insufflate", 12, true], ["dissect", 12, true]]);
+  });
+
+  it("the same with a long backlog and with none: never a pressure or a view the record does not have", () => {
+    for (const backlog of [0, 12]) {
+      const clock = manualTimers();
+      const base = record([...ACCESS, NECK]);
+      const p = new OperativePlayback(clock.timers);
+      p.attach(`k${backlog}`, def);
+      p.sync(base.events, base.s.procedure!);
+      const burst = backlog ? record(dissect(backlog), base) : base;
+      p.sync(burst.events, burst.s.procedure!);
+      const failure = supply(burst.s, false);
+      p.sync(burst.events, failure.procedure!);
+      const repaired = supply(failure, true);
+      p.sync(burst.events, repaired.procedure!);
+      let worst = 0;
+      p.subscribe(() => (worst = Math.max(worst, p.frame().state!.pressure)));
+      for (let i = 0; i < 60; i++) clock.advance(2000);
+      expect([worst, p.frame().state!.pressure, observeField(def, p.frame().state!).inView], `backlog ${backlog}`).toEqual([0, 0, false]);
+    }
+  });
+});

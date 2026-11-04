@@ -120,8 +120,11 @@ A line a model wrote is said only if it is:
 - free of any member of staff the speaker cannot address (by full name, name without its title, or surname);
 - for a line the engine gives a place (`where`: the record has the speaker at the patient, or away from them —
   `placeClaimProblem`), free of a claim to be elsewhere, in either language: a responder whose walk is blocked never
-  says "I'm at the bedside", "I've arrived", "checking the patient", 我在床旁 or 正在检查病人; one at the patient never
-  says they cannot get there or are on the way. The anaesthetist's alarm lines carry it (`blocked` → `away`,
+  says "I'm at the bedside", "I've arrived", "checking the patient", 我在床旁 or 正在检查病人 — nor that they
+  touched the patient or did anything at the bedside, however worded ("I have just palpated the patient's pulse",
+  "pulse feels thready", "bagging him", 刚摸了脉搏, 颈动脉搏动细弱); one at the patient never says they cannot get there
+  or are on the way; and no line claims a treatment given ("I've given…", 我推了…) — that is an intervention, in the
+  record or not at all. The anaesthetist's alarm lines carry it (`blocked` → `away`,
   `arrived` → `at-patient`), so a model's wording can never put them at a bedside the record does not.
 
 Otherwise the template is said. `wordLine` applies the same check to a staff line the engine decides is said: it gives

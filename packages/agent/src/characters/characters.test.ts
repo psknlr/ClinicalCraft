@@ -213,6 +213,18 @@ describe("grounded lines", () => {
     // what a shut-out responder may truthfully say
     for (const truthful of ["I can't get out of the workroom — the door's locked; someone go to the bedside now.", "I am in the anaesthesia workroom and the door is locked.", "门锁了，我过不去——请人马上到床旁。"])
       expect(placeClaimProblem(truthful, "away"), truthful).toBeNull();
+    // shut out, nobody touches the patient: contact and bedside acts are refused however they are worded (the round 3 audit)
+    for (const contact of ["I have just palpated the patient's pulse.", "Pulse feels thready — I'm on it.", "Listened to his chest, it's clear.", "Bagging him now.", "Checked the airway, all fine.", "刚摸了脉搏，很弱。", "我正在给他吸氧。", "颈动脉搏动细弱。"])
+      expect(placeClaimProblem(contact, "away"), contact).toMatch(/claims (?:contact with|to be at) the patient/u);
+    // what a shut-out responder may still say: where they are, why, and what someone else should do
+    for (const truthful of ["The door's locked, I can't get to him — someone check his pulse now!", "我被锁在麻醉准备间，过不去——请人马上去床旁看看他。"])
+      expect(placeClaimProblem(truthful, "away"), truthful).toBeNull();
+    // a treatment is the record's, never a line's — there or not
+    for (const where of ["away", "at-patient"] as const)
+      for (const treated of ["I've given 10 of ephedrine.", "I have just pushed the metaraminol.", "我已经推了麻黄碱。"])
+        expect(placeClaimProblem(treated, where), `${where}: ${treated}`).toMatch(/claims a treatment|claims (?:contact with|to be at) the patient/u);
+    // at the patient, examining is what they are there for
+    expect(placeClaimProblem("I'm with him, feeling the pulse now.", "at-patient")).toBeNull();
     // at the patient: never "I can't get there"
     expect(placeClaimProblem("I can't get through, the door's locked.", "at-patient")).toMatch(/claims not to be at the patient/u);
     expect(placeClaimProblem("I'm at the patient, checking the line.", "at-patient")).toBeNull();

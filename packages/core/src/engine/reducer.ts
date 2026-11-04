@@ -22,7 +22,7 @@ import { currentObjective, progress } from "./queries.js";
 import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
-import { createProcedureState, operate, procedureFor } from "./procedure/index.js";
+import { createProcedureState, operate, procedureFor, procedureStateOf } from "./procedure/index.js";
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
 import { applyStudy } from "./study.js";
 import { reachPhase, recordAvailability } from "./records.js";
@@ -362,7 +362,8 @@ function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
   if (!def.phases.includes(ctx.s.phase)) return rejected("phase-locked", `the operation is not under way in phase "${ctx.s.phase}"`);
   const open = a.op.op === "close" ? closureOnOpenCount(ctx.c, ctx.s) : null;
   if (open?.policy === "refuse") return rejected("requirements-unmet", openCountMessage(open));
-  const step = operate(def, ctx.s.procedure ?? createProcedureState(), a.op, ctx.s.clock, a.actor);
+  // the operation's first step: it opens with the equipment as recorded so far (a fault before it stays a fault)
+  const step = operate(def, procedureStateOf(ctx.s), a.op, ctx.s.clock, a.actor);
   if (step.rejected) return rejected(step.rejected.code, step.rejected.message);
   ctx.s.procedure = step.state;
   const n = step.state.counters.steps;
@@ -411,18 +412,28 @@ function onAnaesthesia(ctx: Ctx, a: Action<"anaesthesia">): Outcome {
  * The operation's equipment supply (docs/PROCEDURE.md "Equipment"): no picture without a working camera and light
  * source; without gas the pneumoperitoneum is lost at once. The same supply again changes nothing.
  */
+/**
+ * What the equipment supplies, recorded apart from the operation (`SessionState.equipment`); an operation under way
+ * follows it (no gas: the pneumoperitoneum is lost). Before the operation opens it is an equipment fault only — no
+ * operative state is made, nothing counts as begun.
+ */
 function onProcedureSupply(ctx: Ctx, a: Action<"procedure-supply">): Outcome {
-  const p = ctx.s.procedure ?? createProcedureState();
-  const now = { image: p.supply?.image !== false, gas: p.supply?.gas !== false };
+  const p = ctx.s.procedure;
+  const was = p?.supply ?? ctx.s.equipment;
+  const now = { image: was?.image !== false, gas: was?.gas !== false };
   if (now.image === a.supply.image && now.gas === a.supply.gas) return { kind: "unchanged" };
-  const next = structuredClone(p);
-  next.supply = { image: a.supply.image, gas: a.supply.gas };
-  const deflated = !a.supply.gas && next.insufflated;
-  if (deflated) {
-    next.insufflated = false;
-    next.pressure = 0;
+  ctx.s.equipment = { image: a.supply.image, gas: a.supply.gas, ...(a.supply.source ? { source: a.supply.source } : {}) };
+  let deflated = false;
+  if (p) {
+    const next = structuredClone(p);
+    next.supply = { image: a.supply.image, gas: a.supply.gas };
+    deflated = !a.supply.gas && next.insufflated;
+    if (deflated) {
+      next.insufflated = false;
+      next.pressure = 0;
+    }
+    ctx.s.procedure = next;
   }
-  ctx.s.procedure = next;
   ctx.events.push({ type: "procedure.supply", image: a.supply.image, gas: a.supply.gas, ...(a.supply.source ? { source: a.supply.source } : {}), ...(deflated ? { deflated: true as const } : {}) });
   return accepted();
 }

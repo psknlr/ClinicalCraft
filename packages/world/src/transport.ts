@@ -106,12 +106,14 @@ export function destinationOf(host: EffectsHost, request: WorldActionRequest): P
  */
 function trolleyFor(host: EffectsHost, st: PatientPlaceState, target: PatientTarget): EntityId | null {
   const body = host.d.patient;
-  // cannot walk: a trolley at hand, or nothing (the transport waits for one)
-  if (body.walkProblem(st)) return trolleyAtHand(host, st) && st.trolley && !host.busy.get(st.trolley) ? st.trolley : null;
+  // a trolley carries the patient only when it is free and in service (one marked out of service never moves them)
+  const usable = (id: EntityId | null): id is EntityId => !!id && !host.busy.get(id) && host.d.store.available(id);
+  // cannot walk: a usable trolley at hand, or nothing (the transport waits for one)
+  if (body.walkProblem(st)) return trolleyAtHand(host, st) && usable(st.trolley) ? st.trolley : null;
   if (body.walks(st) || !trolleyAtHand(host, st)) return null;
   // lying now, or lying where they go (a bed space: the clinical posture there)
   const lying = body.posture(st) === "lying" || (target.posture ? target.posture === "lying" : body.clinicalPostureOf(st) === "lying");
-  return lying && st.trolley && !host.busy.get(st.trolley) ? st.trolley : null;
+  return lying && usable(st.trolley) ? st.trolley : null;
 }
 
 /** How far (m) a trolley may wait from the patient and still come along (parked beside a scanner: `TROLLEY_RINGS`). */
@@ -238,7 +240,12 @@ export async function transportPatient(host: TransportHost, request: WorldAction
   const trolley = trolleyFor(host, st, target);
   // the same mobility assessment as a walk together: a patient who cannot walk goes lying on a trolley, or not at all
   const unable = body.walkProblem(st);
-  if (unable && !trolley) return failed("PRECONDITION_FAILED", `${worldMessage(`pre.cannotWalk.${unable}`, L, { patient: name })} ${worldMessage("pre.needsTrolley", L, { patient: name })}`, { hint: null });
+  if (unable && !trolley) {
+    // their own trolley is here but out of service: say so — they wait for a usable one, never ride on it
+    const broken = st.trolley && trolleyAtHand(host, st) && !host.d.store.available(st.trolley) ? locator.name(st.trolley) : null;
+    const why = broken ? worldMessage("pre.trolleyOutOfService", L, { trolley: broken, patient: name }) : worldMessage("pre.needsTrolley", L, { patient: name });
+    return failed("PRECONDITION_FAILED", `${worldMessage(`pre.cannotWalk.${unable}`, L, { patient: name })} ${why}`, { hint: null });
+  }
   if (trolley !== st.trolley) target = resolveTarget(deps, dest, trolley) ?? target;
   const plan = backend.plan({ actorId: actor.id, from: actor.pose, goal: target.stand, role: actor.role, accessibleOnly: true });
   if (!plan.ok) return failed(plan.code, plan.message, { hint: null });
