@@ -176,6 +176,8 @@ export interface RuntimeConfigPatch {
   agents?: Record<string, { provider?: string; model?: string; effort?: string; temperature?: number }>;
   approvalMode?: ApprovalMode;
   practiceScope?: PracticeScope;
+  /** How the characters are driven (docs/CHARACTERS.md): `llm` — every character model-driven; `rules` — the care team by its policies. */
+  characters?: { engine?: "rules" | "llm" };
   /** A supported language ("zh-CN", "en"); aliases such as "zh" or "en-US" are normalised, anything else is refused (`invalid_config`). */
   locale?: string;
   interlocutor?: AddressTarget;

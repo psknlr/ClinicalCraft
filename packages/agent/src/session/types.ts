@@ -55,7 +55,7 @@ export type TranscriptItem =
    * unasked fact or a diagnosis; the learner's `warning` names only their
    * categories). Ignored by resume.
    */
-  | { type: "diagnostic"; ordinal: number; ts: string; payload: { agent: AgentRole; source: "grounding" | "corrections"; detail: string[] } }
+  | { type: "diagnostic"; ordinal: number; ts: string; payload: { agent: AgentRole; source: "grounding" | "corrections" | "characters"; detail: string[] } }
   /**
    * Embodied mode: the physical world after a committed state-changing world action (and at shutdown when a
    * sensor pose moved since) — a resume restores the last one (`SessionOptions.embodied.snapshot`); the engine

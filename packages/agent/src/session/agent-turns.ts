@@ -7,6 +7,7 @@
  * else — and when a model call fails or refuses with nothing said — its deterministic offline responder.
  * Also the autopilot's host: the clinician driving the case through the same tool path.
  */
+import { PROFILE_POSITION, ROLE_CARDS, roleCardOf, type RoleCard } from "../characters/roles.js";
 import { assess, correctionMade, correctionsFor, patientNonVerbal, t, type NpcCorrection } from "@clinicalcraft/core";
 import { attendingOffline,
   specialistOffline, consultantOffline, examinerOffline, nurseOffline, staffOffline } from "../agents/offline.js";
@@ -36,6 +37,17 @@ export type AgentTurnMode = "message" | "prompt";
 const TOP_AGENT_ROLES = new Set(["patient", "companion"]);
 
 /** The agent turns of one session. */
+/**
+ * The speaker's role card (docs/CHARACTERS.md): a colleague by name speaks from their position's card (a scrub nurse
+ * is not a ward nurse, an anaesthetist is not the learner's preceptor); an agent answering as itself from its
+ * profile's default position. None for the patient, the companion, the examiner or the clinician.
+ */
+function roleCardContext(k: SessionKernel, agent: string, voice: StaffVoice | null): { roleCard?: { card: RoleCard; name: string } } {
+  const card = voice ? roleCardOf(k.caseDef, k.facility, voice.staffId) : PROFILE_POSITION[agent] ? ROLE_CARDS[PROFILE_POSITION[agent]!] : null;
+  if (!card) return {};
+  return { roleCard: { card, name: voice?.name ?? npcDisplayName(k.caseDef, k.facility, agent, k.locale) } };
+}
+
 export class AgentTurns {
   constructor(private readonly k: SessionKernel) {}
 
@@ -259,7 +271,7 @@ export class AgentTurns {
       host: k.tools.loopHost(id),
       agent: profile,
       provider: m.provider,
-      system: buildSystemSections(profile, { ...k.promptContext(), ...(voice ? { speakingAs: { name: voice.name, role: voice.role } } : {}) }),
+      system: buildSystemSections(profile, { ...k.promptContext(), ...(voice ? { speakingAs: { name: voice.name, role: voice.role } } : {}), ...roleCardContext(k, profile.name, voice) }),
       history: k.conversations.of(key),
       userParts: parts,
       tools,

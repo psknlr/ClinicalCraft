@@ -569,10 +569,41 @@ export const PatientSlotSchema = z
   })
   .strict();
 
+/**
+ * A staff member's position — the job they hold, finer than `role` (which decides what their body may do in the
+ * world): a nurse is a scrub, circulating, ward or recovery nurse; an attending is a surgeon, an assistant surgeon,
+ * an anaesthetist or a physician. Each position has a role card (the agent's `characters/roles.ts`): its
+ * responsibilities, authority, limits, communication protocol and whom it escalates to (docs/CHARACTERS.md).
+ */
+export const StaffPositionSchema = z.enum([
+  "surgeon",
+  "assistant-surgeon",
+  "anaesthetist",
+  "scrub-nurse",
+  "circulating-nurse",
+  "ward-nurse",
+  "recovery-nurse",
+  "theatre-coordinator",
+  "physician",
+  "educator",
+  "radiologist",
+  "radiographer",
+  "pathologist",
+  "lab-technician",
+  "transfusion-scientist",
+  "pharmacist",
+  "receptionist",
+  "porter",
+  "paramedic",
+]);
+export type StaffPosition = z.infer<typeof StaffPositionSchema>;
+
 export const StaffSchema = z
   .object({
     id: IdSchema,
     role: z.enum(["nurse", "radiologist", "pathologist", "lab-tech", "attending", "pharmacist", "receptionist", "paramedic", "porter"]),
+    /** The job they hold (default: from the case team's duties, else from `role`). */
+    position: StaffPositionSchema.optional(),
     name: LocalizedTextSchema,
     room: IdSchema,
     /** Level (default: the room's level). */
@@ -660,7 +691,7 @@ const PlacementPatchSchema = TemplatePlacementSchema.omit({ id: true }).partial(
 const SlotPatchSchema = z.object({ accepts: z.array(CaseSettingSchema).min(1).optional(), posture: z.enum(["standing", "sitting", "lying"]).optional() }).strict();
 /** Per-instance changes to one template staff member. */
 const StaffPatchSchema = z
-  .object({ name: LocalizedTextSchema.optional(), role: StaffSchema.shape.role.optional(), greeting: LocalizedTextSchema.optional(), appearance: AppearanceSchema.partial().optional() })
+  .object({ name: LocalizedTextSchema.optional(), role: StaffSchema.shape.role.optional(), position: StaffPositionSchema.optional(), greeting: LocalizedTextSchema.optional(), appearance: AppearanceSchema.partial().optional() })
   .strict();
 
 /** What one instance changes in its template (local ids; template-local frame). */

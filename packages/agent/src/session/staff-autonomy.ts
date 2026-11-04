@@ -12,9 +12,12 @@
  * agrees by construction): goal, task, location, responsibility, held items, reservations, pending requests and
  * what blocks them.
  */
-import { anaesthetised, responsibleAnaesthetist, t, vitalsAt } from "@clinicalcraft/core";
+import { anaesthetised, responsibleAnaesthetist, t, vitalsAt, type StaffPosition } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { dropTractionAwayFromTable } from "./assist.js";
+import { positionOf, roleCardOf } from "../characters/roles.js";
+import { wordLine } from "../characters/voice.js";
+import { characterModel } from "./character-models.js";
 import { rt } from "./i18n.js";
 import type { SessionKernel } from "./kernel.js";
 
@@ -23,6 +26,8 @@ export interface RoleState {
   actorId: string;
   name: string;
   role: string;
+  /** The job they hold (docs/CHARACTERS.md): their role card's position. */
+  position: StaffPosition | null;
   /** What they are there for now ("keep the patient anaesthetised", "hold the traction in port B", "acquire ord-2"). */
   currentGoal: string | null;
   /** What their body is doing (a walk, a device operation), if anything. */
@@ -80,7 +85,23 @@ export class StaffAutonomy {
     const L = k.locale;
     const staff = k.facility?.staff.find((s) => s.id === staffId);
     const name = staff ? t(staff.name, L) : staffId;
-    const text = rt(L, "staff.alarm.answered", { vitals: fresh.map((a) => `${a.vital.toUpperCase()} ${Math.round(a.value)}`).join(", ") });
+    const vitals = fresh.map((a) => `${a.vital.toUpperCase()} ${Math.round(a.value)}`).join(", ");
+    const template = rt(L, "staff.alarm.answered", { vitals });
+    // the anaesthetist's own words when characters are model-driven (grounded in the alarm; else the template)
+    const worded = await wordLine({
+      speaker: name,
+      card: roleCardOf(c, k.facility, staffId),
+      intent: "a new critical alarm on the monitor of the anaesthetised patient you are responsible for; you are now at the patient",
+      facts: [`critical alarm: ${vitals}`, "you are at the patient, checking"],
+      template,
+      locale: L,
+      model: characterModel(k, staff?.role ?? "attending"),
+      timeoutMs: k.settings.characters.timeoutMs,
+      staffNames: (k.facility?.staff ?? []).map((s) => t(s.name, L)),
+      signal,
+    });
+    if (worded.refused && k.settings.characters.engine === "llm") k.recorder?.record("diagnostic", { agent: "attending", source: "characters", detail: [JSON.stringify({ source: "line", speaker: staffId, refused: worded.refused })] });
+    const text = worded.text;
     k.speakLine(id, { agent: "attending", speaker: name, text, grounded: [], staffId });
     k.conversations.addDialogue({ who: "attending", speaker: name, text });
   }
@@ -119,6 +140,7 @@ export class StaffAutonomy {
           actorId: a.id,
           name,
           role: a.role,
+          position: positionOf(c, k.facility, sid),
           currentGoal: goal,
           currentTask: a.task?.label ?? tasks[0]?.id ?? null,
           location: { room: w.roomOf(a.id), x: Math.round(a.pose.x * 100) / 100, z: Math.round(a.pose.z * 100) / 100, level: a.pose.level },

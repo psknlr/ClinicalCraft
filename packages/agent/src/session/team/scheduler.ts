@@ -34,8 +34,13 @@ export interface TeamHost {
   phase(): string;
   locale: string;
   emit(msg: EventMsg): void;
-  /** A member's line, as the learner hears it. */
-  say(speaker: string, text: string): void;
+  /** A member's line, as the learner hears it (`member`: who spoke — their body). */
+  say(speaker: string, text: string, member?: MemberId): void;
+  /**
+   * Model-driven members (docs/CHARACTERS.md, `characters.engine: "llm"`): the member's move this round, decided by
+   * their model from the legal moves (`rules` is the policy's own proposal). Absent: the rules decide.
+   */
+  decide?(member: MemberState, view: MemberView, rules: Proposal | null, signal: AbortSignal): Promise<Proposal | null>;
   /** Does a condition hold on the case record now (a count falls due; closure has begun)? */
   holds(cond: Condition): boolean;
   /** The session's surgical count (the one writer of the case's count record), or null. */
@@ -210,7 +215,8 @@ export class TeamScheduler {
     for (const member of this.order()) {
       if (signal.aborted) break;
       const view = this.view(member);
-      const p = propose(view);
+      const rules = propose(view);
+      const p = this.host.decide ? await this.host.decide(member, view, rules, signal) : rules;
       if (!p) continue;
       busy = (await this.carryOut(member, p, signal)) || busy;
     }
@@ -377,7 +383,7 @@ export class TeamScheduler {
     if (delivered && to) to.inbox.push(id);
     if (delivered && to) this.observe(to, "message", id, `${message.kind} from ${member.id}`);
     this.host.emit({ type: "team_event", event: { kind: "message", message: structuredClone(message) } });
-    this.host.say(this.displayName(member.id), t(message.text, this.host.locale));
+    this.host.say(this.displayName(member.id), t(message.text, this.host.locale), member.id);
   }
 
   private apply(member: MemberState, patches: readonly TaskPatch[]): void {

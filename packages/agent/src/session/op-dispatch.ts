@@ -44,6 +44,7 @@ export function cleanConfigPatch(patch: RuntimeConfigPatch): RuntimeConfigPatch 
   if (typeof patch.practiceScope === "string") out.practiceScope = patch.practiceScope;
   if (typeof patch.locale === "string") out.locale = patch.locale;
   if (typeof patch.interlocutor === "string") out.interlocutor = patch.interlocutor;
+  if (patch.characters && typeof patch.characters === "object" && typeof patch.characters.engine === "string") out.characters = { engine: patch.characters.engine };
   if (patch.agents && typeof patch.agents === "object") {
     out.agents = {};
     for (const [name, o] of Object.entries(patch.agents)) {
@@ -282,6 +283,10 @@ export class OpDispatcher {
         issues.push(`locale "${patch.locale}"`);
         delete patch.locale;
       }
+    }
+    if (patch.characters?.engine !== undefined) {
+      if (patch.characters.engine === "rules" || patch.characters.engine === "llm") next.characters = { ...next.characters, engine: patch.characters.engine };
+      else issues.push(`characters.engine "${String(patch.characters.engine)}"`);
     }
     for (const [agent, override] of Object.entries(patch.agents ?? {})) {
       const merged = { ...(next.agents[agent] ?? {}) } as Record<string, unknown>;

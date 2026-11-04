@@ -242,6 +242,11 @@ function ask(v: MemberView, task: TeamTask): Proposal | null {
   return escalate(v, task, task.reasonText ?? phrase("why.nobody"));
 }
 
+/** Raise a task the team cannot resolve to the person it is for, with the reason (the task ends `escalated`). */
+export function escalateTask(v: MemberView, task: TeamTask, reason: Bilingual, patch: TaskPatch[] = []): Proposal {
+  return escalate(v, task, reason, patch);
+}
+
 function escalate(v: MemberView, task: TeamTask, reason: Bilingual, patch: TaskPatch[] = []): Proposal {
   const clause = { en: reason.en.replace(/[.。]\s*$/u, ""), "zh-CN": reason["zh-CN"].replace(/[.。]\s*$/u, "") };
   return say(v, task.for, "escalate", "unresolved", task, { extra: { reason: clause }, patch: [...patch, { id: task.id, set: { status: "escalated", since: v.round, reason: task.reason ?? "unresolved", reasonText: reason } }] });

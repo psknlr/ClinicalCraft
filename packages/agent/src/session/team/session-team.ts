@@ -10,7 +10,12 @@ import type { Op } from "../../protocol.js";
 import { rt } from "../i18n.js";
 import type { SessionKernel } from "../kernel.js";
 import { TeamScheduler, type TeamHost } from "./scheduler.js";
-import type { TeamCheckpoint } from "./types.js";
+import type { MemberState, TeamCheckpoint } from "./types.js";
+import { PRIMARY_ACTOR } from "@clinicalcraft/world";
+import { ModelTeamMind } from "../../characters/team-mind.js";
+import { positionOf } from "../../characters/roles.js";
+import { characterModel } from "../character-models.js";
+import { SURGEON_NAME } from "./i18n.js";
 
 export { validTeamCheckpoint } from "./checkpoint.js";
 
@@ -61,11 +66,44 @@ export class SessionTeam {
       holds: (cond) => evaluate(k.caseDef, k.state, cond),
       count: () => k.embodied?.count ?? null,
       record: () => k.state.count,
-      say: (speaker, text) => {
-        k.speakLine(k.currentSubmission, { agent: "nurse", speaker, text, grounded: [] });
+      say: (speaker, text, member) => {
+        const staffId = member?.startsWith("staff:") ? member.slice("staff:".length) : undefined;
+        k.speakLine(k.currentSubmission, { agent: "nurse", speaker, text, grounded: [], ...(staffId ? { staffId } : {}) });
         k.conversations.addDialogue({ who: "nurse", speaker, text });
       },
+      // every member decides with their own model (docs/CHARACTERS.md): read at each round, so a `configure` applies
+      decide: (member, view, rules, signal) => (k.settings.characters.engine === "llm" ? this.mind().decide(member, view, rules, signal) : Promise.resolve(rules)),
     };
+  }
+
+  private mindInstance: ModelTeamMind | null = null;
+
+  /** The model-driven team (one per session: it remembers who deferred what). */
+  private mind(): ModelTeamMind {
+    if (this.mindInstance) return this.mindInstance;
+    const k = this.k;
+    const staffOf = (member: MemberState) => k.facility?.staff.find((s) => s.id === member.staff);
+    this.mindInstance = new ModelTeamMind({
+      get locale() {
+        return k.locale;
+      },
+      get timeoutMs() {
+        return k.settings.characters.timeoutMs;
+      },
+      // a member's model is the one their role speaks through (`agents.nurse`, `agents.attending`)
+      model: (member) => characterModel(k, staffOf(member)?.role ?? (member.staff === "surgeon" ? "attending" : "nurse")),
+      position: (member) => (member.staff === "surgeon" ? "surgeon" : positionOf(k.caseDef, k.facility, member.staff)),
+      name: (id) => {
+        const e = k.embodied?.world().entity(id);
+        return e ? t(e.name, k.locale) : id === PRIMARY_ACTOR ? t(SURGEON_NAME, k.locale) : id;
+      },
+      staffNames: () => (k.facility?.staff ?? []).map((s) => t(s.name, k.locale)),
+      warn: (message) => k.emit(k.currentSubmission, { type: "warning", message }),
+      // what each model decided, or why the rules did (transcript only: never an event)
+      record: (entry) => void k.recorder?.record("diagnostic", { agent: "team", source: "characters", detail: [JSON.stringify(entry)] }),
+      usage: (agent, u) => k.models.trackUsage(k.currentSubmission, agent, u),
+    });
+    return this.mindInstance;
   }
 
   /** After an op of the learner: the team acts on its own (autonomy `auto`) until it is idle. */
