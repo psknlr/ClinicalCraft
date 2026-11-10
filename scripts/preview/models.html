@@ -1,0 +1,114 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>Equipment model preview</title>
+<style>html,body{margin:0;background:#b4d7da;font:12px system-ui}canvas{display:block}#labels{position:fixed;inset:0;pointer-events:none}#labels div{position:absolute;background:#f3eed8e6;color:#2e4839;padding:2px 5px;border:1px solid #9aa98c;white-space:nowrap;font-weight:600}#labels div.warn{background:#f6d9cfe6;color:#7a2e1c;border-color:#c98a7a}</style>
+<script type="importmap">{"imports":{"three":"/node_modules/three/build/three.module.js","three/addons/":"/node_modules/three/examples/jsm/"}}</script>
+</head><body><div id="labels"></div>
+<script type="module">
+/**
+ * Equipment models as the web world draws them (docs/BLENDER.md): each type's GLB placed by its catalog
+ * reference (scale, rot, offset — core `fitModel`), lit like the world (hemisphere + sun, ACES, no
+ * environment map), a glowing quad on the front face of every `screen` part (where the world draws the live
+ * display) and, with `compare`, the voxel parts beside it. One cell per type, the camera fitted to it.
+ */
+import * as THREE from "three";
+import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
+const params = new URLSearchParams(location.search);
+const files = (params.get("catalogs") || "").split(",").filter(Boolean);
+const assets = (params.get("assets") || "").split(",").filter(Boolean);
+const only = (params.get("only") || "").split(",").filter(Boolean);
+const view = params.get("view") || "iso";
+const compare = params.get("compare") === "1";
+const cell = Math.max(120, Number(params.get("cell")) || 320);
+const focus = (params.get("focus") || "").split(",").map(Number).filter((v) => Number.isFinite(v)).length === 4 ? params.get("focus").split(",").map(Number) : null;
+const cats = await Promise.all(files.map((f) => fetch("/" + f).then((r) => r.json())));
+const mats = new Map(); let eqs = [];
+for (const c of cats) { for (const m of c.materials || []) mats.set(m.id, m); for (const e of c.equipment || []) if (!only.length || only.includes(e.id)) eqs.push(e); }
+if (only.length) eqs.sort((a, b) => only.indexOf(a.id) - only.indexOf(b.id));
+mats.set("__missing", { id: "__missing", color: "#ff00ff", pattern: "flat" });
+const cache = new Map(); const missing = new Set();
+function material(id) {
+  if (cache.has(id)) return cache.get(id);
+  const m = mats.get(id); if (!m) { missing.add(id); return material("__missing"); }
+  const mm = new THREE.MeshStandardMaterial({ color: new THREE.Color(m.color), roughness: m.roughness ?? 0.93, metalness: m.metalness ?? 0, transparent: (m.opacity ?? 1) < 1, opacity: m.opacity ?? 1, depthWrite: (m.opacity ?? 1) >= 1, emissive: m.emissive ? new THREE.Color(m.emissive) : new THREE.Color(0), emissiveIntensity: m.emissive ? (m.emissiveIntensity ?? 0.3) : 0 });
+  cache.set(id, mm); return mm;
+}
+const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+renderer.setPixelRatio(1); renderer.outputColorSpace = THREE.SRGBColorSpace; renderer.toneMapping = THREE.ACESFilmicToneMapping; renderer.toneMappingExposure = 1.15;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+const box = new THREE.BoxGeometry(1, 1, 1); const plane = new THREE.PlaneGeometry(1, 1);
+const screenMaterial = new THREE.MeshBasicMaterial({ color: "#3fd0a8", toneMapped: false });
+const loader = new GLTFLoader();
+const warnings = [];
+
+/** core `fitModel` for the preview: scale (a number, a triple, or a uniform fit), rot, bounding box centred on the footprint on the floor, then offset. */
+function fit(scene, ref, fp) {
+  scene.updateMatrixWorld(true);
+  const b = new THREE.Box3().setFromObject(scene); const size = b.getSize(new THREE.Vector3());
+  let s = ref.scale;
+  if (s === undefined) { const k = Math.min(fp.w / (size.x || 1), fp.h / (size.y || 1), fp.d / (size.z || 1)); s = [k, k, k]; } else if (typeof s === "number") s = [s, s, s];
+  const holder = new THREE.Group(); holder.add(scene);
+  holder.scale.set(...s); holder.rotation.y = ((ref.rot || 0) * Math.PI) / 180; holder.updateMatrixWorld(true);
+  const fb = new THREE.Box3().setFromObject(holder); const c = fb.getCenter(new THREE.Vector3()); const o = ref.offset || [0, 0, 0];
+  holder.position.set(-c.x + o[0], -fb.min.y + o[1], -c.z + o[2]);
+  return holder;
+}
+function voxels(e) {
+  const g = new THREE.Group();
+  for (const part of e.parts) { const mesh = new THREE.Mesh(box, material(part.name === "screen" ? "black" : part.m)); mesh.position.set(...part.p); mesh.scale.set(...part.s); if (part.r) mesh.rotation.y = (part.r * Math.PI) / 180; mesh.castShadow = mesh.receiveShadow = true; g.add(mesh); }
+  return g;
+}
+function screens(e) {
+  const g = new THREE.Group();
+  for (const part of e.parts) { if (part.name !== "screen") continue; const ry = ((part.r || 0) * Math.PI) / 180; const lift = part.s[2] / 2 + 0.003; const q = new THREE.Mesh(plane, screenMaterial); q.position.set(part.p[0] + Math.sin(ry) * lift, part.p[1], part.p[2] + Math.cos(ry) * lift); q.rotation.y = ry; q.scale.set(part.s[0], part.s[1], 1); g.add(q); }
+  return g;
+}
+async function modelOf(e) {
+  if (!e.model) return null;
+  for (const dir of assets) {
+    const res = await fetch("/" + dir.replace(/\/$/, "") + "/" + e.model.uri);
+    if (!res.ok) continue;
+    const gltf = await loader.parseAsync(await res.arrayBuffer(), "");
+    let triangles = 0;
+    gltf.scene.traverse((o) => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; triangles += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; } });
+    return { group: fit(gltf.scene, e.model, e.footprint), triangles };
+  }
+  warnings.push(`${e.id}: model ${e.model.uri} not found`);
+  return null;
+}
+
+const cells = [];
+for (const e of eqs) {
+  const m = await modelOf(e).catch((err) => { warnings.push(`${e.id}: ${err}`); return null; });
+  if (compare || !m) cells.push({ e, label: `${e.id} · voxels`, content: [voxels(e), screens(e)], warn: !m && !!e.model });
+  if (m) cells.push({ e, label: `${e.id} · ${Math.round(m.triangles)} tris`, content: [m.group, screens(e)] });
+}
+const cols = Math.max(1, Math.min(Number(params.get("cols")) || (compare ? 4 : 5), cells.length || 1));
+const rows = Math.max(1, Math.ceil(cells.length / cols));
+const W = cols * cell, H = rows * cell;
+renderer.setSize(W, H); renderer.setScissorTest(true);
+const lab = document.getElementById("labels");
+cells.forEach((c, i) => {
+  const fp = c.e.footprint;
+  const scene = new THREE.Scene(); scene.background = new THREE.Color("#a8d5e0");
+  scene.add(new THREE.HemisphereLight("#d5f4ff", "#83936c", 2.6));
+  const span = Math.max(fp.w, fp.d, fp.h);
+  const sun = new THREE.DirectionalLight("#fff4d4", 3.4); sun.position.set(-23 * span, 36 * span, 19 * span); sun.castShadow = true; sun.shadow.mapSize.set(1024, 1024);
+  Object.assign(sun.shadow.camera, { left: -span * 1.6, right: span * 1.6, top: span * 1.6, bottom: -span * 1.6, near: span, far: span * 100 }); sun.shadow.normalBias = 0.02 * Math.min(1, span); sun.shadow.bias = -3e-4;
+  scene.add(sun); scene.add(sun.target);
+  const pad = Math.max(fp.w, fp.d) * 1.5 + 0.2;
+  const floor = new THREE.Mesh(new THREE.BoxGeometry(pad, 0.02 * span, pad), material("floor")); floor.position.y = -0.01 * span; floor.receiveShadow = true; scene.add(floor);
+  for (const o of c.content) scene.add(o);
+  const outline = new THREE.LineSegments(new THREE.EdgesGeometry(new THREE.BoxGeometry(fp.w, fp.h, fp.d)), new THREE.LineBasicMaterial({ color: "#c0392b", transparent: true, opacity: 0.3 })); outline.position.y = fp.h / 2; scene.add(outline);
+  // the whole footprint, or (focus=x,y,z,radius in the type's frame) a close-up of one part of it
+  const centre = focus ? new THREE.Vector3(focus[0], focus[1], focus[2]) : new THREE.Vector3(0, fp.h / 2, 0); const radius = focus ? focus[3] : Math.hypot(fp.w, fp.h, fp.d) / 2;
+  const cam = new THREE.PerspectiveCamera(28, 1, radius * 0.05, radius * 40);
+  const dir = view === "front" ? new THREE.Vector3(0, 0.12, 1) : view === "back" ? new THREE.Vector3(-0.4, 0.3, -1) : view === "side" ? new THREE.Vector3(1, 0.12, 0) : view === "top" ? new THREE.Vector3(0.001, 1, 0.12) : new THREE.Vector3(0.62, 0.42, 1);
+  cam.position.copy(centre).addScaledVector(dir.normalize(), (radius / Math.sin((14 * Math.PI) / 180)) * 1.04); cam.lookAt(centre);
+  const x = (i % cols) * cell, y = Math.floor(i / cols) * cell;
+  renderer.setViewport(x, H - y - cell, cell, cell); renderer.setScissor(x, H - y - cell, cell, cell);
+  renderer.render(scene, cam);
+  const d = document.createElement("div"); d.textContent = c.label; d.style.left = x + 4 + "px"; d.style.top = y + 4 + "px"; if (c.warn) d.className = "warn"; lab.appendChild(d);
+});
+window.__done = { count: eqs.length, cells: cells.length, missingMaterials: [...missing], warnings, width: W, height: H };
+</script></body></html>

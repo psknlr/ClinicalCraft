@@ -32,6 +32,8 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
 * Visual QA (required for content authors):
   `node scripts/preview/render.mjs equipment --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/<file>.json --out <png>` and
   `node scripts/preview/render.mjs facility --facility packages/content/facilities/<id>.json --catalogs <all catalog files> --out <png>`.
+  `node scripts/preview/render.mjs models --catalogs <catalog files> [--compare 1] --out <png>` draws the types' GLB
+  models as the world does, beside their voxel parts (BLENDER.md "Looking at the result").
   Files may lie outside the checkout (a `contentDirs` folder): only the files
   named on the command line are served. A file that fails to load or parse
   ends the run at once with `{"ok": false, …}` and exit code 1.

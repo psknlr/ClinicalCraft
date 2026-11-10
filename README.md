@@ -272,11 +272,15 @@ Blender from its voxel parts ([docs/BLENDER.md](docs/BLENDER.md)) — `core-furn
 infusion pumps, anaesthesia machine, rehabilitation equipment…),
 `core-diagnostics` (26: CT, MRI, X-ray, C-arm, PET-CT, ultrasound, analysers,
 microscope, flow cytometer, endoscopy tower…) — and `materials` holds the
-procedural pixel textures. Each equipment type declares voxel parts,
+procedural pixel textures (and the colours that are codes: medical gases follow
+ISO 32, oxygen white). Each equipment type declares voxel parts,
 footprint, capabilities and an interaction (workstation, device, monitor,
 board, atlas…), and optionally `portable` (eight carts can be wheeled),
 `reach`, `interactionPoints`, a declarative `behavior` (the ECG machine and
-the patient monitor) and a GLB `model` (none ships); 15 room templates
+the patient monitor) and a GLB `model` (every built-in type ships one, in
+`packages/content/assets/models`; the bed, the wheelchair, the infusion stands, the
+oxygen cylinder, the ventilator, the defibrillator and other much-seen types have
+builders of their own); 15 room templates
 compose facilities. Examinations, investigations and interventions require
 capabilities present in the facility — the CLI, MCP and agent tools refuse
 an item the whole facility lacks, embodied mode also requires the provider

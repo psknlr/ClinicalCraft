@@ -169,3 +169,7 @@ Exit code 1 on any error.
 
 Tests generate their models in code (`encodeGlb` in core); no binary model
 is committed.
+
+To look at a model rather than measure it, `node scripts/preview/render.mjs
+models …` draws it as the web world does, in headless Chromium (BLENDER.md
+"Looking at the result").

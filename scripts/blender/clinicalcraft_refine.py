@@ -16,7 +16,8 @@ replaces what the boxes cannot say.
 Rules (sizes in metres, a part's dims sorted a ≤ b ≤ c):
 * `screen` parts — a dark box of the part's size: the live display is drawn on its front face;
 * voxel discs — a cross of two fat parts (w × d and d × w) of one material at one centre, with any
-  square inside it: a cylinder (`discs`);
+  square inside it: a cylinder (`discs`), round whichever axis the cross is drawn about (a clock
+  face, a lamp head, an upright gas cylinder), the two parts up to 6 mm apart along it;
 * casters — a small dark cube standing on the floor: a swivel caster on portable types, beds and
   types that have three or more of them, else a round glide;
 * bars — b ≤ 0.06 m, c ≥ 3 b, a ≥ 0.6 b: a cylinder along the long side (legs, poles, rails);
@@ -84,6 +85,50 @@ def discs(parts: list[dict]) -> tuple[list[tuple[tuple, float, float, str, str]]
                        and max(parts[i]["s"][u], parts[i]["s"][v]) <= 2 * radius + 1e-3]
             out.append((centre, radius, max(parts[i]["s"][t] for i in members), "xyz"[t], m))
             used.update(members)
+            break
+    loose, more = _loose_discs(parts, used)
+    return out + loose, used | more
+
+
+#: Two halves of a voxel cylinder may sit this far apart along its axis, or differ this much in
+#: length (m): a cross is often drawn with one arm a few millimetres proud of the other.
+_PROUD = 0.006
+
+
+def _loose_discs(parts: list[dict], taken: set[int]) -> tuple[list[tuple[tuple, float, float, str, str]], set[int]]:
+    """Voxel cylinders the strict rule misses: a cross of fat arms round any axis — not only the
+    thin one (an upright gas cylinder is a cross seen from above) — whose two parts may be a few
+    millimetres apart along that axis or differ as little in length (a lamp head, a dial, a wall
+    outlet). Same result shape as `discs`; `taken` are indices already used."""
+    out, used = [], set()
+
+    def plain(i: int) -> bool:
+        return i not in taken and i not in used and parts[i].get("name") != "screen" and not parts[i].get("r")
+
+    for a, pa in enumerate(parts):
+        if not plain(a):
+            continue
+        for b, pb in enumerate(parts):
+            if b == a or not plain(b) or pb["m"] != pa["m"]:
+                continue
+            sa, sb = pa["s"], pb["s"]
+            axis = None
+            for t in range(3):
+                u, v = [x for x in range(3) if x != t]
+                if abs(pa["p"][u] - pb["p"][u]) > 1e-3 or abs(pa["p"][v] - pb["p"][v]) > 1e-3 or abs(pa["p"][t] - pb["p"][t]) > _PROUD:
+                    continue
+                if abs(sb[u] - sa[v]) > 1e-3 or abs(sb[v] - sa[u]) > 1e-3 or abs(sa[u] - sa[v]) <= 1e-3:
+                    continue
+                if min(sa[u], sa[v]) < 0.35 * max(sa[u], sa[v]) or abs(sa[t] - sb[t]) > max(_PROUD, 0.02 * max(sa[t], sb[t])):
+                    continue
+                axis = t
+                break
+            if axis is None:
+                continue
+            u, v = [x for x in range(3) if x != axis]
+            first = pa if sa[axis] >= sb[axis] else pb
+            out.append((tuple(first["p"]), max(sa[u], sa[v]) / 2, max(sa[axis], sb[axis]), "xyz"[axis], pa["m"]))
+            used.update((a, b))
             break
     return out, used
 

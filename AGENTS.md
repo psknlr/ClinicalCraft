@@ -28,6 +28,7 @@ npm run dev                # web world at http://localhost:5173
 npm run build              # libraries (packages/*/dist: built binary, `serve`) + web
 npm run test:e2e           # Playwright (web)
 blender -b -P scripts/blender/build.py   # rebuild the built-in equipment models (Blender 4.1+, or `python3` with the `bpy` module), then `npm run build`
+node scripts/preview/render.mjs models --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/core-clinical.json --compare 1 --out /tmp/models.png   # the models as the world draws them, beside their voxel parts (docs/BLENDER.md)
 ```
 
 ## Conventions
