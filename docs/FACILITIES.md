@@ -34,10 +34,12 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
   `node scripts/preview/render.mjs facility --facility packages/content/facilities/<id>.json --catalogs <all catalog files> --out <png>`.
   `node scripts/preview/render.mjs models --catalogs <catalog files> [--compare 1] --out <png>` draws the types' GLB
   models as the world does, beside their voxel parts (BLENDER.md "Looking at the result").
-  `node scripts/preview/render.mjs people --facility <facility file> [--only <staff ids>] [--view front|iso|back|side|face|chest] --out <png>`
+  `node scripts/preview/render.mjs people --facility <facility file> [--only <staff ids>] [--view front|iso|back|side|face|chest|hands] --out <png>`
   draws the facility's staff as the world does ("Staff in the 3D world" below); `--case <case.json>` draws a case's
   patient standing, sitting and in bed, and their companion; `--sheet roles|positions|looks|patients` the
-  reference sheets (every role's uniform, every theatre position, what an appearance can ask for).
+  reference sheets (every role's uniform, every theatre position, what an appearance can ask for);
+  `--view hand` the hand by itself in each of its poses (`--detail 0`: as a figure has it), `--view held` the
+  player's own hand and stethoscope as the camera sees them.
   Files may lie outside the checkout (a `contentDirs` folder): only the files
   named on the command line are served. A file that fails to load or parse
   ends the run at once with `{"ok": false, …}` and exit code 1.
@@ -135,6 +137,14 @@ to the shoulders; `bun`, `ponytail`: drawn back, a light fringe and fine strands
 next (skin, hair, build, glasses, height by a few per cent) and is the same for the same staff id every
 time, so a theatre team is three people, not one person three times. Everyone breathes, blinks,
 turns their head to the learner and moves their jaw when they speak. A name tag floats over each.
+
+Hands are hands (`figure/hand*.ts`): one skin over a hand's bones — the knuckles half-way along
+it, the fingers out of the palm through webs, the thumb out of its mound of muscle, nails — drawn
+through a cage of a few hundred points and refined into a smooth surface (`figure/subdivide.ts`),
+resting, laid flat on a lap or a bed, or closed over one another in front of a sterile gown. A
+forearm turns with its hand (the wrist is wide the way the hand is wide) and the hand grows out
+of the forearm's last ring, so wrist and arm are one surface. The player's own hand is the same
+hand, refined once more, pinching the chest piece of its stethoscope pad to pad.
 
 **Equipment types.**
 

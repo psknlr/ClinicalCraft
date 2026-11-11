@@ -5,7 +5,8 @@
  */
 import { Matrix4, Vector3 } from "three";
 import { ANKLE, HIP, NECK, PIVOT, type Frame, type Limb } from "./anatomy.js";
-import { shade, type Paint, type Painter, type Sculpt, type Station, type V3 } from "./sculpt.js";
+import { WRIST } from "./hand-cage.js";
+import { shade, sweepFrames, type Paint, type Painter, type Sculpt, type Station, type V3 } from "./sculpt.js";
 
 /** Values along a line, read between the keys with a smooth curve (keys: [at, ...values], ascending). */
 export function curve(keys: readonly (readonly number[])[]): (at: number) => number[] {
@@ -181,14 +182,36 @@ export function limbPoint(l: Limb, t: number, round = 0.06): Vector3 {
 /** Where sections are cut along a limb (closer together through the joint). */
 const CUTS = [0, 0.14, 0.3, 0.48, 0.66, 0.8, 0.9, 0.96, 1, 1.04, 1.1, 1.2, 1.36, 1.52, 1.68, 1.84, 1.93, 2];
 
-/** Sections of a limb from `t0` to `t1`, each sized by `radii(t)` = [half-width, front, back]. */
-export function limbStations(l: Limb, t0: number, t1: number, radii: (t: number) => number[], round = 0.06): Station[] {
+/**
+ * Sections of a limb from `t0` to `t1`, each sized by `radii(t)` = [half-width, front, back]. With `turn` the
+ * second bone turns with what it ends in, as a forearm does with its hand: its last section lies flat in the
+ * hand's plane (the wrist is wide the way the hand is wide), whichever way the palm is turned.
+ */
+export function limbStations(l: Limb, t0: number, t1: number, radii: (t: number) => number[], round = 0.06, turn = false): Station[] {
   const ts = [t0, ...CUTS.filter((t) => t > t0 + 0.02 && t < t1 - 0.02), t1];
-  return ts.map((t) => {
+  const station = (t: number): Station => {
     const p = limbPoint(l, t, round);
     const [rx, rz, back] = radii(t) as [number, number, number | undefined];
     return { p: [p.x, p.y, p.z] as V3, rx, rz, back: back ?? rz };
-  });
+  };
+  const stations = ts.map(station);
+  if (turn) {
+    // how the section arrives at the wrist when its front is simply carried along, against the hand's own plane
+    const whole = t1 >= 2 ? stations : [...stations, ...CUTS.filter((t) => t > t1 + 0.02).map(station)];
+    const end = sweepFrames(whole)[whole.length - 1]!;
+    const face = new Vector3(...l.face);
+    face.addScaledVector(end.t, -face.dot(end.t));
+    if (face.lengthSq() > 1e-8) {
+      let total = Math.atan2(face.dot(end.s), face.dot(end.f));
+      if (total > Math.PI / 2) total -= Math.PI;
+      if (total < -Math.PI / 2) total += Math.PI;
+      stations.forEach((st, i) => {
+        const k = Math.min(1, Math.max(0, (ts[i]! - 1.1) / 0.85));
+        st.twist = total * k * k * (3 - 2 * k);
+      });
+    }
+  }
+  return stations;
 }
 
 const ARM = curve([
@@ -198,8 +221,8 @@ const ARM = curve([
   [1, 0.0365, 0.039],
   [1.18, 0.0395, 0.041],
   [1.5, 0.034, 0.0345],
-  [1.85, 0.025, 0.0226],
-  [2, 0.0212, 0.0192],
+  [1.85, 0.0278, 0.0218],
+  [2, WRIST[0], WRIST[1]],
 ]);
 const LEG = curve([
   [0, 0.066, 0.086, 0.09],

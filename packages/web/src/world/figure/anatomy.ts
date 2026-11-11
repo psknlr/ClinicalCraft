@@ -4,7 +4,7 @@
  * figure's own: feet at the origin, +Y up, +Z the way they face, +X their left.
  *
  * Standing, the arms hang a little bent with the palms towards the thighs, or (hands `clasped`) are held
- * together in front of the chest, as someone scrubbed keeps them. Sitting, the feet are planted when the seat is
+ * one hand over the other in front of the chest, as someone scrubbed keeps them. Sitting, the feet are planted when the seat is
  * low enough and hang when it is not, and the hands rest on the thighs. Lying, the figure is built upright and
  * laid down by its rig: legs straight, the arms a little away from the trunk.
  */
@@ -99,19 +99,28 @@ export function bend(root: V3, end: V3, a: number, b: number, pole: V3): V3 {
   return [m.x, m.y, m.z];
 }
 
+/** How far the hand on top lies out from the one under it when two are held together: a hand's thickness. */
+const CLASP_OVER = 0.03;
+
 /** How the arms are held. */
 export type ArmPose = "relaxed" | "clasped" | "lap" | "rest" | "sling";
 
-/** One arm of a pose (left: `side` = 1). The right arm is this mirrored, so poses are given for the left. */
-function arm(pose: ArmPose, lift: number, f: Frame, seatTop: number): Limb {
+/**
+ * One arm of a pose (left: `side` = 1). The right arm is this mirrored, so poses are given for the left. `over`:
+ * of two hands held together, the one that lies on the other.
+ */
+function arm(pose: ArmPose, lift: number, f: Frame, seatTop: number, over = false): Limb {
   const sx = SHOULDER_X * f.wide, sy = SHOULDER + lift;
   const root = v(sx, sy, 0);
   const upper = UPPER_ARM, fore = FOREARM;
   if (pose === "clasped") {
-    // scrubbed: hands together in front of the lower chest, elbows out a little
-    const end = v(0.035, sy - 0.235, 0.215 + f.belly * 0.6);
+    // scrubbed: one hand over the other in front of the lower chest, palms to the body, elbows out a little — the
+    // hand on top a hand's thickness further out, its palm on the back of the other
+    const face = new Vector3(-0.1, -0.42, -0.9).normalize();
+    const out = over ? CLASP_OVER : 0;
+    const end = v(0.045 - face.x * out, sy - 0.235 - face.y * out, 0.2 + f.belly * 0.6 - face.z * out);
     const mid = bend(root, end, upper, fore, [0.75, -0.6, -0.25]);
-    return { root, mid, end, along: v(-0.82, 0.2, 0.52), face: v(-0.35, -0.45, -0.82) };
+    return { root, mid, end, along: v(-0.86, 0.14, 0.3), face: [face.x, face.y, face.z] };
   }
   if (pose === "sling") {
     // the forearm across the body in a sling, the hand a little higher than the elbow
@@ -169,5 +178,5 @@ export function skeletonOf(posture: Posture, f: Frame, seat: number, arms: ArmPo
   const lift = hip - HIP;
   const seatTop = hip + 0.078 * f.limb;
   const [l, r] = Array.isArray(pose) ? pose : [pose, pose];
-  return { posture, hip, lift, legs: [leg, leg], arms: [arm(l, lift, f, seatTop), arm(r, lift, f, seatTop)] };
+  return { posture, hip, lift, legs: [leg, leg], arms: [arm(l, lift, f, seatTop, true), arm(r, lift, f, seatTop)] };
 }

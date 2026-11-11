@@ -4,7 +4,7 @@
  * about its joint (`head`) — plus the see-through parts on the head (`clear`: lenses, an oxygen mask). Skin
  * vertices are remembered per geometry for the flush of distress.
  */
-import { Matrix4, type BufferGeometry } from "three";
+import { Matrix4, Vector3, type BufferGeometry } from "three";
 import { frameOf, PIVOT, skeletonOf, type ArmPose, type Build, type Frame, type Posture, type Skeleton, type Stature } from "./anatomy.js";
 import { addNeck, addShell, addShoe, addTrunk, armRadii, endFrame, footFrame, inside, legRadii, limbStations, trouserRadii, type Fit, type ShoeKind } from "./body.js";
 import { addHand, HAND_CLASPED, HAND_FLAT, HAND_RELAXED } from "./hand.js";
@@ -12,7 +12,7 @@ import { addHair, type HairStyle } from "./hair.js";
 import { addFaceMorphs, addHead, irisFor, SKIN_GLOW } from "./head.js";
 import { addBlanket, addChestDetails, addCoat, addLap, addSlingStrap, addSterileGown, COAT_FIT, neckline } from "./dress.js";
 import { addAccessory, addTheatreCap, addSurgicalMask, type Accessory } from "./extras.js";
-import { paint, rgb, Sculpt, type Paint, type Ranges, type V3 } from "./sculpt.js";
+import { paint, rgb, Sculpt, sweepEnd, type Paint, type Ranges, type V3 } from "./sculpt.js";
 import { STERILE_GOWN, THEATRE_CAP, type Wear } from "./wear.js";
 
 export interface FigureSpec {
@@ -48,6 +48,8 @@ export interface Figure {
   triangles: number;
 }
 
+/** Sides of the piece of arm a hand grows out of: enough that its end is round where the hand's skin takes over. */
+const WRIST_SIDES = 16;
 const MIRROR = new Matrix4().makeScale(-1, 1, 1);
 const SLING: Paint = { rgb: rgb("#e9edf0"), gloss: 0 };
 
@@ -121,24 +123,35 @@ export function buildFigure(spec: FigureSpec): Figure {
     const armL = sk.arms[index];
     const slung = sling && index === 0;
     side(index, () => {
+      // the forearm turns with its hand, so every piece of the arm is cut with `turn`
+      const arm = (t0: number, t1: number, radii: (t: number) => number[]) => limbStations(armL, t0, t1, radii, 0.05, true);
       const hemT = sleeve.long ? 1.93 : 0.56;
-      body.sweep(limbStations(armL, 0, hemT, armRadii(f, sleeve.ease), 0.05), sleevePaint, { seg: 10, start: "round", dome: 0.72, end: "flat", capPaint: inside(sleevePaint) });
-      if (!sleeve.long) body.tagged("skin", () => body.sweep(limbStations(armL, 0.44, 2, arms, 0.05), skin, { seg: 10, start: "open", end: "open" }));
-      else if (wear.gloves) body.sweep(limbStations(armL, 1.7, 1.99, armRadii(f, sleeve.ease + 0.0035), 0.05), glove, { seg: 10, start: "open", end: "open" });
-      else body.tagged("skin", () => body.sweep(limbStations(armL, 1.86, 2, arms, 0.05), skin, { seg: 10, start: "open", end: "open" }));
+      body.sweep(arm(0, hemT, armRadii(f, sleeve.ease)), sleevePaint, { seg: 10, start: "round", dome: 0.72, end: "flat", capPaint: inside(sleevePaint) });
+      // what the hand grows out of: the bare forearm, or a glove's cuff over the sleeve
+      const cuffed = sleeve.long && wear.gloves;
+      const forearm = cuffed ? arm(1.7, 2, armRadii(f, sleeve.ease + 0.0035)) : arm(sleeve.long ? 1.86 : 0.44, 2, arms);
+      if (cuffed) body.sweep(forearm, glove, { seg: WRIST_SIDES, start: "open", end: "open" });
+      else body.tagged("skin", () => body.sweep(forearm, skin, { seg: WRIST_SIDES, start: "open", end: "open" }));
+      const frame = endFrame(armL), toHand = frame.clone().invert();
+      const ring = sweepEnd(forearm, { seg: WRIST_SIDES });
+      const wrist: number[] = [];
+      for (let i = 0; i < ring.length; i += 3) {
+        const v = new Vector3(ring[i]!, ring[i + 1]!, ring[i + 2]!).applyMatrix4(toHand);
+        wrist.push(v.x, v.y, v.z);
+      }
       const handPaint = wear.gloves ? glove : skin;
       const handPose = pose === "clasped" ? HAND_CLASPED : sitting || lying || slung ? HAND_FLAT : HAND_RELAXED;
-      const hand = () => body.within(endFrame(armL), () => void addHand(body, handPaint, handPose, { girth: 0.96 + 0.04 * f.limb, gloved: wear.gloves }));
+      const hand = () => body.within(frame, () => void addHand(body, handPaint, handPose, { girth: 0.96 + 0.04 * f.limb, gloved: wear.gloves, wrist }));
       if (wear.gloves) hand();
       else body.tagged("skin", hand);
       if (slung) {
         // the sling: cloth round the forearm from the elbow to the hand
-        body.sweep(limbStations(armL, 0.9, 1.97, armRadii(f, sleeve.ease + 0.014), 0.05), SLING, { seg: 10, start: "round", end: "flat", capPaint: inside(SLING) });
+        body.sweep(arm(0.9, 1.97, armRadii(f, sleeve.ease + 0.014)), SLING, { seg: 10, start: "round", end: "flat", capPaint: inside(SLING) });
       }
       // reflective bands round the upper arms
-      if (wear.stripe) body.sweep(limbStations(armL, 0.56, 0.72, armRadii(f, sleeve.ease + 0.002), 0.05), { rgb: rgb(wear.stripe), gloss: 0.25 }, { seg: 10, start: "flat", end: "flat" });
+      if (wear.stripe) body.sweep(arm(0.56, 0.72, armRadii(f, sleeve.ease + 0.002)), { rgb: rgb(wear.stripe), gloss: 0.25 }, { seg: 10, start: "flat", end: "flat" });
       // the identity band on the left wrist (the right when the left arm is in a sling)
-      if (wear.wristband && index === (sling ? 1 : 0)) body.sweep(limbStations(armL, 1.86, 1.9, armRadii(f, 0.0022), 0.05), paint("#f4f4f0", 0.2), { seg: 10, start: "flat", end: "flat" });
+      if (wear.wristband && index === (sling ? 1 : 0)) body.sweep(arm(1.86, 1.9, armRadii(f, 0.0022)), paint("#f4f4f0", 0.2), { seg: 10, start: "flat", end: "flat" });
     });
   }
   const bareLegs = top === "gown";

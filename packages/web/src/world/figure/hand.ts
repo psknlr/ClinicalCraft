@@ -1,63 +1,37 @@
 /**
- * A hand as a hand is built: the palm between wrist and knuckles — fuller at the ball of the thumb and along
- * the little finger's side, hollow in the middle, the four knuckles standing on its back; fingers of three
- * joints each, a little wider at the joints, flat on the back and padded underneath, each curled by its own
- * amount (a resting hand curls more towards the little finger); nails; the thumb out of its own mound of muscle,
- * turned to face the fingers, and the web of skin between it and the index. The palm is paler than the back,
- * the knuckles and fingertips a touch pinker.
+ * A hand as a hand is: ONE skin over its bones (`hand-bones.ts`), drawn through a cage of points joined the way a
+ * modelled hand is (`hand-cage.ts`) and refined into a smooth surface (`subdivide.ts`) — so the fingers grow out
+ * of the palm through webs, the thumb out of its mound of muscle, the knuckles round their joints, and nothing is
+ * a part pushed into another. On that skin:
+ * - tone: the palm and the pads paler and pinker than the back; knuckles, fingertips and the heel a touch
+ *   flushed; a darker line in the creases of the joints (and, seen close, of the palm);
+ * - soft shade where the hand shades itself — between the fingers, in a bend, in the cupped palm — worked out from
+ *   the bones (the world's light has no such shade of its own);
+ * - nails that lie ON the fingertips (found by casting onto the skin), curved with them, their sides and root
+ *   tucked into the skin, a pale edge and a lighter moon, short as a clinician's are.
+ * A glove is the same hand a little fuller, in one colour, without nails.
  *
- * The frame is a left hand's: the wrist at the origin, fingers along +Y, the palm facing −Z, the thumb on +X
- * (`endFrame` puts it on an arm; a right hand is its mirror).
+ * Seen close (`detail`: the player's own hand) the skin is refined twice; on a figure once. The frame is a left
+ * hand's: the wrist at the origin, fingers along +Y, the palm facing −Z, the thumb on +X (`endFrame` puts it on an
+ * arm; a right hand is its mirror).
  */
 import { Vector3 } from "three";
-import { mix, rgb, shade, type Paint, type Rgb, type Sculpt, type Station, type V3 } from "./sculpt.js";
+import { HAND_RELAXED, type Bone, type Digit, type HandPose } from "./hand-bones.js";
+import { handCage, onRing, type Dims, type HandCage } from "./hand-cage.js";
+import { mix, rgb, shade, type Paint, type Rgb, type Sculpt } from "./sculpt.js";
+import { fitCage, smoothSurface } from "./subdivide.js";
 
-/** How a hand is held. */
-export interface HandPose {
-  /** Each finger, index to little: degrees bent at the knuckle, the middle joint and the end joint. */
-  fingers: readonly (readonly [number, number, number])[];
-  /** Degrees between neighbouring fingers at the knuckles. */
-  spread: number;
-  /** The thumb: degrees out from the index in the palm's plane, degrees forward of the palm, degrees bent at its two joints. */
-  thumb: { out: number; forward: number; bend: readonly [number, number] };
-}
-
-/** At rest: every finger a little bent, more towards the little finger; the thumb beside the index, curving towards it. */
-export const HAND_RELAXED: HandPose = { fingers: [[14, 24, 12], [18, 30, 15], [23, 36, 18], [28, 42, 21]], spread: 3, thumb: { out: 34, forward: 10, bend: [16, 12] } };
-/** Laid flat on something. */
-export const HAND_FLAT: HandPose = { fingers: [[4, 8, 4], [5, 9, 5], [6, 10, 5], [7, 12, 6]], spread: 5, thumb: { out: 44, forward: 4, bend: [8, 6] } };
-/** Closed over the other hand. */
-export const HAND_CLASPED: HandPose = { fingers: [[36, 46, 24], [38, 50, 26], [40, 52, 28], [42, 54, 30]], spread: 2, thumb: { out: 30, forward: 22, bend: [24, 22] } };
-/** A pinch: the pads of the index and the middle finger meet the thumb's, a centimetre apart, over something small; the other two fingers are tucked. */
-export const HAND_HOLD: HandPose = { fingers: [[65, 30, 12], [67, 34, 14], [77, 64, 30], [81, 70, 34]], spread: 2, thumb: { out: 8, forward: 28, bend: [2, 6] } };
-
-/** Where the fingers leave the palm (x across, y along), their lengths and half-widths at the base. */
-const FINGERS: readonly { x: number; y: number; len: number; r: number }[] = [
-  { x: 0.0284, y: 0.0915, len: 0.073, r: 0.0091 },
-  { x: 0.0092, y: 0.0965, len: 0.081, r: 0.0093 },
-  { x: -0.0099, y: 0.0925, len: 0.075, r: 0.0087 },
-  { x: -0.028, y: 0.0835, len: 0.059, r: 0.0077 },
-];
-/** A finger's bones as fractions of its length. */
-const BONES = [0.46, 0.29, 0.25];
-
-const RAD = Math.PI / 180;
-/** How much slimmer a bone's skin is half-way between its joints. */
-const WAIST = 0.045;
-/** The thumb's bones: the one in the palm's mound, then the two of the thumb itself. */
-const THUMB = [0.0445, 0.032, 0.027];
-const PINK = rgb("#e58c86");
-const NAIL = rgb("#f3cfc6");
-const EDGE = rgb("#f6efe6");
-const gauss = (x: number, y: number, cx: number, cy: number, sx: number, sy: number) => Math.exp(-(((x - cx) / sx) ** 2) - ((y - cy) / sy) ** 2);
+export { HAND_CLASPED, HAND_FLAT, HAND_HOLD, HAND_RELAXED, type HandPose } from "./hand-bones.js";
 
 export interface HandOptions {
-  /** The hand seen close (the player's): rounder fingers, a finer palm. */
+  /** The hand seen close (the player's): the skin refined twice, the palm's creases, finer nails. */
   detail?: boolean;
   /** Girth against the average hand. */
   girth?: number;
   /** A glove: one colour, no nails. */
   gloved?: boolean;
+  /** The ring the arm ends in (`sweepEnd`, flat xyz in the hand's frame): the hand's edge is laid on it, point for point, so wrist and arm are one surface. */
+  wrist?: readonly number[];
 }
 
 /** Where the pads of the thumb and of the four fingers are (the hand's frame), for putting something between them. */
@@ -66,302 +40,323 @@ export interface HandPoints {
   fingers: Vector3[];
   /** The way each fingertip points. */
   pointing: Vector3[];
+  /** The tops of the four knuckles, index to little finger. */
+  knuckles: Vector3[];
 }
 
-/** One digit: its joints and, at each, the way it points and the way its back faces. */
-interface Digit {
-  joints: Vector3[];
-  dirs: Vector3[];
-  ups: Vector3[];
+const PINK = rgb("#e58c86");
+/** What the palm of a dark hand is paler towards. */
+const PALE = rgb("#e2b9a0");
+/** A flush on the back of the hand: the same skin, redder and a shade deeper (whatever its colour). */
+const FLUSH: Rgb = [1.02, 0.8, 0.8];
+const NAIL = rgb("#f3cfc6");
+const EDGE = rgb("#f6efe6");
+/** What skin in its own shade turns towards: darker, and warmer (light comes back out of skin red). */
+const SHADE: Rgb = [0.6, 0.43, 0.39];
+/** The creases of the palm (x, y): round the mound of the thumb, and the two across. */
+const PALM_LINES: readonly (readonly (readonly [number, number])[])[] = [
+  [[0.009, -0.002], [0.019, 0.014], [0.0215, 0.038], [0.029, 0.06], [0.034, 0.07]],
+  [[0.034, 0.068], [0.016, 0.062], [-0.004, 0.052], [-0.022, 0.044]],
+  [[-0.037, 0.063], [-0.018, 0.068], [0.0, 0.074], [0.012, 0.083], [0.016, 0.09]],
+];
+
+/** One nail: its points on the skin, how they are joined, and where each lies on it (along 0 root … 1 edge, across 0 middle … 1 side). */
+interface NailShape {
+  points: number[];
+  triangles: number[];
+  place: [number, number][];
 }
 
-function finger(i: number, pose: HandPose, g: number): Digit {
-  const f = FINGERS[i]!;
-  const fan = (1.5 - i) * pose.spread * RAD;
-  const d0 = new Vector3(Math.sin(fan), Math.cos(fan), 0);
-  const joints = [new Vector3(f.x * g, f.y, -0.0015)];
-  const dirs: Vector3[] = [], ups: Vector3[] = [];
-  let bent = 0;
-  BONES.forEach((part, k) => {
-    bent += pose.fingers[i]![k]! * RAD;
-    const d = d0.clone().multiplyScalar(Math.cos(bent)).add(new Vector3(0, 0, -Math.sin(bent)));
-    const up = new Vector3(0, 0, Math.cos(bent)).addScaledVector(d0, Math.sin(bent));
-    dirs.push(d);
-    ups.push(up);
-    joints.push(joints[k]!.clone().addScaledVector(d, f.len * part));
-  });
-  return { joints, dirs, ups };
+/** A hand's skin before it has a colour: the surface, and for each point what the paint needs. */
+interface Shaped {
+  cage: HandCage;
+  points: Float32Array;
+  triangles: number[];
+  /** Per point: how far it is the palm's skin (0 the back … 1 the palm), flush, crease, shade. */
+  palm: Float32Array;
+  flush: Float32Array;
+  crease: Float32Array;
+  shadow: Float32Array;
+  nails: NailShape[];
 }
 
-/** The stations of a digit's skin: three along each bone, one on each joint (standing a little proud as the joint bends). */
-function digitStations(dg: Digit, widths: readonly number[], backs: readonly number[], pads: readonly number[], g: number): Station[] {
-  const out: Station[] = [];
-  const n = dg.dirs.length;
-  // inside the palm
-  out.push({ p: at(dg.joints[0]!.clone().addScaledVector(dg.dirs[0]!, -0.012)), rx: widths[0]! * g, rz: backs[0]! * g, back: pads[0]! * g, power: 2.25 });
-  for (let k = 0; k < n; k++) {
-    const a = dg.joints[k]!, b = dg.joints[k + 1]!;
-    const w0 = widths[k]!, w1 = widths[k + 1]!;
-    const last = k === n - 1;
-    for (const t of last ? [0.2, 0.5, 0.74] : [0.2, 0.5, 0.8]) {
-      const p = a.clone().lerp(b, t);
-      // a bone's skin is slimmer between its joints, its pad fullest in the middle
-      const waist = 1 - WAIST * Math.sin(t * Math.PI);
-      const w = (w0 + (w1 - w0) * t) * waist;
-      const pad = (pads[k]! + (pads[k + 1]! - pads[k]!) * t) * (1 + 0.1 * Math.sin(t * Math.PI));
-      const back = (backs[k]! + (backs[k + 1]! - backs[k]!) * t) * (last && t > 0.4 ? 0.9 : 1);
-      out.push({ p: at(p), rx: w * g, rz: back * g, back: pad * g, power: 2.25 });
-    }
-    if (!last) {
-      // the joint: on the bisector of the two bones, its knuckle standing out with the bend
-      const bend = Math.acos(Math.max(-1, Math.min(1, dg.dirs[k]!.dot(dg.dirs[k + 1]!))));
-      const up = dg.ups[k]!.clone().add(dg.ups[k + 1]!).normalize();
-      const p = b.clone().addScaledVector(up, 0.0006 + 0.0022 * Math.sin(bend * 0.5));
-      out.push({ p: at(p), rx: w1 * 1.02 * g, rz: backs[k + 1]! * 1.05 * g, back: pads[k + 1]! * 0.9 * g, power: 2.25 });
+const shapes = new WeakMap<HandPose, Map<string, Shaped>>();
+
+/** The distance from `p` to the piece of line a–b, and the nearest point on it. */
+function toSegment(p: Vector3, a: Vector3, b: Vector3, out: Vector3): number {
+  out.copy(b).sub(a);
+  const len2 = out.lengthSq();
+  const t = len2 > 0 ? Math.min(1, Math.max(0, ((p.x - a.x) * out.x + (p.y - a.y) * out.y + (p.z - a.z) * out.z) / len2)) : 0;
+  out.multiplyScalar(t).add(a);
+  return out.distanceTo(p);
+}
+
+/** Where the ray from `o` along `d` first meets one of `tris` (three points each, flat), as a distance; −1 if nowhere. */
+function cast(o: Vector3, d: Vector3, tris: Float64Array): number {
+  let best = -1;
+  for (let i = 0; i < tris.length; i += 9) {
+    const ax = tris[i]!, ay = tris[i + 1]!, az = tris[i + 2]!;
+    const e1x = tris[i + 3]! - ax, e1y = tris[i + 4]! - ay, e1z = tris[i + 5]! - az;
+    const e2x = tris[i + 6]! - ax, e2y = tris[i + 7]! - ay, e2z = tris[i + 8]! - az;
+    const px = d.y * e2z - d.z * e2y, py = d.z * e2x - d.x * e2z, pz = d.x * e2y - d.y * e2x;
+    const det = e1x * px + e1y * py + e1z * pz;
+    if (Math.abs(det) < 1e-14) continue;
+    const tx = o.x - ax, ty = o.y - ay, tz = o.z - az;
+    const u = (tx * px + ty * py + tz * pz) / det;
+    if (u < -1e-6 || u > 1 + 1e-6) continue;
+    const qx = ty * e1z - tz * e1y, qy = tz * e1x - tx * e1z, qz = tx * e1y - ty * e1x;
+    const v = (d.x * qx + d.y * qy + d.z * qz) / det;
+    if (v < -1e-6 || u + v > 1 + 1e-6) continue;
+    const t = (e2x * qx + e2y * qy + e2z * qz) / det;
+    if (t > 1e-6 && (best < 0 || t < best)) best = t;
+  }
+  return best;
+}
+
+/** A nail on the last bone of a digit: a grid of points cast onto the skin, its border tucked just under it. */
+function nailShape(bone: Bone, side: Vector3, [w, hd]: Dims, points: Float32Array, triangles: readonly number[], fine: boolean): NailShape {
+  // the skin near this bone
+  const mid = bone.a.clone().addScaledVector(bone.d, bone.len * 0.6);
+  const reach = (bone.len * 0.75 + 0.012) ** 2;
+  const near: number[] = [];
+  for (let i = 0; i < triangles.length; i += 3) {
+    const a = triangles[i]! * 3;
+    if ((points[a]! - mid.x) ** 2 + (points[a + 1]! - mid.y) ** 2 + (points[a + 2]! - mid.z) ** 2 > reach) continue;
+    for (let k = 0; k < 3; k++) near.push(points[triangles[i + k]! * 3]!, points[triangles[i + k]! * 3 + 1]!, points[triangles[i + k]! * 3 + 2]!);
+  }
+  const tris = Float64Array.from(near);
+  const cols = fine ? 7 : 5, rows = fine ? 7 : 4;
+  const out: NailShape = { points: [], triangles: [], place: [] };
+  const o = new Vector3(), d = new Vector3();
+  for (let j = 0; j < rows; j++) {
+    for (let i = 0; i < cols; i++) {
+      const s = (i / (cols - 1)) * 2 - 1, t = j / (rows - 1);
+      // an oval: narrower towards the edge and, a little, towards the root; the root's line bows towards the knuckle
+      const wide = t > 0.62 ? Math.sqrt(Math.max(0, 1 - ((t - 0.62) / 0.38) ** 2 * 0.62)) : 0.9 + 0.1 * Math.min(1, t / 0.3);
+      const along = 0.37 + 0.53 * t + 0.035 * (1 - t) * s * s;
+      const turn = s * wide * 0.78;
+      // rays fan out from under the bone's line, and lean forward over the tip
+      const lean = t > 0.8 ? (t - 0.8) * 2.2 : 0;
+      o.copy(bone.a).addScaledVector(bone.d, bone.len * along).addScaledVector(bone.up, -0.35 * hd);
+      d.copy(bone.up).multiplyScalar(Math.cos(turn)).addScaledVector(side, Math.sin(turn) * (w / (hd * 1.25))).addScaledVector(bone.d, lean).normalize();
+      const hit = cast(o, d, tris);
+      const border = i === 0 || i === cols - 1 || j === 0 || j === rows - 1;
+      const lift = border ? -0.00022 : 0.00032;
+      const far = hit > 0 ? hit : hd * 1.3;
+      out.points.push(o.x + d.x * (far + lift), o.y + d.y * (far + lift), o.z + d.z * (far + lift));
+      out.place.push([t, Math.abs(s)]);
     }
   }
-  const tip = dg.joints[n]!, d = dg.dirs[n - 1]!;
-  const end = widths[n]!;
-  out.push({ p: at(tip.clone().addScaledVector(d, -end * 0.62)), rx: end * g, rz: backs[n]! * g, back: pads[n]! * g, power: 2.15 });
+  const flip = new Vector3().crossVectors(side, bone.d).dot(bone.up) < 0;
+  for (let j = 0; j + 1 < rows; j++) {
+    for (let i = 0; i + 1 < cols; i++) {
+      const a = j * cols + i, b = a + 1, c = a + cols + 1, e = a + cols;
+      if (flip) out.triangles.push(a, e, b, b, e, c);
+      else out.triangles.push(a, b, e, b, c, e);
+    }
+  }
   return out;
 }
 
-function at(v: Vector3): V3 {
-  return [v.x, v.y, v.z];
+/**
+ * Lay the skin's open edge on the arm's last ring: a point on each corner of the ring, the others on its sides.
+ * The skin just beyond gives way with it, less and less over the first centimetre, so the arm's many-sided end
+ * runs out into the hand's round one without a step.
+ */
+function layOnRing(points: Float32Array, border: readonly number[], ring: readonly number[]): void {
+  const angle = (x: number, z: number) => Math.atan2(z, x);
+  const taken = new Map<number, number>();
+  for (let j = 0; j < ring.length / 3; j++) {
+    const a = angle(ring[3 * j]!, ring[3 * j + 2]!);
+    let best = -1, gap = Infinity;
+    for (const v of border) {
+      if (taken.has(v)) continue;
+      let d = Math.abs(angle(points[3 * v]!, points[3 * v + 2]!) - a);
+      if (d > Math.PI) d = 2 * Math.PI - d;
+      if (d < gap) {
+        gap = d;
+        best = v;
+      }
+    }
+    if (best >= 0) taken.set(best, j);
+  }
+  // how far each point of the edge moves, by its angle round the wrist
+  const moved = border
+    .map((v) => {
+      const a = angle(points[3 * v]!, points[3 * v + 2]!);
+      const j = taken.get(v);
+      const q = j === undefined ? onRing(ring, a) : new Vector3(ring[3 * j]!, ring[3 * j + 1]!, ring[3 * j + 2]!);
+      return { v, a, d: q.sub(new Vector3(points[3 * v]!, points[3 * v + 1]!, points[3 * v + 2]!)) };
+    })
+    .sort((m, n) => m.a - n.a);
+  const edge = new Set(border);
+  const REACH = 0.012;
+  for (let i = 0; i < points.length / 3; i++) {
+    // (only the skin of the wrist: a fingertip curled back this far is not part of it)
+    if (edge.has(i) || points[3 * i + 1]! >= REACH || points[3 * i]! ** 2 + points[3 * i + 2]! ** 2 > 0.045 ** 2) continue;
+    const a = angle(points[3 * i]!, points[3 * i + 2]!);
+    // between the two points of the edge on either side of it
+    let hi = moved.findIndex((m) => m.a > a);
+    if (hi < 0) hi = 0;
+    const after = moved[hi]!, before = moved[(hi + moved.length - 1) % moved.length]!;
+    let span = after.a - before.a, part = a - before.a;
+    if (span <= 0) span += 2 * Math.PI;
+    if (part < 0) part += 2 * Math.PI;
+    const t = Math.min(1, Math.max(0, part / span));
+    const k = (1 - Math.max(0, points[3 * i + 1]!) / REACH) ** 2;
+    for (let c = 0; c < 3; c++) points[3 * i + c] = points[3 * i + c]! + k * (before.d.getComponent(c) * (1 - t) + after.d.getComponent(c) * t);
+  }
+  for (const m of moved) for (let c = 0; c < 3; c++) points[3 * m.v + c] = points[3 * m.v + c]! + m.d.getComponent(c);
 }
 
-/** A nail on the back of a digit's last bone (`width(t)`, `back(t)`: the bone's half-width and half-depth along it): curved across like the fingertip under it, a pale edge at its end. */
-function addNail(sc: Sculpt, dg: Digit, width: (t: number) => number, back: (t: number) => number, skin: Rgb): void {
-  const n = dg.dirs.length;
-  const a = dg.joints[n - 1]!, b = dg.joints[n]!;
-  const d = dg.dirs[n - 1]!, up = dg.ups[n - 1]!;
-  const side = new Vector3().crossVectors(d, up).normalize();
-  const bed: Rgb = mix(mix(skin, NAIL, 0.62), PINK, 0.24);
-  const cols = 5, rows = 5;
-  sc.sheet(
-    cols,
-    rows,
-    (i, j) => {
-      const s = (i / (cols - 1)) * 2 - 1, t = j / (rows - 1);
-      const along = 0.36 + 0.56 * t;
-      const w = width(Math.min(along, 0.74));
-      const x = s * w * 0.8 * (1 - 0.08 * t * t);
-      // the same curve as the fingertip's back, a hair proud of it; past the tip's turn it runs on as the free edge
-      const z = back(Math.min(along, 0.74)) * Math.pow(Math.max(0, 1 - Math.pow(Math.abs(x) / w, 2.25)), 1 / 2.25) + 0.0005 - 0.0016 * Math.max(0, along - 0.74) / 0.18;
-      return at(a.clone().lerp(b, along).addScaledVector(side, x).addScaledVector(up, z));
-    },
-    (x, y, z) => {
-      // paler towards the root, a light edge at the tip, the skin's fold darker round it
-      const q = new Vector3(x, y, z).sub(a);
-      const t = q.dot(d) / Math.max(1e-6, a.distanceTo(b));
-      const across = Math.abs(q.dot(side)) / Math.max(1e-6, width(Math.min(t, 0.74)) * 0.8);
-      let c = t > 0.84 ? EDGE : t < 0.5 ? mix(bed, EDGE, 0.3) : bed;
-      if (t < 0.4 || (across > 0.85 && t < 0.8)) c = mix(c, shade(skin, 0.82), 0.55);
-      return { rgb: c, gloss: 0.66, glow: 0.1 };
-    },
-    { thickness: 0.0005, flip: side.clone().cross(d).dot(up) < 0 },
-  );
+function shapeOf(pose: HandPose, g: number, fine: boolean, wrist?: readonly number[]): Shaped {
+  const key = `${g.toFixed(3)}${fine ? "f" : ""}${wrist ? wrist.map((v) => Math.round(v * 1e4)).join(",") : ""}`;
+  let byPose = shapes.get(pose);
+  if (!byPose) shapes.set(pose, (byPose = new Map()));
+  const known = byPose.get(key);
+  if (known) return known;
+  const cage = handCage(pose, g, wrist);
+  const surface = smoothSurface(fitCage(cage.mesh, 5), fine ? 2 : 1);
+  const n = surface.points.length / 4;
+  const points = new Float32Array(n * 3);
+  const palm = new Float32Array(n), flush = new Float32Array(n), crease = new Float32Array(n), shadow = new Float32Array(n);
+  for (let i = 0; i < n; i++) for (let k = 0; k < 3; k++) points[3 * i + k] = surface.points[4 * i + k]!;
+  if (wrist) layOnRing(points, surface.border, wrist);
+  const tri = surface.triangles;
+  // the way the skin faces at each point
+  const nrm = new Float32Array(n * 3);
+  for (let i = 0; i < tri.length; i += 3) {
+    const a = tri[i]! * 3, b = tri[i + 1]! * 3, c = tri[i + 2]! * 3;
+    const ux = points[b]! - points[a]!, uy = points[b + 1]! - points[a + 1]!, uz = points[b + 2]! - points[a + 2]!;
+    const vx = points[c]! - points[a]!, vy = points[c + 1]! - points[a + 1]!, vz = points[c + 2]! - points[a + 2]!;
+    const nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
+    for (const k of [a, b, c]) {
+      nrm[k] = nrm[k]! + nx;
+      nrm[k + 1] = nrm[k + 1]! + ny;
+      nrm[k + 2] = nrm[k + 2]! + nz;
+    }
+  }
+  const digits: Digit[] = [...cage.fingers, cage.thumb];
+  // what shades the skin: every bone as a rod with the flesh round it, the bones of the palm among them
+  const rods: { a: Vector3; b: Vector3; r: number }[] = [];
+  cage.fingers.forEach((dg, i) => {
+    // (a finger's section under its nail is 0.85 of its breadth at the middle joint)
+    const w = cage.ends[i]![0] / 0.85;
+    dg.bones.forEach((b, k) => rods.push({ a: b.a, b: b.a.clone().addScaledVector(b.d, b.len), r: w * (k === 2 ? 0.8 : 0.95) }));
+    rods.push({ a: new Vector3(dg.bones[0]!.a.x * 0.62, 0.012, -0.002), b: dg.bones[0]!.a.clone().add(new Vector3(0, 0, -0.004)), r: 0.0125 * g });
+  });
+  cage.thumb.bones.forEach((b, k) => rods.push({ a: b.a, b: b.a.clone().addScaledVector(b.d, b.len), r: (k === 0 ? 0.0125 : 0.0095) * g }));
+  // flush: over the knuckles and the joints of the fingers (the back), on the pads of the fingertips and the heel (the front)
+  const joints: { p: Vector3; r: number; back: boolean }[] = cage.knuckles.map((p) => ({ p, r: 0.0085, back: true }));
+  const folds: { p: Vector3; across: Vector3; r: number }[] = [];
+  digits.forEach((dg, i) => {
+    const [, hd, hp] = cage.ends[i]!;
+    for (const k of [1, 2]) {
+      const b = dg.bones[k]!, before = dg.bones[k - 1]!;
+      if (i < 4 || k === 2) joints.push({ p: b.a.clone().addScaledVector(before.up.clone().add(b.up).normalize(), hd * 1.3), r: k === 1 ? 0.0068 : 0.0052, back: true });
+      folds.push({ p: b.a, across: before.d.clone().add(b.d).normalize(), r: i < 4 ? 0.011 : 0.013 });
+    }
+    const last = dg.bones[2]!;
+    joints.push({ p: last.a.clone().addScaledVector(last.d, last.len * 0.62).addScaledVector(last.up, -hp), r: 0.0105, back: false });
+  });
+  joints.push({ p: new Vector3(0.024 * g, 0.022, -0.03), r: 0.02, back: false }, { p: new Vector3(-0.026 * g, 0.026, -0.022), r: 0.018, back: false });
+  const p = new Vector3(), q = new Vector3(), nv = new Vector3(), tmp = new Vector3();
+  const lines = PALM_LINES.map((line) => line.map(([x, y]) => new Vector3(x * g, y, 0)));
+  const fingerRoot = Math.min(...cage.fingers.map((dg) => dg.bones[0]!.a.y));
+  for (let i = 0; i < n; i++) {
+    p.set(points[3 * i]!, points[3 * i + 1]!, points[3 * i + 2]!);
+    nv.set(nrm[3 * i]!, nrm[3 * i + 1]!, nrm[3 * i + 2]!).normalize();
+    const back = Math.min(1, Math.max(-1, surface.points[4 * i + 3]!));
+    // the palm's paler skin begins a little beyond the wrist (the arm it grows out of has one colour)
+    palm[i] = Math.min(1, Math.max(0, (0.15 - back) / 0.75)) * Math.min(1, Math.max(0, p.y / 0.02));
+    let f = 0;
+    for (const j of joints) {
+      const side = j.back ? Math.max(0, back) : palm[i]!;
+      if (side > 0) f = Math.max(f, side * Math.exp(-p.distanceToSquared(j.p) / (j.r * j.r)));
+    }
+    flush[i] = f;
+    // creases: in front, across each joint of a digit
+    let c = 0;
+    if (palm[i]! > 0) {
+      for (const fold of folds) {
+        const dist = p.distanceToSquared(fold.p);
+        if (dist > fold.r * fold.r * 2.2) continue;
+        const along = (p.x - fold.p.x) * fold.across.x + (p.y - fold.p.y) * fold.across.y + (p.z - fold.p.z) * fold.across.z;
+        c = Math.max(c, Math.exp(-((along / (fine ? 0.0011 : 0.002)) ** 2)) * Math.exp(-dist / (fold.r * fold.r)));
+      }
+      // and, seen close, the lines of the palm
+      if (fine && p.y < fingerRoot + 0.012 && back < -0.6) {
+        q.set(p.x, p.y, 0);
+        for (const line of lines) for (let k = 0; k + 1 < line.length; k++) c = Math.max(c, 0.42 * Math.exp(-((toSegment(q, line[k]!, line[k + 1]!, tmp) / 0.0021) ** 2)));
+      }
+    }
+    // a crease is a fold of the front: it fades out round the sides
+    crease[i] = c * Math.min(1, Math.max(0, (-0.4 - back) / 0.45));
+    // shade: what of the hand stands in front of this piece of skin
+    let s = 0;
+    for (const rod of rods) {
+      const dist = toSegment(p, rod.a, rod.b, q);
+      if (dist < 1e-5) continue;
+      const facing = ((q.x - p.x) * nv.x + (q.y - p.y) * nv.y + (q.z - p.z) * nv.z) / dist;
+      if (facing > 0.08) s += (facing - 0.08) * Math.min(1, (rod.r / dist) ** 2);
+    }
+    shadow[i] = 1 - Math.exp(-1.25 * s);
+  }
+  const nails = digits.map((dg, i) => nailShape(dg.bones[2]!, dg.side, cage.ends[i]!, points, tri, fine));
+  const shaped: Shaped = { cage, points, triangles: tri, palm, flush, crease, shadow, nails };
+  byPose.set(key, shaped);
+  return shaped;
 }
 
 /** A hand (see the module doc); returns where its pads are. */
 export function addHand(sc: Sculpt, skin: Paint, pose: HandPose = HAND_RELAXED, opts: HandOptions = {}): HandPoints {
   const g = (opts.girth ?? 1) * (opts.gloved ? 1.05 : 1);
   const fine = !!opts.detail;
-  const seg = fine ? 12 : 7;
   const bare = !opts.gloved;
-  const palmTone: Rgb = bare ? mix(shade(skin.rgb, 1.07), PINK, 0.1) : skin.rgb;
-  const glow = skin.glow ?? 0;
-  const lerp = (a: number, b: number, t: number) => a + (b - a) * t;
-  const smooth = (a: number, b: number, x: number) => {
-    const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
-    return t * t * (3 - 2 * t);
-  };
-
-  /* ---------------- digits: where they are ---------------- */
-  const digits = FINGERS.map((_, i) => finger(i, pose, g));
-  // the thumb: its first bone lies in the mound at the palm's edge, its nail turned to the side, and its two joints
-  // bend it across towards the index
-  const th = pose.thumb;
-  const out = th.out * RAD, fwd = th.forward * RAD;
-  const d0 = new Vector3(Math.sin(out) * Math.cos(fwd), Math.cos(out) * Math.cos(fwd), -Math.sin(fwd)).normalize();
-  const up0 = new Vector3(0.9, 0, 0.44);
-  up0.addScaledVector(d0, -up0.dot(d0)).normalize();
-  const thumb: Digit = { joints: [new Vector3(0.019 * g, 0.007, -0.0105)], dirs: [], ups: [] };
-  let bent = 0;
-  THUMB.forEach((len, k) => {
-    if (k > 0) bent += th.bend[k - 1]! * RAD;
-    const d = d0.clone().multiplyScalar(Math.cos(bent)).addScaledVector(up0, -Math.sin(bent));
-    const up = up0.clone().multiplyScalar(Math.cos(bent)).addScaledVector(d0, Math.sin(bent));
-    thumb.dirs.push(d);
-    thumb.ups.push(up);
-    thumb.joints.push(thumb.joints[k]!.clone().addScaledVector(d, len));
-  });
-  const tw = [0.0165, 0.0122, 0.0106, 0.0094], tb = [0.0112, 0.0098, 0.0086, 0.0064], tf = [0.0165, 0.0112, 0.0095, 0.0085];
-
-  /* ---------------- paints ---------------- */
-  // knuckles and the joints of the fingers are a touch pinker on the back; the palm side is paler
-  const knuckles: Vector3[] = [];
-  for (const dg of digits) knuckles.push(dg.joints[0]!, dg.joints[1]!, dg.joints[2]!);
-  knuckles.push(thumb.joints[1]!, thumb.joints[2]!);
-  const tips = [...digits.map((dg) => dg.joints[3]!), thumb.joints[3]!];
-  // the joints a crease runs across, and the way the digit runs through each
-  const creases: Vector3[] = [], creaseDirs: Vector3[] = [];
-  for (const dg of [...digits, thumb]) {
-    for (const k of [1, 2]) {
-      creases.push(dg.joints[k]!);
-      creaseDirs.push(dg.dirs[k - 1]!.clone().add(dg.dirs[k]!).normalize());
+  const shaped = shapeOf(pose, g, fine, opts.wrist);
+  const { cage } = shaped;
+  const glow = skin.glow ?? 0, gloss = skin.gloss ?? 0;
+  // the palm is paler than the back — a little on fair skin, much more on dark
+  const light = 0.2126 * skin.rgb[0] + 0.7152 * skin.rgb[1] + 0.0722 * skin.rgb[2];
+  const front: Rgb = mix(mix(shade(skin.rgb, 1.07), PINK, 0.1), PALE, Math.min(0.45, Math.max(0, (0.42 - light) * 0.9)));
+  const n = shaped.points.length / 3;
+  const paints: Paint[] = [];
+  for (let i = 0; i < n; i++) {
+    const dim = shaped.shadow[i]!;
+    if (!bare) {
+      paints.push({ rgb: shade(skin.rgb, 1 - 0.3 * dim), gloss, glow });
+      continue;
+    }
+    const inPalm = shaped.palm[i]!;
+    let c = mix(skin.rgb, front, inPalm);
+    // flushed: the pads and the heel pinker, the knuckles redder and a shade deeper
+    const warm = shaped.flush[i]!;
+    c = mix(c, PINK, 0.24 * inPalm * warm);
+    c = mix(c, [c[0] * FLUSH[0], c[1] * FLUSH[1], c[2] * FLUSH[2]], 0.75 * (1 - inPalm) * warm);
+    c = shade(c, 1 - 0.15 * shaped.crease[i]!);
+    c = mix(c, [c[0] * SHADE[0], c[1] * SHADE[1], c[2] * SHADE[2]], 0.8 * dim);
+    paints.push({ rgb: c, gloss: gloss * (1 - 0.4 * inPalm), glow });
+  }
+  sc.mesh(shaped.points, shaped.triangles, paints);
+  if (bare) {
+    // a nail's bed shows the skin under it: pinker, and paler by less on a dark hand
+    const bed: Rgb = mix(mix(skin.rgb, NAIL, 0.3 + 0.2 * Math.min(1, light / 0.5)), PINK, 0.34);
+    for (const nail of shaped.nails) {
+      sc.mesh(
+        nail.points,
+        nail.triangles,
+        nail.place.map(([along, across]) => {
+          // a pale edge at the tip, a lighter moon at the root, the skin's fold darker round it
+          let c = along > 0.9 ? mix(bed, EDGE, 0.6) : along < 0.2 && across < 0.5 ? mix(bed, EDGE, 0.22) : bed;
+          if (across > 0.9 || along < 0.06) c = mix(c, shade(skin.rgb, 0.78), 0.55);
+          return { rgb: c, gloss: 0.68, glow: glow * 0.8 };
+        }),
+      );
     }
   }
-  const tmp = new Vector3();
-  const painter = (dorsal: (p: Vector3) => number) => (x: number, y: number, z: number): Paint => {
-    if (!bare) return skin;
-    tmp.set(x, y, z);
-    const back = dorsal(tmp);
-    let c: Rgb = back > 0 ? skin.rgb : mix(skin.rgb, palmTone, Math.min(1, -back * 1.6));
-    let flush = 0;
-    for (const k of knuckles) flush = Math.max(flush, Math.exp(-tmp.distanceToSquared(k) / (0.0066 * 0.0066)));
-    if (back > 0) c = mix(c, PINK, 0.2 * flush);
-    let pad = 0;
-    for (const t of tips) pad = Math.max(pad, Math.exp(-tmp.distanceToSquared(t) / (0.011 * 0.011)));
-    c = mix(c, PINK, 0.14 * pad);
-    // the creases across the joints of the fingers
-    let crease = 0;
-    for (const k of creases) crease = Math.max(crease, Math.exp(-tmp.distanceToSquared(k) / (0.0105 * 0.0105)) * Math.exp(-((tmp.clone().sub(k).dot(creaseDirs[creases.indexOf(k)]!) / 0.0016) ** 2)));
-    c = shade(c, 1 - 0.13 * crease);
-    return { rgb: c, gloss: skin.gloss, glow };
+  const pad = (dg: Digit, dims: Dims) => {
+    const b = dg.bones[2]!;
+    return b.a.clone().addScaledVector(b.d, b.len * 0.55).addScaledVector(b.up, -dims[2]);
   };
-
-  /* ---------------- the palm, from the wrist to the knuckles ---------------- */
-  // sections: [y, half-width to the little finger's side, to the index's side, back, front (the palm's side)]
-  const sections: readonly (readonly [number, number, number, number, number])[] = [
-    [-0.032, 0.0266, 0.0266, 0.0192, 0.0196],
-    [-0.012, 0.027, 0.0272, 0.019, 0.02],
-    [0.004, 0.0296, 0.03, 0.0178, 0.0204],
-    [0.02, 0.0336, 0.034, 0.016, 0.019],
-    [0.038, 0.0368, 0.0375, 0.0142, 0.0168],
-    [0.056, 0.0392, 0.04, 0.0131, 0.0152],
-    [0.072, 0.0402, 0.0408, 0.0124, 0.014],
-    [0.086, 0.0398, 0.0404, 0.011, 0.0128],
-    [0.097, 0.037, 0.0376, 0.0078, 0.0106],
-  ];
-  const around = fine ? 26 : 14;
-  const rows = fine ? sections.length * 2 - 1 : sections.length + 2;
-  const section = (v: number): readonly number[] => {
-    const f = v * (sections.length - 1);
-    const i = Math.min(sections.length - 2, Math.floor(f)), t = f - i;
-    return sections[i]!.map((a, k) => a + (sections[i + 1]![k]! - a) * t);
-  };
-  // the thumb's first bone lies inside the palm's thumb-side edge: the edge swells round it (the mound of the thumb)
-  // and falls back in a curve beyond its knuckle (the web between thumb and index)
-  const cmc = thumb.joints[0]!, mcp = thumb.joints[1]!;
-  const mound = (y: number): { x: number; z: number; w: number } => {
-    const t = (y - cmc.y) / Math.max(1e-6, mcp.y - cmc.y);
-    if (t < -0.35) return { x: 0, z: 0, w: 0 };
-    const axis = cmc.clone().lerp(mcp, Math.min(1, Math.max(0, t)));
-    const r = lerp(tw[0]!, tw[1]!, Math.min(1, Math.max(0, t))) * g;
-    const w = t < 0 ? smooth(-0.35, 0, t) : t <= 1 ? 1 : 1 - smooth(0, 0.03, y - mcp.y);
-    return { x: axis.x + r * 0.78, z: axis.z, w };
-  };
-  // the tendons on the back of the hand: 1 on one, −1 half-way between two, fading towards wrist and knuckles
-  const tendons = (x: number, y: number): number => {
-    const fade = smooth(0.008, 0.035, y) * (1 - smooth(0.07, 0.09, y));
-    let near = 1;
-    for (const f of FINGERS) near = Math.min(near, Math.abs(x - f.x * (0.55 + 0.45 * Math.max(0, y) / f.y)) / 0.0095);
-    return fade * Math.cos(Math.min(1, near) * Math.PI);
-  };
-  // how far each knuckle stands up: more as its finger bends
-  const knuckle = FINGERS.map((_, i) => 0.0016 + 0.003 * Math.sin((pose.fingers[i]![0]! * RAD) / 2 + 0.2));
-  const rings: number[][] = [];
-  for (let j = 0; j < rows; j++) {
-    const v = j / (rows - 1);
-    const [y, wu, wr, back, front] = section(v) as [number, number, number, number, number];
-    const m = mound(y);
-    const ring: number[] = [];
-    for (let i = 0; i < around; i++) {
-      // from the thumb side over the back to the little-finger side and under the palm
-      const a = (i / around) * Math.PI * 2;
-      const c = Math.cos(a), s = Math.sin(a);
-      const e = 2 / (s >= 0 ? 2.1 : 2.35);
-      const side = Math.sign(c) * Math.pow(Math.abs(c), e);
-      const reach = c >= 0 ? Math.max(wr * g, lerp(wr * g, m.x, m.w)) : wu * g;
-      const x = side * reach;
-      let z = Math.sign(s) * Math.pow(Math.abs(s), e) * (s >= 0 ? back : front) * g;
-      // towards the thumb's side the palm follows the thumb's bone forward of the hand
-      if (c > 0) z += m.z * m.w * smooth(0.35, 1, side) * (s >= 0 ? 0.55 : 1);
-      let along = y;
-      if (s >= 0) {
-        // the knuckles stand on the back of the hand above the roots of the fingers; from each a tendon runs back
-        // towards the wrist, the skin dipping a little between them
-        FINGERS.forEach((f, k) => (z += knuckle[k]! * s * gauss(x, y, f.x * g, f.y - 0.006, 0.006, 0.008)));
-        z += 0.0011 * s * tendons(x / g, y);
-      } else {
-        // the pad along the little finger's side, the hollow of the palm, the pads under the knuckles; and the
-        // palm runs on further than the back does, to the webs of the fingers
-        z += s * (0.0026 * gauss(x, y, -0.026 * g, 0.03, 0.011, 0.03) + 0.0024 * gauss(x, y, 0.02 * g, 0.03, 0.013, 0.024) - 0.0042 * gauss(x, y, -0.002, 0.05, 0.014, 0.022) + 0.0016 * gauss(x, y, 0, 0.09, 0.03, 0.008));
-        along += 0.014 * -s * smooth(0.72, 1, v);
-      }
-      ring.push(x, along, z);
-    }
-    rings.push(ring);
-  }
-  // the rings run wrist to knuckles (+Y), round from the thumb side to the back: faces outward
-  const skinOf = painter((p) => p.z / 0.012);
-  sc.rings(
-    rings,
-    around,
-    (x, y, z) => {
-      const p = skinOf(x, y, z);
-      return bare && z > 0.004 ? { ...p, rgb: shade(p.rgb, 1 + 0.035 * tendons(x / g, y)) } : p;
-    },
-    { endPole: [0, 0.106, -0.003] },
-  );
-
-  /* ---------------- fingers ---------------- */
-  const pads: Vector3[] = [];
-  digits.forEach((dg, i) => {
-    const r = FINGERS[i]!.r;
-    const widths = [r, r * 0.97, r * 0.88, r * 0.75];
-    const backs = [r * 0.82, r * 0.8, r * 0.72, r * 0.6];
-    const fronts = [r * 0.86, r * 0.84, r * 0.78, r * 0.72];
-    const up = dg.ups[2]!;
-    const mid = dg.joints[1]!;
-    sc.sweep(digitStations(dg, widths, backs, fronts, g), painter((p) => (p.clone().sub(mid).dot(dg.ups[1]!) + p.clone().sub(dg.joints[2]!).dot(up)) / (r * 1.6)), { seg, front: at(dg.ups[0]!), start: "open", end: "round", dome: 0.95 });
-    if (bare && fine) addNail(sc, dg, (t) => lerp(widths[2]!, widths[3]!, t) * (1 - WAIST * Math.sin(t * Math.PI)) * g, (t) => lerp(backs[2]!, backs[3]!, t) * (t > 0.4 ? 0.9 : 1) * g, skin.rgb);
-    else if (bare) plate(sc, dg, widths[3]! * 0.66 * g, lerp(backs[2]!, backs[3]!, 0.58) * 0.9 * g, 0.0054, { rgb: mix(mix(skin.rgb, NAIL, 0.6), PINK, 0.14), gloss: 0.5, glow });
-    pads.push(dg.joints[2]!.clone().lerp(dg.joints[3]!, 0.55).addScaledVector(up, -fronts[3]! * g));
-  });
-  // the webs: skin between the roots of neighbouring fingers
-  for (let i = 0; i + 1 < digits.length; i++) {
-    const a = digits[i]!, b = digits[i + 1]!;
-    const along = a.dirs[0]!.clone().add(b.dirs[0]!).normalize();
-    const up = a.ups[0]!.clone().add(b.ups[0]!).normalize();
-    const c = a.joints[0]!.clone().add(b.joints[0]!).multiplyScalar(0.5).addScaledVector(along, 0.006).addScaledVector(up, -0.002);
-    const half = a.joints[0]!.distanceTo(b.joints[0]!) / 2;
-    sc.sweep(
-      [
-        { p: at(c.clone().addScaledVector(along, -0.014)), rx: half * 0.95, rz: 0.0052 * g, back: 0.0066 * g },
-        { p: at(c), rx: half * 0.85, rz: 0.0042 * g, back: 0.006 * g },
-        { p: at(c.clone().addScaledVector(along, 0.0075)), rx: half * 0.6, rz: 0.003 * g, back: 0.0044 * g },
-      ],
-      painter((p) => p.clone().sub(c).dot(up) / 0.006),
-      { seg: fine ? 8 : 6, front: at(up), start: "open", end: "round", dome: 0.7 },
-    );
-  }
-
-  /* ---------------- the thumb ---------------- */
-  // from inside its mound: the knuckle, the two bones, the pad
-  const free: Digit = { joints: [cmc.clone().lerp(mcp, 0.45), ...thumb.joints.slice(1)], dirs: thumb.dirs, ups: thumb.ups };
-  sc.sweep(digitStations(free, [lerp(tw[0]!, tw[1]!, 0.45), tw[1]!, tw[2]!, tw[3]!], [lerp(tb[0]!, tb[1]!, 0.45), tb[1]!, tb[2]!, tb[3]!], [lerp(tf[0]!, tf[1]!, 0.45), tf[1]!, tf[2]!, tf[3]!], g), painter((p) => p.clone().sub(thumb.joints[2]!).dot(thumb.ups[2]!) / 0.012), { seg: fine ? 14 : 8, front: at(thumb.ups[0]!), start: "open", end: "round", dome: 0.95 });
-  if (bare && fine) addNail(sc, thumb, (t) => lerp(tw[2]!, tw[3]!, t) * (1 - WAIST * Math.sin(t * Math.PI)) * g, (t) => lerp(tb[2]!, tb[3]!, t) * (t > 0.4 ? 0.9 : 1) * g, skin.rgb);
-  else if (bare) plate(sc, thumb, tw[3]! * 0.66 * g, lerp(tb[2]!, tb[3]!, 0.58) * 0.9 * g, 0.0068, { rgb: mix(mix(skin.rgb, NAIL, 0.6), PINK, 0.14), gloss: 0.5, glow });
-  return { thumb: thumb.joints[2]!.clone().lerp(thumb.joints[3]!, 0.55).addScaledVector(thumb.ups[2]!, -tf[3]! * g), fingers: pads, pointing: digits.map((dg) => dg.dirs[2]!.clone()) };
-}
-
-/** A nail seen from a distance: a small pale plate on the back of a digit's last bone. */
-function plate(sc: Sculpt, dg: Digit, halfWidth: number, back: number, halfLength: number, paint: Paint): void {
-  const n = dg.dirs.length;
-  const d = dg.dirs[n - 1]!, up = dg.ups[n - 1]!;
-  const c = dg.joints[n - 1]!.clone().lerp(dg.joints[n]!, 0.58).addScaledVector(up, back + 0.0004);
-  const side = new Vector3().crossVectors(d, up).normalize();
-  sc.sheet(2, 2, (a, b) => at(c.clone().addScaledVector(side, (a * 2 - 1) * halfWidth).addScaledVector(d, (b * 2 - 1) * halfLength)), paint, { flip: side.clone().cross(d).dot(up) < 0 });
+  return { thumb: pad(cage.thumb, cage.ends[4]!), fingers: cage.fingers.map((dg, i) => pad(dg, cage.ends[i]!)), pointing: cage.fingers.map((dg) => dg.bones[2]!.d.clone()), knuckles: cage.knuckles.map((k) => k.clone()) };
 }

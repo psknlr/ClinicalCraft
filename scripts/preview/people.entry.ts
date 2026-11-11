@@ -8,7 +8,8 @@ import * as THREE from "three";
 import { addHand, HAND_CLASPED, HAND_FLAT, HAND_HOLD, HAND_RELAXED, type HandPose } from "../../packages/web/src/world/figure/hand.js";
 import { buildHeld } from "../../packages/web/src/world/figure/held.js";
 import { figureMaterial } from "../../packages/web/src/world/figure/material.js";
-import { rgb, Sculpt } from "../../packages/web/src/world/figure/sculpt.js";
+import { WRIST } from "../../packages/web/src/world/figure/hand-cage.js";
+import { rgb, Sculpt, sweepEnd, type Station } from "../../packages/web/src/world/figure/sculpt.js";
 import { buildPerson, PATIENT_WEAR, heightOf, looksOf, setBlink, setBreath, setDistressed, setMouth, uniformOf, type AppearanceLike, type PersonOptions, type Posture } from "../../packages/web/src/world/npc.js";
 
 interface Entry {
@@ -132,8 +133,12 @@ function renderHand(params: URLSearchParams): { count: number; width: number; he
   const detail = params.get("detail") !== "0";
   poses.forEach(([name, pose], i) => {
     const sc = new Sculpt();
-    addHand(sc, { rgb: rgb(params.get("skin") || "#dcb696"), gloss: 0.16, glow: 0.12 }, pose, { detail });
-    sc.sweep([{ p: [0, -0.1, 0.002], rx: 0.029, rz: 0.0215, back: 0.0215 }, { p: [0, -0.05, 0.001], rx: 0.0268, rz: 0.0192, back: 0.0196 }, { p: [0, -0.02, 0], rx: 0.0262, rz: 0.0186, back: 0.019 }], { rgb: rgb(params.get("skin") || "#dcb696"), gloss: 0.16, glow: 0.12 }, { seg: 16, start: "round", end: "open" });
+    const skin = { rgb: rgb(params.get("skin") || "#dcb696"), gloss: 0.16, glow: 0.12 };
+    // a forearm's end, as an arm has it (sixteen sides)
+    const forearm: Station[] = [{ p: [0, -0.1, 0.002], rx: 0.03, rz: 0.0225 }, { p: [0, -0.05, 0.001], rx: 0.0275, rz: 0.02 }, { p: [0, -0.02, 0], rx: WRIST[0] * 1.01, rz: WRIST[1] * 1.01 }, { p: [0, 0, 0], rx: WRIST[0], rz: WRIST[1] }];
+    const seg = 16;
+    addHand(sc, skin, pose, { detail, wrist: sweepEnd(forearm, { seg }) });
+    sc.sweep(forearm, skin, { seg, start: "round", end: "open" });
     const mesh = new THREE.Mesh(sc.geometry(), figureMaterial());
     triangles.push(sc.triangleCount);
     views.forEach(([view, dir, up], j) => {

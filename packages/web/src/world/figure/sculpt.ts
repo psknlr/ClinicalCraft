@@ -55,6 +55,8 @@ export interface Station {
   back?: number;
   /** Superellipse exponent: 2 an ellipse, larger a rounder-cornered box (default 2). */
   power?: number;
+  /** A turn of the section about the path (radians), on top of the front carried along: a forearm turning with its hand. */
+  twist?: number;
 }
 
 /** How a sweep is closed at an end: a dome, a flat face with a hard edge, or left open. */
@@ -111,6 +113,62 @@ export function smoothPath(points: readonly V3[], steps = 4): V3[] {
   const e = P[P.length - 1]!;
   out.push([e.x, e.y, e.z]);
   return out;
+}
+
+/** A section's own axes on the path: to the side, to the front, along. */
+export interface SweepFrame {
+  s: Vector3;
+  f: Vector3;
+  t: Vector3;
+}
+
+/** The axes of each section of a sweep: the front is carried along the path from `front` (default +Z), then turned by the station's `twist`. */
+export function sweepFrames(stations: readonly Station[], front: V3 = [0, 0, 1]): SweepFrame[] {
+  const count = stations.length;
+  const carried = new Vector3(...front);
+  const frames: SweepFrame[] = [];
+  for (let i = 0; i < count; i++) {
+    const a = stations[Math.max(0, i - 1)]!.p, b = stations[Math.min(count - 1, i + 1)]!.p;
+    const t = sub(b, a);
+    if (t.lengthSq() < 1e-12) t.set(0, 1, 0);
+    t.normalize();
+    carried.addScaledVector(t, -carried.dot(t));
+    if (carried.lengthSq() < 1e-8) {
+      // the front lies along the path: any direction across it
+      carried.set(Math.abs(t.x) < 0.9 ? 1 : 0, 0, Math.abs(t.x) < 0.9 ? 0 : 1);
+      carried.addScaledVector(t, -carried.dot(t));
+    }
+    carried.normalize();
+    const f = carried.clone();
+    const s = new Vector3().crossVectors(t, f).normalize();
+    const twist = stations[i]!.twist ?? 0;
+    if (twist) {
+      f.multiplyScalar(Math.cos(twist)).addScaledVector(s, Math.sin(twist));
+      s.crossVectors(t, f).normalize();
+    }
+    frames.push({ s, f, t });
+  }
+  return frames;
+}
+
+/** The `seg` points of a section (flat xyz), scaled by `k` and moved `along` the path. */
+function section(st: Station, fr: SweepFrame, seg: number, k = 1, along = 0): number[] {
+  const e = 2 / (st.power ?? 2);
+  const out: number[] = [];
+  for (let j = 0; j < seg; j++) {
+    const a = (j / seg) * TAU;
+    const c = Math.cos(a), sn = Math.sin(a);
+    const x = Math.sign(c) * Math.pow(Math.abs(c), e) * st.rx * k;
+    const z = Math.sign(sn) * Math.pow(Math.abs(sn), e) * (sn >= 0 ? st.rz : (st.back ?? st.rz)) * k;
+    out.push(st.p[0] + fr.s.x * x + fr.f.x * z + fr.t.x * along, st.p[1] + fr.s.y * x + fr.f.y * z + fr.t.y * along, st.p[2] + fr.s.z * x + fr.f.z * z + fr.t.z * along);
+  }
+  return out;
+}
+
+/** The points of a sweep's last section exactly as `Sculpt.sweep` places them (flat xyz): what a hand is laid on. */
+export function sweepEnd(stations: readonly Station[], opts: { seg?: number; front?: V3 } = {}): number[] {
+  const frames = sweepFrames(stations, opts.front);
+  return section(stations[stations.length - 1]!, frames[frames.length - 1]!, opts.seg ?? 12);
 }
 
 /** Vertex ranges [start, count] a `tagged` block added, in the geometry `Sculpt.geometry` returns. */
@@ -255,41 +313,8 @@ export class Sculpt {
     if (count < 2) return;
     const seg = opts.seg ?? 12;
     const start = opts.start ?? "round", end = opts.end ?? "round";
-    const tangents: Vector3[] = [];
-    for (let i = 0; i < count; i++) {
-      const a = stations[Math.max(0, i - 1)]!.p, b = stations[Math.min(count - 1, i + 1)]!.p;
-      const t = sub(b, a);
-      if (t.lengthSq() < 1e-12) t.set(0, 1, 0);
-      tangents.push(t.normalize());
-    }
-    const front = new Vector3(...(opts.front ?? [0, 0, 1]));
-    const frames: { s: Vector3; f: Vector3; t: Vector3 }[] = [];
-    for (let i = 0; i < count; i++) {
-      const t = tangents[i]!;
-      front.addScaledVector(t, -front.dot(t));
-      if (front.lengthSq() < 1e-8) {
-        // the front lies along the path: any direction across it
-        front.set(Math.abs(t.x) < 0.9 ? 1 : 0, 0, Math.abs(t.x) < 0.9 ? 0 : 1);
-        front.addScaledVector(t, -front.dot(t));
-      }
-      front.normalize();
-      const f = front.clone();
-      const s = new Vector3().crossVectors(t, f).normalize();
-      frames.push({ s, f, t });
-    }
-    const ring = (i: number, k: number, along: number): number[] => {
-      const st = stations[i]!, fr = frames[i]!;
-      const e = 2 / (st.power ?? 2);
-      const out: number[] = [];
-      for (let j = 0; j < seg; j++) {
-        const a = (j / seg) * TAU;
-        const c = Math.cos(a), sn = Math.sin(a);
-        const x = Math.sign(c) * Math.pow(Math.abs(c), e) * st.rx * k;
-        const z = Math.sign(sn) * Math.pow(Math.abs(sn), e) * (sn >= 0 ? st.rz : (st.back ?? st.rz)) * k;
-        out.push(st.p[0] + fr.s.x * x + fr.f.x * z + fr.t.x * along, st.p[1] + fr.s.y * x + fr.f.y * z + fr.t.y * along, st.p[2] + fr.s.z * x + fr.f.z * z + fr.t.z * along);
-      }
-      return out;
-    };
+    const frames = sweepFrames(stations, opts.front);
+    const ring = (i: number, k: number, along: number): number[] => section(stations[i]!, frames[i]!, seg, k, along);
     const rings: number[][] = [];
     const dome = opts.dome ?? 1;
     let startPole: V3 | undefined, endPole: V3 | undefined;
@@ -423,6 +448,19 @@ export class Sculpt {
         }
       }
     }
+    this.finish(v0, i0);
+  }
+
+  /**
+   * A mesh made elsewhere (a refined cage: `subdivide.ts`) as one part with smooth normals of its own: `points`
+   * are flat xyz, `triangles` index them (outward when counter-clockwise), `paints` is one paint per point or a
+   * painter.
+   */
+  mesh(points: ArrayLike<number>, triangles: ArrayLike<number>, paints: Painter | readonly Paint[]): void {
+    const v0 = this.vertexCount, i0 = this.idx.length;
+    const each = Array.isArray(paints) ? (paints as readonly Paint[]) : null;
+    for (let i = 0; 3 * i < points.length; i++) this.vertex(points[3 * i]!, points[3 * i + 1]!, points[3 * i + 2]!, each ? each[i]! : (paints as Painter));
+    for (let i = 0; i + 2 < triangles.length; i += 3) this.tri(v0 + triangles[i]!, v0 + triangles[i + 1]!, v0 + triangles[i + 2]!);
     this.finish(v0, i0);
   }
 
