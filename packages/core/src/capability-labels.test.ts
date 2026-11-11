@@ -31,4 +31,11 @@ describe("capability display labels", () => {
     expect(capabilityLabels(["ecg-12lead", "oxygen"], "en")).toEqual(["a 12-lead ECG", "oxygen"]);
     expect(capabilityLabels(["ecg-12lead", "oxygen"], "zh")).toEqual(["十二导联心电图", "氧气"]);
   });
+
+  it("name an endoscope's camera for no one kind of scope: a laparoscopy tower and a thoracoscopy tower both supply it", () => {
+    expect(capabilityLabel("endoscopic-camera", "en")).toBe("an endoscopic camera");
+    expect(capabilityLabel("endoscopic-camera", "zh-CN")).toBe("内镜摄像系统");
+    expect(capabilityLabels(["endoscopic-camera", "light-source"], "en")).toEqual(["an endoscopic camera", "a light source"]);
+    expect(CAPABILITIES["endoscopic-camera"]).toMatch(/thoracoscope/);
+  });
 });

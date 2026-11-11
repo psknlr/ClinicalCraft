@@ -347,8 +347,9 @@ export const CAPABILITIES = {
   "surgery": "Operating theatre",
   "anesthesia": "Anaesthesia machine",
   "endoscopy": "Endoscopy suite",
-  // the laparoscopic image and pneumoperitoneum (an operation's supply: docs/PROCEDURE.md)
-  "endoscopic-camera": "Laparoscopic camera control unit and monitor: the operative image",
+  // the endoscopic image and the pneumoperitoneum (an operation's supply: docs/PROCEDURE.md); a thoracoscopy tower
+  // supplies the first two and no gas
+  "endoscopic-camera": "Endoscopic camera control unit and monitor (a laparoscope's, a thoracoscope's): the operative image",
   "light-source": "Endoscopic light source",
   "insufflator": "CO₂ insufflator: the pneumoperitoneum",
   "dialysis": "Haemodialysis",
