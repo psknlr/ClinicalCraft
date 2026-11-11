@@ -7,13 +7,14 @@
  * Opening, the lips part widest at the middle and not at the corners, which go half the jaw's way and come in a
  * little (`jawShare`, `cornerPull`): a long oval. In it, over the dark of the mouth and the red of the tongue low
  * in it, the edge of the upper teeth shows under the upper lip (`addTeeth`, `teethShow`). Under the nose, the
- * nostrils are two soft shadows (`addNostrils`).
+ * nostrils are two soft shadows (`addNostrils`). A woman's mouth is narrower, her lips fuller and in colour; a
+ * man's wider, his lips thinner and little more than the skin's colour (`leaning`, `skull.ts`).
  *
  * `t` runs across the mouth from −1 at the corner on the figure's right to 1 at the one on its left.
  */
 import { leaves, type Outline, type Patchwork } from "./face-mesh.js";
 import { mix, rgb, shade, type Paint, type Rgb, type Sculpt, type V3 } from "./sculpt.js";
-import { HEAD_CENTRE, faceDepth, faceNormal, featureHeights, remembered, type FaceSpec } from "./skull.js";
+import { HEAD_CENTRE, faceDepth, faceNormal, featureHeights, leaning, remembered, type FaceSpec } from "./skull.js";
 
 /** The shape of a mouth: heights are above the head's centre. */
 export interface MouthForm {
@@ -46,8 +47,10 @@ export function mouthForm(face: FaceSpec): MouthForm {
 
 function shapeMouth(face: FaceSpec): MouthForm {
   const m = featureHeights(face).mouth;
-  const half = 0.0218 - 0.0036 * face.young;
-  const k = 1 - 0.15 * face.young;
+  // (a woman's mouth is narrower with fuller lips, a man's wider with thinner ones)
+  const lean = leaning(face);
+  const half = 0.0218 - 0.0036 * face.young - 0.0012 * lean;
+  const k = (1 - 0.15 * face.young) * (1 + (lean > 0 ? 0.16 : 0.17) * lean);
   const turn = (t: number) => 0.0014 * t * t;
   const line = (x: number) => {
     const t = x / half;
@@ -59,7 +62,7 @@ function shapeMouth(face: FaceSpec): MouthForm {
     const arch = Math.pow(Math.max(0, 1 - Math.pow(a, 1.7)), 0.8);
     const dip = 1 - 0.2 * Math.exp(-((t / 0.13) ** 2));
     const peak = 1 + 0.06 * Math.exp(-(((a - 0.22) / 0.12) ** 2));
-    return m + turn(t) + 0.0072 * k * arch * dip * peak;
+    return m + turn(t) + 0.0072 * k * (1 + 0.14 * Math.max(0, lean)) * arch * dip * peak;
   };
   const bottom = (t: number) => m + turn(t) - 0.0092 * k * Math.pow(Math.max(0, 1 - Math.pow(Math.abs(t), 2.2)), 0.7);
   return { m, half, line, parts: half - 0.003, top, bottom };
@@ -67,6 +70,7 @@ function shapeMouth(face: FaceSpec): MouthForm {
 
 const ROSE = rgb("#dd7f86");
 const DEEP = rgb("#b5364f");
+const CHERRY = rgb("#c3283f");
 const DARK: Rgb = rgb("#1c090b");
 const TONGUE = rgb("#a3454c");
 const TOOTH = rgb("#f1ede4");
@@ -86,7 +90,10 @@ export function addMouthSkin(mesh: Patchwork, hole: readonly number[], face: Fac
   // round the mouth: along the lower lip from the corner on the figure's right, back along the upper
   const where = Array.from({ length: ROUND }, (_, k) => (k < halfRound ? { t: -Math.cos((Math.PI * k) / halfRound), upper: false, corner: k === 0 } : { t: Math.cos((Math.PI * (k - halfRound)) / halfRound), upper: true, corner: k === halfRound }));
   const full = (t: number) => Math.pow(Math.max(0, 1 - Math.pow(Math.abs(t), 2.5)), 0.7);
-  const outer = mix(skin, ROSE, 0.7), deep = mix(skin, DEEP, 0.9);
+  // (a woman's lips have their colour — deepest at the middle of the line — a man's little more than the skin's)
+  const lean = leaning(face);
+  const colour = clamp(0.72 + 0.28 * lean, 0.44, 1);
+  const outer = mix(skin, ROSE, 0.7 * colour), deep = mix(skin, mix(DEEP, CHERRY, Math.max(0, lean) * 0.85), 0.9 * colour);
   const point = (t: number, upper: boolean, corner: boolean, into: number): V3 => {
     const bx = corner ? Math.sign(t) * (f.half + 0.0005) : t * f.half;
     const by = corner ? f.line(Math.sign(t) * f.half) : upper ? f.top(t) : f.bottom(t);
@@ -105,7 +112,7 @@ export function addMouthSkin(mesh: Patchwork, hole: readonly number[], face: Fac
     let c = mix(outer, deep, how);
     if (into < 0.2) c = mix(base.rgb, c, 0.6);
     const lit = !upper && into > 0.3 && into < 0.7 ? Math.exp(-((t / 0.42) ** 2)) : 0;
-    return { rgb: mix(c, [1, 0.95, 0.94], 0.14 * lit), gloss: 0.46 + 0.4 * lit, glow: base.glow };
+    return { rgb: mix(c, [1, 0.95, 0.94], 0.14 * lit), gloss: (0.46 + 0.4 * lit) * (0.75 + 0.25 * colour), glow: base.glow };
   };
   const rings = IN.map((into) =>
     where.map(({ t, upper, corner }) => {

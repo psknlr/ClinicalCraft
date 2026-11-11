@@ -9,12 +9,16 @@
  * upper lid's edge a line of lashes, heavier towards the outer corner and running a little beyond it; under the
  * outer half of the lower lid a faint one. Over each eye a soft straight brow whose edges fade into the skin.
  *
+ * A woman's eyes are larger and more open — the upper lid over the top of a large iris, a little fullness under
+ * the lower lid — under finer, lighter brows, with fuller lashes that run on beyond the outer corner; a man's are
+ * a little narrower under fuller, lower brows, his lashes a fine line (`leaning`, `skull.ts`).
+ *
  * Everything is given for the eye on +X (the figure's left) and mirrored for the other; `u` runs along an eye from
  * −1 at its inner corner to 1 at its outer one.
  */
 import { leaves, type Outline, type Patchwork } from "./face-mesh.js";
 import { mix, rgb, shade, type Paint, type Rgb, type Sculpt, type V3 } from "./sculpt.js";
-import { EYE_X, HEAD_CENTRE, SKIN_GLOW, SOCKET, faceDepth, faceNormal, featureHeights, remembered, type FaceSpec } from "./skull.js";
+import { EYE_X, HEAD_CENTRE, SKIN_GLOW, SOCKET, faceDepth, faceNormal, featureHeights, leaning, remembered, type FaceSpec } from "./skull.js";
 
 /** The shape of an eye (the one on +X): heights are above the head's centre, depths in front of it. */
 export interface EyeForm {
@@ -52,8 +56,10 @@ export function eyeForm(face: FaceSpec): EyeForm {
 
 function shapeEye(face: FaceSpec): EyeForm {
   const e = featureHeights(face).eye;
-  const half = 0.0172 - 0.0014 * face.young;
-  const up = 0.008 + 0.0006 * face.young, down = 0.0052 + 0.0003 * face.young;
+  // (a woman's eyes are larger and more open, a man's a little narrower)
+  const lean = leaning(face);
+  const half = 0.0172 - 0.0014 * face.young + 0.0006 * lean;
+  const up = 0.008 + 0.0006 * face.young + (lean > 0 ? 0.0009 : 0.0006) * lean, down = 0.0052 + 0.0003 * face.young + 0.0004 * lean;
   const line = (u: number) => e + 0.00035 + 0.00085 * u;
   const upper = (u: number) => {
     const w = clamp(u + 0.12 * (1 - u * u), -1, 1);
@@ -73,8 +79,9 @@ function shapeEye(face: FaceSpec): EyeForm {
     return apex - ((dx < 0 ? 0.0052 : 0.0098) / (half * half)) * dx * dx - 41 * dy * dy;
   };
   // (the young have large irises in their rounder eyes; the upper lid always covers the top of one)
-  const r = 0.0074 + 0.0003 * face.young;
-  return { x: EYE_X, e, half, line, upper, lower, fold, ball, thick: (u) => 0.001 * (1 - 0.65 * u * u * u * u), iris: [EYE_X, e + 0.0012 + 0.0004 * face.young, r] };
+  // (a woman's irises are large and sit a little higher: the lid covers their top, the lower lid just cuts them)
+  const r = 0.0074 + 0.0003 * face.young + (lean > 0 ? 0.0006 : 0.00035) * lean;
+  return { x: EYE_X, e, half, line, upper, lower, fold, ball, thick: (u) => 0.001 * (1 - 0.65 * u * u * u * u), iris: [EYE_X, e + 0.0012 + 0.0004 * face.young + 0.0008 * Math.max(0, lean), r] };
 }
 
 /** How many points go round an eye, and where each lies: along the lower lid from the inner corner out, back along the upper. */
@@ -97,6 +104,7 @@ export function addEyeSkin(mesh: Patchwork, hole: readonly number[], side: 1 | -
   const [cx, cy, cz] = HEAD_CENTRE;
   const depth = (x: number, y: number) => faceDepth(x, y, face);
   const where = around();
+  const woman = Math.max(0, leaning(face));
   type Ring = (u: number, upper: boolean, corner: boolean) => V3;
   const xAt = (u: number, k = 1) => f.x + f.half * u * k;
   // the lids' edge: the outline of the open eye, on the eye's surface
@@ -119,8 +127,9 @@ export function addEyeSkin(mesh: Patchwork, hole: readonly number[], side: 1 | -
       const x = xAt(u), y = f.upper(u) + 0.5 * (f.fold(u) - f.upper(u));
       return [x, y, f.ball(x, y) + f.thick(u) * 1.05];
     }
+    // (under a woman's eye the lid is a little full: it makes the eye look larger and the face younger)
     const x = xAt(u), y = f.lower(u) - 0.0017 * (1 - 0.5 * u * u * u * u);
-    return [x, y, 0.7 * (f.ball(x, y) + f.thick(u)) + 0.3 * depth(x, y) + 0.0003 * (1 - u * u)];
+    return [x, y, 0.7 * (f.ball(x, y) + f.thick(u)) + 0.3 * depth(x, y) + (0.0003 + 0.0008 * woman) * (1 - u * u)];
   };
   // the fold over the upper lid (a groove), and the line under the eye where its fullness ends
   const fold: Ring = (u, upper, corner) => {
@@ -156,8 +165,8 @@ export function addEyeSkin(mesh: Patchwork, hole: readonly number[], side: 1 | -
       const p = ring(u, upper, corner);
       return mesh.add(side * p[0] + cx, p[1] + cy, p[2] + cz, paintOf(p, u, upper, corner), moves && upper && !corner);
     });
-  const lidTone = (p: V3, _u: number, upper: boolean, corner: boolean): Paint => (corner ? tint(p, 0.95) : upper ? tint(p, 0.95, SHADOW, 0.07) : tint(p, 1.045));
-  const folds = loop(fold, (p, _u, upper, corner) => (upper && !corner ? tint(p, 0.84, SHADOW, 0.12) : tint(p, 0.985)), false);
+  const lidTone = (p: V3, _u: number, upper: boolean, corner: boolean): Paint => (corner ? tint(p, 0.95) : upper ? tint(p, 0.95, SHADOW, 0.07) : tint(p, 1.045 + 0.035 * woman));
+  const folds = loop(fold, (p, u, upper, corner) => (upper && !corner ? tint(p, 0.84, SHADOW, 0.12) : tint(p, 0.985 - (corner ? 0 : 0.035 * woman * (1 - u * u)))), false);
   const high = loop(between(fold, lid, 0.25), (p, _u, upper, corner) => (upper && !corner ? tint(p, 0.92, SHADOW, 0.08) : tint(p, 1.015)), true);
   const lids = loop(lid, lidTone, true);
   const low = loop(between(lid, margin, 0.75), (p, u, upper, corner) => (upper && !corner ? tint(p, 0.93, SHADOW, 0.08) : corner ? tint(p, 0.95) : tint(p, 1.0 - 0.02 * smooth(0, 1, u))), true);
@@ -279,6 +288,8 @@ export function addEye(sc: Sculpt, side: 1 | -1, face: FaceSpec, tones: { skin: 
 
   /* ---------------- lashes ---------------- */
   const dark: Rgb = mix(rgb("#16100d"), tones.hair, 0.22);
+  const lean = leaning(face);
+  const lashes = 1 + (lean > 0 ? 0.3 : 0.5) * lean;
   sc.tagged("lash", () => {
     const n = 26;
     sc.sheet(
@@ -287,15 +298,16 @@ export function addEye(sc: Sculpt, side: 1 | -1, face: FaceSpec, tones: { skin: 
       (i, j) => {
         // along the upper lid's edge, then on beyond the outer corner, rising a little and thinning to a point
         const s = j / (n - 1);
-        const u = -0.86 + s * 2.08;
+        // (a woman's run on a little further beyond the outer corner; a man's end at it)
+        const u = -0.86 + s * (2.08 + (lean > 0 ? 0.08 : 0.18) * lean);
         const uu = Math.min(1, u), over = Math.max(0, u - 1);
         const x = f.x + f.half * (uu + over * 0.95), y0 = f.upper(uu) + over * f.half * 0.42;
         const full = Math.pow(Math.sin(Math.min(1, s * 1.9) * Math.PI * 0.5), 0.8) * (1 - smooth(0.82, 1, s));
         const heavy = 0.68 + 0.32 * smooth(-0.3, 0.9, u);
         const z0 = f.ball(x, y0) + f.thick(uu);
         // a wedge: its back on the lid just over the edge, its front out before the edge (the lashes' tips), its foot on the rim
-        if (i === 0) return put(x, y0 + 0.0015 * full * heavy, z0 + 0.00014);
-        if (i === 1) return put(x, y0 - 0.00025 * full, z0 + (0.0008 + 0.0012 * heavy) * full + 0.0001);
+        if (i === 0) return put(x, y0 + 0.0015 * full * heavy * lashes, z0 + 0.00014);
+        if (i === 1) return put(x, y0 - 0.00025 * full, z0 + (0.0008 + 0.0012 * heavy) * full * lashes + 0.0001);
         return put(x, y0 - 0.00055 * full, z0 - 0.0006);
       },
       { rgb: dark, gloss: 0.12 },
@@ -317,7 +329,7 @@ export function addEye(sc: Sculpt, side: 1 | -1, face: FaceSpec, tones: { skin: 
       (x, y, z) => {
         const u = (side * (x - cx) - f.x) / f.half;
         const base = skinAt(x, y, z);
-        return { rgb: mix(shade(base.rgb, 0.93), dark, 0.42 * smooth(-0.15, 0.6, u) * (1 - smooth(0.9, 1, u))), gloss: 0.1, glow: base.glow };
+        return { rgb: mix(shade(base.rgb, 0.93), dark, 0.42 * clamp(1 + 0.8 * lean, 0.2, 1) * smooth(-0.15, 0.6, u) * (1 - smooth(0.9, 1, u))), gloss: 0.1, glow: base.glow };
       },
       { flip: side < 0 },
     );
@@ -325,8 +337,10 @@ export function addEye(sc: Sculpt, side: 1 | -1, face: FaceSpec, tones: { skin: 
 
   /* ---------------- the brow ---------------- */
   // (a brow is a shade softer than the hair)
-  const browColour = mix(tones.hair, tones.skin, 0.03);
-  const soft = 1 - 0.3 * face.young;
+  // (a woman's brow is finer, lighter and a touch higher; a man's fuller, darker and lower over the eye)
+  const browColour = mix(tones.hair, tones.skin, 0.03 + 0.07 * Math.max(0, lean));
+  const soft = (1 - 0.3 * face.young) * (1 - (lean > 0 ? 0.14 : 0.28) * lean);
+  const browAt = f.e + 0.0176 + (lean > 0 ? 0.0008 : 0.0016) * lean;
   const bn = 17, bm = 5;
   sc.sheet(
     bn,
@@ -335,7 +349,7 @@ export function addEye(sc: Sculpt, side: 1 | -1, face: FaceSpec, tones: { skin: 
       const t = i / (bn - 1), v = j / (bm - 1);
       const x = f.x - 0.019 + 0.0405 * t;
       // straight and soft: level from its head, the faintest rise, the tail turning down at the end
-      const mid = f.e + 0.0176 + 0.0014 * Math.sin(Math.min(1, t / 0.72) * Math.PI * 0.5) - 0.0036 * Math.pow(Math.max(0, t - 0.7) / 0.3, 1.6);
+      const mid = browAt + 0.0014 * Math.sin(Math.min(1, t / 0.72) * Math.PI * 0.5) - 0.0036 * Math.pow(Math.max(0, t - 0.7) / 0.3, 1.6);
       const thick = (0.0033 * smooth(-0.12, 0.14, t) * (1 - 0.86 * Math.pow(Math.max(0, t - 0.42) / 0.58, 1.5)) + 0.00035) * soft;
       const y = mid + (0.5 - v) * 2 * thick;
       const n = faceNormal(x, y, face);
@@ -345,7 +359,7 @@ export function addEye(sc: Sculpt, side: 1 | -1, face: FaceSpec, tones: { skin: 
     (x, y, z) => {
       const t = (side * (x - cx) - (f.x - 0.019)) / 0.0405;
       const base = skinAt(x, y, z);
-      const mid = f.e + 0.0176 + 0.0014 * Math.sin(Math.min(1, Math.max(0, t) / 0.72) * Math.PI * 0.5) - 0.0036 * Math.pow(Math.max(0, t - 0.7) / 0.3, 1.6);
+      const mid = browAt + 0.0014 * Math.sin(Math.min(1, Math.max(0, t) / 0.72) * Math.PI * 0.5) - 0.0036 * Math.pow(Math.max(0, t - 0.7) / 0.3, 1.6);
       const thick = (0.0033 * smooth(-0.12, 0.14, t) * (1 - 0.86 * Math.pow(Math.max(0, t - 0.42) / 0.58, 1.5)) + 0.00035) * soft;
       // full along its middle, fading out to its edges, lighter at its head
       const across = 1 - Math.pow(Math.min(1, Math.abs(y - cy - mid) / thick), 4);

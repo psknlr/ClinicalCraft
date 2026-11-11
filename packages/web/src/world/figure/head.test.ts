@@ -9,6 +9,8 @@ import { HEAD_CENTRE, faceDepth, featureHeights, phiOfHeight, skullPoint, type F
 
 const ADULT: FaceSpec = { young: 0, wide: 1 };
 const CHILD: FaceSpec = { young: 0.6, wide: 1 };
+const WOMAN: FaceSpec = { young: 0, wide: 1, feminine: 1 };
+const MAN: FaceSpec = { young: 0, wide: 1, feminine: 0 };
 const HAIR = rgb("#2b2420");
 const PAINT: HeadPaint = { skin: rgb("#d8b494"), hair: HAIR, scalp: true, iris: irisFor(HAIR) };
 const [CX, CY, CZ] = HEAD_CENTRE;
@@ -113,6 +115,102 @@ describe("the forms of an eye and of a mouth", () => {
       expect(Math.abs(cornerPull(CX, CY + m.line(0), face))).toBeLessThan(1e-4);
     }
     expect(mouthForm(CHILD).half).toBeLessThan(mouthForm(ADULT).half);
+  });
+});
+
+describe("a woman's features and a man's", () => {
+  it("her eyes are larger and more open under their lids, her mouth narrower with fuller lips; his the other way", () => {
+    const hers = eyeForm(WOMAN), his = eyeForm(MAN), neither = eyeForm(ADULT);
+    expect(hers).not.toBe(neither);
+    expect(his).not.toBe(hers);
+    const open = (f: typeof hers) => f.upper(0) - f.lower(0);
+    expect(hers.half).toBeGreaterThan(neither.half);
+    expect(his.half).toBeLessThan(neither.half);
+    expect(open(hers)).toBeGreaterThan(open(neither) + 0.001);
+    expect(open(his)).toBeLessThan(open(neither) - 0.0005);
+    expect(open(hers) / (2 * hers.half)).toBeGreaterThan(open(his) / (2 * his.half));
+    for (const f of [hers, his]) {
+      const [, iy, r] = f.iris;
+      // the upper lid covers the top of the iris — a face does not stare — and the lower lid no more than its edge
+      expect(iy + r - f.upper(0)).toBeGreaterThan(0.0003);
+      expect(iy + r - f.upper(0)).toBeLessThan(0.0015);
+      expect(f.lower(0) - (iy - r)).toBeLessThan(0.0016);
+      for (let u = -0.95; u <= 0.95; u += 0.05) {
+        expect(f.upper(u)).toBeGreaterThan(f.lower(u));
+        expect(f.fold(u)).toBeGreaterThan(f.upper(u));
+      }
+    }
+    expect(hers.iris[2]).toBeGreaterThan(his.iris[2] + 0.0008);
+    const her = mouthForm(WOMAN), him = mouthForm(MAN), plain = mouthForm(ADULT);
+    expect(her.half).toBeLessThan(plain.half - 0.001);
+    expect(him.half).toBeGreaterThan(plain.half + 0.001);
+    const upper = (m: typeof her) => m.top(0.22) - m.line(0.22 * m.half), lower = (m: typeof her) => m.line(0) - m.bottom(0);
+    expect(upper(her)).toBeGreaterThan(upper(plain) * 1.2);
+    expect(lower(her)).toBeGreaterThan(lower(plain) * 1.1);
+    expect(upper(him)).toBeLessThan(upper(plain) * 0.9);
+    expect(lower(him)).toBeLessThan(lower(plain) * 0.9);
+    // each still a mouth: a bow over a fuller lower lip
+    for (const m of [her, him]) {
+      expect(m.top(0.22)).toBeGreaterThan(m.top(0));
+      expect(lower(m)).toBeGreaterThan(m.top(0) - m.line(0));
+    }
+  });
+
+  it("each is a head of its own — one closed skin, a cast of its own — that blinks and speaks as any does", () => {
+    // (the openings for her larger eyes and narrower mouth are cut out of other squares of the head's grid than his)
+    const hers = head(WOMAN), his = head(MAN);
+    expect(Array.from(hers.position)).not.toEqual(Array.from(his.position));
+    for (const [face, made] of [[WOMAN, hers], [MAN, his]] as const) {
+      const [start, count] = made.sc.ranges("jaw")[0]!;
+      const skin = edgesOf(made.geometry, start, start + count);
+      expect(skin.crowded).toBe(0);
+      expect(skin.open).toBeGreaterThan(60);
+      // a cast in the figure's colours is the head sculpted in them
+      const direct = new Sculpt();
+      sculptHead(direct, face, PAINT);
+      expect(Array.from(direct.geometry().getAttribute("position").array as Float32Array)).toEqual(Array.from(made.position));
+      // the lids keep clear of the eye all the way down
+      const f = eyeForm(face), shut = made.moves[MOVES.blink]!, round = made.moves[MOVES.round]!;
+      for (const b of [0.25, 0.5, 0.75, 1]) {
+        let clear = Infinity;
+        each(made.sc.ranges("lid"), (i) => {
+          const x = Math.abs(made.position[3 * i]! - CX), y = made.position[3 * i + 1]! - CY + b * shut[3 * i + 1]!;
+          clear = Math.min(clear, made.position[3 * i + 2]! - CZ + b * shut[3 * i + 2]! + blinkRound(b) * round[3 * i + 2]! - f.ball(x, y));
+        });
+        expect(clear, `shut ${b}`).toBeGreaterThan(0.00005);
+      }
+      // the jaw opens the mouth: the lower lip goes down, nothing over the upper lip moves
+      const m = mouthForm(face), open = made.moves[MOVES.jaw]!;
+      let lip = 0, above = 0;
+      each(made.sc.ranges("jaw"), (i) => {
+        const x = made.position[3 * i]! - CX, y = made.position[3 * i + 1]! - CY;
+        if (Math.abs(x) < 0.003 && y < m.line(0) - 0.001 && y > m.bottom(0)) lip = Math.min(lip, open[3 * i + 1]!);
+        if (y > m.top(0.22) + 0.018) above = Math.max(above, Math.abs(open[3 * i + 1]!));
+      });
+      expect(lip).toBeLessThan(-0.006);
+      expect(above).toBe(0);
+    }
+    // her lashes are fuller than his: they stand further off the lid
+    const lashes = (made: typeof hers, face: FaceSpec) => {
+      const f = eyeForm(face);
+      let most = 0;
+      each(made.sc.ranges("lash"), (i) => {
+        const x = Math.abs(made.position[3 * i]! - CX), y = made.position[3 * i + 1]! - CY;
+        most = Math.max(most, made.position[3 * i + 2]! - CZ - f.ball(x, y));
+      });
+      return most;
+    };
+    expect(lashes(hers, WOMAN)).toBeGreaterThan(lashes(his, MAN) * 1.3);
+    // and her cheeks and lips have more colour than his: more of her face is redder than the skin's own colour
+    const rosy = (made: typeof hers) => {
+      const colour = made.geometry.getAttribute("color").array as Float32Array;
+      const [start, count] = made.sc.ranges("jaw")[0]!;
+      const own = PAINT.skin[0] / PAINT.skin[1];
+      let red = 0;
+      for (let i = start; i < start + count; i++) red += Math.max(0, colour[3 * i]! / colour[3 * i + 1]! - own * 1.04);
+      return red;
+    };
+    expect(rosy(hers)).toBeGreaterThan(rosy(his) * 1.5);
   });
 });
 

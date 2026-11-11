@@ -1,7 +1,9 @@
 /**
  * The measurements of a figure and where its joints are in a posture. Lengths are metres of an adult of average
  * build standing 1.74 m (about 7½ heads); a figure's `body` group is scaled for stature. The frame is the
- * figure's own: feet at the origin, +Y up, +Z the way they face, +X their left.
+ * figure's own: feet at the origin, +Y up, +Z the way they face, +X their left. A woman's frame is narrower in
+ * the shoulders and the waist, a little fuller in the hips, slimmer in the neck and the limbs; a man's the other
+ * way (`frameOf`).
  *
  * Standing, the arms hang a little bent with the palms towards the thighs, or (hands `clasped`) are held
  * one hand over the other in front of the chest, as someone scrubbed keeps them. Sitting, the feet are planted when the seat is
@@ -48,16 +50,42 @@ export interface Frame {
   young: number;
   /** Leg length against the adult's (an infant's legs are short for the trunk). */
   legs: number;
+  /**
+   * A woman's or a man's frame against the average of the two (1): the width of the shoulders, of the waist and
+   * of the hips, the girth of the neck — and the fullness of the chest (m).
+   */
+  shoulders: number;
+  waist: number;
+  hips: number;
+  neck: number;
+  bust: number;
 }
 
 /** Body scale by stature (the top of the head: adult 1.74 m, teen 1.57, child 1.25, infant 0.78). */
 export const STATURE_SCALE: Record<Stature, number> = { adult: 1, teen: 0.9, child: 0.72, infant: 0.45 };
 
-/** The frame of a build and a stature. */
-export function frameOf(build: Build, stature: Stature): Frame {
+/** The frame of a build and a stature; `feminine`: 0 a man's … 1 a woman's (0.5 neither's in particular; a child's is neither's yet). */
+export function frameOf(build: Build, stature: Stature, feminine = 0.5): Frame {
   const b = build === "slim" ? { wide: 0.93, deep: 0.9, belly: 0, limb: 0.9 } : build === "heavy" ? { wide: 1.13, deep: 1.2, belly: 0.045, limb: 1.16 } : { wide: 1, deep: 1, belly: 0, limb: 1 };
   const s = stature === "infant" ? { head: 1.5, young: 1, legs: 0.8, chub: 1.28 } : stature === "child" ? { head: 1.2, young: 0.6, legs: 0.95, chub: 1.05 } : stature === "teen" ? { head: 1.02, young: 0.22, legs: 1, chub: 0.96 } : { head: 0.965, young: 0, legs: 1, chub: 1 };
-  return { scale: STATURE_SCALE[stature] ?? 1, wide: b.wide * (s.chub > 1 ? 1 + (s.chub - 1) * 0.6 : 1), deep: b.deep * (s.chub > 1 ? 1 + (s.chub - 1) * 0.8 : 1), belly: b.belly, limb: b.limb * s.chub, head: s.head, young: s.young, legs: s.legs };
+  // a woman's shoulders and waist are narrower, her hips a little fuller, her neck and limbs slimmer; a man's the other way
+  const lean = (2 * feminine - 1) * Math.max(0, 1 - 2 * s.young);
+  const woman = Math.max(0, lean), man = Math.max(0, -lean);
+  return {
+    scale: STATURE_SCALE[stature] ?? 1,
+    wide: b.wide * (s.chub > 1 ? 1 + (s.chub - 1) * 0.6 : 1),
+    deep: b.deep * (s.chub > 1 ? 1 + (s.chub - 1) * 0.8 : 1),
+    belly: b.belly,
+    limb: b.limb * s.chub * (1 - 0.06 * woman + 0.03 * man),
+    head: s.head,
+    young: s.young,
+    legs: s.legs,
+    shoulders: 1 - 0.07 * woman + 0.035 * man,
+    waist: 1 - 0.075 * woman + 0.02 * man,
+    hips: 1 + 0.03 * woman - 0.02 * man,
+    neck: 1 - 0.08 * woman + 0.06 * man,
+    bust: 0.013 * woman,
+  };
 }
 
 /** One arm or leg: its three joints, and the frame of the hand or foot at its end. */
@@ -110,7 +138,7 @@ export type ArmPose = "relaxed" | "clasped" | "lap" | "rest" | "sling";
  * of two hands held together, the one that lies on the other.
  */
 function arm(pose: ArmPose, lift: number, f: Frame, seatTop: number, over = false): Limb {
-  const sx = SHOULDER_X * f.wide, sy = SHOULDER + lift;
+  const sx = SHOULDER_X * f.wide * f.shoulders, sy = SHOULDER + lift;
   const root = v(sx, sy, 0);
   const upper = UPPER_ARM, fore = FOREARM;
   if (pose === "clasped") {
@@ -151,7 +179,7 @@ function arm(pose: ArmPose, lift: number, f: Frame, seatTop: number, over = fals
 export function skeletonOf(posture: Posture, f: Frame, seat: number, arms: ArmPose | [ArmPose, ArmPose] = "relaxed"): Skeleton {
   const thigh = THIGH * f.legs, shin = SHIN * f.legs;
   const standHip = ANKLE + shin + thigh;
-  const hx = HIP_X * f.wide;
+  const hx = HIP_X * f.wide * f.hips;
   let hip = standHip;
   let leg: Limb;
   let pose: ArmPose | [ArmPose, ArmPose] = arms;

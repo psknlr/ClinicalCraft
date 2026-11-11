@@ -1,6 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Box3, Group, type BufferAttribute, type Mesh } from "three";
-import { buildPerson, disposeRig, heightOf, looksOf, PATIENT_WEAR, PERSON_HEIGHT, ROLE_UNIFORMS, setBlink, setBreath, setDistressed, setMouth, STATURE_SCALE, uniformOf, type AppearanceLike, type PersonRig } from "./npc.js";
+import { frameOf } from "./figure/anatomy.js";
+import { buildPerson, disposeRig, heightOf, looksOf, PATIENT_WEAR, PERSON_HEIGHT, presentationOf, ROLE_UNIFORMS, setBlink, setBreath, setDistressed, setMouth, STATURE_SCALE, uniformOf, type AppearanceLike, type PersonRig } from "./npc.js";
 
 /** The drawn meshes of a rig (not the unseen aim box). */
 function meshes(rig: PersonRig): Mesh[] {
@@ -59,7 +60,7 @@ describe("people of the world (npc.ts)", () => {
         const rig = buildPerson({ ...looksOf(id), shirt: uni.shirt, pants: uni.pants }, { posture: "standing", wear: uni.wear, seed: id, height: heightOf(id) });
         expect(finite(rig), id).toBe(true);
         expect(rig.triangles, id).toBeGreaterThan(6000);
-        expect(rig.triangles, id).toBeLessThan(29500);
+        expect(rig.triangles, id).toBeLessThan(31500);
         disposeRig(rig);
       }
     }
@@ -216,11 +217,57 @@ describe("people of the world (npc.ts)", () => {
     disposeRig(b);
   });
 
+  it("draws a woman or a man: by what the appearance says, else by a patient's sex, else by the hair", () => {
+    // the default: cropped or no hair, a man's features; hair that is long, tied back, bobbed or permed, a woman's
+    for (const style of ["short", "bald", undefined] as const) expect(presentationOf(style)).toBe("masculine");
+    for (const style of ["long", "wavy", "bob", "bun", "ponytail", "curly"] as const) expect(presentationOf(style)).toBe("feminine");
+    // a patient's sex says more than their hair; one that says neither leaves it to the hair
+    expect(presentationOf("short", "female")).toBe("feminine");
+    expect(presentationOf("long", "male")).toBe("masculine");
+    expect(presentationOf("long", "unspecified")).toBe("feminine");
+    expect(presentationOf("short", "intersex")).toBe("masculine");
+    const face = (ap: AppearanceLike) => {
+      const rig = buildPerson(ap, { posture: "standing" });
+      const out = { position: Array.from(rig.face.geometry.getAttribute("position").array as Float32Array), box: drawnBox(rig) };
+      disposeRig(rig);
+      return out;
+    };
+    const man = face({ hairStyle: "short" }), woman = face({ hairStyle: "short", presentation: "feminine" });
+    // what the appearance says wins over the hair, and it is another face
+    expect(face({ hairStyle: "short", presentation: "masculine" }).position).toEqual(man.position);
+    expect(woman.position).not.toEqual(man.position);
+    expect(face({ hairStyle: "bob" }).position).toEqual(face({ hairStyle: "bob", presentation: "feminine" }).position);
+    expect(face({ hairStyle: "bob", presentation: "masculine" }).position).not.toEqual(face({ hairStyle: "bob" }).position);
+    // and another frame: her shoulders are narrower than his, both of a height
+    expect(woman.box.max.x - woman.box.min.x).toBeLessThan(man.box.max.x - man.box.min.x - 0.015);
+    expect(woman.box.max.y).toBeCloseTo(man.box.max.y, 6);
+    const hers = frameOf("average", "adult", 1), his = frameOf("average", "adult", 0), neither = frameOf("average", "adult");
+    expect(hers.shoulders).toBeLessThan(his.shoulders);
+    expect(hers.waist).toBeLessThan(his.waist);
+    expect(hers.hips).toBeGreaterThan(his.hips);
+    expect(hers.neck).toBeLessThan(his.neck);
+    expect(hers.bust).toBeGreaterThan(0);
+    expect(his.bust).toBe(0);
+    expect([neither.shoulders, neither.waist, neither.hips, neither.neck, neither.bust]).toEqual([1, 1, 1, 1, 0]);
+    // a child is neither yet: the same child whatever is said; a teenager is on the way
+    expect(face({ stature: "child", hairStyle: "bob", presentation: "feminine" }).position).toEqual(face({ stature: "child", hairStyle: "bob", presentation: "masculine" }).position);
+    const girl = frameOf("average", "teen", 1);
+    expect(girl.shoulders).toBeLessThan(1);
+    expect(girl.shoulders).toBeGreaterThan(hers.shoulders);
+    expect(frameOf("average", "infant", 1).shoulders).toBe(1);
+  });
+
   it("staff nobody described differ from one another, and are the same every time", () => {
     const ids = Array.from({ length: 40 }, (_, i) => `or-${i}.scrub-nurse`);
     const looks = ids.map((id) => JSON.stringify(looksOf(id)));
     expect(new Set(looks).size).toBeGreaterThan(20);
     expect(ids.map((id) => JSON.stringify(looksOf(id)))).toEqual(looks);
+    // among enough of them every style of hair is worn, and both women and men are seen
+    const many = Array.from({ length: 400 }, (_, i) => looksOf(`ward-${i}.nurse`));
+    expect([...new Set(many.map((l) => l.hairStyle))].sort()).toEqual(["bald", "bob", "bun", "curly", "long", "ponytail", "short", "wavy"]);
+    const women = many.filter((l) => presentationOf(l.hairStyle) === "feminine").length;
+    expect(women).toBeGreaterThan(160);
+    expect(women).toBeLessThan(300);
     for (const id of ids) {
       expect(heightOf(id)).toBeGreaterThanOrEqual(0.94);
       expect(heightOf(id)).toBeLessThanOrEqual(1.05);

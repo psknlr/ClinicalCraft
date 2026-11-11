@@ -1,8 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { HEAD_CENTRE, NU, NV, faceDepth, faceNormal, featureHeights, hairlineAt, jawLineAt, phiAt, phiOfHeight, remembered, skullPoint, thetaAt, type FaceSpec } from "./skull.js";
+import { HEAD_CENTRE, NU, NV, faceDepth, faceNormal, featureHeights, hairlineAt, jawLineAt, leaning, phiAt, phiOfHeight, remembered, skullPoint, thetaAt, type FaceSpec } from "./skull.js";
 
 const ADULT: FaceSpec = { young: 0, wide: 1 };
 const CHILD: FaceSpec = { young: 0.6, wide: 1 };
+const WOMAN: FaceSpec = { young: 0, wide: 1, feminine: 1 };
+const MAN: FaceSpec = { young: 0, wide: 1, feminine: 0 };
 
 /** A point of the head from its centre. */
 function at(theta: number, phi: number, face: FaceSpec): [number, number, number] {
@@ -124,6 +126,52 @@ describe("the form of a head (skull.ts)", () => {
     expect(hairlineAt(0, CHILD)).toBeGreaterThan(hairlineAt(0, ADULT));
   });
 
+  it("a woman's face and a man's differ where faces do: the jaw and the chin, the brow, the nose, the cheeks", () => {
+    expect(leaning(ADULT)).toBe(0);
+    expect(leaning({ ...ADULT, feminine: 0.5 })).toBe(0);
+    expect(leaning(WOMAN)).toBe(1);
+    expect(leaning(MAN)).toBe(-1);
+    // neither's in particular is the face it was: a face that leans no way is the same with or without the word
+    for (const [theta, phi] of [[0, 1.6], [0.5, 1.9], [1.2, 2.2], [0.2, 2.5]] as const) expect(skullPoint(theta, phi, { ...ADULT, feminine: 0.5 }).toArray()).toEqual(skullPoint(theta, phi, ADULT).toArray());
+    const woman = outline(WOMAN), man = outline(MAN), neither = outline(ADULT);
+    const { eye, mouth } = featureHeights(ADULT);
+    // a man's jaw is broader all the way down, his chin wide and tall; a woman's cheeks are a little fuller beside the
+    // mouth, her chin small and a little shorter
+    for (const mm of [-40, -58, -76, -90]) expect(man.get(mm)!, `at ${mm} mm`).toBeGreaterThan(woman.get(mm)! + 0.0008);
+    expect(man.get(-90)!).toBeGreaterThan(neither.get(-90)! + 0.002);
+    expect(woman.get(-50)!).toBeGreaterThan(neither.get(-50)!);
+    expect(woman.get(-50)! - neither.get(-50)!).toBeLessThan(0.003);
+    expect(woman.get(-94)!).toBeLessThan(neither.get(-94)!);
+    expect(neither.get(-94)! - woman.get(-94)!).toBeLessThan(0.005);
+    expect(jawLineAt(0.07, MAN)).toBeLessThan(jawLineAt(0.07, ADULT) - 0.002);
+    expect(jawLineAt(0.07, WOMAN)).toBeGreaterThan(jawLineAt(0.07, ADULT));
+    // above the eyes they are the same head
+    for (const mm of [10, 40, 80]) expect(Math.abs(man.get(mm)! - woman.get(mm)!)).toBeLessThan(1e-9);
+    // the brow: heavier on a man; the nose: larger and higher in the bridge on a man, smaller on a woman
+    const over = (face: FaceSpec, x: number, y: number) => faceDepth(x, y, face) - faceDepth(x, y, ADULT);
+    expect(over(MAN, 0.03, eye + 0.0205)).toBeGreaterThan(0.0012);
+    expect(over(WOMAN, 0.03, eye + 0.0205)).toBeLessThan(0);
+    const tip = (face: FaceSpec) => {
+      let most = 0;
+      for (let y = eye - 0.015; y > eye - 0.04; y -= 0.0005) most = Math.max(most, faceDepth(0, y, face));
+      return most - faceDepth(0.024, eye - 0.03, face);
+    };
+    expect(tip(MAN)).toBeGreaterThan(tip(ADULT) + 0.001);
+    expect(tip(WOMAN)).toBeLessThan(tip(ADULT) - 0.001);
+    expect(over(MAN, 0, eye + 0.002)).toBeGreaterThan(0.001);
+    expect(over(WOMAN, 0, eye + 0.002)).toBeLessThan(-0.0005);
+    // the cheeks: fuller on a woman beside the mouth; the chin: further forward and broader on a man
+    expect(over(WOMAN, 0.036, eye - 0.052)).toBeGreaterThan(0.001);
+    expect(over(MAN, 0, mouth - 0.031)).toBeGreaterThan(0.0008);
+    // and each is still one face: found by where it is seen
+    for (const face of [WOMAN, MAN]) {
+      for (const [theta, phi] of [[0.3, 1.5], [-0.6, 1.9], [0.1, 2.2]] as const) {
+        const p = at(theta, phi, face);
+        expect(Math.abs(faceDepth(p[0], p[1], face) - p[2])).toBeLessThan(0.0004);
+      }
+    }
+  });
+
   it("finds the face by where it is seen from in front (faceDepth), and the angle a height is at (phiOfHeight)", () => {
     for (const face of [ADULT, CHILD, { young: 0, wide: 1.3 }]) {
       let worst = 0;
@@ -167,5 +215,11 @@ describe("the form of a head (skull.ts)", () => {
     expect(remembered(store, { young: 0.2, wide: 1.1 }, () => ({ n: ++made }))).toBe(first);
     expect(remembered(store, { young: 0.2, wide: 1.2 }, () => ({ n: ++made }))).not.toBe(first);
     expect(made).toBe(2);
+    // a woman's and a man's are two faces; one that says it is neither's is the one that says nothing
+    expect(remembered(store, { young: 0.2, wide: 1.1, feminine: 0.5 }, () => ({ n: ++made }))).toBe(first);
+    const hers = remembered(store, { young: 0.2, wide: 1.1, feminine: 1 }, () => ({ n: ++made }));
+    expect(hers).not.toBe(first);
+    expect(remembered(store, { young: 0.2, wide: 1.1, feminine: 0 }, () => ({ n: ++made }))).not.toBe(hers);
+    expect(made).toBe(4);
   });
 });

@@ -12,23 +12,26 @@ import { trunkAt } from "./figure/body.js";
 import { buildFigure } from "./figure/figure.js";
 import { blinkRound, MOVES } from "./figure/head.js";
 import { figureMaterial } from "./figure/material.js";
+import { presentationOf } from "./figure/looks.js";
 import { rgb, type Ranges } from "./figure/sculpt.js";
 import { PLAIN, type Wear } from "./figure/wear.js";
 import { hashString } from "./textures.js";
 
-export { heightOf, looksOf } from "./figure/looks.js";
+export { heightOf, looksOf, presentationOf } from "./figure/looks.js";
 export { ROLE_UNIFORMS, PATIENT_WEAR, PLAIN as PLAIN_WEAR, uniformOf, type Uniform, type Wear } from "./figure/wear.js";
 
 export interface AppearanceLike {
   skin?: string;
   hair?: string;
-  hairStyle?: "short" | "long" | "bald" | "bun" | "ponytail" | "curly";
+  hairStyle?: "short" | "long" | "bald" | "bun" | "ponytail" | "curly" | "bob" | "wavy";
   shirt?: string;
   pants?: string;
   build?: "slim" | "average" | "heavy";
   stature?: "infant" | "child" | "teen" | "adult";
   gown?: boolean;
   accessory?: "none" | "glasses" | "mask" | "nasal-cannula" | "oxygen-mask" | "sling" | "cap";
+  /** Drawn with a woman's features and frame or a man's (default: `presentationOf` — by sex where it is known, else by the hair style). */
+  presentation?: "feminine" | "masculine";
 }
 
 export type Posture = FigurePosture;
@@ -113,7 +116,7 @@ export function setBlink(rig: PersonRig, shut: number): void {
   m[MOVES.round] = blinkRound(shut);
 }
 
-export const DEFAULT_APPEARANCE: Required<AppearanceLike> = {
+export const DEFAULT_APPEARANCE: Required<Omit<AppearanceLike, "presentation">> = {
   skin: "#cba88a",
   hair: "#3b3027",
   hairStyle: "short",
@@ -142,11 +145,12 @@ CLEAR_MATERIAL.name = "__figure-clear";
 
 /** Build a person whose feet are at the root origin facing +Z. */
 export function buildPerson(appearance: AppearanceLike | undefined, opts: PersonOptions): PersonRig {
-  const ap = { ...DEFAULT_APPEARANCE };
+  const ap: Required<Omit<AppearanceLike, "presentation">> & Pick<AppearanceLike, "presentation"> = { ...DEFAULT_APPEARANCE };
   for (const [k, v] of Object.entries(appearance ?? {})) if (v !== undefined && v !== null) (ap as Record<string, unknown>)[k] = v;
+  const feminine = (ap.presentation ?? presentationOf(ap.hairStyle)) === "feminine" ? 1 : 0;
   const lying = opts.posture === "lying";
   const seat = opts.surfaceY ?? (lying ? 0.9 : 0.5);
-  const fig = buildFigure({ ...ap, posture: opts.posture, seat, wear: opts.wear ?? PLAIN, pillow: lying ? PILLOW : 0 });
+  const fig = buildFigure({ ...ap, posture: opts.posture, seat, wear: opts.wear ?? PLAIN, pillow: lying ? PILLOW : 0, feminine });
   const scale = fig.frame.scale * (opts.height ?? 1);
   const material = figureMaterial();
 

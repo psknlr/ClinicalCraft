@@ -16,6 +16,7 @@
 import { patientCues, resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import type { InteractionTarget, WorldApi, WorldCallbacks, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { createWorld } from "../world/index.js";
+import { presentationOf } from "../world/figure/looks.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
 import { tr } from "../i18n/index.js";
@@ -57,7 +58,8 @@ export function patientFor(c: CaseDefinition, f: FacilityDefinition, locale: str
     slotId: slot.id,
     caseId: c.id,
     name,
-    appearance: c.patient.appearance,
+    // (drawn by their sex unless the case's author says otherwise)
+    appearance: { ...c.patient.appearance, presentation: c.patient.appearance.presentation ?? presentationOf(c.patient.appearance.hairStyle, c.patient.sex) },
     posture: c.patient.posture ?? slot.posture ?? "standing",
     tag: tr("patient.tag", { age: ageText(c), sex: sexText(c) }),
     // the case's companion stands at the patient's side (drawn; the world model has no body for them)

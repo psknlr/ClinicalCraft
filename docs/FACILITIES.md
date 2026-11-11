@@ -131,14 +131,27 @@ stands 1.74 m; the web's `src/world/figure/`), dressed for the job:
 | position `recovery-nurse`, `radiographer` | scrubs — with a stethoscope, with a dosimeter |
 
 A `position` (CHARACTERS.md §2) changes what its `role` wears, so nobody stands in theatre in a
-white coat. `appearance` sets skin, hair and its style (`short`: a fringe combed across; `long`:
-parted, to the shoulders; `bun`, `ponytail`: drawn back — a light fringe to one side, or one parted
-into a curtain — a fine strand left out before each ear; `curly`; `bald`), build, stature, an
-accessory (glasses, a mask, a cap…) and — with `shirt` and
-`pants` — the uniform's colours. What it leaves unsaid differs from one member of staff to the
-next (skin, hair, build, glasses, height by a few per cent) and is the same for the same staff id every
-time, so a theatre team is three people, not one person three times. Everyone breathes, blinks,
-turns their head to the learner and moves their jaw when they speak. A name tag floats over each.
+white coat. `appearance` sets skin, hair and its style, build, stature, an accessory (glasses, a
+mask, a cap…) and — with `shirt` and `pants` — the uniform's colours. The styles of hair:
+
+| `hairStyle` | the hair |
+|---|---|
+| `short` | cropped: full on top, combed from the crown forward into a fringe and down the sides and the back to the hairline |
+| `long` | layered, from a parting a little to one side: a curtain fringe swept either side of the brow to the cheekbones, lengths before the shoulders to the collarbones and behind them down the back |
+| `wavy` | long loose waves from a middle parting under a fringe of wisps over the brows, a lock cut at the cheek beside each eye |
+| `bob` | to the chin all round, cut straight, the ends turned a little in; a fringe of wisps |
+| `bun`, `ponytail` | drawn back to where it is tied — a low knot, or a tail down the back — under a light fringe of wisps or a parted curtain, a fine strand left out before each ear |
+| `curly` | a soft perm to the jaw, in close waves |
+| `bald` | none |
+
+`presentation` (`feminine` \| `masculine`) says whether someone is drawn with a woman's features
+and frame or a man's. Left out, a case's patient is drawn by their `sex`, and anyone else by their
+hair: cropped or bald, a man's; any other style, a woman's — so say it for a woman with cropped
+hair or a man with a ponytail. A child is neither yet, a teenager on the way. What an appearance
+leaves unsaid differs from one member of staff to the next (skin, hair and its style, build,
+glasses, height by a few per cent) and is the same for the same staff id every time, so a theatre
+team is three people, not one person three times. Everyone breathes, blinks, turns their head to
+the learner and moves their jaw when they speak. A name tag floats over each.
 
 A face is one skin (`figure/head.ts`, over the form of a head in `figure/skull.ts`): an oval, the
 line of the jaw soft in to a small chin that stands under the lips, the jaw's lower border rising
@@ -149,12 +162,32 @@ lid coming down round the eye, its lashes with it, to shut on the lower lid; spe
 mouth as an oval — the lower lip and the chin go down, the corners half the way and a little in —
 and under the upper lip the edge of the teeth shows over the dark of the mouth. Behind the lids
 are eyes with an iris, a pupil and the lights in them; over them soft straight brows; the ears
-are shells with a rim, a hollow and a lobe (`figure/ears.ts`); a fringe comes out of the hair
-near the crown and thins to its ends, with no cut edge (`figure/hair.ts`). Skin gives a little
-light back in shade, warmer than it took it (`figure/material.ts`), so a face out of the light
-stays rosy. A face of an age and a width — and a style of hair on it — is sculpted once and kept
-as a cast: everyone with such a face takes the cast in their own colours, so a hospital full of
-people is built in the time of a few.
+are shells with a rim, a hollow and a lobe (`figure/ears.ts`). Skin gives a little light back in
+shade, warmer than it took it (`figure/material.ts`), so a face out of the light stays rosy.
+
+A woman's face and a man's differ where faces do (`FaceSpec.feminine` in `figure/skull.ts`; a
+figure's frame in `figure/anatomy.ts`). Hers: larger eyes, more open, the upper lid over the top
+of a large iris and a little fullness under the lower lid; finer, lighter brows; fuller lashes
+that run on a touch beyond the outer corner; a smaller nose, low in the bridge; a narrower mouth
+with fuller lips, their colour deepest along the line where they meet; rounder cheeks with a
+flush that reaches up under the eyes and over the nose; a small chin; narrower shoulders and
+waist, a slimmer neck. His: a heavier brow over narrower eyes, a larger nose, a wider mouth with
+thinner lips of little more than the skin's colour, a broad jaw to a wide, taller chin, hardly
+any flush; broader shoulders, a thicker neck.
+
+Hair is hair (`figure/hair.ts`, `figure/locks.ts`): strands lying together in locks, each a
+ribbon with a soft ridge that catches the light, thinning to its end — over a layer of hair close
+to the scalp that is in their shade. From a parting the locks fan out over the head, or from the
+crown; where the hair is long enough they go on down past the head — beside the face, before the
+shoulders over the collarbones or behind them down the back, clear of the neck and the trunk — to
+layered lengths, in waves that run round the head together if the style has them. A fringe is
+separate locks that begin in the hair of the top: broad ones side by side with fine ones over
+them, parting into ends the skin shows between; or a curtain swept from the parting. A band of
+light where the head turns from the top to the sides is the sheen of healthy hair.
+
+A face of an age, a width and a sex — and a style of hair on it — is sculpted once and kept as a
+cast: everyone with such a face takes the cast in their own colours, so a hospital full of people
+is built in the time of a few.
 
 Hands are hands (`figure/hand*.ts`): one skin over a hand's bones — the knuckles half-way along
 it, the fingers out of the palm through webs, the thumb out of its mound of muscle, nails — drawn

@@ -18,7 +18,7 @@ function onHead(theta: number, y: number, face: FaceSpec, lift: number): V3 {
 
 /** A theatre cap over the hair (fuller behind when there is long hair to hold); returns its top above the head's joint. */
 export function addTheatreCap(sc: Sculpt, face: FaceSpec, paint: Paint, style: HairStyle): number {
-  const full = style === "long" || style === "bun" || style === "ponytail" || style === "curly" ? 1 : 0.35;
+  const full = style === "long" || style === "wavy" || style === "bun" || style === "ponytail" || style === "curly" ? 1 : style === "bob" ? 0.6 : 0.35;
   const cloth = (x: number, y: number, z: number): Paint => {
     // the gathers of the cloth: faint folds running down to the band
     const a = Math.atan2(x - HEAD_CENTRE[0], z - HEAD_CENTRE[2]);

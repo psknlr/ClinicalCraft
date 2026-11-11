@@ -52,7 +52,7 @@ export const PATIENT_WEAR: Wear = { ...PLAIN, wristband: true };
 export interface Uniform {
   shirt: string;
   pants: string;
-  hairStyle?: "short" | "long" | "bald" | "bun" | "ponytail" | "curly";
+  hairStyle?: "short" | "long" | "bald" | "bun" | "ponytail" | "curly" | "bob" | "wavy";
   wear: Wear;
 }
 

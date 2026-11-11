@@ -8,7 +8,7 @@ import { Matrix4, Vector3, type BufferGeometry } from "three";
 import { frameOf, PIVOT, skeletonOf, type ArmPose, type Build, type Frame, type Posture, type Skeleton, type Stature } from "./anatomy.js";
 import { addNeck, addShell, addShoe, addTrunk, armRadii, endFrame, footFrame, inside, legRadii, limbStations, trouserRadii, type Fit, type ShoeKind } from "./body.js";
 import { addHand, HAND_CLASPED, HAND_FLAT, HAND_RELAXED } from "./hand.js";
-import { addHair, type HairStyle } from "./hair.js";
+import { addHair, coversEars, type HairStyle } from "./hair.js";
 import { addHead, irisFor, SKIN_GLOW } from "./head.js";
 import { addBlanket, addChestDetails, addCoat, addLap, addSlingStrap, addSterileGown, COAT_FIT, neckline } from "./dress.js";
 import { addAccessory, addTheatreCap, addSurgicalMask, type Accessory } from "./extras.js";
@@ -31,6 +31,8 @@ export interface FigureSpec {
   wear: Wear;
   /** How far a pillow raises the head of someone lying (figure units; default 0). */
   pillow?: number;
+  /** 0 a man's face … 1 a woman's (default 0.5: neither's in particular; `skull.ts`). */
+  feminine?: number;
 }
 
 export interface Figure {
@@ -73,7 +75,7 @@ function sleeveOf(wear: Wear, gown: boolean): { long: boolean; ease: number } {
 
 /** Build a figure (see the module doc). */
 export function buildFigure(spec: FigureSpec): Figure {
-  const f = frameOf(spec.build, spec.stature);
+  const f = frameOf(spec.build, spec.stature, spec.feminine);
   const wear = spec.wear;
   const gown = spec.gown;
   const lying = spec.posture === "lying", sitting = spec.posture === "sitting";
@@ -181,11 +183,12 @@ export function buildFigure(spec: FigureSpec): Figure {
   /* ---------------- the head ---------------- */
   const head = new Sculpt();
   const clear = new Sculpt();
-  const face = { young: f.young, wide: 1 + (f.wide - 1) * 0.8 + f.belly * 1.2 };
+  // (a child's face is not yet a woman's or a man's)
+  const face = { young: f.young, wide: 1 + (f.wide - 1) * 0.8 + f.belly * 1.2, feminine: 0.5 + ((spec.feminine ?? 0.5) - 0.5) * Math.max(0, 1 - 2 * f.young) };
   const capped = wear.cap || spec.accessory === "cap";
   const hairRgb = rgb(spec.hair);
   // long hair falls over the ears (unless a cap holds it)
-  const { faceZ, move } = addHead(head, face, { skin: skin.rgb, hair: hairRgb, scalp: spec.hairStyle !== "bald", iris: irisFor(hairRgb) }, { ears: spec.hairStyle !== "long" || capped });
+  const { faceZ, move } = addHead(head, face, { skin: skin.rgb, hair: hairRgb, scalp: spec.hairStyle !== "bald", iris: irisFor(hairRgb) }, { ears: !coversEars(spec.hairStyle) || capped });
   let crown = addHair(head, face, spec.hairStyle, hairRgb, { capped, infant: spec.stature === "infant" });
   if (wear.cap) crown = Math.max(crown, addTheatreCap(head, face, paint(THEATRE_CAP), spec.hairStyle));
   if (wear.mask || spec.accessory === "mask") addSurgicalMask(head, face);

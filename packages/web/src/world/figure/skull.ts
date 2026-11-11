@@ -29,6 +29,18 @@ export interface FaceSpec {
   young: number;
   /** Width of the face (a heavy build's is fuller). */
   wide: number;
+  /**
+   * 0 a man's features … 1 a woman's (default 0.5: neither's in particular). A woman's face has larger eyes under
+   * finer, lighter brows, longer lashes, a smaller nose, fuller lips in a narrower mouth, rounder cheeks, a finer
+   * jaw and a smaller chin; a man's a heavier brow, a larger nose, thinner lips, a broader jaw and a taller chin.
+   * (A child's face is neither yet: whoever builds a face tells it so.)
+   */
+  feminine?: number;
+}
+
+/** How much a face is a woman's (1) or a man's (−1) rather than neither's (0). */
+export function leaning(face: FaceSpec): number {
+  return 2 * (face.feminine ?? 0.5) - 1;
 }
 
 /** Where a face of this age has its eye line and its mouth, above the head's centre. */
@@ -93,7 +105,8 @@ const JAW_LINE = line([
 
 /** The height above the head's centre of the lower border of the jaw, `z` in front of the head's centre (a child's is higher). */
 export function jawLineAt(z: number, face: FaceSpec): number {
-  return -0.055 + (JAW_LINE(z) + 0.055) * (1 - 0.14 * face.young);
+  // (a man's chin is taller, a woman's a little shorter)
+  return -0.055 + (JAW_LINE(z) + 0.055) * (1 - 0.14 * face.young) * (1 - (leaning(face) > 0 ? 0.04 : 0.09) * leaning(face) * smooth(0.02, 0.06, z));
 }
 
 /**
@@ -117,7 +130,9 @@ export function skullPoint(theta: number, phi: number, face: FaceSpec): Vector3 
   z *= 1 + 0.04 * cranium;
   // the jaw: in from the cheekbones in a soft line to a small, rounded chin (the line leaves the cheekbone with no
   // corner: it begins level and steepens)
-  const taper = (1 - 0.37 * young) / (0.75 + 0.25 * face.wide * face.wide);
+  const lean = leaning(face);
+  // (a woman's jaw is finer and comes in sooner; a man's is broad to its angle, his chin wide)
+  const taper = ((1 - 0.37 * young) / (0.75 + 0.25 * face.wide * face.wide)) * (1 + (lean > 0 ? 0.02 : 0.2) * lean * (1 - 0.5 * smooth(-0.075, -0.1, y)) - 0.1 * Math.max(0, lean) * Math.exp(-(((y + 0.05) / 0.028) ** 2)));
   x *= (1 - taper * JAW_IN(-y)) * (1 + (face.wide - 1) * 0.45 * smooth(0.05, -0.05, y));
   // under the jaw: its lower border from the chin back to its angle under the ear, where the neck comes in
   const floor = jawLineAt(z, face);
@@ -130,32 +145,37 @@ export function skullPoint(theta: number, phi: number, face: FaceSpec): Vector3 
   const w = smooth(0.015, 0.055, z);
   if (w > 0) {
     const e = EYE_Y - 0.012 * young, m = MOUTH_Y + 0.006 * young;
-    const nose = 1 - 0.45 * young;
+    // (a woman's nose is smaller, a man's larger and higher in the bridge)
+    const nose = (1 - 0.45 * young) * (1 - (lean > 0 ? 0.16 : 0.14) * lean);
+    const man = Math.max(0, -lean), woman = Math.max(0, lean);
     let d = 0;
     for (const s of [-1, 1]) {
       // the hollow an eye lies in, and the valley beside the root of the nose where its inner corner is
       d += -SOCKET * gauss(x, y, s * EYE_X, e + 0.0015, 0.0145, 0.0095);
       d += -0.0054 * (1 - 0.35 * young) * gauss(x, y, s * 0.0165, e - 0.001, 0.0065, 0.0095);
       // the brow, soft
-      d += 0.0024 * (1 - 0.6 * young) * gauss(x, y, s * 0.03, e + 0.0205, 0.02, 0.007);
+      d += (0.0024 + 0.002 * man - 0.0006 * woman) * (1 - 0.6 * young) * gauss(x, y, s * 0.03, e + 0.0205, 0.02, 0.007);
       // the wings of the nose
       d += 0.0044 * nose * gauss(x, y, s * 0.0116, e - 0.0368, 0.0052, 0.0048);
       // cheeks: the cheekbone, and the apple of the cheek in front of it
       d += (0.0052 + 0.004 * young + 0.003 * (face.wide - 1)) * gauss(x, y, s * 0.041, e - 0.036, 0.022, 0.026);
-      d += 0.002 * gauss(x, y, s * 0.034, e - 0.027, 0.014, 0.012);
-      // the cheek falls in a little under the cheekbone (less on a full face)
-      d += -0.0022 * (1 - young) * Math.max(0, 1.6 - face.wide) * gauss(x, y, s * 0.05, e - 0.056, 0.014, 0.016);
+      d += (0.002 + 0.0012 * woman) * gauss(x, y, s * 0.034, e - 0.027, 0.014, 0.012);
+      // the cheek falls in a little under the cheekbone (less on a full face, hardly on a woman's, more on a man's)
+      d += -(0.0022 - 0.0014 * woman + 0.0012 * man) * (1 - young) * Math.max(0, 1.6 - face.wide) * gauss(x, y, s * 0.05, e - 0.056, 0.014, 0.016);
+      // (a woman's cheeks are full beside the mouth too: a soft, round lower face)
+      d += 0.0016 * woman * gauss(x, y, s * 0.036, e - 0.052, 0.016, 0.016);
       d += -0.0025 * gauss(x, y, s * 0.068, e + 0.03, 0.012, 0.02);
     }
     // the nose: a slim bridge, low between the eyes, to a small rounded tip
-    d += 0.0038 * nose * gauss(x, y, 0, e + 0.002, 0.0078, 0.019);
+    d += (0.0038 + 0.0016 * man - 0.001 * woman) * nose * gauss(x, y, 0, e + 0.002, 0.0078, 0.019);
     d += 0.0148 * nose * gauss(x, y, 0, e - 0.0225, 0.0072, 0.0135);
     d += 0.0098 * nose * gauss(x, y, 0, e - 0.0322, 0.0064, 0.0058);
     // the groove under the nose, the mound of the mouth, the fold under the lower lip, the chin
     d += -0.0016 * gauss(x, y, 0, m + 0.0125, 0.0045, 0.006);
-    d += 0.0038 * gauss(x, y, 0, m + 0.001, 0.022, 0.0125);
+    d += (0.0038 + 0.0008 * woman) * gauss(x, y, 0, m + 0.001, 0.022, 0.0125);
     d += -0.0018 * gauss(x, y, 0, m - 0.0165, 0.014, 0.0058);
-    d += (0.006 - 0.003 * young) * gauss(x, y, 0, m - 0.031, 0.0185, 0.011);
+    // (a man's chin is broader and stands a little further forward)
+    d += (0.006 - 0.003 * young + 0.0014 * man - 0.0008 * woman) * gauss(x, y, 0, m - 0.031, 0.0185 + 0.004 * man - 0.002 * woman, 0.011);
     z += d * w;
   }
   return new Vector3(x + HEAD_CENTRE[0], y + HEAD_CENTRE[1], z + HEAD_CENTRE[2]);
@@ -231,9 +251,9 @@ export function hairlineAt(theta: number, face: FaceSpec): number {
 const depths = new Map<string, Map<number, number>>();
 const depthsOf = new WeakMap<FaceSpec, Map<number, number>>();
 
-/** What has been worked out for a face of this age and width (the same for every figure that has such a face). */
+/** What has been worked out for a face of this age, width and sex (the same for every figure that has such a face). */
 export function remembered<T>(store: Map<string, T>, face: FaceSpec, make: () => T): T {
-  const spec = `${face.young.toFixed(3)}|${face.wide.toFixed(3)}`;
+  const spec = `${face.young.toFixed(3)}|${face.wide.toFixed(3)}|${(face.feminine ?? 0.5).toFixed(2)}`;
   let had = store.get(spec);
   if (had === undefined) store.set(spec, (had = make()));
   return had;

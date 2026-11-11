@@ -72,7 +72,10 @@ export function trunkAt(y: number, f: Frame, fit: Fit = BARE): [number, number, 
   // build: a heavy trunk is wider at the waist than at the shoulders, and carries a belly
   const waist = Math.exp(-(((y - 1.03) / 0.2) ** 2));
   x *= 1 + (f.wide - 1) * (0.55 + 0.75 * waist);
-  a = a * f.deep + f.belly * Math.exp(-(((y - 1.05) / 0.15) ** 2));
+  // a woman's or a man's: the shoulders, the waist, the hips; the chest
+  const up = Math.min(1, Math.max(0, (y - 1.2) / 0.16)), down = Math.min(1, Math.max(0, (1.05 - y) / 0.12));
+  x *= f.shoulders * up * up * (3 - 2 * up) + f.hips * down * down * (3 - 2 * down) + f.waist * (1 - up * up * (3 - 2 * up) - down * down * (3 - 2 * down));
+  a = a * f.deep + f.belly * Math.exp(-(((y - 1.05) / 0.15) ** 2)) + f.bust * Math.exp(-(((y - 1.3) / 0.055) ** 2));
   b = b * (1 + (f.deep - 1) * 0.6);
   if (fit.straight > 0 && y < CHEST) {
     // cloth falls from the chest: no narrower than (most of) the chest above
@@ -328,7 +331,7 @@ export function footFrame(l: Limb): Matrix4 {
 
 /** The neck: from inside the trunk's top up into the head (`forward`: how far a pillow pushes the head). */
 export function addNeck(sc: Sculpt, f: Frame, lift: number, painter: Painter, forward = 0): void {
-  const k = 0.96 + 0.04 * f.wide + (f.wide > 1 ? (f.wide - 1) * 0.5 : 0);
+  const k = (0.96 + 0.04 * f.wide + (f.wide > 1 ? (f.wide - 1) * 0.5 : 0)) * f.neck;
   const top = PIVOT + lift + 0.04 * f.head;
   sc.sweep(
     [

@@ -7,12 +7,13 @@
  *
  * The skin's colour is the face's make-up, as light as good skin wears it: a peach flush on the apples of the
  * cheeks, the tip of the nose and the chin; light along the bridge of the nose and on the cheekbones, a soft
- * shade down its sides, under its tip, in the corners of the eyes and of the mouth and along the jaw.
+ * shade down its sides, under its tip, in the corners of the eyes and of the mouth and along the jaw. A woman's
+ * flush is pinker and reaches up under the eyes and over the nose; a man has hardly any.
  *
  * The skin's points that follow the jaw when it opens are tagged `jaw`, the upper lids `lid`, their lashes `lash`
  * and the teeth behind the upper lip `teeth` (`faceMoves`).
  *
- * A head is the same for every figure with a face of the same age and width, but for its colours: it is sculpted
+ * A head is the same for every figure with a face of the same age, width and sex, but for its colours: it is sculpted
  * once (`sculptHead`) and kept as a cast, and a figure takes the cast in its own skin, hair and eye colour
  * (`addHead`) — dozens of people cost little more than one.
  */
@@ -22,7 +23,7 @@ import { addEye, addEyeSkin, blinkOf, eyeForm } from "./eyes.js";
 import { Patchwork } from "./face-mesh.js";
 import { addMouthSkin, addNostrils, addTeeth, cornerPull, jawShare, mouthForm, teethShow } from "./mouth.js";
 import { Sculpt, mix, rgb, shade, type Cast, type Paint, type Ranges, type Rgb } from "./sculpt.js";
-import { EYE_X, HEAD_CENTRE, NU, NV, SKIN_GLOW, faceDepth, featureHeights, hairlineAt, jawLineAt, phiAt, remembered, skullPoint, thetaAt, type FaceSpec } from "./skull.js";
+import { EYE_X, HEAD_CENTRE, NU, NV, SKIN_GLOW, faceDepth, featureHeights, hairlineAt, jawLineAt, leaning, phiAt, remembered, skullPoint, thetaAt, type FaceSpec } from "./skull.js";
 
 export { EYE_X, EYE_Y, HEAD_CENTRE, MOUTH_Y, SKIN_GLOW, hairlineAt, phiOfHeight, skullPoint, type FaceSpec } from "./skull.js";
 
@@ -45,6 +46,7 @@ export interface HeadPaint {
 }
 
 const PEACH = rgb("#ee8679");
+const PINK = rgb("#f27f8a");
 
 /** The grid of points of a face of an age and a width (worked out once: every figure with such a face shares it). */
 const grids = new Map<string, Vector3[][]>();
@@ -134,6 +136,9 @@ export function sculptHead(sc: Sculpt, face: FaceSpec, paint: HeadPaint, opts: {
   const [cx, cy, cz] = HEAD_CENTRE;
   const { eye: e, mouth: m } = featureHeights(face);
   const scalp = shade(paint.hair, 0.82);
+  // (a woman's cheeks have more colour, up under the eyes and over the nose too; a man's hardly any)
+  const lean = leaning(face);
+  const rouge = 1 + (lean > 0 ? 0.12 : 0.6) * lean, woman = Math.max(0, lean);
   const skinAt = (x: number, y: number, z: number): Paint => {
     const lx = x - cx, ly = y - cy, lz = z - cz;
     let c: Rgb = paint.skin;
@@ -141,8 +146,8 @@ export function sculptHead(sc: Sculpt, face: FaceSpec, paint: HeadPaint, opts: {
     if (lz > 0) {
       const both = (px: number, py: number, sx: number, sy: number) => gauss(lx, ly, px, py, sx, sy) + gauss(lx, ly, -px, py, sx, sy);
       // a peach flush on the apples of the cheeks, a touch of it on the tip of the nose and on the chin
-      const flush = 0.3 * both(0.037, e - 0.0275, 0.018, 0.013) + 0.07 * gauss(lx, ly, 0, e - 0.0335, 0.008, 0.007) + 0.05 * gauss(lx, ly, 0, m - 0.031, 0.012, 0.008);
-      c = mix(c, PEACH, Math.min(0.36, flush));
+      const flush = rouge * (0.3 * both(0.037, e - 0.0275, 0.018, 0.013) + 0.07 * gauss(lx, ly, 0, e - 0.0335, 0.008, 0.007) + 0.05 * gauss(lx, ly, 0, m - 0.031, 0.012, 0.008)) + woman * (0.1 * both(0.033, e - 0.0165, 0.017, 0.0065) + 0.05 * gauss(lx, ly, 0, e - 0.02, 0.012, 0.007));
+      c = mix(c, mix(PEACH, PINK, woman), Math.min(0.42, flush));
       // light where good skin catches it: the forehead, the bridge of the nose, the cheekbones, under the eyes, the chin
       const light = 0.03 * gauss(lx, ly, 0, e + 0.04, 0.03, 0.02) + 0.045 * gauss(lx, ly, 0, e - 0.014, 0.003, 0.018) + 0.035 * both(0.043, e - 0.016, 0.014, 0.007) + 0.04 * both(EYE_X, e - 0.0085, 0.011, 0.003) + 0.025 * gauss(lx, ly, 0, m - 0.03, 0.01, 0.007);
       // shade where it falls: down the sides of the nose and under its tip, in the corners of the eyes, in the

@@ -45,7 +45,8 @@ function sheet(name: string): Entry[] {
   if (name === "positions") return POSITIONS.map(([role, position]) => staffEntry(`sheet-${position}`, role, position, undefined, position));
   if (name === "looks") {
     const out: Entry[] = [];
-    for (const hairStyle of ["short", "long", "bald", "bun", "ponytail", "curly"] as const) out.push({ label: `hair ${hairStyle}`, appearance: { hairStyle, hair: hairStyle === "curly" ? "#4a3b30" : "#2b2420" }, options: { posture: "standing" } });
+    for (const hairStyle of ["short", "long", "bald", "bun", "ponytail", "curly", "bob", "wavy"] as const) out.push({ label: `hair ${hairStyle}`, appearance: { hairStyle, hair: hairStyle === "curly" ? "#4a3b30" : "#2b2420" }, options: { posture: "standing" } });
+    for (const [who, hairStyle] of [["woman", "long"], ["woman", "bob"], ["man", "short"], ["man", "bald"]] as const) out.push({ label: `${who} ${hairStyle}`, appearance: { hairStyle, presentation: who === "woman" ? "feminine" : "masculine" }, options: { posture: "standing" } });
     for (const build of ["slim", "average", "heavy"] as const) out.push({ label: `build ${build}`, appearance: { build }, options: { posture: "standing" } });
     for (const stature of ["infant", "child", "teen", "adult"] as const) out.push({ label: `stature ${stature}`, appearance: { stature, shirt: "#c98f5a" }, options: { posture: "standing" } });
     for (const accessory of ["glasses", "mask", "nasal-cannula", "oxygen-mask", "sling", "cap"] as const) out.push({ label: accessory, appearance: { accessory, gown: accessory === "nasal-cannula" || accessory === "oxygen-mask" }, options: { posture: "standing", wear: PATIENT_WEAR } });
