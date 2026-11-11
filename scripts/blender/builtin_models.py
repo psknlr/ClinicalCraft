@@ -530,3 +530,96 @@ def crash_cart(k: Kit, eq):
     (jx, jy, jz), (jw, jh, _) = jar["p"], jar["s"]
     k.cyl((jx, jy, jz), jw / 2, jh, "lead-glass", seg=16)
     k.cyl((jx, lid["p"][1], jz), jw / 2 + 0.006, lid["s"][1], "blue", seg=16)
+
+
+def coiled(k: Kit, line, radius: float, wire: float, turns: float, m: str, per_turn: int = 5, seg: int = 5):
+    """A coiled cord along `line(t)` (t 0…1, a point in the plane z = const): `turns` turns of
+    radius `radius`, the wire `wire` thick — a handset's cord, a cuff's coiled tube."""
+    pts = []
+    n = max(2, int(turns * per_turn))
+    for i in range(n + 1):
+        t = i / n
+        x, y, z = line(t)
+        x2, y2, _ = line(min(1.0, t + 1e-3))
+        x1, y1, _ = line(max(0.0, t - 1e-3))
+        dx, dy = x2 - x1, y2 - y1
+        d = math.hypot(dx, dy) or 1.0
+        a = 2 * math.pi * turns * t
+        # across the cord in the wall's plane, and out of it
+        pts.append((x - dy / d * radius * math.cos(a), y + dx / d * radius * math.cos(a), z + radius * math.sin(a)))
+    k.hose(pts, wire / 2, m, seg=seg, steps=1)
+
+
+def stethoscope(k: Kit, yoke: tuple[float, float, float], chest: tuple[float, float, float], tube: str = "black", steel: str = "chrome", tips: str = "plastic"):
+    """A stethoscope hanging in the plane z = const from its headset: the yoke at `yoke`, the two
+    sprung ear tubes rising from it and closing to their ear tips (they sit on a peg), the tubing
+    down to the two-sided chest piece at `chest` — the diaphragm in its rim facing out, the bell behind."""
+    x, y, z = yoke
+    for s in (-1, 1):
+        k.hose([(x, y + 0.004, z), (x + s * 0.016, y + 0.055, z), (x + s * 0.03, y + 0.12, z + 0.002), (x + s * 0.026, y + 0.18, z + 0.006), (x + s * 0.011, y + 0.225, z + 0.008)],
+               0.0028, steel, seg=5, steps=2)
+        k.ball((x + s * 0.0085, y + 0.232, z + 0.008), 0.0066, tips, seg=6)
+    k.ball((x, y, z), 0.0062, tube, seg=8, squash=(1, 1.5, 1))
+    cx, cy, cz = chest
+    k.hose([(x, y - 0.004, z), (x + 0.005, y - 0.06, z + 0.002), (x - 0.004, (y + cy) / 2, z + 0.003), (cx + 0.002, cy + 0.085, cz - 0.001), (cx, cy + 0.04, cz - 0.0026)],
+           0.0046, tube, seg=6, steps=4)
+    k.tube((cx, cy + 0.004, cz - 0.0028), (cx, cy + 0.043, cz - 0.0026), 0.0042, steel, seg=8)
+    at = (cx, cy, cz)
+    k.lathe([(0.0145, -0.0148), (0.0162, -0.0159), (0.0177, -0.0148), (0.0165, -0.0128), (0.0115, -0.009), (0.0082, -0.0056), (0.0076, -0.003),
+             (0.0105, -0.0008), (0.019, 0.0032), (0.0218, 0.006)], at, steel, axis="z", seg=16)
+    k.lathe([(0.0218, 0.006), (0.0222, 0.0064), (0.0222, 0.0098), (0.0213, 0.0113), (0.0197, 0.0117)], at, "black", axis="z", seg=16)
+    k.cyl((cx, cy, cz + 0.0113), 0.0196, 0.0012, tips, axis="z", seg=16)
+
+
+@builder("diagnostic-wall-set")
+def diagnostic_wall_set(k: Kit, eq):
+    """Wall diagnostic set: the board; the wall transformer with the otoscope and the
+    ophthalmoscope standing in its cradles, their coiled cords hanging below, and the specula
+    dispenser between them; the aneroid gauge over the cuff basket, its coiled tube down to the
+    rolled cuff and the inflation bulb; and a stethoscope hung by its headset on a peg."""
+    k.box((0, 1.42, -0.092), (0.84, 0.6, 0.015), "mint", r=0.005, seg=2)
+    k.box((0, 1.71, -0.0815), (0.84, 0.02, 0.006), "teal", r=0.002, seg=1)
+    # the transformer and the two instruments in its cradles
+    k.box((-0.16, 1.42, -0.06), (0.32, 0.12, 0.05), "plastic", r=0.014, seg=3)
+    k.cyl((-0.16, 1.42, -0.0338), 0.007, 0.003, "led-green", axis="z", seg=10)
+    for x, scope in ((-0.267, "otoscope"), (-0.053, "ophthalmoscope")):
+        k.cyl((x, 1.484, -0.058), 0.0235, 0.012, "black", seg=12)
+        k.cyl((x, 1.552, -0.058), 0.0142, 0.126, "coal", seg=12, bevel=0.003)
+        k.cyl((x, 1.619, -0.058), 0.0155, 0.008, "chrome", seg=12)
+        if scope == "otoscope":
+            # the head, the speculum pointing out of it, the lens window on top
+            k.box((x, 1.647, -0.058), (0.034, 0.046, 0.034), "coal", r=0.01, seg=2)
+            k.lathe([(0.0125, 0.0), (0.0105, 0.012), (0.0048, 0.032), (0.0034, 0.034)], (x, 1.65, -0.042), "black", axis="z", seg=12)
+            k.cyl((x, 1.672, -0.058), 0.012, 0.004, "chrome", seg=12)
+        else:
+            # the flat head with its lens wheel and the brow rest
+            k.box((x, 1.656, -0.06), (0.04, 0.064, 0.02), "coal", r=0.008, seg=2)
+            k.cyl((x, 1.664, -0.049), 0.0115, 0.004, "chrome", axis="z", seg=14)
+            k.cyl((x, 1.664, -0.0465), 0.0062, 0.002, "black", axis="z", seg=10)
+            k.box((x, 1.692, -0.054), (0.032, 0.008, 0.014), "black", r=0.003, seg=1)
+        # the coiled cord: down from under the transformer and back up
+        coiled(k, lambda t, x=x: (x - 0.016 * math.cos(math.pi * t), 1.358 - 0.15 * math.sin(math.pi * t), -0.058), 0.0062, 0.0036, 9, "black", per_turn=5, seg=4)
+    # the specula dispenser
+    k.box((-0.16, 1.262, -0.065), (0.08, 0.116, 0.04), "plastic", r=0.008, seg=2)
+    k.box((-0.16, 1.21, -0.0445), (0.06, 0.016, 0.004), "black", r=0.002, seg=1)
+    for i in range(3):
+        k.lathe([(0.0062, 0.0), (0.0028, 0.012)], (-0.176 + 0.016 * i, 1.212, -0.044), "coal", axis="z", seg=6)
+    # the aneroid gauge on its bracket
+    k.box((0.21, 1.49, -0.071), (0.18, 0.18, 0.026), "coal", r=0.02, seg=3)
+    k.gauge((0.21, 1.49, -0.058), 0.075, axis="z", face="paper", bezel="chrome", needle="coal", depth=0.006, angle=235)
+    for a in range(-30, 211, 30):
+        ca, sa = math.cos(math.radians(a)), math.sin(math.radians(a))
+        k.box((0.21 + ca * 0.054, 1.49 + sa * 0.054, -0.0505), (0.002, 0.009, 0.001), "coal", r=0.0, seg=1, rot=(0, 0, a - 90))
+    # the cuff basket: the rolled cuff, the bulb, and the coiled tube from the gauge
+    k.box((0.21, 1.205, -0.047), (0.19, 0.06, 0.078), "steel", r=0.01, seg=2)
+    for x in (0.118, 0.302):
+        k.box((x, 1.25, -0.047), (0.006, 0.08, 0.078), "steel", r=0.002, seg=1)
+    k.box((0.21, 1.25, -0.0085), (0.19, 0.08, 0.004), "steel", r=0.001, seg=1)
+    k.cyl((0.195, 1.277, -0.05), 0.036, 0.13, "navy", axis="x", seg=16, bevel=0.006)
+    k.ball((0.283, 1.262, -0.03), 0.02, "black", seg=10, squash=(0.85, 1.25, 0.85))
+    coiled(k, lambda t: (0.262 + 0.02 * t, 1.398 - 0.1 * t, -0.056), 0.0056, 0.0034, 6, "black", per_turn=5, seg=4)
+    # the stethoscope on its peg
+    k.box((0.365, 1.625, -0.081), (0.046, 0.034, 0.007), "chrome", r=0.003, seg=1)
+    k.cyl((0.365, 1.625, -0.061), 0.0058, 0.034, "chrome", axis="z", seg=10)
+    k.ball((0.365, 1.625, -0.043), 0.0078, "chrome", seg=8)
+    stethoscope(k, (0.365, 1.398, -0.062), (0.365, 1.172, -0.062))

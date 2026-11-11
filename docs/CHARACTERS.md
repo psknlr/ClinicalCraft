@@ -26,7 +26,8 @@ never less complete than the rules, and the benchmarks stay deterministic (they 
 ## 2. Positions and role cards
 
 A staff member's **position** is the job they hold, finer than their facility `role` (which decides what their body
-may do in the world): a nurse is a scrub, circulating, ward or recovery nurse; an attending is a surgeon, an assistant
+may do in the world; in the 3D world the position also decides what they wear — a scrub nurse is gowned and gloved, an
+anaesthetist in theatre scrubs: FACILITIES.md "Staff in the 3D world"): a nurse is a scrub, circulating, ward or recovery nurse; an attending is a surgeon, an assistant
 surgeon, an anaesthetist, a physician or an educator. Positions (`StaffPositionSchema`): `surgeon`,
 `assistant-surgeon`, `anaesthetist`, `scrub-nurse`, `circulating-nurse`, `ward-nurse`, `recovery-nurse`,
 `theatre-coordinator`, `physician`, `educator`, `radiologist`, `radiographer`, `pathologist`, `lab-technician`,

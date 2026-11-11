@@ -24,7 +24,9 @@ repository) are built with these: most are refined from their voxel parts, and t
 most seen have their own builders. Of the built-in types those are the hospital
 bed, wheelchair and stool, the IV pole and the infusion pumps, the oxygen cylinder,
 the ventilator, suction unit, defibrillator and crash cart, the mobile C-arm (its C
-one arc: `Kit.revolve`), the surgical light and the garden bench; the CT, MRI and
+one arc: `Kit.revolve`), the surgical light, the garden bench and the wall diagnostic
+set (the otoscope and ophthalmoscope on coiled cords, the aneroid gauge over its cuff,
+a stethoscope hung by its headset on a peg: `coiled`, `stethoscope` in `builtin_models.py`); the CT, MRI and
 PET-CT gantries are revolved round their bores (`Kit.gantry`). Rebuild the built-in ones with `blender -b -P scripts/blender/build.py`
 (or `python3 scripts/blender/build.py` with the `bpy` module), then `npm run build`
 (the web bundle carries the catalogs and so the pinned hashes).

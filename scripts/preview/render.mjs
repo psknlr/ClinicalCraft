@@ -6,12 +6,19 @@
  *   node scripts/preview/render.mjs facility --facility packages/content/facilities/clinic-v4.json [--catalogs a.json,b.json] [--level L1] [--scale 14] --out /tmp/plan.png
  *   node scripts/preview/render.mjs models --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/core-clinical.json [--assets packages/content/assets,../pack/content/assets] [--only id1,id2] [--view iso|front|back|side|top] [--compare 1] [--cell 320] [--cols 5] [--focus x,y,z,radius] --out /tmp/models.png
  *
+ *   node scripts/preview/render.mjs people [--facility facility.json | --case case.json | --sheet roles,positions,looks,patients] [--only id1,id2] [--view front|iso|back|side|top|face|face-iso|chest|hands|held] [--posture standing|sitting|lying] [--cell 420] [--cols 6] [--distress 1] [--speak 0..1] [--blink 0..1] --out /tmp/people.png
+ *
  * Equipment mode renders each equipment type's voxel parts (red outline = declared footprint).
  * Models mode renders each type's GLB model as the web world draws it (docs/BLENDER.md): placed by its catalog
  * reference, lit like the world, a glowing quad where each `screen` part's live display goes; `--compare 1`
  * puts the voxel parts beside it, `--focus` frames a close-up (a point of the type's frame and a radius, m).
  * `--assets` lists the asset directories searched for a model's `uri` (default: the built-in
  * packages/content/assets).
+ * People mode renders the people as the web world draws them (its own code, bundled for the page:
+ * packages/web/src/world/npc.ts): a facility's staff in the uniform of their role as their position wears
+ * it, a case's patient (standing, sitting, in bed) and companion, or a reference sheet — every role, every
+ * theatre position, the looks an appearance can ask for; `--view held` is the first-person hand and its
+ * stethoscope as the camera sees them. Each label gives the figure's triangle count.
  * Facility mode renders a labelled 2D floor plan of one level (default: the default level) —
  * buildings, rooms, walls/openings, placements, slots, staff, spawn, stairs/ramp flights,
  * elevators and access zones. A facility that places room templates (`instances`) is
@@ -30,7 +37,7 @@ const root = path.resolve(path.dirname(fileURLToPath(import.meta.url)), "../..")
 const [mode, ...rest] = process.argv.slice(2);
 const args = {};
 for (let i = 0; i < rest.length; i += 2) args[rest[i].replace(/^--/, "")] = rest[i + 1];
-if (!mode || !args.out) { console.error("usage: render.mjs equipment|facility|models --out file.png [...]"); process.exit(2); }
+if (!mode || !args.out) { console.error("usage: render.mjs equipment|facility|models|people --out file.png [...]"); process.exit(2); }
 
 const types = { ".html": "text/html", ".js": "text/javascript", ".mjs": "text/javascript", ".json": "application/json", ".glb": "model/gltf-binary" };
 /**
@@ -89,6 +96,15 @@ function compiledIfNeeded(file) {
   return out;
 }
 if (args.facility) args.facility = servedPath(compiledIfNeeded(args.facility));
+if (args.case) args.case = servedPath(args.case);
+/** People mode draws with the web world's own code: bundle the page's entry (TypeScript, three.js included) for the browser. */
+async function bundlePeople() {
+  const { build } = await import("esbuild").catch(() => { console.error("people mode needs esbuild (installed with vite: run `npm install`)"); process.exit(2); });
+  const outfile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "cc-preview-")), "people.js");
+  await build({ entryPoints: [path.join(root, "scripts/preview/people.entry.ts")], bundle: true, format: "esm", platform: "browser", target: "es2022", outfile, logLevel: "error", absWorkingDir: root });
+  aliases.set("__bundle/people.js", outfile);
+}
+if (mode === "people") await bundlePeople();
 const server = http.createServer((req, res) => {
   const rel = decodeURIComponent(new URL(req.url, "http://x").pathname).replace(/^\/+/, "");
   const inDir = aliasedFile(rel);
@@ -135,6 +151,16 @@ try {
     await page.waitForTimeout(150);
     await page.screenshot({ path: args.out });
     console.log(JSON.stringify({ ok: true, ...info, errors: errors.filter((e) => !/404/.test(e)) }));
+  } else if (mode === "people") {
+    const q = new URLSearchParams();
+    for (const k of ["facility", "case", "sheet", "only", "view", "cell", "cols", "posture", "distress", "speak", "blink", "breath", "turn", "bg"]) if (args[k] !== undefined) q.set(k, args[k]);
+    await page.goto(`http://127.0.0.1:${port}/scripts/preview/people.html?${q}`);
+    await rendered();
+    const info = await page.evaluate(() => window.__done);
+    await page.setViewportSize({ width: info.width, height: info.height });
+    await page.waitForTimeout(150);
+    await page.screenshot({ path: args.out });
+    console.log(JSON.stringify({ ok: true, ...info, errors }));
   } else if (mode === "facility") {
     await page.goto(`http://127.0.0.1:${port}/scripts/preview/facility.html?facility=${encodeURIComponent(args.facility)}&catalogs=${encodeURIComponent(args.catalogs || "packages/content/catalogs/materials.json")}&level=${encodeURIComponent(args.level || "")}&scale=${encodeURIComponent(args.scale || "")}`);
     await rendered();

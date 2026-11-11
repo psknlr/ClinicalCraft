@@ -79,7 +79,15 @@ solution is sent to the browser).
   ventilator and cannot speak.)") or let the companion open. `cases validate`
   warns when only one of the two fields is set.
 * `appearance` matches age/sex/build (stature `child` for 2–12 y, `infant` < 2 y);
-  `posture` matches the setting (lying in resus, sitting in clinic).
+  `posture` matches the setting (lying in resus, sitting in clinic). The world draws it as a
+  figure of real proportions: `gown: true` is a hospital gown to the knee (bare legs, slippers),
+  otherwise the patient's own top and trousers in `shirt` / `pants`; every patient wears an
+  identity band on the wrist; someone lying is under the covers with the head on the pillow, the
+  arms on top; someone sitting has their feet on the floor when the seat lets them (a child's hang);
+  the accessories are glasses, a surgical mask, a nasal cannula, an oxygen mask, an arm sling and a
+  peaked cap. Look at it before you ship it:
+  `node scripts/preview/render.mjs people --case <case.json> --out <png>` (the patient standing,
+  sitting and in bed, and the companion).
 
 ## 3. History
 

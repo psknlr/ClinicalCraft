@@ -862,7 +862,7 @@
         {"m":"black","p":[0.365,1.328,-0.06],"s":[0.014,0.255,0.01]},
         {"m":"chrome","p":[0.365,1.18,-0.06],"s":[0.05,0.04,0.03]}
       ],
-      "model": {"uri":"models/diagnostic-wall-set.glb","sha256":"6df6cfc3692030c99a751b0b52ad7eed3566deac8ebe230449944e0c9797943d","scale":1,"offset":[0.0,1.12,-0.0545],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
+      "model": {"uri":"models/diagnostic-wall-set.glb","sha256":"64cc749f7916d59938da5f39f7cfe72356d21fcd08bee2c2ffa5004d34199198","scale":1,"offset":[0.0,1.12,-0.053],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "anesthesia-machine",

@@ -110,7 +110,9 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
   **offline** deterministic mode that needs no key.
 - **Data-driven content.** 10 bilingual cases, 3 facilities (one with two
   storeys, built from 15 room templates) and 97 equipment types, each drawn
-  as a 3D model with its voxel parts as the fallback, all JSON validated by
+  as a 3D model with its voxel parts as the fallback; patients and staff are
+  figures of real proportions dressed for their job (a tailored white coat and
+  a stethoscope, scrubs, a sterile gown in theatre); all JSON validated by
   zod schemas; every case is verified by replaying a
   reference solution and a matcher regression corpus.
 - **Agent-CLI ergonomics.** Layered settings and profiles, hooks

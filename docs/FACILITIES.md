@@ -34,6 +34,10 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
   `node scripts/preview/render.mjs facility --facility packages/content/facilities/<id>.json --catalogs <all catalog files> --out <png>`.
   `node scripts/preview/render.mjs models --catalogs <catalog files> [--compare 1] --out <png>` draws the types' GLB
   models as the world does, beside their voxel parts (BLENDER.md "Looking at the result").
+  `node scripts/preview/render.mjs people --facility <facility file> [--only <staff ids>] [--view front|iso|back|side|face|chest] --out <png>`
+  draws the facility's staff as the world does ("Staff in the 3D world" below); `--case <case.json>` draws a case's
+  patient standing, sitting and in bed, and their companion; `--sheet roles|positions|looks|patients` the
+  reference sheets (every role's uniform, every theatre position, what an appearance can ask for).
   Files may lie outside the checkout (a `contentDirs` folder): only the files
   named on the command line are served. A file that fails to load or parse
   ends the run at once with `{"ok": false, …}` and exit code 1.
@@ -105,6 +109,32 @@ levels.
 Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
 (`nurse`, `radiologist`, `pathologist`, `lab-tech`, `attending`,
 `pharmacist`, `receptionist`, `paramedic`, `porter`).
+
+**Staff in the 3D world.** A member of staff is drawn as a figure of real proportions (an adult
+stands 1.74 m; the web's `src/world/figure/`), dressed for the job:
+
+| who | wears |
+|---|---|
+| `nurse` | scrubs, a fob watch, pens and a name tag at the chest pocket, the identity card clipped below it, clogs |
+| `attending` | shirt and tie under a white coat (lapels, three buttons, pockets), a stethoscope round the neck |
+| `radiologist` | a white coat over scrubs, a dosimeter |
+| `pathologist`, `pharmacist`, `lab-tech` | a white coat over a shirt or scrubs |
+| `receptionist` | a shirt and belted trousers, the identity card on a lanyard |
+| `paramedic` | a uniform shirt with epaulettes and reflective bands, boots |
+| `porter` | a polo shirt, the identity card on a lanyard |
+| position `surgeon`, `assistant-surgeon`, `scrub-nurse` | scrubbed: theatre cap, mask, sterile gown and gloves, the hands held together in front |
+| position `anaesthetist`, `circulating-nurse` | theatre scrubs, cap and mask (the anaesthetist a stethoscope) |
+| position `theatre-coordinator` | theatre scrubs and cap |
+| position `recovery-nurse`, `radiographer` | scrubs — with a stethoscope, with a dosimeter |
+
+A `position` (CHARACTERS.md §2) changes what its `role` wears, so nobody stands in theatre in a
+white coat. `appearance` sets skin, hair and its style (`short`: a side-swept fringe; `long`: parted,
+to the shoulders; `bun`, `ponytail`: drawn back, a light fringe and fine strands at the temples;
+`curly`; `bald`), build, stature, an accessory (glasses, a mask, a cap…) and — with `shirt` and
+`pants` — the uniform's colours. What it leaves unsaid differs from one member of staff to the
+next (skin, hair, build, glasses, height by a few per cent) and is the same for the same staff id every
+time, so a theatre team is three people, not one person three times. Everyone breathes, blinks,
+turns their head to the learner and moves their jaw when they speak. A name tag floats over each.
 
 **Equipment types.**
 
@@ -345,7 +375,8 @@ infusion-pump — infusion hardware; IV access is the patient's cannula, not
 equipment),
 `ventilator` (device, ventilator), `suction-unit` (device, suction),
 `nebulizer` (device, nebulizer, portable), `glucometer-station` (device, point-of-care),
-`diagnostic-wall-set` (device, otoscope + stethoscope, wall),
+`diagnostic-wall-set` (device, otoscope + stethoscope, wall: the two handles on coiled cords, the aneroid gauge over
+its cuff basket, a stethoscope hung by its headset on a peg),
 `anesthesia-machine` (device, anesthesia + airway), `operating-table`,
 `surgical-light` (light), `instrument-table`, `medication-cabinet`
 (device, medications), `medication-fridge` (storage, medications),
