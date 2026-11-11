@@ -5,7 +5,10 @@
  * and companion, or a built-in sheet (every role and theatre position, the looks an appearance can ask for).
  */
 import * as THREE from "three";
+import { addHand, HAND_CLASPED, HAND_FLAT, HAND_HOLD, HAND_RELAXED, type HandPose } from "../../packages/web/src/world/figure/hand.js";
 import { buildHeld } from "../../packages/web/src/world/figure/held.js";
+import { figureMaterial } from "../../packages/web/src/world/figure/material.js";
+import { rgb, Sculpt } from "../../packages/web/src/world/figure/sculpt.js";
 import { buildPerson, PATIENT_WEAR, heightOf, looksOf, setBlink, setBreath, setDistressed, setMouth, uniformOf, type AppearanceLike, type PersonOptions, type Posture } from "../../packages/web/src/world/npc.js";
 
 interface Entry {
@@ -110,11 +113,63 @@ function renderHeld(params: URLSearchParams): { count: number; width: number; he
   return { count: 1, width: W, height: H, triangles: [triangles] };
 }
 
+/** The hand by itself, close: each pose from the back, the palm and the thumb's side (`--view hand`; `--detail 0` for the hand as it is on a figure). */
+function renderHand(params: URLSearchParams): { count: number; width: number; height: number; triangles: number[] } {
+  const cell = Number(params.get("cell")) || 420;
+  const poses: [string, HandPose][] = [["relaxed", HAND_RELAXED], ["flat", HAND_FLAT], ["hold", HAND_HOLD], ["clasped", HAND_CLASPED]];
+  const views: [string, THREE.Vector3, THREE.Vector3][] = [["back", new THREE.Vector3(0.15, -0.35, 1), new THREE.Vector3(0, 1, 0)], ["palm", new THREE.Vector3(-0.15, -0.35, -1), new THREE.Vector3(0, 1, 0)], ["thumb side", new THREE.Vector3(1, 0.1, 0.25), new THREE.Vector3(0, 1, 0)]];
+  const W = poses.length * cell, H = views.length * cell;
+  const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
+  renderer.setPixelRatio(1);
+  renderer.outputColorSpace = THREE.SRGBColorSpace;
+  renderer.toneMapping = THREE.ACESFilmicToneMapping;
+  renderer.toneMappingExposure = 1.15;
+  renderer.setSize(W, H);
+  renderer.setScissorTest(true);
+  document.body.appendChild(renderer.domElement);
+  const labels = document.getElementById("labels")!;
+  const triangles: number[] = [];
+  const detail = params.get("detail") !== "0";
+  poses.forEach(([name, pose], i) => {
+    const sc = new Sculpt();
+    addHand(sc, { rgb: rgb(params.get("skin") || "#dcb696"), gloss: 0.16, glow: 0.12 }, pose, { detail });
+    sc.sweep([{ p: [0, -0.1, 0.002], rx: 0.029, rz: 0.0215, back: 0.0215 }, { p: [0, -0.05, 0.001], rx: 0.0268, rz: 0.0192, back: 0.0196 }, { p: [0, -0.02, 0], rx: 0.0262, rz: 0.0186, back: 0.019 }], { rgb: rgb(params.get("skin") || "#dcb696"), gloss: 0.16, glow: 0.12 }, { seg: 16, start: "round", end: "open" });
+    const mesh = new THREE.Mesh(sc.geometry(), figureMaterial());
+    triangles.push(sc.triangleCount);
+    views.forEach(([view, dir, up], j) => {
+      const scene = new THREE.Scene();
+      scene.background = new THREE.Color("#cfe0dc");
+      scene.add(new THREE.HemisphereLight("#d5f4ff", "#83936c", 2.6));
+      const sun = new THREE.DirectionalLight("#fff4d4", 3.4);
+      sun.position.set(-2.3, 3.6, 2.6);
+      scene.add(sun);
+      scene.add(mesh);
+      const centre = new THREE.Vector3(0.005, 0.07, -0.01);
+      const cam = new THREE.PerspectiveCamera(24, 1, 0.01, 10);
+      cam.up.copy(up);
+      cam.position.copy(centre).addScaledVector(dir.clone().normalize(), 0.62);
+      cam.lookAt(centre);
+      const x = i * cell, y = j * cell;
+      renderer.setViewport(x, H - y - cell, cell, cell);
+      renderer.setScissor(x, H - y - cell, cell, cell);
+      renderer.render(scene, cam);
+      scene.remove(mesh);
+      const d = document.createElement("div");
+      d.textContent = `${name} · ${view} · ${sc.triangleCount} tris`;
+      d.style.left = `${x + 4}px`;
+      d.style.top = `${y + 4}px`;
+      labels.appendChild(d);
+    });
+  });
+  return { count: poses.length, width: W, height: H, triangles };
+}
+
 /** Draw the sheet; resolves to what render.mjs reports. */
 export async function render(): Promise<{ count: number; width: number; height: number; triangles: number[] }> {
   const params = new URLSearchParams(location.search);
   const view = params.get("view") || "front";
   if (view === "held") return renderHeld(params);
+  if (view === "hand") return renderHand(params);
   const cell = Math.max(160, Number(params.get("cell")) || 420);
   const list = await entries(params);
   const cols = Math.max(1, Math.min(Number(params.get("cols")) || 6, list.length || 1));

@@ -6,7 +6,8 @@
  */
 import { Matrix4, type BufferGeometry } from "three";
 import { frameOf, PIVOT, skeletonOf, type ArmPose, type Build, type Frame, type Posture, type Skeleton, type Stature } from "./anatomy.js";
-import { addHand, addNeck, addShell, addShoe, addTrunk, armRadii, endFrame, footFrame, HAND_CLASPED, HAND_FLAT, HAND_RELAXED, inside, legRadii, limbStations, trouserRadii, type Fit, type ShoeKind } from "./body.js";
+import { addNeck, addShell, addShoe, addTrunk, armRadii, endFrame, footFrame, inside, legRadii, limbStations, trouserRadii, type Fit, type ShoeKind } from "./body.js";
+import { addHand, HAND_CLASPED, HAND_FLAT, HAND_RELAXED } from "./hand.js";
 import { addHair, type HairStyle } from "./hair.js";
 import { addFaceMorphs, addHead, irisFor, SKIN_GLOW } from "./head.js";
 import { addBlanket, addChestDetails, addCoat, addLap, addSlingStrap, addSterileGown, COAT_FIT, neckline } from "./dress.js";
@@ -123,11 +124,11 @@ export function buildFigure(spec: FigureSpec): Figure {
       const hemT = sleeve.long ? 1.93 : 0.56;
       body.sweep(limbStations(armL, 0, hemT, armRadii(f, sleeve.ease), 0.05), sleevePaint, { seg: 10, start: "round", dome: 0.72, end: "flat", capPaint: inside(sleevePaint) });
       if (!sleeve.long) body.tagged("skin", () => body.sweep(limbStations(armL, 0.44, 2, arms, 0.05), skin, { seg: 10, start: "open", end: "open" }));
-      else if (wear.gloves) body.sweep(limbStations(armL, 1.74, 1.97, armRadii(f, sleeve.ease + 0.003), 0.05), glove, { seg: 10, start: "flat", end: "open" });
+      else if (wear.gloves) body.sweep(limbStations(armL, 1.7, 1.99, armRadii(f, sleeve.ease + 0.0035), 0.05), glove, { seg: 10, start: "open", end: "open" });
       else body.tagged("skin", () => body.sweep(limbStations(armL, 1.86, 2, arms, 0.05), skin, { seg: 10, start: "open", end: "open" }));
       const handPaint = wear.gloves ? glove : skin;
       const handPose = pose === "clasped" ? HAND_CLASPED : sitting || lying || slung ? HAND_FLAT : HAND_RELAXED;
-      const hand = () => body.within(endFrame(armL), () => addHand(body, handPaint, handPose, { girth: 0.96 + 0.04 * f.limb }));
+      const hand = () => body.within(endFrame(armL), () => void addHand(body, handPaint, handPose, { girth: 0.96 + 0.04 * f.limb, gloved: wear.gloves }));
       if (wear.gloves) hand();
       else body.tagged("skin", hand);
       if (slung) {

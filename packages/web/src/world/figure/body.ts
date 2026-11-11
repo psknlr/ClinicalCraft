@@ -1,7 +1,7 @@
 /**
  * The body of a figure, part by part (`Sculpt`): the trunk and what hangs round it (a garment is a shell over
  * the trunk's own surface, from its hem to its neckline), arms and legs as sections swept along their bones
- * through a rounded elbow or knee, hands with fingers, and shoes. Measurements: `anatomy.ts`.
+ * through a rounded elbow or knee, and shoes (hands: `hand.ts`). Measurements: `anatomy.ts`.
  */
 import { Matrix4, Vector3 } from "three";
 import { ANKLE, HIP, NECK, PIVOT, type Frame, type Limb } from "./anatomy.js";
@@ -198,8 +198,8 @@ const ARM = curve([
   [1, 0.0365, 0.039],
   [1.18, 0.0395, 0.041],
   [1.5, 0.034, 0.0345],
-  [1.85, 0.0272, 0.0235],
-  [2, 0.0262, 0.0205],
+  [1.85, 0.025, 0.0226],
+  [2, 0.0212, 0.0192],
 ]);
 const LEG = curve([
   [0, 0.066, 0.086, 0.09],
@@ -213,7 +213,7 @@ const LEG = curve([
   [2, 0.033, 0.037, 0.035],
 ]);
 
-/** A bare arm's section at `t` (see `limbPoint`). */
+/** A bare arm's section at `t` (see `limbPoint`): nearly round at the wrist, where the hand's own wrist takes over whichever way it is turned. */
 export function armRadii(f: Frame, ease = 0): (t: number) => number[] {
   return (t) => {
     const [rx, rz] = ARM(t) as [number, number];
@@ -248,111 +248,6 @@ export function endFrame(l: Limb, origin: V3 = l.end): Matrix4 {
   z.addScaledVector(y, -z.dot(y)).normalize();
   const x = new Vector3().crossVectors(y, z);
   return new Matrix4().makeBasis(x, y, z).setPosition(origin[0], origin[1], origin[2]);
-}
-
-/* ------------------------------------------------------------------ */
-/* Hands                                                               */
-/* ------------------------------------------------------------------ */
-
-/** How a hand is held: finger curl (degrees at the knuckle, middle and end joints) and how far the thumb stands off. */
-export interface HandPose {
-  curl: readonly [number, number, number];
-  /** Extra curl per finger from index to little finger (degrees at each joint). */
-  spread?: number;
-  /** The thumb: out from the palm's edge (degrees), towards the palm (degrees), bend of its joints (degrees). */
-  thumb?: readonly [number, number, number];
-}
-
-export const HAND_RELAXED: HandPose = { curl: [16, 30, 18], spread: 4, thumb: [26, 24, 16] };
-export const HAND_FLAT: HandPose = { curl: [6, 8, 5], spread: 1, thumb: [34, 8, 8] };
-export const HAND_CLASPED: HandPose = { curl: [34, 52, 30], spread: 3, thumb: [18, 32, 24] };
-/** Fingers hooked over something held at their tips, the thumb closing on it from the side. */
-export const HAND_HOLD: HandPose = { curl: [26, 42, 22], spread: 2, thumb: [16, 46, 22] };
-
-const FINGERS: readonly { x: number; y: number; len: number; r: number }[] = [
-  { x: 0.0285, y: 0.092, len: 0.07, r: 0.0086 },
-  { x: 0.0095, y: 0.097, len: 0.078, r: 0.0089 },
-  { x: -0.0095, y: 0.093, len: 0.072, r: 0.0083 },
-  { x: -0.0275, y: 0.084, len: 0.057, r: 0.0073 },
-];
-
-/**
- * A left hand in its own frame: the wrist at the origin, fingers along +Y, the palm facing −Z, the thumb on
- * +X (`endFrame` puts it on an arm; the right hand is its mirror). `detail` adds nails and rounder fingers
- * (the hand the player sees close).
- */
-export function addHand(sc: Sculpt, painter: Paint, pose: HandPose = HAND_RELAXED, opts: { detail?: boolean; girth?: number; nail?: Paint } = {}): void {
-  const g = opts.girth ?? 1;
-  const seg = opts.detail ? 10 : 5;
-  const rad = Math.PI / 180;
-  // palm: wrist to knuckles
-  sc.sweep(
-    [
-      { p: [0, -0.012, 0], rx: 0.0262 * g, rz: 0.011 * g, power: 2.3 },
-      { p: [0.001, 0.02, 0], rx: 0.034 * g, rz: 0.0135 * g, power: 2.5 },
-      { p: [0.001, 0.055, -0.001], rx: 0.0405 * g, rz: 0.0142 * g, power: 2.7 },
-      { p: [0.0005, 0.085, -0.002], rx: 0.0405 * g, rz: 0.0118 * g, power: 2.7 },
-      { p: [0, 0.098, -0.003], rx: 0.037 * g, rz: 0.0098 * g, power: 2.6 },
-    ],
-    painter,
-    { seg: opts.detail ? 16 : 10, start: "open", end: "round", dome: 0.5 },
-  );
-  // the ball of the thumb
-  sc.ball([0.026, 0.034, -0.0075], 0.017 * g, 0.03, 0.013 * g, painter, opts.detail ? 10 : 6, opts.detail ? 6 : 4);
-  const spread = pose.spread ?? 0;
-  FINGERS.forEach((fg, i) => {
-    const bones = [fg.len * 0.44, fg.len * 0.3, fg.len * 0.26];
-    let p = new Vector3(fg.x * g, fg.y, -0.003);
-    let ang = 0;
-    const fan = (fg.x / 0.03) * 0.06; // fingers splay a little
-    const pts: Station[] = [{ p: [p.x, p.y - 0.012, p.z + 0.001], rx: fg.r * g, rz: fg.r * g * 0.92 }];
-    bones.forEach((len, k) => {
-      ang += (pose.curl[k]! + spread * i) * rad;
-      const d = new Vector3(Math.sin(fan) * Math.cos(ang), Math.cos(ang) * Math.cos(fan), -Math.sin(ang));
-      const mid = p.clone().addScaledVector(d, len * 0.5);
-      p = p.clone().addScaledVector(d, len);
-      const taper = 1 - 0.07 * (k + 1);
-      pts.push({ p: [mid.x, mid.y, mid.z], rx: fg.r * g * (taper + 0.035), rz: fg.r * g * (taper + 0.035) * 0.92 });
-      if (k < 2) pts.push({ p: [p.x, p.y, p.z], rx: fg.r * g * taper, rz: fg.r * g * taper * 0.95 });
-      else pts.push({ p: [p.x - d.x * 0.004, p.y - d.y * 0.004, p.z - d.z * 0.004], rx: fg.r * g * taper * 0.96, rz: fg.r * g * taper * 0.86 });
-      if (k === 2 && opts.nail) {
-        // the nail: a small plate on the back of the last joint
-        const up = new Vector3(0, Math.sin(ang), Math.cos(ang));
-        const c = mid.clone().addScaledVector(d, len * 0.18).addScaledVector(up, fg.r * g * taper * 0.8);
-        const side = new Vector3(1, 0, 0);
-        const hw = fg.r * g * 0.62, hl = len * 0.3;
-        sc.sheet(3, 3, (a, b) => {
-          const q = c.clone().addScaledVector(side, (a - 1) * hw).addScaledVector(d, (b - 1) * hl).addScaledVector(up, a === 1 ? 0.0009 : -0.0006);
-          return [q.x, q.y, q.z];
-        }, opts.nail, { thickness: 0.0006 });
-      }
-    });
-    sc.sweep(pts, painter, { seg, front: [0, 0, 1], start: "open", end: "round", dome: 0.9 });
-  });
-  // thumb: out of the ball of the thumb, two visible joints
-  const [out, inward, flex] = pose.thumb ?? [26, 24, 16];
-  let p = new Vector3(0.031 * g, 0.03, -0.006);
-  let d = new Vector3(Math.sin(out * rad) * Math.cos(inward * rad), Math.cos(out * rad) * Math.cos(inward * rad), -Math.sin(inward * rad)).normalize();
-  const pts: Station[] = [{ p: [p.x - d.x * 0.012, p.y - d.y * 0.012, p.z - d.z * 0.012], rx: 0.0125 * g, rz: 0.0112 * g }];
-  const lens = [0.022, 0.03, 0.025];
-  const axis = new Vector3(-Math.cos(out * rad), Math.sin(out * rad), 0.25).normalize(); // the thumb bends across the palm
-  lens.forEach((len, k) => {
-    if (k > 0) d = d.clone().applyAxisAngle(axis, -flex * rad).normalize();
-    p = p.clone().addScaledVector(d, len);
-    const r = (0.0118 - 0.0012 * (k + 1)) * g;
-    pts.push({ p: [p.x, p.y, p.z], rx: r, rz: r * 0.9 });
-  });
-  sc.sweep(pts, painter, { seg, front: [0, 0, 1], start: "open", end: "round", dome: 0.9 });
-  if (opts.nail) {
-    const up = new Vector3().crossVectors(axis, d).normalize();
-    if (up.z < 0) up.multiplyScalar(-1);
-    const c = p.clone().addScaledVector(d, -0.009).addScaledVector(up, 0.0079 * g);
-    const side = new Vector3().crossVectors(d, up).normalize();
-    sc.sheet(3, 3, (a, b) => {
-      const q = c.clone().addScaledVector(side, (a - 1) * 0.0062 * g).addScaledVector(d, (b - 1) * 0.0075).addScaledVector(up, a === 1 ? 0.0009 : -0.0006);
-      return [q.x, q.y, q.z];
-    }, opts.nail, { thickness: 0.0006 });
-  }
 }
 
 /* ------------------------------------------------------------------ */

@@ -6,7 +6,7 @@
  *   node scripts/preview/render.mjs facility --facility packages/content/facilities/clinic-v4.json [--catalogs a.json,b.json] [--level L1] [--scale 14] --out /tmp/plan.png
  *   node scripts/preview/render.mjs models --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/core-clinical.json [--assets packages/content/assets,../pack/content/assets] [--only id1,id2] [--view iso|front|back|side|top] [--compare 1] [--cell 320] [--cols 5] [--focus x,y,z,radius] --out /tmp/models.png
  *
- *   node scripts/preview/render.mjs people [--facility facility.json | --case case.json | --sheet roles,positions,looks,patients] [--only id1,id2] [--view front|iso|back|side|top|face|face-iso|chest|hands|held] [--posture standing|sitting|lying] [--cell 420] [--cols 6] [--distress 1] [--speak 0..1] [--blink 0..1] --out /tmp/people.png
+ *   node scripts/preview/render.mjs people [--facility facility.json | --case case.json | --sheet roles,positions,looks,patients] [--only id1,id2] [--view front|iso|back|side|top|face|face-iso|chest|hands|held|hand] [--posture standing|sitting|lying] [--cell 420] [--cols 6] [--distress 1] [--speak 0..1] [--blink 0..1] --out /tmp/people.png
  *
  * Equipment mode renders each equipment type's voxel parts (red outline = declared footprint).
  * Models mode renders each type's GLB model as the web world draws it (docs/BLENDER.md): placed by its catalog
@@ -18,7 +18,8 @@
  * packages/web/src/world/npc.ts): a facility's staff in the uniform of their role as their position wears
  * it, a case's patient (standing, sitting, in bed) and companion, or a reference sheet — every role, every
  * theatre position, the looks an appearance can ask for; `--view held` is the first-person hand and its
- * stethoscope as the camera sees them. Each label gives the figure's triangle count.
+ * stethoscope as the camera sees them, `--view hand` the hand by itself in each of its poses (`--detail 0`: as
+ * it is on a figure). Each label gives the figure's triangle count.
  * Facility mode renders a labelled 2D floor plan of one level (default: the default level) —
  * buildings, rooms, walls/openings, placements, slots, staff, spawn, stairs/ramp flights,
  * elevators and access zones. A facility that places room templates (`instances`) is
@@ -153,7 +154,7 @@ try {
     console.log(JSON.stringify({ ok: true, ...info, errors: errors.filter((e) => !/404/.test(e)) }));
   } else if (mode === "people") {
     const q = new URLSearchParams();
-    for (const k of ["facility", "case", "sheet", "only", "view", "cell", "cols", "posture", "distress", "speak", "blink", "breath", "turn", "bg"]) if (args[k] !== undefined) q.set(k, args[k]);
+    for (const k of ["facility", "case", "sheet", "only", "view", "cell", "cols", "posture", "distress", "speak", "blink", "breath", "turn", "bg", "detail", "skin"]) if (args[k] !== undefined) q.set(k, args[k]);
     await page.goto(`http://127.0.0.1:${port}/scripts/preview/people.html?${q}`);
     await rendered();
     const info = await page.evaluate(() => window.__done);
