@@ -174,6 +174,22 @@ export function sweepEnd(stations: readonly Station[], opts: { seg?: number; fro
 /** Vertex ranges [start, count] a `tagged` block added, in the geometry `Sculpt.geometry` returns. */
 export type Ranges = [number, number][];
 
+/**
+ * What a `Sculpt` holds, taken off it (`Sculpt.cast`) to be put into others (`Sculpt.put`): a form that is the same
+ * for many figures — a face of an age and a width, a style of hair — is sculpted once and every figure that has it
+ * takes the cast, in colours of its own.
+ */
+export interface Cast {
+  /** xyz a vertex. */
+  position: Float32Array;
+  /** rgb a vertex (linear). */
+  colour: Float32Array;
+  /** gloss and glow a vertex. */
+  finish: Float32Array;
+  index: Uint32Array;
+  tags: Readonly<Record<string, Ranges>>;
+}
+
 /** Gathers parts into one geometry (see the module doc). */
 export class Sculpt {
   private readonly pos: number[] = [];
@@ -218,6 +234,33 @@ export class Sculpt {
   /** The vertex ranges remembered under `tag`. */
   ranges(tag: string): Ranges {
     return this.tags.get(tag) ?? [];
+  }
+
+  /** Everything added so far, as a cast. */
+  cast(): Cast {
+    const tags: Record<string, Ranges> = {};
+    for (const [tag, list] of this.tags) tags[tag] = list.map(([start, count]) => [start, count]);
+    return { position: new Float32Array(this.pos), colour: new Float32Array(this.col), finish: new Float32Array(this.gls), index: new Uint32Array(this.idx), tags };
+  }
+
+  /**
+   * Add a cast in the current frame, in its own colours or in `colour` (rgb a vertex); its tags come with it.
+   * Returns its first vertex here.
+   */
+  put(cast: Cast, colour: ArrayLike<number> = cast.colour): number {
+    const v0 = this.vertexCount, i0 = this.idx.length;
+    const { position, finish, index } = cast;
+    for (let i = 0; i < position.length; i++) this.pos.push(position[i]!);
+    for (let i = 0; i < position.length; i++) this.col.push(colour[i]!);
+    for (let i = 0; i < finish.length; i++) this.gls.push(finish[i]!);
+    for (let i = 0; i < index.length; i++) this.idx.push(v0 + index[i]!);
+    this.finish(v0, i0);
+    for (const [tag, ranges] of Object.entries(cast.tags)) {
+      const list = this.tags.get(tag) ?? [];
+      for (const [start, count] of ranges) list.push([v0 + start, count]);
+      this.tags.set(tag, list);
+    }
+    return v0;
   }
 
   /* ---------------- parts: vertices, triangles, then normals ---------------- */
@@ -388,9 +431,9 @@ export class Sculpt {
   /**
    * A surface through an `nu` × `nv` grid of points `f(i, j)`: open, or closed round `i` (`wrap`). With a
    * `thickness` it is a thin solid (a second face that far behind the first, joined round the border): cloth,
-   * a card, a lens. Faces look along (f(i+1, j) − f(i, j)) × (f(i, j+1) − f(i, j)); `flip` turns them.
+   * a card, a lens — the same everywhere, or by grid point (a lock of hair thins to its ends). Faces look along (f(i+1, j) − f(i, j)) × (f(i, j+1) − f(i, j)); `flip` turns them.
    */
-  sheet(nu: number, nv: number, f: (i: number, j: number) => V3, painter: Painter, opts: { thickness?: number; flip?: boolean; wrap?: boolean; backPaint?: Painter } = {}): void {
+  sheet(nu: number, nv: number, f: (i: number, j: number) => V3, painter: Painter, opts: { thickness?: number | ((i: number, j: number) => number); flip?: boolean; wrap?: boolean; backPaint?: Painter } = {}): void {
     if (nu < 2 || nv < 2) return;
     const v0 = this.vertexCount, i0 = this.idx.length;
     const pts: V3[] = [];
@@ -410,7 +453,8 @@ export class Sculpt {
     for (const p of pts) this.vertex(p[0], p[1], p[2], painter);
     for (let j = 0; j + 1 < nv; j++) for (let i = 0; i < cols; i++) quad(v0 + at(i, j), v0 + at(i + 1, j), v0 + at(i + 1, j + 1), v0 + at(i, j + 1), flip);
     const t = opts.thickness ?? 0;
-    if (t > 0) {
+    const thick = typeof t === "function" ? t : () => t;
+    if (typeof t === "function" || t > 0) {
       // the grid's own normals (in its frame) set the second face back
       const nrm = pts.map(() => new Vector3());
       const face = (a: number, b: number, c: number) => {
@@ -432,7 +476,8 @@ export class Sculpt {
       const sgn = flip ? 1 : -1;
       pts.forEach((p, k) => {
         const n = nrm[k]!.lengthSq() > 0 ? nrm[k]!.normalize() : nrm[k]!.set(0, 0, 1);
-        this.vertex(p[0] + n.x * t * sgn, p[1] + n.y * t * sgn, p[2] + n.z * t * sgn, back);
+        const d = thick(k % nu, Math.floor(k / nu)) * sgn;
+        this.vertex(p[0] + n.x * d, p[1] + n.y * d, p[2] + n.z * d, back);
       });
       for (let j = 0; j + 1 < nv; j++) for (let i = 0; i < cols; i++) quad(b0 + at(i, j), b0 + at(i + 1, j), b0 + at(i + 1, j + 1), b0 + at(i, j + 1), !flip);
       // the border, front to back
@@ -454,14 +499,20 @@ export class Sculpt {
   /**
    * A mesh made elsewhere (a refined cage: `subdivide.ts`) as one part with smooth normals of its own: `points`
    * are flat xyz, `triangles` index them (outward when counter-clockwise), `paints` is one paint per point or a
-   * painter.
+   * painter; `tags` remembers ranges of its points (a face's lids, which a blink moves).
    */
-  mesh(points: ArrayLike<number>, triangles: ArrayLike<number>, paints: Painter | readonly Paint[]): void {
+  mesh(points: ArrayLike<number>, triangles: ArrayLike<number>, paints: Painter | readonly Paint[], tags: Readonly<Record<string, readonly (readonly [number, number])[]>> = {}): void {
     const v0 = this.vertexCount, i0 = this.idx.length;
     const each = Array.isArray(paints) ? (paints as readonly Paint[]) : null;
     for (let i = 0; 3 * i < points.length; i++) this.vertex(points[3 * i]!, points[3 * i + 1]!, points[3 * i + 2]!, each ? each[i]! : (paints as Painter));
     for (let i = 0; i + 2 < triangles.length; i += 3) this.tri(v0 + triangles[i]!, v0 + triangles[i + 1]!, v0 + triangles[i + 2]!);
     this.finish(v0, i0);
+    // some of its points remembered under tags of their own ([first point, count], counted within the mesh)
+    for (const [tag, ranges] of Object.entries(tags)) {
+      const list = this.tags.get(tag) ?? [];
+      for (const [start, count] of ranges) if (count > 0) list.push([v0 + start, count]);
+      this.tags.set(tag, list);
+    }
   }
 
   /** A box about `c` (hard edges). */
@@ -513,11 +564,15 @@ export class Sculpt {
       const ux = pos[b]! - pos[a]!, uy = pos[b + 1]! - pos[a + 1]!, uz = pos[b + 2]! - pos[a + 2]!;
       const vx = pos[c]! - pos[a]!, vy = pos[c + 1]! - pos[a + 1]!, vz = pos[c + 2]! - pos[a + 2]!;
       const nx = uy * vz - uz * vy, ny = uz * vx - ux * vz, nz = ux * vy - uy * vx;
-      for (const k of [a, b, c]) {
-        nrm[k] = nrm[k]! + nx;
-        nrm[k + 1] = nrm[k + 1]! + ny;
-        nrm[k + 2] = nrm[k + 2]! + nz;
-      }
+      nrm[a] = nrm[a]! + nx;
+      nrm[a + 1] = nrm[a + 1]! + ny;
+      nrm[a + 2] = nrm[a + 2]! + nz;
+      nrm[b] = nrm[b]! + nx;
+      nrm[b + 1] = nrm[b + 1]! + ny;
+      nrm[b + 2] = nrm[b + 2]! + nz;
+      nrm[c] = nrm[c]! + nx;
+      nrm[c + 1] = nrm[c + 1]! + ny;
+      nrm[c + 2] = nrm[c + 2]! + nz;
     }
     for (let i = 0; i < nrm.length; i += 3) {
       const l = Math.hypot(nrm[i]!, nrm[i + 1]!, nrm[i + 2]!) || 1;

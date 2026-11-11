@@ -10,6 +10,7 @@ import { BoxGeometry, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial, type
 import { HEIGHT, STATURE_SCALE as SCALES, type Posture as FigurePosture } from "./figure/anatomy.js";
 import { trunkAt } from "./figure/body.js";
 import { buildFigure } from "./figure/figure.js";
+import { blinkRound, MOVES } from "./figure/head.js";
 import { figureMaterial } from "./figure/material.js";
 import { rgb, type Ranges } from "./figure/sculpt.js";
 import { PLAIN, type Wear } from "./figure/wear.js";
@@ -101,13 +102,15 @@ export function setBreath(rig: PersonRig, breath: number): void {
 /** The mouth: 0 closed … 1 as open as speech opens it. */
 export function setMouth(rig: PersonRig, open: number): void {
   const m = rig.face.morphTargetInfluences;
-  if (m) m[0] = open;
+  if (m) m[MOVES.jaw] = open;
 }
 
-/** The eyes: 0 open … 1 shut. */
+/** The eyes: 0 open … 1 shut (the lids go round the eyes on their way: a move of its own, fullest half-way). */
 export function setBlink(rig: PersonRig, shut: number): void {
   const m = rig.face.morphTargetInfluences;
-  if (m) m[1] = shut;
+  if (!m) return;
+  m[MOVES.blink] = shut;
+  m[MOVES.round] = blinkRound(shut);
 }
 
 export const DEFAULT_APPEARANCE: Required<AppearanceLike> = {
@@ -170,7 +173,7 @@ export function buildPerson(appearance: AppearanceLike | undefined, opts: Person
   head.scale.setScalar(fig.frame.head);
   body.add(head);
   const face = part(fig.head, head);
-  face.morphTargetInfluences = [0, 0];
+  face.morphTargetInfluences = [0, 0, 0];
   if (fig.clear) {
     const clear = new Mesh(fig.clear, CLEAR_MATERIAL);
     clear.userData.figure = true;

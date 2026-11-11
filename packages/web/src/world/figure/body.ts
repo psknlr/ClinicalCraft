@@ -333,9 +333,9 @@ export function addNeck(sc: Sculpt, f: Frame, lift: number, painter: Painter, fo
   sc.sweep(
     [
       { p: [0, NECK - 0.03 + lift, -0.014], rx: 0.066 * k, rz: 0.059 * k, back: 0.065 * k },
-      { p: [0, NECK + 0.014 + lift, -0.012 + forward * 0.2], rx: 0.0525 * k, rz: 0.052 * k, back: 0.058 * k },
-      { p: [0, NECK + 0.055 + lift, -0.006 + forward * 0.6], rx: 0.0485 * k, rz: 0.05 * k, back: 0.055 * k },
-      { p: [0, top, 0.002 + forward], rx: 0.0475 * k, rz: 0.049 * k, back: 0.054 * k },
+      { p: [0, NECK + 0.014 + lift, -0.012 + forward * 0.2], rx: 0.051 * k, rz: 0.051 * k, back: 0.057 * k },
+      { p: [0, NECK + 0.055 + lift, -0.006 + forward * 0.6], rx: 0.0435 * k, rz: 0.0465 * k, back: 0.053 * k },
+      { p: [0, top, 0.002 + forward], rx: 0.0425 * k, rz: 0.0455 * k, back: 0.052 * k },
     ],
     painter,
     { seg: 14, start: "open", end: "open" },

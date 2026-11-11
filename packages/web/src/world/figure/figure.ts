@@ -9,7 +9,7 @@ import { frameOf, PIVOT, skeletonOf, type ArmPose, type Build, type Frame, type 
 import { addNeck, addShell, addShoe, addTrunk, armRadii, endFrame, footFrame, inside, legRadii, limbStations, trouserRadii, type Fit, type ShoeKind } from "./body.js";
 import { addHand, HAND_CLASPED, HAND_FLAT, HAND_RELAXED } from "./hand.js";
 import { addHair, type HairStyle } from "./hair.js";
-import { addFaceMorphs, addHead, irisFor, SKIN_GLOW } from "./head.js";
+import { addHead, irisFor, SKIN_GLOW } from "./head.js";
 import { addBlanket, addChestDetails, addCoat, addLap, addSlingStrap, addSterileGown, COAT_FIT, neckline } from "./dress.js";
 import { addAccessory, addTheatreCap, addSurgicalMask, type Accessory } from "./extras.js";
 import { paint, rgb, Sculpt, sweepEnd, type Paint, type Ranges, type V3 } from "./sculpt.js";
@@ -185,14 +185,14 @@ export function buildFigure(spec: FigureSpec): Figure {
   const capped = wear.cap || spec.accessory === "cap";
   const hairRgb = rgb(spec.hair);
   // long hair falls over the ears (unless a cap holds it)
-  const { faceZ } = addHead(head, face, { skin: skin.rgb, hair: hairRgb, scalp: spec.hairStyle !== "bald", iris: irisFor(hairRgb) }, { ears: spec.hairStyle !== "long" || capped });
+  const { faceZ, move } = addHead(head, face, { skin: skin.rgb, hair: hairRgb, scalp: spec.hairStyle !== "bald", iris: irisFor(hairRgb) }, { ears: spec.hairStyle !== "long" || capped });
   let crown = addHair(head, face, spec.hairStyle, hairRgb, { capped, infant: spec.stature === "infant" });
   if (wear.cap) crown = Math.max(crown, addTheatreCap(head, face, paint(THEATRE_CAP), spec.hairStyle));
   if (wear.mask || spec.accessory === "mask") addSurgicalMask(head, face);
   crown = Math.max(crown, addAccessory(head, clear, spec.accessory, face, faceZ, { shirt: rgb(spec.shirt), skin: skin.rgb }));
 
   const bodyG = body.geometry(), chestG = chest.geometry(), headG = head.geometry();
-  addFaceMorphs(headG, head.ranges("jaw"), head.ranges("lid"), face);
+  move(headG);
   const clearG = clear.vertexCount ? clear.geometry() : null;
   return {
     body: bodyG,

@@ -59,7 +59,7 @@ describe("people of the world (npc.ts)", () => {
         const rig = buildPerson({ ...looksOf(id), shirt: uni.shirt, pants: uni.pants }, { posture: "standing", wear: uni.wear, seed: id, height: heightOf(id) });
         expect(finite(rig), id).toBe(true);
         expect(rig.triangles, id).toBeGreaterThan(6000);
-        expect(rig.triangles, id).toBeLessThan(24000);
+        expect(rig.triangles, id).toBeLessThan(29500);
         disposeRig(rig);
       }
     }
@@ -154,16 +154,19 @@ describe("people of the world (npc.ts)", () => {
     meshes(rig).forEach((m, k) => expect(Array.from(m.geometry.getAttribute("color").array as Float32Array)).toEqual(Array.from(before[k]!)));
   });
 
-  it("the face moves: the jaw opens below the lips, the lids come down over the eyes, the trunk breathes", () => {
+  it("the face moves: the jaw opens below the lips, the lids come down round the eyes, the trunk breathes", () => {
     const rig = buildPerson(undefined, { posture: "standing" });
     const morphs = rig.face.geometry.morphAttributes.position as BufferAttribute[];
-    expect(morphs).toHaveLength(2);
+    // the jaw, the lids, and the lids' way round the eyes
+    expect(morphs).toHaveLength(3);
+    expect(rig.face.geometry.morphAttributes.normal).toBeUndefined();
     expect(rig.face.geometry.morphTargetsRelative).toBe(true);
+    expect(rig.face.morphTargetInfluences).toEqual([0, 0, 0]);
     const pos = rig.face.geometry.getAttribute("position");
     const moved = (target: BufferAttribute) => {
       let n = 0, top = -Infinity, bottom = Infinity, down = 0;
       for (let i = 0; i < target.count; i++) {
-        if (Math.abs(target.getY(i)) + Math.abs(target.getZ(i)) < 1e-7) continue;
+        if (Math.abs(target.getX(i)) + Math.abs(target.getY(i)) + Math.abs(target.getZ(i)) < 1e-7) continue;
         n++;
         top = Math.max(top, pos.getY(i));
         bottom = Math.min(bottom, pos.getY(i));
@@ -171,18 +174,46 @@ describe("people of the world (npc.ts)", () => {
       }
       return { n, top, bottom, down };
     };
-    const jaw = moved(morphs[0]!), lids = moved(morphs[1]!);
-    expect(jaw.n).toBeGreaterThan(50);
-    expect(lids.n).toBeGreaterThan(10);
+    const jaw = moved(morphs[0]!), lids = moved(morphs[1]!), round = moved(morphs[2]!);
+    expect(jaw.n).toBeGreaterThan(400);
+    expect(lids.n).toBeGreaterThan(200);
     // the jaw's vertices lie below the eyes' (the lids are up at eye height); both move down
     expect(jaw.top).toBeLessThan(lids.bottom);
-    expect(jaw.down).toBeLessThan(-0.004);
-    expect(lids.down).toBeLessThan(-0.006);
+    expect(jaw.down).toBeLessThan(-0.006);
+    expect(lids.down).toBeLessThan(-0.01);
+    // the way round is the lids' own, and only in depth
+    expect(round.n).toBeGreaterThan(100);
+    expect(round.n).toBeLessThanOrEqual(lids.n);
+    expect(round.down).toBe(0);
+    expect(round.bottom).toBeGreaterThanOrEqual(lids.bottom);
     setMouth(rig, 0.7);
     setBlink(rig, 1);
-    expect(rig.face.morphTargetInfluences).toEqual([0.7, 1]);
+    expect(rig.face.morphTargetInfluences).toEqual([0.7, 1, 0]);
+    setBlink(rig, 0.5);
+    expect(rig.face.morphTargetInfluences).toEqual([0.7, 0.5, 1]);
+    setBlink(rig, 0);
+    expect(rig.face.morphTargetInfluences).toEqual([0.7, 0, 0]);
     setBreath(rig, 0.02);
     expect(rig.torso.scale.z).toBeCloseTo(1.02);
+  });
+
+  it("people with the same face share its form: a second one is built from the first one's casts, in colours of its own", () => {
+    const a = buildPerson({ skin: "#d8b494", hair: "#1f1a17", hairStyle: "bun" }, { posture: "standing" });
+    const b = buildPerson({ skin: "#a97c5a", hair: "#5a5651", hairStyle: "bun" }, { posture: "standing" });
+    const pa = a.face.geometry.getAttribute("position").array as Float32Array, pb = b.face.geometry.getAttribute("position").array as Float32Array;
+    expect(Array.from(pb)).toEqual(Array.from(pa));
+    const ca = a.face.geometry.getAttribute("color").array as Float32Array, cb = b.face.geometry.getAttribute("color").array as Float32Array;
+    let differ = 0;
+    for (let i = 0; i < ca.length; i += 3) if (ca[i] !== cb[i] || ca[i + 1] !== cb[i + 1] || ca[i + 2] !== cb[i + 2]) differ++;
+    // all but what is the same on everyone: the whites of the eyes, the lights in them, the teeth, the band round a bun
+    expect(differ).toBeGreaterThan((ca.length / 3) * 0.85);
+    expect(differ).toBeLessThan(ca.length / 3);
+    // and each owns its geometry (one may be flushed, or given up, without the other)
+    expect(a.face.geometry).not.toBe(b.face.geometry);
+    setDistressed(a, true);
+    expect(Array.from(b.face.geometry.getAttribute("color").array as Float32Array)).toEqual(Array.from(cb));
+    disposeRig(a);
+    disposeRig(b);
   });
 
   it("staff nobody described differ from one another, and are the same every time", () => {

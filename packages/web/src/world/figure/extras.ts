@@ -39,7 +39,7 @@ export function addTheatreCap(sc: Sculpt, face: FaceSpec, paint: Paint, style: H
 /** A surgical mask: pleated, from the bridge of the nose to under the chin, a loop round each ear. */
 export function addSurgicalMask(sc: Sculpt, face: FaceSpec): void {
   const e = EYE_Y - 0.012 * face.young, m = MOUTH_Y + 0.006 * face.young;
-  const top = e - 0.014, bottom = -0.108;
+  const top = e - 0.014, bottom = -0.112;
   const span = 1.08;
   const cloth: Rgb = rgb("#d5e6ee");
   const nu = 15, nv = 9;

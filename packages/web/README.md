@@ -5,7 +5,8 @@ UI framework). The world is built from a facility JSON and the equipment
 catalogs; patients and staff are figures of real proportions built in code
 (`src/world/figure/`: skin, hair and its style, build and stature from the
 appearance; the uniform of a role as a position wears it; standing, sitting,
-in bed under the covers; they breathe, blink, turn to the learner and speak),
+in bed under the covers; faces of one skin whose lids blink and whose lips
+part over their teeth; they breathe, turn to the learner and speak),
 and the player's hand holds a stethoscope; equipment is interactive
 (workstations take orders, monitors show live vitals and an ECG trace, the
 case board takes decisions, the atlas kiosk opens the anatomy viewer).

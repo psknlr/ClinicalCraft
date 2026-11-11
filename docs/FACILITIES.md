@@ -34,8 +34,9 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
   `node scripts/preview/render.mjs facility --facility packages/content/facilities/<id>.json --catalogs <all catalog files> --out <png>`.
   `node scripts/preview/render.mjs models --catalogs <catalog files> [--compare 1] --out <png>` draws the types' GLB
   models as the world does, beside their voxel parts (BLENDER.md "Looking at the result").
-  `node scripts/preview/render.mjs people --facility <facility file> [--only <staff ids>] [--view front|iso|back|side|face|chest|hands] --out <png>`
-  draws the facility's staff as the world does ("Staff in the 3D world" below); `--case <case.json>` draws a case's
+  `node scripts/preview/render.mjs people --facility <facility file> [--only <staff ids>] [--view front|iso|back|side|face|face-iso|face-side|chest|hands] --out <png>`
+  draws the facility's staff as the world does ("Staff in the 3D world" below; `--blink 0..1` and `--speak 0..1`
+  shut their eyes and open their mouths that far); `--case <case.json>` draws a case's
   patient standing, sitting and in bed, and their companion; `--sheet roles|positions|looks|patients` the
   reference sheets (every role's uniform, every theatre position, what an appearance can ask for);
   `--view hand` the hand by itself in each of its poses (`--detail 0`: as a figure has it), `--view held` the
@@ -130,13 +131,30 @@ stands 1.74 m; the web's `src/world/figure/`), dressed for the job:
 | position `recovery-nurse`, `radiographer` | scrubs — with a stethoscope, with a dosimeter |
 
 A `position` (CHARACTERS.md §2) changes what its `role` wears, so nobody stands in theatre in a
-white coat. `appearance` sets skin, hair and its style (`short`: a side-swept fringe; `long`: parted,
-to the shoulders; `bun`, `ponytail`: drawn back, a light fringe and fine strands at the temples;
-`curly`; `bald`), build, stature, an accessory (glasses, a mask, a cap…) and — with `shirt` and
+white coat. `appearance` sets skin, hair and its style (`short`: a fringe combed across; `long`:
+parted, to the shoulders; `bun`, `ponytail`: drawn back — a light fringe to one side, or one parted
+into a curtain — a fine strand left out before each ear; `curly`; `bald`), build, stature, an
+accessory (glasses, a mask, a cap…) and — with `shirt` and
 `pants` — the uniform's colours. What it leaves unsaid differs from one member of staff to the
 next (skin, hair, build, glasses, height by a few per cent) and is the same for the same staff id every
 time, so a theatre team is three people, not one person three times. Everyone breathes, blinks,
 turns their head to the learner and moves their jaw when they speak. A name tag floats over each.
+
+A face is one skin (`figure/head.ts`, over the form of a head in `figure/skull.ts`): an oval, the
+line of the jaw soft in to a small chin that stands under the lips, the jaw's lower border rising
+to its angle under the ear. Lids and lips are that skin itself (`figure/eyes.ts`,
+`figure/mouth.ts`: rings of finer points zipped into openings of the head's grid,
+`figure/face-mesh.ts`), so they shade as one with the face and they move: a blink is the upper
+lid coming down round the eye, its lashes with it, to shut on the lower lid; speech opens the
+mouth as an oval — the lower lip and the chin go down, the corners half the way and a little in —
+and under the upper lip the edge of the teeth shows over the dark of the mouth. Behind the lids
+are eyes with an iris, a pupil and the lights in them; over them soft straight brows; the ears
+are shells with a rim, a hollow and a lobe (`figure/ears.ts`); a fringe comes out of the hair
+near the crown and thins to its ends, with no cut edge (`figure/hair.ts`). Skin gives a little
+light back in shade, warmer than it took it (`figure/material.ts`), so a face out of the light
+stays rosy. A face of an age and a width — and a style of hair on it — is sculpted once and kept
+as a cast: everyone with such a face takes the cast in their own colours, so a hospital full of
+people is built in the time of a few.
 
 Hands are hands (`figure/hand*.ts`): one skin over a hand's bones — the knuckles half-way along
 it, the fingers out of the palm through webs, the thumb out of its mound of muscle, nails — drawn

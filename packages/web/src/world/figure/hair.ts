@@ -1,17 +1,19 @@
 /**
- * Hair on a head (`head.ts`), kept the way well-kept hair is: a close shell over the scalp, and over it locks
- * that flow the way the style is combed — out from the crown into a side-swept fringe over short sides; from a
- * parting down past the face to the shoulders; back from the hairline into a low ponytail or a bun, a few fine
- * strands left to frame the face; soft waves for curls. Under a cap only the hair below its edge shows. A band
- * of light round the crown is the sheen of healthy hair.
+ * Hair on a head (`head.ts`), kept the way well-kept hair is: a close shell over the scalp, and over it a fringe —
+ * one soft sheet that comes out of the hair near the crown, lies over it and falls past the hairline onto the
+ * brow, thinning to its ends and its sides so that it has no cut edge: combed across over short sides; from a
+ * parting down past the face to the shoulders; a light fringe to one side or a parted curtain over hair drawn back
+ * into a bun or a ponytail, a fine strand left out in front of each ear; soft waves for curls. Under a cap only
+ * the hair below its edge shows. A band of light round the crown is the sheen of healthy hair.
  */
 import { Vector3 } from "three";
 import { EYE_Y, HEAD_CENTRE, hairlineAt, phiOfHeight, skullPoint, type FaceSpec } from "./head.js";
-import { shade, type Paint, type Painter, type Rgb, type Sculpt, type Station, type V3 } from "./sculpt.js";
+import { Sculpt, shade, type Cast, type Paint, type Painter, type Rgb, type Station, type V3 } from "./sculpt.js";
+import { remembered } from "./skull.js";
 
 export type HairStyle = "short" | "long" | "bald" | "bun" | "ponytail" | "curly";
 
-const NU = 40, NV = 9;
+const NU = 52, NV = 12;
 
 /** A point of the scalp pushed `lift` out from the middle of the head. */
 export function scalpPoint(theta: number, phi: number, face: FaceSpec, lift: number): V3 {
@@ -19,22 +21,6 @@ export function scalpPoint(theta: number, phi: number, face: FaceSpec, lift: num
   const dx = p.x - HEAD_CENTRE[0], dy = p.y - HEAD_CENTRE[1] + 0.01, dz = p.z - HEAD_CENTRE[2];
   const l = Math.hypot(dx, dy, dz) || 1;
   return [p.x + (dx / l) * lift, p.y + (dy / l) * lift, p.z + (dz / l) * lift];
-}
-
-/** The direction from the middle of the head at `theta` round it and `phi` down from the crown. */
-function dir(theta: number, phi: number): Vector3 {
-  return new Vector3(Math.sin(phi) * Math.sin(theta), Math.cos(phi), Math.sin(phi) * Math.cos(theta));
-}
-
-/** The scalp point along a direction from the middle of the head. */
-function scalpAlong(d: Vector3, face: FaceSpec, lift: number): V3 {
-  const n = d.clone().normalize();
-  return scalpPoint(Math.atan2(n.x, n.z), Math.acos(Math.max(-1, Math.min(1, n.y))), face, lift);
-}
-
-/** The direction to the hairline at `theta`, `drop` (m) below it. */
-function hairlineDir(theta: number, face: FaceSpec, drop = 0): Vector3 {
-  return dir(theta, phiOfHeight(theta, hairlineAt(theta, face) - drop, face));
 }
 
 /** The paint of hair: its colour streaked a little round the head, a soft band of light round the crown. */
@@ -74,55 +60,7 @@ export function addScalpShell(sc: Sculpt, face: FaceSpec, painter: Painter, lift
   return top[1];
 }
 
-/** One lock of hair: over the scalp from one direction to another (bending by `via`), then hanging free. */
-interface Lock {
-  from: Vector3;
-  to: Vector3;
-  via?: Vector3;
-  /** Width at the root and near the tip (m). */
-  width: readonly [number, number];
-  /** How far off the scalp along the lock (`t` 0 … 1). */
-  lift: (t: number) => number;
-  /** Free length hanging from the end (m), how far it swings out then back in (m), and a turn of the tip (+ out, − in). */
-  hang?: number;
-  swing?: number;
-  curl?: number;
-  thickness?: number;
-}
-
-function addLock(sc: Sculpt, face: FaceSpec, lock: Lock, painter: (x: number, y: number, z: number) => Paint, seg = 5): number {
-  const n = 6;
-  const pts: Station[] = [];
-  const th = (lock.thickness ?? 0.0105) / 2;
-  let top = -1;
-  for (let i = 0; i <= n; i++) {
-    const t = i / n;
-    const d = lock.via ? lock.from.clone().multiplyScalar((1 - t) * (1 - t)).addScaledVector(lock.via, 2 * t * (1 - t)).addScaledVector(lock.to, t * t) : lock.from.clone().lerp(lock.to, t);
-    const p = scalpAlong(d, face, lock.lift(t));
-    const w = lock.width[0] + (lock.width[1] - lock.width[0]) * t;
-    const tip = lock.hang ? 1 : 1 - 0.55 * Math.max(0, t - 0.7) / 0.3;
-    pts.push({ p, rx: (w / 2) * tip, rz: th * (0.55 + 0.45 * Math.sin(Math.min(1, t * 1.6) * Math.PI * 0.5)) * tip });
-    top = Math.max(top, p[1]);
-  }
-  if (lock.hang) {
-    // free of the head the lock falls straight, swinging a little out from the neck and back, its tip turned
-    const end = pts[pts.length - 1]!.p;
-    const out = new Vector3(end[0] - HEAD_CENTRE[0], 0, end[2] - HEAD_CENTRE[2]).normalize();
-    const m = 5;
-    for (let i = 1; i <= m; i++) {
-      const t = i / m;
-      const sw = (lock.swing ?? 0) * Math.sin(t * Math.PI * 0.9) + (lock.curl ?? 0) * t * t * t;
-      const w = lock.width[1] * (1 - 0.35 * t);
-      pts.push({ p: [end[0] + out.x * sw, end[1] - lock.hang * t, end[2] + out.z * sw], rx: (w / 2) * (i === m ? 0.5 : 1), rz: th * (i === m ? 0.5 : 0.95) });
-    }
-  }
-  const p0 = pts[0]!.p;
-  sc.sweep(pts, painter, { seg, front: [p0[0] - HEAD_CENTRE[0], p0[1] - HEAD_CENTRE[1], p0[2] - HEAD_CENTRE[2]], start: "round", end: "round", dome: 0.5 });
-  return top;
-}
-
 const gauss = (x: number, c: number, s: number) => Math.exp(-(((x - c) / s) ** 2));
-const bump = (t: number) => Math.pow(Math.sin(Math.min(1, Math.max(0, t)) * Math.PI), 0.75);
 const smoothstep = (a: number, b: number, x: number) => {
   const t = Math.min(1, Math.max(0, (x - a) / (b - a)));
   return t * t * (3 - 2 * t);
@@ -132,46 +70,124 @@ const flank = (theta: number) => Math.sin(theta) ** 2;
 
 type HairPainter = (x: number, y: number, z: number) => Paint;
 
+/** The hair over the scalp under a fringe: how thick it lies (`addScalpShell`'s `lift`) and how far below the hairline its edge is (`drop`). */
+interface Under {
+  lift: (theta: number, s: number) => number;
+  drop?: (theta: number) => number;
+}
+
 /**
- * A fringe: hair from a line on top of the head falling over the hairline onto the brow as one soft sheet, its
- * ends in gentle points. `from` … `to`: where it lands across the brow (angles); `length(u)`: how far below the
- * hairline (m); `sweep`: how far round the head its roots lie from where it lands (it is combed across).
+ * A fringe: hair from a line on top of the head, combed over the hair there and falling past the hairline onto
+ * the brow as one soft sheet. It comes out of the hair it grows from (`under`), lies over it a little fuller, and
+ * past the hairline comes down to rest on the skin; it thins to its ends and to its sides, which go back into the
+ * hair, so it has no cut edge. `from` … `to`: where it lands across the brow (angles); `length(u)`: how far below
+ * the hairline (m); `sweep`: how far round the head its roots lie from where it lands (it is combed across — or,
+ * with a `part`, away from the parting at that angle to either side).
  */
-function fringe(sc: Sculpt, face: FaceSpec, painter: HairPainter, opts: { from: number; to: number; root: number; length: (u: number) => number; sweep: number; points: number; lift: number; wave?: number }): void {
-  const nu = 15, nv = 7;
+function fringe(sc: Sculpt, face: FaceSpec, painter: HairPainter, under: Under, opts: { from: number; to: number; root: number; length: (u: number) => number; sweep: number; part?: number; points?: number; ragged?: number; full?: number; wave?: number }): void {
+  const nu = opts.part === undefined ? 19 : 29, nv = 9;
+  const full = opts.full ?? 0.004;
+  const edgeAt = (theta: number) => phiOfHeight(theta, hairlineAt(theta, face) - (under.drop?.(theta) ?? 0), face);
+  const side = (u: number) => Math.pow(Math.sin(Math.min(1, Math.max(0, u)) * Math.PI), 0.55);
+  const ragged = opts.ragged ?? 0.06;
+  // where each column of it ends: the ends in gentle points
+  const tips = Array.from({ length: nu }, (_, i) => {
+    const u = i / (nu - 1);
+    const tip = opts.from + (opts.to - opts.from) * u;
+    const drop = opts.length(u) * (1 - ragged + ragged * Math.abs(Math.sin(u * Math.PI * (opts.points ?? 3) + 0.4)));
+    return phiOfHeight(tip, hairlineAt(tip, face) - drop, face);
+  });
   const point = (i: number, j: number): V3 => {
     const u = i / (nu - 1), v = j / (nv - 1);
     const tip = opts.from + (opts.to - opts.from) * u;
-    const drop = opts.length(u) * (0.72 + 0.28 * Math.abs(Math.sin(u * Math.PI * opts.points + 0.4)));
-    const phiTip = phiOfHeight(tip, hairlineAt(tip, face) - drop, face);
-    const theta = tip + opts.sweep * (1 - Math.pow(v, 1.4));
+    const phiTip = tips[i]!;
+    // (parted, it is combed away from the parting to either side, and lies lower along it)
+    // (never across it: close to the parting the roots are close to it too)
+    const away = opts.part === undefined ? 1 : -Math.tanh((tip - opts.part) / (2.5 * opts.sweep));
+    const theta = tip + opts.sweep * away * (1 - Math.pow(v, 1.4));
+    const parting = opts.part === undefined ? 0 : Math.exp(-(((theta - opts.part) / 0.035) ** 2));
     const phi = opts.root + (phiTip - opts.root) * v;
-    const lift = 0.003 + opts.lift * (0.55 + 0.45 * Math.sin(v * Math.PI)) * (1 - 0.6 * v) + (opts.wave ?? 0) * Math.sin(u * 19 + v * 5);
-    return scalpPoint(theta, phi, face, lift);
+    const edge = edgeAt(theta);
+    // over the hair it grows from: out of it at the root, then a little fuller than it
+    const base = under.lift(theta, Math.min(1, phi / edge));
+    // (along a parting it lies down on the hair under it: the line of the parting)
+    const rise = full * (0.3 + 0.7 * side(u)) * smoothstep(0.04, 0.5, v);
+    const over = base - 0.0016 * (1 - smoothstep(0, 0.12, v)) + rise - Math.max(0, rise - 0.0004) * parting + (opts.wave ?? 0) * Math.sin(u * 19 + v * 5);
+    // past the hairline it comes down onto the skin
+    // (only past it: before the hairline it stays over the hair it lies on)
+    const down = smoothstep(0.985, Math.max(1.02, 1 + 0.75 * (phiTip / edge - 1)), phi / edge);
+    return scalpPoint(theta, phi, face, over + (0.0019 - over) * down);
   };
   const a = point(0, 0), b = point(nu - 1, 0), c = point(0, nv - 1);
   const n = new Vector3(b[0] - a[0], b[1] - a[1], b[2] - a[2]).cross(new Vector3(c[0] - a[0], c[1] - a[1], c[2] - a[2]));
-  sc.sheet(nu, nv, point, painter, { thickness: 0.0055, flip: n.z < 0 });
+  // thinner to its ends and to its sides
+  const thickness = (i: number, j: number) => (0.0006 + 0.0042 * (1 - 0.9 * smoothstep(0.25, 1, j / (nv - 1)))) * (0.25 + 0.75 * side(i / (nu - 1)));
+  sc.sheet(nu, nv, point, painter, { thickness, flip: n.z < 0 });
 }
 
-/** A light, see-through fringe and the fine strands left out at the temples of hair that is drawn back or worn long. */
-function softFringe(sc: Sculpt, face: FaceSpec, painter: HairPainter, part: number): void {
-  for (let k = 0; k < 5; k++) {
-    const u = k / 4;
-    const a = -0.6 + 1.2 * u;
-    const from = dir(part + a * 0.35, 0.68);
-    const to = hairlineDir(a + (a < part ? -0.08 : 0.08), face, 0.019 + 0.004 * Math.sin(k * 2.6));
-    addLock(sc, face, { from, to, width: [0.02, 0.011], lift: (t) => 0.0065 + 0.004 * bump(t) - 0.002 * t, thickness: 0.0034 }, painter, 5);
-  }
-  for (const s of [-1, 1]) {
-    const from = hairlineDir(s * 0.84, face, -0.004);
-    const to = dir(s * 1.0, phiOfHeight(s * 1.0, EYE_Y - 0.026, face));
-    addLock(sc, face, { from, to, width: [0.008, 0.005], lift: (t) => 0.004 + 0.003 * t, hang: 0.04, swing: 0.003, curl: -0.007, thickness: 0.0036 }, painter, 4);
-  }
+/**
+ * A fine strand left out of hair that is drawn back: on the skin in front of an ear, from the hairline at the
+ * temple down past the cheekbone, thinning to nothing.
+ */
+function strand(sc: Sculpt, face: FaceSpec, painter: HairPainter, side: number): void {
+  const nu = 4, nv = 10;
+  const top = hairlineAt(side * 1.1, face) + 0.006, bottom = EYE_Y - 0.034;
+  sc.sheet(
+    nu,
+    nv,
+    (i, j) => {
+      const u = i / (nu - 1) - 0.5, v = j / (nv - 1);
+      // it comes a little forward on its way down, and narrows
+      const theta = side * (1.13 - 0.07 * v * v + u * 0.13 * Math.pow(1 - v, 0.8));
+      const y = top + (bottom - top) * v;
+      return scalpPoint(theta, phiOfHeight(theta, y, face), face, 0.0009 + 0.0022 * (1 - v) * (1 - 4 * u * u * 0.6));
+    },
+    painter,
+    { thickness: (_i, j) => 0.0003 + 0.0016 * (1 - j / (nv - 1)), flip: side < 0 },
+  );
 }
 
-/** The hair of a style; returns the height of its top above the head's joint. */
+/** Hair as every figure with such a face and such a style has it: its form, each point's share of the hair's colour, and its top. */
+interface HairCast {
+  cast: Cast;
+  hair: Float32Array;
+  crown: number;
+}
+const casts = new Map<string, Map<string, HairCast>>();
+
+/**
+ * The hair of a style, in the head's own frame: the cast of that style on such a face, in this figure's hair
+ * colour. Returns the height of its top above the head's joint.
+ */
 export function addHair(sc: Sculpt, face: FaceSpec, style: HairStyle, hair: Rgb, opts: { capped?: boolean; infant?: boolean } = {}): number {
+  if (style === "bald") return HEAD_CENTRE[1] + 0.115;
+  const kind = `${style}|${opts.capped ? 1 : 0}|${opts.infant ? 1 : 0}`;
+  let store = casts.get(kind);
+  if (!store) casts.set(kind, (store = new Map()));
+  const made = remembered(store, face, () => {
+    // (a colour of hair is so much of the figure's hair colour over a colour of its own — the band a tail is tied with)
+    const dark = new Sculpt(), light = new Sculpt();
+    const crown = sculptHair(dark, face, style, [0, 0, 0], opts);
+    sculptHair(light, face, style, [1, 1, 1], opts);
+    const cast = dark.cast(), lit = light.cast().colour;
+    const share = new Float32Array(lit.length / 3);
+    for (let i = 0; i < share.length; i++) share[i] = lit[3 * i]! - cast.colour[3 * i]!;
+    return { cast, hair: share, crown };
+  });
+  const own = made.cast.colour, n = made.hair.length;
+  const colour = new Float32Array(n * 3);
+  for (let i = 0; i < n; i++) {
+    const a = made.hair[i]!;
+    colour[3 * i] = own[3 * i]! + a * hair[0];
+    colour[3 * i + 1] = own[3 * i + 1]! + a * hair[1];
+    colour[3 * i + 2] = own[3 * i + 2]! + a * hair[2];
+  }
+  sc.put(made.cast, colour);
+  return made.crown;
+}
+
+/** The hair of a style sculpted directly (what a cast is taken from); returns the height of its top above the head's joint. */
+export function sculptHair(sc: Sculpt, face: FaceSpec, style: HairStyle, hair: Rgb, opts: { capped?: boolean; infant?: boolean } = {}): number {
   const top = HEAD_CENTRE[1] + 0.114;
   if (style === "bald") return top + 0.001;
   const painter = hairPaint(hair);
@@ -179,16 +195,25 @@ export function addHair(sc: Sculpt, face: FaceSpec, style: HairStyle, hair: Rgb,
   if (opts.infant) return addScalpShell(sc, face, painter, (_t, s) => 0.004 * (1 - 0.3 * s));
   let crown = top;
   switch (style) {
-    case "curly":
+    case "curly": {
       // a soft perm: full, the surface in loose waves
-      crown = addScalpShell(sc, face, painter, (t, s) => 0.021 * (1 - 0.3 * s * s) - 0.007 * flank(t) * Math.min(1, s * 3) + 0.0045 * Math.sin(t * 6 + s * 7) * Math.sin(s * 9 + t * 2.5) * Math.min(1, s * 3), (t) => 0.003 + 0.004 * gauss(Math.abs(t), Math.PI, 1.2) - 0.006 * gauss(t, 0, 0.8));
-      fringe(sc, face, painter, { from: 0.6, to: -0.95, root: 0.5, length: () => 0.018, sweep: 0.3, points: 4.5, lift: 0.014, wave: 0.0016 });
+      const under: Under = {
+        lift: (t, s) => 0.021 * (1 - 0.3 * s * s) - 0.007 * flank(t) * Math.min(1, s * 3) + 0.0045 * Math.sin(t * 6 + s * 7) * Math.sin(s * 9 + t * 2.5) * Math.min(1, s * 3),
+        drop: (t) => 0.003 + 0.004 * gauss(Math.abs(t), Math.PI, 1.2) - 0.006 * gauss(t, 0, 0.8),
+      };
+      crown = addScalpShell(sc, face, painter, under.lift, under.drop);
+      fringe(sc, face, painter, under, { from: 0.7, to: -0.95, root: 0.3, length: (u) => 0.014 + 0.006 * Math.sin(u * Math.PI), sweep: 0.3, points: 4.5, ragged: 0.12, full: 0.0045, wave: 0.0016 });
       break;
+    }
     case "long": {
       // sleek from an off-centre parting; it falls either side of the face and down the back, the ends turned in
       const part = 0.2;
-      crown = addScalpShell(sc, face, painter, (t, s) => 0.0135 * (1 - 0.3 * s * s) - 0.0032 * gauss(t, part, 0.13) * Math.min(1, s * 2.5) * (1 - 0.4 * s) * smoothstep(2.6, 1.6, Math.abs(t)), (t) => 0.014 * gauss(Math.abs(t), 1.45, 0.42) - 0.004 * gauss(t, 0, 0.7));
-      const n = 23, rows = 9;
+      const under: Under = {
+        lift: (_t, s) => 0.0135 * (1 - 0.3 * s * s),
+        drop: (t) => 0.014 * gauss(Math.abs(t), 1.45, 0.42) - 0.004 * gauss(t, 0, 0.7),
+      };
+      crown = addScalpShell(sc, face, painter, under.lift, under.drop);
+      const n = 27, rows = 9;
       sc.sheet(
         n,
         rows,
@@ -210,23 +235,24 @@ export function addHair(sc: Sculpt, face: FaceSpec, style: HairStyle, hair: Rgb,
         { thickness: 0.014, flip: true },
       );
       // the front lengths: from the parting out and down past the temples, a curtain either side of the brow
-      for (const side of [-1, 1]) {
-        fringe(sc, face, painter, { from: part + side * 0.04, to: side * 0.98, root: 0.62, length: (u) => 0.006 + 0.07 * Math.pow(u, 1.5), sweep: -side * 0.1, points: 1.2, lift: 0.011 });
-      }
+      fringe(sc, face, painter, under, { from: 1.02, to: -1.02, root: 0.34, part, length: (u) => 0.004 + 0.07 * Math.pow(Math.abs(1.02 - 2.04 * u - part) / (1.02 + Math.sign(1.02 - 2.04 * u - part) * -part), 1.5), sweep: 0.1, points: 0.6, full: 0.0035 });
       break;
     }
     case "ponytail":
     case "bun": {
       // drawn back sleek, the comb's lines running to where it is tied
       const low = style === "bun";
-      crown = addScalpShell(sc, face, painter, (t, s) => 0.0088 * (1 - 0.3 * s) + 0.0008 * Math.sin(t * 16) * (0.4 + 0.6 * s), (t) => 0.002 * gauss(Math.abs(t), 1.5, 0.3));
+      const under: Under = { lift: (t, s) => 0.0088 * (1 - 0.3 * s) + 0.0008 * Math.sin(t * 16) * (0.4 + 0.6 * s), drop: (t) => 0.002 * gauss(Math.abs(t), 1.5, 0.3) };
+      crown = addScalpShell(sc, face, painter, under.lift, under.drop);
       const tiePhi = phiOfHeight(Math.PI, low ? -0.03 : 0.014, face);
       const root = scalpPoint(Math.PI, tiePhi, face, 0.01);
       const band: Paint = { rgb: [0.03, 0.03, 0.04], gloss: 0.15 };
       if (low) {
         // a low chignon, a band round its base
-        sc.ball([root[0], root[1] - 0.004, root[2] - 0.024], 0.035, 0.031, 0.03, painter, 14, 8);
-        sc.ball([root[0], root[1] - 0.004, root[2] - 0.004], 0.022, 0.02, 0.012, band, 10, 5);
+        sc.ball([root[0], root[1] - 0.004, root[2] - 0.024], 0.035, 0.031, 0.03, painter, 18, 10);
+        sc.ball([root[0], root[1] - 0.004, root[2] - 0.004], 0.022, 0.02, 0.012, band, 12, 5);
+        // a light fringe combed to one side: just over the brows, longer towards the temple it is combed to
+        fringe(sc, face, painter, under, { from: 0.78, to: -0.86, root: 0.3, length: (u) => 0.009 + 0.016 * Math.pow(u, 1.3), sweep: 0.26, points: 2.5, full: 0.0035 });
       } else {
         const tail: Station[] = [
           { p: [root[0], root[1], root[2]], rx: 0.019, rz: 0.017 },
@@ -236,24 +262,26 @@ export function addHair(sc: Sculpt, face: FaceSpec, style: HairStyle, hair: Rgb,
           { p: [root[0], root[1] - 0.17, root[2] - 0.034], rx: 0.016, rz: 0.013 },
           { p: [root[0], root[1] - 0.212, root[2] - 0.04], rx: 0.008, rz: 0.007 },
         ];
-        sc.sweep(tail, painter, { seg: 10, front: [0, 0, -1], dome: 0.9 });
-        sc.sweep([{ p: [root[0], root[1] - 0.001, root[2] - 0.01], rx: 0.0215, rz: 0.02 }, { p: [root[0], root[1] - 0.005, root[2] - 0.02], rx: 0.0225, rz: 0.021 }], band, { seg: 10, front: [0, 0, -1], start: "flat", end: "flat" });
+        sc.sweep(tail, painter, { seg: 12, front: [0, 0, -1], dome: 0.9 });
+        sc.sweep([{ p: [root[0], root[1] - 0.001, root[2] - 0.01], rx: 0.0215, rz: 0.02 }, { p: [root[0], root[1] - 0.005, root[2] - 0.02], rx: 0.0225, rz: 0.021 }], band, { seg: 12, front: [0, 0, -1], start: "flat", end: "flat" });
+        // a fringe parted off-centre, a soft curtain to either temple
+        const part = -0.16;
+        fringe(sc, face, painter, under, { from: 0.98, to: -0.98, root: 0.32, part, length: (u) => 0.004 + 0.03 * Math.sin(Math.pow(Math.abs(0.98 - 1.96 * u - part) / (0.98 + Math.sign(0.98 - 1.96 * u - part) * -part), 0.9) * Math.PI * 0.86), sweep: 0.08, points: 0.6, full: 0.0032 });
       }
-      softFringe(sc, face, painter, 0.15);
+      // fine strands left out in front of the ears
+      for (const side of [-1, 1]) strand(sc, face, painter, side);
       break;
     }
-    default:
+    default: {
       // short: full on top, close at the sides and the nape, the fringe combed across from a parting on the left
-      crown = addScalpShell(
-        sc,
-        face,
-        painter,
-        (t, s) => 0.0185 * (1 - 0.5 * Math.pow(s, 1.5)) + (-0.0095 * flank(t) + 0.003 * gauss(t, 0.5, 0.8) + 0.0007 * Math.sin((t + s * 0.9) * 15) * s) * smoothstep(0.15, 0.6, s) * (1 - 0.3 * s),
-        (t) => -0.007 * gauss(t, -0.1, 0.9) + 0.002 * Math.sin(t * 9),
-      );
-      fringe(sc, face, painter, { from: 0.55, to: -0.95, root: 0.52, length: (u) => 0.016 + 0.008 * Math.sin(u * Math.PI), sweep: 0.34, points: 3.5, lift: 0.013 });
-      fringe(sc, face, painter, { from: 1.0, to: 0.6, root: 0.6, length: () => 0.006, sweep: -0.1, points: 1.5, lift: 0.008 });
+      const under: Under = {
+        lift: (t, s) => 0.0185 * (1 - 0.5 * Math.pow(s, 1.5)) + (-0.0095 * flank(t) + 0.003 * gauss(t, 0.5, 0.8) + 0.0007 * Math.sin((t + s * 0.9) * 15) * s) * smoothstep(0.15, 0.6, s) * (1 - 0.3 * s),
+        drop: (t) => -0.007 * gauss(t, -0.1, 0.9) + 0.002 * Math.sin(t * 9),
+      };
+      crown = addScalpShell(sc, face, painter, under.lift, under.drop);
+      fringe(sc, face, painter, under, { from: 0.92, to: -0.95, root: 0.3, length: (u) => 0.007 + 0.015 * Math.sin(Math.pow(u, 0.8) * Math.PI * 0.8), sweep: 0.34, points: 3.5, ragged: 0.1, full: 0.0045 });
       break;
+    }
   }
   return crown;
 }
