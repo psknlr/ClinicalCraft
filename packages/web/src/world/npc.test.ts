@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { Box3, Group, type BufferAttribute, type Mesh } from "three";
 import { frameOf } from "./figure/anatomy.js";
-import { buildPerson, disposeRig, heightOf, looksOf, PATIENT_WEAR, PERSON_HEIGHT, presentationOf, ROLE_UNIFORMS, setBlink, setBreath, setDistressed, setMouth, STATURE_SCALE, uniformOf, type AppearanceLike, type PersonRig } from "./npc.js";
+import { buildPerson, disposeRig, heightOf, looksOf, PATIENT_WEAR, PERSON_HEIGHT, presentationOf, presentationOfSex, ROLE_UNIFORMS, setBlink, setBreath, setDistressed, setMouth, STATURE_SCALE, uniformOf, type AppearanceLike, type PersonRig } from "./npc.js";
 
 /** The drawn meshes of a rig (not the unseen aim box). */
 function meshes(rig: PersonRig): Mesh[] {
@@ -217,15 +217,14 @@ describe("people of the world (npc.ts)", () => {
     disposeRig(b);
   });
 
-  it("draws a woman or a man: by what the appearance says, else by a patient's sex, else by the hair", () => {
-    // the default: cropped or no hair, a man's features; hair that is long, tied back, bobbed or permed, a woman's
+  it("draws a woman, a man or neither: by what the appearance says, else — staff — by the hair; the people of a case by the sex it records", () => {
+    // staff nobody described: cropped or no hair, a man's features; hair that is long, tied back, bobbed or permed, a woman's
     for (const style of ["short", "bald", undefined] as const) expect(presentationOf(style)).toBe("masculine");
     for (const style of ["long", "wavy", "bob", "bun", "ponytail", "curly"] as const) expect(presentationOf(style)).toBe("feminine");
-    // a patient's sex says more than their hair; one that says neither leaves it to the hair
-    expect(presentationOf("short", "female")).toBe("feminine");
-    expect(presentationOf("long", "male")).toBe("masculine");
-    expect(presentationOf("long", "unspecified")).toBe("feminine");
-    expect(presentationOf("short", "intersex")).toBe("masculine");
+    // the people of a case: by the sex the case records, whatever their hair — and as neither when it records none
+    expect(presentationOfSex("female")).toBe("feminine");
+    expect(presentationOfSex("male")).toBe("masculine");
+    for (const sex of ["unspecified", "intersex", undefined]) expect(presentationOfSex(sex)).toBe("neutral");
     const face = (ap: AppearanceLike) => {
       const rig = buildPerson(ap, { posture: "standing" });
       const out = { position: Array.from(rig.face.geometry.getAttribute("position").array as Float32Array), box: drawnBox(rig) };
@@ -238,6 +237,13 @@ describe("people of the world (npc.ts)", () => {
     expect(woman.position).not.toEqual(man.position);
     expect(face({ hairStyle: "bob" }).position).toEqual(face({ hairStyle: "bob", presentation: "feminine" }).position);
     expect(face({ hairStyle: "bob", presentation: "masculine" }).position).not.toEqual(face({ hairStyle: "bob" }).position);
+    // neither's in particular is a third face, between the two — whatever the hair
+    const between = face({ hairStyle: "short", presentation: "neutral" });
+    expect(between.position).not.toEqual(man.position);
+    expect(between.position).not.toEqual(woman.position);
+    const width = (f: typeof man) => f.box.max.x - f.box.min.x;
+    expect(width(between)).toBeLessThan(width(man));
+    expect(width(between)).toBeGreaterThan(width(woman));
     // and another frame: her shoulders are narrower than his, both of a height
     expect(woman.box.max.x - woman.box.min.x).toBeLessThan(man.box.max.x - man.box.min.x - 0.015);
     expect(woman.box.max.y).toBeCloseTo(man.box.max.y, 6);

@@ -163,7 +163,10 @@
           "zh-CN": "守在床边的儿子，照顾父亲多年，着急但尽量把病史说清楚；只转述病历里记录的事。",
           "en": "His son at the bedside, who has cared for his father for years — anxious but trying to give the history clearly; relays only what the record contains."
         },
-        "answersHistory": true
+        "answersHistory": true,
+        "appearance": {
+          "presentation": "masculine"
+        }
       }
     },
     "nonVerbalWhen": {

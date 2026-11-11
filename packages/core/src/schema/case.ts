@@ -52,10 +52,12 @@ export const AppearanceSchema = z
     gown: z.boolean().default(false),
     accessory: z.enum(["none", "glasses", "mask", "nasal-cannula", "oxygen-mask", "sling", "cap"]).default("none"),
     /**
-     * Whether the 3D world draws this person with a woman's features and frame or a man's. Left out, a patient is
-     * drawn by their `sex`, and anyone else by their hair style (cropped or bald: a man's; else a woman's).
+     * Whether the 3D world draws this person with a woman's features and frame, a man's, or neither's in
+     * particular. Left out: a patient is drawn by their `sex` (neither's when it is neither); a companion as
+     * neither — say it when the case says who they are; a member of staff by their hair style (cropped or bald: a
+     * man's; else a woman's).
      */
-    presentation: z.enum(["feminine", "masculine"]).optional(),
+    presentation: z.enum(["feminine", "masculine", "neutral"]).optional(),
   })
   .strict();
 export type Appearance = z.infer<typeof AppearanceSchema>;

@@ -144,10 +144,13 @@ mask, a cap…) and — with `shirt` and `pants` — the uniform's colours. The 
 | `curly` | a soft perm to the jaw, in close waves |
 | `bald` | none |
 
-`presentation` (`feminine` \| `masculine`) says whether someone is drawn with a woman's features
-and frame or a man's. Left out, a case's patient is drawn by their `sex`, and anyone else by their
-hair: cropped or bald, a man's; any other style, a woman's — so say it for a woman with cropped
-hair or a man with a ponytail. A child is neither yet, a teenager on the way. What an appearance
+`presentation` (`feminine` \| `masculine` \| `neutral`) says whether someone is drawn with a
+woman's features and frame, a man's, or neither's in particular. Left out, a member of staff is
+drawn by their hair: cropped or bald, a man's; any other style, a woman's — so say it for a woman
+with cropped hair, a man with a ponytail, or whoever the name already tells of ("Ms Zheng"). The
+people of a case are drawn by what the case records, never by their hair: the patient by their
+`sex` (neither's when it is neither), a companion as neither's unless the case says who they are
+(CASE_AUTHORING.md). A child is neither yet, a teenager on the way. What an appearance
 leaves unsaid differs from one member of staff to the next (skin, hair and its style, build,
 glasses, height by a few per cent) and is the same for the same staff id every time, so a theatre
 team is three people, not one person three times. Everyone breathes, blinks, turns their head to

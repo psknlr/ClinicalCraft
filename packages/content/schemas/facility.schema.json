@@ -1098,7 +1098,8 @@
                     "type": "string",
                     "enum": [
                       "feminine",
-                      "masculine"
+                      "masculine",
+                      "neutral"
                     ]
                   }
                 },
@@ -1852,7 +1853,8 @@
                               "type": "string",
                               "enum": [
                                 "feminine",
-                                "masculine"
+                                "masculine",
+                                "neutral"
                               ]
                             }
                           },

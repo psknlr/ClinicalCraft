@@ -10,7 +10,7 @@ import { buildHeld } from "../../packages/web/src/world/figure/held.js";
 import { figureMaterial } from "../../packages/web/src/world/figure/material.js";
 import { WRIST } from "../../packages/web/src/world/figure/hand-cage.js";
 import { rgb, Sculpt, sweepEnd, type Station } from "../../packages/web/src/world/figure/sculpt.js";
-import { buildPerson, PATIENT_WEAR, heightOf, looksOf, setBlink, setBreath, setDistressed, setMouth, uniformOf, type AppearanceLike, type PersonOptions, type Posture } from "../../packages/web/src/world/npc.js";
+import { buildPerson, PATIENT_WEAR, heightOf, looksOf, presentationOfSex, setBlink, setBreath, setDistressed, setMouth, uniformOf, type AppearanceLike, type PersonOptions, type Posture } from "../../packages/web/src/world/npc.js";
 
 interface Entry {
   label: string;
@@ -71,11 +71,12 @@ async function entries(params: URLSearchParams): Promise<Entry[]> {
     const f = (await (await fetch("/" + facility)).json()) as { staff?: { id: string; role: string; position?: string; name?: Local; appearance?: AppearanceLike }[] };
     list = (f.staff ?? []).filter((s) => !only.length || only.includes(s.id)).map((s) => staffEntry(s.id, s.role, s.position, s.appearance, `${s.id} · ${s.position ?? s.role}`));
   } else if (kase) {
-    const c = (await (await fetch("/" + kase)).json()) as { patient?: { name?: Local | string; appearance?: AppearanceLike; posture?: Posture; persona?: { companion?: { name?: Local; appearance?: AppearanceLike } } } };
+    const c = (await (await fetch("/" + kase)).json()) as { patient?: { name?: Local | string; sex?: string; appearance?: AppearanceLike; posture?: Posture; persona?: { companion?: { name?: Local; appearance?: AppearanceLike } } } };
     const p = c.patient ?? {};
-    list = patientEntries(text(p.name) || "patient", p.appearance, [...new Set<Posture>([p.posture ?? "standing", "standing", "sitting", "lying"])]);
+    // as the world draws them: the patient by their sex, the companion as neither a woman nor a man in particular — unless the case says
+    list = patientEntries(text(p.name) || "patient", { ...p.appearance, presentation: p.appearance?.presentation ?? presentationOfSex(p.sex) }, [...new Set<Posture>([p.posture ?? "standing", "standing", "sitting", "lying"])]);
     const comp = p.persona?.companion;
-    if (comp) list.push({ label: `companion · ${text(comp.name)}`, appearance: comp.appearance, options: { posture: "standing", seed: "companion" } });
+    if (comp) list.push({ label: `companion · ${text(comp.name)}`, appearance: { presentation: "neutral", ...comp.appearance }, options: { posture: "standing", seed: "companion" } });
   } else list = (params.get("sheet") || "roles").split(",").flatMap(sheet).filter((e) => !only.length || only.some((o) => e.label.includes(o)));
   const posture = params.get("posture") as Posture | null;
   if (posture) for (const e of list) Object.assign(e, { options: { ...e.options, posture, surfaceY: posture === "lying" ? 0.62 : 0.5 }, surface: posture === "standing" ? undefined : posture === "lying" ? 0.62 : 0.5 });

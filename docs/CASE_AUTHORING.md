@@ -80,10 +80,12 @@ solution is sent to the browser).
   warns when only one of the two fields is set.
 * `appearance` matches age/sex/build (stature `child` for 2–12 y, `infant` < 2 y);
   `posture` matches the setting (lying in resus, sitting in clinic). The patient is drawn with a
-  woman's features and frame or a man's by `patient.sex` (by their hair when the sex is neither);
-  `appearance.presentation` (`feminine` | `masculine`) says otherwise, and says it for a companion,
-  who is drawn by their hair (`hairStyle`: `short`, `long`, `wavy`, `bob`, `bun`, `ponytail`,
-  `curly`, `bald` — FACILITIES.md "Staff in the 3D world"). The world draws it as a
+  woman's features and frame or a man's by `patient.sex`, and with neither's in particular when the
+  sex is neither. A companion is drawn as neither's too — the world shows no more than the record
+  says — so give `appearance.presentation` (`feminine` | `masculine` | `neutral`) to a companion
+  the case says is a wife, a son, a mother…, and leave it out for "a relative" or "a parent" the
+  source does not describe. Hair is `hairStyle`: `short`, `long`, `wavy`, `bob`, `bun`, `ponytail`,
+  `curly`, `bald` (FACILITIES.md "Staff in the 3D world"). The world draws it as a
   figure of real proportions: `gown: true` is a hospital gown to the knee (bare legs, slippers),
   otherwise the patient's own top and trousers in `shirt` / `pants`; every patient wears an
   identity band on the wrist; someone lying is under the covers with the head on the pillow, the

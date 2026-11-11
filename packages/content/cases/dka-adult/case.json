@@ -176,6 +176,7 @@
         },
         "answersHistory": false,
         "appearance": {
+          "presentation": "feminine",
           "hairStyle": "long",
           "hair": "#2b211c",
           "shirt": "#c2703d",
