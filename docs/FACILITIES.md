@@ -16,8 +16,16 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
 * Wall-mounted items (oxygen outlet, clock, whiteboard, lightbox) set
   `solid: false`, keep their parts near local z = −footprint.d/2 (the back),
   and are placed with their back against a wall.
-* Screens: name a part `"screen"` and set the equipment `screen` kind
-  (`vitals`, `ecg`, `pacs`, …); the web client paints a live canvas texture on it.
+* Screens: name a part `"screen"` and set the equipment `screen` kind; the web
+  client paints a canvas texture on it. `vitals` and `ecg` are live — the
+  patient's monitor, redrawn as it changes. The others are a representative
+  picture of what the equipment is for, drawn once: `xray` (a chest film), `ct`
+  and `pacs` (an axial slice), `lab`, `text`, `logo`, and `thoracoscopy` — the
+  round field of a rigid scope in the chest: ribs under the pleura with the
+  vessels that run along them, the collapsed lung with its fissure and carbon
+  pigment, a pad of fat, a grasper (`packages/web/src/world/scope-picture.ts`;
+  every monitor of one size shows the same frame, as monitors on one camera
+  do). A representative picture is never a patient's own finding.
 * Per-placement details: `placement.extraParts` adds voxel parts to one
   placement (same frame as the type's `parts`, rotated with the placement,
   rendered the same way, no collider) and `placement.hideParts` skips type

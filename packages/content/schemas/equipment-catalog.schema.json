@@ -284,7 +284,8 @@
             "pacs",
             "lab",
             "text",
-            "logo"
+            "logo",
+            "thoracoscopy"
           ],
           "default": "none"
         },
