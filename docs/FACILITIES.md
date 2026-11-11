@@ -32,6 +32,15 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
 * Visual QA (required for content authors):
   `node scripts/preview/render.mjs equipment --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/<file>.json --out <png>` and
   `node scripts/preview/render.mjs facility --facility packages/content/facilities/<id>.json --catalogs <all catalog files> --out <png>`.
+  `node scripts/preview/render.mjs models --catalogs <catalog files> [--compare 1] --out <png>` draws the types' GLB
+  models as the world does, beside their voxel parts (BLENDER.md "Looking at the result").
+  `node scripts/preview/render.mjs people --facility <facility file> [--only <staff ids>] [--view front|iso|back|side|face|face-iso|face-side|chest|hands] --out <png>`
+  draws the facility's staff as the world does ("Staff in the 3D world" below; `--blink 0..1` and `--speak 0..1`
+  shut their eyes and open their mouths that far); `--case <case.json>` draws a case's
+  patient standing, sitting and in bed, and their companion; `--sheet roles|positions|looks|patients` the
+  reference sheets (every role's uniform, every theatre position, what an appearance can ask for);
+  `--view hand` the hand by itself in each of its poses (`--detail 0`: as a figure has it), `--view held` the
+  player's own hand and stethoscope as the camera sees them.
   Files may lie outside the checkout (a `contentDirs` folder): only the files
   named on the command line are served. A file that fails to load or parse
   ends the run at once with `{"ok": false, …}` and exit code 1.
@@ -103,6 +112,93 @@ levels.
 Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
 (`nurse`, `radiologist`, `pathologist`, `lab-tech`, `attending`,
 `pharmacist`, `receptionist`, `paramedic`, `porter`).
+
+**Staff in the 3D world.** A member of staff is drawn as a figure of real proportions (an adult
+stands 1.74 m; the web's `src/world/figure/`), dressed for the job:
+
+| who | wears |
+|---|---|
+| `nurse` | scrubs, a fob watch, pens and a name tag at the chest pocket, the identity card clipped below it, clogs |
+| `attending` | shirt and tie under a white coat (lapels, three buttons, pockets), a stethoscope round the neck |
+| `radiologist` | a white coat over scrubs, a dosimeter |
+| `pathologist`, `pharmacist`, `lab-tech` | a white coat over a shirt or scrubs |
+| `receptionist` | a shirt and belted trousers, the identity card on a lanyard |
+| `paramedic` | a uniform shirt with epaulettes and reflective bands, boots |
+| `porter` | a polo shirt, the identity card on a lanyard |
+| position `surgeon`, `assistant-surgeon`, `scrub-nurse` | scrubbed: theatre cap, mask, sterile gown and gloves, the hands held together in front |
+| position `anaesthetist`, `circulating-nurse` | theatre scrubs, cap and mask (the anaesthetist a stethoscope) |
+| position `theatre-coordinator` | theatre scrubs and cap |
+| position `recovery-nurse`, `radiographer` | scrubs — with a stethoscope, with a dosimeter |
+
+A `position` (CHARACTERS.md §2) changes what its `role` wears, so nobody stands in theatre in a
+white coat. `appearance` sets skin, hair and its style, build, stature, an accessory (glasses, a
+mask, a cap…) and — with `shirt` and `pants` — the uniform's colours. The styles of hair:
+
+| `hairStyle` | the hair |
+|---|---|
+| `short` | cropped: full on top, combed from the crown forward into a fringe and down the sides and the back to the hairline |
+| `long` | layered, from a parting a little to one side: a curtain fringe swept either side of the brow to the cheekbones, lengths before the shoulders to the collarbones and behind them down the back |
+| `wavy` | long loose waves from a middle parting under a fringe of wisps over the brows, a lock cut at the cheek beside each eye |
+| `bob` | to the chin all round, cut straight, the ends turned a little in; a fringe of wisps |
+| `bun`, `ponytail` | drawn back to where it is tied — a low knot, or a tail down the back — under a light fringe of wisps or a parted curtain, a fine strand left out before each ear |
+| `curly` | a soft perm to the jaw, in close waves |
+| `bald` | none |
+
+`presentation` (`feminine` \| `masculine` \| `neutral`) says whether someone is drawn with a
+woman's features and frame, a man's, or neither's in particular. Left out, a member of staff is
+drawn by their hair: cropped or bald, a man's; any other style, a woman's — so say it for a woman
+with cropped hair, a man with a ponytail, or whoever the name already tells of ("Ms Zheng"). The
+people of a case are drawn by what the case records, never by their hair: the patient by their
+`sex` (neither's when it is neither), a companion as neither's unless the case says who they are
+(CASE_AUTHORING.md). A child is neither yet, a teenager on the way. What an appearance
+leaves unsaid differs from one member of staff to the next (skin, hair and its style, build,
+glasses, height by a few per cent) and is the same for the same staff id every time, so a theatre
+team is three people, not one person three times. Everyone breathes, blinks, turns their head to
+the learner and moves their jaw when they speak. A name tag floats over each.
+
+A face is one skin (`figure/head.ts`, over the form of a head in `figure/skull.ts`): an oval, the
+line of the jaw soft in to a small chin that stands under the lips, the jaw's lower border rising
+to its angle under the ear. Lids and lips are that skin itself (`figure/eyes.ts`,
+`figure/mouth.ts`: rings of finer points zipped into openings of the head's grid,
+`figure/face-mesh.ts`), so they shade as one with the face and they move: a blink is the upper
+lid coming down round the eye, its lashes with it, to shut on the lower lid; speech opens the
+mouth as an oval — the lower lip and the chin go down, the corners half the way and a little in —
+and under the upper lip the edge of the teeth shows over the dark of the mouth. Behind the lids
+are eyes with an iris, a pupil and the lights in them; over them soft straight brows; the ears
+are shells with a rim, a hollow and a lobe (`figure/ears.ts`). Skin gives a little light back in
+shade, warmer than it took it (`figure/material.ts`), so a face out of the light stays rosy.
+
+A woman's face and a man's differ where faces do (`FaceSpec.feminine` in `figure/skull.ts`; a
+figure's frame in `figure/anatomy.ts`). Hers: larger eyes, more open, the upper lid over the top
+of a large iris and a little fullness under the lower lid; finer, lighter brows; fuller lashes
+that run on a touch beyond the outer corner; a smaller nose, low in the bridge; a narrower mouth
+with fuller lips, their colour deepest along the line where they meet; rounder cheeks with a
+flush that reaches up under the eyes and over the nose; a small chin; narrower shoulders and
+waist, a slimmer neck. His: a heavier brow over narrower eyes, a larger nose, a wider mouth with
+thinner lips of little more than the skin's colour, a broad jaw to a wide, taller chin, hardly
+any flush; broader shoulders, a thicker neck.
+
+Hair is hair (`figure/hair.ts`, `figure/locks.ts`): strands lying together in locks, each a
+ribbon with a soft ridge that catches the light, thinning to its end — over a layer of hair close
+to the scalp that is in their shade. From a parting the locks fan out over the head, or from the
+crown; where the hair is long enough they go on down past the head — beside the face, before the
+shoulders over the collarbones or behind them down the back, clear of the neck and the trunk — to
+layered lengths, in waves that run round the head together if the style has them. A fringe is
+separate locks that begin in the hair of the top: broad ones side by side with fine ones over
+them, parting into ends the skin shows between; or a curtain swept from the parting. A band of
+light where the head turns from the top to the sides is the sheen of healthy hair.
+
+A face of an age, a width and a sex — and a style of hair on it — is sculpted once and kept as a
+cast: everyone with such a face takes the cast in their own colours, so a hospital full of people
+is built in the time of a few.
+
+Hands are hands (`figure/hand*.ts`): one skin over a hand's bones — the knuckles half-way along
+it, the fingers out of the palm through webs, the thumb out of its mound of muscle, nails — drawn
+through a cage of a few hundred points and refined into a smooth surface (`figure/subdivide.ts`),
+resting, laid flat on a lap or a bed, or closed over one another in front of a sterile gown. A
+forearm turns with its hand (the wrist is wide the way the hand is wide) and the hand grows out
+of the forearm's last ring, so wrist and arm are one surface. The player's own hand is the same
+hand, refined once more, pinching the chest piece of its stethoscope pad to pad.
 
 **Equipment types.**
 
@@ -343,7 +439,8 @@ infusion-pump — infusion hardware; IV access is the patient's cannula, not
 equipment),
 `ventilator` (device, ventilator), `suction-unit` (device, suction),
 `nebulizer` (device, nebulizer, portable), `glucometer-station` (device, point-of-care),
-`diagnostic-wall-set` (device, otoscope + stethoscope, wall),
+`diagnostic-wall-set` (device, otoscope + stethoscope, wall: the two handles on coiled cords, the aneroid gauge over
+its cuff basket, a stethoscope hung by its headset on a peg),
 `anesthesia-machine` (device, anesthesia + airway), `operating-table`,
 `surgical-light` (light), `instrument-table`, `medication-cabinet`
 (device, medications), `medication-fridge` (storage, medications),

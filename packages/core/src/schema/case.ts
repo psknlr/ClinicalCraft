@@ -44,13 +44,20 @@ export const AppearanceSchema = z
   .object({
     skin: HexColorSchema.default("#cba88a"),
     hair: HexColorSchema.default("#3b3027"),
-    hairStyle: z.enum(["short", "long", "bald", "bun", "ponytail", "curly"]).default("short"),
+    hairStyle: z.enum(["short", "long", "bald", "bun", "ponytail", "curly", "bob", "wavy"]).default("short"),
     shirt: HexColorSchema.default("#6d9fba"),
     pants: HexColorSchema.default("#354442"),
     build: z.enum(["slim", "average", "heavy"]).default("average"),
     stature: z.enum(["infant", "child", "teen", "adult"]).default("adult"),
     gown: z.boolean().default(false),
     accessory: z.enum(["none", "glasses", "mask", "nasal-cannula", "oxygen-mask", "sling", "cap"]).default("none"),
+    /**
+     * Whether the 3D world draws this person with a woman's features and frame, a man's, or neither's in
+     * particular. Left out: a patient is drawn by their `sex` (neither's when it is neither); a companion as
+     * neither — say it when the case says who they are; a member of staff by their hair style (cropped or bald: a
+     * man's; else a woman's).
+     */
+    presentation: z.enum(["feminine", "masculine", "neutral"]).optional(),
   })
   .strict();
 export type Appearance = z.infer<typeof AppearanceSchema>;

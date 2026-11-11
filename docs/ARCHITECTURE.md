@@ -63,7 +63,8 @@ docs/                       ARCHITECTURE (this), PROTOCOL (runtime, providers, f
                             PROCEDURE (the operative field: `procedure`, `operate`, safety views and gates),
                             GLOSSARY (product words of both languages, register); bench/ — generated benchmark reports
                             and reference demonstrations (samples, not tests)
-scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA),
+scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA: equipment,
+                            models, floor plans, and the people as the world draws them),
                             bench/content-scale.ts (content-scale measurement, docs/EMBODIED.md §11)
 packages/core               @clinicalcraft/core     zod schemas + pure engine
 packages/world              @clinicalcraft/world    embodied world model (pure, headless): collision model, navigation,
@@ -900,7 +901,10 @@ spoken by the patient — those come from engine actions.
   procedural 16×16 pixel textures, instanced boxes, V4 player physics,
   doors, build zone, crafting). Its walls and every collider come from the
   `@clinicalcraft/world` collision model (EMBODIED R2), so the headless
-  world and the 3D view agree box for box. Patients/staff are voxel NPCs; equipment is
+  world and the 3D view agree box for box. Patients and staff are figures of real
+  proportions built in code (`src/world/figure/`: an appearance, a posture, the uniform of
+  a role as a position wears it — FACILITIES.md "Staff in the 3D world"); the player's hand
+  holds a stethoscope; equipment is
   interactive (workstations order exams, monitors show live vitals/ECG,
   the case board takes decisions, atlas kiosk opens the anatomy viewer).
   Panels: conversation (streaming, free text + suggested questions), exam,

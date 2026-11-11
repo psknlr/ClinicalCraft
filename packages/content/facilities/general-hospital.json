@@ -1840,7 +1840,7 @@
     {"id": "cub2-curtain", "type": "privacy-curtain", "x": 27, "z": 0.75, "rot": 0, "room": "ed-cubicle-2"},
     {"id": "cub1-treatment-cart", "type": "crash-cart", "x": 23.465, "z": 5.5, "rot": 270, "room": "ed-cubicle-1", "label": {"zh-CN": "急诊治疗车", "en": "ED Treatment Cart"}},
     {"id": "cub2-ecg", "type": "ecg-machine", "x": 24.5, "z": 5.5, "rot": 90, "room": "ed-cubicle-2", "label": {"zh-CN": "急诊诊室心电图机", "en": "Cubicle ECG Cart"}},
-    {"id": "cub2-nebulizer", "type": "nebulizer", "x": 29.7, "z": 8.25, "rot": 0, "room": "ed-cubicle-2", "label": {"zh-CN": "雾化器", "en": "Nebulizer"}},
+    {"id": "cub2-nebulizer", "type": "nebulizer", "x": 29.7, "z": 8.25, "rot": 0, "room": "ed-cubicle-2", "label": {"zh-CN": "雾化器", "en": "Nebuliser"}},
     {"id": "ed-store-cabinet-1", "type": "cabinet", "x": 34, "z": 9.2, "rot": 180, "room": "ed-store"},
     {"id": "ed-store-cabinet-2", "type": "cabinet", "x": 35.2, "z": 9.2, "rot": 180, "room": "ed-store"},
     {"id": "ed-store-o2-1", "type": "oxygen-cylinder", "x": 39.525, "z": 6, "rot": 270, "room": "ed-store", "label": {"zh-CN": "氧气钢瓶", "en": "Oxygen Cylinder"}},
@@ -1871,7 +1871,7 @@
     {"id": "resus1-defibrillator", "type": "defibrillator", "x": 32.75, "z": -16.725, "rot": 270, "room": "ed-resus", "label": {"zh-CN": "除颤仪 1", "en": "Defibrillator 1"}},
     {"id": "resus1-crash-cart", "type": "crash-cart", "x": 32.95, "z": -15.325, "rot": 270, "room": "ed-resus", "label": {"zh-CN": "抢救车 1", "en": "Crash Cart 1"}},
     {"id": "resus1-ventilator", "type": "ventilator", "x": 32.75, "z": -18.025, "rot": 270, "room": "ed-resus", "label": {"zh-CN": "呼吸机", "en": "Ventilator"}},
-    {"id": "resus1-nebulizer", "type": "nebulizer", "x": 28.3, "z": -16.325, "rot": 90, "room": "ed-resus", "label": {"zh-CN": "雾化器", "en": "Nebulizer"}},
+    {"id": "resus1-nebulizer", "type": "nebulizer", "x": 28.3, "z": -16.325, "rot": 90, "room": "ed-resus", "label": {"zh-CN": "雾化器", "en": "Nebuliser"}},
     {"id": "resus2-bed", "type": "hospital-bed", "x": 41, "z": -17.325, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救床 2", "en": "Resus Bed 2"}},
     {"id": "resus2-monitor", "type": "patient-monitor", "x": 39.65, "z": -19.475, "rot": 0, "room": "ed-resus", "label": {"zh-CN": "抢救监护仪 2", "en": "Resus Monitor 2"}},
     {"id": "resus2-oxygen", "type": "oxygen-outlet", "x": 41.25, "z": -19.7, "rot": 0, "room": "ed-resus"},
@@ -2076,7 +2076,7 @@
       "appearance": {
         "skin": "#d8b494",
         "hair": "#2d241d",
-        "hairStyle": "bun",
+        "hairStyle": "wavy",
         "shirt": "#aa6854",
         "pants": "#354442"
       },
@@ -2168,7 +2168,7 @@
       "appearance": {
         "skin": "#e3c2a2",
         "hair": "#3b3027",
-        "hairStyle": "bun",
+        "hairStyle": "bob",
         "shirt": "#6fa8c7",
         "pants": "#6fa8c7"
       },

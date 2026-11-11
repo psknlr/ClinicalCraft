@@ -2996,7 +2996,9 @@
             "bald",
             "bun",
             "ponytail",
-            "curly"
+            "curly",
+            "bob",
+            "wavy"
           ],
           "default": "short"
         },
@@ -3043,6 +3045,14 @@
             "cap"
           ],
           "default": "none"
+        },
+        "presentation": {
+          "type": "string",
+          "enum": [
+            "feminine",
+            "masculine",
+            "neutral"
+          ]
         }
       },
       "additionalProperties": false
@@ -3340,7 +3350,9 @@
                             "bald",
                             "bun",
                             "ponytail",
-                            "curly"
+                            "curly",
+                            "bob",
+                            "wavy"
                           ],
                           "default": "short"
                         },
@@ -3387,6 +3399,14 @@
                             "cap"
                           ],
                           "default": "none"
+                        },
+                        "presentation": {
+                          "type": "string",
+                          "enum": [
+                            "feminine",
+                            "masculine",
+                            "neutral"
+                          ]
                         }
                       },
                       "additionalProperties": false

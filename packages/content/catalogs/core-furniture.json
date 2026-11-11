@@ -171,7 +171,7 @@
         {"m": "navy", "p": [0, 0.565, 0], "s": [0.44, 0.07, 0.308]},
         {"m": "navy", "p": [0, 0.565, 0], "s": [0.308, 0.07, 0.44]}
       ],
-      "model": {"uri":"models/stool.glb","sha256":"61e8da03032184d14f48bbc86d29375e26359c1aacbbf5280839979e09df38d4","scale":1,"offset":[0.0,0.0005,0.004],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
+      "model": {"uri":"models/stool.glb","sha256":"2b29bbe25bd573e377c5a302aa168ba12bb0390cc254ca8b44b62bec0f83cd57","scale":1,"offset":[0.0,0.0,0.0039],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "waiting-chairs",
@@ -439,7 +439,7 @@
         {"m": "led-green", "p": [0.495, 0.755, -0.58], "s": [0.01, 0.03, 0.04]},
         {"m": "coal", "p": [0.495, 0.76, -0.46], "s": [0.01, 0.08, 0.12]}
       ],
-      "model": {"uri":"models/hospital-bed.glb","sha256":"c9ee67ec91b2e350319bcb6b335a122985978530740d4da171ec121262f72db3","scale":1,"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
+      "model": {"uri":"models/hospital-bed.glb","sha256":"8ab6da9125bcc9593b155f01e377fe65865922add9ec902646f7bd08242737c0","scale":1,"offset":[0.0,0.0,0.0017],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "stretcher",
@@ -450,7 +450,7 @@
         "en": "An emergency trolley with hydraulic height adjustment, side rails, push handle and a folding IV pole."
       },
       "usage": {
-        "zh-CN": "急诊接诊、复苏间和转运时供患者平卧；可直接在车上查体和处置。",
+        "zh-CN": "急诊接诊、抢救间和转运时供患者平卧；可直接在车上查体和处置。",
         "en": "Holds the patient lying flat in the ED, resus bay or during transfer; examine and treat directly on the trolley."
       },
       "capabilities": [],
@@ -560,7 +560,7 @@
         {"m": "coal", "p": [0.115, 0.115, 0.44], "s": [0.17, 0.03, 0.16]},
         {"m": "coal", "p": [-0.115, 0.115, 0.44], "s": [0.17, 0.03, 0.16]}
       ],
-      "model": {"uri":"models/wheelchair.glb","sha256":"1bb86f457418dac2f27f5681bb67494238247b84b61e771a4b0e9a3332857a67","scale":1,"offset":[0.0,0.0,0.035],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
+      "model": {"uri":"models/wheelchair.glb","sha256":"8d4ece250692ddb5690e830c776dbef39fcce99c3cc3ee7a56a7f86940fc065f","scale":1,"offset":[0.0,0.0,0.035],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "bedside-table",
@@ -842,7 +842,7 @@
         "zh-CN": "双工位不锈钢外科刷手槽，感应龙头、膝控开关、刷子分配器和计时器。",
         "en": "A two-station stainless surgical scrub trough with sensor taps, knee paddles, brush dispenser and timer."
       },
-      "usage": {"zh-CN": "进入手术室前进行外科手消毒（刷手）。", "en": "Perform the surgical hand scrub before entering the operating room."},
+      "usage": {"zh-CN": "进入手术室前进行外科手消毒（刷手）。", "en": "Perform the surgical hand scrub before entering the operating theatre."},
       "capabilities": [],
       "footprint": {"w": 1.6, "d": 0.7, "h": 1.75},
       "solid": true,
@@ -1024,13 +1024,13 @@
         "en": "The V4 case-conference evidence board: a teal board in a wooden frame with four pinned evidence cards."
       },
       "usage": {
-        "zh-CN": "汇总证据、提交诊断与处理判断、切换病例时期（如治疗后复评）并对照前后影像。",
+        "zh-CN": "汇总证据、提交诊断与处置决策、切换病例阶段（如治疗后复评）并对照前后影像。",
         "en": "Assemble the evidence, submit diagnostic and management decisions, switch case phase (e.g. post-treatment review) and compare images."
       },
       "capabilities": ["evidence-board"],
       "footprint": {"w": 3.8, "d": 0.6, "h": 3.15},
       "solid": true,
-      "interaction": {"kind": "board", "prompt": {"zh-CN": "E · 会诊 · 提交判断", "en": "E · Case conference · decide"}},
+      "interaction": {"kind": "board", "prompt": {"zh-CN": "E · 会诊 · 提交决策", "en": "E · Case conference · decide"}},
       "screen": "none",
       "tags": ["v4", "conference", "decisions"],
       "parts": [
@@ -1150,7 +1150,7 @@
       "name": {"zh-CN": "自动售货机", "en": "Vending machine"},
       "category": "decor",
       "description": {"zh-CN": "带背光展示窗、按键面板和取货口的饮料零食售货机。", "en": "A drinks and snacks vending machine with a backlit window, keypad and pickup bin."},
-      "usage": {"zh-CN": "候诊区的便利设施；低血糖患者可以就近补充含糖饮料。", "en": "A waiting-area amenity; a source of sugary drinks for a hypoglycaemic patient in a pinch."},
+      "usage": {"zh-CN": "候诊区的便利设施；低血糖患者可以就近补充含糖饮料。", "en": "A waiting-area amenity; a source of sugary drinks for a hypoglycaemic patient at a pinch."},
       "capabilities": [],
       "footprint": {"w": 1, "d": 0.85, "h": 1.9},
       "solid": true,
@@ -1224,7 +1224,7 @@
       "name": {"zh-CN": "饮水机", "en": "Water dispenser"},
       "category": "decor",
       "description": {"zh-CN": "立式桶装饮水机，带冷热水龙头和接水盘。", "en": "A bottled water cooler with hot and cold taps and a drip tray."},
-      "usage": {"zh-CN": "为患者和员工提供饮用水；注意禁食患者不可饮水。", "en": "Drinking water for patients and staff — remember nil-by-mouth patients must not drink."},
+      "usage": {"zh-CN": "为患者和员工提供饮用水；注意禁食禁饮的患者不可饮水。", "en": "Drinking water for patients and staff — remember nil-by-mouth patients must not drink."},
       "capabilities": [],
       "footprint": {"w": 0.35, "d": 0.35, "h": 1.4},
       "solid": true,
@@ -1317,7 +1317,7 @@
       "solid": false,
       "interaction": {"kind": "storage", "prompt": {"zh-CN": "E · 取手套", "en": "E · Take gloves"}},
       "screen": "none",
-      "tags": ["wall", "ppe", "hand-hygiene"],
+      "tags": ["wall", "ppe"],
       "parts": [
         {"m": "chrome", "p": [0, 1.33, -0.055], "s": [0.72, 0.32, 0.01]},
         {"m": "chrome", "p": [0, 1.185, 0], "s": [0.72, 0.03, 0.1]},
@@ -1431,8 +1431,8 @@
       "category": "outdoor",
       "description": {"zh-CN": "白色方舱式救护车，红色腰线与十字标识，车顶红蓝警灯。", "en": "A boxy white ambulance with a red stripe and cross and a red/blue roof light bar."},
       "usage": {
-        "zh-CN": "院前急救转运患者至急诊；救护车到达后在抢救区交接患者。",
-        "en": "Brings pre-hospital patients to the emergency department; take the paramedic handover in the ambulance bay."
+        "zh-CN": "院前急救转运患者至急诊；救护车到达后在抢救室交接患者。",
+        "en": "Brings pre-hospital patients to the emergency department; take the paramedic handover in the resus room."
       },
       "capabilities": [],
       "footprint": {"w": 2.2, "d": 5.6, "h": 2.66},

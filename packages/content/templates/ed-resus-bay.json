@@ -26,7 +26,7 @@
     {"id": "infusion-pump", "type": "infusion-pump", "x": -1.1, "z": -1, "label": {"zh-CN": "输液泵", "en": "Infusion pump"}},
     {"id": "ecg", "type": "ecg-machine", "x": -3.55, "z": -2.6, "rot": 90, "label": {"zh-CN": "心电图机", "en": "ECG cart"}},
     {"id": "pocus", "type": "pocus-cart", "x": -3.575, "z": -1.4, "rot": 90, "label": {"zh-CN": "床旁超声", "en": "POCUS cart"}},
-    {"id": "nebulizer", "type": "nebulizer", "x": -3.575, "z": -0.3, "rot": 90, "label": {"zh-CN": "雾化器", "en": "Nebulizer"}},
+    {"id": "nebulizer", "type": "nebulizer", "x": -3.575, "z": -0.3, "rot": 90, "label": {"zh-CN": "雾化器", "en": "Nebuliser"}},
     {"id": "defibrillator", "type": "defibrillator", "x": 3.55, "z": -2.6, "rot": 270, "label": {"zh-CN": "除颤仪", "en": "Defibrillator"}},
     {"id": "crash-cart", "type": "crash-cart", "x": 3.515, "z": -1.3, "rot": 270, "label": {"zh-CN": "抢救车", "en": "Crash cart"}},
     {"id": "ventilator", "type": "ventilator", "x": 3.45, "z": 0.2, "rot": 270, "label": {"zh-CN": "呼吸机", "en": "Ventilator"}},

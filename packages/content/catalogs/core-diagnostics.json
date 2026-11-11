@@ -129,7 +129,7 @@
         "en": "A 1.5 T superconducting MRI with a deep magnet, ~60 cm flared bore, head coil and docking patient table."
       },
       "usage": {
-        "zh-CN": "检查前必须完成 MRI 安全筛查（起搏器、金属植入物、幽闭恐惧、怀孕）；扫描时间较长，需要患者静止配合。",
+        "zh-CN": "检查前必须完成 MRI 安全筛查（起搏器、金属植入物、幽闭恐惧、妊娠）；扫描时间较长，需要患者静止配合。",
         "en": "Complete MRI safety screening first (pacemaker, metal implants, claustrophobia, pregnancy); scans take longer and need a still, cooperative patient."
       },
       "capabilities": [
@@ -313,7 +313,7 @@
       },
       "usage": {
         "zh-CN": "患者胸部贴紧探测器、双手扶握、深吸气后屏气，拍摄后前位或侧位胸片；与 X 线机配合使用。",
-        "en": "The patient presses the chest to the detector, holds the grips and takes a deep breath in for PA or lateral films; used together with the X-ray tube."
+        "en": "The patient presses the chest to the detector, holds the grips and takes a deep breath in and holds it for PA or lateral films; used together with the X-ray tube."
       },
       "capabilities": [],
       "footprint": {
@@ -437,7 +437,7 @@
         {"m": "coal", "p": [0, 0.62, 0.655], "s": [0.2, 0.04, 0.2]},
         {"m": "teal", "p": [0, 0.46, 0.655], "s": [0.27, 0.04, 0.26]}
       ],
-      "model": {"uri":"models/c-arm.glb","sha256":"e0768930421af690af51dde59c312a535c10e93565c983bb7c8cdf7175377d19","scale":1,"offset":[0.0,0.0009,0.0],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
+      "model": {"uri":"models/c-arm.glb","sha256":"85539fb94749856a5f4dd5f3288d8c0e6d5c41e32ca5b2f0137475d458a04428","scale":1,"offset":[0.0,0.0013,0.0021],"license":"MIT","attribution":{"zh-CN":"ClinicalCraft 贡献者，依据该设备类型的体素部件在 Blender 中建模（scripts/blender）","en":"ClinicalCraft contributors, modelled in Blender from the type's voxel parts (scripts/blender)"},"source":{"name":"ClinicalCraft scripts/blender","url":"https://github.com/psknlr/ClinicalCraft","version":"Blender 5.0.1","changes":"modelled procedurally from the type's voxel parts and footprint"},"use":"cleared"}
     },
     {
       "id": "pet-ct-scanner",
@@ -840,8 +840,8 @@
         "en": "A floor-standing five-part-differential haematology analyser with an autoloader of purple-top EDTA tubes, a touchscreen and run indicators."
       },
       "usage": {
-        "zh-CN": "上机检测血常规（血红蛋白、白细胞分类、血小板）及凝血；异常报警提示复检或人工推片镜检。",
-        "en": "Runs the full blood count (haemoglobin, white-cell differential, platelets) and coagulation; flagged results prompt a rerun or a manual blood film."
+        "zh-CN": "上机检测血常规（血红蛋白、白细胞分类、血小板）；凝血项目须另采蓝帽枸橼酸钠管送检；异常报警提示复检或人工推片镜检。",
+        "en": "Runs the full blood count (haemoglobin, white-cell differential, platelets); coagulation needs a separate blue-top citrate tube; flagged results prompt a rerun or a manual blood film."
       },
       "capabilities": [
         "lab-hematology"
@@ -911,7 +911,7 @@
       "category": "laboratory",
       "description": {
         "zh-CN": "大型全自动生化免疫分析仪：透明罩下有试剂盘与反应盘，前置样本传输轨道，顶部三色状态灯。",
-        "en": "A large automated chemistry and immunoassay analyser: reagent carousel and reaction disk under clear covers, a front sample-rack conveyor and a three-colour status beacon."
+        "en": "A large automated chemistry and immunoassay analyser: reagent carousel and reaction disc under clear covers, a front sample-rack conveyor and a three-colour status beacon."
       },
       "usage": {
         "zh-CN": "检测电解质、肝肾功能、心肌标志物、激素与血清学指标；黄帽或绿帽管离心后放入样本架上机。",
@@ -1002,8 +1002,8 @@
         "en": "A cart-mounted blood gas analyser with a front touchscreen, sample inlet, side reagent pack and receipt printer."
       },
       "usage": {
-        "zh-CN": "采集肝素化动脉或静脉血、排尽气泡后立即进样，约 1 分钟得到 pH、PaO2、PaCO2、乳酸与电解质。",
-        "en": "Inject a bubble-free heparinised arterial or venous sample straight away; pH, PaO2, PaCO2, lactate and electrolytes are ready in about a minute."
+        "zh-CN": "采集肝素化动脉或静脉血、排尽气泡后立即进样，约 1 分钟得到 pH、PaO₂、PaCO₂、乳酸与电解质。",
+        "en": "Inject a bubble-free heparinised arterial or venous sample straight away; pH, PaO₂, PaCO₂, lactate and electrolytes are ready in about a minute."
       },
       "capabilities": [
         "lab-blood-gas"
@@ -1336,7 +1336,7 @@
       },
       "category": "storage",
       "description": {
-        "zh-CN": "玻璃门实验室冷藏柜（2–8 ℃），分层存放试剂盒与待检样本，带温度显示。",
+        "zh-CN": "玻璃门实验室冷藏柜（2–8 °C），分层存放试剂盒与待检样本，带温度显示。",
         "en": "A glass-door laboratory refrigerator (2–8 °C) with shelves of reagent kits and pending samples, and a temperature display."
       },
       "usage": {
@@ -1858,8 +1858,8 @@
       },
       "category": "imaging",
       "description": {
-        "zh-CN": "内镜主机车：高清监视器、视频处理器、冷光源、CO2 送气泵和吸引装置，侧面挂着电子胃镜。",
-        "en": "An endoscopy stack with HD monitor, video processor, light source, CO2 insufflator and suction unit, with a video gastroscope hanging at the side."
+        "zh-CN": "内镜主机车：高清监视器、视频处理器、冷光源、CO₂ 送气泵和吸引装置，侧面挂着电子胃镜。",
+        "en": "An endoscopy stack with HD monitor, video processor, light source, CO₂ insufflator and suction unit, with a video gastroscope hanging at the side."
       },
       "usage": {
         "zh-CN": "用于胃镜、结肠镜等诊疗；术前核对禁食与抗凝/抗血小板药物，必要时取活检送病理。",

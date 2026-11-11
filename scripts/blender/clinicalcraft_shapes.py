@@ -42,6 +42,15 @@ def B(v: Vec) -> Vector:
     return Vector(cc.to_blender(v))
 
 
+#: For shapes turned about a frame axis: the two in-plane directions angles are measured between
+#: (from the first towards the second) and the axis itself, in the ClinicalCraft frame.
+_PLANES = {
+    "x": (Vector((0, 0, 1)), Vector((0, 1, 0)), Vector((1, 0, 0))),
+    "y": (Vector((1, 0, 0)), Vector((0, 0, 1)), Vector((0, 1, 0))),
+    "z": (Vector((1, 0, 0)), Vector((0, 1, 0)), Vector((0, 0, 1))),
+}
+
+
 def rotation(rot: Vec | None) -> Matrix:
     """Rotation (degrees about the frame's x, y, z, applied in that order) as a Blender matrix."""
     m = Matrix.Identity(4)
@@ -231,6 +240,16 @@ class Kit:
         _bevel(bm, rims, min(r, 0.45 * thickness), seg)
         self._commit(bm, m, at, rot)
 
+    def panel(self, outline: Iterable[tuple[float, float]], z0: float, thickness: float, m: str, r: float = 0.0, seg: int = 2) -> None:
+        """A flat piece standing up: `outline` (x, y) seen from the front, from depth z0 forwards by
+        `thickness` — a headboard, a backrest, a sign; `r` rounds its front and back rims."""
+        self.slab([(x, -y) for x, y in outline], z0, thickness, m, r=r, seg=seg, rot=(90, 0, 0))
+
+    def side(self, outline: Iterable[tuple[float, float]], x0: float, thickness: float, m: str, r: float = 0.0, seg: int = 2) -> None:
+        """A flat piece standing up seen from the side: `outline` (z, y), from x0 towards +x by
+        `thickness` — a side rail, a cart's end panel, a wheel guard; `r` rounds its rims."""
+        self.slab([(-y, z) for z, y in outline], x0, thickness, m, r=r, seg=seg, rot=(0, 0, -90))
+
     def gantry(self, centre: Vec, z0: float, z1: float, inner: float, half_w: float, top: float, bottom: float, m: str,
                seg: int = 64, power: float = 4.0, chamfer: float = 0.03) -> None:
         """A ring housing around the frame's z axis through `centre` (x, y), from z0 (back) to z1 (front):
@@ -262,14 +281,168 @@ class Kit:
                 bm.faces.new((a[i], a[j], b_[j], b_[i]))
         self._commit(bm, m)
 
+    def revolve(self, profile: Sequence[tuple[float, float]], centre: Vec, m: str, axis: str = "y", a0: float = 0.0, a1: float = 360.0,
+                seg: int = 32) -> None:
+        """A closed section swept round `axis` through `centre`: `profile` is the section's outline as
+        (radius, position along the axis) points, three or more. A full turn is a ring (a tyre, a
+        bezel, a trim); from `a0` to `a1` degrees it is an arc with flat ends (the C of a C-arm, a
+        curved rail, a handle). Angles turn from the first in-plane axis towards the second —
+        axis "x": from +z (front) up to +y; "y": from +x to +z; "z": from +x up to +y."""
+        e1, e2, ax = _PLANES[axis]
+        full = abs(a1 - a0) >= 360 - 1e-6
+        n = max(3, seg if full else math.ceil(seg * abs(a1 - a0) / 360))
+        steps = n if full else n + 1
+        c = Vector(centre)
+        pts = [(float(r), float(h)) for r, h in profile]
+        bm = bmesh.new()
+        rings = []
+        for i in range(steps):
+            t = math.radians(a0 + (a1 - a0) * i / n)
+            radial = e1 * math.cos(t) + e2 * math.sin(t)
+            rings.append([bm.verts.new(B(c + radial * r + ax * h)) for r, h in pts])
+        k = len(pts)
+        for i in range(n):
+            a, b = rings[i], rings[(i + 1) % steps]
+            for j in range(k):
+                bm.faces.new((a[j], a[(j + 1) % k], b[(j + 1) % k], b[j]))
+        if not full:
+            bm.faces.new(rings[0])
+            bm.faces.new(list(reversed(rings[-1])))
+        self._commit(bm, m)
+
+    def _sweep(self, line: list[Vector], radius: float, m: str, seg: int, r2: float | None = None) -> None:
+        """A round tube along the polyline `line` (frame coordinates): a ring at every point, turned to
+        the bisector of the segments meeting there and carried along without twisting (parallel
+        transport), the ends capped flat; `r2` tapers it."""
+        line = [p for i, p in enumerate(line) if i == 0 or (p - line[i - 1]).length > 1e-7]
+        n = len(line)
+        if n < 2:
+            return
+        dirs = [(b - a).normalized() for a, b in zip(line, line[1:])]
+        tangents = [dirs[0]] + [((a + b).normalized() if (a + b).length > 1e-9 else b) for a, b in zip(dirs, dirs[1:])] + [dirs[-1]]
+        ref = Vector((0, 1, 0)) if abs(tangents[0].y) < 0.9 else Vector((1, 0, 0))
+        normal = (ref - tangents[0] * ref.dot(tangents[0])).normalized()
+        bm = bmesh.new()
+        rings = []
+        for i in range(n):
+            if i:
+                carried = normal - tangents[i] * normal.dot(tangents[i])
+                if carried.length > 1e-9:
+                    normal = carried.normalized()
+            binormal = tangents[i].cross(normal)
+            rad = radius if r2 is None else radius + (r2 - radius) * i / (n - 1)
+            rings.append([bm.verts.new(B(line[i] + (normal * math.cos(2 * math.pi * j / seg) + binormal * math.sin(2 * math.pi * j / seg)) * rad)) for j in range(seg)])
+        for a, b in zip(rings, rings[1:]):
+            for j in range(seg):
+                bm.faces.new((a[j], a[(j + 1) % seg], b[(j + 1) % seg], b[j]))
+        bm.faces.new(list(reversed(rings[0])))
+        bm.faces.new(rings[-1])
+        self._commit(bm, m)
+
+    def hose(self, points: Sequence[Vec], radius: float, m: str, seg: int = 8, steps: int = 4, r2: float | None = None) -> None:
+        """A smooth round hose or cable through `points`: one tube swept along the centripetal
+        Catmull-Rom spline through them (`steps` rings per span; no overshoot where the points are
+        unevenly spaced), tapering to `r2` — a breathing limb, a suction line, a cable; far fewer
+        triangles than `path`, with no joints to see."""
+        ctrl = [Vector(p) for p in points]
+        ctrl = [p for i, p in enumerate(ctrl) if i == 0 or (p - ctrl[i - 1]).length > 1e-7]
+        if len(ctrl) < 2:
+            return
+        ext = [ctrl[0] * 2 - ctrl[1]] + ctrl + [ctrl[-1] * 2 - ctrl[-2]]
+        line = [ctrl[0]]
+        for i in range(1, len(ext) - 2):
+            p0, p1, p2, p3 = ext[i - 1], ext[i], ext[i + 1], ext[i + 2]
+            t0 = 0.0
+            t1 = t0 + math.sqrt((p1 - p0).length)
+            t2 = t1 + math.sqrt((p2 - p1).length)
+            t3 = t2 + math.sqrt((p3 - p2).length)
+            for s_ in range(1, steps + 1):
+                t = t1 + (t2 - t1) * s_ / steps
+                a1 = p0 * ((t1 - t) / (t1 - t0)) + p1 * ((t - t0) / (t1 - t0))
+                a2 = p1 * ((t2 - t) / (t2 - t1)) + p2 * ((t - t1) / (t2 - t1))
+                a3 = p2 * ((t3 - t) / (t3 - t2)) + p3 * ((t - t2) / (t3 - t2))
+                b1 = a1 * ((t2 - t) / (t2 - t0)) + a2 * ((t - t0) / (t2 - t0))
+                b2 = a2 * ((t3 - t) / (t3 - t1)) + a3 * ((t - t1) / (t3 - t1))
+                line.append(b1 * ((t2 - t) / (t2 - t1)) + b2 * ((t - t1) / (t2 - t1)))
+        self._sweep(line, radius, m, seg, r2)
+
+    def pipe(self, points: Sequence[Vec], radius: float, m: str, bend: float = 0.03, seg: int = 8, step: float = 22.5) -> None:
+        """A bent tube through `points`: straight runs joined by round bends of radius `bend` (less
+        where a run is too short for it), a ring every `step` degrees of a bend — a bed rail, a
+        trolley handle, a chair frame; one tube, no joints."""
+        ctrl = [Vector(p) for p in points]
+        ctrl = [p for i, p in enumerate(ctrl) if i == 0 or (p - ctrl[i - 1]).length > 1e-7]
+        if len(ctrl) < 2:
+            return
+        line = [ctrl[0]]
+        for i in range(1, len(ctrl) - 1):
+            a, p, b = ctrl[i - 1], ctrl[i], ctrl[i + 1]
+            d1, d2 = (p - a).normalized(), (b - p).normalized()
+            turn = d1.angle(d2, 0.0)
+            if turn < math.radians(1) or turn > math.radians(179):
+                line.append(p)
+                continue
+            # the bend starts and ends `reach` from the corner; at most half of either run
+            reach = min(bend * math.tan(turn / 2), 0.5 * (p - a).length, 0.5 * (b - p).length)
+            rad = reach / math.tan(turn / 2)
+            start, stop = p - d1 * reach, p + d2 * reach
+            centre = p + (d2 - d1).normalized() * (rad / math.cos(turn / 2))
+            n = max(2, math.ceil(math.degrees(turn) / step))
+            u, v = start - centre, stop - centre
+            for j in range(n + 1):
+                t = j / n
+                w = (u * math.sin((1 - t) * turn) + v * math.sin(t * turn)) / math.sin(turn)
+                line.append(centre + w)
+        line.append(ctrl[-1])
+        self._sweep(line, radius, m, seg)
+
     # ---------------------------------------------------------------- assemblies
-    def caster(self, x: float, z: float, r: float = 0.04, wheel: str = "rubber", fork: str = "chrome", stem: float = 0.03) -> None:
-        """A swivel caster standing on the floor at (x, z): wheel, hub, fork and stem up to y = 2r + stem."""
+    def caster(self, x: float, z: float, r: float = 0.04, wheel: str = "rubber", fork: str = "chrome", stem: float = 0.03, lite: bool = False) -> None:
+        """A swivel caster standing on the floor at (x, z): wheel, hub, fork and stem up to y = 2r + stem.
+        `lite` is the same caster in two fifths of the triangles, for small ones and for types
+        placed in numbers (a stool's five, a bed's four)."""
         w = r * 0.55
+        if lite:
+            self.lathe([(r * 0.62, -w / 2), (r, -w * 0.22), (r, w * 0.22), (r * 0.62, w / 2)], (x, r, z), wheel, axis="x", seg=10)
+            self.box((x, r * 1.6, z - r * 0.2), (w * 1.5, r * 0.6, r * 1.2), fork)
+            self.cyl((x, 2 * r + stem / 2, z), r * 0.28, stem + r * 0.2, fork, seg=6)
+            return
         self.cyl((x, r, z), r, w, wheel, axis="x", seg=14, bevel=r * 0.25)
         self.cyl((x, r, z), r * 0.45, w * 1.2, fork, axis="x", seg=8)
         self.box((x, r * 1.6, z - r * 0.2), (w * 1.5, r * 0.6, r * 1.2), fork, r=r * 0.12, seg=1)
         self.cyl((x, 2 * r + stem / 2, z), r * 0.28, stem + r * 0.2, fork, seg=8)
+
+    def wheel(self, at: Vec, radius: float, width: float, tyre: str = "rubber", hub: str = "chrome", axis: str = "x", spokes: int = 0,
+              tread: float = 0.22, seg: int = 20) -> None:
+        """A wheel centred at `at`, turning about `axis`: a rounded tyre (`tread` of the radius thick),
+        then a rim, hub and `spokes` spokes across it, or (0) a solid disc — a trolley's or a bed's
+        wheel, a wheelchair's drive wheel."""
+        t = radius * tread
+        w = width / 2
+        self.revolve([(radius - t, -w), (radius - 0.3 * t, -w), (radius, -0.45 * w), (radius, 0.45 * w), (radius - 0.3 * t, w), (radius - t, w)], at, tyre, axis=axis, seg=seg)
+        if spokes:
+            self.revolve([(radius - t, -w * 0.7), (radius - t, w * 0.7), (radius - t * 1.6, 0.0)], at, hub, axis=axis, seg=seg)
+            self.cyl(at, radius * 0.14, width * 0.9, hub, axis=axis, seg=8)
+            e1, e2, _ = _PLANES[axis]
+            for i in range(spokes):
+                a = math.pi * i / spokes
+                d = e1 * math.cos(a) + e2 * math.sin(a)
+                self.tube(Vector(at) - d * (radius - t * 1.3), Vector(at) + d * (radius - t * 1.3), radius * 0.03, hub, seg=4)
+        else:
+            self.cyl(at, radius - t * 0.9, width * 0.7, hub, axis=axis, seg=seg)
+            self.cyl(at, radius * 0.22, width * 0.95, tyre, axis=axis, seg=8)
+
+    def gauge(self, at: Vec, radius: float, axis: str = "z", face: str = "paper", bezel: str = "chrome", needle: str = "ambulance-red", depth: float = 0.012,
+              angle: float = 35.0) -> None:
+        """A dial gauge facing along +`axis` with its back at `at`: the body (in the bezel's material),
+        the face and the needle — a regulator's contents gauge, a suction gauge, a thermometer dial."""
+        e1, e2, ax = _PLANES[axis]
+        c = Vector(at)
+        self.cyl(c + ax * (depth / 2), radius, depth, bezel, axis=axis, seg=16)
+        self.cyl(c + ax * (depth + 0.0006), radius * 0.86, 0.0012, face, axis=axis, seg=16)
+        a = math.radians(angle)
+        tip = (e1 * math.cos(a) + e2 * math.sin(a)) * radius * 0.7
+        self.tube(c + ax * (depth + 0.002) - tip * 0.15, c + ax * (depth + 0.002) + tip, radius * 0.06, needle, seg=4)
 
     def screen_bezel(self, part: dict, m: str = "sc-matte-black", border: float = 0.02, depth: float = 0.03, r: float = 0.008) -> None:
         """A display housing behind a voxel `screen` part, its front just behind the part's front

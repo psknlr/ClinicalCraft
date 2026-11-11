@@ -17,11 +17,17 @@ The parts:
 | Built-in models | `scripts/blender/build.py`, `builtin_models.py` | builds a model for every built-in equipment type (97) into `packages/content/assets/models` and writes each reference into its catalog |
 | blender-mcp | `.mcp.json` (Claude Code project server) | lets Claude Code inspect and change a running Blender (`execute_blender_code`, viewport screenshots, Poly Haven / Sketchfab / generated assets) |
 | Inspector | `clinicalcraft assets inspect <file.glb> --type <id>` | checks the file the way the renderer will load it (ASSETS.md) |
+| Previewer | `node scripts/preview/render.mjs models …` | draws the built models as the web world does — placed by their catalog references, lit like the world, a glowing quad where each live screen goes, the voxel parts beside them with `--compare 1` — in headless Chromium: no Blender needed to look at a model |
 
-The built-in models and SurgeryCraft's (all 74 of its types, `tools/blender/` in that
-repository) are built with these: most are refined from their voxel parts, the most
-seen (the surgical light, the anaesthesia workstation, the instruments…) have their
-own builders, and the CT, MRI and PET-CT gantries are revolved round their bores (`Kit.gantry`). Rebuild the built-in ones with `blender -b -P scripts/blender/build.py`
+The built-in models and SurgeryCraft's (all 75 of its types, `tools/blender/` in that
+repository) are built with these: most are refined from their voxel parts, and the
+most seen have their own builders. Of the built-in types those are the hospital
+bed, wheelchair and stool, the IV pole and the infusion pumps, the oxygen cylinder,
+the ventilator, suction unit, defibrillator and crash cart, the mobile C-arm (its C
+one arc: `Kit.revolve`), the surgical light, the garden bench and the wall diagnostic
+set (the otoscope and ophthalmoscope on coiled cords, the aneroid gauge over its cuff,
+a stethoscope hung by its headset on a peg: `coiled`, `stethoscope` in `builtin_models.py`); the CT, MRI and
+PET-CT gantries are revolved round their bores (`Kit.gantry`). Rebuild the built-in ones with `blender -b -P scripts/blender/build.py`
 (or `python3 scripts/blender/build.py` with the `bpy` module), then `npm run build`
 (the web bundle carries the catalogs and so the pinned hashes).
 
@@ -80,7 +86,7 @@ and check it: `clinicalcraft assets inspect content/assets/models/sc-mayo-stand.
 | `describe(eq)` | what to model, as text (an agent's first call) |
 | `blockout(eq)` | the voxel parts as boxes, screens bright cyan, the footprint as a wire box; never exported |
 | `material(eq, id, **over)` | a Principled material from palette entry `id` (colour, roughness, metalness, emissive, opacity) |
-| `Kit(eq)` | `box`, `cyl`, `tube`, `path`, `ball`, `torus`, `lathe`, `slab` (+ `rrect`), `caster`, `screen_bezel`; `finish()` makes the mesh |
+| `Kit(eq)` | solids: `box`, `cyl`, `ball`, `torus`, `lathe`, `revolve` (a section swept round an axis: a full ring, or an arc such as the C of a C-arm); flat pieces: `slab` (seen from above, + `rrect`), `panel` (from the front), `side` (from the side); tubes: `tube` (straight), `pipe` (bent tube with round bends: rails, handles, frames), `hose` (a smooth line through points: limbs, cables), `path` (jointed; superseded by the two before); assemblies: `caster`, `wheel`, `gauge`, `screen_bezel`; `finish()` makes the mesh |
 | `refine(k, eq, skip=)` | the type's voxel parts as refined shapes; a builder refines what it does not replace (`skip`) |
 | `export_model(eq, path, license=, use=, source=, attribution=)` | the GLB and its catalog reference; warns when it does not fill the footprint |
 
@@ -98,6 +104,24 @@ Claude use the bridge through `execute_blender_code`, e.g.:
 
 Claude sees the result through `get_viewport_screenshot` and can correct it; the
 inspector is the authority on whether the file fits.
+
+### Looking at the result
+
+`get_viewport_screenshot` shows Blender's viewport; the world draws a model
+differently (its own lights, no environment map, vertex colours, the live screens
+over it). The previewer shows that:
+
+```bash
+node scripts/preview/render.mjs models --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/core-clinical.json \
+  --only hospital-bed,c-arm --compare 1 --view iso --out /tmp/models.png
+```
+
+`--assets` lists the asset directories searched for each model's `uri` (default the
+built-in `packages/content/assets`; add a pack's `content/assets`), `--view` is
+`iso`, `front`, `back`, `side` or `top`, `--compare 1` puts the voxel parts beside
+each model, `--cell` and `--cols` size the sheet. Each cell is labelled with the
+type and its triangle count; a type whose model is missing is drawn from its voxel
+parts and marked.
 
 ### Headless
 
@@ -128,7 +152,17 @@ rebuilds every model that way and writes the references its catalog generator re
   Items under 0.3 m on every side cast no shadow.
 * **Triangles.** Instances are drawn whole when any copy is in view, so detail costs
   everywhere: chamfer small parts, round only what is large, and aim for ≤ 5 000
-  triangles per model (≤ 10 000 for a centrepiece).
+  triangles per model (≤ 10 000 for a centrepiece). What costs most is what there
+  is most of: a box with three-segment rounding is 188 triangles, with a chamfer 44,
+  plain 12 (a label, a button, an LED needs no more); a `caster` is 264 triangles,
+  `caster(lite=True)` 108; a `hose` or `pipe` is one tube (16 triangles a ring at
+  eight sides) where `path` is a tube and a ball per joint — a three-run bend is
+  some 210 triangles against 372. The previewer prints each model's count.
+* **What the standards fix, the model keeps.** A colour that is a code is one:
+  medical gases follow ISO 32 (palette `gas-oxygen` white for oxygen; nitrous oxide
+  blue, medical air black and white, vacuum yellow, AGSS magenta), never a mix of two
+  codes; fresh soda lime is white (violet means exhausted); the vaporiser colours
+  are the agents' (yellow sevoflurane, purple isoflurane).
 * **Single-file GLB**, no DRACO/meshopt (they fall back to voxels under `serve`'s CSP).
 
 ## Third-party assets and the use status

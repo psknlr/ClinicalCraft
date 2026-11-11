@@ -15,7 +15,7 @@ medical advice.
 
 | | |
 |---|---|
-| id / version | `dka-adult` / `1.1.1` |
+| id / version | `dka-adult` / `1.1.2` |
 | setting / facility | `emergency` (resus bay 1, managed to HDU/ICU level 2) / `general-hospital` |
 | specialty | emergency medicine, endocrinology, critical care |
 | difficulty | 3 / 5 |
@@ -513,6 +513,15 @@ them:
   ≥ 8 mmol/L) depend on the strip brand.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-10 (one threshold)
+
+- **Euglycaemic DKA is glucose < 11.1 mmol/L (200 mg/dL)** in the feedback of
+  the distractor `dx-euglycaemic` (decision `dx-severity`), as the 2024
+  consensus the case follows defines it. The text said < 13.9 mmol/L
+  (250 mg/dL), the 2009 cut-off, which overlapped the case's own criterion
+  for hyperglycaemia (D: ≥ 11.1 mmol/L). No score or path changes: her
+  glucose is 28.0 mmol/L.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

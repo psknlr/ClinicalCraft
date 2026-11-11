@@ -1,64 +1,122 @@
 /**
- * Voxel people (V4 `oe()` generalised): appearance (skin, hair & style,
- * clothes, build, stature, gown, accessory), posture (standing / sitting /
- * lying on a bed), head tracking, speaking (jaw + head bob) and distress.
+ * The people of the world — patients, the people with them and staff — as figures of real proportions built in
+ * code (`figure/`): an appearance (skin, hair and its style, clothes, build, stature, a hospital gown, an
+ * accessory), a posture (standing, sitting, lying in bed) and what is worn (`figure/wear.ts`: the uniform of a
+ * role as a position wears it). A rig is three meshes of one material — limbs, the trunk (it breathes) and the
+ * head (it turns to the learner, its jaw moves when its owner speaks, its eyes blink) — plus an unseen box that
+ * takes the aim. Distress flushes the skin.
  */
-import { Color, Group, Mesh, MeshStandardMaterial, Object3D, type Material } from "three";
-import type { MaterialLibrary } from "./materials.js";
-import { mergeGroup, tintRanges } from "./merge.js";
-import { UNIT_BOX } from "./voxels.js";
+import { BoxGeometry, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial, type BufferAttribute } from "three";
+import { HEIGHT, STATURE_SCALE as SCALES, type Posture as FigurePosture } from "./figure/anatomy.js";
+import { trunkAt } from "./figure/body.js";
+import { buildFigure } from "./figure/figure.js";
+import { blinkRound, MOVES } from "./figure/head.js";
+import { figureMaterial } from "./figure/material.js";
+import { feminineOf, presentationOf, type Presentation } from "./figure/looks.js";
+import { rgb, type Ranges } from "./figure/sculpt.js";
+import { PLAIN, type Wear } from "./figure/wear.js";
+import { hashString } from "./textures.js";
+
+export { heightOf, looksOf, presentationOf, presentationOfSex, type Presentation } from "./figure/looks.js";
+export { ROLE_UNIFORMS, PATIENT_WEAR, PLAIN as PLAIN_WEAR, uniformOf, type Uniform, type Wear } from "./figure/wear.js";
 
 export interface AppearanceLike {
   skin?: string;
   hair?: string;
-  hairStyle?: "short" | "long" | "bald" | "bun" | "ponytail" | "curly";
+  hairStyle?: "short" | "long" | "bald" | "bun" | "ponytail" | "curly" | "bob" | "wavy";
   shirt?: string;
   pants?: string;
   build?: "slim" | "average" | "heavy";
   stature?: "infant" | "child" | "teen" | "adult";
   gown?: boolean;
   accessory?: "none" | "glasses" | "mask" | "nasal-cannula" | "oxygen-mask" | "sling" | "cap";
+  /** Drawn with a woman's features and frame, a man's, or neither's (default: by the hair style, as staff are — `presentationOf`). */
+  presentation?: Presentation;
 }
 
-export type Posture = "standing" | "sitting" | "lying";
+export type Posture = FigurePosture;
 
 export interface PersonOptions {
   posture: Posture;
   /** Seat height (sitting) or mattress top (lying). */
   surfaceY?: number;
-  /** White coat skirt (attending / pharmacist…). */
-  coat?: boolean;
-  badge?: boolean;
-  /** Extra uniform stripe colour (paramedic). */
-  stripe?: string;
+  /** What they wear and carry (default: plain clothes). */
+  wear?: Wear;
+  /** Who this is (an id): when they blink differs from person to person, the same for the same id. */
+  seed?: string;
+  /** Height against the stature's own (default 1). */
+  height?: number;
 }
 
 export interface PersonRig {
   root: Group;
+  /** Everything of the figure, scaled for stature (laid down when lying; a walker bobs it). */
   body: Group;
+  /** The head about the top of the neck (turns and nods). */
   head: Group;
-  mouth: Mesh;
+  /** The trunk: breathing changes its depth (`setBreath`). */
   torso: Mesh;
+  /** The head's surface: the jaw and the lids move (`setMouth`, `setBlink`). */
+  face: Mesh;
   /** Name-tag anchor height (world-local y in root). */
   tagY: number;
   headBaseY: number;
   scale: number;
   posture: Posture;
-  /** Skin vertex ranges inside the merged atlas meshes (distress tint via vertex colours). */
-  skin: { mesh: Mesh; ranges: [number, number][] }[];
-  /** Vertex-colour multiplier that turns this rig's skin texels into the flushed tone. */
-  flushTint: [number, number, number];
+  /** Skin vertices per mesh with their own colours and gloss (distress flushes them). */
+  skin: { mesh: Mesh; ranges: Ranges; colour: Float32Array; finish: Float32Array }[];
   distressed: boolean;
+  /** 0 … 1, this person's own (when they blink). */
+  phase: number;
+  /** Triangles drawn. */
+  triangles: number;
 }
 
-/** Flushed / sweaty skin (distress) on or off — one vertex-colour update, no extra draw calls. */
+/** Flushed, sweaty skin: the colour skin goes towards and how far, and the sheen it gains. */
+const FLUSH = rgb("#d77f68");
+const FLUSH_MIX = 0.5;
+const FLUSH_SHEEN = 0.3;
+
+/** Flushed / sweaty skin (distress) on or off — a vertex-colour update, no extra draw calls. */
 export function setDistressed(rig: PersonRig, on: boolean): void {
   if (rig.distressed === on) return;
   rig.distressed = on;
-  for (const s of rig.skin) tintRanges(s.mesh, s.ranges, on ? rig.flushTint : [1, 1, 1]);
+  for (const s of rig.skin) {
+    const col = s.mesh.geometry.getAttribute("color") as BufferAttribute;
+    const fin = s.mesh.geometry.getAttribute("finish") as BufferAttribute;
+    for (const [start, count] of s.ranges) {
+      for (let i = start; i < start + count; i++) {
+        const r = s.colour[3 * i]!, g = s.colour[3 * i + 1]!, b = s.colour[3 * i + 2]!;
+        if (on) col.setXYZ(i, r + (FLUSH[0] - r) * FLUSH_MIX, g + (FLUSH[1] - g) * FLUSH_MIX, b + (FLUSH[2] - b) * FLUSH_MIX);
+        else col.setXYZ(i, r, g, b);
+        fin.setX(i, s.finish[2 * i]! + (on ? FLUSH_SHEEN : 0));
+      }
+    }
+    col.needsUpdate = true;
+    fin.needsUpdate = true;
+  }
 }
 
-export const DEFAULT_APPEARANCE: Required<AppearanceLike> = {
+/** Breathing: the trunk's depth, `breath` a small fraction either way. */
+export function setBreath(rig: PersonRig, breath: number): void {
+  rig.torso.scale.z = 1 + breath;
+}
+
+/** The mouth: 0 closed … 1 as open as speech opens it. */
+export function setMouth(rig: PersonRig, open: number): void {
+  const m = rig.face.morphTargetInfluences;
+  if (m) m[MOVES.jaw] = open;
+}
+
+/** The eyes: 0 open … 1 shut (the lids go round the eyes on their way: a move of its own, fullest half-way). */
+export function setBlink(rig: PersonRig, shut: number): void {
+  const m = rig.face.morphTargetInfluences;
+  if (!m) return;
+  m[MOVES.blink] = shut;
+  m[MOVES.round] = blinkRound(shut);
+}
+
+export const DEFAULT_APPEARANCE: Required<Omit<AppearanceLike, "presentation">> = {
   skin: "#cba88a",
   hair: "#3b3027",
   hairStyle: "short",
@@ -70,34 +128,31 @@ export const DEFAULT_APPEARANCE: Required<AppearanceLike> = {
   accessory: "none",
 };
 
-export const STATURE_SCALE: Record<string, number> = { adult: 1, teen: 0.9, child: 0.72, infant: 0.45 };
+export const STATURE_SCALE: Record<string, number> = SCALES;
 
-/** Height of the top of the head (adult standing, V4 rig). */
-export const PERSON_HEIGHT = 2.0;
+/** Height of the top of the head (adult standing). */
+export const PERSON_HEIGHT = HEIGHT;
 
-function box(parent: Object3D, mat: Material, x: number, y: number, z: number, sx: number, sy: number, sz: number, rx = 0): Mesh {
-  const m = new Mesh(UNIT_BOX, mat);
-  m.position.set(x, y, z);
-  m.scale.set(sx, sy, sz);
-  if (rx) m.rotation.x = rx;
-  m.castShadow = true;
-  m.receiveShadow = true;
-  parent.add(m);
-  return m;
-}
+/** Lying on a bed: the feet this far (per unit of stature) from the middle of the bed, so the head is on the pillow. */
+const LIE_FEET = 0.95;
+/** Lying: how far the pillow raises the head. */
+const PILLOW = 0.04;
+
+const AIM_BOX = new BoxGeometry(1, 1, 1);
+const AIM_MATERIAL = new MeshBasicMaterial({ visible: false });
+const CLEAR_MATERIAL = new MeshStandardMaterial({ vertexColors: true, transparent: true, opacity: 0.42, roughness: 0.12, depthWrite: false });
+CLEAR_MATERIAL.name = "__figure-clear";
 
 /** Build a person whose feet are at the root origin facing +Z. */
-export function buildPerson(lib: MaterialLibrary, appearance: AppearanceLike | undefined, opts: PersonOptions): PersonRig {
-  const ap = { ...DEFAULT_APPEARANCE, ...(appearance ?? {}) };
-  const scale = STATURE_SCALE[ap.stature] ?? 1;
-  const skin = lib.color(ap.skin);
-  const hair = lib.color(ap.hair);
-  const shirt = ap.gown ? lib.color("#b9d3dc", "dots", 0.06) : lib.color(ap.shirt);
-  const pants = lib.color(ap.pants);
-  const coal = lib.get("coal");
-  const shoe = lib.get("darkwood");
-  const white = lib.get("white");
-  const pink = lib.get("pink");
+export function buildPerson(appearance: AppearanceLike | undefined, opts: PersonOptions): PersonRig {
+  const ap: Required<Omit<AppearanceLike, "presentation">> & Pick<AppearanceLike, "presentation"> = { ...DEFAULT_APPEARANCE };
+  for (const [k, v] of Object.entries(appearance ?? {})) if (v !== undefined && v !== null) (ap as Record<string, unknown>)[k] = v;
+  const feminine = feminineOf(ap.presentation ?? presentationOf(ap.hairStyle));
+  const lying = opts.posture === "lying";
+  const seat = opts.surfaceY ?? (lying ? 0.9 : 0.5);
+  const fig = buildFigure({ ...ap, posture: opts.posture, seat, wear: opts.wear ?? PLAIN, pillow: lying ? PILLOW : 0, feminine });
+  const scale = fig.frame.scale * (opts.height ?? 1);
+  const material = figureMaterial();
 
   const root = new Group();
   root.name = "person";
@@ -105,231 +160,67 @@ export function buildPerson(lib: MaterialLibrary, appearance: AppearanceLike | u
   root.add(body);
   body.scale.setScalar(scale);
 
-  const torsoW = ap.build === "slim" ? 0.58 : ap.build === "heavy" ? 0.8 : 0.66;
-  const torsoD = ap.build === "heavy" ? 0.46 : 0.36;
-  const armX = torsoW / 2 + 0.11;
-  const skinMeshes: Mesh[] = [];
-
-  let torsoC = 1.12;
-  let legsTop = 0.81;
-  const seat = opts.surfaceY ?? 0.5;
-  if (opts.posture === "sitting") {
-    // seat in rig units (body is scaled)
-    const s = seat / scale;
-    legsTop = s + 0.28;
-    torsoC = legsTop + 0.31;
-    for (const sx of [-1, 1]) {
-      box(body, pants, sx * 0.18, s + 0.14, 0.2, 0.25, 0.28, 0.52);
-      const shinTop = s;
-      const shinBot = Math.max(0, s - 0.5);
-      box(body, pants, sx * 0.18, (shinTop + shinBot) / 2, 0.42, 0.25, Math.max(0.1, shinTop - shinBot), 0.26);
-      box(body, shoe, sx * 0.18, shinBot + 0.09, 0.5, 0.29, 0.18, 0.42);
-    }
-    if (ap.gown) box(body, shirt, 0, s + 0.3, 0.12, torsoW, 0.1, 0.62);
-  } else {
-    for (const sx of [-1, 1]) {
-      box(body, pants, sx * 0.18, 0.53, 0, 0.25, 0.56, 0.3);
-      if (opts.posture !== "lying") box(body, shoe, sx * 0.18, 0.21, 0.1, 0.29, 0.18, 0.46);
-    }
-    // in bed: a blanket over legs and trunk (rig space: y along the body, z = up out of the bed)
-    if (opts.posture === "lying") box(body, lib.color("#9fc2cc", "stripe", 0.06), 0, 0.68, 0.035, torsoW + 0.12, 1.26, 0.33);
-    if (ap.gown) box(body, shirt, 0, 0.66, 0, torsoW + 0.04, 0.42, torsoD + 0.04);
-    if (opts.coat) box(body, white, 0, 0.7, 0, torsoW + 0.06, 0.36, torsoD + 0.06);
-  }
-  const torso = box(body, opts.coat ? white : shirt, 0, torsoC, 0, torsoW, 0.65, torsoD);
-  torso.userData.baseZ = torsoD;
-  if (opts.coat) box(body, shirt, 0, torsoC + 0.2, torsoD / 2 + 0.005, 0.2, 0.25, 0.02); // shirt under coat
-  if (opts.stripe) box(body, lib.color(opts.stripe, "flat", 0.04), 0, torsoC - 0.12, torsoD / 2 + 0.006, torsoW + 0.01, 0.06, 0.02);
-  void legsTop;
-
-  // arms
-  const sling = ap.accessory === "sling";
-  for (const sx of [-1, 1]) {
-    if (sling && sx === 1) {
-      const fore = box(body, skin, 0.12, torsoC - 0.12, torsoD / 2 + 0.1, 0.45, 0.16, 0.18);
-      skinMeshes.push(fore);
-      box(body, lib.color("#6d9fba", "stripe", 0.06), 0.12, torsoC - 0.14, torsoD / 2 + 0.12, 0.52, 0.22, 0.16);
-      box(body, lib.color("#6d9fba", "stripe", 0.06), -0.05, torsoC + 0.15, 0, 0.08, 0.5, torsoD + 0.02, 0);
-      const upper = box(body, opts.coat ? white : shirt, armX, torsoC + 0.08, 0.02, 0.18, 0.4, 0.2);
-      void upper;
-      continue;
-    }
-    const sitting = opts.posture === "sitting";
-    if (opts.posture === "lying") {
-      // in bed the arms rest along the trunk on top of it (rig +Z = up): beside the torso they
-      // stuck out over the edge of narrow stretchers / trolleys and hung in the air
-      const ax = sx * (torsoW / 2 - 0.08), az = torsoD / 2 + 0.06;
-      skinMeshes.push(box(body, skin, ax, torsoC - 0.12, az, 0.17, 0.6, 0.12));
-      box(body, opts.coat ? white : shirt, ax, torsoC + 0.16, az, 0.19, 0.2, 0.14);
-      continue;
-    }
-    const arm = box(body, skin, sx * armX, torsoC - 0.1, sitting ? 0.08 : 0, 0.18, 0.65, 0.2, sitting ? -0.35 : 0);
-    skinMeshes.push(arm);
-    // sleeves
-    box(body, opts.coat ? white : shirt, sx * armX, torsoC + 0.16, sitting ? 0.0 : 0, 0.2, 0.2, 0.22);
-  }
-  if (opts.badge !== false) box(body, white, 0.17, torsoC + 0.09, torsoD / 2 + 0.01, 0.13, 0.17, 0.02);
-
-  // head (V4 proportions)
-  const head = new Group();
-  const headBaseY = torsoC + 0.56;
-  head.position.y = headBaseY;
-  if (opts.posture === "lying") head.position.z = 0.08; // resting on the pillow
-  body.add(head);
-  skinMeshes.push(box(head, skin, 0, 0, 0, 0.53, 0.52, 0.47));
-  skinMeshes.push(box(head, skin, 0, -0.02, 0.25, 0.09, 0.12, 0.09));
-  switch (ap.hairStyle) {
-    case "bald":
-      box(head, hair, -0.27, -0.02, -0.1, 0.03, 0.14, 0.24);
-      box(head, hair, 0.27, -0.02, -0.1, 0.03, 0.14, 0.24);
-      break;
-    case "curly":
-      box(head, hair, 0, 0.27, -0.02, 0.62, 0.18, 0.53);
-      box(head, hair, -0.29, 0.09, -0.06, 0.1, 0.34, 0.42);
-      box(head, hair, 0.29, 0.09, -0.06, 0.1, 0.34, 0.42);
-      box(head, hair, 0, 0.1, -0.27, 0.6, 0.36, 0.08);
-      break;
-    default:
-      box(head, hair, 0, 0.245, -0.04, 0.56, 0.12, 0.45);
-      box(head, hair, -0.255, 0.08, -0.08, 0.08, 0.3, 0.35);
-      box(head, hair, 0.255, 0.08, -0.08, 0.08, 0.3, 0.35);
-      if (ap.hairStyle === "long") {
-        box(head, hair, -0.26, -0.12, -0.08, 0.07, 0.42, 0.34);
-        box(head, hair, 0.26, -0.12, -0.08, 0.07, 0.42, 0.34);
-        box(head, hair, 0, -0.08, -0.26, 0.56, 0.62, 0.07);
-      } else if (ap.hairStyle === "bun") {
-        box(head, hair, 0, 0.22, -0.3, 0.22, 0.2, 0.16);
-      } else if (ap.hairStyle === "ponytail") {
-        box(head, hair, 0, 0.1, -0.27, 0.16, 0.14, 0.08);
-        box(head, hair, 0, -0.14, -0.3, 0.12, 0.38, 0.09);
-      }
-      break;
-  }
-  for (const sx of [-1, 1]) {
-    box(head, coal, sx * 0.13, 0.015, 0.243, 0.055, 0.065, 0.025);
-    box(head, hair, sx * 0.13, 0.1, 0.248, 0.12, 0.035, 0.025);
-  }
-  const mouth = box(head, pink, 0, -0.14, 0.245, 0.16, 0.025, 0.025);
-
-  // accessories
-  switch (ap.accessory) {
-    case "glasses": {
-      const glass = lib.has("glass") ? lib.get("glass") : coal;
-      for (const sx of [-1, 1]) {
-        box(head, glass, sx * 0.13, 0.015, 0.262, 0.15, 0.1, 0.012);
-        box(head, coal, sx * 0.13, 0.068, 0.265, 0.16, 0.014, 0.014);
-        box(head, coal, sx * 0.272, 0.04, 0.1, 0.014, 0.014, 0.3);
-      }
-      box(head, coal, 0, 0.04, 0.266, 0.07, 0.014, 0.014);
-      break;
-    }
-    case "mask":
-      box(head, lib.color("#cfe3ea", "stripe", 0.04), 0, -0.1, 0.255, 0.36, 0.2, 0.04);
-      box(head, white, -0.27, -0.05, 0.1, 0.012, 0.012, 0.3);
-      box(head, white, 0.27, -0.05, 0.1, 0.012, 0.012, 0.3);
-      break;
-    case "nasal-cannula": {
-      const tube = lib.color("#d6eef2", "flat", 0.02);
-      box(head, tube, 0, -0.075, 0.29, 0.18, 0.02, 0.02);
-      box(head, tube, -0.04, -0.06, 0.28, 0.02, 0.03, 0.02);
-      box(head, tube, 0.04, -0.06, 0.28, 0.02, 0.03, 0.02);
-      for (const sx of [-1, 1]) {
-        box(head, tube, sx * 0.19, -0.075, 0.2, 0.02, 0.02, 0.18);
-        box(head, tube, sx * 0.275, -0.02, 0.05, 0.02, 0.12, 0.14);
-        box(head, tube, sx * 0.2, -0.28, 0.05, 0.02, 0.3, 0.02);
-      }
-      break;
-    }
-    case "oxygen-mask": {
-      const mask = new MeshStandardMaterial({ color: "#bfe6d6", transparent: true, opacity: 0.72, roughness: 0.3 });
-      box(head, mask, 0, -0.08, 0.29, 0.26, 0.25, 0.1);
-      box(head, mask, 0, -0.08, 0.35, 0.14, 0.14, 0.04);
-      box(head, lib.color("#e9ecea", "flat", 0.02), 0, -0.08, -0.0, 0.56, 0.02, 0.5);
-      box(head, lib.color("#bfe6d6", "flat", 0.02), 0, -0.36, 0.32, 0.035, 0.36, 0.035);
-      break;
-    }
-    case "cap":
-      box(head, lib.color(ap.shirt), 0, 0.3, -0.01, 0.58, 0.12, 0.5);
-      box(head, lib.color(ap.shirt), 0, 0.25, 0.27, 0.5, 0.04, 0.16);
-      break;
-    default:
-      break;
-  }
-
-  // draw-call budget: every static opaque box of the body and of the head merges into one atlas
-  // mesh each (≈ 30 boxes → 4 draw calls per person: body, torso, head, mouth); the torso breathes
-  // and the mouth talks, so they stay separate; glass / transparent masks keep their own material.
-  void skinMeshes;
-  const keep = new Set<Object3D>([torso, mouth, head]);
-  const bodyMerged = mergeGroup(body, keep, lib);
-  const headMerged = mergeGroup(head, keep, lib);
-  const skinRanges: PersonRig["skin"] = [];
-  for (const mr of [bodyMerged, headMerged]) {
-    const r = mr.atlas ? mr.ranges.get(skin.name) : undefined;
-    if (mr.atlas && r) skinRanges.push({ mesh: mr.atlas, ranges: r });
-  }
-  // linear-space ratio flushed / normal skin, applied as a vertex colour
-  const a = new Color(ap.skin), f = new Color("#d9907a");
-  const ratio = (x: number, y: number) => Math.max(0.2, Math.min(3, y / Math.max(0.02, x)));
-  const flushTint: [number, number, number] = [ratio(a.r, f.r), ratio(a.g, f.g), ratio(a.b, f.b)];
-
-  // posture transforms
-  let tagY = 2.62;
-  if (opts.posture === "lying") {
-    const top = (opts.surfaceY ?? 0.9) + 0.24 * scale;
-    body.rotation.x = -Math.PI / 2;
-    body.position.set(0, top, PERSON_HEIGHT * scale * 0.5);
-    tagY = top + 1.05;
-  } else if (opts.posture === "sitting") {
-    tagY = (headBaseY + 0.94) * scale;
-  } else {
-    tagY = (headBaseY + 0.94) * scale;
-  }
-
-  return {
-    root,
-    body,
-    head,
-    mouth,
-    torso,
-    tagY,
-    headBaseY,
-    scale,
-    posture: opts.posture,
-    skin: skinRanges,
-    flushTint,
-    distressed: false,
+  const part = (geometry: typeof fig.body, parent: Group): Mesh => {
+    const m = new Mesh(geometry, material);
+    m.castShadow = true;
+    m.receiveShadow = true;
+    m.userData.figure = true;
+    // the aim is taken by the box below: aiming at a person never slips between an arm and the trunk
+    m.raycast = () => {};
+    parent.add(m);
+    return m;
   };
+  const limbs = part(fig.body, body);
+  const torso = part(fig.chest, body);
+  const head = new Group();
+  head.position.set(fig.pivot[0], fig.pivot[1], fig.pivot[2]);
+  head.scale.setScalar(fig.frame.head);
+  body.add(head);
+  const face = part(fig.head, head);
+  face.morphTargetInfluences = [0, 0, 0];
+  if (fig.clear) {
+    const clear = new Mesh(fig.clear, CLEAR_MATERIAL);
+    clear.userData.figure = true;
+    clear.raycast = () => {};
+    clear.renderOrder = 2;
+    head.add(clear);
+  }
+
+  // the aim box hugs the figure: the trunk and legs as they are, up to the top of the head
+  const top = fig.pivot[1] + fig.crown * fig.frame.head;
+  const aim = new Mesh(AIM_BOX, AIM_MATERIAL);
+  const knee = fig.skeleton.legs[0].mid[2];
+  // (someone in bed: as high over the mattress as the bed's rails, so the aim from above finds the patient before the bed)
+  const z0 = -0.14, z1 = opts.posture === "sitting" ? knee + 0.1 : lying ? 0.46 : 0.17;
+  const halfW = (lying ? 0.3 : 0.25) * (0.5 + 0.5 * fig.frame.wide);
+  aim.scale.set(halfW * 2, top, z1 - z0);
+  aim.position.set(0, top / 2, (z0 + z1) / 2);
+  body.add(aim);
+
+  const skin: PersonRig["skin"] = [];
+  for (const [mesh, ranges] of [[limbs, fig.skin.body], [torso, fig.skin.chest], [face, fig.skin.head]] as const) {
+    if (!ranges.length) continue;
+    skin.push({ mesh, ranges, colour: (mesh.geometry.getAttribute("color").array as Float32Array).slice(), finish: (mesh.geometry.getAttribute("finish").array as Float32Array).slice() });
+  }
+
+  // posture: someone lying is built upright and laid on their back, the head towards −Z
+  let tagY = top * scale + 0.3;
+  if (lying) {
+    const back = trunkAt(1.3, fig.frame, { ease: 0.012, straight: 0 })[2];
+    body.rotation.x = -Math.PI / 2;
+    body.position.set(0, seat + (back - 0.012) * scale, LIE_FEET * scale);
+    tagY = seat + 0.95;
+  }
+
+  const phase = (hashString(opts.seed ?? "someone") % 1000) / 1000;
+  return { root, body, head, torso, face, tagY, headBaseY: fig.pivot[1], scale, posture: opts.posture, skin, distressed: false, phase, triangles: fig.triangles };
 }
 
-/** Disposes per-rig resources: merged geometries and unshared materials (oxygen mask). */
+/** Disposes what a rig owns: its geometries (the materials are shared by every figure). */
 export function disposeRig(rig: PersonRig): void {
   rig.root.traverse((o) => {
     const mesh = o as Mesh;
-    if (mesh.userData?.merged) mesh.geometry.dispose();
-    const m = mesh.material as Material | undefined;
-    if (m && !Array.isArray(m) && (m as MeshStandardMaterial).transparent && m.name === "") m.dispose?.();
+    if (mesh.userData?.figure) mesh.geometry.dispose();
   });
   rig.root.removeFromParent();
 }
-
-export interface Uniform {
-  shirt: string;
-  pants: string;
-  coat?: boolean;
-  stripe?: string;
-  hairStyle?: AppearanceLike["hairStyle"];
-}
-
-/** Role uniforms (staff NPCs). */
-export const ROLE_UNIFORMS: Record<string, Uniform> = {
-  nurse: { shirt: "#6fa8c7", pants: "#6fa8c7" },
-  attending: { shirt: "#6d9fba", pants: "#354442", coat: true },
-  radiologist: { shirt: "#34506b", pants: "#34506b", coat: true },
-  pathologist: { shirt: "#a397bc", pants: "#354442", coat: true },
-  "lab-tech": { shirt: "#5f9e6e", pants: "#5f9e6e" },
-  pharmacist: { shirt: "#5f9e6e", pants: "#354442", coat: true },
-  receptionist: { shirt: "#aa6854", pants: "#354442" },
-  paramedic: { shirt: "#34506b", pants: "#34506b", stripe: "#e3c04f" },
-  porter: { shirt: "#8a8f5a", pants: "#4f5440" },
-};

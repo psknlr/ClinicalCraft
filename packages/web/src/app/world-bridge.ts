@@ -16,6 +16,7 @@
 import { patientCues, resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import type { InteractionTarget, WorldApi, WorldCallbacks, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { createWorld } from "../world/index.js";
+import { presentationOfSex } from "../world/figure/looks.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
 import { tr } from "../i18n/index.js";
@@ -45,7 +46,7 @@ export function sexText(c: CaseDefinition): string {
   return tr(`sex.${c.patient.sex}` as "sex.male");
 }
 
-/** A companion's look when the case authors none: an adult visitor in day clothes. */
+/** A companion's look when the case authors none: an adult visitor in day clothes — drawn as neither a woman nor a man in particular unless the case says who they are (`appearance.presentation`). */
 const VISITOR: Partial<CaseDefinition["patient"]["appearance"]> = { shirt: "#8c6d9e", pants: "#3d3a4a", hairStyle: "short", stature: "adult" };
 
 export function patientFor(c: CaseDefinition, f: FacilityDefinition, locale: string): WorldPatient | null {
@@ -57,12 +58,13 @@ export function patientFor(c: CaseDefinition, f: FacilityDefinition, locale: str
     slotId: slot.id,
     caseId: c.id,
     name,
-    appearance: c.patient.appearance,
+    // (drawn by their sex unless the case's author says otherwise)
+    appearance: { ...c.patient.appearance, presentation: c.patient.appearance.presentation ?? presentationOfSex(c.patient.sex) },
     posture: c.patient.posture ?? slot.posture ?? "standing",
     tag: tr("patient.tag", { age: ageText(c), sex: sexText(c) }),
     // the case's companion stands at the patient's side (drawn; the world model has no body for them)
     ...(companion
-      ? { companion: { appearance: { ...VISITOR, gown: false, accessory: "none", ...(companion.appearance ?? {}) }, label: tr("companion.tag", { role: tr(`companionRole.${companion.role}` as "companionRole.parent"), name: t(companion.name, locale) }) } }
+      ? { companion: { appearance: { ...VISITOR, gown: false, accessory: "none", ...(companion.appearance ?? {}), presentation: companion.appearance?.presentation ?? "neutral" }, label: tr("companion.tag", { role: tr(`companionRole.${companion.role}` as "companionRole.parent"), name: t(companion.name, locale) }) } }
       : {}),
   };
 }
