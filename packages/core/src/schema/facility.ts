@@ -330,8 +330,12 @@ export const EquipmentTypeSchema = z
       })
       .strict()
       .default({ kind: "none" }),
-    /** Live screen content rendered on parts named "screen". */
-    screen: z.enum(["none", "vitals", "ecg", "xray", "ct", "pacs", "lab", "text", "logo"]).default("none"),
+    /**
+     * What is shown on the parts named "screen": the patient's live `vitals` / `ecg`, or a representative picture of
+     * what the equipment is for (`xray`, `ct`, `pacs`, `lab`, `text`, `logo`, `thoracoscopy` — the round field of a
+     * rigid scope in the chest). A representative picture is never a patient's own finding.
+     */
+    screen: z.enum(["none", "vitals", "ecg", "xray", "ct", "pacs", "lab", "text", "logo", "thoracoscopy"]).default("none"),
     /** Point light emitted by the equipment (surgical lights, lamps). */
     light: z
       .object({ color: HexColorSchema, intensity: z.number().min(0), distance: z.number().min(0), y: z.number() })

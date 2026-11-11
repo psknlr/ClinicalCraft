@@ -54,6 +54,8 @@ names. Only the words around them follow the glossary.
 | a duct or vessel handle `T1…` | — | **结构 T1…** / **structure T1…** | what the operator sees before identifying it; the anatomy's name appears only after imaging |
 | the web window that runs the operation (`surgery`) | — | **腹腔镜手术** / **Laparoscopic surgery** (HUD button 手术 / Surgery) | names what the learner does, not the engine part |
 | the laparoscopic picture kept beside the theatre (`scope-dock`) | — | **腹腔镜画面** / **Laparoscope**; its states 实时 / Live, 腹腔镜在体外 / Scope outside the patient, 已中转开腹 / Converted to open | the picture, not a window: it stays in view whatever window is open |
+| the camera an endoscope's picture comes from (capability `endoscopic-camera`) | 腹腔镜摄像系统 / "a laparoscopic camera" | **内镜摄像系统** / **an endoscopic camera** | a laparoscopy tower and a thoracoscopy tower both supply it, so the label names neither scope; the messages of a laparoscopic operation itself still say 腹腔镜 / laparoscopic |
+| what a screen of kind `thoracoscopy` shows | — | **胸腔镜画面** / **the thoracoscope's picture** | a representative picture of what the equipment is for, as a `pacs` screen's slice is; never called a finding or a live image |
 | `portPlans[]` | — | **布孔方案** / **port plan** | the surgical term for where the trocars go |
 | work-up plan | "workup plan" (agent, CLI) | **work-up plan** | British spelling of the noun; the tool keeps its id `update_workup` |
 | operating room (case setting, room kind) | "Operating room" (web, CLI) | **operating theatre** | British usage, as the world and facilities already say; the id stays `operating-room` |
