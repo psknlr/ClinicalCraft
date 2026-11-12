@@ -292,11 +292,14 @@ describe("G13: recent events are the observer's own, its delegates' and what it 
   it("a device changed out of the observer's sight is not reported; in sight it is", async () => {
     const w = makeWorld("stemi-inferior-rv");
     expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:office-records" })).status).toBe("completed");
-    // the nurse wheels the bay's ECG cart to the patient
+    // the nurse wheels the bay's ECG cart out to a cubicle (the bay's cart already stands at its patient: a move
+    // "to the patient" moves nothing and says so)
     expect((await w.act({ actorId: N, operation: "approach", targetId: "eq:resus1-ecg" })).status).toBe("completed");
-    expect((await w.act({ actorId: N, operation: "move_to", targetId: "eq:resus1-ecg", goal: { kind: "interact", id: w.patientId } })).status).toBe("completed");
+    const stay = await w.act({ actorId: N, operation: "move_to", targetId: "eq:resus1-ecg", goal: { kind: "interact", id: w.patientId } });
+    expect(stay).toMatchObject({ status: "completed", moved: { displacement: 0, alreadyAtDestination: true } });
+    expect((await w.act({ actorId: N, operation: "move_to", targetId: "eq:resus1-ecg", goal: { kind: "room", id: "ed-cubicle-1" } })).status).toBe("completed");
     expect(w.runtime.observe(A).recentEvents.filter((e) => e.type === "entity.moved")).toEqual([]);
-    expect((await w.act({ actorId: A, operation: "approach", targetId: w.patientId })).status).toBe("completed");
+    expect((await w.act({ actorId: A, operation: "approach", targetId: "eq:resus1-ecg" })).status).toBe("completed");
     expect(w.runtime.observe(A).recentEvents.filter((e) => e.type === "entity.moved").map((e) => e.summary)).toEqual([expect.stringMatching(/ECG/)]);
   });
 });

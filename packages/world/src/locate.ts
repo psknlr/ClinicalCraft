@@ -262,10 +262,16 @@ export class WorldLocator {
     return this.distance(actor.pose, monitor) <= Math.max(range, MIN_RANGE) + 1e-6 && this.lineOfSight(actor.pose, monitor);
   }
 
-  /** Capabilities an entity provides (equipment only; an out-of-service device provides nothing). */
+  /**
+   * Capabilities an entity provides now (equipment only): an out-of-service device provides nothing; a device in a
+   * behaviour state that declares `supplies` provides only those (a tower switched off: no picture, no gas).
+   */
   capabilities(id: EntityId): string[] {
     const e = this.registry.entity(id);
     if (!e || e.kind !== "equipment" || !this.state.available(id)) return [];
-    return e.capabilities;
+    const b = e.equipmentType?.behavior;
+    if (!b || b.derived) return e.capabilities;
+    const supplies = b.states[this.state.entity(id)?.state ?? e.initialState ?? b.initial]?.supplies;
+    return supplies ? e.capabilities.filter((c) => supplies.includes(c)) : e.capabilities;
   }
 }

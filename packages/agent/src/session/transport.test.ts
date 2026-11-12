@@ -195,3 +195,51 @@ describe("delegation sentences (extra review item 5)", () => {
     await t.session.close();
   });
 });
+
+describe("saved in the middle of a transport (the engineering recommendations: the porter's journey)", () => {
+  /** A mover that takes `ms` per walk, so a save can fall in the middle of one. */
+  const slow = (ms: number) => ({
+    async move(_actor: string, plan: { target: { x: number; z: number; level: string; y: number; yaw: number; pitch: number } }, signal?: AbortSignal) {
+      for (let i = 0; i < 10; i++) {
+        await new Promise((r) => setTimeout(r, ms / 10));
+        if (signal?.aborted) return { arrived: false, pose: { ...plan.target }, replans: 0 };
+      }
+      return { arrived: true, pose: { ...plan.target }, replans: 0 };
+    },
+  });
+
+  it("on reload the patient, the porter, the trolley and the destination agree, and the journey is carried out once — one transfer, travel charged once", async () => {
+    const stemi = content.cases.get("stemi-inferior-rv")!.def;
+    const facility = content.facilities.get("teaching-hospital")!.def;
+    const base = { caseDef: stemi, facility, catalogs: catalogsFor(content, facility), settingsPatch: { embodiment: "embodied", approvalMode: "bypass" } } as const;
+    const t = await makeSession({ ...base, embodied: { mover: slow(400) as never } });
+    await t.session.run({ type: "clinical_action", action: { type: "start" } });
+    const w = t.session.world()!;
+    const home = w.patientPlace()!;
+    // the porter is sent; the save falls while they wheel the patient
+    void t.session.run({ type: "external_tool_call", callId: "porter", tool: "delegate_task", args: { role: "porter", task: "transport_patient", target: "eq:ct.scanner" }, allowBypass: true });
+    for (let i = 0; i < 400 && !w.patientPlace()?.transit; i++) await new Promise((r) => setTimeout(r, 5));
+    const transit = w.patientPlace()!.transit!;
+    expect(transit.by).toBe("staff:porter");
+    const saved = JSON.parse(JSON.stringify(t.session.snapshot()));
+    expect(saved.world.journey).toMatchObject({ by: "staff:porter", patient: expect.stringMatching(/^patient:/), parameters: expect.objectContaining({}) });
+    // the bodies as saved: the patient still in their bed space, the porter at their side (a walk commits when it ends)
+    expect(saved.world.entities[saved.world.journey.patient]?.patient?.slot ?? home.slot).toBe(home.slot);
+    const clockAtSave = saved.state?.clock ?? null;
+    await t.session.close();
+
+    const transcript = new MemoryTranscript();
+    const r = await makeSession({ ...base, transcript, resume: { sessionId: saved.sessionId, actions: saved.actions, messages: saved.messages, dialogue: saved.dialogue }, embodied: { snapshot: saved.world, team: saved.team } });
+    const done = await r.session.resumedJourney();
+    expect(done?.status, done?.message).toBe("completed");
+    const rw = r.session.world()!;
+    expect(rw.patientPlace()).toMatchObject({ provider: "eq:ct.scanner", trolley: transit.trolley ?? expect.anything() });
+    expect(rw.roomOf("staff:porter")).toBe(rw.roomOf("eq:ct.scanner"));
+    // one transfer: the patient moved once, and the walk charged once (nothing was charged for the walk the save cut short)
+    expect(travel(transcript)).toHaveLength(1);
+    if (clockAtSave != null) expect(r.session.state.clock).toBeGreaterThan(clockAtSave);
+    // the journey is not carried out twice (a second look finds none)
+    expect(rw.restoredJourney()).toBeNull();
+    await r.session.close();
+  });
+});

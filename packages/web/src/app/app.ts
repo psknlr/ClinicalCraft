@@ -4,8 +4,9 @@
  * keyboard, language switching and the `?qa` hooks. UI modules only talk to
  * this object; the world only talks to it through `WorldCallbacks`.
  */
+import { encounterClockRuns } from "./clocks.js";
 import type { Op } from "@clinicalcraft/agent";
-import { historyVoice, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
+import { historyVoice, procedureFor, procedureStateOf, regionAt, t, type ClinicalAction } from "@clinicalcraft/core";
 import type { BlockInfo, InteractionTarget, SoundKind, WorldCallbacks, WorldSave } from "../contracts.js";
 import { ct, getLocale, initLocale, onLocaleChange, setLocale as setUiLocale, tr, type UiLocale } from "../i18n/index.js";
 import { ApprovalDialog } from "../ui/approval.js";
@@ -14,6 +15,10 @@ import { Hud } from "../ui/hud.js";
 import { Intro } from "../ui/intro.js";
 import { PanelHost, type PanelBuilder } from "../ui/panel.js";
 import { atlasPanel } from "../ui/panels/atlas.js";
+import { ScopeDock } from "../ui/scope-dock.js";
+import { OperativePlayback } from "../ui/operative-playback.js";
+import { surgeryPanel } from "../ui/panels/surgery.js";
+import { teamPanel } from "../ui/panels/team.js";
 import { autopilotPanel } from "../ui/panels/autopilot.js";
 import { elevatorPanel, type ElevatorArgs } from "../ui/panels/elevator.js";
 import { boardPanel, comparePanel } from "../ui/panels/board.js";
@@ -90,6 +95,8 @@ export class ClinicalCraftApp implements App {
   /** Refusals of the learner's actions with "Go there" (embodied mode). */
   readonly feedback: ActionFeedback;
   /** External control of the running encounter (`clinicalcraft mcp --attach`): per encounter, never persisted. */
+  readonly scope: ScopeDock;
+  readonly playback = new OperativePlayback();
   readonly external: ExternalControl;
   private _slot = 0;
   private lastTalk: ConversationArgs = { agent: "patient" };
@@ -102,9 +109,25 @@ export class ClinicalCraftApp implements App {
   /** The encounter finished: external control ends once no external call is running. */
   private externalEnding: ReturnType<typeof setTimeout> | null = null;
   private readonly refresh = throttleFrame(() => {
+    this.syncPlayback();
     this.hud.update();
     this.panels.update();
+    this.scope.update();
   });
+
+  /** Does the encounter's time run now (`encounterClockRuns`: the case clock, the staff's round and the team's)? */
+  encounterClock(): boolean {
+    return encounterClockRuns({ entered: !!this.game?.entered, approvalOpen: this.approval.isOpen, panel: this.panels.isOpen ? (this.panels.current as PanelName | null) : null });
+  }
+
+  /** The operation's record into the one playback every laparoscope view shows. */
+  private syncPlayback(): void {
+    const game = this.game;
+    const state = game ? (game.session.store.snapshot?.state ?? game.session.session.state) : null;
+    const def = game && state ? (procedureFor(game.caseDef, state) ?? null) : null;
+    this.playback.attach(game ? `${game.caseDef.id}:${game.session.session.id}` : "", def);
+    if (game && def && state) this.playback.sync(game.session.store.operativeEvents(), procedureStateOf(state));
+  }
 
   constructor(dom: AppDom) {
     this.dom = dom;
@@ -121,6 +144,9 @@ export class ClinicalCraftApp implements App {
       (slotId) => this.vitalsFor(slotId),
     );
     this.hud = new Hud(dom.hud, this);
+    // the laparoscopic picture beside the theatre, above any window (below an approval)
+    this.scope = new ScopeDock(this);
+    dom.approval.before(this.scope.el);
     this.intro = new Intro(dom.intro, this);
     this.mover = new BrowserMover({
       renderer: () => this.world.api,
@@ -367,6 +393,10 @@ export class ClinicalCraftApp implements App {
         return craftPanel(this);
       case "atlas":
         return atlasPanel(this);
+      case "surgery":
+        return surgeryPanel(this);
+      case "team":
+        return teamPanel(this);
       case "autopilot":
         return autopilotPanel(this);
       case "elevator":
@@ -400,6 +430,7 @@ export class ClinicalCraftApp implements App {
         return;
       case "board":
       case "atlas":
+      case "surgery":
       case "craft":
         this.open(route.panel);
         return;
@@ -707,6 +738,12 @@ export class ClinicalCraftApp implements App {
   /* Game lifecycle                                                    */
   /* ---------------------------------------------------------------- */
 
+  /**
+   * The team scenario a facilitator chose for the next new encounter (`?team=<scenario id>`, or `__QA__.start`'s
+   * `team`): set at `start` when the case has it (docs/TEAM.md §6), otherwise the encounter starts without one.
+   */
+  private teamScenario: string | null = new URLSearchParams(location.search).get("team");
+
   async startCase(caseId: string, facilityId: string, resume: boolean): Promise<void> {
     if (this.starting) return;
     this.starting = true;
@@ -783,6 +820,10 @@ export class ClinicalCraftApp implements App {
         staffFor: (agent) => staffForAgent(agent, { facility, slotId: slot?.id ?? null, world: session.world() })?.staffId ?? null,
         agentDriving: () => this.game?.embodied?.agentDriving() ?? false,
         embodied: () => this.game?.embodied ?? null,
+        // one pause policy for the encounter's time, the staff's round and the care team's: the team works on while the
+        // learner operates, reads the chart or watches the team — only the pause menu (and what opens from it) or an
+        // approval waiting for the learner stops them
+        clockRunning: () => this.encounterClock(),
       });
       const embodied =
         session.embodiment === "embodied"
@@ -824,7 +865,10 @@ export class ClinicalCraftApp implements App {
           this.refresh();
         }),
       );
-      if (!session.session.state.started && !session.session.state.finished) session.act({ type: "start" });
+      if (!session.session.state.started && !session.session.state.finished) {
+        const team = this.teamScenario && caseDef.team?.scenarios.some((x) => x.id === this.teamScenario) ? this.teamScenario : null;
+        session.act(team ? { type: "start", team } : { type: "start" });
+      }
       this.enter(!!save);
     } catch (err) {
       console.error(err);
@@ -1008,6 +1052,7 @@ export class ClinicalCraftApp implements App {
             caseDef: game.caseDef,
             slotId: game.slotId,
             embodied: !!game.embodied,
+            phase: (game.session.store.snapshot?.state ?? game.session.session.state).phase,
           }),
         );
       },
@@ -1132,9 +1177,10 @@ export class ClinicalCraftApp implements App {
       say: (text: string, to = "patient", staff?: string) => app.say(text, to, staff ?? null),
       /** Deterministic engine action without the approval gate (test set-up only). */
       dispatch: (action: ClinicalAction) => app.game?.session.session.dispatch(action) ?? null,
-      start: (caseId: string, facilityId?: string, resume = false) => {
+      start: (caseId: string, facilityId?: string, resume = false, team?: string) => {
         const card = app.content.cards.find((c) => c.id === caseId);
         const fid = facilityId ?? (card ? app.content.defaultFacility(card)?.id : undefined) ?? "general-hospital";
+        if (team !== undefined) app.teamScenario = team || null;
         return app.startCase(caseId, fid, resume);
       },
       /** Load a full case (its lazy chunk, or the server document); resolves true when it is valid. */

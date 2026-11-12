@@ -154,6 +154,7 @@
         },
         "answersHistory": false,
         "appearance": {
+          "presentation": "feminine",
           "stature": "adult",
           "hairStyle": "bun"
         }

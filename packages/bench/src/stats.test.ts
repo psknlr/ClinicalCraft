@@ -74,3 +74,17 @@ describe("percentile (R-7) / mean / round", () => {
     expect(round(2.5, 0)).toBe(3);
   });
 });
+
+describe("runs scored apart by evidence", () => {
+  it("source-only and expanded runs never share one number", async () => {
+    const { metricsByEvidence } = await import("./runner.js");
+    const run = (evidence: "source-only" | "expanded", success: boolean) =>
+      ({ scenarioId: "s", category: "navigation", caseId: "c", facilityId: null, locale: "en", seed: 1, success, status: "completed", predicates: [], calls: [], refusals: [], answer: null, usage: { inputTokens: 0, outputTokens: 0 }, wallMs: 1, simMinutes: 0, trace: { spans: 0, setupSpans: 0, digest: "" }, stateDigest: "", evidence, audit: { spatial: { audited: 0, violations: [] }, authorisation: { audited: 0, unauthorised: [] }, contraindicated: [] } }) as never;
+    const m = metricsByEvidence([run("source-only", true), run("source-only", true), run("expanded", false)]);
+    expect(m["source-only"]?.runs).toBe(2);
+    expect(m["source-only"]?.taskSuccess.k).toBe(2);
+    expect(m.expanded?.runs).toBe(1);
+    expect(m.expanded?.taskSuccess.k).toBe(0);
+    expect(metricsByEvidence([run("source-only", true)]).expanded).toBeUndefined();
+  });
+});

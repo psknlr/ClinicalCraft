@@ -16,7 +16,7 @@ import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
 import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
 import { buildCollisionModel } from "./collision.js";
-import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type WorldDynamics, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
 import { worldMessage } from "./i18n.js";
 import { levelInfos } from "./levels.js";
 import { WorldLocator } from "./locate.js";
@@ -43,6 +43,8 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
   const collision = buildCollisionModel(facility, catalogs, { patients: slot ? [{ slotId: slot.id, posture: bindingPosture(binding, facility) }] : [] });
   const registry = buildRegistry(facility, catalogs, binding, collision);
   const store = new WorldStateStore({ facility, registry, newId: options.newId, spawn: options.spawn, snapshot: options.snapshot });
+  /** The transport the snapshot was taken in the middle of, until the session takes it (`restoredJourney`). */
+  let restored: WorldJourney | null = options.snapshot?.journey ? structuredClone(options.snapshot.journey) : null;
   const rotOf = (id: string) => registry.entity(id)?.rot ?? 0;
   // the patient's body (EMBODIED §8): where it is now, its posture (the place's, else clinical state's), its collider
   const staticBody = slot ? collision.colliders.find((c) => c.id === `patient:${slot.id}`) : undefined;
@@ -156,11 +158,37 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
       return backend.plan({ actorId, from: a.pose, goal, role: a.role });
     },
 
-    checkSpatial: (actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }) => checker.check(actorId, intent, opts),
+    recordBound: (id: EntityId) => rules.recordBound(id),
+    roomOf: (id: EntityId) => locator.place(id)?.room ?? null,
+    checkSpatial(actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }): SpatialCheck {
+      const base = checker.check(actorId, intent, opts);
+      // a checklist step's team prerequisites (the WHO board's count before a Time Out) hold on every path to it
+      const actor = store.actor(actorId);
+      if (!base.ok || intent.kind !== "intervene" || !intent.interventionId || !actor) return base;
+      const fail = rules.checklistPrerequisite(intent.interventionId, actor);
+      if (!fail) return base;
+      return {
+        ok: false,
+        code: opts?.recheck ? "SPATIAL_PRECONDITION_CHANGED" : "SPATIAL_REQUIREMENT_UNMET",
+        requirement: base.requirement,
+        reason: "checklist-prerequisite",
+        message: fail.message,
+        hint: fail.goal ? { goal: fail.goal, label: fail.label ?? "", ...(fail.then ? { then: fail.then } : {}) } : null,
+        details: { board: rules.checklistOperation(intent.interventionId)?.id ?? null, code: fail.code },
+      };
+    },
     atBedside(id: EntityId) {
       const resolved = actions.resolve(id);
       const p = resolved ? locator.place(resolved) : null;
       return !!p && locator.atBedside(p);
+    },
+    provides: (id: EntityId) => {
+      const resolved = actions.resolve(id);
+      return resolved ? locator.capabilities(resolved) : [];
+    },
+    stateOf: (id: EntityId) => {
+      const resolved = actions.resolve(id);
+      return resolved ? rules.state(resolved) : null;
     },
     bedsideProviders: (capability: string) =>
       registry
@@ -188,9 +216,17 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
 
     setObstacle: (o, present) => actions.setObstacle(o, present),
     setAvailability: (id, available) => actions.setAvailability(id, available),
+    placeItem: (id, beside, opts) => actions.placeItem(id, beside, opts),
     setDoor: (id, state) => actions.setDoor(id, state),
 
     subscribe: (listener) => store.subscribe(listener),
-    snapshot: () => store.snapshot(),
+    // a transport walking now goes into the snapshot with its destination (a resumed session carries it out)
+    snapshot: () => (actions.journey ? { ...store.snapshot(), journey: structuredClone(actions.journey) } : store.snapshot()),
+    roomAt: (at) => registry.roomAt(at.level, at.x, at.z),
+    restoredJourney: () => {
+      const j = restored;
+      restored = null;
+      return j;
+    },
   };
 }

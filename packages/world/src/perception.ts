@@ -100,7 +100,7 @@ interface Row extends Belief {
 const SIDE_NORMAL: Record<DoorSpec["side"], { x: number; z: number }> = { n: { x: 0, z: -1 }, s: { x: 0, z: 1 }, e: { x: 1, z: 0 }, w: { x: -1, z: 0 } };
 
 /** Inspection result (the runtime's `inspect`). */
-export type Inspection = ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string }[] };
+export type Inspection = ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string; code?: string }[] };
 
 /** Room information (the runtime's `roomInfo`). */
 export interface RoomInfo {
@@ -182,6 +182,8 @@ export class Perception {
   /** Awareness of an entity for an actor at its current pose, or null when it does not know it. */
   awareness(actor: ActorState, p: Placed, o: PerceptionOptions = this.d.options): Awareness | null {
     if (p.heldBy === actor.id) return "visible";
+    // out of sight until someone searches for it (`conceal.ts`): not even remembered where it was
+    if (!p.heldBy && this.d.store.entity(p.id)?.concealed) return null;
     if (p.kind === "room") return actor.room !== null && p.id === `room:${actor.room}` ? "visible" : "mapped";
     const loc = this.d.locator;
     if (p.level === actor.pose.level) {
@@ -378,6 +380,7 @@ export class Perception {
       case "item.held":
       case "entity.state":
       case "entity.moved":
+      case "entity.concealed":
         return sees(e.actorId) || sees(e.entityId);
       case "door.changed":
         return e.actorId === actor.id || sees(e.entityId);
@@ -471,8 +474,11 @@ export class Perception {
     const rules = this.d.rules;
     const operations = rules.spec(p.id).operations.map((op) => {
       const fail = rules.precheck(p.id, op, actor) ?? rules.spatial(p.id, op, actor);
-      const row: { op: string; name: string; available: boolean; reason?: string } = { op: op.id, name: operationName(op.id, L, op.name), available: !fail };
-      if (fail) row.reason = fail.message;
+      const row: { op: string; name: string; available: boolean; reason?: string; code?: string } = { op: op.id, name: operationName(op.id, L, op.name), available: !fail };
+      if (fail) {
+        row.reason = fail.message;
+        row.code = fail.code;
+      }
       return row;
     });
     const out: Inspection = { ...base, description: this.describe(p), operations };
@@ -552,6 +558,7 @@ export class Perception {
     const p = this.d.locator.place(id);
     if (!p) return false;
     if (p.heldBy === actor.id) return true;
+    if (!p.heldBy && this.d.store.entity(id)?.concealed) return false;
     return this.d.locator.visibility.canSee(actor.pose, this.d.locator.sight(p), { range: this.d.options.visibilityRange, fovDeg: this.d.options.fovDeg });
   }
 
@@ -579,6 +586,9 @@ export class Perception {
         break;
       case "entity.moved":
         summary = worldMessage("entity.moved", L, { target: n(e.entityId) });
+        break;
+      case "entity.concealed":
+        summary = worldMessage(e.concealed ? "entity.concealed" : key(e.actorId, "entity.found", "self.found"), L, { actor: n(e.actorId), target: n(e.entityId) });
         break;
       case "item.held":
         summary = worldMessage(e.held ? key(e.actorId, "item.held", "self.held") : key(e.actorId, "item.dropped", "self.dropped"), L, { actor: n(e.actorId), target: n(e.entityId) });

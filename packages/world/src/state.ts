@@ -167,6 +167,11 @@ export class WorldStateStore implements WorldDynamics {
     return this.entityMap.get(id);
   }
 
+  /** Items concealed now (out of everyone's sight until searched for; `conceal.ts`). */
+  concealedIds(): EntityId[] {
+    return [...this.entityMap.entries()].filter(([, s]) => s.concealed && !s.heldBy).map(([id]) => id);
+  }
+
   /** Per-entity version (0 until the entity first changes). Actors are entities too. */
   entityVersion(id: EntityId): number {
     return this.entityMap.get(id)?.version ?? 0;

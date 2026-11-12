@@ -326,6 +326,7 @@ export class PermissionState {
 export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>> = {
   start: null,
   ask: "ask_patient",
+  operate: "operate",
   examine: "examine",
   order: "order_test",
   read: "read_result",
@@ -337,6 +338,15 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   flag: null,
   note: null,
   finish: "finish_case",
+  hold: "place_hold",
+  "release-hold": "release_hold",
+  // a count is recorded from the world (the count board, the RF wand, the team), never entered by hand
+  count: null,
+  // a learner orders a study with order_study; its acquisition, report and review are the hospital's
+  study: "order_study",
+  anaesthesia: null,
+  "alarm-response": null,
+  "procedure-supply": null,
 };
 
 /** Equivalent tool name for a learner `clinical_action` (null when the action is not gated). */

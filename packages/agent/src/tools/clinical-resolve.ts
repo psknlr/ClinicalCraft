@@ -91,15 +91,32 @@ export function readPhase(s: SessionState, investigationId: string, phaseArg?: s
   return latest?.phase ?? s.phase;
 }
 
+/** The one status of an ordered result, for every role (access to its content is decided separately). */
+export type ResultStatus = "read" | "no-record" | "ready" | "pending";
+
 /**
- * Learner-facing status of an order: read, "no record" (the case has no
- * result for it in that phase — it will never come back), ready, or pending
- * until its due time.
+ * The status of an order's result, the same for the clinician, the nurse and every consultant: read; "no record"
+ * (the case has no result for it in that phase — it will never come back); ready (back, not yet reviewed); or
+ * pending until its due time. Who may see the content is a separate rule (`interpretableBy`, read results only).
  */
+export function resultStatus(c: CaseDefinition, o: ReturnType<typeof orderStatus>[number]): ResultStatus {
+  if (o.read) return "read";
+  if (resultFor(c, o.order.investigationId, o.order.phase) === null) return "no-record";
+  return o.ready ? "ready" : "pending";
+}
+
+/** Learner-facing status of an order (`resultStatus` in words). */
 export function orderStatusText(c: CaseDefinition, o: ReturnType<typeof orderStatus>[number], locale: string): string {
-  if (o.read) return rt(locale, "label.read");
-  if (resultFor(c, o.order.investigationId, o.order.phase) === null) return rt(locale, "label.noRecord");
-  return o.ready ? rt(locale, "label.ready") : rt(locale, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, locale, "ceil") });
+  switch (resultStatus(c, o)) {
+    case "read":
+      return rt(locale, "label.read");
+    case "no-record":
+      return rt(locale, "label.noRecord");
+    case "ready":
+      return rt(locale, "label.ready");
+    case "pending":
+      return rt(locale, "label.pendingUntil", { time: clockTime(c, o.order.readyAt, locale, "ceil") });
+  }
 }
 
 /**
@@ -394,7 +411,8 @@ export function capabilityRefusal(ctx: Pick<ToolContext, "facility" | "catalogs"
 export function maxDosesRefusal(ctx: Pick<ToolContext, "caseDef" | "locale" | "state">, iv: Intervention): ToolOutput | null {
   const s = ctx.state();
   if (iv.maxDoses == null || s.finished) return null;
-  if (s.interventions.filter((r) => r.interventionId === iv.id).length < iv.maxDoses) return null;
+  // a checklist step's out-of-order attempts are logged but use none of its doses (the reducer counts the same way)
+  if (s.interventions.filter((r) => r.interventionId === iv.id && !r.invalid).length < iv.maxDoses) return null;
   const L = ctx.locale;
   const message = `${rejectionText(L, "max-doses")} ${rt(L, "tool.rejected.item", { name: t(iv.name, L) })}`;
   return { ok: false, output: rt(L, "tool.rejected", { code: "max-doses", message }), data: { rejected: { code: "max-doses", message: `"${iv.id}" may be given at most ${iv.maxDoses} time(s)` }, message } };

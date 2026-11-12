@@ -36,18 +36,22 @@ async function call(s: McpServer, method: string, params?: unknown): Promise<any
 
 // Embodied mode (PROTOCOL §12): perception only reads; walking and operating change the world.
 const WORLD_READ_ONLY = ["find_entities", "find_objects", "get_action_feedback", "get_agent_state", "get_nearby_objects", "get_room_info", "get_visible_objects", "inspect_object", "observe_world"];
-const READ_ONLY = ["case_status", "check_vitals", "get_debrief", "list_cases", "list_options", ...WORLD_READ_ONLY].sort();
-const DESTRUCTIVE = ["delegate_task", "execute_skill", "interact_object", "intervene", "order_test"];
+// the operative field: looking only reads; a step acts on the patient
+// new investigations: their status and reports only read
+const READ_ONLY = ["case_status", "check_vitals", "get_debrief", "list_cases", "list_options", "list_studies", "observe_field", "read_study", ...WORLD_READ_ONLY].sort();
+const DESTRUCTIVE = ["delegate_task", "execute_skill", "interact_object", "intervene", "operate", "order_test"];
 // taking the patient to the same destination again changes nothing ("already there")
-const IDEMPOTENT = [...READ_ONLY, "cancel_action", "finish_case", "set_phase", "transport_patient", "update_workup"].sort();
+// …and a study ordered again with the same request_key, or a record retrieved again, is the same
+const IDEMPOTENT = [...READ_ONLY, "cancel_action", "finish_case", "order_study", "retrieve_report", "set_phase", "transport_patient", "update_workup"].sort();
 
 describe("tools/list annotations", () => {
   it("every tool has a title and all four hints; openWorldHint is false (a closed simulation)", async () => {
     const s = server();
     await call(s, "initialize", { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } });
     const { tools } = (await call(s, "tools/list")) as { tools: McpToolSpec[] };
-    // 17 clinical-mode tools + 17 world tools (get_camera_frame needs a browser: never listed headless).
-    expect(tools.length).toBe(34);
+    // 18 clinical-mode tools (with request_hint) + the operative field's 2 + the new investigations' 4 + 17 world
+    // tools (get_camera_frame needs a browser: never listed headless).
+    expect(tools.length).toBe(41);
     expect(tools.map((t) => t.name)).not.toContain("get_camera_frame");
     for (const name of ["navigate_to", "interact_object"]) expect(tools.find((t) => t.name === name)!.annotations.readOnlyHint, name).toBe(false);
     for (const tool of tools) {

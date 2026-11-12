@@ -132,6 +132,10 @@ export const CAPABILITY_LABELS: Readonly<Record<string, { "zh-CN": string; en: s
   surgery: { "zh-CN": "手术室", en: "an operating theatre" },
   anesthesia: { "zh-CN": "麻醉机", en: "an anaesthesia machine" },
   endoscopy: { "zh-CN": "内镜室", en: "an endoscopy suite" },
+  // the camera of any rigid endoscope — a laparoscope's, a thoracoscope's: named for neither
+  "endoscopic-camera": { "zh-CN": "内镜摄像系统", en: "an endoscopic camera" },
+  "light-source": { "zh-CN": "冷光源", en: "a light source" },
+  insufflator: { "zh-CN": "气腹机", en: "an insufflator" },
   dialysis: { "zh-CN": "血液透析", en: "haemodialysis" },
   apheresis: { "zh-CN": "治疗性单采（血浆置换）", en: "therapeutic apheresis (plasma exchange)" },
   "neonatal-care": { "zh-CN": "新生儿暖箱/辐射台", en: "a neonatal incubator or radiant warmer" },

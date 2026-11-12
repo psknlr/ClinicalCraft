@@ -1,8 +1,8 @@
 /**
- * Draw-call reduction for movable voxel groups (people, door leaves): the
+ * Draw-call reduction for movable voxel groups (door leaves, portable items): the
  * unit boxes directly under a group are merged into
  *   – ONE mesh for every atlas-able library material (texels sampled from the
- *     library's texture atlas, vertex colours = 1 so they can tint later), and
+ *     library's texture atlas, vertex colours = 1), and
  *   – one mesh per remaining material (glass, metal, transparent masks…).
  * Meshes listed in `keep` (animated parts) are left alone.
  */
@@ -92,13 +92,4 @@ export function mergeGroup(group: Object3D, keep: Set<Object3D>, lib: MaterialLi
     result.others.push(mesh);
   }
   return result;
-}
-
-/** Multiply the vertex colour of the given ranges of an atlas mesh (1,1,1 = untinted). */
-export function tintRanges(mesh: Mesh, ranges: [number, number][] | undefined, rgb: [number, number, number]): void {
-  if (!ranges?.length) return;
-  const col = mesh.geometry.getAttribute("color") as BufferAttribute | undefined;
-  if (!col) return;
-  for (const [start, count] of ranges) for (let i = start; i < start + count; i++) col.setXYZ(i, rgb[0], rgb[1], rgb[2]);
-  col.needsUpdate = true;
 }

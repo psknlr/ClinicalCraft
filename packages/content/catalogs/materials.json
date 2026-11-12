@@ -357,6 +357,13 @@
       "metalness": 0.2
     },
     {
+      "id": "gas-oxygen",
+      "color": "#f8faf9",
+      "pattern": "flat",
+      "variance": 0.01,
+      "roughness": 0.45
+    },
+    {
       "id": "paper",
       "color": "#f6f1e3",
       "pattern": "noise",

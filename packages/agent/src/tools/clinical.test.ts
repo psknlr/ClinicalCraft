@@ -287,7 +287,8 @@ describe("clinical tools", () => {
     const h = harness();
     expect((await h.run("update_workup", { plan: [{ text: "ECG", status: "pending" }] })).output).toBe("Plan updated (1 items).");
     expect(h.plans).toHaveLength(1);
-    expect((await h.run("consult", { role: "radiologist", question: "CT?" })).output).toBe("(radiologist) reply");
+    // the recipient is named first (a consult never answers anonymously)
+    expect((await h.run("consult", { role: "radiologist", question: "CT?" })).output).toBe("To: Radiologist\n(radiologist) reply");
     expect(h.asked).toEqual(["radiologist:CT?"]);
   });
 
@@ -308,7 +309,7 @@ describe("NPC tools", () => {
     await nurse.run("order_test", { investigation_id: "ct-chest" });
     await nurse.run("wait", { minutes: 20 });
     const status = await nurse.run("get_results");
-    expect(status.output).toBe("CT chest (Emergency) is back — the learner should review it.");
+    expect(status.output).toBe("CT chest (Emergency) is back — it needs the doctor's review before anyone discusses it.");
     await nurse.run("read_result", { investigation_id: "ct-chest" });
     expect((await nurse.run("get_results")).output).toContain("No aortic dissection.");
   });

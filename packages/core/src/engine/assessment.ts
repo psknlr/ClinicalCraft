@@ -2,14 +2,26 @@
  * Deterministic assessment of a session — a teaching-script measure, never a
  * validated competency score (docs/ARCHITECTURE.md §2.1 rule 5).
  */
+import { claimsMatchField } from "./procedure/claims.js";
+import { countSummary } from "./count.js";
+import { ENGINE_VERSION } from "./version.js";
+import { procedureFor } from "./procedure/variant.js";
 import type { CaseDefinition } from "../schema/case.js";
 import type { SessionState } from "../schema/session.js";
 import { evaluate, parseResultKey, resultFor } from "./conditions.js";
 import { patientAlarmsAt } from "./physiology.js";
 import { progress } from "./queries.js";
 import { creditedHistory } from "./twins.js";
+import { studyStatus } from "./study.js";
 import { unique } from "./text.js";
 import type { AssessmentReport } from "./types.js";
+
+/** Source-only or expanded (new investigations ordered), and how far each new investigation got (docs/STUDIES.md §7). */
+function studySummary(s: SessionState): Pick<AssessmentReport, "evidence" | "studies"> {
+  const codes = [...new Set((s.studies?.orders ?? []).map((o) => o.code))];
+  if (!codes.length) return { evidence: "source-only" };
+  return { evidence: "expanded", studies: codes.map((code) => ({ code, status: studyStatus(s, code)!, accessions: s.studies!.accessions.filter((a) => a.code === code).length })) };
+}
 
 /** `count` = distinct known ids in `done`; required items count as done when `credited` (default `done`) has them. */
 function coverage(items: { id: string; required: boolean }[], done: string[], credited: string[] = done) {
@@ -144,16 +156,45 @@ function rubricSummary(c: CaseDefinition, s: SessionState): Pick<AssessmentRepor
   return { rubric, score: { earned: tidy(earned), possible: tidy(possible), percent }, ...critical };
 }
 
+/** Safety gates that hold at the end, the verdict, and the cap a safety-critical gate puts on the percentage. */
+function gateSummary(c: CaseDefinition, s: SessionState) {
+  const gates = c.safetyGates.filter((g) => evaluate(c, s, g.when));
+  const critical = gates.filter((g) => g.verdict === "safety-critical");
+  const verdict: "clear" | "complication" | "safety-critical" = critical.length ? "safety-critical" : gates.length ? "complication" : "clear";
+  const cap = critical.length ? Math.min(...critical.map((g) => g.capPercent ?? 40)) : null;
+  return { gates: gates.map((g) => ({ id: g.id, verdict: g.verdict })), verdict, cap };
+}
+
+function procedureSummary(c: CaseDefinition, s: SessionState): AssessmentReport["procedure"] {
+  const p = s.procedure;
+  const def = procedureFor(c, s);
+  if (!p || !def) return undefined;
+  return {
+    unsafe: p.unsafe.map((u) => ({ ...u })),
+    injuries: p.injuries.map((i) => ({ kind: i.kind, structure: i.structure, recognised: i.recognised, severity: i.severity })),
+    pauses: p.pauses.map((x) => ({ view: x.view, at: x.at, achieved: x.achieved, claimsMatchField: claimsMatchField(def, x) })),
+    counters: { ...p.counters },
+  };
+}
+
 /** Assess a session against its case (pure). */
 export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   const p = progress(c, s);
   // Required history asked through a phase twin (`supersedes`) is credited; `asked` counts the questions really asked.
   const history = coverage(c.history, s.asked, creditedHistory(c, s));
   const exam = coverage(c.exam, s.examined);
-  const { rubric, score, criticalMissed } = rubricSummary(c, s);
+  const { rubric, score: raw, criticalMissed } = rubricSummary(c, s);
+  const gates = c.safetyGates.length ? gateSummary(c, s) : null;
+  const score = gates?.cap != null && raw.percent > gates.cap ? { ...raw, percent: gates.cap, uncapped: raw.percent } : raw;
+  const procedure = procedureSummary(c, s);
+  const count = countSummary(s);
   return {
     caseId: c.id,
+    caseVersion: c.version,
+    engine: ENGINE_VERSION,
     completed: p.complete,
+    finished: s.finished,
+    ...studySummary(s),
     minutes: s.clock,
     hints: s.hints,
     objectives: p.objectives.map((o) => (o.done ? { id: o.id, done: true, at: o.doneAt } : { id: o.id, done: false })),
@@ -164,7 +205,10 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
     safety: {
       contraindicated: s.interventions.filter((r) => r.appropriateness === "contraindicated").map((r) => ({ interventionId: r.interventionId, at: r.at })),
       criticalAlarms: countCriticalAlarms(c, s),
+      ...(gates ? { gates: gates.gates, verdict: gates.verdict } : {}),
     },
+    ...(procedure ? { procedure } : {}),
+    ...(count ? { count } : {}),
     rubric,
     score,
     ...(criticalMissed ? { criticalMissed } : {}),

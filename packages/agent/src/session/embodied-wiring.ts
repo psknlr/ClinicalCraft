@@ -5,6 +5,7 @@
  * delegated staff member's act runs through: the learner's own tool path, or a model agent's `executeToolCall`
  * (its allow-list, hooks and approval gate), with the acting body. Never a shortcut.
  */
+import { clinicalActionFeedback } from "./action-ids.js";
 import type { ActorId } from "@clinicalcraft/world";
 import { clockLabel } from "../agents/prompts.js";
 import { executeToolCall } from "../loop.js";
@@ -34,6 +35,7 @@ export function embodiedHost(k: SessionKernel): EmbodiedHost {
     recordWorld: (snapshot) => void k.recorder?.record("world", { snapshot }),
     clockText: () => clockLabel(k.caseDef, k.state.clock, k.locale),
     skills: () => k.skillList,
+    actionFeedback: (id) => clinicalActionFeedback(k.caseDef, k.acceptedActions, id),
   };
 }
 

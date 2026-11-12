@@ -15,6 +15,8 @@ export const STAFF_AGENT: Readonly<Record<string, string>> = {
   radiologist: "radiologist",
   pathologist: "pathologist",
   attending: "attending",
+  // a case consultant (the anaesthetist) answers through the attending's profile, under their own name
+  consultant: "attending",
   "lab-tech": "pathologist",
   pharmacist: "nurse",
   receptionist: "nurse",

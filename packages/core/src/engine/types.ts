@@ -2,6 +2,7 @@
  * Engine-level types shared by the validation, simulation, matching and
  * assessment modules (see docs/ARCHITECTURE.md §3).
  */
+import type { CountReport } from "./count.js";
 import type { z } from "zod";
 import type { Decision } from "../schema/case.js";
 import type { VitalKey, Vitals } from "../schema/common.js";
@@ -166,7 +167,19 @@ export interface MatchOptions {
  */
 export interface AssessmentReport {
   caseId: string;
+  /** The case version and the engine that scored it (a score is only comparable with both frozen). */
+  caseVersion: string;
+  engine: string;
+  /** Every objective met (`completed`); the encounter ended with `finish` (`finished`). */
   completed: boolean;
+  finished: boolean;
+  /**
+   * `source-only`: the encounter used the published record alone; `expanded`: it ordered new investigations
+   * (simulated, docs/STUDIES.md) — scores of the two are reported apart, never compared.
+   */
+  evidence: "source-only" | "expanded";
+  /** The new investigations of an expanded encounter and how far each got (docs/STUDIES.md §4). */
+  studies?: { code: string; status: "ordered" | "waiting" | "acquired" | "released" | "reviewed"; accessions: number }[];
   minutes: number;
   hints: number;
   objectives: { id: string; done: boolean; at?: number }[];
@@ -175,7 +188,34 @@ export interface AssessmentReport {
   /** `unread` lists result keys (`${id}@${phase}`) ordered but never read. */
   investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };
   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
-  safety: { contraindicated: { interventionId: string; at: number }[]; criticalAlarms: number };
+  safety: {
+    contraindicated: { interventionId: string; at: number }[];
+    criticalAlarms: number;
+    /**
+     * Case safety gates that hold (docs/PROCEDURE.md §8), and the verdict they give: `safety-critical`
+     * (no score compensates it — the percentage is capped), `complication`, or `clear`. Present when the
+     * case has gates.
+     */
+    gates?: { id: string; verdict: "safety-critical" | "complication" }[];
+    verdict?: "clear" | "complication" | "safety-critical";
+  };
+  /**
+   * What the operation really did (cases with a `procedure`, once it has begun): unsafe acts, injuries and
+   * whether they were recognised, safety pauses with what was claimed against what the field showed, and
+   * the counters. For the debrief — never shown to an operator during the case.
+   */
+  procedure?: {
+    unsafe: { code: string; structure?: string; at: number }[];
+    injuries: { kind: string; structure: string; recognised: boolean; severity: "minor" | "major" }[];
+    pauses: { view: string; at: number; achieved: boolean; claimsMatchField: boolean }[];
+    counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number };
+  };
+  /**
+   * The surgical count (cases whose team keeps one; docs/TEAM.md §4.3), by item identity: its status, the items
+   * still missing or not in the count, documented transfers and additions, escalations, recoveries and scans, and
+   * every unsafe progression (closure on an open count) — the debrief's record, never erased.
+   */
+  count?: CountReport;
   /**
    * `met: null` = transcript-judged item (needs the examiner agent). `scored: false` (present only then): the
    * item's `scoredWhen` does not hold, so it counts neither as earned nor as possible. `critical: true`
@@ -183,7 +223,7 @@ export interface AssessmentReport {
    */
   rubric: { id: string; domain: string; weight: number; met: boolean | null; scored?: false; critical?: true }[];
   /** Deterministic rubric items only, scored ones only (`scoredWhen`). */
-  score: { earned: number; possible: number; percent: number };
+  score: { earned: number; possible: number; percent: number; uncapped?: number };
   /**
    * Critical deterministic items missed — scored and not met — in rubric order. Present when the case marks
    * any item `critical` (empty: none missed); every debrief shows them prominently. Judged critical items are

@@ -18,6 +18,7 @@
  *      assistant message is dropped; calls not yet run get "cancelled" results
  *      so tool calls and results always stay paired.
  */
+import { actionIdsBetween } from "./session/action-ids.js";
 import type { AgentProfile } from "./agents/types.js";
 import type { HookInput, HookInputBase, HookResult } from "./hooks/types.js";
 import type { AgentRole, EventMsg, TokenUsage } from "./protocol.js";
@@ -235,9 +236,12 @@ export async function executeToolCall(params: ExecuteToolCallParams): Promise<To
   const now = p.now ?? (() => Date.now());
   const L = p.ctx.locale;
   const startedAt = now();
+  // the clinical actions this call commits are those after this sequence number (nested calls included)
+  const seqBefore = p.ctx.state().seq;
   p.emit({ type: "tool_call_begin", turnId: p.turnId, agent: p.agent, callId: p.call.id, tool: p.call.name, args: p.call.args });
 
   const finish = (status: ToolCallStatus, output: ToolOutput): ToolCallOutcome => {
+    const actionIds = actionIdsBetween(seqBefore, p.ctx.state().seq);
     p.emit({
       type: "tool_call_end",
       turnId: p.turnId,
@@ -247,6 +251,7 @@ export async function executeToolCall(params: ExecuteToolCallParams): Promise<To
       ok: output.ok,
       output: output.output,
       ...(output.data !== undefined ? { data: output.data } : {}),
+      ...(actionIds.length ? { actionIds } : {}),
       durationMs: Math.max(0, now() - startedAt),
     });
     return {
@@ -322,6 +327,35 @@ export interface ExecuteToolCallsResult {
   grounded: string[];
   /** Set when the turn must stop: signal abort or an "abort" approval answer. */
   stop: "interrupted" | "denied" | null;
+}
+
+/** A stable key for a tool call's arguments (object keys sorted). */
+function stableArgs(v: unknown): string {
+  if (Array.isArray(v)) return `[${v.map(stableArgs).join(",")}]`;
+  if (v && typeof v === "object") return `{${Object.keys(v as object).sort().map((k) => `${JSON.stringify(k)}:${stableArgs((v as Record<string, unknown>)[k])}`).join(",")}}`;
+  return JSON.stringify(v) ?? "null";
+}
+
+/**
+ * Identical failures within one turn: the same tool with the same arguments, failing with the same output, while
+ * the engine state did not change. The count resets when the call succeeds or anything is committed.
+ */
+export class RepeatedFailures {
+  private readonly seen = new Map<string, { n: number; output: string; seq: number }>();
+
+  /** Record a call's outcome; returns how many times in a row it has failed identically (0 when it did not fail). */
+  note(call: ToolCallRequest, outcome: Pick<ToolCallOutcome, "status" | "output">, seq: number): number {
+    const key = `${call.name}:${stableArgs(call.args)}`;
+    if (outcome.status === "ok" && outcome.output.ok) {
+      this.seen.delete(key);
+      return 0;
+    }
+    const before = this.seen.get(key);
+    const same = before && before.output === outcome.output.output && before.seq === seq;
+    const n = same ? before.n + 1 : 1;
+    this.seen.set(key, { n, output: outcome.output.output, seq });
+    return n;
+  }
 }
 
 /**
@@ -461,6 +495,7 @@ export async function runAgentTurn(p: RunAgentTurnParams): Promise<TurnResult> {
   const maxStop = p.maxStopContinuations ?? 3;
   let rounds = 0;
   let toolCalls = 0;
+  const repeats = new RepeatedFailures();
   let stopContinuations = 0;
   let pauses = 0;
   let text = "";
@@ -541,7 +576,8 @@ export async function runAgentTurn(p: RunAgentTurnParams): Promise<TurnResult> {
     }
 
     if (rounds >= p.maxToolRounds) {
-      push({ role: "user", content: calls.map((c) => ({ type: "tool_result" as const, callId: c.id, content: rt(L, "tool.maxRounds"), isError: true })) });
+      // one plain stop for the turn, with what to do next time — not one identical refusal per pending call
+      push({ role: "user", content: calls.map((c, i) => ({ type: "tool_result" as const, callId: c.id, content: i === 0 ? rt(L, "tool.maxRounds") : rt(L, "tool.maxRounds.more"), isError: true })) });
       return done("max_tool_rounds");
     }
     rounds++;
@@ -551,7 +587,13 @@ export async function runAgentTurn(p: RunAgentTurnParams): Promise<TurnResult> {
       calls,
     );
     toolCalls += calls.length;
-    push({ role: "user", content: executed.results });
+    // the same call failing the same way with nothing changed: say so, and what to inspect instead of retrying
+    const marked = executed.results.map((r, i) => {
+      const call = calls[i]!;
+      const n = repeats.note(call, executed.outcomes[i]!, ctx.state().seq);
+      return n >= 2 ? { ...r, content: `${r.content}\n${rt(L, "tool.repeatedFailure", { n, tool: call.name })}` } : r;
+    });
+    push({ role: "user", content: marked });
     for (const id of executed.grounded) grounded.add(id);
     if (executed.stop) return done(executed.stop);
   }

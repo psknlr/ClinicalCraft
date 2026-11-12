@@ -16,7 +16,10 @@ import type { SessionKernel } from "./kernel.js";
 const APPROVAL_DECISIONS: ReadonlySet<string> = new Set(["approved", "approved_for_session", "denied", "abort"]);
 
 /** Ops that start work and are cancelled while still queued by an interrupt or shutdown. */
-const CANCELLABLE_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "autopilot", "compact", "assess", "world_action", "external_tool_call"]);
+const CANCELLABLE_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "autopilot", "compact", "assess", "world_action", "external_tool_call", "team"]);
+
+/** Ops of the learner after which the care team acts on its own (autonomy `auto`, docs/TEAM.md). */
+const LEARNER_OPS: ReadonlySet<Op["type"]> = new Set(["user_message", "clinical_action", "slash_command", "world_action", "external_tool_call", "autopilot"]);
 
 /** Remove anything that looks like a credential from an op before it is transcribed. */
 export function sanitizeOp(op: Op): Op {
@@ -41,6 +44,7 @@ export function cleanConfigPatch(patch: RuntimeConfigPatch): RuntimeConfigPatch 
   if (typeof patch.practiceScope === "string") out.practiceScope = patch.practiceScope;
   if (typeof patch.locale === "string") out.locale = patch.locale;
   if (typeof patch.interlocutor === "string") out.interlocutor = patch.interlocutor;
+  if (patch.characters && typeof patch.characters === "object" && typeof patch.characters.engine === "string") out.characters = { engine: patch.characters.engine };
   if (patch.agents && typeof patch.agents === "object") {
     out.agents = {};
     for (const [name, o] of Object.entries(patch.agents)) {
@@ -144,41 +148,56 @@ export class OpDispatcher {
     const previous = k.currentSubmission;
     k.currentSubmission = id;
     try {
-      switch (op.type) {
-        case "user_message":
-          return await k.learner.handleUserMessage(id, op.text, op.to ?? null, op.staff ?? null);
-        case "clinical_action":
-          await k.learner.handleClinicalAction(id, op.action, op.rationale);
-          return;
-        case "slash_command":
-          return await k.learner.handleCommand(id, op.name, op.args);
-        case "autopilot":
-          return await this.withTurn(id, (signal) => k.agents.runAutopilot(id, op.goal, op.maxTurns, signal));
-        case "world_action":
-          return void (await this.withTurn(id, (signal) => this.worldAction(id, op.request, signal)));
-        case "external_tool_call":
-          return await this.withTurn(id, (signal) => k.external.run(id, op, signal));
-        case "configure":
-          return this.configure(id, op.patch);
-        case "compact":
-          return await this.withTurn(id, (signal) => k.conversations.compact(id, op.agent ?? null, "manual", signal));
-        case "assess":
-          return void (await this.withTurn(id, (signal) => k.agents.runAssessment(id, signal)));
-        case "shutdown":
-          return await this.shutdownSequence(id);
-        case "interrupt":
-        case "approval_response":
-        case "dynamic_tool_response":
-        case "world_pose":
-        case "external_tool_cancel":
-          return;
-        default: {
-          const never: never = op;
-          return never;
-        }
-      }
+      await this.handle(id, op);
+      // the care team acts after each act of the learner (autonomy `auto`), in the same submission
+      if (LEARNER_OPS.has(op.type) && k.team.available() && !k.closing) await this.withTurn(id, (signal) => k.team.afterLearner(signal));
+      // the staff's own round follows too: traction against where bodies are, investigations, a new alarm answered
+      if (LEARNER_OPS.has(op.type) && !k.closing) await this.withTurn(id, (signal) => k.staff.step(id, signal));
     } finally {
       k.currentSubmission = previous;
+    }
+  }
+
+  /** One op of the queue, by type. */
+  private async handle(id: string, op: Op): Promise<void> {
+    const k = this.k;
+    switch (op.type) {
+      case "user_message":
+        return await k.learner.handleUserMessage(id, op.text, op.to ?? null, op.staff ?? null);
+      case "clinical_action":
+        await k.learner.handleClinicalAction(id, op.action, op.rationale);
+        return;
+      case "slash_command":
+        return await k.learner.handleCommand(id, op.name, op.args);
+      case "autopilot":
+        return await this.withTurn(id, (signal) => k.agents.runAutopilot(id, op.goal, op.maxTurns, signal));
+      case "world_action":
+        return void (await this.withTurn(id, (signal) => this.worldAction(id, op.request, signal)));
+      case "external_tool_call":
+        return await this.withTurn(id, (signal) => k.external.run(id, op, signal));
+      case "configure":
+        return this.configure(id, op.patch);
+      case "compact":
+        return await this.withTurn(id, (signal) => k.conversations.compact(id, op.agent ?? null, "manual", signal));
+      case "assess":
+        return void (await this.withTurn(id, (signal) => k.agents.runAssessment(id, signal)));
+      case "team":
+        return await this.withTurn(id, (signal) => k.team.op(id, op, signal));
+      case "staff_step":
+        if (k.closing || !k.state.started) return;
+        return await this.withTurn(id, (signal) => k.staff.step(id, signal));
+      case "shutdown":
+        return await this.shutdownSequence(id);
+      case "interrupt":
+      case "approval_response":
+      case "dynamic_tool_response":
+      case "world_pose":
+      case "external_tool_cancel":
+        return;
+      default: {
+        const never: never = op;
+        return never;
+      }
     }
   }
 
@@ -264,6 +283,10 @@ export class OpDispatcher {
         issues.push(`locale "${patch.locale}"`);
         delete patch.locale;
       }
+    }
+    if (patch.characters?.engine !== undefined) {
+      if (patch.characters.engine === "rules" || patch.characters.engine === "llm") next.characters = { ...next.characters, engine: patch.characters.engine };
+      else issues.push(`characters.engine "${String(patch.characters.engine)}"`);
     }
     for (const [agent, override] of Object.entries(patch.agents ?? {})) {
       const merged = { ...(next.agents[agent] ?? {}) } as Record<string, unknown>;

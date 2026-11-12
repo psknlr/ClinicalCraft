@@ -11,7 +11,9 @@
  * frame loop, map) and returns the `WorldApi` over it; `debug` is qa.ts.
  */
 import type { CreateWorld, WorldApi, WorldOptions, WorldSave } from "../contracts.js";
+import { hasLooks } from "@clinicalcraft/core";
 import { captureJpeg } from "./capture.js";
+import { applyLook } from "./live.js";
 import { PHYSICS } from "./physics.js";
 import { worldDebug } from "./qa.js";
 import { VoxelWorld } from "./voxel-world.js";
@@ -101,6 +103,13 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     placePatient: (slotId, at) => world.people.placeAt(slotId, at),
     pushPatient: (slotId, by, posture) => world.people.push(slotId, by, posture),
     escortPatient: (slotId, by) => world.people.escort(slotId, by),
+    setEquipmentState(placementId, state) {
+      const rec = ctx.live.get(placementId);
+      if (!rec || rec.state === state) return;
+      for (const old of applyLook(rec, state)) old.dispose();
+      stage.markShadows();
+    },
+    statefulEquipment: () => [...ctx.live.values()].filter((rec) => hasLooks(rec.type)).map((rec) => rec.id),
     setDoor: (doorId, open) => world.doors.set(doorId, open),
     setDoorLocked: (doorId, locked) => world.doors.setLocked(doorId, locked),
     captureFrame(o) {

@@ -23,16 +23,18 @@
  * A step the policy makes impossible is narrated and listed as missed —
  * never done through the non-spatial path. After a study the patient was
  * taken to, they are taken back to their bed space unless the next step
- * needs them at a device too (EMBODIED §8).
+ * needs them at a device too (EMBODIED §8). In a case that keeps a surgical count, closure waits for the count:
+ * before `operate close` on a count that is not settled, the closing count is made at the count board in the
+ * patient's room (docs/TEAM.md §4.3) — the autopilot never closes on a count it did not take.
  */
-import type { ClinicalAction, SessionState } from "@clinicalcraft/core";
-import { PRIMARY_ACTOR, roleName, type ActionHint, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
+import { countSettled, countStatus, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
+import { behaviorOf, PRIMARY_ACTOR, roleName, type ActionHint, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
 import type { ToolCallStatus } from "../loop.js";
 import { actionIntent } from "../tools/spatial.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { nameOf } from "../tools/world-format.js";
-import { walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
+import { lostTraction, walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
 import { clinicalOperation, heldBy, operationPath, releaseHeld, releaseOperation, type DeviceRoute } from "./device-ops.js";
 import { rt } from "./i18n.js";
 import type { SessionTrace } from "./trace.js";
@@ -166,7 +168,7 @@ async function returnPatient(host: AutopilotHost, e: EmbodiedAutopilotHost, step
   if (home) return;
   for (let i = host.cursor.value; i < steps.length; i++) {
     const step = steps[i]!;
-    if (step.kind !== "tool" || stepAlreadySatisfied(step, host.state())) continue;
+    if (step.kind !== "tool" || stepAlreadySatisfied(step, host.state(), host.cursor.extraOps)) continue;
     const intent = actionIntent(step.action as ClinicalAction);
     if (!intent) continue;
     if (needsPatientAtProvider(world.checkSpatial(PRIMARY_ACTOR, intent).requirement)) return;
@@ -202,6 +204,74 @@ function stepVerified(step: OfflineClinicianStep, state: SessionState, clockBefo
 }
 
 /** Carry out one tool step with the body (see the module docs). */
+/** The world request a hint's `then` names. */
+function thenRequest(then: NonNullable<ActionHint["then"]>) {
+  return { operation: then.operation, targetId: then.targetId, ...(then.goal ? { goal: then.goal } : {}), ...(then.parameters ? { parameters: then.parameters } : {}) };
+}
+
+/** Prerequisite chains followed by `achieve` (the count board's final count → the RF wand's scan → picking it up). */
+const MAX_PREREQUISITE_DEPTH = 4;
+
+/**
+ * Do a world operation, following its refusals: walk to the hint's goal, do the hint's `then` first (recursively),
+ * then try again — a few attempts, a few levels deep. True when it was done.
+ */
+async function achieve(e: EmbodiedAutopilotHost, request: Parameters<EmbodiedAutopilotHost["act"]>[0], turnId: string, signal?: AbortSignal, depth = 0): Promise<boolean> {
+  for (let attempt = 0; attempt < 3 && !signal?.aborted; attempt++) {
+    const r = await e.act(request, turnId, signal);
+    if (r.status === "completed") return true;
+    if (r.status === "cancelled" || !r.hint || depth >= MAX_PREREQUISITE_DEPTH) return false;
+    if ((await e.act({ operation: "navigate", goal: r.hint.goal }, turnId, signal)).status !== "completed") return false;
+    if (r.hint.then && !(await achieve(e, thenRequest(r.hint.then), turnId, signal, depth + 1))) return false;
+  }
+  return false;
+}
+
+/**
+ * A record-backed count device (`surgical_count` operations) in the patient's room — the count board, or (`handheld`)
+ * the RF wand — with its operations by step.
+ */
+function countDevice(world: WorldRuntime, patientId: string | null, handheld: boolean): { id: string; ops: Map<string, string> } | null {
+  const room = patientId ? world.entity(patientId)?.room : null;
+  for (const e of world.entities()) {
+    if (e.kind !== "equipment" || (e.portable === "handheld") !== handheld || (room && e.room !== room)) continue;
+    const spec = behaviorOf(e);
+    const ops = spec.derived === "case-record" ? spec.operations.filter((o) => o.clinical?.tool === "surgical_count" && o.clinical.item) : [];
+    if (ops.length) return { id: e.id, ops: new Map(ops.map((o) => [o.clinical!.item!, o.id])) };
+  }
+  return null;
+}
+
+/**
+ * Before closure on a count that is not settled (docs/TEAM.md §4.3): the closing count (or a recount) at the count
+ * board; still open — the discrepancy escalated on the board (unless it was), then the patient scanned with the RF
+ * wand: a retained swab found is searched out of the wound and the count taken again; a clear scan excludes one.
+ */
+async function countBeforeClosure(host: AutopilotHost, e: EmbodiedAutopilotHost, step: OfflineClinicianStep, turnId: string, signal?: AbortSignal): Promise<void> {
+  const a = step.action;
+  if (a.type !== "operate" || a.op.op !== "close" || !host.state().count) return;
+  const settled = () => countSettled(host.state().count);
+  const board = countDevice(e.world(), e.patientId(), false);
+  if (settled() || !board) return;
+  const on = async (device: { id: string; ops: Map<string, string> }, stepId: string) => {
+    const op = device.ops.get(stepId);
+    return !!op && (await achieve(e, { operation: op, targetId: device.id }, turnId, signal));
+  };
+  for (const stage of ["closing", "recount"]) if ((await on(board, stage)) && countStatus(host.state().count) !== "baseline") break;
+  if (settled() || signal?.aborted) return;
+  if (countStatus(host.state().count) === "discrepancy") await on(board, "escalate");
+  const wand = countDevice(e.world(), e.patientId(), true);
+  if (!wand || !(await on(wand, "scan"))) return;
+  const patient = e.patientId();
+  const found = host.state().count?.entries.findLast((x) => x.op === "scan");
+  if (found?.op === "scan" && found.detected.length && patient) {
+    // a retained swab: out of the wound, then counted again
+    await e.act({ operation: "search", targetId: patient }, turnId, signal);
+    await on(board, "recount");
+  }
+  await e.act({ operation: "put_down", targetId: wand.id }, turnId, signal);
+}
+
 async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, step: Extract<OfflineClinicianStep, { kind: "tool" }>, turnId: string, signal?: AbortSignal): Promise<StepRun> {
   const intent = actionIntent(step.action as ClinicalAction);
   const actor = PRIMARY_ACTOR;
@@ -229,6 +299,11 @@ async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, st
             } else if (check.reason === "provider-not-at-bedside" && goal.kind === "interact" && patient) {
               if ((await e.act({ operation: "navigate", goal }, turnId, signal)).status !== "completed") break;
               if ((await e.act({ operation: "move_to", targetId: goal.id, goal: { kind: "interact", id: patient } }, turnId, signal)).status !== "completed") break;
+            } else if (then) {
+              // walk there, then do what the hint names — a checklist step's prerequisite (the count board's counts,
+              // the RF wand's scan first), following each refusal's own hint a few levels deep
+              if ((await e.act({ operation: "navigate", goal }, turnId, signal)).status !== "completed") break;
+              if (!(await achieve(e, thenRequest(then), turnId, signal))) break;
             } else if ((await e.act({ operation: "navigate", goal }, turnId, signal)).status !== "completed") break;
             check = world.checkSpatial(actor, intent);
           }
@@ -277,6 +352,7 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
   const steps = clinicianOfflineSteps(host.caseDef, host.locale);
   let executed = 0;
   let last = "";
+  const regrasped = new Set<number>();
   host.ensureStarted();
   while (executed < Math.max(1, maxSteps)) {
     if (signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
@@ -287,13 +363,14 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
       return { status: "end_turn", text: last, grounded: [], done: true, toolCalls: executed };
     }
     const step = steps[host.cursor.value]!;
-    if (stepAlreadySatisfied(step, host.state())) {
+    if (stepAlreadySatisfied(step, host.state(), host.cursor.extraOps)) {
       host.cursor.value++;
       continue;
     }
     if (step.kind === "action") {
       host.cursor.value++;
       host.dispatch({ ...step.action, by: "agent" } as ClinicalAction);
+      await host.afterStep?.(signal);
       continue;
     }
     const pending =
@@ -311,7 +388,28 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
       host.cursor.value++;
       continue;
     }
+    // a traction the reference set up and never let go has gone (a colleague left the table): re-grasp first, once
+    const regrasp = run === step && !regrasped.has(host.cursor.value) ? lostTraction(host.state(), steps, host.cursor.value) : null;
+    if (regrasp) {
+      regrasped.add(host.cursor.value);
+      const again = stepForAction(host.caseDef, regrasp.action, host.locale);
+      if (again.kind === "tool") {
+        last = rt(host.locale, "clinician.narrate.regrasp", { structure: regrasp.structure });
+        host.narrate(turnId, last);
+        const stepsBefore = host.state().procedure?.counters.steps ?? 0;
+        const o = await runEmbodiedStep(host, e, again, turnId, signal);
+        executed++;
+        if ((host.state().procedure?.counters.steps ?? 0) > stepsBefore) host.cursor.extraOps = (host.cursor.extraOps ?? 0) + 1;
+        if (o.status === "interrupted" || signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
+        if (o.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
+        continue;
+      }
+    }
     const clockBefore = host.state().clock;
+    if (run === step) {
+      await countBeforeClosure(host, e, run, turnId, signal);
+      await host.afterStep?.(signal);
+    }
     last = run.narration;
     host.narrate(turnId, run.narration);
     const outcome = await runEmbodiedStep(host, e, run, turnId, signal);
@@ -322,6 +420,8 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
     if (run === step || host.state().clock === clockBefore) host.cursor.value++;
     // a study done at a device: the patient goes back to their bed space (unless the next step needs a device too)
     await returnPatient(host, e, steps, turnId, signal);
+    // the care team's turn (its assigned scenario runs alongside: a hold, a search, a request)
+    await host.afterStep?.(signal);
   }
   return { status: "end_turn", text: last, grounded: [], done: host.state().finished, toolCalls: executed };
 }

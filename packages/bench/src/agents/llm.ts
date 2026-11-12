@@ -50,8 +50,13 @@ export function missingKey(config: ProviderConfig, settings: LlmAgentOptions["se
   return env.length ? env : [`${config.id.toUpperCase()}_API_KEY`];
 }
 
+/** The live agent: a bench agent, plus its session wiring for any task with a tool-call limit (the operative track). */
+export interface LlmAgent extends BenchAgent {
+  wiringFor(maxToolCalls: number, tap: ProviderTap): AgentWiring;
+}
+
 /** Build the live agent (throws `LiveRunError` when it must not run). */
-export function createLlmAgent(o: LlmAgentOptions): BenchAgent {
+export function createLlmAgent(o: LlmAgentOptions): LlmAgent {
   if (!o.live) throw new LiveRunError("live-required");
   if ((o.refuseInCi ?? true) && o.env.CI && o.env.CI !== "false" && o.env.CI !== "0") throw new LiveRunError("ci");
   const providerId = o.provider ?? o.settings.provider;
@@ -61,17 +66,17 @@ export function createLlmAgent(o: LlmAgentOptions): BenchAgent {
   const missing = missingKey(config, o.settings);
   if (missing) throw new LiveRunError("no-key", { provider: providerId, env: missing.join(" / ") });
   const model = config.model;
+  const wiringFor = (maxToolCalls: number, tap: ProviderTap): AgentWiring => ({
+    clinician: { provider: providerId, model, maxToolRounds: Math.min(100, maxToolCalls) },
+    resolveProvider: (id: string, m: string | null) => resolveNodeProviderConfig(o.settings, id, m, o.env),
+    providerFactory: (agent: AgentProfile, cfg: ProviderConfig) => tapProvider(o.providerFactory ? o.providerFactory(agent, cfg) : createProvider(cfg), tap),
+  });
   return {
     kind: "llm",
     provider: providerId,
     model,
-    wiring(scenario: BenchScenario, tap: ProviderTap): AgentWiring {
-      return {
-        clinician: { provider: providerId, model, maxToolRounds: Math.min(100, scenario.limits.maxToolCalls) },
-        resolveProvider: (id: string, m: string | null) => resolveNodeProviderConfig(o.settings, id, m, o.env),
-        providerFactory: (agent: AgentProfile, cfg: ProviderConfig) => tapProvider(o.providerFactory ? o.providerFactory(agent, cfg) : createProvider(cfg), tap),
-      };
-    },
+    wiring: (scenario: BenchScenario, tap: ProviderTap): AgentWiring => wiringFor(scenario.limits.maxToolCalls, tap),
+    wiringFor,
     run: (ctx: BenchAgentContext) => driveModel(ctx),
   };
 }

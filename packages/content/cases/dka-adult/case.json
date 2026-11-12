@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "dka-adult",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "title": {
     "zh-CN": "呕吐、腹痛伴呼吸急促 · 24岁女性",
     "en": "Vomiting, abdominal pain and fast breathing · 24-year-old woman"
@@ -176,6 +176,7 @@
         },
         "answersHistory": false,
         "appearance": {
+          "presentation": "feminine",
           "hairStyle": "long",
           "hair": "#2b211c",
           "shirt": "#c2703d",
@@ -8386,8 +8387,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。正常血糖性DKA指血糖 < 13.9 mmol/L（250 mg/dL）的DKA，常与SGLT2抑制剂、妊娠或饥饿有关；她血糖28.0 mmol/L且从未用过SGLT2抑制剂。",
-            "en": "No. Euglycaemic DKA means DKA with glucose < 13.9 mmol/L (250 mg/dL), often with SGLT2 inhibitors, pregnancy or starvation; her glucose is 28.0 mmol/L and she has never taken an SGLT2 inhibitor."
+            "zh-CN": "不对。正常血糖性DKA指血糖 < 11.1 mmol/L（200 mg/dL）的DKA，常与SGLT2抑制剂、妊娠或饥饿有关；她血糖28.0 mmol/L且从未用过SGLT2抑制剂。",
+            "en": "No. Euglycaemic DKA means DKA with glucose < 11.1 mmol/L (200 mg/dL), often with SGLT2 inhibitors, pregnancy or starvation; her glucose is 28.0 mmol/L and she has never taken an SGLT2 inhibitor."
           }
         },
         {

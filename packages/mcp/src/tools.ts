@@ -104,6 +104,17 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   update_workup: { title: "Update the work-up plan", ...RECORDS, idempotentHint: true },
   case_status: { title: "Case status", ...READ_ONLY },
   finish_case: { title: "Finish the case", ...RECORDS, idempotentHint: true },
+  request_hint: { title: "Ask for a teaching hint (counts against the score)", ...RECORDS },
+  // The operative field (docs/PROCEDURE.md §7): looking only reads; every step acts on the patient (clip, divide,
+  // coagulate and bail-out are high-risk and need confirmation).
+  observe_field: { title: "Look at the operative field", ...READ_ONLY },
+  operate: { title: "Operative step", ...RECORDS, destructiveHint: true },
+  // New investigations (docs/STUDIES.md): the published record is looked up (recorded as a read); an order is a new
+  // simulated study (the same request_key again is the same order); its status and reports only read.
+  retrieve_report: { title: "Retrieve an existing report", ...RECORDS, idempotentHint: true },
+  order_study: { title: "Order a new investigation", ...RECORDS, idempotentHint: true },
+  read_study: { title: "Read a new investigation", ...READ_ONLY },
+  list_studies: { title: "List new investigations", ...READ_ONLY },
   // Embodied mode (§12). Perception only reads (the body's memory of what it saw is not encounter state);
   // walking moves the body and spends simulated time; operations with a clinical effect (a device giving a
   // drug, delegated or skill steps) act on the patient through the approval gate.
@@ -156,6 +167,9 @@ function withConfirm(schema: Record<string, unknown>): Record<string, unknown> {
   return { ...schema, properties: { ...((schema.properties ?? {}) as Record<string, unknown>), confirm: CONFIRM_SCHEMA } };
 }
 
+/** The operative field's tools (listed for every session; they answer "this case has no operation" elsewhere). */
+const OPERATIVE: readonly string[] = ["observe_field", "operate"];
+
 function clinicalSpec(tool: ToolDefinition<Record<string, unknown>>): McpToolSpec {
   const schema = withSessionId(tool.inputSchema);
   const annotations = toolAnnotations(tool.name);
@@ -163,7 +177,7 @@ function clinicalSpec(tool: ToolDefinition<Record<string, unknown>>): McpToolSpe
     name: tool.name,
     title: annotations.title,
     // `confirm` follows the approval gate (tools it never asks about are read-only there), not the hints.
-    description: `${tool.description} Requires session_id from start_case.${tool.readOnly ? "" : " High-risk or always-ask actions need a second call with confirm: true after the user agreed."}`,
+    description: `${tool.description}${OPERATIVE.includes(tool.name) ? " Only in a case with an operation (start_case says so), once case_status says it is under way; in-world sessions: at the operating table." : ""} Requires session_id from start_case.${tool.readOnly ? "" : " High-risk or always-ask actions need a second call with confirm: true after the user agreed."}`,
     inputSchema: tool.readOnly ? schema : withConfirm(schema),
     annotations,
   };
@@ -309,7 +323,7 @@ export async function callTool(host: ToolHost, name: string, args: Record<string
         const { output, notices } = outcome;
         const warnings = outcome.warnings ?? [];
         const text = [output.output, notices.length > 0 ? notices.map((n) => `! ${n}`).join("\n") : "", noticeLines(entry.session.locale, warnings)].filter(Boolean).join("\n\n");
-        return textResult(text, { session_id: entry.id, tool: name, ok: output.ok, data: output.data ?? null, ...(notices.length ? { notices } : {}), ...(warnings.length ? { warnings } : {}) }, !output.ok);
+        return textResult(text, { session_id: entry.id, tool: name, ok: output.ok, data: output.data ?? null, ...(outcome.actionIds?.length ? { actionIds: outcome.actionIds } : {}), ...(notices.length ? { notices } : {}), ...(warnings.length ? { warnings } : {}) }, !output.ok);
       });
     }
   }
@@ -358,6 +372,8 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
       card?.text ?? "",
       narrated ? mm(SL, "start.narration", { text: opening }) : mm(SL, "start.says", { speaker, text: opening }),
       mm(SL, "start.next", { session: session.id }),
+      // a case with an operation: how it is done (never with intervene, a count or a device)
+      c.procedure ? mm(SL, "start.operation", { name: t(c.procedure.name, SL) }) : "",
       embodied ? mm(SL, "start.embodied", { place: place ?? "-" }) : "",
       noticeLines(SL, warnings),
     ]
@@ -375,6 +391,7 @@ async function startCase(host: ToolHost, args: Record<string, unknown>): Promise
       practiceScope: session.settings.practiceScope,
       provider: session.settings.provider,
       embodiment: session.embodiment,
+      operation: c.procedure != null,
       ...(embodied ? { place } : {}),
       ...(warnings.length ? { warnings } : {}),
     });

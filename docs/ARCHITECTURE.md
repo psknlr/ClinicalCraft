@@ -60,9 +60,11 @@ vitest.config.ts            one test runner for every package (src aliases)
 docs/                       ARCHITECTURE (this), PROTOCOL (runtime, providers, front-ends, embodied mode, world bridge),
                             EMBODIED (the embodied layer, its benchmark and status; zh-CN/EMBODIED.md is its translation),
                             CASE_AUTHORING (incl. the clinical content standard), FACILITIES, ASSETS, DESIGN_PRINCIPLES,
+                            PROCEDURE (the operative field: `procedure`, `operate`, safety views and gates),
                             GLOSSARY (product words of both languages, register); bench/ — generated benchmark reports
                             and reference demonstrations (samples, not tests)
-scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA),
+scripts/                    gen-json-schemas.ts (`npm run schemas`), preview/render.mjs (content visual QA: equipment,
+                            models, floor plans, and the people as the world draws them),
                             bench/content-scale.ts (content-scale measurement, docs/EMBODIED.md §11)
 packages/core               @clinicalcraft/core     zod schemas + pure engine
 packages/world              @clinicalcraft/world    embodied world model (pure, headless): collision model, navigation,
@@ -207,8 +209,16 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     such place the patient stays where they are).
 * **Condition DSL** — `schema/common.ts`: `all/any/not/always`, `asked`,
   `examined`, `ordered`, `read`, `resultReady`, `decided`, `attempted`,
-  `decidedFirstTry`, `intervened`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`. `asked: id` also holds when a history item that
+  `decidedFirstTry`, `intervened`, `inOrder`, `phase`, `flag`, `objective`, `vital`,
+  `elapsed`, `hints`, `procedure`. `intervened` takes `valid`: `true` counts only
+  attempts that were not contraindicated when made, `false` only those that
+  were. `inOrder: [id…]` holds when those interventions were first validly
+  given in that order, compared by committed action sequence
+  (`InterventionRecord.seq`), so two acts in the same simulated minute keep
+  their order. An intervention with `checklist: true` (a WHO checklist step)
+  records an out-of-order attempt (`invalid: true`): it is logged and shown,
+  but its effects and flags do not apply and it uses none of `maxDoses`, so a
+  later attempt in order still counts. `asked: id` also holds when a history item that
   supersedes `id` (phase twins, transitively) was asked. `decidedFirstTry: decisionId` is true iff the first
   recorded (i.e. accepted) attempt at that decision was correct — once the
   first answer is wrong it stays false, so it belongs in rubric items rather
@@ -374,15 +384,20 @@ rotateLocal(x, z, rot): [number, number]; rotateSide(side, rot); offsetSign(side
 
 // GLB / glTF equipment models without a renderer (glb.ts; docs/ASSETS.md, `clinicalcraft assets inspect`)
 parseGlb(bytes: Uint8Array): GlbInfo                    // container, counts, bounds, extensions, issues; throws GlbError when unreadable
-checkModelReference(info, ref: EquipmentModel, footprint, opts?: { sha256?, draco?, tolerance?, errorTolerance? }): AssetIssue[]   // scale, licence, attribution, pinned hash, loadable extensions
+checkModelReference(info, ref: EquipmentModel, footprint, opts?: { sha256?, draco?, tolerance?, errorTolerance? }): AssetIssue[]   // scale (axes under MIN_FIT_AXIS: aim allowance), licence, attribution, use status + source (MODEL_USE), pinned hash, loadable extensions
 fitModel(bounds, ref, footprint): ModelFit; modelScale(ref): Vec3 | undefined; encodeGlb(json, bin?): Uint8Array   // fitting; GLB writer (test fixtures)
 GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web renderer loads / those that need a decoder (DRACO; KTX2/Basis, not bundled)
 ```
+
+**Operative field** (`engine/procedure`, schema `schema/procedure.ts`; contract [PROCEDURE.md](PROCEDURE.md)): `operate(def, state, op, at)` — the pure step behind the `operate` action, whose result lands in `SessionState.procedure`; `observeField(def, state)` — the operator's view (handles, never duct or vessel names); `evaluateProcedure` — the `procedure` condition leaf; `portReport` and `reach` — port ergonomics; `viewCriteria`/`viewHolds` — safety views judged on the field; `procedureFor(case, state)` — the session's definition with its anatomical variant laid over it (`resolveProcedure`), the one every reader uses. The operative benchmark (`@clinicalcraft/bench` `operative/`, `clinicalcraft bench operative`; [BENCHMARK_OPERATIVE.md](BENCHMARK_OPERATIVE.md)) runs agents on a case's procedure with the variant hidden. `assess` adds `procedure` and, from the case's `safetyGates`, `safety.verdict` (a `safety-critical` gate caps the percentage).
 
 ### 3.1 Reducer semantics
 
 * `start` — sets `started`; emits `session.started`. All other actions before
   `start` are rejected `not-started`, except `set-phase`, `note`, `flag`.
+  `start {variant}` also records the procedure's anatomical variant
+  (`SessionState.variant`, hidden state; an unknown one is rejected
+  `unknown-id`; PROCEDURE.md §9).
   After `finish`, everything is rejected `finished`.
 * Static clock: actions cost 0 minutes; turnaround is ignored (results ready
   immediately). Simulated clock: each action advances `clock` by
@@ -417,11 +432,25 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   already decided → `already-decided`. Correct iff (single) the chosen option
   is correct; (multiple) the chosen set equals the set of correct options.
   Appends to `attempts`; on correct sets `decisions[id] = clock`.
-* `intervene` — `maxDoses` exceeded → `max-doses`. Appropriateness:
+* `intervene` — `maxDoses` exceeded → `max-doses`. A hold standing on the
+  intervention (see `hold`) → `on-hold`, naming who placed it and why; nothing
+  is recorded. Appropriateness:
   `contraindicated` if `contraindicatedWhen` true (evaluated **before**
   applying), else `indicated` if `indicatedWhen` true, else `neutral`.
   Applies `setFlags`; effects are applied lazily by `vitalsAt` from the
-  intervention records.
+  intervention records. A checklist step (`checklist: true`) attempted while
+  contraindicated is recorded `invalid`: nothing applied, no dose used.
+* `hold {interventionId, placedBy, reason}` — an explicit hold (an
+  anaesthetist or attending withholding clearance): appended to `holds` with
+  the minute and sequence. Unknown id → `unknown-id`; an intervention already
+  given, or a second hold by the same holder → `invalid`. Costs no time.
+* `release-hold {interventionId, releasedBy, reassessment}` — releases the
+  holds of that intervention placed by `releasedBy` (compared trimmed and
+  case-insensitively), recording who and the reassessment. Nothing held →
+  `invalid`; every standing hold placed by someone else →
+  `requirements-unmet` ("only <holder> can release it"). Missing information
+  never places a hold by itself; the `held` condition leaf reads a standing
+  hold (PROTOCOL.md §3.1).
 * `finish` — rejected `objectives-incomplete` unless `progress().complete`
   (V4 behaviour); sets `finished`; emits `case.finished`.
 * After **every accepted** action: newly completed objectives (in order of
@@ -707,6 +736,12 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   `CaseDefinition` + `SessionState` (via core `reduce`), NPC conversations,
   the approval gate, hooks, transcript sink. Processes submissions serially.
   Deterministic `clinical_action` ops work with no LLM at all.
+* **The care team** (`packages/agent/src/session/team/`, docs/TEAM.md) — in in-world mode, a case's room staff work
+  on their own: a `TeamScheduler` per session wakes members by rounds; pure role policies (`policy.ts`) decide from
+  each member's own view (what their body perceives, what was said to them, their tasks); their acts are world
+  actions on a nurse's tool path. Driven by the `team` op (the browser's team clock and headless runs alike), saved as
+  a `TeamCheckpoint`, scored by `bench team`. Concealed items and `search` live in the world
+  (`packages/world/src/conceal.ts`).
 * **Agents** — markdown + frontmatter definitions (Claude Code subagents):
   `patient` and `companion` (portrayed like standardised patients),
   `nurse` (ISBAR / SBAR), `radiologist`, `pathologist`, `attending`
@@ -866,7 +901,10 @@ spoken by the patient — those come from engine actions.
   procedural 16×16 pixel textures, instanced boxes, V4 player physics,
   doors, build zone, crafting). Its walls and every collider come from the
   `@clinicalcraft/world` collision model (EMBODIED R2), so the headless
-  world and the 3D view agree box for box. Patients/staff are voxel NPCs; equipment is
+  world and the 3D view agree box for box. Patients and staff are figures of real
+  proportions built in code (`src/world/figure/`: an appearance, a posture, the uniform of
+  a role as a position wears it — FACILITIES.md "Staff in the 3D world"); the player's hand
+  holds a stethoscope; equipment is
   interactive (workstations order exams, monitors show live vitals/ECG,
   the case board takes decisions, atlas kiosk opens the anatomy viewer).
   Panels: conversation (streaming, free text + suggested questions), exam,

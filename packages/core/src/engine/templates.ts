@@ -234,9 +234,11 @@ function expand(f: FacilityDefinition, inst: TemplateInstance, t: RoomTemplate, 
     const placed = placePoint(s, at, rot);
     const appearance = patch.appearance ? { ...(s.appearance ?? {}), ...patch.appearance } : s.appearance;
     const greeting = patch.greeting ?? s.greeting;
+    const position = patch.position ?? s.position;
     staff.push({
       id: id(s.id),
       role: patch.role ?? s.role,
+      ...(position ? { position } : {}),
       name: patch.name ?? s.name,
       room: inst.id,
       x: placed.x,

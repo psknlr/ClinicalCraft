@@ -4,8 +4,9 @@
  * announcements). Results are never quoted — the learner must read them.
  */
 import { t, type CaseDefinition, type DomainEvent, type VitalKey } from "@clinicalcraft/core";
-import { investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
+import { interventionLabel, investigationName, noReading, objectiveTitle, phaseLabel, vitalLabel, vitalWithUnit } from "../tools/format.js";
 import { rt, type RuntimeKey } from "./i18n.js";
+import { sentence } from "./i18n-checklist.js";
 
 /** Who voices a reaction line. */
 export type LineSpeaker = "nurse" | "monitor" | "patient" | "companion" | "narrator";
@@ -122,6 +123,44 @@ export function caseSpeakerNames(c: CaseDefinition): SpeakerNames {
 }
 
 /** Who calls a critical result through, by investigation category. */
+/** " — missing: …; — not in the count: …" for a count's open items (ids without the `eq:` prefix). */
+export function openItemsText(L: string, open: { missing?: readonly string[]; unexpected?: readonly string[] }, name: (id: string) => string = (id) => id.replace(/^eq:/u, "")): string {
+  const list = (ids: readonly string[]) => ids.map(name).join(L === "zh-CN" ? "、" : ", ");
+  return [open.missing?.length ? rt(L, "count.open.missing", { items: list(open.missing) }) : "", open.unexpected?.length ? rt(L, "count.open.unexpected", { items: list(open.unexpected) }) : ""].join("");
+}
+
+/** A study's released report or a wait, as the learner is told of it (the rest is the chart's). */
+function studyNotification(c: CaseDefinition, L: string, event: Extract<DomainEvent, { type: "study.recorded" }>): EventReaction[] {
+  const profile = (c.studies ?? []).find((p) => p.code === event.code);
+  const name = profile ? t(profile.name, L) : event.code;
+  if (event.op === "release") return [{ notification: { level: "info", title: rt(L, "study.label.simulated"), body: rt(L, "study.released", { label: rt(L, "study.label.simulated"), name, accession: event.id }) } }];
+  // an order that cannot proceed now, with what would let it (recorded once per reason)
+  if (event.op === "wait" && event.reason) return [{ notification: { level: "warning", title: rt(L, "study.label.simulated"), body: rt(L, "study.status.waiting", { name, order: event.id, reason: event.reason }) } }];
+  return [];
+}
+
+/** What the team calls the counted items ("swabs"). */
+export function countItemName(c: CaseDefinition, L: string): string {
+  const count = c.team?.count;
+  return count ? (count.name ? t(count.name, L) : count.item) : "";
+}
+
+/** A count, a scan or an escalation as the learner is told of it (a discrepancy is a warning). */
+function countNotification(c: CaseDefinition, L: string, event: Extract<DomainEvent, { type: "count.recorded" }>): EventReaction[] {
+  const status = rt(L, `count.status.${event.status}` as RuntimeKey);
+  const open = (event.missing?.length ?? 0) + (event.unexpected?.length ?? 0) + (event.detected?.length ?? 0) > 0;
+  const level = event.status === "discrepancy" || event.status === "unresolved" || open ? "warning" : "info";
+  const title = rt(L, "count.title");
+  const item = countItemName(c, L);
+  if (event.op === "count") {
+    const stage = rt(L, `count.stage.${event.stage ?? "recount"}` as RuntimeKey);
+    return [{ notification: { level, title, body: rt(L, "count.result", { stage, item, n: event.accounted ?? 0, of: event.of ?? 0, open: openItemsText(L, event), status }) } }];
+  }
+  if (event.op === "scan") return [{ notification: { level, title, body: event.detected?.length ? rt(L, "count.scan.detected", { items: event.detected.map((id) => id.replace(/^eq:/u, "")).join(", "), status }) : rt(L, "count.scan.clear", { status }) } }];
+  if (event.op === "escalate") return [{ notification: { level: "warning", title, body: rt(L, "count.line", { item, status, open: "" }) } }];
+  return [];
+}
+
 function criticalResultKeys(c: CaseDefinition, investigationId: string): { body: RuntimeKey; line: RuntimeKey } {
   const category = c.investigations.find((i) => i.id === investigationId)?.category;
   switch (category) {
@@ -179,6 +218,18 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     }
     case "objective.completed":
       return [{ notification: { level: "info", title: rt(L, "notify.objective.title"), body: objectiveTitle(c, event.objectiveId, L) } }];
+    case "hold.placed":
+      return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by: event.placedBy, reason: sentence(event.reason) }) } }];
+    case "hold.released":
+      return [{ notification: { level: "info", title: rt(L, "status.holds"), body: rt(L, "hold.released", { name: interventionLabel(c, event.interventionId, L), by: event.releasedBy, reassessment: event.reassessment }) } }];
+    case "study.recorded":
+      return studyNotification(c, L, event);
+    case "anaesthesia.recorded":
+      return [];
+    case "count.recorded":
+      return countNotification(c, L, event);
+    case "count.unsafe":
+      return [{ notification: { level: "critical", title: rt(L, "count.title"), body: rt(L, "count.unsafe", { status: rt(L, `count.status.${event.status}` as RuntimeKey), open: openItemsText(L, event) }) } }];
     case "case.completed":
       return [{ notification: { level: "info", title: rt(L, "notify.caseCompleted.title"), body: rt(L, "notify.caseCompleted.body") } }];
     case "case.finished":
@@ -197,6 +248,9 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     case "flag.changed":
     case "note.added":
     case "action.rejected":
+    case "procedure.step":
+    case "alarm.response":
+    case "procedure.supply":
       return [];
     default: {
       const never: never = event;

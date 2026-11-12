@@ -5,6 +5,9 @@
  * Values may contain `{name}` placeholders. Values ending in `.html` keys
  * are trusted markup (our own <kbd>/<br>), never case or model text.
  */
+import { SURGERY_ZH } from "./surgery.js";
+import { TEAM_ZH } from "./team.js";
+
 const zh = {
   /* ---------------- app & brand ---------------- */
   "app.title": "临床方块世界",
@@ -126,6 +129,8 @@ const zh = {
   "hud.savedNow": "进度与建造已保存在本机",
   "hud.saveFailed": "当前环境禁止本地保存；可在暂停菜单导出存档",
   "hud.clock": "模拟时间 {time}",
+  "hud.next": "⏭ {min} 分钟后：{what}",
+  "hud.nextTitle": "等待至其就绪：病例时钟前进，医护人员继续各自的工作",
   "hud.elapsed": "T+{min} 分钟",
   "hud.controls.html": "<kbd>W A S D</kbd> 移动　<kbd>Space</kbd> 跳跃　<kbd>Shift</kbd> 冲刺　<kbd>E</kbd> 交互　<kbd>T</kbd> 交谈　<kbd>B</kbd> 背包",
   "hud.vitalsTitle": "生命体征 · 按 V 打开监护仪",
@@ -235,6 +240,14 @@ const zh = {
   "conv.tab.tests": "检查",
   "tests.lead": "在患者身边开检查：标本在这里采集，经气动物流送检；床旁检查需要设备在床旁。已出的结果也可以在这里看。",
   "tests.here": "床旁可开",
+  "studies.title": "开具新检查（模拟）",
+  "studies.lead": "本次接诊中依据病例教学配置完成的检查——标为模拟检查，绝不是原始病例记录。要调阅已有报告，请使用上面的原始病例记录。",
+  "studies.order": "开具",
+  "studies.orderStandard": "开具 · 标准导联",
+  "studies.orderMirror": "开具 · 镜像导联（右位心）",
+  "studies.repeat": "再次开具（新的检查号）",
+  "studies.notOrdered": "未开具",
+  "studies.report": "查看报告",
   "tests.elsewhere": "其他地方（{n}）",
   "tests.elsewhereHint": "这些检查不能在床旁开：点一下看原因和去路。",
   "tests.none": "本病例没有需要开具的检查。",
@@ -377,6 +390,7 @@ const zh = {
   "orders.nowhere": "{name} · 本场馆没有相应设备",
   "orders.pending": "{name} · 已送检，约 {min} 分钟后出结果",
   "orders.noRecord": "{name} · 本阶段无记录",
+  "orders.notYet": "{name} · 该记录尚未产生",
   "orders.acquired": "已获取资料",
   "orders.none": "尚未获取资料。走到相应工作站，输入检查名称。",
   "orders.read": "已读",
@@ -949,6 +963,11 @@ const zh = {
   "pose.standing": "请站起来。",
   "emb.mode.embodied": "实景模式",
   "emb.mode.clinical": "临床模式",
+  "set.characters": "大模型驱动的角色",
+  "set.characters.hint": "开启后，手术团队成员也通过各自的模型、在岗位职责卡内决策和说话，医护人员的呼叫由说话者的模型措辞——模型缺失、超时或越界时由规则接替。与患者和医护人员的对话无论开关都使用模型。立即生效",
+  "set.characters.rules": "关（团队按规则行事）",
+  "set.characters.llm": "开（每个角色由其模型驱动）",
+  "set.characters.offline": "尚未配置模型：在“模型”中选择之前，角色按规则行事。",
   "set.embodiment": "实景模式",
   "set.embodiment.hint": "开启：要走到患者床旁、把设备推过来才能操作，示范医生与接受委派的同事也一样（推荐）；关闭：临床模式，操作不受位置限制",
   "set.embodiment.on": "开启（实景）",
@@ -1167,6 +1186,10 @@ const zh = {
   /* ---------------- learning record ---------------- */
   "record.file": "clinical_learning_record.json",
   "record.saveFile": "clinicalcraft_save.json",
+
+  /* ---------------- laparoscopic surgery (i18n/surgery.ts) ---------------- */
+  ...SURGERY_ZH,
+  ...TEAM_ZH,
 } as const;
 
 export default zh;

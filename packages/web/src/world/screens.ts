@@ -1,16 +1,24 @@
 /**
  * Equipment screens: static pixel-art panels (pacs / xray / ct / lab / text /
- * logo) drawn once, and live bedside-monitor canvases redrawn at ≤ 10 Hz.
+ * logo) and the picture of a thoracoscope (`scope-picture.ts`) drawn once, and
+ * live bedside-monitor canvases redrawn at ≤ 10 Hz.
  */
 import { CanvasTexture, Color, LinearFilter, NearestFilter, SRGBColorSpace } from "three";
+import { thoracoscopyPixels } from "./scope-picture.js";
 import { createLcg, hashString } from "./textures.js";
 
-export type ScreenKind = "none" | "vitals" | "ecg" | "xray" | "ct" | "pacs" | "lab" | "text" | "logo";
+export type ScreenKind = "none" | "vitals" | "ecg" | "xray" | "ct" | "pacs" | "lab" | "text" | "logo" | "thoracoscopy";
+
+/** Screens whose picture is shaded rather than pixel art: drawn finer and smoothed when magnified. */
+export const isShadedScreen = (kind: ScreenKind): boolean => kind === "thoracoscopy";
+
+/** The thoracoscope's picture per canvas size: every monitor of one size shows the same frame. */
+const scopeFrames = new Map<string, Uint8ClampedArray>();
 
 /** Canvas size for a screen of physical size w×h (units). Static art is low-res pixel art. */
 export function screenCanvasSize(kind: ScreenKind, w: number, h: number): [number, number] {
   const aspect = Math.max(0.3, Math.min(4, w / Math.max(0.05, h)));
-  if (kind === "vitals" || kind === "ecg") {
+  if (kind === "vitals" || kind === "ecg" || isShadedScreen(kind)) {
     const cw = 320;
     return [cw, Math.max(96, Math.round(cw / aspect))];
   }
@@ -56,6 +64,16 @@ function paintV4Text(ctx: CanvasRenderingContext2D, W: number, H: number, bg: st
 
 /** Paint static pixel art for a screen kind (deterministic per seed). `bg` = the part's material colour. */
 export function paintStaticScreen(ctx: CanvasRenderingContext2D, W: number, H: number, kind: ScreenKind, seed: string, bg?: string): void {
+  if (kind === "thoracoscopy") {
+    // one frame for every monitor of this size: the monitors of a theatre show the same camera
+    const key = `${W}x${H}`;
+    let frame = scopeFrames.get(key);
+    if (!frame) scopeFrames.set(key, (frame = thoracoscopyPixels(W, H)));
+    const image = ctx.createImageData(W, H);
+    image.data.set(frame);
+    ctx.putImageData(image, 0, 0);
+    return;
+  }
   const rnd = createLcg(hashString(seed + kind));
   if (kind === "text" && bg) {
     paintV4Text(ctx, W, H, bg, rnd);
@@ -148,8 +166,9 @@ export function createScreenTexture(kind: ScreenKind, w: number, h: number, seed
     texture.minFilter = LinearFilter;
     texture.generateMipmaps = false;
   } else {
-    texture.magFilter = NearestFilter;
-    texture.minFilter = NearestFilter;
+    const filter = isShadedScreen(kind) ? LinearFilter : NearestFilter;
+    texture.magFilter = filter;
+    texture.minFilter = filter;
     texture.generateMipmaps = false;
     paintStaticScreen(ctx, cw, ch, kind, seed, bg);
     texture.needsUpdate = true;

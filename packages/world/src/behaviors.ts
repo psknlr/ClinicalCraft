@@ -28,7 +28,7 @@
  * footprint and never below `MIN_RANGE`; an operation without
  * `actorWithin` / `patientWithin` must be done within the entity's reach.
  */
-import { monitorAttached, NEARBY_STATE_RANGE, t, type ClinicalEffect, type LocalizedText } from "@clinicalcraft/core";
+import { COUNT_EFFECT_STEPS, evaluate, monitorAttached, NEARBY_STATE_RANGE, t, type CaseDefinition, type ClinicalEffect, type Condition, type LocalizedText } from "@clinicalcraft/core";
 import { permits, rolesFor, operationClass } from "./authority.js";
 import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
 import { listText, metres, operationName, roleName, stateName, worldMessage } from "./i18n.js";
@@ -65,9 +65,50 @@ export interface BehaviorSpec {
   /** Where the state comes from: stored in the world, the door record, derived from the engine, or none. */
   stateSource: "stored" | "door" | "derived" | "none";
   initial: string | null;
-  states: Record<string, { name?: LocalizedText; available?: boolean }>;
-  derived?: "monitor-attachment";
+  states: Record<string, { name?: LocalizedText; available?: boolean; when?: Condition }>;
+  /** `monitor-attachment`: the patient's monitor; `case-record`: a board that shows the case record (WHO checklist). */
+  derived?: "monitor-attachment" | "case-record";
   operations: OperationSpec[];
+}
+
+/** The case items a `case-record` behaviour's operations name (`select: "item"`), by kind. */
+function recordItems(spec: BehaviorSpec): { tool: string; item: string }[] {
+  return spec.operations.flatMap((o) => (o.clinical?.select === "item" && o.clinical.item ? [{ tool: o.clinical.tool, item: o.clinical.item }] : []));
+}
+
+/** Does the case record what this board shows (every item its operations name)? */
+export function recordBacked(spec: BehaviorSpec, c: CaseDefinition): boolean {
+  if (spec.derived !== "case-record") return false;
+  const items = recordItems(spec);
+  const has = (tool: string, id: string) =>
+    tool === "surgical_count"
+      ? !!c.team?.count && (COUNT_EFFECT_STEPS as readonly string[]).includes(id)
+      : tool === "intervene"
+        ? c.interventions.some((i) => i.id === id)
+        : tool === "examine"
+          ? c.exam.some((f) => f.id === id)
+          : c.investigations.some((i) => i.id === id);
+  return items.length > 0 && items.every((x) => has(x.tool, x.item));
+}
+
+const physicalCache = new WeakMap<BehaviorSpec, BehaviorSpec>();
+
+/** A `case-record` board in a case that does not record its items: its own state machine, physical operations. */
+function physical(spec: BehaviorSpec): BehaviorSpec {
+  const hit = physicalCache.get(spec);
+  if (hit) return hit;
+  const out: BehaviorSpec = {
+    stateSource: "stored",
+    initial: spec.initial,
+    states: spec.states,
+    operations: spec.operations.map((o) => {
+      if (o.clinical?.select !== "item") return o;
+      const { clinical: _clinical, ...rest } = o;
+      return rest;
+    }),
+  };
+  physicalCache.set(spec, out);
+  return out;
 }
 
 /** Hand hygiene validity (simulated minutes) after `wash_hands`. */
@@ -276,7 +317,11 @@ export class DeviceRules {
   /** Behaviour of an entity id (none for unknown ids, people, rooms). */
   spec(id: EntityId): BehaviorSpec {
     const e = this.d.locator.registry.entity(id);
-    return e ? behaviorOf(e) : NO_BEHAVIOR;
+    if (!e) return NO_BEHAVIOR;
+    const spec = behaviorOf(e);
+    // a board showing the case record follows the record only in a case that records it
+    if (spec.derived === "case-record" && !recordBacked(spec, this.d.clinical.caseDef)) return physical(spec);
+    return spec;
   }
 
   /** Operation by name, or null when the entity does not offer it. */
@@ -296,11 +341,14 @@ export class DeviceRules {
     if (s?.heldBy) return s.data?.equipped ? "equipped" : "held";
     switch (spec.stateSource) {
       case "stored":
-        return s?.state ?? spec.initial;
+        return s?.state ?? this.d.locator.registry.entity(id)?.initialState ?? spec.initial;
       case "door":
         return s?.door?.locked ? "locked" : s?.door?.open ? "open" : "closed";
       case "derived": {
         const c = this.d.clinical;
+        // the last listed state whose condition holds in the case record, else the initial state — only on a board
+        // bound to the encounter (in the patient's room); another room's board shows nothing of this patient
+        if (spec.derived === "case-record") return this.recordBound(id) ? this.recordState(spec) : spec.initial;
         return this.d.locator.isPatientMonitor(id) && monitorAttached(c.caseDef, c.state()) ? "attached" : "detached";
       }
       default:
@@ -319,11 +367,55 @@ export class DeviceRules {
     return [...(state === null ? [] : [state]), ...(own !== null && own !== state ? [own] : [])];
   }
 
-  /** A carried item's own stored lifecycle state (null: not carried, or no stored behaviour). */
+  /**
+   * A carried item's own state (null: not carried, or none): its stored lifecycle state, or what it shows of the case
+   * record (an RF wand in hand still reads "scan clear" — `derived: "case-record"`).
+   */
   private carriedOwnState(id: EntityId): string | null {
     const spec = this.spec(id);
     const s = this.d.store.entity(id);
-    return s?.heldBy && spec.stateSource === "stored" ? (s.state ?? spec.initial) : null;
+    if (!s?.heldBy) return null;
+    if (spec.stateSource === "stored") return s.state ?? this.d.locator.registry.entity(id)?.initialState ?? spec.initial;
+    if (spec.stateSource === "derived" && spec.derived === "case-record") return this.recordBound(id) ? this.recordState(spec) : spec.initial;
+    return null;
+  }
+
+  /** The room the encounter's record-backed boards are in: the patient's room now (null while between rooms). */
+  encounterRoom(): string | null {
+    const loc = this.d.locator;
+    return (loc.patientId ? loc.place(loc.patientId)?.room : null) ?? null;
+  }
+
+  /**
+   * Is a record-backed board (or a record-backed handheld, the RF wand) bound to the encounter now — in the patient's
+   * room? Only then does it show the case record and write to it: OR 1's WHO board never signs in a patient in OR 7.
+   * Read for every display and again right before a commit (the patient may have been moved meanwhile).
+   */
+  recordBound(id: EntityId): boolean {
+    const room = this.encounterRoom();
+    const p = this.d.locator.place(id);
+    return !!room && !!p && p.room === room;
+  }
+
+  /** A record-backed board's operation done away from the encounter: refused, pointing at the same board in the patient's room. */
+  private unboundFailure(id: EntityId, o: OperationSpec): RuleFailure {
+    const loc = this.d.locator;
+    const L = this.d.locale;
+    const room = this.encounterRoom();
+    const type = loc.registry.entity(id)?.type;
+    const there = room ? loc.registry.ofKind("equipment").find((e) => e.type === type && e.id !== id && loc.place(e.id)?.room === room) : undefined;
+    const patient = loc.patientId ? loc.name(loc.patientId) : "—";
+    const message = worldMessage("pre.otherRoom", L, { target: loc.name(id), operation: this.operationLabel(o), patient, room: room ? loc.name(`room:${room}`) : worldMessage("pre.betweenRooms", L) });
+    return { code: "PRECONDITION_FAILED", message, ...(there ? { goal: { kind: "interact", id: there.id }, label: worldMessage("hint.approach", L, { target: loc.name(there.id) }) } : {}) };
+  }
+
+  /** The last listed state of a `case-record` behaviour whose condition holds in the case record, else its initial state. */
+  private recordState(spec: BehaviorSpec): string | null {
+    const c = this.d.clinical;
+    const state = c.state();
+    let at = spec.initial;
+    for (const [name, st] of Object.entries(spec.states)) if (st.when && evaluate(c.caseDef, state, st.when)) at = name;
+    return at;
   }
 
   /** Localised state name (behaviour names first). */
@@ -421,6 +513,8 @@ export class DeviceRules {
     }
     // a carried item is in its holder's hands: nobody else operates it
     if (s?.heldBy && s.heldBy !== actor.id) return { code: "DEVICE_BUSY", message: worldMessage("pre.heldByOther", L, { target, holder: loc.name(s.heldBy) }) };
+    // a record-backed board writes the record of the encounter in its own room only
+    if (o.clinical?.select === "item" && spec.derived === "case-record" && !this.recordBound(id)) return this.unboundFailure(id, o);
     if (o.from !== "*" && !this.states(id).some((x) => o.from.includes(x))) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id, this.carriedOwnState(id) ?? state) ?? "—" }) };
     const builtin = this.builtinPrecheck(id, o, actor, target);
     if (builtin) return builtin;
@@ -429,6 +523,46 @@ export class DeviceRules {
     for (const p of o.requires) {
       if (isPlacementPredicate(p) || evaluatePredicate(p, env)) continue;
       return this.predicateFailure(id, p, o, place, actor);
+    }
+    return null;
+  }
+
+  /**
+   * The checklist board operation that records a case step (a record-backed WHO board's `time_out` → the case's
+   * `time-out`), nearest the patient (in the patient's room first), or null when the facility has none. Its team
+   * prerequisites are the step's own, whichever way the step is taken (`checklistPrerequisite`).
+   */
+  checklistOperation(interventionId: string): { id: EntityId; op: OperationSpec } | null {
+    const loc = this.d.locator;
+    const patient = loc.patientId ? loc.place(loc.patientId) : null;
+    let best: { id: EntityId; op: OperationSpec; key: [number, number, string] } | null = null;
+    for (const e of loc.registry.ofKind("equipment")) {
+      const spec = this.spec(e.id);
+      if (spec.derived !== "case-record") continue;
+      const op = spec.operations.find((o) => o.clinical?.select === "item" && o.clinical.tool === "intervene" && o.clinical.item === interventionId);
+      const p = op ? loc.place(e.id) : null;
+      if (!op || !p) continue;
+      const key: [number, number, string] = patient
+        ? [p.room && p.room === patient.room ? 0 : 1, p.level === patient.level ? Math.hypot(p.position.x - patient.position.x, p.position.z - patient.position.z) : 1e6, e.id]
+        : [1, 0, e.id];
+      if (!best || key[0] < best.key[0] || (key[0] === best.key[0] && (key[1] < best.key[1] || (key[1] === best.key[1] && key[2] < best.key[2])))) best = { id: e.id, op, key };
+    }
+    return best ? { id: best.id, op: best.op } : null;
+  }
+
+  /**
+   * The team prerequisites of a checklist step (the board operation's declared predicates that are not about where
+   * the actor stands or who they are — a baseline count on the count board before the Time Out), or null when they
+   * hold. The board and `intervene` take the same step: one rule (docs/EMBODIED.md §6).
+   */
+  checklistPrerequisite(interventionId: string, actor: ActorState): RuleFailure | null {
+    const found = this.checklistOperation(interventionId);
+    if (!found) return null;
+    const place = this.d.locator.place(found.id);
+    const env = this.env(actor, place, this.state(found.id));
+    for (const p of found.op.requires) {
+      if (isPlacementPredicate(p) || "role" in p || "handsClean" in p || "actorHolding" in p || evaluatePredicate(p, env)) continue;
+      return this.predicateFailure(found.id, p, found.op, place, actor);
     }
     return null;
   }
@@ -532,15 +666,25 @@ export class DeviceRules {
       const wanted = (Array.isArray(n.state) ? n.state : [n.state]).map((s) => this.typeStateName(n.type, s));
       const near = this.nearbyOfType(place, n.type, within)[0];
       if (!near) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.nearbyStateNone", L, { operation, device, distance: metres(within) }) };
+      // the first step on that device's way to a wanted state (the count board's baseline count; closing, then the
+      // final count), when this actor may take it: the hint's `then`
+      const step = this.firstStepTowards(near, Array.isArray(n.state) ? n.state : [n.state], actor);
       return {
         code: "PRECONDITION_FAILED",
         message: worldMessage("pre.nearbyState", L, { operation, device, states: listText(wanted, L), state: this.stateLabel(near) ?? "—" }),
         goal: { kind: "interact", id: near },
         label: worldMessage("hint.approach", L, { target: this.d.locator.name(near) }),
+        ...(step ? { then: { operation: step.id, targetId: near } } : {}),
       };
     }
     if ("role" in p) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.role", L, { roles: listText(p.role.map((r) => roleName(r, L)), L), operation }) };
-    if ("state" in p) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id) ?? "—" }) };
+    if ("state" in p) {
+      const message = worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id) ?? "—" });
+      // an item that must be in hand (an RF wand's scan): pick it up first
+      const wanted = Array.isArray(p.state) ? p.state : [p.state];
+      const pick = wanted.includes("held") && !place?.heldBy ? this.operation(id, "pick_up") : null;
+      return pick ? { code: "PRECONDITION_FAILED", message, goal: { kind: "interact", id }, label: worldMessage("hint.approach", L, { target }), then: { operation: pick.id, targetId: id } } : { code: "PRECONDITION_FAILED", message };
+    }
     if ("deviceAtBedside" in p) {
       if (!this.d.locator.patientId) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.noPatient", L) };
       const portable = place?.entity?.portable;
@@ -549,6 +693,29 @@ export class DeviceRules {
         : { code: "PRECONDITION_FAILED", message: worldMessage("pre.notAtBedsideFixed", L, { target }) };
     }
     return { code: "PRECONDITION_FAILED", message: worldMessage("pre.predicate", L, { operation }) };
+  }
+
+  /**
+   * The first operation on a device's shortest way (by its state machine: physical operations, and the count record's
+   * own entries — a count, a scan — never a checklist step or a treatment) from its states now to one of `wanted`,
+   * that `actor` may do; null when there is none.
+   */
+  firstStepTowards(id: EntityId, wanted: readonly string[], actor: ActorState): OperationSpec | null {
+    const ops = this.spec(id).operations.filter((o) => (!o.clinical || o.clinical.tool === "surgical_count") && !o.toolByParam && o.to !== undefined && permits(actor.role, o.id, o));
+    const offered = (st: string, o: OperationSpec) => o.from === "*" || o.from.includes(st);
+    const queue: { state: string; first: OperationSpec | null }[] = this.states(id).map((st) => ({ state: st, first: null }));
+    const seen = new Set(queue.map((q) => q.state));
+    while (queue.length) {
+      const { state, first } = queue.shift()!;
+      for (const o of ops) {
+        if (!offered(state, o) || seen.has(o.to!)) continue;
+        const head = first ?? o;
+        if (wanted.includes(o.to!)) return head;
+        seen.add(o.to!);
+        queue.push({ state: o.to!, first: head });
+      }
+    }
+    return null;
   }
 
   /**

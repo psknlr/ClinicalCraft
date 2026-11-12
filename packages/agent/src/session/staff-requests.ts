@@ -13,10 +13,16 @@
  * | show me the way to …               | they say where it is and walk there (the learner follows) |
  * | where is …?                        | an answer from the hospital's public directory as they know it (a room, its distance) — never a case fact |
  *
+ * Leaving an anaesthetised patient: an anaesthetist (team duty `anaesthesia`) asked to go out of the patient's room
+ * (back to a post elsewhere, to show the way) while the patient is under anaesthesia first calls a colleague who
+ * covers it (`team.cover`), waits for them at the patient, records the hand-over, and only then goes; nobody to
+ * take over, or they cannot come: they stay and say why.
+ *
  * A thing, a treatment or a place the world (or the case) does not know leaves the words as talk for the colleague's
  * own agent to answer.
  */
-import { t } from "@clinicalcraft/core";
+import { canLeaveAnaesthetisedPatient, t } from "@clinicalcraft/core";
+import { handoverFromRecord, handoverText } from "./handover.js";
 import { MAX_HELD, PRIMARY_ACTOR, roleName, type ActorId, type ActorState, type NavGoal, type ObservedEntity, type WorldActionResult } from "@clinicalcraft/world";
 import { npcDisplayName } from "../agents/prompts.js";
 import { resolveIntervention } from "../tools/clinical.js";
@@ -140,6 +146,8 @@ export class StaffRequests {
       case "back": {
         const post = this.k.embodied!.world().entity(who.actor.id);
         if (!post) return false;
+        // an anaesthetised patient is never left without an anaesthetist: relief first, recorded
+        if (this.leavesPatient(post.room) && !(await this.relieved(id, say, who, signal))) return true;
         say(rt(L, "req.back", { post: this.k.embodied!.world().regionName({ level: post.level, x: post.position.x, z: post.position.z }) }));
         await this.walk(id, say, who, { kind: "point", x: post.position.x, z: post.position.z, level: post.level }, signal);
         return true;
@@ -147,7 +155,11 @@ export class StaffRequests {
       case "guide": {
         const place = this.find(who, intent.place);
         if (!place) return false;
-        say(rt(L, "req.guide", { place: place.name, room: this.roomOf(place) }));
+        const world = this.k.embodied!.world();
+        if (this.leavesPatient(place.kind === "room" ? place.id.replace(/^room:/u, "") : world.roomOf(place.id)) && !(await this.relieved(id, say, who, signal))) return true;
+        // a place that is its own room is just "that way" (never "the control desk is in the control desk")
+        const room = this.roomOf(place);
+        say(room === place.name ? rt(L, "req.guideRoom", { place: place.name }) : rt(L, "req.guide", { place: place.name, room }));
         const goal: NavGoal = place.kind === "room" ? { kind: "room", id: place.id.replace(/^room:/, "") } : { kind: "interact", id: place.id };
         await this.walk(id, say, who, goal, signal);
         return true;
@@ -186,6 +198,61 @@ export class StaffRequests {
     if (d?.status === "completed") say(rt(L, "req.done", { task: label }));
     else if (d?.status === "cancelled") say(rt(L, "req.stopped", { task: label }));
     else say(rt(L, "req.failed", { task: label, reason: this.reasonOf(d, out.output) }));
+    return true;
+  }
+
+  /** Does going to `room` take a colleague out of the patient's room? */
+  private leavesPatient(room: string | null): boolean {
+    const e = this.k.embodied!;
+    const patient = e.patientId();
+    const here = patient ? e.world().roomOf(patient) : null;
+    return !!here && room !== here;
+  }
+
+  /**
+   * Before an anaesthetist leaves an anaesthetised patient: a colleague covering anaesthesia comes to the patient and
+   * takes over, and the hand-over is recorded. True: they may go (not the case's anaesthetist, the patient not under
+   * anaesthesia, or relieved); false: they stay (said why).
+   */
+  private async relieved(id: string, say: Say, who: Colleague, signal: AbortSignal): Promise<boolean> {
+    const k = this.k;
+    const L = k.locale;
+    const c = k.caseDef;
+    // not the responsible anaesthetist of an anaesthetised patient: free to go
+    if (canLeaveAnaesthetisedPatient(c, k.state, who.staffId)) return true;
+    const e = k.embodied!;
+    const world = e.world();
+    const patient = e.patientId();
+    // who can take over: the colleagues covering anaesthesia, then the team's own anaesthetist (back from elsewhere)
+    const team = c.team;
+    const candidates = [...(team?.cover ?? []), ...(team?.members ?? [])].filter((m) => m.duties.includes("anaesthesia") && m.staff !== who.staffId).map((m) => m.staff);
+    const coverId = candidates.find((sid) => world.actor(`staff:${sid}`));
+    const cover = coverId ? world.actor(`staff:${coverId}`) : null;
+    if (!cover || !patient) {
+      say(rt(L, "relief.none"));
+      return false;
+    }
+    const ent = world.entity(cover.id);
+    const relief: Colleague = { actor: cover, staffId: cover.id.slice("staff:".length), name: ent ? t(ent.name, L) : cover.id };
+    say(rt(L, "relief.calling", { name: relief.name }));
+    k.dispatch({ type: "anaesthesia", anaesthesia: { op: "request-relief", from: who.staffId, to: relief.staffId }, by: "system" }, id);
+    const r = await e.act({ agent: "learner", submission: id, signal }, { actorId: relief.actor.id, operation: "navigate", goal: { kind: "interact", id: patient }, onBehalfOf: PRIMARY_ACTOR }, signal);
+    // in person: the world says whether the colleague is at the patient
+    if (!world.checkSpatial(relief.actor.id, { tool: "examine", kind: "examine" }).ok) {
+      say(rt(L, "relief.notComing", { name: relief.name, reason: (r.status === "completed" ? rt(L, "study.wait.notInReach") : r.message.split("\n")[0]!).replace(/[.。]\s*$/u, "") }));
+      return false;
+    }
+    k.dispatch({ type: "anaesthesia", anaesthesia: { op: "relief-arrived", by: relief.staffId }, by: "system" }, id);
+    // the structured hand-over: what the record holds now, nothing composed for it
+    const h = handoverFromRecord(c, k.state);
+    const done = k.dispatch({ type: "anaesthesia", anaesthesia: { op: "handover", from: who.staffId, to: relief.staffId, ...h }, by: "system" }, id);
+    if (done.rejected) {
+      say(rt(L, "relief.notComing", { name: relief.name, reason: done.rejected.message }));
+      return false;
+    }
+    const line = `${rt(L, "relief.taken", { from: who.name })} ${handoverText(c, h, L)}`;
+    k.speakLine(id, { agent: "attending", speaker: relief.name, text: line, grounded: [], staffId: relief.staffId });
+    k.conversations.addDialogue({ who: "attending", speaker: relief.name, text: line });
     return true;
   }
 

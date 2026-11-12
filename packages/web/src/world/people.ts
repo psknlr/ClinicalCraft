@@ -1,5 +1,5 @@
 /**
- * The people of a voxel world: patients in their slots and staff at their posts, as voxel rigs with a name tag
+ * The people of a voxel world: patients in their slots and staff at their posts, as figures (`npc.ts`) with a name tag
  * (tags face the camera and never take the aim ray), an aim target and the collision model's body. A patient is
  * drawn where the world model has them (EMBODIED §8): in their own bed space (lying on the bed, sitting on it,
  * or standing), at a spot (a scanner table, another bed space), or travelling with a walker — lying on the
@@ -19,7 +19,7 @@ import type { InteractionTarget, PatientSpot, WorldApi, WorldPatient } from "../
 import type { NpcRecord } from "./context.js";
 import { rigRotationOf, yawOfRig } from "./embodiment.js";
 import { surfaceTop, surfaceUnder } from "./equipment.js";
-import { buildPerson, disposeRig, ROLE_UNIFORMS, setDistressed, type AppearanceLike, type Posture } from "./npc.js";
+import { buildPerson, disposeRig, heightOf, looksOf, PATIENT_WEAR, setDistressed, uniformOf, type AppearanceLike, type Posture } from "./npc.js";
 import { collides } from "./physics.js";
 import { roleName, tx } from "./strings.js";
 import { Trail } from "./trail.js";
@@ -28,6 +28,9 @@ import type { VoxelWorld } from "./voxel-world.js";
 /** How far (m) behind a walker, along its trail, the patient walking with it goes — and their companion. */
 const STEP_BEHIND = 1.05;
 const COMPANION_BEHIND = 1.95;
+
+/** Width (m) of the name tag over someone's head: wide enough to read across a room, not wider than the person is tall. */
+const TAG_WIDTH = 1.5;
 
 /** Name tags / labels never take the aim ray. */
 function noRaycast(o: Object3D): void {
@@ -56,7 +59,7 @@ export class People {
 
   /** Draw a patient where the world model has them (their slot, a spot, or travelling with a walker). */
   place(p: WorldPatient): void {
-    const { facility, ctx, levels, lib, signs, S, merged, levelRoots, colliderLevels, stage } = this.world;
+    const { facility, ctx, levels, signs, S, merged, levelRoots, colliderLevels, stage } = this.world;
     const root = stage.root;
     const { patientSpots, patientPushes, tagSigns } = this;
     const slot = facility.patientSlots.find((s) => s.id === p.slotId);
@@ -86,12 +89,12 @@ export class People {
     } else if (posture === "sitting") {
       surface = bed ? top(bed) : 0.5;
     }
-    const rig = buildPerson(lib, p.appearance as AppearanceLike, { posture, surfaceY: surface, badge: true });
+    const rig = buildPerson(p.appearance as AppearanceLike, { posture, surfaceY: surface, wear: PATIENT_WEAR, seed: `patient:${p.slotId}` });
     rig.root.position.set(x, elevation, z);
     rig.root.rotation.y = MathUtils.degToRad(rot);
     (levelRoots.get(slotLevel) ?? root).add(rig.root);
     rig.root.updateMatrixWorld(true);
-    const tag = signs.make(p.tag || p.name, 2.2);
+    const tag = signs.make(p.tag || p.name, TAG_WIDTH);
     tag.position.set(0, rig.tagY, 0);
     noRaycast(tag);
     rig.root.add(tag);
@@ -130,7 +133,7 @@ export class People {
    * standing or sitting, on a spot no collider takes (else the other side, else the foot), facing the patient.
    */
   private placeCompanion(p: WorldPatient, at: { x: number; z: number; rot: number; level: string; elevation: number; lying: boolean; bed: { w: number; d: number } | null }): void {
-    const { ctx, lib, signs, levelRoots, stage } = this.world;
+    const { ctx, signs, levelRoots, stage } = this.world;
     const old = ctx.npcs.get(`companion:${p.slotId}`);
     if (old) this.remove(old);
     const c = p.companion;
@@ -154,12 +157,12 @@ export class People {
         break;
       }
     }
-    const rig = buildPerson(lib, { ...c.appearance } as AppearanceLike, { posture: "standing", badge: false });
+    const rig = buildPerson({ ...c.appearance } as AppearanceLike, { posture: "standing", seed: `companion:${p.slotId}` });
     rig.root.position.set(spot.x, at.elevation, spot.z);
     rig.root.rotation.y = rigRotationOf(Math.atan2(-(at.x - spot.x), -(at.z - spot.z)));
     (levelRoots.get(at.level) ?? stage.root).add(rig.root);
     rig.root.updateMatrixWorld(true);
-    const tag = signs.make(c.label, 2.0, "#7a6a3c");
+    const tag = signs.make(c.label, TAG_WIDTH * 0.92, "#7a6a3c");
     tag.position.set(0, rig.tagY, 0);
     noRaycast(tag);
     rig.root.add(tag);
@@ -196,20 +199,22 @@ export class People {
 
   /** Staff at their posts: uniform by role, a "role · name" tag, their greeting as the aim hint. */
   private buildStaff(): void {
-    const { facility, ctx, levels, lib, signs, S, locale, levelRoots, stage } = this.world;
+    const { facility, ctx, levels, signs, S, locale, levelRoots, stage } = this.world;
     const root = stage.root;
     const physics = ctx.physics;
     for (const st of facility.staff ?? []) {
       const staffLevel = entityLevel(facility, st);
-      const uni = ROLE_UNIFORMS[st.role] ?? { shirt: "#f1ead5", pants: "#354442" };
-      const ap: AppearanceLike = { shirt: uni.shirt, pants: uni.pants, hairStyle: uni.hairStyle, ...(st.appearance ?? {}) };
-      const rig = buildPerson(lib, ap, { posture: "standing", coat: !!uni.coat, stripe: uni.stripe, badge: true });
+      // the uniform of their role as their position wears it; what the facility leaves unsaid about their looks
+      // differs from one member of staff to the next (the same for the same id, every time)
+      const uni = uniformOf(st.role, st.position);
+      const ap: AppearanceLike = { ...looksOf(st.id), shirt: uni.shirt, pants: uni.pants, ...(uni.hairStyle ? { hairStyle: uni.hairStyle } : {}), ...(st.appearance ?? {}) };
+      const rig = buildPerson(ap, { posture: "standing", wear: uni.wear, seed: `staff:${st.id}`, height: heightOf(st.id) });
       rig.root.position.set(st.x, levels.elevation(staffLevel), st.z);
       rig.root.rotation.y = MathUtils.degToRad(st.rot ?? 0);
       (levelRoots.get(staffLevel) ?? root).add(rig.root);
       const name = tx(st.name, locale);
       const role = roleName(st.role, locale);
-      const tag = signs.make(`${role} · ${name}`, 2.2, "#417868");
+      const tag = signs.make(`${role} · ${name}`, TAG_WIDTH, "#417868");
       tag.position.set(0, rig.tagY, 0);
       noRaycast(tag);
       rig.root.add(tag);

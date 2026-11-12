@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { AppearanceSchema, CaseSettingSchema } from "./case.js";
-import { CapabilitySchema, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
+import { CapabilitySchema, ConditionSchema, COUNT_STAGES, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
 
 /**
  * Virtual environment — facilities, rooms, equipment and materials.
@@ -143,12 +143,35 @@ export const WorldPredicateSchema: z.ZodType<WorldPredicate> = z.lazy(() =>
  * the first case item whose `requires` this device provides (`capability`),
  * or is the case's monitoring intervention (`monitoring`).
  */
+/**
+ * The steps of a `surgical_count` effect (its `item`; docs/TEAM.md §4.3): the baseline before incision, a count at
+ * a stage, an RF scan of the patient, an escalation of a discrepancy. The session records them from the world.
+ */
+export const COUNT_EFFECT_STEPS = ["baseline", ...COUNT_STAGES, "scan", "escalate"] as const;
+/** The operative steps a device's operation may be (`ClinicalEffect.tool: "operate"`): its gas controls. */
+export const DEVICE_OPERATIVE_STEPS = ["insufflate", "desufflate"] as const;
+
 export const ClinicalEffectSchema = z
   .object({
-    tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine"]),
-    select: z.enum(["param", "capability", "monitoring"]),
+    /**
+     * `surgical_count`: an entry of the case's count record (a count board, an RF wand), `item` naming the step.
+     * `operate`: a step of the operation itself, `item` naming it (`insufflate` — at the procedure's usual pressure,
+     * or the operation's `pressure` parameter — or `desufflate`): a laparoscopy tower's gas controls are the
+     * operation's own pneumoperitoneum, so the device, the record and the field never disagree.
+     */
+    tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine", "surgical_count", "operate"]),
+    /** `item`: the case item with id `item` (a WHO board's `sign_in` → the case's `sign-in`; a count's step). */
+    select: z.enum(["param", "capability", "monitoring", "item"]),
+    item: IdSchema.optional(),
   })
-  .strict();
+  .strict()
+  .refine((e) => (e.select === "item") === (e.item != null), { message: "`item` names the case item exactly when `select` is \"item\"" })
+  .refine((e) => e.tool !== "surgical_count" || (e.select === "item" && (COUNT_EFFECT_STEPS as readonly string[]).includes(e.item ?? "")), {
+    message: `a surgical_count effect names its step: select "item", item one of ${COUNT_EFFECT_STEPS.join(", ")}`,
+  })
+  .refine((e) => e.tool !== "operate" || (e.select === "item" && (DEVICE_OPERATIVE_STEPS as readonly string[]).includes(e.item ?? "")), {
+    message: `an operate effect names its step: select "item", item one of ${DEVICE_OPERATIVE_STEPS.join(", ")}`,
+  });
 export type ClinicalEffect = z.infer<typeof ClinicalEffectSchema>;
 
 /** One operation of a device behaviour (offered in the `from` states; `to` = state after success). */
@@ -172,6 +195,59 @@ export const BehaviorOperationSchema = z
   .strict();
 export type BehaviorOperation = z.infer<typeof BehaviorOperationSchema>;
 
+/** What the parts named "screen" can show (an equipment type's `screen`; a state's look may change it). */
+export const SCREEN_KINDS = ["none", "vitals", "ecg", "xray", "ct", "pacs", "lab", "text", "logo", "thoracoscopy"] as const;
+/** The screens that are a picture drawn once — what a state's look may switch between (`vitals` and `ecg` are the patient's own, live). */
+export const STATIC_SCREEN_KINDS = ["none", "xray", "ct", "pacs", "lab", "text", "logo", "thoracoscopy"] as const;
+
+/** How a manikin is covered when it lies on its side, and whether its chest moves (`EquipmentManikinSchema`). */
+export const MANIKIN_COVERS = ["clothes", "blanket", "drapes"] as const;
+export const MANIKIN_BREATHING = ["none", "both", "one-lung"] as const;
+
+/** A layer of a model: lower-case letters, digits, `_` and `-` — a node of the GLB named `layer:<id>` (docs/BLENDER.md). */
+export const LayerIdSchema = z
+  .string()
+  .min(1)
+  .max(40)
+  .regex(/^[a-z0-9][a-z0-9_-]*$/, "a layer id is lower-case letters, digits, '_' and '-', and starts with a letter or digit");
+
+/**
+ * What a state changes of the type's `manikin` (a state's look): the body turned or covered differently, awake
+ * or asleep, breathing or not. What it leaves out stays as the type says.
+ */
+export const ManikinLookSchema = z
+  .object({
+    posture: z.enum(["standing", "sitting", "lying", "lateral"]).optional(),
+    sideUp: z.enum(["left", "right"]).optional(),
+    cover: z.enum(MANIKIN_COVERS).optional(),
+    flex: z.number().min(0).max(25).optional(),
+    asleep: z.boolean().optional(),
+    breathing: z.enum(MANIKIN_BREATHING).optional(),
+  })
+  .strict();
+export type ManikinLook = z.infer<typeof ManikinLookSchema>;
+
+/**
+ * What is drawn of the equipment while it is in a state (docs/FACILITIES.md "A look for each state"): which
+ * layers of its model show, what its screens show, how its manikin is. Visual only, and it decides nothing: the
+ * state does — whoever brought it about, a learner, a colleague or an agent, through the same operation — and
+ * the look follows the state.
+ */
+export const StateLookSchema = z
+  .object({
+    /**
+     * The layers of the type's model drawn in this state (nodes of the GLB named `layer:<id>`: docs/BLENDER.md).
+     * Every other layer is hidden; what belongs to no layer is always drawn. Omitted: no layer.
+     */
+    layers: z.array(LayerIdSchema).optional(),
+    /** What the parts named "screen" show in this state (omitted: the type's `screen`). A picture drawn once, or `none`: dark. */
+    screen: z.enum(STATIC_SCREEN_KINDS).optional(),
+    /** What this state changes of the type's `manikin`. */
+    manikin: ManikinLookSchema.optional(),
+  })
+  .strict();
+export type StateLook = z.infer<typeof StateLookSchema>;
+
 /**
  * Declarative device state machine (no code). States that mirror a clinical
  * fact are `derived` from the engine and never stored (EMBODIED R6):
@@ -180,17 +256,70 @@ export type BehaviorOperation = z.infer<typeof BehaviorOperationSchema>;
 export const DeviceBehaviorSchema = z
   .object({
     initial: IdSchema,
-    states: z.record(IdSchema, z.object({ name: LocalizedTextSchema.optional(), available: z.boolean().optional() }).strict()),
+    states: z.record(
+      IdSchema,
+      z
+        .object({
+          name: LocalizedTextSchema.optional(),
+          available: z.boolean().optional(),
+          /** `derived: "case-record"`: the device is in this state while the condition holds (the last listed that holds wins). */
+          when: ConditionSchema.optional(),
+          /**
+           * The device's capabilities that work in this state (omit: all of them). A laparoscopy tower `off`
+           * supplies none — no picture, no gas — and powered on supplies its camera, light source and insufflator;
+           * the world's capability rule (bedside providers, the operation's equipment) follows it.
+           */
+          supplies: z.array(CapabilitySchema).optional(),
+          /** What is drawn of the equipment in this state (omitted: the type as it is, none of its model's layers). */
+          look: StateLookSchema.optional(),
+        })
+        .strict(),
+    ),
     operations: z.record(IdSchema, BehaviorOperationSchema),
-    derived: z.enum(["monitor-attachment"]).optional(),
+    /**
+     * `case-record` (a WHO checklist board): in a case that defines every item its operations' clinical effects
+     * name (`select: "item"`), the state is derived from the case record — the last state whose `when` holds, else
+     * `initial` — and an operation's only effect is its clinical act, through the session's tool path (validation,
+     * scope, approvals, the spatial gate); the board follows the record whoever made the entry. In a case without
+     * those items the device keeps its own state machine and its operations are physical.
+     */
+    derived: z.enum(["monitor-attachment", "case-record"]).optional(),
   })
   .strict();
 export type DeviceBehavior = z.infer<typeof DeviceBehaviorSchema>;
 
 /**
+ * Use status of a model file (docs/ASSETS.md "Sources and use status"):
+ * `cleared` — its licence allows redistribution and the use intended (attribution
+ * and other conditions recorded); `research-only` — non-commercial or research
+ * terms: keep it local, out of commits and published builds; `pending` — licence,
+ * release or third-party parts not yet checked: `assets inspect` fails.
+ */
+export const MODEL_USE = ["cleared", "research-only", "pending"] as const;
+export type ModelUse = (typeof MODEL_USE)[number];
+
+/** Where a model file came from: enough to find the exact release again and to credit it. */
+export const ModelSourceSchema = z
+  .object({
+    /** Project, dataset, author or tool (e.g. "Poly Haven", "SurgeryCraft tools/blender"). */
+    name: z.string().min(1),
+    /** Page, download URL or DOI of the exact release. */
+    url: z.string().min(1).optional(),
+    /** Release, version or commit. */
+    version: z.string().min(1).optional(),
+    /** Date the file was retrieved or built (YYYY-MM-DD). */
+    retrieved: z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "expected YYYY-MM-DD").optional(),
+    /** What was changed from the source (re-meshed, rescaled, parts split, materials…). */
+    changes: z.string().min(1).optional(),
+  })
+  .strict();
+export type ModelSource = z.infer<typeof ModelSourceSchema>;
+
+/**
  * Optional GLB/glTF model of an equipment type — visual only: the voxel
  * parts stay the fallback, the collider is always the semantic footprint
- * and a model is never interactive by itself.
+ * and a model is never interactive by itself. Named `screen` parts keep
+ * drawing their display over the model.
  */
 export const EquipmentModelSchema = z
   .object({
@@ -206,9 +335,77 @@ export const EquipmentModelSchema = z
     /** SPDX id or licence text. */
     license: z.string().min(1),
     attribution: LocalizedTextSchema.optional(),
+    /** Provenance of the file. */
+    source: ModelSourceSchema.optional(),
+    /** Use status (`MODEL_USE`); `assets inspect` notes a reference without one. */
+    use: z.enum(MODEL_USE).optional(),
   })
   .strict();
 export type EquipmentModel = z.infer<typeof EquipmentModelSchema>;
+
+/**
+ * A body drawn with the equipment — the patient simulator of a training station, a manikin on a trolley. It is
+ * one of the world's own figures (the people of the world are drawn the same way) and it is nobody: not an actor
+ * of the world model, no record, nothing to examine or to talk to. Visual only, like a model: the footprint stays
+ * the collider and the aim finds the equipment (docs/FACILITIES.md "A body drawn with equipment").
+ */
+export const EquipmentManikinSchema = z
+  .object({
+    /**
+     * How it is placed: `standing`, `sitting`, `lying` on its back — or `lateral`: on its side as for an operation
+     * on the chest (the arm underneath out in front on its board, the upper arm forward on a support, the leg
+     * underneath bent at hip and knee).
+     */
+    posture: z.enum(["standing", "sitting", "lying", "lateral"]),
+    /** `lateral`: the side that is up — the side operated on (default `left`). */
+    sideUp: z.enum(["left", "right"]).optional(),
+    /**
+     * `lateral`: what covers it. `clothes` (default): what its appearance says — its own clothes, or a hospital
+     * gown. `blanket`: undressed, a theatre cap over the hair, a blanket to the waist — on the table before the
+     * field is prepared. `drapes`: undressed and draped for an operation on the side of the chest that is up —
+     * the theatre cap, towels round the field, a sheet over the hips and the legs.
+     */
+    cover: z.enum(MANIKIN_COVERS).optional(),
+    /** The earlier spelling of `cover: "drapes"` (kept for catalogs written with it). */
+    draped: z.boolean().optional(),
+    /**
+     * Whether its chest moves: `none` (omitted: none), `both` — it breathes, or is ventilated — or `one-lung`: on
+     * its side with only the lung underneath ventilated, the side that is up all but still. (No default is filled
+     * in: a catalog written before it reads back as it was written.)
+     */
+    breathing: z.enum(MANIKIN_BREATHING).optional(),
+    /**
+     * `lateral`: how far each half of a flexed table goes down from the break under the chest (degrees): the trunk
+     * bends sideways over it, as it does on the table.
+     */
+    flex: z.number().min(0).max(25).default(0),
+    /** Eyes shut (anaesthetised; a simulator at rest). */
+    asleep: z.boolean().default(false),
+    /**
+     * Where it is, in the type's frame (m from the footprint centre on the floor, rotated with the placement): the
+     * feet of one standing or sitting; the middle of what one lying on its back lies on; of one on its side, the
+     * middle of the table under the chest (where a flexed table breaks).
+     */
+    x: z.number().default(0),
+    z: z.number().default(0),
+    /** Height (m above the placement's floor) of what it stands on, of the seat or of the surface it lies on. */
+    y: z.number().min(0).default(0),
+    /** Turned about the vertical (degrees) as a placement is: at 0 one standing or sitting faces +Z, the head of one lying is towards −Z. */
+    rot: z.number().default(0),
+    /** Its looks (default: an adult of average build). */
+    appearance: AppearanceSchema.partial().optional(),
+  })
+  .strict()
+  .refine((m) => m.posture === "lateral" || (m.sideUp === undefined && !m.draped && m.cover === undefined && m.flex === 0 && m.breathing !== "one-lung"), {
+    message: "`sideUp`, `cover` (`draped`), `flex` and `breathing: \"one-lung\"` describe a manikin on its side (`posture: \"lateral\"`)",
+  })
+  .refine((m) => m.cover === undefined || m.draped === undefined || m.draped === (m.cover === "drapes"), { message: "`draped` is the earlier spelling of `cover: \"drapes\"`: say one, or the same with both" });
+export type EquipmentManikin = z.infer<typeof EquipmentManikinSchema>;
+
+/** How a manikin on its side is covered: its `cover`, or what the earlier `draped` said (`clothes` when neither does). */
+export function manikinCover(m: Pick<EquipmentManikin, "cover" | "draped">): (typeof MANIKIN_COVERS)[number] {
+  return m.cover ?? (m.draped ? "drapes" : "clothes");
+}
 
 /**
  * Default interaction reach (m from the footprint) by interaction kind, used
@@ -252,8 +449,12 @@ export const EquipmentTypeSchema = z
       })
       .strict()
       .default({ kind: "none" }),
-    /** Live screen content rendered on parts named "screen". */
-    screen: z.enum(["none", "vitals", "ecg", "xray", "ct", "pacs", "lab", "text", "logo"]).default("none"),
+    /**
+     * What is shown on the parts named "screen": the patient's live `vitals` / `ecg`, or a representative picture of
+     * what the equipment is for (`xray`, `ct`, `pacs`, `lab`, `text`, `logo`, `thoracoscopy` — the round field of a
+     * rigid scope in the chest). A representative picture is never a patient's own finding.
+     */
+    screen: z.enum(SCREEN_KINDS).default("none"),
     /** Point light emitted by the equipment (surgical lights, lamps). */
     light: z
       .object({ color: HexColorSchema, intensity: z.number().min(0), distance: z.number().min(0), y: z.number() })
@@ -270,6 +471,8 @@ export const EquipmentTypeSchema = z
     behavior: DeviceBehaviorSchema.optional(),
     /** Optional GLB/glTF model (visual only). */
     model: EquipmentModelSchema.optional(),
+    /** A body drawn with the equipment by the world's figure kit (visual only): a patient simulator, a manikin. */
+    manikin: EquipmentManikinSchema.optional(),
   })
   .strict();
 export type EquipmentType = z.infer<typeof EquipmentTypeSchema>;
@@ -321,6 +524,10 @@ export const WallStyleSchema = z
     body: IdSchema.default("cream"),
     top: IdSchema.default("wood"),
     thickness: z.number().positive().default(1),
+    /** Window frames (default: the base material). */
+    frame: IdSchema.optional(),
+    /** Mullions of windows ≥ 2.5 m wide, one every 1.5 m (default: "wood" when the library has it — V4 —, else the frame). */
+    mullion: IdSchema.optional(),
   })
   .strict();
 
@@ -480,6 +687,11 @@ export const PlacementSchema = z
      * right). Out-of-range indices are `checkFacility` errors.
      */
     hideParts: z.array(z.number().int().min(0)).optional(),
+    /**
+     * The device's behaviour state at the start (default: its type's `initial`) — a theatre set up before the list
+     * has its laparoscopy tower on and white-balanced, while the spare in the store is off. One of the type's states.
+     */
+    state: IdSchema.optional(),
   })
   .strict();
 export type Placement = z.infer<typeof PlacementSchema>;
@@ -503,10 +715,41 @@ export const PatientSlotSchema = z
   })
   .strict();
 
+/**
+ * A staff member's position — the job they hold, finer than `role` (which decides what their body may do in the
+ * world): a nurse is a scrub, circulating, ward or recovery nurse; an attending is a surgeon, an assistant surgeon,
+ * an anaesthetist or a physician. Each position has a role card (the agent's `characters/roles.ts`): its
+ * responsibilities, authority, limits, communication protocol and whom it escalates to (docs/CHARACTERS.md).
+ */
+export const StaffPositionSchema = z.enum([
+  "surgeon",
+  "assistant-surgeon",
+  "anaesthetist",
+  "scrub-nurse",
+  "circulating-nurse",
+  "ward-nurse",
+  "recovery-nurse",
+  "theatre-coordinator",
+  "physician",
+  "educator",
+  "radiologist",
+  "radiographer",
+  "pathologist",
+  "lab-technician",
+  "transfusion-scientist",
+  "pharmacist",
+  "receptionist",
+  "porter",
+  "paramedic",
+]);
+export type StaffPosition = z.infer<typeof StaffPositionSchema>;
+
 export const StaffSchema = z
   .object({
     id: IdSchema,
     role: z.enum(["nurse", "radiologist", "pathologist", "lab-tech", "attending", "pharmacist", "receptionist", "paramedic", "porter"]),
+    /** The job they hold (default: from the case team's duties, else from `role`). */
+    position: StaffPositionSchema.optional(),
     name: LocalizedTextSchema,
     room: IdSchema,
     /** Level (default: the room's level). */
@@ -594,7 +837,7 @@ const PlacementPatchSchema = TemplatePlacementSchema.omit({ id: true }).partial(
 const SlotPatchSchema = z.object({ accepts: z.array(CaseSettingSchema).min(1).optional(), posture: z.enum(["standing", "sitting", "lying"]).optional() }).strict();
 /** Per-instance changes to one template staff member. */
 const StaffPatchSchema = z
-  .object({ name: LocalizedTextSchema.optional(), role: StaffSchema.shape.role.optional(), greeting: LocalizedTextSchema.optional(), appearance: AppearanceSchema.partial().optional() })
+  .object({ name: LocalizedTextSchema.optional(), role: StaffSchema.shape.role.optional(), position: StaffPositionSchema.optional(), greeting: LocalizedTextSchema.optional(), appearance: AppearanceSchema.partial().optional() })
   .strict();
 
 /** What one instance changes in its template (local ids; template-local frame). */

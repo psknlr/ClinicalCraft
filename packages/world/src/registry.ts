@@ -206,6 +206,7 @@ export function buildRegistry(
     };
     if (type.portable) entity.portable = type.portable;
     if (points) entity.interactionPoints = points;
+    if (p.state) entity.initialState = p.state;
     entities.push(entity);
   }
 

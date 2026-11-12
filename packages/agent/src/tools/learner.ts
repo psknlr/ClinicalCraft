@@ -50,6 +50,16 @@ export const LEARNER_CLINICAL_TOOLS = [
   "update_workup",
   "case_status",
   "finish_case",
+  // a teaching hint, asked for explicitly (counts against the score; a consultation never does)
+  "request_hint",
+  // the operative field (docs/PROCEDURE.md §7): the operator's own steps; a colleague's with their body (hold_traction)
+  "observe_field",
+  "operate",
+  // new investigations (docs/STUDIES.md): the record retrieved, a new study ordered and read
+  "retrieve_report",
+  "order_study",
+  "read_study",
+  "list_studies",
 ] as const;
 
 /** Every tool a learner (and a skill or delegated step) may call, in a stable order. */

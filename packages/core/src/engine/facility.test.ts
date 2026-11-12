@@ -1,6 +1,6 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import type { EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
+import { manikinCover, type EquipmentCatalog, type FacilityDefinition } from "../schema/facility.js";
 import {
   assignPatientSlot,
   buildingLevels,
@@ -117,6 +117,7 @@ describe("checkFacility", () => {
     f.catalogs.push("hospital");
     f.terrain.ground = "lava";
     f.buildings[0].walls.body = "marble";
+    f.buildings[0].walls.frame = "titanium";
     f.rooms[0].partitions[0].material = "cardboard";
     f.rooms.push({ ...f.rooms[0], id: "annex", building: "ghost-building", rect: { x: 18, z: 0, w: 10, d: 4 } });
     f.placements.push({ id: "mystery", type: "teleporter", x: 0, z: 0, y: 0, rot: 0 });
@@ -136,6 +137,7 @@ describe("checkFacility", () => {
     expectIssue("catalogs.1", "warning", /catalog "hospital" is not loaded/);
     expectIssue("terrain.ground", "error", /unknown material "lava"/);
     expectIssue("buildings.0.walls.body", "error", /unknown material "marble"/);
+    expectIssue("buildings.0.walls.frame", "error", /unknown material "titanium"/);
     expectIssue("rooms.0.partitions.0.material", "error", /unknown material "cardboard"/);
     expectIssue("buildZone.materials.4", "error", /unknown material "unobtainium"/);
     expectIssue("rooms.3.building", "error", /unknown building "ghost-building"/);
@@ -456,6 +458,57 @@ describe("checkCatalogs: embodiment fields", () => {
     expect(brief).not.toContainEqual(["interactionPoints.0", "warning"]);
     const solid = withType({ solid: true, interactionPoints: [{ x: 0, z: 0 }] });
     expect(solid.issues.map((i) => i.message)).toEqual([expect.stringMatching(/lies inside the solid/)]);
+  });
+
+  it("a manikin — a body drawn with the equipment — is parsed with its defaults; what describes one on its side is refused on any other", () => {
+    const { issues } = withType({ footprint: { w: 2.1, d: 1.1, h: 1.8 }, manikin: { posture: "lateral", sideUp: "left", cover: "drapes", breathing: "one-lung", flex: 9, asleep: true, x: -0.27, z: -0.13, y: 0.93, rot: 90, appearance: { presentation: "neutral" } } });
+    expect(issues).toEqual([]);
+    const raw = structuredClone(fixture("mini.catalog.json")) as { equipment: Record<string, unknown>[] };
+    raw.equipment[0].manikin = { posture: "sitting" };
+    const sitting = parseCatalog(raw);
+    expect(sitting.ok && sitting.value.equipment[0].manikin).toEqual({ posture: "sitting", flex: 0, asleep: false, x: 0, z: 0, y: 0, rot: 0 });
+    // a manikin written before `cover` and `breathing` reads back as it was written (a pinned pack's tools echo it)
+    raw.equipment[0].manikin = { posture: "lateral", sideUp: "left", draped: true, flex: 9, asleep: true, x: -0.27, z: -0.13, y: 0.93, rot: 90 };
+    const earlier = parseCatalog(raw);
+    expect(earlier.ok && Object.keys(earlier.value.equipment[0].manikin!)).toEqual(["posture", "sideUp", "draped", "flex", "asleep", "x", "z", "y", "rot"]);
+    // how one on its side is covered: said with `cover`, or with the earlier `draped` — never two ways at once
+    const cover = (m: Record<string, unknown>) => {
+      raw.equipment[0].manikin = m;
+      const r = parseCatalog(raw);
+      return r.ok ? manikinCover(r.value.equipment[0].manikin!) : null;
+    };
+    expect(cover({ posture: "lateral" })).toBe("clothes");
+    expect(cover({ posture: "lateral", draped: true })).toBe("drapes");
+    expect(cover({ posture: "lateral", draped: false })).toBe("clothes");
+    expect(cover({ posture: "lateral", cover: "blanket" })).toBe("blanket");
+    expect(cover({ posture: "lateral", cover: "drapes", draped: true })).toBe("drapes");
+    expect(cover({ posture: "lateral", cover: "blanket", draped: true })).toBeNull();
+    for (const [bad, at] of [
+      [{ posture: "lying", draped: true }, "equipment.0.manikin"],
+      [{ posture: "lying", cover: "blanket" }, "equipment.0.manikin"],
+      [{ posture: "sitting", breathing: "one-lung" }, "equipment.0.manikin"],
+      [{ posture: "lateral", breathing: "deep" }, "equipment.0.manikin.breathing"],
+      [{ posture: "lateral", cover: "towel" }, "equipment.0.manikin.cover"],
+      [{ posture: "sitting", flex: 9 }, "equipment.0.manikin"],
+      [{ posture: "standing", sideUp: "right" }, "equipment.0.manikin"],
+      [{ posture: "lateral", flex: 40 }, "equipment.0.manikin.flex"],
+      [{ posture: "prone" }, "equipment.0.manikin.posture"],
+      [{ posture: "lateral", hat: true }, "equipment.0.manikin"],
+    ] as const) {
+      raw.equipment[0].manikin = bad;
+      const r = parseCatalog(raw);
+      expect(r.ok).toBe(false);
+      expect(r.ok ? [] : r.issues.map((i) => i.path)).toContain(at);
+    }
+  });
+
+  it("reports a manikin that is not on its equipment: beside the footprint, above it, or in a hand", () => {
+    const beside = withType({ manikin: { posture: "lying", x: 3, y: 0.5 } });
+    expect(beside.issues.map((i) => [i.path.slice(beside.prefix.length + 1), i.severity, i.message])).toEqual([["manikin", "warning", expect.stringMatching(/outside its .* footprint/)]]);
+    const above = withType({ manikin: { posture: "lying", y: 9 } });
+    expect(above.issues.map((i) => i.path.slice(above.prefix.length + 1))).toEqual(["manikin.y"]);
+    const held = withType({ portable: "handheld", manikin: { posture: "standing" } });
+    expect(held.issues.map((i) => i.message)).toEqual(expect.arrayContaining([expect.stringMatching(/a body is not carried in a hand/)]));
   });
 
   it("the built-in catalogs' behaviours and portable flags are consistent", () => {

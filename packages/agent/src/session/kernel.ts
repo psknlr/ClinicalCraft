@@ -14,6 +14,10 @@
  * - `embodied-wiring.ts` — what embodied mode needs of the session (`EmbodiedHost`, a caller's tool path);
  * - `resume.ts` — snapshots, and restoring a resumed session.
  */
+import { SessionStudies } from "./studies.js";
+import { StaffAutonomy } from "./staff-autonomy.js";
+import { syncProcedureSupply } from "./procedure-supply.js";
+import { actionIdOf } from "./action-ids.js";
 import {
   createSession as createEngineState,
   currentWaypoint,
@@ -61,6 +65,8 @@ import { reactToDomainEvent, type EventReaction } from "./notifications.js";
 import { OpDispatcher } from "./op-dispatch.js";
 import { initialAffectIntensity, type PatientMemory } from "./patient-pipeline.js";
 import type { CreateSessionOptions } from "./session.js";
+import { SessionTeam } from "./team/session-team.js";
+import { validTeamCheckpoint } from "./team/checkpoint.js";
 import { ToolPath } from "./tool-path.js";
 
 /** A session-unique id: a random UUID where the platform has one. */
@@ -100,11 +106,22 @@ export class SessionKernel {
   readonly skillList: SkillDefinition[];
   /** Embodied mode (settings `embodiment: "embodied"`): the encounter's world and everything wired to it; null in clinical mode. */
   readonly embodied: EmbodiedSession | null;
+  /** The care team of a case with a `team` (embodied mode; docs/TEAM.md). */
+  readonly team: SessionTeam;
+  /** New investigations: ordering, fulfilment, reporting, review (docs/STUDIES.md). */
+  readonly studies: SessionStudies;
+  /** What staff do on their own, round by round (`staff_step`, and after every act). */
+  readonly staff: StaffAutonomy;
 
   settings: ResolvedSettings;
   /** The engine state (core `reduce`). */
   state: SessionState;
   acceptedActions: ClinicalAction[] = [];
+  /**
+   * A restored record (resume.ts): what it was made with, the original actions when the current engine replays them
+   * differently (kept unedited, reported), the replay's issues, and how many actions were accepted at the restore.
+   */
+  restore: { createdWith: import("./types.js").RecordProvenance | null; original: ClinicalAction[] | null; issues: import("./types.js").ReplayIssue[]; acceptedAtRestore: number } | null = null;
   plan: PlanItem[] = [];
   planExplanation: string | null = null;
   interlocutor: AgentRole = "patient";
@@ -169,6 +186,11 @@ export class SessionKernel {
     this.ops = new OpDispatcher(this);
     // Embodied mode (EMBODIED R3): the session builds the world; the clinical tools are spatially gated, world tools are added.
     this.embodied = this.settings.embodiment === "embodied" ? new EmbodiedSession(embodiedHost(this), opts.embodied ?? {}) : null;
+    this.team = new SessionTeam(this, validTeamCheckpoint(opts.embodied?.team));
+    this.studies = new SessionStudies(this);
+    this.staff = new StaffAutonomy(this);
+    if (opts.reportWriter) this.studies.writer = opts.reportWriter;
+    if (opts.reportWriterTimeoutMs != null) this.studies.writerTimeoutMs = opts.reportWriterTimeoutMs;
     if (this.embodied) {
       for (const tool of this.embodied.gatedTools((name) => this.registry.get(name))) this.registry.replace(tool);
       for (const tool of this.embodied.worldTools()) this.registry.replace(tool);
@@ -346,20 +368,26 @@ export class SessionKernel {
 
   /** Dispatch an engine action: transcript, events, hooks, staff reactions, the examiner's dialogue. */
   dispatch(action: ClinicalAction, id: string): ReduceResult {
+    // an operative step works with the equipment the room supplies now (a tower out of service: no picture, no gas)
+    if (action.type === "operate") syncProcedureSupply(this, id);
     const result = reduce(this.caseDef, this.state, action);
     const accepted = !result.rejected;
+    // a committed action's persistent id (`act-<seq>`): the same in a replay, after a reload, in every front-end
+    const actionId = accepted && result.state.seq !== this.state.seq ? actionIdOf(result.state.seq) : null;
     if (accepted) {
       this.state = result.state;
       this.acceptedActions.push(action);
     }
     this.recorder?.record("action", { action, accepted });
     for (const event of result.events) {
-      this.emit(id, { type: "clinical_event", event });
+      this.emit(id, { type: "clinical_event", event, ...(actionId ? { actionId } : {}) });
       this.embodied?.noteClinicalEvent(this.hub.lastSeq, event);
       this.queueHook({ hook_event_name: "ClinicalEvent", event }, id);
       // A `vitals.alarm` says itself whether its value is an arrest placeholder (`unmeasurable`, set at the minute it fired).
       for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale)) this.react(id, reaction);
     }
+    // in-world: the items opened onto the field are recorded at the start, before a scenario moves anything (the count)
+    if (accepted && action.type === "start") this.embodied?.count.ensureBaseline("system");
     if (accepted) {
       this.emitSnapshot(id);
       if (action.type === "note") {

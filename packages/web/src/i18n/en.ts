@@ -1,6 +1,8 @@
 /**
  * English UI strings — exactly the keys of zh-CN.ts (type-checked).
  */
+import { SURGERY_EN } from "./surgery.js";
+import { TEAM_EN } from "./team.js";
 import type { Messages } from "./zh-CN.js";
 
 const en: Messages = {
@@ -124,6 +126,8 @@ const en: Messages = {
   "hud.savedNow": "Progress and builds saved on this device",
   "hud.saveFailed": "Local saving is blocked here; export a save from the pause menu",
   "hud.clock": "Sim time {time}",
+  "hud.next": "⏭ {what} in {min} min",
+  "hud.nextTitle": "Wait until it is ready: the case clock moves on, and the staff carry on their work",
   "hud.elapsed": "T+{min} min",
   "hud.controls.html": "<kbd>W A S D</kbd> move　<kbd>Space</kbd> jump　<kbd>Shift</kbd> sprint　<kbd>E</kbd> interact　<kbd>T</kbd> talk　<kbd>B</kbd> bag",
   "hud.vitalsTitle": "Vital signs · press V for the monitor",
@@ -233,6 +237,14 @@ const en: Messages = {
   "conv.tab.tests": "Tests",
   "tests.lead": "Order tests at the patient's side: samples are taken here and go to the lab by pneumatic tube; a bedside test needs its device at the bed. Results that are out can be read here too.",
   "tests.here": "At the bedside",
+  "studies.title": "Order a new investigation (simulated)",
+  "studies.lead": "A study done in this encounter from the case's teaching profile — labelled a simulated investigation, never the published case's record. To retrieve an existing report, use the published records above.",
+  "studies.order": "Order",
+  "studies.orderStandard": "Order · standard leads",
+  "studies.orderMirror": "Order · mirrored leads (dextrocardia)",
+  "studies.repeat": "Order again (a new accession)",
+  "studies.notOrdered": "Not ordered",
+  "studies.report": "Read the report",
   "tests.elsewhere": "Elsewhere ({n})",
   "tests.elsewhereHint": "These are not ordered at the bedside: click one for the reason and the way.",
   "tests.none": "This case has no tests to order.",
@@ -375,6 +387,7 @@ const en: Messages = {
   "orders.nowhere": "{name} · no equipment for it here",
   "orders.pending": "{name} · sent, result in about {min} min",
   "orders.noRecord": "{name} · no record in this phase",
+  "orders.notYet": "{name} · record not yet created",
   "orders.acquired": "Evidence gathered",
   "orders.none": "Nothing gathered yet. Walk to the right workstation and type a test name.",
   "orders.read": "Read",
@@ -947,6 +960,11 @@ const en: Messages = {
   "pose.standing": "Please stand up.",
   "emb.mode.embodied": "in-world mode",
   "emb.mode.clinical": "clinical mode",
+  "set.characters": "Model-driven characters",
+  "set.characters.hint": "On: the care team also decides and speaks through each member's own model, within their role card, and staff calls are worded by the speaker's model — the rules stand in whenever a model is missing, slow or off-script. Conversations with the patient and the staff use the model either way. Applies at once",
+  "set.characters.rules": "Off (the team follows its rules)",
+  "set.characters.llm": "On (every character driven by its model)",
+  "set.characters.offline": "No model is configured: the characters follow the rules until you choose one under Model.",
   "set.embodiment": "In-world mode",
   "set.embodiment.hint": "On: walk to the bedside and wheel the equipment over to act — the demonstration clinician and the staff you delegate to as well (recommended). Off: clinical mode, acts from anywhere",
   "set.embodiment.on": "On (in-world)",
@@ -1165,6 +1183,10 @@ const en: Messages = {
   /* ---------------- learning record ---------------- */
   "record.file": "clinical_learning_record.json",
   "record.saveFile": "clinicalcraft_save.json",
+
+  /* ---------------- laparoscopic surgery (i18n/surgery.ts) ---------------- */
+  ...SURGERY_EN,
+  ...TEAM_EN,
 };
 
 export default en;

@@ -6,14 +6,20 @@
 // validation & loading
 export { parseCase, parseFacility, parseCatalog, issuesFromZodError, contentWarnings, formatPath } from "./parse.js";
 export { checkCaseIntegrity } from "./integrity.js";
+export { checkTeamDefinition, teamFacilityIssues } from "./team.js";
 export { checkContentStandard, citedDois, caseTestUtterances, CONTENT_MINIMUMS, WELL_FORMED_DOI, type TestUtterance } from "./content-standard.js";
 export { verifyCase } from "./verify.js";
+
+// the operative field (docs/PROCEDURE.md)
+export * from "./procedure/index.js";
 
 // session lifecycle
 export { createSession, reduce, replay } from "./reducer.js";
 
 // queries
-export { evaluate, conditionRefs, resultFor, resultKey, parseResultKey, isOrderReady, type ConditionRef } from "./conditions.js";
+export { evaluate, conditionRefs, resultFor, resultKey, parseResultKey, isOrderReady, activeHolds, type ConditionRef } from "./conditions.js";
+export { explainCondition, requirementLeaves, type Requirement } from "./explain.js";
+export { correctionMatches, correctionMade, correctionsFor } from "./corrections.js";
 export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus, presentedOptions } from "./queries.js";
 export { historyTwin, historyAvailable, historyCredited, creditedHistory, supersededIn, supersededItems, hasHistoryTwins } from "./twins.js";
 export {
@@ -81,6 +87,18 @@ export {
 
 // assessment
 export { assess, countCriticalAlarms } from "./assessment.js";
+export { ENGINE_VERSION } from "./version.js";
+
+// new investigations (docs/STUDIES.md)
+export { phaseReached, reachPhase, recordAvailability, type RecordState } from "./records.js";
+export { caseData, datumStatus, type DatumStatus } from "./datum.js";
+export { applyAlarm, openAlarm, type AlarmResult } from "./alarm.js";
+export { nextEvent, pendingEvents, type PendingEvent } from "./next-event.js";
+export { anaesthetised, applyAnaesthesia, canLeaveAnaesthetisedPatient, responsibleAnaesthetist, type AnaesthesiaResult } from "./anaesthesia.js";
+export { applyStudy, BEDSIDE_COLLECTORS, DEPARTMENT_COLLECTORS, evaluateStudy, OPERATIVE_IMAGING, operativeImagingAsked, seeded, studyCategory, studyCollectors, studyObservations, studyOrderBlock, studyProfile, studyStatus, unmetPrerequisites, type StudyResult } from "./study.js";
+
+// the surgical count (docs/TEAM.md §4.3)
+export { applyCount, closureOnOpenCount, compareCount, countLedger, countOpenItems, countSettled, countStatus, countSummary, evaluateCount, type CountLedgerView, type CountReport, type CountResult } from "./count.js";
 
 // facility helpers
 export {
@@ -118,6 +136,7 @@ export {
   GLB_DECODER_EXTENSIONS,
   GLB_RENDERER_EXTENSIONS,
   GlbError,
+  LAYER_NODE,
   modelScale,
   parseGlb,
   type AssetIssue,
@@ -126,6 +145,7 @@ export {
   type ModelCheckOptions,
   type ModelFit,
 } from "./glb.js";
+export { drawnManikin, hasLooks, initialState, lookLayers, lookOf, sameFigure, type DrawnManikin, type ResolvedLook } from "./looks.js";
 
 // utilities
 export { createRng, hashString, seedFrom } from "./random.js";

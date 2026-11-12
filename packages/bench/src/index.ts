@@ -22,6 +22,10 @@ export * from "./report.js";
 export * from "./demo.js";
 // the grounding benchmark (docs/GROUNDING.md): the deterministic layer every agent stands on
 export * from "./grounding/index.js";
+// the operative benchmark (docs/BENCHMARK_OPERATIVE.md): agents at the operating table, anatomy hidden
+export * from "./operative/index.js";
+// the team benchmark (docs/TEAM.md §7): the care team on its own, scored from the session's record
+export * from "./team/index.js";
 export * from "./agents/types.js";
 export * from "./agents/model.js";
 export * from "./agents/reference.js";

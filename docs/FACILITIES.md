@@ -16,8 +16,16 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
 * Wall-mounted items (oxygen outlet, clock, whiteboard, lightbox) set
   `solid: false`, keep their parts near local z = −footprint.d/2 (the back),
   and are placed with their back against a wall.
-* Screens: name a part `"screen"` and set the equipment `screen` kind
-  (`vitals`, `ecg`, `pacs`, …); the web client paints a live canvas texture on it.
+* Screens: name a part `"screen"` and set the equipment `screen` kind; the web
+  client paints a canvas texture on it. `vitals` and `ecg` are live — the
+  patient's monitor, redrawn as it changes. The others are a representative
+  picture of what the equipment is for, drawn once: `xray` (a chest film), `ct`
+  and `pacs` (an axial slice), `lab`, `text`, `logo`, and `thoracoscopy` — the
+  round field of a rigid scope in the chest: ribs under the pleura with the
+  vessels that run along them, the collapsed lung with its fissure and carbon
+  pigment, a pad of fat, a grasper (`packages/web/src/world/scope-picture.ts`;
+  every monitor of one size shows the same frame, as monitors on one camera
+  do). A representative picture is never a patient's own finding.
 * Per-placement details: `placement.extraParts` adds voxel parts to one
   placement (same frame as the type's `parts`, rotated with the placement,
   rendered the same way, no collider) and `placement.hideParts` skips type
@@ -32,6 +40,19 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
 * Visual QA (required for content authors):
   `node scripts/preview/render.mjs equipment --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/<file>.json --out <png>` and
   `node scripts/preview/render.mjs facility --facility packages/content/facilities/<id>.json --catalogs <all catalog files> --out <png>`.
+  `node scripts/preview/render.mjs models --catalogs <catalog files> [--compare 1] [--states all|<ids>] --out <png>`
+  draws the types' GLB models as the world does, beside their voxel parts, with the body a type is drawn with ("A
+  body drawn with equipment" below; BLENDER.md "Looking at the result") — a type whose look follows its state as
+  it starts, or once per state named (`--states all`: the storyboard of its states; "A look for each state" below).
+  `node scripts/preview/render.mjs people --facility <facility file> [--only <staff ids>] [--view front|iso|back|side|face|face-iso|face-side|chest|hands] --out <png>`
+  draws the facility's staff as the world does ("Staff in the 3D world" below; `--blink 0..1` and `--speak 0..1`
+  shut their eyes and open their mouths that far); `--case <case.json>` draws a case's
+  patient standing, sitting and in bed, and their companion; `--posture lateral [--up right] [--cover blanket|drapes]
+  [--flex 9] [--asleep 1]` lays whoever is drawn on their side on an operating table ("A body drawn with
+  equipment" below; `--view front|back|head|top`; `--breath` and `--rise` draw the chest that far out); `--sheet roles|positions|looks|patients` the
+  reference sheets (every role's uniform, every theatre position, what an appearance can ask for);
+  `--view hand` the hand by itself in each of its poses (`--detail 0`: as a figure has it), `--view held` the
+  player's own hand and stethoscope as the camera sees them.
   Files may lie outside the checkout (a `contentDirs` folder): only the files
   named on the command line are served. A file that fails to load or parse
   ends the run at once with `{"ok": false, …}` and exit code 1.
@@ -129,6 +150,7 @@ levels.
 | `levels: [{ id, name, elevation = 0, height = 5 }]` | facility | storeys; default `[]` = one implicit level `L0` at elevation 0 |
 | `level` | rooms, placements, patient slots, staff | the level the entity stands on (default: the room's level, else the *default level* — the one at elevation 0, else the first) |
 | `levels: [levelId…]` | buildings | levels the building spans (default: the default level); its walls and openings repeat on each, lifted by the level's elevation; off the default level only the inside of these buildings is walkable |
+| `walls: { height = 5, base, body, top, thickness = 1, frame?, mullion? }` | buildings | the outer walls: materials by course (`base` the bottom row of each storey, `body`, `top` the last row); `frame` the window frames (default: `base`); `mullion` the mullions of windows ≥ 2.5 m wide, one every 1.5 m (default: `wood` — V4 —, else the frame) |
 | `levels: [levelId…]` | building openings | the levels an opening exists on (default: every level the building spans) — e.g. the entrance door on the ground floor only, windows on every storey |
 | `connectors: [{ id, kind: stairs \| elevator \| ramp, name, stops: [{ level, x, z }…] ≥ 2, travelSeconds?, accessible?, width?, roles = [] }]` | facility | portals between levels, stops listed in travel order; `travelSeconds` between adjacent stops (default stairs 15, ramp 10, elevator 20); `accessible` (default: elevators and ramps yes, stairs no) — wheelchairs, beds and pushed carts use only accessible ones; `width` of a stairs/ramp flight (m, default 2, ≤ 10); `roles` restrict who may use it (empty = everyone) |
 | `access: [{ id, name, level?, rect, roles ≥ 1 }]` | facility | restricted areas: only these roles may plan through them (`ACCESS_DENIED` otherwise); an actor standing inside may always leave |
@@ -137,6 +159,93 @@ Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
 (`nurse`, `radiologist`, `pathologist`, `lab-tech`, `attending`,
 `pharmacist`, `receptionist`, `paramedic`, `porter`).
 
+**Staff in the 3D world.** A member of staff is drawn as a figure of real proportions (an adult
+stands 1.74 m; the web's `src/world/figure/`), dressed for the job:
+
+| who | wears |
+|---|---|
+| `nurse` | scrubs, a fob watch, pens and a name tag at the chest pocket, the identity card clipped below it, clogs |
+| `attending` | shirt and tie under a white coat (lapels, three buttons, pockets), a stethoscope round the neck |
+| `radiologist` | a white coat over scrubs, a dosimeter |
+| `pathologist`, `pharmacist`, `lab-tech` | a white coat over a shirt or scrubs |
+| `receptionist` | a shirt and belted trousers, the identity card on a lanyard |
+| `paramedic` | a uniform shirt with epaulettes and reflective bands, boots |
+| `porter` | a polo shirt, the identity card on a lanyard |
+| position `surgeon`, `assistant-surgeon`, `scrub-nurse` | scrubbed: theatre cap, mask, sterile gown and gloves, the hands held together in front |
+| position `anaesthetist`, `circulating-nurse` | theatre scrubs, cap and mask (the anaesthetist a stethoscope) |
+| position `theatre-coordinator` | theatre scrubs and cap |
+| position `recovery-nurse`, `radiographer` | scrubs — with a stethoscope, with a dosimeter |
+
+A `position` (CHARACTERS.md §2) changes what its `role` wears, so nobody stands in theatre in a
+white coat. `appearance` sets skin, hair and its style, build, stature, an accessory (glasses, a
+mask, a cap…) and — with `shirt` and `pants` — the uniform's colours. The styles of hair:
+
+| `hairStyle` | the hair |
+|---|---|
+| `short` | cropped: full on top, combed from the crown forward into a fringe and down the sides and the back to the hairline |
+| `long` | layered, from a parting a little to one side: a curtain fringe swept either side of the brow to the cheekbones, lengths before the shoulders to the collarbones and behind them down the back |
+| `wavy` | long loose waves from a middle parting under a fringe of wisps over the brows, a lock cut at the cheek beside each eye |
+| `bob` | to the chin all round, cut straight, the ends turned a little in; a fringe of wisps |
+| `bun`, `ponytail` | drawn back to where it is tied — a low knot, or a tail down the back — under a light fringe of wisps or a parted curtain, a fine strand left out before each ear |
+| `curly` | a soft perm to the jaw, in close waves |
+| `bald` | none |
+
+`presentation` (`feminine` \| `masculine` \| `neutral`) says whether someone is drawn with a
+woman's features and frame, a man's, or neither's in particular. Left out, a member of staff is
+drawn by their hair: cropped or bald, a man's; any other style, a woman's — so say it for a woman
+with cropped hair, a man with a ponytail, or whoever the name already tells of ("Ms Zheng"). The
+people of a case are drawn by what the case records, never by their hair: the patient by their
+`sex` (neither's when it is neither), a companion as neither's unless the case says who they are
+(CASE_AUTHORING.md). A child is neither yet, a teenager on the way. What an appearance
+leaves unsaid differs from one member of staff to the next (skin, hair and its style, build,
+glasses, height by a few per cent) and is the same for the same staff id every time, so a theatre
+team is three people, not one person three times. Everyone breathes, blinks, turns their head to
+the learner and moves their jaw when they speak. A name tag floats over each.
+
+A face is one skin (`figure/head.ts`, over the form of a head in `figure/skull.ts`): an oval, the
+line of the jaw soft in to a small chin that stands under the lips, the jaw's lower border rising
+to its angle under the ear. Lids and lips are that skin itself (`figure/eyes.ts`,
+`figure/mouth.ts`: rings of finer points zipped into openings of the head's grid,
+`figure/face-mesh.ts`), so they shade as one with the face and they move: a blink is the upper
+lid coming down round the eye, its lashes with it, to shut on the lower lid; speech opens the
+mouth as an oval — the lower lip and the chin go down, the corners half the way and a little in —
+and under the upper lip the edge of the teeth shows over the dark of the mouth. Behind the lids
+are eyes with an iris, a pupil and the lights in them; over them soft straight brows; the ears
+are shells with a rim, a hollow and a lobe (`figure/ears.ts`). Skin gives a little light back in
+shade, warmer than it took it (`figure/material.ts`), so a face out of the light stays rosy.
+
+A woman's face and a man's differ where faces do (`FaceSpec.feminine` in `figure/skull.ts`; a
+figure's frame in `figure/anatomy.ts`). Hers: larger eyes, more open, the upper lid over the top
+of a large iris and a little fullness under the lower lid; finer, lighter brows; fuller lashes
+that run on a touch beyond the outer corner; a smaller nose, low in the bridge; a narrower mouth
+with fuller lips, their colour deepest along the line where they meet; rounder cheeks with a
+flush that reaches up under the eyes and over the nose; a small chin; narrower shoulders and
+waist, a slimmer neck. His: a heavier brow over narrower eyes, a larger nose, a wider mouth with
+thinner lips of little more than the skin's colour, a broad jaw to a wide, taller chin, hardly
+any flush; broader shoulders, a thicker neck.
+
+Hair is hair (`figure/hair.ts`, `figure/locks.ts`): strands lying together in locks, each a
+ribbon with a soft ridge that catches the light, thinning to its end — over a layer of hair close
+to the scalp that is in their shade. From a parting the locks fan out over the head, or from the
+crown; where the hair is long enough they go on down past the head — beside the face, before the
+shoulders over the collarbones or behind them down the back, clear of the neck and the trunk — to
+layered lengths, in waves that run round the head together if the style has them. A fringe is
+separate locks that begin in the hair of the top: broad ones side by side with fine ones over
+them, parting into ends the skin shows between; or a curtain swept from the parting. A band of
+light where the head turns from the top to the sides is the sheen of healthy hair.
+
+A face of an age, a width and a sex — and a style of hair on it — is sculpted once and kept as a
+cast: everyone with such a face takes the cast in their own colours, so a hospital full of people
+is built in the time of a few.
+
+Hands are hands (`figure/hand*.ts`): one skin over a hand's bones — the knuckles half-way along
+it, the fingers out of the palm through webs, the thumb out of its mound of muscle, nails — drawn
+through a cage of a few hundred points and refined into a smooth surface (`figure/subdivide.ts`),
+resting, laid flat on a lap or a bed, or closed over one another in front of a sterile gown. A
+forearm turns with its hand (the wrist is wide the way the hand is wide) and the hand grows out
+of the forearm's last ring, so wrist and arm are one surface. The player's own hand is the same
+hand, refined once more, pinching the chest piece of its stethoscope pad to pad.
+
 **Equipment types.**
 
 | field | meaning |
@@ -144,8 +253,8 @@ Roles (`ACTOR_ROLES`): `clinician` (the learner's avatar) and the staff roles
 | `portable: "cart" \| "handheld"` | can be wheeled to another spot (`cart`) or carried (`handheld`); absent = fixed. The built-in carts: `ecg-machine`, `defibrillator`, `crash-cart`, `treatment-cart`, `oxygen-cylinder`, `nebulizer`, `niv-ventilator`, `glucometer-station`, `apheresis-machine`, `eeg-machine`, `fetal-monitor`, `neonatal-incubator`, `phototherapy-unit`, `pocus-cart`, `ultrasound-machine`. Every actor knows where the departments keep them (embodied perception: "usually kept in …") until it sees one elsewhere |
 | `reach` | interaction reach in metres from the footprint (≤ 10). Default by interaction kind (core `DEFAULT_REACH`): workstation 1.2, monitor 2, bed 1.5, device 1.2, atlas 1.5, board 2.5, craft 1.2, sink 1, storage 1, none 1 (doors 1.2, staff 2). `oxygen-outlet` declares 2.2 (reached over the bed head) |
 | `interactionPoints: [{ x, z }]` | where an actor stands to use it: local offsets from the footprint centre, rotated with the placement; absent = any free spot within reach with line of sight |
-| `behavior: { initial, states: { id: { name?, available? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select }, durationSeconds?, reserve?, release?, roles? } }, derived? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`) through the session's normal tool path; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
-| `model: { uri, sha256?, scale?, offset?, rot?, license, attribution? }` | optional GLB/glTF model — visual only: the voxel parts stay the fallback, the collider is always the footprint and a model is never interactive by itself |
+| `behavior: { initial, states: { id: { name?, available?, when?, supplies?, look? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select, item? }, durationSeconds?, reserve?, release?, roles? } }, derived? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`, `surgical_count`, `operate`) through the session's normal tool path — `operate` with `select: "item"` names a step of the operation (`insufflate`, at the procedure's usual pressure or the operation's `pressure` parameter, or `desufflate`: a tower's gas controls), and a step the operation refuses leaves the device's state as it was; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `select: "item"` with `item` names one case item (a WHO board's `sign_in` → the case's `sign-in`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). `derived: "case-record"` makes a board a view of the case record: in a case that defines every item its operations name (`select: "item"`), the state is the last state whose `when` condition holds (else `initial`) and each operation's only effect is its clinical act, through the session's tool path, so the board, the bedside and an agent make one entry and the board follows the record whoever made it; in a case without those items the device keeps its own state machine and its operations are physical. A state's `supplies` lists the type's capabilities that work in it (omit: all of them; each must be one of the type's capabilities, else an error): the world's capability rule (`WorldRuntime.provides` — bedside providers, an operation's equipment) follows it, so a laparoscopy tower `off` supplies no picture and no gas and powered on supplies its camera, light source and insufflator. A placement may start its device in another state (`Placement.state`, one of its type's states, else an error): a theatre set up before the list. A state's `look` is what the web world draws of the equipment in it — the layers of its model, its screens' picture, its manikin ("A look for each state" below). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
+| `model: { uri, sha256?, scale?, offset?, rot?, license, attribution?, source?, use? }` | optional GLB/glTF model — visual only: the voxel parts stay the fallback, named `screen` parts keep drawing over it, the collider is always the footprint and a model is never interactive by itself; `source` and `use` (cleared / research-only / pending) are its provenance and use status (ASSETS.md) |
 
 **Patients on the move (EMBODIED §8, review G8).** No new field: the world
 model reads what is there. A patient slot's `bed` of type `hospital-bed` or
@@ -333,10 +442,107 @@ it; DRACO only when a decoder path is configured), once per URL; relative
 It checks the pinned `sha256`, fits the model to the footprint (`fitModel`:
 the reference `scale` — else a uniform fit inside the footprint — then
 `rot`, the bounding box centred on the footprint on the floor, then
-`offset`), casts shadows and is disposed with the world. Any error or a
-missing file keeps the voxel parts. The collider is always the footprint and
-the interaction target always the placement's: the model's meshes never
-take the aim (an invisible footprint box does).
+`offset`), casts shadows (except items under `MODEL_SHADOW_MIN` = 0.3 m on
+every side) and is disposed with the world. Static placements of one model
+on one level and in one 16 m square (`MODEL_CELL`) are drawn as instances
+(`instanceModel`: a draw call per primitive however many placements; the
+squares let the camera and the shadow pass cull what is out of view);
+portable ones (carts, handheld items) are clones in their own group, so they
+move, and so are the placements whose look follows their state. A model may have
+**layers** — nodes named `layer:<id>` (docs/BLENDER.md "Layers") — drawn only in
+the states whose look names them: an instance never draws one. Named `screen`
+parts keep drawing their display over the model. Any error or a missing file keeps the
+voxel parts. The collider is always the footprint and the interaction target
+always the placement's: the model's meshes never take the aim (an invisible
+footprint box does). docs/BLENDER.md has the Blender workflow.
+
+## A body drawn with equipment (`manikin`)
+
+A training station has a patient simulator on its table; a skills room has a manikin
+on a trolley. An equipment type's optional `manikin` is such a body, drawn by the web
+world with the equipment — by its own figure kit (`src/world/figure/`, placed by
+`manikin.ts`), so it is one of the same figures as the people of the world and stays
+one whatever that kit becomes. It is **nobody**: not an actor of the world model, no
+record, nothing to examine or to talk to, no name tag. The aim finds the equipment,
+the footprint stays the collider, and the body does not move. A case's patient is
+never a manikin, and a manikin is never presented as a patient.
+
+| field | |
+|---|---|
+| `posture` | `standing`, `sitting`, `lying` (on its back, under the covers), or `lateral`: on its side as for an operation on the chest — the arm underneath out in front on its board with the palm up, the upper arm straight forward over it on a support at shoulder height (no further from the trunk than a right angle, the face and the airway free), the leg underneath bent at hip and knee, the upper leg nearly straight on the pillow between them |
+| `sideUp` | `lateral`: `left` (default) or `right` — the side operated on |
+| `cover` | `lateral`: what covers it. `clothes` (default): what its `appearance` says — its own clothes, or a hospital gown. `blanket`: undressed, a theatre cap over the hair, a blanket over the hips and the legs that hangs a hand's breadth over the sides — on the table before the field is prepared, and after. `drapes`: undressed and draped for an operation on the side of the chest that is up — the theatre cap, four towels round the field (bare skin from the costal margin to under the armpit), a sheet over the hips and the legs that hangs over the sides and the foot of the table |
+| `draped` | the earlier spelling of `cover: "drapes"`, kept for catalogs written with it (with `cover` as well, the two must agree) |
+| `breathing` | whether its chest moves: `none` (default); `both` — it breathes, or is ventilated: in over a third of a five-second breath and out over the rest, on its side the chest wall that is up rising a millimetre; `one-lung` — on its side with only the lung underneath ventilated: half as deep, the side that is up all but still |
+| `flex` | `lateral`: how far each half of a flexed table goes down from the break under the chest (degrees, 0–25): the trunk bends sideways over it and the head goes down with its end |
+| `asleep` | eyes shut |
+| `x`, `z` | where it is in the type's frame (m from the footprint centre, turned with the placement): the feet of one standing or sitting; the middle of what one lying on its back lies on; of one on its side, the middle of the table under the chest — where a flexed table breaks |
+| `y` | height above the placement's floor of what it stands on, of its seat, or of the surface it lies on |
+| `rot` | degrees about the vertical, as a placement's: at 0 one standing or sitting faces +Z and the head of one lying is towards −Z (on its side with the left up, the face is to −X) |
+| `appearance` | its looks, as a person's (`presentation: "neutral"` for a body that is neither a woman's nor a man's) |
+
+`sideUp`, `cover` (`draped`), `flex` and `breathing: "one-lung"` are refused on any
+posture but `lateral`. What lies on the chest (the towels) breathes with it; the cloth
+over the hips and the legs lies on the legs and does not. A state of the type's device
+may change the cover, the breathing and the rest ("A look for each state" below).
+Someone on their side lies with the back near the edge of the table, so that the bent knee stays
+on it: the kit takes a table 0.58 m wide with its mattress, its middle 7 cm in front
+of the middle of the body, breaking under the lower end of the breastbone, its foot
+8 cm past the soles (`LATERAL` in `figure/anatomy.ts`); the surface is 19.6 cm below
+the middle of the body, the shoulder underneath a little sunk into it.
+
+The type's model and voxel parts are everything but the body — the table, the
+supports, what stands on the skin — and are built round it: `placedPoint(rig, p)` and
+`placedHeadPoint(rig, p)` (`manikin.ts`) say where a point of the figure's own frame
+(a joint, a point of the trunk's surface, the mouth) is once the body is bent and laid
+down, in the type's frame (docs/BLENDER.md "A model round a body"). `checkCatalogs`
+warns when a manikin is put outside its type's footprint, above its height, or on a
+handheld item. The models previewer draws it with the type.
+
+## A look for each state (`look`)
+
+What a device is like changes as it is used: a tower shows a picture once it is on; a
+training station's simulator is under a blanket before the operation and draped
+during it, ventilated on one lung while the chest is open, the scope standing in its
+port from the moment it goes in. An equipment type with a behaviour may give each of
+its states a `look` — what the web world draws of it in that state:
+
+| field | |
+|---|---|
+| `layers` | the layers of the type's model drawn in this state: nodes of the GLB named `layer:<id>` (lower-case letters, digits, `_` and `-`; docs/BLENDER.md "Layers"). Every other layer is hidden; what is in no layer is always drawn. Omitted: no layer |
+| `screen` | what the parts named `screen` show: a picture drawn once (`xray`, `ct`, `pacs`, `lab`, `text`, `logo`, `thoracoscopy`) or `none` — dark. Omitted: the type's `screen`. A patient's own live screen (`vitals`, `ecg`) is never a look's to change |
+| `manikin` | what the state changes of the type's `manikin`: `cover`, `breathing`, `asleep` — or `posture`, `sideUp`, `flex`, though a model built round the body fits one body in one position. What it leaves out stays as the type says; a body turned off its side loses what only a body on its side has |
+
+A state without a look, a state the type does not have, a device without a behaviour:
+the type as it is, none of its model's layers (`lookOf` in core resolves a look).
+
+**The look follows the state, and decides nothing.** The state is the world model's
+(`WorldRuntime.stateOf`): stored, the one a placement starts in (`Placement.state`),
+or derived from the case record. Whoever moves a device on — the learner at it, a
+colleague asked to, an agent through `interact_object`, and so a model-driven member
+of the team or a facilitator later — does it by the same operation under the same
+rules, and the scene follows: the embodied link hands each `entity.state` event to the
+renderer (`WorldApi.setEquipmentState(placementId, state)`), asks again on every
+clinical event (a state derived from the record has no event of its own), and draws
+every such placement as the world has it whenever the scene is drawn anew
+(`syncScene`). A front-end never picks a look of its own; without a world model a
+placement keeps the look of the state it starts in.
+
+**Drawing** (`src/world/live.ts`). A placement whose type has looks is drawn as its own
+copy of the model, not an instance, with screens and a manikin of its own. A change of
+state shows and hides the copy's layers, paints the screens' picture (dark: no quad
+drawn), and builds the manikin anew only when the figure itself changes — its cover,
+its posture, asleep or awake; how its chest moves is animated every frame. Each layer
+shown is a draw call more, and the triangles that count are the ones shown at once
+(docs/BLENDER.md "Layers").
+
+**Checks.** `checkCatalogs`: layers on a type without a model, a layer named twice, a
+picture with no `screen` part to show it (warnings); a look that changes a patient's
+live screen, changes a manikin the type does not have, or gives a body that is not on
+its side what only one on its side has (errors). `clinicalcraft assets inspect --type
+<id>`: every layer a look shows must be in the model (error), and a layer no look shows
+is never drawn (warning). The models previewer draws a type in the states asked for —
+`--states all` is the storyboard of its states.
 
 ## Equipment catalogs (ids are a contract — facilities reference them)
 
@@ -370,7 +576,8 @@ equipment),
 `ventilator` (device, ventilator + niv), `suction-unit` (device, suction),
 `nebulizer` (device, nebulizer, portable), `niv-ventilator` (device, niv,
 portable: the ward's mobile BiPAP/CPAP unit), `glucometer-station` (device, point-of-care),
-`diagnostic-wall-set` (device, otoscope + stethoscope, wall),
+`diagnostic-wall-set` (device, otoscope + stethoscope, wall: the two handles on coiled cords, the aneroid gauge over
+its cuff basket, a stethoscope hung by its headset on a peg),
 `anesthesia-machine` (device, anesthesia + airway), `operating-table`,
 `surgical-light` (light), `instrument-table`, `medication-cabinet`
 (device, medications), `medication-fridge` (storage, medications),

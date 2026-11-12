@@ -1,0 +1,82 @@
+/*
+ * The care team's panel (ui/panels/team.ts): the pace and surgeon controls, the count's record, what was said
+ * (the lines addressed to the learner marked, with their answers) and the tasks. The app's palette (app.css).
+ */
+.team-panel {
+  display: grid;
+  gap: 12px;
+}
+.team-controls {
+  display: grid;
+  gap: 6px;
+}
+.team-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+}
+.team-row button[aria-pressed="true"] {
+  background: var(--ok-soft);
+  border-color: var(--ok);
+}
+.team-count {
+  margin: 0;
+  padding: 6px 10px;
+  border-left: 3px solid var(--warn);
+  background: var(--paper);
+}
+.team-messages ol,
+.team-tasks ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 4px;
+}
+.team-msg {
+  display: grid;
+  grid-template-columns: minmax(0, 14em) auto minmax(0, 1fr);
+  gap: 6px;
+  align-items: baseline;
+  padding: 4px 6px;
+  border-bottom: 1px solid var(--line-soft);
+}
+.team-msg.to-you {
+  background: var(--warn-soft);
+}
+.team-msg.kind-escalate .team-text {
+  color: var(--danger);
+  font-weight: 600;
+}
+.team-who {
+  color: var(--muted);
+  font-size: 0.9em;
+}
+.team-answers,
+.team-msg > button {
+  grid-column: 3;
+  display: flex;
+  gap: 6px;
+}
+.team-task {
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+}
+.team-task.status-escalated,
+.team-task.status-declined {
+  color: var(--danger);
+}
+.team-verified {
+  color: var(--ok);
+}
+@media (max-width: 640px) {
+  .team-msg {
+    grid-template-columns: minmax(0, 1fr);
+  }
+  .team-answers,
+  .team-msg > button {
+    grid-column: 1;
+  }
+}

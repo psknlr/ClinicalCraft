@@ -2,15 +2,18 @@
  * Equipment placements: voxel parts instanced per material (owners map ray
  * hits back to placements), live/static screens, animated parts, equipment
  * lights, labels and interaction targets. The rotated footprint colliders of
- * solid equipment are the collision model's (`eq:<placementId>`).
+ * solid equipment are the collision model's (`eq:<placementId>`). A placement
+ * whose look follows its state, or with a manikin, also gets a record in
+ * `ctx.live` (`live.ts`): it is built as its state is at the start.
  */
 import { Box3, CanvasTexture, Color, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial, NearestFilter, SRGBColorSpace, Vector3, type BufferAttribute, type Object3D } from "three";
 import { mergeGeometries } from "three/examples/jsm/utils/BufferGeometryUtils.js";
-import { entityLevel, type EquipmentType, type Placement, type VoxelPart } from "@clinicalcraft/core";
+import { entityLevel, hasLooks, initialState, type EquipmentType, type Placement, type VoxelPart } from "@clinicalcraft/core";
 import { TROLLEY_TYPES } from "@clinicalcraft/world";
 import type { InteractionTarget } from "../contracts.js";
 import type { BuildContext, PlacementInfo, TargetRecord } from "./context.js";
 import { DEG, partBox, placementBox, rotateXZ, rotatedFootprint, unionBox } from "./geometry.js";
+import { applyLook, createLive, liveScreenMaterial, showScreen, type LiveScreen } from "./live.js";
 import { beginPortable } from "./portable.js";
 import { roomAt } from "./region.js";
 import { createScreenTexture, type ScreenKind } from "./screens.js";
@@ -324,11 +327,19 @@ export function buildPlacements(ctx: BuildContext): void {
     const trolley = TROLLEY_TYPES.includes(type.id);
     const portable = type.portable || trolley ? beginPortable(ctx, { id: p.id, x: p.x, z: p.z, rot }, y, level) : null;
     if (portable && trolley) portable.record.trolley = { length: Math.max(type.footprint.w, type.footprint.d) };
+    // a placement whose look follows its state, or with a manikin (live.ts): built as its state is at the start —
+    // the world model's state moves it on (`WorldApi.setEquipmentState`)
+    const looks = hasLooks(type);
+    const live = looks || type.manikin ? createLive(p.id, type, { x: p.x, y, z: p.z, rot }, ctx.root, initialState(type, p)) : null;
+    if (live) ctx.live.set(p.id, live);
+    const screenByState = looks && Object.values(type.behavior?.states ?? {}).some((st) => st.look?.screen !== undefined);
     // a type with a GLB model: its voxel parts get their own group and batch (the fallback, hidden once the model is in)
     let finishFallback: (() => void) | null = null;
     const modelled = !!(ctx.models && type.model);
-    // screens and LEDs of a modelled placement stay in its own group (not in the level-wide atlases)
+    // screens and LEDs of a modelled placement are its own meshes (not in the level-wide atlases); its screens'
+    // displays stay outside the fallback group, drawn over the model (a screen can be a clinical channel: vitals)
     const standalone = modelled;
+    const screenRoot = ctx.root;
     if (modelled) {
       const fallback = new Group();
       fallback.name = `voxels:${p.id}`;
@@ -341,7 +352,7 @@ export function buildPlacements(ctx: BuildContext): void {
         for (const m of batch.build(fallback, ctx.lib, ctx.shadows)) ctx.pickables.push(m);
         ctx.root = prevRoot;
         ctx.batch = prevBatch;
-        ctx.models!.push({ placementId: p.id, model: type.model!, footprint: { ...type.footprint }, at: { x: p.x, y, z: p.z, rot }, level, fallback, ...(portable ? { parent: portable.record.inner } : {}) });
+        ctx.models!.push({ placementId: p.id, model: type.model!, footprint: { ...type.footprint }, at: { x: p.x, y, z: p.z, rot }, level, fallback, ...(portable ? { parent: portable.record.inner } : {}), ...(looks ? { live: true } : {}) });
       };
     }
 
@@ -354,6 +365,23 @@ export function buildPlacements(ctx: BuildContext): void {
       const px = p.x + wx, py = y + ly, pz = p.z + wz;
       boxes.push(partBox({ x: p.x, z: p.z, y, rot }, part as never));
       const anim = part.anim ?? "none";
+      if (part.name === "screen" && live && screenByState) {
+        // a screen whose picture follows the state: its housing, and a quad of its own (dark: no quad drawn)
+        ctx.batch.add(blackId, px, py, pz, part.s[0], part.s[1], part.s[2], ry, interactive ? p.id : undefined);
+        const lift = part.s[2] / 2 + 0.003;
+        const mesh = new Mesh(UNIT_PLANE, liveScreenMaterial(null));
+        mesh.position.set(px + Math.sin(ry) * lift, py, pz + Math.cos(ry) * lift);
+        mesh.rotation.y = ry;
+        mesh.scale.set(part.s[0], part.s[1], 1);
+        mesh.userData.owner = p.id;
+        mesh.visible = false;
+        screenRoot.add(mesh);
+        ctx.pickables.push(mesh);
+        const screen: LiveScreen = { mesh, w: part.s[0], h: part.s[1], seed: p.id, bg: ctx.lib.def(part.m)?.color, kind: "none", texture: null };
+        showScreen(screen, live.look.screen as ScreenKind);
+        live.screens.push(screen);
+        continue;
+      }
       if (part.name === "screen" && screenKind !== "none") {
         const sc = createScreenTexture(screenKind, part.s[0], part.s[1], p.id, ctx.lib.def(part.m)?.color);
         const live = screenKind === "vitals" || screenKind === "ecg";
@@ -374,7 +402,7 @@ export function buildPlacements(ctx: BuildContext): void {
         mesh.rotation.y = ry;
         mesh.scale.set(part.s[0], part.s[1], 1);
         mesh.userData.owner = p.id;
-        ctx.root.add(mesh);
+        screenRoot.add(mesh);
         ctx.pickables.push(mesh);
         if (!live) {
           // a modelled placement's static screen: its own quad in its group
@@ -434,6 +462,9 @@ export function buildPlacements(ctx: BuildContext): void {
     }
     finishFallback?.();
     if (portable) for (const m of portable.finish()) ctx.pickables.push(m);
+    // a body drawn with the equipment (a patient simulator): one of the world's figures, where the type puts it —
+    // beside the model and the voxel parts, never hidden with either, and never an aim target of its own
+    if (live) applyLook(live, live.state);
 
     if (type.light) {
       ctx.lights.push({

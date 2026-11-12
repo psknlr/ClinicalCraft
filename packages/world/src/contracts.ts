@@ -240,6 +240,8 @@ export interface SemanticEntity {
   public?: Record<string, string>;
   /** Equipment type (for equipment entities). */
   equipmentType?: EquipmentType;
+  /** A device's behaviour state at the start when its placement sets one (`Placement.state`; else its type's `initial`). */
+  initialState?: string;
 }
 
 /** Binding of the encounter to the world: the case's patient in its slot. */
@@ -309,6 +311,12 @@ export interface EntityRuntimeState {
   door?: { open: boolean; locked: boolean };
   /** Scenario-controlled availability (`out-of-service` devices). */
   available?: boolean;
+  /**
+   * Out of everyone's sight until found (`conceal.ts`): `true` — where it lies (a swab dropped under the Mayo stand),
+   * found by searching within reach; an entity id — inside that (a swab in the wound: the patient), found only by
+   * searching it.
+   */
+  concealed?: true | EntityId;
   /** The patient (`patient:<slot>`): where the body is once it moved (EMBODIED §8, patient transport). */
   patient?: PatientPlaceState;
 }
@@ -438,6 +446,23 @@ export interface WorldStateSnapshot {
   obstacles: DynamicObstacle[];
   /** Last results by action id (idempotency window). */
   results: WorldActionResult[];
+  /**
+   * A patient transport walking when the snapshot was taken (EMBODIED §8.4): who wheels whom where. A walk's poses
+   * are committed when it ends, so the bodies are saved where the journey started; a session restored from the
+   * snapshot has the same walker carry it out (`restoredJourney`) — one transfer, its walk charged once.
+   */
+  journey?: WorldJourney;
+}
+
+/** A patient transport in progress (`WorldStateSnapshot.journey`). */
+export interface WorldJourney {
+  /** The walker. */
+  by: ActorId;
+  patient: EntityId;
+  /** The transport's action id. */
+  actionId: string;
+  /** The `transport_patient` parameters (the destination). */
+  parameters: Record<string, unknown>;
 }
 
 /* ------------------------------------------------------------------ */
@@ -450,6 +475,8 @@ export type WorldEvent = (
   | { id: string; type: "actor.discovered"; actorId: ActorId; entities: EntityId[] }
   | { id: string; type: "entity.state"; entityId: EntityId; from: string | null; to: string | null; operation: string; actorId: ActorId }
   | { id: string; type: "entity.moved"; entityId: EntityId; to: Vec3 & { level: string }; actorId: ActorId }
+  /** An item concealed by a scenario (`actorId` "scenario"), or revealed by someone's search (`concealed: false`). */
+  | { id: string; type: "entity.concealed"; entityId: EntityId; concealed: boolean; actorId: ActorId }
   | { id: string; type: "item.held"; entityId: EntityId; actorId: ActorId; held: boolean }
   | { id: string; type: "door.changed"; entityId: EntityId; open: boolean; locked: boolean; actorId: ActorId | null }
   | { id: string; type: "reservation.changed"; entityId: EntityId; reservedBy: ActorId | null }
@@ -721,14 +748,20 @@ export type SpatialRequirement =
    * at a fixed device — the CT scanner, the C-arm — or a patient-performed test at a station): no walk of the
    * actor fixes it — the patient is brought there (`transport_patient`, review G8).
    */
-  | { kind: "patient-at-provider"; capabilities: string[] }
+  /** `beds`: a bed-kind placement providing the capabilities counts as well (an operating table). */
+  | { kind: "patient-at-provider"; capabilities: string[]; beds?: boolean }
   | { kind: "any-of"; options: SpatialRequirement[] }
   | { kind: "all-of"; options: SpatialRequirement[] };
 
 /** The clinical tool call being checked, in engine terms (no dependency on the agent package). */
 export interface ClinicalIntent {
   tool: string;
-  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "consult" | "delegate" | "cognitive";
+  /**
+   * `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic
+   * screen; `count`: an entry of the surgical count (docs/TEAM.md §4.3) — where it is made is the device operation's
+   * own requirement (at the count board, the wand at the table).
+   */
+  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count";
   itemId?: string;
   findingId?: string;
   investigationId?: string;
@@ -826,6 +859,8 @@ export type WorldOperation =
   | "equip"
   | "move_to"
   | "wash_hands"
+  /** Search within reach of where the actor stands, or a thing within reach (`targetId`: the wound): what is concealed there is revealed. */
+  | "search"
   | "cancel"
   | (string & {});
 
@@ -886,6 +921,11 @@ export interface WorldActionResult {
   events: WorldEvent[];
   /** Where to go / what to do next when the failure is recoverable (`then`: an operation to do on arrival, e.g. a fetch). */
   hint?: ActionHint | null;
+  /**
+   * A moved item (`move_to`): how far it actually moved and where it stands now, and `already_at_destination` when
+   * it already satisfied the destination and nothing was moved (docs/EMBODIED.md §5).
+   */
+  moved?: { entityId: EntityId; displacement: number; at: { x: number; z: number; level: string }; satisfied: boolean; alreadyAtDestination?: true };
 }
 
 /** Result of running a clinical tool through the session's tool path (hooks → precheck → approval → engine). */
@@ -1010,7 +1050,7 @@ export interface WorldRuntime {
   /* perception (read-only) */
   observe(actorId: ActorId, opts?: Partial<PerceptionOptions>): WorldObservation;
   find(actorId: ActorId, query: EntityQuery): ObservedEntity[];
-  inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string }[] }) | null;
+  inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string; code?: string }[] }) | null;
   /**
    * In-service devices of an equipment type near an entity — the same level, footprint to footprint within `within` m
    * (default the `nearbyState` range), itself excluded — with their behaviour state, nearest first: what a
@@ -1039,6 +1079,15 @@ export interface WorldRuntime {
    */
   checkSpatial(actorId: ActorId, intent: ClinicalIntent, opts?: { recheck?: boolean }): SpatialCheck;
   /**
+   * Is a record-backed board (`derived: "case-record"`) bound to the encounter now — in the patient's room? Only then
+   * does it show and write the case record (a session re-checks it right before committing a board's clinical act).
+   */
+  recordBound(id: EntityId): boolean;
+  /** The room at a point (null: outdoors, a corridor without a room, or off the plan). */
+  roomAt(at: { level: string; x: number; z: number }): string | null;
+  /** The room an entity or actor is in now (a moved, dropped or carried item: where it is, not where it was placed); null outdoors or unknown. */
+  roomOf(id: EntityId): string | null;
+  /**
    * THE bedside rule (EMBODIED §6), where the entity stands now (a moved cart
    * where it was parked, a carried item with its holder): on the patient
    * slot's level, and in the slot's room — or within `BEDSIDE_RADIUS` of the
@@ -1051,6 +1100,19 @@ export interface WorldRuntime {
   atBedside(id: EntityId): boolean;
   /** In-service equipment providing `capability` that is at the bedside now (`atBedside`), in registry order. */
   bedsideProviders(capability: string): EntityId[];
+  /**
+   * THE capability rule: what a device provides now — nothing out of service; in a behaviour state that declares
+   * `supplies`, only those (a laparoscopy tower switched off gives no picture and no gas); otherwise all of its
+   * capabilities. Empty for anything that is not equipment.
+   */
+  provides(id: EntityId): string[];
+  /**
+   * The behaviour state an entity is in now (EMBODIED §8.1): stored, or the state its placement starts in; a
+   * door's record; derived from the case (a monitor's attachment, a record-backed board); a carried item's
+   * "held" / "equipped". Null for an entity without a behaviour. What is drawn of a device follows it (a state's
+   * `look`): front-ends ask here, whoever changed the state.
+   */
+  stateOf(id: EntityId): string | null;
 
   /* the patient's body (EMBODIED §8, patient transport) */
   /** Where the patient is now (bed space or provider, posture, support, trolley, home); null without a patient. */
@@ -1081,10 +1143,21 @@ export interface WorldRuntime {
   /* scenario / instructor controls (benchmark, tests) */
   setObstacle(obstacle: DynamicObstacle, present: boolean): void;
   setAvailability(id: EntityId, available: boolean): void;
+  /** Put a handheld item beside another placement at once (scenario initial conditions; nobody carries it). */
+  /**
+   * Put a handheld item beside a placement (or the patient) at once (a scenario's initial conditions); `concealed`:
+   * out of sight until searched for; `inside`: concealed in that placement (the wound), found only by searching it.
+   */
+  placeItem(id: EntityId, besideId: EntityId, opts?: { concealed?: boolean; inside?: boolean }): void;
   setDoor(id: EntityId, state: { open?: boolean; locked?: boolean }): void;
 
   /* events & persistence */
   subscribe(listener: (event: WorldEvent, version: number) => void): () => void;
+  /**
+   * The transport a restored snapshot was taken in the middle of (`WorldStateSnapshot.journey`), once: the session
+   * resumes it with the same walker; null otherwise (and on every later call).
+   */
+  restoredJourney(): WorldJourney | null;
   snapshot(): WorldStateSnapshot;
 }
 

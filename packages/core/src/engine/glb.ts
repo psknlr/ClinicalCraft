@@ -58,6 +58,11 @@ export interface GlbInfo {
   };
   /** Bounding box in metres (glTF units, Y up) of the default scene; null without POSITION min/max. */
   bounds: GlbBounds | null;
+  /**
+   * The model's layers: the ids of its nodes named `layer:<id>` (sorted) — parts drawn only in the states whose
+   * look names them (docs/BLENDER.md "Layers"). The box above is of everything, every layer included.
+   */
+  layers: string[];
   extensionsUsed: string[];
   extensionsRequired: string[];
   /** Problems of the file itself (container, references, missing bounds). */
@@ -240,6 +245,11 @@ export function parseGlb(bytes: Uint8Array): GlbInfo {
       }
     }
   };
+  const layers = new Set<string>();
+  for (const n of nodes) {
+    const m = typeof n.name === "string" ? LAYER_NODE.exec(n.name) : null;
+    if (m) layers.add(m[1]!);
+  }
   const scene = scenes[num(json.scene, 0)];
   if (scene) {
     const seen = new Set<number>();
@@ -288,6 +298,7 @@ export function parseGlb(bytes: Uint8Array): GlbInfo {
       skins: arr(json.skins).length,
     },
     bounds,
+    layers: [...layers].sort(),
     extensionsUsed: strs(json.extensionsUsed),
     extensionsRequired: strs(json.extensionsRequired),
     issues,
@@ -377,10 +388,26 @@ export function fitModel(bounds: GlbBounds, ref: Pick<EquipmentModel, "scale" | 
 const NO_LICENCE = /^(?:|unknown|none|noassertion|todo|tbd|proprietary|all rights reserved|unlicensed)$/i;
 /** Licences whose terms require attribution. */
 const NEEDS_ATTRIBUTION = /^(?:CC-BY|CC BY|OGL|ODC-By)/i;
+/** Non-commercial licences (CC BY-NC…, "non-commercial" terms). */
+const NON_COMMERCIAL = /(?:^|[-\s])NC(?:[-\s]|$)|non-?commercial/i;
+
+/**
+ * Footprint axes shorter than this (m) are aim and handling allowances of small items (an instrument
+ * lying flat, a pack of swabs): the size check accepts a smaller model there and flags only a larger one.
+ */
+export const MIN_FIT_AXIS = 0.05;
+
+/**
+ * A node of a model that is one of its layers: `layer:<id>`, optionally with a suffix an exporter adds to keep
+ * names apart (`layer:scope.001`).
+ */
+export const LAYER_NODE = /^layer:([a-z0-9][a-z0-9_-]*)(?:\.\d+)?$/;
 
 export interface ModelCheckOptions {
   /** Lowercase hex SHA-256 of the file (checked against the reference's pinned hash). */
   sha256?: string;
+  /** The layers the type's looks show (`lookLayers`): each must be in the model, and the model should have no other. */
+  layers?: readonly string[];
   /** The renderer is configured with a DRACO decoder path. */
   draco?: boolean;
   /** Relative tolerance of the size check before a warning (default 0.25), and before an error (default 1 = twice / half). */
@@ -391,14 +418,23 @@ export interface ModelCheckOptions {
 /**
  * Check a parsed model against a catalog `model` reference and the
  * equipment's semantic footprint (the collider): licence and attribution,
- * pinned SHA-256, extensions the renderer cannot load, and whether the model
- * as placed (`fitModel`) matches the footprint's size.
+ * use status and provenance, pinned SHA-256, extensions the renderer cannot load, and whether the model
+ * as placed (`fitModel`; vertically its top, so a wall- or ceiling-mounted model lifted by its offset
+ * counts from the floor) matches the footprint: an error when it is uniformly off by more than
+ * `errorTolerance` (units) or sticks out that far on an axis, a warning when an axis is off by more
+ * than `tolerance`.
  */
 export function checkModelReference(info: GlbInfo, ref: EquipmentModel, footprint: { w: number; d: number; h: number }, opts: ModelCheckOptions = {}): AssetIssue[] {
   const out: AssetIssue[] = [...info.issues];
   const licence = (ref.license ?? "").trim();
   if (NO_LICENCE.test(licence)) out.push({ severity: "error", code: "license", message: `no usable licence ("${licence}"): a model needs an SPDX id or licence text that allows reuse` });
   else if (NEEDS_ATTRIBUTION.test(licence) && !ref.attribution) out.push({ severity: "warning", code: "attribution", message: `${licence} requires attribution: add \`attribution\` (author, source, changes)` });
+  // use status and provenance (docs/ASSETS.md "Sources and use status")
+  if (!ref.use) out.push({ severity: "info", code: "use", message: 'no use status: add `use` ("cleared", "research-only" or "pending") and `source`' });
+  else if (ref.use === "pending") out.push({ severity: "error", code: "use", message: 'use status "pending": the licence, release or third-party parts are not checked yet — clear them before the model ships' });
+  else if (ref.use === "research-only") out.push({ severity: "warning", code: "use", message: "research-only: keep the file local (assets/local or ~/.clinicalcraft/assets), out of commits, content packs and published builds" });
+  if (ref.use === "cleared" && NON_COMMERCIAL.test(licence)) out.push({ severity: "warning", code: "use", message: `${licence} is non-commercial: "cleared" holds only where every use is non-commercial — otherwise mark it "research-only"` });
+  if (ref.use && ref.use !== "pending" && !ref.source) out.push({ severity: "info", code: "source", message: "no `source`: record the project, URL or DOI, version and date so the exact release can be found again" });
   if (!ref.sha256) out.push({ severity: "warning", code: "sha256", message: "the reference pins no sha256: a changed file would be loaded silently" });
   else if (opts.sha256 && opts.sha256 !== ref.sha256) out.push({ severity: "error", code: "sha256", message: `sha256 mismatch: file ${opts.sha256}, reference ${ref.sha256}` });
   for (const ext of info.extensionsRequired) {
@@ -406,20 +442,36 @@ export function checkModelReference(info: GlbInfo, ref: EquipmentModel, footprin
     if (ext === "KHR_draco_mesh_compression" && opts.draco) continue;
     out.push({ severity: "error", code: "extension", message: GLB_DECODER_EXTENSIONS.includes(ext) ? `requires ${ext}: needs a decoder the renderer is not configured with (the voxel parts are shown instead)` : `requires ${ext}, which the renderer does not support` });
   }
+  if (opts.layers) {
+    // what a state shows has to be in the file; a layer nothing shows is never drawn
+    const want = new Set(opts.layers), have = new Set(info.layers);
+    const missing = [...want].filter((l) => !have.has(l)), unused = [...have].filter((l) => !want.has(l));
+    if (missing.length) out.push({ severity: "error", code: "layers", message: `the type's looks show ${missing.map((l) => `"${l}"`).join(", ")}: the model has no node named ${missing.map((l) => `layer:${l}`).join(", ")}` });
+    if (unused.length) out.push({ severity: "warning", code: "layers", message: `no state's look shows ${unused.map((l) => `"${l}"`).join(", ")}: ${unused.length > 1 ? "those layers are" : "that layer is"} never drawn` });
+  }
   for (const ext of info.extensionsUsed) if (!info.extensionsRequired.includes(ext) && !GLB_RENDERER_EXTENSIONS.includes(ext) && !GLB_DECODER_EXTENSIONS.includes(ext)) out.push({ severity: "info", code: "extension", message: `uses ${ext} (optional; ignored by the renderer)` });
   if (info.bounds) {
     const fit = fitModel(info.bounds, ref, footprint);
     const fp: Vec3 = [footprint.w, footprint.h, footprint.d];
     const tol = opts.tolerance ?? 0.25, err = opts.errorTolerance ?? 1;
     const fmt = (v: Vec3) => v.map((x) => x.toFixed(2)).join(" × ");
-    const ratios = fit.size.map((v, i) => (fp[i] > 0 ? v / fp[i] : 1));
+    // vertically the model's top as placed counts: one lifted by its offset (a wall clock, a ceiling
+    // light in a floor-to-ceiling footprint) is measured from the floor like the footprint
+    const placed: Vec3 = [fit.size[0], (ref.offset?.[1] ?? 0) + fit.size[1], fit.size[2]];
+    // a footprint axis under MIN_FIT_AXIS is an aim and handling allowance (a scalpel lying flat): a thinner model fits it
+    const ratios = placed.map((v, i) => (fp[i] > 0 ? (fp[i] < MIN_FIT_AXIS && v < fp[i] ? 1 : v / fp[i]) : 1));
     const worst = Math.max(...ratios.map((r) => (r > 0 ? Math.max(r, 1 / r) : Infinity)));
+    // an error is a unit mistake (uniformly off: centimetres for metres) or a model sticking far out of its collider;
+    // one axis short of the footprint (a wall panel thinner than its standoff) only warns
+    const uniform = Math.cbrt(ratios.reduce((a, r) => a * Math.max(r, 1e-9), 1));
+    const protrudes = Math.max(...ratios);
+    const msg = `scale mismatch: the model at its reference scale is ${fmt(fit.size)} m${placed[1] !== fit.size[1] ? ` (top at ${placed[1].toFixed(2)} m)` : ""}, the footprint ${fmt(fp)} m (w × h × d)`;
     if (fit.fitted) {
       out.push({ severity: "info", code: "scale", message: `no scale in the reference: fitted uniformly ×${fit.scale[0].toPrecision(3)} to ${fmt(fit.size)} m inside the footprint ${fmt(fp)} m` });
       const fill = Math.min(...ratios);
       if (fill < 0.5) out.push({ severity: "warning", code: "scale", message: `proportions differ from the footprint: fitted ${fmt(fit.size)} m fills ${(fill * 100).toFixed(0)} % of one footprint axis (${fmt(fp)} m)` });
-    } else if (worst > 1 + err) out.push({ severity: "error", code: "scale", message: `scale mismatch: the model at its reference scale is ${fmt(fit.size)} m, the footprint ${fmt(fp)} m (w × h × d)` });
-    else if (worst > 1 + tol) out.push({ severity: "warning", code: "scale", message: `scale mismatch: the model at its reference scale is ${fmt(fit.size)} m, the footprint ${fmt(fp)} m (w × h × d)` });
+    } else if (protrudes > 1 + err || uniform < 1 / (1 + err)) out.push({ severity: "error", code: "scale", message: msg });
+    else if (worst > 1 + tol) out.push({ severity: "warning", code: "scale", message: msg });
   }
   return out;
 }

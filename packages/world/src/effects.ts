@@ -14,9 +14,10 @@
  * time of the clinical act. Walking (`move_to`) charges travel once.
  */
 import { levelElevation } from "./levels.js";
+import type { Placed } from "./locate.js";
 import { HAND_HYGIENE_MINUTES, type OperationSpec } from "./behaviors.js";
 import { selectClinical } from "./clinical.js";
-import type { ActionHint, ActorId, ActorState, ClinicalInvokeResult, EntityId, NavGoal, NavPlan, NavigationRecord, Pose, Vec3, WorldActionRequest, WorldErrorCode, WorldEvent } from "./contracts.js";
+import type { ActionHint, ActorId, ActorState, ClinicalInvokeResult, EntityId, NavGoal, NavPlan, NavigationRecord, Pose, Vec3, WorldActionRequest, WorldActionResult, WorldErrorCode, WorldEvent } from "./contracts.js";
 import { metres, worldMessage } from "./i18n.js";
 import type { ActionBusDeps } from "./actions.js";
 import { cellPoint, distanceToArea, type Area } from "./raster.js";
@@ -35,6 +36,7 @@ export interface Outcome {
   elapsedSeconds?: number;
   clinical?: { tool: string; ok: boolean; output: string };
   clinicalEventIds?: string[];
+  moved?: WorldActionResult["moved"];
 }
 
 /** A finished walk (committed pose, events, telemetry). */
@@ -233,8 +235,26 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
   const goal = request.goal ?? request.parameters?.goal;
   if (!host.isGoal(goal)) return failed("INVALID_REQUEST", worldMessage("INVALID_REQUEST", L, { reason: worldMessage("pre.missingParam", L, { param: "goal" }) }));
   const cart = locator.place(id)!;
+  const dest = destinationName(host, goal);
+  // already where it was asked to go: nothing moves, and the reply says so (never a 0 m "move") — only when a move
+  // could not bring it any closer (as close as a fresh move leaves it), so a cart at the edge of the band is still wheeled in
+  const already = cartSatisfies(host, cart, goal, CART_ALREADY);
+  if (already.ok) {
+    return {
+      status: "completed",
+      message: worldMessage("ok.cartAlready", L, { target, destination: dest, distance: metres(already.distance) }),
+      events: [],
+      moved: { entityId: id, displacement: 0, at: { x: r2(cart.position.x), z: r2(cart.position.z), level: cart.level }, satisfied: true, alreadyAtDestination: true },
+    };
+  }
   const plan = backend.plan({ actorId: actor.id, from: actor.pose, goal, role: actor.role, accessibleOnly: true });
-  if (!plan.ok) return failed(plan.code, plan.message, { hint: null });
+  if (!plan.ok) {
+    // what stands in the way, and a spot it can reach instead
+    const blocker = blockerBetween(host, cart, goal, id);
+    const hint = alternativeHint(host, id, goal);
+    const message = [plan.message, blocker ? worldMessage("pre.cartInTheWay", L, { blocker: locator.name(blocker) }) : "", hint ? "" : worldMessage("pre.cartNearest", L, { target })].filter(Boolean).join(" ");
+    return failed(plan.code, message, { hint });
+  }
   host.busy.set(id, actor.id);
   let walk: Walk;
   try {
@@ -244,7 +264,10 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
   }
   const now = store.actor(actor.id)!;
   // a cart is left beside the body that wheeled it — not between them and what it was brought to
-  const spot = parkingSpot(host, now.pose, id, goalTargetArea(host, goal), goalSight(host, goal));
+  // a room goal: a spot inside that room when there is one (never "moved to the room" and left in the corridor)
+  const room = goal.kind === "room" ? goal.id.replace(/^room:/, "") : null;
+  const inRoom = room ? (x: number, z: number) => host.d.registry.roomAt(now.pose.level, x, z) === room : undefined;
+  const spot = parkingSpot(host, now.pose, id, goalTargetArea(host, goal), goalSight(host, goal), inRoom);
   const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
   if (!spot) return { status: "failed", errorCode: "PRECONDITION_FAILED", message: worldMessage("pre.noSpot", L, { target }), events: walk.events, ...base };
   store.patchEntity(id, { position: { ...spot, rot: cart.rot } });
@@ -254,8 +277,126 @@ async function moveCart(host: EffectsHost, request: WorldActionRequest, actor: A
   mover.placeEntity?.(id, { ...spot, rot: cart.rot });
   // where it now stands: its room, else the building's corridor or the facility's outdoor region (lead note 2)
   const placeName = locator.regionName({ level: spot.level, x: spot.x, z: spot.z });
-  if (walk.interrupted) return { status: "cancelled", errorCode: "MOVEMENT_INTERRUPTED", message: worldMessage("ok.interrupted", L, { distance: metres(walk.walked) }), events, ...base };
-  return { status: "completed", message: worldMessage("ok.moved", L, { target, place: placeName, distance: metres(walk.walked) }), events, ...base };
+  const displacement = r2(cart.level === spot.level ? Math.hypot(spot.x - cart.position.x, spot.z - cart.position.z) : walk.walked);
+  const after = locator.place(id)!;
+  const reached = cartSatisfies(host, after, goal);
+  const moved = { entityId: id, displacement, at: { x: r2(spot.x), z: r2(spot.z), level: spot.level }, satisfied: reached.ok };
+  if (walk.interrupted) return { status: "cancelled", errorCode: "MOVEMENT_INTERRUPTED", message: worldMessage("ok.interrupted", L, { distance: metres(walk.walked) }), events, ...base, moved };
+  // the final position is checked against the destination: a cart that did not get there is not reported as moved there
+  if (!reached.ok) {
+    const blocker = blockerBetween(host, after, goal, id);
+    const hint = alternativeHint(host, id, goal);
+    const message = [worldMessage(blocker ? "pre.cartBlocked" : "pre.cartShort", L, { target, destination: dest, displacement: metres(displacement), distance: metres(reached.distance), blocker: blocker ? locator.name(blocker) : "" }), hint ? "" : worldMessage("pre.cartNearest", L, { target })].filter(Boolean).join(" ");
+    return { status: "failed", errorCode: "PATH_BLOCKED", message, events, ...base, moved, hint };
+  }
+  return { status: "completed", message: worldMessage("ok.moved", L, { target, place: placeName, distance: metres(displacement) }), events, ...base, moved };
+}
+
+const r2 = (v: number) => Math.round(v * 100) / 100;
+
+/** How close a cart must stand to what it was brought to (the bedside band of a fetch). */
+const CART_AT_TARGET = 2.5;
+/** Already there, nothing to move: as close as a fresh move leaves it (within 1.25 m of the body at the target). */
+const CART_ALREADY = 1.25;
+/** How close to a point a cart is "there" by default (it is parked beside the body that wheeled it, ≥ 0.6 m away). */
+const CART_AT_POINT = 1.5;
+
+/** The destination of a goal in words (its target's name, a room, a point). */
+function destinationName(host: EffectsHost, goal: NavGoal): string {
+  if (goal.kind === "point") return `(${goal.x.toFixed(1)}, ${goal.z.toFixed(1)})`;
+  if (goal.kind === "any") return goal.goals.map((g) => destinationName(host, g)).join(" | ");
+  if (goal.kind === "room") return host.d.locator.name(`room:${goal.id.replace(/^room:/, "")}`);
+  return host.d.locator.name(host.d.registry.resolveId(goal.id) ?? goal.id);
+}
+
+/**
+ * Does a cart standing at `p` satisfy a destination? A room: inside it. A point or an entity: within the goal's
+ * range (default the bedside band). An interact goal: within the bedside band of its target. Same level always.
+ */
+function cartSatisfies(host: EffectsHost, p: Placed, goal: NavGoal, band = CART_AT_TARGET): { ok: boolean; distance: number } {
+  const loc = host.d.locator;
+  if (goal.kind === "any") {
+    const all = goal.goals.map((g) => cartSatisfies(host, p, g, band));
+    return all.find((x) => x.ok) ?? all.sort((a, b) => a.distance - b.distance)[0] ?? { ok: false, distance: Infinity };
+  }
+  if (goal.kind === "room") return { ok: p.room === goal.id.replace(/^room:/, ""), distance: 0 };
+  if (goal.kind === "point") {
+    if (goal.level && goal.level !== p.level) return { ok: false, distance: Infinity };
+    const d = distanceToArea(goal.x, goal.z, p.area);
+    return { ok: d <= (goal.range ?? CART_AT_POINT) + 1e-6, distance: d };
+  }
+  const id = host.d.registry.resolveId(goal.id) ?? goal.id;
+  if (id === p.id) return { ok: true, distance: 0 };
+  const t = loc.place(id);
+  if (!t || t.level !== p.level) return { ok: false, distance: Infinity };
+  const d = areaGap(p.area, t.area);
+  const range = goal.kind === "interact" ? band : Math.min(goal.range ?? band, band === CART_AT_TARGET ? Infinity : band);
+  // for the patient: THE bedside rule (the one the spatial policy applies to a provider); for anything else the same
+  // room as what it was brought to (never "there" through a wall)
+  const placed = id === loc.patientId ? loc.atBedside(p) : !t.room || p.room === t.room;
+  return { ok: d <= range + 1e-6 && placed, distance: d };
+}
+
+/** The gap between two areas (0 when they touch or overlap). */
+function areaGap(a: Area, b: Area): number {
+  const dx = Math.max(0, a.minX - b.maxX, b.minX - a.maxX);
+  const dz = Math.max(0, a.minZ - b.maxZ, b.minZ - a.maxZ);
+  return Math.hypot(dx, dz);
+}
+
+/** The nearest solid thing on the straight line from a cart to its destination (not the cart, not the target), or null. */
+function blockerBetween(host: EffectsHost, p: Placed, goal: NavGoal, self: EntityId): EntityId | null {
+  if (goal.kind === "room" || goal.kind === "any") return null;
+  const loc = host.d.locator;
+  const to = goal.kind === "point" ? { x: goal.x, z: goal.z } : loc.place(host.d.registry.resolveId(goal.id) ?? goal.id)?.position;
+  if (!to) return null;
+  const targetId = goal.kind === "point" ? null : (host.d.registry.resolveId(goal.id) ?? goal.id);
+  let best: { id: EntityId; d: number } | null = null;
+  for (const e of host.d.registry.entities) {
+    if (e.id === self || e.id === targetId || e.level !== p.level || (e.kind !== "equipment" && e.kind !== "patient" && e.kind !== "staff")) continue;
+    if (e.kind === "equipment" && e.equipmentType?.solid === false) continue;
+    const q = loc.place(e.id);
+    if (!q || !segmentHitsArea(p.position.x, p.position.z, to.x, to.z, grow(q.area, 0.2))) continue;
+    const d = Math.hypot(q.position.x - p.position.x, q.position.z - p.position.z);
+    if (!best || d < best.d) best = { id: e.id, d };
+  }
+  return best?.id ?? null;
+}
+
+/** Does the segment (x0,z0)–(x1,z1) cross an area? (sampled every 5 cm: areas are at least that big) */
+function segmentHitsArea(x0: number, z0: number, x1: number, z1: number, a: Area): boolean {
+  const n = Math.max(2, Math.ceil(Math.hypot(x1 - x0, z1 - z0) / 0.05));
+  for (let i = 1; i < n; i++) {
+    const x = x0 + ((x1 - x0) * i) / n;
+    const z = z0 + ((z1 - z0) * i) / n;
+    if (x >= a.minX && x <= a.maxX && z >= a.minZ && z <= a.maxZ) return true;
+  }
+  return false;
+}
+
+/**
+ * A reachable alternative for a cart that cannot reach its destination: the free spot nearest the destination's
+ * target, as a point goal to wheel it to (null when there is none).
+ */
+function alternativeHint(host: EffectsHost, id: EntityId, goal: NavGoal): ActionHint | null {
+  if (goal.kind === "room" || goal.kind === "any") return null;
+  const loc = host.d.locator;
+  const tp = goal.kind === "point" ? null : loc.place(host.d.registry.resolveId(goal.id) ?? goal.id);
+  const centre = goal.kind === "point" ? { x: goal.x, z: goal.z, level: goal.level ?? loc.place(id)?.level ?? "" } : tp ? { x: tp.position.x, z: tp.position.z, level: tp.level } : null;
+  if (!centre) return null;
+  const spot = parkingSpot(host, { x: centre.x, y: 0, z: centre.z, yaw: 0, pitch: 0, level: centre.level }, id, tp?.area ?? null);
+  if (!spot) return null;
+  // the cart is parked beside whoever wheels it: within the point band of that free spot
+  const alternative: NavGoal = { kind: "point", x: r2(spot.x), z: r2(spot.z), level: spot.level, range: CART_AT_POINT };
+  // it already stands there (as a move would leave it): no move would help — the refusal says so, without a hint
+  const here = loc.place(id);
+  if (here && cartSatisfies(host, here, alternative, CART_ALREADY).ok) return null;
+  const L = host.d.locale;
+  return {
+    goal: { kind: "interact", id },
+    label: worldMessage("hint.cartAlternative", L, { target: loc.name(id), x: spot.x.toFixed(1), z: spot.z.toFixed(1) }),
+    then: { operation: "move_to", targetId: id, goal: alternative },
+  };
 }
 
 /** The area a goal leads to (the target entity's footprint, a point), or null (rooms, composite goals). */
@@ -286,7 +427,7 @@ const grow = (a: Area, m: number): Area => ({ minX: a.minX - m, maxX: a.maxX + m
  * spot in that order where the parked cart would not hide it (else the
  * nearest all the same).
  */
-export function parkingSpot(host: EffectsHost, pose: Pose, id: EntityId, towards: Area | null, keepInView?: SightTarget | null): (Vec3 & { level: string }) | null {
+export function parkingSpot(host: EffectsHost, pose: Pose, id: EntityId, towards: Area | null, keepInView?: SightTarget | null, prefer?: (x: number, z: number) => boolean): (Vec3 & { level: string }) | null {
   const grids = host.d.grids;
   const g = grids?.grid(pose.level);
   const y = levelElevation(host.d.facility, pose.level);
@@ -307,7 +448,8 @@ export function parkingSpot(host: EffectsHost, pose: Pose, id: EntityId, towards
         const c = cellPoint(g, i);
         const dPose = Math.hypot(c.x - pose.x, c.z - pose.z);
         if (dPose > radius || others.some((a) => Math.hypot(c.x - a.pose.x, c.z - a.pose.z) < 0.6)) continue;
-        found.push({ i, score: (towards ? distanceToArea(c.x, c.z, towards) : 0) + 0.25 * dPose });
+        // `prefer`: such cells first (a room goal's own room), the others only when none is free
+        found.push({ i, score: (towards ? distanceToArea(c.x, c.z, towards) : 0) + 0.25 * dPose + (prefer && !prefer(c.x, c.z) ? 1000 : 0) });
       }
     if (!found.length) continue;
     // nearest first (ties: the lower cell index, as the scan order)

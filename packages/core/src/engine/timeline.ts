@@ -23,6 +23,7 @@ import type { CaseDefinition } from "../schema/case.js";
 import type { VitalKey } from "../schema/common.js";
 import type { DomainEvent, SessionState } from "../schema/session.js";
 import { evaluate, resultFor } from "./conditions.js";
+import { reachPhase } from "./records.js";
 import { alarmsAt, unmeasurableAt } from "./physiology.js";
 import type { AlarmLevel } from "./types.js";
 
@@ -120,6 +121,7 @@ function applyPhaseEdges(tl: Timeline): boolean {
     if (!now || was || s.phase === phase.id) continue;
     tl.events.push({ type: "phase.changed", from: s.phase, to: phase.id, automatic: true });
     s.phase = phase.id;
+    reachPhase(s, phase.id);
     changed = true;
   }
   return changed;

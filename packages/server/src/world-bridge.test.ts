@@ -272,7 +272,8 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
   });
 
   it("re-registers when the server forgot the session (missed heartbeats) — with the same id and key — and keeps serving", async () => {
-    const s = await serve({ world: { heartbeatMs: 60, pingMs: 60, expireAfterMs: 300, sweepMs: 20 } });
+    // Expiry is 15 heartbeats (production: 10 s / 45 s), so an event-loop stall on a busy runner cannot expire the session by itself.
+    const s = await serve({ world: { heartbeatMs: 100, pingMs: 100, expireAfterMs: 1500, sweepMs: 50 } });
     const session = await liveSession();
     let frozen = false;
     let registrations = 0;
@@ -286,11 +287,11 @@ describe("connectWorldBridge ⇄ clinicalcraft serve ⇄ WorldAttachClient", () 
       await bridge.ready;
       const first = bridge.status.liveSessionId!;
       const key = bridge.status.attachKey;
-      await new Promise((r) => setTimeout(r, 450)); // heartbeats keep it alive past expireAfterMs
+      await new Promise((r) => setTimeout(r, 1800)); // heartbeats keep it alive past expireAfterMs
       expect(bridge.status.liveSessionId).toBe(first);
       expect(registrations).toBe(1);
       frozen = true; // a frozen tab: no heartbeats
-      await until(() => registrations === 2 && bridge.status.state === "connected", 3000);
+      await until(() => registrations === 2 && bridge.status.state === "connected", 8000);
       frozen = false;
       expect(statuses.map((st) => st.state)).toContain("reconnecting");
       // The external agent's --world-session and key keep working: the same id came back for the same key.

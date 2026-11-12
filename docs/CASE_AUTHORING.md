@@ -79,7 +79,21 @@ solution is sent to the browser).
   ventilator and cannot speak.)") or let the companion open. `cases validate`
   warns when only one of the two fields is set.
 * `appearance` matches age/sex/build (stature `child` for 2–12 y, `infant` < 2 y);
-  `posture` matches the setting (lying in resus, sitting in clinic).
+  `posture` matches the setting (lying in resus, sitting in clinic). The patient is drawn with a
+  woman's features and frame or a man's by `patient.sex`, and with neither's in particular when the
+  sex is neither. A companion is drawn as neither's too — the world shows no more than the record
+  says — so give `appearance.presentation` (`feminine` | `masculine` | `neutral`) to a companion
+  the case says is a wife, a son, a mother…, and leave it out for "a relative" or "a parent" the
+  source does not describe. Hair is `hairStyle`: `short`, `long`, `wavy`, `bob`, `bun`, `ponytail`,
+  `curly`, `bald` (FACILITIES.md "Staff in the 3D world"). The world draws it as a
+  figure of real proportions: `gown: true` is a hospital gown to the knee (bare legs, slippers),
+  otherwise the patient's own top and trousers in `shirt` / `pants`; every patient wears an
+  identity band on the wrist; someone lying is under the covers with the head on the pillow, the
+  arms on top; someone sitting has their feet on the floor when the seat lets them (a child's hang);
+  the accessories are glasses, a surgical mask, a nasal cannula, an oxygen mask, an arm sling and a
+  peaked cap. Look at it before you ship it:
+  `node scripts/preview/render.mjs people --case <case.json> --out <png>` (the patient standing,
+  sitting and in bed, and the companion).
 
 ## 3. History
 
@@ -189,6 +203,27 @@ solution is sent to the browser).
   absent (the UI says "no record").
 * `alternativeTo: [ids]` marks interchangeable essentials (e.g. abdominal CT ↔
   ultrasound): reading either satisfies "essential investigations" in the assessment.
+* **Safety data: asking is not confirming.** Tag the history items that
+  establish a safety-critical datum: `safety: {datum: "allergy" | "fasting" |
+  "airway" | …, finding?: "unknown" | "negative" | "positive"}` (an `unknown`
+  disclosure defaults to `unknown`). Core `datumStatus` derives not asked /
+  asked-unknown / verified-negative / verified-positive / mitigated (an
+  intervention with `mitigates: [datum]`, a documented precaution). A checklist
+  step lists the data it states in `reports` (a Sign In: allergy, fasting): the
+  learner reads each as the record knows it — "Allergy status remains unknown
+  (asked; not recorded)", "The team has acknowledged these unresolved items" —
+  never "confirmed". Score recognised uncertainty and its management with the
+  condition leaf `{datum, status: [...]}`, never fabricated certainty; and never
+  write a step's text as if an unknown had been confirmed.
+* **Records in the simulated timeline.** A document in the case is not a
+  document the learner can see now. A record is read from the current phase or
+  one already reached, never a later one: the operation record, the histology
+  and the follow-up of a case's review phase do not exist before it (ordering
+  one is refused, `retrieve_report` says "Record not yet created" and gives no
+  text). `availability: {earliestPhase?, when?, historical?}` holds a record back
+  further — not before `earliestPhase` is reached, nor while `when` does not
+  hold — and says whether it predates the encounter (`historical: true`: a prior
+  report) or is written during it (core `recordAvailability`).
 * A report that already exists — an outside scan, an old echo, the operative
   note, the drug chart, a referral letter — is a **record review**:
   `performedAt: "records"`, `requires` at most `["records"]`, `risk: "none"`.
@@ -212,7 +247,11 @@ solution is sent to the browser).
 ## 6. Interventions & physiology (acute cases)
 
 * `clock.mode: "simulated"`, `startTime`, sensible `actionCosts`, optional
-  `realtimeScale` (0–2), optional `limitMinutes`.
+  `realtimeScale` (0–2), optional `limitMinutes`. In in-world mode a walk or a
+  device operation costs its seconds × `realtimeScale` (`worldTime: "scaled"`,
+  the default) — or its own duration with `worldTime: "actual"`, for a case
+  where a device's time matters clinically (a 60 s insufflation is a clinical
+  minute; the vital signs read afterwards carry it).
 * `physiology.baseline` consistent with the presentation; `trends` for untreated
   deterioration that stop (`until`) when the right treatment is given (and
   `recoverPerMinute` for improvement); `events` for scripted turns (VF arrest if
@@ -330,6 +369,92 @@ solution is sent to the browser).
   must say what the learner means *now*: "/give epipen" during anaphylaxis is
   IM adrenaline, not a take-home prescription.
 
+### 6.1 Operations (`procedure`, `safetyGates`)
+
+A surgical case can carry the operation itself: `procedure` (anatomy, regions, port sites and plans,
+instruments, safety views, bail-outs — the contract is [PROCEDURE.md](PROCEDURE.md)) acted on by the
+`operate` action in the phases it lists. Rules for authoring one:
+
+* **Provenance on every structure.** `reference` (adapted reference anatomy), `imaging` (segmented from
+  the patient's own images), `authored`, `published-case`; never present reference anatomy as the
+  patient's. A ductal or arterial variant appears in the base anatomy only when the source documents it.
+* **Counterfactual anatomy goes in `procedure.variants`** (PROCEDURE.md §9): a variant the source does not
+  report (an aberrant duct, a second cystic artery, a frozen triangle) is a named variant with
+  `provenance: "authored"`, a debrief `summary` and `references` for the variant itself, never the base.
+  Each variant needs its own reference path (`cases verify` replays the base one; give the variants
+  scenarios in an operative benchmark suite). Rubric items that only make sense in one variant are
+  `scoredWhen` `{"procedure": {"variant": id}}`.
+* **Names stay hidden.** Give every duct and vessel an `appearsAs` description (what it looks like); the
+  operator and agents see handles, not names (`cases validate` warns otherwise).
+* **Gate the operation with the checklist.** Mark the WHO steps `checklist: true` and open the operative
+  phase only on a valid Time Out (`enterWhen: {"intervened": "time-out", "valid": true}`): an early
+  attempt is logged as invalid, leaves the operation locked and uses none of the step's doses, so a later
+  attempt in order opens it. Make induction contraindicated before the Sign In, score the order by
+  committed sequence (`{"inOrder": ["sign-in", "induction"]}`) and show a reversed order in the verdict with
+  a safety gate on `{"intervened": "induction", "valid": false}`. Open recovery only on a valid Sign Out.
+  Keep tasks and checks apart: attaching the monitor is its own `monitoring` intervention (the monitor's
+  `attach` and a delegated nurse record it; `physiology.monitor.attachedWhen` reads it); a checklist step is
+  never `kind: "monitoring"` and is valid only once its own checks are addressed (`contraindicatedWhen` on the
+  monitor and the questions it asks). Make the Time Out need a valid Sign In as well as induction. A WHO
+  board marked `derived: "case-record"` shows these steps; its operations' team prerequisites (a baseline
+  count) hold for `intervene` on the same step too.
+* **Holds are explicit.** An attending or anaesthetist who withholds clearance places a hold (`hold`, their
+  `place_hold` tool) and releases it after a recorded reassessment; give them knowledge that says when, and
+  that missing information alone is no universal prohibition. `{"held": "induction"}` reads a standing hold
+  (for a gate or a debrief line, not to block — the engine refuses a held step itself).
+  Physiology events may read the field (`{"procedure": {"insufflated": true}}`); label simulated values as
+  simulated in their message.
+* **Count what the operator sees.** Give the "only the structures entering" criterion a usual `count` (2):
+  the operator then reports at the safety pause how many structures they see entering, and only the true
+  number is credited (an anatomical variant with a third structure needs the report "three").
+* **Score the operation in the rubric**: the critical view documented and true (`{"procedure": {"documented":
+  "cvs", "valid": true}}`), correct identification, no irreversible step on unconfirmed anatomy (an
+  avoided-harm item with `scoredWhen`), and complication management items `scoredWhen` the complication
+  occurred (the percentage renormalises when it did not). Credit the outcome from the field — the specimen
+  out, the abdomen closed, or a bail-out through its own items — and score those items from the moment the
+  operation opens (`scoredWhen` including the valid Time Out), so a run that never operates (counts, devices,
+  the wrong tool) loses them instead of leaving them unscored.
+* **`safetyGates`**: outcomes no score compensates (a bile duct injury, an irreversible step without a true
+  critical view, an unrecognised injury) are `safety-critical` gates with a `capPercent`; recoverable
+  complications are `complication` gates. Every debrief states the verdict.
+* The reference `solution` performs the operation with `operate` steps; handles are assigned in the order
+  structures come into view (`cases verify` replays them).
+
+### 6.2 The care team (`team`)
+
+A theatre case can give its room a care team that works on its own in in-world mode (contract:
+[TEAM.md](TEAM.md)):
+- the room;
+- the phases in which the team acts;
+- the members and their duties (`circulate`, `instruments`, `count`, `surgeon`);
+- optionally, the count it keeps item by item (`count`: the counted handheld type, when it falls due, and the places
+  the circulating nurse searches).
+
+* **Members are the room's own staff** (`teamFacilityIssues`: they work in `team.room`); the surgeon is `surgeon` (the
+  learner). Somebody must circulate.
+* **Team scenarios set up conditions, never steps.** A scenario can:
+  - post a need (an item for a member, with what the team calls it aloud);
+  - put a member on a break (`absent`), with a relief colleague from another room (`relief`);
+  - move an item beside another placement (in the room, or elsewhere in the hospital), or conceal it (`concealed`:
+    where it lies; `inside` + `beside: "patient"`: in the wound).
+
+  The summary is facilitator text and is never shown to the team. Mark scenarios `provenance: "authored"`: they are
+  teaching material, not the case report.
+* **Search places are the same for every scenario** (the room's usual places: the Mayo stand, the back table…). Never
+  list a place because a scenario hides something there; that would point the team to it.
+* **Give each scenario an `expect`** (`delivered: true | false`, `count: "correct" | "reconciled" | "unresolved"`) and
+  keep one control with nothing set up: `clinicalcraft bench team` scores every scenario against it (all must pass),
+  and the control measures false holds.
+* The counted items are placed one by one in the room (a facility's placements); the baseline is every one in the room,
+  by entity id, recorded at the start of an in-world encounter. The count is the case's record (docs/TEAM.md §4.3):
+  read it with `{ "count": {…} }` conditions — make the Sign Out contraindicated while it is open
+  (`{"count": {"status": ["baseline", "discrepancy", "unresolved"]}}`), and give closure on an open count a
+  safety-critical gate (`{"count": {"unsafe": true}}`). `team.count.closure` chooses whether closure on an open count is
+  recorded (teaching mode, the default) or refused.
+* Exercise the count by identity, not only by number: keep a scenario with an item **not in the count** (another room's
+  item moved in: six of five, or five of five with one still in the wound), and a positive control with a **documented
+  transfer** (`items[].transfer`: a swab sent with the specimen — no hold expected).
+
 ## 7. Learning design
 
 * 4–6 `objectives` (chapters) in logical order with `hint`, `guidance` and
@@ -354,8 +479,8 @@ solution is sent to the browser).
   presented in a seeded shuffle, so list them in any order.
 * Conditions available everywhere: `all/any/not/always`, `asked`, `examined`,
   `ordered`, `read`, `resultReady`, `decided`, `decidedFirstTry` (rubric: first
-  attempt correct), `attempted`, `intervened`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`. `ordered` and `read` take a `phase` (that phase's order or
+  attempt correct), `attempted`, `intervened`, `inOrder`, `held` (a hold stands),
+  `phase`, `flag`, `objective`, `vital`, `elapsed`, `hints`. `ordered` and `read` take a `phase` (that phase's order or
   result — an unphased `read` is also met by a "no result yet" placeholder of any
   phase). An act done **in time**: `{ "intervened": "tpe", "whenIndicated": true }`
   counts only the times the intervention was given while its `indicatedWhen` held
@@ -398,7 +523,12 @@ solution is sent to the browser).
   and must not contain result findings or derived values (another study's
   report, a creatinine clearance, a score total): model-backed NPCs get it in
   their prompt, and results reach them through `get_results` only once read.
-  Keep it to interpretive/teaching knowledge and boundaries.
+  Keep it to interpretive/teaching knowledge and boundaries. A named
+  `consultant` (the anaesthetist) is reached by `consult {staff}` and speaks
+  through the attending's profile; a facility staff member with the same title
+  ("Dr Tanaka (anaesthesia)") brings that consultant's knowledge.
+* `npcs[].corrections` (§7.3 below) for misconceptions a colleague must always
+  correct.
 * `debrief`: conclusion, 3–6 key reasoning points, boundaries, unknowns, 3–6
   teaching points, guideline references, and the formative-assessment notice.
 * `solution`: an array of typed `ClinicalAction`s — the reference action path (start → … → finish) that completes all
@@ -422,6 +552,24 @@ solution is sent to the browser).
   phrases learners use ("量过血压", "以前有什么病"). A particle the learner adds
   is skipped ("吸过毒吗" finds 吸毒) but a keyword's own particles are kept
   ("吃了啥药" is about just now, not 吃的啥药), and 痛 matches 疼.
+
+### 7.3 Teaching corrections (`npcs[].corrections`)
+
+A model-backed colleague can endorse a confident but wrong plan. When a case knows such an error — paralysis
+with little or no hypnotic, end-tidal CO₂ as the measure of preoxygenation, a swallow test before extubation, a
+hypothetical turned into history — author it as a correction on the colleagues who must catch it:
+
+```json
+{ "id": "preox-etco2", "misconception": {"en": "EtCO₂ > 40 shows adequate preoxygenation", "zh-CN": "…"},
+  "match": [["etco2", "end-tidal co2", "呼末二氧化碳"], ["preoxygen", "预充氧"]],
+  "say": {"en": "Correction: preoxygenation is judged by end-tidal OXYGEN …", "zh-CN": "纠正：…"},
+  "marks": ["end-tidal oxygen", "呼气末氧"] }
+```
+
+A message matches when it contains a phrase of every `match` group (case-insensitive, any locale). The model
+gets a `<must_correct>` part; a reply with none of the `marks` gets `say` appended as the same speaker's next line;
+the offline responder says it first. It is teaching design, never a case fact: cite the guidance in
+`debrief.references`, and test it (a regression in which the colleague corrects the error).
 
 ## 8. Facilities
 

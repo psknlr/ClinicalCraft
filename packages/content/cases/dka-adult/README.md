@@ -514,7 +514,7 @@ them:
 
 ## Changelog
 
-### 1.1.2 — 2026-10-30 (assessment validity)
+### 1.1.3 — 2026-11-12 (assessment validity)
 
 - **Options rebalanced so the key is not cued by length.** In all 3
   single-best decisions (`dx-severity`, `k-sequencing`, `glucose-falling`) the
@@ -538,6 +538,15 @@ them:
 - **Matcher corpus:** six `extensions.testUtterances` that were one of their
   item's keywords (`cases validate --strict`) are now paraphrases; no history
   item, answer or keyword changed.
+
+### 1.1.2 — 2026-11-10 (one threshold)
+
+- **Euglycaemic DKA is glucose < 11.1 mmol/L (200 mg/dL)** in the feedback of
+  the distractor `dx-euglycaemic` (decision `dx-severity`), as the 2024
+  consensus the case follows defines it. The text said < 13.9 mmol/L
+  (250 mg/dL), the 2009 cut-off, which overlapped the case's own criterion
+  for hyperglycaemia (D: ≥ 11.1 mmol/L). No score or path changes: her
+  glucose is 28.0 mmol/L.
 
 ### 1.1.1 — 2026-10-28 (assessment integrity)
 

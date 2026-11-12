@@ -9,6 +9,10 @@
  */
 
 import { EMBODIED_EN, EMBODIED_ZH } from "./i18n-embodied.js";
+import { PROCEDURE_EN, PROCEDURE_ZH } from "./i18n-procedure.js";
+import { CHECKLIST_EN, CHECKLIST_ZH } from "./i18n-checklist.js";
+import { COUNT_EN, COUNT_ZH } from "./i18n-count.js";
+import { STUDIES_EN, STUDIES_ZH } from "./i18n-studies.js";
 
 /** Runtime languages shipped with ClinicalCraft. */
 export type RuntimeLang = "zh-CN" | "en";
@@ -115,7 +119,9 @@ const EN = {
   "tool.denied": "Not permitted: {reason}",
   "tool.deniedByLearner": "The learner denied this action{reason}. Do not retry it; adapt your plan.",
   "tool.aborted": "Cancelled: the turn was interrupted before this tool ran.",
-  "tool.maxRounds": "Not executed: the tool-round limit for this turn was reached.",
+  "tool.maxRounds": "Not executed: the tool-round limit for this turn was reached. Next turn, start from case_status (phase, what is still needed) instead of repeating calls.",
+  "tool.maxRounds.more": "Not executed (same turn limit).",
+  "tool.repeatedFailure": "This exact {tool} call has now failed {n} times in a row with the same result, and nothing changed. Do not retry it: read case_status (phase, the unmet requirement), inspect the target and its available operations (inspect_object), then choose a different action.",
   "tool.failed": "Tool error: {message}",
   "loop.stopHook": "A Stop hook asked you to continue before ending your turn: {reason}",
   "loop.streamEnded": "The model stream ended unexpectedly.",
@@ -178,11 +184,15 @@ const EN = {
   "tool.facts.phase": "Not revealed — {ids} are not available in this phase.",
   "tool.results.notObtained": "The learner has not obtained this result yet — you cannot discuss it.",
   "tool.results.notInScope": "This result is outside your remit.",
-  "tool.results.ready": "{name} ({phase}) is back — the learner should review it.",
+  "tool.results.ready": "{name} ({phase}) is back — it needs the doctor's review before anyone discusses it.",
+  "tool.results.noRecord": "{name} ({phase}): there is no result for this phase — nothing will come back (the record does not contain one).",
   "tool.results.pending": "{name} ({phase}) is still pending (expected {time}).",
   "tool.results.none": "No results have been obtained yet.",
   "tool.hint.none": "All objectives are complete — no further hints.",
   "tool.consult.unknownRole": "Unknown consultant role \"{role}\".",
+  "tool.consult.unknownStaff": "Nobody here answers to “{staff}”. You can ask: {candidates}.",
+  "tool.consult.ambiguousStaff": "More than one colleague answers to “{staff}”: {candidates}. Say which one (a name or staff id).",
+  "tool.consult.to": "To: {to}",
   "tool.nestedLimit": "{agent} is not available right now (too many nested consultations).",
   "tool.dynamic.unsupported": "The front-end does not support {tool}.",
   "tool.status.header": "Phase {phase} · {clock}{finished}",
@@ -207,6 +217,7 @@ const EN = {
   "reject.already-decided": "Already answered correctly.",
   "reject.objectives-incomplete": "Objectives are still incomplete.",
   "reject.cannot-answer": "The patient cannot speak now, and nobody here can answer for them.",
+  "reject.on-hold": "On hold: it needs a recorded reassessment and release by whoever placed the hold.",
   "reject.invalid": "Invalid action.",
 
   // approval summaries
@@ -276,6 +287,9 @@ const EN = {
   "cmd.case.disclaimer": "Note: {text}",
   "cmd.ask.answered": "Asked: {question}",
   "cmd.badIndex": "No item number {index}.",
+  "resume.migrated": "This session was created with {case} v{old} (engine {oldEngine}); the current content is v{new} (engine {newEngine}). {n} historical action(s) cannot be replayed exactly under the current rules — the original record is kept unchanged; see the migration report.",
+  "resume.versionChanged": "This session was created with {case} v{old} (engine {oldEngine}); the current content is v{new} (engine {newEngine}). Every historical action replays.",
+  "resume.issues": "{n} historical action(s) cannot be replayed exactly under the current rules — the original record is kept unchanged; see the migration report.",
   "cmd.hint.text": "Hint: {hint}",
   "cmd.plan.empty": "No work-up plan yet.",
   "cmd.note.added": "Note added.",
@@ -421,6 +435,7 @@ const EN = {
   "nurse.offline.observations": "My observations now: {readings}.",
   "nurse.offline.pending": "Pending: {list}.",
   "nurse.offline.ready": "Back and waiting for you: {list}.",
+  "nurse.offline.noRecord": "No result for this phase (nothing will come back): {list}.",
   "nurse.offline.noOrders": "Nothing has been ordered yet.",
   "nurse.offline.knowledge": "{knowledge}",
   "consultant.offline.nothing": "You haven't retrieved any {kind} results yet, so I have nothing to comment on. Order and read the study first.",
@@ -474,6 +489,10 @@ const EN = {
   "tool.noCapability": "Not available here: {name} needs {capabilities}, which {facility} does not have.",
   // embodied mode (./i18n-embodied.ts)
   ...EMBODIED_EN,
+  ...PROCEDURE_EN,
+  ...CHECKLIST_EN,
+  ...COUNT_EN,
+  ...STUDIES_EN,
 } as const;
 
 export type RuntimeKey = keyof typeof EN;
@@ -558,7 +577,9 @@ const ZH: Record<RuntimeKey, string> = {
   "tool.denied": "不允许：{reason}",
   "tool.deniedByLearner": "学员拒绝了该操作{reason}。不要重试，请调整方案。",
   "tool.aborted": "已取消：本轮在执行该工具前被中断。",
-  "tool.maxRounds": "未执行：本轮工具调用次数已达上限。",
+  "tool.maxRounds": "未执行：本轮工具调用次数已达上限。下一轮请先看 case_status（阶段、仍缺什么），不要重复调用。",
+  "tool.maxRounds.more": "未执行（同一上限）。",
+  "tool.repeatedFailure": "这个 {tool} 调用已连续 {n} 次以相同结果失败，且状态没有任何变化。不要再重试：先读 case_status（阶段、未满足的要求），再查看目标及其可用操作（inspect_object），然后换一种做法。",
   "tool.failed": "工具出错：{message}",
   "loop.stopHook": "Stop 钩子要求你在结束本轮前继续：{reason}",
   "loop.streamEnded": "模型输出流意外中断。",
@@ -621,11 +642,15 @@ const ZH: Record<RuntimeKey, string> = {
   "tool.facts.phase": "未揭示——{ids} 在当前阶段不可用。",
   "tool.results.notObtained": "学员还没有获取这项结果——你不能讨论它。",
   "tool.results.notInScope": "这项结果不在你的职责范围内。",
-  "tool.results.ready": "{name}（{phase}）结果已出——请学员查看。",
+  "tool.results.ready": "{name}（{phase}）结果已出——需医生先查看，之后才能讨论。",
+  "tool.results.noRecord": "{name}（{phase}）：本阶段没有这项结果——不会再出来（记录里没有）。",
   "tool.results.pending": "{name}（{phase}）尚未出结果（预计{time}）。",
   "tool.results.none": "目前还没有获取任何结果。",
   "tool.hint.none": "所有目标均已完成——没有更多提示。",
   "tool.consult.unknownRole": "未知会诊角色“{role}”。",
+  "tool.consult.unknownStaff": "这里没有“{staff}”。可以询问：{candidates}。",
+  "tool.consult.ambiguousStaff": "有不止一位同事对应“{staff}”：{candidates}。请说明是哪一位（姓名或员工编号）。",
+  "tool.consult.to": "对象：{to}",
   "tool.nestedLimit": "{agent} 暂时无法回应（嵌套会诊次数过多）。",
   "tool.dynamic.unsupported": "前端不支持 {tool}。",
   "tool.status.header": "阶段 {phase} · {clock}{finished}",
@@ -649,6 +674,7 @@ const ZH: Record<RuntimeKey, string> = {
   "reject.already-decided": "已经正确作答。",
   "reject.objectives-incomplete": "目标尚未全部完成。",
   "reject.cannot-answer": "患者现在无法说话，身边也没有人能代为回答。",
+  "reject.on-hold": "已被暂缓：需由暂缓者记录重新评估并解除后才能进行。",
   "reject.invalid": "无效操作。",
 
   "sum.ask": "向患者提问：“{question}”",
@@ -715,6 +741,9 @@ const ZH: Record<RuntimeKey, string> = {
   "cmd.case.disclaimer": "说明：{text}",
   "cmd.ask.answered": "已提问：{question}",
   "cmd.badIndex": "没有编号为 {index} 的项目。",
+  "resume.migrated": "本次接诊创建于 {case} v{old}（引擎 {oldEngine}）；当前内容为 v{new}（引擎 {newEngine}）。有 {n} 个历史操作无法按现行规则原样重放——原始记录保持不变；请查看迁移报告。",
+  "resume.versionChanged": "本次接诊创建于 {case} v{old}（引擎 {oldEngine}）；当前内容为 v{new}（引擎 {newEngine}）。全部历史操作均可重放。",
+  "resume.issues": "有 {n} 个历史操作无法按现行规则原样重放——原始记录保持不变；请查看迁移报告。",
   "cmd.hint.text": "提示：{hint}",
   "cmd.plan.empty": "还没有诊疗计划。",
   "cmd.note.added": "笔记已添加。",
@@ -855,6 +884,7 @@ const ZH: Record<RuntimeKey, string> = {
   "nurse.offline.observations": "我现在观察到的：{readings}。",
   "nurse.offline.pending": "待出结果：{list}。",
   "nurse.offline.ready": "已出结果待查看：{list}。",
+  "nurse.offline.noRecord": "本阶段没有结果（不会再出来）：{list}。",
   "nurse.offline.noOrders": "目前还没有开任何检查。",
   "nurse.offline.knowledge": "{knowledge}",
   "consultant.offline.nothing": "你还没有调阅任何{kind}结果，我暂时没有可以解读的内容。请先开具并查看检查。",
@@ -905,6 +935,10 @@ const ZH: Record<RuntimeKey, string> = {
   "reason.truncated": "回复在 {maxTokens} 个 token 的上限处被截断——请调高 agents.{agent}.maxTokens",
   "tool.noCapability": "此处无法进行：{name}需要{capabilities}，而{facility}没有这些条件。",
   ...EMBODIED_ZH,
+  ...PROCEDURE_ZH,
+  ...CHECKLIST_ZH,
+  ...COUNT_ZH,
+  ...STUDIES_ZH,
 };
 
 const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };

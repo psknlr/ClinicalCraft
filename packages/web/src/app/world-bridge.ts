@@ -4,7 +4,8 @@
  *
  *   WorldHost      creates/recreates the world for a facility + patient (also the intro backdrop)
  *   patientFor     the case's patient in the first facility slot accepting `case.setting`
- *   routeInteraction  E on a target → which panel opens (patient/staff/workstation/device/monitor/board/atlas/craft)
+ *   routeInteraction  E on a target → which panel opens (patient/staff/workstation/device/monitor/board/atlas/craft;
+ *                  the operating table: the surgery window while the case's operation is under way)
  *   GameWorldLink  per game: waypoint beacon from `state_snapshot.waypoint`, NPC speaking (the one who spoke: the
  *                  patient, their companion, the colleague the turn names — a narration moves no mouth), the patient's
  *                  bystander cues (core `patientCues`: distress, oxygen accessory, posture — in embodied mode the
@@ -15,9 +16,12 @@
 import { patientAgeText, patientCues, resolveWaypoint, t, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition, type PatientSlot } from "@clinicalcraft/core";
 import type { InteractionTarget, WorldApi, WorldCallbacks, WorldPatient, WorldSave, WorldSettings } from "../contracts.js";
 import { createWorld } from "../world/index.js";
+import { presentationOfSex } from "../world/figure/looks.js";
 import type { VitalsSnapshot } from "@clinicalcraft/core";
 import { STAFF_AGENT, type EventMsg } from "@clinicalcraft/agent";
 import { getLocale, tr } from "../i18n/index.js";
+import { surgeryOffered } from "../ui/panels/surgery-controls.js";
+import { STANDALONE } from "./llm.js";
 import type { EmbodiedLink } from "./embodied-link.js";
 import type { AppSession } from "./session.js";
 import { Stations } from "./stations.js";
@@ -41,7 +45,7 @@ export function sexText(c: CaseDefinition): string {
   return tr(`sex.${c.patient.sex}` as "sex.male");
 }
 
-/** A companion's look when the case authors none: an adult visitor in day clothes. */
+/** A companion's look when the case authors none: an adult visitor in day clothes — drawn as neither a woman nor a man in particular unless the case says who they are (`appearance.presentation`). */
 const VISITOR: Partial<CaseDefinition["patient"]["appearance"]> = { shirt: "#8c6d9e", pants: "#3d3a4a", hairStyle: "short", stature: "adult" };
 
 export function patientFor(c: CaseDefinition, f: FacilityDefinition, locale: string): WorldPatient | null {
@@ -53,12 +57,13 @@ export function patientFor(c: CaseDefinition, f: FacilityDefinition, locale: str
     slotId: slot.id,
     caseId: c.id,
     name,
-    appearance: c.patient.appearance,
+    // (drawn by their sex unless the case's author says otherwise)
+    appearance: { ...c.patient.appearance, presentation: c.patient.appearance.presentation ?? presentationOfSex(c.patient.sex) },
     posture: c.patient.posture ?? slot.posture ?? "standing",
     tag: tr("patient.tag", { age: ageText(c), sex: sexText(c) }),
     // the case's companion stands at the patient's side (drawn; the world model has no body for them)
     ...(companion
-      ? { companion: { appearance: { ...VISITOR, gown: false, accessory: "none", ...(companion.appearance ?? {}) }, label: tr("companion.tag", { role: tr(`companionRole.${companion.role}` as "companionRole.parent"), name: t(companion.name, locale) }) } }
+      ? { companion: { appearance: { ...VISITOR, gown: false, accessory: "none", ...(companion.appearance ?? {}), presentation: companion.appearance?.presentation ?? "neutral" }, label: tr("companion.tag", { role: tr(`companionRole.${companion.role}` as "companionRole.parent"), name: t(companion.name, locale) }) } }
       : {}),
   };
 }
@@ -108,6 +113,8 @@ export class WorldHost {
         saved,
         callbacks: this.callbacks,
         vitals: (slotId) => this.vitals(slotId),
+        // equipment models are served files (`/local-assets/models/…`): the single-file build draws voxels
+        ...(STANDALONE ? { models: false as const } : {}),
       });
       this.key = key;
       this.spec = spec;
@@ -153,6 +160,7 @@ export type Route =
   | { panel: "monitor"; placementId: string | null }
   | { panel: "board" }
   | { panel: "atlas" }
+  | { panel: "surgery" }
   | { panel: "craft" }
   | { panel: "elevator"; connectorId: string; level: string; name: string; stops: string[] }
   /** Embodied mode: an operation on equipment through the world model (a sink's `wash_hands`). */
@@ -162,7 +170,11 @@ export type Route =
 /** Facility staff role → session agent profile (the session's own mapping: a staff member addressed by name speaks through it). */
 export { STAFF_AGENT };
 
-export function routeInteraction(target: InteractionTarget, ctx: { caseDef: CaseDefinition | null; slotId: string | null; embodied?: boolean }): Route {
+/**
+ * `phase`: the session's phase — equipment with the `surgery` capability (the operating table) opens the
+ * laparoscopic surgery window while the case's operation is under way in that phase.
+ */
+export function routeInteraction(target: InteractionTarget, ctx: { caseDef: CaseDefinition | null; slotId: string | null; embodied?: boolean; phase?: string }): Route {
   switch (target.kind) {
     case "patient":
       if (ctx.caseDef && target.caseId === ctx.caseDef.id) return { panel: "conversation", agent: "patient" };
@@ -175,6 +187,7 @@ export function routeInteraction(target: InteractionTarget, ctx: { caseDef: Case
       // the call panel outside the car is handled by the world (the car door opens); inside: choose a floor
       return { panel: "elevator", connectorId: target.connectorId, level: target.level, name: target.name, stops: target.stops };
     case "equipment":
+      if (target.capabilities.includes("surgery") && surgeryOffered(ctx.caseDef, ctx.phase)) return { panel: "surgery" };
       switch (target.interaction) {
         case "workstation":
           return { panel: "orders", placementId: target.placementId };
@@ -238,7 +251,17 @@ export interface GameWorldLinkOptions {
   agentDriving?: () => boolean;
   /** The embodied controller (null: clinical mode). */
   embodied?: () => EmbodiedLink | null;
+  /**
+   * The encounter's time runs now (`encounterClockRuns`: open and not paused — a chart, the surgery window or any
+   * other panel open does not stop it). The one clock of the real-time tick, the staff's round and the care team's.
+   */
+  clockRunning?: () => boolean;
 }
+
+/** Real milliseconds between the care team's steps while it acts on its own (autonomy `auto`). */
+export const TEAM_STEP_MS = 2000;
+/** The staff's own round (`staff_step`), ms. */
+export const STAFF_STEP_MS = 2000;
 
 export class GameWorldLink {
   readonly stations: Stations;
@@ -405,11 +428,56 @@ export class GameWorldLink {
     }
   }
 
+  private teamWait = 0;
+  private teamBusy = false;
+
+  /**
+   * The care team's clock (docs/TEAM.md §2): in autonomy `auto`, one `team step` op every `TEAM_STEP_MS` while the
+   * encounter runs (the same clock as the staff's round: the learner operating or reading the chart does not stop it)
+   * — the same op a headless run uses, queued with the learner's own, so a learner who only watches still sees the
+   * team work. Never while an agent drives a body or a step is still running.
+   */
+  private teamTick(dt: number): void {
+    const session = this.o.app.session;
+    if (this.teamBusy || !(this.o.clockRunning?.() ?? this.o.playing()) || this.o.agentDriving?.()) return;
+    const team = this.o.caseDef.team;
+    if (!team || !team.phases.includes(session.state.phase) || session.state.finished) return;
+    if (session.team()?.autonomy !== "auto") return;
+    this.teamWait += dt;
+    if (this.teamWait < TEAM_STEP_MS) return;
+    this.teamWait = 0;
+    this.teamBusy = true;
+    void session.run({ type: "team", action: "step" }).finally(() => (this.teamBusy = false));
+  }
+
+  private staffWait = 0;
+  private staffBusy = false;
+
+  /**
+   * The staff's own clock (docs/TEAM.md §5): one `staff_step` op every `STAFF_STEP_MS` while the encounter runs —
+   * whatever the learner is looking at, so a nurse sent for a device gets there, the study is acquired and the
+   * anaesthetist answers an alarm without the learner acting. Never while an agent drives a body (its own acts run
+   * the same round) or a step is still running.
+   */
+  private staffTick(dt: number): void {
+    const session = this.o.app.session;
+    if (this.staffBusy || !(this.o.clockRunning?.() ?? this.o.playing()) || this.o.agentDriving?.()) return;
+    if (!session.state.started || session.state.finished) return;
+    this.staffWait += dt;
+    if (this.staffWait < STAFF_STEP_MS) return;
+    this.staffWait = 0;
+    this.staffBusy = true;
+    void session.run({ type: "staff_step" }).finally(() => (this.staffBusy = false));
+  }
+
   private onTick(): void {
     const now = performance.now();
     const dt = now - this.lastTick;
     this.lastTick = now;
-    if (!this.o.playing()) return;
+    this.teamTick(dt);
+    this.staffTick(dt);
+    // a real-time case clock runs while the encounter is open and not paused (reading the chart does not stop it)
+    if (!(this.o.clockRunning?.() ?? this.o.playing())) return;
     // an agent drives a body: the world charges that time (travel, procedures) — real time would count it twice
     if (this.o.agentDriving?.()) return;
     const c = this.o.caseDef;

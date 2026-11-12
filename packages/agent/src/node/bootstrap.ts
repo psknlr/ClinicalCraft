@@ -255,7 +255,7 @@ export async function createNodeSession(opts: CreateNodeSessionOptions = {}): Pr
     cwd: settings.projectRoot,
     ...(settings.embodiment === "embodied"
       ? {
-          embodied: { ...(opts.embodied ?? {}), ...(resumed?.world ? { snapshot: resumed.world } : {}) },
+          embodied: { ...(opts.embodied ?? {}), ...(resumed?.world ? { snapshot: resumed.world } : {}), ...(resumed?.team ? { team: resumed.team } : {}) },
           skills: skills.skills,
           ...(skills.issues.length ? { skillIssues: skills.issues } : {}),
           ...("untrusted" in skills && skills.untrusted ? { skillsUntrusted: skills.untrusted } : {}),

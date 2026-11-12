@@ -80,6 +80,19 @@ export function reportMarkdown(r: BenchReport, locale: string): string {
     out.push(`| ${bm(L, `category.${c}` as BenchMessageKey)} | ${m.runs} | ${rate} | ${ci} | ${m.spatialViolations.k} / ${m.spatialViolations.n} | ${m.unauthorisedAcceptance.k} / ${m.unauthorisedAcceptance.n} | ${num(m.avgToolCalls)} | ${num(m.latencyMs.p50, 0)} / ${num(m.latencyMs.p95, 0)} |`);
   }
   out.push("");
+  // the published record alone vs with new (simulated) investigations: never one number for both
+  const byEvidence = r.metrics.byEvidence ?? {};
+  if (Object.keys(byEvidence).length) {
+    out.push(`## ${bm(L, "report.byEvidence")}`, "");
+    out.push(`| ${bm(L, "report.evidence")} | ${bm(L, "report.runs")} | ${bm(L, "report.metric.taskSuccess")} | ${bm(L, "report.ci")} |`, "|---|---:|---:|---|");
+    for (const e of ["source-only", "expanded"] as const) {
+      const m = byEvidence[e];
+      if (!m) continue;
+      const [rate, ci] = propCells(m.taskSuccess);
+      out.push(`| ${bm(L, `evidence.${e}` as BenchMessageKey)} | ${m.runs} | ${rate} | ${ci} |`);
+    }
+    out.push("");
+  }
   out.push(`## ${bm(L, "report.scenarios")}`, "");
   out.push(
     `| ${bm(L, "report.scenario")} | ${bm(L, "report.category")} | ${bm(L, "report.case")} | ${bm(L, "report.success")} | ${bm(L, "report.calls")} | ${bm(L, "report.tokens")} | ${bm(L, "report.wall")} | ${bm(L, "report.sim")} | ${bm(L, "report.deterministic")} |`,

@@ -3,8 +3,8 @@
  * input in physics sub-steps so an agent's walk keeps real time on slow frames, while a human's step stays
  * clamped), the camera (head bob, sprint FOV), the hand, aiming and the position report to the app, elevator
  * rides, walking staff and pushed carts and patients, doors, sun, lights and detail culling, the NPCs' head
- * tracking, speech and breathing, name tags, particles, clouds, the beacon, animated parts and live monitor
- * screens. While paused the scene is redrawn at a low rate; the auto-walk runs even while paused.
+ * tracking, speech and breathing, the manikins' breathing, name tags, particles, clouds, the beacon, animated
+ * parts and live monitor screens. While paused the scene is redrawn at a low rate; the auto-walk runs even while paused.
  */
 import { MathUtils, Vector3 } from "three";
 import { monitorRenderer } from "../shared/monitor-render.js";
@@ -13,10 +13,14 @@ import { regionAt } from "./region.js";
 import { animateDoors } from "./structures.js";
 import { normAngle, rigRotationOf, yawTowards } from "./embodiment.js";
 import type { NpcRecord } from "./context.js";
+import { animateLive } from "./live.js";
+import { setBlink, setBreath, setMouth } from "./npc.js";
 import type { VoxelWorld } from "./voxel-world.js";
 
 /** Within this distance (m) someone speaking to the learner turns to face them. */
 const FACE_RANGE = 6;
+/** How long a blink takes (s). */
+const BLINK = 0.16;
 
 /** May this NPC turn where it stands (not walking a route, not travelling with or walking behind someone)? */
 function facesSpeaker(world: VoxelWorld, n: NpcRecord): boolean {
@@ -206,17 +210,22 @@ export class FrameLoop {
       const bob = s.bob !== false;
       let hy = rig.headBaseY + (bob ? Math.sin(now * 0.0018) * 0.005 : 0);
       if (n.speaking) {
-        rig.mouth.scale.y = 0.025 * (1 + Math.abs(Math.sin(now * 0.022)) * 2.6);
-        rig.head.rotation.x = Math.sin(now * 0.011) * 0.05;
-        hy += Math.abs(Math.sin(now * 0.011)) * 0.012;
+        // syllables: the jaw opens and closes about five times a second, some wider than others
+        setMouth(rig, Math.abs(Math.sin(now * 0.0155)) * (0.62 + 0.38 * Math.sin(now * 0.0043 + rig.phase * 6)));
+        rig.head.rotation.x = Math.sin(now * 0.0055) * 0.035;
+        hy += Math.abs(Math.sin(now * 0.0055)) * 0.004;
       } else {
-        rig.mouth.scale.y = 0.025;
+        setMouth(rig, 0);
         rig.head.rotation.x *= 0.9;
       }
       rig.head.position.y = hy;
-      const breath = n.distressed ? 0.035 * Math.sin(now * 0.016) : 0.012 * Math.sin(now * 0.004);
-      rig.torso.scale.z = (rig.torso.userData.baseZ as number) * (1 + breath);
+      setBreath(rig, n.distressed ? 0.035 * Math.sin(now * 0.016) : 0.014 * Math.sin(now * 0.0022 + rig.phase * 6));
+      // a blink every few seconds, each person in their own time
+      const since = (now * 0.001 + rig.phase * 7) % (3.1 + rig.phase * 2.6);
+      setBlink(rig, since < BLINK ? Math.sin((since / BLINK) * Math.PI) : 0);
     }
+    // the manikins that breathe (a ventilator's rhythm; one lung down: all but still on the side that is up)
+    animateLive(ctx.live.values(), now);
     for (const tag of people.tagSigns) {
       tag.getWorldPosition(tmpV);
       const parentYaw = tag.parent ? tag.parent.rotation.y : 0;

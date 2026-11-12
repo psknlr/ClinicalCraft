@@ -365,9 +365,10 @@ export interface TargetDeps {
  * station) — or, where no device provides them, a terminal standing for its department (the V4 clinic's
  * imaging workstation). In service, registry order.
  */
-export function patientProviders(d: Pick<TargetDeps, "registry" | "capabilities">, caps: readonly string[]): EntityId[] {
+export function patientProviders(d: Pick<TargetDeps, "registry" | "capabilities">, caps: readonly string[], beds = false): EntityId[] {
   const fixed = d.registry.ofKind("equipment").filter((e) => !e.portable && caps.every((c) => d.capabilities(e.id).includes(c)));
-  const devices = fixed.filter((e) => (PATIENT_PROVIDER_KINDS as readonly string[]).includes(e.interaction));
+  // `beds`: a table the patient lies on counts too (the operating table: `operate`)
+  const devices = fixed.filter((e) => (PATIENT_PROVIDER_KINDS as readonly string[]).includes(e.interaction) || (beds && e.interaction === "bed"));
   return (devices.length ? devices : fixed.filter((e) => e.interaction === "workstation")).map((e) => e.id);
 }
 
@@ -444,8 +445,8 @@ function rankProviders(d: TargetDeps, ids: EntityId[], from: { level: string; x:
 }
 
 /** Providers of every capability for the patient, the one a transport hint names first. */
-export function rankedPatientProviders(d: TargetDeps, caps: readonly string[]): EntityId[] {
-  return rankProviders(d, patientProviders(d, caps), d.body.anchor());
+export function rankedPatientProviders(d: TargetDeps, caps: readonly string[], beds = false): EntityId[] {
+  return rankProviders(d, patientProviders(d, caps, beds), d.body.anchor());
 }
 
 /**

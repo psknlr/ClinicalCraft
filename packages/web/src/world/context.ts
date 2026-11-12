@@ -12,6 +12,7 @@ import type { SignFactory } from "./signs.js";
 import type { BoxBatch } from "./voxels.js";
 import type { ScreenKind } from "./screens.js";
 import type { PersonRig } from "./npc.js";
+import type { LivePlacement } from "./live.js";
 
 export interface LightCandidate {
   x: number;
@@ -178,6 +179,11 @@ export interface ModelRequest {
   fallback: Group;
   /** Where the loaded model goes (a portable placement's group, so it moves with it); default: its level's group. */
   parent?: Group;
+  /**
+   * The placement's look follows its state (`live.ts`): its model is a copy of its own, never an instance, so
+   * the layers of this one placement can be shown and hidden.
+   */
+  live?: boolean;
 }
 
 export interface BuildContext {
@@ -220,6 +226,8 @@ export interface BuildContext {
   placements: Map<string, PlacementInfo>;
   /** Portable placements (carts, handheld items), each in its own movable group (embodiment). */
   portables: Map<string, PortableRecord>;
+  /** Placements whose look follows their state, or that have a manikin (`live.ts`), by placement id. */
+  live: Map<string, LivePlacement>;
   npcs: Map<string, NpcRecord>;
   /** Meshes carry castShadow flags (the renderer's shadow map decides whether they are used). */
   shadows: boolean;

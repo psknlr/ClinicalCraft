@@ -13,7 +13,9 @@
  */
 import {
   ClinicalActionSchema,
+  caseData,
   createSession as createEngineState,
+  datumStatus,
   currentObjective,
   matchOrders,
   orderStatus,
@@ -30,7 +32,9 @@ import {
 } from "@clinicalcraft/core";
 import { runPatientTurn, type PatientTurnInput, type PatientTurnResult } from "../session/patient-pipeline.js";
 import { isZh, joinList, joinSentences, rt, type RuntimeKey } from "../session/i18n.js";
+import { sentence } from "../session/i18n-checklist.js";
 import { obtainedResultsText } from "../tools/npc.js";
+import { resultStatus } from "../tools/clinical-resolve.js";
 import { bedsideReadings, formatVitals, interventionLabel, investigationName, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
 import { decisionRefFor } from "../tools/decision-refs.js";
 import { optionLabelsFor } from "../tools/option-labels.js";
@@ -66,11 +70,14 @@ export function nurseResultsLine(ctx: OfflineContext): string {
   const orders = orderStatus(c, ctx.state());
   if (orders.length === 0) return rt(L, "nurse.offline.noOrders");
   const label = (o: (typeof orders)[number]) => `${investigationName(c, o.order.investigationId, L)} (${phaseLabel(c, o.order.phase, L)})`;
-  const ready = orders.filter((o) => o.ready && !o.read).map(label);
-  const pending = orders.filter((o) => !o.ready).map(label);
+  // the clinician's own status for each (`resultStatus`): "no record" is never "back"
+  const ready = orders.filter((o) => resultStatus(c, o) === "ready").map(label);
+  const pending = orders.filter((o) => resultStatus(c, o) === "pending").map(label);
+  const none = orders.filter((o) => resultStatus(c, o) === "no-record").map(label);
   const parts: string[] = [];
   if (ready.length > 0) parts.push(rt(L, "nurse.offline.ready", { list: joinList(L, ready) }));
   if (pending.length > 0) parts.push(rt(L, "nurse.offline.pending", { list: joinList(L, pending) }));
+  if (none.length > 0) parts.push(rt(L, "nurse.offline.noRecord", { list: joinList(L, none) }));
   if (parts.length === 0) {
     const read = obtainedResultsText({ ...ctx, agent: "nurse" }, null);
     return read.ok ? (isZh(L) ? "已开的检查结果您都看过了。" : "You have reviewed every result that has come back.") : rt(L, "nurse.offline.noOrders");
@@ -193,21 +200,56 @@ export function asksForHint(utterance: string): boolean {
 }
 
 /**
- * Deterministic preceptor. Consulting the attending is Socratic guidance and
- * costs nothing: it names the current objective (already on the status line)
- * and asks what the learner knows and still needs. Only when the learner asks
- * for a hint (`asksForHint`) does it give the objective's authored hint — and
- * that is recorded as a scored hint, like `/hint` and the LLM attending's
- * `give_hint`.
+ * Deterministic preceptor. Consulting the attending is Socratic guidance and costs nothing: it names the current
+ * objective (already on the status line) and asks what the learner knows and still needs. A scored hint is never
+ * inferred from the words of a consultation ("help me", "I'm stuck"): it is asked for explicitly (`/hint`,
+ * `request_hint`), and the preceptor says so.
  */
-export function attendingOffline(ctx: OfflineContext, dispatch: (action: ClinicalAction) => ReduceResult, utterance = ""): { text: string; hinted: boolean } {
+export function attendingOffline(ctx: OfflineContext, _dispatch: (action: ClinicalAction) => ReduceResult, utterance = ""): { text: string; hinted: boolean } {
   const c = ctx.caseDef;
   const L = ctx.locale;
   const objective = currentObjective(c, ctx.state());
   if (!objective) return { text: rt(L, "attending.offline.done"), hinted: false };
-  if (!asksForHint(utterance)) return { text: rt(L, "attending.offline.nudge", { objective: t(objective.title, L) }), hinted: false };
-  const r = dispatch({ type: "hint", by: "agent" });
-  return { text: rt(L, "attending.offline.hint", { hint: t(objective.hint, L) }), hinted: !r.rejected };
+  const nudge = rt(L, "attending.offline.nudge", { objective: t(objective.title, L) });
+  return { text: asksForHint(utterance) ? `${nudge} ${rt(L, "attending.offline.hintChannel")}` : nudge, hinted: false };
+}
+
+/** A colleague's specialty, from the case team's duties or their title. */
+export function specialtyOf(c: CaseDefinition, staffId: string, name: string): "anaesthesia" | "surgery" | "radiology" | "pathology" | "other" {
+  if (c.team?.members.some((m) => m.staff === staffId && m.duties.includes("anaesthesia")) || c.team?.cover.some((m) => m.staff === staffId && m.duties.includes("anaesthesia"))) return "anaesthesia";
+  if (/anaesth|anesth|麻醉/iu.test(name)) return "anaesthesia";
+  if (/radiolog|放射|影像/iu.test(name)) return "radiology";
+  if (/patholog|病理/iu.test(name)) return "pathology";
+  if (/surg|外科|术者|助手/iu.test(name)) return "surgery";
+  return "other";
+}
+
+/**
+ * A named colleague consulted offline (the engineering recommendations, P1-8): a role-specific answer grounded in
+ * the record — never the generic preceptor, never a scored hint. The anaesthetist says where the anaesthetic stands
+ * (induced or not), the vitals as monitored, and each safety datum as the record knows it (an unknown stays unknown);
+ * another specialist says that offline they can speak only to what the record holds.
+ */
+export function specialistOffline(ctx: OfflineContext, voice: { staffId: string; name: string }, _facility?: unknown): string {
+  const c = ctx.caseDef;
+  const L = ctx.locale;
+  const s = ctx.state();
+  const specialty = specialtyOf(c, voice.staffId, voice.name);
+  if (specialty !== "anaesthesia") return rt(L, "specialist.offline.other", { name: voice.name });
+  const induction = c.interventions.filter((i) => i.kind === "airway").map((i) => s.interventions.find((r) => r.interventionId === i.id && !r.invalid)).find(Boolean);
+  const parts = [rt(L, induction ? "specialist.anaesthesia.induced" : "specialist.anaesthesia.notInduced")];
+  const v = vitalsAt(c, s);
+  if (!v.baselineOnly && v.monitorAttached !== false) {
+    const x = v.vitals;
+    const bits = [x.hr != null ? `HR ${Math.round(x.hr)}` : "", x.sbp != null && x.dbp != null ? `BP ${Math.round(x.sbp)}/${Math.round(x.dbp)}` : "", x.spo2 != null ? `SpO₂ ${Math.round(x.spo2)}` : "", x.etco2 != null ? `EtCO₂ ${Math.round(x.etco2)}` : ""].filter(Boolean);
+    if (bits.length) parts.push(rt(L, "specialist.anaesthesia.vitals", { vitals: bits.join(", ") }));
+  } else parts.push(rt(L, "specialist.anaesthesia.noMonitor"));
+  const data = caseData(c).flatMap((d) => {
+    const st = datumStatus(c, s, d);
+    return st ? [rt(L, `datum.status.${st}` as RuntimeKey, { datum: rt(L, `datum.name.${d}` as RuntimeKey) || d })] : [];
+  });
+  parts.push(...data);
+  return parts.join(" ");
 }
 
 /* ------------------------------------------------------------------ */
@@ -298,12 +340,23 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
       return rt(L, "clinician.narrate.intervene", { name: interventionLabel(c, action.interventionId, L) });
     case "advance-time":
       return rt(L, "clinician.narrate.wait", { minutes: action.minutes });
+    case "operate":
+      return rt(L, "clinician.narrate.operate", { op: action.op.op });
+    case "hold":
+      return rt(L, "hold.placed", { name: interventionLabel(c, action.interventionId, L), by: action.placedBy, reason: sentence(action.reason) });
+    case "release-hold":
+      return rt(L, "hold.released", { name: interventionLabel(c, action.interventionId, L), by: action.releasedBy, reassessment: action.reassessment });
     case "finish":
       return rt(L, "clinician.narrate.finish");
     case "start":
     case "hint":
     case "flag":
     case "note":
+    case "count":
+    case "study":
+    case "anaesthesia":
+    case "alarm-response":
+    case "procedure-supply":
       return null;
     default: {
       const never: never = action;
@@ -340,12 +393,21 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
       return tool("intervene", { intervention_id: action.interventionId });
     case "advance-time":
       return tool("wait", { minutes: action.minutes });
+    case "operate":
+      return tool("operate", { ...action.op });
     case "finish":
       return tool("finish_case", {});
     case "start":
     case "hint":
     case "flag":
     case "note":
+    case "hold":
+    case "release-hold":
+    case "count":
+    case "study":
+    case "anaesthesia":
+    case "alarm-response":
+    case "procedure-supply":
       return { kind: "action", action, narration: null };
     default: {
       const never: never = action;
@@ -368,7 +430,7 @@ export function clinicianOfflineSteps(c: CaseDefinition, locale: string): Offlin
     if (!parsed.success) continue;
     const action = parsed.data;
     const step: OfflineClinicianStep = stepForAction(c, action, locale);
-    const key = action.type === "intervene" ? `intervene:${action.interventionId}` : action.type === "hint" ? "hint" : null;
+    const key = action.type === "intervene" ? `intervene:${action.interventionId}` : action.type === "hint" ? "hint" : action.type === "operate" ? "operate" : null;
     if (key) {
       const n = (counts.get(key) ?? 0) + 1;
       counts.set(key, n);
@@ -396,7 +458,7 @@ export function clinicianOfflineSteps(c: CaseDefinition, locale: string): Offlin
  * dose in the solution still happens, but never twice after a resume); a wait
  * when the clock already reaches the reference run's clock after it.
  */
-export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionState): boolean {
+export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionState, extraOps = 0): boolean {
   const a = step.action;
   switch (a.type) {
     case "start":
@@ -416,7 +478,12 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
     case "set-phase":
       return state.phase === a.phase;
     case "intervene":
-      return state.interventions.filter((r) => r.interventionId === a.interventionId).length >= (step.occurrence ?? 1);
+      // an out-of-order checklist attempt (recorded invalid) is not the step done
+      return state.interventions.filter((r) => r.interventionId === a.interventionId && !r.invalid).length >= (step.occurrence ?? 1);
+    case "hold":
+      return (state.holds ?? []).some((h) => h.interventionId === a.interventionId && h.placedBy === a.placedBy);
+    case "release-hold":
+      return (state.holds ?? []).some((h) => h.interventionId === a.interventionId && h.released?.by === a.releasedBy);
     case "hint":
       return state.hints >= (step.occurrence ?? 1);
     case "advance-time":
@@ -425,6 +492,17 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
       return state.flags.includes(a.flag) === (a.value !== false);
     case "note":
       return state.notes.some((n) => n.text === a.text);
+    case "operate":
+      // the operator's place in the operation: neither a colleague's own steps nor the walkthrough's re-grasps
+      return (state.procedure?.counters.steps ?? 0) - (state.procedure?.counters.colleague ?? 0) - extraOps >= (step.occurrence ?? 1);
+    case "count":
+      return (state.count?.entries.filter((e) => e.op === a.count.op).length ?? 0) >= (step.occurrence ?? 1);
+    case "study":
+      return a.study.op === "order" ? (state.studies?.orders.some((o) => o.key === (a.study as { key: string }).key) ?? false) : false;
+    case "anaesthesia":
+    case "alarm-response":
+    case "procedure-supply":
+      return false;
     default: {
       const never: never = a;
       return never;

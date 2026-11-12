@@ -1,0 +1,259 @@
+# Equipment models in Blender
+
+ClinicalCraft draws equipment from voxel parts; an equipment type may also name a
+GLB model that replaces them in the web world (ASSETS.md, FACILITIES.md). This page
+is how such models are made in Blender — by a person, by an agent driving Blender
+through [blender-mcp](https://github.com/hsaigroup/blender-mcp), or headless — so
+that they fit the model contract the first time: the right frame and size, screens
+left clear, a provenance record and a use status.
+
+The parts:
+
+| piece | where | what it does |
+|---|---|---|
+| Blender bridge | `scripts/blender/clinicalcraft_blender.py` | finds an equipment type in the catalogs, describes it, builds its voxel parts as a blockout, makes palette materials, exports the model and returns its catalog `model` reference |
+| Shape kit | `scripts/blender/clinicalcraft_shapes.py` | boxes, cylinders, tubes, bars, rings, lathes and flat profiles in the type's own frame, into one mesh with one material (colours as vertex colours, roughness, metalness and glow from a palette texture) |
+| Refiner | `scripts/blender/clinicalcraft_refine.py` | a model from a type's own voxel parts: rounded boxes, round bars and poles, casters or glides, discs where the voxels drew a circle, a dark housing behind each screen, blobs for foliage |
+| Built-in models | `scripts/blender/build.py`, `builtin_models.py` | builds a model for every built-in equipment type (97) into `packages/content/assets/models` and writes each reference into its catalog |
+| blender-mcp | `.mcp.json` (Claude Code project server) | lets Claude Code inspect and change a running Blender (`execute_blender_code`, viewport screenshots, Poly Haven / Sketchfab / generated assets) |
+| Inspector | `clinicalcraft assets inspect <file.glb> --type <id>` | checks the file the way the renderer will load it (ASSETS.md) |
+| Previewer | `node scripts/preview/render.mjs models …` | draws the built models as the web world does — placed by their catalog references, lit like the world, a glowing quad where each live screen goes, the body a type is drawn with (its `manikin`), the voxel parts beside them with `--compare 1` — in headless Chromium: no Blender needed to look at a model |
+
+The built-in models and SurgeryCraft's (all 75 of its types, `tools/blender/` in that
+repository) are built with these: most are refined from their voxel parts, and the
+most seen have their own builders. Of the built-in types those are the hospital
+bed, wheelchair and stool, the IV pole and the infusion pumps, the oxygen cylinder,
+the ventilator, suction unit, defibrillator and crash cart, the mobile C-arm (its C
+one arc: `Kit.revolve`), the surgical light, the garden bench and the wall diagnostic
+set (the otoscope and ophthalmoscope on coiled cords, the aneroid gauge over its cuff,
+a stethoscope hung by its headset on a peg: `coiled`, `stethoscope` in `builtin_models.py`); the CT, MRI and
+PET-CT gantries are revolved round their bores (`Kit.gantry`). Rebuild the built-in ones with `blender -b -P scripts/blender/build.py`
+(or `python3 scripts/blender/build.py` with the `bpy` module), then `npm run build`
+(the web bundle carries the catalogs and so the pinned hashes).
+
+## blender-mcp: set-up and privacy
+
+`.mcp.json` registers blender-mcp **1.8.7** for Claude Code, run by `uvx` on Python
+3.11, with **telemetry off**. 1.8.7 is the version in hsaigroup/blender-mcp (PyPI has 2.x since); its PyPI
+build has the same code plus the telemetry endpoint (`config.py`, git-ignored in the
+repository). Claude Code asks once before it starts a project server.
+
+1. Install [uv](https://docs.astral.sh/uv/) and Blender (4.1 or newer for the shape kit).
+2. Install the matching add-on: `uvx --python 3.11 blender-mcp==1.8.7 install-addon`, then
+   in Blender *Edit → Preferences → Add-ons* enable **Interface: Blender MCP**.
+3. In the same preferences **untick "Allow Telemetry"** (it is on by default).
+4. In the 3D viewport press `N` → **BlenderMCP** → **Start MCP Server**.
+
+Why telemetry stays off: blender-mcp's terms (TERMS_AND_CONDITIONS.md, August 2026)
+say that with consent it collects prompts, generated code, viewport screenshots,
+scene metadata and your manual edits, keeps them indefinitely and may use them to
+train models or release them as datasets. `DISABLE_TELEMETRY=true` in `.mcp.json`
+turns off every upload path in the server (events, screenshots, trajectories);
+unticking the add-on's consent also stops it recording manual edits. Even so, **never put case text, patient data or anything
+from `assets/local/` into a Blender prompt** — model geometry needs none of it.
+
+`execute_blender_code` runs any Python inside Blender: save the `.blend` first.
+Only one MCP client should talk to one Blender at a time.
+
+## The bridge
+
+From Blender's Python console, from `execute_blender_code`, or a script:
+
+```python
+import sys; sys.path.insert(0, "/path/to/ClinicalCraft/scripts/blender")
+import clinicalcraft_blender as cc
+from clinicalcraft_shapes import Kit, rrect
+
+eq = cc.load_type("sc-mayo-stand", content=["/path/to/SurgeryCraft/content"])
+print(cc.describe(eq))   # footprint, parts by material, screens to keep clear
+cc.blockout(eq)          # collection cc-blockout: the voxel parts in their colours, the footprint as a wire box
+```
+
+Model in collection `cc-model` (by hand, or with the kit), then:
+
+```python
+ref = cc.export_model(eq, "/path/to/pack/content/assets/models/sc-mayo-stand.glb",
+                      license="CC0-1.0", use="cleared",
+                      source={"name": "…", "url": "…", "retrieved": "2026-10-31"})
+print(ref)               # {"uri": "models/sc-mayo-stand.glb", "sha256": …, "scale": 1, "offset": …, …}
+```
+
+and check it: `clinicalcraft assets inspect content/assets/models/sc-mayo-stand.glb --type sc-mayo-stand`.
+
+| operation | does |
+|---|---|
+| `load_type(id, content)` | the type and the world's palette (built-in catalogs + `content` dirs) |
+| `describe(eq)` | what to model, as text (an agent's first call) |
+| `blockout(eq)` | the voxel parts as boxes, screens bright cyan, the footprint as a wire box; never exported |
+| `material(eq, id, **over)` | a Principled material from palette entry `id` (colour, roughness, metalness, emissive, opacity) |
+| `Kit(eq)` | solids: `box`, `cyl`, `ball`, `torus`, `lathe`, `revolve` (a section swept round an axis: a full ring, or an arc such as the C of a C-arm); flat pieces: `slab` (seen from above, + `rrect`), `panel` (from the front), `side` (from the side); tubes: `tube` (straight), `pipe` (bent tube with round bends: rails, handles, frames), `hose` (a smooth line through points: limbs, cables), `path` (jointed; superseded by the two before); assemblies: `caster`, `wheel`, `gauge`, `screen_bezel`; `finish()` makes the mesh |
+| `refine(k, eq, skip=)` | the type's voxel parts as refined shapes; a builder refines what it does not replace (`skip`) |
+| `export_model(eq, path, license=, use=, source=, attribution=)` | the GLB and its catalog reference; warns when it does not fill the footprint |
+
+### With Claude Code
+
+With Blender running and the add-on's server started, ask in plain words and let
+Claude use the bridge through `execute_blender_code`, e.g.:
+
+> Load `sc-anaesthesia-workstation` from ../SurgeryCraft/content with the ClinicalCraft
+> Blender bridge, describe it and build the blockout. Model it over the blockout with
+> the shape kit — keep the screen part clear — then show me a viewport screenshot.
+
+> Export it to ../SurgeryCraft/content/assets/models/ as `cleared` with our own source
+> record, then run `clinicalcraft assets inspect … --type sc-anaesthesia-workstation`.
+
+Claude sees the result through `get_viewport_screenshot` and can correct it; the
+inspector is the authority on whether the file fits.
+
+### Looking at the result
+
+`get_viewport_screenshot` shows Blender's viewport; the world draws a model
+differently (its own lights, no environment map, vertex colours, the live screens
+over it). The previewer shows that:
+
+```bash
+node scripts/preview/render.mjs models --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/core-clinical.json \
+  --only hospital-bed,c-arm --compare 1 --view iso --out /tmp/models.png
+```
+
+`--assets` lists the asset directories searched for each model's `uri` (default the
+built-in `packages/content/assets`; add a pack's `content/assets`), `--view` is
+`iso`, `front`, `back`, `side` or `top`, `--compare 1` puts the voxel parts beside
+each model, `--cell` and `--cols` size the sheet, `--focus x,y,z,radius` frames a
+close-up (a point of the type's frame and a radius, m). A type whose look follows its
+state is drawn as it starts; `--states a,b` draws it once per state named, and
+`--states all` in every state in order — the storyboard of what its operation does
+to it (FACILITIES.md "A look for each state"). Each cell is labelled with the type, the
+state and the triangles drawn; a type whose model is missing is drawn from its voxel
+parts and marked.
+
+### A model round a body
+
+A type with a `manikin` (FACILITIES.md "A body drawn with equipment") has a body the
+world draws — one of its own figures — and a model that is everything else. The body
+is not modelled: the model is built round it, from where the figure's own code puts
+it. In the web package, `buildManikin(manikin, { x: 0, y: 0, z: 0, rot: 0 }, id)`
+builds the rig in the type's frame, and `placedPoint(rig, p)` / `placedHeadPoint(rig, p)`
+(`src/world/manikin.ts`) give the place of a point of the figure's own frame once the
+body is bent over its table and laid down: a joint from `rig.skeleton`, a point of
+the bare trunk's surface from `trunkPoint(height, angle, rig.frame, 0)`
+(`figure/body.ts`), the mouth. A tool writes those numbers to a file and the builder
+reads it — SurgeryCraft's `tools/figure-fit.mts` and `tools/blender/thoracic_models.py`
+do this for its thoracoscopy station (supports under the arms, a ring under the head,
+ports through the chest wall), and its checks fail when the file is no longer what the
+figure kit says. The previewer draws the body with the model, so the fit is seen
+without starting the world.
+
+Such a body is one body in one position, whatever its cover: the figure is measured
+draped (the sheet included, for what has to clear it), and a look that turned or bent
+it would leave the model fitted to another body — SurgeryCraft's tool refuses one.
+
+### Layers
+
+A model whose look follows its equipment's state (FACILITIES.md "A look for each state")
+has **layers**: parts drawn only in the states whose look names them — a port once it is
+in, the scope while it is in the chest, the dressings at the end. In the kit, shapes built
+inside `with k.layer("scope"):` go to a mesh of their own, exported as a node named
+`layer:scope`:
+
+```python
+k.box(…)                         # the table: always drawn
+with k.layer("scope"):
+    k.tube(…)                    # drawn in the states whose look names "scope"
+k.finish()                       # the model's own object, then one object per layer, in the order of their names
+```
+
+* A layer's id is lower-case letters, digits, `_` and `-` (core `LayerIdSchema`).
+  Entering a layer again adds to it; layers do not nest; an empty one is left out.
+* Every layer shares the model's palette material (and its glass), so a layer costs a
+  draw call while it is shown, and nothing while it is hidden.
+* The model is fitted as a whole, layers included — a layer never moves the rest.
+* Triangles: what is drawn at once counts — what is in no layer plus the layers of the
+  busiest state; `k.triangles()` gives each part's count, and the previewer the count
+  of each state it draws (`--states all`).
+* The inspector lists the model's layers and, with `--type`, checks them against the
+  type's looks: a layer a look shows and the model lacks fails; a layer no look shows
+  warns (it is never drawn). An instance — a placement whose look does not follow its
+  state — draws no layer.
+
+### Headless
+
+The same code runs without a window: `blender -b -P build.py`, or with the `bpy`
+module (`pip install bpy`, Python 3.11) — SurgeryCraft's `tools/blender/build.py`
+rebuilds every model that way and writes the references its catalog generator reads.
+
+## Model rules
+
+* **Frame.** Metres, the origin at the footprint centre on the floor, the front
+  facing glTF +Z (Blender −Y: the Front view). Build in place over the blockout;
+  `export_model` records `scale: 1` and the `offset` that keeps the model where it
+  was built (a pendant stays at the ceiling).
+* **Fill the footprint** — it is the collider and the aim box. The inspector warns
+  past 25 % and fails past 2× / ½, except on footprint axes under 5 cm (an instrument
+  lying flat), where a thinner model is fine.
+* **Screens.** Named `screen` parts are live displays the world draws (vitals, PACS,
+  checklists); they keep drawing over the model. Leave their front faces clear —
+  `Kit.screen_bezel(part)` builds a housing just behind one.
+* **Surfaces things stand on keep their height** (a set-up table's drape top at
+  0.90 m carries the instruments placed on it).
+* **Draw calls.** Each primitive of a model is a draw call. The kit merges every
+  shape into one mesh with one material: each face's colour is a vertex colour, its
+  roughness, metalness and glow a texel of the model's palette texture (nearest
+  filtering, no mipmaps); only transparent palette entries (glass) get a material of
+  their own. Static placements of one model are drawn as instances, per level and
+  16 m square; portable ones (carts, handheld items) cost their primitives each.
+  Items under 0.3 m on every side cast no shadow.
+* **Triangles.** Instances are drawn whole when any copy is in view, so detail costs
+  everywhere: chamfer small parts, round only what is large, and aim for ≤ 5 000
+  triangles per model (≤ 10 000 for a centrepiece). What costs most is what there
+  is most of: a box with three-segment rounding is 188 triangles, with a chamfer 44,
+  plain 12 (a label, a button, an LED needs no more); a `caster` is 264 triangles,
+  `caster(lite=True)` 108; a `hose` or `pipe` is one tube (16 triangles a ring at
+  eight sides) where `path` is a tube and a ball per joint — a three-run bend is
+  some 210 triangles against 372. The previewer prints each model's count.
+* **What the standards fix, the model keeps.** A colour that is a code is one:
+  medical gases follow ISO 32 (palette `gas-oxygen` white for oxygen; nitrous oxide
+  blue, medical air black and white, vacuum yellow, AGSS magenta), never a mix of two
+  codes; fresh soda lime is white (violet means exhausted); the vaporiser colours
+  are the agents' (yellow sevoflurane, purple isoflurane).
+* **Single-file GLB**, no DRACO/meshopt (they fall back to voxels under `serve`'s CSP).
+
+## Third-party assets and the use status
+
+blender-mcp can pull Poly Haven assets (CC0), Sketchfab models (each with its own
+licence) and generated models (Hyper3D Rodin, Hunyuan3D — the providers' terms).
+Whatever comes in, record `source` and set `use` (ASSETS.md): **`cleared`** only when
+the licence allows redistribution and this use, **`research-only`** for
+non-commercial or research terms (keep it in `assets/local/`, never in a commit or a
+content pack), **`pending`** until checked (the inspector fails). Keep the original
+download untouched next to the derived model, and note the changes in `source.changes`.
+
+### Sources surveyed (2026-10-30)
+
+A survey of 3D sources for hospital, instrument and anatomy work, with the status a
+model taken from each **starts** from here. They come from that survey's reading of
+each project's licence page, not from a legal review: check the exact release you
+download before you clear anything.
+
+| source | what it offers | starts as | note |
+|---|---|---|---|
+| Poly Haven, ambientCG | HDRIs, PBR materials, props | cleared (CC0-1.0) | materials and lighting for renders; the voxel world uses palette colours |
+| BodyParts3D | named organ meshes | cleared (CC-BY-4.0) | attribution; the bundled atlas already uses Z-Anatomy / BodyParts3D (CC BY-SA 4.0) |
+| Human Reference Atlas 3D library | organ GLBs | cleared (CC-BY-4.0) | attribution |
+| Open Anatomy SPL atlases (e.g. knee) | MRI-derived structures | cleared per atlas | the knee atlas: 3D Slicer licence section B (notices, attribution); check each atlas |
+| NLM Visible Human | CT/MRI/cryosections | cleared | acknowledge the source, no implied endorsement |
+| MakeHuman / MPFB core | parametric people | cleared (CC0-1.0) | third-party clothes and hair differ |
+| 100STYLE | locomotion BVH | cleared (CC-BY-4.0) | one retargeted bundle's mesh is non-commercial |
+| C3VDv2; EndoSLAM | colon / GI geometry and camera paths | cleared (CC-BY-4.0) | the original C3VD is CC BY-NC-SA |
+| CMU motion capture | general mocap | cleared, with a condition | usable in products; the raw data may not be resold |
+| Manufacturer CAD (Baxter/Hillrom, Getinge) | beds, tables, lights, booms | pending | no open redistribution licence found; reference geometry only |
+| NVIDIA Isaac Sim hospital; Isaac for Healthcare | USD scenes and assets | pending | asset terms vary; Lightwheel SimReady is non-commercial R&D |
+| TotalSegmentator v3; MedShapeNet | CT segmentations; 100 000+ shapes | pending | v3 licence not readable; MedShapeNet inherits each source's terms |
+| CORE4D; OphNet-3D; Open Knee(s) | interaction / hand data; knee models | pending | SMPL-X terms; partial release; release-specific licences |
+| Sketchfab; Hyper3D; Hunyuan3D (via blender-mcp) | downloaded or generated models | pending | per-model licence; provider terms |
+| 3D-COSI | 103 scanned instruments | research-only | an earlier release is CC BY-NC 4.0 |
+| Edinburgh simulated tools; AMASS; GRAB; BEHAVE; MVOR; 4D-OR; MM-OR | tools, motion, OR recordings | research-only | research or non-commercial terms, or access by application |
+| Vascular Model Repository | vessel geometry | research-only | research and development licence |
+
+The OR recordings and motion datasets inform staff movement and timing; nothing in
+the embodied world plays them back. They have no place in a content pack.
