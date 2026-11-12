@@ -50,8 +50,8 @@ export interface PersonOptions {
   height?: number;
   /** On their side (`lateral`): the side that is up (default the left). */
   up?: "left" | "right";
-  /** On their side: undressed and draped for an operation on the side of the chest that is up. */
-  draped?: boolean;
+  /** On their side, what covers them: their own `clothes` (default), a `blanket` to the waist, or the `drapes` of an operation on the chest. */
+  cover?: "clothes" | "blanket" | "drapes";
   /** On their side: how far each half of a flexed table goes down from the break under the chest (degrees; default 0). */
   flex?: number;
   /** Eyes shut (anaesthetised; a simulator at rest). */
@@ -111,9 +111,13 @@ export function setDistressed(rig: PersonRig, on: boolean): void {
   }
 }
 
-/** Breathing: the trunk's depth, `breath` a small fraction either way. */
-export function setBreath(rig: PersonRig, breath: number): void {
+/**
+ * Breathing: the trunk's depth, `breath` a small fraction either way — and, for someone on their side whose
+ * chest wall is seen rising, its width (`rise`: the side that is up lifts, the one underneath is on the mattress).
+ */
+export function setBreath(rig: PersonRig, breath: number, rise = 0): void {
   rig.torso.scale.z = 1 + breath;
+  rig.torso.scale.x = 1 + rise;
 }
 
 /** The mouth: 0 closed … 1 as open as speech opens it. */
@@ -164,7 +168,7 @@ export function buildPerson(appearance: AppearanceLike | undefined, opts: Person
   const feminine = feminineOf(ap.presentation ?? presentationOf(ap.hairStyle));
   const lying = opts.posture === "lying", lateral = opts.posture === "lateral";
   const seat = opts.surfaceY ?? (lying || lateral ? 0.9 : 0.5);
-  const fig = buildFigure({ ...ap, posture: opts.posture, seat, wear: opts.wear ?? PLAIN, pillow: lying ? PILLOW : 0, feminine, up: opts.up, draped: opts.draped, flex: ((opts.flex ?? 0) * Math.PI) / 180 });
+  const fig = buildFigure({ ...ap, posture: opts.posture, seat, wear: opts.wear ?? PLAIN, pillow: lying ? PILLOW : 0, feminine, up: opts.up, cover: opts.cover, flex: ((opts.flex ?? 0) * Math.PI) / 180 });
   const scale = fig.frame.scale * (opts.height ?? 1);
   const material = figureMaterial();
 

@@ -383,6 +383,7 @@ export class EmbodiedSession {
       roomAt: (at) => w().roomAt(at),
       bedsideProviders: (capability) => w().bedsideProviders(capability),
       provides: (id) => w().provides(id),
+      stateOf: (id) => w().stateOf(id),
       patientPlace: () => w().patientPlace(),
       patientMonitor: () => w().patientMonitor(),
       screenInView: (actorId) => w().screenInView(actorId),

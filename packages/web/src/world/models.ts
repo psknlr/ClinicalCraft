@@ -11,6 +11,10 @@
  * Visual only: the collider is the type's footprint (the collision model),
  * and the interaction target stays the placement's — the model's own meshes
  * never take the aim; an invisible footprint box carries the placement id.
+ *
+ * A model may have layers (nodes named `layer:<id>`, docs/BLENDER.md): parts
+ * drawn only in the states whose look names them (`live.ts`) — and so never
+ * for a placement whose look does not follow its state.
  */
 import {
   Box3,
@@ -42,6 +46,7 @@ import { GLTFLoader, type GLTFLoaderPlugin, type GLTFParser } from "three/exampl
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import type { MeshoptDecoder as MeshoptDecoderType } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { fitModel, parseGlb, type EquipmentModel, type GlbBounds, type ModelFit } from "@clinicalcraft/core";
+import { layerOf, showLayers } from "./layers.js";
 
 let meshopt: Promise<typeof MeshoptDecoderType> | null = null;
 /**
@@ -132,7 +137,7 @@ export async function sha256Hex(buf: ArrayBuffer): Promise<string | null> {
   return [...digest].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-/** Bounds of an object in its own frame (the loaded scene before any fit). */
+/** Bounds of an object in its own frame (the loaded scene before any fit) — everything in it, every layer included. */
 export function objectBounds(o: Object3D): GlbBounds | null {
   o.updateMatrixWorld(true);
   const box = new Box3().setFromObject(o);
@@ -237,7 +242,8 @@ export interface PlacedModel {
  * Put a loaded model at a placement: a group at the placement's origin and
  * rotation holding a clone of the scene with the fit transform (shadows on, except
  * for small items: `MODEL_SHADOW_MIN`; never ray-tested) and an invisible footprint
- * box owned by the placement.
+ * box owned by the placement. The model's layers are hidden: a placement whose look
+ * follows its state shows the ones its state names (`live.ts`).
  */
 export function placeModel(
   scene: Object3D,
@@ -261,6 +267,7 @@ export function placeModel(
       o.receiveShadow = true;
     }
   });
+  showLayers(model, []);
   const group = new Group();
   group.name = `model:${at.id}`;
   group.position.set(at.x, at.y, at.z);
@@ -298,7 +305,9 @@ export interface InstancedModel {
  * Draw the static placements of one model as instances: a draw call per mesh (primitive) of the
  * model however many placements there are, each instance where `placeModel` would put a clone
  * (shadows as there, never ray-tested), plus an invisible aim proxy per placement. Portable
- * placements (carts, handheld items) move one by one and keep `placeModel`.
+ * placements (carts, handheld items) move one by one and keep `placeModel`; so do the placements
+ * whose look follows their state. What is in a layer of the model is left out: only such a
+ * placement ever shows one.
  */
 export function instanceModel(
   scene: Object3D,
@@ -334,11 +343,15 @@ export function instanceModel(
   return { meshes, proxies: placements.map((p) => aimProxy(p.footprint, p.at)), fits };
 }
 
+/** The meshes of a model that are in none of its layers. */
 function meshesOf(o: Object3D): Mesh[] {
   const out: Mesh[] = [];
-  o.traverse((c) => {
+  const visit = (c: Object3D): void => {
+    if (layerOf(c) !== null) return;
     if ((c as Mesh).isMesh) out.push(c as Mesh);
-  });
+    for (const child of c.children) visit(child);
+  };
+  visit(o);
   return out;
 }
 

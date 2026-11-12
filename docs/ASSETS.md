@@ -154,7 +154,8 @@ The inspector is pure Node (no renderer; core `parseGlb` /
 the asset's generator and copyright, counts (scenes, nodes, meshes,
 primitives, triangles, vertices, materials, textures, images, animations,
 skins), the bounding box from the POSITION accessors' min/max through the
-default scene's node transforms, extensions used and required, and the
+default scene's node transforms, the model's layers (nodes named
+`layer:<id>`, BLENDER.md "Layers"), extensions used and required, and the
 file's SHA-256. With `--type` it checks the type's `model` reference: a
 usable licence (error) and attribution for CC-BY (warning), the pinned hash
 (missing: warning; different: error), required extensions the renderer
@@ -163,7 +164,10 @@ footprint (more than 25 % off: warning; more than twice or half: error — e.g.
 a model authored in centimetres; without `scale`, the fitted factor is
 reported and very different proportions warn; a footprint axis under 5 cm is
 an aim allowance — a scalpel lying flat in a 3 cm-high footprint — where only
-a larger model is flagged). It also checks the use status and the source.
+a larger model is flagged). It also checks the use status and the source,
+and the layers against the type's looks (FACILITIES.md "A look for each
+state"): one a look shows and the model lacks is an error, one no look shows a
+warning (it is never drawn).
 Exit code 1 on any error.
 `--draco` assumes a configured DRACO decoder.
 

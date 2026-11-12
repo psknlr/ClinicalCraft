@@ -58,6 +58,11 @@ export interface GlbInfo {
   };
   /** Bounding box in metres (glTF units, Y up) of the default scene; null without POSITION min/max. */
   bounds: GlbBounds | null;
+  /**
+   * The model's layers: the ids of its nodes named `layer:<id>` (sorted) — parts drawn only in the states whose
+   * look names them (docs/BLENDER.md "Layers"). The box above is of everything, every layer included.
+   */
+  layers: string[];
   extensionsUsed: string[];
   extensionsRequired: string[];
   /** Problems of the file itself (container, references, missing bounds). */
@@ -240,6 +245,11 @@ export function parseGlb(bytes: Uint8Array): GlbInfo {
       }
     }
   };
+  const layers = new Set<string>();
+  for (const n of nodes) {
+    const m = typeof n.name === "string" ? LAYER_NODE.exec(n.name) : null;
+    if (m) layers.add(m[1]!);
+  }
   const scene = scenes[num(json.scene, 0)];
   if (scene) {
     const seen = new Set<number>();
@@ -288,6 +298,7 @@ export function parseGlb(bytes: Uint8Array): GlbInfo {
       skins: arr(json.skins).length,
     },
     bounds,
+    layers: [...layers].sort(),
     extensionsUsed: strs(json.extensionsUsed),
     extensionsRequired: strs(json.extensionsRequired),
     issues,
@@ -386,9 +397,17 @@ const NON_COMMERCIAL = /(?:^|[-\s])NC(?:[-\s]|$)|non-?commercial/i;
  */
 export const MIN_FIT_AXIS = 0.05;
 
+/**
+ * A node of a model that is one of its layers: `layer:<id>`, optionally with a suffix an exporter adds to keep
+ * names apart (`layer:scope.001`).
+ */
+export const LAYER_NODE = /^layer:([a-z0-9][a-z0-9_-]*)(?:\.\d+)?$/;
+
 export interface ModelCheckOptions {
   /** Lowercase hex SHA-256 of the file (checked against the reference's pinned hash). */
   sha256?: string;
+  /** The layers the type's looks show (`lookLayers`): each must be in the model, and the model should have no other. */
+  layers?: readonly string[];
   /** The renderer is configured with a DRACO decoder path. */
   draco?: boolean;
   /** Relative tolerance of the size check before a warning (default 0.25), and before an error (default 1 = twice / half). */
@@ -422,6 +441,13 @@ export function checkModelReference(info: GlbInfo, ref: EquipmentModel, footprin
     if (GLB_RENDERER_EXTENSIONS.includes(ext)) continue;
     if (ext === "KHR_draco_mesh_compression" && opts.draco) continue;
     out.push({ severity: "error", code: "extension", message: GLB_DECODER_EXTENSIONS.includes(ext) ? `requires ${ext}: needs a decoder the renderer is not configured with (the voxel parts are shown instead)` : `requires ${ext}, which the renderer does not support` });
+  }
+  if (opts.layers) {
+    // what a state shows has to be in the file; a layer nothing shows is never drawn
+    const want = new Set(opts.layers), have = new Set(info.layers);
+    const missing = [...want].filter((l) => !have.has(l)), unused = [...have].filter((l) => !want.has(l));
+    if (missing.length) out.push({ severity: "error", code: "layers", message: `the type's looks show ${missing.map((l) => `"${l}"`).join(", ")}: the model has no node named ${missing.map((l) => `layer:${l}`).join(", ")}` });
+    if (unused.length) out.push({ severity: "warning", code: "layers", message: `no state's look shows ${unused.map((l) => `"${l}"`).join(", ")}: ${unused.length > 1 ? "those layers are" : "that layer is"} never drawn` });
   }
   for (const ext of info.extensionsUsed) if (!info.extensionsRequired.includes(ext) && !GLB_RENDERER_EXTENSIONS.includes(ext) && !GLB_DECODER_EXTENSIONS.includes(ext)) out.push({ severity: "info", code: "extension", message: `uses ${ext} (optional; ignored by the renderer)` });
   if (info.bounds) {

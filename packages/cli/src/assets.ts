@@ -9,7 +9,7 @@
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { readFile } from "node:fs/promises";
-import { checkModelReference, GlbError, parseGlb, t, type AssetIssue, type EquipmentType } from "@clinicalcraft/core";
+import { checkModelReference, GlbError, lookLayers, parseGlb, t, type AssetIssue, type EquipmentType } from "@clinicalcraft/core";
 import { loadContent } from "@clinicalcraft/agent/node";
 import { sanitizeTerminal, table } from "@clinicalcraft/agent";
 import { flagBool, flagString, UsageError, type ParsedArgs } from "./argv.js";
@@ -52,7 +52,8 @@ export async function assetsInspect(ctx: CliContext, args: ParsedArgs): Promise<
     if (!type) throw new CliError(ctx.t("assets.unknownType", { id: typeId }), EXIT.usage);
     if (!type.model) throw new CliError(ctx.t("assets.noModel", { id: typeId, catalog: catalog ?? "" }), EXIT.usage);
   }
-  const issues: AssetIssue[] = type?.model ? checkModelReference(info, type.model, type.footprint, { sha256, draco: flagBool(args, "draco") }) : info.issues;
+  // (the layers a type's looks show have to be in its model: a type without looks expects none)
+  const issues: AssetIssue[] = type?.model ? checkModelReference(info, type.model, type.footprint, { sha256, draco: flagBool(args, "draco"), layers: lookLayers(type) }) : info.issues;
   const errors = issues.filter((i) => i.severity === "error").length;
 
   if (flagBool(args, "json")) {
@@ -67,6 +68,7 @@ export async function assetsInspect(ctx: CliContext, args: ParsedArgs): Promise<
     [ctx.t("assets.asset"), [`glTF ${info.asset.version}`, info.asset.generator ? sanitizeTerminal(info.asset.generator) : "", info.asset.copyright ? `© ${sanitizeTerminal(info.asset.copyright)}` : ""].filter(Boolean).join(" · ")],
     [ctx.t("assets.counts"), `${c.scenes} scene(s), ${c.nodes} node(s), ${c.meshes} mesh(es), ${c.primitives} primitive(s), ${c.triangles} triangle(s), ${c.vertices} vertices, ${c.materials} material(s), ${c.textures} texture(s), ${c.images} image(s), ${c.animations} animation(s), ${c.skins} skin(s)`],
     [ctx.t("assets.bounds"), info.bounds ? `${fmt3(info.bounds.size)} m · min ${pt3(info.bounds.min)} · max ${pt3(info.bounds.max)}` : "—"],
+    ...(info.layers.length ? [[ctx.t("assets.layers"), info.layers.map((l) => sanitizeTerminal(l)).join(", ")]] : []),
     [ctx.t("assets.extensions"), [...info.extensionsUsed.map((e) => (info.extensionsRequired.includes(e) ? `${e} (required)` : e)), ...info.extensionsRequired.filter((e) => !info.extensionsUsed.includes(e)).map((e) => `${e} (required)`)].join(", ") || "—"],
   ];
   if (type?.model) {

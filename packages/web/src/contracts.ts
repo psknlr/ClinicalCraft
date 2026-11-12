@@ -283,6 +283,14 @@ export interface WorldApi {
    * collider meanwhile. The world model says where they stay (`placePatient`).
    */
   escortPatient(slotId: string, by: string | null): void;
+  /**
+   * Draw a placement as it is in a behaviour state (a state's `look`, docs/FACILITIES.md "A look for each state":
+   * the layers of its model, its screens' picture, its manikin). The state is the world model's
+   * (`WorldRuntime.stateOf`) — the renderer follows it and decides nothing. A placement without looks: nothing.
+   */
+  setEquipmentState(placementId: string, state: string | null): void;
+  /** The placements whose look follows their state (the ones `setEquipmentState` draws anew). */
+  statefulEquipment(): string[];
   /** Open or close a door (renderer door id; a `door:` prefix is accepted). A locked door does not open. */
   setDoor(doorId: string, open: boolean): void;
   /** Lock / unlock a door: a locked door closes and stays shut for the player and for walkers. */

@@ -10,7 +10,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
-import { afterEach, describe, expect, it } from "vitest";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { compileFacility, parseCase, parseCatalog, parseFacility, type CaseDefinition, type EquipmentCatalog, type FacilityDefinition } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import type { WorldApi } from "../contracts.js";
@@ -192,6 +192,7 @@ describe("a transport drawn by the renderer (PE: the ward bed to CT and back)", 
       placePatient: (slot: string, at: unknown) => placed.push({ slot, at }),
       setPatientState: () => undefined,
       setDoor: () => undefined,
+      statefulEquipment: () => [],
     } as unknown as WorldApi;
     const mover: BrowserMover = new BrowserMover({ renderer: () => api, pushing: (a) => link.pushing(a), carrying: (a) => link.carrying(a) });
     const app = await startAppSession({ caseDef: c, facility, catalogs, stored, choice: { provider: "offline", model: null, mode: "offline", fellBack: false }, locale: "en", served: false, embodiment: "embodied", embodied: { mover } });
@@ -208,6 +209,100 @@ describe("a transport drawn by the renderer (PE: the ward bed to CT and back)", 
     const back = await link.worldAction({ operation: "transport_patient", targetId: "patient:ward-1", parameters: { destination: "home" } });
     expect(back?.status, back?.message).toBe("completed");
     expect(placed.at(-1)).toEqual({ slot: "ward-1", at: null });
+  });
+});
+
+describe("what is drawn of a device follows its state in the world (a state's look)", () => {
+  /** A session whose renderer draws two devices by their state: the resus bay's ECG machine and the patient's monitor. */
+  async function withStatefulScene() {
+    const c = caseOf("stemi-inferior-rv");
+    const stored = defaultSettings();
+    stored.agent.approvalMode = "bypass";
+    const drawn: string[] = [];
+    const shown = new Map<string, string | null>([["resus1-ecg", "idle"], ["resus1-monitor", "detached"], ["not-in-this-world", null]]);
+    let session: AppSession | null = null;
+    const api = {
+      // the avatar is drawn where the world has the learner (its Mover has no renderer to walk: the world places it)
+      get position() {
+        const pose = session?.world()?.actor(PRIMARY_ACTOR)?.pose;
+        return pose ? { x: pose.x, y: pose.y, z: pose.z, yaw: pose.yaw, pitch: pose.pitch, level: pose.level } : { x: BEDSIDE.x, y: 0, z: BEDSIDE.z, yaw: 0, pitch: 0, level: "L0" };
+      },
+      staffPose: () => null,
+      placeStaff: () => undefined,
+      placeEquipment: () => undefined,
+      pushEquipment: () => undefined,
+      placePatient: () => undefined,
+      pushPatient: () => undefined,
+      setPatientState: () => undefined,
+      setDoor: () => undefined,
+      setDoorLocked: () => undefined,
+      statefulEquipment: () => ["resus1-ecg", "resus1-monitor", "not-in-this-world"],
+      // as the renderer does: a placement already drawn in that state is left alone
+      setEquipmentState: (id: string, state: string | null) => {
+        if (shown.get(id) === state) return;
+        shown.set(id, state);
+        drawn.push(`${id}:${state}`);
+      },
+    } as unknown as WorldApi;
+    const mover = new BrowserMover({ renderer: () => null });
+    const app = await startAppSession({ caseDef: c, facility, catalogs, stored, choice: { provider: "offline", model: null, mode: "offline", fellBack: false }, locale: "en", served: false, embodiment: "embodied", embodied: { mover } });
+    session = app;
+    app.submit({ type: "configure", patch: { approvalMode: "bypass" } });
+    app.session.dispatch({ type: "start" });
+    const link = new EmbodiedLink({ app, renderer: () => api, mover, facility, caseDef: c, slotId: "resus-1", feedback: new ActionFeedback(() => null, () => null, () => undefined), toast: () => undefined, locale: () => "en" });
+    open.push({ app, link });
+    return { app, link, drawn, shown, world: app.world()! };
+  }
+
+  it("the scene is told the state the world has: when it is drawn, and on every change — whoever made it", async () => {
+    const { app, link, drawn, shown, world } = await withStatefulScene();
+    // the scene was built as the placements start (the type's initial state): the world agrees, nothing is redrawn —
+    // and a placement the world does not know is left as it was built
+    shown.set("not-in-this-world", "built");
+    link.syncScene();
+    expect(drawn).toEqual([]);
+    expect(world.stateOf("eq:resus1-ecg")).toBe("idle");
+    expect(world.stateOf("eq:no-such-device")).toBeNull();
+
+    // the learner prepares the ECG machine at the bedside: the world changes its state, the scene follows the event
+    drawn.length = 0;
+    expect((await link.worldAction({ operation: "approach", targetId: "patient" }))?.status).toBe("completed");
+    const prepared = await link.worldAction({ operation: "prepare", targetId: "eq:resus1-ecg" });
+    expect(prepared?.status, prepared?.message).toBe("completed");
+    expect(drawn).toEqual(["resus1-ecg:prepared"]);
+
+    // a colleague acts on the world themselves (no hand of the learner's in it): the same event, the same call
+    drawn.length = 0;
+    expect((await world.execute({ actionId: "n0", actorId: "staff:ed-nurse", operation: "approach", targetId: "patient" })).status).toBe("completed");
+    const reset = await world.execute({ actionId: "c1", actorId: PRIMARY_ACTOR, operation: "reset", targetId: "eq:resus1-ecg" });
+    expect(reset.status, reset.message).toBe("completed");
+    expect(drawn).toEqual(["resus1-ecg:idle"]);
+    const byNurse = await world.execute({ actionId: "n1", actorId: "staff:ed-nurse", operation: "prepare", targetId: "eq:resus1-ecg" });
+    expect(byNurse.status, byNurse.message).toBe("completed");
+    expect(drawn).toEqual(["resus1-ecg:idle", "resus1-ecg:prepared"]);
+
+    // a state derived from the case record (the monitor's attachment) has no event of its own: the record's change
+    // is the scene's cue to ask again
+    drawn.length = 0;
+    app.session.dispatch({ type: "intervene", interventionId: "cardiac-monitoring" });
+    expect(world.stateOf("eq:resus1-monitor")).toBe("attached");
+    // (the session's events reach the app's store on their own, a moment later)
+    await vi.waitFor(() => expect(drawn).toEqual(["resus1-monitor:attached"]));
+    link.syncScene();
+    expect(drawn).toEqual(["resus1-monitor:attached"]);
+
+    // a scene rebuilt from scratch (a new renderer starts every placement in its initial state) is brought up to the world
+    shown.set("resus1-ecg", "idle");
+    shown.set("resus1-monitor", "detached");
+    drawn.length = 0;
+    link.syncScene();
+    expect(drawn).toEqual(["resus1-ecg:prepared", "resus1-monitor:attached"]);
+  });
+
+  it("a renderer without such equipment is asked nothing more", async () => {
+    const { link, drawn } = await start().then(async (s) => ({ ...s, drawn: [] as string[] }));
+    link.syncScene(); // no renderer at all: nothing to draw, nothing thrown
+    expect(drawn).toEqual([]);
   });
 });
 
@@ -300,6 +395,7 @@ describe("words for the patient and walking with them (EMBODIED §6, §8.4)", ()
       escortPatient: (slot: string, by: string | null) => calls.push(`escort:${slot}:${by}`),
       setPatientState: () => undefined,
       setDoor: () => undefined,
+      statefulEquipment: () => [],
     } as unknown as WorldApi;
     const mover = new BrowserMover({ renderer: () => null });
     const app = await startAppSession({ caseDef: c, facility, catalogs, stored, choice: { provider: "offline", model: null, mode: "offline", fellBack: false }, locale: "en", served: false, embodiment: "embodied", embodied: { mover } });

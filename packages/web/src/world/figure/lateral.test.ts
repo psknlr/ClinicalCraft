@@ -9,6 +9,8 @@ const length = (a: readonly number[], b: readonly number[]) => Math.hypot(a[0]! 
 const F = frameOf("average", "adult");
 
 const SPEC: FigureSpec = { skin: "#d9b596", hair: "#2b2420", hairStyle: "short", shirt: "#6d9fba", pants: "#354442", build: "average", stature: "adult", gown: false, accessory: "none", posture: "lateral", seat: 0.9, wear: { ...PLAIN, cap: true } };
+/** How much of a mesh is skin (vertices in its skin ranges). */
+const skinOf = (ranges: [number, number][]): number => ranges.reduce((n, [, count]) => n + count, 0);
 
 function finite(g: BufferGeometry): boolean {
   for (const name of ["position", "normal", "color", "finish"]) {
@@ -122,34 +124,50 @@ describe("the trunk over the break of a flexed table (bend.ts)", () => {
 
 describe("a figure on its side (figure.ts)", () => {
   it("draped for an operation on the chest: bare skin on the trunk and both arms, towels and a sheet, no feet to see", () => {
-    const draped = buildFigure({ ...SPEC, draped: true });
+    const draped = buildFigure({ ...SPEC, cover: "drapes" });
     const clothed = buildFigure({ ...SPEC, gown: true });
     for (const fig of [draped, clothed]) {
       expect(finite(fig.body)).toBe(true);
       expect(finite(fig.chest)).toBe(true);
       expect(fig.triangles).toBeLessThan(36000);
     }
-    const skinOf = (ranges: [number, number][]) => ranges.reduce((n, [, count]) => n + count, 0);
     // the whole trunk is skin under the drapes (a gown shows it at the neck only), and the arms are bare from the shoulder
     expect(skinOf(draped.skin.chest)).toBeGreaterThan(3 * skinOf(clothed.skin.chest));
     expect(skinOf(draped.skin.body)).toBeGreaterThan(skinOf(clothed.skin.body) * 0.9);
-    // towels and the sheet are cloth on the trunk's mesh: far more of it than a bare trunk is
-    expect(draped.chest.getAttribute("position").count).toBeGreaterThan(skinOf(draped.skin.chest) + 1500);
-    // the sheet reaches past the soles and hangs below the surface the body lies on
-    draped.chest.computeBoundingBox();
-    const box = draped.chest.boundingBox!;
+    // the towels round the field lie on the trunk's mesh, and breathe with it: more of it than a bare trunk is
+    expect(draped.chest.getAttribute("position").count).toBeGreaterThan(skinOf(draped.skin.chest) + 250);
+    // the sheet lies on the legs (it does not breathe): it reaches past the soles and hangs below the surface the body lies on
+    draped.body.computeBoundingBox();
+    const box = draped.body.boundingBox!;
     expect(box.min.y).toBeLessThan(LATERAL.foot + 0.01);
     expect(box.min.x).toBeLessThan(-LATERAL.rest - 0.25);
     expect(box.max.z).toBeGreaterThan(LATERAL.shift + LATERAL.tableHalf);
     expect(box.min.z).toBeLessThan(LATERAL.shift - LATERAL.tableHalf);
-    // nothing is drawn below the ankles of someone under a sheet; someone in a gown has slippers on
+    // the trunk's own mesh stays on the table: nothing of it hangs over the side
+    draped.chest.computeBoundingBox();
+    expect(draped.chest.boundingBox!.min.x).toBeGreaterThan(-LATERAL.rest - 0.05);
+  });
+
+  it("under a blanket before the drapes go on: as bare, no towels, a blanket to the waist that hangs less far than the sheet", () => {
+    const draped = buildFigure({ ...SPEC, cover: "drapes" }), blanket = buildFigure({ ...SPEC, cover: "blanket" });
+    expect(finite(blanket.body)).toBe(true);
+    expect(skinOf(blanket.skin.chest)).toBe(skinOf(draped.skin.chest));
+    // no towels: the trunk's mesh is skin and nothing else
+    expect(blanket.chest.getAttribute("position").count).toBe(skinOf(blanket.skin.chest));
+    expect(blanket.chest.getAttribute("position").count).toBeLessThan(draped.chest.getAttribute("position").count - 250);
+    blanket.body.computeBoundingBox();
     draped.body.computeBoundingBox();
-    clothed.body.computeBoundingBox();
-    expect(clothed.body.boundingBox!.min.y).toBeLessThan(draped.body.boundingBox!.min.y - 0.02);
+    const b = blanket.body.boundingBox!, d = draped.body.boundingBox!;
+    // it covers hips and legs past the soles, and hangs a hand's breadth over the table's side — the sheet far lower
+    expect(b.min.y).toBeLessThan(LATERAL.foot + 0.01);
+    expect(b.min.x).toBeLessThan(-LATERAL.rest - 0.1);
+    expect(b.min.x).toBeGreaterThan(d.min.x + 0.12);
+    // someone in their own clothes on their side has neither
+    expect(buildFigure({ ...SPEC, cover: "clothes" }).triangles).toBe(buildFigure({ ...SPEC }).triangles);
   });
 
   it("the right side up is the mirror of the left side up", () => {
-    const left = buildFigure({ ...SPEC, draped: true, up: "left" }), right = buildFigure({ ...SPEC, draped: true, up: "right" });
+    const left = buildFigure({ ...SPEC, cover: "drapes", up: "left" }), right = buildFigure({ ...SPEC, cover: "drapes", up: "right" });
     left.chest.computeBoundingBox();
     right.chest.computeBoundingBox();
     expect(right.chest.boundingBox!.max.x).toBeCloseTo(-left.chest.boundingBox!.min.x, 3);
@@ -158,8 +176,8 @@ describe("a figure on its side (figure.ts)", () => {
   });
 
   it("over a flexed table the figure is bent and its head turned with its end of the trunk", () => {
-    const flat = buildFigure({ ...SPEC, draped: true });
-    const flexed = buildFigure({ ...SPEC, draped: true, flex: (9 * Math.PI) / 180 });
+    const flat = buildFigure({ ...SPEC, cover: "drapes" });
+    const flexed = buildFigure({ ...SPEC, cover: "drapes", flex: (9 * Math.PI) / 180 });
     expect(flat.bend).toBeNull();
     expect(flat.pivotTurn).toBe(0);
     expect(flexed.bend).toMatchObject({ at: LATERAL.break, up: 1 });

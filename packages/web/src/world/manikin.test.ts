@@ -1,15 +1,16 @@
 import { describe, expect, it } from "vitest";
 import { Box3, Vector3, type Mesh } from "three";
-import { EquipmentManikinSchema, type EquipmentManikin } from "@clinicalcraft/core";
+import { drawnManikin, EquipmentManikinSchema, type DrawnManikin } from "@clinicalcraft/core";
 import { LATERAL } from "./figure/anatomy.js";
 import { MOVES } from "./figure/head.js";
 import { rotateXZ } from "./geometry.js";
-import { buildManikin, manikinFigure, placedHeadPoint, placedPoint } from "./manikin.js";
-import { buildPerson, PLAIN_WEAR, type PersonRig } from "./npc.js";
+import { breathOf, buildManikin, manikinFigure, placedHeadPoint, placedPoint } from "./manikin.js";
+import { buildPerson, PLAIN_WEAR, setBreath, type PersonRig } from "./npc.js";
 
-const manikin = (patch: Record<string, unknown>): EquipmentManikin => EquipmentManikinSchema.parse(patch);
+/** A type's manikin as the world draws it with nothing changed by a state. */
+const manikin = (patch: Record<string, unknown>): DrawnManikin => drawnManikin(EquipmentManikinSchema.parse(patch))!;
 /** A patient simulator on its right side on a table flexed under the chest, as a thoracoscopy station has one. */
-const ON_ITS_SIDE = manikin({ posture: "lateral", sideUp: "left", draped: true, flex: 9, asleep: true, x: -0.27, z: -0.13, y: 0.93, rot: 90 });
+const ON_ITS_SIDE = manikin({ posture: "lateral", sideUp: "left", cover: "drapes", flex: 9, asleep: true, x: -0.27, z: -0.13, y: 0.93, rot: 90 });
 
 function drawnBox(rig: PersonRig): Box3 {
   rig.root.updateMatrixWorld(true);
@@ -25,7 +26,7 @@ describe("someone on their side, laid down by their rig (npc.ts)", () => {
   it("lies along −Z with the side that is up on top, the surface under the chest at the root", () => {
     for (const up of ["left", "right"] as const) {
       const sign = up === "left" ? 1 : -1;
-      const rig = buildPerson(undefined, { posture: "lateral", surfaceY: 0.9, up, draped: true, wear: { ...PLAIN_WEAR, cap: true } });
+      const rig = buildPerson(undefined, { posture: "lateral", surfaceY: 0.9, up, cover: "drapes", wear: { ...PLAIN_WEAR, cap: true } });
       // the figure's left is up (or down), its head towards −Z, its face to −X (the left side up) or +X
       const left = new Vector3(1, 0, 0).applyQuaternion(rig.body.quaternion), head = new Vector3(0, 1, 0).applyQuaternion(rig.body.quaternion);
       expect(left.y).toBeCloseTo(sign, 6);
@@ -52,8 +53,8 @@ describe("someone on their side, laid down by their rig (npc.ts)", () => {
   });
 
   it("asleep: the eyes are shut; over a flexed table the head end is lower and the head turned with it", () => {
-    const flat = buildPerson(undefined, { posture: "lateral", surfaceY: 0.9, draped: true });
-    const flexed = buildPerson(undefined, { posture: "lateral", surfaceY: 0.9, draped: true, flex: 9, asleep: true });
+    const flat = buildPerson(undefined, { posture: "lateral", surfaceY: 0.9, cover: "drapes" });
+    const flexed = buildPerson(undefined, { posture: "lateral", surfaceY: 0.9, cover: "drapes", flex: 9, asleep: true });
     expect(flat.face.morphTargetInfluences![MOVES.blink]).toBe(0);
     expect(flexed.face.morphTargetInfluences![MOVES.blink]).toBe(1);
     expect(flat.bend).toBeNull();
@@ -71,15 +72,55 @@ describe("someone on their side, laid down by their rig (npc.ts)", () => {
 describe("a body drawn with equipment (manikin.ts)", () => {
   it("is one of the world's figures: draped for theatre it wears a theatre cap and nothing else; each placement's is its own", () => {
     const a = manikinFigure(ON_ITS_SIDE, "station-1"), b = manikinFigure(ON_ITS_SIDE, "station-2");
-    expect(a.options).toMatchObject({ posture: "lateral", up: "left", draped: true, flex: 9, asleep: true, surfaceY: 0.93 });
+    expect(a.options).toMatchObject({ posture: "lateral", up: "left", cover: "drapes", flex: 9, asleep: true, surfaceY: 0.93 });
     expect(a.options.wear).toEqual({ ...PLAIN_WEAR, cap: true });
     expect(a.options.seed).not.toBe(b.options.seed);
     // one that sits wears what its appearance says, and what describes one on its side is left out
     const sitting = manikinFigure(manikin({ posture: "sitting", y: 0.5, appearance: { gown: true } }), "chair");
     expect(sitting.options).toMatchObject({ posture: "sitting", surfaceY: 0.5, asleep: false });
     expect(sitting.options.wear).toEqual(PLAIN_WEAR);
-    expect(sitting.options).not.toHaveProperty("draped");
+    expect(sitting.options).not.toHaveProperty("cover");
     expect(sitting.appearance).toEqual({ gown: true });
+    // the earlier spelling of the drapes is the same figure; under a blanket it is as bare, with a theatre cap on
+    expect(manikinFigure(manikin({ posture: "lateral", draped: true, flex: 9, asleep: true, x: -0.27, z: -0.13, y: 0.93, rot: 90 }), "station-1").options).toEqual(a.options);
+    const blanket = manikinFigure(manikin({ posture: "lateral", cover: "blanket" }), "s");
+    expect(blanket.options).toMatchObject({ cover: "blanket", up: "left", flex: 0 });
+    expect(blanket.options.wear).toEqual({ ...PLAIN_WEAR, cap: true });
+    // one on its side in its own clothes keeps them
+    expect(manikinFigure(manikin({ posture: "lateral" }), "s").options.wear).toEqual(PLAIN_WEAR);
+  });
+
+  it("breathes as its state says: not at all, with both lungs, or with the lung that is down only", () => {
+    const still = manikin({ posture: "lateral", cover: "drapes" });
+    expect(still.breathing).toBe("none");
+    expect(breathOf(still, 1234)).toEqual([0, 0]);
+    const both = manikin({ posture: "lateral", cover: "blanket", breathing: "both" }), one = manikin({ posture: "lateral", cover: "drapes", breathing: "one-lung" });
+    // a ventilator's breath: five seconds, in over the first third, and the chest is never drawn in
+    const depth = (m: DrawnManikin, t: number) => breathOf(m, t)[0], rise = (m: DrawnManikin, t: number) => breathOf(m, t)[1];
+    expect(depth(both, 0)).toBeCloseTo(0, 6);
+    expect(depth(both, 5000 / 3)).toBeCloseTo(0.024, 4);
+    expect(depth(both, 5000)).toBeCloseTo(depth(both, 0), 3);
+    for (let t = 0; t < 5000; t += 125) {
+      expect(depth(both, t)).toBeGreaterThanOrEqual(0);
+      expect(depth(both, t)).toBeLessThanOrEqual(0.0241);
+      // one lung: half as deep, and the chest wall that is up hardly rises at all
+      expect(depth(one, t)).toBeCloseTo(depth(both, t) / 2, 6);
+      expect(rise(one, t)).toBeLessThanOrEqual(rise(both, t) / 4 + 1e-9);
+    }
+    // the chest wall that is up rises a millimetre at most (what a model puts on that skin stays on it)
+    expect(rise(both, 5000 / 3)).toBeCloseTo(0.006, 4);
+    expect(rise(both, 5000 / 3) * 0.17).toBeLessThan(0.0011);
+    // each placement's manikin in its own time; one that lies on its back breathes forwards only
+    expect(breathOf(both, 0, 0.5)).not.toEqual(breathOf(both, 0, 0));
+    expect(breathOf(manikin({ posture: "lying", breathing: "both" }), 5000 / 3)[1]).toBe(0);
+
+    // the rig takes it on its trunk — what lies on the chest (the towels) moves with it, the sheet on the legs does not
+    const rig = buildManikin(both, { x: 0, y: 0, z: 0, rot: 0 }, "s");
+    setBreath(rig, 0.02, 0.01);
+    expect(rig.torso.scale.z).toBeCloseTo(1.02, 6);
+    expect(rig.torso.scale.x).toBeCloseTo(1.01, 6);
+    setBreath(rig, 0);
+    expect(rig.torso.scale.toArray()).toEqual([1, 1, 1]);
   });
 
   it("is put where the type says, turned with its placement as the type's parts are", () => {

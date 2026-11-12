@@ -5,12 +5,15 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import type { EquipmentModel } from "../schema/facility.js";
-import { checkModelReference, encodeGlb, fitModel, GlbError, parseGlb, type GlbInfo } from "./glb.js";
+import { checkModelReference, encodeGlb, fitModel, GlbError, LAYER_NODE, parseGlb, type GlbInfo } from "./glb.js";
 
-/** A box mesh (8 vertices, 12 triangles) of `size` centred on `centre`, as a GLB with optional node transform and extensions. */
+/**
+ * A box mesh (8 vertices, 12 triangles) of `size` centred on `centre`, as a GLB with optional node transform and
+ * extensions; `more`: further nodes of the same mesh (a model in layers).
+ */
 function boxGlb(
   size: [number, number, number],
-  opts: { centre?: [number, number, number]; node?: Record<string, unknown>; used?: string[]; required?: string[]; materials?: number; minMax?: boolean; generator?: string } = {},
+  opts: { centre?: [number, number, number]; node?: Record<string, unknown>; more?: Record<string, unknown>[]; used?: string[]; required?: string[]; materials?: number; minMax?: boolean; generator?: string } = {},
 ): Uint8Array {
   const [w, h, d] = size;
   const [cx, cy, cz] = opts.centre ?? [0, h / 2, 0];
@@ -27,8 +30,8 @@ function boxGlb(
   const json = {
     asset: { version: "2.0", generator: opts.generator ?? "clinicalcraft test" },
     scene: 0,
-    scenes: [{ nodes: [0] }],
-    nodes: [{ mesh: 0, ...(opts.node ?? {}) }],
+    scenes: [{ nodes: [0, ...(opts.more ?? []).map((_, i) => i + 1)] }],
+    nodes: [{ mesh: 0, ...(opts.node ?? {}) }, ...(opts.more ?? []).map((n) => ({ mesh: 0, ...n }))],
     meshes: [{ primitives: [{ attributes: { POSITION: 0 }, indices: 1, ...(opts.materials ? { material: 0 } : {}) }] }],
     materials: Array.from({ length: opts.materials ?? 0 }, (_, i) => ({ name: `m${i}` })),
     buffers: [{ byteLength: bin.byteLength }],
@@ -79,6 +82,22 @@ describe("parseGlb", () => {
     close(info.bounds!.min, [2, 0, -1]);
     const m = parseGlb(boxGlb([1, 1, 1], { node: { matrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 3, 0, 1] } }));
     close(m.bounds!.min, [-0.5, 3, -0.5]);
+  });
+
+  it("lists the model's layers: its nodes named layer:<id>, whatever suffix an exporter added", () => {
+    expect(parseGlb(boxGlb([1, 1, 1])).layers).toEqual([]);
+    const info = parseGlb(
+      boxGlb([1, 1, 1], {
+        node: { name: "station" },
+        more: [{ name: "layer:scope" }, { name: "layer:camera-port" }, { name: "layer:scope.001" }, { name: "layer:chest_tube" }, { name: "Layer:Loud" }, { name: "layer:" }, { name: "layer:a b" }, { name: "sublayer:x" }, {}],
+      }),
+    );
+    expect(info.layers).toEqual(["camera-port", "chest_tube", "scope"]);
+    // the box is of everything, every layer included; the counts too
+    expect(info.counts).toMatchObject({ nodes: 10, meshes: 1 });
+    expect(LAYER_NODE.exec("layer:working-ports")?.[1]).toBe("working-ports");
+    expect(LAYER_NODE.exec("layer:working-ports.012")?.[1]).toBe("working-ports");
+    for (const no of ["layer:", "layer:Scope", "layers:scope", "layer:scope.a", " layer:scope", "layer:scope "]) expect(LAYER_NODE.test(no), no).toBe(false);
   });
 
   it("lists extensions and reports missing bounds", () => {
@@ -189,6 +208,23 @@ describe("checkModelReference", () => {
     }
     expect(codes(checkModelReference(info, ref({ ...ok, license: "CC-BY-4.0", attribution: by }), bed))).toEqual([]);
   });
+  it("checks the layers a type's looks show against the model's: a missing one fails, one nothing shows warns", () => {
+    const ok = ref({ scale: 1, sha256: "a".repeat(64) });
+    const layered = parseGlb(boxGlb([0.9, 0.6, 2.1], { more: [{ name: "layer:scope" }, { name: "layer:drain" }] }));
+    expect(codes(checkModelReference(layered, ok, bed, { layers: ["drain", "scope"] }))).toEqual([]);
+    const missing = checkModelReference(layered, ok, bed, { layers: ["drain", "scope", "dressings", "marks"] });
+    expect(codes(missing)).toEqual(["error:layers"]);
+    expect(missing[0].message).toMatch(/"dressings", "marks".*layer:dressings, layer:marks/);
+    const unused = checkModelReference(layered, ok, bed, { layers: ["scope"] });
+    expect(codes(unused)).toEqual(["warning:layers"]);
+    expect(unused[0].message).toMatch(/"drain": that layer is never drawn/);
+    // a type without looks whose model has layers: nothing ever hides them — said as well
+    expect(codes(checkModelReference(layered, ok, bed, { layers: [] }))).toEqual(["warning:layers"]);
+    // not asked (a caller that does not know the type's looks): not checked
+    expect(codes(checkModelReference(layered, ok, bed))).toEqual([]);
+    expect(codes(checkModelReference(info, ok, bed, { layers: [] }))).toEqual([]);
+  });
+
   it("rejects required extensions the renderer cannot load (DRACO only with a decoder)", () => {
     const draco = parseGlb(boxGlb([0.9, 0.6, 2.1], { used: ["KHR_draco_mesh_compression"], required: ["KHR_draco_mesh_compression"] }));
     const r = ref({ scale: 1, sha256: "a".repeat(64) });
