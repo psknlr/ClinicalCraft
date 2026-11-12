@@ -6,8 +6,10 @@
  * submissions serially (one turn at a time); `interrupt` and
  * `approval_response` are handled out-of-band so they stay responsive.
  */
+import type { ReportWriter } from "./studies.js";
 import type { CaseDefinition, ClinicalAction, EquipmentCatalog, FacilityDefinition, ReduceResult, SessionState } from "@clinicalcraft/core";
 import type { CameraSensor, EpisodeTrace, Mover, Pose, WorldRuntime, WorldStateSnapshot } from "@clinicalcraft/world";
+import type { TeamCheckpoint } from "./team/types.js";
 import type { AgentProfile, SlashCommand } from "../agents/types.js";
 import type { CommandHookExecutor, HookHandler } from "../hooks/types.js";
 import type { AgentEvent, AgentRole, Op, PlanItem } from "../protocol.js";
@@ -53,14 +55,16 @@ export type TranscriptItem =
    * unasked fact or a diagnosis; the learner's `warning` names only their
    * categories). Ignored by resume.
    */
-  | { type: "diagnostic"; ordinal: number; ts: string; payload: { agent: AgentRole; source: "grounding"; detail: string[] } }
+  | { type: "diagnostic"; ordinal: number; ts: string; payload: { agent: AgentRole; source: "grounding" | "corrections" | "characters"; detail: string[] } }
   /**
    * Embodied mode: the physical world after a committed state-changing world action (and at shutdown when a
    * sensor pose moved since) — a resume restores the last one (`SessionOptions.embodied.snapshot`); the engine
    * state comes from the replayed actions (device states that mirror clinical facts are derived from it).
    * The idempotency window is trimmed (`results` without paths and events).
    */
-  | { type: "world"; ordinal: number; ts: string; payload: { snapshot: WorldStateSnapshot } };
+  | { type: "world"; ordinal: number; ts: string; payload: { snapshot: WorldStateSnapshot } }
+  /** Embodied mode, a case with a `team` (docs/TEAM.md): the care team after a round that changed it — a resume restores the last one (`SessionOptions.embodied.team`). */
+  | { type: "team"; ordinal: number; ts: string; payload: { checkpoint: TeamCheckpoint } };
 
 export interface SessionOptions {
   caseDef: CaseDefinition;
@@ -98,9 +102,10 @@ export interface SessionOptions {
    * (facility, catalogs, the case bound to its slot with core `assignPatientSlot`); a facility is required
    * (`EmbodimentError`, code `embodiment_requires_facility`). `mover` animates bodies (browser; default instant),
    * `camera` gives camera frames (`get_camera_frame`, vision models only), `spawn` the learner's start pose,
-   * `snapshot` the physical state to restore (resume: the last transcript `world` item).
+   * `snapshot` the physical state to restore (resume: the last transcript `world` item), `team` the care team to
+   * restore with it (the last transcript `team` item; docs/TEAM.md).
    */
-  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose; snapshot?: WorldStateSnapshot };
+  embodied?: { mover?: Mover; camera?: CameraSensor; spawn?: Pose; snapshot?: WorldStateSnapshot; team?: TeamCheckpoint };
   /**
    * Project skills (`.clinicalcraft/skills/*.json`, validated; embodied mode) — they extend the built-in skills,
    * registered as `project:<id>` (they never shadow a built-in; `execute_skill {skill_id: "<id>"}` finds them when
@@ -111,10 +116,20 @@ export interface SessionOptions {
   skillIssues?: string[];
   /** The project's skill files left out because the project is not trusted (a bilingual startup `warning`). */
   skillsUntrusted?: { dir: string; files: number };
+  /**
+   * New investigations (docs/STUDIES.md §5): a writer of report text (a model). Its text is validated before release;
+   * one that fails, returns nothing or takes longer than `reportWriterTimeoutMs` (default 8000) is replaced by the
+   * deterministic template — never an invented report. Absent: the template only.
+   */
+  reportWriter?: ReportWriter;
+  reportWriterTimeoutMs?: number;
   /** Restore from a previous session (resume). */
   resume?: {
     sessionId: string;
     actions: ClinicalAction[];
+    /** The record's provenance and its original actions (a `@2` snapshot): kept, never edited, by the restore. */
+    createdWith?: RecordProvenance;
+    originalActions?: ClinicalAction[];
     messages?: Partial<Record<AgentRole, unknown[]>>;
     /**
      * The examiner's dialogue (transcript `dialogue` items / `SessionSnapshot.dialogue`).
@@ -170,8 +185,37 @@ export interface ClinicalSessionApi {
   close(): Promise<void>;
 }
 
+/** A historical action the current engine cannot replay exactly (the restore's migration report). */
+export interface ReplayIssue {
+  /** Its index in the original record. */
+  originalIndex: number;
+  type: string;
+  status: "rejected-under-current-engine";
+  reason: string;
+}
+
+/** What a session's record was made with (case content and engine), for an auditable restore. */
+export interface RecordProvenance {
+  caseId: string;
+  caseVersion: string;
+  /** A hash of the case definition: two contents of one version told apart. */
+  contentRevision: string;
+  engineVersion: string;
+  clinicalcraftVersion: string;
+}
+
 export interface SessionSnapshot {
-  format: "clinicalcraft-session@1";
+  /** `@2` adds the record's provenance and its migration; `@1` saves are read as before. */
+  format: "clinicalcraft-session@1" | "clinicalcraft-session@2";
+  /** What the record was made with first, and what this snapshot was taken with (`@2`). */
+  createdWith?: RecordProvenance;
+  savedWith?: RecordProvenance;
+  /**
+   * The original record, never edited, when the current engine replays it differently: `actions` is then the
+   * migrated record (what replays now) and `replayIssues` says which original actions did not, and why.
+   */
+  originalActions?: ClinicalAction[];
+  replayIssues?: ReplayIssue[];
   sessionId: string;
   caseId: string;
   caseVersion: string;
@@ -192,4 +236,6 @@ export interface SessionSnapshot {
   /** Embodied mode: the encounter's mode and its physical world (resume with `SessionOptions.embodied.snapshot`). */
   embodiment?: Embodiment;
   world?: WorldStateSnapshot;
+  /** A case with a care team (docs/TEAM.md): the team mid-task (resume with `SessionOptions.embodied.team`). */
+  team?: TeamCheckpoint;
 }

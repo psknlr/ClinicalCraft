@@ -418,6 +418,8 @@ function materialRefs(f: FacilityDefinition): [string, string][] {
     refs.push([`buildings.${i}.floor`, b.floor], [`buildings.${i}.walls.base`, b.walls.base], [`buildings.${i}.walls.body`, b.walls.body]);
     refs.push([`buildings.${i}.walls.top`, b.walls.top], [`buildings.${i}.roof.material`, b.roof.material]);
     if (b.roof.beams) refs.push([`buildings.${i}.roof.beams`, b.roof.beams]);
+    if (b.walls.frame) refs.push([`buildings.${i}.walls.frame`, b.walls.frame]);
+    if (b.walls.mullion) refs.push([`buildings.${i}.walls.mullion`, b.walls.mullion]);
   });
   f.rooms.forEach((r, i) => {
     if (r.floor) refs.push([`rooms.${i}.floor`, r.floor]);
@@ -479,6 +481,8 @@ function checkPlacements(f: FacilityDefinition, catalogs: EquipmentCatalog[]): I
       if (!(cap in CAPABILITIES)) issues.push(warn(`placements.${i}.capabilities.${j}`, `non-canonical capability "${cap}"`));
     });
     if (!type) return;
+    if (p.state !== undefined && !(type.behavior && !type.behavior.derived && p.state in type.behavior.states))
+      issues.push(err(`placements.${i}.state`, `"${type.id}" has no state "${p.state}"${type.behavior ? ` (states: ${Object.keys(type.behavior.states).join(", ")})` : " (it has no behaviour)"}`));
     (p.hideParts ?? []).forEach((index, j) => {
       if (index >= type.parts.length) issues.push(err(`placements.${i}.hideParts.${j}`, `"${type.id}" has no part ${index} (it has ${type.parts.length})`));
     });
@@ -740,6 +744,7 @@ function checkEquipmentType(e: EquipmentType, path: string, materials: Map<strin
     if (!(cap in CAPABILITIES)) issues.push(warn(`${path}.capabilities.${j}`, `non-canonical capability "${cap}"`));
   });
   if (e.behavior) issues.push(...checkBehavior(e, e.behavior, `${path}.behavior`, types));
+  if (e.behavior) issues.push(...checkLooks(e, e.behavior, `${path}.behavior`));
   issues.push(...checkEmbodiment(e, path));
   return issues;
 }
@@ -775,6 +780,9 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
   const states = new Set(Object.keys(b.states));
   if (states.size === 0) issues.push(err(`${path}.states`, `behaviour of "${e.id}" declares no states`));
   if (!states.has(b.initial)) issues.push(err(`${path}.initial`, `initial state "${b.initial}" is not one of the states of "${e.id}"`));
+  for (const [id, st] of Object.entries(b.states))
+    for (const [k, cap] of (st.supplies ?? []).entries())
+      if (!e.capabilities.includes(cap)) issues.push(err(`${path}.states.${id}.supplies.${k}`, `"${e.id}" in "${id}" cannot supply "${cap}": it is not one of its capabilities`));
   if (b.derived === "monitor-attachment") {
     for (const needed of ["attached", "detached"]) if (!states.has(needed)) issues.push(err(`${path}.states`, `derived "monitor-attachment" needs a "${needed}" state`));
     if (e.interaction.kind !== "monitor") issues.push(warn(`${path}.derived`, `"monitor-attachment" on "${e.id}", whose interaction kind is "${e.interaction.kind}" (expected "monitor")`));
@@ -813,6 +821,37 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
   return issues;
 }
 
+/**
+ * A state's look against its type: layers need a model to have them, a screen picture a part named "screen" and
+ * a type whose screen is not the patient's own, a manikin change a manikin — and one that is still on its side
+ * to say what only a body on its side has.
+ */
+function checkLooks(e: EquipmentType, b: DeviceBehavior, path: string): Issue[] {
+  const issues: Issue[] = [];
+  const hasScreen = e.parts.some((p) => p.name === "screen");
+  for (const [name, st] of Object.entries(b.states)) {
+    const look = st.look;
+    if (!look) continue;
+    const at = `${path}.states.${name}.look`;
+    if (look.layers?.length && !e.model) issues.push(warn(`${at}.layers`, `"${e.id}" has no model: the layers a look names are nodes of one (docs/BLENDER.md)`));
+    const twice = (look.layers ?? []).filter((l, i, all) => all.indexOf(l) !== i);
+    if (twice.length) issues.push(warn(`${at}.layers`, `layer ${[...new Set(twice)].map((l) => `"${l}"`).join(", ")} named more than once`));
+    if (look.screen !== undefined) {
+      if (e.screen === "vitals" || e.screen === "ecg") issues.push(err(`${at}.screen`, `the screen of "${e.id}" is the patient's own (${e.screen}): a look cannot change it`));
+      else if (!hasScreen) issues.push(warn(`${at}.screen`, `"${e.id}" has no part named "screen" to show it on`));
+    }
+    if (look.manikin) {
+      if (!e.manikin) issues.push(err(`${at}.manikin`, `"${e.id}" has no manikin for a look to change`));
+      else {
+        const posture = look.manikin.posture ?? e.manikin.posture;
+        const sideOnly = [look.manikin.sideUp !== undefined && "sideUp", look.manikin.cover !== undefined && "cover", (look.manikin.flex ?? 0) > 0 && "flex", look.manikin.breathing === "one-lung" && 'breathing "one-lung"'].filter((x): x is string => !!x);
+        if (posture !== "lateral" && sideOnly.length) issues.push(err(`${at}.manikin`, `${sideOnly.join(", ")}: only a manikin on its side has it (posture "${posture}" in this state)`));
+      }
+    }
+  }
+  return issues;
+}
+
 function checkEmbodiment(e: EquipmentType, path: string): Issue[] {
   const issues: Issue[] = [];
   const { w, d } = e.footprint;
@@ -826,5 +865,12 @@ function checkEmbodiment(e: EquipmentType, path: string): Issue[] {
   if (e.portable === "cart" && (!e.solid || e.tags.includes("wall"))) issues.push(warn(`${path}.portable`, `"${e.id}" is a portable cart but wall-mounted (${!e.solid ? "solid: false" : 'tag "wall"'})`));
   if (e.portable === "handheld" && (w > 1 || d > 1 || e.footprint.h > 1.5)) issues.push(warn(`${path}.portable`, `"${e.id}" is too large (${w}×${d}×${e.footprint.h}) to be handheld`));
   if (e.model && !/\.(glb|gltf)(\.gz)?([?#].*)?$/i.test(e.model.uri)) issues.push(warn(`${path}.model.uri`, `model "${e.model.uri}" is not a .glb/.gltf file`));
+  if (e.manikin) {
+    // a body drawn with the equipment belongs on it: inside the footprint, no higher than the equipment is
+    const m = e.manikin;
+    if (Math.abs(m.x) > w / 2 + SPATIAL_TOLERANCE || Math.abs(m.z) > d / 2 + SPATIAL_TOLERANCE) issues.push(warn(`${path}.manikin`, `the manikin of "${e.id}" is at (${m.x}, ${m.z}), outside its ${w}×${d} footprint`));
+    if (m.y > e.footprint.h + SPATIAL_TOLERANCE) issues.push(warn(`${path}.manikin.y`, `the manikin of "${e.id}" lies ${m.y} m up, above the equipment's height ${e.footprint.h}`));
+    if (e.portable === "handheld") issues.push(warn(`${path}.manikin`, `"${e.id}" is handheld: a body is not carried in a hand`));
+  }
   return issues;
 }

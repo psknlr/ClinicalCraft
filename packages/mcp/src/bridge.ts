@@ -39,6 +39,9 @@
 import {
   checkPermission,
   clinicalTools,
+  procedureTools,
+  studyTools,
+  actionIdsBetween,
   formatRule,
   HookRunner,
   PermissionState,
@@ -74,6 +77,8 @@ export type ToolRunOutcome =
        * refusal) or a reply replaced by the authored answer. Never silent.
        */
       warnings?: string[];
+      /** The clinical actions this call committed (`act-<seq>`, persistent: `get_action_feedback` resolves them). */
+      actionIds?: string[];
     }
   | {
       status: "refused";
@@ -162,9 +167,13 @@ type HookSpec =
   | { hook_event_name: "PreToolUse"; agent: string; tool_name: string; tool_input: unknown }
   | { hook_event_name: "PostToolUse"; agent: string; tool_name: string; tool_input: unknown; tool_response: { ok: boolean; output: string } };
 
-/** Every bridged tool by name (the clinical tools of PROTOCOL §3, without the dynamic `walk_to`). */
+/**
+ * Every bridged tool by name: the clinical tools of PROTOCOL §3 (without the dynamic `walk_to`) and the operative
+ * field's `observe_field` / `operate` (docs/PROCEDURE.md §7 — they answer "this case has no operation" elsewhere) and
+ * the new investigations' `retrieve_report` / `order_study` / `read_study` / `list_studies` (docs/STUDIES.md).
+ */
 export function bridgedTools(): Map<string, ToolDefinition<Record<string, unknown>>> {
-  return new Map(clinicalTools().map((t) => [t.name, t]));
+  return new Map([...clinicalTools(), ...procedureTools(), ...studyTools()].map((t) => [t.name, t]));
 }
 
 /** Runs tools as the learner on one session. Not re-entrant: callers serialise calls per session. */
@@ -245,7 +254,8 @@ export class SessionToolRunner {
       agent: "learner",
       state: () => s.state,
       dispatch: (action) => s.dispatch(action),
-      ask: (agent, utterance, sig) => this.ask(agent, utterance, sig ?? signal),
+      // a named colleague (`consult {staff}`) answers as themselves: the facility staff member the voice names
+      ask: (agent, utterance, sig, voice) => this.ask(agent, utterance, sig ?? signal, voice?.staffId),
       updatePlan: (plan, explanation) => {
         this.plan = { items: plan.map((p) => ({ text: p.text, status: p.status })), explanation: explanation ?? null };
       },
@@ -347,12 +357,20 @@ export class SessionToolRunner {
       }
     });
     let output: ToolOutput;
+    const seqBefore = this.session.state.seq;
     try {
       output = await tool.run(input, ctx);
     } catch (err) {
       output = { ok: false, output: signal?.aborted ? mm(L, "tool.aborted", { tool: name }) : mm(L, "tool.failed", { tool: name, message: err instanceof Error ? err.message : String(err) }) };
     } finally {
       off();
+    }
+    const actionIds = actionIdsBetween(seqBefore, this.session.state.seq);
+    // the staff's own round follows a state-changing act, as on the session's op path (docs/TEAM.md §5): an
+    // investigation's next stage, traction against where hands are, an alarm answered — what they say is a notice
+    if (!tool.readOnly && !signal?.aborted && this.session.state.started && !this.session.state.finished) {
+      const round = await this.session.run({ type: "staff_step" });
+      for (const e of round) if (e.msg.type === "agent_message") notices.push(`${e.msg.speaker ?? e.msg.agent}: ${e.msg.text}`);
     }
     await this.runHook({ hook_event_name: "PostToolUse", agent: "learner", tool_name: name, tool_input: input, tool_response: { ok: output.ok, output: output.output } }, signal);
     for (const w of warnings) this.opts.log?.(w);
@@ -383,15 +401,15 @@ export class SessionToolRunner {
     }
     // Done: the confirmation (and the record of this call's attempts) is used up.
     this.pending.delete(key);
-    return { status: "done", output, notices, ...(warnings.length > 0 ? { warnings } : {}) };
+    return { status: "done", output, notices, ...(warnings.length > 0 ? { warnings } : {}), ...(actionIds.length ? { actionIds } : {}) };
   }
 
   /** Talk to an NPC through the session (UserPromptSubmit hooks, patient pipeline, transcript). */
-  private async ask(agent: AgentRole, utterance: string, signal?: AbortSignal): Promise<{ text: string; grounded: string[] }> {
+  private async ask(agent: AgentRole, utterance: string, signal?: AbortSignal, staff?: string): Promise<{ text: string; grounded: string[] }> {
     const onAbort = () => this.session.submit({ type: "interrupt" });
     signal?.addEventListener("abort", onAbort, { once: true });
     try {
-      const events = await this.session.run({ type: "user_message", text: utterance, to: agent });
+      const events = await this.session.run({ type: "user_message", text: utterance, to: agent, ...(staff ? { staff } : {}) });
       // Only the addressed agent's own turn (a companion answers in the patient's turn). Staff lines
       // its actions triggered (alarms, critical-result calls, announcements) are synthetic turns:
       // the client gets those as notices from their `notification` events, never as the reply.

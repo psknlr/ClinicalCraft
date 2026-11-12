@@ -17,6 +17,8 @@ import { formatPath, issuesFromZodError } from "./parse.js";
 import { MONITORED_VITALS, OBSERVED_VITALS } from "./monitor.js";
 import { compactText, tokenize } from "./text.js";
 import { supersededIn } from "./twins.js";
+import { checkProcedureDefinition, checkProcedureRef } from "./procedure/check.js";
+import { checkTeamDefinition } from "./team.js";
 import type { Issue } from "./types.js";
 
 type PathPart = string | number;
@@ -108,6 +110,7 @@ function checkCollections(c: CaseDefinition): Issue[] {
 /* ------------------------------------------------------------------ */
 
 function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef): Issue[] {
+  if (ref.kind === "procedure") return checkProcedureRef(c, ref.predicate, ref.path);
   const missing = (label: string) => [err(ref.path, `unknown ${label} "${ref.id}"`)];
   switch (ref.kind) {
     case "history":
@@ -207,7 +210,9 @@ function checkAllConditions(c: CaseDefinition, ids: Ids): Issue[] {
     issues.push(...checkCondition(c, ids, r.scoredWhen, ["rubric", i, "scoredWhen"]));
   });
   issues.push(...checkCondition(c, ids, c.patient.nonVerbalWhen, ["patient", "nonVerbalWhen"]));
+  c.safetyGates.forEach((g, i) => issues.push(...checkCondition(c, ids, g.when, ["safetyGates", i, "when"])));
   c.orderMatching.warnings.forEach((w, i) => issues.push(...checkCondition(c, ids, w.unless, ["orderMatching", "warnings", i, "unless"])));
+  issues.push(...checkCondition(c, ids, c.team?.count?.when, ["team", "count", "when"]));
   return issues;
 }
 
@@ -656,5 +661,38 @@ export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
     ...checkPhysiology(c, ids),
     ...checkSolution(c, ids),
     ...checkReachability(c, ids),
+    ...checkProcedureDefinition(c),
+    ...checkTeamDefinition(c),
+    ...checkStudies(c, ids),
+    ...checkRecordAvailability(c),
   ];
+}
+
+/** A record's availability names phases of the case (docs/CASE_AUTHORING.md: records in the simulated timeline). */
+function checkRecordAvailability(c: CaseDefinition): Issue[] {
+  const phases = new Set(c.phases.map((p) => p.id));
+  return c.investigations.flatMap((inv, i) =>
+    inv.availability?.earliestPhase && !phases.has(inv.availability.earliestPhase) ? [{ path: formatPath(["investigations", i, "availability", "earliestPhase"]), message: `unknown phase "${inv.availability.earliestPhase}"`, severity: "error" as const }] : [],
+  );
+}
+
+/** The case's test profiles (docs/STUDIES.md): unique codes, a historical record that exists, sound intervals. */
+function checkStudies(c: CaseDefinition, ids: Ids): Issue[] {
+  const issues: Issue[] = [];
+  const codes = new Set<string>();
+  (c.studies ?? []).forEach((p, i) => {
+    const at = ["studies", i];
+    if (codes.has(p.code)) issues.push({ path: formatPath([...at, "code"]), message: `duplicate study code "${p.code}"`, severity: "error" });
+    codes.add(p.code);
+    if (c.investigations.some((x) => x.id === p.code)) issues.push({ path: formatPath([...at, "code"]), message: `"${p.code}" is also an investigation id: a new study and the source's record need different ids`, severity: "error" });
+    if (p.historical && !c.investigations.some((x) => x.id === p.historical)) issues.push({ path: formatPath([...at, "historical"]), message: `no investigation "${p.historical}"`, severity: "error" });
+    // when it may be ordered, what makes it unsafe, what it needs: conditions on the case's own ids
+    issues.push(...checkCondition(c, ids, p.orderableWhen, [...at, "orderableWhen"]));
+    (p.restrictions ?? []).forEach((r, j) => issues.push(...checkCondition(c, ids, r.when, [...at, "restrictions", j, "when"])));
+    (p.prerequisites ?? []).forEach((r, j) => issues.push(...checkCondition(c, ids, r.when, [...at, "prerequisites", j, "when"])));
+    if (p.model.kind === "lab") p.model.analytes.forEach((a, j) => {
+      if (a.low >= a.high) issues.push({ path: formatPath([...at, "model", "analytes", j]), message: `reference interval of "${a.id}" is empty (low ≥ high)`, severity: "error" });
+    });
+  });
+  return issues;
 }

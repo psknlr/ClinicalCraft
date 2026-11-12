@@ -102,7 +102,7 @@
     {"id": "signpost", "type": "signpost", "x": 4.5, "z": 19.5}
   ],
   "staff": [
-    {"id": "receptionist", "role": "receptionist", "name": {"zh-CN": "郑女士（导诊）", "en": "Ms Zheng (reception)"}, "room": "lobby", "x": 2.0, "z": 8.3, "rot": 180, "greeting": {"zh-CN": "您好，急诊在东侧，二层是病房、ICU 和手术室。", "en": "Hello — the emergency department is to the east; wards, ICU and theatre are upstairs."}},
+    {"id": "receptionist", "role": "receptionist", "name": {"zh-CN": "郑女士（导诊）", "en": "Ms Zheng (reception)"}, "room": "lobby", "x": 2.0, "z": 8.3, "rot": 180, "appearance": {"presentation": "feminine"}, "greeting": {"zh-CN": "您好，急诊在东侧，二层是病房、ICU 和手术室。", "en": "Hello — the emergency department is to the east; wards, ICU and theatre are upstairs."}},
     {"id": "triage-nurse", "role": "nurse", "name": {"zh-CN": "冯护士（分诊）", "en": "Nurse Feng (triage)"}, "room": "triage", "x": 19.0, "z": 5.2, "rot": 180, "greeting": {"zh-CN": "分诊台：先测生命体征，再安排抢救间或隔间。", "en": "Triage: vital signs first, then a resus bay or a cubicle."}},
     {"id": "paramedic", "role": "paramedic", "name": {"zh-CN": "陈师傅（急救员）", "en": "Chen (paramedic)"}, "room": "ambulance-bay", "x": 28.4, "z": 7.5, "rot": 270, "greeting": {"zh-CN": "刚交接完一个病人，有需要随时叫我。", "en": "Just handed over a patient — call me if you need anything."}},
     {"id": "porter", "role": "porter", "name": {"zh-CN": "蒋师傅（护工）", "en": "Jiang (porter)"}, "room": "landing", "x": -1.0, "z": 3.4, "rot": 90, "greeting": {"zh-CN": "需要转运病人？电梯在东边，楼梯在西边。", "en": "Need a patient moved? The lift is on the east side, the stairs on the west."}}

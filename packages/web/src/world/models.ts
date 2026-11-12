@@ -11,12 +11,42 @@
  * Visual only: the collider is the type's footprint (the collision model),
  * and the interaction target stays the placement's — the model's own meshes
  * never take the aim; an invisible footprint box carries the placement id.
+ *
+ * A model may have layers (nodes named `layer:<id>`, docs/BLENDER.md): parts
+ * drawn only in the states whose look names them (`live.ts`) — and so never
+ * for a placement whose look does not follow its state.
  */
-import { Box3, BoxGeometry, Group, Mesh, MeshBasicMaterial, type Material, type Object3D, type Texture } from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
+import {
+  Box3,
+  BoxGeometry,
+  ClampToEdgeWrapping,
+  Group,
+  InstancedMesh,
+  LinearFilter,
+  LinearMipmapLinearFilter,
+  LinearMipmapNearestFilter,
+  Matrix4,
+  Mesh,
+  MeshBasicMaterial,
+  MirroredRepeatWrapping,
+  NearestFilter,
+  NearestMipmapLinearFilter,
+  NearestMipmapNearestFilter,
+  Quaternion,
+  RepeatWrapping,
+  Texture,
+  Vector3,
+  type MagnificationTextureFilter,
+  type Material,
+  type MinificationTextureFilter,
+  type Object3D,
+  type Wrapping,
+} from "three";
+import { GLTFLoader, type GLTFLoaderPlugin, type GLTFParser } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { DRACOLoader } from "three/examples/jsm/loaders/DRACOLoader.js";
 import type { MeshoptDecoder as MeshoptDecoderType } from "three/examples/jsm/libs/meshopt_decoder.module.js";
 import { fitModel, parseGlb, type EquipmentModel, type GlbBounds, type ModelFit } from "@clinicalcraft/core";
+import { layerOf, showLayers } from "./layers.js";
 
 let meshopt: Promise<typeof MeshoptDecoderType> | null = null;
 /**
@@ -43,6 +73,50 @@ export interface ModelOptions {
   fetch?: (url: string) => Promise<{ ok: boolean; status: number; arrayBuffer(): Promise<ArrayBuffer> }>;
 }
 
+const FILTERS: Record<number, MagnificationTextureFilter | MinificationTextureFilter> = {
+  9728: NearestFilter,
+  9729: LinearFilter,
+  9984: NearestMipmapNearestFilter,
+  9985: LinearMipmapNearestFilter,
+  9986: NearestMipmapLinearFilter,
+  9987: LinearMipmapLinearFilter,
+};
+const WRAPPINGS: Record<number, Wrapping> = { 33071: ClampToEdgeWrapping, 33648: MirroredRepeatWrapping, 10497: RepeatWrapping };
+
+/**
+ * GLTFLoader plugin: an image embedded in the GLB (a bufferView: the palette texture of
+ * scripts/blender's models) is decoded from its bytes with createImageBitmap — no blob: URL and
+ * no fetch, so a strict `connect-src` allows it and a reload or a disposed world that cuts a
+ * load short logs nothing. The texture is set up as GLTFParser.loadTextureImage does (sampler,
+ * wrapping, mipmaps, flipY). Other images, or no createImageBitmap: three's own path.
+ */
+export function embeddedImages(parser: GLTFParser): GLTFLoaderPlugin {
+  return {
+    name: "clinicalcraft_embedded_images",
+    loadTexture(index: number): Promise<Texture> | null {
+      const json = parser.json;
+      const def = json.textures?.[index];
+      const image = def?.source !== undefined ? json.images?.[def.source] : undefined;
+      if (!image || image.bufferView === undefined || typeof createImageBitmap !== "function") return null;
+      return parser.getDependency("bufferView", image.bufferView).then(async (data: ArrayBuffer) => {
+        const bitmap = await createImageBitmap(new Blob([data], { type: image.mimeType ?? "image/png" }), { premultiplyAlpha: "none", colorSpaceConversion: "none" });
+        const texture = new Texture(bitmap);
+        texture.flipY = false;
+        texture.name = def.name || image.name || "";
+        const sampler = json.samplers?.[def.sampler] ?? {};
+        texture.magFilter = (FILTERS[sampler.magFilter] as MagnificationTextureFilter | undefined) ?? LinearFilter;
+        texture.minFilter = (FILTERS[sampler.minFilter] as MinificationTextureFilter | undefined) ?? LinearMipmapLinearFilter;
+        texture.wrapS = WRAPPINGS[sampler.wrapS] ?? RepeatWrapping;
+        texture.wrapT = WRAPPINGS[sampler.wrapT] ?? RepeatWrapping;
+        texture.generateMipmaps = texture.minFilter !== NearestFilter && texture.minFilter !== LinearFilter;
+        texture.needsUpdate = true;
+        parser.associations.set(texture, { textures: index });
+        return texture;
+      });
+    },
+  };
+}
+
 /** URL of a model URI: absolute URLs, data:/blob: URIs and root paths as they are; relative ones under `baseUrl`. */
 export function modelUrl(uri: string, baseUrl = "/local-assets/"): string {
   if (/^(?:[a-z][a-z0-9+.-]*:|\/)/i.test(uri)) return uri;
@@ -63,7 +137,7 @@ export async function sha256Hex(buf: ArrayBuffer): Promise<string | null> {
   return [...digest].map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
-/** Bounds of an object in its own frame (the loaded scene before any fit). */
+/** Bounds of an object in its own frame (the loaded scene before any fit) — everything in it, every layer included. */
 export function objectBounds(o: Object3D): GlbBounds | null {
   o.updateMatrixWorld(true);
   const box = new Box3().setFromObject(o);
@@ -100,6 +174,7 @@ export class ModelCache {
   private disposed = false;
 
   constructor(opts: ModelOptions = {}) {
+    this.loader.register(embeddedImages);
     this.baseUrl = opts.baseUrl ?? "/local-assets/";
     if (opts.dracoPath) {
       this.draco = new DRACOLoader();
@@ -146,6 +221,12 @@ export class ModelCache {
   }
 }
 
+/**
+ * Models whose footprint is smaller than this on every side (m) cast no shadow: an instrument's
+ * shadow is a texel or two of the shadow map, and every caster costs the shadow pass a draw call.
+ */
+export const MODEL_SHADOW_MIN = 0.3;
+
 /** An invisible box (the footprint) that carries the aim for a modelled placement: rendered never, ray-tested always. */
 const PROXY_MATERIAL = new MeshBasicMaterial({ visible: false });
 const PROXY_BOX = new BoxGeometry(1, 1, 1);
@@ -159,8 +240,10 @@ export interface PlacedModel {
 
 /**
  * Put a loaded model at a placement: a group at the placement's origin and
- * rotation holding a clone of the scene with the fit transform (shadows on,
- * never ray-tested) and an invisible footprint box owned by the placement.
+ * rotation holding a clone of the scene with the fit transform (shadows on, except
+ * for small items: `MODEL_SHADOW_MIN`; never ray-tested) and an invisible footprint
+ * box owned by the placement. The model's layers are hidden: a placement whose look
+ * follows its state shows the ones its state names (`live.ts`).
  */
 export function placeModel(
   scene: Object3D,
@@ -176,13 +259,15 @@ export function placeModel(
   model.scale.set(...fit.scale);
   model.rotation.set(0, fit.rotY, 0);
   model.position.set(...fit.position);
+  const casts = shadows && Math.max(footprint.w, footprint.d, footprint.h) >= MODEL_SHADOW_MIN;
   model.traverse((o) => {
     o.raycast = () => {};
     if ((o as Mesh).isMesh) {
-      o.castShadow = shadows;
+      o.castShadow = casts;
       o.receiveShadow = true;
     }
   });
+  showLayers(model, []);
   const group = new Group();
   group.name = `model:${at.id}`;
   group.position.set(at.x, at.y, at.z);
@@ -195,6 +280,79 @@ export function placeModel(
   group.add(proxy);
   group.updateMatrixWorld(true);
   return { group, proxy, fit };
+}
+
+/** The invisible footprint box carrying the aim for one placement (world transform; owner = the placement). */
+function aimProxy(footprint: { w: number; d: number; h: number }, at: { x: number; y: number; z: number; rot: number; id: string }): Mesh {
+  const proxy = new Mesh(PROXY_BOX, PROXY_MATERIAL);
+  proxy.scale.set(footprint.w, footprint.h, footprint.d);
+  proxy.rotation.y = (at.rot * Math.PI) / 180;
+  proxy.position.set(at.x, at.y + footprint.h / 2, at.z);
+  proxy.userData.owner = at.id;
+  proxy.updateMatrixWorld(true);
+  return proxy;
+}
+
+export interface InstancedModel {
+  /** One instanced mesh per mesh of the model: an instance per placement, at its fitted transform. */
+  meshes: InstancedMesh[];
+  /** The aim proxy of each placement (same order). */
+  proxies: Mesh[];
+  fits: ModelFit[];
+}
+
+/**
+ * Draw the static placements of one model as instances: a draw call per mesh (primitive) of the
+ * model however many placements there are, each instance where `placeModel` would put a clone
+ * (shadows as there, never ray-tested), plus an invisible aim proxy per placement. Portable
+ * placements (carts, handheld items) move one by one and keep `placeModel`; so do the placements
+ * whose look follows their state. What is in a layer of the model is left out: only such a
+ * placement ever shows one.
+ */
+export function instanceModel(
+  scene: Object3D,
+  placements: readonly { ref: Pick<EquipmentModel, "scale" | "rot" | "offset">; footprint: { w: number; d: number; h: number }; at: { x: number; y: number; z: number; rot: number; id: string } }[],
+  shadows: boolean,
+): InstancedModel | null {
+  const bounds = objectBounds(scene);
+  if (!bounds || !placements.length) return null;
+  scene.updateMatrixWorld(true);
+  const sources = meshesOf(scene);
+  const fits: ModelFit[] = [];
+  const frames: Matrix4[] = [];
+  const up = new Vector3(0, 1, 0);
+  for (const p of placements) {
+    const fit = fitModel(bounds, p.ref, p.footprint);
+    fits.push(fit);
+    const place = new Matrix4().compose(new Vector3(p.at.x, p.at.y, p.at.z), new Quaternion().setFromAxisAngle(up, (p.at.rot * Math.PI) / 180), new Vector3(1, 1, 1));
+    const fitted = new Matrix4().compose(new Vector3(...fit.position), new Quaternion().setFromAxisAngle(up, fit.rotY), new Vector3(...fit.scale));
+    frames.push(place.multiply(fitted));
+  }
+  const meshes = sources.map((src) => {
+    const im = new InstancedMesh(src.geometry, src.material, placements.length);
+    im.name = `model:${src.name || "mesh"}`;
+    const m = new Matrix4();
+    frames.forEach((frame, i) => im.setMatrixAt(i, m.multiplyMatrices(frame, src.matrixWorld)));
+    im.instanceMatrix.needsUpdate = true;
+    im.castShadow = shadows && Math.max(placements[0].footprint.w, placements[0].footprint.d, placements[0].footprint.h) >= MODEL_SHADOW_MIN;
+    im.receiveShadow = true;
+    im.raycast = () => {};
+    im.computeBoundingSphere();
+    return im;
+  });
+  return { meshes, proxies: placements.map((p) => aimProxy(p.footprint, p.at)), fits };
+}
+
+/** The meshes of a model that are in none of its layers. */
+function meshesOf(o: Object3D): Mesh[] {
+  const out: Mesh[] = [];
+  const visit = (c: Object3D): void => {
+    if (layerOf(c) !== null) return;
+    if ((c as Mesh).isMesh) out.push(c as Mesh);
+    for (const child of c.children) visit(child);
+  };
+  visit(o);
+  return out;
 }
 
 /** The shared proxy geometry/material are module-level (never disposed with a world). */

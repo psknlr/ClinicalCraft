@@ -1,10 +1,12 @@
 /**
- * What a voxel world draws for the player rather than of the facility: the first-person hand (V4) holding the
- * selected block, the outline around the aimed target or block, and the golden waypoint beacon over the
- * current objective's destination, with its label (`WorldApi.setWaypoint`).
+ * What a voxel world draws for the player rather than of the facility: the first-person hand holding the chest
+ * piece of a stethoscope in every hotbar slot (`figure/held.ts`; the hotbar shows the selected block), the
+ * outline around the aimed target or block, and the golden waypoint beacon over the current objective's
+ * destination, with its label (`WorldApi.setWaypoint`).
  */
-import { BoxGeometry, Color, EdgesGeometry, Group, LineBasicMaterial, LineSegments, Mesh, MeshBasicMaterial, MeshStandardMaterial, type Material, type Object3D, type Vector3 } from "three";
+import { BoxGeometry, Color, EdgesGeometry, Group, LineBasicMaterial, LineSegments, Mesh, MeshBasicMaterial, MeshStandardMaterial, type Object3D, type Vector3 } from "three";
 import type { WorldPoint } from "../contracts.js";
+import { buildHeld } from "./figure/held.js";
 import { UNIT_BOX } from "./voxels.js";
 import type { VoxelWorld } from "./voxel-world.js";
 
@@ -12,8 +14,6 @@ import type { VoxelWorld } from "./voxel-world.js";
 export class Overlay {
   /** The first-person hand (a child of the camera). */
   readonly hand: Group;
-  /** The block in the hand (hotbar block slots). */
-  readonly held: Mesh;
   /** The outline around the aimed target or block. */
   readonly highlight: LineSegments;
   readonly beacon: Group;
@@ -24,7 +24,7 @@ export class Overlay {
   private beaconLabel: Object3D | null = null;
 
   constructor(private readonly world: VoxelWorld) {
-    const { stage, lib } = world;
+    const { stage } = world;
     const { camera, scene } = stage;
     /* ---------------- hand, highlight, beacon ---------------- */
     const hand = new Group();
@@ -32,21 +32,7 @@ export class Overlay {
     camera.add(hand);
     hand.position.set(0.4, -0.39, -0.58);
     hand.rotation.set(-0.12, -0.17, -0.2);
-    const handMesh = (mat: Material, x: number, y: number, z: number, sx: number, sy: number, sz: number) => {
-      const m = new Mesh(UNIT_BOX, mat);
-      m.position.set(x, y, z);
-      m.scale.set(sx, sy, sz);
-      hand.add(m);
-      return m;
-    };
-    handMesh(lib.get("skin"), 0, 0, 0, 0.16, 0.27, 0.18);
-    handMesh(lib.get("white"), 0, -0.22, 0, 0.19, 0.2, 0.21);
-    const held = new Mesh(UNIT_BOX, lib.get("wood"));
-    this.held = held;
-    held.scale.setScalar(0.22);
-    held.position.set(-0.02, 0.2, -0.01);
-    held.visible = false;
-    hand.add(held);
+    hand.add(buildHeld());
 
     const highlight = new LineSegments(new EdgesGeometry(new BoxGeometry(1.01, 1.01, 1.01)), new LineBasicMaterial({ color: "#faf6cf", transparent: true, opacity: 0.85 }));
     this.highlight = highlight;

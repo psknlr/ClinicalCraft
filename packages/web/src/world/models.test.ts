@@ -5,12 +5,16 @@
  */
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
-import { Box3, Mesh, type Object3D } from "three";
+import { Box3, Matrix4, Mesh, NearestFilter, type MeshStandardMaterial, type Object3D } from "three";
 import { encodeGlb, fitModel } from "@clinicalcraft/core";
-import { ModelCache, modelUrl, objectBounds, placeModel, sha256Hex } from "./models.js";
+import { layerOf, showLayers } from "./layers.js";
+import { instanceModel, MODEL_SHADOW_MIN, ModelCache, modelUrl, objectBounds, placeModel, sha256Hex } from "./models.js";
 
-/** A box mesh w × h × d standing on y = 0 (8 vertices, 12 triangles). */
-function boxGlb(w: number, h: number, d: number): Uint8Array {
+/**
+ * A box mesh w × h × d standing on y = 0 (8 vertices, 12 triangles); `more`: further nodes of the same mesh
+ * (a model in layers: nodes named `layer:<id>`, each where its `translation` puts it).
+ */
+function boxGlb(w: number, h: number, d: number, more: Record<string, unknown>[] = []): Uint8Array {
   const pos = new Float32Array(24);
   for (let i = 0; i < 8; i++) pos.set([i & 1 ? w / 2 : -w / 2, i & 2 ? h : 0, i & 4 ? d / 2 : -d / 2], i * 3);
   const idx = new Uint16Array([0, 1, 3, 0, 3, 2, 4, 6, 7, 4, 7, 5, 0, 4, 5, 0, 5, 1, 2, 3, 7, 2, 7, 6, 0, 2, 6, 0, 6, 4, 1, 5, 7, 1, 7, 3]);
@@ -20,8 +24,8 @@ function boxGlb(w: number, h: number, d: number): Uint8Array {
   return encodeGlb(
     {
       asset: { version: "2.0" },
-      scenes: [{ nodes: [0] }],
-      nodes: [{ mesh: 0 }],
+      scenes: [{ nodes: [0, ...more.map((_, i) => i + 1)] }],
+      nodes: [{ mesh: 0 }, ...more.map((n) => ({ mesh: 0, ...n }))],
       meshes: [{ primitives: [{ attributes: { POSITION: 0 }, indices: 1, material: 0 }] }],
       materials: [{ pbrMetallicRoughness: { baseColorFactor: [0.8, 0.8, 0.8, 1] } }],
       buffers: [{ byteLength: bin.byteLength }],
@@ -132,6 +136,167 @@ describe("placeModel", () => {
     expect((placed.proxy.material as { visible: boolean }).visible).toBe(false);
     // the cached scene itself is untouched (clones per placement)
     expect(scene.scale.x).toBe(1);
+    // a small item (an instrument on the back table) casts no shadow
+    const small = placeModel(scene, {}, { w: 0.16, d: 0.04, h: 0.03 }, { x: 0, y: 0.9, z: 0, rot: 0, id: "or-1.scalpel" }, true)!;
+    expect(MODEL_SHADOW_MIN).toBeGreaterThan(0.16);
+    for (const m of meshes(small.group.children.find((c) => c !== small.proxy)!)) expect(m.castShadow).toBe(false);
     cache.dispose();
+  });
+});
+
+describe("instanceModel", () => {
+  it("draws static placements as instances where placeModel would put each clone, with an aim proxy each", async () => {
+    const cache = new ModelCache({ fetch: server({ "/local-assets/bed.glb": glb }).fetch });
+    const scene = await cache.load("bed.glb");
+    const footprint = { w: 1, d: 2, h: 0.5 };
+    const placements = [
+      { ref: { scale: 0.5 }, footprint, at: { x: 3, y: 5, z: -2, rot: 90, id: "or-1.bed" } },
+      { ref: { offset: [0, 0.2, 0.1] as [number, number, number] }, footprint, at: { x: -4, y: 5, z: 6, rot: 180, id: "or-2.bed" } },
+    ];
+    const inst = instanceModel(scene, placements, true)!;
+    expect(inst.meshes).toHaveLength(meshes(scene).length);
+    const im = inst.meshes[0];
+    expect(im.count).toBe(2);
+    expect(im.castShadow).toBe(true);
+    const hits: unknown[] = [];
+    im.raycast({} as never, hits as never);
+    expect(hits).toEqual([]);
+    placements.forEach((p, i) => {
+      const clone = placeModel(scene, p.ref, p.footprint, p.at, true)!;
+      const mesh = meshes(clone.group.children.find((c) => c !== clone.proxy)!)[0];
+      const got = new Matrix4();
+      im.getMatrixAt(i, got);
+      got.elements.forEach((v, k) => expect(v).toBeCloseTo(mesh.matrixWorld.elements[k], 6));
+      expect(inst.proxies[i].userData.owner).toBe(p.at.id);
+      expect(inst.proxies[i].matrixWorld.elements.map((v) => +v.toFixed(6))).toEqual(clone.proxy.matrixWorld.elements.map((v) => +v.toFixed(6)));
+    });
+    expect(instanceModel(scene, [{ ...placements[0], footprint: { w: 0.16, d: 0.04, h: 0.03 } }], true)!.meshes[0].castShadow).toBe(false);
+    cache.dispose();
+  });
+});
+
+describe("a model in layers (nodes named layer:<id>)", () => {
+  // a table (the model's own mesh), a scope standing on it and a drain beside it — each a layer
+  const layered = boxGlb(2, 1, 4, [
+    { name: "layer:scope", translation: [0, 1, 0], scale: [0.1, 1, 0.1] },
+    { name: "layer:chest-tube.001", translation: [1.5, 0, 0], scale: [0.5, 0.2, 0.25] },
+    { name: "trim" },
+  ]);
+  const load = async () => {
+    const cache = new ModelCache({ fetch: server({ "/local-assets/station.glb": layered }).fetch });
+    return { cache, scene: await cache.load("station.glb") };
+  };
+  const named = (o: Object3D, name: string): Object3D => {
+    let found: Object3D | null = null;
+    o.traverse((c) => {
+      if (c.userData.name === name) found = c;
+    });
+    if (!found) throw new Error(`no node ${name}`);
+    return found;
+  };
+
+  it("the loader keeps a node's own name beside the one it cleans: that is where a layer is read", async () => {
+    const { cache, scene } = await load();
+    const scope = named(scene, "layer:scope");
+    expect(scope.name).not.toContain(":"); // three strips what its animation paths reserve
+    expect(layerOf(scope)).toBe("scope");
+    expect(layerOf(named(scene, "layer:chest-tube.001"))).toBe("chest-tube");
+    expect(layerOf(named(scene, "trim"))).toBeNull();
+    expect(showLayers(scene.clone(true), [])).toEqual(["chest-tube", "scope"]);
+    // the model is fitted to everything in the file: the scope stands 1 m above the table, the drain reaches 1 m past its side
+    const b = objectBounds(scene)!;
+    expect(b.size[1]).toBeCloseTo(2);
+    expect(b.max[0]).toBeCloseTo(2);
+    expect(b.min[0]).toBeCloseTo(-1);
+    cache.dispose();
+  });
+
+  it("a placed copy hides every layer until a look shows one; the copy keeps what each node is", async () => {
+    const { cache, scene } = await load();
+    const placed = placeModel(scene, { scale: 1 }, { w: 3, d: 4, h: 2 }, { x: 0, y: 0, z: 0, rot: 0, id: "st-1" }, true)!;
+    const model = placed.group.children.find((c) => c !== placed.proxy)!;
+    expect(named(model, "layer:scope").visible).toBe(false);
+    expect(named(model, "layer:chest-tube.001").visible).toBe(false);
+    expect(named(model, "trim").visible).toBe(true);
+    expect(showLayers(model, ["scope"])).toEqual(["chest-tube", "scope"]);
+    expect(named(model, "layer:scope").visible).toBe(true);
+    expect(named(model, "layer:chest-tube.001").visible).toBe(false);
+    // the cached scene is not a placement: nothing of it was hidden, and another copy starts hidden again
+    expect(named(scene, "layer:scope").visible).toBe(true);
+    const other = placeModel(scene, { scale: 1 }, { w: 3, d: 4, h: 2 }, { x: 5, y: 0, z: 0, rot: 0, id: "st-2" }, true)!;
+    expect(named(other.group, "layer:scope").visible).toBe(false);
+    cache.dispose();
+  });
+
+  it("instances — placements whose look does not follow their state — never draw a layer", async () => {
+    const { cache, scene } = await load();
+    expect(meshes(scene)).toHaveLength(4);
+    const inst = instanceModel(scene, [{ ref: { scale: 1 }, footprint: { w: 3, d: 4, h: 2 }, at: { x: 0, y: 0, z: 0, rot: 0, id: "st-1" } }], true)!;
+    // the table and its trim: two meshes; the scope and the drain are left out
+    expect(inst.meshes).toHaveLength(2);
+    // …placed by the fit of the whole model all the same (the table is where it would be with its layers shown)
+    const clone = placeModel(scene, { scale: 1 }, { w: 3, d: 4, h: 2 }, { x: 0, y: 0, z: 0, rot: 0, id: "st-1" }, true)!;
+    const table = meshes(clone.group.children.find((c) => c !== clone.proxy)!)[0];
+    const got = new Matrix4();
+    inst.meshes[0].getMatrixAt(0, got);
+    got.elements.forEach((v, k) => expect(v).toBeCloseTo(table.matrixWorld.elements[k], 6));
+    cache.dispose();
+  });
+});
+
+describe("embedded images (the palette texture)", () => {
+  it("are decoded from the GLB's bytes — no blob: URL, no fetch — and set up from the sampler", async () => {
+    // a one-triangle mesh whose material samples an embedded PNG (bufferView 2) with a nearest sampler
+    const pos = new Float32Array([0, 0, 0, 1, 0, 0, 0, 1, 0]);
+    const uv = new Float32Array([0.5, 0.5, 0.5, 0.5, 0.5, 0.5]);
+    const png = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a, 0, 0, 0, 0]);
+    const bin = new Uint8Array(pos.byteLength + uv.byteLength + png.byteLength);
+    bin.set(new Uint8Array(pos.buffer), 0);
+    bin.set(new Uint8Array(uv.buffer), pos.byteLength);
+    bin.set(png, pos.byteLength + uv.byteLength);
+    const bytes = encodeGlb(
+      {
+        asset: { version: "2.0" },
+        scenes: [{ nodes: [0] }],
+        nodes: [{ mesh: 0 }],
+        meshes: [{ primitives: [{ attributes: { POSITION: 0, TEXCOORD_0: 1 }, material: 0 }] }],
+        materials: [{ pbrMetallicRoughness: { metallicRoughnessTexture: { index: 0 } } }],
+        textures: [{ sampler: 0, source: 0 }],
+        samplers: [{ magFilter: 9728, minFilter: 9728 }],
+        images: [{ bufferView: 2, mimeType: "image/png" }],
+        buffers: [{ byteLength: bin.byteLength }],
+        bufferViews: [
+          { buffer: 0, byteOffset: 0, byteLength: pos.byteLength },
+          { buffer: 0, byteOffset: pos.byteLength, byteLength: uv.byteLength },
+          { buffer: 0, byteOffset: pos.byteLength + uv.byteLength, byteLength: png.byteLength },
+        ],
+        accessors: [
+          { bufferView: 0, componentType: 5126, count: 3, type: "VEC3", min: [0, 0, 0], max: [1, 1, 0] },
+          { bufferView: 1, componentType: 5126, count: 3, type: "VEC2" },
+        ],
+      },
+      bin,
+    );
+    const decoded: Blob[] = [];
+    const g = globalThis as Record<string, unknown>;
+    const saved = { createImageBitmap: g.createImageBitmap, createObjectURL: URL.createObjectURL };
+    const objectUrls: unknown[] = [];
+    g.createImageBitmap = async (blob: Blob) => (decoded.push(blob), { width: 1, height: 1, close() {} });
+    URL.createObjectURL = (o: Blob | MediaSource) => (objectUrls.push(o), "blob:never");
+    try {
+      const { fetch, calls } = server({ "/local-assets/palette.glb": bytes });
+      const cache = new ModelCache({ fetch });
+      const mesh = meshes(await cache.load("palette.glb"))[0];
+      const map = (mesh.material as MeshStandardMaterial).metalnessMap!;
+      expect(map).toBeTruthy();
+      expect([map.magFilter, map.minFilter, map.generateMipmaps, map.flipY]).toEqual([NearestFilter, NearestFilter, false, false]);
+      expect(decoded.map((b) => [b.type, b.size])).toEqual([["image/png", png.byteLength]]);
+      expect(objectUrls).toEqual([]);
+      expect(calls).toEqual(["/local-assets/palette.glb"]);
+      cache.dispose();
+    } finally {
+      g.createImageBitmap = saved.createImageBitmap;
+      URL.createObjectURL = saved.createObjectURL;
+    }
   });
 });

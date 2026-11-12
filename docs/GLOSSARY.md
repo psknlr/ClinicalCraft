@@ -46,6 +46,21 @@ names. Only the words around them follow the glossary.
 | approval mode `bypass` | 跳过 (agent), 绕过 (web) | **绕过** | one word |
 | grounding benchmark (`bench grounding`) | 语义落地基准 | **事实依据基准** | 语义落地 is NLP jargon; the benchmark checks that answers and acts rest on the case record (依据病例) |
 | debrief `boundaries` | 复评边界 / "Boundaries" (web), 证据边界 / "Evidence boundaries" (CLI) | **证据边界** / **evidence boundaries** | what the evidence does and does not show |
+| the operative field of a case's `procedure` | — | **术野** / **operative field** | the surgeon's word for what the laparoscope shows and the instruments act on |
+| `views[]` "cvs" | — | **关键安全视野** / **critical view of safety** (CVS) | the established term (Strasberg; SAGES); never "安全视图" |
+| `safety-pause` | — | **安全暂停** / **safety pause** | a pause before an irreversible step to state the critical view; it records the operator's judgement and is never shown as a verification |
+| `bailout` strategies | — | **补救策略** / **bail-out** (求助、胆囊次全切除、中转开腹) | the safe alternatives when the critical view cannot be reached; not "失败方案" |
+| `procedure.variants` | — | **解剖变异** / **anatomical variant** (假设性 / counterfactual when the source does not report it) | the patient's real anatomy in a session, hidden from the operator; never "版本" or "变体" |
+| region `fibrosis` | — | **致密纤维化** / **dense fibrosis**; a frozen triangle: **“冰冻”三角** | what severe chronic inflammation does to the planes; the `dense-fibrosis` signal reads "组织致密，层次已无法分开" |
+| a duct or vessel handle `T1…` | — | **结构 T1…** / **structure T1…** | what the operator sees before identifying it; the anatomy's name appears only after imaging |
+| the web window that runs the operation (`surgery`) | — | **腹腔镜手术** / **Laparoscopic surgery** (HUD button 手术 / Surgery) | names what the learner does, not the engine part |
+| the laparoscopic picture kept beside the theatre (`scope-dock`) | — | **腹腔镜画面** / **Laparoscope**; its states 实时 / Live, 腹腔镜在体外 / Scope outside the patient, 已中转开腹 / Converted to open | the picture, not a window: it stays in view whatever window is open |
+| the camera an endoscope's picture comes from (capability `endoscopic-camera`) | 腹腔镜摄像系统 / "a laparoscopic camera" | **内镜摄像系统** / **an endoscopic camera** | a laparoscopy tower and a thoracoscopy tower both supply it, so the label names neither scope; the messages of a laparoscopic operation itself still say 腹腔镜 / laparoscopic |
+| what a screen of kind `thoracoscopy` shows | — | **胸腔镜画面** / **the thoracoscope's picture** | a representative picture of what the equipment is for, as a `pacs` screen's slice is; never called a finding or a live image |
+| a body drawn with equipment (an equipment type's `manikin`): the patient simulator of a training station | — | **模拟人** / **a manikin** (of a station: **a patient simulator**) | it is drawn as the people of the world are, and it is nobody — never 患者 / "the patient" in the text of a station, which rehearses a sequence on a simulator |
+| what is drawn of equipment in a state (a behaviour state's `look`) | — | technical **状态外观** / **a state's look** | content authors' word: it follows the state and decides nothing; learners never read it — they see the station change |
+| a part of an equipment model drawn only in some states (a node `layer:<id>`) | — | **图层** / **layer** (`assets inspect` prints 图层 / Layers) | the word modelling tools use for parts shown and hidden together; never 层 alone, which is a storey (楼层) here |
+| `portPlans[]` | — | **布孔方案** / **port plan** | the surgical term for where the trocars go |
 | work-up plan | "workup plan" (agent, CLI) | **work-up plan** | British spelling of the noun; the tool keeps its id `update_workup` |
 | operating room (case setting, room kind) | "Operating room" (web, CLI) | **operating theatre** | British usage, as the world and facilities already say; the id stays `operating-room` |
 | the CMCR collections (library filter, card label) | 中华病例说 · 多专科疑难（{n} 例）, 多专科疑难病例集 / "CMCR · multispecialty cases ({n})", "Multispecialty collection" (web); 中华病例说 · 20 例 / "CMCR · 20 cases" (docs) | **中华病例说 · 原选病例（{n} 例）**, label **原选病例集** / **CMCR · original selection ({n})**, label **Original selection**; **中华病例说 · 新增病例（{n} 例）**, label **新增病例集** / **CMCR · additional cases ({n})**, label **Additional collection** | a collection is named for how it joined the library, the same way in both languages: 疑难 ("difficult") judged the cases and had no counterpart in "multispecialty", and both collections are multispecialty |
@@ -123,7 +138,19 @@ developer documents use.
 | test | test (formal: investigation) | 检查（正式：辅助检查） | `order_test`, `investigations[]` |
 | treatment | treatment; give (formal: intervention) | 处置；给予 | `intervene`, `interventions[]` |
 | result, critical result | result, critical result | 结果、危急值 | `read_result`, `critical` |
+| consultation vs teaching hint | a consultation (consult a colleague: their specialty, from the record); a teaching hint (asked for explicitly: /hint, request_hint — counts against the score) | 会诊（向同事咨询：按其专科、依据病历）；教学提示（须明确申请：/hint、request_hint——计入评分） | `consult` never records a hint; `request_hint`, `/hint` | never inferred from the words of a consultation |
+| position (a staff member's job) | the job a member of staff holds, finer than their facility role: scrub, circulating, ward or recovery nurse; surgeon, assistant surgeon, anaesthetist, physician… | 岗位（洗手护士、巡回护士、病房护士、复苏室护士；主刀医生、助手医生、麻醉医生…） | `StaffPositionSchema`, `staff.position`, `positionOf` | never "role" for this: `role` is what a body may do in the world |
+| role card | a position's job description: mission, responsibilities, what it may and never does, how it communicates, whom it escalates to, what it knows | 岗位职责卡 | `ROLE_CARDS`, `roleSection` (`<role>`), docs/CHARACTERS.md | a card never grants an act the world or the scope of practice refuses |
+| character engine | how the characters are driven: by the rules, or by each character's model within its role card | 角色驱动方式：规则驱动 / 大模型驱动 | `characters.engine: "rules" \| "llm"`, `--characters` | learner-facing "model-driven characters" / 大模型驱动的角色; the rules always stand in when a model is missing, slow or off-script |
+| safety datum status | not asked; remains unknown (asked; not recorded); verified — none / present; managed by a documented precaution | 未询问；仍不明（已询问，记录中没有）；已核实——无 / 有；已按记录的预防措施处理 | `history[].safety`, `datumStatus`, intervention `reports` / `mitigates` | asking is not confirming |
 | record review | record review (an existing report read from the notes or the EHR) | 病历查阅（在病历或电子病历中调阅已有报告） | `investigations[].performedAt: "records"` |
+| retrieve an existing report | Retrieve an existing report | 调阅已有报告 | `retrieve_report` (the published case only; never orders) |
+| order a new investigation | Order a new investigation | 开具新检查 | `order_study`, `case.studies[]` test profiles ([STUDIES.md](STUDIES.md)) |
+| simulated investigation | Simulated investigation (a study done in this encounter, from the case's teaching profile) | 模拟检查（本次接诊中完成，依据病例的教学配置生成） | `SessionState.studies`, `read_study`; never shown as the patient's record |
+| published source record | Published source record | 原始病例记录 | `investigations[]` results |
+| historical material unavailable | Historical material unavailable (the published case has no such record) | 原始病例中无此资料 | a record result `available: false`, or none |
+| record not yet created | Record not yet created (written later in the encounter) | 该记录尚未产生 | `recordAvailability` `not-yet`, `investigations[].availability` |
+| accession | accession (one acquisition of an ordered study: a tracing, a sample) | 检查号（一次采集：一份描记或一份标本） | `StudyAccession.id`, e.g. `ecg-12lead-1` |
 | cannot speak, cannot answer | "<name> cannot speak: <reason>" (approach), "<name> cannot answer: <reason>" (a question) — narrated | “<姓名>无法说话：<原因>”（走近时）、“<姓名>无法回答：<原因>”（提问时）——以旁白呈现 | `patient.nonVerbalWhen`, `nonVerbalReason`, rejection `cannot-answer` |
 | work-up plan | work-up plan | 诊疗计划 | `update_workup` |
 | bedside | bedside | 床旁 | the bedside rule (EMBODIED §6) |
@@ -141,6 +168,24 @@ developer documents use.
 | equipment operation | operate the equipment (device operations) | 设备操作 | world action / 世界动作: `world_action`, `interact_object` |
 | refusal | "Not here: …" with the reason and the way | “此处无法进行：……”及原因与去路 | spatial refusal: `SPATIAL_REQUIREMENT_UNMET`, `hint.goal` |
 | Go there | Go there | 前往 | a `navigate` to `hint.goal` |
+| care team | care team (Team button, the team panel) | 手术团队（“团队”按钮、团队面板） | `case.team`, `TeamScheduler`, docs/TEAM.md | the staff of a room working on their own; learner text never says "agent" or "scheduler" for them |
+| circulating nurse / scrub nurse | circulating nurse; scrub nurse | 巡回护士；洗手护士 | duties `circulate`, `instruments`, `count` | named by the facility ("Nurse Aisyah (circulating)" / 阿伊莎护士（巡回）) |
+| surgeon | surgeon (the learner in the team's words) | 术者 | member `surgeon`, `PRIMARY_ACTOR` | 术者, not 主刀 or 外科医生, in team speech |
+| read-back (check-back) | read back; "A needle holder to the surgeon — confirm?" | 复述确认；“持针器递给术者——确认吗？” | message kinds `request` → `readback` → `confirm` (TeamSTEPPS check-back) | |
+| escalate | tell the surgeon why ("… hasn't arrived — …") | 上报（向术者说明原因） | message kind `escalate` | always with the reason |
+| relief colleague | relief colleague (called by phone) | 顶班同事（电话联系） | scenario `relief` | |
+| assistant (at the operating table); hold the traction; let go | assistant surgeon; "Please hold the grasper in port B."; the traction has gone: the window has closed | 助手；“请拉住 B 孔的抓钳。”；牵引已松开：术野窗口已闭合 | `delegate_task hold_traction` / `release_traction`, `operate {op: "hand-over"}` with `actor`, `PortState.holder`, signal `exposure-lost` | the assistant holds with their own hands: when they leave the table, the traction falls |
+| hand over the anaesthetic (relief) | "I'll hand over first."; "I've taken over the anaesthetic from …"; Anaesthesia handed over at 08:43: … | 麻醉交接；“我先交接。”；“我已从……手里接过麻醉管理。” | `team.cover`, duty `anaesthesia`, a `note` recording it (TEAM.md §5) | an anaesthetised patient is never left without an anaesthetist |
+| count; hold on closure | count (closing count); "please hold closure and check the wound"; recount | 清点（关闭前清点）；“请暂停关闭，检查术野”；复点 | `team.count`, `about.hold`, `about.recount`, `CountLedger`; the count record `SessionState.count` (`count` action) | an unresolved count ends with an X-ray before the patient leaves; the count is kept item by item (逐件), never as a bare number |
+| count discrepancy; not in the count; set aside | "Count incorrect — 4 of 5 swabs"; "1 not in the count"; "set aside off the field" | 清点不符；“不在清点内”；“移出手术野另放” | count statuses `discrepancy` / `unresolved` / `excluded` / `reconciled`; `missing`, `unexpected`; `transfer` | a swab from another room is not in this count: six of five is a discrepancy, not "correct" |
+| unsafe progression | "Closed while the count was not settled: recorded as an unsafe progression for the debrief" | 不安全推进（“在清点未相符时关闭：已记为不安全推进，供复盘”） | `CountRecord.unsafe`, `{ "count": { "unsafe": true } }` | recorded, never erased; not 违规 (a rule broken) — a step taken on an unsafe basis |
+| search | Search within reach; Check the wound | 在身边仔细查找；检查术野 | world operation `search` (`targetId`: the patient), concealed items (EMBODIED §8.6) | |
+| learner mode / observer mode (team) | I am the surgeon; Observe | 我来当术者；观察 | `team surgeon learner \| simulated` (observer mode = the simulated surgeon) | |
+| team pace | Team pace: Auto / Step / Next step | 团队节奏：自动 / 单步 / 下一步 | autonomy `auto` / `step` (`team resume` / `pause` / `step`) | |
+| checklist step; invalid (out of order) | WHO Sign In / Time Out / Sign Out; "Recorded as INVALID — out of order" | WHO 麻醉前核查 / 切皮前暂停核查 / 离室前核查；“已记为无效——顺序不对” | `checklist: true`, `InterventionRecord.invalid` | never "given" or "done" when invalid |
+| hold (withheld clearance); release after reassessment | "Induction is on hold — placed by the attending: …"; "released after reassessment: …" | 暂缓（不同意继续）；“诱导已被上级医师暂缓：……”；重新评估后解除 | `hold` / `release-hold` actions, `place_hold` / `release_hold`, `held`, code `on-hold` | 暂缓, not 禁止 or 冻结: a decision that waits on a reassessment |
+| what is still needed; next | "· WHO Time Out … → next: intervene …" | 仍需；下一步 | `case_status` requirements (`explainCondition`) | met ✓ / open · |
+| teaching correction | "Correction: …" | 纠正：…… | `npcs[].corrections` | authored teaching, said by the colleague who catches the error |
 
 ### Assessment and debrief
 
@@ -168,10 +213,13 @@ developer documents use.
 | trace | trace (live trace) | 轨迹（实时轨迹） | episode trace, `--trace` | |
 | transcript | transcript (session record) | 会话记录 | JSONL transcript | |
 | approval | approve, deny, approval | 批准、拒绝、审批 | approval gate | |
+| equipment model | 3D model (of an equipment type) | 设备模型 | `model` (GLB/glTF), `clinicalcraft assets inspect` | visual only: the voxel parts stay the fallback and the footprint the collider ([ASSETS.md](ASSETS.md)) |
+| model use status | cleared; research only; licence check pending | 可发布；仅限研究；许可待核实 | `model.use`: `cleared` / `research-only` / `pending`; `model.source` (provenance) | never "approval" (审批 is the action gate) |
 | grounding | grounded in the case record: facts only from the case | 依据病例：事实只来自病例记录 | grounding rules (ARCHITECTURE §2.1) | "grounding" is technical; learners read what it means |
 | grounding check | grounding check | 事实核验 | `verifyGrounding` | |
 | benchmark | benchmark | 基准测试 | `bench` | |
 | grounding benchmark | grounding benchmark | 事实依据基准 | `bench grounding`, suite `grounding-v1` | developer-facing |
+| operative benchmark | operative benchmark | 手术基准测试 | `bench operative`, suites in `<content dir>/operative/` | developer-facing; agents operate with the anatomy hidden |
 | embodied agent benchmark | embodied agent benchmark | 具身智能体基准测试 | `bench run`, suite `embodied-v1` | developer-facing technical name |
 | benchmark scenario | scenario | 场景 | `clinicalcraft/bench-scenario@1` | |
 | skill; hook | skill; hook | 技能；钩子 | `execute_skill`; settings `hooks` | |

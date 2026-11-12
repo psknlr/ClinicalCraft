@@ -87,7 +87,7 @@ function buildWindow(ctx: BuildContext, wall: WallLine, o0: ResolvedOpening, thi
   const o = elevation ? { ...o0, y0: o0.y0 + elevation, y1: o0.y1 + elevation } : o0;
   const glass = ctx.lib.has("glass") ? "glass" : mats.body;
   addBox(ctx, glass, wall, o.a, o.b, o.y0, o.y1, Math.min(0.1, thickness));
-  const frame = mats.base;
+  const frame = mats.frame ?? mats.base;
   const ft = 0.1;
   const fd = Math.min(thickness + 0.04, 0.4);
   // The frame sits 2 mm inside the hole and the jambs stop at sill / head: faces that coincided with
@@ -101,7 +101,7 @@ function buildWindow(ctx: BuildContext, wall: WallLine, o0: ResolvedOpening, thi
   if (width >= 2.5) {
     const n = Math.floor(width / 1.5);
     const mid = (o.a + o.b) / 2;
-    const mullion = ctx.lib.has("wood") ? "wood" : frame;
+    const mullion = mats.mullion ?? (ctx.lib.has("wood") ? "wood" : frame);
     for (let i = 0; i < n; i++) {
       const u = mid + (i - (n - 1) / 2) * 1.5;
       addBox(ctx, mullion, wall, u - 0.04, u + 0.04, o.y0 + ft, o.y1 - ft, Math.min(thickness, 0.3) + 0.02);

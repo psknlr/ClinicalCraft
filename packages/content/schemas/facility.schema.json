@@ -503,6 +503,12 @@
                     "type": "number",
                     "exclusiveMinimum": 0,
                     "default": 1
+                  },
+                  "frame": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "mullion": {
+                    "$ref": "#/definitions/Id"
                   }
                 },
                 "additionalProperties": false,
@@ -872,6 +878,9 @@
                   "type": "integer",
                   "minimum": 0
                 }
+              },
+              "state": {
+                "$ref": "#/definitions/Id"
               }
             },
             "required": [
@@ -973,6 +982,30 @@
                   "porter"
                 ]
               },
+              "position": {
+                "type": "string",
+                "enum": [
+                  "surgeon",
+                  "assistant-surgeon",
+                  "anaesthetist",
+                  "scrub-nurse",
+                  "circulating-nurse",
+                  "ward-nurse",
+                  "recovery-nurse",
+                  "theatre-coordinator",
+                  "physician",
+                  "educator",
+                  "radiologist",
+                  "radiographer",
+                  "pathologist",
+                  "lab-technician",
+                  "transfusion-scientist",
+                  "pharmacist",
+                  "receptionist",
+                  "porter",
+                  "paramedic"
+                ]
+              },
               "name": {
                 "$ref": "#/definitions/LocalizedText"
               },
@@ -1011,7 +1044,9 @@
                       "bald",
                       "bun",
                       "ponytail",
-                      "curly"
+                      "curly",
+                      "bob",
+                      "wavy"
                     ],
                     "default": "short"
                   },
@@ -1058,6 +1093,14 @@
                       "cap"
                     ],
                     "default": "none"
+                  },
+                  "presentation": {
+                    "type": "string",
+                    "enum": [
+                      "feminine",
+                      "masculine",
+                      "neutral"
+                    ]
                   }
                 },
                 "additionalProperties": false
@@ -1637,6 +1680,9 @@
                             "type": "integer",
                             "minimum": 0
                           }
+                        },
+                        "state": {
+                          "$ref": "#/definitions/Id"
                         }
                       },
                       "additionalProperties": false
@@ -1707,6 +1753,30 @@
                             "porter"
                           ]
                         },
+                        "position": {
+                          "type": "string",
+                          "enum": [
+                            "surgeon",
+                            "assistant-surgeon",
+                            "anaesthetist",
+                            "scrub-nurse",
+                            "circulating-nurse",
+                            "ward-nurse",
+                            "recovery-nurse",
+                            "theatre-coordinator",
+                            "physician",
+                            "educator",
+                            "radiologist",
+                            "radiographer",
+                            "pathologist",
+                            "lab-technician",
+                            "transfusion-scientist",
+                            "pharmacist",
+                            "receptionist",
+                            "porter",
+                            "paramedic"
+                          ]
+                        },
                         "greeting": {
                           "$ref": "#/definitions/LocalizedText"
                         },
@@ -1729,7 +1799,9 @@
                                 "bald",
                                 "bun",
                                 "ponytail",
-                                "curly"
+                                "curly",
+                                "bob",
+                                "wavy"
                               ],
                               "default": "short"
                             },
@@ -1776,6 +1848,14 @@
                                 "cap"
                               ],
                               "default": "none"
+                            },
+                            "presentation": {
+                              "type": "string",
+                              "enum": [
+                                "feminine",
+                                "masculine",
+                                "neutral"
+                              ]
                             }
                           },
                           "additionalProperties": false

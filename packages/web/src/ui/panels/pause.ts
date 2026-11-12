@@ -31,6 +31,8 @@ const APPROVAL_MODES: ApprovalMode[] = ["default", "strict", "auto", "plan", "by
 const SCOPES: PracticeScope[] = ["history-only", "workup", "full"];
 const PIPELINES = ["select-voice", "tool"] as const;
 const EMBODIMENTS = ["embodied", "clinical"] as const;
+/** How the characters are driven (docs/CHARACTERS.md). */
+const CHARACTER_ENGINES = ["rules", "llm"] as const;
 
 function setting(label: string, hint: string | null, control: HTMLElement, id?: string): HTMLElement {
   return h("label", { class: "setting", ...(id ? { for: id } : {}) }, h("div", null, h("b", null, label), hint ? h("small", null, hint) : null), control);
@@ -547,6 +549,9 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
         ),
         id,
       );
+    const charactersOffline = (engine: string) => engine === "llm" && app.choice().provider === "offline";
+    const charactersNote = h("p", { class: "small muted", id: "characters-offline" }, tr("set.characters.offline"));
+    charactersNote.hidden = !charactersOffline(agent.characters?.engine ?? "rules");
     sections.push(
       h(
         "section",
@@ -567,6 +572,15 @@ export function pausePanel(app: App, args: PauseArgs): () => PanelView {
             s.agent.patient = { ...(s.agent.patient ?? {}), pipeline: v };
           }),
         ),
+        // model-driven characters (docs/CHARACTERS.md): applies at once — the team reads it each round
+        selectRow("setting-characters", tr("set.characters"), tr("set.characters.hint"), CHARACTER_ENGINES, agent.characters?.engine === "llm" ? "llm" : "rules", (v) => tr(`set.characters.${v}`), (v) => {
+          prefs.update((s) => {
+            s.agent.characters = { ...(s.agent.characters ?? {}), engine: v };
+          });
+          charactersNote.hidden = !charactersOffline(v);
+        }),
+        // without a model nothing can be model-driven: the rules decide (said, never silent)
+        charactersNote,
         // "In-world mode" (embodiment; docs/EMBODIED.md R3): the mode of the next encounter; a running one keeps its own
         selectRow("setting-embodiment", tr("set.embodiment"), tr("set.embodiment.hint"), EMBODIMENTS, agent.embodiment === "clinical" ? "clinical" : "embodied", (v) => tr(v === "embodied" ? "set.embodiment.on" : "set.embodiment.off"), (v) =>
           prefs.update((s) => {

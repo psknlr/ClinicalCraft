@@ -32,6 +32,8 @@ export type PanelId =
   | "craft"
   | "help"
   | "atlas"
+  | "surgery"
+  | "team"
   | "autopilot"
   | "elevator"
   | "confirm";
@@ -41,7 +43,7 @@ export interface PanelView {
   kicker: string;
   title: string;
   body: Child;
-  /** Window modifiers: "wide", "narrow", "atlas", "tall". */
+  /** Window modifiers: "wide", "narrow", "atlas", "surgery", "tall". */
   variant?: string;
   /** Called (rAF-throttled) whenever the session store changes. */
   update?: () => void;

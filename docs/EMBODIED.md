@@ -87,8 +87,8 @@
   come over and hand it over), and in the browser the carry row of a handheld
   item's device panel and "In your hands" in the inventory panel (§2.1).
 - **Not done** (§14): no live language model has been run through the
-  embodied tools or the benchmark; no GLB equipment model ships; nothing has
-  been hardened, deployed or operated as a production service.
+  embodied tools or the benchmark; nothing has been hardened, deployed or
+  operated as a production service.
 
 ## Contents
 
@@ -133,7 +133,7 @@ are the proposal's.
 | R5 | `SpatialClinicalActionGate` | **Spatial requirements are data** (`SpatialRequirement`), derived from semantics the content already has: investigation/intervention `requires` capabilities, intervention `kind`, the bedside rule of the web world (FACILITIES.md "Interaction semantics"). Facilities may override. Every refusal carries a stable code and a **navigation hint** (a goal the agent can pass to `navigate_to`). | The web UI enforced these rules ad hoc (`app/stations.ts`); making them a shared policy holds the CLI/MCP/LLM path to the same rules and gives agents actionable failures (mineflayer-pathfinder style). |
 | R6 | Equipment state machines | Device behaviours are **declarative** (catalog JSON, no code). **Device states that mirror clinical facts are derived from the engine, never stored** (e.g. "monitor attached" ⇐ `monitorAttached(case, state)`); only physical state (power, leads on, cart position, door open, reservations) is stored in the world. | Two stores for one fact diverge on resume, replay and rejection. The engine stays authoritative for every clinical outcome (§4.3). |
 | R7 | Visibility and information boundaries | Observations label each entity with an **awareness level** — `visible` (field of view + line of sight + range), `nearby`, `remembered` (seen earlier by this actor), `mapped` (on the public hospital directory). Patients expose only what a bystander sees (name tag, posture, visible distress, oxygen mask); monitors expose their screen only when it is in view and attached (the same check as `check_vitals`). | Grounding rule (ARCHITECTURE §2.1) extended to space: a CT scanner can be *known* to be in Radiology without being visible from the ED; a visible patient never reveals unread results. |
-| R8 | Movement time vs clinical time (§8.5) | **Travel costs simulated time explicitly**: a completed navigation dispatches `advance-time { reason: "travel" }` for the walking time × `clock.realtimeScale` (static clocks: free). In the browser, real-time ticks are paused while an *agent* drives a body, so walking costs the same in both runtimes. | The web advanced the clock only by real-time ticks while no panel was open — an autopilot walk with the autopilot panel open was a zero-time action. |
+| R8 | Movement time vs clinical time (§8.5) | **Travel costs simulated time explicitly**: a completed navigation dispatches `advance-time { reason: "travel" }` for the walking time × `clock.realtimeScale` (static clocks: free; a case with `clock.worldTime: "actual"` charges walks and device operations their own duration, whatever the scale). In the browser, real-time ticks are paused while an *agent* drives a body, so walking costs the same in both runtimes. | The web advanced the clock only by real-time ticks while no panel was open — an autopilot walk with the autopilot panel open was a zero-time action. |
 | R9 | Skill library (Voyager) | **Skills are declarative workflows** (JSON) whose steps are tool calls and whose success is checked by **postconditions in the existing Condition DSL** plus world predicates. Model-proposed skills are validated data, never code, and execute through the normal tool path. | Verifiable by construction; no `eval`; the same gate applies. |
 | R10 | Room templates, multiple floors | **Templates are an authoring-time macro** compiled (`compileFacility`) into the flat facility format, so renderer, navigation and tools need no template awareness. Levels (`levels`, `level`) and `connectors` (stairs, elevator, ramp) are **additive optional fields** — existing facilities stay valid without a migration; a breaking change would bump `clinicalcraft/facility@2` with a pure migration. | Keeps `clinic-v4` and `general-hospital` byte-identical and every existing tool working. (`floor` is already taken: it is the floor *material*.) |
 | R11 | Benchmark | The benchmark **separates infrastructure validation** (reference replay, scripted agents — must be 100 %) from **model competence** (live models, reported with Wilson 95 % intervals over seeds). Live runs need explicit flags and a spending cap and never run in CI. | Offline replay proves the plumbing, not reasoning (§16.3). |
@@ -530,7 +530,12 @@ code path returns it.
   `label`, and `then` — the operation to do on arrival before retrying (a
   fetch: `{ operation: "move_to", targetId: <cart>, goal: <the patient> }`;
   the patient to take somewhere: `transport_patient {destination}`; hands to
-  wash: `wash_hands` at the nearest sink). Device operations that involve the
+  wash: `wash_hands` at the nearest sink; a nearby device in the wrong state:
+  the first operation on its way to the needed state — the count board's
+  `baseline_count`, or `closing_count` then `final_count`; an item that must
+  be in hand: `pick_up`). A `then` may itself be refused with a hint of its
+  own (the final count needs the RF wand scanned, the scan needs the wand in
+  hand): the embodied autopilot follows such chains a few levels deep. Device operations that involve the
   patient never alternate hints between the device and the patient: when the
   device's reach and the patient's range (or the policy's at-patient range)
   can both hold, the hint is a `point` goal on the nearest such spot; when
@@ -568,10 +573,24 @@ code path returns it.
   connector seconds of every ride completed (a walk stopped before the
   stairs never pays a share of them); the record's `length` adds the climb
   of every flight completed, as the planner's does.
+* **A cart's destination is checked before and after** (`move_to`): a cart
+  already as close as a move would leave it (within 1.25 m of its target, in
+  its room; at the patient's bedside by the bedside rule) is not moved —
+  `completed` with "already at its destination" and `moved.alreadyAtDestination`;
+  after a move the cart must satisfy the destination (within 2.5 m of a target
+  in its room or at the bedside; inside a room goal — parking prefers its
+  cells; within a point goal's range, default 1.5 m), else the move is `failed`
+  `PATH_BLOCKED` naming what stands between the cart and the destination, with
+  a reachable alternative (`hint.then: move_to` the free spot nearest it) — or,
+  when the cart already stands at that spot, saying so without a hint. The
+  result's `moved` reports the real displacement and where the cart stands now
+  (never the metres the actor walked).
 * **Time**: physical operations charge their `durationSeconds`
   (`elapse(…, "procedure")`); an operation with a clinical effect charges
   nothing itself — the engine's action cost (`clock.actionCosts`) is the
-  time of the clinical act. Failed actions change no version and charge
+  time of the clinical act. On a simulated clock the seconds count ×
+  `clock.realtimeScale` (`clock.worldTime: "scaled"`, the default) or as
+  their own duration (`"actual"`). Failed actions change no version and charge
   nothing.
 * **Results** are recorded whatever their status (a window of 128): retry a
   transient failure (`DEVICE_BUSY`) with a new action id. Refusals that can
@@ -622,7 +641,10 @@ test) and is evaluated by `SpatialChecker`. Review rounds G4–G10 and G8
 | `order_test` / `read_result` of a **record review** (`performedAt: "records"`: an existing report retrieved from the chart — an outside scan, an old echo, the operative note, the drug chart) | `any-of` [`at-provider` `records` (a records terminal or a nursing-station desk), `at-patient` 1.5 m (`why: "notes"`: the notes at the bedside)] — never a transport, a sample or a device, whatever `requires` says; no capability gap (`caseCapabilityGaps`) and no procedure risk at the approval gate | a report that already exists is looked up in the EHR or in the notes at the bedside, not performed again |
 | `read_result` | no capability: anywhere · personal kit only: `at-patient` · bedside tests: `any-of` [`at-patient`, `at-provider` `records`, a fixed workstation providing them (`fixedOnly`, `providerKinds: ["workstation"]`)] — **never the device** · laboratory: `any-of` [`at-provider` `records`, `at-patient`, a laboratory station] · otherwise `at-provider` (the report at a console — never the patient) | a recorded ECG is read on paper or in the EHR, not by wheeling the cart back; a report is read without the patient |
 | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) | |
+| `intervene` of a checklist step that a record-backed board (`derived: "case-record"`) also takes | the board operation's team prerequisites as well (its declared predicates other than where the actor stands or who they are — the WHO board's Time Out needs the baseline count on the count board); refused `SPATIAL_REQUIREMENT_UNMET`, reason `checklist-prerequisite`, with the board's message and the way to the device | one checklist action, two ways to take it: the board and `intervene` record the same step under the same rule |
 | `intervene`, other kinds (`medication`, `fluid`, `oxygen`, `procedure`, `positioning`, `airway`, `monitoring`, `other`) | its capabilities — an empty `requires` takes the kind's defaults (`KIND_DEFAULT_CAPABILITIES`: oxygen → `oxygen`, monitoring → `cardiac-monitor`, fluid → `iv-access`, airway → `airway`) — minus the personal kit: nothing left → `at-patient` 1.5 m; otherwise `bedside-provider` for them, except **delivered** capabilities (`DELIVERED_CAPABILITIES`: `medications`, `blood-bank`), which need only an in-service provider somewhere in the facility. `iv-access` is **patient state**: `all-of` [`clinical` {intervened: the case's IV-access procedure}, …] — skipped when the case authors `extensions.embodied.ivAccessInSitu` or has no such procedure; that procedure itself needs the cannulation kit (a crash or treatment cart) at the bedside | the kit must be at the bed (in a garden it is brought); an IV drug needs a cannula in the patient, not an IV pole beside the bed |
+| `operate` (a step of the case's operation, PROCEDURE.md) | `all-of` [`patient-at-provider` `surgery` with `beds` (the patient on an operating table), `at-patient` 1.5 m] | the operator at the table: an operation is never done from another room or floor — checked again after an approval wait and immediately before the engine commits, like every gated act |
+| `observe_field` (the laparoscopic screen) | `near-patient` 3 m + line of sight | the field is seen in the theatre, at the table |
 | `consult`, `delegate_task`, cognitive tools (`answer_decision`, `update_workup`, `wait`, `set_phase`, `finish_case`, `list_options`, `case_status`) | anywhere | phone/pager; thinking; delegated staff walk physically |
 | an unresolved item (a free-text query the tool will resolve or refuse) | `ask_patient` / `examine`: as above without capabilities; `order_test` / `read_result` / `intervene`: anywhere | the tool refuses it anyway |
 
@@ -901,7 +923,7 @@ reservation) replaces them — the built-in catalogs declare one for
 | kind | states | operations |
 |---|---|---|
 | workstation | — | `order` / `read` — clinical `order_test` / `read_result` of parameter `investigation` (also `investigation_id`); the station must provide every capability the item requires (`investigationsAt`), or be a `records` terminal — order entry for laboratory tests, the viewer of laboratory and bedside results; `read` takes an optional `phase` |
-| monitor (`patient-monitor`) | `attached` / `detached`, derived: the patient's monitor (the linked monitor of the bed space the patient is in now, else monitors at the bedside where the patient is) is attached when `monitorAttached(case, state)`; other monitors are always detached and offer nothing | `attach` (detached; device at the bedside, actor within 1.5 m of the patient; `intervene` of the case's monitoring intervention — the first `intervened` id of `physiology.monitor.attachedWhen`, else the first monitoring intervention the device provides; it takes the engine's action cost, not its declared 60 s), `read` (attached; THE screen rule: within 6 m with line of sight from the monitor's own room), `cycle_nibp` (attached; within 1.5 m; physical, 45 s) |
+| monitor (`patient-monitor`) | `attached` / `detached`, derived: the patient's monitor (the linked monitor of the bed space the patient is in now, else monitors at the bedside where the patient is) is attached when `monitorAttached(case, state)`; other monitors are always detached and offer nothing | `attach` (detached; device at the bedside, actor within 1.5 m of the patient; `intervene` of the case's monitoring intervention — the first `intervened` id of `physiology.monitor.attachedWhen`, else the first monitoring intervention the device provides, never a checklist step (attaching the monitor records no WHO Sign In); it takes the engine's action cost, not its declared 60 s), `read` (attached; THE screen rule: within 6 m with line of sight from the monitor's own room), `cycle_nibp` (attached; within 1.5 m; physical, 45 s) |
 | ECG machine (`ecg-machine`, catalog) | `idle` → `prepared` → `connected` → `completed` (stored) | `prepare` (device at the bedside, actor within 1.5 m of the cart and of the patient; reserves the cart; 30 s), `connect` (1.5 m of both; 120 s), `record` (`order_test` of the first case item the cart provides — the 12-lead ECG; the engine's action cost), `reset` (from any later state; releases the cart; 30 s) |
 | device | — | `use` — parameter `investigation` → `order_test`, or `intervention` → `intervene`; the item's `requires` must intersect the device's capabilities (`deviceActions`); the §6 policy decides where |
 | door | `open` / `closed` / `locked` (the door record) | `open` (closed), `close` (open; nobody in the doorway area), `lock` (closed → locked), `unlock` (locked → closed) |
@@ -949,6 +971,31 @@ reservation) replaces them — the built-in catalogs declare one for
   reason (spatial included).
 * Staff movement is deterministic path following (no LLM per frame).
 
+**Boards that show the case record** (`derived: "case-record"`, e.g. a WHO checklist board, a surgical count board, an
+RF wand): in a case that records what their operations name — checklist steps (`clinical: {tool: "intervene", select:
+"item"}`), or the surgical count (`clinical: {tool: "surgical_count", select: "item", item: <step>}`, the steps
+`baseline`, `cavity`, `closing`, `final`, `recount`, `handover`, `scan`, `escalate`; docs/TEAM.md §4.3) — their state
+is the last listed state whose `when` holds on the record and their operations write it (a count from what the team
+in the room can account for, a scan from what lies inside the patient — never a number or an id the caller gives);
+elsewhere they are physical boards with their own stored states. A record-backed board is **bound to the encounter**:
+only a board in the patient's room now shows the record and writes it (`recordBound`). Another room's board shows its
+initial state and refuses the operation — "it records nothing of this patient", pointing at the same board in the
+patient's room — so OR 1's board never signs in a patient in OR 7. The binding is read for every display and checked
+again right before the engine commit (after an approval wait or a transfer of the patient: `SPATIAL_PRECONDITION_CHANGED`,
+nothing recorded). A record-backed handheld (the RF wand) shows its record state while carried as well as `held`. The
+path to a board state a prerequisite needs (`firstStepTowards`) may use the count's own operations (a count, a scan),
+never a checklist step or a treatment.
+
+**What is drawn follows the state.** A state may carry a `look` (FACILITIES.md "A look for each state"): the layers of
+the equipment's model drawn in it, its screens' picture, how its manikin is covered and breathes — a training station's
+simulator under a blanket, then draped and ventilated on one lung, the scope standing in its port while it is in the
+chest. The look decides nothing: the state does (`WorldRuntime.stateOf`), and the web world follows it — every
+`entity.state` event, a fresh ask on every clinical event (a state derived from the record has no event of its own),
+every placement again when the scene is drawn anew. Whoever moves a device on — the learner, a colleague, an agent
+through `interact_object`, and so a model-driven member of the team or a facilitator — does it by the same operation
+under the same rules (authority, scope, the spatial gate), and the scene shows the same thing; a front-end never picks
+a look of its own.
+
 ### 8.2 Authority
 
 Each operation has a class; a role holds classes; an operation's own
@@ -987,7 +1034,7 @@ do names them ("Lin Xiao (Nurse): Give Aspirin …?").
 
 | role | delegable tasks | clinical tools with their body | interventions |
 |---|---|---|---|
-| clinician (the learner's avatar), attending | all | all | all |
+| clinician (the learner's avatar), attending | all, with `hold_traction` / `release_traction` (assisting at the operating table) | all | all |
 | nurse | `attach_monitor`, `record_ecg`, `obtain_iv_access`, `fetch_equipment`, `give_intervention`, `transport_patient` | `check_vitals`, `examine`, `order_test` (bedside tests only: ECG, point of care, peak flow, CTG — an EEG is not a nursing test), `read_result`, `intervene` | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (chest compressions, defibrillation, urinary catheter, NG tube, bedside swallow screen…) — never an item authored `scope: "medical"`, airway / RSI, an arterial line or another medical procedure, a consult or a disposition |
 | paramedic | as a nurse | as a nurse | as a nurse + airway |
 | porter | `fetch_equipment`, `transport_patient` (wheel the patient to a study and back) | — (no clinical class) | — |
@@ -1019,6 +1066,15 @@ patient's monitor all follow it.
 |---|---|---|---|
 | a **relocation**: an intervention with an authored `destination` (a transfer: STEMI `transfer-cath-lab` → `{capability: "fluoroscopy"}`, PE `transfer-hdu` and asthma `admit-picu` → `{setting: "icu"}`) or a phase with a `location` (STEMI `cath` / `post-pci`, stroke `angio` → fluoroscopy; anaphylaxis `ed-resus` / `ed` → `{setting: "emergency"}`), applied by the session when the engine reports `intervention.applied` / `phase.changed` (deferred until a transport in flight ends) | the patient to the destination resolved in this facility: a setting or room kind → the first patient slot of it (where they are already counts); a capability → the patient position at the providing device (a bed beside it — the cath-lab table by the C-arm —, its own table for CT, MRI, PET-CT and X-ray, else a free spot in its reach); the trolley they lie on comes along; it becomes their `home` | none (the clinical act's own) | the team (`patient.moved`, `by: null`, with the team's accessible route — carts and people by the bed set aside, `NavRequest.ignoreObstacles` — for the record and the browser); no such place in the facility: the patient stays and the result says so ("This hospital has no ICU/HDU bed: … stays in …") |
 | **`transport_patient {destination}`** (the learner's / a model's tool, `/transport`, `interact_object` on the patient, or `delegate_task porter\|nurse transport_patient`) | from the patient's side, the body wheels the bed the patient lies on (or walks a patient who can walk — a child to the peak-flow station) to a provider (`eq:<id>`), a bed space or room, or `home`; accessible routes only (beds take the lift); the patient and the trolley are busy meanwhile; an interrupted walk leaves the patient on the trolley where it stopped | the walk, charged once (`travel`) | the walker (`patient.moved`, `by` the actor) |
+
+**Saved in the middle of a journey.** A walk's poses are committed when it ends, so a snapshot taken while a
+body wheels the patient holds both where the journey started, plus the journey itself
+(`WorldStateSnapshot.journey`: the walker, the patient, the action id, the `transport_patient` parameters). A
+session resumed from it (`EmbodiedSession.resumeJourney`, run by `ClinicalSession.start`;
+`ClinicalSession.resumedJourney()` resolves when it arrives) has the same walker carry the journey out to the
+same destination: one transfer, the walk charged once — the walk the save cut short never committed or
+charged anything — and the trolley comes along as before. `WorldRuntime.restoredJourney()` hands the journey
+over once.
 
 The policy asks for transports (§6): a study on the patient at a fixed
 device or a patient-performed test refuses `patient-not-at-provider` with
@@ -1063,6 +1119,27 @@ standing where it stopped. The destination's posture (lying on the CT table)
 is taken on arrival. `smzl-lung-adeno` in `clinic-v4` (an outpatient, the
 couch is no trolley) walks to the CT and back; the bed-bound patients of the
 other built-in transports go on their beds as before.
+
+**One mobility assessment** decides for a walk together (`escort_patient`)
+and a transport (`transport_patient`) alike: `PatientBody.walkProblem` — lying
+by clinical state, unable to respond (`cannotSpeak`: intubated, sedated,
+unconscious), too unwell. A patient who cannot walk travels only lying on a
+trolley at hand, every step of the way; with none, the transport is refused
+before anyone moves (`PRECONDITION_FAILED`: "… cannot respond and cannot walk
+with you. Taking … anywhere needs a trolley or a bed, and none is at hand:
+bring one (or ask a porter for one) first.") — never walked upright. The
+assessment goes on **during** a walking transport: when the patient's state is
+refreshed on the way (`refreshPatient`, after every clinical event) and they can
+no longer walk, the transport stops at once (`TransportHost.transitStop`) — the
+patient is laid down where the walk stopped (sat down when only too unwell),
+on no bed and no trolley, nobody walking them from that moment — and the action
+fails with the reason, where they stopped and that going on needs a trolley
+("… Stopped in … and laid … down safely where they were. Taking … anywhere
+needs a trolley or a bed …"). A new transport makes the same assessment before
+it starts; a save at the stop restores the same place with nothing in progress. A trolley carries the patient only
+when it is free **and in service**: a patient who cannot walk whose trolley is marked out of service is not moved at
+all — the transport fails naming it ("… is out of service, so … cannot be taken on it: a usable trolley or bed is
+needed …") — and goes once a usable one is there.
 
 **Walking with the patient** (`escort_patient` / `release_patient`;
 `escort.ts`). "Follow me": a patient who can walk — not lying by clinical
@@ -1208,6 +1285,40 @@ facility the heparin comes at minute 31.4. On 2026-10-20 the same run scored
 and languages (38 runs, 2026-10-29); `anaphylaxis-garden` cannot be played
 embodied there (no place for a `community` patient — `embodiment_no_slot`).
 
+### 8.5 The care team
+
+A case with a `team` (contract: [TEAM.md](TEAM.md)) has staff who work on their own in its team phases. They do not
+wait to be told each step:
+- the circulating nurse notices what is needed, asks the colleague whose duty it is, checks the read-back, and sees
+  for herself that the person holds the item;
+- the scrub nurse reads the request back, finds the instrument she can see, and hands it over;
+- the team keeps the count item by item, holds closure when it is short, searches, and recounts.
+
+Every act is that member's own world action, through the action bus on a nurse's tool path: authority and scope of
+practice apply, and the act is done `onBehalfOf` the colleague who asked. They rely only on what that member's body
+perceives and what was said to them. It is driven by the `team` op: the same step in the browser (a team clock, 2 s,
+while the encounter runs) and headless. It is saved with the world (`SessionSnapshot.team`, `team` transcript items),
+and on restore a completed act never runs again. The learner answers as the surgeon (read-backs, "wound checked"), or
+watches a simulated surgeon (observer mode). `clinicalcraft bench team` scores every authored team scenario from the
+record.
+
+### 8.6 Concealed items and search
+
+A scenario can put a handheld item **out of everyone's sight** (`placeItem … { concealed: true }` — a swab dropped
+under the Mayo stand; `{ inside: true }` — a swab in the wound, concealed in the patient). The item is in the world:
+it has a place, and snapshots and physics keep it. But no one perceives it:
+- observations, `find`, `canSee` and recent events leave it out, and it is not even remembered where it was seen;
+- acting on it by id, or navigating to it, is refused `TARGET_NOT_FOUND`;
+- the browser does not draw it.
+
+`search` (a built-in operation, physical class, 20 simulated seconds) is how it is found:
+- without a target, the body's hands go through what is within reach of where it stands (`RANGES.interact`), and
+  every loose concealed item there is revealed where it lies;
+- with `targetId`, it searches one thing within reach (the patient's wound) and brings out what is concealed inside
+  it, into the searcher's hand, or at their feet when both hands are full.
+
+A revealed item is an ordinary item again (`entity.concealed` with `concealed: false`; "You found …").
+
 ## 9. Skills
 
 Skills are declarative workflows (`clinicalcraft/skill@1`; zod `SkillSchema`
@@ -1321,10 +1432,15 @@ simulated/real time.
   room **templates** compiled into flat facilities (FACILITIES.md);
   equipment `portable`, `reach`, `interactionPoints`, `behavior`, and an
   optional `model` (GLB/glTF with sha256, scale, offset, licence and
-  attribution; the voxel parts remain the fallback and the collider is always
-  the semantic footprint — a model is never interactive by itself). The
-  pipeline is in docs/ASSETS.md (`clinicalcraft assets inspect`); no built-in
-  catalog ships a model.
+  attribution, provenance `source` and use status `use`; the voxel parts
+  remain the fallback, named `screen` parts keep drawing their display over
+  the model, and the collider is always the semantic footprint — a model is
+  never interactive by itself). Static placements of one model are drawn as
+  instances, per level and 16 m square. The pipeline is in docs/ASSETS.md
+  (`clinicalcraft assets inspect`; a content pack serves its own `assets/`),
+  authoring in Blender in docs/BLENDER.md. Every built-in equipment type
+  ships a model (`packages/content/assets/models`, built by
+  `scripts/blender/build.py`).
 
 ### Measured content scale
 
@@ -1585,7 +1701,9 @@ them) and a sha256 of the canonical final engine state + world snapshot.
   before it.
 - *Clinical safety* — interventions the engine applied as contraindicated.
 
-**Metrics** (`metrics.ts`, `stats.ts`), overall and per category; every
+**Metrics** (`metrics.ts`, `stats.ts`), overall, per category and per evidence (`metrics.byEvidence`: a run's
+`evidence` is `source-only`, or `expanded` once it ordered a new — simulated — investigation; the two are scored
+apart, docs/STUDIES.md §7); every
 proportion carries a Wilson 95 % score interval —
 centre = (p̂ + z²/2n)/(1 + z²/n), half-width = z·√(p̂(1−p̂)/n + z²/4n²)/(1 + z²/n),
 z = 1.959964, clamped to [0, 1], exactly 0 / 1 at k = 0 / n (checked
@@ -1849,13 +1967,14 @@ the measurements of §4, §7, §11).
 | Two-level `teaching-hospital` (22 template instances, stairs + elevator, access zones) | yes (A4) | `facilities validate`: no issue; world: every interactive placement and slot reachable, stairs and elevator routes to the ICU, the accessible route through the elevator, porter-only and access-zone rules, collision-model snapshot | web e2e `teaching-hospital.spec.ts` (stairs up, elevator down, map floors); `navigation-icu-upstairs`; the autopilot there: 100 % in every case it hosts, both modes and languages (38 runs, 2026-10-29) | no — `anaphylaxis-garden` has no place there (§14.3) |
 | Multi-level collision model and physics (`slab`, `ramp`, `rail` colliders; `stepPlayer` on ramps) | yes (A4) | unit: ramp surface, step-up / snap-down limits, flight sides and underside, the real stairs up and down, guarded stairwell; single-level pins unchanged | browser QA walking the real stairs; e2e | no — Perf, Rel |
 | Multi-level web world (storeys, stairs, elevator ride, level culling, floor-aware lights / aim / region, map floor tabs, cross-level autopilot) | yes (A4) | unit: levels and culling, regions per level, elevator cars, routes across levels; e2e (the existing suite unchanged for `clinic-v4` / `general-hospital`) | visual QA of both levels, the stairs and the elevator | no — frame times and draw calls not budgeted; Chromium only. Perf |
-| GLB/glTF equipment models (core `parseGlb` / `checkModelReference` / `fitModel`, `clinicalcraft assets inspect`, web `ModelCache`) | yes (A4) | unit with GLBs generated in code; CLI tests; renderer tests (GLTFLoader load, per-URL cache, hash / 404 / garbage fallback, fit, aim proxy) | `assets inspect` on a generated GLB, with and without `--type`; harness QA (`?model=<type>`) | no — **no built-in catalog ships a model**; no real-world model has been loaded; meshopt / DRACO models fall back to voxels under `serve`'s CSP |
+| GLB/glTF equipment models (core `parseGlb` / `checkModelReference` / `fitModel`, `clinicalcraft assets inspect`, web `ModelCache` / `instanceModel`; Blender bridge, shape kit and refiner `scripts/blender`; built-in models `packages/content/assets/models`) | yes (A4) | unit with GLBs generated in code; CLI tests (use status, source); renderer tests (GLTFLoader load, per-URL cache, hash / 404 / garbage fallback, fit, aim proxy, instances placed as clones, no shadow from small items); server test (a pack's and the built-in `assets/`); content test: every built-in model is pinned, cleared and passes the inspector | `assets inspect` on a generated GLB, with and without `--type`; harness QA (`?model=<type>`); 2026-10-31, the IMPF hospital under `serve` with 62 built-in and 74 SurgeryCraft models — 885 placements loaded, 0 failed, live screens drawn over them; OR 7 wide view against all voxels: 382 → 637 steady draw calls, shadow pass 602 → 1 118, triangles 0.12 M → 0.75 M | no — portable models (carts, instruments) are clones, not instances; the standalone build draws voxels (models are served files); meshopt / DRACO models fall back to voxels under `serve`'s CSP; frame times on low-end devices unmeasured |
+| A look for each state (`behavior.states.<id>.look`: the layers of a model, the screens' picture, a manikin's cover and breathing; core `lookOf`, the checks in `checkCatalogs` and `assets inspect --type`; web `live.ts`, `WorldApi.setEquipmentState`, the embodied link following `entity.state`, clinical events and `syncScene`; the Blender kit's `k.layer`; the previewer's `--states`) | yes | core `looks.test.ts` (resolution, the earlier `draped`, every check), `glb.test.ts` (layers in a file, checked against the looks); web `live.test.ts` (layers shown and hidden, a picture painted once per change and the old one handed back, the manikin built anew only when the figure changes, breathing), `models.test.ts` (a layered GLB through three's loader: the node's own name kept, a copy hidden until shown, an instance never drawing a layer), `embodied-world.test.ts` (the link: the learner's operation, a colleague's, a state derived from the record, a scene drawn anew), `manikin.test.ts`, `figure/lateral.test.ts` | SurgeryCraft's thoracoscopy station — 18 states, 12 layers (its `thoracoscopy.test.ts`, `figure-fit --check`, `assets inspect --type`); in the web world under `serve` (2026-11-12): the learner's `check_position` and `isolate_lung` redrew the station, later states drawn by the renderer and brought back to the world's state by `syncScene`, no page error | no — one authored type; a change of cover builds the manikin anew (a short hitch); no e2e spec. Perf |
 | Agent embodied mode (settings `embodiment` / `perception`, `SessionOptions.embodied`, `world_action` / `world_pose` ops, `world_event` / `world_action_result`, `ClinicalView` / `ClinicalPort`, spatial gate + pre-commit recheck, 18 world tools, travel and procedure time, `world()` / `trace()`) | yes (A5; `transport_patient` FX-T) | agent unit + integration on built-in cases: refusal before the gate with `hint.goal`, TOCTOU → `SPATIAL_PRECONDITION_CHANGED`, `deny: ["intervene(alteplase)"]` through a device, a `world_action` op, delegation, a skill and a model's inline skill, travel charged once / never on static clocks, a scripted model observe → navigate → order → read, camera frames for vision models only, Anthropic / OpenAI request bodies | CLI `--embodied` (play, exec, eval) and MCP `start_case {embodied}`; the web (§2.1) | no — **no live model has driven the embodied tools**; prompt-injection resistance not tested with real models. Sec |
 | Role authority and scope of practice (S3) | yes | agent `scope-review.test.ts` (receptionist, lab technician, pharmacist, radiologist, nurse, paramedic, porter; approvals naming the staff member; authored `scope`), bench `audit-scope.test.ts` | the authorisation audit over every benchmark run (0 / 249 and 0 / 252 accepted acts unauthorised) | no — a teaching simplification, not any jurisdiction's rules; not reviewed by clinical educators |
 | Vitals channels (G3 / G11: `vitalsView`, `learnerVitals`) | yes | unit: the clinician's `<monitor>` section, `wait`, skill `vital` predicates, the MCP state resource, the REPL status line (`monitor-status.test.ts`) | REPL "vitals: not in view" away from the bedside; web monitor panel "out of view" (e2e) | no — Perf, Rel (§14.4) |
 | Web embodied runtime (§2.1: embodied by default, mode per encounter; `BrowserMover` / `BrowserCamera`; `world_pose`; panel operations as `world_action`, auto-approach and "Go there"; the R8 tick pause; staff walkers, parked carts, locks; world verdicts in the UI; badge, toasts, map actors, live trace) | yes (A6 and the learner-facing review) | unit: frame-rate independent steering, route legs, mover and camera over a fake renderer, portable promotion, spatial helpers and refusal text, world-view verdicts, store folding, trace grouping, embodied start / resume / save validation; e2e `embodied*.spec.ts`, `transport.spec.ts`, `review.spec.ts` and the rest of the suite (45 tests) | the full web e2e suite in embodied mode (Chromium + SwiftShader); the offline standalone page from `file://` | no — Chromium + SwiftShader only (no Firefox / Safari, no real GPU, no phone hardware); known UI behaviours (§14.3). Perf |
 | Embodied offline autopilot | yes (A5) | every built-in case × zh-CN / en finishes in its own facility with the clinical-mode score (test); the STEMI trace chain | `exec --embodied --autopilot`: 40 / 40 runs (both modes) at the clinical score; teaching hospital: 38 / 38 at 100 % (2026-10-29). The 125 CMCR cases (20 in [CMCR_CASES.md](CMCR_CASES.md), 105 in [CMCR_105_CASES.md](CMCR_105_CASES.md)): the test, both locales, at the clinical score in the general hospital (the 20: 2026-10-29; the 105: CI on commit 88ed0d2, 2026-10-29); record reviews never move the patient; not measured in the teaching hospital; no benchmark scenario uses them; the 105 are being re-authored and are not yet ready for teaching | no — a deterministic replay of the reference solution: it shows the plumbing, not reasoning |
-| Delegation (`delegate_task`: `attach_monitor`, `record_ecg`, `obtain_iv_access`, `fetch_equipment`, `give_intervention`, `transport_patient`) | yes (A5; review: the bedside rule, fetch hints followed, `onBehalfOf`, scope before a step, `cancelled` C17, nothing left reserved C3) | the nurse attaches the monitor (engine, world state, nurse at the bedside, travel time); deny rules apply to the delegating caller; `/delegate staff:ed-nurse record_ecg` (general hospital) and `staff:ed-station.nurse` (teaching hospital, the cart fetched to the bed first); porter transports | multi-agent scenarios; REPL `/delegate nurse attach_monitor` | no — staff follow deterministic scripts; no model drives a staff member |
+| Delegation (`delegate_task`: `attach_monitor`, `record_ecg`, `obtain_iv_access`, `fetch_equipment`, `give_intervention`, `transport_patient`, `hold_traction`, `release_traction`) | yes (A5; review: the bedside rule, fetch hints followed, `onBehalfOf`, scope before a step, `cancelled` C17, nothing left reserved C3) | the nurse attaches the monitor (engine, world state, nurse at the bedside, travel time); deny rules apply to the delegating caller; `/delegate staff:ed-nurse record_ecg` (general hospital) and `staff:ed-station.nurse` (teaching hospital, the cart fetched to the bed first); porter transports | multi-agent scenarios; REPL `/delegate nurse attach_monitor` | no — staff follow deterministic scripts; no model drives a staff member |
 | Skills (`clinicalcraft/skill@1`, 11 built-ins, project + inline skills, interpreter) | yes (A5; review S2, S8, G1, C3, C8–C10) | schema (references, macros, no code), interpreter (when, retry, recovery, final refusals, postconditions), built-ins on STEMI, project loader, risk from the steps | REPL `/skill` lists the 11; **no benchmark scenario runs a skill** | no — not validated end to end; no live model has proposed an inline skill. Sec |
 | Session traces, `world` transcript items, resume | yes (A5) | trace scopes, JSONL, the STEMI chain; resume from memory and from JSONL (`createNodeSession`), embodiment kept / an explicit other one refused | `exec --trace` (a header + 287 spans for STEMI); `--continue` restores the world | no — transcripts are local JSONL files without retention or backup policy. Ops |
 | MCP embodied (`start_case {embodied}`, 17 world tools with annotations, `not_embodied`, two-step confirmation of approvals inside world operations) | yes (A5; review S1, G11, C15) | in-process JSON-RPC tests; a real stdio smoke test | a stdio session: 34 tools listed with annotations; spatial refusal with `hint.goal` → `navigate_to` → `interact_object` → `intervene` → the state resource; `not_embodied` on a clinical session | no — not exercised by Claude Code, Codex or Grok CLI with a live model |
@@ -1867,6 +1986,9 @@ the measurements of §4, §7, §11).
 | Screen rule, learner text, lazy hints (extra review items 1–5) | yes (FX-T round) | `screen-rule.test.ts` (read ⇔ policy over sampled points; the reviewer's spots), world `i18n.test.ts` (no raw tool id; both languages, same placeholders), unsupported operations named, `hint-cost.test.ts` (budget, identical results), delegation sentences | web e2e (out of view, "Go there") | no — ranking a hint still costs a reachability flood per new cell (≈ 1.3–1.8 s for 60 cold cells), paid only when read. Perf |
 | Reference demonstration (`clinicalcraft bench demo`) | yes (A7) | STEMI in both languages: every step confirmed by engine + world state, the per-step chain with ids and versions, the assessment span; an encounter cut short fails | `docs/bench/demo.en.md` / `demo.zh-CN.md` regenerated on 2026-10-29: 50 steps, 26 world actions, 0 violations, 22 / 22; the trace is byte-identical when regenerated | no — demonstrates the infrastructure (a replay), not clinical reasoning |
 | Content scale (case index, lazy per-case chunks, paginated ETag'd server API, `CaseLibrary` in the CLI and MCP) | yes | unit: indexer, case store, server content API, the web index plugin | measured with 100–1 000 synthetic cases (§11) | no — browser start-up and case switching with a large catalogue unmeasured; first-load validation ≈ 150–230 ms per case. Perf |
+| Operative field (`procedure`, `operate`, docs/PROCEDURE.md): anatomy, regions, ports and instruments, safety views judged on the field, unsafe acts and injuries that follow from the anatomy, the operator's view (handles, never duct names), `observe_field` / `operate` tools, `safetyGates`; a colleague holding a port (`hand-over`, `delegate_task hold_traction`), traction that falls when they leave the table (`exposure-lost`); the web's scope dock beside the theatre with one presentation queue | yes (procedure round; the assistant and the dock: the 2.5.0 recommendations) | core unit tests: a safe path, adversarial paths (habitual traction, a misidentified common bile duct clipped and divided, clipping without a pause, a claimed but untrue view, a bleed managed, hidden-hazard energy, a torn gallbladder), bail-outs, reach and port ergonomics, determinism; hand-over rules (`approach.test.ts`); the presentation queue and the exposure window (web `scope-presenter.test.ts`); SurgeryCraft `case126-release.test.ts` and the fourth browser demonstration | not validated: no surgical, anaesthetic or radiological review; the one case using it (SurgeryCraft cmcr-1654623) runs on reference anatomy | no — rule-based tissue states, not calibrated mechanics; the web panel is a first version. Rel, Val |
+| Care team (docs/TEAM.md; §8.5): `case.team`, team scenarios chosen at `start` (hidden), `TeamScheduler` (rounds, autonomy auto / step / off), offline role policies (circulating nurse, scrub nurse, the count, the simulated surgeon), messages with check-back, action receipts with the true initiator, claims, exactly-once action ids, `team` op / `team_event`, `team` transcript items and `SessionSnapshot.team` (with the scenario's lifecycle: pending / active / completed and its set-up event), web Team panel and team clock, one scheduling path (the learner's acts, external agents, every autopilot step), `bench team` scored by obligations (assigned / activated / completed / escalated / invalid); the surgical count as one record by item identity (`SessionState.count`, §8.1 record-backed boards bound to the patient's room) | yes (team round) | core `team.test.ts` (consistency, facility fit, start), `count.test.ts` (11: every count ending, 6/5, a false 5/5, a documented transfer, closure recorded or refused); agent `team/policy.test.ts` (17 rules on hand-built views), `team/session-team.test.ts`, `session/identity.test.ts`; bench `team/score.test.ts` (obligations); SurgeryCraft `tools/case126-team.test.ts` (16: the two-nurse handoff while the learner watches, relief, moved and missing instruments, the surgeon away, one owner for two requests, save / restore mid-handoff with one hand-over, every count ending in learner and observer mode, closing on a hold, who a reply is for, named colleagues, speech under anaesthesia) and `tools/case126-count.test.ts` (11: the field, the board, the RF wand, the Sign Out, the team and the score agree on every count ending; a save before the operation; the headless autopilot) | `bench team` over Case 126: 11 / 11 scenarios (11 activated, 11 completed, 2 appropriately escalated, 0 invalid), every one exactly once; the browser (2026-11-02, Case 126 under `serve`, Chromium + SwiftShader): the team clock carried a needle-holder handoff through to "seen to be done", and the autosave kept the team — the count record, the board binding and the reload of a pending scenario not yet demonstrated in the browser | no — rule-based policies for two duties and the count; no language model drives a team member; one case; not reviewed by perioperative nurses. Rel |
+| Concealed items and `search` (§8.6) | yes (team round) | world `conceal.test.ts` (out of observations, `find`, `canSee`, memory and events; refused by id and as a goal; revealed within reach or from inside the patient into the hand; kept by a snapshot) | the Case 126 count scenarios (a swab under the Mayo stand, in the wound, gone from the room) | no — concealment is set by a scenario only; nothing hides an item during play. Rel |
 
 ### 14.3 Known limitations
 
@@ -1889,8 +2011,12 @@ Stated as they are; none was changed in this behaviour-preserving release
    114.5 minutes.
 4. **No live language model was exercised** in this work: benchmark live
    runs are opt-in and never run in CI, and nothing records a model driving
-   the embodied tools, the MCP server or the bridge. **No GLB model ships**:
-   the model pipeline is tested with generated fixtures only.
+   the embodied tools, the MCP server or the bridge. **Equipment models are
+   checked by file, not by eye in every facility**: the built-in models pass
+   the inspector in a unit test and were looked at in the IMPF hospital
+   (2026-10-31: 62 built-in and 74 SurgeryCraft models, 885 placements, all
+   loaded in Chromium) and in a few views of the general hospital (all 97);
+   the teaching hospital and the V4 clinic were not reviewed shot by shot.
 5. **The reports and demonstrations in `docs/bench/` are generated
    artefacts.** Their header names the working tree they came from (the
    reports: `ddbb594d96df` with uncommitted changes — the tree committed as

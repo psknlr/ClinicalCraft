@@ -175,7 +175,10 @@
           "zh-CN": "守在床边的丈夫，着急但尽量把看到的情况说清楚；只转述病历里记录的事，不添加目击细节。",
           "en": "Her husband at the bedside, anxious but trying to describe clearly what he saw; relays only what the record contains, adding no witnessed detail."
         },
-        "answersHistory": true
+        "answersHistory": true,
+        "appearance": {
+          "presentation": "masculine"
+        }
       }
     },
     "nonVerbalWhen": {

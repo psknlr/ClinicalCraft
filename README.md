@@ -12,7 +12,7 @@
 > 送去 CT，生命体征只能看屏幕、手测或查病历，化验在病人身边下单，每个职员角色只做本职业
 > 范围内的事；智能体可以观察、导航、操作设备、委派护士与护工，并留下可审计的轨迹；
 > 临床医生智能体还能做示范接诊。内置 135 个中英双语教学病例（原有 10 例，以及中华病例说 125 例：原选 20 例、新增 105 例；新增病例正在依据原文重写，尚不可用于教学）、3 个场馆（含两层的教学医院）、
-> 103 种体素设备，以及 41 个具身智能体基准场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
+> 103 种设备（每种都有三维模型，体素部件为后备），以及 41 个具身智能体基准场景；支持 Anthropic Claude、OpenAI、xAI Grok、智谱 GLM / Z.ai、DeepSeek、Kimi、通义千问、
 > OpenRouter、Ollama、LM Studio 等模型，**无需任何密钥也能以离线确定性模式完整运行**。同一套
 > 运行时还提供终端 REPL、无界面批处理、HTTP 服务和 MCP 服务，可让 Claude Code / Codex /
 > Grok CLI 扮演医生，甚至经 `mcp --attach` 进入你正在浏览器里进行的接诊。本项目仅用于教学
@@ -40,6 +40,7 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
 [中华病例说 · 新增 105 例 / CMCR additional cases](docs/CMCR_105_CASES.md) ·
 [Facilities & equipment](docs/FACILITIES.md) ·
 [Local assets](docs/ASSETS.md) ·
+[Equipment models in Blender](docs/BLENDER.md) ·
 [Design lineage](docs/DESIGN_PRINCIPLES.md) ·
 [Glossary](docs/GLOSSARY.md) ·
 [CLI reference](packages/cli/README.md)
@@ -109,8 +110,11 @@ headless runs, an HTTP server and an MCP server that all speak one protocol.
   model/effort, a server-side key proxy for the browser, and a fully
   **offline** deterministic mode that needs no key.
 - **Data-driven content.** 135 bilingual cases (the original ten and 125 adapted from published CMCR case reports), 3 facilities (one with two
-  storeys, built from 15 room templates) and 103 voxel equipment types, all
-  JSON validated by zod schemas; every case is verified by replaying a
+  storeys, built from 15 room templates) and 103 equipment types, each drawn
+  as a 3D model with its voxel parts as the fallback; patients and staff are
+  figures of real proportions dressed for their job (a tailored white coat and
+  a stethoscope, scrubs, a sterile gown in theatre); all JSON validated by
+  zod schemas; every case is verified by replaying a
   reference solution and a matcher regression corpus.
 - **Agent-CLI ergonomics.** Layered settings and profiles, hooks
   (`SessionStart` … `SessionEnd`, shell commands with JSON on stdin),
@@ -267,17 +271,22 @@ are synthetic. The 125 CMCR cases are adapted from published case reports ([docs
 | `general-hospital` · 临床方块综合医院 ClinicalCraft General Hospital | ED with triage, resus and cubicles, ambulance bay, outpatient clinic, radiology (X-ray, CT, MRI, PET-CT, cath lab, ultrasound), laboratory, pathology, endoscopy, pharmacy, ward and ICU (with EEG, apheresis, neonatal incubator and phototherapy, CTG and a monoplace hyperbaric chamber), operating theatre, conference room, gardens — 37 rooms, 270 placements, 14 patient slots for every case setting, 10 staff |
 | `teaching-hospital` · Teaching Hospital (教学医院) | two storeys built from room templates (22 instances + 10 authored rooms): **L0** entrance, lobby with reception, triage, ED (2 resus bays, 2 cubicles, nursing station, store), radiology (CT, X-ray), laboratory, pharmacy (restricted dispensary), outpatient and orthopaedic rooms, ambulance bay; **L1** two 4-bed wards, ICU, teaching room, rehabilitation gym, operating theatre (restricted sterile zone), staff room — main stairs and an elevator, 32 rooms, 285 placements, 17 patient slots, 11 staff (a porter among them). Offered as an alternative for compatible cases |
 
-Three equipment catalogs define **103 equipment types** — `core-furniture` (39),
+Three equipment catalogs define **103 equipment types**, each with a 3D model built in
+Blender from its voxel parts ([docs/BLENDER.md](docs/BLENDER.md)) — `core-furniture` (39),
 `core-clinical` (38: monitors, ECG, defibrillator, crash cart, treatment cart, ventilator, a mobile non-invasive ventilator,
 infusion pumps, anaesthesia machine, dialysis and apheresis machines, EEG cart, fetal monitor (CTG),
 neonatal incubator, phototherapy unit, monoplace hyperbaric chamber, rehabilitation equipment…),
 `core-diagnostics` (26: CT, MRI, X-ray, C-arm, PET-CT, ultrasound, analysers,
 microscope, flow cytometer, endoscopy tower…) — and `materials` holds the
-procedural pixel textures. Each equipment type declares voxel parts,
+procedural pixel textures (and the colours that are codes: medical gases follow
+ISO 32, oxygen white). Each equipment type declares voxel parts,
 footprint, capabilities and an interaction (workstation, device, monitor,
 board, atlas…), and optionally `portable` (eight carts can be wheeled),
 `reach`, `interactionPoints`, a declarative `behavior` (the ECG machine and
-the patient monitor) and a GLB `model` (none ships); 15 room templates
+the patient monitor) and a GLB `model` (every built-in type ships one, in
+`packages/content/assets/models`; the bed, the wheelchair, the infusion stands, the
+oxygen cylinder, the ventilator, the defibrillator and other much-seen types have
+builders of their own); 15 room templates
 compose facilities. Examinations, investigations and interventions require
 capabilities present in the facility — the CLI, MCP and agent tools refuse
 an item the whole facility lacks, embodied mode also requires the provider
@@ -431,6 +440,33 @@ npm run -s cc -- bench grounding --split dev --lang en
 npm run -s cc -- bench grounding --split test --failures 0 --compare grounding-results/before/grounding-report.json
 ```
 
+**The operative benchmark** — `bench operative` puts an agent at the operating
+table of a case with a `procedure`. The patient's anatomy is the base anatomy or
+one of the procedure's anatomical variants, fixed or drawn by the run seed, and
+it is never shown to the agent. The agent works with `observe_field` and
+`operate` only. Success is judged on the final state: the case's safety verdict,
+injuries, a critical view that was true when documented, a safe bail-out where
+one is indicated.
+
+The report gives, overall and per anatomy with Wilson intervals:
+
+- task success;
+- safety-critical outcomes;
+- irreversible steps without a true view;
+- overclaiming safety pauses;
+- bail-out appropriateness.
+
+A hidden-state audit fails any run whose tool results named the anatomy. Suites
+live in `<content dir>/operative/<suite>/`, so a content pack ships its own. The
+SurgeryCraft pack's `case126-v1` has 8 scenarios over six anatomies, with a
+held-out test split. `reference` and `scripted-llm` validate it at 100 %. No live
+run has been recorded yet. Contract: [docs/BENCHMARK_OPERATIVE.md](docs/BENCHMARK_OPERATIVE.md).
+
+```bash
+npm run -s cc -- bench operative --list
+npm run -s cc -- bench operative --suite case126-v1 --agent reference --seeds 1-8
+```
+
 **The reference demonstration** — `bench demo` works the full embodied STEMI
 encounter headless with the reference clinician and writes `trace.jsonl` and
 `demo.md`: for every step, Observation → Plan → Navigation → Object
@@ -445,7 +481,8 @@ npm run -s cc -- bench demo --case stemi-inferior-rv --lang zh-CN --out bench-de
 
 ### Connect Claude Code / Codex / Grok CLI to a live world (`mcp --attach`)
 
-`clinicalcraft mcp --attach <server>` gives your agent the same clinical and
+`clinicalcraft mcp --attach <server>` gives your agent the same clinical,
+operative (`observe_field`, `operate` — in a case with an operation) and
 world tools, but in an encounter **you** are playing in the browser — you
 watch the avatar walk and act, and you answer every approval. It is paired
 with one encounter by the live-session id and the attach key that encounter
@@ -469,7 +506,8 @@ shows you; it never picks a session by itself.
    from the badge):
 
    ```bash
-   mkdir -p ~/.clinicalcraft && (umask 077; printf '%s\n' 'ak_…paste the key…' > ~/.clinicalcraft/attach-key)
+   mkdir -p ~/.clinicalcraft && (umask 077; printf '%s\
+' 'ak_…paste the key…' > ~/.clinicalcraft/attach-key)
 
    # Claude Code
    claude mcp add clinicalcraft-live -- node "$PWD/packages/cli/dist/bin.js" mcp --attach http://127.0.0.1:5178 --world-session ls_… --attach-key-file ~/.clinicalcraft/attach-key --cwd "$PWD"

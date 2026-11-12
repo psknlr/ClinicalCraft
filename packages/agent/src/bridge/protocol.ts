@@ -33,6 +33,8 @@ import { hashString } from "@clinicalcraft/core";
 import type { ApprovalDecision, RiskLevel } from "../protocol.js";
 import { sanitizeTerminal } from "../terminal.js";
 import { clinicalTools } from "../tools/clinical.js";
+import { procedureTools } from "../tools/procedure.js";
+import { studyTools } from "../tools/studies.js";
 import { WORLD_TOOL_NAMES } from "../tools/world.js";
 
 /** Base path of the bridge routes. */
@@ -80,12 +82,20 @@ export const BRIDGE_LIMITS = {
 
 /**
  * Tools an external agent may call in a live session — as the clinician agent:
- * the clinical tools (PROTOCOL §3) and the world tools (§12.4). Never the
- * front-end's dynamic `walk_to`, nor `get_camera_frame` (images do not travel
- * over the bridge). The browser additionally requires the clinician's
- * allow-list, practice scope and bare deny rules (`toolsFor("clinician")`).
+ * the clinical tools (PROTOCOL §3), the operative field's `observe_field` and
+ * `operate` (offered by a session only in a case with an operation), the new
+ * investigations' `retrieve_report`, `order_study`, `read_study` and
+ * `list_studies` (docs/STUDIES.md) and the world tools (§12.4). Never the front-end's dynamic `walk_to`, nor
+ * `get_camera_frame` (images do not travel over the bridge). The browser
+ * additionally requires the clinician's allow-list, practice scope and bare
+ * deny rules (`toolsFor("clinician")`).
  */
-export const BRIDGE_TOOLS: readonly string[] = Object.freeze([...clinicalTools().map((t) => t.name), ...WORLD_TOOL_NAMES.filter((name) => name !== "get_camera_frame")]);
+export const BRIDGE_TOOLS: readonly string[] = Object.freeze([
+  ...clinicalTools().map((t) => t.name),
+  ...procedureTools().map((t) => t.name),
+  ...studyTools().map((t) => t.name),
+  ...WORLD_TOOL_NAMES.filter((name) => name !== "get_camera_frame"),
+]);
 
 const BRIDGE_TOOL_SET: ReadonlySet<string> = new Set(BRIDGE_TOOLS);
 

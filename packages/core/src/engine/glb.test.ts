@@ -5,12 +5,15 @@
 import { createHash } from "node:crypto";
 import { describe, expect, it } from "vitest";
 import type { EquipmentModel } from "../schema/facility.js";
-import { checkModelReference, encodeGlb, fitModel, GlbError, parseGlb, type GlbInfo } from "./glb.js";
+import { checkModelReference, encodeGlb, fitModel, GlbError, LAYER_NODE, parseGlb, type GlbInfo } from "./glb.js";
 
-/** A box mesh (8 vertices, 12 triangles) of `size` centred on `centre`, as a GLB with optional node transform and extensions. */
+/**
+ * A box mesh (8 vertices, 12 triangles) of `size` centred on `centre`, as a GLB with optional node transform and
+ * extensions; `more`: further nodes of the same mesh (a model in layers).
+ */
 function boxGlb(
   size: [number, number, number],
-  opts: { centre?: [number, number, number]; node?: Record<string, unknown>; used?: string[]; required?: string[]; materials?: number; minMax?: boolean; generator?: string } = {},
+  opts: { centre?: [number, number, number]; node?: Record<string, unknown>; more?: Record<string, unknown>[]; used?: string[]; required?: string[]; materials?: number; minMax?: boolean; generator?: string } = {},
 ): Uint8Array {
   const [w, h, d] = size;
   const [cx, cy, cz] = opts.centre ?? [0, h / 2, 0];
@@ -27,8 +30,8 @@ function boxGlb(
   const json = {
     asset: { version: "2.0", generator: opts.generator ?? "clinicalcraft test" },
     scene: 0,
-    scenes: [{ nodes: [0] }],
-    nodes: [{ mesh: 0, ...(opts.node ?? {}) }],
+    scenes: [{ nodes: [0, ...(opts.more ?? []).map((_, i) => i + 1)] }],
+    nodes: [{ mesh: 0, ...(opts.node ?? {}) }, ...(opts.more ?? []).map((n) => ({ mesh: 0, ...n }))],
     meshes: [{ primitives: [{ attributes: { POSITION: 0 }, indices: 1, ...(opts.materials ? { material: 0 } : {}) }] }],
     materials: Array.from({ length: opts.materials ?? 0 }, (_, i) => ({ name: `m${i}` })),
     buffers: [{ byteLength: bin.byteLength }],
@@ -54,7 +57,7 @@ function boxGlb(
 
 const sha = (b: Uint8Array) => createHash("sha256").update(b).digest("hex");
 const close = (v: number[], w: number[]) => v.forEach((x, i) => expect(x).toBeCloseTo(w[i], 6));
-const ref = (over: Partial<EquipmentModel> = {}): EquipmentModel => ({ uri: "models/bed.glb", license: "CC0-1.0", ...over });
+const ref = (over: Partial<EquipmentModel> = {}): EquipmentModel => ({ uri: "models/bed.glb", license: "CC0-1.0", use: "cleared", source: { name: "test" }, ...over });
 
 describe("parseGlb", () => {
   it("reads the container, counts and the accessor bounding box", () => {
@@ -79,6 +82,22 @@ describe("parseGlb", () => {
     close(info.bounds!.min, [2, 0, -1]);
     const m = parseGlb(boxGlb([1, 1, 1], { node: { matrix: [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 3, 0, 1] } }));
     close(m.bounds!.min, [-0.5, 3, -0.5]);
+  });
+
+  it("lists the model's layers: its nodes named layer:<id>, whatever suffix an exporter added", () => {
+    expect(parseGlb(boxGlb([1, 1, 1])).layers).toEqual([]);
+    const info = parseGlb(
+      boxGlb([1, 1, 1], {
+        node: { name: "station" },
+        more: [{ name: "layer:scope" }, { name: "layer:camera-port" }, { name: "layer:scope.001" }, { name: "layer:chest_tube" }, { name: "Layer:Loud" }, { name: "layer:" }, { name: "layer:a b" }, { name: "sublayer:x" }, {}],
+      }),
+    );
+    expect(info.layers).toEqual(["camera-port", "chest_tube", "scope"]);
+    // the box is of everything, every layer included; the counts too
+    expect(info.counts).toMatchObject({ nodes: 10, meshes: 1 });
+    expect(LAYER_NODE.exec("layer:working-ports")?.[1]).toBe("working-ports");
+    expect(LAYER_NODE.exec("layer:working-ports.012")?.[1]).toBe("working-ports");
+    for (const no of ["layer:", "layer:Scope", "layers:scope", "layer:scope.a", " layer:scope", "layer:scope "]) expect(LAYER_NODE.test(no), no).toBe(false);
   });
 
   it("lists extensions and reports missing bounds", () => {
@@ -145,6 +164,30 @@ describe("checkModelReference", () => {
     expect(codes(checkModelReference(info, ref({ sha256: sha(bytes) }), bed))).toEqual(["info:scale"]);
     expect(codes(checkModelReference(info, ref({ sha256: sha(bytes) }), { w: 0.9, d: 2.1, h: 3 }))).toEqual(["info:scale", "warning:scale"]);
   });
+  it("treats footprint axes under 5 cm as an aim allowance: a thinner model fits, a thicker one does not", () => {
+    // a scalpel lying flat: 16 × 0.9 × 1.6 cm in a 16 × 3 × 4 cm footprint
+    const flat = boxGlb([0.16, 0.009, 0.016]);
+    const fp = { w: 0.16, d: 0.04, h: 0.03 };
+    expect(codes(checkModelReference(parseGlb(flat), ref({ scale: 1, sha256: sha(flat) }), fp))).toEqual([]);
+    const thick = boxGlb([0.16, 0.07, 0.016]);
+    expect(codes(checkModelReference(parseGlb(thick), ref({ scale: 1, sha256: sha(thick) }), fp))).toEqual(["error:scale"]);
+    // a long axis still catches a model authored in centimetres
+    const cm = boxGlb([16, 0.9, 1.6]);
+    expect(codes(checkModelReference(parseGlb(cm), ref({ scale: 1, sha256: sha(cm) }), fp))).toEqual(["error:scale"]);
+  });
+  it("measures a lifted model by its top; one short axis warns, a uniformly small or protruding model fails", () => {
+    // a wall clock built in place: 0.42 × 0.42 × 0.05 m with its bottom at 2.14 m, footprint floor to 2.6 m, 0.1 m deep
+    const clock = boxGlb([0.42, 0.42, 0.05]);
+    const fp = { w: 0.45, d: 0.1, h: 2.6 };
+    expect(codes(checkModelReference(parseGlb(clock), ref({ scale: 1, offset: [0, 2.14, 0], sha256: sha(clock) }), fp))).toEqual(["warning:scale"]); // only the depth is short
+    expect(codes(checkModelReference(parseGlb(clock), ref({ scale: 1, sha256: sha(clock) }), fp))).toEqual(["error:scale"]); // without its offset it would stand on the floor
+    expect(codes(checkModelReference(parseGlb(clock), ref({ scale: 1, offset: [0, 2.14, 0], sha256: sha(clock) }), { w: 0.45, d: 0.05, h: 2.6 }))).toEqual([]);
+    // uniformly a third of the footprint (authored too small): an error; one axis 2.5 × the footprint: an error
+    const small = boxGlb([0.3, 0.2, 0.7]);
+    expect(codes(checkModelReference(parseGlb(small), ref({ scale: 1, sha256: sha(small) }), bed))).toEqual(["error:scale"]);
+    const long = boxGlb([0.9, 0.6, 5.3]);
+    expect(codes(checkModelReference(parseGlb(long), ref({ scale: 1, sha256: sha(long) }), bed))).toEqual(["error:scale"]);
+  });
   it("requires a usable licence, attribution for CC-BY, and a pinned, matching sha256", () => {
     expect(codes(checkModelReference(info, ref({ license: "UNKNOWN", scale: 1, sha256: sha(bytes) }), bed))).toEqual(["error:license"]);
     expect(codes(checkModelReference(info, ref({ license: "CC-BY-4.0", scale: 1, sha256: sha(bytes) }), bed))).toEqual(["warning:attribution"]);
@@ -152,6 +195,36 @@ describe("checkModelReference", () => {
     expect(codes(checkModelReference(info, ref({ scale: 1 }), bed))).toEqual(["warning:sha256"]);
     expect(codes(checkModelReference(info, ref({ scale: 1, sha256: "0".repeat(64) }), bed, { sha256: sha(bytes) }))).toEqual(["error:sha256"]);
   });
+  it("checks the use status and provenance: pending fails, research-only and non-commercial-but-cleared warn", () => {
+    const ok = { scale: 1, sha256: sha(bytes) };
+    expect(codes(checkModelReference(info, ref({ ...ok, use: undefined }), bed))).toEqual(["info:use"]);
+    expect(codes(checkModelReference(info, ref({ ...ok, use: "pending", source: undefined }), bed))).toEqual(["error:use"]);
+    expect(codes(checkModelReference(info, ref({ ...ok, use: "research-only" }), bed))).toEqual(["warning:use"]);
+    expect(codes(checkModelReference(info, ref({ ...ok, source: undefined }), bed))).toEqual(["info:source"]);
+    const by = { en: "A. Author", "zh-CN": "作者" };
+    for (const license of ["CC-BY-NC-4.0", "CC BY-NC-SA 4.0", "CC-BY-NC-ND-4.0", "research and non-commercial use only"]) {
+      expect([license, codes(checkModelReference(info, ref({ ...ok, license, attribution: by }), bed))]).toEqual([license, ["warning:use"]]);
+      expect([license, codes(checkModelReference(info, ref({ ...ok, license, attribution: by, use: "research-only" }), bed))]).toEqual([license, ["warning:use"]]);
+    }
+    expect(codes(checkModelReference(info, ref({ ...ok, license: "CC-BY-4.0", attribution: by }), bed))).toEqual([]);
+  });
+  it("checks the layers a type's looks show against the model's: a missing one fails, one nothing shows warns", () => {
+    const ok = ref({ scale: 1, sha256: "a".repeat(64) });
+    const layered = parseGlb(boxGlb([0.9, 0.6, 2.1], { more: [{ name: "layer:scope" }, { name: "layer:drain" }] }));
+    expect(codes(checkModelReference(layered, ok, bed, { layers: ["drain", "scope"] }))).toEqual([]);
+    const missing = checkModelReference(layered, ok, bed, { layers: ["drain", "scope", "dressings", "marks"] });
+    expect(codes(missing)).toEqual(["error:layers"]);
+    expect(missing[0].message).toMatch(/"dressings", "marks".*layer:dressings, layer:marks/);
+    const unused = checkModelReference(layered, ok, bed, { layers: ["scope"] });
+    expect(codes(unused)).toEqual(["warning:layers"]);
+    expect(unused[0].message).toMatch(/"drain": that layer is never drawn/);
+    // a type without looks whose model has layers: nothing ever hides them — said as well
+    expect(codes(checkModelReference(layered, ok, bed, { layers: [] }))).toEqual(["warning:layers"]);
+    // not asked (a caller that does not know the type's looks): not checked
+    expect(codes(checkModelReference(layered, ok, bed))).toEqual([]);
+    expect(codes(checkModelReference(info, ok, bed, { layers: [] }))).toEqual([]);
+  });
+
   it("rejects required extensions the renderer cannot load (DRACO only with a decoder)", () => {
     const draco = parseGlb(boxGlb([0.9, 0.6, 2.1], { used: ["KHR_draco_mesh_compression"], required: ["KHR_draco_mesh_compression"] }));
     const r = ref({ scale: 1, sha256: "a".repeat(64) });

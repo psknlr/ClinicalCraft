@@ -3,7 +3,8 @@
  * card with hint, region & coordinates, clickable minimap, crosshair and
  * target tooltip, turn-phase bubble, compact vitals strip, V4 hotbar with
  * block counts, controls legend, status bar (phase, save state, simulated
- * clock, provider pill), autopilot dock and V4 touch controls; in embodied mode the embodiment badge
+ * clock, provider pill), autopilot dock and V4 touch controls, the Surgery button while the case's
+ * operation is under way (`procedure.phases`); in embodied mode the embodiment badge
  * (where the world model has the learner's body, "walking…" while the world moves it) and the slot for
  * action feedback ("Go there"); while external control is on (PROTOCOL §13.6) the external-agent badge —
  * its state, the live-session id and attach key the learner hands to their agent (copyable), the calls
@@ -23,6 +24,7 @@ import type { BlockInfo, InteractionTarget, MoveInfo } from "../contracts.js";
 import { caseDisclaimer, ct, getLocale, tr, trMaybe } from "../i18n/index.js";
 import { append, clear, clockLabel, h } from "./dom.js";
 import { phaseBadge } from "./panels/common.js";
+import { surgeryOffered } from "./panels/surgery-controls.js";
 import { nameLabel } from "./panels/trace-labels.js";
 
 interface SlotDef {
@@ -142,6 +144,8 @@ export class Hud {
     e.phase = h("b", { id: "phase-label" });
     e.saved = h("span", { id: "saved" });
     e.clock = h("span", { id: "sim-clock", class: "sim-clock" });
+    // what the case waits for next, and a control to wait until it (docs/PROTOCOL.md "Case time")
+    e.next = h("button", { type: "button", id: "next-event", class: "small-pill next-event", hidden: true, onclick: () => this.waitForNext() });
     e.pill = h("button", { type: "button", id: "hud-llm", class: "llm-pill small-pill", onclick: () => this.app.open("settings", { section: "llm" }) });
     e.vitals = h("button", { type: "button", id: "vitals-strip", class: "vitals-strip", hidden: true, title: tr("hud.vitalsTitle"), "aria-label": tr("hud.vitalsTitle"), onclick: () => this.app.open("monitor") });
     e.dock = h("div", { id: "autopilot-dock", class: "autopilot-dock", hidden: true });
@@ -163,6 +167,10 @@ export class Hud {
           btn("journal-btn", tr("hud.journal"), "J", () => this.app.open("journal")),
           btn("map-btn", tr("hud.map"), "M", () => this.app.open("map")),
           (e.autopilot = h("button", { type: "button", id: "autopilot-btn", onclick: () => this.app.open("autopilot") }, tr("hud.autopilot"))),
+          // the laparoscopic surgery window: only while the case's operation is under way in this phase
+          (e.surgery = h("button", { type: "button", id: "surgery-btn", hidden: true, title: tr("surgery.hudTitle"), onclick: () => this.app.open("surgery") }, tr("surgery.hud"))),
+          // the care team (docs/TEAM.md): while the case's team works on its own in this phase
+          (e.team = h("button", { type: "button", id: "team-btn", hidden: true, title: tr("team.hudTitle"), onclick: () => this.app.open("team") }, tr("team.hud"))),
           btn("pause-btn", tr("hud.pause"), "Esc", () => this.app.open("pause")),
         ),
       ),
@@ -188,7 +196,7 @@ export class Hud {
       e.finished,
       e.feedback,
       h("div", { class: "bottom" }, e.selected, e.hotbar, h("div", { class: "controls", html: tr("hud.controls.html") })),
-      h("div", { class: "statusbar" }, e.phase, e.clock, h("br"), e.saved, h("br"), e.pill),
+      h("div", { class: "statusbar" }, e.phase, e.clock, h("br"), e.next, h("br"), e.saved, h("br"), e.pill),
       e.dock,
       ...this.touchControls(),
     );
@@ -369,10 +377,21 @@ export class Hud {
 
     /* status bar */
     e.phase.textContent = phaseBadge(c, s.phase, L);
+    const surgery = surgeryOffered(c, s.phase);
+    if (e.surgery.hidden === surgery) e.surgery.hidden = !surgery;
+    const team = !!game.embodied && !!c.team?.phases.includes(s.phase);
+    if (e.team.hidden === team) e.team.hidden = !team;
     if (c.clock.mode === "simulated") {
       e.clock.hidden = false;
       e.clock.textContent = c.clock.startTime ? ` · ${tr("hud.clock", { time: clockLabel(c.clock.startTime, s.clock) })}` : ` · ${tr("hud.elapsed", { min: Math.round(s.clock) })}`;
     } else e.clock.hidden = true;
+    const next = c.clock.mode === "simulated" && !s.finished ? game.session.session.nextEvent() : null;
+    e.next.hidden = !next;
+    if (next) {
+      const label = tr("hud.next", { what: ct(next.name), min: Math.max(1, Math.ceil(next.inMinutes)) });
+      if (e.next.textContent !== label) e.next.textContent = label;
+      e.next.title = tr("hud.nextTitle");
+    }
 
     /* vitals strip */
     this.renderVitals(c);
@@ -524,6 +543,14 @@ export class Hud {
   /** Embodied: "readable" / "monitor-not-in-view" / other — whether the strip may show the monitor's live values. */
   private readableKey(): string {
     return this.app.game?.embodied?.screenKey() ?? "";
+  }
+
+  /** Wait until what the case waits for next (the learner's own wait: the clock moves, the staff's round follows). */
+  private waitForNext(): void {
+    const game = this.app.game;
+    const next = game?.session.session.nextEvent();
+    if (!game || !next || next.inMinutes <= 0) return;
+    game.session.act({ type: "advance-time", minutes: Math.ceil(next.inMinutes * 100) / 100 });
   }
 
   private renderVitals(c: CaseDefinition): void {

@@ -58,12 +58,18 @@ export interface AutopilotHost {
    * Position in the offline walkthrough (persists across autopilot runs) and
    * the tool steps that did not go through (denied, blocked, rejected).
    */
-  cursor: { value: number; missed: OfflineClinicianStep[] };
+  cursor: { value: number; missed: OfflineClinicianStep[]; extraOps?: number };
   /**
    * The offline clinician's turn, when it is not `offlineClinicianTurn` — embodied mode replays the
    * walkthrough with the body (`embodiedOfflineTurn`).
    */
   offlineTurn?(turnId: string, maxSteps: number, signal?: AbortSignal): Promise<AgentOutcome>;
+  /**
+   * After each step of the walkthrough: the session's care team takes its turn (docs/TEAM.md §2) — the same path the
+   * browser, the learner and external agents drive after their own acts, so a headless run works the assigned team
+   * scenario too and never runs ahead of it.
+   */
+  afterStep?(signal?: AbortSignal): Promise<void>;
 }
 
 /**
@@ -93,6 +99,8 @@ export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, 
   const steps = clinicianOfflineSteps(host.caseDef, host.locale);
   let executed = 0;
   let last = "";
+  /** Cursor positions a re-grasp was tried at (once each: a traction that cannot be set again is not retried). */
+  const regrasped = new Set<number>();
   host.ensureStarted();
   while (executed < Math.max(1, maxSteps)) {
     if (signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
@@ -103,7 +111,7 @@ export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, 
       return { status: "end_turn", text: last, grounded: [], done: true, toolCalls: executed };
     }
     const step = steps[host.cursor.value]!;
-    if (stepAlreadySatisfied(step, host.state())) {
+    if (stepAlreadySatisfied(step, host.state(), host.cursor.extraOps)) {
       host.cursor.value++;
       continue;
     }
@@ -130,6 +138,25 @@ export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, 
       host.cursor.value++;
       continue;
     }
+    // A traction the reference run set up — and never let go — has gone (a colleague holding it left the table):
+    // re-grasp before the next instrument step, once, and say so; the step itself follows.
+    const regrasp = run === step && !regrasped.has(host.cursor.value) ? lostTraction(host.state(), steps, host.cursor.value) : null;
+    if (regrasp) {
+      regrasped.add(host.cursor.value);
+      const again = stepForAction(host.caseDef, regrasp.action, host.locale);
+      if (again.kind === "tool") {
+        last = rt(host.locale, "clinician.narrate.regrasp", { structure: regrasp.structure });
+        host.narrate(turnId, last);
+        const stepsBefore = host.state().procedure?.counters.steps ?? 0;
+        const outcome = await host.executeTool(turnId, again.tool, again.args, signal);
+        executed++;
+        // a step the reference does not have: the walkthrough's place in the operation is not moved by it
+        if ((host.state().procedure?.counters.steps ?? 0) > stepsBefore) host.cursor.extraOps = (host.cursor.extraOps ?? 0) + 1;
+        if (outcome.status === "interrupted" || signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
+        if (outcome.status === "cancelled") return { status: "denied", text: last, grounded: [], toolCalls: executed };
+        continue;
+      }
+    }
     const clockBefore = host.state().clock;
     last = run.narration;
     host.narrate(turnId, run.narration);
@@ -142,6 +169,28 @@ export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, 
     if (run === step || host.state().clock === clockBefore) host.cursor.value++;
   }
   return { status: "end_turn", text: last, grounded: [], done: host.state().finished, toolCalls: executed };
+}
+
+/** Operative steps that work with an instrument in a field the traction exposes. */
+const INSTRUMENT_STEPS: ReadonlySet<string> = new Set(["dissect", "isolate", "clip", "divide", "coagulate", "identify", "safety-pause"]);
+
+/**
+ * The traction to set again before the step at `cursor` (null: none lost): the reference run's last `retract` of a
+ * structure before this step, not released by it since, that the field no longer holds.
+ */
+export function lostTraction(s: SessionState, steps: readonly OfflineClinicianStep[], cursor: number): { action: Extract<ClinicalAction, { type: "operate" }>; structure: string } | null {
+  const step = steps[cursor];
+  const p = s.procedure;
+  if (!p || step?.action.type !== "operate" || !INSTRUMENT_STEPS.has(step.action.op.op) || (p.bailouts ?? []).length) return null;
+  const held = new Map<string, Extract<ClinicalAction, { type: "operate" }>>();
+  for (const x of steps.slice(0, cursor)) {
+    if (x.action.type !== "operate") continue;
+    const op = x.action.op as { op: string; structure?: string };
+    if (op.op === "retract" && op.structure) held.set(op.structure, x.action as Extract<ClinicalAction, { type: "operate" }>);
+    if (op.op === "release" && op.structure) held.delete(op.structure);
+  }
+  for (const [structure, action] of held) if (!p.retractions[structure]) return { action: { type: "operate", op: structuredClone(action.op) }, structure };
+  return null;
 }
 
 /** Run the autopilot loop (one `turn_started` … `turn_complete` per clinician turn). */

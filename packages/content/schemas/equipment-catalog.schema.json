@@ -284,7 +284,8 @@
             "pacs",
             "lab",
             "text",
-            "logo"
+            "logo",
+            "thoracoscopy"
           ],
           "default": "none"
         },
@@ -369,6 +370,89 @@
                   },
                   "available": {
                     "type": "boolean"
+                  },
+                  "when": {
+                    "$ref": "#/definitions/Condition"
+                  },
+                  "supplies": {
+                    "type": "array",
+                    "items": {
+                      "$ref": "#/definitions/Capability"
+                    }
+                  },
+                  "look": {
+                    "type": "object",
+                    "properties": {
+                      "layers": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 40,
+                          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+                        }
+                      },
+                      "screen": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "xray",
+                          "ct",
+                          "pacs",
+                          "lab",
+                          "text",
+                          "logo",
+                          "thoracoscopy"
+                        ]
+                      },
+                      "manikin": {
+                        "type": "object",
+                        "properties": {
+                          "posture": {
+                            "type": "string",
+                            "enum": [
+                              "standing",
+                              "sitting",
+                              "lying",
+                              "lateral"
+                            ]
+                          },
+                          "sideUp": {
+                            "type": "string",
+                            "enum": [
+                              "left",
+                              "right"
+                            ]
+                          },
+                          "cover": {
+                            "type": "string",
+                            "enum": [
+                              "clothes",
+                              "blanket",
+                              "drapes"
+                            ]
+                          },
+                          "flex": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 25
+                          },
+                          "asleep": {
+                            "type": "boolean"
+                          },
+                          "breathing": {
+                            "type": "string",
+                            "enum": [
+                              "none",
+                              "both",
+                              "one-lung"
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false
                   }
                 },
                 "additionalProperties": false
@@ -421,7 +505,9 @@
                           "read_result",
                           "intervene",
                           "check_vitals",
-                          "examine"
+                          "examine",
+                          "surgical_count",
+                          "operate"
                         ]
                       },
                       "select": {
@@ -429,8 +515,12 @@
                         "enum": [
                           "param",
                           "capability",
-                          "monitoring"
+                          "monitoring",
+                          "item"
                         ]
+                      },
+                      "item": {
+                        "$ref": "#/definitions/Id"
                       }
                     },
                     "required": [
@@ -484,7 +574,8 @@
             "derived": {
               "type": "string",
               "enum": [
-                "monitor-attachment"
+                "monitor-attachment",
+                "case-record"
               ]
             }
           },
@@ -555,11 +646,199 @@
             },
             "attribution": {
               "$ref": "#/definitions/LocalizedText"
+            },
+            "source": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "url": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "version": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "retrieved": {
+                  "type": "string",
+                  "pattern": "^\\d{4}-\\d{2}-\\d{2}$"
+                },
+                "changes": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "name"
+              ],
+              "additionalProperties": false
+            },
+            "use": {
+              "type": "string",
+              "enum": [
+                "cleared",
+                "research-only",
+                "pending"
+              ]
             }
           },
           "required": [
             "uri",
             "license"
+          ],
+          "additionalProperties": false
+        },
+        "manikin": {
+          "type": "object",
+          "properties": {
+            "posture": {
+              "type": "string",
+              "enum": [
+                "standing",
+                "sitting",
+                "lying",
+                "lateral"
+              ]
+            },
+            "sideUp": {
+              "type": "string",
+              "enum": [
+                "left",
+                "right"
+              ]
+            },
+            "cover": {
+              "type": "string",
+              "enum": [
+                "clothes",
+                "blanket",
+                "drapes"
+              ]
+            },
+            "draped": {
+              "type": "boolean"
+            },
+            "breathing": {
+              "type": "string",
+              "enum": [
+                "none",
+                "both",
+                "one-lung"
+              ]
+            },
+            "flex": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 25,
+              "default": 0
+            },
+            "asleep": {
+              "type": "boolean",
+              "default": false
+            },
+            "x": {
+              "type": "number",
+              "default": 0
+            },
+            "z": {
+              "type": "number",
+              "default": 0
+            },
+            "y": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0
+            },
+            "rot": {
+              "type": "number",
+              "default": 0
+            },
+            "appearance": {
+              "type": "object",
+              "properties": {
+                "skin": {
+                  "$ref": "#/definitions/HexColor",
+                  "default": "#cba88a"
+                },
+                "hair": {
+                  "$ref": "#/definitions/HexColor",
+                  "default": "#3b3027"
+                },
+                "hairStyle": {
+                  "type": "string",
+                  "enum": [
+                    "short",
+                    "long",
+                    "bald",
+                    "bun",
+                    "ponytail",
+                    "curly",
+                    "bob",
+                    "wavy"
+                  ],
+                  "default": "short"
+                },
+                "shirt": {
+                  "$ref": "#/definitions/HexColor",
+                  "default": "#6d9fba"
+                },
+                "pants": {
+                  "$ref": "#/definitions/HexColor",
+                  "default": "#354442"
+                },
+                "build": {
+                  "type": "string",
+                  "enum": [
+                    "slim",
+                    "average",
+                    "heavy"
+                  ],
+                  "default": "average"
+                },
+                "stature": {
+                  "type": "string",
+                  "enum": [
+                    "infant",
+                    "child",
+                    "teen",
+                    "adult"
+                  ],
+                  "default": "adult"
+                },
+                "gown": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "accessory": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "glasses",
+                    "mask",
+                    "nasal-cannula",
+                    "oxygen-mask",
+                    "sling",
+                    "cap"
+                  ],
+                  "default": "none"
+                },
+                "presentation": {
+                  "type": "string",
+                  "enum": [
+                    "feminine",
+                    "masculine",
+                    "neutral"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "posture"
           ],
           "additionalProperties": false
         }
@@ -772,6 +1051,841 @@
           },
           "required": [
             "not"
+          ],
+          "additionalProperties": false
+        }
+      ]
+    },
+    "Condition": {
+      "anyOf": [
+        {
+          "type": "object",
+          "properties": {
+            "all": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Condition"
+              }
+            }
+          },
+          "required": [
+            "all"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "any": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Condition"
+              }
+            }
+          },
+          "required": [
+            "any"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "not": {
+              "$ref": "#/definitions/Condition"
+            }
+          },
+          "required": [
+            "not"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "always": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "always"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "asked": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "asked"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "examined": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "examined"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "ordered": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "ordered"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "read": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "read"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "resultReady": {
+              "$ref": "#/definitions/Id"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "resultReady"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decided": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "decided"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "attempted": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "attempted"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "decidedFirstTry": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "decidedFirstTry"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "intervened": {
+              "$ref": "#/definitions/Id"
+            },
+            "minCount": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "valid": {
+              "type": "boolean"
+            },
+            "whenIndicated": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "intervened"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "inOrder": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 2,
+              "maxItems": 8
+            }
+          },
+          "required": [
+            "inOrder"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "held": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "held"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "phase": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "phase"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "flag": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "flag"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "objective": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "objective"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "vital": {
+              "type": "string",
+              "enum": [
+                "hr",
+                "sbp",
+                "dbp",
+                "rr",
+                "spo2",
+                "temp",
+                "gcs",
+                "glucose",
+                "etco2",
+                "pain"
+              ]
+            },
+            "op": {
+              "type": "string",
+              "enum": [
+                "lt",
+                "lte",
+                "gt",
+                "gte",
+                "eq"
+              ]
+            },
+            "value": {
+              "type": "number"
+            }
+          },
+          "required": [
+            "vital",
+            "op",
+            "value"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "elapsed": {
+              "type": "object",
+              "properties": {
+                "gte": {
+                  "type": "number"
+                },
+                "lte": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "elapsed"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "hints": {
+              "type": "object",
+              "properties": {
+                "gte": {
+                  "type": "number"
+                },
+                "lte": {
+                  "type": "number"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "hints"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "procedure": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "view": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "view"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "criterion": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "criterion"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "documented": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "valid": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "documented"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "injury": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "bile-duct-injury",
+                            "vascular-injury",
+                            "bleeding",
+                            "perforation",
+                            "thermal-injury",
+                            "bile-leak"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    },
+                    "recognised": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "injury"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "unsafe": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "irreversible-without-pause",
+                            "irreversible-without-view",
+                            "irreversible-on-unidentified",
+                            "irreversible-on-misidentified",
+                            "blind-in-obscured-field",
+                            "energy-near-hidden-hazard",
+                            "excessive-traction",
+                            "continued-after-injury",
+                            "insufflation-over-max",
+                            "dissection-beyond-safe-plane"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "unsafe"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "clipped": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "minCount": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": [
+                    "clipped"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "divided": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "divided"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "isolated": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "isolated"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "identified": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "as": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "identified"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "specimen": {
+                      "type": "string",
+                      "enum": [
+                        "in-situ",
+                        "detached",
+                        "bagged",
+                        "extracted"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "specimen"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "bailout": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "call-help",
+                            "subtotal-fenestrating",
+                            "subtotal-reconstituting",
+                            "convert-open",
+                            "abandon-refer"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bailout"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "imaged": {
+                      "type": "string",
+                      "enum": [
+                        "ioc",
+                        "lap-us"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "imaged"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "insufflated": {
+                      "type": "boolean"
+                    },
+                    "pressure": {
+                      "type": "object",
+                      "properties": {
+                        "gte": {
+                          "type": "number"
+                        },
+                        "lte": {
+                          "type": "number"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "insufflated"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "bleeding": {
+                      "type": "string",
+                      "enum": [
+                        "any",
+                        "ooze",
+                        "brisk",
+                        "major"
+                      ]
+                    },
+                    "controlled": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "bleeding"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "spillage": {
+                      "type": "string",
+                      "enum": [
+                        "bile",
+                        "stones"
+                      ]
+                    },
+                    "cleared": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "spillage"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "counter": {
+                      "type": "string",
+                      "enum": [
+                        "steps",
+                        "exchanges",
+                        "clashes",
+                        "crossings"
+                      ]
+                    },
+                    "gte": {
+                      "type": "number"
+                    },
+                    "lte": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "counter"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "inspected": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "inspected"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "dissectedExposed": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "atLeast": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  },
+                  "required": [
+                    "dissectedExposed",
+                    "atLeast"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "closed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "closed"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "variant": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "variant"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "procedure"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "count": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "baseline",
+                        "correct",
+                        "discrepancy",
+                        "unresolved",
+                        "excluded",
+                        "reconciled"
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "baseline",
+                          "correct",
+                          "discrepancy",
+                          "unresolved",
+                          "excluded",
+                          "reconciled"
+                        ]
+                      },
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "stage": {
+                  "type": "string",
+                  "enum": [
+                    "baseline",
+                    "cavity",
+                    "closing",
+                    "final",
+                    "recount",
+                    "handover"
+                  ]
+                },
+                "scan": {
+                  "type": "string",
+                  "enum": [
+                    "clear",
+                    "detected"
+                  ]
+                },
+                "escalated": {
+                  "type": "boolean"
+                },
+                "unsafe": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "count"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "study": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "ordered",
+                "acquired",
+                "released",
+                "reviewed"
+              ]
+            }
+          },
+          "required": [
+            "study"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "datum": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "not-asked",
+                  "asked-unknown",
+                  "verified-negative",
+                  "verified-positive",
+                  "mitigated"
+                ]
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "datum",
+            "status"
           ],
           "additionalProperties": false
         }

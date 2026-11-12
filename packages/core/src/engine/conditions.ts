@@ -7,11 +7,16 @@
  * the patient, not the bedside: an unattached monitor or an unread glucose
  * does not change them.
  */
+import { datumStatus } from "./datum.js";
 import type { CaseDefinition, Result } from "../schema/case.js";
-import type { Condition } from "../schema/common.js";
-import type { OrderRecord, SessionState } from "../schema/session.js";
+import type { Condition, ProcedurePredicate } from "../schema/common.js";
+import type { HoldRecord, OrderRecord, SessionState } from "../schema/session.js";
 import { vitalValue } from "./signal.js";
 import { historyCredited } from "./twins.js";
+import { evaluateProcedure } from "./procedure/predicates.js";
+import { evaluateCount } from "./count.js";
+import { evaluateStudy } from "./study.js";
+import { procedureFor } from "./procedure/variant.js";
 
 /** Composite key of a result: `${investigationId}@${phase}`. */
 export function resultKey(investigationId: string, phase: string): string {
@@ -74,6 +79,11 @@ function resultReady(c: CaseDefinition, s: SessionState, investigationId: string
   );
 }
 
+/** The holds standing on an intervention (placed, not released), oldest first. */
+export function activeHolds(s: SessionState, interventionId: string): HoldRecord[] {
+  return (s.holds ?? []).filter((h) => h.interventionId === interventionId && !h.released);
+}
+
 /**
  * Evaluate a condition against a session.
  *
@@ -96,9 +106,23 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("attempted" in cond) return s.attempts.some((a) => a.decisionId === cond.attempted);
   if ("decidedFirstTry" in cond) return s.attempts.find((a) => a.decisionId === cond.decidedFirstTry)?.correct === true;
   if ("intervened" in cond) {
-    const count = s.interventions.filter((r) => r.interventionId === cond.intervened && (!cond.whenIndicated || r.appropriateness === "indicated")).length;
+    const count = s.interventions.filter(
+      (r) =>
+        r.interventionId === cond.intervened &&
+        (cond.valid == null || (r.appropriateness !== "contraindicated") === cond.valid) &&
+        (!cond.whenIndicated || r.appropriateness === "indicated"),
+    ).length;
     return count >= (cond.minCount ?? 1);
   }
+  if ("inOrder" in cond) {
+    // the first valid attempt of each, by committed sequence (records saved before `seq` fall back to their index)
+    const firsts = cond.inOrder.map((id) => {
+      const i = s.interventions.findIndex((r) => r.interventionId === id && r.appropriateness !== "contraindicated");
+      return i < 0 ? null : (s.interventions[i]!.seq ?? i);
+    });
+    return firsts.every((x, i) => x !== null && (i === 0 || x > firsts[i - 1]!));
+  }
+  if ("held" in cond) return activeHolds(s, cond.held).length > 0;
   if ("phase" in cond) return s.phase === cond.phase;
   if ("flag" in cond) return s.flags.includes(cond.flag);
   if ("objective" in cond) return Object.prototype.hasOwnProperty.call(s.objectivesDone, cond.objective);
@@ -108,6 +132,13 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   }
   if ("elapsed" in cond) return inRange(s.clock, cond.elapsed);
   if ("hints" in cond) return inRange(s.hints, cond.hints);
+  if ("procedure" in cond) return evaluateProcedure(procedureFor(c, s), s.procedure, cond.procedure, s.variant);
+  if ("count" in cond) return evaluateCount(s, cond.count);
+  if ("study" in cond) return evaluateStudy(s, cond.study, cond.status);
+  if ("datum" in cond) {
+    const st = datumStatus(c, s, cond.datum);
+    return !!st && cond.status.includes(st);
+  }
   return false;
 }
 
@@ -125,7 +156,9 @@ export type ConditionRef =
   | { kind: "phase"; id: string; path: (string | number)[] }
   | { kind: "flag"; id: string; path: (string | number)[] }
   | { kind: "objective"; id: string; path: (string | number)[] }
-  | { kind: "vital"; id: string; path: (string | number)[] };
+  | { kind: "vital"; id: string; path: (string | number)[] }
+  /** A `procedure` leaf (its ids are checked against the case's procedure by `checkCaseIntegrity`). */
+  | { kind: "procedure"; predicate: ProcedurePredicate; path: (string | number)[] };
 
 /** Collect every id referenced by a condition tree (depth-first, document order). */
 export function conditionRefs(cond: Condition, base: (string | number)[] = []): ConditionRef[] {
@@ -145,10 +178,13 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("decidedFirstTry" in node) out.push({ kind: "decision", id: node.decidedFirstTry, path: [...path, "decidedFirstTry"] });
     else if ("intervened" in node)
       out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), ...(node.whenIndicated ? { whenIndicated: true } : {}), path: [...path, "intervened"] });
+    else if ("inOrder" in node) node.inOrder.forEach((id, i) => out.push({ kind: "intervention", id, path: [...path, "inOrder", i] }));
+    else if ("held" in node) out.push({ kind: "intervention", id: node.held, path: [...path, "held"] });
     else if ("phase" in node) out.push({ kind: "phase", id: node.phase, path: [...path, "phase"] });
     else if ("flag" in node) out.push({ kind: "flag", id: node.flag, path: [...path, "flag"] });
     else if ("objective" in node) out.push({ kind: "objective", id: node.objective, path: [...path, "objective"] });
     else if ("vital" in node) out.push({ kind: "vital", id: node.vital, path: [...path, "vital"] });
+    else if ("procedure" in node) out.push({ kind: "procedure", predicate: node.procedure, path: [...path, "procedure"] });
   };
   visit(cond, base);
   return out;

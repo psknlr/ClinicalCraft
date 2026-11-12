@@ -24,6 +24,10 @@ export interface WallMaterials {
   base: string;
   body: string;
   top: string;
+  /** Window frames (default: `base`). */
+  frame?: string;
+  /** Window mullions (default: "wood" when the library has it, else the frame). */
+  mullion?: string;
 }
 
 /** One wall (or partition sub-wall) with its openings resolved against it. */
@@ -99,7 +103,7 @@ export function facilityWalls(f: FacilityDefinition): WallSpec[] {
             wall,
             height: ws.height,
             thickness: ws.thickness,
-            materials: { base: ws.base, body: ws.body, top: ws.top },
+            materials: { base: ws.base, body: ws.body, top: ws.top, ...(ws.frame ? { frame: ws.frame } : {}), ...(ws.mullion ? { mullion: ws.mullion } : {}) },
           },
           openings,
         );

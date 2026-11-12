@@ -1435,11 +1435,21 @@ details.topic .question {
   align-items: center;
   transform-origin: bottom center;
 }
-.pixel-head.hair-long::after {
+.pixel-head.hair-long::after,
+.pixel-head.hair-wavy::after,
+.pixel-head.hair-bob::after {
   box-shadow: none;
 }
-.pixel-head.hair-long {
+.pixel-head.hair-long,
+.pixel-head.hair-wavy {
   box-shadow: inset -12px 0 #0000001a, -7px 6px 0 -1px var(--hair), 7px 6px 0 -1px var(--hair);
+}
+.pixel-head.hair-bob {
+  box-shadow: inset -12px 0 #0000001a, -6px 1px 0 -2px var(--hair), 6px 1px 0 -2px var(--hair);
+}
+.pixel-head.hair-wavy,
+.pixel-head.hair-bob {
+  border-top-width: 15px;
 }
 .pixel-head.hair-curly {
   border-top-width: 17px;

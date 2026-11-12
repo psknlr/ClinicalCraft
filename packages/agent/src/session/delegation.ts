@@ -15,8 +15,14 @@
  * `give_intervention` (`params.intervention`, fetching what must stand at
  * the bedside), `transport_patient` (the target or `params.destination` —
  * a device, a bed space or room, `home` — or `params.capability`: the staff
- * member walks to the patient and wheels them there; porters and nurses).
+ * member walks to the patient and wheels them there; porters and nurses),
+ * `hold_traction` (`params.port`: a doctor walks to the operating table and
+ * takes the instrument in that port, keeping its traction — PROCEDURE.md §3
+ * `hand-over`), `release_traction` (lets go and hands it back). Someone who
+ * holds traction lets go before any other task (`letGo` in the result): the
+ * window closes, and the operator sees it.
  */
+import { lookupStaff } from "../tools/consult-target.js";
 import { monitorAttached, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { ivAccessIntervention, PRIMARY_ACTOR, type ActorId, type NavGoal, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { SkillToolCall } from "../skills/interpreter.js";
@@ -72,6 +78,14 @@ export interface DelegationResult {
   message?: string;
   /** `not-authorized`: why, localised (the staff member's scope of practice — review S3). */
   refusal?: string;
+  /** `target-not-intervention` / `unknown-intervention`: what was asked for (an entity id, or the text). */
+  asked?: string;
+  /** Equipment delivered (`fetch_equipment`): where it stands now and how far from the patient. */
+  delivered?: { entityId: string; room: string | null; distance: number; x: number; z: number };
+  /** Traction let go: the instruments this colleague held at the table, handed back before this task or as it. */
+  letGo?: { port: string; instrument: string }[];
+  /** `hold_traction`: the port taken and its instrument. */
+  holding?: { port: string; instrument: string };
 }
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
@@ -81,7 +95,11 @@ export function pickStaff(world: WorldRuntime, role: string, patientId: string |
   const direct = role.startsWith("staff:") ? world.actor(role) : world.actor(`staff:${role}`);
   if (direct && direct.id.startsWith("staff:")) return direct.id;
   const candidates = world.actors().filter((a) => a.id.startsWith("staff:") && a.role === role);
-  if (!candidates.length) return null;
+  if (!candidates.length) {
+    // a colleague by name or title ("Nurse Lim", "洗手护士"): the one room-aware resolver, in the patient's room
+    const named = lookupStaff(world.facility, role, patientId ? world.roomOf(patientId) : null);
+    return named.kind === "one" && world.actor(`staff:${named.staff.id}`) ? `staff:${named.staff.id}` : null;
+  }
   const place = patientId ? world.patientPlace() : null;
   const entity = patientId && !place ? world.entity(patientId) : null;
   const at = place ? { level: place.level, x: place.x, z: place.z } : entity ? { level: entity.level, x: entity.position.x, z: entity.position.z } : null;
@@ -151,6 +169,9 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
   h.onStaff?.(staff);
   // What the staff member holds already is not this task's to release.
   const heldBefore = new Set(heldBy(world, staff));
+  const staffRef = staff.replace(/^staff:/u, "");
+  /** The ports whose instruments this colleague holds at the operating table. */
+  const holding = () => (h.state().procedure?.ports ?? []).filter((p) => p.holder === staffRef && p.instrument);
 
   const span = h.trace.start("plan", `delegate:${task}`, { actorId: staff, refs: { entities: [patient] }, data: { role, task, ...(target ? { target } : {}) } });
   let cancelled = false;
@@ -229,8 +250,35 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
   };
 
   const verify = (name: string, ok: boolean) => h.trace.start("verification", name, { actorId: staff, refs: { entities: [patient] } }).end({ ok, worldVersion: world.version });
+  /** Let go of every traction this colleague holds and hand the instruments back (their own steps, at the table). */
+  const letGo = async (): Promise<boolean> => {
+    for (const p of holding()) {
+      const held = { port: p.site, instrument: p.instrument! };
+      for (const [structure, r] of Object.entries(h.state().procedure?.retractions ?? {})) if (r.port === p.site && !(await clinical("operate", { op: "release", structure }))) return false;
+      if (!(await clinical("operate", { op: "hand-over", port: p.site }))) return false;
+      (result.letGo ??= []).push(held);
+    }
+    return true;
+  };
   const run = async (): Promise<DelegationResult> => {
+    // traction is let go before anything else is done with these hands
+    if (task !== "hold_traction" && task !== "release_traction" && holding().length && !(await letGo())) return finish(cancelled ? "cancelled" : "failed");
     switch (task as DelegationTask) {
+      case "hold_traction": {
+        const port = strArg(params, "port") || target;
+        if (!port) return finish("failed", "no-target");
+        if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
+        const ok = (await clinical("operate", { op: "hand-over", port, to: staffRef })) && holding().some((p) => p.site === port);
+        const p = holding().find((x) => x.site === port);
+        if (p) result.holding = { port, instrument: p.instrument! };
+        verify(`holding port ${port}`, ok);
+        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
+      }
+      case "release_traction": {
+        const ok = (await letGo()) && holding().length === 0;
+        verify("traction let go", ok);
+        return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
+      }
       case "attach_monitor": {
         const monitor = h.patientMonitorId();
         if (!monitor) return finish("failed", "no-item");
@@ -270,6 +318,10 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
         const cart = resolved && world.entity(resolved)?.portable ? resolved : cartFor(capability || target);
         if (!cart) return finish("failed", "no-target");
         const ok = await fetch(cart);
+        // where it stands now (the final position, measured — not where it was asked to go)
+        const e = world.entity(cart);
+        const p = world.entity(patient);
+        if (e && p) result.delivered = { entityId: cart, room: e.room, distance: r2(Math.hypot(e.position.x - p.position.x, e.position.z - p.position.z)), x: r2(e.position.x), z: r2(e.position.z) };
         verify(`at bedside ${cart}`, ok && h.atBedside(cart));
         return finish(ok && h.atBedside(cart) ? "completed" : cancelled ? "cancelled" : "failed");
       }
@@ -285,11 +337,20 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
         return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
       }
       case "give_intervention": {
+        const wanted = strArg(params, "intervention") || target;
         const id = interventionOf(h, params, target);
-        if (!id) return finish("failed", "no-target");
-        const before = h.state().interventions.filter((x) => x.interventionId === id).length;
+        if (!id) {
+          // three different failures, said apart: nothing named; an entity named (equipment is not a treatment);
+          // a name the case has no intervention for
+          if (!wanted) return finish("failed", "no-target");
+          result.asked = wanted;
+          return finish("failed", h.resolve(wanted, staff) ? "target-not-intervention" : "unknown-intervention");
+        }
+        // an out-of-order checklist attempt is recorded as invalid: it is not the task done
+        const given = () => h.state().interventions.filter((x) => x.interventionId === id && !x.invalid).length;
+        const before = given();
         if ((await toPatient()).status !== "completed") return finish(cancelled ? "cancelled" : "failed");
-        const ok = (await clinical("intervene", { intervention_id: id })) && h.state().interventions.filter((x) => x.interventionId === id).length > before;
+        const ok = (await clinical("intervene", { intervention_id: id })) && given() > before;
         verify(`intervened ${id}`, ok);
         return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
       }

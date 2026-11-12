@@ -9,7 +9,7 @@
  * (`answeredDecision`, `answeredOptions`). An answer naming an id its case
  * lacks never gets that far (`answerActionRefusal`).
  */
-import { historyTwin, matchHistory, t, type CaseDefinition, type ClinicalAction, type LocalizedText, type SessionState } from "@clinicalcraft/core";
+import { historyTwin, matchHistory, ProcedureOpSchema, t, type CaseDefinition, type ClinicalAction, type LocalizedText, type SessionState } from "@clinicalcraft/core";
 import {
   answeredDecision,
   answeredOptions,
@@ -53,11 +53,24 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
       return { phase: action.phase };
     case "advance-time":
       return { minutes: action.minutes };
+    case "operate":
+      return { ...action.op };
+    case "hold":
+      return { intervention_id: action.interventionId, reason: action.reason };
+    case "release-hold":
+      return { intervention_id: action.interventionId, reassessment: action.reassessment };
     case "finish":
     case "start":
     case "hint":
     case "flag":
     case "note":
+    case "count":
+      return {};
+    case "study":
+      return action.study.op === "order" ? { code: action.study.code, ...(action.study.indication ? { indication: action.study.indication } : {}) } : {};
+    case "anaesthesia":
+    case "alarm-response":
+    case "procedure-supply":
       return {};
     default: {
       const never: never = action;
@@ -171,11 +184,24 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
       return { ok: true, action: { ...action, phase: strArg(input, "phase") } };
     case "advance-time":
       return { ok: true, action: { ...action, minutes: Number(input.minutes) } };
+    case "operate": {
+      const op = ProcedureOpSchema.safeParse(input);
+      return op.success ? { ok: true, action: { ...action, op: op.data } } : { ok: true, action };
+    }
+    case "hold":
+      return { ok: true, action: { ...action, interventionId: strArg(input, "intervention_id") || action.interventionId, reason: strArg(input, "reason") || action.reason } };
+    case "release-hold":
+      return { ok: true, action: { ...action, interventionId: strArg(input, "intervention_id") || action.interventionId, reassessment: strArg(input, "reassessment") || action.reassessment } };
     case "finish":
     case "start":
     case "hint":
     case "flag":
     case "note":
+    case "count":
+    case "study":
+    case "anaesthesia":
+    case "alarm-response":
+    case "procedure-supply":
       return { ok: true, action };
     default: {
       const never: never = action;

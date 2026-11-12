@@ -72,8 +72,123 @@ export const VitalsSchema = z
 export type Vitals = z.infer<typeof VitalsSchema>;
 
 /* ------------------------------------------------------------------ */
+/* Procedure condition leaf (docs/PROCEDURE.md §6)                     */
+/* ------------------------------------------------------------------ */
+
+export const BailoutSchema = z.enum([
+  "call-help",
+  "subtotal-fenestrating",
+  "subtotal-reconstituting",
+  "convert-open",
+  "abandon-refer",
+]);
+export type Bailout = z.infer<typeof BailoutSchema>;
+
+export const ImagingSchema = z.enum(["ioc", "lap-us"]);
+export type Imaging = z.infer<typeof ImagingSchema>;
+
+export const InjuryKindSchema = z.enum([
+  "bile-duct-injury",
+  "vascular-injury",
+  "bleeding",
+  "perforation",
+  "thermal-injury",
+  "bile-leak",
+]);
+export type InjuryKind = z.infer<typeof InjuryKindSchema>;
+
+/**
+ * Unsafe acts the engine records whatever their outcome (docs/PROCEDURE.md §6). An unsafe act is not an
+ * injury: clipping the right duct without a documented view is still unsafe.
+ */
+export const UnsafeCodeSchema = z.enum([
+  "irreversible-without-pause",
+  "irreversible-without-view",
+  "irreversible-on-unidentified",
+  "irreversible-on-misidentified",
+  "blind-in-obscured-field",
+  "energy-near-hidden-hazard",
+  "excessive-traction",
+  "continued-after-injury",
+  "insufflation-over-max",
+  "dissection-beyond-safe-plane",
+]);
+export type UnsafeCode = z.infer<typeof UnsafeCodeSchema>;
+
+const Range = { gte: z.number().optional(), lte: z.number().optional() };
+
+export const ProcedurePredicateSchema = z.union([
+  z.object({ view: IdSchema }).strict(),
+  z.object({ criterion: IdSchema }).strict(),
+  /** A safety pause documented `documented`; `valid`: every criterion claimed true and truly met. */
+  z.object({ documented: IdSchema, valid: z.boolean().optional() }).strict(),
+  z.object({ injury: z.union([InjuryKindSchema, z.literal("any")]), recognised: z.boolean().optional() }).strict(),
+  z.object({ unsafe: z.union([UnsafeCodeSchema, z.literal("any")]) }).strict(),
+  z.object({ clipped: IdSchema, minCount: z.number().int().min(1).optional() }).strict(),
+  z.object({ divided: IdSchema }).strict(),
+  z.object({ isolated: IdSchema }).strict(),
+  /** The operator named a structure (`as` absent: identified it correctly). */
+  z.object({ identified: IdSchema, as: IdSchema.optional() }).strict(),
+  z.object({ specimen: z.enum(["in-situ", "detached", "bagged", "extracted"]) }).strict(),
+  z.object({ bailout: z.union([BailoutSchema, z.literal("any")]) }).strict(),
+  z.object({ imaged: ImagingSchema }).strict(),
+  z.object({ plan: IdSchema }).strict(),
+  z.object({ insufflated: z.boolean(), pressure: z.object(Range).strict().optional() }).strict(),
+  z.object({ bleeding: z.enum(["any", "ooze", "brisk", "major"]), controlled: z.boolean().optional() }).strict(),
+  z.object({ spillage: z.enum(["bile", "stones"]), cleared: z.boolean().optional() }).strict(),
+  z.object({ counter: z.enum(["steps", "exchanges", "clashes", "crossings"]), ...Range }).strict(),
+  z.object({ inspected: z.boolean() }).strict(),
+  /** The region was dissected while its exposure was at least `atLeast` (the best exposure of any dissection step there). */
+  z.object({ dissectedExposed: IdSchema, atLeast: z.number().min(0).max(1) }).strict(),
+  z.object({ closed: z.boolean() }).strict(),
+  /** The session's anatomical variant is this one (`reference`: the base definition). Hidden truth: for rubric `scoredWhen` and gates. */
+  z.object({ variant: IdSchema }).strict(),
+]);
+export type ProcedurePredicate = z.infer<typeof ProcedurePredicateSchema>;
+
+/* ------------------------------------------------------------------ */
 /* Condition DSL                                                       */
 /* ------------------------------------------------------------------ */
+
+/**
+ * The surgical count's status (docs/TEAM.md §4.3, `engine/count.ts`), from its record: `none` (no record: the count is
+ * kept in in-world mode), `baseline` (the items opened onto the field recorded, no count since but the one before
+ * incision), `correct` (every expected item accounted for by
+ * identity, no discrepancy ever), `discrepancy` (an item missing, one not in the count, or a retained item detected —
+ * not escalated yet), `unresolved` (the discrepancy escalated, still open), `excluded` (escalated, and a clear scan
+ * after the last count excludes a retained item), `reconciled` (accounted for again after a discrepancy).
+ */
+export const COUNT_STATUSES = ["none", "baseline", "correct", "discrepancy", "unresolved", "excluded", "reconciled"] as const;
+export const CountStatusSchema = z.enum(COUNT_STATUSES);
+export type CountStatus = z.infer<typeof CountStatusSchema>;
+/** The statuses in which every counted item is accounted for (or a retained item is excluded): closure may follow. */
+export const COUNT_SETTLED: readonly CountStatus[] = ["correct", "reconciled", "excluded"];
+
+/**
+ * When a count was taken (the count board's columns): `baseline` — before incision, against the items opened onto
+ * the field (it settles nothing about closure); then before cavity and skin closure, the final count, a recount after
+ * a search, a staff hand-over.
+ */
+export const COUNT_STAGES = ["baseline", "cavity", "closing", "final", "recount", "handover"] as const;
+export const CountStageSchema = z.enum(COUNT_STAGES);
+export type CountStage = z.infer<typeof CountStageSchema>;
+
+/**
+ * A condition on the count's record; every given field must hold (`{}`: a baseline was counted). `status`: the
+ * status now (one of); `stage`: the latest count was taken at this stage; `scan`: the latest scan with the detection
+ * wand found nothing (`clear`) or a retained item (`detected`); `escalated`: a discrepancy was escalated (ever: the
+ * credit stays); `unsafe`: an unsafe progression was recorded (closure on an open count — permanent).
+ */
+export const CountPredicateSchema = z
+  .object({
+    status: z.union([CountStatusSchema, z.array(CountStatusSchema).min(1)]).optional(),
+    stage: CountStageSchema.optional(),
+    scan: z.enum(["clear", "detected"]).optional(),
+    escalated: z.boolean().optional(),
+    unsafe: z.boolean().optional(),
+  })
+  .strict();
+export type CountPredicate = z.infer<typeof CountPredicateSchema>;
 
 /**
  * Declarative predicates over a session's state. Used by objectives,
@@ -109,11 +224,20 @@ export type Condition =
    */
   | { decidedFirstTry: string }
   /**
-   * Intervention given at least `minCount` times (default 1). With `whenIndicated`, only the times it was given
-   * while its `indicatedWhen` held (and its `contraindicatedWhen` did not) count — "given in time": the window is
-   * the intervention's own `indicatedWhen` (e.g. `{ "phase": "admission" }`), judged when it is given.
+   * Intervention given at least `minCount` times (default 1). `valid: true` counts only attempts that were not
+   * contraindicated when made (a checklist step in order); `valid: false` only those that were. With
+   * `whenIndicated`, only the times it was given while its `indicatedWhen` held (and its `contraindicatedWhen` did
+   * not) count — "given in time": the window is the intervention's own `indicatedWhen` (e.g.
+   * `{ "phase": "admission" }`), judged when it is given.
    */
-  | { intervened: string; minCount?: number; whenIndicated?: boolean }
+  | { intervened: string; minCount?: number; valid?: boolean; whenIndicated?: boolean }
+  /**
+   * Interventions first validly given in this order (by committed action sequence, so two acts in the same
+   * simulated minute keep their order): `{"inOrder": ["sign-in", "induction"]}`. False while one is missing.
+   */
+  | { inOrder: string[] }
+  /** An explicit hold stands on this intervention (placed and not yet released; see the `hold` action). */
+  | { held: string }
   /** Current case phase equals. */
   | { phase: string }
   /** Scenario flag set (by interventions, events or `flag` actions). */
@@ -125,7 +249,13 @@ export type Condition =
   /** Simulated minutes elapsed since the case started. */
   | { elapsed: { gte?: number; lte?: number } }
   /** Number of hints used. */
-  | { hints: { gte?: number; lte?: number } };
+  | { hints: { gte?: number; lte?: number } }
+  | { procedure: ProcedurePredicate }
+  /** The surgical count's record (docs/TEAM.md §4.3; `engine/count.ts`): every given field must hold. */
+  | { count: CountPredicate }
+  /** A new investigation (docs/STUDIES.md) reached at least `status` (default `ordered`). */
+  | { study: string; status?: "ordered" | "acquired" | "released" | "reviewed" }
+  | { datum: string; status: ("not-asked" | "asked-unknown" | "verified-negative" | "verified-positive" | "mitigated")[] };
 
 /** The union behind `ConditionSchema`, built once (`z.lazy` calls its getter on every parse). */
 let conditionUnion: z.ZodType<Condition> | undefined;
@@ -150,13 +280,23 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ decided: IdSchema }).strict(),
     z.object({ attempted: IdSchema }).strict(),
     z.object({ decidedFirstTry: IdSchema }).strict(),
-    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional(), whenIndicated: z.boolean().optional() }).strict(),
+    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional(), valid: z.boolean().optional(), whenIndicated: z.boolean().optional() }).strict(),
+    z.object({ inOrder: z.array(IdSchema).min(2).max(8) }).strict(),
+    z.object({ held: IdSchema }).strict(),
     z.object({ phase: IdSchema }).strict(),
     z.object({ flag: IdSchema }).strict(),
     z.object({ objective: IdSchema }).strict(),
     z.object({ vital: VitalKeySchema, op: z.enum(["lt", "lte", "gt", "gte", "eq"]), value: z.number() }).strict(),
     z.object({ elapsed: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
     z.object({ hints: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
+    /** The operative field (case `procedure`, docs/PROCEDURE.md §6). */
+    z.object({ procedure: ProcedurePredicateSchema }).strict(),
+    /** The surgical count's record (docs/TEAM.md §4.3). */
+    z.object({ count: CountPredicateSchema }).strict(),
+    /** A new investigation (docs/STUDIES.md). */
+    z.object({ study: IdSchema, status: z.enum(["ordered", "acquired", "released", "reviewed"]).optional() }).strict(),
+    /** A safety datum's status is one of these (`datumStatus`: not asked, asked but unknown, verified, mitigated). */
+    z.object({ datum: IdSchema, status: z.array(z.enum(["not-asked", "asked-unknown", "verified-negative", "verified-positive", "mitigated"])).min(1) }).strict(),
   ])),
 );
 
@@ -222,6 +362,11 @@ export const CAPABILITIES = {
   "surgery": "Operating theatre",
   "anesthesia": "Anaesthesia machine",
   "endoscopy": "Endoscopy suite",
+  // the endoscopic image and the pneumoperitoneum (an operation's supply: docs/PROCEDURE.md); a thoracoscopy tower
+  // supplies the first two and no gas
+  "endoscopic-camera": "Endoscopic camera control unit and monitor (a laparoscope's, a thoracoscope's): the operative image",
+  "light-source": "Endoscopic light source",
+  "insufflator": "CO₂ insufflator: the pneumoperitoneum",
   "dialysis": "Haemodialysis",
   "apheresis": "Therapeutic apheresis: plasma exchange, red-cell exchange, cytapheresis",
   "neonatal-care": "Neonatal thermal care: incubator or radiant warmer",

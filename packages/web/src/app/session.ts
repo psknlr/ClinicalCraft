@@ -11,10 +11,12 @@
  */
 import {
   createSession,
+  validTeamCheckpoint,
   type ClinicalSession,
   type Op,
   type PlanItem,
   type ResolvedSettings,
+  type RuntimeConfigPatch,
   type SessionSnapshot,
   type TranscriptItem,
   type TranscriptSink,
@@ -32,6 +34,21 @@ import { SessionStore } from "./store.js";
  * lets the page-exit flush use `keepalive`, and keeps every request far below
  * the server's body limit.
  */
+
+/**
+ * What a running session is told when the learner changes the settings (`configure`): the model, approvals, scope,
+ * language and how the characters are driven (docs/CHARACTERS.md — read by the team each round, so it applies at once).
+ */
+export function configurePatch(settings: Pick<ResolvedSettings, "approvalMode" | "practiceScope" | "characters">, choice: Pick<RuntimeChoice, "provider" | "model">, locale: string): RuntimeConfigPatch {
+  return {
+    provider: choice.provider,
+    ...(choice.model ? { model: choice.model } : {}),
+    approvalMode: settings.approvalMode,
+    practiceScope: settings.practiceScope,
+    characters: { engine: settings.characters.engine },
+    locale,
+  };
+}
 export const TRANSCRIPT_CHUNK_BYTES = 60 * 1024;
 
 const encoder = new TextEncoder();
@@ -273,9 +290,11 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
   // Embodied: the world is built by the session (resume: its saved physical state; a snapshot that does not
   // fit this facility is dropped — the world starts afresh, the clinical record is still replayed).
   const savedWorld = embodiment === "embodied" && resume ? validWorldSnapshot(resume.world, o.facility?.id) : null;
+  // the care team mid-task (docs/TEAM.md) comes back only with the world it acted in
+  const savedTeam = savedWorld ? validTeamCheckpoint(resume?.team) : null;
   const embodiedOption = (withSnapshot: boolean) =>
     embodiment === "embodied"
-      ? { embodied: { ...(o.embodied?.mover ? { mover: o.embodied.mover } : {}), ...(o.embodied?.camera ? { camera: o.embodied.camera } : {}), ...(withSnapshot && savedWorld ? { snapshot: savedWorld } : {}) } }
+      ? { embodied: { ...(o.embodied?.mover ? { mover: o.embodied.mover } : {}), ...(o.embodied?.camera ? { camera: o.embodied.camera } : {}), ...(withSnapshot && savedWorld ? { snapshot: savedWorld, ...(savedTeam ? { team: savedTeam } : {}) } : {}) } }
       : {};
   const options = (withSnapshot: boolean): Parameters<typeof createSession>[0] => ({
     caseDef: o.caseDef,
@@ -290,7 +309,8 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
     // Handled by the web UI itself (see ui/panels/conversation.ts webCommand): hidden from /help.
     disabledCommands: WEB_HANDLED_COMMANDS,
     resolveProvider: browserResolveProvider(() => settings, () => mode),
-    ...(resume ? { resume: { sessionId, actions: cleanActions(resume.actions), messages: resume.messages ?? {}, ...(resume.dialogue?.length ? { dialogue: resume.dialogue } : {}) } } : {}),
+    // the record's provenance and its unedited original actions (a @2 save): the restore reports what no longer replays
+    ...(resume ? { resume: { sessionId, actions: cleanActions(resume.actions), messages: resume.messages ?? {}, ...(resume.dialogue?.length ? { dialogue: resume.dialogue } : {}), ...(resume.createdWith ? { createdWith: resume.createdWith } : {}), ...(resume.originalActions ? { originalActions: cleanActions(resume.originalActions) } : {}) } } : {}),
     // A snapshot keeps no plan explanation (SessionSnapshot.plan is items only).
     ...(plan.length ? { restore: { plan: { items: plan, explanation: null } } } : {}),
     // Same transcript file (served: sessions/web/<id>.jsonl): continue its ordinal sequence.
@@ -344,16 +364,7 @@ export async function startAppSession(o: AppSessionOptions): Promise<AppSession>
     reconfigure(stored, choice, locale) {
       settings = resolveAgentSettings(stored, { provider: choice.provider, model: choice.model, locale, embodiment: session.embodiment }).settings;
       mode = choice.mode;
-      submit({
-        type: "configure",
-        patch: {
-          provider: choice.provider,
-          ...(choice.model ? { model: choice.model } : {}),
-          approvalMode: settings.approvalMode,
-          practiceScope: settings.practiceScope,
-          locale,
-        },
-      });
+      submit({ type: "configure", patch: configurePatch(settings, choice, locale) });
     },
     snapshot: () => {
       const snap = session.snapshot();

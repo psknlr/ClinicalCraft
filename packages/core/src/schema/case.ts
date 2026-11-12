@@ -1,3 +1,4 @@
+import { StudyProfileSchema } from "./study.js";
 import { z } from "zod";
 import {
   AssetRefSchema,
@@ -12,6 +13,8 @@ import {
   VitalKeySchema,
   VitalsSchema,
 } from "./common.js";
+import { ProcedureDefinitionSchema } from "./procedure.js";
+import { CaseTeamSchema } from "./team.js";
 // session.ts depends only on common.ts, so importing it here creates no cycle
 import { ClinicalActionSchema } from "./session.js";
 
@@ -41,13 +44,20 @@ export const AppearanceSchema = z
   .object({
     skin: HexColorSchema.default("#cba88a"),
     hair: HexColorSchema.default("#3b3027"),
-    hairStyle: z.enum(["short", "long", "bald", "bun", "ponytail", "curly"]).default("short"),
+    hairStyle: z.enum(["short", "long", "bald", "bun", "ponytail", "curly", "bob", "wavy"]).default("short"),
     shirt: HexColorSchema.default("#6d9fba"),
     pants: HexColorSchema.default("#354442"),
     build: z.enum(["slim", "average", "heavy"]).default("average"),
     stature: z.enum(["infant", "child", "teen", "adult"]).default("adult"),
     gown: z.boolean().default(false),
     accessory: z.enum(["none", "glasses", "mask", "nasal-cannula", "oxygen-mask", "sling", "cap"]).default("none"),
+    /**
+     * Whether the 3D world draws this person with a woman's features and frame, a man's, or neither's in
+     * particular. Left out: a patient is drawn by their `sex` (neither's when it is neither); a companion as
+     * neither — say it when the case says who they are; a member of staff by their hair style (cropped or bald: a
+     * man's; else a woman's).
+     */
+    presentation: z.enum(["feminine", "masculine", "neutral"]).optional(),
   })
   .strict();
 export type Appearance = z.infer<typeof AppearanceSchema>;
@@ -175,6 +185,12 @@ export const ClockSchema = z
     startTime: z.string().regex(/^\d{2}:\d{2}$/).optional(),
     /** Simulated minutes that pass per real minute in the 3D world (0 = only actions advance time). */
     realtimeScale: z.number().min(0).max(60).default(0),
+    /**
+     * What a world action costs on a simulated clock (docs/EMBODIED.md R8): `scaled` — its seconds × `realtimeScale`
+     * (0: walking and device operations are free); `actual` — its own duration (a 60 s insufflation is one clinical
+     * minute; a walk its travel time), whatever `realtimeScale` is. Observations made afterwards carry that time.
+     */
+    worldTime: z.enum(["scaled", "actual"]).default("scaled"),
     /** Minutes each action type consumes in `simulated` mode. */
     actionCosts: z
       .object({
@@ -241,6 +257,12 @@ export const HistoryItemSchema = z
      * unknown   — the source does not record this; the patient must not invent it.
      */
     disclosure: z.enum(["volunteer", "on-ask", "specific", "unknown"]).default("on-ask"),
+    /**
+     * A safety-critical datum this answer establishes (`datumStatus`): which (`allergy`, `fasting`, `airway`…) and
+     * what it shows — `unknown` (the default for a `disclosure: "unknown"` answer), `negative` or `positive`. Asking
+     * does not confirm: an unknown stays unknown until verified or mitigated.
+     */
+    safety: z.object({ datum: IdSchema, finding: z.enum(["unknown", "negative", "positive"]).optional() }).strict().optional(),
     /** Counts towards history-taking completeness. */
     required: z.boolean().default(false),
     /** Restrict availability to phases (default: all). */
@@ -395,6 +417,20 @@ export const InvestigationSchema = z
     alternativeTo: z.array(IdSchema).default([]),
     /** Results keyed by phase id. A phase without a key is "no record in this phase". */
     results: z.record(IdSchema, ResultSchema),
+    /**
+     * When the document exists in the simulated timeline (`recordAvailability`): never before `earliestPhase` (default:
+     * its first result's phase) has been reached, nor while `when` does not hold; `historical` — it predates the
+     * encounter (a prior report), else it is made during the encounter (the operation record, the pathology report,
+     * the follow-up). A document existing in the case is not a document visible to the learner now.
+     */
+    availability: z
+      .object({
+        earliestPhase: IdSchema.optional(),
+        when: ConditionSchema.optional(),
+        historical: z.boolean().optional(),
+      })
+      .strict()
+      .optional(),
   })
   .strict();
 export type Investigation = z.infer<typeof InvestigationSchema>;
@@ -506,6 +542,17 @@ export const InterventionSchema = z
     setFlags: z.array(IdSchema).default([]),
     /** Max times it may be given (e.g. 1 for thrombolysis). */
     maxDoses: z.number().int().positive().optional(),
+    /**
+     * A checklist step (WHO Sign In, Time Out, Sign Out): an attempt while `contraindicatedWhen` holds (out of
+     * order) is recorded as an invalid attempt — logged and shown, but its effects and flags do not apply and it
+     * does not use up `maxDoses` — so a later attempt in order still counts. Gate on it with
+     * `{"intervened": id, "valid": true}`.
+     */
+    checklist: z.boolean().optional(),
+    /** Safety data this step states (a Sign In: allergy, fasting…): shown as their status, an unknown as unknown. */
+    reports: z.array(IdSchema).default([]),
+    /** Safety data whose unknown this step manages (a documented precaution: allergy unknown, aspiration risk). */
+    mitigates: z.array(IdSchema).default([]),
     /** When given while this is true it is appropriate (scored positively). */
     indicatedWhen: ConditionSchema.optional(),
     /** When given while this is true it is unsafe (scored as a safety event; effects still apply). */
@@ -744,6 +791,26 @@ export const DebriefSchema = z
 /* NPC knowledge (nurse / consultants)                                 */
 /* ------------------------------------------------------------------ */
 
+/**
+ * A misconception this colleague always corrects (docs/CASE_AUTHORING.md §7.3): when a message to them matches
+ * `match` (at least one phrase of every group, case-insensitive, any locale), their reply must make the correction —
+ * a model is told to, and a reply that contains none of `marks` gets `say` appended; the offline responder says it.
+ * Authored teaching (a regression for unsafe advice a model once endorsed), never a case fact.
+ */
+export const NpcCorrectionSchema = z
+  .object({
+    id: IdSchema,
+    /** The misconception, for authors and reviewers. */
+    misconception: LocalizedTextSchema,
+    match: z.array(z.array(z.string().trim().min(1)).min(1)).min(1).max(6),
+    /** The correction, in the colleague's voice. */
+    say: LocalizedTextSchema,
+    /** Words that show a reply made the correction (any one, any locale; case-insensitive). */
+    marks: z.array(z.string().trim().min(1)).min(1),
+  })
+  .strict();
+export type NpcCorrection = z.infer<typeof NpcCorrectionSchema>;
+
 export const NpcBriefSchema = z
   .object({
     role: z.enum(["nurse", "radiologist", "pathologist", "lab-tech", "attending", "pharmacist", "consultant", "receptionist", "paramedic"]),
@@ -753,6 +820,8 @@ export const NpcBriefSchema = z
     /** Investigation ids this NPC may interpret once the learner has the result. */
     interprets: z.array(IdSchema).default([]),
     revealsDiagnosis: z.boolean().default(false),
+    /** Misconceptions this colleague always corrects (see `NpcCorrectionSchema`). */
+    corrections: z.array(NpcCorrectionSchema).default([]),
   })
   .strict();
 
@@ -827,6 +896,12 @@ export const CaseSchema = z
     /** What to say when an exam maneuver is not recorded in the source. */
     examNotRecorded: LocalizedTextSchema.optional(),
     investigations: z.array(InvestigationSchema).default([]),
+    /**
+     * New investigations the simulated hospital can perform in this encounter, beyond the published case
+     * (docs/STUDIES.md): test profiles — what each can reveal, how it is acquired, its turnaround. Their results
+     * are labelled simulated, never the source's.
+     */
+    studies: z.array(StudyProfileSchema).default([]),
     orderMatching: OrderMatchingSchema.default({}),
     interventions: z.array(InterventionSchema).default([]),
     physiology: PhysiologySchema.optional(),
@@ -835,6 +910,28 @@ export const CaseSchema = z
     rubric: z.array(RubricItemSchema).default([]),
     npcs: z.array(NpcBriefSchema).default([]),
     debrief: DebriefSchema,
+    /** The operation the case's operative phases carry out (docs/PROCEDURE.md); `operate` acts on it. */
+    procedure: ProcedureDefinitionSchema.optional(),
+    /** The care team of the case's room, who work on their own in its phases (docs/TEAM.md). */
+    team: CaseTeamSchema.optional(),
+    /**
+     * Safety gates (docs/PROCEDURE.md §8): outcomes no score compensates. A gate whose `when` holds at the end
+     * sets the assessment's safety verdict; `safety-critical` gates also cap the reported percentage.
+     */
+    safetyGates: z
+      .array(
+        z
+          .object({
+            id: IdSchema,
+            label: LocalizedTextSchema,
+            when: ConditionSchema,
+            verdict: z.enum(["safety-critical", "complication"]),
+            /** Highest percentage reported while this gate holds (safety-critical gates; default 40). */
+            capPercent: z.number().min(0).max(100).optional(),
+          })
+          .strict(),
+      )
+      .default([]),
     /** Facts the source does not contain; agents must never invent them. */
     unknowns: z.array(LocalizedTextSchema).default([]),
     assets: z.array(AssetRefSchema).default([]),

@@ -11,11 +11,15 @@ import { inScope, parseRule } from "../permissions.js";
 import type { PracticeScope } from "../protocol.js";
 import { clinicalTools, walkToTool, type ToolArgs } from "./clinical.js";
 import { npcTools, type NpcToolOptions } from "./npc.js";
+import { procedureTools } from "./procedure.js";
+import { studyTools } from "./studies.js";
 import type { ToolDefinition } from "./types.js";
 
 export * from "./clinical.js";
 export * from "./decision-refs.js";
 export * from "./npc.js";
+export { procedureTools } from "./procedure.js";
+export { orderText, studyLines, studyText, studyTools } from "./studies.js";
 export * from "./option-labels.js";
 export * from "./spatial.js";
 export * from "./scope.js";
@@ -42,7 +46,7 @@ export interface AgentToolFilter {
   /** Permission deny rules; bare `tool` rules hide the tool. */
   deny?: readonly string[];
   /** Case (used to hide `wait` on static clocks). */
-  caseDef?: Pick<CaseDefinition, "clock">;
+  caseDef?: Pick<CaseDefinition, "clock" | "procedure"> & Partial<Pick<CaseDefinition, "studies">>;
 }
 
 /** All tools of a session, by name. */
@@ -52,6 +56,8 @@ export class ToolRegistry {
   constructor(options: ToolRegistryOptions = {}) {
     for (const tool of clinicalTools()) this.tools.set(tool.name, tool);
     for (const tool of npcTools(options.npc)) this.tools.set(tool.name, tool);
+    for (const tool of procedureTools()) this.tools.set(tool.name, tool);
+    for (const tool of studyTools()) this.tools.set(tool.name, tool);
     if (options.dynamicTools?.includes(walkToTool.name)) this.tools.set(walkToTool.name, walkToTool);
     for (const tool of options.extra ?? []) this.tools.set(tool.name, tool);
   }
@@ -89,6 +95,10 @@ export class ToolRegistry {
       if (!inScope(tool.scope, filter.scope)) continue;
       if (isHiddenByDeny(tool.name, filter.deny)) continue;
       if (tool.name === "wait" && filter.caseDef && filter.caseDef.clock.mode !== "simulated") continue;
+      // the operative field only in a case with an operation (docs/PROCEDURE.md §7)
+      if ((tool.name === "observe_field" || tool.name === "operate") && filter.caseDef && !filter.caseDef.procedure) continue;
+      // new investigations only in a case with test profiles (docs/STUDIES.md)
+      if ((tool.name === "order_study" || tool.name === "read_study" || tool.name === "list_studies") && filter.caseDef && !(filter.caseDef.studies ?? []).length) continue;
       out.push(tool);
     }
     return out;

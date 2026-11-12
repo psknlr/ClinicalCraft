@@ -194,6 +194,22 @@ const SettingsShape = {
       })
       .strict()
       .optional(),
+    /**
+     * How the characters are driven (docs/CHARACTERS.md). `rules` (default): the care team decides by its
+     * deterministic policies, and the staff's own round words its lines from templates; every character with a
+     * model still talks to the learner through it. `llm`: every character is model-driven — each care-team member
+     * decides each round with its model from the legal moves the engine lists and words what it says, and staff lines
+     * are worded by the speaker's model — always within its role card, checked against what that person can see, and
+     * with the rules standing in whenever a model is missing, slow, or answers outside the rules.
+     */
+    characters: z
+      .object({
+        engine: z.enum(["rules", "llm"]).default("rules"),
+        /** How long a character's model may take to decide or word a line before the rules do (ms). */
+        timeoutMs: z.number().int().min(500).max(60000).default(8000),
+      })
+      .strict()
+      .optional(),
     /** Server options for `clinicalcraft serve`. */
     server: z
       .object({
@@ -246,6 +262,8 @@ export interface ResolvedSettings {
   defaultFacility: string | null;
   transcripts: { enabled: boolean; dir: string | null };
   patient: { pipeline: "select-voice" | "tool"; strictGrounding: boolean; offlineFallback: boolean };
+  /** How the characters are driven (docs/CHARACTERS.md): `rules` or `llm`, and a model's time limit (ms). */
+  characters: { engine: "rules" | "llm"; timeoutMs: number };
   server: { host: string; port: number; token: string | null };
   /** Where each top-level key came from (for `clinicalcraft config` / debugging). */
   sources: Record<string, "default" | "user" | "project" | "local" | "env" | "flag" | "profile">;

@@ -197,12 +197,44 @@
               "type": "integer",
               "minimum": 1
             },
+            "valid": {
+              "type": "boolean"
+            },
             "whenIndicated": {
               "type": "boolean"
             }
           },
           "required": [
             "intervened"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "inOrder": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 2,
+              "maxItems": 8
+            }
+          },
+          "required": [
+            "inOrder"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "held": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "held"
           ],
           "additionalProperties": false
         },
@@ -322,6 +354,510 @@
             "hints"
           ],
           "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "procedure": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "view": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "view"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "criterion": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "criterion"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "documented": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "valid": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "documented"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "injury": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "bile-duct-injury",
+                            "vascular-injury",
+                            "bleeding",
+                            "perforation",
+                            "thermal-injury",
+                            "bile-leak"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    },
+                    "recognised": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "injury"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "unsafe": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "irreversible-without-pause",
+                            "irreversible-without-view",
+                            "irreversible-on-unidentified",
+                            "irreversible-on-misidentified",
+                            "blind-in-obscured-field",
+                            "energy-near-hidden-hazard",
+                            "excessive-traction",
+                            "continued-after-injury",
+                            "insufflation-over-max",
+                            "dissection-beyond-safe-plane"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "unsafe"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "clipped": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "minCount": {
+                      "type": "integer",
+                      "minimum": 1
+                    }
+                  },
+                  "required": [
+                    "clipped"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "divided": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "divided"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "isolated": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "isolated"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "identified": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "as": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "identified"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "specimen": {
+                      "type": "string",
+                      "enum": [
+                        "in-situ",
+                        "detached",
+                        "bagged",
+                        "extracted"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "specimen"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "bailout": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "call-help",
+                            "subtotal-fenestrating",
+                            "subtotal-reconstituting",
+                            "convert-open",
+                            "abandon-refer"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "any"
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "bailout"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "imaged": {
+                      "type": "string",
+                      "enum": [
+                        "ioc",
+                        "lap-us"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "imaged"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "plan": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "plan"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "insufflated": {
+                      "type": "boolean"
+                    },
+                    "pressure": {
+                      "type": "object",
+                      "properties": {
+                        "gte": {
+                          "type": "number"
+                        },
+                        "lte": {
+                          "type": "number"
+                        }
+                      },
+                      "additionalProperties": false
+                    }
+                  },
+                  "required": [
+                    "insufflated"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "bleeding": {
+                      "type": "string",
+                      "enum": [
+                        "any",
+                        "ooze",
+                        "brisk",
+                        "major"
+                      ]
+                    },
+                    "controlled": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "bleeding"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "spillage": {
+                      "type": "string",
+                      "enum": [
+                        "bile",
+                        "stones"
+                      ]
+                    },
+                    "cleared": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "spillage"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "counter": {
+                      "type": "string",
+                      "enum": [
+                        "steps",
+                        "exchanges",
+                        "clashes",
+                        "crossings"
+                      ]
+                    },
+                    "gte": {
+                      "type": "number"
+                    },
+                    "lte": {
+                      "type": "number"
+                    }
+                  },
+                  "required": [
+                    "counter"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "inspected": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "inspected"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "dissectedExposed": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "atLeast": {
+                      "type": "number",
+                      "minimum": 0,
+                      "maximum": 1
+                    }
+                  },
+                  "required": [
+                    "dissectedExposed",
+                    "atLeast"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "closed": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "closed"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "variant": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "variant"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            }
+          },
+          "required": [
+            "procedure"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "count": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "baseline",
+                        "correct",
+                        "discrepancy",
+                        "unresolved",
+                        "excluded",
+                        "reconciled"
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "baseline",
+                          "correct",
+                          "discrepancy",
+                          "unresolved",
+                          "excluded",
+                          "reconciled"
+                        ]
+                      },
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "stage": {
+                  "type": "string",
+                  "enum": [
+                    "baseline",
+                    "cavity",
+                    "closing",
+                    "final",
+                    "recount",
+                    "handover"
+                  ]
+                },
+                "scan": {
+                  "type": "string",
+                  "enum": [
+                    "clear",
+                    "detected"
+                  ]
+                },
+                "escalated": {
+                  "type": "boolean"
+                },
+                "unsafe": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "count"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "study": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "string",
+              "enum": [
+                "ordered",
+                "acquired",
+                "released",
+                "reviewed"
+              ]
+            }
+          },
+          "required": [
+            "study"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "datum": {
+              "$ref": "#/definitions/Id"
+            },
+            "status": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "not-asked",
+                  "asked-unknown",
+                  "verified-negative",
+                  "verified-positive",
+                  "mitigated"
+                ]
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "datum",
+            "status"
+          ],
+          "additionalProperties": false
         }
       ]
     },
@@ -333,6 +869,12 @@
             "type": {
               "type": "string",
               "const": "start"
+            },
+            "variant": {
+              "$ref": "#/definitions/Id"
+            },
+            "team": {
+              "$ref": "#/definitions/Id"
             },
             "by": {
               "type": "string",
@@ -665,6 +1207,1585 @@
           "required": [
             "type",
             "text"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "operate"
+            },
+            "op": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "plan-ports"
+                    },
+                    "plan": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "plan"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "insufflate"
+                    },
+                    "pressure": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 30
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "pressure"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "desufflate"
+                    }
+                  },
+                  "required": [
+                    "op"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "insert"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "instrument": {
+                      "type": "string",
+                      "enum": [
+                        "laparoscope",
+                        "grasper",
+                        "maryland",
+                        "hook",
+                        "scissors",
+                        "clip-applier",
+                        "suction",
+                        "retrieval-bag",
+                        "cholangiocatheter",
+                        "lap-us"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "instrument"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "withdraw"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "retract"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "structure": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "direction": {
+                      "anyOf": [
+                        {
+                          "type": "array",
+                          "minItems": 3,
+                          "maxItems": 3,
+                          "items": [
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "number"
+                            },
+                            {
+                              "type": "number"
+                            }
+                          ]
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "cephalad",
+                              "caudal",
+                              "patient-left",
+                              "patient-right",
+                              "anterior",
+                              "posterior"
+                            ]
+                          },
+                          "minItems": 1
+                        }
+                      ]
+                    },
+                    "force": {
+                      "type": "string",
+                      "enum": [
+                        "gentle",
+                        "firm",
+                        "excessive"
+                      ],
+                      "default": "firm"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "structure",
+                    "direction"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "release"
+                    },
+                    "structure": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "structure"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "hand-over"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "dissect"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "region": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "energy": {
+                      "type": "boolean",
+                      "default": false
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "region"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "isolate"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "handle"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "identify"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    },
+                    "as": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "handle",
+                    "as"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "safety-pause"
+                    },
+                    "view": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "claims": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "anyOf": [
+                          {
+                            "type": "boolean"
+                          },
+                          {
+                            "type": "integer",
+                            "minimum": 0,
+                            "maximum": 9
+                          }
+                        ]
+                      },
+                      "propertyNames": {
+                        "minLength": 1,
+                        "maxLength": 80,
+                        "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+                      }
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "view",
+                    "claims"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "clip"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    },
+                    "count": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 3,
+                      "default": 1
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "handle"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "divide"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "handle"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "coagulate"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "handle": {
+                      "type": "string",
+                      "pattern": "^T\\d+$"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port",
+                    "handle"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "suction"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "irrigate"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "image"
+                    },
+                    "modality": {
+                      "type": "string",
+                      "enum": [
+                        "ioc",
+                        "lap-us"
+                      ]
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "modality",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "inspect"
+                    }
+                  },
+                  "required": [
+                    "op"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "recognise"
+                    },
+                    "injury": {
+                      "type": "string",
+                      "enum": [
+                        "bile-duct-injury",
+                        "vascular-injury",
+                        "bleeding",
+                        "perforation",
+                        "thermal-injury",
+                        "bile-leak"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "injury"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "bag"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "extract"
+                    },
+                    "port": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "port"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "bailout"
+                    },
+                    "strategy": {
+                      "type": "string",
+                      "enum": [
+                        "call-help",
+                        "subtotal-fenestrating",
+                        "subtotal-reconstituting",
+                        "convert-open",
+                        "abandon-refer"
+                      ]
+                    },
+                    "revise": {
+                      "type": "boolean"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "strategy"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "close"
+                    }
+                  },
+                  "required": [
+                    "op"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "actor": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "op"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "hold"
+            },
+            "interventionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "placedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "interventionId",
+            "placedBy",
+            "reason"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "release-hold"
+            },
+            "interventionId": {
+              "$ref": "#/definitions/Id"
+            },
+            "releasedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "reassessment": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 1000
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "interventionId",
+            "releasedBy",
+            "reassessment"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "study"
+            },
+            "study": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "order"
+                    },
+                    "code": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "key": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 120
+                    },
+                    "indication": {
+                      "type": "string",
+                      "maxLength": 500
+                    },
+                    "priority": {
+                      "type": "string",
+                      "enum": [
+                        "routine",
+                        "urgent"
+                      ],
+                      "default": "routine"
+                    },
+                    "requester": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "reviewer": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "configuration": {
+                      "type": "string",
+                      "maxLength": 40
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "code",
+                    "key",
+                    "requester"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "wait"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 300
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "assign"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "progress"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "stage": {
+                      "type": "string",
+                      "enum": [
+                        "en-route",
+                        "at-patient",
+                        "acquisition-started"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "stage"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "acquire"
+                    },
+                    "order": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "collector": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "configuration": {
+                      "type": "string",
+                      "maxLength": 40
+                    },
+                    "quality": {
+                      "type": "string",
+                      "enum": [
+                        "good",
+                        "limited"
+                      ],
+                      "default": "good"
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "order",
+                    "collector"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "release"
+                    },
+                    "accession": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "findings": {
+                      "type": "object",
+                      "properties": {
+                        "en": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        },
+                        "zh-CN": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        }
+                      },
+                      "required": [
+                        "en",
+                        "zh-CN"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "impression": {
+                      "type": "object",
+                      "properties": {
+                        "en": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        },
+                        "zh-CN": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        }
+                      },
+                      "required": [
+                        "en",
+                        "zh-CN"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "limitations": {
+                      "type": "object",
+                      "properties": {
+                        "en": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        },
+                        "zh-CN": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 4000
+                        }
+                      },
+                      "required": [
+                        "en",
+                        "zh-CN"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "generator": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "supportedBy": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 80
+                      },
+                      "maxItems": 50
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "accession",
+                    "findings",
+                    "impression",
+                    "generator"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "review"
+                    },
+                    "accession": {
+                      "type": "string",
+                      "minLength": 1
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "basis": {
+                      "type": "string",
+                      "enum": [
+                        "named",
+                        "responsible",
+                        "on-duty"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "accession",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "study"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "anaesthesia"
+            },
+            "anaesthesia": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "request-relief"
+                    },
+                    "from": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "from",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "relief-arrived"
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "handover"
+                    },
+                    "from": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "airway": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 80
+                      },
+                      "maxItems": 20,
+                      "default": []
+                    },
+                    "ventilation": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "propertyNames": {
+                        "maxLength": 20
+                      },
+                      "default": {}
+                    },
+                    "haemodynamics": {
+                      "type": "object",
+                      "additionalProperties": {
+                        "type": "number"
+                      },
+                      "propertyNames": {
+                        "maxLength": 20
+                      },
+                      "default": {}
+                    },
+                    "drugs": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "type": "string",
+                            "maxLength": 80
+                          },
+                          "at": {
+                            "type": "number"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "at"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "maxItems": 50,
+                      "default": []
+                    },
+                    "unresolved": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "maxLength": 200
+                      },
+                      "maxItems": 20,
+                      "default": []
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "from",
+                    "to"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "anaesthesia"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "procedure-supply"
+            },
+            "supply": {
+              "type": "object",
+              "properties": {
+                "image": {
+                  "type": "boolean"
+                },
+                "gas": {
+                  "type": "boolean"
+                },
+                "source": {
+                  "type": "string",
+                  "maxLength": 200
+                }
+              },
+              "required": [
+                "image",
+                "gas"
+              ],
+              "additionalProperties": false
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "supply"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "alarm-response"
+            },
+            "alarm": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "detect"
+                    },
+                    "vital": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "value": {
+                      "type": "number"
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "vital",
+                    "value",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "blocked"
+                    },
+                    "vital": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "vital",
+                    "by",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "arrived"
+                    },
+                    "vital": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "vital",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "cleared"
+                    },
+                    "vital": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "vital"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "alarm"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "count"
+            },
+            "count": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "baseline"
+                    },
+                    "ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                      },
+                      "minItems": 1,
+                      "maxItems": 200
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "ids",
+                    "staff"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "count"
+                    },
+                    "ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                      },
+                      "maxItems": 200
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "stage": {
+                      "type": "string",
+                      "enum": [
+                        "baseline",
+                        "cavity",
+                        "closing",
+                        "final",
+                        "recount",
+                        "handover"
+                      ]
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "ids",
+                    "staff",
+                    "stage"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "scan"
+                    },
+                    "detected": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                      },
+                      "maxItems": 200
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "detected",
+                    "staff"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "recover"
+                    },
+                    "ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                      },
+                      "minItems": 1,
+                      "maxItems": 200
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "from": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "ids",
+                    "staff",
+                    "from"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "add"
+                    },
+                    "ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                      },
+                      "minItems": 1,
+                      "maxItems": 200
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "ids",
+                    "staff",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "transfer"
+                    },
+                    "ids": {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "minLength": 1,
+                        "maxLength": 120
+                      },
+                      "minItems": 1,
+                      "maxItems": 200
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "ids",
+                    "staff",
+                    "to",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "escalate"
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "to": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "staff",
+                    "to",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "count"
           ],
           "additionalProperties": false
         },

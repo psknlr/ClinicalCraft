@@ -145,7 +145,8 @@ export class EmbodiedLink {
 
   /**
    * Draw the world's physical state: staff where the world has them (a restored world, a rebuilt scene),
-   * carts where they were parked (hidden while carried), door locks and stored door states.
+   * carts where they were parked (hidden while carried), door locks and stored door states, and the equipment
+   * whose look follows its state as its state is.
    */
   syncScene(): void {
     const world = this.world;
@@ -168,7 +169,8 @@ export class EmbodiedLink {
       if (!e.portable && !st?.position) continue;
       const pid = placementIdOf(e.id);
       if (!pid) continue;
-      if (st?.heldBy) api.placeEquipment(pid, null);
+      // in someone's hands, or concealed (out of everyone's sight until searched for): not drawn where it lies
+      if (st?.heldBy || st?.concealed) api.placeEquipment(pid, null);
       else if (st?.position) api.placeEquipment(pid, { x: st.position.x, y: st.position.y, z: st.position.z, level: st.position.level, ...(st.position.rot !== undefined ? { rot: st.position.rot } : {}) });
       else api.placeEquipment(pid, "home");
     }
@@ -185,6 +187,25 @@ export class EmbodiedLink {
       api.setDoorLocked(d.id, !!st?.locked);
       api.setDoor(d.id, !!st?.open);
     }
+    this.syncLooks();
+  }
+
+  /**
+   * Draw the equipment whose look follows its state (a state's `look`: the layers of its model, its screens, its
+   * manikin) as the world has it — the world's state, whoever changed it: the learner at the device, a colleague,
+   * an agent. A stored state arrives as an `entity.state` event; one derived from the case record (a monitor's
+   * attachment, a record-backed board) changes with the record, so the scene asks again on every clinical event.
+   * Few placements have looks, and one already drawn in its state is left alone: asking is cheap.
+   */
+  private syncLooks(): void {
+    const world = this.world;
+    const api = this.o.renderer();
+    if (this.disposed || !world || !api) return;
+    for (const pid of api.statefulEquipment()) {
+      const state = world.stateOf(`eq:${pid}`);
+      // (none: equipment the world does not know — left as it was built)
+      if (state !== null) api.setEquipmentState(pid, state);
+    }
   }
 
   private onWorldEvent(ev: WorldEvent): void {
@@ -197,10 +218,14 @@ export class EmbodiedLink {
         if (ev.task) this.tasks.set(ev.actorId, ev.task.kind);
         else this.tasks.delete(ev.actorId);
         return;
-      case "entity.state":
+      case "entity.state": {
         if (ev.to) this.states.set(ev.entityId, ev.to);
         else this.states.delete(ev.entityId);
+        // what is drawn of the device follows its state (a placement without looks: nothing)
+        const pid = placementIdOf(ev.entityId);
+        if (pid) this.o.renderer()?.setEquipmentState(pid, ev.to);
         return;
+      }
       case "patient.moved": {
         // a transport ended (the walker's push stopped) or the team moved the patient: draw them there
         const api = this.o.renderer();
@@ -466,6 +491,10 @@ export class EmbodiedLink {
     switch (msg.type) {
       case "world_action_result":
         this.settle(msg.result.actionId, msg.result);
+        return;
+      case "clinical_event":
+        // the case record changed: a state derived from it has no `entity.state` of its own
+        this.syncLooks();
         return;
       case "error":
       case "warning": {

@@ -14,7 +14,7 @@ import {
   type Texture,
 } from "three";
 import type { EquipmentCatalog, EquipmentType, MaterialDef } from "@clinicalcraft/core";
-import { createLcg, hashString, pixelsToCanvas, texturePixels, V4_SEED, type TexturePattern } from "./textures.js";
+import { createLcg, pixelsToCanvas, texturePixels, V4_SEED, type TexturePattern } from "./textures.js";
 
 /** Atlas grid (tiles per side, 16 px each): 32 → 1024 materials in a 512² texture. */
 const ATLAS_TILES = 32;
@@ -165,16 +165,6 @@ export class MaterialLibrary {
     return m;
   }
 
-  /** A V4-textured material for an arbitrary colour (NPC skin/hair/clothes). Deterministic per colour. */
-  color(hex: string, pattern: TexturePattern = "noise", variance = 0.11): MeshStandardMaterial {
-    const key = `${hex}|${pattern}|${variance}`;
-    let m = this.mats.get(key);
-    if (m) return m;
-    const def: MaterialDef = { id: key, color: hex, pattern, variance, emissiveIntensity: 0, opacity: 1, roughness: 0.93, metalness: 0, castShadow: true };
-    m = this.create(def, createLcg(hashString(key) ^ V4_SEED));
-    return m;
-  }
-
   /** A per-object clone (for highlight/tint) of a library material; cached by key. */
   tinted(id: string, key: string, apply: (m: MeshStandardMaterial) => void): MeshStandardMaterial {
     const k = `${id}::${key}`;
@@ -209,7 +199,7 @@ export class MaterialLibrary {
     return !!d && d.opacity >= 1 && !d.emissive && d.metalness === 0 && Math.abs(d.roughness - 0.93) < 0.05;
   }
 
-  /** The shared atlas material (vertex colours multiply the texel: used for tints such as flushed skin). */
+  /** The shared atlas material (vertex colours multiply the texel). */
   atlasMaterial(): MeshStandardMaterial {
     this.ensureAtlas();
     return this.atlasMat!;

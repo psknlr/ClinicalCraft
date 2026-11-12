@@ -7,8 +7,10 @@
  * else — and when a model call fails or refuses with nothing said — its deterministic offline responder.
  * Also the autopilot's host: the clinician driving the case through the same tool path.
  */
-import { assess, patientNonVerbal } from "@clinicalcraft/core";
-import { attendingOffline, consultantOffline, examinerOffline, nurseOffline, staffOffline } from "../agents/offline.js";
+import { PROFILE_POSITION, ROLE_CARDS, roleCardOf, type RoleCard } from "../characters/roles.js";
+import { assess, correctionMade, correctionsFor, patientNonVerbal, t, type NpcCorrection } from "@clinicalcraft/core";
+import { attendingOffline,
+  specialistOffline, consultantOffline, examinerOffline, nurseOffline, staffOffline } from "../agents/offline.js";
 import { agentKind, buildSystemSections, npcDisplayName, patientLocation } from "../agents/prompts.js";
 import type { AgentProfile } from "../agents/types.js";
 import { executeToolCall, runAgentTurn } from "../loop.js";
@@ -24,6 +26,7 @@ import { runPatientTurn, selectFacts } from "./patient-pipeline.js";
 import { colleagueOf } from "./staff-requests.js";
 import { staffTaskTool } from "./staff-tool.js";
 import { conversationKey, type StaffVoice } from "./staff-voice.js";
+import { consultantsFor } from "../tools/consult-target.js";
 
 /** Agents with colleagues' bodies in the world behind them (they may act on the learner's request). */
 const STAFF_KINDS: ReadonlySet<string> = new Set(["nurse", "attending", "radiologist", "pathologist"]);
@@ -34,6 +37,17 @@ export type AgentTurnMode = "message" | "prompt";
 const TOP_AGENT_ROLES = new Set(["patient", "companion"]);
 
 /** The agent turns of one session. */
+/**
+ * The speaker's role card (docs/CHARACTERS.md): a colleague by name speaks from their position's card (a scrub nurse
+ * is not a ward nurse, an anaesthetist is not the learner's preceptor); an agent answering as itself from its
+ * profile's default position. None for the patient, the companion, the examiner or the clinician.
+ */
+function roleCardContext(k: SessionKernel, agent: string, voice: StaffVoice | null): { roleCard?: { card: RoleCard; name: string } } {
+  const card = voice ? roleCardOf(k.caseDef, k.facility, voice.staffId) : PROFILE_POSITION[agent] ? ROLE_CARDS[PROFILE_POSITION[agent]!] : null;
+  if (!card) return {};
+  return { roleCard: { card, name: voice?.name ?? npcDisplayName(k.caseDef, k.facility, agent, k.locale) } };
+}
+
 export class AgentTurns {
   constructor(private readonly k: SessionKernel) {}
 
@@ -221,23 +235,43 @@ export class AgentTurns {
     }
   }
 
+  /**
+   * The case's authored corrections a message to this colleague triggers (`npcs[].corrections`): the role's own,
+   * and a named consultant's when one speaks (docs/CASE_AUTHORING.md §7.3). Never for the patient, the examiner
+   * or the clinician.
+   */
+  private correctionsDue(profile: AgentProfile, voice: StaffVoice | null, utterance: string): NpcCorrection[] {
+    const kind = agentKind(profile);
+    if (!utterance.trim() || kind === "patient" || kind === "companion" || kind === "examiner" || kind === "clinician") return [];
+    // a named speaker who is one of the case's consultants (by name or title) brings that consultant's corrections
+    const consultant = consultantsFor(this.k.caseDef, voice?.name)[0];
+    const name = consultant?.name ? t(consultant.name, this.k.locale) : (voice?.name ?? null);
+    return correctionsFor(this.k.caseDef, voice?.role ?? profile.name, name, utterance);
+  }
+
   private async runModelAgent(id: string, turnId: string, profile: AgentProfile, utterance: string, signal?: AbortSignal, extraContext: readonly string[] = [], voice: StaffVoice | null = null, fromLearner = false): Promise<AgentOutcome> {
     const k = this.k;
     const m = k.models.model(profile.name);
     if (!m.provider) return this.offlineReply(id, turnId, profile, utterance, false, voice);
+    const due = this.correctionsDue(profile, voice, utterance);
     // each colleague keeps their own conversation with the learner (two nurses share a profile, never a memory)
     const key = conversationKey(profile.name, voice);
     await k.conversations.maybeAutoCompact(id, key, signal);
     const parts: ChatPart[] = [{ type: "text", text: utterance.trim() || rt(k.locale, "npc.approach") }];
     // a colleague with a body acts on the learner's request with it (embodied mode; never in a nested ask)
     const who = fromLearner && STAFF_KINDS.has(agentKind(profile)) ? colleagueOf(k, profile.name, voice) : null;
-    const tools = who ? [...k.toolsFor(profile.name), staffTaskTool(k, id, who)] : k.toolsFor(profile.name);
+    // a named colleague is consulted, never the teaching preceptor: no scored hint in their turn (a hint is asked for
+    // explicitly — /hint, request_hint)
+    const own = voice ? k.toolsFor(profile.name).filter((tool) => tool.name !== "give_hint") : k.toolsFor(profile.name);
+    const tools = who ? [...own, staffTaskTool(k, id, who)] : own;
     for (const extra of extraContext) parts.push({ type: "text", text: extra });
+    // a misconception in the message this colleague must correct (authored; checked on the reply below)
+    if (due.length > 0) parts.push({ type: "text", text: `<must_correct>\nThe message contains a misconception you must correct explicitly in this reply, before anything else:\n${due.map((c) => `- ${t(c.say, k.locale)}`).join("\n")}\n</must_correct>` });
     const turn = await runAgentTurn({
       host: k.tools.loopHost(id),
       agent: profile,
       provider: m.provider,
-      system: buildSystemSections(profile, { ...k.promptContext(), ...(voice ? { speakingAs: { name: voice.name, role: voice.role } } : {}) }),
+      system: buildSystemSections(profile, { ...k.promptContext(), ...(voice ? { speakingAs: { name: voice.name, role: voice.role } } : {}), ...roleCardContext(k, profile.name, voice) }),
       history: k.conversations.of(key),
       userParts: parts,
       tools,
@@ -262,6 +296,15 @@ export class AgentTurns {
       k.emit(id, { type: "warning", message: rt(k.locale, "warning.refusalFallback", { agent: profile.name }) });
       return this.offlineReply(id, turnId, profile, utterance, true, voice);
     }
+    // the reply did not make a due correction: the colleague says it now (the endorsement of unsafe advice is never left standing)
+    const missing = turn.stopReason === "end_turn" ? due.filter((c) => !correctionMade(c, turn.text)) : [];
+    if (missing.length > 0) {
+      const addition = missing.map((c) => t(c.say, k.locale)).join(" ");
+      k.conversations.append(key, [{ role: "assistant", content: [{ type: "text", text: addition }] }]);
+      this.emitAgentMessage(id, turnId, profile.name, addition, [], voice);
+      k.recorder?.record("diagnostic", { agent: profile.name, source: "corrections", detail: missing.map((c) => c.id) });
+      return { status: turn.stopReason, text: [turn.text, addition].filter((x) => x.trim()).join("\n"), grounded: turn.grounded, toolCalls: turn.toolCalls };
+    }
     return { status: turn.stopReason, text: turn.text, grounded: turn.grounded, ...(turn.error ? { error: turn.error } : {}), toolCalls: turn.toolCalls };
   }
 
@@ -282,7 +325,8 @@ export class AgentTurns {
         text = other ?? consultantOffline(kind, ctx, utterance);
         break;
       case "attending":
-        text = attendingOffline(ctx, (action) => k.dispatch(action, id), utterance).text;
+        // a named colleague (Dr Tanaka) answers from their specialty and the record — the preceptor only without one
+        text = voice ? specialistOffline(ctx, voice, k.facility) : attendingOffline(ctx, (action) => k.dispatch(action, id), utterance).text;
         break;
       case "examiner":
         text = examinerOffline(k.caseDef, assess(k.caseDef, k.state), k.locale).narrative;
@@ -290,6 +334,9 @@ export class AgentTurns {
       default:
         text = rt(k.locale, "agent.offline.generic", { agent: profile.name });
     }
+    // the case's authored corrections come first (the offline colleague makes them too)
+    const due = this.correctionsDue(profile, voice, utterance);
+    if (due.length > 0) text = [...due.map((c) => t(c.say, k.locale)), text].join(" ");
     const messages: ChatMessage[] = [];
     if (utterance.trim() && !userAlreadyRecorded) messages.push({ role: "user", content: [{ type: "text", text: utterance }] });
     messages.push({ role: "assistant", content: [{ type: "text", text }] });
@@ -422,6 +469,10 @@ export class AgentTurns {
           now: k.now,
         }),
       cursor: k.offlineCursor,
+      afterStep: async (signal) => {
+        if (k.team.available()) await k.team.afterLearner(signal ?? new AbortController().signal);
+        await k.staff.step(id, signal ?? new AbortController().signal);
+      },
       ...(k.embodied && embodied
         ? {
             offlineTurn: (turnId: string, maxSteps: number, signal?: AbortSignal) => {

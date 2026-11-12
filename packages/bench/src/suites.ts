@@ -140,6 +140,7 @@ function conditionIssues(c: CaseDefinition, cond: Condition, path: string): stri
       phase: c.phases,
       objective: c.objectives,
     };
+    if (ref.kind === "procedure") continue;
     const list = lists[ref.kind];
     if (list && !list.some((x) => x.id === ref.id)) out.push(`${path}.${ref.path.join(".")}: unknown ${ref.kind} "${ref.id}" in case ${c.id}`);
   }

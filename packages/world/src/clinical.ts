@@ -20,6 +20,8 @@
  *   `intervened` id of `physiology.monitor.attachedWhen` that is a
  *   monitoring intervention, else the first monitoring intervention whose
  *   requires this device provides, else the first monitoring intervention.
+ *   A checklist step (`checklist: true`) is never selected: attaching the
+ *   monitor is one task and records no WHO Sign In.
  *
  * Tool arguments use the agent tools' names: `order_test` /
  * `read_result {investigation_id, phase?}`, `intervene {intervention_id}`,
@@ -85,9 +87,13 @@ function intervenedIds(cond: Condition | undefined, out: string[] = []): string[
   return out;
 }
 
-/** The case's monitoring intervention for a device with these capabilities (see module docs), or null. */
+/**
+ * The case's monitoring intervention for a device with these capabilities (see module docs), or null. A checklist
+ * step (`checklist: true`, e.g. a WHO Sign In) is never one: attaching a monitor is one task, it does not record
+ * the team's check.
+ */
 export function monitoringIntervention(c: CaseDefinition, caps: readonly string[]): string | null {
-  const monitoring = c.interventions.filter((i) => i.kind === "monitoring");
+  const monitoring = c.interventions.filter((i) => i.kind === "monitoring" && i.checklist !== true);
   for (const id of intervenedIds(c.physiology?.monitor?.attachedWhen)) if (monitoring.some((i) => i.id === id)) return id;
   return monitoring.find((i) => i.requires.length > 0 && i.requires.every((r) => caps.includes(r)))?.id ?? monitoring[0]?.id ?? null;
 }
@@ -121,6 +127,8 @@ export function ivAccessInSitu(c: CaseDefinition): boolean {
 /** The clinical intent of a tool call on a case item (what `checkSpatial` evaluates). */
 export function intentFor(tool: ClinicalEffect["tool"], itemId: string | null): ClinicalIntent {
   switch (tool) {
+    case "surgical_count":
+      return itemId ? { tool, kind: "count", itemId } : { tool, kind: "count" };
     case "order_test":
       return itemId ? { tool, kind: "order", investigationId: itemId } : { tool, kind: "order" };
     case "read_result":
@@ -129,6 +137,8 @@ export function intentFor(tool: ClinicalEffect["tool"], itemId: string | null): 
       return itemId ? { tool, kind: "intervene", interventionId: itemId } : { tool, kind: "intervene" };
     case "examine":
       return itemId ? { tool, kind: "examine", findingId: itemId } : { tool, kind: "examine" };
+    case "operate":
+      return { tool, kind: "operate" };
     default:
       return { tool, kind: "vitals" };
   }
@@ -192,6 +202,17 @@ export function selectClinical(opts: {
     else if (paramOf(parameters, "intervention")) tool = "intervene";
     else return { ok: false, code: "INVALID_REQUEST", message: worldMessage("INVALID_REQUEST", L, { reason: worldMessage("pre.missingParam", L, { param: "investigation | intervention" }) }) };
   }
+  if (tool === "operate") {
+    // a step of the operation itself (a tower's gas controls): through the session's tool path, like at the table
+    const op = opts.effect.item ?? "";
+    const pressure = typeof parameters?.["pressure"] === "number" ? (parameters["pressure"] as number) : (c.procedure?.insufflation?.usual ?? 12);
+    return { ok: true, value: { tool, args: op === "insufflate" ? { op, pressure } : { op }, intent: intentFor(tool, op), itemId: op, itemName: op } };
+  }
+  if (tool === "surgical_count") {
+    // an entry of the count record (the step is the effect's item): the session records it from the world
+    const step = opts.effect.item ?? "";
+    return { ok: true, value: { tool, args: { step }, intent: intentFor(tool, step), itemId: step, itemName: step } };
+  }
   const kind = itemKindOf(tool);
   if (!kind) return { ok: true, value: { tool, args: {}, intent: intentFor(tool, null), itemId: null, itemName: "" } };
   const all = items(c, kind, L);
@@ -200,8 +221,14 @@ export function selectClinical(opts: {
   const unknown = (id: string): SelectionResult => ({ ok: false, code: "INVALID_REQUEST", message: worldMessage("INVALID_REQUEST", L, { reason: worldMessage("pre.unknownItem", L, { item: id }) }) });
   const provides = (i: Item) => i.requires.length > 0 && i.requires.every((r) => caps.includes(r));
 
+  if (opts.effect.select === "item" && opts.effect.item) {
+    // a fixed case item (a WHO board's `sign_in` → the case's `sign-in`)
+    const item = all.find((i) => i.id === opts.effect.item);
+    return item ? done(item) : unknown(opts.effect.item);
+  }
   if (opts.effect.select === "monitoring" && kind === "intervention") {
-    const monitoring = c.interventions.filter((i) => i.kind === "monitoring").map((i) => i.id);
+    // never a checklist step: the monitor attaches, the team's check is made on its own (the WHO board, intervene)
+    const monitoring = c.interventions.filter((i) => i.kind === "monitoring" && i.checklist !== true).map((i) => i.id);
     const id = wanted ?? monitoringIntervention(c, caps);
     if (!id) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.noItem", L, { target }) };
     const item = all.find((i) => i.id === id);

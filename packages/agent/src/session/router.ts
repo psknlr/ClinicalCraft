@@ -39,6 +39,37 @@ export function resolveAgentAlias(word: string): string {
   return Object.hasOwn(ADDRESS_ALIASES, w) ? ADDRESS_ALIASES[w]! : w.toLowerCase();
 }
 
+/**
+ * The colleague an `@` mention may name, with the text after it: the longest run of up to four words (or, with no
+ * space as Chinese is typed, the longest leading run of characters) that `lookup` answers for — never a bare agent
+ * name (`@nurse …` addresses the nurse as before). Null when the input is not a mention or names nobody.
+ */
+export function parseMention<T>(text: string, lookup: (name: string) => T | null, agents: readonly string[] = []): { found: T; text: string } | null {
+  const m = /^[@＠]([\s\S]+)$/u.exec(text.trim());
+  if (!m) return null;
+  const body = m[1]!;
+  const isAgent = (w: string) => agents.includes(w.toLowerCase()) || Object.hasOwn(ADDRESS_ALIASES, w);
+  const words = [...body.matchAll(/[^\s,，:：]+/gu)];
+  for (let n = Math.min(4, words.length); n >= 1; n--) {
+    const last = words[n - 1]!;
+    const name = body.slice(0, last.index! + last[0].length);
+    if (n === 1 && isAgent(name)) break;
+    const found = lookup(name);
+    if (found !== null) return { found, text: body.slice(last.index! + last[0].length).replace(/^[\s,:，：]+/u, "").trim() };
+  }
+  // no space after a Chinese name: "@林护士请把持针器递给我"
+  const first = words[0]?.[0] ?? "";
+  if (/[\u4e00-\u9fff]/u.test(first)) {
+    for (let k = Math.min(first.length - 1, 8); k >= 2; k--) {
+      const name = first.slice(0, k);
+      if (isAgent(name)) continue;
+      const found = lookup(name);
+      if (found !== null) return { found, text: body.slice(k).replace(/^[\s,:，：]+/u, "").trim() };
+    }
+  }
+  return null;
+}
+
 const COMMAND_RE = /^[/／]([^\s/／]*)\s*([\s\S]*)$/;
 const ADDRESS_RE = /^[@＠]([A-Za-z][A-Za-z0-9_-]*)(?:[\s,:，：]+([\s\S]*))?$/;
 /** Longest Chinese alias first, so "护士长" wins over "护士". */
