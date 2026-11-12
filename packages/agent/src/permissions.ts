@@ -346,6 +346,8 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   anaesthesia: null,
   "alarm-response": null,
   "procedure-supply": null,
+  // where the patient arrived is the world's to say (a transport, a transfer by the team), never entered by hand
+  arrival: null,
 };
 
 /** Equivalent tool name for a learner `clinical_action` (null when the action is not gated). */

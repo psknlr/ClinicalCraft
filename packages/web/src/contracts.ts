@@ -286,9 +286,10 @@ export interface WorldApi {
   /**
    * Draw a placement as it is in a behaviour state (a state's `look`, docs/FACILITIES.md "A look for each state":
    * the layers of its model, its screens' picture, its manikin). The state is the world model's
-   * (`WorldRuntime.stateOf`) — the renderer follows it and decides nothing. A placement without looks: nothing.
+   * (`WorldRuntime.stateOf`), and so is `screen` when given (`WorldRuntime.screenOf`: dark while what the picture
+   * needs does not hold) — the renderer follows them and decides nothing. A placement without looks: nothing.
    */
-  setEquipmentState(placementId: string, state: string | null): void;
+  setEquipmentState(placementId: string, state: string | null, screen?: string): void;
   /** The placements whose look follows their state (the ones `setEquipmentState` draws anew). */
   statefulEquipment(): string[];
   /** Open or close a door (renderer door id; a `door:` prefix is accepted). A locked door does not open. */

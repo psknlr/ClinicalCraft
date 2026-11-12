@@ -121,7 +121,18 @@ export const ProcedurePredicateSchema = z.union([
   z.object({ criterion: IdSchema }).strict(),
   /** A safety pause documented `documented`; `valid`: every criterion claimed true and truly met. */
   z.object({ documented: IdSchema, valid: z.boolean().optional() }).strict(),
-  z.object({ injury: z.union([InjuryKindSchema, z.literal("any")]), recognised: z.boolean().optional() }).strict(),
+  /**
+   * An injury of a kind (`any`: of any kind); `recognised`: said aloud (or not); `structure`: to this structure (or
+   * one of these) — what an injury is attributed to: a bile leak from the bed's subvesical duct is not a leak from
+   * the cystic duct's clips, and an item that scores the clipping of one structure names it.
+   */
+  z
+    .object({
+      injury: z.union([InjuryKindSchema, z.literal("any")]),
+      recognised: z.boolean().optional(),
+      structure: z.union([IdSchema, z.array(IdSchema).min(1)]).optional(),
+    })
+    .strict(),
   z.object({ unsafe: z.union([UnsafeCodeSchema, z.literal("any")]) }).strict(),
   z.object({ clipped: IdSchema, minCount: z.number().int().min(1).optional() }).strict(),
   z.object({ divided: IdSchema }).strict(),
@@ -377,6 +388,8 @@ export const ROOM_KINDS = [
   "ward",
   "icu",
   "operating-room",
+  /** A post-anaesthesia care unit (recovery room, PACU): where a patient is handed over after an operation. */
+  "recovery",
   "imaging",
   "laboratory",
   "pathology",
@@ -395,6 +408,36 @@ export const ROOM_KINDS = [
   "stairwell",
 ] as const;
 export const RoomKindSchema = z.enum(ROOM_KINDS);
+export type RoomKind = z.infer<typeof RoomKindSchema>;
+
+/**
+ * A staff member's position — the job they hold, finer than `role` (which decides what their body may do in the
+ * world): a nurse is a scrub, circulating, ward or recovery nurse; an attending is a surgeon, an assistant surgeon,
+ * an anaesthetist or a physician. Each position has a role card (the agent's `characters/roles.ts`): its
+ * responsibilities, authority, limits, communication protocol and whom it escalates to (docs/CHARACTERS.md).
+ */
+export const StaffPositionSchema = z.enum([
+  "surgeon",
+  "assistant-surgeon",
+  "anaesthetist",
+  "scrub-nurse",
+  "circulating-nurse",
+  "ward-nurse",
+  "recovery-nurse",
+  "theatre-coordinator",
+  "physician",
+  "educator",
+  "radiologist",
+  "radiographer",
+  "pathologist",
+  "lab-technician",
+  "transfusion-scientist",
+  "pharmacist",
+  "receptionist",
+  "porter",
+  "paramedic",
+]);
+export type StaffPosition = z.infer<typeof StaffPositionSchema>;
 
 /* ------------------------------------------------------------------ */
 /* Assets                                                              */

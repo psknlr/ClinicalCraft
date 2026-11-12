@@ -141,6 +141,11 @@ export interface SpatialGate {
    * delay or a transfer of the patient. Null when nothing is to be checked.
    */
   device?(ctx: ToolContext): SpatialCheck | null;
+  /**
+   * The action as the engine records it, given the check that let it through (`recheck`): an intervention given at a
+   * place or received in person keeps where the patient was and who took them over (`Intervention.at` / `receivers`).
+   */
+  placed?(action: ClinicalAction, check: SpatialCheck | null): ClinicalAction;
 }
 
 /** `wait` in embodied mode: its closing vitals line only shows what the acting body can see (review G11). */
@@ -192,11 +197,13 @@ export function spatiallyGated<A extends Record<string, unknown>>(tool: ToolDefi
       if (!intent) return tool.run(args, ctx);
       const actor = gate.actorOf(ctx);
       let armed = true;
+      let passed: SpatialCheck | null = null;
       const guard = () => {
         if (!armed) return;
         armed = false;
         const check = gate.check(actor, intent, true);
         if (!check.ok) throw new SpatialAbort(check);
+        passed = check;
         const device = gate.device?.(ctx);
         if (device && !device.ok) throw new SpatialAbort(device);
       };
@@ -205,7 +212,7 @@ export function spatiallyGated<A extends Record<string, unknown>>(tool: ToolDefi
         ...(gate.rhythm ? { bedsideRhythm: () => gate.rhythm!() } : {}),
         dispatch: (action) => {
           guard();
-          return ctx.dispatch(action);
+          return ctx.dispatch(gate.placed ? gate.placed(action, passed) : action);
         },
         ask: async (agent, utterance, signal) => {
           guard();

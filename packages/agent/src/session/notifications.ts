@@ -251,6 +251,7 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     case "procedure.step":
     case "alarm.response":
     case "procedure.supply":
+    case "patient.arrived":
       return [];
     default: {
       const never: never = event;

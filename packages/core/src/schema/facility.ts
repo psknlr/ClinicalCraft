@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { AppearanceSchema, CaseSettingSchema } from "./case.js";
-import { CapabilitySchema, ConditionSchema, COUNT_STAGES, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
+import { CapabilitySchema, ConditionSchema, COUNT_STAGES, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema, StaffPositionSchema } from "./common.js";
 
 /**
  * Virtual environment — facilities, rooms, equipment and materials.
@@ -91,24 +91,30 @@ export type ActorRole = z.infer<typeof ActorRoleSchema>;
  * `actorWithin` the acting actor is within N m of this device;
  * `patientWithin` the acting actor is within N m of the bound patient;
  * `deviceAtBedside` this device stands within the bedside radius of the patient;
- * `actorHolding` the actor holds an item (entity id or equipment type id);
+ * `actorHolding` the actor holds an item (entity id or equipment type id) — with `itemState`, one in that state
+ * (a stapler with a reload in: `{ "actorHolding": "sc-endo-stapler", "itemState": "loaded" }`);
  * `state` the device is in one of these behaviour states;
  * `role` the actor has one of these roles; `handsClean` hand hygiene is valid;
  * `nearbyState` another in-service device of equipment type `type`, on the same
  * level within `within` m of this device (footprint to footprint, default
  * `NEARBY_STATE_RANGE`), is in one of `state` — equipment that depends on
  * equipment (an electrosurgical unit fires only with the smoke evacuator
- * running; a C-arm screens only with its lead shield in place).
+ * running; a C-arm screens only with its lead shield in place); with `linked`, one connected by instance to a
+ * device of that type (a drainage unit on water seal, connected to a chest tube that is in);
+ * `linked` this device is connected by instance (an operation's `link`, or an item it `uses` with `link`) to a
+ * device of `type` (in `state`) — directly, or through a device of type `via` it is connected to (a training
+ * station: the chest tube in its chest, and through it the drainage unit on that tube).
  */
 export type WorldPredicate =
   | { actorWithin: number }
   | { patientWithin: number }
   | { deviceAtBedside: true }
-  | { actorHolding: string }
+  | { actorHolding: string; itemState?: string | string[] }
   | { state: string | string[] }
   | { role: ActorRole[] }
   | { handsClean: true }
-  | { nearbyState: { type: string; state: string | string[]; within?: number } }
+  | { nearbyState: { type: string; state: string | string[]; within?: number; linked?: { type: string; state?: string | string[] } } }
+  | { linked: { type: string; state?: string | string[]; via?: string } }
   | { all: WorldPredicate[] }
   | { any: WorldPredicate[] }
   | { not: WorldPredicate };
@@ -121,15 +127,23 @@ export const WorldPredicateSchema: z.ZodType<WorldPredicate> = z.lazy(() =>
     z.object({ actorWithin: z.number().positive() }).strict(),
     z.object({ patientWithin: z.number().positive() }).strict(),
     z.object({ deviceAtBedside: z.literal(true) }).strict(),
-    z.object({ actorHolding: z.string().min(1) }).strict(),
+    z.object({ actorHolding: z.string().min(1), itemState: z.union([IdSchema, z.array(IdSchema).min(1)]).optional() }).strict(),
     z.object({ state: z.union([IdSchema, z.array(IdSchema).min(1)]) }).strict(),
     z.object({ role: z.array(ActorRoleSchema).min(1) }).strict(),
     z.object({ handsClean: z.literal(true) }).strict(),
     z
       .object({
-        nearbyState: z.object({ type: IdSchema, state: z.union([IdSchema, z.array(IdSchema).min(1)]), within: z.number().positive().max(20).optional() }).strict(),
+        nearbyState: z
+          .object({
+            type: IdSchema,
+            state: z.union([IdSchema, z.array(IdSchema).min(1)]),
+            within: z.number().positive().max(20).optional(),
+            linked: z.object({ type: IdSchema, state: z.union([IdSchema, z.array(IdSchema).min(1)]).optional() }).strict().optional(),
+          })
+          .strict(),
       })
       .strict(),
+    z.object({ linked: z.object({ type: IdSchema, state: z.union([IdSchema, z.array(IdSchema).min(1)]).optional(), via: IdSchema.optional() }).strict() }).strict(),
     z.object({ all: z.array(WorldPredicateSchema) }).strict(),
     z.object({ any: z.array(WorldPredicateSchema) }).strict(),
     z.object({ not: WorldPredicateSchema }).strict(),
@@ -191,9 +205,65 @@ export const BehaviorOperationSchema = z
     release: z.boolean().optional(),
     /** Roles allowed (default: everyone). */
     roles: z.array(ActorRoleSchema).min(1).optional(),
+    /**
+     * The item in the acting actor's hands the operation works with: the first alternative they hold in one of its
+     * `from` states (omitted: any). That very instrument moves to `to` (omitted: unchanged) — a stapler fired at a
+     * training station is that stapler fired, its reload spent — and a device that keeps a run record names it.
+     * `link`: the item stays connected to the device (a chest tube placed in the station's chest). Refused when the
+     * actor holds none of them in such a state.
+     */
+    uses: z
+      .array(z.object({ item: z.string().min(1), from: z.array(IdSchema).min(1).optional(), to: IdSchema.optional(), link: z.boolean().optional() }).strict())
+      .min(1)
+      .max(4)
+      .optional(),
+    /**
+     * Other devices the operation also sets: each in-service device of `type` within `within` m of this one (default
+     * the bedside radius) — with `from`, only one in one of those states — moves to `to`. A training station's reset
+     * puts back what the instructor presets for the next trainee (a fresh drainage unit, the count board cleared).
+     */
+    sets: z
+      .array(z.object({ type: IdSchema, from: z.array(IdSchema).min(1).optional(), to: IdSchema, within: z.number().positive().max(20).optional() }).strict())
+      .min(1)
+      .max(32)
+      .optional(),
+    /**
+     * Connect this device, by instance, to the nearest in-service device of `type` (in `state`) within `within` m
+     * (default `LINK_RANGE`): a drainage unit to the chest tube that is in. Refused when there is none.
+     */
+    link: z
+      .object({ type: IdSchema, state: z.union([IdSchema, z.array(IdSchema).min(1)]).optional(), within: z.number().positive().max(20).optional() })
+      .strict()
+      .optional(),
+    /** Disconnect this device from the devices of a type it is connected to (`true`: from every one). */
+    unlink: z.union([IdSchema, z.literal(true)]).optional(),
+    /**
+     * On a device that keeps a run record (`runs`): this operation closes the run and starts the next (a training
+     * station reset for the next trainee). The run closed is kept, apart from the new one.
+     */
+    newRun: z.boolean().optional(),
+    /**
+     * The roles the step is assessed for. Taken by another role — as `requires` may allow, in practice — the run
+     * record labels it a role substitution and the result says so.
+     */
+    assessed: z.array(ActorRoleSchema).min(1).optional(),
   })
   .strict();
 export type BehaviorOperation = z.infer<typeof BehaviorOperationSchema>;
+
+/** Default range (m, footprint to footprint) of an operation's `link`: the device and what it connects to side by side. */
+export const LINK_RANGE = 2.5;
+
+/**
+ * Does a world predicate read only devices — their states, what is near them, what they are connected to — never an
+ * actor? A screen's `screenNeeds` may use only these: nobody is acting when a screen is looked at.
+ */
+export function isDevicePredicate(p: WorldPredicate): boolean {
+  if ("all" in p) return p.all.every(isDevicePredicate);
+  if ("any" in p) return p.any.every(isDevicePredicate);
+  if ("not" in p) return isDevicePredicate(p.not);
+  return "state" in p || "nearbyState" in p || "linked" in p || "deviceAtBedside" in p;
+}
 
 /** What the parts named "screen" can show (an equipment type's `screen`; a state's look may change it). */
 export const SCREEN_KINDS = ["none", "vitals", "ecg", "xray", "ct", "pacs", "lab", "text", "logo", "thoracoscopy"] as const;
@@ -284,6 +354,16 @@ export const DeviceBehaviorSchema = z
      * those items the device keeps its own state machine and its operations are physical.
      */
     derived: z.enum(["monitor-attachment", "case-record"]).optional(),
+    /**
+     * Keep a record of each run (a training station): every completed operation — what it was, the state before and
+     * after, who did it in which role, when, the items it used and what became of them, a role substitution — kept
+     * on the device; an operation with `newRun` closes the run and starts the next. Each trainee's run is its own.
+     * `{ with, within }`: the operations on the devices of those types within `within` m (default the bedside radius)
+     * go into the same run — the count board, the checklist, the drainage unit a drill uses: one record per trainee.
+     */
+    runs: z
+      .union([z.boolean(), z.object({ with: z.array(IdSchema).min(1).max(24), within: z.number().positive().max(20).optional() }).strict()])
+      .optional(),
   })
   .strict();
 export type DeviceBehavior = z.infer<typeof DeviceBehaviorSchema>;
@@ -455,6 +535,17 @@ export const EquipmentTypeSchema = z
      * rigid scope in the chest). A representative picture is never a patient's own finding.
      */
     screen: z.enum(SCREEN_KINDS).default("none"),
+    /**
+     * What the screens' picture needs, read by the world for this device (device predicates only: `state`,
+     * `nearbyState`, `linked`, `deviceAtBedside`): while one does not hold the screens are dark, whatever the state's
+     * look says — a camera's picture needs the tower on, lit and white-balanced and the scope in the chest, and every
+     * display of it and every step done under vision read the same predicates.
+     */
+    screenNeeds: z
+      .array(WorldPredicateSchema)
+      .min(1)
+      .refine((ps) => ps.every(isDevicePredicate), "screenNeeds reads devices only: state, nearbyState, linked, deviceAtBedside (and all / any / not of them)")
+      .optional(),
     /** Point light emitted by the equipment (surgical lights, lamps). */
     light: z
       .object({ color: HexColorSchema, intensity: z.number().min(0), distance: z.number().min(0), y: z.number() })
@@ -714,35 +805,6 @@ export const PatientSlotSchema = z
     monitor: IdSchema.optional(),
   })
   .strict();
-
-/**
- * A staff member's position — the job they hold, finer than `role` (which decides what their body may do in the
- * world): a nurse is a scrub, circulating, ward or recovery nurse; an attending is a surgeon, an assistant surgeon,
- * an anaesthetist or a physician. Each position has a role card (the agent's `characters/roles.ts`): its
- * responsibilities, authority, limits, communication protocol and whom it escalates to (docs/CHARACTERS.md).
- */
-export const StaffPositionSchema = z.enum([
-  "surgeon",
-  "assistant-surgeon",
-  "anaesthetist",
-  "scrub-nurse",
-  "circulating-nurse",
-  "ward-nurse",
-  "recovery-nurse",
-  "theatre-coordinator",
-  "physician",
-  "educator",
-  "radiologist",
-  "radiographer",
-  "pathologist",
-  "lab-technician",
-  "transfusion-scientist",
-  "pharmacist",
-  "receptionist",
-  "porter",
-  "paramedic",
-]);
-export type StaffPosition = z.infer<typeof StaffPositionSchema>;
 
 export const StaffSchema = z
   .object({

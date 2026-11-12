@@ -91,6 +91,10 @@ function describeRequirement(r: SpatialRequirement): string {
       return `the patient's attached monitor ≤ ${r.range} m`;
     case "patient-at-provider":
       return `the patient at [${r.capabilities.join(", ")}]`;
+    case "patient-in":
+      return `the patient in a ${Object.entries(r.destination).map(([k, v]) => `${k} ${v}`).join(", ")}`;
+    case "staff-at-patient":
+      return `a ${r.positions.join(" | ")} ≤ ${r.range} m of the patient`;
     case "clinical":
       return `clinical: ${r.need}${r.interventionId ? ` (${r.interventionId} first)` : ""}`;
     case "any-of":

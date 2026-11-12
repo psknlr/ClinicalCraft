@@ -6,7 +6,7 @@
  * refuses the question: `cannot-answer`). An opening line written as an aside ("(She is on a ventilator…)") is
  * narration too. Shared by the patient pipeline, the learner's button questions and `list_options`.
  */
-import { patientNonVerbal, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { evaluate, patientNonVerbal, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { isZh, rt, type RuntimeKey } from "./i18n.js";
 
 /** A display name without its "(pseudonym)" / "（化名）" note. */
@@ -22,12 +22,14 @@ function asSentence(text: string, locale: string): string {
 }
 
 /**
- * While the patient cannot speak (`patient.nonVerbalWhen` holds): the authored reason in `locale` ("" when the
- * case gives none). Null while the patient can speak.
+ * While the patient cannot speak (`patient.nonVerbalWhen` holds): the authored reason in `locale` — the first of
+ * `nonVerbalReasons` whose condition holds now, else `nonVerbalReason` ("" when the case gives none). Null while
+ * the patient can speak.
  */
 export function nonVerbalReason(c: CaseDefinition, s: SessionState, locale: string): string | null {
   if (!patientNonVerbal(c, s)) return null;
-  return c.patient.nonVerbalReason ? t(c.patient.nonVerbalReason, locale).trim() : "";
+  const reason = c.patient.nonVerbalReasons?.find((r) => evaluate(c, s, r.when))?.reason ?? c.patient.nonVerbalReason;
+  return reason ? t(reason, locale).trim() : "";
 }
 
 /** The narration when the patient cannot answer ("Li Ming cannot answer: intubated and sedated.") — or, on approach, cannot speak. */

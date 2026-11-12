@@ -3,9 +3,10 @@
  * interventions given, the vitals at the hand-over, the drugs given and when, the holds still open — never prose
  * made up for it; and its words in either language.
  */
-import { activeHolds, t, vitalsAt, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { handoverFromRecord as recordHandover, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { rt } from "./i18n.js";
 
+/** What an anaesthetist hands over to the colleague who relieves them (`AnaesthesiaOpSchema` "handover"). */
 export interface HandoverContent {
   airway: string[];
   ventilation: Record<string, number>;
@@ -14,20 +15,10 @@ export interface HandoverContent {
   unresolved: string[];
 }
 
-/** What the record holds for a hand-over now. */
+/** What the record holds for an anaesthetic hand-over now (core `handoverFromRecord`, the anaesthetic part of it). */
 export function handoverFromRecord(c: CaseDefinition, s: SessionState): HandoverContent {
-  const kind = (id: string) => c.interventions.find((i) => i.id === id)?.kind;
-  const given = s.interventions.filter((r) => !r.invalid);
-  const v = vitalsAt(c, s).vitals;
-  const pick = (keys: readonly string[]) => Object.fromEntries(keys.flatMap((key) => (typeof (v as Record<string, unknown>)[key] === "number" ? [[key, (v as Record<string, number>)[key]!]] : [])));
-  const holds = c.interventions.filter((i) => activeHolds(s, i.id).length > 0).map((i) => i.id);
-  return {
-    airway: [...new Set(given.filter((r) => kind(r.interventionId) === "airway").map((r) => r.interventionId))],
-    ventilation: pick(["spo2", "rr", "etco2"]),
-    haemodynamics: pick(["hr", "sbp", "dbp", "map"]),
-    drugs: given.filter((r) => kind(r.interventionId) === "medication").map((r) => ({ id: r.interventionId, at: r.at })),
-    unresolved: holds,
-  };
+  const { airway, ventilation, haemodynamics, drugs, unresolved } = recordHandover(c, s);
+  return { airway, ventilation, haemodynamics, drugs, unresolved };
 }
 
 /** The hand-over in words ("Airway: …; SpO₂ 98, …; drugs: …; open: …"). */

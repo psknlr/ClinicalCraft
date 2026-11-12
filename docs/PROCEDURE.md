@@ -263,7 +263,7 @@ rubric items, objectives, phases, scenario events and safety gates:
 
 ```
 { "view": id } · { "criterion": id } · { "documented": id, "valid"?: bool } ·
-{ "injury": kind|"any", "recognised"?: bool } · { "unsafe": code|"any" } ·
+{ "injury": kind|"any", "recognised"?: bool, "structure"?: id|[id] } · { "unsafe": code|"any" } ·
 { "clipped": id, "minCount"? } · { "divided": id } · { "isolated": id } ·
 { "identified": id, "as"?: id } · { "specimen": state } · { "bailout": strategy|"any" } ·
 { "imaged": "ioc"|"lap-us" } · { "plan": id } · { "insufflated": bool, "pressure"?: range } ·
@@ -275,6 +275,12 @@ rubric items, objectives, phases, scenario events and safety gates:
 `variant` reads the session's anatomical variant (§9). It is hidden truth, like the anatomy. It lets
 rubric items be `scoredWhen` a variant is in force and lets gates depend on it. Structure ids in
 conditions may name a structure of any variant; in the others the condition is simply false.
+
+`injury` with `structure` reads the injuries to that structure (or one of those) only: an injury is attributed to
+what was injured, and when — the step on that structure that caused it (the injury's `at`). An item that scores
+the clipping of the cystic duct and artery names them (`{ "injury": "bile-leak", "structure": "cystic-duct" }`), so a
+leak from another structure — a subvesical duct opened in the gallbladder bed — never counts against that clipping;
+recognising and managing the leak are scored by items of their own.
 
 `view` and `criterion` read the field **now**, so they are false once the laparoscopy has ended. To score
 what was achieved, use `documented` (the safety pause's record) or `dissectedExposed` (the best exposure

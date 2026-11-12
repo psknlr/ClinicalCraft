@@ -154,6 +154,31 @@ describe("a patient who cannot speak", () => {
     expect(call.output).toBe("Li Ming cannot answer: intubated and sedated.");
     expect(t1.session.state.asked).toEqual([]);
   });
+
+  it("the reason follows the patient's state (`nonVerbalReasons`): each state said as it is, the plain reason last", async () => {
+    // silent from the aspirin on: "anaesthetised" until thrombolysis, then "awake, the tube still in"
+    const c = quiet((x) => {
+      x.patient.nonVerbalReasons = [
+        { when: { not: { intervened: "lysis" } }, reason: { "zh-CN": "全身麻醉中", en: "under general anaesthesia" } },
+        { when: { intervened: "lysis" }, reason: { "zh-CN": "已清醒，但气管导管仍在", en: "awake, but the tracheal tube is still in" } },
+      ];
+    });
+    // (thrombolysis is a high-risk act: no approval prompt in this test)
+    const t1 = await makeSession({ caseDef: c, settingsPatch: { approvalMode: "bypass" } });
+    await t1.session.run({ type: "clinical_action", action: { type: "start" } });
+    await t1.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "aspirin" } });
+    const say = async () => msgsOf(await t1.session.run({ type: "user_message", text: "What does the pain feel like?" }), "agent_message").at(-1)!.text;
+    expect(await say()).toBe("Li Ming cannot answer: under general anaesthesia.");
+    await t1.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "lysis" } });
+    expect(await say()).toBe("Li Ming cannot answer: awake, but the tracheal tube is still in.");
+    // none holding: the case's own reason
+    const plain = quiet((x) => (x.patient.nonVerbalReasons = [{ when: { intervened: "lysis" }, reason: { "zh-CN": "插管中", en: "intubated" } }]));
+    const t2 = await makeSession({ caseDef: plain });
+    await t2.session.run({ type: "clinical_action", action: { type: "start" } });
+    await t2.session.run({ type: "clinical_action", action: { type: "intervene", interventionId: "aspirin" } });
+    expect(msgsOf(await t2.session.run({ type: "user_message", text: "Any pain now?" }), "agent_message").at(-1)!.text).toBe("Li Ming cannot answer: intubated and sedated.");
+    expect(t1.session.state.asked).toEqual([]);
+  });
 });
 
 describe("septic-shock-cap after intubation (the built-in case)", () => {

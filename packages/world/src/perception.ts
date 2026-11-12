@@ -287,6 +287,12 @@ export class Perception {
       if (c.cannotSpeak !== undefined) out.speech = c.cannotSpeak ? worldMessage("cue.cannotSpeakWhy", L, { reason: c.cannotSpeak }) : worldMessage("cue.cannotSpeak", L);
       return out;
     }
+    // a picture that needs something (`screenNeeds`: a camera's — the tower lit, the scope in): what the screen shows
+    // now, by the one rule every display of it reads (`DeviceRules.screen`)
+    if (p.entity?.equipmentType?.screenNeeds?.length && awareness === "visible") {
+      const kind = this.d.rules.screen(p.id);
+      return { screen: kind === "none" ? worldMessage("cue.screenDark", L) : worldMessage("cue.screenShows", L, { picture: worldMessage(`screenKind.${kind}`, L) }) };
+    }
     // THE screen rule (`WorldLocator.screenInView`): from the monitor's own room, never through a window
     if (p.entity?.interaction === "monitor" && awareness === "visible" && loc.isPatientMonitor(p.id) && loc.screenInView(actor, p, RANGES.screen) && this.d.rules.state(p.id) === "attached") {
       const snapshot = this.d.clinical.bedside();

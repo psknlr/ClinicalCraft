@@ -203,8 +203,8 @@ export class EmbodiedLink {
     if (this.disposed || !world || !api) return;
     for (const pid of api.statefulEquipment()) {
       const state = world.stateOf(`eq:${pid}`);
-      // (none: equipment the world does not know — left as it was built)
-      if (state !== null) api.setEquipmentState(pid, state);
+      // (none: equipment the world does not know — left as it was built); its screens: what the world says they show
+      if (state !== null || world.entity(`eq:${pid}`)) api.setEquipmentState(pid, state, world.screenOf(`eq:${pid}`));
     }
   }
 
@@ -221,11 +221,17 @@ export class EmbodiedLink {
       case "entity.state": {
         if (ev.to) this.states.set(ev.entityId, ev.to);
         else this.states.delete(ev.entityId);
-        // what is drawn of the device follows its state (a placement without looks: nothing)
-        const pid = placementIdOf(ev.entityId);
-        if (pid) this.o.renderer()?.setEquipmentState(pid, ev.to);
+        // what is drawn of the device follows its state — and a picture on another screen may follow it too (the
+        // tower lit, the scope in): every live placement is asked again (few have looks; asking is cheap)
+        this.syncLooks();
         return;
       }
+      case "item.held":
+      case "entity.moved":
+      case "entity.availability":
+        // a screen's picture may need a device nearby (`screenNeeds`): moved, carried off or out of service
+        this.syncLooks();
+        return;
       case "patient.moved": {
         // a transport ended (the walker's push stopped) or the team moved the patient: draw them there
         const api = this.o.renderer();

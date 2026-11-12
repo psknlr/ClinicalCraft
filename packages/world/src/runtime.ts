@@ -16,7 +16,7 @@ import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
 import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
 import { buildCollisionModel } from "./collision.js";
-import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type RunRecord, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
 import { worldMessage } from "./i18n.js";
 import { levelInfos } from "./levels.js";
 import { WorldLocator } from "./locate.js";
@@ -189,6 +189,17 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     stateOf: (id: EntityId) => {
       const resolved = actions.resolve(id);
       return resolved ? rules.state(resolved) : null;
+    },
+    screenOf: (id: EntityId) => {
+      const resolved = actions.resolve(id);
+      return resolved ? rules.screen(resolved) : "none";
+    },
+    runsOf: (id: EntityId) => {
+      const resolved = actions.resolve(id);
+      const data = resolved ? store.entity(resolved)?.data : undefined;
+      const current = (data?.run as RunRecord | undefined) ?? null;
+      const closed = Array.isArray(data?.runs) ? (data!.runs as RunRecord[]) : [];
+      return { current: current ? structuredClone(current) : null, closed: structuredClone(closed) };
     },
     bedsideProviders: (capability: string) =>
       registry

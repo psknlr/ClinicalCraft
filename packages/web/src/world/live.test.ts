@@ -190,6 +190,24 @@ describe("a placement whose look follows its state (live.ts)", () => {
     expect(rec.manikin!.drawn.cover).toBe("blanket");
   });
 
+  it("the screens show what the world says (`screenOf`): dark while the picture's needs do not hold, whatever the state's look says", () => {
+    const { rec, screen } = liveStation("lung-down");
+    painted.length = 0;
+    // the scope in by the state, but the tower off: the world says the screen is dark — no quad drawn, nothing painted
+    expect(applyLook(rec, "explored", paint, "none")).toEqual([]);
+    expect([rec.look.screen, screen.mesh.visible, painted]).toEqual(["none", false, []]);
+    // the view back: the same state, now with its picture
+    expect(applyLook(rec, "explored", paint, "thoracoscopy")).toEqual([]);
+    expect([rec.look.screen, screen.mesh.visible, painted]).toEqual(["thoracoscopy", true, ["thoracoscopy 0.5x0.3 st-1"]]);
+    // lost again (the light on standby): dark, the picture handed back to be disposed
+    const picture = screen.texture!;
+    expect(applyLook(rec, "explored", paint, "none")).toEqual([picture]);
+    expect(screen.mesh.visible).toBe(false);
+    // no word from the world: the state's look, as before
+    expect(applyLook(rec, "explored", paint)).toEqual([]);
+    expect(rec.look.screen).toBe("thoracoscopy");
+  });
+
   it("showScreen paints a picture once per change", () => {
     const mesh = new Mesh(UNIT_PLANE, liveScreenMaterial(null));
     const screen: LiveScreen = { mesh, w: 1, h: 0.5, seed: "s", bg: "#123456", kind: "none", texture: null };

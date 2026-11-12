@@ -25,7 +25,7 @@
  */
 import type { ClinicalActionFeedback } from "./action-ids.js";
 import { COUNT_TOOL, SurgicalCount } from "./count.js";
-import { assignPatientSlot, canLeaveAnaesthetisedPatient, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
+import { anaesthetised, assignPatientSlot, canLeaveAnaesthetisedPatient, patientCues, responsibleAnaesthetist, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   behaviorOf,
   createWorldRuntime,
@@ -307,6 +307,8 @@ export class EmbodiedSession {
     this.unsubscribe = runtime.subscribe((event, version) => {
       this.dirty = true;
       this.host.emit({ type: "world_event", event, version });
+      // the patient came to rest in another room: the record keeps the arrival (where, who brought them, when)
+      if (event.type === "patient.moved") this.noteArrival(event.from.room, event.to.room, event.to.slot, event.by);
       for (const l of [...this.listeners]) {
         try {
           l(event, version);
@@ -384,6 +386,8 @@ export class EmbodiedSession {
       bedsideProviders: (capability) => w().bedsideProviders(capability),
       provides: (id) => w().provides(id),
       stateOf: (id) => w().stateOf(id),
+      screenOf: (id) => w().screenOf(id),
+      runsOf: (id) => w().runsOf(id),
       patientPlace: () => w().patientPlace(),
       patientMonitor: () => w().patientMonitor(),
       screenInView: (actorId) => w().screenInView(actorId),
@@ -468,6 +472,8 @@ export class EmbodiedSession {
           this.targets.delete(actionId);
         }
       }
+      // a patient wheeled to where they are handed over in person is met there (the recovery nurse at the bay)
+      if (transport) await this.settleMeetings();
       // a swab searched out of the wound is recorded as recovered, by whoever took it out (the count's evidence)
       this.count.afterAct(request, result);
       this.traceEngineChanges(actionId, actorId);
@@ -618,7 +624,8 @@ export class EmbodiedSession {
   private followClinicalEvent(event: DomainEvent): void {
     const c = this.host.caseDef;
     if (event.type === "intervention.applied") {
-      const destination = c.interventions.find((i) => i.id === event.interventionId)?.destination;
+      // an attempt out of order (a checklist-gated transfer before the Sign Out) is recorded and applies nothing
+      const destination = event.invalid ? undefined : c.interventions.find((i) => i.id === event.interventionId)?.destination;
       if (destination) this.relocate(destination);
       if (this.inner.refreshPatient()) this.record();
     } else if (event.type === "phase.changed") {
@@ -647,6 +654,65 @@ export class EmbodiedSession {
     this.host.emit({ type: "notification", level: r.ok ? "info" : "warning", title: rt(this.host.locale(), "world.relocated"), body: r.message });
   }
 
+  /**
+   * The patient arrived in another room (a transport ended there, or the team moved them): recorded in the clinical
+   * record (`arrival`) — the facility room, its kind, the bed space and who wheeled them (absent: the team).
+   */
+  private noteArrival(from: string | null, to: string | null, slot: string | null, by: string | null): void {
+    if (!to || to === from) return;
+    const kind = this.host.facility?.rooms.find((r) => r.id === to)?.kind;
+    this.host.dispatch({ type: "arrival", room: to, ...(kind ? { kind } : {}), ...(slot ? { slot } : {}), ...(by ? { broughtBy: by.replace(/^staff:/, "") } : {}), by: "system" });
+    this.meetOnArrival(to, slot);
+  }
+
+  /** Walks of a receiving member of staff to a patient who has just arrived (`meetOnArrival`); the moving call waits for them. */
+  private meetings: Promise<unknown>[] = [];
+
+  /**
+   * The patient arrived in another room: who belongs at the bed comes to it — the responsible anaesthetist of a patient
+   * still under anaesthesia care (intubated: docs/TEAM.md §5, nobody responsible leaves them), and where the patient is
+   * handed over in person (an intervention's `at` and `receivers`: the recovery room and its recovery nurse) the nearest
+   * member of that room's staff holding the position. Whoever is there already stays. The tool call or world action
+   * that moved the patient finishes once they are there (`settleMeetings`).
+   */
+  private meetOnArrival(room: string, slot: string | null): void {
+    const f = this.host.facility;
+    const patient = this.patientId();
+    if (!f || !patient) return;
+    const c = this.host.caseDef;
+    const world = this.inner;
+    const body = world.patientPlace();
+    const near = (id: string) => {
+      const a = world.actor(id);
+      return a && body ? Math.hypot(a.pose.x - body.x, a.pose.z - body.z) : Infinity;
+    };
+    const come = (who: string | undefined, agent: "nurse" | "attending") => {
+      if (!who || !world.actor(who) || near(who) <= 2) return;
+      this.meetings.push(this.act({ agent }, { actorId: who, operation: "navigate", goal: { kind: "interact", id: patient }, onBehalfOf: PRIMARY_ACTOR }).catch(() => undefined));
+    };
+    const s = this.host.state();
+    if (anaesthetised(c, s)) {
+      const anaesthetist = responsibleAnaesthetist(c, s);
+      come(anaesthetist ? `staff:${anaesthetist}` : undefined, "attending");
+    }
+    const kind = f.rooms.find((r) => r.id === room)?.kind;
+    const accepts = slot ? (f.patientSlots.find((x) => x.id === slot)?.accepts ?? []) : [];
+    const handedOverHere = (at: NonNullable<CaseDefinition["interventions"][number]["at"]>) => (at.roomKind ? at.roomKind === kind : at.setting ? accepts.includes(at.setting) : false);
+    const positions = new Set(c.interventions.filter((i) => i.at && i.receivers?.length && handedOverHere(i.at)).flatMap((i) => i.receivers!));
+    if (!positions.size) return;
+    const staff = f.staff
+      .filter((x) => x.room === room && x.position && positions.has(x.position))
+      .map((x) => `staff:${x.id}`)
+      .filter((id) => world.actor(id))
+      .sort((a, b) => near(a) - near(b) || (a < b ? -1 : 1));
+    come(staff[0], "nurse");
+  }
+
+  /** The receiving staff's walks to a patient who arrived (`meetOnArrival`), awaited. */
+  private async settleMeetings(): Promise<void> {
+    while (this.meetings.length) await Promise.all(this.meetings.splice(0));
+  }
+
   private flushRelocations(): void {
     for (const destination of this.deferred.splice(0)) this.relocate(destination);
   }
@@ -661,6 +727,8 @@ export class EmbodiedSession {
         let out: ToolOutput;
         try {
           out = await tool.run(args, ctx);
+          // a patient moved by this call is met where they arrived (the recovery nurse at the bay)
+          await this.settleMeetings();
         } finally {
           this.noteCaptures.delete(lines);
         }
@@ -693,6 +761,26 @@ export class EmbodiedSession {
       staff: (actorId, locale) => this.staffActor(actorId, locale),
       vitals: (actorId) => this.vitalsView(actorId),
       device: (ctx) => this.deviceBinding(ctx.worldActionId),
+      placed: (action, check) => this.placed(action, check),
+    };
+  }
+
+  /**
+   * An intervention given at a place or received in person (`Intervention.at` / `receivers`): the record keeps where
+   * the patient was and who took them over — what the world confirmed when it let the act through.
+   */
+  private placed(action: ClinicalAction, check: SpatialCheck | null): ClinicalAction {
+    if (action.type !== "intervene") return action;
+    const iv = this.host.caseDef.interventions.find((i) => i.id === action.interventionId);
+    if (!iv || (!iv.at && !iv.receivers?.length)) return action;
+    const place = this.inner.patientPlace();
+    const room = place?.room ?? null;
+    const kind = room ? this.host.facility?.rooms.find((r) => r.id === room)?.kind : undefined;
+    const receiver = check?.ok && iv.receivers?.length ? check.satisfiedBy.find((id) => id.startsWith("staff:")) : undefined;
+    return {
+      ...action,
+      ...(room ? { place: { room, ...(kind ? { kind } : {}), ...(place?.slot ? { slot: place.slot } : {}) } } : {}),
+      ...(receiver ? { receivedBy: receiver.slice("staff:".length) } : {}),
     };
   }
 

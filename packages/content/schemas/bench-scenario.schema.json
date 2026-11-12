@@ -420,6 +420,20 @@
                     },
                     "recognised": {
                       "type": "boolean"
+                    },
+                    "structure": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/Id"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "minItems": 1
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -1097,6 +1111,62 @@
             },
             "interventionId": {
               "$ref": "#/definitions/Id"
+            },
+            "place": {
+              "type": "object",
+              "properties": {
+                "room": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 120
+                },
+                "kind": {
+                  "type": "string",
+                  "enum": [
+                    "entrance",
+                    "reception",
+                    "waiting",
+                    "consult",
+                    "triage",
+                    "resus",
+                    "emergency",
+                    "ward",
+                    "icu",
+                    "operating-room",
+                    "recovery",
+                    "imaging",
+                    "laboratory",
+                    "pathology",
+                    "pharmacy",
+                    "nurse-station",
+                    "conference",
+                    "office",
+                    "corridor",
+                    "storage",
+                    "restroom",
+                    "garden",
+                    "build-zone",
+                    "rehabilitation",
+                    "teaching",
+                    "elevator",
+                    "stairwell"
+                  ]
+                },
+                "slot": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 120
+                }
+              },
+              "required": [
+                "room"
+              ],
+              "additionalProperties": false
+            },
+            "receivedBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
             },
             "by": {
               "type": "string",
@@ -2783,6 +2853,76 @@
           "required": [
             "type",
             "count"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "arrival"
+            },
+            "room": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "kind": {
+              "type": "string",
+              "enum": [
+                "entrance",
+                "reception",
+                "waiting",
+                "consult",
+                "triage",
+                "resus",
+                "emergency",
+                "ward",
+                "icu",
+                "operating-room",
+                "recovery",
+                "imaging",
+                "laboratory",
+                "pathology",
+                "pharmacy",
+                "nurse-station",
+                "conference",
+                "office",
+                "corridor",
+                "storage",
+                "restroom",
+                "garden",
+                "build-zone",
+                "rehabilitation",
+                "teaching",
+                "elevator",
+                "stairwell"
+              ]
+            },
+            "slot": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 120
+            },
+            "broughtBy": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "room"
           ],
           "additionalProperties": false
         },

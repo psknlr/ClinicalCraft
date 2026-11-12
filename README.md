@@ -362,7 +362,16 @@ your hands). World tools let an agent observe, find, walk, operate equipment
 transport the patient, delegate to staff and run declarative skills; every
 device operation with a clinical effect runs the clinical tool through the
 same gate, so a deny rule also stops a device that would give the drug.
-Walking costs simulated time. Clinical mode is unchanged and remains
+Walking costs simulated time. What equipment does is data, and so is
+what it works with: a step that uses the instrument in hand uses that very
+one, in the state it is in (a stapler fires only with a reload in, and that
+reload is spent); devices connect by instance (a drainage unit to the chest
+tube that is in); a camera's picture, on every screen that shows it, and
+every step done under vision read one rule; a training station keeps each
+trainee's run and puts back the instructor's presets for the next. Where the
+patient arrives is recorded from the world, and a hand-over given at a
+place, in person — a recovery hand-over at the recovery bed, to the recovery
+nurse — is refused anywhere else. Clinical mode is unchanged and remains
 available. Design, rules, measurements and an honest status table
 (implemented / tested / validated / production-ready — nothing is
 production-ready, and no live model has been run through these tools yet):

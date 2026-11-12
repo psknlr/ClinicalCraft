@@ -219,7 +219,8 @@ hand, refined once more, pinching the chest piece of its stethoscope pad to pad.
 | `portable: "cart" \| "handheld"` | can be wheeled to another spot (`cart`) or carried (`handheld`); absent = fixed. The built-in carts: `ecg-machine`, `defibrillator`, `crash-cart`, `treatment-cart`, `oxygen-cylinder`, `nebulizer`, `glucometer-station`, `pocus-cart`, `ultrasound-machine`. Every actor knows where the departments keep them (embodied perception: "usually kept in …") until it sees one elsewhere |
 | `reach` | interaction reach in metres from the footprint (≤ 10). Default by interaction kind (core `DEFAULT_REACH`): workstation 1.2, monitor 2, bed 1.5, device 1.2, atlas 1.5, board 2.5, craft 1.2, sink 1, storage 1, none 1 (doors 1.2, staff 2). `oxygen-outlet` declares 2.2 (reached over the bed head) |
 | `interactionPoints: [{ x, z }]` | where an actor stands to use it: local offsets from the footprint centre, rotated with the placement; absent = any free spot within reach with line of sight |
-| `behavior: { initial, states: { id: { name?, available?, when?, supplies?, look? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select, item? }, durationSeconds?, reserve?, release?, roles? } }, derived? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`, `surgical_count`, `operate`) through the session's normal tool path — `operate` with `select: "item"` names a step of the operation (`insufflate`, at the procedure's usual pressure or the operation's `pressure` parameter, or `desufflate`: a tower's gas controls), and a step the operation refuses leaves the device's state as it was; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `select: "item"` with `item` names one case item (a WHO board's `sign_in` → the case's `sign-in`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). `derived: "case-record"` makes a board a view of the case record: in a case that defines every item its operations name (`select: "item"`), the state is the last state whose `when` condition holds (else `initial`) and each operation's only effect is its clinical act, through the session's tool path, so the board, the bedside and an agent make one entry and the board follows the record whoever made it; in a case without those items the device keeps its own state machine and its operations are physical. A state's `supplies` lists the type's capabilities that work in it (omit: all of them; each must be one of the type's capabilities, else an error): the world's capability rule (`WorldRuntime.provides` — bedside providers, an operation's equipment) follows it, so a laparoscopy tower `off` supplies no picture and no gas and powered on supplies its camera, light source and insufflator. A placement may start its device in another state (`Placement.state`, one of its type's states, else an error): a theatre set up before the list. A state's `look` is what the web world draws of the equipment in it — the layers of its model, its screens' picture, its manikin ("A look for each state" below). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
+| `behavior: { initial, states: { id: { name?, available?, when?, supplies?, look? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select, item? }, durationSeconds?, reserve?, release?, roles?, uses?, sets?, link?, unlink?, newRun?, assessed? } }, derived?, runs? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`, `surgical_count`, `operate`) through the session's normal tool path — `operate` with `select: "item"` names a step of the operation (`insufflate`, at the procedure's usual pressure or the operation's `pressure` parameter, or `desufflate`: a tower's gas controls), and a step the operation refuses leaves the device's state as it was; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `select: "item"` with `item` names one case item (a WHO board's `sign_in` → the case's `sign-in`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). `derived: "case-record"` makes a board a view of the case record: in a case that defines every item its operations name (`select: "item"`), the state is the last state whose `when` condition holds (else `initial`) and each operation's only effect is its clinical act, through the session's tool path, so the board, the bedside and an agent make one entry and the board follows the record whoever made it; in a case without those items the device keeps its own state machine and its operations are physical. A state's `supplies` lists the type's capabilities that work in it (omit: all of them; each must be one of the type's capabilities, else an error): the world's capability rule (`WorldRuntime.provides` — bedside providers, an operation's equipment) follows it, so a laparoscopy tower `off` supplies no picture and no gas and powered on supplies its camera, light source and insufflator. A placement may start its device in another state (`Placement.state`, one of its type's states, else an error): a theatre set up before the list. A state's `look` is what the web world draws of the equipment in it — the layers of its model, its screens' picture, its manikin ("A look for each state" below). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
+| `screenNeeds: [WorldPredicate…]` | what the screens' picture needs, read by the world for this device — device predicates only (`state`, `nearbyState`, `linked`, `deviceAtBedside` and `all` / `any` / `not` of them; another kind fails parsing): while one does not hold, its screens are dark whatever the state's look says (`WorldRuntime.screenOf`). A camera's picture needs the tower on, lit and white-balanced and the scope in the chest: the tower's own monitor, the boom displays and a training station's monitor each say so, and the steps done under vision require the same predicates — one view ("Operations that work with other things" below) |
 | `model: { uri, sha256?, scale?, offset?, rot?, license, attribution?, source?, use? }` | optional GLB/glTF model — visual only: the voxel parts stay the fallback, named `screen` parts keep drawing over it, the collider is always the footprint and a model is never interactive by itself; `source` and `use` (cleared / research-only / pending) are its provenance and use status (ASSETS.md) |
 
 **Patients on the move (EMBODIED §8, review G8).** No new field: the world
@@ -252,6 +253,46 @@ state), and `all` / `any` / `not`. A carried handheld item is in two states
 at once — `held` / `equipped` and its own lifecycle state — and `from`,
 `state` and `nearbyState` match either: `from: ["loaded"]` with
 `requires: [{ "state": "held" }]` means loaded and in hand (EMBODIED §8.1).
+Three more read what is in a hand or what is connected:
+`{ actorHolding: id, itemState: id | [id…] }` — the actor holds one in that
+state (a stapler with a reload in); `{ linked: { type, state?, via? } }` —
+this device is connected, by instance, to a device of that type (in that
+state), directly or through one of type `via` (a training station: the chest
+tube in its chest, and through it the drainage unit on that tube); and
+`nearbyState`'s `linked: { type, state? }` — the device nearby is connected
+to one of that type (a drainage unit on water seal, connected to a chest tube
+that is in). A refusal names what is missing: the item's state and the one
+needed, the device not connected, the first alternative of an `any` (the rule
+before its exception), the first failing part of an `all`, the device nearby
+in a state a `not` excludes.
+
+**Operations that work with other things.** An operation may change more than
+its own device, each committed with it in the same action:
+
+| field | |
+|---|---|
+| `uses: [{ item, from?, to?, link? }…]` | the item in the acting actor's hands it works with — of the alternatives in order, the first they hold in one of its `from` states (omitted: any). That very instrument moves to `to` (omitted: unchanged): a stapler fired at a training station is that stapler fired, its reload spent, exactly as when it is fired at the table. `link`: the item stays connected to the device (a chest tube placed in the station's chest). Refused when the actor holds none of them in such a state, naming the state the one in hand is in |
+| `sets: [{ type, from?, to, within? }…]` | other devices: every in-service device of `type` within `within` m (default 6) — in one of `from`, when given — moves to `to` as a fresh one, its connections undone. A training station's reset puts back what the instructor presets for the next trainee |
+| `link: { type, state?, within? }` | connect this device, by instance, to the nearest in-service device of `type` (in `state`) within `within` m (default `LINK_RANGE`, 2.5): both remember the other (`data.links`), across a hand-over, a put-down and a reload. Refused when there is none |
+| `unlink: type \| true` | disconnect this device from the devices of a type (`true`: from all) |
+| `assessed: [role…]` | the roles the step is assessed for. Taken by another role — which its `requires` may allow, e.g. `{ any: [{ role: [...] }, { nearbyState: { type: console, state: "practice" } }] }` — the result and the run record label it a role substitution, not assessed |
+| `newRun: true` | on a device that keeps a run record: close the run and start the next |
+
+**A run record** (`behavior.runs: true | { with: [type…], within? }`): a device that
+keeps one — a training station — records every completed operation in the run under
+way: the operation, its state before and after, who did it in which role, when (the
+clinical clock), the items it used by instance with what became of them, a role
+substitution; `with` adds the operations on the devices of those types within `within`
+m (default 6) — the count board, the checklist, the drainage unit the drill uses — so
+one trainee's run is one record, in the order it was done. An operation with `newRun`
+closes the run (kept, the last ten) and starts the next with the presets its `sets`
+put back. `WorldRuntime.runsOf(id)` returns the run under way and the closed ones.
+
+**Validation** of the operations above: `checkCatalogs` warns about a `uses`, `sets`,
+`link`, `unlink`, `linked`, `itemState` or `runs.with` naming a type no loaded catalog
+defines or a state that type does not have, a `newRun` on a device without a run record,
+an `assessed` role its `roles` do not allow, and `screenNeeds` on a type that shows
+nothing on a screen; a `screenNeeds` state the type does not have is an error.
 
 **Validation.** `checkFacility`: unknown level ids (buildings, rooms,
 placements, slots, staff, access zones; errors), an entity on another level
@@ -488,8 +529,12 @@ or derived from the case record. Whoever moves a device on — the learner at it
 colleague asked to, an agent through `interact_object`, and so a model-driven member
 of the team or a facilitator later — does it by the same operation under the same
 rules, and the scene follows: the embodied link hands each `entity.state` event to the
-renderer (`WorldApi.setEquipmentState(placementId, state)`), asks again on every
-clinical event (a state derived from the record has no event of its own), and draws
+renderer (`WorldApi.setEquipmentState(placementId, state, screen)`, `screen` being
+`WorldRuntime.screenOf`: the state's picture, dark while what it needs does not hold),
+asks every live placement again on any device's change of state, an item picked up,
+put down or moved and a device taken out of service or back (a picture may need another
+device), and on every clinical event (a state derived from the record has no event of
+its own), and draws
 every such placement as the world has it whenever the scene is drawn anew
 (`syncScene`). A front-end never picks a look of its own; without a world model a
 placement keeps the look of the state it starts in.

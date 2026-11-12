@@ -207,6 +207,21 @@ describe("unsafe paths are never a valid critical view", () => {
     expect(report.procedure?.injuries[0]).toMatchObject({ kind: "bile-duct-injury", recognised: false });
   });
 
+  it("an injury is attributed to the structure injured: `structure` reads the injuries to that structure only", () => {
+    const wrong: ProcedureOp = { op: "retract", port: "B", structure: "gallbladder-infundibulum", direction: ["patient-right", "caudal"], force: "firm" };
+    const base = [...ACCESS, wrong, ...Array.from({ length: 12 }, () => TRIANGLE[0])];
+    const cbd = handle(run(base).p, "common-bile-duct");
+    const { s } = run([...base, { op: "isolate", port: "C", handle: cbd }, { op: "withdraw", port: "C" }, { op: "insert", port: "C", instrument: "scissors" }, { op: "divide", port: "C", handle: cbd }]);
+    const injured = (q: { injury: "bile-duct-injury" | "any"; structure?: string | string[]; recognised?: boolean }) => evaluate(c, s, { procedure: q });
+    expect(injured({ injury: "bile-duct-injury" })).toBe(true);
+    expect(injured({ injury: "bile-duct-injury", structure: "common-bile-duct" })).toBe(true);
+    expect(injured({ injury: "any", structure: ["cystic-duct", "common-bile-duct"] })).toBe(true);
+    // the same injury, read for another structure: not there
+    expect(injured({ injury: "bile-duct-injury", structure: "cystic-duct" })).toBe(false);
+    expect(injured({ injury: "any", structure: ["cystic-duct", "cystic-artery"] })).toBe(false);
+    expect(injured({ injury: "any", structure: "common-bile-duct", recognised: false })).toBe(true);
+  });
+
   it("clipping without a safety pause is unsafe even on the right structure", () => {
     const { p } = dissected();
     const cd = handle(p, "cystic-duct");

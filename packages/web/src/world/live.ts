@@ -5,7 +5,9 @@
  *
  * The state is the world model's (`WorldRuntime.stateOf`): whoever changed it — a learner at the device, a
  * colleague, an agent — the scene follows through `WorldApi.setEquipmentState`, and nothing here decides
- * anything. Without a world model a placement keeps the look of the state it starts in.
+ * anything. So is the picture on its screens (`WorldRuntime.screenOf`): a camera's picture is dark while what it
+ * needs (`screenNeeds`: the tower lit, the scope in) does not hold. Without a world model a placement keeps the
+ * look of the state it starts in.
  */
 import { MeshBasicMaterial, type Mesh, type Object3D, type Texture } from "three";
 import { lookOf, sameFigure, type DrawnManikin, type EquipmentType, type ResolvedLook } from "@clinicalcraft/core";
@@ -31,7 +33,7 @@ export type ScreenPainter = (kind: ScreenKind, w: number, h: number, seed: strin
 
 export interface LivePlacement {
   id: string;
-  type: Pick<EquipmentType, "behavior" | "screen" | "manikin">;
+  type: Pick<EquipmentType, "behavior" | "screen" | "manikin" | "screenNeeds">;
   /** The placement's origin in the world (its level's floor + its own y) and its turn (degrees). */
   at: { x: number; y: number; z: number; rot: number };
   /** Where what is drawn of it goes: its level's group, or a portable placement's own. */
@@ -100,11 +102,14 @@ export function showScreen(screen: LiveScreen, kind: ScreenKind, paint: ScreenPa
 
 /**
  * Draw a live placement as it is in `state`: the model's layers, the screens' picture, the manikin (rebuilt
- * when the figure itself differs). Returns the textures it replaced — the caller owns and disposes them.
+ * when the figure itself differs). `screen`: what the world says the screens show now (`WorldRuntime.screenOf`: the
+ * state's picture, dark while what it needs does not hold) — omitted, the state's look. Returns the textures it
+ * replaced — the caller owns and disposes them.
  */
-export function applyLook(rec: LivePlacement, state: string | null, paint: ScreenPainter = createScreenTexture): Texture[] {
+export function applyLook(rec: LivePlacement, state: string | null, paint: ScreenPainter = createScreenTexture, screen?: string): Texture[] {
   rec.state = state;
-  rec.look = lookOf(rec.type, state);
+  const look = lookOf(rec.type, state);
+  rec.look = screen === undefined ? look : { ...look, screen: screen as ResolvedLook["screen"] };
   if (rec.model) showLayers(rec.model, rec.look.layers);
   const replaced: Texture[] = [];
   for (const s of rec.screens) {

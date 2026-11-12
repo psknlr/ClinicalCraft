@@ -10,6 +10,7 @@ import {
   LocalizedListSchema,
   LocalizedTextSchema,
   RoomKindSchema,
+  StaffPositionSchema,
   VitalKeySchema,
   VitalsSchema,
 } from "./common.js";
@@ -122,6 +123,12 @@ export const PatientSchema = z
      * VA-ECMO" / "气管插管镇静中"). A clause or a short sentence; learner-facing, so no diagnosis spoiler.
      */
     nonVerbalReason: LocalizedTextSchema.optional(),
+    /**
+     * Why, when it depends on the patient's state: the first entry whose `when` holds names the reason ("under
+     * general anaesthesia" until the anaesthetic is reversed, then "awake, but the tracheal tube is still in");
+     * none holding: `nonVerbalReason`. Each state the patient goes through is said as it is.
+     */
+    nonVerbalReasons: z.array(z.object({ when: ConditionSchema, reason: LocalizedTextSchema }).strict()).max(12).optional(),
   })
   .strict();
 export type Patient = z.infer<typeof PatientSchema>;
@@ -534,6 +541,25 @@ export const InterventionSchema = z
      * transfer that waits for something else is the location of the phase it leads to.
      */
     destination: DestinationSchema.optional(),
+    /**
+     * Where the patient must be for it (in-world mode): a recovery-room hand-over is given with the patient at a
+     * recovery bay (`{ roomKind: "recovery" }`), never in the theatre. The world refuses it elsewhere and says how to
+     * get there (take the patient: `transport_patient`); the record keeps where it was given (`place`). Text mode
+     * has no places: not checked.
+     */
+    at: DestinationSchema.optional(),
+    /**
+     * Who takes the patient over in person (in-world mode): a member of staff holding one of these positions at
+     * the patient (`["recovery-nurse"]`). The world refuses it while none is there; the record keeps who it was
+     * (`receivedBy`). Text mode: not checked.
+     */
+    receivers: z.array(StaffPositionSchema).min(1).optional(),
+    /**
+     * A hand-over (an advance report, the in-person hand-over at the bed): its record keeps what the record held when
+     * it was given — the airway, the vitals, the drugs, open holds, whether the patient can speak, the operation and
+     * the count (`InterventionRecord.handover`) — never prose made up for it.
+     */
+    handover: z.boolean().optional(),
     /** Oxygen delivery device (kind `oxygen`): what goes on the patient's face (a mask or nasal cannulae). */
     device: z.enum(["nasal-cannula", "high-flow-nasal-cannula", "simple-mask", "non-rebreather-mask", "venturi-mask", "nebuliser-mask"]).optional(),
     /** Drives approval: moderate/high risk actions require confirmation under the default policy. */

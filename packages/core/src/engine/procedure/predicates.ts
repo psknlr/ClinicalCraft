@@ -35,7 +35,8 @@ export function evaluateProcedure(def: ProcedureDefinition | undefined, s: Proce
     return p.valid ? valid : pauses.length > 0 && !valid;
   }
   if ("injury" in p) {
-    const hits = s.injuries.filter((i) => p.injury === "any" || i.kind === p.injury);
+    const to = p.structure == null ? null : Array.isArray(p.structure) ? p.structure : [p.structure];
+    const hits = s.injuries.filter((i) => (p.injury === "any" || i.kind === p.injury) && (to === null || to.includes(i.structure)));
     if (p.recognised == null) return hits.length > 0;
     return hits.some((i) => i.recognised === p.recognised);
   }

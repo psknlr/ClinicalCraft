@@ -227,6 +227,8 @@ export interface SemanticEntity {
   rot: number;
   /** Rotated footprint (w along X, d along Z, h up) — equipment, beds, patients, staff. */
   footprint?: { w: number; d: number; h: number };
+  /** A member of staff's position (the facility's `position`: a recovery nurse, an anaesthetist), when it names one. */
+  staffPosition?: string;
   capabilities: string[];
   interaction: InteractionKind;
   /** Equipment that can be moved (`cart`: wheeled to a new spot; `handheld`: carried by an actor). */
@@ -292,6 +294,44 @@ export interface SeenPlace {
 }
 
 export const MAX_HELD = 2;
+
+/** An item an operation worked with (`uses`): which instance, its type, and its state before and after. */
+export interface RunItemUse {
+  id: EntityId;
+  type: string;
+  from: string | null;
+  to: string | null;
+}
+
+/** One completed operation of a device that keeps a run record (`DeviceBehavior.runs`). */
+export interface RunEntry {
+  /** The operation, and the device's state before and after it. */
+  op: string;
+  /** Another device of the run (`runs.with`: the count board, the drainage unit), when the operation was on it. */
+  device?: EntityId;
+  from: string | null;
+  to: string | null;
+  /** Who did it, in which role; `at`: the clinical clock (simulated minutes). */
+  actor: ActorId;
+  role: ActorRole;
+  at: number;
+  /** The items it worked with (`uses`), each by instance. */
+  used?: RunItemUse[];
+  /** Done by a role the step is not assessed for (`assessed`): a role substitution, not assessed. */
+  substitution?: { assessed: ActorRole[] };
+}
+
+/** A run of a device that keeps a run record: one trainee's, from a reset to the next. */
+export interface RunRecord {
+  /** 1, 2, …: the device's runs in order. */
+  n: number;
+  startedAt: number;
+  /** What the reset that started it put back (`sets`): each device and the state it was given. */
+  presets?: { id: EntityId; type: string; state: string }[];
+  entries: RunEntry[];
+  /** Closed by the next run's start (`newRun`). */
+  closedAt?: number;
+}
 
 /** Stored (physical) state of one entity. Derived states (mirroring clinical facts) are never stored (EMBODIED R6). */
 export interface EntityRuntimeState {
@@ -750,6 +790,16 @@ export type SpatialRequirement =
    */
   /** `beds`: a bed-kind placement providing the capabilities counts as well (an operating table). */
   | { kind: "patient-at-provider"; capabilities: string[]; beds?: boolean }
+  /**
+   * The patient is in a place of the kind named (an intervention's `at`: a recovery bay, `{ roomKind: "recovery" }`):
+   * no walk of the actor fixes it — the patient is taken there (`transport_patient`).
+   */
+  | { kind: "patient-in"; destination: CoreDestination }
+  /**
+   * A member of staff holding one of `positions` within `range` m of the patient (an intervention's `receivers`): who
+   * takes the patient over in person. Satisfied by that member of staff (`satisfiedBy`).
+   */
+  | { kind: "staff-at-patient"; positions: string[]; range: number }
   | { kind: "any-of"; options: SpatialRequirement[] }
   | { kind: "all-of"; options: SpatialRequirement[] };
 
@@ -1113,6 +1163,14 @@ export interface WorldRuntime {
    * `look`): front-ends ask here, whoever changed the state.
    */
   stateOf(id: EntityId): string | null;
+  /**
+   * What a device's screens show now (`SCREEN_KINDS`): its state's look, else its type's screen — dark ("none") while
+   * what the picture needs (`screenNeeds`) does not hold, or out of service. THE screen of a device: front-ends draw
+   * it, and every display of one picture reads the same predicates as the steps done under vision.
+   */
+  screenOf(id: EntityId): string;
+  /** A device's run record (`DeviceBehavior.runs`): the run under way and the runs closed before it, oldest first. */
+  runsOf(id: EntityId): { current: RunRecord | null; closed: RunRecord[] };
 
   /* the patient's body (EMBODIED §8, patient transport) */
   /** Where the patient is now (bed space or provider, posture, support, trolley, home); null without a patient. */

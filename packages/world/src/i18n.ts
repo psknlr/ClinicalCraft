@@ -124,6 +124,35 @@ export const OPERATION_NAMES: Record<string, Pair> = {
   reposition_patient: { "zh-CN": "请患者换个体位", en: "Ask the patient to change position" },
 };
 
+/** Staff positions in words (an intervention's `receivers`; core `StaffPositionSchema`). */
+export const POSITION_NAMES: Record<string, Pair> = {
+  surgeon: { "zh-CN": "主刀医生", en: "surgeon" },
+  "assistant-surgeon": { "zh-CN": "助手医生", en: "assistant surgeon" },
+  anaesthetist: { "zh-CN": "麻醉医生", en: "anaesthetist" },
+  "scrub-nurse": { "zh-CN": "洗手护士", en: "scrub nurse" },
+  "circulating-nurse": { "zh-CN": "巡回护士", en: "circulating nurse" },
+  "ward-nurse": { "zh-CN": "病房护士", en: "ward nurse" },
+  "recovery-nurse": { "zh-CN": "恢复室护士", en: "recovery nurse" },
+  "theatre-coordinator": { "zh-CN": "手术室协调员", en: "theatre coordinator" },
+  physician: { "zh-CN": "内科医生", en: "physician" },
+  educator: { "zh-CN": "带教老师", en: "educator" },
+  radiologist: { "zh-CN": "放射科医生", en: "radiologist" },
+  radiographer: { "zh-CN": "放射技师", en: "radiographer" },
+  pathologist: { "zh-CN": "病理科医生", en: "pathologist" },
+  "lab-technician": { "zh-CN": "检验技师", en: "laboratory technician" },
+  "transfusion-scientist": { "zh-CN": "输血科技师", en: "transfusion scientist" },
+  pharmacist: { "zh-CN": "药师", en: "pharmacist" },
+  receptionist: { "zh-CN": "前台接待", en: "receptionist" },
+  porter: { "zh-CN": "护工", en: "porter" },
+  paramedic: { "zh-CN": "急救员", en: "paramedic" },
+};
+
+/** A staff position in words ("recovery nurse"); the id itself when unknown. */
+export function positionName(position: string, locale: string): string {
+  const pair = POSITION_NAMES[position];
+  return pair ? t(pair, locale) : position;
+}
+
 /** Room kinds in words (a destination's `roomKind`). */
 export const ROOM_KIND_NAMES: Record<string, Pair> = {
   entrance: { "zh-CN": "入口", en: "entrance" },
@@ -136,6 +165,7 @@ export const ROOM_KIND_NAMES: Record<string, Pair> = {
   ward: { "zh-CN": "病房", en: "ward" },
   icu: { "zh-CN": "重症监护室", en: "intensive care unit" },
   "operating-room": { "zh-CN": "手术室", en: "operating theatre" },
+  recovery: { "zh-CN": "麻醉后恢复室", en: "recovery room (PACU)" },
   imaging: { "zh-CN": "影像室", en: "imaging room" },
   laboratory: { "zh-CN": "检验科", en: "laboratory" },
   pathology: { "zh-CN": "病理科", en: "pathology" },
@@ -211,6 +241,21 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "pre.recipientHandsFull": { "zh-CN": "{holder}两手都占着（最多拿 {max} 件）。", en: "{holder}'s hands are full (at most {max} items in hand)." },
   "pre.nearbyState": { "zh-CN": "{operation}需要附近的「{device}」处于{states}状态（现在是{state}）。", en: '{operation} needs the nearby "{device}" to be {states} (it is {state}).' },
   "pre.nearbyStateNone": { "zh-CN": "{operation}需要 {distance} 米内有一台「{device}」，附近没有。", en: '{operation} needs a "{device}" within {distance} m; there is none nearby.' },
+  "cue.screenDark": { "zh-CN": "黑屏——没有画面", en: "dark — no picture" },
+  "cue.screenShows": { "zh-CN": "显示{picture}", en: "showing {picture}" },
+  "screenKind.thoracoscopy": { "zh-CN": "胸腔镜的胸腔画面", en: "the thoracoscope's picture of the chest" },
+  "screenKind.xray": { "zh-CN": "X 线片", en: "an X-ray" },
+  "screenKind.ct": { "zh-CN": "CT 图像", en: "a CT" },
+  "screenKind.pacs": { "zh-CN": "影像归档（PACS）图像", en: "PACS images" },
+  "screenKind.lab": { "zh-CN": "检验结果", en: "laboratory results" },
+  "screenKind.text": { "zh-CN": "文字信息", en: "text" },
+  "screenKind.logo": { "zh-CN": "标志画面", en: "a logo" },
+  "pre.nearbyStateNot": { "zh-CN": "{operation}要求附近的「{device}」不处于{state}状态，而它现在正是。", en: '{operation} needs the nearby "{device}" not to be {state} — it is.' },
+  "pre.itemState": { "zh-CN": "{operation}需要手里的「{item}」处于{states}状态（你手里的这件现在是{state}）。", en: '{operation} needs the "{item}" in your hands to be {states} (the one you hold is {state}).' },
+  "pre.linkNone": { "zh-CN": "{operation}需要 {distance} 米内有一台{states}的「{device}」可以连接，附近没有。", en: '{operation} needs a "{device}" ({states}) within {distance} m to connect to; there is none nearby.' },
+  "pre.linked": { "zh-CN": "{operation}需要「{target}」连接着一台{states}的「{device}」——现在没有连上。", en: '{operation} needs {target} to be connected to a "{device}" that is {states} — it is not.' },
+  "pre.linkedVia": { "zh-CN": "{operation}需要「{target}」里的「{via}」连接着一台{states}的「{device}」——现在没有连上。", en: '{operation} needs the "{via}" in {target} to be connected to a "{device}" that is {states} — it is not.' },
+  "ok.substitution": { "zh-CN": "（由{role}代为完成——这一步考核的是{assessed}：记为角色替代，不计入考核。）", en: "(Done by the {role} in place of the {assessed} this step is assessed for: recorded as a role substitution, not assessed.)" },
   "pre.noPatient": { "zh-CN": "这里没有患者。", en: "There is no patient here." },
   "pre.noItem": { "zh-CN": "本病例在「{target}」没有可做的项目。", en: 'There is nothing to do with "{target}" in this case.' },
   "pre.cannotProvide": { "zh-CN": "「{target}」不能提供「{item}」（需要：{caps}）。", en: '"{target}" cannot provide "{item}" (needs: {caps}).' },
@@ -310,6 +355,10 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
   "spatial.monitor-not-in-view": { "zh-CN": "看不到「{monitor}」的屏幕：需在它所在的房间内、{range} 米内且视线无遮挡。", en: 'The screen of "{monitor}" is out of view: be in its room, within {range} m, with a clear view.' },
   "spatial.clinical": { "zh-CN": "先要完成「{intervention}」。", en: 'This needs "{intervention}" first.' },
   "spatial.kit-at-home": { "zh-CN": "床旁需要{caps}，它在{place}且无法推来：请把{patient}送回去。", en: "Needs {caps} at the bedside; it stands in {place} and cannot be brought: take {patient} back there." },
+  "spatial.patient-elsewhere": { "zh-CN": "这一步要在{place}做——{patient}现在在{here}：先把患者送过去。", en: "This is done with {patient} in a {place} — they are in {here}: take them there first." },
+  "spatial.no-such-place": { "zh-CN": "这一步要在{place}做，这里没有。", en: "This is done in a {place}, and there is none here." },
+  "spatial.no-receiver": { "zh-CN": "这一步要当面交给在{patient}身边的{positions}——现在一个也不在。", en: "This is handed over in person to a {positions} at {patient}'s side — none is there now." },
+  "hint.receiver": { "zh-CN": "请{receiver}到{patient}身边", en: "Ask {receiver} to come to {patient}" },
   "spatial.patient-not-at-provider": { "zh-CN": "这项检查需要{patient}在{caps}旁（「{provider}」）：请把患者送过去。", en: 'This needs {patient} at {caps} ("{provider}"): take the patient there.' },
   "spatial.clinical.iv-access": { "zh-CN": "还没有静脉通路：请先建立静脉通路（「{intervention}」），再给这个药。", en: 'There is no IV access yet: place a cannula first ("{intervention}"), then give this.' },
   "spatial.clinical.sample": { "zh-CN": "还没有采集标本：请到{patient}身边采集，或先建立静脉通路（「{intervention}」，同时采血）。", en: 'No sample has been taken yet: take it at {patient}\'s side, or place IV access first ("{intervention}" draws the bloods).' },
@@ -413,6 +462,9 @@ export function metres(value: number): string {
 }
 
 /** A list in the reader's language ("a, b" / "a、b"). */
-export function listText(items: readonly string[], locale: string): string {
-  return items.join(locale.toLowerCase().startsWith("zh") ? "、" : ", ");
+export function listText(items: readonly string[], locale: string, conj?: "or"): string {
+  const zh = locale.toLowerCase().startsWith("zh");
+  if (conj !== "or" || items.length < 2) return items.join(zh ? "、" : ", ");
+  const head = items.slice(0, -1).join(zh ? "、" : ", ");
+  return zh ? `${head}或${items.at(-1)}` : `${head} or ${items.at(-1)}`;
 }

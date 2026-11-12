@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility } from "./anaesthesia.js";
 import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "./alarm.js";
-import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
+import { CountStageSchema, IdSchema, RoomKindSchema, type CountStage, type CountStatus, type RoomKind, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
 import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
 
@@ -76,7 +76,21 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("set-phase"), phase: IdSchema, ...base }).strict(),
   z.object({ type: z.literal("hint"), ...base }).strict(),
   z.object({ type: z.literal("answer"), decisionId: IdSchema, optionIds: z.array(IdSchema).min(1), ...base }).strict(),
-  z.object({ type: z.literal("intervene"), interventionId: IdSchema, ...base }).strict(),
+  /**
+   * `place` (where the patient was: the facility room, its kind, the bed space) and `receivedBy` (the member of staff
+   * who took the patient over in person) are what the world confirmed in in-world mode — the session fills them for
+   * an intervention given at a place (`Intervention.at`) or received by a position (`Intervention.receivers`); a
+   * caller never supplies them. Absent in text mode.
+   */
+  z
+    .object({
+      type: z.literal("intervene"),
+      interventionId: IdSchema,
+      place: z.object({ room: z.string().trim().min(1).max(120), kind: RoomKindSchema.optional(), slot: z.string().trim().min(1).max(120).optional() }).strict().optional(),
+      receivedBy: HolderSchema.optional(),
+      ...base,
+    })
+    .strict(),
   /**
    * Let simulated time pass. `reason` (optional, informational — the engine treats every reason alike):
    * `wait` (the learner or an agent waited), `travel` (an embodied walk, docs/EMBODIED.md R8),
@@ -117,6 +131,22 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("alarm-response"), alarm: AlarmResponseOpSchema, ...base }).strict(),
   /** The surgical count's record (`CountOpSchema`; cases whose team keeps a count). */
   z.object({ type: z.literal("count"), count: CountOpSchema, ...base }).strict(),
+  /**
+   * The patient arrived in another room (docs/TEAM.md §5): the world moved them there — wheeled by someone
+   * (`broughtBy`: their staff id, or the learner's avatar) or transferred by the team (absent). Recorded by the
+   * session from the world in in-world mode, never entered by hand; `room` is the facility room, `kind` its kind,
+   * `slot` the bed space.
+   */
+  z
+    .object({
+      type: z.literal("arrival"),
+      room: z.string().trim().min(1).max(120),
+      kind: RoomKindSchema.optional(),
+      slot: z.string().trim().min(1).max(120).optional(),
+      broughtBy: HolderSchema.optional(),
+      ...base,
+    })
+    .strict(),
   z.object({ type: z.literal("finish"), ...base }).strict(),
 ]);
 export type ClinicalAction = z.infer<typeof ClinicalActionSchema>;
@@ -154,6 +184,51 @@ export interface InterventionRecord {
    * its effects and flags did not apply and it used none of `maxDoses`.
    */
   invalid?: true;
+  /** Where the patient was when it was given (in-world mode: what the world confirmed; see the `intervene` action). */
+  place?: PatientPlaceRecord;
+  /** The member of staff who took the patient over in person (`Intervention.receivers`; in-world mode). */
+  receivedBy?: string;
+  /** A hand-over (`Intervention.handover`): what the record held when it was given — never prose made up for it. */
+  handover?: HandoverContent;
+}
+
+/** Where the patient is: the facility room, its kind and the bed space (in-world mode). */
+export interface PatientPlaceRecord {
+  room: string;
+  kind?: RoomKind;
+  slot?: string;
+}
+
+/** The patient arrived in another room (the `arrival` action): where, who brought them, when. */
+export interface ArrivalRecord extends PatientPlaceRecord {
+  /** Who wheeled them (a staff id, or the learner's avatar); absent: a transfer by the team. */
+  broughtBy?: string;
+  at: number;
+  seq: number;
+}
+
+/**
+ * The content of a hand-over (docs/TEAM.md §5), taken from the record as it stands when it is given (`handoverFromRecord`):
+ * the airway interventions given, the vitals then, the drugs given and when, the holds still open, whether the
+ * patient can speak, the operation as it ended (its injuries, recognised or not) and the count's status.
+ */
+export interface HandoverContent {
+  airway: string[];
+  ventilation: Record<string, number>;
+  haemodynamics: Record<string, number>;
+  drugs: { id: string; at: number }[];
+  unresolved: string[];
+  /** The patient can speak now (`patient.nonVerbalWhen` does not hold). */
+  speaks: boolean;
+  /** Cases with an operation: how it ended and what happened in it. */
+  procedure?: {
+    closed: boolean;
+    specimen: string;
+    bailouts: string[];
+    injuries: { kind: string; structure: string; recognised: boolean }[];
+  };
+  /** Cases whose team keeps a count: its status. */
+  count?: CountStatus;
 }
 
 /** An explicit hold on an intervention (see the `hold` action): placed, and later released after a reassessment. */
@@ -256,6 +331,8 @@ export interface SessionState {
   anaesthesia?: AnaesthesiaResponsibility;
   /** Critical alarms and the responses to them (docs/TEAM.md §5), one episode per alarm. */
   alarms?: AlarmEpisode[];
+  /** Where the patient has been taken, in order (`arrival`; in-world mode): absent until the first move. */
+  arrivals?: ArrivalRecord[];
   /**
    * What the operation's equipment supplies, recorded apart from the operation (`procedure-supply`): a tower failing
    * before the Time Out is an equipment fault, never the start of the operation. The operation takes it over when it
@@ -322,6 +399,8 @@ export type DomainEvent =
   /** A study op recorded: the order, acquisition or report it concerns (`id`). */
   | { type: "study.recorded"; op: StudyOp["op"]; code: string; id: string; reason?: string }
   | { type: "anaesthesia.recorded"; op: AnaesthesiaOp["op"]; responsible: string; relief?: string }
+  /** The patient arrived in another room (`arrival`). */
+  | { type: "patient.arrived"; room: string; kind?: RoomKind; slot?: string; broughtBy?: string }
   /** The operation's equipment supply changed (`deflated`: the pneumoperitoneum was lost with the gas). */
   | { type: "procedure.supply"; image: boolean; gas: boolean; source?: string; deflated?: true }
   /** An alarm response step (`id`: the episode). */

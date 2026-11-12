@@ -507,6 +507,7 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | `intervene`，kind 为 `consult` / `disposition` | 任意位置（电话 / 寻呼） | |
 | 以病例记录为准的核查板（`derived: "case-record"`）也能完成的核查步骤，用 `intervene` 完成时 | 还要满足该核查板操作的团队前提（除站位和身份以外声明的条件——WHO 核查板的 Time Out 需要清点板上已完成切皮前清点）；不满足时拒绝为 `SPATIAL_REQUIREMENT_UNMET`，原因 `checklist-prerequisite`，附核查板的说明和去该设备的路线 | 同一个核查动作，两种做法：核查板和 `intervene` 以同一规则记录同一步骤 |
 | `intervene`，其他 kind（`medication`、`fluid`、`oxygen`、`procedure`、`positioning`、`airway`、`monitoring`、`other`） | 其所需能力——`requires` 为空时取该 kind 的默认值（`KIND_DEFAULT_CAPABILITIES`：oxygen → `oxygen`，monitoring → `cardiac-monitor`，fluid → `iv-access`，airway → `airway`）——去掉随身器械：不剩任何能力 → `at-patient` 1.5 m；否则对这些能力要求 `bedside-provider`，但**配送类**能力（`DELIVERED_CAPABILITIES`：`medications`、`blood-bank`）只需场馆某处有在用的提供者。`iv-access` 是**患者状态**：`all-of` [`clinical` {intervened: 病例的建立静脉通路操作}，…]——若病例标注了 `extensions.embodied.ivAccessInSitu` 或没有此类操作则跳过；建立静脉通路操作本身需要穿刺包（抢救车或治疗车）在床旁 | 器械必须在床边（在花园里就得带过去）；静脉用药需要患者身上有留置针，而不是床边有输液架 |
+| 在指定地点进行（`at`：恢复室交接，`{ roomKind: "recovery" }`）或须当面交接（`receivers`：`["recovery-nurse"]`）的 `intervene`——不论其类型 | `all-of` [`patient-in` 该地点（患者所在床位接受该 setting、所在房间属于该类型，或所在设备具备该能力）、`staff-at-patient`（担任其中某一岗位的职员在患者 3 米内且有视线）、该类型本身的要求]。拒绝理由为 `patient-elsewhere`（提示：走到患者身边，再用 `transport_patient` 送到第一个这样的床位）、`no-such-place`（本场馆没有）或 `no-receiver`（提示：最近的这类职员）。记录保留交接地点与接收者（`intervene.place`、`receivedBy`：由会话根据放行的那次检查填写——智能体的工具与学员自己的操作都一样；调用方从不提供） | 恢复室交接在恢复室床旁当面交给恢复室护士——患者还在手术床上时绝不能被接收 |
 | `operate`（病例手术的一个步骤，PROCEDURE.md） | `all-of` [`patient-at-provider` `surgery` 且 `beds`（患者在手术床上）、`at-patient` 1.5 米] | 术者在手术床旁：手术绝不能在另一个房间或楼层进行——与所有受门控的动作一样，审批等待之后、引擎提交之前会再次检查 |
 | `observe_field`（腹腔镜屏幕） | `near-patient` 3 米 + 视线可及 | 术野要在手术室里、手术床旁才能看到 |
 | `consult`、`delegate_task`、认知类工具（`answer_decision`、`update_workup`、`wait`、`set_phase`、`finish_case`、`list_options`、`case_status`） | 任意位置 | 电话 / 寻呼；思考；被委派的职员会亲自走过去 |
@@ -750,6 +751,16 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   前置条件——不考虑位置（那由 `inReach` 说明）；`inspect` 列出每个操作及其
   `available` 和原因（包括空间原因）。
 * 职员的移动是确定性的路径跟随（不会每帧调用大模型）。
+* **作用于其他物品的操作**（FACILITIES.md）：`uses`——操作所用的、行动者手里的物品，按实例计（依次取第一个处于其 `from`
+  状态之一的备选物品；就是那一件进入 `to` 状态：在训练台上击发的切割缝合器就是那把缝合器被击发、钉仓用掉），手里没有
+  处于该状态的物品时拒绝，并说明手里那件现在的状态；`actorHolding` 的 `itemState` 读的是同一件事；`link` / `unlink`
+  按实例连接或断开两台设备（两边都记在 `data.links` 里，递交、放下和重新载入后都保留），`linked` / `nearbyState.linked`
+  读取这一连接（处于水封、连在已置入胸管上的引流装置）；`sets` 把附近的其他设备设为某个状态，视为全新的一台（训练台的
+  复位：教师预设）；`assessed` 指明这一步考核的角色——在 `requires` 允许的情况下（练习模式）由其他角色完成时，结果和
+  训练记录都标为角色替代。带 `runs` 的设备保留**训练记录**（每个完成的操作：前后状态、谁以什么角色、何时、用了哪些物品
+  及其结果、是否角色替代——加上 `runs.with` 时，还包括附近演练设备上的操作），`newRun` 结束一轮记录并开始下一轮
+  （`WorldRuntime.runsOf`）。拒绝时说明缺什么：`any` 的第一个备选（先说规则，再说例外）、`all` 第一个不满足的部分、
+  `not` 所排除的那台设备。
 
 **显示病历记录的看板**（`derived: "case-record"`，例如 WHO 核查板、手术清点板、RF 检测棒）：在病例记录其操作所指内容的
 情况下——核查步骤（`clinical: {tool: "intervene", select: "item"}`），或手术清点（`clinical: {tool: "surgical_count",
@@ -767,7 +778,10 @@ select: "item", item: <步骤>}`，步骤为 `baseline`、`cavity`、`closing`�
 进入胸腔期间立在观察孔里。外观不做任何决定：决定的是状态（`WorldRuntime.stateOf`），网页世界跟随它——每个
 `entity.state` 事件；每个临床事件之后重新询问一次（由病历记录派生的状态没有自己的事件）；场景重新绘制时逐一重画每个
 这样的摆放。无论谁推进设备——学员、同事、经 `interact_object` 的智能体，乃至以后由模型驱动的团队成员或带教老师——
-都通过同一个操作、遵守同样的规则（权限、执业范围、空间闸门），场景显示的也就相同；前端从不自行挑选外观。
+都通过同一个操作、遵守同样的规则（权限、执业范围、空间闸门），场景显示的也就相同；前端从不自行挑选外观。**同一个视野：**
+画面依赖某些条件的屏幕（`screenNeeds`：镜头画面——摄像系统开机、光源打开、已白平衡，胸腔镜在胸腔内）在条件不成立时
+一律黑屏，不论其状态外观怎么写（`WorldRuntime.screenOf`，设备的唯一屏幕规则）；这一画面的每块显示屏与直视下进行的每一步
+读取相同的谓词，网页世界照此绘制，看着这块屏幕的人也如此感知（`cues.screen`：“黑屏——没有画面”或它显示的内容）。
 
 ### 8.2 权限
 
@@ -830,6 +844,13 @@ CASE_AUTHORING）会覆盖 kind 的默认值（用药、补液、吸氧、监护
 |---|---|---|---|
 | **转移**：带有作者标注 `destination` 的处置（转科：STEMI 的 `transfer-cath-lab` → `{capability: "fluoroscopy"}`，PE 的 `transfer-hdu` 与哮喘的 `admit-picu` → `{setting: "icu"}`）或带 `location` 的阶段（STEMI 的 `cath` / `post-pci`、卒中的 `angio` → fluoroscopy；严重过敏反应的 `ed-resus` / `ed` → `{setting: "emergency"}`），由会话在引擎报告 `intervention.applied` / `phase.changed` 时执行（若有转运正在进行，则等其结束） | 患者被送到本场馆中解析出的目的地：setting 或房间类型 → 该类第一个患者床位（已经在那里也算）；能力 → 提供该能力的设备处的患者位置（设备旁的床——导管室中 C 形臂旁的检查床——，CT、MRI、PET-CT 和 X 线机则用其自带的检查床，否则为其够及范围内的空闲位置）；患者所躺的平车随行；该处成为其 `home` | 无（计入临床操作自身的耗时） | 团队（`patient.moved`，`by: null`，附团队的无障碍路线——床边的推车和人被挪开，`NavRequest.ignoreObstacles`——供记录和浏览器使用）；本场馆没有这样的地方：患者留在原处，结果中会说明（"This hospital has no ICU/HDU bed: … stays in …"） |
 | **`transport_patient {destination}`**（学员 / 模型的工具、`/transport`、对患者执行 `interact_object`，或 `delegate_task porter\|nurse transport_patient`） | 行动者在患者身边，推着患者所躺的床（或陪能走的患者步行——孩子去呼气峰流速测定站）到某个提供者（`eq:<id>`）、床位或房间，或 `home`；只走无障碍路线（床要乘电梯）；期间患者和平车都处于占用状态；行走被打断时，患者留在平车停下的地方 | 行走时间，只计一次（`travel`） | 推车的人（`patient.moved`，`by` 为该行动者） |
+
+**到达会被记录，患者会有人接。** 世界把患者移到另一个房间时——转移或转运——会话把到达记入病历（`arrival`：房间、
+房间类型、床位、谁推来的；没有则为团队；不能手工录入，手工录入会被拒绝），各有各的时间。随后该在床旁的人会来到床旁：
+仍处于麻醉管理下的患者（`patient.nonVerbalWhen` 成立——带着气管导管：负责的人不离开被麻醉的患者，§8.5）由其负责麻醉医生
+陪同；在须当面交接的地方（处置的 `at` 与 `receivers`：恢复室及其恢复室护士），由该房间里担任该岗位、离得最近的职员接患者。
+移动患者的那次调用或世界动作在他们到达后才返回。记录型看板留在它的房间：7 号手术间的核查板在患者还在时完成了 Sign Out，
+患者到恢复室后它就不再显示这位患者的任何内容。
 
 **转运途中存档。** 行走的位置在行走结束时才提交，所以在有人推着患者走的时候拍下的快照，两人都还在出发的位置，
 另外记下这次行程本身（`WorldStateSnapshot.journey`：推车的人、患者、动作 id、`transport_patient` 参数）。
@@ -1531,6 +1552,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 可见性（`VisibilityModel`） | yes（W1；门从不遮挡自己） | 单元测试：墙、窗、门、视野、部分遮挡、被挪动的推车、从交互点看关闭的门、楼层之间无视线 | 感知与空间场景；任何观察中都没有病例事实（10 个病例 × 2 种语言） | no——性能只测到 120 × 100 m 和两层 |
 | 导航（`GridAStarBackend`、`NavGrids`、入口图；目标代价上限 S7；多楼层行走被打断 C11） | yes（W1） | 单元测试：三个场馆中的真实路线、每个交互设备和每扇门、各类失败、门锁、区域、障碍、被挪动的推车、两层测试场馆、评审者构造的 DoS 目标被拒绝或 < 1 s、在楼梯路线的每个点停下的行走 | 已测量（§7）；导航场景 | no——更大的医院未测量；评估过的替代方案（导航网格）未采用（R12）。Perf |
 | 状态存储（`WorldStateStore`：行动者、版本、事件、幂等窗口、规范化快照） | yes（W2） | 单元测试：版本规则（含传感器更新）、动态信息、有界日志、快照一致性与拒绝 | `--continue` 恢复具身会话的位置；演示的轨迹重新生成时逐字节相同 | no——快照格式（`clinicalcraft-world@1`）没有迁移方案；会话记录是本地文件。Rel、Ops |
+| 作用于其他物品的操作与每位学员一份训练记录（2026-11-12 审计这一轮：`uses`、`itemState`、`sets`、`link` / `unlink` / `linked`、`assessed`、`runs` / `newRun`、`screenNeeds` / `screenOf`）；在指定地点当面交接（`at`、`receivers`、`patient-in`、`staff-at-patient`、`intervene.place` / `receivedBy`、`handover`）；病历中的到达记录与患者到达处有人接 | yes | `world/src/station.test.ts`（按实例、按状态使用器械，空的或用过的缝合器，练习模式下的角色替代，同一个视野——断电、光源、退镜——，按实例连接并跨递交与重新载入保留，预设与每位学员一份记录）、`world/src/handover-place.test.ts`（不在该处 / 无接收者 / 由其接收）、core `procedure.test.ts`（按结构归因的损伤）、agent `nonverbal.test.ts`（按状态的原因） | SurgeryCraft 内容包的胸腔镜训练台与 Case 126（其 `tools/check.sh`：审计的七项发现各有一个回归测试，两个发布场景都经由玩家界面和智能体界面）；网页屏幕跟随 `screenOf`（已通过类型检查，本轮未在浏览器中重跑） | no——只有一个内容包使用；演练的预设与恢复室交接都未经临床教师审核 |
 | 设备行为与权限（`behaviors.ts`、`clinical.ts`、`authority.ts`） | yes（W2） | 在内置目录 + 一个测试目录上的单元测试：各类型的操作、谓词、带占用与时长的心电图状态机、跟随引擎的派生监护仪状态、门、水槽、储物柜、手持物品、角色限制 | 交互与恢复场景；STEMI 演示（心电图 prepare / connect / record / reset，监护仪 attach） | no——只编写了两个目录行为（`ecg-machine`、`patient-monitor`）；手持物品（递交、佩戴）与 `nearbyState` 只存在于测试目录和内容包中 |
 | 空间规则（`DefaultSpatialPolicy`、`SpatialChecker`）：唯一的床旁规则、唯一的屏幕规则、生命体征读屏 / 手测 / 查病历、kind 默认值、静脉通路是患者状态、化验在患者身边采样、结果不在设备上读、病历查阅在电子病历终端或床旁进行、药品配送、被占用的设备、`patient-at-provider`、能力显示名称 | yes（W2；评审 G4–G10、G8、C14） | §6 的每一行（成立、每种失败原因、能解决它的提示）；对 10 个病例每个条目的提示性质测试（含转运）；三个医院每个床位的床旁规则；设备操作收敛性扫描（C7）；屏幕规则 ⇔ 空间规则；惰性提示的预算 | `cases verify --all`；对整个病例库的具身示范接诊（40 / 40 达到临床得分）；两个基准智能体均无被接受的违规 | no——只在 10 个内置病例和 3 个场馆上验证；没有临床教师审阅这些规则的记录 |
 | 感知（`observe`、`find`、`inspect`、`roomInfo`、`canSee`；认知等级、下落、近期事件、区域名称、跨楼层可达性） | yes（W2；G13、线索说明 1–2、C16） | 单元测试：认知等级、上限、方位、线索、屏幕规则、不改变版本的记忆、下落及其快照、第二 / 第三人称事件、按名称的出口、楼上 ICU 可达并按路径排序；任何观察中都没有病例事实 | 感知 / 空间场景；在护士站执行 `/delegate staff:ed-nurse record_ecg`（综合医院与教学医院） | no——按 ID 导航去的是真实位置而非“认为的”位置（§14.3）；`find {}` 每次 7–12 ms。Perf |

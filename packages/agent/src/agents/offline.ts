@@ -355,6 +355,7 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":
+    case "arrival":
       return null;
     default: {
       const never: never = action;
@@ -401,6 +402,7 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":
+    case "arrival":
       return { kind: "action", action, narration: null };
     default: {
       const never: never = action;
@@ -496,6 +498,8 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
     case "alarm-response":
     case "procedure-supply":
       return false;
+    case "arrival":
+      return (state.arrivals ?? []).some((x) => x.room === a.room);
     default: {
       const never: never = a;
       return never;

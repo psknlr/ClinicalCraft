@@ -28,7 +28,7 @@
  * footprint and never below `MIN_RANGE`; an operation without
  * `actorWithin` / `patientWithin` must be done within the entity's reach.
  */
-import { COUNT_EFFECT_STEPS, evaluate, monitorAttached, NEARBY_STATE_RANGE, t, type CaseDefinition, type ClinicalEffect, type Condition, type LocalizedText } from "@clinicalcraft/core";
+import { COUNT_EFFECT_STEPS, evaluate, isDevicePredicate, LINK_RANGE, lookOf, monitorAttached, NEARBY_STATE_RANGE, t, type BehaviorOperation, type CaseDefinition, type ClinicalEffect, type Condition, type LocalizedText } from "@clinicalcraft/core";
 import { permits, rolesFor, operationClass } from "./authority.js";
 import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
 import { listText, metres, operationName, roleName, stateName, worldMessage } from "./i18n.js";
@@ -58,6 +58,18 @@ export interface OperationSpec {
   roles?: readonly ActorRole[];
   effect?: BuiltinEffect;
   source: "builtin" | "catalog";
+  /** The item in the actor's hands it works with (catalog `uses`): that instrument's own state moves. */
+  uses?: NonNullable<BehaviorOperation["uses"]>;
+  /** Other devices nearby it also sets (catalog `sets`: a station's presets put back). */
+  sets?: NonNullable<BehaviorOperation["sets"]>;
+  /** Connect this device, by instance, to the nearest device of a type (catalog `link`). */
+  link?: NonNullable<BehaviorOperation["link"]>;
+  /** Disconnect this device from the devices of a type (catalog `unlink`; `true`: all). */
+  unlink?: string | true;
+  /** Close the device's run record and start the next (catalog `newRun`). */
+  newRun?: boolean;
+  /** The roles the step is assessed for (catalog `assessed`): another role's step is a labelled substitution. */
+  assessed?: readonly ActorRole[];
 }
 
 /** The behaviour of one entity. */
@@ -69,6 +81,8 @@ export interface BehaviorSpec {
   /** `monitor-attachment`: the patient's monitor; `case-record`: a board that shows the case record (WHO checklist). */
   derived?: "monitor-attachment" | "case-record";
   operations: OperationSpec[];
+  /** Keeps a record of each run (catalog `runs`: a training station), with the operations on nearby devices of `with`. */
+  runs?: { with: readonly string[]; within: number };
 }
 
 /** The case items a `case-record` behaviour's operations name (`select: "item"`), by kind. */
@@ -214,11 +228,18 @@ export function behaviorOf(e: SemanticEntity): BehaviorSpec {
         if (o.to !== undefined) out.to = o.to;
         if (o.clinical) out.clinical = o.clinical;
         if (o.roles) out.roles = o.roles;
+        if (o.uses) out.uses = o.uses;
+        if (o.sets) out.sets = o.sets;
+        if (o.link) out.link = o.link;
+        if (o.unlink !== undefined) out.unlink = o.unlink;
+        if (o.newRun) out.newRun = true;
+        if (o.assessed) out.assessed = o.assessed;
         if (!o.clinical && named[id]) out.effect = named[id];
         return out;
       }),
     };
     if (b.derived) spec.derived = b.derived;
+    if (b.runs) spec.runs = b.runs === true ? { with: [], within: NEARBY_STATE_RANGE } : { with: b.runs.with, within: b.runs.within ?? NEARBY_STATE_RANGE };
   } else spec = BUILTIN_BEHAVIORS[e.interaction] ?? NO_BEHAVIOR;
   if (type.portable === "cart") spec = { ...spec, operations: [...spec.operations, op("move_to", { effect: "move-to" })] };
   if (type.portable === "handheld") spec = { ...spec, operations: [...spec.operations, op("pick_up", { effect: "pick-up" }), op("put_down", { effect: "put-down" }), op("equip", { effect: "equip" }), op("hand_over", { effect: "hand-over" })] };
@@ -235,12 +256,18 @@ export interface PredicateEnv {
   state: string | null;
   role: ActorRole;
   handsClean: boolean;
-  holding(ref: string): boolean;
+  /** The actor holds an item of `ref` (an entity id or a type) — with `states`, one in one of those states. */
+  holding(ref: string, states?: readonly string[]): boolean;
   actorWithin(m: number): boolean;
   patientWithin(m: number): boolean;
   deviceAtBedside(): boolean;
-  /** Another in-service device of `type` within `within` m of this one is in one of `states` (`nearbyState`; absent: false). */
-  nearby?(type: string, states: readonly string[], within: number): boolean;
+  /**
+   * Another in-service device of `type` within `within` m of this one is in one of `states` (`nearbyState`; absent:
+   * false) — with `linked`, one connected by instance to a device of `linked.type` (in `linked.states`).
+   */
+  nearby?(type: string, states: readonly string[], within: number, linked?: { type: string; states: readonly string[] | null }): boolean;
+  /** This device is connected by instance to a device of `type` (in `states`), directly or through one of type `via` (`linked`). */
+  linked?(type: string, states: readonly string[] | null, via?: string): boolean;
   /** Every state the entity is in (`state` predicates match any): a carried item is "held" and in its own lifecycle state (absent: `state`). */
   states?: readonly string[];
 }
@@ -253,7 +280,11 @@ export function evaluatePredicate(p: WorldPredicate, env: PredicateEnv): boolean
   if ("actorWithin" in p) return env.actorWithin(p.actorWithin);
   if ("patientWithin" in p) return env.patientWithin(p.patientWithin);
   if ("deviceAtBedside" in p) return env.deviceAtBedside();
-  if ("actorHolding" in p) return env.holding(p.actorHolding);
+  if ("actorHolding" in p) return p.itemState === undefined ? env.holding(p.actorHolding) : env.holding(p.actorHolding, Array.isArray(p.itemState) ? p.itemState : [p.itemState]);
+  if ("linked" in p) {
+    const l = p.linked;
+    return !!env.linked?.(l.type, l.state === undefined ? null : Array.isArray(l.state) ? l.state : [l.state], l.via);
+  }
   if ("state" in p) {
     const wanted = Array.isArray(p.state) ? p.state : [p.state];
     return (env.states ?? (env.state === null ? [] : [env.state])).some((s) => wanted.includes(s));
@@ -262,7 +293,8 @@ export function evaluatePredicate(p: WorldPredicate, env: PredicateEnv): boolean
   if ("handsClean" in p) return env.handsClean;
   if ("nearbyState" in p) {
     const n = p.nearbyState;
-    return !!env.nearby?.(n.type, Array.isArray(n.state) ? n.state : [n.state], n.within ?? NEARBY_STATE_RANGE);
+    const linked = n.linked ? { type: n.linked.type, states: n.linked.state === undefined ? null : Array.isArray(n.linked.state) ? n.linked.state : [n.linked.state] } : undefined;
+    return !!env.nearby?.(n.type, Array.isArray(n.state) ? n.state : [n.state], n.within ?? NEARBY_STATE_RANGE, linked);
   }
   return false;
 }
@@ -443,22 +475,79 @@ export class DeviceRules {
     return operationName(o.id, this.d.locale, o.name);
   }
 
-  private env(actor: ActorState, place: Placed | null, state: string | null): PredicateEnv {
+  private env(actor: ActorState | null, place: Placed | null, state: string | null): PredicateEnv {
     const loc = this.d.locator;
     return {
       state,
-      role: actor.role,
-      handsClean: actor.handsCleanUntil !== null && this.d.clinical.clock() <= actor.handsCleanUntil,
-      holding: (ref) => actor.holding.some((h) => h === ref || loc.registry.entity(h)?.type === ref || h === `eq:${ref}`),
-      actorWithin: (m) => !!place && this.within(actor, place, m),
+      // nobody acting (a screen looked at): no role, nothing in hand, nowhere to stand
+      role: actor?.role ?? ("" as ActorRole),
+      handsClean: !!actor && actor.handsCleanUntil !== null && this.d.clinical.clock() <= actor.handsCleanUntil,
+      holding: (ref, states) => !!actor && this.heldOf(actor, ref).some((h) => !states || this.states(h).some((x) => states.includes(x))),
+      actorWithin: (m) => !!actor && !!place && this.within(actor, place, m),
       patientWithin: (m) => {
         const p = loc.patient();
-        return !!p && this.within(actor, p, m);
+        return !!actor && !!p && this.within(actor, p, m);
       },
       deviceAtBedside: () => !!place && loc.atBedside(place),
-      nearby: (type, states, within) => !!place && this.nearbyOfType(place, type, within).some((id) => this.states(id).some((x) => states.includes(x))),
+      nearby: (type, states, within, linked) =>
+        !!place && this.nearbyOfType(place, type, within).some((id) => this.states(id).some((x) => states.includes(x)) && (!linked || this.linkedTo(id, linked.type, linked.states).length > 0)),
+      linked: (type, states, via) => !!place && (via ? this.linkedTo(place.id, via, null).some((mid) => this.linkedTo(mid, type, states).length > 0) : this.linkedTo(place.id, type, states).length > 0),
       states: place ? this.states(place.id) : state === null ? [] : [state],
     };
+  }
+
+  /** The items of `ref` (an entity id or an equipment type) an actor has in hand (carried or worn), in hand order. */
+  heldOf(actor: Pick<ActorState, "holding">, ref: string): EntityId[] {
+    const reg = this.d.locator.registry;
+    return actor.holding.filter((h) => h === ref || reg.entity(h)?.type === ref || h === `eq:${ref}`);
+  }
+
+  /** The entities this one is connected to by instance (an operation's `link`, a `uses` with `link`): stored on both. */
+  links(id: EntityId): EntityId[] {
+    const l = this.d.store.entity(id)?.data?.links;
+    return Array.isArray(l) ? l.filter((x): x is EntityId => typeof x === "string") : [];
+  }
+
+  /** The entities of `type` (in one of `states`; null: any) this one is connected to. */
+  linkedTo(id: EntityId, type: string, states: readonly string[] | null): EntityId[] {
+    const reg = this.d.locator.registry;
+    return this.links(id).filter((x) => reg.entity(x)?.type === type && (!states || this.states(x).some((s) => states.includes(s))));
+  }
+
+  /**
+   * The item an operation with `uses` works with: of its alternatives in order, the first the actor holds in one of
+   * its `from` states (that very instrument), with what it becomes; null when they hold none of them so.
+   */
+  usedItem(o: OperationSpec, actor: Pick<ActorState, "holding">): { id: EntityId; use: NonNullable<OperationSpec["uses"]>[number] } | null {
+    for (const use of o.uses ?? []) {
+      const id = this.heldOf(actor, use.item).find((h) => !use.from || this.states(h).some((s) => use.from!.includes(s)));
+      if (id) return { id, use };
+    }
+    return null;
+  }
+
+  /** What an operation's `link` connects this device to: the nearest in-service device of its type (in its state), or null. */
+  linkTarget(id: EntityId, o: OperationSpec): EntityId | null {
+    const l = o.link;
+    const place = l ? this.d.locator.place(id) : null;
+    if (!l || !place) return null;
+    const states = l.state === undefined ? null : Array.isArray(l.state) ? l.state : [l.state];
+    return this.nearbyOfType(place, l.type, l.within ?? LINK_RANGE).find((x) => !states || this.states(x).some((s) => states.includes(s))) ?? null;
+  }
+
+  /**
+   * What a device's screens show now: its state's look (else its type's screen) — dark while what the picture needs
+   * (`screenNeeds`) does not hold. THE screen of a device: every display and every front-end reads it here.
+   */
+  screen(id: EntityId): string {
+    const e = this.d.locator.registry.entity(id);
+    const type = e?.equipmentType;
+    if (!type) return "none";
+    const state = this.state(id);
+    const kind = lookOf(type, state).screen;
+    if (kind === "none" || !type.screenNeeds?.length || !this.d.store.available(id)) return this.d.store.available(id) ? kind : "none";
+    const env = this.env(null, this.d.locator.place(id), state);
+    return type.screenNeeds.every((p) => isDevicePredicate(p) && evaluatePredicate(p, env)) ? kind : "none";
   }
 
   /**
@@ -524,7 +613,31 @@ export class DeviceRules {
       if (isPlacementPredicate(p) || evaluatePredicate(p, env)) continue;
       return this.predicateFailure(id, p, o, place, actor);
     }
+    // the instrument it works with: in hand, and in a state to do it (a stapler with a reload in)
+    if (o.uses?.length && !this.usedItem(o, actor)) return this.usesFailure(o, actor);
+    // what it connects to: there
+    if (o.link && !this.linkTarget(id, o)) {
+      const states = o.link.state === undefined ? [] : (Array.isArray(o.link.state) ? o.link.state : [o.link.state]).map((s) => this.typeStateName(o.link!.type, s));
+      return { code: "PRECONDITION_FAILED", message: worldMessage("pre.linkNone", L, { operation, device: this.typeName(o.link.type), states: states.length ? listText(states, L) : "—", distance: metres(o.link.within ?? LINK_RANGE) }) };
+    }
     return null;
+  }
+
+  /** Why an operation's `uses` fails: the first alternative named, in hand or not, and the state it is in. */
+  private usesFailure(o: OperationSpec, actor: ActorState): RuleFailure {
+    const L = this.d.locale;
+    const operation = this.operationLabel(o);
+    const uses = o.uses ?? [];
+    const items = listText(uses.map((u) => this.typeName(u.item)), L, "or");
+    // holding one of them, in the wrong state: say which state it is in and which it needs
+    for (const u of uses) {
+      const held = this.heldOf(actor, u.item)[0];
+      if (!held || !u.from) continue;
+      const own = this.states(held).find((s) => s !== "held" && s !== "equipped") ?? this.state(held);
+      const wanted = listText(u.from.map((s) => this.typeStateName(u.item, s)), L, "or");
+      return { code: "PRECONDITION_FAILED", message: worldMessage("pre.itemState", L, { operation, item: this.typeName(u.item), states: wanted, state: this.stateLabel(held, own) ?? "—" }) };
+    }
+    return { code: "PRECONDITION_FAILED", message: worldMessage("pre.holding", L, { item: items }) };
   }
 
   /**
@@ -653,12 +766,46 @@ export class DeviceRules {
     const L = this.d.locale;
     const target = this.d.locator.name(id);
     const operation = this.operationLabel(o);
+    // a compound one: why its first alternative fails (`any`: the rule, before its exception — the role a step is
+    // assessed for, before practice mode), or its first failing part (`all`)
+    if ("any" in p && p.any.length) return this.predicateFailure(id, p.any[0]!, o, place, actor);
+    if ("all" in p) {
+      const env = this.env(actor, place, this.state(id));
+      const part = p.all.find((x) => !evaluatePredicate(x, env));
+      if (part) return this.predicateFailure(id, part, o, place, actor);
+    }
+    // a device nearby that must not be in a state (the scope in the chest during a white balance): which one is
+    if ("not" in p && "nearbyState" in p.not && place) {
+      const n = p.not.nearbyState;
+      const wanted = Array.isArray(n.state) ? n.state : [n.state];
+      const there = this.nearbyOfType(place, n.type, n.within ?? NEARBY_STATE_RANGE).find((x) => this.states(x).some((s) => wanted.includes(s)));
+      if (there) {
+        const state = this.states(there).find((s) => wanted.includes(s))!;
+        return { code: "PRECONDITION_FAILED", message: worldMessage("pre.nearbyStateNot", L, { operation, device: this.typeName(n.type), state: this.stateLabel(there, state) ?? state }), goal: { kind: "interact", id: there }, label: worldMessage("hint.approach", L, { target: this.d.locator.name(there) }) };
+      }
+    }
     if ("handsClean" in p) {
       // the learner sentence names no tool; the hint does: the nearest sink, then wash_hands there
       const sink = this.nearestSink(actor);
       return { code: "PRECONDITION_FAILED", message: worldMessage("pre.handsClean", L), ...(sink ? { goal: { kind: "interact", id: sink } as NavGoal, label: worldMessage("hint.wash", L, { target: this.d.locator.name(sink) }), then: { operation: "wash_hands", targetId: sink } } : {}) };
     }
-    if ("actorHolding" in p) return { code: "PRECONDITION_FAILED", message: worldMessage("pre.holding", L, { item: this.typeName(p.actorHolding) }) };
+    if ("actorHolding" in p) {
+      const held = p.itemState !== undefined ? this.heldOf(actor, p.actorHolding)[0] : undefined;
+      if (held && p.itemState !== undefined) {
+        const wanted = (Array.isArray(p.itemState) ? p.itemState : [p.itemState]).map((s) => this.typeStateName(p.actorHolding, s));
+        const own = this.states(held).find((s) => s !== "held" && s !== "equipped") ?? this.state(held);
+        return { code: "PRECONDITION_FAILED", message: worldMessage("pre.itemState", L, { operation, item: this.typeName(p.actorHolding), states: listText(wanted, L, "or"), state: this.stateLabel(held, own) ?? "—" }) };
+      }
+      return { code: "PRECONDITION_FAILED", message: worldMessage("pre.holding", L, { item: this.typeName(p.actorHolding) }) };
+    }
+    if ("linked" in p) {
+      const l = p.linked;
+      const states = l.state === undefined ? [] : (Array.isArray(l.state) ? l.state : [l.state]).map((s) => this.typeStateName(l.type, s));
+      return {
+        code: "PRECONDITION_FAILED",
+        message: worldMessage(l.via ? "pre.linkedVia" : "pre.linked", L, { operation, target, device: this.typeName(l.type), via: l.via ? this.typeName(l.via) : "", states: states.length ? listText(states, L, "or") : "—" }),
+      };
+    }
     if ("nearbyState" in p && place) {
       const n = p.nearbyState;
       const within = n.within ?? NEARBY_STATE_RANGE;

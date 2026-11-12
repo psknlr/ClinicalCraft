@@ -103,13 +103,13 @@ export const createWorld: CreateWorld = (opts: WorldOptions): WorldApi => {
     placePatient: (slotId, at) => world.people.placeAt(slotId, at),
     pushPatient: (slotId, by, posture) => world.people.push(slotId, by, posture),
     escortPatient: (slotId, by) => world.people.escort(slotId, by),
-    setEquipmentState(placementId, state) {
+    setEquipmentState(placementId, state, screen) {
       const rec = ctx.live.get(placementId);
-      if (!rec || rec.state === state) return;
-      for (const old of applyLook(rec, state)) old.dispose();
+      if (!rec || (rec.state === state && (screen === undefined || rec.look.screen === screen))) return;
+      for (const old of applyLook(rec, state, undefined, screen)) old.dispose();
       stage.markShadows();
     },
-    statefulEquipment: () => [...ctx.live.values()].filter((rec) => hasLooks(rec.type)).map((rec) => rec.id),
+    statefulEquipment: () => [...ctx.live.values()].filter((rec) => hasLooks(rec.type) || !!rec.type.screenNeeds?.length).map((rec) => rec.id),
     setDoor: (doorId, open) => world.doors.set(doorId, open),
     setDoorLocked: (doorId, locked) => world.doors.setLocked(doorId, locked),
     captureFrame(o) {

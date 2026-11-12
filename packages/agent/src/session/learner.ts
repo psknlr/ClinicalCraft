@@ -263,6 +263,15 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "relief.handEntry") }), code: "permission_denied" });
       return null;
     }
+    // where the patient arrived, and where a hand-over was given and to whom, are the world's to say
+    if (requested.type === "arrival") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "arrival.handEntry") }), code: "permission_denied" });
+      return null;
+    }
+    if (requested.type === "intervene" && (requested.place || requested.receivedBy)) {
+      const { place: _place, receivedBy: _receivedBy, ...plain } = requested;
+      requested = plain;
+    }
     if (requested.type === "operate" && requested.actor) {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "assist.handEntry") }), code: "permission_denied" });
       return null;
@@ -304,6 +313,8 @@ export class LearnerPath {
         k.emit(id, { type: "error", message: spatialRefusal(check, L).output, code: check.code });
         return null;
       }
+      // given at a place or received in person: the record keeps where, and who took the patient over
+      action = embodied.gate().placed?.(action, check) ?? action;
     }
     let result!: ReduceResult;
     // Who answers a button question is decided on the state it is asked in (the engine judges it there too).

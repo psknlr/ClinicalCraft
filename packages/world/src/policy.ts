@@ -57,9 +57,10 @@
  */
 import { capabilityLabels, evaluate, monitorAttached, PERSONAL_KIT, t, type CaseDefinition, type Condition } from "@clinicalcraft/core";
 import { RANGES, type ActionHint, type ActorId, type ActorState, type ClinicalIntent, type ClinicalView, type EncounterBinding, type EntityId, type InteractionKind, type NavGoal, type SpatialCheck, type SpatialErrorCode, type SpatialPolicy, type SpatialRequirement } from "./contracts.js";
+import type { Destination as CoreDestination } from "@clinicalcraft/core";
 import { BEDSIDE_CAPABILITIES, BLOOD_SAMPLE_CAPABILITIES, CHART_CAPABILITY, DELIVERED_CAPABILITIES, IV_ACCESS_CAPABILITY, KIND_DEFAULT_CAPABILITIES, LAB_CAPABILITIES, PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
 import { ivAccessIntervention, ivAccessInSitu } from "./clinical.js";
-import { listText, metres, worldMessage } from "./i18n.js";
+import { listText, metres, positionName, worldMessage } from "./i18n.js";
 import type { Placed, StateView, WorldLocator } from "./locate.js";
 import { MIN_RANGE } from "./nav/backend.js";
 import { areaGap, rankedPatientProviders, type TargetDeps } from "./patient.js";
@@ -160,7 +161,13 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
       }
       case "intervene": {
         const iv = intent.interventionId ? c.interventions.find((x) => x.id === intent.interventionId) : undefined;
-        if (!iv || REMOTE_INTERVENTION_KINDS.includes(iv.kind)) return ANYWHERE;
+        if (!iv) return ANYWHERE;
+        // where the patient must be for it (a recovery bay) and who takes them over there in person: whatever its kind
+        const where: SpatialRequirement[] = [];
+        if (iv.at) where.push({ kind: "patient-in", destination: iv.at });
+        if (iv.receivers?.length) where.push({ kind: "staff-at-patient", positions: [...iv.receivers], range: POLICY_RANGES.talk });
+        const placed = (r: SpatialRequirement): SpatialRequirement => (where.length ? { kind: "all-of", options: [...where, r] } : r);
+        if (REMOTE_INTERVENTION_KINDS.includes(iv.kind)) return where.length ? placed(atPatient) : ANYWHERE;
         const requires = iv.requires.length ? iv.requires : (this.kindDefaults[iv.kind] ?? []);
         let caps = requires.filter((r) => !kit.has(r));
         // IV access is patient state: the case's IV-access procedure done first (a line in situ needs none) —
@@ -174,7 +181,7 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
         const delivered = caps.filter((r) => this.delivered.has(r));
         const bedside = caps.filter((r) => !this.delivered.has(r));
         const base: SpatialRequirement = caps.length ? { kind: "bedside-provider", capabilities: bedside, patientRange: POLICY_RANGES.contact, ...(delivered.length ? { delivered } : {}) } : atPatient;
-        return prerequisite ? { kind: "all-of", options: [prerequisite, base] } : base;
+        return placed(prerequisite ? { kind: "all-of", options: [prerequisite, base] } : base);
       }
       case "operate":
         // the operator at the table and the patient on it: an operation is never done from another room or floor
@@ -344,6 +351,10 @@ export class SpatialChecker {
         return this.clinicalOutcome(r);
       case "patient-at-provider":
         return this.patientAtProviderOutcome(actor, r.capabilities, !!r.beds);
+      case "patient-in":
+        return this.patientInOutcome(r.destination);
+      case "staff-at-patient":
+        return this.staffAtPatientOutcome(r.positions, r.range);
       case "any-of": {
         const failures: Failure[] = [];
         for (const option of r.options) {
@@ -366,8 +377,8 @@ export class SpatialChecker {
         }
         if (!failing.length) return { ok: true, satisfiedBy: [...new Set([...used, ...patientAt])] };
         // a part no walk can fix (a clinical prerequisite, nothing in the facility): report it alone, without hints;
-        // the patient to bring to a device comes first too (a walk to the console would be wasted)
-        const stuck = failing.find((fs) => fs.every((f) => !f.candidates.length)) ?? failing.find((fs) => fs.some((f) => f.reason === "patient-not-at-provider"));
+        // the patient to bring to a device or a place comes first too (a walk to the console would be wasted)
+        const stuck = failing.find((fs) => fs.every((f) => !f.candidates.length)) ?? failing.find((fs) => fs.some((f) => f.reason === "patient-not-at-provider" || f.reason === "patient-elsewhere"));
         return { ok: false, failures: stuck ?? failing.flat() };
       }
     }
@@ -582,6 +593,75 @@ export class SpatialChecker {
         },
       ],
     };
+  }
+
+  /**
+   * The patient in a place of the kind named (`patient-in`): their bed space accepts the setting, their room is of the
+   * room kind, or the provider they are at has the capability. Elsewhere: go to the patient and take them to the
+   * first such bed space (or provider); none in the facility: nothing to do here.
+   */
+  private patientInOutcome(dest: CoreDestination): Outcome {
+    const loc = this.d.locator;
+    const L = this.d.locale;
+    const patient = loc.patient();
+    const body = loc.patientBody;
+    const st = body?.state();
+    if (!patient || !body || !st) return this.noPatient();
+    const f = body.facility;
+    const kindOf = (room: string | null | undefined) => (room ? f.rooms.find((r) => r.id === room)?.kind : undefined);
+    const here = body.slotNow();
+    const ok = dest.setting
+      ? !!here?.accepts.includes(dest.setting)
+      : dest.roomKind
+        ? kindOf(here?.room ?? patient.room) === dest.roomKind
+        : dest.capability
+          ? !!st.provider && loc.capabilities(st.provider).includes(dest.capability)
+          : false;
+    if (ok) return { ok: true, satisfiedBy: [patient.id] };
+    const place = dest.setting ? worldMessage(`setting.${dest.setting}`, L) : dest.roomKind ? worldMessage(`roomKind.${dest.roomKind}`, L) : this.caps([dest.capability!]);
+    const slot = dest.setting ? f.patientSlots.find((s) => s.accepts.includes(dest.setting!)) : dest.roomKind ? f.patientSlots.find((s) => kindOf(s.room) === dest.roomKind) : undefined;
+    const deps = this.targetDeps();
+    const provider = dest.capability && deps ? rankedPatientProviders(deps, [dest.capability])[0] : undefined;
+    const target = slot?.id ?? provider;
+    const details = { destination: { ...dest }, room: patient.room, ...(target ? { to: target } : {}) };
+    if (!target) return { ok: false, failures: [{ reason: "no-such-place", details, candidates: [], message: () => worldMessage("spatial.no-such-place", L, { place }) }] };
+    const herePlace = patient.room ? loc.name(`room:${patient.room}`) : worldMessage("pre.betweenRooms", L);
+    return {
+      ok: false,
+      failures: [
+        {
+          reason: "patient-elsewhere",
+          details,
+          candidates: [{ goal: { kind: "interact", id: patient.id }, target: patient, fetch: false, transport: target }],
+          message: () => worldMessage("spatial.patient-elsewhere", L, { patient: this.patientName(), place, here: herePlace }),
+        },
+      ],
+    };
+  }
+
+  /**
+   * A member of staff holding one of `positions` at the patient (`staff-at-patient`), nearest first: the one who takes
+   * the patient over in person. None there: go to one of them (the hint) — they come to the patient when asked.
+   */
+  private staffAtPatientOutcome(positions: readonly string[], range: number): Outcome {
+    const loc = this.d.locator;
+    const L = this.d.locale;
+    const patient = loc.patient();
+    if (!patient) return this.noPatient();
+    const needed = Math.max(range, MIN_RANGE);
+    const staff = loc.registry.ofKind("staff").filter((e) => !!e.staffPosition && positions.includes(e.staffPosition));
+    const near = staff
+      .map((e) => ({ e, a: this.d.state.actor(e.id) }))
+      .filter((x) => !!x.a && x.a.pose.level === patient.level && loc.distance(x.a.pose, patient) <= needed + 1e-6 && loc.lineOfSight(x.a.pose, patient))
+      .sort((x, y) => loc.distance(x.a!.pose, patient) - loc.distance(y.a!.pose, patient) || (x.e.id < y.e.id ? -1 : 1));
+    if (near.length) return { ok: true, satisfiedBy: [near[0]!.e.id] };
+    const names = listText(positions.map((p) => positionName(p, L)), L, "or");
+    const details = { positions: [...positions], staff: staff.map((e) => e.id) };
+    const candidates = staff.flatMap((e) => {
+      const p = loc.place(e.id);
+      return p ? [{ goal: { kind: "interact", id: e.id } as NavGoal, target: p, fetch: false }] : [];
+    });
+    return { ok: false, failures: [{ reason: "no-receiver", details, candidates, message: () => worldMessage("spatial.no-receiver", L, { patient: this.patientName(), positions: names }) }] };
   }
 
   /** The patient's attached monitor, read from its screen: within range, line of sight, from the monitor's own room. */

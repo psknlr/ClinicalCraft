@@ -258,6 +258,7 @@ export function buildRegistry(
       reach: DEFAULT_REACH.talk,
       tags: ["staff", st.role],
       public: { role: roleName(st.role, locale), name: t(st.name, locale) },
+      ...(st.position ? { staffPosition: st.position } : {}),
     });
   }
 

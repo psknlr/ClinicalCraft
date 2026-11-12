@@ -330,9 +330,12 @@ export function buildPlacements(ctx: BuildContext): void {
     // a placement whose look follows its state, or with a manikin (live.ts): built as its state is at the start —
     // the world model's state moves it on (`WorldApi.setEquipmentState`)
     const looks = hasLooks(type);
-    const live = looks || type.manikin ? createLive(p.id, type, { x: p.x, y, z: p.z, rot }, ctx.root, initialState(type, p)) : null;
+    // a screen whose picture needs something (`screenNeeds`: a camera's picture, the tower lit and the scope in) is
+    // live too: the world says when it is dark
+    const pictureNeeds = !!type.screenNeeds?.length && type.screen !== "none";
+    const live = looks || type.manikin || pictureNeeds ? createLive(p.id, type, { x: p.x, y, z: p.z, rot }, ctx.root, initialState(type, p)) : null;
     if (live) ctx.live.set(p.id, live);
-    const screenByState = looks && Object.values(type.behavior?.states ?? {}).some((st) => st.look?.screen !== undefined);
+    const screenByState = (looks && Object.values(type.behavior?.states ?? {}).some((st) => st.look?.screen !== undefined)) || (!!live && pictureNeeds);
     // a type with a GLB model: its voxel parts get their own group and batch (the fallback, hidden once the model is in)
     let finishFallback: (() => void) | null = null;
     const modelled = !!(ctx.models && type.model);

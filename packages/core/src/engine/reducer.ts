@@ -28,6 +28,7 @@ import { applyStudy } from "./study.js";
 import { reachPhase, recordAvailability } from "./records.js";
 import { applyAnaesthesia } from "./anaesthesia.js";
 import { applyAlarm } from "./alarm.js";
+import { handoverFromRecord } from "./handover.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -287,7 +288,19 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
         ? "indicated"
         : "neutral";
   const invalid = intervention.checklist === true && appropriateness === "contraindicated";
-  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, ...(invalid ? { invalid: true as const } : {}) });
+  // a hand-over keeps what the record held when it was given; where it was given and who took the patient over are
+  // what the world confirmed (in-world mode)
+  const handover = intervention.handover && !invalid ? handoverFromRecord(c, before) : null;
+  s.interventions.push({
+    interventionId: intervention.id,
+    at: s.clock,
+    appropriateness,
+    seq: s.seq + 1,
+    ...(invalid ? { invalid: true as const } : {}),
+    ...(a.place ? { place: { ...a.place } } : {}),
+    ...(a.receivedBy ? { receivedBy: a.receivedBy } : {}),
+    ...(handover ? { handover } : {}),
+  });
   ctx.events.push({ type: "intervention.applied", interventionId: intervention.id, appropriateness, ...(invalid ? { invalid: true as const } : {}) });
   if (invalid) return accepted(actionCost(c, "intervene"));
   for (const flag of intervention.setFlags) {
@@ -329,6 +342,19 @@ function onReleaseHold(ctx: Ctx, a: Action<"release-hold">): Outcome {
   const released = { by: a.releasedBy, reassessment: a.reassessment, at: s.clock, seq: s.seq + 1 };
   s.holds = (s.holds ?? []).map((h) => (mine.includes(h) ? { ...h, released } : h));
   ctx.events.push({ type: "hold.released", interventionId: a.interventionId, releasedBy: a.releasedBy, reassessment: a.reassessment });
+  return accepted();
+}
+
+/** The patient arrived in another room (recorded by the session from the world): where, who brought them, when. */
+function onArrival(ctx: Ctx, a: Action<"arrival">): Outcome {
+  const { s } = ctx;
+  const last = s.arrivals?.at(-1);
+  if (last && last.room === a.room && last.slot === a.slot) return { kind: "unchanged" };
+  s.arrivals = [
+    ...(s.arrivals ?? []),
+    { room: a.room, ...(a.kind ? { kind: a.kind } : {}), ...(a.slot ? { slot: a.slot } : {}), ...(a.broughtBy ? { broughtBy: a.broughtBy } : {}), at: s.clock, seq: s.seq + 1 },
+  ];
+  ctx.events.push({ type: "patient.arrived", room: a.room, ...(a.kind ? { kind: a.kind } : {}), ...(a.slot ? { slot: a.slot } : {}), ...(a.broughtBy ? { broughtBy: a.broughtBy } : {}) });
   return accepted();
 }
 
@@ -509,6 +535,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onReleaseHold(ctx, a);
     case "count":
       return onCount(ctx, a);
+    case "arrival":
+      return onArrival(ctx, a);
     case "study":
       return onStudy(ctx, a);
     case "anaesthesia":

@@ -17,8 +17,9 @@ import { levelElevation } from "./levels.js";
 import type { Placed } from "./locate.js";
 import { HAND_HYGIENE_MINUTES, type OperationSpec } from "./behaviors.js";
 import { selectClinical } from "./clinical.js";
-import type { ActionHint, ActorId, ActorState, ClinicalInvokeResult, EntityId, NavGoal, NavPlan, NavigationRecord, Pose, Vec3, WorldActionRequest, WorldActionResult, WorldErrorCode, WorldEvent } from "./contracts.js";
-import { metres, worldMessage } from "./i18n.js";
+import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
+import type { ActionHint, ActorId, ActorState, ClinicalInvokeResult, EntityId, NavGoal, NavPlan, NavigationRecord, Pose, RunEntry, RunItemUse, RunRecord, Vec3, WorldActionRequest, WorldActionResult, WorldErrorCode, WorldEvent } from "./contracts.js";
+import { listText, metres, roleName, worldMessage } from "./i18n.js";
 import type { ActionBusDeps } from "./actions.js";
 import { cellPoint, distanceToArea, type Area } from "./raster.js";
 import { formatScreen } from "./screen.js";
@@ -81,6 +82,7 @@ function physicalOperation(host: EffectsHost, actor: ActorState, id: EntityId, o
   const operation = rules.operationLabel(o);
   const events: WorldEvent[] = [];
   let message: string | null = null;
+  let note: string | null = null;
   let elapsed = 0;
   const charge = (seconds: number) => {
     if (seconds > 0) {
@@ -142,12 +144,18 @@ function physicalOperation(host: EffectsHost, actor: ActorState, id: EntityId, o
       events.push(host.emit({ type: "entity.state", entityId: id, from: "held", to: "equipped", operation: o.id, actorId: actor.id }));
       break;
     }
-    default:
-      events.push(...commitTransition(host, actor, id, o, rules.state(id)));
+    default: {
+      const fromState = rules.state(id);
+      events.push(...commitTransition(host, actor, id, o, fromState));
+      const extra = commitExtras(host, actor, id, o, fromState);
+      events.push(...extra.events);
+      note = extra.note;
+    }
   }
   if (o.effect !== "wash-hands") charge(o.durationSeconds);
   const state = rules.stateLabel(id);
-  const out: Outcome = { status: "completed", message: message ?? (o.to !== undefined && state ? worldMessage("ok.state", L, { operation, target, state }) : worldMessage("ok.done", L, { operation, target })), events };
+  const done = message ?? (o.to !== undefined && state ? worldMessage("ok.state", L, { operation, target, state }) : worldMessage("ok.done", L, { operation, target }));
+  const out: Outcome = { status: "completed", message: note ? `${done} ${note}` : done, events };
   if (elapsed > 0) out.elapsedSeconds = elapsed;
   return out;
 }
@@ -174,6 +182,115 @@ export function commitTransition(host: EffectsHost, actor: ActorState, id: Entit
   if (stateChanged) events.push(host.emit({ type: "entity.state", entityId: id, from: fromState, to: toState, operation: o.id, actorId: actor.id }));
   if (reservationChanged) events.push(host.emit({ type: "reservation.changed", entityId: id, reservedBy: o.reserve ? actor.id : null }));
   return events;
+}
+
+/** How many closed runs a device keeps (the oldest are dropped). */
+export const KEPT_RUNS = 10;
+
+/**
+ * What an operation does beyond its own transition (catalog `uses`, `sets`, `link`, `unlink`, a run record), committed
+ * with it: the instrument in the actor's hands moves on — that very one (a stapler fired: its reload spent) —, the
+ * devices it sets are put back as fresh ones (their connections undone), the connections it makes or breaks are
+ * stored on both sides, and a device that keeps a run record gains the entry (a `newRun` closes the run and starts
+ * the next). Returns the events and the result's note (a role substitution).
+ */
+export function commitExtras(host: EffectsHost, actor: ActorState, id: EntityId, o: OperationSpec, fromState: string | null): { events: WorldEvent[]; note: string | null } {
+  const { store, rules, locator, locale: L, clinical } = host.d;
+  const events: WorldEvent[] = [];
+  const reg = locator.registry;
+  const stored = (x: EntityId) => store.entity(x)?.state ?? reg.entity(x)?.initialState ?? rules.spec(x).initial;
+  const linksOf = (x: EntityId) => rules.links(x);
+  const setLinks = (x: EntityId, links: EntityId[]) => {
+    const data = { ...(store.entity(x)?.data ?? {}) };
+    if (links.length) data.links = [...new Set(links)].sort();
+    else delete data.links;
+    store.patchEntity(x, { data: Object.keys(data).length ? data : undefined });
+  };
+  const connect = (a: EntityId, b: EntityId) => {
+    if (a === b) return;
+    setLinks(a, [...linksOf(a), b]);
+    setLinks(b, [...linksOf(b), a]);
+  };
+  const disconnect = (a: EntityId, b: EntityId) => {
+    setLinks(a, linksOf(a).filter((x) => x !== b));
+    setLinks(b, linksOf(b).filter((x) => x !== a));
+  };
+  const setState = (x: EntityId, to: string) => {
+    const before = stored(x);
+    if (before === to) return;
+    store.patchEntity(x, { state: to });
+    events.push(host.emit({ type: "entity.state", entityId: x, from: before, to, operation: o.id, actorId: actor.id }));
+  };
+  const used: RunItemUse[] = [];
+  // the instrument in hand: that one moves on (and may stay connected to the device)
+  const u = o.uses?.length ? rules.usedItem(o, store.actor(actor.id) ?? actor) : null;
+  if (u) {
+    const before = stored(u.id);
+    if (u.use.to !== undefined) setState(u.id, u.use.to);
+    if (u.use.link) connect(u.id, id);
+    used.push({ id: u.id, type: reg.entity(u.id)?.type ?? u.use.item, from: before, to: u.use.to ?? before });
+  }
+  // connections broken, then made
+  if (o.unlink !== undefined) for (const x of linksOf(id)) if (o.unlink === true || reg.entity(x)?.type === o.unlink) disconnect(id, x);
+  if (o.link) {
+    const target = rules.linkTarget(id, o);
+    if (target) connect(id, target);
+  }
+  // the devices it sets: each a fresh one in its new state, its connections undone
+  const presets: NonNullable<RunRecord["presets"]> = [];
+  const place = o.sets?.length ? locator.place(id) : null;
+  for (const x of place ? (o.sets ?? []) : []) {
+    for (const other of rules.nearbyOfType(place!, x.type, x.within ?? NEARBY_STATE_RANGE)) {
+      if (rules.spec(other).stateSource !== "stored") continue;
+      if (x.from && !rules.states(other).some((s) => x.from!.includes(s))) continue;
+      for (const l of linksOf(other)) disconnect(other, l);
+      setState(other, x.to);
+      presets.push({ id: other, type: x.type, state: x.to });
+    }
+  }
+  // the run record: this entry, or a run closed and the next begun
+  let note: string | null = null;
+  const substitution = o.assessed && !o.assessed.includes(actor.role) ? { assessed: [...o.assessed] } : null;
+  if (substitution) note = worldMessage("ok.substitution", L, { role: roleName(actor.role, L).toLowerCase(), assessed: listText(substitution.assessed.map((r) => roleName(r, L).toLowerCase()), L, "or") });
+  const entry: RunEntry = {
+    op: o.id,
+    from: fromState,
+    to: rules.state(id),
+    actor: actor.id,
+    role: actor.role,
+    at: clinical.clock(),
+    ...(used.length ? { used } : {}),
+    ...(substitution ? { substitution } : {}),
+  };
+  if (rules.spec(id).runs) appendRun(host, id, entry, o.newRun ? presets : null);
+  // a device a run records with its own (the count board beside a training station): into that run too
+  const here = locator.place(id);
+  const type = reg.entity(id)?.type;
+  if (here && type) {
+    for (const e of reg.ofKind("equipment")) {
+      const runs = e.id === id ? undefined : rules.spec(e.id).runs;
+      if (!runs?.with.includes(type)) continue;
+      const p = locator.place(e.id);
+      if (p && p.level === here.level && rules.nearbyOfType(p, type, runs.within).includes(id)) appendRun(host, e.id, { ...entry, device: id }, null);
+    }
+  }
+  return { events, note };
+}
+
+/** Add an entry to a device's run under way (begun if none); `presets` (a `newRun`): close it and begin the next with them. */
+function appendRun(host: EffectsHost, id: EntityId, entry: RunEntry, presets: NonNullable<RunRecord["presets"]> | null): void {
+  const { store, clinical } = host.d;
+  const data = { ...(store.entity(id)?.data ?? {}) };
+  const now = clinical.clock();
+  const closed = Array.isArray(data.runs) ? (data.runs as RunRecord[]) : [];
+  let run = (data.run as RunRecord | undefined) ?? { n: closed.length + 1, startedAt: now, entries: [] };
+  run = { ...run, entries: [...run.entries, entry] };
+  if (presets) {
+    data.runs = [...closed, { ...run, closedAt: now }].slice(-KEPT_RUNS);
+    run = { n: run.n + 1, startedAt: now, ...(presets.length ? { presets } : {}), entries: [] };
+  }
+  data.run = run;
+  store.patchEntity(id, { data });
 }
 
 function invalidateDoor(host: EffectsHost, id: EntityId): void {
@@ -222,7 +339,10 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
   if (r.outcome === "unauthorized") return failed("NOT_AUTHORIZED", r.message ?? r.output, { clinical, hint: null });
   if (r.outcome !== "ok") return failed("CLINICAL_REJECTED", worldMessage("CLINICAL_REJECTED", L, { output: r.output }), { clinical, clinicalEventIds: [...r.clinicalEventIds] });
   const events = commitTransition(host, actor, id, o, fromState);
-  return { status: "completed", message: worldMessage("ok.clinical", L, { operation, target, output: r.output }), events, clinical, clinicalEventIds: [...r.clinicalEventIds] };
+  const extra = commitExtras(host, actor, id, o, fromState);
+  events.push(...extra.events);
+  const done = worldMessage("ok.clinical", L, { operation, target, output: r.output });
+  return { status: "completed", message: extra.note ? `${done} ${extra.note}` : done, events, clinical, clinicalEventIds: [...r.clinicalEventIds] };
 }
 
 /* ------------------------------------------------------------------ */

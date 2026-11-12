@@ -289,6 +289,13 @@
           ],
           "default": "none"
         },
+        "screenNeeds": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/WorldPredicate"
+          },
+          "minItems": 1
+        },
         "light": {
           "type": "object",
           "properties": {
@@ -557,6 +564,134 @@
                       ]
                     },
                     "minItems": 1
+                  },
+                  "uses": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "item": {
+                          "type": "string",
+                          "minLength": 1
+                        },
+                        "from": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "minItems": 1
+                        },
+                        "to": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "link": {
+                          "type": "boolean"
+                        }
+                      },
+                      "required": [
+                        "item"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1,
+                    "maxItems": 4
+                  },
+                  "sets": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "type": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "from": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "minItems": 1
+                        },
+                        "to": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "within": {
+                          "type": "number",
+                          "exclusiveMinimum": 0,
+                          "maximum": 20
+                        }
+                      },
+                      "required": [
+                        "type",
+                        "to"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1,
+                    "maxItems": 32
+                  },
+                  "link": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "state": {
+                        "anyOf": [
+                          {
+                            "$ref": "#/definitions/Id"
+                          },
+                          {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/definitions/Id"
+                            },
+                            "minItems": 1
+                          }
+                        ]
+                      },
+                      "within": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 20
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
+                  },
+                  "unlink": {
+                    "anyOf": [
+                      {
+                        "$ref": "#/definitions/Id"
+                      },
+                      {
+                        "type": "boolean",
+                        "const": true
+                      }
+                    ]
+                  },
+                  "newRun": {
+                    "type": "boolean"
+                  },
+                  "assessed": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "clinician",
+                        "nurse",
+                        "radiologist",
+                        "pathologist",
+                        "lab-tech",
+                        "attending",
+                        "pharmacist",
+                        "receptionist",
+                        "paramedic",
+                        "porter"
+                      ]
+                    },
+                    "minItems": 1
                   }
                 },
                 "required": [
@@ -576,6 +711,35 @@
               "enum": [
                 "monitor-attachment",
                 "case-record"
+              ]
+            },
+            "runs": {
+              "anyOf": [
+                {
+                  "type": "boolean"
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "with": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "minItems": 1,
+                      "maxItems": 24
+                    },
+                    "within": {
+                      "type": "number",
+                      "exclusiveMinimum": 0,
+                      "maximum": 20
+                    }
+                  },
+                  "required": [
+                    "with"
+                  ],
+                  "additionalProperties": false
+                }
               ]
             }
           },
@@ -900,6 +1064,20 @@
             "actorHolding": {
               "type": "string",
               "minLength": 1
+            },
+            "itemState": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Id"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "minItems": 1
+                }
+              ]
             }
           },
           "required": [
@@ -998,6 +1176,32 @@
                   "type": "number",
                   "exclusiveMinimum": 0,
                   "maximum": 20
+                },
+                "linked": {
+                  "type": "object",
+                  "properties": {
+                    "type": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "state": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/Id"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "minItems": 1
+                        }
+                      ]
+                    }
+                  },
+                  "required": [
+                    "type"
+                  ],
+                  "additionalProperties": false
                 }
               },
               "required": [
@@ -1009,6 +1213,44 @@
           },
           "required": [
             "nearbyState"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "linked": {
+              "type": "object",
+              "properties": {
+                "type": {
+                  "$ref": "#/definitions/Id"
+                },
+                "state": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Id"
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "via": {
+                  "$ref": "#/definitions/Id"
+                }
+              },
+              "required": [
+                "type"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "linked"
           ],
           "additionalProperties": false
         },
@@ -1450,6 +1692,20 @@
                     },
                     "recognised": {
                       "type": "boolean"
+                    },
+                    "structure": {
+                      "anyOf": [
+                        {
+                          "$ref": "#/definitions/Id"
+                        },
+                        {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "minItems": 1
+                        }
+                      ]
                     }
                   },
                   "required": [

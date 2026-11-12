@@ -745,6 +745,18 @@ function checkEquipmentType(e: EquipmentType, path: string, materials: Map<strin
   });
   if (e.behavior) issues.push(...checkBehavior(e, e.behavior, `${path}.behavior`, types));
   if (e.behavior) issues.push(...checkLooks(e, e.behavior, `${path}.behavior`));
+  if (e.screenNeeds && e.screen === "none") issues.push(warn(`${path}.screenNeeds`, `"${e.id}" says what its screens' picture needs, but shows nothing on a screen ("screen": "none")`));
+  (e.screenNeeds ?? []).forEach((p, k) => {
+    for (const near of nearbyLeaves(p)) {
+      const other = types.get(near.type);
+      if (!other) issues.push(warn(`${path}.screenNeeds.${k}`, `"nearbyState" names equipment type "${near.type}", which no loaded catalog defines`));
+      else {
+        const known = knownStates(other);
+        for (const s of Array.isArray(near.state) ? near.state : [near.state]) if (known && !known.has(s)) issues.push(warn(`${path}.screenNeeds.${k}`, `"nearbyState" refers to state "${s}", which "${near.type}" does not have`));
+      }
+    }
+    if (e.behavior) for (const s of predicateStates(p)) if (!(s in e.behavior.states)) issues.push(err(`${path}.screenNeeds.${k}`, `predicate refers to unknown state "${s}"`));
+  });
   issues.push(...checkEmbodiment(e, path));
   return issues;
 }
@@ -764,6 +776,20 @@ function nearbyLeaves(p: WorldPredicate, out: { type: string; state: string | st
   else if ("all" in p) p.all.forEach((x) => nearbyLeaves(x, out));
   else if ("any" in p) p.any.forEach((x) => nearbyLeaves(x, out));
   else if ("not" in p) nearbyLeaves(p.not, out);
+  return out;
+}
+
+/** Leaves of a world predicate that name another equipment type and its states (`actorHolding` with `itemState`, `linked`, a `nearbyState`'s `linked`). */
+function typedLeaves(p: WorldPredicate, out: { key: string; type: string; states: string[] }[] = []): { key: string; type: string; states: string[] }[] {
+  const list = (v: string | string[] | undefined) => (v === undefined ? [] : Array.isArray(v) ? v : [v]);
+  if ("all" in p) p.all.forEach((x) => typedLeaves(x, out));
+  else if ("any" in p) p.any.forEach((x) => typedLeaves(x, out));
+  else if ("not" in p) typedLeaves(p.not, out);
+  else if ("actorHolding" in p && p.itemState !== undefined) out.push({ key: "actorHolding", type: p.actorHolding, states: list(p.itemState) });
+  else if ("linked" in p) {
+    out.push({ key: "linked", type: p.linked.type, states: list(p.linked.state) });
+    if (p.linked.via) out.push({ key: "linked.via", type: p.linked.via, states: [] });
+  } else if ("nearbyState" in p && p.nearbyState.linked) out.push({ key: "nearbyState.linked", type: p.nearbyState.linked.type, states: list(p.nearbyState.linked.state) });
   return out;
 }
 
@@ -789,6 +815,11 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
   }
   const ops = Object.entries(b.operations);
   if (ops.length === 0) issues.push(warn(`${path}.operations`, `behaviour of "${e.id}" offers no operations`));
+  if (b.runs && b.runs !== true) {
+    b.runs.with.forEach((type, k) => {
+      if (types.size && !types.has(type)) issues.push(warn(`${path}.runs.with.${k}`, `the run record of "${e.id}" names equipment type "${type}", which no loaded catalog defines`));
+    });
+  }
   const reserves = ops.some(([, op]) => op.reserve);
   // a handheld item reports "held" / "equipped" while carried: an operation may be offered in those (never lead to them)
   const carried = new Set(e.portable === "handheld" ? ["held", "equipped"] : []);
@@ -814,6 +845,28 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
         }
       }
     });
+    // another type named by a predicate, `uses`, `sets` or `link`: a catalog type, and the states it can be in
+    const typed = (where: string, what: string, type: string, wanted: readonly string[]) => {
+      const other = types.get(type);
+      // an entity id (`uses` may name one) or a built-in type: nothing to check here
+      if (!other) {
+        if (!/^eq:|\./.test(type) && types.size) issues.push(warn(where, `${what} names equipment type "${type}", which no loaded catalog defines`));
+        return;
+      }
+      const known = knownStates(other);
+      for (const s of wanted) if (known && !known.has(s)) issues.push(warn(where, `${what} refers to state "${s}", which "${type}" does not have`));
+    };
+    (op.requires ?? []).forEach((p, k) => {
+      for (const leaf of typedLeaves(p)) typed(`${at}.requires.${k}`, `"${leaf.key}"`, leaf.type, leaf.states);
+    });
+    (op.uses ?? []).forEach((u, k) => typed(`${at}.uses.${k}`, `"uses"`, u.item, [...(u.from ?? []), ...(u.to !== undefined ? [u.to] : [])]));
+    (op.sets ?? []).forEach((x, k) => typed(`${at}.sets.${k}`, `"sets"`, x.type, [...(x.from ?? []), x.to]));
+    if (op.link) typed(`${at}.link`, `"link"`, op.link.type, op.link.state === undefined ? [] : Array.isArray(op.link.state) ? op.link.state : [op.link.state]);
+    if (typeof op.unlink === "string") typed(`${at}.unlink`, `"unlink"`, op.unlink, []);
+    if (op.newRun && !b.runs) issues.push(warn(`${at}.newRun`, `"${name}" starts a new run, but "${e.id}" keeps no run record (behaviour \`runs\`)`));
+    if (op.assessed && op.roles) {
+      for (const r of op.assessed) if (!op.roles.includes(r)) issues.push(warn(`${at}.assessed`, `"${name}" is assessed for role "${r}", which its roles do not allow`));
+    }
     if (op.clinical?.select === "capability" && e.capabilities.length === 0) issues.push(warn(`${at}.clinical.select`, `"capability" selection on "${e.id}", which provides no capabilities`));
     if (op.clinical?.select === "monitoring" && op.clinical.tool !== "intervene") issues.push(warn(`${at}.clinical.tool`, `"monitoring" selects an intervention: expected tool "intervene", got "${op.clinical.tool}"`));
     if (op.release && !reserves) issues.push(warn(`${at}.release`, `"${name}" releases a reservation no operation of "${e.id}" takes`));

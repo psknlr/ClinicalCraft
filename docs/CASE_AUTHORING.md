@@ -78,6 +78,14 @@ solution is sent to the browser).
   write it as one bracketed aside ("（她接着呼吸机，无法说话。）" / "(She is on a
   ventilator and cannot speak.)") or let the companion open. `cases validate`
   warns when only one of the two fields is set.
+  When the reason changes with the patient's state, `patient.nonVerbalReasons`
+  lists `{ "when": condition, "reason": text }` in order: the first whose
+  condition holds is said ("under general anaesthesia" until the anaesthetic
+  is reversed, then "awake, but the tracheal tube is still in"); none holding,
+  `nonVerbalReason`. Write `nonVerbalWhen` from what takes speech away — the
+  anaesthetic and the airway, each by its own event — never from a checklist
+  step, a phase or a room: a Sign Out or a transfer to recovery gives no voice
+  back to a patient who is still intubated.
 * `appearance` matches age/sex/build (stature `child` for 2–12 y, `infant` < 2 y);
   `posture` matches the setting (lying in resus, sitting in clinic). The patient is drawn with a
   woman's features and frame or a man's by `patient.sex`, and with neither's in particular when the
@@ -647,7 +655,23 @@ never leave it to a guess:
   intervention is applied or the phase starts (nothing charged: the act's own
   time); a facility without such a place leaves the patient where they are,
   and the result says so. Never author a destination for an order, a consult
-  or a discharge home.
+  or a discharge home. The world records each arrival in the clinical record
+  (`arrival`), with its own time.
+* A hand-over given **at a place, in person** says where and to whom: an
+  intervention's `at` (same shape as `destination`: `{ "roomKind": "recovery" }`
+  — the recovery room) and `receivers` (staff positions:
+  `["recovery-nurse"]`). In embodied mode it is refused anywhere else (the hint
+  takes the patient there) and while nobody holding the position is at the
+  bed (the hint goes to them; on the patient's arrival the nearest of them in
+  that room comes to the bed), and its record keeps where it was given and
+  who took the patient over. `handover: true` keeps the hand-over's content
+  on the record — the airway interventions, the vitals, the drugs, open holds,
+  whether the patient can speak, the operation and the count, from the record
+  as it stands. Give the advance report (a `consult` from theatre, anywhere)
+  and the hand-over at the bed as two interventions: two records, two times.
+  Text mode has no places: gate the hand-over on the transfer
+  (`contraindicatedWhen` + `checklist: true`, so an attempt before it is
+  recorded as invalid and applies nothing).
 * A positioning or transfer that changes how the patient lies or sits sets
   `posture` (`lying` | `sitting` | `standing`): "lie her flat with legs
   raised" → `lying`, "sit upright" → `sitting`, a trolley transfer →
