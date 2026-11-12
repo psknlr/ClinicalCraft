@@ -284,6 +284,7 @@ export class VoxelWorld {
       if ((o as InstancedMesh).isInstancedMesh) (o as InstancedMesh).dispose();
     });
     for (const sc of ctx.screens) sc.texture.dispose();
+    for (const rec of ctx.live.values()) for (const sc of rec.screens) sc.texture?.dispose();
     for (const t of ctx.ownedTextures) t.dispose();
     this.models.cache?.dispose();
     // animated parts use per-part clones that keep the library name (skipped above)

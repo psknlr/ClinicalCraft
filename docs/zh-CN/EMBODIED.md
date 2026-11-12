@@ -762,6 +762,13 @@ select: "item", item: <步骤>}`，步骤为 `baseline`、`cavity`、`closing`�
 不记录任何内容）。随身携带的记录型手持设备（RF 检测棒）在 `held` 之外也显示其记录状态。为满足前置条件而推进看板状态的
 路径（`firstStepTowards`）可以使用清点自身的操作（清点、扫描），绝不使用核查步骤或治疗。
 
+**画出来的样子跟随状态。** 状态可以带一个 `look`（状态外观；FACILITIES.md "A look for each state"）：在该状态下画出设备
+模型的哪些图层、屏幕显示什么画面、模拟人如何遮盖、如何呼吸——训练台的模拟人先盖着毯子，再铺上手术巾、单肺通气，胸腔镜
+进入胸腔期间立在观察孔里。外观不做任何决定：决定的是状态（`WorldRuntime.stateOf`），网页世界跟随它——每个
+`entity.state` 事件；每个临床事件之后重新询问一次（由病历记录派生的状态没有自己的事件）；场景重新绘制时逐一重画每个
+这样的摆放。无论谁推进设备——学员、同事、经 `interact_object` 的智能体，乃至以后由模型驱动的团队成员或带教老师——
+都通过同一个操作、遵守同样的规则（权限、执业范围、空间闸门），场景显示的也就相同；前端从不自行挑选外观。
+
 ### 8.2 权限
 
 每个操作属于一个类别；每个角色拥有若干类别；操作自己的 `roles` 还可进一步收窄
@@ -1533,6 +1540,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 多楼层碰撞模型与物理（`slab`、`ramp`、`rail` 碰撞体；坡道上的 `stepPlayer`） | yes（A4） | 单元测试：坡面、上台阶 / 下吸附的限制、楼梯段侧面与底面、真实楼梯的上下行、有护栏的楼梯井；单层的固定数据不变 | 在浏览器中走真实楼梯的 QA；e2e | no——Perf、Rel |
 | 多楼层网页世界（楼层、楼梯、乘电梯、楼层剔除、按楼层的灯光 / 瞄准 / 区域、地图楼层选项卡、跨楼层示范接诊） | yes（A4） | 单元测试：楼层与剔除、各楼层区域、电梯轿厢、跨楼层路线；e2e（`clinic-v4` / `general-hospital` 的现有测试不变） | 对两层、楼梯和电梯的视觉 QA | no——帧时间与绘制调用没有预算；只在 Chromium 上运行。Perf |
 | GLB/glTF 设备模型（core `parseGlb` / `checkModelReference` / `fitModel`、`clinicalcraft assets inspect`、网页 `ModelCache` / `instanceModel`；Blender 桥接、形状工具与精修器 `scripts/blender`；内置模型 `packages/content/assets/models`） | yes（A4） | 用代码生成的 GLB 做单元测试；CLI 测试（使用状态、来源）；渲染器测试（GLTFLoader 加载、按 URL 缓存、哈希 / 404 / 垃圾数据回退、适配、瞄准代理、实例与克隆位置一致、小物件不投影）；服务器测试（内容包与内置的 `assets/`）；内容测试：每个内置模型都已固定哈希、可发布并通过检查器 | 对生成的 GLB 运行 `assets inspect`（带与不带 `--type`）；测试台 QA（`?model=<type>`）；2026-10-31：在 `serve` 下的 IMPF 医院中加载 62 个内置模型和 74 个 SurgeryCraft 模型——885 处摆放全部加载、0 失败，实时屏幕绘制在模型之上；7 号手术室全景与全体素相比：常态绘制调用 382 → 637，阴影通道 602 → 1 118，三角形 0.12 M → 0.75 M | no——可移动模型（推车、器械）是克隆而非实例；单文件构建绘制体素（模型是被服务的文件）；在 `serve` 的 CSP 下 meshopt / DRACO 模型会回退到体素；低端设备的帧时间未测量 |
+| 每个状态的外观（`behavior.states.<id>.look`：模型的图层、屏幕画面、模拟人的遮盖与呼吸；core `lookOf`，`checkCatalogs` 与 `assets inspect --type` 中的检查；网页 `live.ts`、`WorldApi.setEquipmentState`，实景链接跟随 `entity.state`、临床事件与 `syncScene`；Blender 工具的 `k.layer`；预览器的 `--states`） | yes | core `looks.test.ts`（解析、旧写法 `draped`、每项检查）、`glb.test.ts`（文件中的图层，对照外观检查）；网页 `live.test.ts`（图层的显示与隐藏、每次变化只绘制一次画面并交回旧纹理、只有人形本身改变时才重建模拟人、呼吸）、`models.test.ts`（经 three 加载器的分图层 GLB：保留节点原名、副本在显示前隐藏、实例从不绘制图层）、`embodied-world.test.ts`（链接：学员的操作、同事的操作、由病历派生的状态、场景重新绘制）、`manikin.test.ts`、`figure/lateral.test.ts` | SurgeryCraft 的胸腔镜训练台——18 个状态、12 个图层（其 `thoracoscopy.test.ts`、`figure-fit --check`、`assets inspect --type`）；在 `serve` 下的网页世界中（2026-11-12）：学员的 `check_position` 和 `isolate_lung` 使训练台随之重画，渲染器画出后续状态后由 `syncScene` 恢复到世界的状态，无页面错误 | no——只有一个编写了外观的类型；更换遮盖时会重建模拟人（短暂卡顿）；无 e2e 用例。Perf |
 | 智能体具身模式（设置 `embodiment` / `perception`、`SessionOptions.embodied`、`world_action` / `world_pose` op、`world_event` / `world_action_result`、`ClinicalView` / `ClinicalPort`、空间闸门 + 提交前复查、18 个世界工具、行走与操作时间、`world()` / `trace()`） | yes（A5；`transport_patient` 来自 FX-T） | 在内置病例上的智能体单元 + 集成测试：审批前带 `hint.goal` 的拒绝、TOCTOU → `SPATIAL_PRECONDITION_CHANGED`、经设备的 `deny: ["intervene(alteplase)"]`、`world_action` op、委派、技能与模型的内联技能、行走只计一次 / 静态时钟从不计时、脚本模型 observe → navigate → order → read、只对视觉模型提供摄像画面、Anthropic / OpenAI 请求体 | CLI `--embodied`（play、exec、eval）与 MCP `start_case {embodied}`；网页（§2.1） | no——**从未有真实模型驱动过具身工具**；未用真实模型测试对提示注入的抵抗力。Sec |
 | 角色权限与执业范围（S3） | yes | 智能体 `scope-review.test.ts`（前台接待、检验技师、药师、放射科医师、护士、急救员、护工；点名职员的审批；作者标注的 `scope`），基准 `audit-scope.test.ts` | 每次基准运行的授权审计（0 / 249 与 0 / 252 个被接受操作越权） | no——这是教学用的简化，不是任何司法辖区的规定；未经临床教师审阅 |
 | 生命体征通道（G3 / G11：`vitalsView`、`learnerVitals`） | yes | 单元测试：临床医生的 `<monitor>` 段、`wait`、技能的 `vital` 谓词、MCP 状态资源、REPL 状态行（`monitor-status.test.ts`） | 远离床旁时 REPL 显示 "vitals: not in view"；网页监护面板显示“看不到屏幕”（e2e） | no——Perf、Rel（§14.4） |

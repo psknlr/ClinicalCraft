@@ -19,12 +19,24 @@ colours it has.
 
 Materials are palette ids (the world's own colours) or names made with `k.paint(name, base, …)`.
 Rotations are degrees about the frame's axes, `rot=(rx, ry, rz)`, applied x, then y, then z.
+
+A model whose look follows its equipment's state has **layers** (docs/BLENDER.md "Layers"): shapes built
+inside `with k.layer("scope"):` go to a mesh of their own — a node named `layer:scope` in the file — that
+the world draws only in the states whose look names it (`behavior.states.<id>.look.layers`). A layer
+shares the model's palette and material, and costs a draw call of its own while it is shown.
+
+    k.box(…)                                      # the table: always drawn
+    with k.layer("scope"):
+        k.tube(…)                                 # drawn while the scope is in
+
 Needs Blender 4.1 or newer.
 """
 from __future__ import annotations
 
 import math
-from typing import Iterable, Sequence
+import re
+from contextlib import contextmanager
+from typing import Iterable, Iterator, Sequence
 
 import bpy  # first: with the `bpy` module, bmesh is importable only once bpy is
 import bmesh
@@ -33,6 +45,8 @@ from mathutils import Matrix, Vector
 import clinicalcraft_blender as cc
 
 Vec = Sequence[float]
+#: A layer's id (core `LayerIdSchema`): what follows `layer:` in the name of its node.
+LAYER_ID = re.compile(r"^[a-z0-9][a-z0-9_-]{0,39}$")
 #: Local axis turns: shapes are made along Blender +Z (the frame's y) and turned to x or z.
 _AXIS = {"y": None, "x": (0, 0, -90), "z": (90, 0, 0)}
 
@@ -92,10 +106,31 @@ class Kit:
     def __init__(self, eq: cc.Equipment, name: str = cc.MODEL, smooth_angle: float = 35):
         self.eq = eq
         self.col = cc.collection(name, clear=True)
+        #: where shapes go now: the model's own mesh, or the mesh of the layer being built
         self.bm = bmesh.new()
+        self.base = self.bm
+        self.layers: dict[str, object] = {}
         self.slots: list[str] = []
         self.paints: dict[str, tuple[str, dict]] = {}
         self.smooth = math.radians(smooth_angle)
+
+    # ---------------------------------------------------------------- layers
+    @contextmanager
+    def layer(self, name: str) -> Iterator["Kit"]:
+        """Shapes built inside go to layer `name`: a mesh of its own, exported as a node named
+        `layer:<name>`, which the world draws only in the states whose look names it. Entering a
+        layer again adds to it; layers do not nest."""
+        if not LAYER_ID.match(name):
+            raise ValueError(f'layer "{name}": lower-case letters, digits, "_" and "-", starting with a letter or digit')
+        if self.bm is not self.base:
+            raise ValueError(f'layer "{name}" inside another layer: layers do not nest')
+        if name not in self.layers:
+            self.layers[name] = bmesh.new()
+        self.bm = self.layers[name]
+        try:
+            yield self
+        finally:
+            self.bm = self.base
 
     # ---------------------------------------------------------------- materials
     def paint(self, name: str, base: str, **over) -> str:
@@ -456,41 +491,64 @@ class Kit:
         and **one material** for everything opaque (`palette_material`): the colour of each face is a
         vertex colour (glTF COLOR_0) and its roughness, metalness and glow come from a palette texture
         with a texel per palette entry, so a model costs the renderer one draw call (plus one per
-        transparent entry, glass), however many shapes and colours it has."""
-        bmesh.ops.recalc_face_normals(self.bm, faces=self.bm.faces)
-        me = bpy.data.meshes.new(name or self.eq.id)
-        self.bm.to_mesh(me)
-        self.bm.free()
-        me.shade_smooth()
-        me.set_sharp_from_angle(angle=self.smooth)
+        transparent entry, glass), however many shapes and colours it has. Each layer (`layer`) is a
+        further object named `layer:<id>`, made the same way with the same materials — a draw call more
+        while the world shows it. Returns the model's own object (what is in no layer)."""
+        if self.bm is not self.base:
+            raise ValueError("finish() inside a layer")
         defs = [self._def(m) for m in self.slots]
         glass = [i for i, d in enumerate(defs) if float(d.get("opacity", 1)) < 1]
         opaque = [i for i in range(len(defs)) if i not in glass]
         texel = {slot: n for n, slot in enumerate(opaque)}
         slot_material = {slot: 0 for slot in opaque} | {slot: 1 + n for n, slot in enumerate(glass)}
-        # per-corner colour and palette coordinate
-        indices = [0] * len(me.polygons)
-        me.polygons.foreach_get("material_index", indices)
-        col = me.color_attributes.new("Col", "BYTE_COLOR", "CORNER")
-        uv = me.uv_layers.new(name="UVMap")
         srgb = [_srgb(d["color"]) for d in defs]
         width = max(1, len(opaque))
-        colours = [0.0] * (len(me.loops) * 4)
-        uvs = [0.5] * (len(me.loops) * 2)
-        for poly, slot in zip(me.polygons, indices):
-            u = (texel.get(slot, 0) + 0.5) / width
-            for li in poly.loop_indices:
-                colours[li * 4:li * 4 + 4] = srgb[slot]
-                uvs[li * 2] = u
-        col.data.foreach_set("color_srgb", colours)
-        uv.data.foreach_set("uv", uvs)
-        me.polygons.foreach_set("material_index", [slot_material[i] for i in indices])
-        me.materials.append(palette_material(f"cc:{self.eq.id}", [defs[i] for i in opaque]))
-        for slot in glass:
-            me.materials.append(_glass_material(f"cc:{self.eq.id}:{self.slots[slot]}", defs[slot]))
-        ob = bpy.data.objects.new(name or self.eq.id, me)
-        self.col.objects.link(ob)
+        materials = [palette_material(f"cc:{self.eq.id}", [defs[i] for i in opaque])]
+        materials += [_glass_material(f"cc:{self.eq.id}:{self.slots[slot]}", defs[slot]) for slot in glass]
+
+        def make(bm, title: str):
+            bmesh.ops.recalc_face_normals(bm, faces=bm.faces)
+            me = bpy.data.meshes.new(title)
+            bm.to_mesh(me)
+            bm.free()
+            me.shade_smooth()
+            me.set_sharp_from_angle(angle=self.smooth)
+            # per-corner colour and palette coordinate
+            indices = [0] * len(me.polygons)
+            me.polygons.foreach_get("material_index", indices)
+            col = me.color_attributes.new("Col", "BYTE_COLOR", "CORNER")
+            uv = me.uv_layers.new(name="UVMap")
+            colours = [0.0] * (len(me.loops) * 4)
+            uvs = [0.5] * (len(me.loops) * 2)
+            for poly, slot in zip(me.polygons, indices):
+                u = (texel.get(slot, 0) + 0.5) / width
+                for li in poly.loop_indices:
+                    colours[li * 4:li * 4 + 4] = srgb[slot]
+                    uvs[li * 2] = u
+            col.data.foreach_set("color_srgb", colours)
+            uv.data.foreach_set("uv", uvs)
+            me.polygons.foreach_set("material_index", [slot_material[i] for i in indices])
+            for material in materials:
+                me.materials.append(material)
+            ob = bpy.data.objects.new(title, me)
+            self.col.objects.link(ob)
+            return ob
+
+        ob = make(self.base, name or self.eq.id)
+        # layers in the order of their names: the same scene gives the same file
+        for layer in sorted(self.layers):
+            if not self.layers[layer].faces:
+                print(f'[clinicalcraft] {self.eq.id}: layer "{layer}" is empty — left out')
+                self.layers[layer].free()
+                continue
+            make(self.layers[layer], f"layer:{layer}")
+        self.layers = {}
         return ob
+
+    def triangles(self) -> dict[str, int]:
+        """Triangles built so far: of the model's own mesh (`""`) and of each layer."""
+        count = lambda bm: sum(len(f.verts) - 2 for f in bm.faces)  # noqa: E731
+        return {"": count(self.base)} | {name: count(bm) for name, bm in sorted(self.layers.items())}
 
 
 def _srgb(hex_color: str) -> list[float]:

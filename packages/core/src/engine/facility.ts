@@ -744,6 +744,7 @@ function checkEquipmentType(e: EquipmentType, path: string, materials: Map<strin
     if (!(cap in CAPABILITIES)) issues.push(warn(`${path}.capabilities.${j}`, `non-canonical capability "${cap}"`));
   });
   if (e.behavior) issues.push(...checkBehavior(e, e.behavior, `${path}.behavior`, types));
+  if (e.behavior) issues.push(...checkLooks(e, e.behavior, `${path}.behavior`));
   issues.push(...checkEmbodiment(e, path));
   return issues;
 }
@@ -816,6 +817,37 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
     if (op.clinical?.select === "capability" && e.capabilities.length === 0) issues.push(warn(`${at}.clinical.select`, `"capability" selection on "${e.id}", which provides no capabilities`));
     if (op.clinical?.select === "monitoring" && op.clinical.tool !== "intervene") issues.push(warn(`${at}.clinical.tool`, `"monitoring" selects an intervention: expected tool "intervene", got "${op.clinical.tool}"`));
     if (op.release && !reserves) issues.push(warn(`${at}.release`, `"${name}" releases a reservation no operation of "${e.id}" takes`));
+  }
+  return issues;
+}
+
+/**
+ * A state's look against its type: layers need a model to have them, a screen picture a part named "screen" and
+ * a type whose screen is not the patient's own, a manikin change a manikin — and one that is still on its side
+ * to say what only a body on its side has.
+ */
+function checkLooks(e: EquipmentType, b: DeviceBehavior, path: string): Issue[] {
+  const issues: Issue[] = [];
+  const hasScreen = e.parts.some((p) => p.name === "screen");
+  for (const [name, st] of Object.entries(b.states)) {
+    const look = st.look;
+    if (!look) continue;
+    const at = `${path}.states.${name}.look`;
+    if (look.layers?.length && !e.model) issues.push(warn(`${at}.layers`, `"${e.id}" has no model: the layers a look names are nodes of one (docs/BLENDER.md)`));
+    const twice = (look.layers ?? []).filter((l, i, all) => all.indexOf(l) !== i);
+    if (twice.length) issues.push(warn(`${at}.layers`, `layer ${[...new Set(twice)].map((l) => `"${l}"`).join(", ")} named more than once`));
+    if (look.screen !== undefined) {
+      if (e.screen === "vitals" || e.screen === "ecg") issues.push(err(`${at}.screen`, `the screen of "${e.id}" is the patient's own (${e.screen}): a look cannot change it`));
+      else if (!hasScreen) issues.push(warn(`${at}.screen`, `"${e.id}" has no part named "screen" to show it on`));
+    }
+    if (look.manikin) {
+      if (!e.manikin) issues.push(err(`${at}.manikin`, `"${e.id}" has no manikin for a look to change`));
+      else {
+        const posture = look.manikin.posture ?? e.manikin.posture;
+        const sideOnly = [look.manikin.sideUp !== undefined && "sideUp", look.manikin.cover !== undefined && "cover", (look.manikin.flex ?? 0) > 0 && "flex", look.manikin.breathing === "one-lung" && 'breathing "one-lung"'].filter((x): x is string => !!x);
+        if (posture !== "lateral" && sideOnly.length) issues.push(err(`${at}.manikin`, `${sideOnly.join(", ")}: only a manikin on its side has it (posture "${posture}" in this state)`));
+      }
+    }
   }
   return issues;
 }

@@ -3,8 +3,8 @@
  * the limbs (`body`), the trunk with everything that lies on it and so breathes with it (`chest`), and the head
  * about its joint (`head`) — plus the see-through parts on the head (`clear`: lenses, an oxygen mask). Skin
  * vertices are remembered per geometry for the flush of distress. Someone on their side (`lateral`) may be
- * draped for an operation on the chest (`draped`: bare skin, towels round the field, a sheet over hips and legs)
- * and bent over the break of a flexed table (`flex`).
+ * undressed under a blanket, or draped for an operation on the chest (`cover`: bare skin; towels round the field
+ * and a sheet over hips and legs), and bent over the break of a flexed table (`flex`).
  */
 import { Matrix4, Vector3, type BufferGeometry } from "three";
 import { frameOf, LATERAL, PIVOT, skeletonOf, type ArmPose, type Build, type Frame, type Posture, type Skeleton, type Stature } from "./anatomy.js";
@@ -13,7 +13,7 @@ import { addNeck, addShell, addShoe, addTrunk, armRadii, endFrame, footFrame, in
 import { addHand, HAND_CLASPED, HAND_FLAT, HAND_RELAXED } from "./hand.js";
 import { addHair, coversEars, type HairStyle } from "./hair.js";
 import { addHead, irisFor, SKIN_GLOW } from "./head.js";
-import { addBlanket, addChestDetails, addCoat, addLap, addSlingStrap, addSterileGown, addThoracicDrapes, COAT_FIT, neckline } from "./dress.js";
+import { addBlanket, addChestDetails, addCoat, addFieldTowels, addLap, addSideCloth, addSlingStrap, addSterileGown, COAT_FIT, neckline, SIDE_BLANKET, THORACIC_SHEET } from "./dress.js";
 import { addAccessory, addTheatreCap, addSurgicalMask, type Accessory } from "./extras.js";
 import { paint, rgb, Sculpt, sweepEnd, type Paint, type Ranges, type V3 } from "./sculpt.js";
 import { STERILE_GOWN, THEATRE_CAP, type Wear } from "./wear.js";
@@ -38,8 +38,11 @@ export interface FigureSpec {
   feminine?: number;
   /** On their side (`lateral`): the side that is up (default the left). */
   up?: "left" | "right";
-  /** On their side: undressed and draped for an operation on the side of the chest that is up (`dress.ts`). */
-  draped?: boolean;
+  /**
+   * On their side, what covers them (`dress.ts`): their own `clothes` (default); undressed under a `blanket` to
+   * the waist; or undressed under the `drapes` of an operation on the side of the chest that is up.
+   */
+  cover?: "clothes" | "blanket" | "drapes";
   /** On their side: how far each half of a flexed table goes down from the break under the chest (radians; default 0). */
   flex?: number;
 }
@@ -95,7 +98,9 @@ export function buildFigure(spec: FigureSpec): Figure {
   const gown = spec.gown;
   const lying = spec.posture === "lying", sitting = spec.posture === "sitting", lateral = spec.posture === "lateral";
   const up = spec.up === "right" ? -1 : 1;
-  const draped = lateral && !!spec.draped;
+  const cover = lateral ? (spec.cover ?? "clothes") : "clothes";
+  // (undressed: bare skin on the trunk and the arms, nothing drawn below the ankles under the cloth)
+  const undressed = cover !== "clothes";
   const sling = spec.accessory === "sling" && !lateral;
   const pose: ArmPose = wear.hands === "clasped" && spec.posture === "standing" ? "clasped" : "relaxed";
   const sk = skeletonOf(spec.posture, f, spec.seat / f.scale, sling ? ["sling", pose] : pose, up);
@@ -113,16 +118,16 @@ export function buildFigure(spec: FigureSpec): Figure {
 
   /* ---------------- the trunk and what lies on it ---------------- */
   const chest = new Sculpt();
-  // (bare skin shows its outline: the trunk of someone draped is cut finer than one under clothes)
-  if (draped) chest.tagged("skin", () => addTrunk(chest, f, lift, 0.775, 1.482, skin, { ease: 0, straight: 0 }, { seg: 44, rows: 32, start: "round", end: "open" }));
+  // (bare skin shows its outline: the trunk of someone undressed is cut finer than one under clothes)
+  if (undressed) chest.tagged("skin", () => addTrunk(chest, f, lift, 0.775, 1.482, skin, { ease: 0, straight: 0 }, { seg: 44, rows: 32, start: "round", end: "open" }));
   else chest.tagged("skin", () => addTrunk(chest, f, lift, 1.25, 1.482, skin, { ease: -0.002, straight: 0 }, { seg: 16, start: "open", end: "open" }));
   const top = gown ? "gown" : wear.top;
   const topFit: Fit = top === "gown" ? { ease: 0.026, straight: 1, flare: 0.05 } : top === "scrub" ? { ease: 0.016, straight: 0.95 } : top === "shirt" ? { ease: 0.008, straight: 0.45 } : { ease: 0.013, straight: 0.85 };
   const tucked = top === "shirt";
   const longGown = top === "gown" && spec.posture === "standing";
   const topHem = tucked ? 1.0 : longGown ? 0.5 : top === "gown" ? 0.84 : top === "scrub" ? 0.862 : 0.874;
-  if (draped) addThoracicDrapes(chest, sk, f, up);
-  else {
+  if (cover === "drapes") addFieldTowels(chest, f, up);
+  if (!undressed) {
     addShell(chest, f, lift, { hem: topHem, neck: neckline(top), fit: topFit, paint: shirt, nv: longGown ? 20 : 16 });
     // what covers the hips: trousers (their top under an untucked hem, or belted over a tucked shirt), or the gown
     const hipPaint = top === "gown" ? shirt : pants;
@@ -150,12 +155,12 @@ export function buildFigure(spec: FigureSpec): Figure {
       // the forearm turns with its hand, so every piece of the arm is cut with `turn`
       const arm = (t0: number, t1: number, radii: (t: number) => number[]) => limbStations(armL, t0, t1, radii, 0.05, true);
       const hemT = sleeve.long ? 1.93 : 0.56;
-      if (!draped) body.sweep(arm(0, hemT, armRadii(f, sleeve.ease)), sleevePaint, { seg: 10, start: "round", dome: 0.72, end: "flat", capPaint: inside(sleevePaint) });
-      // what the hand grows out of: the bare forearm (the whole bare arm of someone draped), or a glove's cuff over the sleeve
-      const cuffed = sleeve.long && wear.gloves && !draped;
-      const forearm = cuffed ? arm(1.7, 2, armRadii(f, sleeve.ease + 0.0035)) : arm(draped ? 0 : sleeve.long ? 1.86 : 0.44, 2, arms);
+      if (!undressed) body.sweep(arm(0, hemT, armRadii(f, sleeve.ease)), sleevePaint, { seg: 10, start: "round", dome: 0.72, end: "flat", capPaint: inside(sleevePaint) });
+      // what the hand grows out of: the bare forearm (the whole bare arm of someone undressed), or a glove's cuff over the sleeve
+      const cuffed = sleeve.long && wear.gloves && !undressed;
+      const forearm = cuffed ? arm(1.7, 2, armRadii(f, sleeve.ease + 0.0035)) : arm(undressed ? 0 : sleeve.long ? 1.86 : 0.44, 2, arms);
       if (cuffed) body.sweep(forearm, glove, { seg: WRIST_SIDES, start: "open", end: "open" });
-      else body.tagged("skin", () => body.sweep(forearm, skin, { seg: WRIST_SIDES, start: draped ? "round" : "open", dome: 0.72, end: "open" }));
+      else body.tagged("skin", () => body.sweep(forearm, skin, { seg: WRIST_SIDES, start: undressed ? "round" : "open", dome: 0.72, end: "open" }));
       const frame = endFrame(armL), toHand = frame.clone().invert();
       const ring = sweepEnd(forearm, { seg: WRIST_SIDES });
       const wrist: number[] = [];
@@ -178,7 +183,7 @@ export function buildFigure(spec: FigureSpec): Figure {
       if (wear.wristband && index === (sling ? 1 : 0)) body.sweep(arm(1.86, 1.9, armRadii(f, 0.0022)), paint("#f4f4f0", 0.2), { seg: 10, start: "flat", end: "flat" });
     });
   }
-  const bareLegs = top === "gown" || draped;
+  const bareLegs = top === "gown" || undressed;
   for (const index of [0, 1] as const) {
     const leg = sk.legs[index];
     side(index, () => {
@@ -195,12 +200,14 @@ export function buildFigure(spec: FigureSpec): Figure {
       }
       // in bed the feet are under the covers, on the table under the sheet
       const shoe = () => body.within(footFrame(leg), () => addShoe(body, shoeKind, shoeUpper, shoeSole, f.limb));
-      if (lying || draped) return;
+      if (lying || undressed) return;
       if (shoeKind === "bare") body.tagged("skin", shoe);
       else shoe();
     });
   }
   if (lying) addBlanket(chest, sk, f, lift);
+  // the cloth over the hips and the legs of someone on their side lies on the legs: it does not breathe
+  if (undressed) addSideCloth(body, sk, f, up, cover === "drapes" ? THORACIC_SHEET : SIDE_BLANKET);
 
   /* ---------------- the head ---------------- */
   const head = new Sculpt();

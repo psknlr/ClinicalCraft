@@ -119,8 +119,12 @@ node scripts/preview/render.mjs models --catalogs packages/content/catalogs/mate
 `--assets` lists the asset directories searched for each model's `uri` (default the
 built-in `packages/content/assets`; add a pack's `content/assets`), `--view` is
 `iso`, `front`, `back`, `side` or `top`, `--compare 1` puts the voxel parts beside
-each model, `--cell` and `--cols` size the sheet. Each cell is labelled with the
-type and its triangle count; a type whose model is missing is drawn from its voxel
+each model, `--cell` and `--cols` size the sheet, `--focus x,y,z,radius` frames a
+close-up (a point of the type's frame and a radius, m). A type whose look follows its
+state is drawn as it starts; `--states a,b` draws it once per state named, and
+`--states all` in every state in order — the storyboard of what its operation does
+to it (FACILITIES.md "A look for each state"). Each cell is labelled with the type, the
+state and the triangles drawn; a type whose model is missing is drawn from its voxel
 parts and marked.
 
 ### A model round a body
@@ -139,6 +143,38 @@ do this for its thoracoscopy station (supports under the arms, a ring under the 
 ports through the chest wall), and its checks fail when the file is no longer what the
 figure kit says. The previewer draws the body with the model, so the fit is seen
 without starting the world.
+
+Such a body is one body in one position, whatever its cover: the figure is measured
+draped (the sheet included, for what has to clear it), and a look that turned or bent
+it would leave the model fitted to another body — SurgeryCraft's tool refuses one.
+
+### Layers
+
+A model whose look follows its equipment's state (FACILITIES.md "A look for each state")
+has **layers**: parts drawn only in the states whose look names them — a port once it is
+in, the scope while it is in the chest, the dressings at the end. In the kit, shapes built
+inside `with k.layer("scope"):` go to a mesh of their own, exported as a node named
+`layer:scope`:
+
+```python
+k.box(…)                         # the table: always drawn
+with k.layer("scope"):
+    k.tube(…)                    # drawn in the states whose look names "scope"
+k.finish()                       # the model's own object, then one object per layer, in the order of their names
+```
+
+* A layer's id is lower-case letters, digits, `_` and `-` (core `LayerIdSchema`).
+  Entering a layer again adds to it; layers do not nest; an empty one is left out.
+* Every layer shares the model's palette material (and its glass), so a layer costs a
+  draw call while it is shown, and nothing while it is hidden.
+* The model is fitted as a whole, layers included — a layer never moves the rest.
+* Triangles: what is drawn at once counts — what is in no layer plus the layers of the
+  busiest state; `k.triangles()` gives each part's count, and the previewer the count
+  of each state it draws (`--states all`).
+* The inspector lists the model's layers and, with `--type`, checks them against the
+  type's looks: a layer a look shows and the model lacks fails; a layer no look shows
+  warns (it is never drawn). An instance — a placement whose look does not follow its
+  state — draws no layer.
 
 ### Headless
 

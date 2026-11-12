@@ -8,7 +8,9 @@
  * Equipment models as the web world draws them (docs/BLENDER.md): each type's GLB placed by its catalog
  * reference (scale, rot, offset — core `fitModel`), lit like the world (hemisphere + sun, ACES, no
  * environment map), a glowing quad on the front face of every `screen` part (where the world draws the live
- * display) and, with `compare`, the voxel parts beside it. One cell per type, the camera fitted to it.
+ * display) and, with `compare`, the voxel parts beside it. One cell per type, the camera fitted to it — and
+ * for a type whose look follows its state (a state's `look`), one cell per state asked for (`states`): the
+ * layers of its model, the picture on its screens and its manikin as that state has them.
  */
 import * as THREE from "three";
 import { GLTFLoader } from "three/addons/loaders/GLTFLoader.js";
@@ -20,6 +22,7 @@ const view = params.get("view") || "iso";
 const compare = params.get("compare") === "1";
 const cell = Math.max(120, Number(params.get("cell")) || 320);
 const focus = (params.get("focus") || "").split(",").map(Number).filter((v) => Number.isFinite(v)).length === 4 ? params.get("focus").split(",").map(Number) : null;
+const states = (params.get("states") || "").split(",").filter(Boolean);
 const cats = await Promise.all(files.map((f) => fetch("/" + f).then((r) => r.json())));
 const mats = new Map(); let eqs = [];
 for (const c of cats) { for (const m of c.materials || []) mats.set(m.id, m); for (const e of c.equipment || []) if (!only.length || only.includes(e.id)) eqs.push(e); }
@@ -58,41 +61,66 @@ function voxels(e) {
   for (const part of e.parts) { const mesh = new THREE.Mesh(box, material(part.name === "screen" ? "black" : part.m)); mesh.position.set(...part.p); mesh.scale.set(...part.s); if (part.r) mesh.rotation.y = (part.r * Math.PI) / 180; mesh.castShadow = mesh.receiveShadow = true; g.add(mesh); }
   return g;
 }
-function screens(e) {
+/** The displays: a glowing quad where a live display goes — or, for a type drawn in a state, the picture that state shows (none: dark, no quad). */
+function screens(e, look) {
   const g = new THREE.Group();
-  for (const part of e.parts) { if (part.name !== "screen") continue; const ry = ((part.r || 0) * Math.PI) / 180; const lift = part.s[2] / 2 + 0.003; const q = new THREE.Mesh(plane, screenMaterial); q.position.set(part.p[0] + Math.sin(ry) * lift, part.p[1], part.p[2] + Math.cos(ry) * lift); q.rotation.y = ry; q.scale.set(part.s[0], part.s[1], 1); g.add(q); }
+  for (const part of e.parts) {
+    if (part.name !== "screen") continue;
+    let mat = screenMaterial;
+    if (look && world) {
+      if (look.screen === "none") continue;
+      if (look.screen !== "vitals" && look.screen !== "ecg") mat = new THREE.MeshBasicMaterial({ map: world.createScreenTexture(look.screen, part.s[0], part.s[1], e.id, mats.get(part.m)?.color).texture, toneMapped: false });
+    }
+    const ry = ((part.r || 0) * Math.PI) / 180; const lift = part.s[2] / 2 + 0.003; const q = new THREE.Mesh(plane, mat); q.position.set(part.p[0] + Math.sin(ry) * lift, part.p[1], part.p[2] + Math.cos(ry) * lift); q.rotation.y = ry; q.scale.set(part.s[0], part.s[1], 1); g.add(q);
+  }
   return g;
 }
-async function modelOf(e) {
+/** A type's model, fitted as the world fits it (to everything in the file, every layer included); with `layers`, only those of its layers shown — and counted. */
+async function modelOf(e, layers) {
   if (!e.model) return null;
   for (const dir of assets) {
     const res = await fetch("/" + dir.replace(/\/$/, "") + "/" + e.model.uri);
     if (!res.ok) continue;
     const gltf = await loader.parseAsync(await res.arrayBuffer(), "");
+    const group = fit(gltf.scene, e.model, e.footprint);
+    const has = layers && world ? world.showLayers(gltf.scene, layers) : [];
+    for (const l of layers ?? []) if (!has.includes(l) && !warnings.includes(`${e.id}: no layer "${l}" in ${e.model.uri}`)) warnings.push(`${e.id}: no layer "${l}" in ${e.model.uri}`);
     let triangles = 0;
-    gltf.scene.traverse((o) => { if (o.isMesh) { o.castShadow = o.receiveShadow = true; triangles += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; } });
-    return { group: fit(gltf.scene, e.model, e.footprint), triangles };
+    const count = (o, shown) => { shown = shown && o.visible; if (o.isMesh) { o.castShadow = o.receiveShadow = true; if (shown) triangles += (o.geometry.index ? o.geometry.index.count : o.geometry.attributes.position.count) / 3; } for (const c of o.children) count(c, shown); };
+    count(gltf.scene, true);
+    return { group, triangles };
   }
-  warnings.push(`${e.id}: model ${e.model.uri} not found`);
+  if (!warnings.includes(`${e.id}: model ${e.model.uri} not found`)) warnings.push(`${e.id}: model ${e.model.uri} not found`);
   return null;
 }
 
-/** The body a type is drawn with (`manikin`): one of the world's figures, built by the world's own code (a bundle render.mjs serves). */
-let buildManikin = null;
-if (eqs.some((e) => e.manikin)) buildManikin = (await import("/__bundle/manikin.js").catch(() => null))?.buildManikin ?? null;
-function manikin(e) {
+/**
+ * What the world's own code draws (a bundle render.mjs serves): the body a type is drawn with (`manikin`) — one of
+ * the world's figures — and a type as it is in a state (a state's `look`). Only loaded for the types that need it.
+ */
+let world = null;
+if (eqs.some((e) => e.manikin || Object.values(e.behavior?.states ?? {}).some((s) => s.look))) world = await import("/__bundle/manikin.js").catch((err) => { warnings.push(`the world's code: ${err}`); return null; });
+function manikin(e, look) {
   const g = new THREE.Group();
-  if (!e.manikin) return g;
-  if (!buildManikin) { if (!warnings.includes(`${e.id}: manikin not drawn (no esbuild)`)) warnings.push(`${e.id}: manikin not drawn (no esbuild)`); return g; }
-  g.add(buildManikin({ draped: false, flex: 0, asleep: false, x: 0, z: 0, y: 0, rot: 0, ...e.manikin }, { x: 0, y: 0, z: 0, rot: 0 }, e.id).root);
+  if (!look?.manikin) return g;
+  g.add(world.buildManikin(look.manikin, { x: 0, y: 0, z: 0, rot: 0 }, e.id).root);
   return g;
 }
 
 const cells = [];
 for (const e of eqs) {
-  const m = await modelOf(e).catch((err) => { warnings.push(`${e.id}: ${err}`); return null; });
-  if (compare || !m) cells.push({ e, label: `${e.id} · voxels`, content: [voxels(e), screens(e), manikin(e)], warn: !m && !!e.model });
-  if (m) cells.push({ e, label: `${e.id} · ${Math.round(m.triangles)} tris`, content: [m.group, screens(e), manikin(e)] });
+  // as the engine reads the type (defaults filled in), in each state asked for: one cell per state for a type with looks
+  const type = world?.parseType(e) ?? null;
+  if (!type && (e.manikin || Object.values(e.behavior?.states ?? {}).some((s) => s.look))) warnings.push(world ? `${e.id}: does not parse — drawn without its manikin and looks` : `${e.id}: manikin and looks not drawn (no esbuild)`);
+  const drawn = type ? world.looksOf(type, states) : [{ state: null, look: null }];
+  for (const { state, look } of drawn) {
+    const m = await modelOf(e, look?.layers).catch((err) => { warnings.push(`${e.id}: ${err}`); return null; });
+    const name = state === null ? e.id : `${e.id} · ${state}`;
+    // (a type without looks keeps the glowing quad where its display goes; one drawn in a state shows that state's picture)
+    const shown = state === null ? null : look;
+    if ((compare && state === drawn[0].state) || !m) cells.push({ e, label: `${name} · voxels`, content: [voxels(e), screens(e, shown), manikin(e, look)], warn: !m && !!e.model });
+    if (m) cells.push({ e, label: `${name} · ${Math.round(m.triangles)} tris`, content: [m.group, screens(e, shown), manikin(e, look)] });
+  }
 }
 const cols = Math.max(1, Math.min(Number(params.get("cols")) || (compare ? 4 : 5), cells.length || 1));
 const rows = Math.max(1, Math.ceil(cells.length / cols));

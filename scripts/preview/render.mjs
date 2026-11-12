@@ -4,7 +4,7 @@
  *
  *   node scripts/preview/render.mjs equipment --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/core-clinical.json [--only id1,id2] [--view iso|top|front] --out /tmp/eq.png
  *   node scripts/preview/render.mjs facility --facility packages/content/facilities/clinic-v4.json [--catalogs a.json,b.json] [--level L1] [--scale 14] --out /tmp/plan.png
- *   node scripts/preview/render.mjs models --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/core-clinical.json [--assets packages/content/assets,../pack/content/assets] [--only id1,id2] [--view iso|front|back|side|top] [--compare 1] [--cell 320] [--cols 5] [--focus x,y,z,radius] --out /tmp/models.png
+ *   node scripts/preview/render.mjs models --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/core-clinical.json [--assets packages/content/assets,../pack/content/assets] [--only id1,id2] [--view iso|front|back|side|top] [--compare 1] [--states all|id1,id2] [--cell 320] [--cols 5] [--focus x,y,z,radius] --out /tmp/models.png
  *
  *   node scripts/preview/render.mjs people [--facility facility.json | --case case.json | --sheet roles,positions,looks,patients] [--only id1,id2] [--view front|iso|back|side|top|face|face-iso|face-side|chest|hands|held|hand] [--posture standing|sitting|lying] [--cell 420] [--cols 6] [--distress 1] [--speak 0..1] [--blink 0..1] --out /tmp/people.png
  *
@@ -13,12 +13,15 @@
  * reference, lit like the world, a glowing quad where each `screen` part's live display goes, and the body a
  * type is drawn with (its `manikin`, by the world's own figure code); `--compare 1`
  * puts the voxel parts beside it, `--focus` frames a close-up (a point of the type's frame and a radius, m).
+ * A type whose look follows its state (a state's `look`: docs/FACILITIES.md) is drawn as it starts; `--states`
+ * draws it once per state named — or `all`: the storyboard of its states — with the layers of its model, the
+ * picture on its screens and its manikin as that state has them.
  * `--assets` lists the asset directories searched for a model's `uri` (default: the built-in
  * packages/content/assets).
  * People mode renders the people as the web world draws them (its own code, bundled for the page:
  * packages/web/src/world/npc.ts): a facility's staff in the uniform of their role as their position wears
  * it, a case's patient (standing, sitting, in bed) and companion, or a reference sheet — every role, every
- * theatre position, the looks an appearance can ask for; `--posture lateral` (with `--up right`, `--draped 1`,
+ * theatre position, the looks an appearance can ask for; `--posture lateral` (with `--up right`, `--cover blanket|drapes`,
  * `--flex <degrees>`, `--asleep 1`) lays them on their side on an operating table; `--view held` is the first-person hand and its
  * stethoscope as the camera sees them, `--view hand` the hand by itself in each of its poses (`--detail 0`: as
  * it is on a figure). Each label gives the figure's triangle count.
@@ -108,7 +111,7 @@ async function bundlePeople() {
   aliases.set("__bundle/people.js", outfile);
 }
 if (mode === "people") await bundlePeople();
-/** Models mode draws a type's manikin with the web world's own code too: bundled for the page, three.js left to the page's import map. */
+/** Models mode draws a type's manikin, and its look in a state, with the web world's own code too: bundled for the page, three.js left to the page's import map. */
 async function bundleManikin() {
   const { build } = await import("esbuild").catch(() => ({ build: null }));
   if (!build) return; // without esbuild the page draws the models and says which manikins it left out
@@ -152,7 +155,7 @@ try {
     console.log(JSON.stringify({ ok: true, ...info, errors }));
   } else if (mode === "models") {
     const assets = (args.assets || "packages/content/assets").split(",").filter(Boolean).map(servedDir).join(",");
-    const q = new URLSearchParams({ catalogs: args.catalogs || "", assets, only: args.only || "", view: args.view || "iso", compare: args.compare || "", cell: args.cell || "", cols: args.cols || "", focus: args.focus || "" });
+    const q = new URLSearchParams({ catalogs: args.catalogs || "", assets, only: args.only || "", view: args.view || "iso", compare: args.compare || "", cell: args.cell || "", cols: args.cols || "", focus: args.focus || "", states: args.states || args.state || "" });
     // a model missing from every asset directory is a warning of the page, not a failed load
     page.removeAllListeners("response");
     page.on("response", (r) => { if (r.status() >= 400 && !r.url().endsWith("/favicon.ico") && !r.url().endsWith(".glb")) failLoad(new Error(`HTTP ${r.status()} for ${new URL(r.url()).pathname}`)); });
@@ -165,7 +168,7 @@ try {
     console.log(JSON.stringify({ ok: true, ...info, errors: errors.filter((e) => !/404/.test(e)) }));
   } else if (mode === "people") {
     const q = new URLSearchParams();
-    for (const k of ["facility", "case", "sheet", "only", "view", "cell", "cols", "posture", "up", "draped", "flex", "asleep", "distress", "speak", "blink", "breath", "turn", "bg", "detail", "skin"]) if (args[k] !== undefined) q.set(k, args[k]);
+    for (const k of ["facility", "case", "sheet", "only", "view", "cell", "cols", "posture", "up", "cover", "draped", "flex", "asleep", "distress", "speak", "blink", "breath", "rise", "turn", "bg", "detail", "skin"]) if (args[k] !== undefined) q.set(k, args[k]);
     await page.goto(`http://127.0.0.1:${port}/scripts/preview/people.html?${q}`);
     await rendered();
     const info = await page.evaluate(() => window.__done);

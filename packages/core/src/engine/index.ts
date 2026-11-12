@@ -136,6 +136,7 @@ export {
   GLB_DECODER_EXTENSIONS,
   GLB_RENDERER_EXTENSIONS,
   GlbError,
+  LAYER_NODE,
   modelScale,
   parseGlb,
   type AssetIssue,
@@ -144,6 +145,7 @@ export {
   type ModelCheckOptions,
   type ModelFit,
 } from "./glb.js";
+export { drawnManikin, hasLooks, initialState, lookLayers, lookOf, sameFigure, type DrawnManikin, type ResolvedLook } from "./looks.js";
 
 // utilities
 export { createRng, hashString, seedFrom } from "./random.js";

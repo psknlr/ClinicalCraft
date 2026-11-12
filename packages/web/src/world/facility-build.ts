@@ -15,6 +15,7 @@ import { buildElevators, type Elevator } from "./elevator.js";
 import { buildPlacements } from "./equipment.js";
 import { WorldLevels } from "./levels.js";
 import { MaterialLibrary, mergeCatalogs, type MergedCatalogs } from "./materials.js";
+import { setLiveModel } from "./live.js";
 import { instanceModel, MODEL_SHADOW_MIN, ModelCache, modelUrl, placeModel, shortUrl } from "./models.js";
 import { ColliderGrid, type Aabb } from "./physics.js";
 import { SignFactory } from "./signs.js";
@@ -122,6 +123,7 @@ export function buildFacility(opts: WorldOptions, stage: Stage, locale: string):
     animated: [],
     placements: new Map(),
     portables: new Map(),
+    live: new Map(),
     npcs: new Map(),
     // meshes always carry castShadow flags; the renderer's shadow map (quality) decides whether they are used
     shadows: true,
@@ -157,7 +159,8 @@ export const MODEL_CELL = 16;
  * Equipment GLB/glTF models (EMBODIED §11), loaded after the build; a failed one keeps its voxel parts (a
  * warning says why). Static placements of one model on one level and in one `MODEL_CELL` square are drawn
  * as instances (`instanceModel`: a draw call per primitive however many there are); portable ones (carts,
- * handheld items) as clones in their own group, so they move (`placeModel`).
+ * handheld items) as clones in their own group, so they move (`placeModel`) — and so are the placements whose
+ * look follows their state (`live.ts`): the layers of each one's own copy are shown and hidden.
  */
 export class EquipmentModels {
   readonly cache: ModelCache | null;
@@ -190,14 +193,17 @@ export class EquipmentModels {
     };
     const groups = new Map<string, ModelRequest[]>();
     for (const req of ctx.models ?? []) {
-      if (req.parent) {
+      if (req.parent || req.live) {
         modelCache!
           .load(req.model.uri, req.model.sha256)
           .then((scene) => {
             if (world.disposed) return;
             const placed = placeModel(scene, req.model, req.footprint, { ...req.at, id: req.placementId }, ctx.shadows);
             if (!placed) throw new Error("empty model");
-            req.parent!.add(placed.group);
+            (req.parent ?? levelRoots.get(req.level) ?? root).add(placed.group);
+            // the layers of a placement whose look follows its state: as its state is now
+            const live = ctx.live.get(req.placementId);
+            if (live) setLiveModel(live, placed.group);
             swapIn(req, placed.proxy);
             stage.markShadows();
           })

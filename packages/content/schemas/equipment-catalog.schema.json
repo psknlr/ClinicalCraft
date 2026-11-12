@@ -379,6 +379,80 @@
                     "items": {
                       "$ref": "#/definitions/Capability"
                     }
+                  },
+                  "look": {
+                    "type": "object",
+                    "properties": {
+                      "layers": {
+                        "type": "array",
+                        "items": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 40,
+                          "pattern": "^[a-z0-9][a-z0-9_-]*$"
+                        }
+                      },
+                      "screen": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "xray",
+                          "ct",
+                          "pacs",
+                          "lab",
+                          "text",
+                          "logo",
+                          "thoracoscopy"
+                        ]
+                      },
+                      "manikin": {
+                        "type": "object",
+                        "properties": {
+                          "posture": {
+                            "type": "string",
+                            "enum": [
+                              "standing",
+                              "sitting",
+                              "lying",
+                              "lateral"
+                            ]
+                          },
+                          "sideUp": {
+                            "type": "string",
+                            "enum": [
+                              "left",
+                              "right"
+                            ]
+                          },
+                          "cover": {
+                            "type": "string",
+                            "enum": [
+                              "clothes",
+                              "blanket",
+                              "drapes"
+                            ]
+                          },
+                          "flex": {
+                            "type": "number",
+                            "minimum": 0,
+                            "maximum": 25
+                          },
+                          "asleep": {
+                            "type": "boolean"
+                          },
+                          "breathing": {
+                            "type": "string",
+                            "enum": [
+                              "none",
+                              "both",
+                              "one-lung"
+                            ]
+                          }
+                        },
+                        "additionalProperties": false
+                      }
+                    },
+                    "additionalProperties": false
                   }
                 },
                 "additionalProperties": false
@@ -636,9 +710,24 @@
                 "right"
               ]
             },
+            "cover": {
+              "type": "string",
+              "enum": [
+                "clothes",
+                "blanket",
+                "drapes"
+              ]
+            },
             "draped": {
-              "type": "boolean",
-              "default": false
+              "type": "boolean"
+            },
+            "breathing": {
+              "type": "string",
+              "enum": [
+                "none",
+                "both",
+                "one-lung"
+              ]
             },
             "flex": {
               "type": "number",

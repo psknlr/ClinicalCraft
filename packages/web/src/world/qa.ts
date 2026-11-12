@@ -55,6 +55,8 @@ export function worldDebug(world: VoxelWorld, buildMs: () => number): WorldApi["
       return walkers.walking().map((n) => n.id);
     },
     screens: ctx.screens,
+    /** Placements whose look follows their state, or with a manikin: the state drawn, its layers, screens, manikin. */
+    live: ctx.live,
     warnings: ctx.warnings,
     lib,
     groundMeshes,

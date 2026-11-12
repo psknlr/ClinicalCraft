@@ -3,7 +3,8 @@
  * collars, the tailored white coat (lapels, buttons, pockets, a half-belt behind), the sterile gown, a belt, a
  * name tag and an identity card, pens, a nurse's fob watch, a dosimeter, reflective bands, the stethoscope
  * round the neck — and cloth that falls: a gown over a sitting patient's lap, the covers over one in bed, the
- * drapes of an operation on the chest. Everything here lies on the trunk and so breathes with it.
+ * towels and the sheet of an operation on the chest, a blanket over someone on their side. What lies on the trunk
+ * breathes with it.
  */
 import { Matrix4, Vector3 } from "three";
 import { ANKLE, HIP, LATERAL, NECK, type Frame, type Skeleton } from "./anatomy.js";
@@ -493,12 +494,11 @@ export const THEATRE_TOWEL = "#4e9a86";
 export const CHEST_FIELD = { low: 1.1, high: 1.33, round: 0.86 } as const;
 
 /**
- * Draped for an operation on the side of the chest. The figure is built upright and laid on its side by its rig,
- * so `up`·X is up off the table: four towels round the field (`CHEST_FIELD`) — under the armpit, below the
- * costal margin, along the front and along the back — and a sheet over the hips and the legs, the pillow between
- * the knees under it, hanging over the sides and the foot of the table (`LATERAL`).
+ * The towels round the field of an operation on the side of the chest (`CHEST_FIELD`) — under the armpit, below
+ * the costal margin, along the front and along the back. The figure is built upright and laid on its side by its
+ * rig, so `up`·X is up off the table. They lie on the chest and breathe with it.
  */
-export function addThoracicDrapes(sc: Sculpt, sk: Skeleton, f: Frame, up: 1 | -1): void {
+export function addFieldTowels(sc: Sculpt, f: Frame, up: 1 | -1): void {
   const on: On = (y, a, proud = 0) => trunkPoint(y, a, f, 0, undefined, proud);
   const side = (up * Math.PI) / 2;
   const towel = rgb(THEATRE_TOWEL);
@@ -508,10 +508,32 @@ export function addThoracicDrapes(sc: Sculpt, sk: Skeleton, f: Frame, up: 1 | -1
   panel(sc, on, 15, 3, (u, v) => [CHEST_FIELD.low - 0.07 + 0.075 * v, side + (u * 2 - 1) * wrap], towelPaint, 0.003, 0.003);
   panel(sc, on, 15, 3, (u, v) => [CHEST_FIELD.high - 0.005 + 0.07 * v, side + (u * 2 - 1) * wrap], towelPaint, 0.003, 0.003);
   for (const s of [-1, 1]) panel(sc, on, 4, 8, (u, v) => [CHEST_FIELD.low - 0.04 + (CHEST_FIELD.high - CHEST_FIELD.low + 0.075) * v, side + s * (CHEST_FIELD.round + 0.46 * u)], towelPaint, 0.0044, 0.003);
+}
 
-  // the sheet: heights above the middle of the body over the trunk below the field, the legs and the pillow
+/** A cloth over the hips and the legs of someone on their side: where its top edge is, how far it hangs, what it is. */
+export interface SideCloth {
+  /** Its top edge (standing adult height): a sterile sheet meets the towel below the field, a blanket comes to the waist. */
+  top: number;
+  /** How far it hangs over the sides and the foot of the table (m). */
+  drop: number;
+  /** Its colour, and a band of another along its top edge (a blanket's sheet turned back over it). */
+  colour: string;
+  fold?: string;
+}
+
+/** The sterile sheet of an operation on the chest, and the blanket someone lies under before the field is prepared. */
+export const THORACIC_SHEET: SideCloth = { top: CHEST_FIELD.low - 0.025, drop: 0.34, colour: THEATRE_DRAPE };
+export const SIDE_BLANKET: SideCloth = { top: 1.02, drop: 0.15, colour: "#a9c4cf", fold: "#f1f2ee" };
+
+/**
+ * A cloth over the hips and the legs of someone on their side, the pillow between the knees under it, hanging
+ * over the sides and the foot of the table (`LATERAL`). The figure is built upright and laid on its side by its
+ * rig, so `up`·X is up off the table. It lies on the legs, not on the chest: it does not breathe.
+ */
+export function addSideCloth(sc: Sculpt, sk: Skeleton, f: Frame, up: 1 | -1, cloth: SideCloth): void {
+  // heights above the middle of the body over the trunk below the cloth's edge, the legs and the pillow
   const floor = -LATERAL.rest;
-  const top = CHEST_FIELD.low - 0.025;
+  const top = cloth.top;
   const caps: Capsule[] = [];
   for (let y = 0.775; y < top + 0.03; y += 0.04) {
     const [rx, fr, bk] = trunkAt(y, f);
@@ -537,22 +559,24 @@ export function addThoracicDrapes(sc: Sculpt, sk: Skeleton, f: Frame, up: 1 | -1
   const u0 = LATERAL.foot, u1 = top;
   const nx = 23, ny = 40, fall = 4;
   const h = drape(nx, ny, w0, w1, u0, u1, floor, caps, 0.011);
-  const blue = rgb(THEATRE_DRAPE);
-  const drop = 0.34;
+  const base = rgb(cloth.colour), fold = cloth.fold ? rgb(cloth.fold) : null;
   sc.sheet(
     nx + 2 * fall,
     ny + fall,
     (i, j) => {
-      // over the back edge, the front edge and the foot of the table the sheet hangs
+      // over the back edge, the front edge and the foot of the table the cloth hangs
       const ti = Math.min(nx - 1, Math.max(0, i - fall)), tj = Math.max(0, j - fall);
       const di = i < fall ? (fall - i) / fall : i >= nx + fall ? (i - nx - fall + 1) / fall : 0;
       const dj = j < fall ? (fall - j) / fall : 0;
       const w = w0 + ((w1 - w0) * ti) / (nx - 1) + (i < fall ? -1 : 1) * 0.014 * Math.sin((di * Math.PI) / 2);
       const u = u0 + ((u1 - u0) * tj) / (ny - 1) - 0.014 * Math.sin((dj * Math.PI) / 2);
-      const height = h[tj]![ti]! - drop * Math.max(di, dj);
+      const height = h[tj]![ti]! - cloth.drop * Math.max(di, dj);
       return [up * height, u, w];
     },
-    (x, y) => ({ rgb: shade(blue, 0.96 + 0.04 * Math.sin(y * 130) + 0.35 * Math.min(0.06, Math.max(0, up * x - floor) * 0.25)), gloss: 0 }),
+    (x, y) => {
+      const turned = fold !== null && y > top - 0.085;
+      return { rgb: shade(turned ? fold : base, (turned ? 1 : 0.96 + 0.04 * Math.sin(y * 130)) + 0.35 * Math.min(0.06, Math.max(0, up * x - floor) * 0.25)), gloss: 0 };
+    },
     { thickness: 0.005, flip: up === 1 },
   );
 }

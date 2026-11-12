@@ -1106,6 +1106,13 @@ export interface WorldRuntime {
    * capabilities. Empty for anything that is not equipment.
    */
   provides(id: EntityId): string[];
+  /**
+   * The behaviour state an entity is in now (EMBODIED §8.1): stored, or the state its placement starts in; a
+   * door's record; derived from the case (a monitor's attachment, a record-backed board); a carried item's
+   * "held" / "equipped". Null for an entity without a behaviour. What is drawn of a device follows it (a state's
+   * `look`): front-ends ask here, whoever changed the state.
+   */
+  stateOf(id: EntityId): string | null;
 
   /* the patient's body (EMBODIED §8, patient transport) */
   /** Where the patient is now (bed space or provider, posture, support, trolley, home); null without a patient. */

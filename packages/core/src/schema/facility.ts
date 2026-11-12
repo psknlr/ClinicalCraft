@@ -195,6 +195,59 @@ export const BehaviorOperationSchema = z
   .strict();
 export type BehaviorOperation = z.infer<typeof BehaviorOperationSchema>;
 
+/** What the parts named "screen" can show (an equipment type's `screen`; a state's look may change it). */
+export const SCREEN_KINDS = ["none", "vitals", "ecg", "xray", "ct", "pacs", "lab", "text", "logo", "thoracoscopy"] as const;
+/** The screens that are a picture drawn once — what a state's look may switch between (`vitals` and `ecg` are the patient's own, live). */
+export const STATIC_SCREEN_KINDS = ["none", "xray", "ct", "pacs", "lab", "text", "logo", "thoracoscopy"] as const;
+
+/** How a manikin is covered when it lies on its side, and whether its chest moves (`EquipmentManikinSchema`). */
+export const MANIKIN_COVERS = ["clothes", "blanket", "drapes"] as const;
+export const MANIKIN_BREATHING = ["none", "both", "one-lung"] as const;
+
+/** A layer of a model: lower-case letters, digits, `_` and `-` — a node of the GLB named `layer:<id>` (docs/BLENDER.md). */
+export const LayerIdSchema = z
+  .string()
+  .min(1)
+  .max(40)
+  .regex(/^[a-z0-9][a-z0-9_-]*$/, "a layer id is lower-case letters, digits, '_' and '-', and starts with a letter or digit");
+
+/**
+ * What a state changes of the type's `manikin` (a state's look): the body turned or covered differently, awake
+ * or asleep, breathing or not. What it leaves out stays as the type says.
+ */
+export const ManikinLookSchema = z
+  .object({
+    posture: z.enum(["standing", "sitting", "lying", "lateral"]).optional(),
+    sideUp: z.enum(["left", "right"]).optional(),
+    cover: z.enum(MANIKIN_COVERS).optional(),
+    flex: z.number().min(0).max(25).optional(),
+    asleep: z.boolean().optional(),
+    breathing: z.enum(MANIKIN_BREATHING).optional(),
+  })
+  .strict();
+export type ManikinLook = z.infer<typeof ManikinLookSchema>;
+
+/**
+ * What is drawn of the equipment while it is in a state (docs/FACILITIES.md "A look for each state"): which
+ * layers of its model show, what its screens show, how its manikin is. Visual only, and it decides nothing: the
+ * state does — whoever brought it about, a learner, a colleague or an agent, through the same operation — and
+ * the look follows the state.
+ */
+export const StateLookSchema = z
+  .object({
+    /**
+     * The layers of the type's model drawn in this state (nodes of the GLB named `layer:<id>`: docs/BLENDER.md).
+     * Every other layer is hidden; what belongs to no layer is always drawn. Omitted: no layer.
+     */
+    layers: z.array(LayerIdSchema).optional(),
+    /** What the parts named "screen" show in this state (omitted: the type's `screen`). A picture drawn once, or `none`: dark. */
+    screen: z.enum(STATIC_SCREEN_KINDS).optional(),
+    /** What this state changes of the type's `manikin`. */
+    manikin: ManikinLookSchema.optional(),
+  })
+  .strict();
+export type StateLook = z.infer<typeof StateLookSchema>;
+
 /**
  * Declarative device state machine (no code). States that mirror a clinical
  * fact are `derived` from the engine and never stored (EMBODIED R6):
@@ -217,6 +270,8 @@ export const DeviceBehaviorSchema = z
            * the world's capability rule (bedside providers, the operation's equipment) follows it.
            */
           supplies: z.array(CapabilitySchema).optional(),
+          /** What is drawn of the equipment in this state (omitted: the type as it is, none of its model's layers). */
+          look: StateLookSchema.optional(),
         })
         .strict(),
     ),
@@ -305,11 +360,20 @@ export const EquipmentManikinSchema = z
     /** `lateral`: the side that is up — the side operated on (default `left`). */
     sideUp: z.enum(["left", "right"]).optional(),
     /**
-     * `lateral`: draped for an operation on the side of the chest that is up — undressed, a theatre cap over the
-     * hair, towels round the field, a sheet over the hips and the legs. Otherwise the figure wears what its
-     * appearance says (its own clothes, or a hospital gown).
+     * `lateral`: what covers it. `clothes` (default): what its appearance says — its own clothes, or a hospital
+     * gown. `blanket`: undressed, a theatre cap over the hair, a blanket to the waist — on the table before the
+     * field is prepared. `drapes`: undressed and draped for an operation on the side of the chest that is up —
+     * the theatre cap, towels round the field, a sheet over the hips and the legs.
      */
-    draped: z.boolean().default(false),
+    cover: z.enum(MANIKIN_COVERS).optional(),
+    /** The earlier spelling of `cover: "drapes"` (kept for catalogs written with it). */
+    draped: z.boolean().optional(),
+    /**
+     * Whether its chest moves: `none` (omitted: none), `both` — it breathes, or is ventilated — or `one-lung`: on
+     * its side with only the lung underneath ventilated, the side that is up all but still. (No default is filled
+     * in: a catalog written before it reads back as it was written.)
+     */
+    breathing: z.enum(MANIKIN_BREATHING).optional(),
     /**
      * `lateral`: how far each half of a flexed table goes down from the break under the chest (degrees): the trunk
      * bends sideways over it, as it does on the table.
@@ -332,8 +396,16 @@ export const EquipmentManikinSchema = z
     appearance: AppearanceSchema.partial().optional(),
   })
   .strict()
-  .refine((m) => m.posture === "lateral" || (m.sideUp === undefined && !m.draped && m.flex === 0), { message: "`sideUp`, `draped` and `flex` describe a manikin on its side (`posture: \"lateral\"`)" });
+  .refine((m) => m.posture === "lateral" || (m.sideUp === undefined && !m.draped && m.cover === undefined && m.flex === 0 && m.breathing !== "one-lung"), {
+    message: "`sideUp`, `cover` (`draped`), `flex` and `breathing: \"one-lung\"` describe a manikin on its side (`posture: \"lateral\"`)",
+  })
+  .refine((m) => m.cover === undefined || m.draped === undefined || m.draped === (m.cover === "drapes"), { message: "`draped` is the earlier spelling of `cover: \"drapes\"`: say one, or the same with both" });
 export type EquipmentManikin = z.infer<typeof EquipmentManikinSchema>;
+
+/** How a manikin on its side is covered: its `cover`, or what the earlier `draped` said (`clothes` when neither does). */
+export function manikinCover(m: Pick<EquipmentManikin, "cover" | "draped">): (typeof MANIKIN_COVERS)[number] {
+  return m.cover ?? (m.draped ? "drapes" : "clothes");
+}
 
 /**
  * Default interaction reach (m from the footprint) by interaction kind, used
@@ -382,7 +454,7 @@ export const EquipmentTypeSchema = z
      * what the equipment is for (`xray`, `ct`, `pacs`, `lab`, `text`, `logo`, `thoracoscopy` — the round field of a
      * rigid scope in the chest). A representative picture is never a patient's own finding.
      */
-    screen: z.enum(["none", "vitals", "ecg", "xray", "ct", "pacs", "lab", "text", "logo", "thoracoscopy"]).default("none"),
+    screen: z.enum(SCREEN_KINDS).default("none"),
     /** Point light emitted by the equipment (surgical lights, lamps). */
     light: z
       .object({ color: HexColorSchema, intensity: z.number().min(0), distance: z.number().min(0), y: z.number() })

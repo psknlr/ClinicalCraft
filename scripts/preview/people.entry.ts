@@ -80,10 +80,13 @@ async function entries(params: URLSearchParams): Promise<Entry[]> {
   } else list = (params.get("sheet") || "roles").split(",").flatMap(sheet).filter((e) => !only.length || only.some((o) => e.label.includes(o)));
   const posture = params.get("posture") as Posture | null;
   const flat = posture === "lying" || posture === "lateral";
-  // on their side: the side that is up, draped for an operation on the chest, the table's flex, asleep (`--up right --draped 1 --flex 9 --asleep 1`)
-  const lateral = posture === "lateral" ? { up: params.get("up") === "right" ? ("right" as const) : ("left" as const), draped: params.get("draped") === "1", flex: Number(params.get("flex")) || 0, asleep: params.get("asleep") === "1" } : {};
-  // (someone draped for theatre wears a theatre cap)
-  if (lateral.draped) for (const e of list) e.options = { ...e.options, wear: { ...(e.options.wear ?? PLAIN_WEAR), cap: true } };
+  // on their side: the side that is up, what covers them (their clothes, a blanket, the drapes of an operation on the
+  // chest), the table's flex, asleep (`--up right --cover drapes --flex 9 --asleep 1`; `--draped 1` is `--cover drapes`)
+  const asked = params.get("cover") ?? (params.get("draped") === "1" ? "drapes" : "clothes");
+  const cover = asked === "drapes" || asked === "blanket" ? asked : ("clothes" as const);
+  const lateral = posture === "lateral" ? { up: params.get("up") === "right" ? ("right" as const) : ("left" as const), cover, flex: Number(params.get("flex")) || 0, asleep: params.get("asleep") === "1" } : {};
+  // (someone undressed for theatre wears a theatre cap)
+  if (posture === "lateral" && cover !== "clothes") for (const e of list) e.options = { ...e.options, wear: { ...(e.options.wear ?? PLAIN_WEAR), cap: true } };
   if (posture) for (const e of list) Object.assign(e, { options: { ...e.options, ...lateral, posture, surfaceY: flat ? (posture === "lateral" ? 0.92 : 0.62) : 0.5 }, surface: posture === "standing" ? undefined : flat ? (posture === "lateral" ? 0.92 : 0.62) : 0.5 });
   return list;
 }
@@ -224,7 +227,7 @@ export async function render(): Promise<{ count: number; width: number; height: 
     if (params.get("distress") === "1") setDistressed(rig, true);
     setMouth(rig, Number(params.get("speak")) || 0);
     if (!e.options.asleep) setBlink(rig, Number(params.get("blink")) || 0);
-    setBreath(rig, Number(params.get("breath")) || 0);
+    setBreath(rig, Number(params.get("breath")) || 0, Number(params.get("rise")) || 0);
     rig.head.rotation.y = Number(params.get("turn")) || 0;
     scene.add(rig.root);
     const posture = e.options.posture;
