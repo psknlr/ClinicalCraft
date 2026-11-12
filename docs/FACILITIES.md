@@ -41,11 +41,14 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
   `node scripts/preview/render.mjs equipment --catalogs packages/content/catalogs/materials.json,packages/content/catalogs/<file>.json --out <png>` and
   `node scripts/preview/render.mjs facility --facility packages/content/facilities/<id>.json --catalogs <all catalog files> --out <png>`.
   `node scripts/preview/render.mjs models --catalogs <catalog files> [--compare 1] --out <png>` draws the types' GLB
-  models as the world does, beside their voxel parts (BLENDER.md "Looking at the result").
+  models as the world does, beside their voxel parts, with the body a type is drawn with ("A body drawn with
+  equipment" below; BLENDER.md "Looking at the result").
   `node scripts/preview/render.mjs people --facility <facility file> [--only <staff ids>] [--view front|iso|back|side|face|face-iso|face-side|chest|hands] --out <png>`
   draws the facility's staff as the world does ("Staff in the 3D world" below; `--blink 0..1` and `--speak 0..1`
   shut their eyes and open their mouths that far); `--case <case.json>` draws a case's
-  patient standing, sitting and in bed, and their companion; `--sheet roles|positions|looks|patients` the
+  patient standing, sitting and in bed, and their companion; `--posture lateral [--up right] [--draped 1]
+  [--flex 9] [--asleep 1]` lays whoever is drawn on their side on an operating table ("A body drawn with
+  equipment" below; `--view front|back|head|top`); `--sheet roles|positions|looks|patients` the
   reference sheets (every role's uniform, every theatre position, what an appearance can ask for);
   `--view hand` the hand by itself in each of its poses (`--detail 0`: as a figure has it), `--view held` the
   player's own hand and stethoscope as the camera sees them.
@@ -415,6 +418,44 @@ drawing their display over the model. Any error or a missing file keeps the
 voxel parts. The collider is always the footprint and the interaction target
 always the placement's: the model's meshes never take the aim (an invisible
 footprint box does). docs/BLENDER.md has the Blender workflow.
+
+## A body drawn with equipment (`manikin`)
+
+A training station has a patient simulator on its table; a skills room has a manikin
+on a trolley. An equipment type's optional `manikin` is such a body, drawn by the web
+world with the equipment — by its own figure kit (`src/world/figure/`, placed by
+`manikin.ts`), so it is one of the same figures as the people of the world and stays
+one whatever that kit becomes. It is **nobody**: not an actor of the world model, no
+record, nothing to examine or to talk to, no name tag. The aim finds the equipment,
+the footprint stays the collider, and the body does not move. A case's patient is
+never a manikin, and a manikin is never presented as a patient.
+
+| field | |
+|---|---|
+| `posture` | `standing`, `sitting`, `lying` (on its back, under the covers), or `lateral`: on its side as for an operation on the chest — the arm underneath out in front on its board with the palm up, the upper arm straight forward over it on a support at shoulder height (no further from the trunk than a right angle, the face and the airway free), the leg underneath bent at hip and knee, the upper leg nearly straight on the pillow between them |
+| `sideUp` | `lateral`: `left` (default) or `right` — the side operated on |
+| `draped` | `lateral`: draped for an operation on the side of the chest that is up — undressed, a theatre cap over the hair, four towels round the field (bare skin from the costal margin to under the armpit), a sheet over the hips and the legs that hangs over the sides and the foot of the table. Otherwise the figure wears what its `appearance` says |
+| `flex` | `lateral`: how far each half of a flexed table goes down from the break under the chest (degrees, 0–25): the trunk bends sideways over it and the head goes down with its end |
+| `asleep` | eyes shut |
+| `x`, `z` | where it is in the type's frame (m from the footprint centre, turned with the placement): the feet of one standing or sitting; the middle of what one lying on its back lies on; of one on its side, the middle of the table under the chest — where a flexed table breaks |
+| `y` | height above the placement's floor of what it stands on, of its seat, or of the surface it lies on |
+| `rot` | degrees about the vertical, as a placement's: at 0 one standing or sitting faces +Z and the head of one lying is towards −Z (on its side with the left up, the face is to −X) |
+| `appearance` | its looks, as a person's (`presentation: "neutral"` for a body that is neither a woman's nor a man's) |
+
+`sideUp`, `draped` and `flex` are refused on any posture but `lateral`. Someone on
+their side lies with the back near the edge of the table, so that the bent knee stays
+on it: the kit takes a table 0.58 m wide with its mattress, its middle 7 cm in front
+of the middle of the body, breaking under the lower end of the breastbone, its foot
+8 cm past the soles (`LATERAL` in `figure/anatomy.ts`); the surface is 19.6 cm below
+the middle of the body, the shoulder underneath a little sunk into it.
+
+The type's model and voxel parts are everything but the body — the table, the
+supports, what stands on the skin — and are built round it: `placedPoint(rig, p)` and
+`placedHeadPoint(rig, p)` (`manikin.ts`) say where a point of the figure's own frame
+(a joint, a point of the trunk's surface, the mouth) is once the body is bent and laid
+down, in the type's frame (docs/BLENDER.md "A model round a body"). `checkCatalogs`
+warns when a manikin is put outside its type's footprint, above its height, or on a
+handheld item. The models previewer draws it with the type.
 
 ## Equipment catalogs (ids are a contract — facilities reference them)
 

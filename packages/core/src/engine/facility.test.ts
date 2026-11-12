@@ -460,6 +460,37 @@ describe("checkCatalogs: embodiment fields", () => {
     expect(solid.issues.map((i) => i.message)).toEqual([expect.stringMatching(/lies inside the solid/)]);
   });
 
+  it("a manikin — a body drawn with the equipment — is parsed with its defaults; what describes one on its side is refused on any other", () => {
+    const { issues } = withType({ footprint: { w: 2.1, d: 1.1, h: 1.8 }, manikin: { posture: "lateral", sideUp: "left", draped: true, flex: 9, asleep: true, x: -0.27, z: -0.13, y: 0.93, rot: 90, appearance: { presentation: "neutral" } } });
+    expect(issues).toEqual([]);
+    const raw = structuredClone(fixture("mini.catalog.json")) as { equipment: Record<string, unknown>[] };
+    raw.equipment[0].manikin = { posture: "sitting" };
+    const sitting = parseCatalog(raw);
+    expect(sitting.ok && sitting.value.equipment[0].manikin).toEqual({ posture: "sitting", draped: false, flex: 0, asleep: false, x: 0, z: 0, y: 0, rot: 0 });
+    for (const [bad, at] of [
+      [{ posture: "lying", draped: true }, "equipment.0.manikin"],
+      [{ posture: "sitting", flex: 9 }, "equipment.0.manikin"],
+      [{ posture: "standing", sideUp: "right" }, "equipment.0.manikin"],
+      [{ posture: "lateral", flex: 40 }, "equipment.0.manikin.flex"],
+      [{ posture: "prone" }, "equipment.0.manikin.posture"],
+      [{ posture: "lateral", hat: true }, "equipment.0.manikin"],
+    ] as const) {
+      raw.equipment[0].manikin = bad;
+      const r = parseCatalog(raw);
+      expect(r.ok).toBe(false);
+      expect(r.ok ? [] : r.issues.map((i) => i.path)).toContain(at);
+    }
+  });
+
+  it("reports a manikin that is not on its equipment: beside the footprint, above it, or in a hand", () => {
+    const beside = withType({ manikin: { posture: "lying", x: 3, y: 0.5 } });
+    expect(beside.issues.map((i) => [i.path.slice(beside.prefix.length + 1), i.severity, i.message])).toEqual([["manikin", "warning", expect.stringMatching(/outside its .* footprint/)]]);
+    const above = withType({ manikin: { posture: "lying", y: 9 } });
+    expect(above.issues.map((i) => i.path.slice(above.prefix.length + 1))).toEqual(["manikin.y"]);
+    const held = withType({ portable: "handheld", manikin: { posture: "standing" } });
+    expect(held.issues.map((i) => i.message)).toEqual(expect.arrayContaining([expect.stringMatching(/a body is not carried in a hand/)]));
+  });
+
   it("the built-in catalogs' behaviours and portable flags are consistent", () => {
     const content = new URL("../../../content/", import.meta.url);
     const read = (rel: string): unknown => JSON.parse(readFileSync(new URL(rel, content), "utf8"));

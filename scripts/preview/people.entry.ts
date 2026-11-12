@@ -10,7 +10,7 @@ import { buildHeld } from "../../packages/web/src/world/figure/held.js";
 import { figureMaterial } from "../../packages/web/src/world/figure/material.js";
 import { WRIST } from "../../packages/web/src/world/figure/hand-cage.js";
 import { rgb, Sculpt, sweepEnd, type Station } from "../../packages/web/src/world/figure/sculpt.js";
-import { buildPerson, PATIENT_WEAR, heightOf, looksOf, presentationOfSex, setBlink, setBreath, setDistressed, setMouth, uniformOf, type AppearanceLike, type PersonOptions, type Posture } from "../../packages/web/src/world/npc.js";
+import { buildPerson, PATIENT_WEAR, PLAIN_WEAR, heightOf, looksOf, presentationOfSex, setBlink, setBreath, setDistressed, setMouth, uniformOf, type AppearanceLike, type PersonOptions, type Posture } from "../../packages/web/src/world/npc.js";
 
 interface Entry {
   label: string;
@@ -79,7 +79,12 @@ async function entries(params: URLSearchParams): Promise<Entry[]> {
     if (comp) list.push({ label: `companion · ${text(comp.name)}`, appearance: { presentation: "neutral", ...comp.appearance }, options: { posture: "standing", seed: "companion" } });
   } else list = (params.get("sheet") || "roles").split(",").flatMap(sheet).filter((e) => !only.length || only.some((o) => e.label.includes(o)));
   const posture = params.get("posture") as Posture | null;
-  if (posture) for (const e of list) Object.assign(e, { options: { ...e.options, posture, surfaceY: posture === "lying" ? 0.62 : 0.5 }, surface: posture === "standing" ? undefined : posture === "lying" ? 0.62 : 0.5 });
+  const flat = posture === "lying" || posture === "lateral";
+  // on their side: the side that is up, draped for an operation on the chest, the table's flex, asleep (`--up right --draped 1 --flex 9 --asleep 1`)
+  const lateral = posture === "lateral" ? { up: params.get("up") === "right" ? ("right" as const) : ("left" as const), draped: params.get("draped") === "1", flex: Number(params.get("flex")) || 0, asleep: params.get("asleep") === "1" } : {};
+  // (someone draped for theatre wears a theatre cap)
+  if (lateral.draped) for (const e of list) e.options = { ...e.options, wear: { ...(e.options.wear ?? PLAIN_WEAR), cap: true } };
+  if (posture) for (const e of list) Object.assign(e, { options: { ...e.options, ...lateral, posture, surfaceY: flat ? (posture === "lateral" ? 0.92 : 0.62) : 0.5 }, surface: posture === "standing" ? undefined : flat ? (posture === "lateral" ? 0.92 : 0.62) : 0.5 });
   return list;
 }
 
@@ -181,7 +186,8 @@ export async function render(): Promise<{ count: number; width: number; height: 
   const list = await entries(params);
   const cols = Math.max(1, Math.min(Number(params.get("cols")) || 6, list.length || 1));
   const rows = Math.max(1, Math.ceil(list.length / cols));
-  const tall = view === "face" || view === "hands" || view === "chest" ? 1 : 1.6;
+  // (someone on their side is drawn in a wide cell)
+  const tall = view === "face" || view === "hands" || view === "chest" ? 1 : params.get("posture") === "lateral" ? 0.66 : 1.6;
   const W = cols * cell, H = Math.round(rows * cell * tall);
   const renderer = new THREE.WebGLRenderer({ antialias: true, preserveDrawingBuffer: true });
   renderer.setPixelRatio(1);
@@ -217,12 +223,29 @@ export async function render(): Promise<{ count: number; width: number; height: 
     triangles.push(rig.triangles);
     if (params.get("distress") === "1") setDistressed(rig, true);
     setMouth(rig, Number(params.get("speak")) || 0);
-    setBlink(rig, Number(params.get("blink")) || 0);
+    if (!e.options.asleep) setBlink(rig, Number(params.get("blink")) || 0);
     setBreath(rig, Number(params.get("breath")) || 0);
     rig.head.rotation.y = Number(params.get("turn")) || 0;
     scene.add(rig.root);
     const posture = e.options.posture;
-    if (e.surface !== undefined) {
+    if (e.surface !== undefined && posture === "lateral") {
+      // an operating table under someone on their side: two halves that go down from the break under the chest
+      const flex = ((e.options.flex ?? 0) * Math.PI) / 180;
+      for (const [length, turn] of [[-0.82, -flex], [1.3, flex]] as const) {
+        const half = new THREE.Group();
+        half.position.y = e.surface;
+        half.rotation.x = turn;
+        const top = new THREE.Mesh(new THREE.BoxGeometry(0.58, 0.08, Math.abs(length)), propMat);
+        top.position.set(0, -0.04, length / 2);
+        top.castShadow = top.receiveShadow = true;
+        half.add(top);
+        scene.add(half);
+      }
+      const column = new THREE.Mesh(new THREE.BoxGeometry(0.34, e.surface - 0.1, 0.4), propMat);
+      column.position.set(0, (e.surface - 0.1) / 2, 0.1);
+      column.castShadow = column.receiveShadow = true;
+      scene.add(column);
+    } else if (e.surface !== undefined) {
       const prop = posture === "lying" ? new THREE.Mesh(new THREE.BoxGeometry(0.95, e.surface, 2.1), propMat) : new THREE.Mesh(new THREE.BoxGeometry(0.5, e.surface, 0.46), propMat);
       prop.position.set(0, e.surface / 2, posture === "lying" ? 0 : -0.02);
       prop.castShadow = prop.receiveShadow = true;
@@ -232,7 +255,7 @@ export async function render(): Promise<{ count: number; width: number; height: 
     const box = new THREE.Box3().setFromObject(rig.body);
     const headAt = rig.head.getWorldPosition(new THREE.Vector3());
     let centre = box.getCenter(new THREE.Vector3());
-    let radius = Math.max(box.max.y - box.min.y, box.max.z - box.min.z) * 0.56;
+    let radius = Math.max(box.max.y - box.min.y, box.max.z - box.min.z) * (posture === "lateral" ? 0.4 : 0.56);
     let dir = new THREE.Vector3(0, 0.06, 1);
     if (view === "iso") dir = new THREE.Vector3(0.62, 0.22, 1);
     else if (view === "side") dir = new THREE.Vector3(1, 0.06, 0.02);
@@ -254,6 +277,9 @@ export async function render(): Promise<{ count: number; width: number; height: 
       radius = 0.2 * rig.scale;
       dir = new THREE.Vector3(1, 0.1, 0.6);
     } else if (posture === "lying" && view === "front") dir = new THREE.Vector3(0.9, 0.75, 0.55);
+    else if (posture === "lateral" && view === "front") dir = new THREE.Vector3(e.options.up === "right" ? 0.9 : -0.9, 0.62, 0.2);
+    else if (posture === "lateral" && view === "back") dir = new THREE.Vector3(e.options.up === "right" ? -0.9 : 0.9, 0.62, 0.2);
+    else if (posture === "lateral" && view === "head") dir = new THREE.Vector3(e.options.up === "right" ? 0.5 : -0.5, 0.55, -1);
     const cam = new THREE.PerspectiveCamera(26, 1 / tall, radius * 0.05, radius * 60);
     cam.position.copy(centre).addScaledVector(dir.normalize(), (radius / Math.sin((13 * Math.PI) / 180)) * 1.04);
     cam.lookAt(centre);

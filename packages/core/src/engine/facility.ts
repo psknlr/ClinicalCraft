@@ -833,5 +833,12 @@ function checkEmbodiment(e: EquipmentType, path: string): Issue[] {
   if (e.portable === "cart" && (!e.solid || e.tags.includes("wall"))) issues.push(warn(`${path}.portable`, `"${e.id}" is a portable cart but wall-mounted (${!e.solid ? "solid: false" : 'tag "wall"'})`));
   if (e.portable === "handheld" && (w > 1 || d > 1 || e.footprint.h > 1.5)) issues.push(warn(`${path}.portable`, `"${e.id}" is too large (${w}×${d}×${e.footprint.h}) to be handheld`));
   if (e.model && !/\.(glb|gltf)(\.gz)?([?#].*)?$/i.test(e.model.uri)) issues.push(warn(`${path}.model.uri`, `model "${e.model.uri}" is not a .glb/.gltf file`));
+  if (e.manikin) {
+    // a body drawn with the equipment belongs on it: inside the footprint, no higher than the equipment is
+    const m = e.manikin;
+    if (Math.abs(m.x) > w / 2 + SPATIAL_TOLERANCE || Math.abs(m.z) > d / 2 + SPATIAL_TOLERANCE) issues.push(warn(`${path}.manikin`, `the manikin of "${e.id}" is at (${m.x}, ${m.z}), outside its ${w}×${d} footprint`));
+    if (m.y > e.footprint.h + SPATIAL_TOLERANCE) issues.push(warn(`${path}.manikin.y`, `the manikin of "${e.id}" lies ${m.y} m up, above the equipment's height ${e.footprint.h}`));
+    if (e.portable === "handheld") issues.push(warn(`${path}.manikin`, `"${e.id}" is handheld: a body is not carried in a hand`));
+  }
   return issues;
 }

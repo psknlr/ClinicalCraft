@@ -10,14 +10,16 @@
  *
  * Equipment mode renders each equipment type's voxel parts (red outline = declared footprint).
  * Models mode renders each type's GLB model as the web world draws it (docs/BLENDER.md): placed by its catalog
- * reference, lit like the world, a glowing quad where each `screen` part's live display goes; `--compare 1`
+ * reference, lit like the world, a glowing quad where each `screen` part's live display goes, and the body a
+ * type is drawn with (its `manikin`, by the world's own figure code); `--compare 1`
  * puts the voxel parts beside it, `--focus` frames a close-up (a point of the type's frame and a radius, m).
  * `--assets` lists the asset directories searched for a model's `uri` (default: the built-in
  * packages/content/assets).
  * People mode renders the people as the web world draws them (its own code, bundled for the page:
  * packages/web/src/world/npc.ts): a facility's staff in the uniform of their role as their position wears
  * it, a case's patient (standing, sitting, in bed) and companion, or a reference sheet — every role, every
- * theatre position, the looks an appearance can ask for; `--view held` is the first-person hand and its
+ * theatre position, the looks an appearance can ask for; `--posture lateral` (with `--up right`, `--draped 1`,
+ * `--flex <degrees>`, `--asleep 1`) lays them on their side on an operating table; `--view held` is the first-person hand and its
  * stethoscope as the camera sees them, `--view hand` the hand by itself in each of its poses (`--detail 0`: as
  * it is on a figure). Each label gives the figure's triangle count.
  * Facility mode renders a labelled 2D floor plan of one level (default: the default level) —
@@ -106,6 +108,15 @@ async function bundlePeople() {
   aliases.set("__bundle/people.js", outfile);
 }
 if (mode === "people") await bundlePeople();
+/** Models mode draws a type's manikin with the web world's own code too: bundled for the page, three.js left to the page's import map. */
+async function bundleManikin() {
+  const { build } = await import("esbuild").catch(() => ({ build: null }));
+  if (!build) return; // without esbuild the page draws the models and says which manikins it left out
+  const outfile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "cc-preview-")), "manikin.js");
+  await build({ entryPoints: [path.join(root, "scripts/preview/manikin.entry.ts")], bundle: true, format: "esm", platform: "browser", target: "es2022", conditions: ["source"], external: ["three"], outfile, logLevel: "error", absWorkingDir: root });
+  aliases.set("__bundle/manikin.js", outfile);
+}
+if (mode === "models") await bundleManikin();
 const server = http.createServer((req, res) => {
   const rel = decodeURIComponent(new URL(req.url, "http://x").pathname).replace(/^\/+/, "");
   const inDir = aliasedFile(rel);
@@ -154,7 +165,7 @@ try {
     console.log(JSON.stringify({ ok: true, ...info, errors: errors.filter((e) => !/404/.test(e)) }));
   } else if (mode === "people") {
     const q = new URLSearchParams();
-    for (const k of ["facility", "case", "sheet", "only", "view", "cell", "cols", "posture", "distress", "speak", "blink", "breath", "turn", "bg", "detail", "skin"]) if (args[k] !== undefined) q.set(k, args[k]);
+    for (const k of ["facility", "case", "sheet", "only", "view", "cell", "cols", "posture", "up", "draped", "flex", "asleep", "distress", "speak", "blink", "breath", "turn", "bg", "detail", "skin"]) if (args[k] !== undefined) q.set(k, args[k]);
     await page.goto(`http://127.0.0.1:${port}/scripts/preview/people.html?${q}`);
     await rendered();
     const info = await page.evaluate(() => window.__done);

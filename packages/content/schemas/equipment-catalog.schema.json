@@ -616,6 +616,142 @@
             "license"
           ],
           "additionalProperties": false
+        },
+        "manikin": {
+          "type": "object",
+          "properties": {
+            "posture": {
+              "type": "string",
+              "enum": [
+                "standing",
+                "sitting",
+                "lying",
+                "lateral"
+              ]
+            },
+            "sideUp": {
+              "type": "string",
+              "enum": [
+                "left",
+                "right"
+              ]
+            },
+            "draped": {
+              "type": "boolean",
+              "default": false
+            },
+            "flex": {
+              "type": "number",
+              "minimum": 0,
+              "maximum": 25,
+              "default": 0
+            },
+            "asleep": {
+              "type": "boolean",
+              "default": false
+            },
+            "x": {
+              "type": "number",
+              "default": 0
+            },
+            "z": {
+              "type": "number",
+              "default": 0
+            },
+            "y": {
+              "type": "number",
+              "minimum": 0,
+              "default": 0
+            },
+            "rot": {
+              "type": "number",
+              "default": 0
+            },
+            "appearance": {
+              "type": "object",
+              "properties": {
+                "skin": {
+                  "$ref": "#/definitions/HexColor",
+                  "default": "#cba88a"
+                },
+                "hair": {
+                  "$ref": "#/definitions/HexColor",
+                  "default": "#3b3027"
+                },
+                "hairStyle": {
+                  "type": "string",
+                  "enum": [
+                    "short",
+                    "long",
+                    "bald",
+                    "bun",
+                    "ponytail",
+                    "curly",
+                    "bob",
+                    "wavy"
+                  ],
+                  "default": "short"
+                },
+                "shirt": {
+                  "$ref": "#/definitions/HexColor",
+                  "default": "#6d9fba"
+                },
+                "pants": {
+                  "$ref": "#/definitions/HexColor",
+                  "default": "#354442"
+                },
+                "build": {
+                  "type": "string",
+                  "enum": [
+                    "slim",
+                    "average",
+                    "heavy"
+                  ],
+                  "default": "average"
+                },
+                "stature": {
+                  "type": "string",
+                  "enum": [
+                    "infant",
+                    "child",
+                    "teen",
+                    "adult"
+                  ],
+                  "default": "adult"
+                },
+                "gown": {
+                  "type": "boolean",
+                  "default": false
+                },
+                "accessory": {
+                  "type": "string",
+                  "enum": [
+                    "none",
+                    "glasses",
+                    "mask",
+                    "nasal-cannula",
+                    "oxygen-mask",
+                    "sling",
+                    "cap"
+                  ],
+                  "default": "none"
+                },
+                "presentation": {
+                  "type": "string",
+                  "enum": [
+                    "feminine",
+                    "masculine",
+                    "neutral"
+                  ]
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "posture"
+          ],
+          "additionalProperties": false
         }
       },
       "required": [

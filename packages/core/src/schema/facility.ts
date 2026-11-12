@@ -289,6 +289,53 @@ export const EquipmentModelSchema = z
 export type EquipmentModel = z.infer<typeof EquipmentModelSchema>;
 
 /**
+ * A body drawn with the equipment — the patient simulator of a training station, a manikin on a trolley. It is
+ * one of the world's own figures (the people of the world are drawn the same way) and it is nobody: not an actor
+ * of the world model, no record, nothing to examine or to talk to. Visual only, like a model: the footprint stays
+ * the collider and the aim finds the equipment (docs/FACILITIES.md "A body drawn with equipment").
+ */
+export const EquipmentManikinSchema = z
+  .object({
+    /**
+     * How it is placed: `standing`, `sitting`, `lying` on its back — or `lateral`: on its side as for an operation
+     * on the chest (the arm underneath out in front on its board, the upper arm forward on a support, the leg
+     * underneath bent at hip and knee).
+     */
+    posture: z.enum(["standing", "sitting", "lying", "lateral"]),
+    /** `lateral`: the side that is up — the side operated on (default `left`). */
+    sideUp: z.enum(["left", "right"]).optional(),
+    /**
+     * `lateral`: draped for an operation on the side of the chest that is up — undressed, a theatre cap over the
+     * hair, towels round the field, a sheet over the hips and the legs. Otherwise the figure wears what its
+     * appearance says (its own clothes, or a hospital gown).
+     */
+    draped: z.boolean().default(false),
+    /**
+     * `lateral`: how far each half of a flexed table goes down from the break under the chest (degrees): the trunk
+     * bends sideways over it, as it does on the table.
+     */
+    flex: z.number().min(0).max(25).default(0),
+    /** Eyes shut (anaesthetised; a simulator at rest). */
+    asleep: z.boolean().default(false),
+    /**
+     * Where it is, in the type's frame (m from the footprint centre on the floor, rotated with the placement): the
+     * feet of one standing or sitting; the middle of what one lying on its back lies on; of one on its side, the
+     * middle of the table under the chest (where a flexed table breaks).
+     */
+    x: z.number().default(0),
+    z: z.number().default(0),
+    /** Height (m above the placement's floor) of what it stands on, of the seat or of the surface it lies on. */
+    y: z.number().min(0).default(0),
+    /** Turned about the vertical (degrees) as a placement is: at 0 one standing or sitting faces +Z, the head of one lying is towards −Z. */
+    rot: z.number().default(0),
+    /** Its looks (default: an adult of average build). */
+    appearance: AppearanceSchema.partial().optional(),
+  })
+  .strict()
+  .refine((m) => m.posture === "lateral" || (m.sideUp === undefined && !m.draped && m.flex === 0), { message: "`sideUp`, `draped` and `flex` describe a manikin on its side (`posture: \"lateral\"`)" });
+export type EquipmentManikin = z.infer<typeof EquipmentManikinSchema>;
+
+/**
  * Default interaction reach (m from the footprint) by interaction kind, used
  * when an equipment type has no `reach` (`talk`: staff conversation; patients
  * use the contact range 1.5).
@@ -352,6 +399,8 @@ export const EquipmentTypeSchema = z
     behavior: DeviceBehaviorSchema.optional(),
     /** Optional GLB/glTF model (visual only). */
     model: EquipmentModelSchema.optional(),
+    /** A body drawn with the equipment by the world's figure kit (visual only): a patient simulator, a manikin. */
+    manikin: EquipmentManikinSchema.optional(),
   })
   .strict();
 export type EquipmentType = z.infer<typeof EquipmentTypeSchema>;

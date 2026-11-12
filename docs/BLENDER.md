@@ -17,7 +17,7 @@ The parts:
 | Built-in models | `scripts/blender/build.py`, `builtin_models.py` | builds a model for every built-in equipment type (97) into `packages/content/assets/models` and writes each reference into its catalog |
 | blender-mcp | `.mcp.json` (Claude Code project server) | lets Claude Code inspect and change a running Blender (`execute_blender_code`, viewport screenshots, Poly Haven / Sketchfab / generated assets) |
 | Inspector | `clinicalcraft assets inspect <file.glb> --type <id>` | checks the file the way the renderer will load it (ASSETS.md) |
-| Previewer | `node scripts/preview/render.mjs models …` | draws the built models as the web world does — placed by their catalog references, lit like the world, a glowing quad where each live screen goes, the voxel parts beside them with `--compare 1` — in headless Chromium: no Blender needed to look at a model |
+| Previewer | `node scripts/preview/render.mjs models …` | draws the built models as the web world does — placed by their catalog references, lit like the world, a glowing quad where each live screen goes, the body a type is drawn with (its `manikin`), the voxel parts beside them with `--compare 1` — in headless Chromium: no Blender needed to look at a model |
 
 The built-in models and SurgeryCraft's (all 75 of its types, `tools/blender/` in that
 repository) are built with these: most are refined from their voxel parts, and the
@@ -122,6 +122,23 @@ built-in `packages/content/assets`; add a pack's `content/assets`), `--view` is
 each model, `--cell` and `--cols` size the sheet. Each cell is labelled with the
 type and its triangle count; a type whose model is missing is drawn from its voxel
 parts and marked.
+
+### A model round a body
+
+A type with a `manikin` (FACILITIES.md "A body drawn with equipment") has a body the
+world draws — one of its own figures — and a model that is everything else. The body
+is not modelled: the model is built round it, from where the figure's own code puts
+it. In the web package, `buildManikin(manikin, { x: 0, y: 0, z: 0, rot: 0 }, id)`
+builds the rig in the type's frame, and `placedPoint(rig, p)` / `placedHeadPoint(rig, p)`
+(`src/world/manikin.ts`) give the place of a point of the figure's own frame once the
+body is bent over its table and laid down: a joint from `rig.skeleton`, a point of
+the bare trunk's surface from `trunkPoint(height, angle, rig.frame, 0)`
+(`figure/body.ts`), the mouth. A tool writes those numbers to a file and the builder
+reads it — SurgeryCraft's `tools/figure-fit.mts` and `tools/blender/thoracic_models.py`
+do this for its thoracoscopy station (supports under the arms, a ring under the head,
+ports through the chest wall), and its checks fail when the file is no longer what the
+figure kit says. The previewer draws the body with the model, so the fit is seen
+without starting the world.
 
 ### Headless
 
