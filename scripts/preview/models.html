@@ -77,11 +77,22 @@ async function modelOf(e) {
   return null;
 }
 
+/** The body a type is drawn with (`manikin`): one of the world's figures, built by the world's own code (a bundle render.mjs serves). */
+let buildManikin = null;
+if (eqs.some((e) => e.manikin)) buildManikin = (await import("/__bundle/manikin.js").catch(() => null))?.buildManikin ?? null;
+function manikin(e) {
+  const g = new THREE.Group();
+  if (!e.manikin) return g;
+  if (!buildManikin) { if (!warnings.includes(`${e.id}: manikin not drawn (no esbuild)`)) warnings.push(`${e.id}: manikin not drawn (no esbuild)`); return g; }
+  g.add(buildManikin({ draped: false, flex: 0, asleep: false, x: 0, z: 0, y: 0, rot: 0, ...e.manikin }, { x: 0, y: 0, z: 0, rot: 0 }, e.id).root);
+  return g;
+}
+
 const cells = [];
 for (const e of eqs) {
   const m = await modelOf(e).catch((err) => { warnings.push(`${e.id}: ${err}`); return null; });
-  if (compare || !m) cells.push({ e, label: `${e.id} · voxels`, content: [voxels(e), screens(e)], warn: !m && !!e.model });
-  if (m) cells.push({ e, label: `${e.id} · ${Math.round(m.triangles)} tris`, content: [m.group, screens(e)] });
+  if (compare || !m) cells.push({ e, label: `${e.id} · voxels`, content: [voxels(e), screens(e), manikin(e)], warn: !m && !!e.model });
+  if (m) cells.push({ e, label: `${e.id} · ${Math.round(m.triangles)} tris`, content: [m.group, screens(e), manikin(e)] });
 }
 const cols = Math.max(1, Math.min(Number(params.get("cols")) || (compare ? 4 : 5), cells.length || 1));
 const rows = Math.max(1, Math.ceil(cells.length / cols));

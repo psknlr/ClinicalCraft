@@ -1,13 +1,15 @@
 /**
  * The people of the world — patients, the people with them and staff — as figures of real proportions built in
  * code (`figure/`): an appearance (skin, hair and its style, clothes, build, stature, a hospital gown, an
- * accessory), a posture (standing, sitting, lying in bed) and what is worn (`figure/wear.ts`: the uniform of a
- * role as a position wears it). A rig is three meshes of one material — limbs, the trunk (it breathes) and the
- * head (it turns to the learner, its jaw moves when its owner speaks, its eyes blink) — plus an unseen box that
- * takes the aim. Distress flushes the skin.
+ * accessory), a posture (standing, sitting, lying in bed — or on their side on an operating table, draped for an
+ * operation on the chest) and what is worn (`figure/wear.ts`: the uniform of a role as a position wears it). A
+ * rig is three meshes of one material — limbs, the trunk (it breathes) and the head (it turns to the learner,
+ * its jaw moves when its owner speaks, its eyes blink) — plus an unseen box that takes the aim. Distress flushes
+ * the skin.
  */
-import { BoxGeometry, Group, Mesh, MeshBasicMaterial, MeshStandardMaterial, type BufferAttribute } from "three";
-import { HEIGHT, STATURE_SCALE as SCALES, type Posture as FigurePosture } from "./figure/anatomy.js";
+import { BoxGeometry, Group, Matrix4, Mesh, MeshBasicMaterial, MeshStandardMaterial, Vector3, type BufferAttribute } from "three";
+import { HEIGHT, LATERAL, STATURE_SCALE as SCALES, type Frame, type Posture as FigurePosture, type Skeleton } from "./figure/anatomy.js";
+import type { SideBend } from "./figure/bend.js";
 import { trunkAt } from "./figure/body.js";
 import { buildFigure } from "./figure/figure.js";
 import { blinkRound, MOVES } from "./figure/head.js";
@@ -46,6 +48,14 @@ export interface PersonOptions {
   seed?: string;
   /** Height against the stature's own (default 1). */
   height?: number;
+  /** On their side (`lateral`): the side that is up (default the left). */
+  up?: "left" | "right";
+  /** On their side: undressed and draped for an operation on the side of the chest that is up. */
+  draped?: boolean;
+  /** On their side: how far each half of a flexed table goes down from the break under the chest (degrees; default 0). */
+  flex?: number;
+  /** Eyes shut (anaesthetised; a simulator at rest). */
+  asleep?: boolean;
 }
 
 export interface PersonRig {
@@ -70,6 +80,10 @@ export interface PersonRig {
   phase: number;
   /** Triangles drawn. */
   triangles: number;
+  /** What the figure was built from — its measurements, its joints (upright frame) and its bend over a flexed table: a model fitted to the body reads them (`manikin.ts`). */
+  frame: Frame;
+  skeleton: Skeleton;
+  bend: SideBend | null;
 }
 
 /** Flushed, sweaty skin: the colour skin goes towards and how far, and the sheen it gains. */
@@ -148,9 +162,9 @@ export function buildPerson(appearance: AppearanceLike | undefined, opts: Person
   const ap: Required<Omit<AppearanceLike, "presentation">> & Pick<AppearanceLike, "presentation"> = { ...DEFAULT_APPEARANCE };
   for (const [k, v] of Object.entries(appearance ?? {})) if (v !== undefined && v !== null) (ap as Record<string, unknown>)[k] = v;
   const feminine = feminineOf(ap.presentation ?? presentationOf(ap.hairStyle));
-  const lying = opts.posture === "lying";
-  const seat = opts.surfaceY ?? (lying ? 0.9 : 0.5);
-  const fig = buildFigure({ ...ap, posture: opts.posture, seat, wear: opts.wear ?? PLAIN, pillow: lying ? PILLOW : 0, feminine });
+  const lying = opts.posture === "lying", lateral = opts.posture === "lateral";
+  const seat = opts.surfaceY ?? (lying || lateral ? 0.9 : 0.5);
+  const fig = buildFigure({ ...ap, posture: opts.posture, seat, wear: opts.wear ?? PLAIN, pillow: lying ? PILLOW : 0, feminine, up: opts.up, draped: opts.draped, flex: ((opts.flex ?? 0) * Math.PI) / 180 });
   const scale = fig.frame.scale * (opts.height ?? 1);
   const material = figureMaterial();
 
@@ -174,10 +188,11 @@ export function buildPerson(appearance: AppearanceLike | undefined, opts: Person
   const torso = part(fig.chest, body);
   const head = new Group();
   head.position.set(fig.pivot[0], fig.pivot[1], fig.pivot[2]);
+  head.rotation.z = fig.pivotTurn;
   head.scale.setScalar(fig.frame.head);
   body.add(head);
   const face = part(fig.head, head);
-  face.morphTargetInfluences = [0, 0, 0];
+  face.morphTargetInfluences = opts.asleep ? [0, 1, blinkRound(1)] : [0, 0, 0];
   if (fig.clear) {
     const clear = new Mesh(fig.clear, CLEAR_MATERIAL);
     clear.userData.figure = true;
@@ -191,8 +206,8 @@ export function buildPerson(appearance: AppearanceLike | undefined, opts: Person
   const aim = new Mesh(AIM_BOX, AIM_MATERIAL);
   const knee = fig.skeleton.legs[0].mid[2];
   // (someone in bed: as high over the mattress as the bed's rails, so the aim from above finds the patient before the bed)
-  const z0 = -0.14, z1 = opts.posture === "sitting" ? knee + 0.1 : lying ? 0.46 : 0.17;
-  const halfW = (lying ? 0.3 : 0.25) * (0.5 + 0.5 * fig.frame.wide);
+  const z0 = -0.14, z1 = opts.posture === "sitting" ? knee + 0.1 : lying ? 0.46 : lateral ? 0.4 : 0.17;
+  const halfW = (lying || lateral ? 0.3 : 0.25) * (0.5 + 0.5 * fig.frame.wide);
   aim.scale.set(halfW * 2, top, z1 - z0);
   aim.position.set(0, top / 2, (z0 + z1) / 2);
   body.add(aim);
@@ -210,10 +225,20 @@ export function buildPerson(appearance: AppearanceLike | undefined, opts: Person
     body.rotation.x = -Math.PI / 2;
     body.position.set(0, seat + (back - 0.012) * scale, LIE_FEET * scale);
     tagY = seat + 0.95;
+  } else if (lateral) {
+    // on their side: built upright and laid down with the head towards −Z — the side that is up to +Y, the face
+    // to −X (the left side up) or +X (the right) — the surface under the chest, where a flexed table breaks, at
+    // the root's origin and the middle of the table under it (`LATERAL`)
+    const up = opts.up === "right" ? -1 : 1;
+    const lay = new Matrix4().makeBasis(new Vector3(0, up, 0), new Vector3(0, 0, -1), new Vector3(-up, 0, 0));
+    body.quaternion.setFromRotationMatrix(lay);
+    const under = new Vector3(-up * LATERAL.rest, LATERAL.break, LATERAL.shift).multiplyScalar(scale).applyMatrix4(lay);
+    body.position.set(-under.x, seat - under.y, -under.z);
+    tagY = seat + 0.95;
   }
 
   const phase = (hashString(opts.seed ?? "someone") % 1000) / 1000;
-  return { root, body, head, torso, face, tagY, headBaseY: fig.pivot[1], scale, posture: opts.posture, skin, distressed: false, phase, triangles: fig.triangles };
+  return { root, body, head, torso, face, tagY, headBaseY: fig.pivot[1], scale, posture: opts.posture, skin, distressed: false, phase, triangles: fig.triangles, frame: fig.frame, skeleton: fig.skeleton, bend: fig.bend };
 }
 
 /** Disposes what a rig owns: its geometries (the materials are shared by every figure). */

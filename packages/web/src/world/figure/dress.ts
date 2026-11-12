@@ -2,11 +2,11 @@
  * Clothes on the trunk (`body.ts` shells) and what makes them read as clothes: necklines and their trims,
  * collars, the tailored white coat (lapels, buttons, pockets, a half-belt behind), the sterile gown, a belt, a
  * name tag and an identity card, pens, a nurse's fob watch, a dosimeter, reflective bands, the stethoscope
- * round the neck — and cloth that falls: a gown over a sitting patient's lap, the covers over one in bed.
- * Everything here lies on the trunk and so breathes with it.
+ * round the neck — and cloth that falls: a gown over a sitting patient's lap, the covers over one in bed, the
+ * drapes of an operation on the chest. Everything here lies on the trunk and so breathes with it.
  */
 import { Matrix4, Vector3 } from "three";
-import { ANKLE, HIP, NECK, type Frame, type Skeleton } from "./anatomy.js";
+import { ANKLE, HIP, LATERAL, NECK, type Frame, type Skeleton } from "./anatomy.js";
 import { addShell, limbPoint, trunkAt, trunkPoint, type Fit } from "./body.js";
 import { mix, paint as hex, rgb, shade, type Paint, type Painter, type Sculpt, type Station, type V3 } from "./sculpt.js";
 import { addChestPiece, addEarTube, addTubing, STEM_END, STEEL } from "./stethoscope.js";
@@ -394,8 +394,11 @@ export function addChestDetails(sc: Sculpt, f: Frame, lift: number, spec: { wear
 /* Cloth that falls over the body                                      */
 /* ------------------------------------------------------------------ */
 
-/** A height above a plane from capsules lying on it: [x0, y0, x1, y1, height of the axis, radius]. */
-type Capsule = readonly [number, number, number, number, number, number];
+/**
+ * A height above a plane from capsules lying on it: [x0, y0, x1, y1, height of the axis, radius], and for one
+ * that slopes or tapers the height and the radius at its far end.
+ */
+type Capsule = readonly [number, number, number, number, number, number] | readonly [number, number, number, number, number, number, number, number];
 
 /** Cloth over capsules: a grid of heights, eased so the cloth spans the hollows between them. */
 function drape(nx: number, ny: number, x0: number, x1: number, y0: number, y1: number, floor: number, capsules: readonly Capsule[], slack = 0.008): number[][] {
@@ -406,10 +409,11 @@ function drape(nx: number, ny: number, x0: number, x1: number, y0: number, y1: n
     for (let i = 0; i < nx; i++) {
       const x = x0 + ((x1 - x0) * i) / (nx - 1);
       let top = floor;
-      for (const [ax, ay, bx, by, z, r] of capsules) {
+      for (const [ax, ay, bx, by, z0, r0, z1 = z0, r1 = r0] of capsules) {
         const dx = bx - ax, dy = by - ay;
         const t = Math.min(1, Math.max(0, ((x - ax) * dx + (y - ay) * dy) / Math.max(1e-9, dx * dx + dy * dy)));
         const d2 = (x - ax - dx * t) ** 2 + (y - ay - dy * t) ** 2;
+        const z = z0 + (z1 - z0) * t, r = r0 + (r1 - r0) * t;
         if (d2 < r * r) top = Math.max(top, z + Math.sqrt(r * r - d2) + slack);
       }
       row.push(top);
@@ -474,6 +478,82 @@ export function addBlanket(sc: Sculpt, sk: Skeleton, f: Frame, lift: number): vo
       return { rgb: shade(base, fold ? 1 : 0.97 + 0.03 * Math.sin(y * 150) + 0.4 * Math.min(0.05, Math.max(0, z - bed) * 0.3)), gloss: 0 };
     },
     { thickness: 0.006 },
+  );
+}
+
+/** The blue of a theatre drape and the green of the towels round a field. */
+export const THEATRE_DRAPE = "#3f84b6";
+export const THEATRE_TOWEL = "#4e9a86";
+
+/**
+ * The field of an operation on the side of the chest, by height (standing adult) and by how far round the trunk
+ * from the middle of the side (radians): bare skin from the costal margin to under the armpit, far enough to the
+ * front and to the back for the incisions of a thoracoscopy.
+ */
+export const CHEST_FIELD = { low: 1.1, high: 1.33, round: 0.86 } as const;
+
+/**
+ * Draped for an operation on the side of the chest. The figure is built upright and laid on its side by its rig,
+ * so `up`·X is up off the table: four towels round the field (`CHEST_FIELD`) — under the armpit, below the
+ * costal margin, along the front and along the back — and a sheet over the hips and the legs, the pillow between
+ * the knees under it, hanging over the sides and the foot of the table (`LATERAL`).
+ */
+export function addThoracicDrapes(sc: Sculpt, sk: Skeleton, f: Frame, up: 1 | -1): void {
+  const on: On = (y, a, proud = 0) => trunkPoint(y, a, f, 0, undefined, proud);
+  const side = (up * Math.PI) / 2;
+  const towel = rgb(THEATRE_TOWEL);
+  // a huckaback towel: the faintest ribs across it
+  const towelPaint: Painter = (_x, y) => ({ rgb: shade(towel, 0.97 + 0.03 * Math.sin(y * 420)), gloss: 0 });
+  const wrap = CHEST_FIELD.round + 0.46;
+  panel(sc, on, 15, 3, (u, v) => [CHEST_FIELD.low - 0.07 + 0.075 * v, side + (u * 2 - 1) * wrap], towelPaint, 0.003, 0.003);
+  panel(sc, on, 15, 3, (u, v) => [CHEST_FIELD.high - 0.005 + 0.07 * v, side + (u * 2 - 1) * wrap], towelPaint, 0.003, 0.003);
+  for (const s of [-1, 1]) panel(sc, on, 4, 8, (u, v) => [CHEST_FIELD.low - 0.04 + (CHEST_FIELD.high - CHEST_FIELD.low + 0.075) * v, side + s * (CHEST_FIELD.round + 0.46 * u)], towelPaint, 0.0044, 0.003);
+
+  // the sheet: heights above the middle of the body over the trunk below the field, the legs and the pillow
+  const floor = -LATERAL.rest;
+  const top = CHEST_FIELD.low - 0.025;
+  const caps: Capsule[] = [];
+  for (let y = 0.775; y < top + 0.03; y += 0.04) {
+    const [rx, fr, bk] = trunkAt(y, f);
+    const r = Math.min(rx, (fr + bk) / 2) * 0.86;
+    caps.push([fr - r, y, r - bk, y, rx - r, r]);
+  }
+  let knee = { z: 0, y: 0 };
+  for (const index of [0, 1] as const) {
+    const leg = sk.legs[index];
+    const h = (x: number) => up * (index === 0 ? x : -x);
+    const a = limbPoint(leg, 0), k = limbPoint(leg, 1), e = limbPoint(leg, 2);
+    // (a thigh is thickest a third of the way down: two pieces, each a little fuller than the leg)
+    const m = limbPoint(leg, 0.4);
+    caps.push([a.z, a.y, m.z, m.y, h(a.x), 0.1 * f.limb, h(m.x), 0.1 * f.limb], [m.z, m.y, k.z, k.y, h(m.x), 0.1 * f.limb, h(k.x), 0.07 * f.limb], [k.z, k.y, e.z, e.y, h(k.x), 0.072 * f.limb, h(e.x), 0.05 * f.limb]);
+    const toe = new Vector3(...leg.along).normalize().multiplyScalar(0.17).add(e);
+    caps.push([e.z, e.y, toe.z, toe.y, h(e.x), 0.052, h(toe.x), 0.04]);
+    if (h(k.x) > 0) knee = { z: k.z, y: k.y };
+  }
+  // the pillow under the upper leg, from above the knee to the ankle
+  caps.push([knee.z + 0.03, knee.y + 0.12, knee.z - 0.01, knee.y - 0.3, -0.035, 0.105]);
+
+  const w0 = LATERAL.shift - LATERAL.tableHalf, w1 = LATERAL.shift + LATERAL.tableHalf;
+  const u0 = LATERAL.foot, u1 = top;
+  const nx = 23, ny = 40, fall = 4;
+  const h = drape(nx, ny, w0, w1, u0, u1, floor, caps, 0.011);
+  const blue = rgb(THEATRE_DRAPE);
+  const drop = 0.34;
+  sc.sheet(
+    nx + 2 * fall,
+    ny + fall,
+    (i, j) => {
+      // over the back edge, the front edge and the foot of the table the sheet hangs
+      const ti = Math.min(nx - 1, Math.max(0, i - fall)), tj = Math.max(0, j - fall);
+      const di = i < fall ? (fall - i) / fall : i >= nx + fall ? (i - nx - fall + 1) / fall : 0;
+      const dj = j < fall ? (fall - j) / fall : 0;
+      const w = w0 + ((w1 - w0) * ti) / (nx - 1) + (i < fall ? -1 : 1) * 0.014 * Math.sin((di * Math.PI) / 2);
+      const u = u0 + ((u1 - u0) * tj) / (ny - 1) - 0.014 * Math.sin((dj * Math.PI) / 2);
+      const height = h[tj]![ti]! - drop * Math.max(di, dj);
+      return [up * height, u, w];
+    },
+    (x, y) => ({ rgb: shade(blue, 0.96 + 0.04 * Math.sin(y * 130) + 0.35 * Math.min(0.06, Math.max(0, up * x - floor) * 0.25)), gloss: 0 }),
+    { thickness: 0.005, flip: up === 1 },
   );
 }
 

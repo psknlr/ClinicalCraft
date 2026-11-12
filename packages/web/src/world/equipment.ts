@@ -11,6 +11,7 @@ import { TROLLEY_TYPES } from "@clinicalcraft/world";
 import type { InteractionTarget } from "../contracts.js";
 import type { BuildContext, PlacementInfo, TargetRecord } from "./context.js";
 import { DEG, partBox, placementBox, rotateXZ, rotatedFootprint, unionBox } from "./geometry.js";
+import { buildManikin } from "./manikin.js";
 import { beginPortable } from "./portable.js";
 import { roomAt } from "./region.js";
 import { createScreenTexture, type ScreenKind } from "./screens.js";
@@ -436,6 +437,9 @@ export function buildPlacements(ctx: BuildContext): void {
     }
     finishFallback?.();
     if (portable) for (const m of portable.finish()) ctx.pickables.push(m);
+    // a body drawn with the equipment (a patient simulator): one of the world's figures, where the type puts it —
+    // beside the model and the voxel parts, never hidden with either, and never an aim target of its own
+    if (type.manikin) (portable?.record.inner ?? ctx.root).add(buildManikin(type.manikin, { x: p.x, y, z: p.z, rot }, p.id).root);
 
     if (type.light) {
       ctx.lights.push({

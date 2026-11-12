@@ -5,7 +5,9 @@ UI framework). The world is built from a facility JSON and the equipment
 catalogs; patients and staff are figures of real proportions built in code
 (`src/world/figure/`: skin, hair and its style, build and stature from the
 appearance; the uniform of a role as a position wears it; standing, sitting,
-in bed under the covers; faces of one skin whose lids blink and whose lips
+in bed under the covers — or, as the body an equipment type is drawn with
+(a station's patient simulator: `manikin.ts`), on its side on a flexed table,
+draped for an operation on the chest; faces of one skin whose lids blink and whose lips
 part over their teeth, a woman's features or a man's; hair in locks — long
 and layered, in waves, bobbed, cropped, tied back; they breathe, turn to the
 learner and speak),
@@ -78,7 +80,7 @@ touch screens.
 
 | folder (`src/`) | |
 |---|---|
-| `world/` | voxel renderer — `index.ts` builds the `WorldApi` over a `VoxelWorld` (`voxel-world.ts`) and its parts: `stage.ts` (renderer, scene, lights), `facility-build.ts`, `people.ts` (patients and staff), `doors.ts`, `rides.ts`, `autowalk.ts`, `input.ts`, `interaction.ts`, `overlay.ts`, `blocks.ts`, `carts.ts`, `culling.ts`, `frame-loop.ts`, `map-data.ts`, `qa.ts`; equipment meshes (and optional GLB models, `models.ts`), live screens and the pictures of the others (`screens.ts`; a thoracoscope's picture: `scope-picture.ts`), NPCs, map, build zone; levels (`levels.ts`: storeys, stairs `stairs.ts`, elevators `elevator.ts`, level culling, cross-level autopilot `route.ts`); colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |
+| `world/` | voxel renderer — `index.ts` builds the `WorldApi` over a `VoxelWorld` (`voxel-world.ts`) and its parts: `stage.ts` (renderer, scene, lights), `facility-build.ts`, `people.ts` (patients and staff), `doors.ts`, `rides.ts`, `autowalk.ts`, `input.ts`, `interaction.ts`, `overlay.ts`, `blocks.ts`, `carts.ts`, `culling.ts`, `frame-loop.ts`, `map-data.ts`, `qa.ts`; equipment meshes (and optional GLB models, `models.ts`; the body a type is drawn with, `manikin.ts`), live screens and the pictures of the others (`screens.ts`; a thoracoscope's picture: `scope-picture.ts`), NPCs, map, build zone; levels (`levels.ts`: storeys, stairs `stairs.ts`, elevators `elevator.ts`, level culling, cross-level autopilot `route.ts`); colliders, wall layout, physics, path-finding and build-zone rules come from `@clinicalcraft/world` (`geometry.ts`, `physics.ts`, `pathfind.ts`, `buildzone.ts` here re-export it) |
 | `app/` | app controller, session bridge, settings, LLM modes, persistence, local assets, external control (`external.ts`: the world bridge for `clinicalcraft mcp --attach`) |
 | `ui/` | HUD, intro/case library, approval dialog, panels (conversation, orders, report, monitor, board, journal, debrief, map with floor tabs, elevator, atlas, autopilot, inventory, help, pause) |
 | `atlas/` | anatomy viewer (needs the local-only anatomy model) |

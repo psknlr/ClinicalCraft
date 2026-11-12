@@ -8,14 +8,18 @@
  * Standing, the arms hang a little bent with the palms towards the thighs, or (hands `clasped`) are held
  * one hand over the other in front of the chest, as someone scrubbed keeps them. Sitting, the feet are planted when the seat is
  * low enough and hang when it is not, and the hands rest on the thighs. Lying, the figure is built upright and
- * laid down by its rig: legs straight, the arms a little away from the trunk.
+ * laid down by its rig: legs straight, the arms a little away from the trunk. On their side (`lateral`, as for
+ * an operation on the chest), likewise built upright and laid down: the arm that is underneath out in front on
+ * its board, the palm up; the arm that is up straight forward over it on a padded support at shoulder height, no
+ * further from the trunk than a right angle; the leg underneath bent at hip and knee, the upper leg nearly
+ * straight on the pillow between them — and over the break of a flexed table the trunk bends sideways (`bend.ts`).
  */
 import { Vector3 } from "three";
 import type { V3 } from "./sculpt.js";
 
 export type Build = "slim" | "average" | "heavy";
 export type Stature = "infant" | "child" | "teen" | "adult";
-export type Posture = "standing" | "sitting" | "lying";
+export type Posture = "standing" | "sitting" | "lying" | "lateral";
 
 /** Height of the top of the head of a standing adult. */
 export const HEIGHT = 1.74;
@@ -102,6 +106,8 @@ export interface Limb {
 /** Where everything is, for one posture (left limbs: +X; the right side mirrors unless a pose says otherwise). */
 export interface Skeleton {
   posture: Posture;
+  /** On their side: which side is up (1 the left, −1 the right). */
+  up?: 1 | -1;
   /** Height of the hip joints (the trunk hangs from here: `lift` = this − HIP). */
   hip: number;
   lift: number;
@@ -130,8 +136,17 @@ export function bend(root: V3, end: V3, a: number, b: number, pole: V3): V3 {
 /** How far the hand on top lies out from the one under it when two are held together: a hand's thickness. */
 const CLASP_OVER = 0.03;
 
-/** How the arms are held. */
-export type ArmPose = "relaxed" | "clasped" | "lap" | "rest" | "sling";
+/** How the arms are held (`board`, `gutter`: the lower and the upper arm of someone on their side). */
+export type ArmPose = "relaxed" | "clasped" | "lap" | "rest" | "sling" | "board" | "gutter";
+
+/**
+ * Someone on their side on an operating table, in the figure's own (upright) frame: how far below the middle of
+ * the body the surface they lie on is (the shoulder underneath sinks a little into the mattress), how far in
+ * front of the middle of the body the middle of the table is (they lie with the back near its edge, so that the
+ * bent knee stays on it), half the width of the table with its mattress, the height of the body the table
+ * breaks under (about the lower end of the breastbone), and where the foot of the table is (past the soles).
+ */
+export const LATERAL = { rest: 0.196, shift: 0.07, tableHalf: 0.29, break: 1.2, foot: -0.08 } as const;
 
 /**
  * One arm of a pose (left: `side` = 1). The right arm is this mirrored, so poses are given for the left. `over`:
@@ -162,6 +177,22 @@ function arm(pose: ArmPose, lift: number, f: Frame, seatTop: number, over = fals
     const mid = bend(root, end, upper, fore, [0.55, -0.2, -0.8]);
     return { root, mid, end, along: v(-0.08, -0.12, 0.99), face: v(0, -1, -0.1) };
   }
+  if (pose === "board") {
+    // on their side, the arm underneath: brought forward on its board at the level of the mattress, the shoulder
+    // drawn forward from under the trunk, the elbow all but straight, the palm up (towards the body's middle)
+    const from = v(sx - 0.014, sy, 0.03);
+    const end = v(sx - 0.012, sy + 0.1, 0.56);
+    const mid = bend(from, end, upper, fore, [0, -1, 0.2]);
+    return { root: from, mid, end, along: v(0, 0.2, 0.98), face: v(-1, 0, 0) };
+  }
+  if (pose === "gutter") {
+    // on their side, the arm that is up: straight forward on a padded support at shoulder height, over the arm
+    // underneath — the angle with the trunk no more than a right angle, the elbow a little bent, the palm down
+    // on the pad — so that the face and the airway stay free
+    const end = v(sx - 0.02, sy + 0.075, 0.52);
+    const mid = bend(root, end, upper, fore, [0, -1, 0.15]);
+    return { root, mid, end, along: v(-0.03, 0.22, 0.975), face: v(-1, 0, 0) };
+  }
   if (pose === "rest") {
     // lying (the rig lays the figure on its back): the arm along the trunk, on top of the covers
     const out = 0.045 + (f.wide - 1) * 0.12 + f.belly * 0.4;
@@ -175,14 +206,32 @@ function arm(pose: ArmPose, lift: number, f: Frame, seatTop: number, over = fals
   return { root, mid, end, along: v(0.04, -0.985, 0.165), face: v(-0.985, -0.05, 0.16) };
 }
 
-/** The joints of a posture (`seat`: the seat's or the mattress's top in the figure's own units). */
-export function skeletonOf(posture: Posture, f: Frame, seat: number, arms: ArmPose | [ArmPose, ArmPose] = "relaxed"): Skeleton {
+/** A leg from the hip: the thigh `flex` forward of straight down, the knee bent by `knee` (radians), the knee and the ankle `out` further from the middle. */
+function legFrom(hx: number, hip: number, thigh: number, shin: number, flex: number, knee: number, out: readonly [number, number], foot: readonly [V3, V3]): Limb {
+  const mid = v(hx + out[0], hip - thigh * Math.cos(flex), thigh * Math.sin(flex));
+  const a = flex - knee;
+  return { root: v(hx, hip, 0), mid, end: v(hx + out[1], mid[1] - shin * Math.cos(a), mid[2] + shin * Math.sin(a)), along: foot[0], face: foot[1] };
+}
+
+/**
+ * The joints of a posture (`seat`: the seat's or the mattress's top in the figure's own units; `up`: of someone
+ * on their side, the side that is up — 1 the left, −1 the right).
+ */
+export function skeletonOf(posture: Posture, f: Frame, seat: number, arms: ArmPose | [ArmPose, ArmPose] = "relaxed", up: 1 | -1 = 1): Skeleton {
   const thigh = THIGH * f.legs, shin = SHIN * f.legs;
   const standHip = ANKLE + shin + thigh;
   const hx = HIP_X * f.wide * f.hips;
   let hip = standHip;
   let leg: Limb;
   let pose: ArmPose | [ArmPose, ArmPose] = arms;
+  if (posture === "lateral") {
+    // the leg underneath lies on the mattress, bent at hip and knee; the upper one nearly straight on the pillow
+    // between them (limbs are given as left ones: `out` is away from the middle, so down for the one underneath)
+    const under = legFrom(hx, hip, thigh, shin, 0.73, 1.48, [0.03, 0.066], [v(0.05, -0.62, 0.78), v(0, 0.78, 0.62)]);
+    const over = legFrom(hx, hip, thigh, shin, 0.21, 0.35, [0.05, 0.07], [v(0.06, -0.5, 0.86), v(0, 0.86, 0.5)]);
+    const lower = arm("board", 0, f, 0), upper = arm("gutter", 0, f, 0);
+    return { posture, up, hip, lift: 0, legs: up === 1 ? [over, under] : [under, over], arms: up === 1 ? [upper, lower] : [lower, upper] };
+  }
   if (posture === "sitting") {
     // the thigh rests on the seat: the hip joint a thigh's half-thickness above it
     hip = seat + 0.078 * f.limb;
