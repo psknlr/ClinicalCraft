@@ -388,6 +388,12 @@ export class EmbodiedSession {
       stateOf: (id) => w().stateOf(id),
       screenOf: (id) => w().screenOf(id),
       runsOf: (id) => w().runsOf(id),
+      setScenario: (id, scenario) => {
+        let set = false;
+        self.control(() => (set = w().setScenario(id, scenario)));
+        return set;
+      },
+      scenarioOf: (id) => w().scenarioOf(id),
       patientPlace: () => w().patientPlace(),
       patientMonitor: () => w().patientMonitor(),
       screenInView: (actorId) => w().screenInView(actorId),
@@ -1148,6 +1154,7 @@ export function delegationText(r: DelegationResult, locale: string, world: World
   const task = taskLabel(locale, r.task);
   if (r.message === "no-item") return rt(locale, "delegate.noItem", { task, what: task });
   if (r.message === "no-target") return rt(locale, "delegate.needTarget", { task, param: rt(locale, r.task === "give_intervention" ? "delegate.param.intervention" : "delegate.param.target") });
+  if (r.message === "no-operation") return rt(locale, "delegate.needTarget", { task, param: rt(locale, "delegate.param.operation") });
   if (r.message === "target-not-intervention") {
     const id = world.resolveId(r.asked ?? "");
     const e = id ? world.entity(id) : null;

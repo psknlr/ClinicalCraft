@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { AppearanceSchema, CaseSettingSchema } from "./case.js";
-import { CapabilitySchema, ConditionSchema, COUNT_STAGES, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema, StaffPositionSchema } from "./common.js";
+import { CapabilitySchema, ConditionSchema, COUNT_STAGES, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema, StaffPositionSchema, type StaffPosition } from "./common.js";
 
 /**
  * Virtual environment — facilities, rooms, equipment and materials.
@@ -103,7 +103,12 @@ export type ActorRole = z.infer<typeof ActorRoleSchema>;
  * device of that type (a drainage unit on water seal, connected to a chest tube that is in);
  * `linked` this device is connected by instance (an operation's `link`, or an item it `uses` with `link`) to a
  * device of `type` (in `state`) — directly, or through a device of type `via` it is connected to (a training
- * station: the chest tube in its chest, and through it the drainage unit on that tube).
+ * station: the chest tube in its chest, and through it the drainage unit on that tube);
+ * `position` the actor holds one of these staff positions (the anaesthetist, the assistant surgeon: finer than a
+ * role — the learner's own body has none);
+ * `scenario` this device's run is under one of these scenarios (its behaviour's `scenarios`, arranged by the
+ * instructor and hidden from whoever acts) — read only by an operation's `outcomes`, never by a precondition: a
+ * refusal would say what the trainee is not to know.
  */
 export type WorldPredicate =
   | { actorWithin: number }
@@ -112,6 +117,8 @@ export type WorldPredicate =
   | { actorHolding: string; itemState?: string | string[] }
   | { state: string | string[] }
   | { role: ActorRole[] }
+  | { position: StaffPosition[] }
+  | { scenario: string | string[] }
   | { handsClean: true }
   | { nearbyState: { type: string; state: string | string[]; within?: number; linked?: { type: string; state?: string | string[] } } }
   | { linked: { type: string; state?: string | string[]; via?: string } }
@@ -130,6 +137,8 @@ export const WorldPredicateSchema: z.ZodType<WorldPredicate> = z.lazy(() =>
     z.object({ actorHolding: z.string().min(1), itemState: z.union([IdSchema, z.array(IdSchema).min(1)]).optional() }).strict(),
     z.object({ state: z.union([IdSchema, z.array(IdSchema).min(1)]) }).strict(),
     z.object({ role: z.array(ActorRoleSchema).min(1) }).strict(),
+    z.object({ position: z.array(StaffPositionSchema).min(1) }).strict(),
+    z.object({ scenario: z.union([IdSchema, z.array(IdSchema).min(1)]) }).strict(),
     z.object({ handsClean: z.literal(true) }).strict(),
     z
       .object({
@@ -243,13 +252,46 @@ export const BehaviorOperationSchema = z
      */
     newRun: z.boolean().optional(),
     /**
-     * The roles the step is assessed for. Taken by another role — as `requires` may allow, in practice — the run
-     * record labels it a role substitution and the result says so.
+     * Whom the step is assessed for: roles, or staff positions (the anaesthetist's step, the assistant surgeon's).
+     * Taken by anyone else — as `requires` may allow, in practice — the run record labels it a role substitution
+     * and the result says so.
      */
-    assessed: z.array(ActorRoleSchema).min(1).optional(),
+    assessed: z.array(z.union([ActorRoleSchema, StaffPositionSchema])).min(1).optional(),
+    /**
+     * What the operation leads to when something holds: the first outcome whose `when` holds decides — its state
+     * (`to`), the devices it sets (`sets`, with the operation's own) and what is seen (`result`, said with the
+     * result) — else the operation's own `to`. One test, more than one observable result: a leak test that shows no
+     * bubbles, or bubbles at the stump. `when` reads devices (`state`, `nearbyState`, `linked`) and the run's
+     * `scenario`, never the actor. `uses: false`: the instrument in hand is not moved on (the step never came to
+     * it).
+     */
+    outcomes: z
+      .array(
+        z
+          .object({
+            when: z.array(WorldPredicateSchema).min(1),
+            to: IdSchema.optional(),
+            sets: z.array(z.object({ type: IdSchema, from: z.array(IdSchema).min(1).optional(), to: IdSchema, within: z.number().positive().max(20).optional() }).strict()).min(1).max(8).optional(),
+            uses: z.literal(false).optional(),
+            result: LocalizedTextSchema.optional(),
+          })
+          .strict(),
+      )
+      .min(1)
+      .max(8)
+      .optional(),
+    /**
+     * The instructor arranges a run's scenario with this operation (parameter `scenario`: one of the `scenarios` of
+     * the equipment type `type`, or `none`): it is set, hidden, on the nearest in-service device of that type within
+     * `within` m (default the bedside radius). An instructor's console arms the training station beside it.
+     */
+    arms: z.object({ type: IdSchema, within: z.number().positive().max(20).optional() }).strict().optional(),
   })
   .strict();
 export type BehaviorOperation = z.infer<typeof BehaviorOperationSchema>;
+
+/** The parameter value of an arming operation (`arms`) that clears a run's scenario. */
+export const NO_SCENARIO = "none";
 
 /** Default range (m, footprint to footprint) of an operation's `link`: the device and what it connects to side by side. */
 export const LINK_RANGE = 2.5;
@@ -263,6 +305,25 @@ export function isDevicePredicate(p: WorldPredicate): boolean {
   if ("any" in p) return p.any.every(isDevicePredicate);
   if ("not" in p) return isDevicePredicate(p.not);
   return "state" in p || "nearbyState" in p || "linked" in p || "deviceAtBedside" in p;
+}
+
+/**
+ * May an operation's outcome read this predicate (`outcomes[].when`)? Devices and the run's scenario — never the
+ * actor: the same test comes out the same way whoever does it.
+ */
+export function isOutcomePredicate(p: WorldPredicate): boolean {
+  if ("all" in p) return p.all.every(isOutcomePredicate);
+  if ("any" in p) return p.any.every(isOutcomePredicate);
+  if ("not" in p) return isOutcomePredicate(p.not);
+  return "scenario" in p || isDevicePredicate(p);
+}
+
+/** Does a predicate read the run's scenario (at any depth)? Only an outcome may. */
+export function readsScenario(p: WorldPredicate): boolean {
+  if ("all" in p) return p.all.some(readsScenario);
+  if ("any" in p) return p.any.some(readsScenario);
+  if ("not" in p) return readsScenario(p.not);
+  return "scenario" in p;
 }
 
 /** What the parts named "screen" can show (an equipment type's `screen`; a state's look may change it). */
@@ -319,6 +380,36 @@ export const StateLookSchema = z
 export type StateLook = z.infer<typeof StateLookSchema>;
 
 /**
+ * An entry of a run a mark looks for: the operation `op` — on the device itself, or (`device`) on a device of that
+ * equipment type recorded with it (`runs.with`) — that led to one of the states `to` (omitted: any).
+ */
+export const RunStepRefSchema = z
+  .object({ op: IdSchema, device: IdSchema.optional(), to: z.union([IdSchema, z.array(IdSchema).min(1)]).optional() })
+  .strict();
+export type RunStepRef = z.infer<typeof RunStepRefSchema>;
+
+/**
+ * What a run is marked on (docs/FACILITIES.md "A run's marks"): a member of the team, the sign that reached them
+ * and the response they owe it — each scored against the sign that member had, never one they could not have.
+ * `by`: whose mark it is (roles or staff positions); `sign`: the entry of the run that made the sign available to
+ * them (the bleed seen on the screens, the monitor's alarm, a colleague's call); `response`: the entry that answers
+ * it, by one of them, after the sign; `within`: simulated seconds allowed (omitted: no limit); `first`: nothing else
+ * of theirs on the device itself may come between the sign and the response (pressure before anything else).
+ */
+export const RunMarkSchema = z
+  .object({
+    id: IdSchema,
+    name: LocalizedTextSchema,
+    by: z.array(z.union([ActorRoleSchema, StaffPositionSchema])).min(1),
+    sign: RunStepRefSchema,
+    response: RunStepRefSchema,
+    within: z.number().positive().max(3600).optional(),
+    first: z.boolean().optional(),
+  })
+  .strict();
+export type RunMark = z.infer<typeof RunMarkSchema>;
+
+/**
  * Declarative device state machine (no code). States that mirror a clinical
  * fact are `derived` from the engine and never stored (EMBODIED R6):
  * `monitor-attachment` — "attached"/"detached" follow `monitorAttached(case, state)`.
@@ -362,8 +453,24 @@ export const DeviceBehaviorSchema = z
      * go into the same run — the count board, the checklist, the drainage unit a drill uses: one record per trainee.
      */
     runs: z
-      .union([z.boolean(), z.object({ with: z.array(IdSchema).min(1).max(24), within: z.number().positive().max(20).optional() }).strict()])
+      .union([
+        z.boolean(),
+        z
+          .object({
+            with: z.array(IdSchema).min(1).max(24),
+            within: z.number().positive().max(20).optional(),
+            /** What a run is marked on: each member's response against the sign they had (`RunMarkSchema`). */
+            marks: z.array(RunMarkSchema).min(1).max(24).optional(),
+          })
+          .strict(),
+      ])
       .optional(),
+    /**
+     * The scenarios an instructor may arrange for a run (a training station: an air leak at the stump, a bleed),
+     * by id. A run's scenario is hidden from whoever acts — no observation, state or refusal shows it — and only an
+     * operation's `outcomes` read it (`scenario`); the run record names it once the run is closed.
+     */
+    scenarios: z.record(IdSchema, z.object({ name: LocalizedTextSchema, summary: LocalizedTextSchema.optional() }).strict()).optional(),
   })
   .strict();
 export type DeviceBehavior = z.infer<typeof DeviceBehaviorSchema>;

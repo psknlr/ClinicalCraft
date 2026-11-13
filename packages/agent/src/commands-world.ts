@@ -2,7 +2,7 @@
  * Slash commands of embodied mode (docs/EMBODIED.md): `/look`, `/where`,
  * `/find <query>`, `/go <target>`, `/inspect <target>`,
  * `/use <target> <operation> [key=value…]`, `/map`, `/skill [id] [key=value…]`,
- * `/delegate <role> <task> [target]`, `/transport <destination|home>`. Each runs its world tool as the
+ * `/delegate <role> <task> [target] [key=value…]`, `/transport <destination|home>`. Each runs its world tool as the
  * learner — validation, PreToolUse hooks, the approval gate (and, for an
  * operation with a clinical effect, the clinical tool's own gate) — exactly
  * like `/order` runs `order_test`. Registered only in embodied sessions; in
@@ -22,7 +22,7 @@ const NAMES = [
   ["use", "<target> <operation> [key=value…]"],
   ["map", ""],
   ["skill", "[id] [key=value…]"],
-  ["delegate", "<role> <task> [target]"],
+  ["delegate", "<role> <task> [target] [key=value…]"],
   ["transport", "<destination|home>"],
 ] as const;
 
@@ -128,9 +128,12 @@ export async function executeEmbodiedCommand(host: CommandHost, name: string, ar
       else await run("transport_patient", { destination: args });
       return true;
     case "delegate": {
-      const [role, task, target] = tokens;
-      if (!role || !task) usage(host, name, "<role> <task> [target]");
-      else await run("delegate_task", { role, task, ...(target ? { target } : {}) });
+      // `key=value` tokens are the task's parameters (operate_device: operation=<the device's operation>)
+      const [role, task, ...rest] = tokens;
+      const target = rest[0] && !rest[0].includes("=") ? rest[0] : undefined;
+      const params = keyValues(rest.slice(target ? 1 : 0));
+      if (!role || !task) usage(host, name, "<role> <task> [target] [key=value…]");
+      else await run("delegate_task", { role, task, ...(target ? { target } : {}), ...(Object.keys(params).length ? { params } : {}) });
       return true;
     }
     default:

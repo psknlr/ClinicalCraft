@@ -26,6 +26,7 @@ export * from "./reach.js";
 export * from "./policy.js";
 export * from "./screen.js";
 export * from "./perception.js";
+export * from "./marks.js";
 export * from "./trace.js";
 export * from "./actions.js";
 export * from "./runtime.js";

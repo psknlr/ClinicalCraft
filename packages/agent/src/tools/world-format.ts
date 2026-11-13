@@ -96,9 +96,19 @@ export function entitiesText(list: readonly ObservedEntity[], locale: string, ac
 /** The text of an inspection (`inspect_object`). */
 export function inspectionText(i: NonNullable<ReturnType<WorldRuntime["inspect"]>>, locale: string, actorLevel: string): string {
   const lines = [rt(locale, "world.inspect", { name: i.name, id: i.id, description: i.description || "—" }), entityLine(i, locale, actorLevel)];
+  if (i.stateName) lines.push(rt(locale, "world.inspect.state", { state: i.stateName }));
   if (i.usage) lines.push(rt(locale, "world.inspect.usage", { usage: i.usage }));
   for (const op of i.operations) {
     lines.push(rt(locale, "world.inspect.op", { name: op.name, op: op.op, status: op.available ? rt(locale, "world.inspect.available") : rt(locale, "world.inspect.unavailable", { reason: op.reason ?? "—" }) }));
+  }
+  // a device that keeps a run record: the run under way, and the last one closed with its scenario and its marks
+  if (i.runs?.current) lines.push(rt(locale, "world.inspect.run", { n: i.runs.current.n, steps: i.runs.current.steps }));
+  const last = i.runs?.last;
+  if (last) {
+    lines.push(rt(locale, "world.inspect.lastRun", { n: last.n, steps: last.steps, scenario: last.scenario ? rt(locale, "world.inspect.runScenario", { scenario: last.scenario }) : "" }));
+    for (const m of last.marks ?? []) {
+      lines.push(rt(locale, "world.inspect.mark", { name: m.name, status: rt(locale, `world.inspect.mark.${m.status}` as RuntimeKey), seconds: m.seconds !== undefined ? rt(locale, "world.inspect.markSeconds", { seconds: m.seconds }) : "" }));
+    }
   }
   return lines.join("\n");
 }

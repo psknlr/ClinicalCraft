@@ -743,6 +743,12 @@ export class ClinicalCraftApp implements App {
    * `team`): set at `start` when the case has it (docs/TEAM.md §6), otherwise the encounter starts without one.
    */
   private teamScenario: string | null = new URLSearchParams(location.search).get("team");
+  /**
+   * The scenario a facilitator chose for the drills of the next new encounter (`?drill=<scenario id>`): arranged —
+   * hidden from the learner — on every device whose behaviour has a scenario of that id (a training station's
+   * `scenarios`, docs/FACILITIES.md "A run's scenario"); a device without it starts as it always does.
+   */
+  private drillScenario: string | null = new URLSearchParams(location.search).get("drill");
 
   async startCase(caseId: string, facilityId: string, resume: boolean): Promise<void> {
     if (this.starting) return;
@@ -868,6 +874,9 @@ export class ClinicalCraftApp implements App {
       if (!session.session.state.started && !session.session.state.finished) {
         const team = this.teamScenario && caseDef.team?.scenarios.some((x) => x.id === this.teamScenario) ? this.teamScenario : null;
         session.act(team ? { type: "start", team } : { type: "start" });
+        const drill = this.drillScenario;
+        const world = drill ? session.session.world() : null;
+        if (drill && world) for (const e of world.entities()) if (e.equipmentType?.behavior?.scenarios?.[drill]) world.setScenario(e.id, drill);
       }
       this.enter(!!save);
     } catch (err) {

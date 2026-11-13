@@ -15,8 +15,9 @@
 import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
 import { ActionBus, goalProblem, instantMover } from "./actions.js";
 import { DeviceRules } from "./behaviors.js";
+import { setScenario } from "./effects.js";
 import { buildCollisionModel } from "./collision.js";
-import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type RunRecord, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
+import { DEFAULT_PERCEPTION, type ActorId, type ActorState, type BodyPosture, type ClinicalIntent, type EntityId, type NavGoal, type NavPlan, type Pose, type SpatialCheck, type WorldDynamics, type WorldJourney, type WorldRuntime, type WorldRuntimeOptions } from "./contracts.js";
 import { worldMessage } from "./i18n.js";
 import { levelInfos } from "./levels.js";
 import { WorldLocator } from "./locate.js";
@@ -196,10 +197,17 @@ export function createWorldRuntime(options: WorldRuntimeOptions): WorldRuntime {
     },
     runsOf: (id: EntityId) => {
       const resolved = actions.resolve(id);
-      const data = resolved ? store.entity(resolved)?.data : undefined;
-      const current = (data?.run as RunRecord | undefined) ?? null;
-      const closed = Array.isArray(data?.runs) ? (data!.runs as RunRecord[]) : [];
-      return { current: current ? structuredClone(current) : null, closed: structuredClone(closed) };
+      return resolved ? rules.runs(resolved) : { current: null, closed: [] };
+    },
+    setScenario: (id: EntityId, scenario: string | null) => {
+      const resolved = actions.resolve(id);
+      if (!resolved || (scenario !== null && !rules.spec(resolved).scenarios?.[scenario])) return false;
+      setScenario(actions, resolved, scenario);
+      return true;
+    },
+    scenarioOf: (id: EntityId) => {
+      const resolved = actions.resolve(id);
+      return resolved ? rules.scenario(resolved) : null;
     },
     bedsideProviders: (capability: string) =>
       registry

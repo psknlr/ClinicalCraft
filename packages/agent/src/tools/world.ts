@@ -84,7 +84,7 @@ function tooDeep(ctx: ToolContext): ToolOutput | null {
 }
 
 /** Tasks staff can be delegated (`delegate_task`). */
-export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient", "hold_traction", "release_traction"] as const;
+export const DELEGATION_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient", "hold_traction", "release_traction", "operate_device"] as const;
 
 const GOAL_SCHEMA = {
   type: "object",
@@ -187,10 +187,10 @@ export const WORLD_TOOL_SPECS: readonly Spec[] = [
   {
     name: "delegate_task",
     description:
-      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
+      "Ask a staff member to do a task with their own hands: attach_monitor, record_ecg, obtain_iv_access, fetch_equipment (target: equipment id or params.capability), give_intervention (params.intervention), transport_patient (target: the destination as for transport_patient — a porter or a nurse wheels the patient there), hold_traction (params.port: a doctor at the operating table takes the instrument in that port and keeps its traction), release_traction (they let go and hand it back), operate_device (target: a device; params.operation: one of its own operations, params.parameters: its parameters — the colleague nearest the device does it, if the world lets their role and staff position). Someone holding traction lets go before any other task. They walk there and act; approvals still apply. Returns status, steps and simulated time.",
     inputSchema: obj(
       {
-        role: { type: "string", minLength: 1, maxLength: 40, description: "nurse, porter, paramedic… (or a staff id staff:<id>)." },
+        role: { type: "string", minLength: 1, maxLength: 40, description: "nurse, porter, paramedic…, a staff position (anaesthetist, assistant-surgeon, circulating-nurse…) or a staff id staff:<id>." },
         task: { type: "string", enum: [...DELEGATION_TASKS] },
         target: { type: "string", maxLength: 120 },
         params: { type: "object" },

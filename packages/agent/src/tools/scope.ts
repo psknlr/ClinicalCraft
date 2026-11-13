@@ -14,7 +14,7 @@
  * | role | delegable tasks | clinical tools with their body | interventions |
  * |---|---|---|---|
  * | clinician (the learner's avatar), attending | all (with hold_traction / release_traction: an assistant at the operating table) | all | all |
- * | nurse | attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention, transport_patient | check_vitals, examine, order_test (bedside tests: ECG, point of care, peak flow), read_result, intervene | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (CPR, defibrillation, catheters, NG tube, swallow screen…) — never an item authored `scope: "medical"`, airway/RSI, an arterial line or another medical procedure, a consult or a disposition |
+ * | nurse | attach_monitor, record_ecg, obtain_iv_access, fetch_equipment, give_intervention, transport_patient, operate_device (a device's own operation: the world decides) | check_vitals, examine, order_test (bedside tests: ECG, point of care, peak flow), read_result, intervene | medication, fluid, oxygen, monitoring, positioning, the case's IV access and the items authored `scope: "nursing"` (CPR, defibrillation, catheters, NG tube, swallow screen…) — never an item authored `scope: "medical"`, airway/RSI, an arterial line or another medical procedure, a consult or a disposition |
  * | paramedic | as a nurse | as a nurse | as a nurse + airway |
  * | porter | fetch_equipment, transport_patient (wheel the patient to a study and back) | — (no clinical class) | — |
  * | receptionist | fetch_equipment | — (no clinical class) | — |
@@ -44,7 +44,11 @@ export interface RoleScope {
   readonly investigations: "*" | "bedside";
 }
 
-const CARE_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient"] as const;
+/**
+ * `operate_device`: a device's own operation with the colleague's hands — the world decides whether their role and
+ * staff position may (and a clinical effect goes through this scope again, with their body).
+ */
+const CARE_TASKS = ["attach_monitor", "record_ecg", "obtain_iv_access", "fetch_equipment", "give_intervention", "transport_patient", "operate_device"] as const;
 /** A doctor also assists at the operating table: takes an instrument in a port and keeps its traction (PROCEDURE.md §3). */
 const ALL_TASKS = [...CARE_TASKS, "hold_traction", "release_traction"] as const;
 const FULL: RoleScope = { tasks: ALL_TASKS, tools: "*", interventionKinds: "*", ivAccess: true, nursing: true, investigations: "*" };

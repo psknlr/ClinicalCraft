@@ -311,15 +311,56 @@ export interface RunEntry {
   device?: EntityId;
   from: string | null;
   to: string | null;
-  /** Who did it, in which role; `at`: the clinical clock (simulated minutes). */
+  /** Who did it, in which role (and staff position, when they hold one); `at`: the clinical clock (simulated minutes). */
   actor: ActorId;
   role: ActorRole;
+  position?: string;
   at: number;
   /** The items it worked with (`uses`), each by instance. */
   used?: RunItemUse[];
-  /** Done by a role the step is not assessed for (`assessed`): a role substitution, not assessed. */
-  substitution?: { assessed: ActorRole[] };
+  /** Done by someone the step is not assessed for (`assessed`: roles or staff positions): a role substitution, not assessed. */
+  substitution?: { assessed: string[] };
 }
+
+/**
+ * How a run did on one of its marks (`DeviceBehavior.runs.marks`): a member's response against the sign they had.
+ * `met` — the response came, from one of them, in time; `late` — it came after the time allowed; `missed` — the
+ * sign came and the response never did (or, for a mark that asks for it `first`, something else of theirs came
+ * before it); `not-applicable` — the sign never reached them, so nothing was owed.
+ */
+export interface RunMarkResult {
+  id: string;
+  status: "met" | "late" | "missed" | "not-applicable";
+  /** The clinical clock (simulated minutes) at the sign and at the response. */
+  signAt?: number;
+  responseAt?: number;
+  /** Simulated seconds from the sign to the response. */
+  seconds?: number;
+  /** Who gave the response. */
+  actor?: ActorId;
+}
+
+/** A run of a device that keeps a run record, in brief (an inspection's `runs`). */
+export interface RunBrief {
+  /** 1, 2, …: the device's runs in order; `steps`: the operations recorded so far. */
+  n: number;
+  steps: number;
+  /** A closed run: the scenario it was under, in words (hidden while it ran). */
+  scenario?: string;
+  /** A closed run: how it did on what it is marked on (never shown while the run is under way: it would coach). */
+  marks?: { id: string; name: string; status: RunMarkResult["status"]; seconds?: number }[];
+}
+
+/** What inspecting one entity gives (`WorldRuntime.inspect`): what is observed of it, its description and its operations. */
+export type Inspection = ObservedEntity & {
+  description: string;
+  /** The state in words (a catalog behaviour's name for it: a simulator's monitor reads "alarm: HR 128 /min …"). */
+  stateName?: string;
+  usage?: string;
+  operations: { op: string; name: string; available: boolean; reason?: string; code?: string }[];
+  /** A device that keeps a run record: the run under way, and the last one closed with its scenario and its marks. */
+  runs?: { current: RunBrief | null; last: RunBrief | null };
+};
 
 /** A run of a device that keeps a run record: one trainee's, from a reset to the next. */
 export interface RunRecord {
@@ -331,6 +372,10 @@ export interface RunRecord {
   entries: RunEntry[];
   /** Closed by the next run's start (`newRun`). */
   closedAt?: number;
+  /** The scenario the run was under (the device's `scenarios`): named once the run is closed, hidden while it ran. */
+  scenario?: string;
+  /** How the run did on what it is marked on (`runs.marks`), as `runsOf` reads it from the entries. */
+  marks?: RunMarkResult[];
 }
 
 /** Stored (physical) state of one entity. Derived states (mirroring clinical facts) are never stored (EMBODIED R6). */
@@ -1100,7 +1145,7 @@ export interface WorldRuntime {
   /* perception (read-only) */
   observe(actorId: ActorId, opts?: Partial<PerceptionOptions>): WorldObservation;
   find(actorId: ActorId, query: EntityQuery): ObservedEntity[];
-  inspect(actorId: ActorId, id: EntityId): (ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string; code?: string }[] }) | null;
+  inspect(actorId: ActorId, id: EntityId): Inspection | null;
   /**
    * In-service devices of an equipment type near an entity — the same level, footprint to footprint within `within` m
    * (default the `nearbyState` range), itself excluded — with their behaviour state, nearest first: what a
@@ -1171,6 +1216,14 @@ export interface WorldRuntime {
   screenOf(id: EntityId): string;
   /** A device's run record (`DeviceBehavior.runs`): the run under way and the runs closed before it, oldest first. */
   runsOf(id: EntityId): { current: RunRecord | null; closed: RunRecord[] };
+  /**
+   * Arrange the scenario a device's run is under (one of its behaviour's `scenarios`; null: none) — the
+   * facilitator's set-up, as a team scenario's items are placed: hidden from whoever acts. False when the device
+   * has no such scenario.
+   */
+  setScenario(id: EntityId, scenario: string | null): boolean;
+  /** The scenario a device's run is under now (the facilitator's truth: never part of an observation); null: none. */
+  scenarioOf(id: EntityId): string | null;
 
   /* the patient's body (EMBODIED §8, patient transport) */
   /** Where the patient is now (bed space or provider, posture, support, trolley, home); null without a patient. */

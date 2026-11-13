@@ -591,7 +591,10 @@ export class GridAStarBackend implements NavigationBackend {
         seconds += leg.via.travelSeconds * leg.hops;
         path.push({ x: stop.x, z: stop.z, level: leg.level, via: leg.via.id });
       }
-      const centres = leg.cells.slice(1).map((i) => cellPoint(g, i));
+      // a start inside an obstacle was moved to the nearest free cell: that cell is the first step — a body standing in
+      // furniture next to where it must stand walks there, and is never told it has arrived where it stands
+      const moved = !leg.via && leg === route.legs[0] && cellIndex(g, leg.from.x, leg.from.z) !== leg.cells[0];
+      const centres = (moved ? leg.cells : leg.cells.slice(1)).map((i) => cellPoint(g, i));
       const isLast = leg === route.legs[route.legs.length - 1];
       const exact = route.target.exact;
       if (isLast && exact && cellIndex(g, exact.x, exact.z) === leg.cells[leg.cells.length - 1]) {

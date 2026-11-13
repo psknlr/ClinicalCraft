@@ -28,12 +28,13 @@
  * footprint and never below `MIN_RANGE`; an operation without
  * `actorWithin` / `patientWithin` must be done within the entity's reach.
  */
-import { COUNT_EFFECT_STEPS, evaluate, isDevicePredicate, LINK_RANGE, lookOf, monitorAttached, NEARBY_STATE_RANGE, t, type BehaviorOperation, type CaseDefinition, type ClinicalEffect, type Condition, type LocalizedText } from "@clinicalcraft/core";
+import { COUNT_EFFECT_STEPS, evaluate, isDevicePredicate, isOutcomePredicate, LINK_RANGE, lookOf, monitorAttached, NEARBY_STATE_RANGE, t, type BehaviorOperation, type CaseDefinition, type ClinicalEffect, type Condition, type DeviceBehavior, type LocalizedText, type RunMark } from "@clinicalcraft/core";
 import { permits, rolesFor, operationClass } from "./authority.js";
-import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
-import { listText, metres, operationName, roleName, stateName, worldMessage } from "./i18n.js";
+import { MAX_HELD, RANGES, type ActionHint, type ActorRole, type ActorState, type ClinicalView, type CollisionModel, type EntityId, type InteractionKind, type NavGoal, type RunRecord, type SemanticEntity, type WorldErrorCode, type WorldPredicate } from "./contracts.js";
+import { listText, metres, operationName, positionName, roleName, stateName, worldMessage } from "./i18n.js";
 import { escortProblem } from "./escort.js";
 import type { Placed, WorldLocator } from "./locate.js";
+import { markRun } from "./marks.js";
 import { MIN_RANGE } from "./nav/backend.js";
 import type { Area } from "./raster.js";
 import type { WorldStateStore } from "./state.js";
@@ -68,9 +69,16 @@ export interface OperationSpec {
   unlink?: string | true;
   /** Close the device's run record and start the next (catalog `newRun`). */
   newRun?: boolean;
-  /** The roles the step is assessed for (catalog `assessed`): another role's step is a labelled substitution. */
-  assessed?: readonly ActorRole[];
+  /** Whom the step is assessed for — roles or staff positions (catalog `assessed`): anyone else's step is a labelled substitution. */
+  assessed?: readonly string[];
+  /** What it leads to when something holds (catalog `outcomes`): the first whose `when` holds decides. */
+  outcomes?: NonNullable<BehaviorOperation["outcomes"]>;
+  /** Arranges a run's scenario on the nearest device of a type (catalog `arms`; parameter `scenario`). */
+  arms?: NonNullable<BehaviorOperation["arms"]>;
 }
+
+/** One outcome of an operation (catalog `outcomes[]`). */
+export type OperationOutcome = NonNullable<BehaviorOperation["outcomes"]>[number];
 
 /** The behaviour of one entity. */
 export interface BehaviorSpec {
@@ -81,8 +89,10 @@ export interface BehaviorSpec {
   /** `monitor-attachment`: the patient's monitor; `case-record`: a board that shows the case record (WHO checklist). */
   derived?: "monitor-attachment" | "case-record";
   operations: OperationSpec[];
-  /** Keeps a record of each run (catalog `runs`: a training station), with the operations on nearby devices of `with`. */
-  runs?: { with: readonly string[]; within: number };
+  /** Keeps a record of each run (catalog `runs`: a training station), with the operations on nearby devices of `with`; `marks`: what a run is marked on. */
+  runs?: { with: readonly string[]; within: number; marks: readonly RunMark[] };
+  /** The scenarios an instructor may arrange for a run (catalog `scenarios`), hidden from whoever acts. */
+  scenarios?: NonNullable<DeviceBehavior["scenarios"]>;
 }
 
 /** The case items a `case-record` behaviour's operations name (`select: "item"`), by kind. */
@@ -234,12 +244,15 @@ export function behaviorOf(e: SemanticEntity): BehaviorSpec {
         if (o.unlink !== undefined) out.unlink = o.unlink;
         if (o.newRun) out.newRun = true;
         if (o.assessed) out.assessed = o.assessed;
+        if (o.outcomes) out.outcomes = o.outcomes;
+        if (o.arms) out.arms = o.arms;
         if (!o.clinical && named[id]) out.effect = named[id];
         return out;
       }),
     };
     if (b.derived) spec.derived = b.derived;
-    if (b.runs) spec.runs = b.runs === true ? { with: [], within: NEARBY_STATE_RANGE } : { with: b.runs.with, within: b.runs.within ?? NEARBY_STATE_RANGE };
+    if (b.runs) spec.runs = b.runs === true ? { with: [], within: NEARBY_STATE_RANGE, marks: [] } : { with: b.runs.with, within: b.runs.within ?? NEARBY_STATE_RANGE, marks: b.runs.marks ?? [] };
+    if (b.scenarios) spec.scenarios = b.scenarios;
   } else spec = BUILTIN_BEHAVIORS[e.interaction] ?? NO_BEHAVIOR;
   if (type.portable === "cart") spec = { ...spec, operations: [...spec.operations, op("move_to", { effect: "move-to" })] };
   if (type.portable === "handheld") spec = { ...spec, operations: [...spec.operations, op("pick_up", { effect: "pick-up" }), op("put_down", { effect: "put-down" }), op("equip", { effect: "equip" }), op("hand_over", { effect: "hand-over" })] };
@@ -255,6 +268,10 @@ export function behaviorOf(e: SemanticEntity): BehaviorSpec {
 export interface PredicateEnv {
   state: string | null;
   role: ActorRole;
+  /** The acting actor's staff position (`position`; null: none — the learner's own body, or nobody acting). */
+  position?: string | null;
+  /** The scenario this device's run is under (`scenario`; null or absent: none) — read by an operation's outcomes only. */
+  scenario?: string | null;
   handsClean: boolean;
   /** The actor holds an item of `ref` (an entity id or a type) — with `states`, one in one of those states. */
   holding(ref: string, states?: readonly string[]): boolean;
@@ -290,6 +307,8 @@ export function evaluatePredicate(p: WorldPredicate, env: PredicateEnv): boolean
     return (env.states ?? (env.state === null ? [] : [env.state])).some((s) => wanted.includes(s));
   }
   if ("role" in p) return p.role.includes(env.role);
+  if ("position" in p) return !!env.position && (p.position as readonly string[]).includes(env.position);
+  if ("scenario" in p) return !!env.scenario && (Array.isArray(p.scenario) ? p.scenario : [p.scenario]).includes(env.scenario);
   if ("handsClean" in p) return env.handsClean;
   if ("nearbyState" in p) {
     const n = p.nearbyState;
@@ -298,6 +317,9 @@ export function evaluatePredicate(p: WorldPredicate, env: PredicateEnv): boolean
   }
   return false;
 }
+
+/** A name with its first letter in upper case (a staff position beside a role's name: "Surgeon"). */
+const capitalised = (s: string): string => (s ? s[0]!.toUpperCase() + s.slice(1) : s);
 
 /** Metres between two ground footprints (0 when they touch or overlap). */
 export function areaDistance(a: Area, b: Area): number {
@@ -481,6 +503,8 @@ export class DeviceRules {
       state,
       // nobody acting (a screen looked at): no role, nothing in hand, nowhere to stand
       role: actor?.role ?? ("" as ActorRole),
+      position: actor ? this.positionOf(actor.id) : null,
+      scenario: place ? this.scenario(place.id) : null,
       handsClean: !!actor && actor.handsCleanUntil !== null && this.d.clinical.clock() <= actor.handsCleanUntil,
       holding: (ref, states) => !!actor && this.heldOf(actor, ref).some((h) => !states || this.states(h).some((x) => states.includes(x))),
       actorWithin: (m) => !!actor && !!place && this.within(actor, place, m),
@@ -494,6 +518,56 @@ export class DeviceRules {
       linked: (type, states, via) => !!place && (via ? this.linkedTo(place.id, via, null).some((mid) => this.linkedTo(mid, type, states).length > 0) : this.linkedTo(place.id, type, states).length > 0),
       states: place ? this.states(place.id) : state === null ? [] : [state],
     };
+  }
+
+  /** An actor's staff position (the anaesthetist, the assistant surgeon); null: none — the learner's own body. */
+  positionOf(actorId: string): string | null {
+    return this.d.locator.registry.entity(actorId)?.staffPosition ?? null;
+  }
+
+  /**
+   * The scenario a device's run is under (its behaviour's `scenarios`; null: none). Hidden: the instructor's — no
+   * observation, state or refusal shows it; only an operation's outcomes read it, and the facilitator
+   * (`WorldRuntime.scenarioOf`).
+   */
+  scenario(id: EntityId): string | null {
+    const s = this.d.store.entity(id)?.data?.scenario;
+    return typeof s === "string" && !!this.spec(id).scenarios?.[s] ? s : null;
+  }
+
+  /**
+   * A device's run records (catalog `runs`): the run under way and the closed ones, each with how it did on what it
+   * is marked on — read from its own entries every time (never stored: the same entries, the same marks).
+   */
+  runs(id: EntityId): { current: RunRecord | null; closed: RunRecord[] } {
+    const data = this.d.store.entity(id)?.data;
+    const current = (data?.run as RunRecord | undefined) ?? null;
+    const closed = Array.isArray(data?.runs) ? (data!.runs as RunRecord[]) : [];
+    const marks = this.spec(id).runs?.marks ?? [];
+    const typeOf = (x: EntityId) => this.d.locator.registry.entity(x)?.type ?? null;
+    const marked = (run: RunRecord): RunRecord => (marks.length ? { ...structuredClone(run), marks: markRun(marks, run, typeOf) } : structuredClone(run));
+    return { current: current ? marked(current) : null, closed: closed.map(marked) };
+  }
+
+  /** What an operation leads to now (catalog `outcomes`): the first outcome whose `when` holds, or null — its own `to`. */
+  outcomeOf(id: EntityId, o: OperationSpec): OperationOutcome | null {
+    if (!o.outcomes?.length) return null;
+    const env = this.env(null, this.d.locator.place(id), this.state(id));
+    return o.outcomes.find((out) => out.when.every((p) => isOutcomePredicate(p) && evaluatePredicate(p, env))) ?? null;
+  }
+
+  /**
+   * An operation as it comes out now: with the outcome that holds, its state, the devices it also sets, and whether
+   * the instrument in hand moves on. `result`: what is seen, said with the result.
+   */
+  resolved(id: EntityId, o: OperationSpec): { op: OperationSpec; result: LocalizedText | null } {
+    const out = this.outcomeOf(id, o);
+    if (!out) return { op: o, result: null };
+    const op: OperationSpec = { ...o };
+    if (out.to !== undefined) op.to = out.to;
+    if (out.sets) op.sets = [...(o.sets ?? []), ...out.sets];
+    if (out.uses === false) delete op.uses;
+    return { op, result: out.result ?? null };
   }
 
   /** The items of `ref` (an entity id or an equipment type) an actor has in hand (carried or worn), in hand order. */
@@ -768,7 +842,13 @@ export class DeviceRules {
     const operation = this.operationLabel(o);
     // a compound one: why its first alternative fails (`any`: the rule, before its exception — the role a step is
     // assessed for, before practice mode), or its first failing part (`all`)
-    if ("any" in p && p.any.length) return this.predicateFailure(id, p.any[0]!, o, place, actor);
+    if ("any" in p && p.any.length) {
+      // whose step it is, by role and by staff position together ("Only Clinician or Surgeon may …")
+      const who = p.any.flatMap((x) => ("role" in x ? x.role.map((r) => roleName(r, L)) : "position" in x ? x.position.map((s) => capitalised(positionName(s, L))) : []));
+      const mixed = p.any.some((x) => "role" in x) && p.any.some((x) => "position" in x);
+      if (mixed) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.role", L, { roles: listText(who, L, "or"), operation }) };
+      return this.predicateFailure(id, p.any[0]!, o, place, actor);
+    }
     if ("all" in p) {
       const env = this.env(actor, place, this.state(id));
       const part = p.all.find((x) => !evaluatePredicate(x, env));
@@ -825,6 +905,7 @@ export class DeviceRules {
       };
     }
     if ("role" in p) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.role", L, { roles: listText(p.role.map((r) => roleName(r, L)), L), operation }) };
+    if ("position" in p) return { code: "NOT_AUTHORIZED", message: worldMessage("pre.position", L, { positions: listText(p.position.map((x) => positionName(x, L)), L, "or"), operation }) };
     if ("state" in p) {
       const message = worldMessage("pre.state", L, { target, operation, state: this.stateLabel(id) ?? "—" });
       // an item that must be in hand (an RF wand's scan): pick it up first

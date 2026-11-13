@@ -17,9 +17,9 @@ import { levelElevation } from "./levels.js";
 import type { Placed } from "./locate.js";
 import { HAND_HYGIENE_MINUTES, type OperationSpec } from "./behaviors.js";
 import { selectClinical } from "./clinical.js";
-import { NEARBY_STATE_RANGE } from "@clinicalcraft/core";
-import type { ActionHint, ActorId, ActorState, ClinicalInvokeResult, EntityId, NavGoal, NavPlan, NavigationRecord, Pose, RunEntry, RunItemUse, RunRecord, Vec3, WorldActionRequest, WorldActionResult, WorldErrorCode, WorldEvent } from "./contracts.js";
-import { listText, metres, roleName, worldMessage } from "./i18n.js";
+import { ACTOR_ROLES, NEARBY_STATE_RANGE, NO_SCENARIO, t } from "@clinicalcraft/core";
+import type { ActionHint, ActorId, ActorRole, ActorState, ClinicalInvokeResult, EntityId, NavGoal, NavPlan, NavigationRecord, Pose, RunEntry, RunItemUse, RunRecord, Vec3, WorldActionRequest, WorldActionResult, WorldErrorCode, WorldEvent } from "./contracts.js";
+import { listText, metres, positionName, roleName, worldMessage } from "./i18n.js";
 import type { ActionBusDeps } from "./actions.js";
 import { cellPoint, distanceToArea, type Area } from "./raster.js";
 import { formatScreen } from "./screen.js";
@@ -68,8 +68,44 @@ export const failed = (code: WorldErrorCode, message: string, extra: Partial<Out
 /** Run an operation that passed authority, preconditions and the spatial check. */
 export async function runOperation(host: EffectsHost, request: WorldActionRequest, actor: ActorState, targetId: EntityId, o: OperationSpec, signal: AbortSignal): Promise<Outcome> {
   if (o.effect === "move-to") return moveCart(host, request, actor, targetId, signal);
+  if (o.arms) return armScenario(host, request, actor, targetId, o);
   if (o.clinical || o.toolByParam) return clinicalOperation(host, request, actor, targetId, o, signal);
   return physicalOperation(host, actor, targetId, o);
+}
+
+/**
+ * An operation that arranges a run's scenario (catalog `arms`; parameter `scenario`): set — hidden — on the nearest
+ * device of the type, or cleared (`none`). The one who arranges it is told; nothing of the device changes for anyone
+ * to see.
+ */
+function armScenario(host: EffectsHost, request: WorldActionRequest, actor: ActorState, id: EntityId, o: OperationSpec): Outcome {
+  const { store, rules, locator, locale: L, port } = host.d;
+  const arms = o.arms!;
+  const within = arms.within ?? NEARBY_STATE_RANGE;
+  const place = locator.place(id);
+  const device = place ? rules.nearbyOfType(place, arms.type, within)[0] : undefined;
+  if (!device) return failed("PRECONDITION_FAILED", worldMessage("pre.armNone", L, { device: rules.typeName(arms.type), distance: metres(within) }));
+  const scenarios = rules.spec(device).scenarios ?? {};
+  const wanted = typeof request.parameters?.scenario === "string" ? request.parameters.scenario : "";
+  if (wanted !== NO_SCENARIO && !scenarios[wanted]) {
+    const list = listText(Object.entries(scenarios).map(([key, s]) => `${key} (${t(s.name, L)})`), L, "or");
+    return failed("INVALID_REQUEST", worldMessage("INVALID_REQUEST", L, { reason: worldMessage("pre.scenarioParam", L, { scenarios: list || "—" }) }));
+  }
+  setScenario(host, device, wanted === NO_SCENARIO ? null : wanted);
+  if (o.durationSeconds > 0) port?.elapse(o.durationSeconds, "procedure");
+  const events = commitTransition(host, actor, id, o, rules.state(id));
+  const name = locator.name(device);
+  const message = wanted === NO_SCENARIO ? worldMessage("ok.disarmed", L, { device: name }) : worldMessage("ok.armed", L, { device: name, scenario: t(scenarios[wanted]!.name, L) });
+  return { status: "completed", message, events, ...(o.durationSeconds > 0 ? { elapsedSeconds: o.durationSeconds } : {}) };
+}
+
+/** Set (or clear) the scenario a device's run is under: hidden data on the device, kept by a snapshot. */
+export function setScenario(host: Pick<EffectsHost, "d">, id: EntityId, scenario: string | null): void {
+  const { store } = host.d;
+  const data = { ...(store.entity(id)?.data ?? {}) };
+  if (scenario === null) delete data.scenario;
+  else data.scenario = scenario;
+  store.patchEntity(id, { data: Object.keys(data).length ? data : undefined });
 }
 
 /* ------------------------------------------------------------------ */
@@ -83,6 +119,8 @@ function physicalOperation(host: EffectsHost, actor: ActorState, id: EntityId, o
   const events: WorldEvent[] = [];
   let message: string | null = null;
   let note: string | null = null;
+  let to = o.to;
+  let charged = false;
   let elapsed = 0;
   const charge = (seconds: number) => {
     if (seconds > 0) {
@@ -146,15 +184,21 @@ function physicalOperation(host: EffectsHost, actor: ActorState, id: EntityId, o
     }
     default: {
       const fromState = rules.state(id);
-      events.push(...commitTransition(host, actor, id, o, fromState));
-      const extra = commitExtras(host, actor, id, o, fromState);
+      // what it leads to now (catalog `outcomes`): the same test may come out another way
+      const now = rules.resolved(id, o);
+      // its time passes first: what it leads to is there to see — and in the run record — when it is done
+      charge(o.durationSeconds);
+      charged = true;
+      to = now.op.to;
+      events.push(...commitTransition(host, actor, id, now.op, fromState));
+      const extra = commitExtras(host, actor, id, now.op, fromState);
       events.push(...extra.events);
-      note = extra.note;
+      note = [now.result ? t(now.result, L) : null, extra.note].filter((x): x is string => !!x).join(" ") || null;
     }
   }
-  if (o.effect !== "wash-hands") charge(o.durationSeconds);
+  if (o.effect !== "wash-hands" && !charged) charge(o.durationSeconds);
   const state = rules.stateLabel(id);
-  const done = message ?? (o.to !== undefined && state ? worldMessage("ok.state", L, { operation, target, state }) : worldMessage("ok.done", L, { operation, target }));
+  const done = message ?? (to !== undefined && state ? worldMessage("ok.state", L, { operation, target, state }) : worldMessage("ok.done", L, { operation, target }));
   const out: Outcome = { status: "completed", message: note ? `${done} ${note}` : done, events };
   if (elapsed > 0) out.elapsedSeconds = elapsed;
   return out;
@@ -250,14 +294,19 @@ export function commitExtras(host: EffectsHost, actor: ActorState, id: EntityId,
   }
   // the run record: this entry, or a run closed and the next begun
   let note: string | null = null;
-  const substitution = o.assessed && !o.assessed.includes(actor.role) ? { assessed: [...o.assessed] } : null;
-  if (substitution) note = worldMessage("ok.substitution", L, { role: roleName(actor.role, L).toLowerCase(), assessed: listText(substitution.assessed.map((r) => roleName(r, L).toLowerCase()), L, "or") });
+  const position = rules.positionOf(actor.id);
+  const substitution = o.assessed && !o.assessed.includes(actor.role) && !(position && o.assessed.includes(position)) ? { assessed: [...o.assessed] } : null;
+  if (substitution) {
+    const who = (x: string) => ((ACTOR_ROLES as readonly string[]).includes(x) ? roleName(x as ActorRole, L) : positionName(x, L)).toLowerCase();
+    note = worldMessage("ok.substitution", L, { role: (position ? positionName(position, L) : roleName(actor.role, L)).toLowerCase(), assessed: listText(substitution.assessed.map(who), L, "or") });
+  }
   const entry: RunEntry = {
     op: o.id,
     from: fromState,
     to: rules.state(id),
     actor: actor.id,
     role: actor.role,
+    ...(position ? { position } : {}),
     at: clinical.clock(),
     ...(used.length ? { used } : {}),
     ...(substitution ? { substitution } : {}),
@@ -286,7 +335,10 @@ function appendRun(host: EffectsHost, id: EntityId, entry: RunEntry, presets: No
   let run = (data.run as RunRecord | undefined) ?? { n: closed.length + 1, startedAt: now, entries: [] };
   run = { ...run, entries: [...run.entries, entry] };
   if (presets) {
-    data.runs = [...closed, { ...run, closedAt: now }].slice(-KEPT_RUNS);
+    // the run closed says what scenario it was under (hidden while it ran); the next starts with none
+    const scenario = typeof data.scenario === "string" ? data.scenario : null;
+    data.runs = [...closed, { ...run, closedAt: now, ...(scenario ? { scenario } : {}) }].slice(-KEPT_RUNS);
+    delete data.scenario;
     run = { n: run.n + 1, startedAt: now, ...(presets.length ? { presets } : {}), entries: [] };
   }
   data.run = run;
@@ -338,11 +390,13 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
   if (r.outcome === "spatial") return failed(r.code ?? "SPATIAL_PRECONDITION_CHANGED", r.message ?? r.output, { clinical, hint: r.hint ?? null });
   if (r.outcome === "unauthorized") return failed("NOT_AUTHORIZED", r.message ?? r.output, { clinical, hint: null });
   if (r.outcome !== "ok") return failed("CLINICAL_REJECTED", worldMessage("CLINICAL_REJECTED", L, { output: r.output }), { clinical, clinicalEventIds: [...r.clinicalEventIds] });
-  const events = commitTransition(host, actor, id, o, fromState);
-  const extra = commitExtras(host, actor, id, o, fromState);
+  const now = rules.resolved(id, o);
+  const events = commitTransition(host, actor, id, now.op, fromState);
+  const extra = commitExtras(host, actor, id, now.op, fromState);
   events.push(...extra.events);
   const done = worldMessage("ok.clinical", L, { operation, target, output: r.output });
-  return { status: "completed", message: extra.note ? `${done} ${extra.note}` : done, events, clinical, clinicalEventIds: [...r.clinicalEventIds] };
+  const note = [now.result ? t(now.result, L) : null, extra.note].filter((x): x is string => !!x).join(" ");
+  return { status: "completed", message: note ? `${done} ${note}` : done, events, clinical, clinicalEventIds: [...r.clinicalEventIds] };
 }
 
 /* ------------------------------------------------------------------ */

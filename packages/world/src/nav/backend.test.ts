@@ -240,6 +240,28 @@ describe("routes in general-hospital", () => {
     expect(anyEcg.targetEntity).toBe("eq:resus1-ecg"); // the nearer of the two from the entrance
   });
 
+  it("from inside furniture next to where one must stand: walked to that spot, never told one has arrived where one stands", () => {
+    // every interactive placement: the spot the planner sends a body to, and each blocked cell round it (a staff post
+    // drawn against a machine) — from there the plan still ends within reach of the thing
+    let tried = 0;
+    for (const e of w.registry.ofKind("equipment").filter((x) => x.interaction !== "none")) {
+      const first = w.plan({ kind: "interact", id: e.id });
+      if (!first.ok) continue;
+      const g = w.backend.grids.grid(e.level)!;
+      const reach = Math.max(e.reach, MIN_RANGE);
+      for (const [dx, dz] of [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, -1], [1, -1], [-1, 1]] as const) {
+        const from: Pose = { ...first.target, x: first.target.x + dx * g.cell, z: first.target.z + dz * g.cell };
+        const ix = Math.floor((from.x - g.minX) / g.cell), iz = Math.floor((from.z - g.minZ) / g.cell);
+        if (ix < 0 || iz < 0 || ix >= g.cols || iz >= g.rows || !g.base[iz * g.cols + ix]) continue;
+        const plan = w.plan({ kind: "interact", id: e.id }, from);
+        if (!plan.ok) continue;
+        tried++;
+        expect(distanceToArea(plan.target.x, plan.target.z, footprintArea(e)), `${e.id} from (${from.x}, ${from.z})`).toBeLessThanOrEqual(reach + 1e-6);
+      }
+    }
+    expect(tried).toBeGreaterThan(40);
+  });
+
   it("follow: the target's current pose (a staff member who walked away)", () => {
     const here: Pose = { x: 0, y: 0, z: -2, yaw: 0, pitch: 0, level: "L0" };
     w.s.poses.set("staff:lab-tech", here);

@@ -51,7 +51,7 @@
  * `version`. `canSee` records nothing.
  */
 import { t, type LocalizedText } from "@clinicalcraft/core";
-import { RANGES, type ActorId, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type DoorSpec, type EntityId, type EntityQuery, type InteractionKind, type ObservedEntity, type PerceptionOptions, type SeenPlace, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
+import { RANGES, type ActorId, type ActorState, type Awareness, type ClinicalView, type CollisionModel, type DoorSpec, type EntityId, type EntityQuery, type Inspection, type InteractionKind, type ObservedEntity, type PerceptionOptions, type SeenPlace, type WorldEvent, type WorldEventSummary, type WorldObservation } from "./contracts.js";
 import type { DeviceRules } from "./behaviors.js";
 import { metres, operationName, postureName, roleName, stateName, worldMessage } from "./i18n.js";
 import type { Placed, WorldLocator } from "./locate.js";
@@ -98,9 +98,6 @@ interface Row extends Belief {
 
 /** Unit outward normal of a wall side (north is −Z). */
 const SIDE_NORMAL: Record<DoorSpec["side"], { x: number; z: number }> = { n: { x: 0, z: -1 }, s: { x: 0, z: 1 }, e: { x: 1, z: 0 }, w: { x: -1, z: 0 } };
-
-/** Inspection result (the runtime's `inspect`). */
-export type Inspection = ObservedEntity & { description: string; usage?: string; operations: { op: string; name: string; available: boolean; reason?: string; code?: string }[] };
 
 /** Room information (the runtime's `roomInfo`). */
 export interface RoomInfo {
@@ -488,8 +485,27 @@ export class Perception {
       return row;
     });
     const out: Inspection = { ...base, description: this.describe(p), operations };
+    // the state in words, as far as this body can tell it (the state itself is only there when it can)
+    const stateName = base.state !== undefined && base.state !== "out-of-service" ? rules.stateLabel(p.id, base.state) : undefined;
+    if (stateName && stateName !== base.state) out.stateName = stateName;
     const usage = p.entity?.equipmentType?.usage;
     if (usage) out.usage = t(usage, L);
+    const spec = rules.spec(p.id);
+    if (spec.runs) {
+      const { current, closed } = rules.runs(p.id);
+      const last = closed.at(-1);
+      out.runs = {
+        current: current ? { n: current.n, steps: current.entries.length } : null,
+        last: last
+          ? {
+              n: last.n,
+              steps: last.entries.length,
+              ...(last.scenario ? { scenario: spec.scenarios?.[last.scenario] ? t(spec.scenarios[last.scenario]!.name, L) : last.scenario } : {}),
+              ...(last.marks ? { marks: last.marks.map((m) => ({ id: m.id, name: t(spec.runs!.marks.find((x) => x.id === m.id)?.name ?? m.id, L), status: m.status, ...(m.seconds !== undefined ? { seconds: m.seconds } : {}) })) } : {}),
+            }
+          : null,
+      };
+    }
     return out;
   }
 

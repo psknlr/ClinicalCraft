@@ -18,9 +18,13 @@
  * member walks to the patient and wheels them there; porters and nurses),
  * `hold_traction` (`params.port`: a doctor walks to the operating table and
  * takes the instrument in that port, keeping its traction — PROCEDURE.md §3
- * `hand-over`), `release_traction` (lets go and hands it back). Someone who
- * holds traction lets go before any other task (`letGo` in the result): the
- * window closes, and the operator sees it.
+ * `hand-over`), `release_traction` (lets go and hands it back),
+ * `operate_device` (the target device's own operation `params.operation`,
+ * with `params.parameters`: the colleague nearest the device walks to it and
+ * does it with their own hands — the world decides whether their role and
+ * staff position may: an anaesthetist's step stays an anaesthetist's).
+ * Someone who holds traction lets go before any other task (`letGo` in the
+ * result): the window closes, and the operator sees it.
  */
 import { lookupStaff } from "../tools/consult-target.js";
 import { monitorAttached, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
@@ -90,18 +94,25 @@ export interface DelegationResult {
 
 const r2 = (v: number) => Math.round(v * 100) / 100;
 
-/** The staff member for a role (or a staff id): the one nearest to the patient where the patient is now. */
-export function pickStaff(world: WorldRuntime, role: string, patientId: string | null): ActorId | null {
+/**
+ * The staff member for a role, a staff position ("anaesthetist") or a staff id: the one nearest to the patient where
+ * the patient is now — or, with `near` (a device a task is about), nearest to that.
+ */
+export function pickStaff(world: WorldRuntime, role: string, patientId: string | null, near?: string | null): ActorId | null {
   const direct = role.startsWith("staff:") ? world.actor(role) : world.actor(`staff:${role}`);
   if (direct && direct.id.startsWith("staff:")) return direct.id;
-  const candidates = world.actors().filter((a) => a.id.startsWith("staff:") && a.role === role);
+  const device = near ? world.entity(near) : null;
+  const staff = world.actors().filter((a) => a.id.startsWith("staff:"));
+  const byRole = staff.filter((a) => a.role === role);
+  // a staff position names its holders ("anaesthetist", "assistant-surgeon"): finer than a role
+  const candidates = byRole.length ? byRole : staff.filter((a) => world.entity(a.id)?.staffPosition === role);
   if (!candidates.length) {
     // a colleague by name or title ("Nurse Lim", "洗手护士"): the one room-aware resolver, in the patient's room
-    const named = lookupStaff(world.facility, role, patientId ? world.roomOf(patientId) : null);
+    const named = lookupStaff(world.facility, role, device ? device.room : patientId ? world.roomOf(patientId) : null);
     return named.kind === "one" && world.actor(`staff:${named.staff.id}`) ? `staff:${named.staff.id}` : null;
   }
-  const place = patientId ? world.patientPlace() : null;
-  const entity = patientId && !place ? world.entity(patientId) : null;
+  const place = !device && patientId ? world.patientPlace() : null;
+  const entity = device ?? (patientId && !place ? world.entity(patientId) : null);
   const at = place ? { level: place.level, x: place.x, z: place.z } : entity ? { level: entity.level, x: entity.position.x, z: entity.position.z } : null;
   const dist = (a: (typeof candidates)[number]) => (at && a.pose.level === at.level ? Math.hypot(a.pose.x - at.x, a.pose.z - at.z) : 1e9);
   return [...candidates].sort((a, b) => dist(a) - dist(b) || (a.id < b.id ? -1 : 1))[0]!.id;
@@ -152,7 +163,9 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
     return result;
   };
   if (!(DELEGATION_TASKS as readonly string[]).includes(task)) return finish("failed", "unknown-task");
-  const staff = pickStaff(world, role, patient);
+  // a device's own operation: the colleague nearest that device (a drill's faculty stand at its station, not at the patient)
+  const device = task === "operate_device" && target ? h.resolve(target, PRIMARY_ACTOR) : null;
+  const staff = pickStaff(world, role, patient, device);
   if (!staff) return finish("failed", "unknown-role");
   result.staffId = staff;
   if (!patient) return finish("failed", "no-patient");
@@ -335,6 +348,18 @@ export async function runDelegation(h: DelegationHost, caller: ClinicalCaller, a
         const ok = r.status === "completed" && !!after;
         verify(`patient at ${after?.provider ?? after?.slot ?? "—"}${before && after && before.x === after.x && before.z === after.z ? " (already there)" : ""}`, ok);
         return finish(ok ? "completed" : cancelled ? "cancelled" : "failed");
+      }
+      case "operate_device": {
+        // the device's own operation, with this colleague's hands: the world decides (their role, their staff
+        // position, the device's state and what it needs) and says why not
+        const operation = strArg(params, "operation");
+        if (!device) return finish("failed", "no-target");
+        if (!operation) return finish("failed", "no-operation");
+        const parameters = params.parameters && typeof params.parameters === "object" && !Array.isArray(params.parameters) ? (params.parameters as Record<string, unknown>) : undefined;
+        const r = await operate(device, operation, parameters);
+        if (r.status !== "completed") result.refusal = r.message.split("\n")[0] ?? r.message;
+        verify(`${operation} ${device}`, r.status === "completed");
+        return finish(r.status === "completed" ? "completed" : cancelled ? "cancelled" : "failed");
       }
       case "give_intervention": {
         const wanted = strArg(params, "intervention") || target;

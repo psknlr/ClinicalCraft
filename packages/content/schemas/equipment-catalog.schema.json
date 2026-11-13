@@ -688,10 +688,104 @@
                         "pharmacist",
                         "receptionist",
                         "paramedic",
-                        "porter"
+                        "porter",
+                        "surgeon",
+                        "assistant-surgeon",
+                        "anaesthetist",
+                        "scrub-nurse",
+                        "circulating-nurse",
+                        "ward-nurse",
+                        "recovery-nurse",
+                        "theatre-coordinator",
+                        "physician",
+                        "educator",
+                        "radiographer",
+                        "lab-technician",
+                        "transfusion-scientist"
                       ]
                     },
                     "minItems": 1
+                  },
+                  "outcomes": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "when": {
+                          "type": "array",
+                          "items": {
+                            "$ref": "#/definitions/WorldPredicate"
+                          },
+                          "minItems": 1
+                        },
+                        "to": {
+                          "$ref": "#/definitions/Id"
+                        },
+                        "sets": {
+                          "type": "array",
+                          "items": {
+                            "type": "object",
+                            "properties": {
+                              "type": {
+                                "$ref": "#/definitions/Id"
+                              },
+                              "from": {
+                                "type": "array",
+                                "items": {
+                                  "$ref": "#/definitions/Id"
+                                },
+                                "minItems": 1
+                              },
+                              "to": {
+                                "$ref": "#/definitions/Id"
+                              },
+                              "within": {
+                                "type": "number",
+                                "exclusiveMinimum": 0,
+                                "maximum": 20
+                              }
+                            },
+                            "required": [
+                              "type",
+                              "to"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "minItems": 1,
+                          "maxItems": 8
+                        },
+                        "uses": {
+                          "type": "boolean",
+                          "const": false
+                        },
+                        "result": {
+                          "$ref": "#/definitions/LocalizedText"
+                        }
+                      },
+                      "required": [
+                        "when"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1,
+                    "maxItems": 8
+                  },
+                  "arms": {
+                    "type": "object",
+                    "properties": {
+                      "type": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "within": {
+                        "type": "number",
+                        "exclusiveMinimum": 0,
+                        "maximum": 20
+                      }
+                    },
+                    "required": [
+                      "type"
+                    ],
+                    "additionalProperties": false
                   }
                 },
                 "required": [
@@ -733,6 +827,128 @@
                       "type": "number",
                       "exclusiveMinimum": 0,
                       "maximum": 20
+                    },
+                    "marks": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "name": {
+                            "$ref": "#/definitions/LocalizedText"
+                          },
+                          "by": {
+                            "type": "array",
+                            "items": {
+                              "type": "string",
+                              "enum": [
+                                "clinician",
+                                "nurse",
+                                "radiologist",
+                                "pathologist",
+                                "lab-tech",
+                                "attending",
+                                "pharmacist",
+                                "receptionist",
+                                "paramedic",
+                                "porter",
+                                "surgeon",
+                                "assistant-surgeon",
+                                "anaesthetist",
+                                "scrub-nurse",
+                                "circulating-nurse",
+                                "ward-nurse",
+                                "recovery-nurse",
+                                "theatre-coordinator",
+                                "physician",
+                                "educator",
+                                "radiographer",
+                                "lab-technician",
+                                "transfusion-scientist"
+                              ]
+                            },
+                            "minItems": 1
+                          },
+                          "sign": {
+                            "type": "object",
+                            "properties": {
+                              "op": {
+                                "$ref": "#/definitions/Id"
+                              },
+                              "device": {
+                                "$ref": "#/definitions/Id"
+                              },
+                              "to": {
+                                "anyOf": [
+                                  {
+                                    "$ref": "#/definitions/Id"
+                                  },
+                                  {
+                                    "type": "array",
+                                    "items": {
+                                      "$ref": "#/definitions/Id"
+                                    },
+                                    "minItems": 1
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "op"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "response": {
+                            "type": "object",
+                            "properties": {
+                              "op": {
+                                "$ref": "#/definitions/Id"
+                              },
+                              "device": {
+                                "$ref": "#/definitions/Id"
+                              },
+                              "to": {
+                                "anyOf": [
+                                  {
+                                    "$ref": "#/definitions/Id"
+                                  },
+                                  {
+                                    "type": "array",
+                                    "items": {
+                                      "$ref": "#/definitions/Id"
+                                    },
+                                    "minItems": 1
+                                  }
+                                ]
+                              }
+                            },
+                            "required": [
+                              "op"
+                            ],
+                            "additionalProperties": false
+                          },
+                          "within": {
+                            "type": "number",
+                            "exclusiveMinimum": 0,
+                            "maximum": 3600
+                          },
+                          "first": {
+                            "type": "boolean"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "name",
+                          "by",
+                          "sign",
+                          "response"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "minItems": 1,
+                      "maxItems": 24
                     }
                   },
                   "required": [
@@ -741,6 +957,29 @@
                   "additionalProperties": false
                 }
               ]
+            },
+            "scenarios": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "summary": {
+                    "$ref": "#/definitions/LocalizedText"
+                  }
+                },
+                "required": [
+                  "name"
+                ],
+                "additionalProperties": false
+              },
+              "propertyNames": {
+                "minLength": 1,
+                "maxLength": 80,
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]*$"
+              }
             }
           },
           "required": [
@@ -1133,6 +1372,66 @@
           },
           "required": [
             "role"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "position": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "enum": [
+                  "surgeon",
+                  "assistant-surgeon",
+                  "anaesthetist",
+                  "scrub-nurse",
+                  "circulating-nurse",
+                  "ward-nurse",
+                  "recovery-nurse",
+                  "theatre-coordinator",
+                  "physician",
+                  "educator",
+                  "radiologist",
+                  "radiographer",
+                  "pathologist",
+                  "lab-technician",
+                  "transfusion-scientist",
+                  "pharmacist",
+                  "receptionist",
+                  "porter",
+                  "paramedic"
+                ]
+              },
+              "minItems": 1
+            }
+          },
+          "required": [
+            "position"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "scenario": {
+              "anyOf": [
+                {
+                  "$ref": "#/definitions/Id"
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "minItems": 1
+                }
+              ]
+            }
+          },
+          "required": [
+            "scenario"
           ],
           "additionalProperties": false
         },

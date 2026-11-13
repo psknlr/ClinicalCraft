@@ -8,7 +8,7 @@
 import type { CaseDefinition, Investigation } from "../schema/case.js";
 import type { Condition } from "../schema/common.js";
 import { CAPABILITIES, PERSONAL_KIT } from "../schema/common.js";
-import { DEFAULT_LEVEL_ID, DEFAULT_REACH } from "../schema/facility.js";
+import { ACTOR_ROLES, DEFAULT_LEVEL_ID, DEFAULT_REACH, isOutcomePredicate, readsScenario } from "../schema/facility.js";
 import type { DeviceBehavior, EquipmentCatalog, EquipmentType, FacilityDefinition, Level, MaterialDef, Placement, Rect, Room, VoxelPart, WorldPredicate } from "../schema/facility.js";
 import { DEFAULT_LOCALE, t } from "../i18n.js";
 import type { Issue, PatientSlot, WaypointLocation } from "./types.js";
@@ -793,6 +793,15 @@ function typedLeaves(p: WorldPredicate, out: { key: string; type: string; states
   return out;
 }
 
+/** The scenario ids a world predicate reads (`scenario` leaves, at any depth). */
+function scenarioLeaves(p: WorldPredicate, out: string[] = []): string[] {
+  if ("scenario" in p) out.push(...(Array.isArray(p.scenario) ? p.scenario : [p.scenario]));
+  else if ("all" in p) p.all.forEach((x) => scenarioLeaves(x, out));
+  else if ("any" in p) p.any.forEach((x) => scenarioLeaves(x, out));
+  else if ("not" in p) scenarioLeaves(p.not, out);
+  return out;
+}
+
 /** States another type can be in: its catalog behaviour's (plus held / equipped for a handheld item); null when built in. */
 function knownStates(t: EquipmentType): Set<string> | null {
   if (!t.behavior) return null;
@@ -816,10 +825,30 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
   const ops = Object.entries(b.operations);
   if (ops.length === 0) issues.push(warn(`${path}.operations`, `behaviour of "${e.id}" offers no operations`));
   if (b.runs && b.runs !== true) {
-    b.runs.with.forEach((type, k) => {
+    const recorded = b.runs.with;
+    recorded.forEach((type, k) => {
       if (types.size && !types.has(type)) issues.push(warn(`${path}.runs.with.${k}`, `the run record of "${e.id}" names equipment type "${type}", which no loaded catalog defines`));
     });
+    // a mark's sign and response: operations of this device, or of a device the run records with it, and their states
+    const seenMarks = new Set<string>();
+    (b.runs.marks ?? []).forEach((m, k) => {
+      const at = `${path}.runs.marks.${k}`;
+      if (seenMarks.has(m.id)) issues.push(err(`${at}.id`, `mark "${m.id}" is listed twice`));
+      seenMarks.add(m.id);
+      for (const [key, ref] of [["sign", m.sign], ["response", m.response]] as const) {
+        if (ref.device !== undefined && !recorded.includes(ref.device)) {
+          issues.push(err(`${at}.${key}.device`, `"${ref.device}" is not a device this run records (\`runs.with\`)`));
+          continue;
+        }
+        const other = ref.device === undefined ? e : types.get(ref.device);
+        if (!other?.behavior) continue;
+        if (!(ref.op in other.behavior.operations)) issues.push(err(`${at}.${key}.op`, `"${other.id}" has no operation "${ref.op}"`));
+        for (const s of ref.to === undefined ? [] : Array.isArray(ref.to) ? ref.to : [ref.to]) if (!(s in other.behavior.states)) issues.push(err(`${at}.${key}.to`, `"${other.id}" has no state "${s}"`));
+      }
+    });
   }
+  const scenarios = new Set(Object.keys(b.scenarios ?? {}));
+  if (scenarios.has("none")) issues.push(err(`${path}.scenarios.none`, `"none" is how a run's scenario is cleared: a scenario cannot be called that`));
   const reserves = ops.some(([, op]) => op.reserve);
   // a handheld item reports "held" / "equipped" while carried: an operation may be offered in those (never lead to them)
   const carried = new Set(e.portable === "handheld" ? ["held", "equipped"] : []);
@@ -832,6 +861,7 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
     }
     if (op.to !== undefined && !states.has(op.to)) issues.push(err(`${at}.to`, `unknown state "${op.to}"`));
     (op.requires ?? []).forEach((p, k) => {
+      if (readsScenario(p)) issues.push(err(`${at}.requires.${k}`, `a precondition cannot read the run's scenario: a refusal would tell the trainee what is hidden (use \`outcomes\`)`));
       for (const s of predicateStates(p)) if (!states.has(s) && !carried.has(s)) issues.push(err(`${at}.requires.${k}`, `predicate refers to unknown state "${s}"`));
       for (const near of nearbyLeaves(p)) {
         const other = types.get(near.type);
@@ -865,7 +895,29 @@ function checkBehavior(e: EquipmentType, b: DeviceBehavior, path: string, types:
     if (typeof op.unlink === "string") typed(`${at}.unlink`, `"unlink"`, op.unlink, []);
     if (op.newRun && !b.runs) issues.push(warn(`${at}.newRun`, `"${name}" starts a new run, but "${e.id}" keeps no run record (behaviour \`runs\`)`));
     if (op.assessed && op.roles) {
-      for (const r of op.assessed) if (!op.roles.includes(r)) issues.push(warn(`${at}.assessed`, `"${name}" is assessed for role "${r}", which its roles do not allow`));
+      const roles: readonly string[] = op.roles;
+      for (const r of op.assessed) if ((ACTOR_ROLES as readonly string[]).includes(r) && !roles.includes(r)) issues.push(warn(`${at}.assessed`, `"${name}" is assessed for role "${r}", which its roles do not allow`));
+    }
+    // what it leads to when something holds: devices and the run's scenario only, a state of this device, types it sets
+    (op.outcomes ?? []).forEach((out, k) => {
+      const where = `${at}.outcomes.${k}`;
+      out.when.forEach((p, j) => {
+        if (!isOutcomePredicate(p)) issues.push(err(`${where}.when.${j}`, `an outcome reads devices and the run's scenario, never the actor: state, nearbyState, linked, deviceAtBedside, scenario (and all / any / not of them)`));
+        for (const s of predicateStates(p)) if (!states.has(s) && !carried.has(s)) issues.push(err(`${where}.when.${j}`, `predicate refers to unknown state "${s}"`));
+        for (const s of scenarioLeaves(p)) if (!scenarios.has(s)) issues.push(err(`${where}.when.${j}`, `"${e.id}" has no scenario "${s}" (behaviour \`scenarios\`)`));
+        for (const leaf of typedLeaves(p)) typed(`${where}.when.${j}`, `"${leaf.key}"`, leaf.type, leaf.states);
+        for (const near of nearbyLeaves(p)) typed(`${where}.when.${j}`, `"nearbyState"`, near.type, Array.isArray(near.state) ? near.state : [near.state]);
+      });
+      if (out.to !== undefined && !states.has(out.to)) issues.push(err(`${where}.to`, `unknown state "${out.to}"`));
+      (out.sets ?? []).forEach((x, j) => typed(`${where}.sets.${j}`, `"sets"`, x.type, [...(x.from ?? []), x.to]));
+      if (out.to === undefined && !out.sets && !out.result && !out.uses) issues.push(warn(where, `this outcome of "${name}" changes nothing`));
+    });
+    // an operation that arms a run's scenario: on a type that has scenarios
+    if (op.arms) {
+      const other = types.get(op.arms.type);
+      if (!other) {
+        if (types.size) issues.push(warn(`${at}.arms`, `"arms" names equipment type "${op.arms.type}", which no loaded catalog defines`));
+      } else if (!Object.keys(other.behavior?.scenarios ?? {}).length) issues.push(err(`${at}.arms`, `"${op.arms.type}" has no scenarios to arrange (behaviour \`scenarios\`)`));
     }
     if (op.clinical?.select === "capability" && e.capabilities.length === 0) issues.push(warn(`${at}.clinical.select`, `"capability" selection on "${e.id}", which provides no capabilities`));
     if (op.clinical?.select === "monitoring" && op.clinical.tool !== "intervene") issues.push(warn(`${at}.clinical.tool`, `"monitoring" selects an intervention: expected tool "intervene", got "${op.clinical.tool}"`));

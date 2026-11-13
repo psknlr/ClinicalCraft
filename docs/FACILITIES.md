@@ -219,7 +219,7 @@ hand, refined once more, pinching the chest piece of its stethoscope pad to pad.
 | `portable: "cart" \| "handheld"` | can be wheeled to another spot (`cart`) or carried (`handheld`); absent = fixed. The built-in carts: `ecg-machine`, `defibrillator`, `crash-cart`, `treatment-cart`, `oxygen-cylinder`, `nebulizer`, `glucometer-station`, `pocus-cart`, `ultrasound-machine`. Every actor knows where the departments keep them (embodied perception: "usually kept in …") until it sees one elsewhere |
 | `reach` | interaction reach in metres from the footprint (≤ 10). Default by interaction kind (core `DEFAULT_REACH`): workstation 1.2, monitor 2, bed 1.5, device 1.2, atlas 1.5, board 2.5, craft 1.2, sink 1, storage 1, none 1 (doors 1.2, staff 2). `oxygen-outlet` declares 2.2 (reached over the bed head) |
 | `interactionPoints: [{ x, z }]` | where an actor stands to use it: local offsets from the footprint centre, rotated with the placement; absent = any free spot within reach with line of sight |
-| `behavior: { initial, states: { id: { name?, available?, when?, supplies?, look? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select, item? }, durationSeconds?, reserve?, release?, roles?, uses?, sets?, link?, unlink?, newRun?, assessed? } }, derived?, runs? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`, `surgical_count`, `operate`) through the session's normal tool path — `operate` with `select: "item"` names a step of the operation (`insufflate`, at the procedure's usual pressure or the operation's `pressure` parameter, or `desufflate`: a tower's gas controls), and a step the operation refuses leaves the device's state as it was; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `select: "item"` with `item` names one case item (a WHO board's `sign_in` → the case's `sign-in`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). `derived: "case-record"` makes a board a view of the case record: in a case that defines every item its operations name (`select: "item"`), the state is the last state whose `when` condition holds (else `initial`) and each operation's only effect is its clinical act, through the session's tool path, so the board, the bedside and an agent make one entry and the board follows the record whoever made it; in a case without those items the device keeps its own state machine and its operations are physical. A state's `supplies` lists the type's capabilities that work in it (omit: all of them; each must be one of the type's capabilities, else an error): the world's capability rule (`WorldRuntime.provides` — bedside providers, an operation's equipment) follows it, so a laparoscopy tower `off` supplies no picture and no gas and powered on supplies its camera, light source and insufflator. A placement may start its device in another state (`Placement.state`, one of its type's states, else an error): a theatre set up before the list. A state's `look` is what the web world draws of the equipment in it — the layers of its model, its screens' picture, its manikin ("A look for each state" below). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
+| `behavior: { initial, states: { id: { name?, available?, when?, supplies?, look? } }, operations: { id: { name, from: [state…] \| "*", to?, requires?: [WorldPredicate…], clinical?: { tool, select, item? }, durationSeconds?, reserve?, release?, roles?, uses?, sets?, link?, unlink?, newRun?, assessed?, outcomes?, arms? } }, derived?, runs?, scenarios? }` | declarative device state machine (EMBODIED §8). `clinical` runs a clinical tool (`order_test`, `read_result`, `intervene`, `check_vitals`, `examine`, `surgical_count`, `operate`) through the session's normal tool path — `operate` with `select: "item"` names a step of the operation (`insufflate`, at the procedure's usual pressure or the operation's `pressure` parameter, or `desufflate`: a tower's gas controls), and a step the operation refuses leaves the device's state as it was; `select`: the case item comes from an operation parameter (`param`), is the first item whose `requires` this device provides (`capability`) or the case's monitoring intervention (`monitoring`). `select: "item"` with `item` names one case item (a WHO board's `sign_in` → the case's `sign-in`). `derived: "monitor-attachment"` mirrors the engine's `monitorAttached` (states `attached` / `detached`, never stored). `derived: "case-record"` makes a board a view of the case record: in a case that defines every item its operations name (`select: "item"`), the state is the last state whose `when` condition holds (else `initial`) and each operation's only effect is its clinical act, through the session's tool path, so the board, the bedside and an agent make one entry and the board follows the record whoever made it; in a case without those items the device keeps its own state machine and its operations are physical. A state's `supplies` lists the type's capabilities that work in it (omit: all of them; each must be one of the type's capabilities, else an error): the world's capability rule (`WorldRuntime.provides` — bedside providers, an operation's equipment) follows it, so a laparoscopy tower `off` supplies no picture and no gas and powered on supplies its camera, light source and insufflator. A placement may start its device in another state (`Placement.state`, one of its type's states, else an error): a theatre set up before the list. A state's `look` is what the web world draws of the equipment in it — the layers of its model, its screens' picture, its manikin ("A look for each state" below). Built in: `ecg-machine` (idle → prepared → connected → completed: `prepare`, `connect`, `record` → `order_test` by capability, `reset`) and `patient-monitor` (derived; `attach` → `intervene` monitoring, `read`, `cycle_nibp`) |
 | `screenNeeds: [WorldPredicate…]` | what the screens' picture needs, read by the world for this device — device predicates only (`state`, `nearbyState`, `linked`, `deviceAtBedside` and `all` / `any` / `not` of them; another kind fails parsing): while one does not hold, its screens are dark whatever the state's look says (`WorldRuntime.screenOf`). A camera's picture needs the tower on, lit and white-balanced and the scope in the chest: the tower's own monitor, the boom displays and a training station's monitor each say so, and the steps done under vision require the same predicates — one view ("Operations that work with other things" below) |
 | `model: { uri, sha256?, scale?, offset?, rot?, license, attribution?, source?, use? }` | optional GLB/glTF model — visual only: the voxel parts stay the fallback, named `screen` parts keep drawing over it, the collider is always the footprint and a model is never interactive by itself; `source` and `use` (cleared / research-only / pending) are its provenance and use status (ASSETS.md) |
 
@@ -261,10 +261,19 @@ state), directly or through one of type `via` (a training station: the chest
 tube in its chest, and through it the drainage unit on that tube); and
 `nearbyState`'s `linked: { type, state? }` — the device nearby is connected
 to one of that type (a drainage unit on water seal, connected to a chest tube
-that is in). A refusal names what is missing: the item's state and the one
-needed, the device not connected, the first alternative of an `any` (the rule
-before its exception), the first failing part of an `all`, the device nearby
-in a state a `not` excludes.
+that is in). Two more: `{ position: [position…] }` — the acting actor holds
+one of these staff positions (`anaesthetist`, `assistant-surgeon`,
+`circulating-nurse`…: finer than a role, since an anaesthetist and an assistant
+surgeon are both doctors; the learner's own body holds none) — and
+`{ scenario: id | [id…] }` — this device's run is under one of these scenarios
+("One test, more than one result" below), which only an operation's `outcomes`
+may read: a precondition that read it would tell the trainee, in its refusal,
+what is hidden (an error). A refusal names what is missing: the item's state
+and the one needed, the device not connected, the first alternative of an `any`
+(the rule before its exception) — or, when an `any` gives both roles and staff
+positions, all of them together ("Only Clinician or Surgeon may …") —, the
+first failing part of an `all`, the device nearby in a state a `not` excludes,
+the staff position a step belongs to.
 
 **Operations that work with other things.** An operation may change more than
 its own device, each committed with it in the same action:
@@ -275,14 +284,58 @@ its own device, each committed with it in the same action:
 | `sets: [{ type, from?, to, within? }…]` | other devices: every in-service device of `type` within `within` m (default 6) — in one of `from`, when given — moves to `to` as a fresh one, its connections undone. A training station's reset puts back what the instructor presets for the next trainee |
 | `link: { type, state?, within? }` | connect this device, by instance, to the nearest in-service device of `type` (in `state`) within `within` m (default `LINK_RANGE`, 2.5): both remember the other (`data.links`), across a hand-over, a put-down and a reload. Refused when there is none |
 | `unlink: type \| true` | disconnect this device from the devices of a type (`true`: from all) |
-| `assessed: [role…]` | the roles the step is assessed for. Taken by another role — which its `requires` may allow, e.g. `{ any: [{ role: [...] }, { nearbyState: { type: console, state: "practice" } }] }` — the result and the run record label it a role substitution, not assessed |
+| `assessed: [role \| position…]` | whom the step is assessed for: roles, or staff positions (the anaesthetist's step, the assistant surgeon's). Taken by anyone else — which its `requires` may allow, e.g. `{ any: [{ role: [...] }, { position: [...] }, { nearbyState: { type: console, state: "practice" } }] }` — the result and the run record label it a role substitution, not assessed |
 | `newRun: true` | on a device that keeps a run record: close the run and start the next |
+| `outcomes: [{ when: [predicate…], to?, sets?, uses?: false, result? }…]` | what the operation leads to when something holds: the first outcome whose `when` holds decides — its state (`to`), the devices it also sets (`sets`), what is seen (`result`, said with the result) — else the operation's own `to`. `when` reads devices (`state`, `nearbyState`, `linked`) and the run's `scenario`, never the actor: the same test comes out the same way whoever does it. `uses: false`: the instrument in hand is not moved on |
+| `arms: { type, within? }` | the instructor arranges a run's scenario with this operation (parameter `scenario`: one of that type's `scenarios`, or `none`): set, hidden, on the nearest device of `type` within `within` m (default 6) |
 
-**A run record** (`behavior.runs: true | { with: [type…], within? }`): a device that
+**One test, more than one result** (`outcomes`, `scenarios`). A training station's
+leak test that always reads "no leak" teaches nothing about looking: with `outcomes`
+the same operation — the same button, the same tool call, the same preconditions —
+leads to one state or another, and what follows depends on what the trainee saw.
+What decides is a state of some device, or the run's **scenario**: a behaviour's
+`scenarios: { id: { name, summary? } }` are what an instructor may arrange for a run
+(an air leak at the stump, a bleed). A run's scenario is **hidden from whoever
+acts**: no observation, inspection, state, event or refusal shows it; only `outcomes`
+read it; the run record names it once the run is closed (`RunRecord.scenario`), and
+`newRun` clears it — the next run has none until one is arranged. It is arranged in
+the room by an operation with `arms` (an instructor's console, for the roles that
+may: the one who arranges it is told which, in words) or by the facilitator
+(`WorldRuntime.setScenario(id, scenario | null)`, as a team scenario's items are
+placed; in the browser `?drill=<scenario id>` arranges it on every device that has
+that scenario when a new encounter starts). `WorldRuntime.scenarioOf(id)` is the
+facilitator's reading, never part of an observation. When it matters that the trainee
+cannot tell *whether* anything was arranged, arrange every run — `none` included:
+arranging changes the device's version, whichever scenario it is.
+
+**A run's marks** (`behavior.runs.marks`). What a run is marked on, member by member:
+`{ id, name, by: [role | position…], sign: { op, device?, to? }, response: { op,
+device?, to? }, within?, first? }` — a member of the team (`by`), the entry of the run
+that made a **sign** available to them (an operation, on the device itself or on a
+device of a type recorded with it, that led to a state: the bleed seen on the screens,
+the monitor's alarm, a colleague's call) and the **response** they owe it: the first
+such entry after the sign by one of them. Each member is scored against the sign
+*they* had: a sign that never came (nobody called) leaves the mark `not-applicable`
+— the mark missed is that of whoever owed the call; `within`: simulated seconds
+allowed from the sign to the response (later: `late`); `first`: nothing else of theirs
+on the device itself may come between (pressure before anything else — else
+`missed`). `WorldRuntime.runsOf(id)` returns each run with `marks: [{ id, status:
+"met" | "late" | "missed" | "not-applicable", signAt?, responseAt?, seconds?, actor?
+}]`, read from the run's own entries every time (`markRun`: pure — the same entries,
+the same marks), never from anyone's say-so. An entry's time is when its operation was
+done: a device operation's duration passes before its result is there to see.
+Inspecting such a device (`WorldRuntime.inspect`: `runs`) gives the run under way in
+brief — its number and how many steps — and the last one closed with its scenario in
+words and its marks; a run under way shows no marks (they would coach) and no
+scenario. An inspection also gives the state in words (`stateName`: a simulator's
+monitor reads "alarm: HR 128 /min …"), as far as the inspecting body can tell the
+state at all.
+
+**A run record** (`behavior.runs: true | { with: [type…], within?, marks? }`): a device that
 keeps one — a training station — records every completed operation in the run under
-way: the operation, its state before and after, who did it in which role, when (the
-clinical clock), the items it used by instance with what became of them, a role
-substitution; `with` adds the operations on the devices of those types within `within`
+way: the operation, its state before and after, who did it in which role and staff
+position, when (the clinical clock), the items it used by instance with what became of
+them, a role substitution; `with` adds the operations on the devices of those types within `within`
 m (default 6) — the count board, the checklist, the drainage unit the drill uses — so
 one trainee's run is one record, in the order it was done. An operation with `newRun`
 closes the run (kept, the last ten) and starts the next with the presets its `sets`
@@ -291,8 +344,13 @@ put back. `WorldRuntime.runsOf(id)` returns the run under way and the closed one
 **Validation** of the operations above: `checkCatalogs` warns about a `uses`, `sets`,
 `link`, `unlink`, `linked`, `itemState` or `runs.with` naming a type no loaded catalog
 defines or a state that type does not have, a `newRun` on a device without a run record,
-an `assessed` role its `roles` do not allow, and `screenNeeds` on a type that shows
-nothing on a screen; a `screenNeeds` state the type does not have is an error.
+an `assessed` role its `roles` do not allow, an outcome that changes nothing, and
+`screenNeeds` on a type that shows nothing on a screen; errors: a `screenNeeds` state the
+type does not have, a precondition that reads the run's `scenario`, an outcome that
+reads the actor, a `scenario` or a state an outcome names that the device does not have,
+a scenario called `none`, an `arms` on a type without scenarios, a mark listed twice or
+whose sign or response names an operation, a state or a recorded device that is not
+there.
 
 **Validation.** `checkFacility`: unknown level ids (buildings, rooms,
 placements, slots, staff, access zones; errors), an entity on another level

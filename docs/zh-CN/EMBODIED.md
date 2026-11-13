@@ -761,6 +761,15 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   及其结果、是否角色替代——加上 `runs.with` 时，还包括附近演练设备上的操作），`newRun` 结束一轮记录并开始下一轮
   （`WorldRuntime.runsOf`）。拒绝时说明缺什么：`any` 的第一个备选（先说规则，再说例外）、`all` 第一个不满足的部分、
   `not` 所排除的那台设备。
+* **同一项试验，不止一种结果；每轮的情景；每轮的评分项**（FACILITIES.md）：操作的 `outcomes` 在某个条件成立时通向
+  另一个状态——条件可以是某台设备的状态，也可以是本轮的**情景**（行为的 `scenarios`）。情景由教师在控制台设置
+  （`arms`，参数 `scenario`），或由带教人员设置（`WorldRuntime.setScenario`；浏览器中用 `?drill=<id>`），对执行操作的人
+  隐藏：任何观察、查看、事件或拒绝信息都不显示它，前提条件不得读取它，训练记录只在该轮结束后才写明。`position` 表示
+  这一步属于某个岗位（麻醉医生的、助手医生的：比角色更细），`assessed` 也可以写岗位。`runs.marks` 按成员给一轮评分——
+  每个人收到的征象（该轮记录中的一条）和应有的应对，是否及时、需要时是否是第一步——都从该轮自己的记录读出
+  （`runsOf(...).marks`；查看设备时只显示已结束一轮的评分）。设备操作的时长先过去，结果才出现，因此记录中的时间是
+  这一步完成的时间。同事的那一步要请其本人去做：`delegate_task … operate_device`（target：设备；`params.operation`）
+  会让离该设备最近的那位工作人员——按角色、岗位或编号——亲手完成，能不能做由世界判定。
 
 **显示病历记录的看板**（`derived: "case-record"`，例如 WHO 核查板、手术清点板、RF 检测棒）：在病例记录其操作所指内容的
 情况下——核查步骤（`clinical: {tool: "intervene", select: "item"}`），或手术清点（`clinical: {tool: "surgical_count",
@@ -818,7 +827,7 @@ clinical 类别只允许行动者*请求*临床效果；最终仍由会话的工
 | 角色 | 可委派的任务 | 可借其身体使用的临床工具 | 处置 |
 |---|---|---|---|
 | clinician（学员的化身）、attending | 全部，含 `hold_traction` / `release_traction`（在手术台旁当助手） | 全部 | 全部 |
-| nurse | `attach_monitor`、`record_ecg`、`obtain_iv_access`、`fetch_equipment`、`give_intervention`、`transport_patient` | `check_vitals`、`examine`、`order_test`（仅床旁检查：心电图、床旁快速检测、呼气峰流速）、`read_result`、`intervene` | 用药、补液、吸氧、监护、体位、病例的建立静脉通路，以及标注 `scope: "nursing"` 的条目（胸外按压、除颤、导尿、鼻胃管、床旁吞咽筛查…）——从不包括标注 `scope: "medical"` 的条目、气道管理 / 快速顺序诱导插管、动脉置管或其他医疗操作、会诊或去向安排 |
+| nurse | `attach_monitor`、`record_ecg`、`obtain_iv_access`、`fetch_equipment`、`give_intervention`、`transport_patient`、`operate_device`（设备自身的操作：其角色和岗位能否做由世界判定；有临床效果的操作仍要再过一次执业范围） | `check_vitals`、`examine`、`order_test`（仅床旁检查：心电图、床旁快速检测、呼气峰流速）、`read_result`、`intervene` | 用药、补液、吸氧、监护、体位、病例的建立静脉通路，以及标注 `scope: "nursing"` 的条目（胸外按压、除颤、导尿、鼻胃管、床旁吞咽筛查…）——从不包括标注 `scope: "medical"` 的条目、气道管理 / 快速顺序诱导插管、动脉置管或其他医疗操作、会诊或去向安排 |
 | paramedic | 同 nurse | 同 nurse | 同 nurse + 气道管理 |
 | porter | `fetch_equipment`、`transport_patient`（把患者推去检查再推回） | —（无 clinical 类别） | — |
 | receptionist | `fetch_equipment` | —（无 clinical 类别） | — |
@@ -1552,6 +1561,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 可见性（`VisibilityModel`） | yes（W1；门从不遮挡自己） | 单元测试：墙、窗、门、视野、部分遮挡、被挪动的推车、从交互点看关闭的门、楼层之间无视线 | 感知与空间场景；任何观察中都没有病例事实（10 个病例 × 2 种语言） | no——性能只测到 120 × 100 m 和两层 |
 | 导航（`GridAStarBackend`、`NavGrids`、入口图；目标代价上限 S7；多楼层行走被打断 C11） | yes（W1） | 单元测试：三个场馆中的真实路线、每个交互设备和每扇门、各类失败、门锁、区域、障碍、被挪动的推车、两层测试场馆、评审者构造的 DoS 目标被拒绝或 < 1 s、在楼梯路线的每个点停下的行走 | 已测量（§7）；导航场景 | no——更大的医院未测量；评估过的替代方案（导航网格）未采用（R12）。Perf |
 | 状态存储（`WorldStateStore`：行动者、版本、事件、幂等窗口、规范化快照） | yes（W2） | 单元测试：版本规则（含传感器更新）、动态信息、有界日志、快照一致性与拒绝 | `--continue` 恢复具身会话的位置；演示的轨迹重新生成时逐字节相同 | no——快照格式（`clinicalcraft-world@1`）没有迁移方案；会话记录是本地文件。Rel、Ops |
+| 同一项试验不止一种结果、每轮隐藏的情景、岗位、每轮的评分项、请同事亲手操作设备（`outcomes`、`scenarios`、`arms`、`scenario`、`position`、`runs.marks`、`setScenario` / `scenarioOf`、`delegate_task operate_device`、查看结果中的 `stateName` 与 `runs`）；起点在家具里时先走到最近的空位 | yes | `world/src/scenario.test.ts`（同一项试验的两种结果；在控制台和由带教人员设置；不向学员透露；某个岗位的一步；评分项的及时、迟了、未做到、不适用；目录检查拒绝的写法）、`world/src/nav/backend.test.ts`（从家具里出发）、agent `delegation-device.test.ts`（按角色、岗位和编号请同事；以文字拒绝） | SurgeryCraft 内容包的胸腔镜训练台（其 `tools/check.sh`：有两种结果的漏气试验、出血与团队应对，均经由玩家界面和智能体界面）；浏览器的“请……来做”按钮、训练记录摘要和 `?drill=` 已通过类型检查，未在浏览器中重跑 | no——只有一个内容包使用；评分项的时限是编写的教学数值，演练中的工作人员在被请到时才行动（没有自主应对演练报警的策略） |
 | 作用于其他物品的操作与每位学员一份训练记录（2026-11-12 审计这一轮：`uses`、`itemState`、`sets`、`link` / `unlink` / `linked`、`assessed`、`runs` / `newRun`、`screenNeeds` / `screenOf`）；在指定地点当面交接（`at`、`receivers`、`patient-in`、`staff-at-patient`、`intervene.place` / `receivedBy`、`handover`）；病历中的到达记录与患者到达处有人接 | yes | `world/src/station.test.ts`（按实例、按状态使用器械，空的或用过的缝合器，练习模式下的角色替代，同一个视野——断电、光源、退镜——，按实例连接并跨递交与重新载入保留，预设与每位学员一份记录）、`world/src/handover-place.test.ts`（不在该处 / 无接收者 / 由其接收）、core `procedure.test.ts`（按结构归因的损伤）、agent `nonverbal.test.ts`（按状态的原因） | SurgeryCraft 内容包的胸腔镜训练台与 Case 126（其 `tools/check.sh`：审计的七项发现各有一个回归测试，两个发布场景都经由玩家界面和智能体界面）；网页屏幕跟随 `screenOf`（已通过类型检查，本轮未在浏览器中重跑） | no——只有一个内容包使用；演练的预设与恢复室交接都未经临床教师审核 |
 | 设备行为与权限（`behaviors.ts`、`clinical.ts`、`authority.ts`） | yes（W2） | 在内置目录 + 一个测试目录上的单元测试：各类型的操作、谓词、带占用与时长的心电图状态机、跟随引擎的派生监护仪状态、门、水槽、储物柜、手持物品、角色限制 | 交互与恢复场景；STEMI 演示（心电图 prepare / connect / record / reset，监护仪 attach） | no——只编写了两个目录行为（`ecg-machine`、`patient-monitor`）；手持物品（递交、佩戴）与 `nearbyState` 只存在于测试目录和内容包中 |
 | 空间规则（`DefaultSpatialPolicy`、`SpatialChecker`）：唯一的床旁规则、唯一的屏幕规则、生命体征读屏 / 手测 / 查病历、kind 默认值、静脉通路是患者状态、化验在患者身边采样、结果不在设备上读、病历查阅在电子病历终端或床旁进行、药品配送、被占用的设备、`patient-at-provider`、能力显示名称 | yes（W2；评审 G4–G10、G8、C14） | §6 的每一行（成立、每种失败原因、能解决它的提示）；对 10 个病例每个条目的提示性质测试（含转运）；三个医院每个床位的床旁规则；设备操作收敛性扫描（C7）；屏幕规则 ⇔ 空间规则；惰性提示的预算 | `cases verify --all`；对整个病例库的具身示范接诊（40 / 40 达到临床得分）；两个基准智能体均无被接受的违规 | no——只在 10 个内置病例和 3 个场馆上验证；没有临床教师审阅这些规则的记录 |
@@ -1568,7 +1578,7 @@ PCI 后的心电图在那里用推过去的抢救室心电图车记录。真实�
 | 生命体征通道（G3 / G11：`vitalsView`、`learnerVitals`） | yes | 单元测试：临床医生的 `<monitor>` 段、`wait`、技能的 `vital` 谓词、MCP 状态资源、REPL 状态行（`monitor-status.test.ts`） | 远离床旁时 REPL 显示 "vitals: not in view"；网页监护面板显示“看不到屏幕”（e2e） | no——Perf、Rel（§14.4） |
 | 网页具身运行时（§2.1：默认具身、按接诊选择模式；`BrowserMover` / `BrowserCamera`；`world_pose`；面板操作即 `world_action`、自动走近与“前往”；R8 的计时暂停；职员行走、停放的推车、门锁；UI 中的世界判定；徽标、提示、地图上的行动者、实时轨迹） | yes（A6 及面向学员的评审） | 单元测试：与帧率无关的转向、路径分段、基于模拟渲染器的 Mover 与摄像头、便携设备提升、空间辅助函数与拒绝文字、world-view 判定、存储折叠、轨迹分组、具身开始 / 恢复 / 存档校验；e2e `embodied*.spec.ts`、`transport.spec.ts`、`review.spec.ts` 及测试集其余部分（45 个测试） | 具身模式下的完整网页 e2e 测试集（Chromium + SwiftShader）；从 `file://` 打开的离线单文件页面 | no——只用 Chromium + SwiftShader（没有 Firefox / Safari、没有真实 GPU、没有手机硬件）；已知的 UI 行为（§14.3）。Perf |
 | 具身离线示范接诊 | yes（A5） | 每个内置病例 × zh-CN / en 都在自己的场馆中以临床模式得分完成（测试）；STEMI 轨迹链 | `exec --embodied --autopilot`：40 / 40 次运行（两种模式）达到临床得分；教学医院：38 / 38 次为 100 %（2026-10-29）。中华病例说 20 例（[CMCR_CASES.md](../CMCR_CASES.md)）：该测试在综合医院、两种语言下均达到临床得分（2026-10-29）；调阅病历从不移动患者；未在教学医院测量 | no——是参考解法的确定性重放：展示的是管道，不是推理 |
-| 委派（`delegate_task`：`attach_monitor`、`record_ecg`、`obtain_iv_access`、`fetch_equipment`、`give_intervention`、`transport_patient`、`hold_traction`、`release_traction`） | yes（A5；评审：床旁规则、跟随取设备提示、`onBehalfOf`、迈步前检查执业范围、`cancelled` C17、不留下任何占用 C3） | 护士连接监护仪（引擎、世界状态、护士在床旁、行走时间）；拒绝规则作用于委派者；`/delegate staff:ed-nurse record_ecg`（综合医院）与 `staff:ed-station.nurse`（教学医院，先把推车推到床边）；护工转运 | 多智能体场景；REPL `/delegate nurse attach_monitor` | no——职员按确定性脚本行动；没有模型驱动职员 |
+| 委派（`delegate_task`：`attach_monitor`、`record_ecg`、`obtain_iv_access`、`fetch_equipment`、`give_intervention`、`transport_patient`、`hold_traction`、`release_traction`、`operate_device`） | yes（A5；评审：床旁规则、跟随取设备提示、`onBehalfOf`、迈步前检查执业范围、`cancelled` C17、不留下任何占用 C3） | 护士连接监护仪（引擎、世界状态、护士在床旁、行走时间）；拒绝规则作用于委派者；`/delegate staff:ed-nurse record_ecg`（综合医院）与 `staff:ed-station.nurse`（教学医院，先把推车推到床边）；护工转运 | 多智能体场景；REPL `/delegate nurse attach_monitor` | no——职员按确定性脚本行动；没有模型驱动职员 |
 | 技能（`clinicalcraft/skill@1`、11 个内置技能、项目与内联技能、解释器） | yes（A5；评审 S2、S8、G1、C3、C8–C10） | schema（引用、宏、无代码）、解释器（when、重试、恢复、最终拒绝、后置条件）、STEMI 上的内置技能、项目加载器、按步骤评估风险 | REPL `/skill` 列出 11 个；**没有任何基准场景运行技能** | no——未端到端验证；没有真实模型提出过内联技能。Sec |
 | 会话轨迹、`world` 会话记录条目、恢复 | yes（A5） | 轨迹作用域、JSONL、STEMI 链；从内存和 JSONL 恢复（`createNodeSession`），保留具身模式 / 显式指定其他模式时拒绝 | `exec --trace`（STEMI：首行 + 287 个跨度）；`--continue` 恢复世界 | no——会话记录是本地 JSONL 文件，没有保留或备份策略。Ops |
 | MCP 具身（`start_case {embodied}`、17 个带注解的世界工具、`not_embodied`、世界操作内部审批的两步确认） | yes（A5；评审 S1、G11、C15） | 进程内 JSON-RPC 测试；真实 stdio 冒烟测试 | 一次 stdio 会话：列出 34 个带注解的工具；带 `hint.goal` 的空间拒绝 → `navigate_to` → `interact_object` → `intervene` → 状态资源；临床会话上返回 `not_embodied` | no——未由 Claude Code、Codex 或 Grok CLI 配合真实模型运行过 |

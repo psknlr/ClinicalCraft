@@ -17,7 +17,8 @@
 import { matchOrders, orderWarnings, recordAvailability, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import type { Verdict } from "../../app/embodied-link.js";
-import { ct, getLocale, tr } from "../../i18n/index.js";
+import { PRIMARY_ACTOR } from "@clinicalcraft/world";
+import { ct, getLocale, tr, trMaybe } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { capList, evidenceGrid, minutesLeft, phaseName, riskBadge } from "./common.js";
@@ -348,6 +349,37 @@ export function devicePanel(app: App, args: { placementId: string }): () => Pane
   };
 }
 
+/** The role of the learner's own body (a step assessed for it is the learner's to take). */
+const LEARNER_ROLE = "clinician";
+
+/**
+ * A device that keeps a run record (a training station): the run under way in brief, and the last one closed —
+ * its scenario, hidden while it ran, and how it did on what it is marked on (`WorldRuntime.inspect`: marks are
+ * never shown while a run is under way). Null when the device keeps none.
+ */
+function runBrief(game: Game, entityId: string, type: { behavior?: { runs?: unknown } | undefined }): HTMLElement | null {
+  if (!type.behavior?.runs) return null;
+  const runs = game.session.world()?.inspect(PRIMARY_ACTOR, entityId)?.runs;
+  if (!runs?.current && !runs?.last) return null;
+  const out = h("div", { class: "device-run small", id: "device-run" });
+  if (runs.current) out.append(h("p", { dataset: { run: String(runs.current.n) } }, tr("device.run", { n: runs.current.n, steps: runs.current.steps })));
+  const last = runs.last;
+  if (last) {
+    out.append(h("p", { class: "muted" }, [tr("device.lastRun", { n: last.n, steps: last.steps }), last.scenario ? ` ${tr("device.lastRunScenario", { scenario: last.scenario })}` : ""].join("")));
+    if (last.marks?.length) {
+      out.append(
+        h("p", { class: "eyebrow" }, tr("device.marks")),
+        h(
+          "ul",
+          { class: "device-marks" },
+          last.marks.map((m) => h("li", { dataset: { mark: m.id, status: m.status } }, `${m.name} — ${tr(`device.mark.${m.status}`)}${m.seconds !== undefined ? ` (${tr("device.markSeconds", { seconds: m.seconds })})` : ""}`)),
+        ),
+      );
+    }
+  }
+  return out;
+}
+
 /**
  * Embodied mode: the device's own operations (catalog behaviour, e.g. the ECG cart's prepare → connect →
  * record → reset, offered from its current state) and, for a cart, "Bring to the patient" (`move_to`); for a
@@ -381,13 +413,22 @@ function deviceOps(game: Game, placementId: string): HTMLElement | null {
       h(
         "div",
         { class: "row wrap device-op-list" },
-        Object.entries(behavior.operations).map(([id, op]) => {
+        Object.entries(behavior.operations).flatMap(([id, op]) => {
           const from = op.from ?? ["*"];
           const offered = from.includes("*") || from.includes(state) || (!!carried && from.includes(carried));
-          return h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
+          const own = h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
+          // another member's step (assessed for a staff position or a staff role, never the learner's own): the
+          // learner asks that colleague, who does it with their own hands — `/delegate … operate_device`
+          const theirs = (op.assessed ?? []).filter((a) => a !== LEARNER_ROLE);
+          if (!offered || !theirs.length || (op.assessed ?? []).includes(LEARNER_ROLE)) return [own];
+          const who = trMaybe(`position.${theirs[0]!}`, theirs[0]!);
+          const ask = () => void game.session.submit({ type: "user_message", text: `/delegate ${theirs[0]!} operate_device ${entityId} operation=${id}` });
+          return [own, h("button", { type: "button", class: "device-op device-ask", title: tr("device.askTitle", { who }), dataset: { ask: id, who: theirs[0]! }, onclick: ask }, tr("device.ask", { who }))];
         }),
       ),
     );
+    const record = runBrief(game, entityId, type);
+    if (record) wrap.append(record);
   }
   if (portable && patient) {
     wrap.append(h("div", { class: "row wrap" }, h("button", { type: "button", id: "device-bring", dataset: { op: "move_to" }, onclick: () => run("move_to", { goal: { kind: "interact", id: patient } }) }, tr("device.bring"))));

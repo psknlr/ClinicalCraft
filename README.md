@@ -368,7 +368,11 @@ one, in the state it is in (a stapler fires only with a reload in, and that
 reload is spent); devices connect by instance (a drainage unit to the chest
 tube that is in); a camera's picture, on every screen that shows it, and
 every step done under vision read one rule; a training station keeps each
-trainee's run and puts back the instructor's presets for the next. Where the
+trainee's run and puts back the instructor's presets for the next. The same
+test can come out more than one way — an instructor arranges a run's
+scenario, hidden from the trainee — and a run is marked member by member,
+each against the sign that reached them; a colleague takes their own step
+when asked, with their own hands. Where the
 patient arrives is recorded from the world, and a hand-over given at a
 place, in person — a recovery hand-over at the recovery bed, to the recovery
 nurse — is refused anywhere else. Clinical mode is unchanged and remains
