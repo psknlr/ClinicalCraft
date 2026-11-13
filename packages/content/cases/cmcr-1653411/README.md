@@ -218,6 +218,8 @@ non-critical item. Debrief the order of the acts from the transcript.
 call, which has to come before the recorded course opens) and `rb-no-delay` (the dangerous error: diverting him to a CT,
 an admission or fibrinolysis). Both are acts; neither reads a final-phase record.
 
+**Safety outcome.** `fibrinolysis` is `critical: true`: with primary PCI available within 120 minutes and his bleeding, surgical and stroke history unknown, giving it fails the assessment's safety outcome (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score.
+
 ## Reference path (`solution`)
 
 52 steps, static clock: start → presentation, onset, pain now → **12-lead ECG** (arrival) → **monitoring with a
@@ -566,6 +568,7 @@ other library cases cite them.
   names the infarct; the look-alike negatives now share words with real questions, and `family` excludes "does your
   family know you're here". In-world: `cath-week` carries a ward location, and the nurse's name and brief are no longer
   tied to the ED.
+- 2026-11-13: safety outcome (external audit of 2026-11-12): the high-risk interventions state `critical` (`fibrinolysis` true); no fact, score or reference path changed.
 
 ### 1.0.0 — 2026-10-28
 
@@ -620,6 +623,8 @@ V5 导联 rS 型（广泛梗死图形）。诊断：前降支近段病变所致�
   不出有无血栓形成、QS 波也不等于无心肌可救，这些在干扰项的反馈中讲解；干扰项包括与记录病程相似的“等症状再发才造影”（记录中
   没有任何药物治疗的记载）。
 - 决策 4（出院前，多选）：超声心动图、12 个月双联抗血小板、高强度他汀达标；不为单纯 RBBB 植入起搏器，不在出院前植入 ICD。
+
+**安全结果。** `fibrinolysis` 标为 `critical: true`：可在 120 分钟内行直接 PCI，且出血、手术和卒中史不明，此时溶栓，无论得分多少，安全结果都判为不通过（`safety.passed: false`），所有复盘和导出都在分数旁显示。
 
 **复盘要点（PEARLS）。** 先谈面对带束支阻滞的心电图时的犹豫；用两句话说清首份心电图和你的处理；分析 RBBB 下 ST 段的方向、
 ST 段形态与旧心电图为何不影响决策、为何不选溶栓、CT 狭窄分级能说明什么不能说明什么、T 波倒置何时代表再灌注何时代表演变、Q 波

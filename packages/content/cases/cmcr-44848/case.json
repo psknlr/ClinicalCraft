@@ -3063,6 +3063,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3104,6 +3105,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3331,6 +3333,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },

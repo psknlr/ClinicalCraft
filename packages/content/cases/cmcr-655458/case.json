@@ -3225,6 +3225,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },

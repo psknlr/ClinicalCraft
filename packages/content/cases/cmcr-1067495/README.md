@@ -164,6 +164,8 @@ separate plasma infusion (exchange is available from the start, so an infusion i
 ordering condition: both are contraindicated in every phase and scored by `rb-no-unindicated-treatment`. To keep the
 rubric at twelve items, the two history items were merged into `rb-history-and-red-flags`.
 
+**Safety outcome.** `neuraxial-block`, `alteplase` and `caesarean-section` (contraindicated until plasma exchange has started) are `critical: true`: giving one while it is contraindicated fails the assessment's safety outcome (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score. `rb-avoided-harm` scores the first two; the early caesarean section has its own harm text and fails the safety outcome without a rubric deduction.
+
 ## Reference path (`solution`)
 
 88 steps: start → 17 admission history items (including the 10 unrecorded ones she cannot answer) → the four exam
@@ -489,6 +491,7 @@ against the full source article.
   birth on the post-caesarean values. The head CT is an `essential` record shown from admission (the "initial" CT),
   a troponin and a 12-lead ECG can be ordered at presentation (no result recorded), and key reasoning 2 says that
   treatment waits for the film, not for ADAMTS13.
+* 2026-11-13: safety outcome (external audit of 2026-11-12): the high-risk interventions state `critical` (`neuraxial-block` true, `caesarean-section` true, `alteplase` true); no fact, score or reference path changed.
 
 ### 1.0.0
 
@@ -532,6 +535,8 @@ ADAMTS13（干扰项同样送涂片和LDH，但判断和处理有误：HELLP输�
 ④ 产后：病情没有随分娩缓解，每日置换加激素、利妥昔单抗、不输板、转ICU，卡普赛珠单抗由血液科决定（干扰项：原报告的血浆加
 反复输板、等待产后HELLP缓解、溶栓、改用依库珠单抗）；⑤ ICU家庭会议：共同决策（干扰项：说服继续、
 不谈话即出院、断言徒劳）。
+
+**安全结果。** `neuraxial-block`、`alteplase` 和 `caesarean-section`（血浆置换开始之前禁忌）标为 `critical: true`：在禁忌时给予，无论得分多少，评估的安全结果都判为不通过（`safety.passed: false`），所有复盘和导出都在分数旁显示。
 
 **复盘要点（PEARLS）。** 先谈感受；复述最初几小时的判断、送检和分娩前治疗；分析：哪些表现子痫前期解释不了、为何先留
 ADAMTS13标本又不等结果、为何不输血小板、剖宫产麻醉怎么选、分娩后哪些指标说明病情没停、溶栓为何有害、原报告的血浆与输板
