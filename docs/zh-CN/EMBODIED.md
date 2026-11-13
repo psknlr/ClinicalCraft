@@ -791,7 +791,7 @@ clinical 类别只允许行动者*请求*临床效果；最终仍由会话的工
 执业范围设置、执业范围规则）决定。`transport_patient` 属于 physical，但收窄为临床
 团队和护工（前台接待不得推送患者：`NOT_AUTHORIZED`）。
 
-操作还可以注明它所属的手术**分工权限**（`control`：装持针器的针为 `instruments`，清点板为 `count`，腹腔镜
+操作还可以注明它所属的手术**分工权限**（`control`：给持针器装针为 `instruments`，清点板为 `count`，腹腔镜
 主机的电源为 `equipment`；各项权限见 docs/TEAM.md §1）。目前它只是声明的内容：世界尚不检查它，收窄操作的
 仍只有上面的 `roles`。
 
