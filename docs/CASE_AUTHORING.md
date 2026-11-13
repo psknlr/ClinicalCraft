@@ -382,35 +382,72 @@ solution is sent to the browser).
   low-value test) is not critical. Every `risk: "high"` intervention with a
   `contraindicatedWhen` states the decision — `critical: true`, or
   `critical: false` when giving it while contraindicated is a recoverable
-  misjudgement — and `cases validate` warns while it is unset (§9.8). This is
+  misjudgement — and `cases validate` warns while it is unset (§9.8). A
+  critical intervention is never `risk: "none"` or `"low"`: its badge and the
+  confirmation (moderate and high risk ask) say what it can do (§9.8). This is
   not the rubric's `critical` (§7), which names a missed item first in the
   debrief; a case usually has both: the critical intervention, and a
   critical avoided-harm rubric item that loses its weight when it is given.
 * **The preset dose: `doseSpec`.** Give every medication and fluid whose
   dose matters a machine-readable preset beside its `dose` text:
-  `"doseSpec": { "amount": 0.5, "unit": "mg", "route": "IM" }` — the same
-  dose the text states (`cases validate` warns when they differ, §9.8). Units: `g`, `mg`, `microgram`, `mL`, `unit`
+  `"doseSpec": { "amount": 0.5, "unit": "mg", "route": "IM" }` — the dose
+  the text states (`cases validate` warns when they differ, §9.8). Units: `g`, `mg`, `microgram`, `mL`, `unit`
   (international units) or `mmol`, optionally per kg and per hour or minute
   (`mg/kg`, `unit/kg/h`, `microgram/kg/min`) — `microgram` and `unit` are
   never abbreviated. Routes: `IM`, `IV`, `IO`, `SC`, `PO`, `SL`, `PR`, `IN`,
-  `INH` (nebulised or inhaled), `TOP`. A range is `amount` to `upTo`
-  (labetalol 10–20 mg: `"amount": 10, "upTo": 20`). A weight-based preset
+  `INH` (nebulised or inhaled), `TOP`. A weight-based preset
   needs `patient.weightKg` (`cases validate` warns otherwise): an order in
   absolute units is converted through it and may differ by up to 10 %
   (rounding); when a cap applies to this patient ("max 90 mg"), author the
-  capped absolute dose. When a learner's order states a dose (the order as
-  written: `ordered.dose`, PROTOCOL §3.2), the engine compares it after unit
-  conversion — 500 microgram is 0.5 mg; a volume is never read as a mass, a
-  bolus never as a rate. An equivalent dose is given; another amount or
-  route, or a unit that cannot be compared, is **not given**: the session
-  records a **dose error** (the order as written, the dose read, the preset,
-  the ratio) for the debrief. It is critical — the safety outcome fails —
-  when the ratio is ≥ 10 or ≤ 0.1, or the intervention is `critical` or
-  `risk: "high"`. An order without a dose gives the preset, as does a choice
-  from a list. Write each dose a learner may choose as its own intervention
-  only when it changes the clinical course (IM vs IV-bolus adrenaline);
-  otherwise one intervention with its preset is enough — a wrong dose is
-  caught as a dose error.
+  capped absolute dose.
+  * **A preset spans every dose the case's cited guidance allows** — `amount`
+    to `upTo` (labetalol 10–20 mg: `"amount": 10, "upTo": 20`), around the
+    dose the text gives: aspirin 300 mg with ESC, Chinese and ACC/AHA loading
+    doses is 150–325 mg; ceftriaxone 2 g with CAP guidelines' 1–2 g is
+    1–2 g; IM adrenaline 0.5 mg for an item that also stands for an adult
+    auto-injector is 0.3–0.5 mg. Name the range's sources in the dose text or
+    the README, and never invent a dose the case does not support: a single
+    preset that refuses a guideline-concordant dose delays a time-critical
+    drug and teaches nothing. (The tenfold check counts from the range's
+    nearer end, so keep a range no wider than the guidance.)
+  * **No preset for an item that stands for a class** — an item whose
+    aliases name other drugs ("steroids" for hydrocortisone, dexamethasone and
+    methylprednisolone; "an antiemetic") or other measures (an inhaler in
+    puffs): the check compares amounts, not drugs, so another member's usual
+    dose would read as a dose error. Nor for an error the learner must be able
+    to make whatever dose they write (a potassium chloride push), or a text that
+    gives a bolus then an infusion, a schedule or alternatives no single preset
+    says — split the item when each dose matters.
+  * **Names and aliases** that state a dose state the preset's, as one dose
+    with its unit ("IM adrenaline 300 micrograms (0.3 mL of 1 mg/mL)",
+    "enoxaparin 40 mg" — not "enoxaparin 40"): typed as an order, a name is
+    read like any order (§9.8).
+  * **How an order is checked** (PROTOCOL §3.2). The engine reads the words of
+    an order itself — figures, Chinese numerals ("五毫克"), English words
+    ("five milligrams"); a volume through the strength the order states
+    ("0.5 mL of 1:1000" is 0.5 mg); a syringe or a bag with its rate as the
+    rate it delivers ("insulin 50 units in 50 mL at 5.5 mL/h" is
+    5.5 units/h); a dose in parts as their total — and compares it after unit
+    conversion: 500 microgram is 0.5 mg; a bolus never a rate. An equivalent
+    dose is given. A dose it cannot read (a fraction, "0。5 mg", a range, a
+    number with no unit) or compare (a volume without its strength, a dose
+    per kg without the weight, a rate for a single dose) is **asked about**:
+    nothing given, no dose error. Another amount or route is **not given**:
+    the session records a **dose error** (the order as written, the dose
+    read, the preset, the ratio) for the debrief. It is critical — the safety
+    outcome fails — when the ratio is ≥ 10 or ≤ 0.1, and for a `critical` or
+    `risk: "high"` intervention also when the order is at least twice the
+    preset or by another route; every other dose error (a rounding or
+    weight-band difference, an under-dose that is not tenfold) is a warning
+    to review. An order without a dose gives the preset, as does a choice
+    from a list. Write each dose a learner may choose as its own intervention
+    only when it changes the clinical course (IM vs IV-bolus adrenaline);
+    otherwise one intervention with its preset is enough — a wrong dose is
+    caught as a dose error.
+  * **High-alert medicines** (an insulin, potassium, a heparin, an opioid, a
+    thrombolytic) whose `dose` text states exactly one dose — one amount or one
+    range — need a preset (`cases validate` warns, naming the preset to add,
+    §9.8): their tenfold errors are the ones that kill.
 
 ### 6.1 Operations (`procedure`, `safetyGates`)
 
@@ -546,7 +583,7 @@ A theatre case can give its room a care team that works on its own in in-world m
     { "not": { "intervened": "adrenaline-im" } },
     { "all": [
       { "elapsedSince": { "intervened": "adrenaline-im", "gte": 5 } },
-      { "flag": "reassessed-before-repeat" },
+      { "examined": "ex-airway-treated", "afterLast": "adrenaline-im" },
       { "any": [{ "vital": "sbp", "op": "lt", "value": 90 }, { "vital": "spo2", "op": "lt", "value": 94 }] }
     ] }
   ] }
@@ -557,6 +594,12 @@ A theatre case can give its room a care team that works on its own in in-world m
   patient who has improved, is given (neutral) but not counted. Keep the
   reassessment, the interval and the continuing indication as separate
   leaves, so each can be named in the debrief and tested on its own.
+  `{ "examined": id, "afterLast": intervention }` is the reassessment *since
+  the last dose*: it holds when the finding's latest examination came after
+  the intervention was last given (by action order, so within the same minute
+  too) and a dose given since undoes it — a flag set once ("reassessed") would
+  also count a reassessment made before an earlier dose. List each finding
+  that reassesses (`any` of them, in every phase it is examined in).
 * `rubric`: 8–15 deterministic items across domains (history, examination,
   investigations, diagnosis, management, safety, efficiency) + 1–3
   communication items judged by the examiner (`judgeGuidance`, no `met`).
@@ -587,8 +630,10 @@ A theatre case can give its room a care team that works on its own in in-world m
   §6): making it, not missing a rubric item, fails the safety outcome
   (`AssessmentReport.safety.passed`).
 * `cases verify` reports the reference path's rubric score (`--json`:
-  `score.earned`, `score.possible`, `score.percent`); it warns when the
-  reference path misses a critical item. Replay the main wrong paths and
+  `score.earned`, `score.possible`, `score.percent`) and, beside it, its
+  safety outcome (`safety.passed`, `safety.criticalFailures` by intervention,
+  `safety.doseErrors` counted; the line notes one that did not pass); it warns
+  when the reference path misses a critical item. Replay the main wrong paths and
   "do nothing" for the README's score table (§9.6).
 * `npcs`: nurse (triage handover, logistics), consultants who interpret results
   the learner already has, attending (Socratic). Knowledge must not exceed the case,
@@ -623,9 +668,13 @@ A theatre case can give its room a care team that works on its own in in-world m
 
   `cases verify` then accepts those interventions given while contraindicated
   (a critical one draws a warning: the reference path's own assessment does not
-  pass safety, and a safety-critical gate holding at its end becomes a warning
-  too); every other contraindicated step, every dose error and a timeout still
-  fail it. A declared id the path never gives while contraindicated is a
+  pass safety), and a safety-critical gate holding at its end only when the
+  declared error set it off — its `when` names a declared intervention or a
+  flag one sets (then a warning); every other contraindicated step, every
+  other safety-critical gate, every dose error and a timeout still fail it. A
+  dose error cannot be declared: an order whose dose conflicts is not given,
+  so the path has nothing to recover from — the nurse's read-back is taught in
+  play. A declared id the path never gives while contraindicated is a
   warning. Keep teaching cases of this kind few and say so in the README; the
   usual case teaches errors through what the learner may do, not through its
   reference path.
@@ -947,4 +996,7 @@ wrong for a case, say so in the README rather than bending the text to it.
 | a test utterance is not one of its expected item's keywords (compared the same way) | `extensions.testUtterances.<i>` |
 | every specialty id is canonical — one id per discipline, US spelling (`CANONICAL_SPECIALTIES` in `packages/core/src/specialties.ts`, labelled in `SPECIALTY_LABELS`); a synonym's warning names its replacement (`SPECIALTY_SYNONYMS`). Paediatric scheme: the age group is `pediatrics` (`neonatology` for a newborn) and a child's organ specialty is the adult id beside it (`["pediatrics", "neurology"]`, not `paediatric-neurology`); `pediatric-surgery` and `neonatology` are disciplines of their own | `specialty.<i>` |
 | a `risk: "high"` intervention with a `contraindicatedWhen` states whether giving it then is a critical safety failure: `critical: true` or `critical: false` (§6) | `interventions.<i>.critical` |
-| a preset dose states the dose its `dose` text states, in every locale: the text's first dose (an amount or a range, end for end with `amount`–`upTo`, through `patient.weightKg` for a dose per kg) where the units can be compared, and its route when the text names exactly one | `interventions.<i>.doseSpec` |
+| a preset dose states the dose its `dose` text states, in every locale: the text's first dose — a single dose within `amount`–`upTo` (a preset may span the doses the cited guidance allows around it), a range end for end, through `patient.weightKg` for a dose per kg; a unit that cannot be compared is a mismatch — and its route when the text names exactly one (§6) | `interventions.<i>.doseSpec` |
+| a name or alias that states a dose, typed as an order, is given: the preset's dose, one dose with its unit — not another dose, a range, a number without its unit or a volume without its strength (the nurse would refuse or ask; §6) | `interventions.<i>.doseSpec` |
+| a high-alert medication (an insulin, potassium, a heparin, an opioid, a thrombolytic, by its name) whose `dose` text states exactly one dose (one amount or one range, in every locale) has a `doseSpec`; the warning names the preset to add, as the text states it. A text with several doses — a bolus then an infusion, a schedule, alternatives — is exempt (split the item if each dose matters), as is an item contraindicated always (§6) | `interventions.<i>.doseSpec` |
+| a `critical` intervention is not `risk: "none"` or `"low"` (§6) | `interventions.<i>.risk` |

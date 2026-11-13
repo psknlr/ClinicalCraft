@@ -2148,7 +2148,7 @@
       "requires": [
         "medications"
       ],
-      "risk": "low",
+      "risk": "moderate",
       "critical": true,
       "effects": [],
       "setFlags": [],

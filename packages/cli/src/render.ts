@@ -15,6 +15,7 @@ import {
   phaseLabel,
   resolveDecisionRef,
   rt,
+  safetySummary,
   sanitizeTerminal,
   vitalLabel,
   vitalWithUnit,
@@ -554,7 +555,10 @@ export class EventRenderer {
         if (event.severity === "critical") this.line(p.bold(p.red(`‼ ${m(L, "render.scenario")}`)));
         return;
       case "intervention.applied":
-        if (event.appropriateness === "contraindicated") this.line(p.bold(p.red(`☠ ${m(L, "render.contraindicated")}`)));
+        if (event.appropriateness === "contraindicated") this.line(p.bold(p.red(`☠ ${m(L, event.critical ? "render.criticalFailure" : "render.contraindicated")}`)));
+        return;
+      case "dose.error":
+        this.line(event.severity === "critical" ? p.bold(p.red(`⚠ ${m(L, "render.doseError")}`)) : p.yellow(`⚠ ${m(L, "render.doseError")}`));
         return;
       case "action.rejected":
         if (this.o.verbose) this.line(p.dim(`· ${event.action}: ${event.code}`));
@@ -592,6 +596,8 @@ export class EventRenderer {
         decisions: report.decisions.length,
       }),
     );
+    // The safety outcome beside the score, never folded into it (PROTOCOL §3.2): what the learner did, so mid-case too.
+    this.renderSafety(report);
     this.line(
       m(L, "assess.coverage", {
         asked: report.history.requiredAsked,
@@ -614,6 +620,16 @@ export class EventRenderer {
     for (const j of judged) this.line(`  ${j.met ? p.green("✓") : p.yellow("·")} ${j.id}${j.evidence ? p.dim(` — ${truncate(j.evidence, 100)}`) : ""}`);
     if (narrative) this.line(narrative);
     this.line(p.dim(m(L, "assess.notice")));
+  }
+
+  /** "Safety: passed" (green), "… to review" (yellow) or "Safety: not passed — …" (red), each critical safety failure and dose error. */
+  private renderSafety(report: AssessmentReport): void {
+    const p = this.p;
+    const safety = safetySummary(this.c, report, this.L);
+    if (!safety.headline) return;
+    this.line(safety.passed === false ? p.bold(p.red(safety.headline)) : safety.doseErrors.length > 0 ? p.yellow(safety.headline) : p.green(safety.headline));
+    for (const f of safety.criticalFailures) this.line(p.bold(p.red(f.text)));
+    for (const e of safety.doseErrors) this.line(e.severity === "critical" ? p.red(e.text) : p.yellow(e.text));
   }
 
   /* ---------------------------------------------------------------- */

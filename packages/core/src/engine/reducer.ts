@@ -14,6 +14,7 @@ import {
   type DomainEvent,
   type DoseErrorRecord,
   type ReduceResult,
+  type WrittenOrder,
   type RejectionCode,
   type SessionState,
 } from "../schema/session.js";
@@ -30,7 +31,7 @@ import { applyStudy } from "./study.js";
 import { reachPhase, recordAvailability } from "./records.js";
 import { applyAnaesthesia } from "./anaesthesia.js";
 import { applyAlarm } from "./alarm.js";
-import { compareDose, doseErrorSeverity } from "./dose.js";
+import { checkOrder, formatDose, type DoseQueryReason, type OrderCheck } from "./dose.js";
 import { BASE_VARIANT } from "../schema/procedure.js";
 import type { ReplayRejection, ReplayResult } from "./types.js";
 
@@ -174,6 +175,8 @@ function onExamine(ctx: Ctx, a: Action<"examine">): Outcome {
   }
   const firstTime = !s.examined.includes(finding.id);
   if (firstTime) s.examined.push(finding.id);
+  // when it was last examined: a reassessment after a dose (`{ examined, afterLast }`)
+  s.lastExamined = { ...(s.lastExamined ?? {}), [finding.id]: { at: s.clock, seq: s.seq + 1 } };
   ctx.events.push({ type: "exam.performed", findingId: finding.id, firstTime });
   return accepted(actionCost(c, "examine"));
 }
@@ -283,8 +286,19 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
       `"${intervention.id}" is on hold — placed by ${hold.placedBy}: ${hold.reason}. It needs a recorded reassessment and release by ${hold.placedBy}.`,
     );
   }
-  // the order as written: a dose that conflicts with the preset is not given — a dose error, kept for the debrief
-  if (doseError(ctx, intervention, a)) return accepted(actionCost(c, "intervene"));
+  // the order as written (`checkOrder`, read from its words whatever dose the client sent): a dose that cannot be read
+  // or compared is asked about — nothing given, nothing recorded; one that conflicts with the preset is not given — a
+  // dose error, kept for the debrief
+  let ordered: WrittenOrder | undefined;
+  if (a.ordered) {
+    const check = checkOrder(a.ordered, intervention, c.patient.weightKg);
+    if (check.outcome === "query") return rejected("dose-unclear", doseQueryMessage(a.ordered.text, check, intervention));
+    if (check.outcome === "conflict") {
+      recordDoseError(ctx, intervention, a.ordered.text, check);
+      return accepted(actionCost(c, "intervene"));
+    }
+    ordered = { text: a.ordered.text, ...(check.dose ? { dose: { ...check.dose } } : {}) };
+  }
   const appropriateness =
     intervention.contraindicatedWhen && evaluate(c, before, intervention.contraindicatedWhen)
       ? "contraindicated"
@@ -294,8 +308,7 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
   const invalid = intervention.checklist === true && appropriateness === "contraindicated";
   // a critical intervention given while contraindicated: the critical safety failure (an invalid attempt gave nothing)
   const critical = appropriateness === "contraindicated" && !invalid && intervention.critical === true;
-  const ordered = a.ordered ? { ordered: a.ordered } : {};
-  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, ...(invalid ? { invalid: true as const } : {}), ...ordered });
+  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, ...(invalid ? { invalid: true as const } : {}), ...(ordered ? { ordered } : {}) });
   ctx.events.push({ type: "intervention.applied", interventionId: intervention.id, appropriateness, ...(invalid ? { invalid: true as const } : {}), ...(critical ? { critical: true as const } : {}) });
   if (invalid) return accepted(actionCost(c, "intervene"));
   for (const flag of intervention.setFlags) {
@@ -306,26 +319,33 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
   return accepted(actionCost(c, "intervene"));
 }
 
+/** Why an order's dose is asked about (`dose-unclear`), technically: the words, and the preset they could not be checked against. */
+function doseQueryMessage(text: string, check: Extract<OrderCheck, { outcome: "query" }>, intervention: Intervention): string {
+  const preset = formatDose(intervention.doseSpec!);
+  const dose = check.dose ? formatDose(check.dose) : "its dose";
+  const why: Record<DoseQueryReason, string> = {
+    strength: `${dose} cannot be compared with ${preset} without the strength`,
+    weight: `${dose} cannot be compared with ${preset} without the patient's weight`,
+    rate: `${dose} and ${preset} are not both rates (or both single doses)`,
+    range: `"${check.words}" is a range — which dose was meant is not known`,
+    "no-unit": `"${check.words}" states no unit`,
+    unreadable: `"${check.words}" cannot be read as a dose`,
+  };
+  return `the dose of the order "${text}" for "${intervention.id}" is not clear: ${why[check.reason]}; nothing was given — order it again with the dose as a number and its unit`;
+}
+
 /**
- * An order whose stated dose conflicts with the intervention's preset (`doseSpec`, `compareDose` through the
- * patient's weight): records the dose error and emits `dose.error` — nothing is given. False when there is nothing
- * to check (no stated dose, no preset) or the dose is the preset's.
+ * An order whose dose conflicts with the intervention's preset (`checkOrder`, through the patient's weight): records
+ * the dose error and emits `dose.error` — nothing is given.
  */
-function doseError(ctx: Ctx, intervention: Intervention, a: Action<"intervene">): boolean {
-  const { c, s } = ctx;
-  const stated = a.ordered?.dose;
-  const preset = intervention.doseSpec;
-  if (!a.ordered || !stated || !preset) return false;
-  const check = compareDose(stated, preset, c.patient.weightKg);
-  if (check.equivalent) return false;
-  const text = a.ordered.text;
-  const severity = doseErrorSeverity(check.ratio, intervention);
+function recordDoseError(ctx: Ctx, intervention: Intervention, text: string, check: Extract<OrderCheck, { outcome: "conflict" }>): void {
+  const { s } = ctx;
+  const preset = intervention.doseSpec!;
   // the record and the event each get their own copies (records are immutable by convention, events go out)
-  const fields = () => ({ interventionId: intervention.id, text, ordered: { ...stated }, preset: { ...preset }, ratio: check.ratio, conflicts: [...check.conflicts], severity });
+  const fields = () => ({ interventionId: intervention.id, text, ordered: { ...check.dose }, preset: { ...preset }, ratio: check.ratio, conflicts: [...check.conflicts], severity: check.severity });
   const record: DoseErrorRecord = { ...fields(), at: s.clock, seq: s.seq + 1 };
   s.doseErrors = [...(s.doseErrors ?? []), record];
   ctx.events.push({ type: "dose.error", ...fields() });
-  return true;
 }
 
 const sameHolder = (a: string, b: string) => a.trim().toLowerCase() === b.trim().toLowerCase();

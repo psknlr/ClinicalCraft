@@ -331,8 +331,12 @@ cited without a DOI because none was verified.
   amiodarone, or while she bleeds — is `critical: true` (the report's course: INR 5.1 with visible haematuria eight
   days after amiodarone started without a warfarin reduction); `rb-safety-dose` was already a critical rubric item.
   `pcc` (high risk; no major bleed recorded) is `critical: false`: a thrombotic risk to a new bioprosthesis, but
-  recoverable. Scores are unchanged.
-- **Preset dose (audit P0-2):** `doseSpec` on amiodarone 0.2 g PO.
+  recoverable. `warfarin-continue` is moderate risk (it was low): a critical intervention's badge and confirmation
+  say what it can do. Scores are unchanged.
+- **No preset dose (audit P0-2).** The amiodarone item (0.2 g PO, the report's maintenance dose) takes no
+  `doseSpec`: it also answers for "an antiarrhythmic", and an oral loading regimen (for example 600 mg a day) is
+  common practice, so the dose check — it compares amounts, not drugs or regimens — would read both as dose errors.
+  The warfarin items state no dose to check.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

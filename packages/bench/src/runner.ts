@@ -11,6 +11,7 @@
  */
 import { createHash } from "node:crypto";
 import { traceJsonl, type TokenUsage } from "@clinicalcraft/agent";
+import { assess, type AssessedDoseError, type AssessmentReport } from "@clinicalcraft/core";
 import type { LoadedContent } from "@clinicalcraft/agent/node";
 import { canonical, type EpisodeTrace } from "@clinicalcraft/world";
 import type { BenchAgent, ProviderTap } from "./agents/types.js";
@@ -59,6 +60,35 @@ export interface BenchRun {
     authorisation: { audited: number; unauthorised: AuditResult["authorisation"]["unauthorised"] };
     contraindicated: AuditResult["safety"]["contraindicated"];
   };
+  /**
+   * The safety outcome of the final state (core `assess`, docs/PROTOCOL.md §3.2), reported beside the predicates:
+   * `passed` is false after a critical safety failure, a critical dose error or a safety-critical gate — such a run
+   * never counts as a success, whatever its predicates; null when the run left no state to assess (skipped, or
+   * failed before its session started).
+   */
+  safety: BenchSafety;
+}
+
+/** A run's safety outcome (`BenchRun.safety`). */
+export interface BenchSafety {
+  passed: boolean | null;
+  /** Critical interventions given while contraindicated: the case's dangerous errors, made. */
+  criticalFailures: { interventionId: string; at: number }[];
+  /** Orders not given because their dose conflicted with the preset. */
+  doseErrors: AssessedDoseError[];
+  /** The operation's verdict (cases with a `procedure`), when the case has safety gates. */
+  verdict?: NonNullable<AssessmentReport["safety"]["verdict"]>;
+}
+
+/** The safety outcome of an assessment as a run records it. */
+export function benchSafety(report: Pick<AssessmentReport, "safety">): BenchSafety {
+  const s = report.safety;
+  return {
+    passed: s.passed,
+    criticalFailures: s.criticalFailures.map(({ interventionId, at }) => ({ interventionId, at })),
+    doseErrors: s.doseErrors.map((e) => ({ ...e, ordered: { ...e.ordered }, preset: { ...e.preset }, conflicts: [...e.conflicts] })),
+    ...(s.verdict ? { verdict: s.verdict } : {}),
+  };
 }
 
 export interface BenchReport {
@@ -98,7 +128,7 @@ export interface RunScenarioOptions {
 export async function runScenario(scenario: BenchScenario, agent: BenchAgent, seed: number, o: RunScenarioOptions): Promise<BenchRun> {
   const t0 = performance.now();
   const answers = new AnswerStore();
-  const base: Omit<BenchRun, "success" | "status" | "predicates" | "calls" | "refusals" | "answer" | "usage" | "wallMs" | "simMinutes" | "trace" | "stateDigest" | "evidence" | "audit"> = {
+  const base: Omit<BenchRun, "success" | "status" | "predicates" | "calls" | "refusals" | "answer" | "usage" | "wallMs" | "simMinutes" | "trace" | "stateDigest" | "evidence" | "audit" | "safety"> = {
     scenarioId: scenario.id,
     category: scenario.category,
     caseId: scenario.caseId,
@@ -106,7 +136,19 @@ export async function runScenario(scenario: BenchScenario, agent: BenchAgent, se
     locale: scenario.locale,
     seed,
   };
-  const empty = { predicates: [], calls: [], refusals: [], answer: null, usage: { inputTokens: 0, outputTokens: 0 }, simMinutes: 0, trace: { spans: 0, setupSpans: 0, digest: "" }, stateDigest: "", evidence: "source-only" as const, audit: { spatial: { audited: 0, violations: [] }, authorisation: { audited: 0, unauthorised: [] }, contraindicated: [] } };
+  const empty = {
+    predicates: [],
+    calls: [],
+    refusals: [],
+    answer: null,
+    usage: { inputTokens: 0, outputTokens: 0 },
+    simMinutes: 0,
+    trace: { spans: 0, setupSpans: 0, digest: "" },
+    stateDigest: "",
+    evidence: "source-only" as const,
+    audit: { spatial: { audited: 0, violations: [] }, authorisation: { audited: 0, unauthorised: [] }, contraindicated: [] },
+    safety: { passed: null, criticalFailures: [], doseErrors: [] },
+  };
   if (o.budget?.exhausted()) {
     o.budget.skipped++;
     return { ...base, ...empty, success: false, status: "skipped", limit: "budget", wallMs: 0 };
@@ -184,9 +226,11 @@ export async function runScenario(scenario: BenchScenario, agent: BenchAgent, se
       targetOf: (actionId) => targets.get(actionId) ?? null,
     };
     const predicates = evaluatePredicates(view, scenario.predicates).map((r) => ({ kind: predicateKind(r.predicate), class: r.class, ok: r.ok, detail: r.detail }));
+    // the safety outcome beside the predicates: a run with a critical failure is never a success
+    const safety = benchSafety(assess(s.caseDef, s.state));
     const run: BenchRun = {
       ...base,
-      success: !error && !limit && predicates.every((p) => p.ok),
+      success: !error && !limit && predicates.every((p) => p.ok) && safety.passed !== false,
       status: error ? "error" : limit ? "limit" : "completed",
       ...(limit ? { limit } : {}),
       ...(error ? { error } : {}),
@@ -201,6 +245,7 @@ export async function runScenario(scenario: BenchScenario, agent: BenchAgent, se
       stateDigest,
       evidence: (s.state.studies?.orders.length ?? 0) > 0 ? "expanded" : "source-only",
       audit: { spatial: audit.spatial, authorisation: audit.authorisation, contraindicated: audit.safety.contraindicated },
+      safety,
     };
     o.onTrace?.(run, jsonl);
     return run;
@@ -235,6 +280,7 @@ export function runFacts(run: BenchRun): RunFacts {
     spatial: { audited: run.audit.spatial.audited, violations: run.audit.spatial.violations.length },
     authorisation: { audited: run.audit.authorisation.audited, unauthorised: run.audit.authorisation.unauthorised.length },
     contraindicated: run.audit.contraindicated.length,
+    safety: { passed: run.safety?.passed ?? null, criticalFailures: run.safety?.criticalFailures.length ?? 0, doseErrors: run.safety?.doseErrors.length ?? 0 },
     ...(run.status === "skipped" ? { skipped: true } : {}),
   };
 }

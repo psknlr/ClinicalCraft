@@ -38,6 +38,7 @@ import { resultStatus } from "../tools/clinical-resolve.js";
 import { bedsideReadings, formatVitals, interventionLabel, investigationName, offMonitor, phaseLabel, withoutEcg } from "../tools/format.js";
 import { decisionRefFor } from "../tools/decision-refs.js";
 import { optionLabelsFor } from "../tools/option-labels.js";
+import { safetyHeadline } from "../safety.js";
 
 /** What an offline responder may look at. */
 export interface OfflineContext {
@@ -268,10 +269,13 @@ export function examinerOffline(c: CaseDefinition, report: AssessmentReport, loc
     return e ? t(e.maneuver, L) : id;
   });
   const judged = report.rubric.filter((r) => r.met === null).length;
+  // the safety outcome beside the score, never folded into it (PROTOCOL §3.2)
+  const safety = safetyHeadline(report.safety, L);
   const narrative = rt(L, "examiner.offline.narrative", {
     percent: report.score.percent,
     earned: report.score.earned,
     possible: report.score.possible,
+    safety: safety ? `${safety}${isZh(L) ? "。" : ". "}` : "",
     done: report.objectives.filter((o) => o.done).length,
     total: report.objectives.length,
     hAsked: report.history.requiredAsked,
@@ -390,7 +394,8 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
     case "set-phase":
       return tool("set_phase", { phase: action.phase });
     case "intervene":
-      return tool("intervene", { intervention_id: action.interventionId });
+      // a reference step that writes its order keeps the words (their dose is checked, PROTOCOL §3.2)
+      return tool("intervene", { intervention_id: action.interventionId, ...(action.ordered ? { query: action.ordered.text } : {}) });
     case "advance-time":
       return tool("wait", { minutes: action.minutes });
     case "operate":

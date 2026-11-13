@@ -205,8 +205,12 @@ export type Condition =
   | { always: boolean }
   /** History item asked by the learner (or disclosed by the patient agent). */
   | { asked: string }
-  /** Physical-exam finding performed. */
-  | { examined: string }
+  /**
+   * Physical-exam finding performed. `afterLast` (an intervention id): examined after that intervention was last
+   * given (`lastGiven`, by committed action sequence) — a reassessment after the latest dose, which a dose given since
+   * undoes; false while the intervention was never given (sessions saved before the exam times were kept: false).
+   */
+  | { examined: string; afterLast?: string }
   /** Investigation ordered; `phase` restricts to orders placed in that phase. */
   | { ordered: string; phase?: string }
   /** Investigation result read; `phase` restricts to the result for that phase. */
@@ -282,7 +286,7 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ not: ConditionSchema }).strict(),
     z.object({ always: z.boolean() }).strict(),
     z.object({ asked: IdSchema }).strict(),
-    z.object({ examined: IdSchema }).strict(),
+    z.object({ examined: IdSchema, afterLast: IdSchema.optional() }).strict(),
     z.object({ ordered: IdSchema, phase: IdSchema.optional() }).strict(),
     z.object({ read: IdSchema, phase: IdSchema.optional() }).strict(),
     z.object({ resultReady: IdSchema, phase: IdSchema.optional() }).strict(),

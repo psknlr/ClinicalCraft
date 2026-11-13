@@ -13,6 +13,7 @@ import {
   facilityCapabilities,
   interventionNegation,
   matchExam,
+  readOrder,
   matchInterventions,
   matchOrders,
   matchSpecificity,
@@ -304,12 +305,47 @@ function itemRoutes(iv: Intervention): Set<string> {
 }
 
 /**
- * A free-text intervention query (see `resolveIntervention`). A query that
- * states a route ("oral prednisolone", "IV adrenaline") never resolves to an
- * item that states only other routes (IV hydrocortisone, IM adrenaline):
- * such an item is offered as a candidate instead.
+ * An order's words without its doses ("adrenaline 0.5 mg i.m." → "adrenaline i.m.", "肾上腺素0.5毫克肌注" →
+ * "肾上腺素 肌注", "肌注肾上腺素五毫克" → "肌注肾上腺素"): the words that name the item, not how much of it — core
+ * `readOrder` finds the doses (a ratio, a count, a percentage are not). NFKC-normalised, spaces collapsed.
+ */
+export function withoutDoses(text: string): string {
+  const nfkc = text.normalize("NFKC");
+  let out = "";
+  let at = 0;
+  for (const [start, end] of readOrder(nfkc).spans) {
+    if (start < at) continue;
+    out += `${nfkc.slice(at, start)} `;
+    at = end;
+  }
+  return `${out}${nfkc.slice(at)}`.replace(/\s+/g, " ").trim();
+}
+
+/**
+ * A free-text intervention query (see `resolveIntervention`). The order's dose
+ * is not the item's name: words that name no single item ("adrenaline 0.5 mg
+ * i.m." matches as weakly as the bare drug) are tried again without their
+ * doses (`withoutDoses`), and that reading is taken when it names one item —
+ * one of the first reading's candidates. Words that name an item with its dose
+ * ("0.9% sodium chloride 500 mL") resolve as written. The dose itself is still
+ * read from the whole order and checked (`writtenOrder`, docs/PROTOCOL.md §3.2).
  */
 function interventionQuery(c: CaseDefinition, query: string, locale: string): Resolution {
+  const r = interventionWords(c, query, locale);
+  if (r.kind !== "none" && r.kind !== "ambiguous") return r;
+  const words = withoutDoses(query);
+  if (!words || words === query.normalize("NFKC").replace(/\s+/g, " ").trim()) return r;
+  const bare = interventionWords(c, words, locale);
+  return bare.kind === "id" && (r.kind === "none" || r.ids.includes(bare.id)) ? bare : r;
+}
+
+/**
+ * Free-text intervention words as written. A query that states a route ("oral
+ * prednisolone", "IV adrenaline") never resolves to an item that states only
+ * other routes (IV hydrocortisone, IM adrenaline): such an item is offered as
+ * a candidate instead.
+ */
+function interventionWords(c: CaseDefinition, query: string, locale: string): Resolution {
   const all = matchInterventions(c, query, locale);
   const wanted = routesOf(analyzeNegation(query).affirmative);
   const offRoute = (id: string) => {

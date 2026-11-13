@@ -89,10 +89,11 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("hint"), ...base }).strict(),
   z.object({ type: z.literal("answer"), decisionId: IdSchema, optionIds: z.array(IdSchema).min(1), ...base }).strict(),
   /**
-   * Give an intervention. `ordered`: the order as written and the dose read from it. When it states a dose and the
-   * intervention has a preset (`doseSpec`), the two are compared (`compareDose`): an equivalent dose is given and
-   * recorded with the order; a conflicting one is not given — a dose error is recorded (`dose.error`). An order
-   * without a dose, or no `ordered`, gives the preset.
+   * Give an intervention. `ordered`: the order as written and the dose read from it — the engine reads the words
+   * itself (`checkOrder`): a `dose` they do not state, or none, never hides the dose written. When the intervention
+   * has a preset (`doseSpec`): an equivalent dose is given and recorded with the order; a conflicting amount or route
+   * is not given — a dose error is recorded (`dose.error`); a dose that cannot be read or compared is refused
+   * (`dose-unclear`). An order that states no dose, or no `ordered`, gives the preset.
    */
   z.object({ type: z.literal("intervene"), interventionId: IdSchema, ordered: WrittenOrderSchema.optional(), ...base }).strict(),
   /**
@@ -202,7 +203,11 @@ export interface DoseErrorRecord {
    */
   ratio: number | null;
   conflicts: DoseConflict[];
-  /** `critical`: ratio ≥ 10 or ≤ 0.1, or the intervention is critical or high-risk; otherwise `warning`. */
+  /**
+   * `critical` (`doseErrorSeverity`): a tenfold difference (ratio ≥ 10 or ≤ 0.1) for any medicine, and for an
+   * intervention that is `critical` or high-risk also twice the preset or more (ratio ≥ 2) or another route; otherwise
+   * `warning` (a rounding or weight-band difference, an under-dose that is not tenfold) — never failing the safety outcome.
+   */
   severity: "warning" | "critical";
 }
 
@@ -265,6 +270,11 @@ export interface SessionState {
   phasesReached?: string[];
   asked: string[];
   examined: string[];
+  /**
+   * Each finding's latest examination: the minute and the action sequence (`{ examined, afterLast }` conditions).
+   * Absent until the first; sessions saved before have none.
+   */
+  lastExamined?: Record<string, { at: number; seq: number }>;
   orders: OrderRecord[];
   /** Result keys read, `${investigationId}@${phase}` */
   seen: string[];
@@ -407,6 +417,13 @@ export type RejectionCode =
   | "cannot-answer"
   /** `intervene`: an explicit hold stands on this intervention (see the `hold` action); it is not carried out. */
   | "on-hold"
+  /**
+   * `intervene`: the order's dose cannot be checked against the preset — it cannot be read (a fraction, "0。5 mg", a
+   * unit with no number), is a range, has no unit, or is in a unit the preset's cannot be compared with: without the
+   * strength or the weight, or a rate against a single dose (`checkOrder` `query`). Nothing is given and no dose error
+   * is recorded: the nurse asks.
+   */
+  | "dose-unclear"
   | "invalid";
 
 export interface ReduceResult {

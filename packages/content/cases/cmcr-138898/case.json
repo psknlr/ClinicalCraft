@@ -3446,7 +3446,6 @@
         "zh-CN": "美罗培南1 g静脉滴注，每8小时一次（原报告没有写剂量；此为肾功能正常成人的常用剂量）",
         "en": "Meropenem 1 g IV every 8 hours (the report gives no dose; this is a usual adult dose with normal renal function)"
       },
-      "doseSpec": { "amount": 1, "unit": "g", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"

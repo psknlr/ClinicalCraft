@@ -167,8 +167,12 @@ or **adrenaline 1 mg IV** while he has a pulse. Giving one fails the assessment'
 (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score; the effects still
 play out. In the audit's replay (nitroglycerin after the IV line) the score stays 19/22 (86 %), with `r-no-nitrate`
 named first and the safety outcome failed. Free-text orders are checked against the preset doses (`doseSpec`):
-aspirin 300 mg, ticagrelor 180 mg, clopidogrel 600 mg, atorvastatin 40–80 mg (PO), UFH 70–100 units/kg and
-enoxaparin 0.5 mg/kg (IV, through his 78 kg), ondansetron 4 mg IV.
+aspirin 150–325 mg (the loading doses of the guidelines its text cites — ESC and Chinese 150–300 mg, ACC/AHA
+162–325 mg — around its 300 mg), ticagrelor 180 mg, clopidogrel 600 mg (PO), UFH 70–100 units/kg, enoxaparin
+0.5 mg/kg and morphine 2–4 mg (IV, through his 78 kg). "Aspirin 150 mg", "162 mg" and "325 mg" are given; "aspirin
+3000 mg" is not (a dose error to review: nine times the top of the range); "300 g" is a critical dose error. The
+statin and ondansetron items have none: they also answer for "a statin" and "an antiemetic", and the dose check
+compares amounts, not drugs, so rosuvastatin 20 mg (high-intensity) would read as half the atorvastatin dose.
 
 ## Reference path (`solution`)
 
@@ -401,9 +405,12 @@ no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
   adrenaline while he has a pulse (`{ "intervened": …, "valid": false }`; its `scoredWhen` names both); the item's
   weight, the total (22) and the reference path (22/22) are unchanged — the VF branch's indicated shocks and
   adrenaline do not cost it.
-- **Preset doses (audit P0-2):** `doseSpec` on aspirin 300 mg, ticagrelor 180 mg, clopidogrel 600 mg, atorvastatin
-  40–80 mg, UFH 70–100 units/kg, enoxaparin 0.5 mg/kg and ondansetron 4 mg, the doses their texts state. Atropine
-  (0.5 mg here, 1 mg in the AHA algorithm the text cites), morphine (titrated) and the infusions have none.
+- **Preset doses (audit P0-2):** `doseSpec` on aspirin 150–325 mg (the guidelines' loading doses, which its text now
+  names around the 300 mg), ticagrelor 180 mg, clopidogrel 600 mg, UFH 70–100 units/kg, enoxaparin 0.5 mg/kg and
+  morphine 2–4 mg IV, the doses their texts state. Atropine (0.5 mg here, 1 mg in the AHA algorithm the text cites),
+  the infusions and the deliberate errors (nitroglycerin, metoprolol, tenecteplase: given whatever dose is written,
+  so the consequence plays out) have none, nor do the statin and ondansetron items, which also answer for other drugs
+  of their class ("a statin", "an antiemetic") whose usual doses the amount-only dose check would read as dose errors.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

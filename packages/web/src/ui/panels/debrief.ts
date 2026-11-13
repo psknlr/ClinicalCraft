@@ -6,12 +6,15 @@
  * first-try decisions, safety events, the operation (cases with a `procedure`,
  * once the case is finished: `debrief-operation.ts`), the rubric (deterministic met/unmet,
  * examiner-judged items with evidence) and the examiner narrative. Scores are
- * formative only (DESIGN_PRINCIPLES §2.6).
+ * formative only (DESIGN_PRINCIPLES §2.6). The safety outcome stands beside the
+ * score — passed or not, each critical safety failure and dose error
+ * (docs/PROTOCOL.md §3.2) — and a run that did not pass is never shown as passed.
  */
+import { safetySummary, type SafetySummary } from "@clinicalcraft/agent";
 import { availableDecisions, progress, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import type { AssessmentView } from "../../app/store.js";
-import { ct, joinList, reviewLine, tr, trMaybe } from "../../i18n/index.js";
+import { ct, getLocale, joinList, reviewLine, tr, trMaybe } from "../../i18n/index.js";
 import { clear, h, mount } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { investigationName } from "./common.js";
@@ -128,11 +131,13 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
           hiddenDecisions > 0 ? h("li", { class: "no" }, h("span", { class: "mark" }, "·"), tr("debrief.decisionsLocked", { n: hiddenDecisions })) : null,
         ),
         h("h4", { style: "margin-top:14px" }, tr("debrief.safety")),
-        r.safety.contraindicated.length || r.safety.criticalAlarms
+        r.safety.contraindicated.length || r.safety.criticalAlarms || r.safety.doseErrors?.length
           ? h(
               "ul",
               { class: "check-list" },
               r.safety.contraindicated.map((s) => h("li", { class: "no" }, h("span", { class: "mark" }, "⚠"), tr("debrief.contra", { name: ct(c.interventions.find((x) => x.id === s.interventionId)?.name) || s.interventionId, min: Math.round(s.at) }))),
+              // orders not given: what was written, what was read from it, the preset
+              safetySummary(c, r, getLocale()).doseErrors.map((e) => h("li", { class: e.severity === "critical" ? "no" : "partial", dataset: { doseError: e.interventionId } }, h("span", { class: "mark" }, "⚠"), e.text.replace(/^⚠\s*/u, ""))),
               r.safety.criticalAlarms ? h("li", { class: "partial" }, h("span", { class: "mark" }, "!"), tr("debrief.criticalAlarms", { n: r.safety.criticalAlarms })) : null,
             )
           : h("p", { class: "small muted" }, tr("debrief.noSafety")),
@@ -179,6 +184,29 @@ function assessmentSection(c: CaseDefinition, view: AssessmentView, offline: boo
       : null,
     view.narrative ? h("div", { class: "narrative" }, h("div", { class: "eyebrow" }, offline ? tr("debrief.narrativeOffline") : tr("debrief.narrative")), h("p", null, view.narrative)) : null,
   );
+}
+
+/**
+ * The safety outcome, prominently (`#debrief-safety`): the headline ("Safety: not passed — …"), each critical safety
+ * failure with its harm and each dose error. What the learner did, so shown mid-case too — but never an operation's
+ * gate before the case is finished (the caller leaves the gates out then); nothing while it passed with nothing to
+ * review (the metric tile says so).
+ */
+function safetyBlock(safety: SafetySummary): HTMLElement | null {
+  const items = [...safety.criticalFailures.map((f) => f.text), ...safety.doseErrors.map((e) => e.text)].map((x) => x.replace(/^⚠\s*/u, ""));
+  if (safety.passed !== false && items.length === 0) return null;
+  return h(
+    "div",
+    { class: safety.passed === false ? "critical-missed safety-outcome" : "critical-missed safety-outcome review", id: "debrief-safety", role: "alert", dataset: { passed: String(safety.passed) } },
+    h("h4", null, `⚠ ${safety.headline}`),
+    items.length ? h("ul", null, items.map((x) => h("li", null, x))) : null,
+  );
+}
+
+/** The metric tile beside the score: the safety outcome, passed or not — never "passed" for a run that did not pass. */
+function safetyTile(safety: SafetySummary | null): HTMLElement {
+  const label = safety?.passed == null ? "…" : safety.passed ? tr("debrief.safetyPassed") : tr("debrief.safetyNotPassed");
+  return h("div", { class: safety?.passed === false ? "safety-bad" : undefined, id: "debrief-safety-metric", dataset: { passed: String(safety?.passed ?? "") } }, h("b", null, label), h("small", null, tr("debrief.metric.safety")));
 }
 
 /**
@@ -234,10 +262,14 @@ export function debriefPanel(app: App): () => PanelView {
       const guidelines = c.provenance.review?.guidelines ?? [];
       // Critical items missed (`rubric[].critical`), prominently — once the debrief is unlocked (mid-case they would be an answer key).
       const critical = unlocked ? (report?.criticalMissed ?? []).map((id) => ct(c.rubric.find((x) => x.id === id)?.text) || id) : [];
+      // the safety outcome beside the score (docs/PROTOCOL.md §3.2) — for a case with an operation, without the
+      // operation's gates until the debrief is unlocked, as the score is held back (docs/PROCEDURE.md §7)
+      const safety = report ? safetySummary(c, report, getLocale(), { gates: !(c.procedure && !unlocked) }) : null;
       mount(
         content,
         unlocked ? leadBlock(c, s) : null,
         critical.length ? h("div", { class: "critical-missed", id: "debrief-critical", role: "alert" }, h("h4", null, `⚠ ${tr("debrief.criticalMissed")}`), h("ul", null, critical.map((x) => h("li", null, x)))) : null,
+        safety ? safetyBlock(safety) : null,
         !s.finished ? h("p", { class: "notice" }, tr("debrief.notFinished")) : null,
         !unlocked ? h("p", { class: "notice", id: "debrief-locked" }, tr("debrief.locked")) : null,
         h(
@@ -248,6 +280,7 @@ export function debriefPanel(app: App): () => PanelView {
           h("div", null, h("b", null, String(s.hints)), h("small", null, tr("debrief.metric.hints"))),
           // an operation's score mid-case would tell whether a hidden view or injury holds (docs/PROCEDURE.md §7)
           h("div", null, h("b", null, report ? (c.procedure && !unlocked ? "—" : `${report.score.percent}%`) : "…"), h("small", null, tr("debrief.metric.score"))),
+          safetyTile(safety),
         ),
         c.clock.mode === "simulated" ? h("p", { class: "small muted", style: "text-align:center" }, tr("debrief.minutes", { n: Math.round(s.clock) })) : null,
         unlocked

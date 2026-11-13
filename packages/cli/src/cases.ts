@@ -473,6 +473,12 @@ export interface CaseVerification {
   decisions: { decided: number; total: number };
   /** The reference path's rubric score (deterministic, scored items: core `assess`). */
   score: { earned: number; possible: number; percent: number };
+  /**
+   * The reference path's safety outcome beside its score (core `assess`, docs/PROTOCOL.md §3.2): passed, the critical
+   * safety failures (by intervention) and the dose errors it made. Core `verifyCase` already fails a path that makes
+   * either, unless the case declares it (`errorRecovery`).
+   */
+  safety: { passed: boolean; criticalFailures: string[]; doseErrors: number };
   /** `extra`: utterances that also select (and credit) unexpected facts (warnings). */
   utterances: { total: number; failed: number; extra: number };
   issues: Issue[];
@@ -496,6 +502,7 @@ export function verifyCaseDefinition(c: CaseDefinition): CaseVerification {
     objectives: { done: a.objectives.filter((o) => o.done).length, total: a.objectives.length },
     decisions: { decided: a.decisions.filter((d) => d.decided).length, total: a.decisions.length },
     score: { ...a.score },
+    safety: { passed: a.safety.passed, criticalFailures: a.safety.criticalFailures.map((f) => f.interventionId), doseErrors: a.safety.doseErrors.length },
     utterances: { total: corpus.total, failed: corpus.failures.length, extra: corpus.extras.length },
     issues,
   };
@@ -529,7 +536,7 @@ export async function casesVerify(ctx: CliContext, args: ParsedArgs): Promise<nu
           possible: r.score.possible,
           percent: r.score.percent,
         }),
-      )}`,
+      )}${r.safety.passed ? "" : ` ${p.red(ctx.t("cases.verifyUnsafe", { failures: r.safety.criticalFailures.length, doses: r.safety.doseErrors }))}`}`,
     );
     printIssues(ctx, r.issues, !flagBool(args, "quiet"));
   }

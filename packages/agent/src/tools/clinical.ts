@@ -56,6 +56,7 @@ import {
   type ToolArgs,
 } from "./clinical-resolve.js";
 import { studyLines } from "./studies.js";
+import { administeredDose, doseChallengeText, doseCheckText, doseErrorData, doseQueryChallengeText, doseQueryData, doseText, orderCheck, writtenOrder } from "./dose-order.js";
 import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay, recommendations } from "./requirements.js";
 import { resolveConsultStaff } from "./consult-target.js";
 import type { StaffVoice } from "../session/staff-voice.js";
@@ -76,6 +77,7 @@ export {
   resolveInvestigation,
   strArg,
   unresolvedOutput,
+  withoutDoses,
   type Resolution,
   type ToolArgs,
 } from "./clinical-resolve.js";
@@ -499,12 +501,15 @@ const intervene: ToolDefinition<ToolArgs> = {
   description:
     "Give a treatment or perform a bedside procedure (drug, oxygen, fluids, airway, a checklist step, disposition…), by id or free text. " +
     "High-risk interventions always need the learner's confirmation. Returns the patient's response; contraindicated choices cause harm. " +
+    "A dose and route written in the order (query or dose: \"IM adrenaline 0.5 mg\", \"肌注肾上腺素 0.5 mg\") are checked against the dose the nurse prepared: " +
+    "a dose that differs is not given — the nurse reads the order back and asks you to confirm, and it is recorded as a dose error; a dose that cannot be read (a fraction, a range, no unit, a volume of unknown strength) is not given either — the nurse asks for it as a number with its unit. Without a dose the prepared dose is given. " +
     "An operation is not an intervention: when the case has one, it is done with observe_field and operate at the table.",
   inputSchema: {
     type: "object",
     properties: {
       intervention_id: { type: "string", description: "Exact intervention id from list_options(interventions)." },
-      query: { type: "string", maxLength: 300, description: "Free text when the id is unknown." },
+      query: { type: "string", maxLength: 300, description: "Free text when the id is unknown: the order as you would write it (a dose and route in it are checked)." },
+      dose: { type: "string", maxLength: 120, description: "The dose and route as written in your order (\"0.5 mg IM\", \"500 micrograms IM\", \"0.5毫克 肌注\"); checked against the dose prepared. Omit to give the prepared dose." },
     },
     additionalProperties: false,
   },
@@ -515,7 +520,13 @@ const intervene: ToolDefinition<ToolArgs> = {
   alwaysAsk: (args, ctx) => interventionRisk(args, ctx) === "high",
   summarize(args, ctx) {
     const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
-    return rt(ctx.locale, "sum.intervene", { name: r.kind === "id" ? interventionLabel(ctx.caseDef, r.id, ctx.locale) : strArg(args, "query") || strArg(args, "intervention_id") });
+    const name = r.kind === "id" ? interventionLabel(ctx.caseDef, r.id, ctx.locale) : strArg(args, "query") || strArg(args, "intervention_id");
+    // the dose as ordered, so the confirmation shows what is being confirmed — as the engine will read it (`checkOrder`)
+    const order = writtenOrder(args);
+    const check = order && r.kind === "id" ? orderCheck(ctx.caseDef, r.id, order) : null;
+    if (order && check?.outcome === "query") return rt(ctx.locale, "sum.interveneUnclear", { name, text: order.text });
+    const dose = check ? check.dose : order?.dose;
+    return dose ? rt(ctx.locale, "sum.interveneDose", { name, dose: doseText(dose, ctx.locale) }) : rt(ctx.locale, "sum.intervene", { name });
   },
   specifier(args, ctx) {
     const r = resolveIntervention(ctx.caseDef, args, ctx.locale);
@@ -540,15 +551,32 @@ const intervene: ToolDefinition<ToolArgs> = {
     }
     const unavailable = capabilityRefusal(ctx, interventionLabel(c, r.id, L), c.interventions.find((i) => i.id === r.id)?.requires ?? []);
     if (unavailable) return unavailable;
-    const result = dispatch(ctx, { type: "intervene", interventionId: r.id });
+    // the order as written (words only: an id alone states none) and the dose read from it — the engine checks it
+    const ordered = writtenOrder(args);
+    const result = dispatch(ctx, { type: "intervene", interventionId: r.id, ...(ordered ? { ordered } : {}) });
     if (result.rejected?.code === "on-hold") {
       const hold = activeHolds(ctx.state(), r.id)[0];
       const message = hold ? rt(L, "intervene.onHold", { name: interventionLabel(c, r.id, L), by: hold.placedBy, reason: sentence(hold.reason) }) : rejectionText(L, "on-hold");
       return { ok: false, output: rt(L, "tool.rejected", { code: "on-hold", message }), data: { rejected: result.rejected, message, hold: hold ?? null } };
     }
+    // the order's dose is not clear: nothing given, no dose error — the nurse asks for it as a number with its unit
+    if (result.rejected?.code === "dose-unclear" && ordered) {
+      const check = orderCheck(c, r.id, ordered);
+      if (check?.outcome === "query") {
+        const message = doseQueryChallengeText(c, r.id, check, L);
+        const iv = c.interventions.find((i) => i.id === r.id)!;
+        return { ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseQuery: doseQueryData(c, iv.id, ordered.text, check), message } };
+      }
+    }
     // Name what the query matched ("give the pump a rest" → the IV insulin infusion), so a refusal is not opaque.
     if (result.rejected) return rejectedOutput(L, result, result.rejected.code === "max-doses" ? rt(L, "tool.rejected.item", { name: t(c.interventions.find((i) => i.id === r.id)!.name, L) }) : undefined);
     const iv = c.interventions.find((i) => i.id === r.id)!;
+    const doseError = eventsOf(result, "dose.error")[0];
+    if (doseError) {
+      // the dose ordered differs from the dose prepared: nothing given — the nurse reads the order back (closed loop)
+      const message = doseChallengeText(c, doseError, L);
+      return { ok: false, output: message, data: { interventionId: iv.id, kind: iv.kind, given: false, doseError: doseErrorData(doseError), message } };
+    }
     const applied = eventsOf(result, "intervention.applied")[0];
     const appropriateness = applied?.appropriateness ?? "neutral";
     const harm = iv.harm ? t(iv.harm, L) : "";
@@ -560,12 +588,20 @@ const intervene: ToolDefinition<ToolArgs> = {
     const dose = iv.dose ? t(iv.dose, L) : "";
     const name = t(iv.name, L);
     const lines = [rt(L, "tool.intervened", { name, dose: dose && !name.includes(dose) ? ` (${dose})` : "" })];
+    // the order as the engine recorded it (the dose it read from the words: a split dose's total, a volume's content)
+    const record = ctx.state().interventions.at(-1);
+    const recorded = record?.interventionId === iv.id && record.ordered ? record.ordered : ordered;
+    // what the order's stated amount came to: the preset dose in the units written, or not checked (no preset)
+    const checked = doseCheckText(c, iv, recorded, L);
+    if (checked) lines.push(checked);
     if (iv.response) lines.push(rt(L, "tool.intervention.response", { text: t(iv.response, L) }));
     // the safety data this step states, as the record knows them — an unknown stays unknown (never "confirmed")
     const data = safetyDataLines(c, ctx.state(), iv.reports, L);
     lines.push(...data);
     if (appropriateness === "contraindicated" && harm) lines.push(rt(L, "tool.intervention.harm", { text: harm }));
-    return { ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind, ...(iv.reports.length ? { safetyData: Object.fromEntries(iv.reports.map((d) => [d, datumStatus(c, ctx.state(), d)])) } : {}) } };
+    // the order as written and the dose read from it, apart from the dose given: the preset (`doseSpec`, the dose text)
+    const order = recorded ? { ordered: recorded, administered: administeredDose(c, iv.id, L) } : {};
+    return { ok: true, output: lines.join("\n"), data: { interventionId: iv.id, appropriateness, kind: iv.kind, ...order, ...(iv.reports.length ? { safetyData: Object.fromEntries(iv.reports.map((d) => [d, datumStatus(c, ctx.state(), d)])) } : {}) } };
   },
 };
 

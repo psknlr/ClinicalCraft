@@ -587,8 +587,12 @@ them:
   withheld analgesia are recoverable, and listing for theatre before surgical review, imaging and consent
   (`lap-appendectomy`, high risk) is now explicitly `critical: false` (`cases validate`). The safety outcome passes
   on every path; the score and `r-safety` are unchanged.
-- **Preset doses (audit P0-2):** `doseSpec` on paracetamol 1 g IV and ondansetron 4 mg IV. The titrated morphine
-  and the parecoxib (whose text offers ketorolac 15 mg as an alternative) have none.
+- **Preset doses (audit P0-2):** `doseSpec` on paracetamol 1 g IV ("paracetamol 10 g IV" is not given: a critical
+  dose error; "15 mg/kg" is the preset at his 68 kg) and on the titrated morphine, 2–3 mg IV — the increment its text
+  states ("morphine 2 mg IV" and "3 mg IV" are given; "morphine 30 mg IV", ten times the top of it, is a critical dose
+  error). The parecoxib (whose text offers ketorolac 15 mg as an alternative) and ondansetron have none — the
+  ondansetron item also answers for "an antiemetic", and the dose check compares amounts, not drugs, so "antiemetic:
+  cyclizine 50 mg" would read as 12.5 times a 4 mg preset (a critical dose error).
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

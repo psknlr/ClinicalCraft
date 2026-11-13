@@ -6,12 +6,13 @@
  * commit, the engine, PostToolUse hooks. Only learner tools may run on this path (never an NPC's or a
  * front-end's), and simulation-owned flags can never be set directly.
  */
-import { ClinicalActionSchema, historyVoice, t, type ClinicalAction, type ReduceResult, type SessionState } from "@clinicalcraft/core";
+import { ClinicalActionSchema, historyVoice, t, type ClinicalAction, type ReduceResult, type SessionState, type WrittenOrder } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { agentKind } from "../agents/prompts.js";
 import { executeCommand, type CommandHost } from "../commands.js";
 import { actionToolName } from "../permissions.js";
 import { rejectionText } from "../tools/clinical.js";
+import { doseChallengeText, doseQueryReadBack, doseReadBack, orderCheck } from "../tools/dose-order.js";
 import { isLearnerTool } from "../tools/learner.js";
 import { actionIntent, spatialCodeOf, spatialRefusal } from "../tools/spatial.js";
 import type { ToolContext, ToolDefinition, ToolOutput } from "../tools/types.js";
@@ -329,20 +330,45 @@ export class LearnerPath {
     } else if (action.type === "ask") {
       this.speakAuthoredAnswer(id, action.itemId, voice === "companion" ? "companion" : "patient", asked);
     }
+    // an order whose dose differs from the dose prepared: nothing given — the nurse reads it back (PROTOCOL §3.2)
+    const doseError = result.events.find((e) => e.type === "dose.error");
+    if (doseError) this.speakDoseReadBack(id, doseError);
+    // an order whose dose is not clear: nothing given, no dose error — the nurse asks for it
+    if (result.rejected?.code === "dose-unclear" && action.type === "intervene" && action.ordered) this.speakDoseQuery(id, action.interventionId, action.ordered);
     if (tool && args) {
       // Same hook sequence as an agent's tool call: PreToolUse → gate → run → PostToolUse.
-      let output = rejection ?? "";
-      if (!rejection) {
+      let output = rejection ?? (doseError ? doseChallengeText(k.caseDef, doseError, L) : "");
+      if (!rejection && !doseError) {
         try {
           output = tool.summarize(args, k.tools.context("learner", id, signal));
         } catch {
           output = tool.name;
         }
       }
-      const post = await k.runHook({ hook_event_name: "PostToolUse", agent: "learner", tool_name: tool.name, tool_input: args, tool_response: { ok: !rejection, output } }, signal);
+      const post = await k.runHook({ hook_event_name: "PostToolUse", agent: "learner", tool_name: tool.name, tool_input: args, tool_response: { ok: !rejection && !doseError, output } }, signal);
       for (const w of post.warnings) k.emit(id, { type: "warning", message: w });
     }
     return result;
+  }
+
+  /** The nurse's question about an order whose dose is not clear (core `dose-unclear`): spoken, and kept for the examiner. */
+  private speakDoseQuery(id: string, interventionId: string, ordered: WrittenOrder): void {
+    const k = this.k;
+    const check = orderCheck(k.caseDef, interventionId, ordered);
+    if (check?.outcome !== "query") return;
+    const speaker = rt(k.locale, "speaker.nurse");
+    const text = doseQueryReadBack(k.caseDef, interventionId, check, k.locale);
+    k.conversations.addDialogue({ who: "nurse", speaker, text });
+    k.speakLine(id, { agent: "nurse", speaker, text, grounded: [] });
+  }
+
+  /** The nurse's read-back of an order whose dose differs from the dose prepared (core `dose.error`): spoken, and kept for the examiner. */
+  private speakDoseReadBack(id: string, e: Extract<ReduceResult["events"][number], { type: "dose.error" }>): void {
+    const k = this.k;
+    const speaker = rt(k.locale, "speaker.nurse");
+    const text = doseReadBack(k.caseDef, e, k.locale);
+    k.conversations.addDialogue({ who: "nurse", speaker, text });
+    k.speakLine(id, { agent: "nurse", speaker, text, grounded: [] });
   }
 
   /**
