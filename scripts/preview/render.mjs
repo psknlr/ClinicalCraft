@@ -107,7 +107,7 @@ if (args.case) args.case = servedPath(args.case);
 async function bundlePeople() {
   const { build } = await import("esbuild").catch(() => { console.error("people mode needs esbuild (installed with vite: run `npm install`)"); process.exit(2); });
   const outfile = path.join(fs.mkdtempSync(path.join(os.tmpdir(), "cc-preview-")), "people.js");
-  await build({ entryPoints: [path.join(root, "scripts/preview/people.entry.ts")], bundle: true, format: "esm", platform: "browser", target: "es2022", outfile, logLevel: "error", absWorkingDir: root });
+  await build({ entryPoints: [path.join(root, "scripts/preview/people.entry.ts")], bundle: true, format: "esm", platform: "browser", target: "es2022", conditions: ["source"], outfile, logLevel: "error", absWorkingDir: root });
   aliases.set("__bundle/people.js", outfile);
 }
 if (mode === "people") await bundlePeople();

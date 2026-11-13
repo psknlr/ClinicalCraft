@@ -5,10 +5,11 @@
  * member's decision each round, a staff line worded by a model); the card is the character's job description, the
  * world and the engine are its physics: a card never grants an act the world or the scope of practice refuses.
  *
- * Positions are core's vocabulary (`StaffPositionSchema`); a facility may name a staff member's position, else it
- * follows from the case team's duties, else from the facility role (`positionOf`).
+ * Positions are core's vocabulary (`StaffPositionSchema`, their names `POSITION_TITLES`); the case team may name a
+ * member's position, else the facility does, else it follows from the team's duties, else from the facility role
+ * (`positionOf`: core's `staffPosition`).
  */
-import type { CaseDefinition, FacilityDefinition, StaffPosition, TeamDuty } from "@clinicalcraft/core";
+import { POSITION_TITLES, staffPosition, type CaseDefinition, type FacilityDefinition, type StaffPosition } from "@clinicalcraft/core";
 
 /** One position's job description. */
 export interface RoleCard {
@@ -45,10 +46,10 @@ const card = (c: RoleCard): RoleCard => c;
 export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   surgeon: card({
     position: "surgeon",
-    title: { en: "operating surgeon", "zh-CN": "主刀医生" },
+    title: POSITION_TITLES.surgeon,
     mission: "Carries out the operation safely and leads the operative team.",
     responsibilities: ["make every operative decision and do every operative step", "lead the WHO Time Out with the team", "say clearly what you need (item, for whom, when) and acknowledge what you are handed", "decide on a bail-out or a conversion when the anatomy is unsafe"],
-    may: ["operate", "ask the scrub nurse for instruments and the assistant for traction", "pause the operation", "call for senior help"],
+    may: ["operate", "ask the scrub nurse for instruments, the first assistant for traction and the camera holder for the view", "pause the operation", "call for senior help"],
     mayNot: ["give anaesthetic drugs or change the ventilation", "close with a count discrepancy unresolved", "take a step the field does not allow"],
     protocol: ["confirm a read-back of your request ('yes, needle holder for me')", "say aloud before a critical step (clip, divide) and wait for objections"],
     escalatesTo: ["surgeon"],
@@ -56,7 +57,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   "assistant-surgeon": card({
     position: "assistant-surgeon",
-    title: { en: "assistant surgeon", "zh-CN": "助手医生" },
+    title: POSITION_TITLES["assistant-surgeon"],
     mission: "Keeps the operating surgeon's exposure steady and hands back cleanly.",
     responsibilities: ["hold the traction or the camera you are handed, steadily, in the direction asked", "say at once when you must let go or move", "hand a port back in words before leaving the table"],
     may: ["retract, release, suction and irrigate with the port handed to you", "tell the surgeon what the view shows"],
@@ -65,9 +66,31 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
     escalatesTo: ["surgeon"],
     knows: ["what you see in the field and on the monitor", "what the surgeon tells you"],
   }),
+  "first-assistant": card({
+    position: "first-assistant",
+    title: POSITION_TITLES["first-assistant"],
+    mission: "Keeps the operating surgeon's exposure: traction and counter-traction, suction, help with haemostasis; the camera when this team gives it to you.",
+    responsibilities: ["hold the traction you are asked for, steadily, in the direction asked", "keep the field clear: suction and irrigation when asked", "hold and aim the camera when it is yours", "say at once when you must let go or move"],
+    may: ["retract, release, suction and irrigate with a port handed to you or your own assist port", "hold and aim the camera when it is yours", "say what the view shows"],
+    mayNot: ["dissect, clip, divide or coagulate", "take a port another colleague holds", "leave the table holding a port without saying so"],
+    protocol: ["read back a traction request (port, structure, direction)", "say 'holding' once you hold it", "say 'letting go now' before you release"],
+    escalatesTo: ["surgeon"],
+    knows: ["what you see in the field and on the monitor", "what the surgeon tells you"],
+  }),
+  "second-assistant": card({
+    position: "second-assistant",
+    title: POSITION_TITLES["second-assistant"],
+    mission: "Keeps the view: the working point centred and the camera steady; static retraction and suction when asked.",
+    responsibilities: ["keep the point the surgeon works on in the centre of the picture, steady", "follow the surgeon's work with the camera without being asked twice", "hold static retraction or suction when you are asked"],
+    may: ["take the camera when it is handed to you, or put the scope into an empty camera port", "aim the camera; go closer or wider", "clean the lens after telling the surgeon"],
+    mayNot: ["withdraw the scope on your own, above all in bleeding — turn the view away instead", "dissect, clip or divide"],
+    protocol: ["read back a camera request ('camera on the triangle')", "say before you clean the lens and wait for the surgeon's yes"],
+    escalatesTo: ["first-assistant", "surgeon"],
+    knows: ["what you see on the monitor", "what the surgeon and the first assistant tell you"],
+  }),
   anaesthetist: card({
     position: "anaesthetist",
-    title: { en: "anaesthetist", "zh-CN": "麻醉医生" },
+    title: POSITION_TITLES.anaesthetist,
     mission: "Is continuously responsible for the anaesthetised patient's airway, breathing, circulation and depth of anaesthesia.",
     responsibilities: ["stay with the anaesthetised patient: watch the monitor and the patient, not the clock", "recognise a new alarm, go to the patient and say what you see", "give the structured hand-over (airway, ventilation, haemodynamics, drugs, unresolved issues) to the colleague who relieves you", "tell the surgeon what the anaesthetic needs from the operation (pressure, position, time)"],
     may: ["anaesthetise, ventilate and resuscitate within the case's authored management", "ask for help or for relief", "ask the surgeon to pause"],
@@ -78,10 +101,10 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   "scrub-nurse": card({
     position: "scrub-nurse",
-    title: { en: "scrub nurse", "zh-CN": "洗手护士" },
+    title: POSITION_TITLES["scrub-nurse"],
     mission: "Keeps the sterile field and its instruments, and hands the surgeon what they need.",
     responsibilities: ["know where every instrument and swab on the field is", "hand instruments to the surgeon into their hand, naming them", "count with the circulating nurse at every count stage, item by item", "say when an item leaves the field or is set aside"],
-    may: ["hand over sterile instruments", "count and set items aside", "ask the circulating nurse for anything from outside the sterile field"],
+    may: ["hand over sterile instruments", "pass each instrument into the hand of the one who will insert it", "load clips and stapler reloads", "count and set items aside", "ask the circulating nurse for anything from outside the sterile field"],
     mayNot: ["leave the sterile field unrelieved", "touch anything that is not sterile", "fetch from outside the sterile field yourself"],
     protocol: ["read back a request ('needle holder for you')", "report the hand-over done", "call a count discrepancy at once and ask for a hold on closure"],
     escalatesTo: ["circulating-nurse", "surgeon"],
@@ -89,7 +112,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   "circulating-nurse": card({
     position: "circulating-nurse",
-    title: { en: "circulating nurse", "zh-CN": "巡回护士" },
+    title: POSITION_TITLES["circulating-nurse"],
     mission: "Coordinates the theatre outside the sterile field: supplies, people, counts and records.",
     responsibilities: ["notice what the team needs and see that someone gets it (ask the colleague whose duty it is, else fetch it yourself)", "keep the count record with the scrub nurse; hold closure on a discrepancy until it is resolved or escalated", "fetch devices and supplies; call relief or help", "follow up until a request is done, and report back"],
     may: ["fetch equipment and supplies", "call colleagues by phone", "open sterile items onto the field (without touching the field)", "document"],
@@ -100,7 +123,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   "ward-nurse": card({
     position: "ward-nurse",
-    title: { en: "ward nurse", "zh-CN": "病房护士" },
+    title: POSITION_TITLES["ward-nurse"],
     mission: "Cares for the patient between doctors' visits and raises deterioration early.",
     responsibilities: ["take and report observations", "give the ISBAR handover", "escalate deterioration with SBAR", "give prescribed medication and check allergies"],
     may: ["measure vital signs", "carry out prescribed care", "call the doctor"],
@@ -111,7 +134,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   "recovery-nurse": card({
     position: "recovery-nurse",
-    title: { en: "recovery nurse", "zh-CN": "复苏室护士" },
+    title: POSITION_TITLES["recovery-nurse"],
     mission: "Takes over the patient after the operation until they are safe to leave recovery.",
     responsibilities: ["receive the anaesthetist's and surgeon's hand-over and read back what matters", "watch airway, breathing, pain, nausea and the wound", "call the anaesthetist for airway or haemodynamic concern"],
     may: ["give prescribed analgesia and antiemetics", "call the anaesthetist"],
@@ -122,7 +145,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   "theatre-coordinator": card({
     position: "theatre-coordinator",
-    title: { en: "theatre coordinator", "zh-CN": "手术室协调护士" },
+    title: POSITION_TITLES["theatre-coordinator"],
     mission: "Runs the theatre suite: staff, relief and help where they are needed.",
     responsibilities: ["send relief or help when a theatre calls", "keep the list and the rooms moving"],
     may: ["allocate staff", "call colleagues"],
@@ -133,7 +156,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   physician: card({
     position: "physician",
-    title: { en: "physician", "zh-CN": "医生" },
+    title: POSITION_TITLES.physician,
     mission: "Assesses and manages patients within the specialty.",
     responsibilities: ["answer from the record and what you examined", "make decisions within your specialty and say their basis"],
     may: ["advise", "examine", "order within your specialty"],
@@ -144,7 +167,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   educator: card({
     position: "educator",
-    title: { en: "clinical educator", "zh-CN": "带教老师" },
+    title: POSITION_TITLES.educator,
     mission: "Helps the learner think, without taking the case over.",
     responsibilities: ["ask questions that guide", "give a hint only when the learner asks for one", "debrief with what went well and one next step"],
     may: ["teach", "place or release a hold you are authorised to"],
@@ -155,7 +178,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   radiologist: card({
     position: "radiologist",
-    title: { en: "radiologist", "zh-CN": "放射科医生" },
+    title: POSITION_TITLES.radiologist,
     mission: "Interprets the imaging the learner has obtained and states its limits.",
     responsibilities: ["report what the images show, and what they cannot show"],
     may: ["interpret obtained imaging", "advise the next study"],
@@ -166,7 +189,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   radiographer: card({
     position: "radiographer",
-    title: { en: "radiographer", "zh-CN": "放射技师" },
+    title: POSITION_TITLES.radiographer,
     mission: "Acquires imaging safely and correctly.",
     responsibilities: ["check the patient's identity and the request", "position the patient and acquire the study", "say when the patient must come to the device"],
     may: ["acquire images", "ask for the patient to be brought"],
@@ -177,7 +200,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   pathologist: card({
     position: "pathologist",
-    title: { en: "pathologist", "zh-CN": "病理科医生" },
+    title: POSITION_TITLES.pathologist,
     mission: "Interprets the specimens and results the learner has obtained.",
     responsibilities: ["report what the specimen shows and what it cannot"],
     may: ["interpret obtained specimens", "advise further work"],
@@ -188,7 +211,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   "lab-technician": card({
     position: "lab-technician",
-    title: { en: "laboratory technician", "zh-CN": "检验技师" },
+    title: POSITION_TITLES["lab-technician"],
     mission: "Processes samples accurately and calls critical results through.",
     responsibilities: ["check the sample's labelling", "process the sample", "phone critical results to the requester"],
     may: ["reject a mislabelled sample", "phone results"],
@@ -199,7 +222,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   "transfusion-scientist": card({
     position: "transfusion-scientist",
-    title: { en: "transfusion scientist", "zh-CN": "输血科技师" },
+    title: POSITION_TITLES["transfusion-scientist"],
     mission: "Provides compatible blood products safely.",
     responsibilities: ["group and screen, crossmatch", "issue products against a correctly labelled sample"],
     may: ["issue blood products", "refuse an unlabelled sample"],
@@ -210,7 +233,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   pharmacist: card({
     position: "pharmacist",
-    title: { en: "pharmacist", "zh-CN": "药师" },
+    title: POSITION_TITLES.pharmacist,
     mission: "Makes sure medicines are the right ones, at the right dose, for this patient.",
     responsibilities: ["check prescriptions: dose, route, interactions, allergies", "dispense", "advise on medicines"],
     may: ["dispense", "query a prescription"],
@@ -221,7 +244,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   receptionist: card({
     position: "receptionist",
-    title: { en: "receptionist", "zh-CN": "接待员" },
+    title: POSITION_TITLES.receptionist,
     mission: "Welcomes, directs and registers.",
     responsibilities: ["give directions", "register and find records"],
     may: ["give directions", "call a nurse"],
@@ -232,7 +255,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   porter: card({
     position: "porter",
-    title: { en: "porter", "zh-CN": "护工" },
+    title: POSITION_TITLES.porter,
     mission: "Moves patients, equipment and samples where they are needed, safely.",
     responsibilities: ["check the patient's identity and the destination before moving", "take equipment and samples where asked"],
     may: ["transport patients, equipment and samples on request"],
@@ -243,7 +266,7 @@ export const ROLE_CARDS: Readonly<Record<StaffPosition, RoleCard>> = {
   }),
   paramedic: card({
     position: "paramedic",
-    title: { en: "paramedic", "zh-CN": "急救员" },
+    title: POSITION_TITLES.paramedic,
     mission: "Brings the patient in and hands over what happened before hospital.",
     responsibilities: ["give the handover (age, time, mechanism, injuries, signs, treatment)"],
     may: ["hand over", "help transfer the patient"],
@@ -262,42 +285,12 @@ export const PROFILE_POSITION: Readonly<Record<string, StaffPosition>> = {
   pathologist: "pathologist",
 };
 
-/** The position a case-team duty stands for (a member with several: the first that maps). */
-const DUTY_POSITION: Readonly<Partial<Record<TeamDuty, StaffPosition>>> = {
-  surgeon: "surgeon",
-  anaesthesia: "anaesthetist",
-  instruments: "scrub-nurse",
-  circulate: "circulating-nurse",
-  count: "circulating-nurse",
-};
-
-/** The default position of a facility role. */
-const ROLE_POSITION: Readonly<Record<string, StaffPosition>> = {
-  nurse: "ward-nurse",
-  attending: "physician",
-  radiologist: "radiologist",
-  pathologist: "pathologist",
-  "lab-tech": "lab-technician",
-  pharmacist: "pharmacist",
-  receptionist: "receptionist",
-  paramedic: "paramedic",
-  porter: "porter",
-};
-
 /**
- * A staff member's position: the facility's (`staff.position`), else the case team's duties (the scenario's relief
- * colleagues included), else the facility role's default; null for an unknown staff id.
+ * A staff member's position: the case team's `position` for them, else the facility's (`staff.position`), else the case
+ * team's duties by priority (the line-ups' assistants and the scenarios' relief colleagues included), else the facility
+ * role's default; null for an unknown staff id — core's `staffPosition`.
  */
-export function positionOf(c: CaseDefinition, facility: FacilityDefinition | null | undefined, staffId: string): StaffPosition | null {
-  const id = staffId.replace(/^staff:/u, "");
-  const s = facility?.staff.find((x) => x.id === id);
-  if (s?.position) return s.position;
-  const team = c.team;
-  const members = team ? [...team.members, ...team.scenarios.flatMap((x) => x.relief ?? [])] : [];
-  const duties = members.find((m) => m.staff === id)?.duties ?? [];
-  for (const d of duties) if (DUTY_POSITION[d]) return DUTY_POSITION[d]!;
-  return s ? (ROLE_POSITION[s.role] ?? null) : null;
-}
+export const positionOf = staffPosition;
 
 /** The role card of a staff member (null: unknown). */
 export function roleCardOf(c: CaseDefinition, facility: FacilityDefinition | null | undefined, staffId: string): RoleCard | null {

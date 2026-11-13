@@ -7,6 +7,7 @@ import type { z } from "zod";
 import type { Decision } from "../schema/case.js";
 import type { VitalKey, Vitals } from "../schema/common.js";
 import type { PatientSlotSchema } from "../schema/facility.js";
+import type { Place } from "../schema/positions.js";
 import type { ClinicalAction, DomainEvent, OrderRecord, RejectionCode, SessionState } from "../schema/session.js";
 
 /* ------------------------------------------------------------------ */
@@ -174,6 +175,11 @@ export interface AssessmentReport {
   completed: boolean;
   finished: boolean;
   /**
+   * The learner's place in the care team (`start {seat}`, docs/TEAM.md §1) when it was not the operating surgeon's:
+   * only the place's rubric items are scored (`rubric[].seats`), and `joined` holds what the team did before.
+   */
+  seat?: Place;
+  /**
    * `source-only`: the encounter used the published record alone; `expanded`: it ordered new investigations
    * (simulated, docs/STUDIES.md) — scores of the two are reported apart, never compared.
    */
@@ -183,6 +189,13 @@ export interface AssessmentReport {
   minutes: number;
   hints: number;
   objectives: { id: string; done: boolean; at?: number }[];
+  /**
+   * In a place (`seat`): what the team had done when the learner joined — the case's reference path up to the team's
+   * phase (`SessionState.joined`): history credited, findings examined, tests ordered, decisions answered, objectives
+   * done. It is the team's, never credited to the learner: `history`, `exam`, `investigations` and `decisions` below
+   * count what was left to do then.
+   */
+  joined?: { history: string[]; exam: string[]; investigations: string[]; decisions: string[]; objectives: string[] };
   history: { asked: number; required: number; requiredAsked: number; missingRequired: string[] };
   exam: { performed: number; required: number; requiredPerformed: number; missingRequired: string[] };
   /** `unread` lists result keys (`${id}@${phase}`) ordered but never read. */

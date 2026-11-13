@@ -85,6 +85,10 @@ export const SEAT_POSITIONS = ["surgeon", "first-assistant", "second-assistant",
 export const SeatSchema = z.enum(SEAT_POSITIONS);
 export type Seat = z.infer<typeof SeatSchema>;
 
+/** The places in the team: every seat but the operating surgeon's (the only seats a session records). */
+export const TEAM_PLACES = ["first-assistant", "second-assistant", "scrub-nurse"] as const satisfies readonly Seat[];
+export type Place = (typeof TEAM_PLACES)[number];
+
 /** The positions that work scrubbed at the sterile field (gowned and gloved); every other position is non-sterile. */
 export const STERILE_POSITIONS: readonly StaffPosition[] = ["surgeon", "assistant-surgeon", "first-assistant", "second-assistant", "scrub-nurse"];
 

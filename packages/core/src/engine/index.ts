@@ -7,6 +7,36 @@
 export { parseCase, parseFacility, parseCatalog, issuesFromZodError, contentWarnings, formatPath } from "./parse.js";
 export { checkCaseIntegrity } from "./integrity.js";
 export { checkTeamDefinition, teamFacilityIssues } from "./team.js";
+// the care team's positions, places and controls (docs/TEAM.md §1)
+export {
+  bodyControls,
+  DUTY_POSITION,
+  DUTY_PRIORITY,
+  dutyPosition,
+  effectiveTeam,
+  fieldControls,
+  isPlace,
+  joinPath,
+  LEARNER_BODY,
+  LEGACY_COLLEAGUE,
+  memberBody,
+  memberControls,
+  memberPosition,
+  operatorOf,
+  placeMember,
+  positionOfMember,
+  refOfBody,
+  ROLE_POSITION,
+  seatMember,
+  seatsOf,
+  staffPosition,
+  standingBy,
+  standInOf,
+  teamMember,
+  type ControlPurpose,
+  type Controls,
+  type TeamChoice,
+} from "./seats.js";
 export { checkContentStandard, citedDois, caseTestUtterances, CONTENT_MINIMUMS, WELL_FORMED_DOI, type TestUtterance } from "./content-standard.js";
 export { verifyCase } from "./verify.js";
 

@@ -12,10 +12,13 @@ import {
   type ClinicalAction,
   type ClinicalActionType,
   type DomainEvent,
+  type JoinRecord,
   type ReduceResult,
   type RejectionCode,
   type SessionState,
 } from "../schema/session.js";
+import type { Place } from "../schema/positions.js";
+import { joinPath, placeMember, standInOf } from "./seats.js";
 import { t } from "../i18n.js";
 import { activeHolds, evaluate, resultFor, resultKey } from "./conditions.js";
 import { currentObjective, progress } from "./queries.js";
@@ -142,9 +145,67 @@ function onStart(ctx: Ctx, a: Action<"start">): Outcome {
     if (!ctx.c.team?.scenarios.some((x) => x.id === a.team)) return rejected("unknown-id", `this case has no team scenario "${a.team}"`);
     ctx.s.teamScenario = a.team;
   }
+  if (a.lineup != null) {
+    if (!ctx.c.team) return rejected("invalid", `this case has no care team (no line-up "${a.lineup}" to choose)`);
+    if (!(ctx.c.team.lineups ?? []).some((l) => l.id === a.lineup)) return rejected("unknown-id", `this case's team has no line-up "${a.lineup}"`);
+    ctx.s.lineup = a.lineup;
+  }
+  // the operating surgeon's seat is the learner as always: recorded as no place
+  if (a.seat != null && a.seat !== "surgeon") {
+    const refusal = placeRefusal(ctx.c, ctx.s, a.seat);
+    if (refusal) return rejected("invalid", refusal);
+    ctx.s.seat = a.seat;
+  }
   ctx.s.started = true;
   ctx.events.push({ type: "session.started" });
   return accepted();
+}
+
+/** Why a place in the team cannot be taken in this encounter (null: it can; docs/TEAM.md §1). */
+function placeRefusal(c: CaseDefinition, s: SessionState, place: Place): string | null {
+  const team = c.team;
+  if (!team) return `this case has no care team: the learner operates (there is no ${place} place)`;
+  if (!standInOf(c)) return `nobody in this case's team stands in for the surgeon (the surgeon member's "standIn"): the learner operates (there is no ${place} place)`;
+  if ((s.variant ?? BASE_VARIANT) !== BASE_VARIANT) return `the ${place} place is offered with the base anatomy only: the stand-in surgeon follows the reference path`;
+  const member = placeMember(c, place, s.lineup);
+  if (!member) return `this case's team${s.lineup ? ` with line-up "${s.lineup}"` : ""} has no ${place}: there is no such place`;
+  const scenario = s.teamScenario ? team.scenarios.find((x) => x.id === s.teamScenario) : undefined;
+  if (scenario?.absent.includes(member.staff)) return `"${member.staff}" is absent in team scenario "${scenario.id}": the ${place} place is not offered`;
+  return null;
+}
+
+/**
+ * A place in the team joins the encounter at the team's phase (docs/TEAM.md §1): the case's reference path after its
+ * own start (`joinPath`) is applied action by action, each by the system, while the case is in none of the team's
+ * phases. What it did is recorded (`SessionState.joined`): the assessment reports it as the team's. A refused action,
+ * or a path that ends before the team's phases, refuses the start — the case's checks report either
+ * (`checkTeamDefinition`).
+ */
+function joinTeam(c: CaseDefinition, started: SessionState): { state: SessionState; events: DomainEvent[] } | { refused: string } {
+  const phases = c.team?.phases ?? [];
+  let state = started;
+  const events: DomainEvent[] = [];
+  let actions = 0;
+  for (const a of joinPath(c)) {
+    if (phases.includes(state.phase) || state.finished) break;
+    const r = reduce(c, state, { ...a, by: "system" });
+    if (r.rejected) return { refused: `the case's reference path cannot bring the team to its phase: its "${a.type}" was refused (${r.rejected.message})` };
+    state = r.state;
+    events.push(...r.events);
+    actions += 1;
+  }
+  if (!phases.includes(state.phase)) return { refused: `the case's reference path never reaches the team's phases (${phases.join(", ")})` };
+  const joined: JoinRecord = {
+    actions,
+    seq: state.seq,
+    at: state.clock,
+    asked: [...state.asked],
+    examined: [...state.examined],
+    orders: state.orders.map((o) => o.key),
+    decisions: Object.keys(state.decisions),
+    objectives: Object.keys(state.objectivesDone),
+  };
+  return { state: { ...state, joined }, events };
 }
 
 function onAsk(ctx: Ctx, a: Action<"ask">): Outcome {
@@ -571,6 +632,12 @@ export function reduce(c: CaseDefinition, s: SessionState, a: ClinicalAction): R
     const timeline = openTimeline(c, s, ctx.s, ctx.events);
     settle(timeline);
     if (outcome.cost > 0) advanceClock(timeline, ctx.s.clock + outcome.cost);
+  }
+  // a place in the team: the reference path up to the team's phase is the team's work, done with the start
+  if (action.type === "start" && ctx.s.seat) {
+    const joined = joinTeam(c, ctx.s);
+    if ("refused" in joined) return rejection(s, action.type, "invalid", joined.refused, action);
+    return { state: joined.state, events: [...ctx.events, ...joined.events] };
   }
   return { state: ctx.s, events: ctx.events };
 }

@@ -5,6 +5,7 @@
  * and companion, or a built-in sheet (every role and theatre position, the looks an appearance can ask for).
  */
 import * as THREE from "three";
+import { StaffPositionSchema, type StaffPosition } from "@clinicalcraft/core";
 import { addHand, HAND_CLASPED, HAND_FLAT, HAND_HOLD, HAND_RELAXED, type HandPose } from "../../packages/web/src/world/figure/hand.js";
 import { buildHeld } from "../../packages/web/src/world/figure/held.js";
 import { figureMaterial } from "../../packages/web/src/world/figure/material.js";
@@ -21,16 +22,32 @@ interface Entry {
 }
 
 const ROLES = ["nurse", "attending", "radiologist", "pathologist", "lab-tech", "pharmacist", "receptionist", "paramedic", "porter"];
-const POSITIONS: [string, string][] = [
-  ["attending", "surgeon"],
-  ["attending", "assistant-surgeon"],
-  ["nurse", "scrub-nurse"],
-  ["attending", "anaesthetist"],
-  ["nurse", "circulating-nurse"],
-  ["nurse", "theatre-coordinator"],
-  ["nurse", "recovery-nurse"],
-  ["radiologist", "radiographer"],
-];
+/** The facility role that holds each position (the sheet dresses that role as the position wears it). */
+const POSITION_ROLE: Record<StaffPosition, string> = {
+  surgeon: "attending",
+  "assistant-surgeon": "attending",
+  "first-assistant": "attending",
+  "second-assistant": "attending",
+  anaesthetist: "attending",
+  "scrub-nurse": "nurse",
+  "circulating-nurse": "nurse",
+  "ward-nurse": "nurse",
+  "recovery-nurse": "nurse",
+  "theatre-coordinator": "nurse",
+  physician: "attending",
+  educator: "attending",
+  radiologist: "radiologist",
+  radiographer: "radiologist",
+  pathologist: "pathologist",
+  "lab-technician": "lab-tech",
+  "transfusion-scientist": "lab-tech",
+  pharmacist: "pharmacist",
+  receptionist: "receptionist",
+  porter: "porter",
+  paramedic: "paramedic",
+};
+/** Every position core knows, each worn by its role. */
+const POSITIONS: [string, string][] = StaffPositionSchema.options.map((position) => [POSITION_ROLE[position] ?? "attending", position]);
 
 function staffEntry(id: string, role: string, position: string | undefined, appearance: AppearanceLike | undefined, label: string): Entry {
   const uni = uniformOf(role, position);

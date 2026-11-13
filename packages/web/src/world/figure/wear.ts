@@ -1,8 +1,9 @@
 /**
  * What a figure wears and carries. A patient or a visitor wears their own clothes (or a hospital gown); staff
- * wear the uniform of their role, refined by the position they hold (docs/CHARACTERS.md §2): a scrub nurse or
- * a surgeon is scrubbed — theatre cap, mask, sterile gown and gloves, hands held in front — an anaesthetist or
- * a circulating nurse is in theatre scrubs, cap and mask, and nobody wears a white coat in theatre.
+ * wear the uniform of their role, refined by the position they hold (docs/CHARACTERS.md §2): a scrub nurse, a
+ * surgeon or an assistant at the table is scrubbed — theatre cap, mask, sterile gown and gloves, hands held in
+ * front — an anaesthetist or a circulating nurse is in theatre scrubs, cap and mask, and nobody wears a white coat
+ * in theatre.
  */
 import type { ShoeKind } from "./body.js";
 
@@ -85,6 +86,8 @@ const scrubbed: Wear = theatre({ over: "sterile", gloves: true, hands: "clasped"
 const POSITION_WEAR: Record<string, { colours?: boolean; wear: Wear }> = {
   surgeon: { colours: true, wear: scrubbed },
   "assistant-surgeon": { colours: true, wear: scrubbed },
+  "first-assistant": { colours: true, wear: scrubbed },
+  "second-assistant": { colours: true, wear: scrubbed },
   "scrub-nurse": { colours: true, wear: scrubbed },
   anaesthetist: { colours: true, wear: theatre({ stethoscope: true }) },
   "circulating-nurse": { colours: true, wear: theatre({ pens: true }) },

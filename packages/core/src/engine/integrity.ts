@@ -427,6 +427,12 @@ function checkMeasures(c: CaseDefinition): Issue[] {
 function checkSolutionAction(c: CaseDefinition, ids: Ids, a: ClinicalAction, path: PathPart[]): Issue[] {
   const unknown = (field: string, label: string, id: string) => [err([...path, field], `unknown ${label} "${id}"`)];
   switch (a.type) {
+    case "start": {
+      // the reference path is the operating surgeon's: it takes no place in the team; a line-up it names exists
+      const issues = a.seat != null ? [err([...path, "seat"], `the reference solution is the operating surgeon's: its start takes no seat (here "${a.seat}")`)] : [];
+      if (a.lineup != null && !(c.team?.lineups ?? []).some((l) => l.id === a.lineup)) issues.push(...unknown("lineup", "line-up", a.lineup));
+      return issues;
+    }
     case "ask":
       return ids.history.has(a.itemId) ? [] : unknown("itemId", "history item", a.itemId);
     case "examine":

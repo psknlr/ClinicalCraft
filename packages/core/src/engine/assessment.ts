@@ -6,8 +6,8 @@ import { claimsMatchField } from "./procedure/claims.js";
 import { countSummary } from "./count.js";
 import { ENGINE_VERSION } from "./version.js";
 import { procedureFor } from "./procedure/variant.js";
-import type { CaseDefinition } from "../schema/case.js";
-import type { SessionState } from "../schema/session.js";
+import type { CaseDefinition, RubricItem } from "../schema/case.js";
+import type { JoinRecord, SessionState } from "../schema/session.js";
 import { evaluate, parseResultKey, resultFor } from "./conditions.js";
 import { patientAlarmsAt } from "./physiology.js";
 import { progress } from "./queries.js";
@@ -23,10 +23,14 @@ function studySummary(s: SessionState): Pick<AssessmentReport, "evidence" | "stu
   return { evidence: "expanded", studies: codes.map((code) => ({ code, status: studyStatus(s, code)!, accessions: s.studies!.accessions.filter((a) => a.code === code).length })) };
 }
 
-/** `count` = distinct known ids in `done`; required items count as done when `credited` (default `done`) has them. */
-function coverage(items: { id: string; required: boolean }[], done: string[], credited: string[] = done) {
-  const known = new Set(items.map((i) => i.id));
-  const required = items.filter((i) => i.required);
+/**
+ * `count` = distinct known ids in `done`; required items count as done when `credited` (default `done`) has them.
+ * Items in `team` (what the team had done when the learner joined it in a place) are the team's: left out altogether.
+ */
+function coverage(items: { id: string; required: boolean }[], done: string[], credited: string[] = done, team: ReadonlySet<string> = new Set()) {
+  const own = items.filter((i) => !team.has(i.id));
+  const known = new Set(own.map((i) => i.id));
+  const required = own.filter((i) => i.required);
   const missingRequired = required.filter((i) => !credited.includes(i.id)).map((i) => i.id);
   return {
     count: unique(done).filter((id) => known.has(id)).length,
@@ -34,6 +38,16 @@ function coverage(items: { id: string; required: boolean }[], done: string[], cr
     requiredDone: required.length - missingRequired.length,
     missingRequired,
   };
+}
+
+/** What the team had done when the learner joined it in a place (`SessionState.joined`); null for the operating surgeon. */
+function joinedOf(s: SessionState): JoinRecord | null {
+  return s.seat && s.joined ? s.joined : null;
+}
+
+/** Whether a rubric item scores the learner's place: an item without `seats` is the operating surgeon's (no place). */
+function scoresPlace(item: RubricItem, s: SessionState): boolean {
+  return (item.seats ?? ["surgeon"]).includes(s.seat ?? "surgeon");
 }
 
 /**
@@ -47,8 +61,14 @@ function alternativesOf(c: CaseDefinition, id: string): string[] {
   return unique([...own, ...reverse]).filter((alt) => alt !== id);
 }
 
-function investigationSummary(c: CaseDefinition, s: SessionState): AssessmentReport["investigations"] {
+/**
+ * In a place, the orders the team placed before the learner joined are the team's: what was ordered, of low value or
+ * harmful, and left unread counts the learner's own orders; an essential test the team ordered is not missing.
+ */
+function investigationSummary(c: CaseDefinition, s: SessionState, joined: JoinRecord | null = null): AssessmentReport["investigations"] {
   const orderedIds = unique(s.orders.map((o) => o.investigationId));
+  const own = joined ? s.orders.filter((o) => !joined.orders.includes(o.key)) : s.orders;
+  const ownIds = joined ? unique(own.map((o) => o.investigationId)) : orderedIds;
   // investigations with an informative result read in some phase (an `available: false` record yields no information)
   const informativeReads = new Set(
     s.seen.flatMap((key) => {
@@ -56,21 +76,22 @@ function investigationSummary(c: CaseDefinition, s: SessionState): AssessmentRep
       return resultFor(c, investigationId, phase)?.available === true ? [investigationId] : [];
     }),
   );
-  const byValue = (value: string) => c.investigations.filter((i) => i.value === value && orderedIds.includes(i.id)).map((i) => i.id);
+  const byValue = (value: string) => c.investigations.filter((i) => i.value === value && ownIds.includes(i.id)).map((i) => i.id);
   // an essential investigation is satisfied by ordering it, or by reading (any phase) an available result of one of its alternatives
   const satisfied = (id: string) => orderedIds.includes(id) || alternativesOf(c, id).some((alt) => informativeReads.has(alt));
   return {
-    ordered: s.orders.length,
+    ordered: own.length,
     essentialMissing: c.investigations.filter((i) => i.value === "essential" && !satisfied(i.id)).map((i) => i.id),
     lowValue: byValue("low-value"),
     harmful: byValue("harmful"),
     // ordered results that carry information but were never read ("no record" / available:false results are not counted)
-    unread: s.orders.filter((o) => !s.seen.includes(o.key) && resultFor(c, o.investigationId, o.phase)?.available === true).map((o) => o.key),
+    unread: own.filter((o) => !s.seen.includes(o.key) && resultFor(c, o.investigationId, o.phase)?.available === true).map((o) => o.key),
   };
 }
 
-function decisionSummary(c: CaseDefinition, s: SessionState): AssessmentReport["decisions"] {
-  return c.decisions.map((d) => {
+/** In a place, a decision the team had answered before the learner joined is the team's: not listed. */
+function decisionSummary(c: CaseDefinition, s: SessionState, joined: JoinRecord | null = null): AssessmentReport["decisions"] {
+  return c.decisions.filter((d) => !joined?.decisions.includes(d.id)).map((d) => {
     const attempts = s.attempts.filter((a) => a.decisionId === d.id);
     return {
       id: d.id,
@@ -136,7 +157,8 @@ function tidy(value: number): number {
 /**
  * The rubric as assessed: each item's `met` (null for a judged item), `scored: false` while its `scoredWhen`
  * does not hold (it then counts neither as earned nor as possible — an avoided-harm item is not earned by
- * doing nothing), `critical: true` for a critical item; the score over the scored deterministic items; and,
+ * doing nothing) or when it is not the learner's place's item (`seats`; an item without them is the operating
+ * surgeon's), `critical: true` for a critical item; the score over the scored deterministic items; and,
  * when the case marks critical items, the ones missed.
  */
 function rubricSummary(c: CaseDefinition, s: SessionState): Pick<AssessmentReport, "rubric" | "score" | "criticalMissed"> {
@@ -145,7 +167,7 @@ function rubricSummary(c: CaseDefinition, s: SessionState): Pick<AssessmentRepor
     domain: item.domain,
     weight: item.weight,
     met: item.met ? evaluate(c, s, item.met) : null,
-    ...(item.scoredWhen && !evaluate(c, s, item.scoredWhen) ? { scored: false as const } : {}),
+    ...(!scoresPlace(item, s) || (item.scoredWhen && !evaluate(c, s, item.scoredWhen)) ? { scored: false as const } : {}),
     ...(item.critical ? { critical: true as const } : {}),
   }));
   const scored = rubric.filter((r) => r.met !== null && r.scored !== false);
@@ -165,6 +187,20 @@ function gateSummary(c: CaseDefinition, s: SessionState) {
   return { gates: gates.map((g) => ({ id: g.id, verdict: g.verdict })), verdict, cap };
 }
 
+/**
+ * What the team had done when the learner joined it in a place, in the case's order: the history credited, findings
+ * examined, tests ordered (in the order placed), decisions answered and objectives done.
+ */
+function joinedSummary(c: CaseDefinition, s: SessionState, joined: JoinRecord, history: ReadonlySet<string>): NonNullable<AssessmentReport["joined"]> {
+  return {
+    history: c.history.filter((h) => history.has(h.id)).map((h) => h.id),
+    exam: c.exam.filter((e) => joined.examined.includes(e.id)).map((e) => e.id),
+    investigations: unique(s.orders.filter((o) => joined.orders.includes(o.key)).map((o) => o.investigationId)),
+    decisions: c.decisions.filter((d) => joined.decisions.includes(d.id)).map((d) => d.id),
+    objectives: c.objectives.filter((o) => joined.objectives.includes(o.id)).map((o) => o.id),
+  };
+}
+
 function procedureSummary(c: CaseDefinition, s: SessionState): AssessmentReport["procedure"] {
   const p = s.procedure;
   const def = procedureFor(c, s);
@@ -177,12 +213,19 @@ function procedureSummary(c: CaseDefinition, s: SessionState): AssessmentReport[
   };
 }
 
-/** Assess a session against its case (pure). */
+/**
+ * Assess a session against its case (pure). In a place in the team (`seat`, docs/TEAM.md §1) only the place's rubric
+ * items are scored, and what the team had done before the learner joined is reported apart (`joined`), never credited:
+ * the history, examination, investigation and decision sections count what was left to do then. Safety gates stay the
+ * team's outcomes, in every place.
+ */
 export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
   const p = progress(c, s);
+  const joined = joinedOf(s);
   // Required history asked through a phase twin (`supersedes`) is credited; `asked` counts the questions really asked.
-  const history = coverage(c.history, s.asked, creditedHistory(c, s));
-  const exam = coverage(c.exam, s.examined);
+  const teamHistory = joined ? new Set(creditedHistory(c, { ...s, asked: joined.asked })) : undefined;
+  const history = coverage(c.history, s.asked, creditedHistory(c, s), teamHistory);
+  const exam = coverage(c.exam, s.examined, s.examined, joined ? new Set(joined.examined) : undefined);
   const { rubric, score: raw, criticalMissed } = rubricSummary(c, s);
   const gates = c.safetyGates.length ? gateSummary(c, s) : null;
   const score = gates?.cap != null && raw.percent > gates.cap ? { ...raw, percent: gates.cap, uncapped: raw.percent } : raw;
@@ -194,14 +237,16 @@ export function assess(c: CaseDefinition, s: SessionState): AssessmentReport {
     engine: ENGINE_VERSION,
     completed: p.complete,
     finished: s.finished,
+    ...(s.seat ? { seat: s.seat } : {}),
     ...studySummary(s),
     minutes: s.clock,
     hints: s.hints,
     objectives: p.objectives.map((o) => (o.done ? { id: o.id, done: true, at: o.doneAt } : { id: o.id, done: false })),
+    ...(joined ? { joined: joinedSummary(c, s, joined, teamHistory!) } : {}),
     history: { asked: history.count, required: history.required, requiredAsked: history.requiredDone, missingRequired: history.missingRequired },
     exam: { performed: exam.count, required: exam.required, requiredPerformed: exam.requiredDone, missingRequired: exam.missingRequired },
-    investigations: investigationSummary(c, s),
-    decisions: decisionSummary(c, s),
+    investigations: investigationSummary(c, s, joined),
+    decisions: decisionSummary(c, s, joined),
     safety: {
       contraindicated: s.interventions.filter((r) => r.appropriateness === "contraindicated").map((r) => ({ interventionId: r.interventionId, at: r.at })),
       criticalAlarms: countCriticalAlarms(c, s),

@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { Box3, Group, type BufferAttribute, type Mesh } from "three";
+import { canonicalPosition, STERILE_POSITIONS, StaffPositionSchema } from "@clinicalcraft/core";
 import { frameOf } from "./figure/anatomy.js";
 import { buildPerson, disposeRig, heightOf, looksOf, PATIENT_WEAR, PERSON_HEIGHT, presentationOf, presentationOfSex, ROLE_UNIFORMS, setBlink, setBreath, setDistressed, setMouth, STATURE_SCALE, uniformOf, type AppearanceLike, type PersonRig } from "./npc.js";
 
@@ -31,7 +32,8 @@ function finite(rig: PersonRig): boolean {
   });
 }
 
-const POSITIONS = ["surgeon", "assistant-surgeon", "anaesthetist", "scrub-nurse", "circulating-nurse", "ward-nurse", "recovery-nurse", "theatre-coordinator", "physician", "educator", "radiologist", "radiographer", "pathologist", "lab-technician", "transfusion-scientist", "pharmacist", "receptionist", "porter", "paramedic"];
+/** Every position core knows: a position added there is dressed here or this test fails. */
+const POSITIONS = StaffPositionSchema.options;
 
 describe("people of the world (npc.ts)", () => {
   it("a standing adult is of real size: feet on the floor, the head at 1.74 m, three meshes of one material", () => {
@@ -64,10 +66,16 @@ describe("people of the world (npc.ts)", () => {
         disposeRig(rig);
       }
     }
-    // nobody wears a white coat in theatre; whoever is scrubbed is gowned and gloved with their hands held in front
-    for (const position of ["surgeon", "assistant-surgeon", "scrub-nurse"]) {
-      const wear = uniformOf(position === "scrub-nurse" ? "nurse" : "attending", position).wear;
-      expect(wear).toMatchObject({ over: "sterile", gloves: true, cap: true, mask: true, hands: "clasped", stethoscope: false });
+    // nobody wears a white coat in theatre; whoever works scrubbed (core's sterile positions: the surgeon, both
+    // assistants and the assistant surgeon, the scrub nurse) is gowned and gloved with their hands held in front
+    expect([...STERILE_POSITIONS].sort()).toEqual(["assistant-surgeon", "first-assistant", "scrub-nurse", "second-assistant", "surgeon"]);
+    for (const position of STERILE_POSITIONS) {
+      const wear = uniformOf(canonicalPosition(position) === "scrub-nurse" ? "nurse" : "attending", position).wear;
+      expect(wear, position).toMatchObject({ over: "sterile", gloves: true, cap: true, mask: true, hands: "clasped", stethoscope: false });
+    }
+    // and nobody outside them is
+    for (const position of POSITIONS.filter((p) => !STERILE_POSITIONS.includes(p))) {
+      for (const role of Object.keys(ROLE_UNIFORMS)) expect(uniformOf(role, position).wear.over, `${role} ${position}`).not.toBe("sterile");
     }
     for (const position of ["anaesthetist", "circulating-nurse"]) {
       const wear = uniformOf(position === "anaesthetist" ? "attending" : "nurse", position).wear;

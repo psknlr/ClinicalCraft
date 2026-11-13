@@ -4,7 +4,7 @@ import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "
 import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
 import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
-import { SeatSchema, type Seat } from "./positions.js";
+import { SeatSchema, type Place } from "./positions.js";
 
 /**
  * Session — the deterministic, event-sourced state of one learner working
@@ -175,6 +175,25 @@ export interface HoldRecord {
   released?: { by: string; reassessment: string; at: number; seq: number };
 }
 
+/**
+ * What the care team had done when the learner joined it in a place (`start {seat}`, docs/TEAM.md §1): the case's
+ * reference path after its own `start`, applied by the system with the learner's start until the case was in one of the
+ * team's phases. None of it is the learner's: the assessment reports it as the team's.
+ */
+export interface JoinRecord {
+  /** Reference actions applied. */
+  actions: number;
+  /** The record when the learner joined: the last sequence number and the minute. */
+  seq: number;
+  at: number;
+  /** History items asked, findings examined, order keys (`id@phase`), decisions answered and objectives done by then. */
+  asked: string[];
+  examined: string[];
+  orders: string[];
+  decisions: string[];
+  objectives: string[];
+}
+
 /** One entry of the count's record: the op as given, when, and — for a `count` — what it found missing or unexpected. */
 export type CountEntry = CountOp & {
   at: number;
@@ -259,9 +278,14 @@ export interface SessionState {
    * The learner's place in the care team chosen at `start` (docs/TEAM.md §1): a first or second assistant or the scrub
    * nurse. Absent: the operating surgeon (`start {seat: "surgeon"}` is recorded as no place).
    */
-  seat?: Exclude<Seat, "surgeon">;
+  seat?: Place;
   /** The team's line-up chosen at `start` (`team.lineups`). Absent: the base team. */
   lineup?: string;
+  /**
+   * In a place (`seat`): what the team had done when the learner joined — the case's reference path up to the team's
+   * phase, applied with the start (docs/TEAM.md §1). The assessment reports it as the team's, never the learner's.
+   */
+  joined?: JoinRecord;
   /** Holds placed on interventions, in order (absent until the first; sessions saved before have none). */
   holds?: HoldRecord[];
   /** The surgical count (cases whose team keeps one), from the baseline on. */
