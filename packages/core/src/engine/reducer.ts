@@ -26,6 +26,7 @@ import { examBranch, historyBranch, resultBranch, toldKey } from "./branches.js"
 import { createProcedureState, operate, procedureFor, procedureStateOf } from "./procedure/index.js";
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
 import { applyStudy } from "./study.js";
+import { applyPrescription } from "./prescription.js";
 import { reachPhase, recordAvailability } from "./records.js";
 import { applyAnaesthesia } from "./anaesthesia.js";
 import { applyAlarm } from "./alarm.js";
@@ -412,6 +413,29 @@ function onStudy(ctx: Ctx, a: Action<"study">): Outcome {
   return accepted();
 }
 
+/**
+ * A step of a prescription (docs/PRESCRIPTIONS.md): signed, reviewed, read, prepared, picked, checked, supplied. A
+ * repeated request (the same key, the same review) is unchanged; an attempt refused for a clinical reason is accepted
+ * as a recorded refusal — the record says it was tried, and nothing else changes.
+ */
+function onPrescription(ctx: Ctx, a: Action<"prescription">): Outcome {
+  const r = applyPrescription(ctx.c, ctx.s, a.prescription);
+  if (!r.ok) return rejected(r.code, r.message);
+  if (!r.changed) return { kind: "unchanged" };
+  ctx.s.prescriptions = r.record;
+  ctx.events.push({
+    type: "prescription.recorded",
+    op: a.prescription.op,
+    prescription: a.prescription.prescription,
+    ...(r.version != null ? { version: r.version } : {}),
+    ...(r.refused ? { refused: { code: r.refused.code, reason: r.refused.reason } } : {}),
+    ...(r.findings != null ? { findings: r.findings } : {}),
+    // a label check says what it found; what a supply got wrong stays on the record until the record is read
+    ...(r.discrepancies != null && a.prescription.op === "check-label" ? { discrepancies: r.discrepancies } : {}),
+  });
+  return accepted();
+}
+
 /** A step of anaesthesia responsibility: a relief requested or arrived, a hand-over accepted (`engine/anaesthesia.ts`). */
 function onAnaesthesia(ctx: Ctx, a: Action<"anaesthesia">): Outcome {
   const r = applyAnaesthesia(ctx.c, ctx.s, a.anaesthesia);
@@ -524,6 +548,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onCount(ctx, a);
     case "study":
       return onStudy(ctx, a);
+    case "prescription":
+      return onPrescription(ctx, a);
     case "anaesthesia":
       return onAnaesthesia(ctx, a);
     case "alarm-response":

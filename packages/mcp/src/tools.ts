@@ -115,6 +115,12 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   order_study: { title: "Order a new investigation", ...RECORDS, idempotentHint: true },
   read_study: { title: "Read a new investigation", ...READ_ONLY },
   list_studies: { title: "List new investigations", ...READ_ONLY },
+  // Prescriptions (docs/PRESCRIPTIONS.md): signing makes a version (the same request_key again is the same version);
+  // reading the record also records that the dispensary's review was read (again: nothing new); a dispensing step
+  // puts a supply together and hands it out.
+  prescribe: { title: "Sign a prescription", ...RECORDS },
+  read_prescription: { title: "Read a prescription", ...RECORDS, idempotentHint: true },
+  dispense: { title: "Dispensing step", ...RECORDS },
   // Embodied mode (§12). Perception only reads (the body's memory of what it saw is not encounter state);
   // walking moves the body and spends simulated time; operations with a clinical effect (a device giving a
   // drug, delegated or skill steps) act on the patient through the approval gate.

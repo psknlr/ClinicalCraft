@@ -52,6 +52,7 @@ import {
   type ToolArgs,
 } from "./clinical-resolve.js";
 import { studyLines } from "./studies.js";
+import { prescriptionLines } from "./prescriptions.js";
 import { asksForOperation, countLines, holdLines, objectiveRequirementLines, operationLines, operationPrerequisiteLines, operationUnderWay, recommendations } from "./requirements.js";
 import { resolveConsultStaff } from "./consult-target.js";
 import type { StaffVoice } from "../session/staff-voice.js";
@@ -886,7 +887,7 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
   }
   // what the current objective still needs (named, with the next action), standing holds, and the operation
   const visible = visiblePhases(c, s);
-  lines.push(...objectiveRequirementLines(c, s, L, visible), ...holdLines(c, s, L), ...operationLines(c, s, L, visible), ...countLines(c, s, L), ...studyLines(c, s, L, ctx.facility));
+  lines.push(...objectiveRequirementLines(c, s, L, visible), ...holdLines(c, s, L), ...operationLines(c, s, L, visible), ...countLines(c, s, L), ...studyLines(c, s, L, ctx.facility), ...prescriptionLines(c, s, L, ctx.facility));
   const objective = currentObjective(c, s);
   return {
     text: lines.join("\n"),
@@ -910,7 +911,7 @@ export function caseStatusText(ctx: Pick<ToolContext, "caseDef" | "locale" | "st
 const caseStatus: ToolDefinition<ToolArgs> = {
   name: "case_status",
   description:
-    "Review the case status: objectives, what the current objective still needs (each requirement met or open, with the next available action), holds, the operation's status, pending and ready orders, which decisions are open, phase and clock.",
+    "Review the case status: objectives, what the current objective still needs (each requirement met or open, with the next available action), holds, the operation's status, pending and ready orders, prescriptions and where each stands, which decisions are open, phase and clock.",
   inputSchema: EMPTY_SCHEMA,
   readOnly: true,
   sideEffect: "none",

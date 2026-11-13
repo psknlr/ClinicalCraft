@@ -9,13 +9,14 @@
  */
 import { datumStatus } from "./datum.js";
 import type { CaseDefinition, Result } from "../schema/case.js";
-import type { Condition, ProcedurePredicate } from "../schema/common.js";
+import type { Condition, PrescriptionPredicate, ProcedurePredicate } from "../schema/common.js";
 import type { HoldRecord, OrderRecord, SessionState } from "../schema/session.js";
 import { vitalValue } from "./signal.js";
 import { historyCredited } from "./twins.js";
 import { evaluateProcedure } from "./procedure/predicates.js";
 import { evaluateCount } from "./count.js";
 import { evaluateStudy } from "./study.js";
+import { evaluatePrescription } from "./prescription.js";
 import { procedureFor } from "./procedure/variant.js";
 
 /** Composite key of a result: `${investigationId}@${phase}`. */
@@ -133,6 +134,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("procedure" in cond) return evaluateProcedure(procedureFor(c, s), s.procedure, cond.procedure, s.variant);
   if ("count" in cond) return evaluateCount(s, cond.count);
   if ("study" in cond) return evaluateStudy(s, cond.study, cond.status);
+  if ("prescription" in cond) return evaluatePrescription(c, s, cond.prescription);
   if ("datum" in cond) {
     const st = datumStatus(c, s, cond.datum);
     return !!st && cond.status.includes(st);
@@ -156,7 +158,9 @@ export type ConditionRef =
   | { kind: "objective"; id: string; path: (string | number)[] }
   | { kind: "vital"; id: string; path: (string | number)[] }
   /** A `procedure` leaf (its ids are checked against the case's procedure by `checkCaseIntegrity`). */
-  | { kind: "procedure"; predicate: ProcedurePredicate; path: (string | number)[] };
+  | { kind: "procedure"; predicate: ProcedurePredicate; path: (string | number)[] }
+  /** A `prescription` leaf (its prescription and formulations are checked against the case's by `checkCaseIntegrity`). */
+  | { kind: "prescription"; predicate: PrescriptionPredicate; path: (string | number)[] };
 
 /** Collect every id referenced by a condition tree (depth-first, document order). */
 export function conditionRefs(cond: Condition, base: (string | number)[] = []): ConditionRef[] {
@@ -183,6 +187,7 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("objective" in node) out.push({ kind: "objective", id: node.objective, path: [...path, "objective"] });
     else if ("vital" in node) out.push({ kind: "vital", id: node.vital, path: [...path, "vital"] });
     else if ("procedure" in node) out.push({ kind: "procedure", predicate: node.procedure, path: [...path, "procedure"] });
+    else if ("prescription" in node) out.push({ kind: "prescription", predicate: node.prescription, path: [...path, "prescription"] });
   };
   visit(cond, base);
   return out;

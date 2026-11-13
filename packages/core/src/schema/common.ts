@@ -189,6 +189,40 @@ export const CountPredicateSchema = z
   .strict();
 export type CountPredicate = z.infer<typeof CountPredicateSchema>;
 
+/** A prescription's status (docs/PRESCRIPTIONS.md): its current version's (`none`: nothing signed yet). */
+export const PRESCRIPTION_STATUSES = ["none", "submitted", "queried", "confirmed", "preparing", "dispensed"] as const;
+export const PrescriptionStatusSchema = z.enum(PRESCRIPTION_STATUSES);
+export type PrescriptionStatus = z.infer<typeof PrescriptionStatusSchema>;
+
+/**
+ * A condition on the prescription record (`engine/prescription.ts`); every given field must hold (`{}`: something was
+ * signed). `id`: which prescription (absent: any of the case's — the fields are then read on one that satisfies them
+ * all). `status`: its current version's status is one of; `current`: the current version signs this formulation;
+ * `signed` / `dispensed`: a version of this formulation was signed / supplied at any time (`dispensed: true`: any
+ * formulation); `versions`: how many versions were signed; `queried`: a review raised a query (ever — the credit
+ * stays); `acknowledged`: the prescriber read a review that raised one; `refused`: an attempt was refused and recorded
+ * (`true`: any; or which step); `discrepancy`: a supply differed from its version (`true`: any; or which kind);
+ * `labelChecked`: the latest supply's label was checked; `supplyRead`: the prescriber has read the record of the latest
+ * supply (neither value holds before anything was supplied).
+ */
+export const PrescriptionPredicateSchema = z
+  .object({
+    id: IdSchema.optional(),
+    status: z.union([PrescriptionStatusSchema, z.array(PrescriptionStatusSchema).min(1)]).optional(),
+    current: IdSchema.optional(),
+    signed: IdSchema.optional(),
+    dispensed: z.union([IdSchema, z.literal(true)]).optional(),
+    versions: z.object({ gte: z.number().int().min(0).optional(), lte: z.number().int().min(0).optional() }).strict().optional(),
+    queried: z.boolean().optional(),
+    acknowledged: z.boolean().optional(),
+    refused: z.union([z.boolean(), z.enum(["submit", "prepare", "pick", "dispense"])]).optional(),
+    discrepancy: z.union([z.boolean(), z.enum(["identity", "omitted", "label", "expired", "label-unchecked"])]).optional(),
+    labelChecked: z.boolean().optional(),
+    supplyRead: z.boolean().optional(),
+  })
+  .strict();
+export type PrescriptionPredicate = z.infer<typeof PrescriptionPredicateSchema>;
+
 /**
  * Declarative predicates over a session's state. Used by objectives,
  * decisions (`requires`), waypoints, physiology trends/events,
@@ -253,6 +287,8 @@ export type Condition =
   | { count: CountPredicate }
   /** A new investigation (docs/STUDIES.md) reached at least `status` (default `ordered`). */
   | { study: string; status?: "ordered" | "acquired" | "released" | "reviewed" }
+  /** The prescription record (docs/PRESCRIPTIONS.md; `engine/prescription.ts`): every given field must hold. */
+  | { prescription: PrescriptionPredicate }
   | { datum: string; status: ("not-asked" | "asked-unknown" | "verified-negative" | "verified-positive" | "mitigated")[] };
 
 export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
@@ -284,6 +320,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ count: CountPredicateSchema }).strict(),
     /** A new investigation (docs/STUDIES.md). */
     z.object({ study: IdSchema, status: z.enum(["ordered", "acquired", "released", "reviewed"]).optional() }).strict(),
+    /** The prescription record (docs/PRESCRIPTIONS.md). */
+    z.object({ prescription: PrescriptionPredicateSchema }).strict(),
     /** A safety datum's status is one of these (`datumStatus`: not asked, asked but unknown, verified, mitigated). */
     z.object({ datum: IdSchema, status: z.array(z.enum(["not-asked", "asked-unknown", "verified-negative", "verified-positive", "mitigated"])).min(1) }).strict(),
   ]),
@@ -355,6 +393,14 @@ export const CAPABILITIES = {
   "light-source": "Endoscopic light source",
   "insufflator": "CO₂ insufflator: the pneumoperitoneum",
   "dialysis": "Haemodialysis",
+  // Traditional and complementary medicine (a TCM clinic's treatment room and dispensary)
+  "acupuncture": "Acupuncture kit at the couch: sterile single-use needles and a sharps container",
+  "moxibustion": "Moxibustion kit (moxa, a heat lamp, extraction)",
+  "cupping": "Cupping set",
+  "tuina-couch": "A treatment couch for tuina and manual therapy (face hole, adjustable height)",
+  "tongue-imaging": "Tongue-imaging station: a standard light source and a colour reference card",
+  "tcm-dispensing": "Herbal dispensing: a herb drawer cabinet or a granule dispenser",
+  "decoction": "Decoction of a herbal prescription (a decoction machine)",
   // Teaching & records
   "anatomy-atlas": "3D anatomical reference",
   "evidence-board": "Case conference / decision board",

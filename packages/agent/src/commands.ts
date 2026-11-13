@@ -90,6 +90,9 @@ const BUILTIN_NAMES = [
   ["results", ""],
   ["read", "<id> [phase]"],
   ["give", "<query>"],
+  ["prescribe", "<formulation>"],
+  ["rx", "[prescription]"],
+  ["dispense", "<step> [line] [product]"],
   ["vitals", ""],
   ["board", ""],
   ["answer", "<decision> <option…>"],
@@ -555,6 +558,22 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
     case "give":
       if (!a) return usage(host, name, "<query>");
       return toolOut(host, await host.runTool("intervene", c.interventions.some((i) => i.id === a) ? { intervention_id: a } : { query: a }), "give");
+    case "prescribe": {
+      // sign a formulation as the next version of its prescription (docs/PRESCRIPTIONS.md)
+      if (!a) return usage(host, name, "<formulation>");
+      const known = (c.prescriptions ?? []).some((p) => p.formulations.some((f) => f.id === a));
+      return toolOut(host, await host.runTool("prescribe", known ? { formulation: a } : { query: a }));
+    }
+    case "rx":
+      // the prescription record: versions, the dispensary's review, the supply
+      return toolOut(host, await host.runTool("read_prescription", a ? { prescription: a } : {}));
+    case "dispense": {
+      // a dispensing step at the device, where the case makes the learner the dispenser
+      const [step, line, product] = splitArgs(a);
+      if (!step) return usage(host, name, "<prepare|pick|check-label|dispense> [line] [product]");
+      const version = step !== "pick" && line && /^\d+$/u.test(line) ? Number(line) : undefined;
+      return toolOut(host, await host.runTool("dispense", { step, ...(version ? { version } : {}), ...(step === "pick" && line ? { line } : {}), ...(step === "pick" && product ? { product } : {}) }));
+    }
     case "vitals":
       return toolOut(host, await host.runTool("check_vitals", {}));
     case "board": {

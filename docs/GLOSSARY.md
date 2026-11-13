@@ -140,6 +140,11 @@ developer documents use.
 | published source record | Published source record | 原始病例记录 | `investigations[]` results |
 | historical material unavailable | Historical material unavailable (the published case has no such record) | 原始病例中无此资料 | a record result `available: false`, or none |
 | record not yet created | Record not yet created (written later in the encounter) | 该记录尚未产生 | `recordAvailability` `not-yet`, `investigations[].availability` |
+| prescription version | version (a signed formulation: "version 2 of the herbal prescription"); superseded | 版本（第2版）；已作废 | `SessionState.prescriptions.versions`, `prescribe` ([PRESCRIPTIONS.md](PRESCRIPTIONS.md)) |
+| dispensary | the dispensary (who reviews and supplies a prescription; the staff member is a dispenser or pharmacist) | 药房（审方并发药；人员为调剂员或药师） | `prescriptions[].dispensary`, role `pharmacist` |
+| the dispensary's review, query | review; a query (a point the prescriber must resolve before anything is supplied); confirmed | 审方；审方意见（处方医师须先处理）；已确认 | `review` op, `read_prescription` |
+| supply, dispensing step | supply (what the dispensary hands out for a version); the steps: select the version, pick, check the label, supply | 发药；调剂步骤：选定版本、取药、核对标签、发药 | `dispense` op and tool, `Dispensing` |
+| supply discrepancy | a difference between what was supplied and its version ("Differs from the version: …") | 与处方版本不符 | `Dispensing.discrepancies`, `prescriptions[].deviations` |
 | accession | accession (one acquisition of an ordered study: a tracing, a sample) | 检查号（一次采集：一份描记或一份标本） | `StudyAccession.id`, e.g. `ecg-12lead-1` |
 | cannot speak, cannot answer | "<name> cannot speak: <reason>" (approach), "<name> cannot answer: <reason>" (a question) — narrated | “<姓名>无法说话：<原因>”（走近时）、“<姓名>无法回答：<原因>”（提问时）——以旁白呈现 | `patient.nonVerbalWhen`, `nonVerbalReason`, rejection `cannot-answer` |
 | work-up plan | work-up plan | 诊疗计划 | `update_workup` |

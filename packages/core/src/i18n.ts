@@ -134,6 +134,14 @@ export const CAPABILITY_LABELS: Readonly<Record<string, { "zh-CN": string; en: s
   "light-source": { "zh-CN": "冷光源", en: "a light source" },
   insufflator: { "zh-CN": "气腹机", en: "an insufflator" },
   dialysis: { "zh-CN": "血液透析", en: "haemodialysis" },
+  // Traditional and complementary medicine
+  acupuncture: { "zh-CN": "针灸用具", en: "an acupuncture kit" },
+  moxibustion: { "zh-CN": "艾灸用具", en: "a moxibustion kit" },
+  cupping: { "zh-CN": "拔罐用具", en: "a cupping set" },
+  "tuina-couch": { "zh-CN": "推拿治疗床", en: "a tuina couch" },
+  "tongue-imaging": { "zh-CN": "舌象采集仪", en: "a tongue-imaging station" },
+  "tcm-dispensing": { "zh-CN": "中药调剂设备", en: "herbal dispensing equipment" },
+  decoction: { "zh-CN": "煎药机", en: "a decoction machine" },
   // Teaching & records
   "anatomy-atlas": { "zh-CN": "解剖图谱", en: "the anatomy atlas" },
   "evidence-board": { "zh-CN": "会诊板", en: "the case board" },

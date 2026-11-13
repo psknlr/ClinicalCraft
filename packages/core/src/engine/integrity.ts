@@ -8,7 +8,7 @@
  * phases enterable.
  */
 import type { CaseDefinition } from "../schema/case.js";
-import type { Condition } from "../schema/common.js";
+import type { Condition, PrescriptionPredicate } from "../schema/common.js";
 import type { LocalizedList } from "../i18n.js";
 import { ClinicalActionSchema, type ClinicalAction } from "../schema/session.js";
 import { conditionRefs, type ConditionRef } from "./conditions.js";
@@ -111,6 +111,7 @@ function checkCollections(c: CaseDefinition): Issue[] {
 
 function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef): Issue[] {
   if (ref.kind === "procedure") return checkProcedureRef(c, ref.predicate, ref.path);
+  if (ref.kind === "prescription") return checkPrescriptionRef(c, ref.predicate, ref.path);
   const missing = (label: string) => [err(ref.path, `unknown ${label} "${ref.id}"`)];
   switch (ref.kind) {
     case "history":
@@ -496,6 +497,19 @@ function checkSolutionAction(c: CaseDefinition, ids: Ids, a: ClinicalAction, pat
       }
       return [];
     }
+    case "prescription": {
+      const op = a.prescription;
+      const def = (c.prescriptions ?? []).find((d) => d.id === op.prescription);
+      if (!def) return unknown("prescription.prescription", "prescription", op.prescription);
+      if (op.op === "submit" && !def.formulations.some((f) => f.id === op.formulation)) return [err([...path, "prescription", "formulation"], `unknown formulation "${op.formulation}" of prescription "${def.id}"`)];
+      if (op.op === "pick") {
+        const issues: Issue[] = [];
+        if (op.line != null && !def.products.some((p) => p.id === op.line)) issues.push(err([...path, "prescription", "line"], `unknown product "${op.line}" of prescription "${def.id}"`));
+        if (op.product != null && !def.products.some((p) => p.id === op.product)) issues.push(err([...path, "prescription", "product"], `unknown product "${op.product}" of prescription "${def.id}"`));
+        return issues;
+      }
+      return [];
+    }
     default:
       return [];
   }
@@ -702,8 +716,83 @@ export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
     ...checkProcedureDefinition(c),
     ...checkTeamDefinition(c),
     ...checkStudies(c, ids),
+    ...checkPrescriptions(c, ids),
     ...checkRecordAvailability(c),
   ];
+}
+
+/**
+ * A `prescription` condition leaf (docs/PRESCRIPTIONS.md): the prescription it names is the case's, the formulations
+ * it names are that prescription's (with no `id`: some prescription's), and the case has prescriptions at all.
+ */
+function checkPrescriptionRef(c: CaseDefinition, p: PrescriptionPredicate, path: PathPart[]): Issue[] {
+  const defs = c.prescriptions ?? [];
+  if (!defs.length) return [err(path, "a prescription condition, but the case has no prescriptions, so this can never become true")];
+  const def = p.id != null ? defs.find((d) => d.id === p.id) : undefined;
+  if (p.id != null && !def) return [err([...path, "id"], `unknown prescription "${p.id}"`)];
+  const issues: Issue[] = [];
+  const formulation = (key: "current" | "signed" | "dispensed", id: string) => {
+    if (!(def ? [def] : defs).some((d) => d.formulations.some((f) => f.id === id))) issues.push(err([...path, key], `unknown formulation "${id}"${def ? ` of prescription "${def.id}"` : ""}`));
+  };
+  if (p.current != null) formulation("current", p.current);
+  if (p.signed != null) formulation("signed", p.signed);
+  if (typeof p.dispensed === "string") formulation("dispensed", p.dispensed);
+  if (p.versions && p.versions.gte != null && p.versions.lte != null && p.versions.gte > p.versions.lte) issues.push(err([...path, "versions"], `empty range (gte ${p.versions.gte} > lte ${p.versions.lte}), so this can never become true`));
+  return issues;
+}
+
+/**
+ * The case's prescriptions (docs/PRESCRIPTIONS.md): unique ids; every line, look-alike, review rule and supply
+ * deviation names a product (and formulation) of its prescription; conditions on the case's own ids; a usual dose
+ * that is a range; a formulation that can never be supplied as written (a warning).
+ */
+function checkPrescriptions(c: CaseDefinition, ids: Ids): Issue[] {
+  const issues: Issue[] = [];
+  const seen = new Set<string>();
+  (c.prescriptions ?? []).forEach((def, i) => {
+    const at: PathPart[] = ["prescriptions", i];
+    if (seen.has(def.id)) issues.push(err([...at, "id"], `duplicate prescription id "${def.id}"`));
+    seen.add(def.id);
+    if (ids.interventions.has(def.id)) issues.push(warn([...at, "id"], `"${def.id}" is also an intervention id: a prescription and a treatment given at the bedside need different ids`));
+    issues.push(...duplicates(def.products, [...at, "products"], "product"), ...duplicates(def.formulations, [...at, "formulations"], "formulation"), ...duplicates(def.review, [...at, "review"], "review rule"));
+    const products = new Map(def.products.map((p) => [p.id, p]));
+    const formulations = new Set(def.formulations.map((f) => f.id));
+    def.products.forEach((p, j) => {
+      if (p.usualDose && p.usualDose[0] > p.usualDose[1]) issues.push(err([...at, "products", j, "usualDose"], `usual dose of "${p.id}" is an empty range (${p.usualDose[0]} > ${p.usualDose[1]})`));
+      p.confusedWith.forEach((id, k) => {
+        if (!products.has(id)) issues.push(err([...at, "products", j, "confusedWith", k], `unknown product "${id}"`));
+        else if (id === p.id) issues.push(warn([...at, "products", j, "confusedWith", k], `product "${p.id}" lists itself as a look-alike`));
+      });
+    });
+    def.formulations.forEach((f, j) => {
+      issues.push(...checkCondition(c, ids, f.signableWhen, [...at, "formulations", j, "signableWhen"]));
+      if (f.signableWhen && !f.refusal) issues.push(warn([...at, "formulations", j, "refusal"], `formulation "${f.id}" may be refused (signableWhen) but has no refusal text: say why it cannot be signed yet`));
+      f.lines.forEach((l, k) => {
+        if (!products.has(l.product)) issues.push(err([...at, "formulations", j, "lines", k, "product"], `unknown product "${l.product}"`));
+      });
+    });
+    def.review.forEach((rule, j) => {
+      (rule.products ?? []).forEach((id, k) => {
+        if (!products.has(id)) issues.push(err([...at, "review", j, "products", k], `unknown product "${id}"`));
+      });
+      (rule.formulations ?? []).forEach((id, k) => {
+        if (!formulations.has(id)) issues.push(err([...at, "review", j, "formulations", k], `unknown formulation "${id}"`));
+      });
+      if (rule.minDose != null && !rule.products) issues.push(err([...at, "review", j, "minDose"], `review rule "${rule.id}" has a minDose but names no products`));
+      issues.push(...checkCondition(c, ids, rule.when, [...at, "review", j, "when"]));
+    });
+    def.deviations.forEach((d, j) => {
+      if (!formulations.has(d.formulation)) issues.push(err([...at, "deviations", j, "formulation"], `unknown formulation "${d.formulation}"`));
+      issues.push(...checkCondition(c, ids, d.when, [...at, "deviations", j, "when"]));
+      d.substitutions.forEach((x, k) => {
+        if (!products.has(x.product)) issues.push(err([...at, "deviations", j, "substitutions", k, "product"], `unknown product "${x.product}"`));
+        if (!products.has(x.with)) issues.push(err([...at, "deviations", j, "substitutions", k, "with"], `unknown product "${x.with}"`));
+      });
+      if (def.dispensedBy === "learner") issues.push(warn([...at, "deviations", j], `prescription "${def.id}" is dispensed by the learner: an authored supply deviation never applies`));
+      if (!d.label && !d.substitutions.length) issues.push(warn([...at, "deviations", j], `supply deviation of "${d.formulation}" changes nothing (no label, no substitution)`));
+    });
+  });
+  return issues;
 }
 
 /** A record's availability names phases of the case (docs/CASE_AUTHORING.md: records in the simulated timeline). */

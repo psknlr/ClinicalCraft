@@ -13,12 +13,14 @@ import { clinicalTools, walkToTool, type ToolArgs } from "./clinical.js";
 import { npcTools, type NpcToolOptions } from "./npc.js";
 import { procedureTools } from "./procedure.js";
 import { studyTools } from "./studies.js";
+import { prescriptionTools, PRESCRIPTION_TOOL_NAMES } from "./prescriptions.js";
 import type { ToolDefinition } from "./types.js";
 
 export * from "./clinical.js";
 export * from "./npc.js";
 export { procedureTools } from "./procedure.js";
 export { orderText, studyLines, studyText, studyTools } from "./studies.js";
+export { dispensaryStaff, formulationText, prescriptionHeads, prescriptionLines, prescriptionText, prescriptionTools, PRESCRIPTION_TOOL_NAMES, resolveFormulation } from "./prescriptions.js";
 export * from "./spatial.js";
 export * from "./scope.js";
 export * from "./world.js";
@@ -44,7 +46,7 @@ export interface AgentToolFilter {
   /** Permission deny rules; bare `tool` rules hide the tool. */
   deny?: readonly string[];
   /** Case (used to hide `wait` on static clocks). */
-  caseDef?: Pick<CaseDefinition, "clock" | "procedure"> & Partial<Pick<CaseDefinition, "studies">>;
+  caseDef?: Pick<CaseDefinition, "clock" | "procedure"> & Partial<Pick<CaseDefinition, "studies" | "prescriptions">>;
 }
 
 /** All tools of a session, by name. */
@@ -56,6 +58,7 @@ export class ToolRegistry {
     for (const tool of npcTools(options.npc)) this.tools.set(tool.name, tool);
     for (const tool of procedureTools()) this.tools.set(tool.name, tool);
     for (const tool of studyTools()) this.tools.set(tool.name, tool);
+    for (const tool of prescriptionTools()) this.tools.set(tool.name, tool);
     if (options.dynamicTools?.includes(walkToTool.name)) this.tools.set(walkToTool.name, walkToTool);
     for (const tool of options.extra ?? []) this.tools.set(tool.name, tool);
   }
@@ -97,6 +100,8 @@ export class ToolRegistry {
       if ((tool.name === "observe_field" || tool.name === "operate") && filter.caseDef && !filter.caseDef.procedure) continue;
       // new investigations only in a case with test profiles (docs/STUDIES.md)
       if ((tool.name === "order_study" || tool.name === "read_study" || tool.name === "list_studies") && filter.caseDef && !(filter.caseDef.studies ?? []).length) continue;
+      // prescriptions only in a case that has some (docs/PRESCRIPTIONS.md)
+      if (PRESCRIPTION_TOOL_NAMES.includes(tool.name) && filter.caseDef && !(filter.caseDef.prescriptions ?? []).length) continue;
       out.push(tool);
     }
     return out;

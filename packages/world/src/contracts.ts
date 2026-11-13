@@ -759,13 +759,17 @@ export interface ClinicalIntent {
   /**
    * `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic
    * screen; `count`: an entry of the surgical count (docs/TEAM.md §4.3) — where it is made is the device operation's
-   * own requirement (at the count board, the wand at the table).
+   * own requirement (at the count board, the wand at the table). `prescribe`: a prescription version signed, and
+   * `read-prescription`: its record read (docs/PRESCRIPTIONS.md) — at the chart; `dispense`: a dispensing step, at a
+   * device that provides what the prescription's supply `requires`.
    */
-  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count";
+  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count" | "prescribe" | "read-prescription" | "dispense";
   itemId?: string;
   findingId?: string;
   investigationId?: string;
   interventionId?: string;
+  /** The prescription a `prescribe`, `read-prescription` or `dispense` intent concerns (absent: the case's only one). */
+  prescriptionId?: string;
   /** Staff role/agent for consult/delegate. */
   agent?: string;
 }

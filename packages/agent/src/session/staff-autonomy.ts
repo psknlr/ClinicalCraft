@@ -7,7 +7,9 @@
  *   patient, reported and reviewed (`SessionStudies`);
  * - traction: a colleague holding a port who is no longer at the table has let go (`assist.ts`);
  * - alarms: the responsible anaesthetist of an anaesthetised patient recognises a new critical alarm, goes to the
- *   patient and says so — the response the simulation authors, no drug or treatment of their own.
+ *   patient and says so — the response the simulation authors, no drug or treatment of their own;
+ * - prescriptions: the dispensary reviews each version the prescriber signs, raises its query or confirms it, and
+ *   supplies the confirmed version at the dispensing device with the dispenser's own body (`SessionPrescriptions`).
  * `states()` is each staff member's role state, derived from the authoritative record and the world (so a reload
  * agrees by construction): goal, task, location, responsibility, held items, reservations, pending requests and
  * what blocks them.
@@ -64,6 +66,8 @@ export class StaffAutonomy {
       syncProcedureSupply(k, id);
       await this.readyEquipment(id, signal);
       if (k.studies.available()) await k.studies.afterLearner(id, signal);
+      // the dispensary: a version just signed reviewed, a confirmed one supplied at the dispensing device
+      if (k.prescriptions.available()) await k.prescriptions.afterLearner(id, signal);
       await this.answerAlarm(id, signal);
     } catch (err) {
       k.emit(id, { type: "warning", message: `staff: ${err instanceof Error ? err.message : String(err)}` });
@@ -221,7 +225,9 @@ export class StaffAutonomy {
       const tasks = (team?.state.tasks ?? []).filter((x) => x.owner === sid && !DONE.has(x.status));
       for (const x of tasks) responsibility.push(`task ${x.id}`);
       const port = s.procedure?.ports.find((p) => p.holder === sid)?.site;
-      const goal = anaesthetist === sid ? rt(L, "staff.goal.anaesthesia") : port ? rt(L, "staff.goal.traction", { port }) : orders[0] ? rt(L, "staff.goal.study", { order: orders[0].id }) : tasks[0] ? tasks[0].need : null;
+      const supply = k.prescriptions.goalOf(sid);
+      if (supply) responsibility.push(supply);
+      const goal = anaesthetist === sid ? rt(L, "staff.goal.anaesthesia") : port ? rt(L, "staff.goal.traction", { port }) : orders[0] ? rt(L, "staff.goal.study", { order: orders[0].id }) : (supply ?? (tasks[0] ? tasks[0].need : null));
       return [
         {
           actorId: a.id,

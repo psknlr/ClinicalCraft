@@ -23,12 +23,18 @@ const PARAM: Record<string, string> = { order_test: "investigation", read_result
  * The operation of `entityId` whose clinical effect would run `tool` on
  * `itemId` (with `phase` for reads), or null. Mirrors the action bus: a
  * workstation's items must be covered by its capabilities, a device's
- * `use` needs them to intersect.
+ * `use` needs them to intersect. For `dispense`, `itemId` is the dispensing step (`prepare`, `pick`, `check-label`,
+ * `dispense`) and the operation is the device's own for that step.
  */
 export function clinicalOperation(world: WorldRuntime, entityId: EntityId, tool: string, itemId: string, caseDef: CaseDefinition, locale: string, phase?: string): DeviceRoute | null {
   const e = world.entity(entityId);
   if (!e || e.kind !== "equipment") return null;
   const spec = behaviorOf(e);
+  if (tool === "dispense") {
+    // a dispensing step (docs/PRESCRIPTIONS.md): the device's operation whose clinical effect is that step
+    const op = spec.operations.find((o) => o.clinical?.tool === "dispense" && o.clinical.item === itemId);
+    return op ? { entityId, spec, op, parameters: {} } : null;
+  }
   const key = PARAM[tool];
   if (!key) return null;
   for (const op of spec.operations) {

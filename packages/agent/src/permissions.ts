@@ -343,13 +343,20 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   count: null,
   // a learner orders a study with order_study; its acquisition, report and review are the hospital's
   study: "order_study",
+  // signing is `prescribe`; by op (`actionToolName`): reading the review `read_prescription`, a dispensing step
+  // `dispense`; the review is the dispensary's
+  prescription: "prescribe",
   anaesthesia: null,
   "alarm-response": null,
   "procedure-supply": null,
 };
 
 /** Equivalent tool name for a learner `clinical_action` (null when the action is not gated). */
-export function actionToolName(action: Pick<ClinicalAction, "type">): string | null {
+export function actionToolName(action: Pick<ClinicalAction, "type"> | ClinicalAction): string | null {
+  if (action.type === "prescription" && "prescription" in action) {
+    const op = action.prescription.op;
+    return op === "submit" ? "prescribe" : op === "acknowledge" ? "read_prescription" : op === "review" ? null : "dispense";
+  }
   return ACTION_TOOL[action.type] ?? null;
 }
 
@@ -369,6 +376,8 @@ export function actionSpecifier(action: ClinicalAction): string | null {
       return action.decisionId;
     case "set-phase":
       return action.phase;
+    case "prescription":
+      return action.prescription.op === "submit" ? action.prescription.formulation : action.prescription.op === "acknowledge" ? action.prescription.prescription : action.prescription.op === "review" ? null : action.prescription.op;
     default:
       return null;
   }

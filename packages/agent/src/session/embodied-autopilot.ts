@@ -34,7 +34,7 @@ import type { ToolCallStatus } from "../loop.js";
 import { actionIntent } from "../tools/spatial.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { nameOf } from "../tools/world-format.js";
-import { lostTraction, walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
+import { awaitColleague, lostTraction, walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
 import { clinicalOperation, heldBy, operationPath, releaseHeld, releaseOperation, type DeviceRoute } from "./device-ops.js";
 import { rt } from "./i18n.js";
 import type { SessionTrace } from "./trace.js";
@@ -73,6 +73,19 @@ function readPhase(step: OfflineClinicianStep): string | undefined {
 function deviceRoute(host: AutopilotHost, e: EmbodiedAutopilotHost, step: OfflineClinicianStep, satisfiedBy: readonly string[]): DeviceRoute | null {
   if (step.kind !== "tool") return null;
   const a = step.action;
+  // a dispensing step the clinician takes (a case that makes the learner the dispenser): the device's own operation
+  // for it, with what the step names (the version, the line and the product picked)
+  if (a.type === "prescription") {
+    if (step.tool !== "dispense") return null;
+    for (const id of satisfiedBy) {
+      const route = clinicalOperation(e.world(), id, "dispense", a.prescription.op, host.caseDef, host.locale);
+      if (route) {
+        const { step: _step, ...parameters } = step.args;
+        return { ...route, parameters };
+      }
+    }
+    return null;
+  }
   const item = a.type === "order" || a.type === "read" ? a.investigationId : a.type === "intervene" ? a.interventionId : null;
   if (!item) return null;
   const patient = e.patientId();
@@ -371,6 +384,15 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
       host.cursor.value++;
       host.dispatch({ ...step.action, by: "agent" } as ClinicalAction);
       await host.afterStep?.(signal);
+      continue;
+    }
+    if (step.kind === "await") {
+      // a colleague's own work (the dispensary's review, its supply at the device): their bodies, their turns
+      last = step.narration;
+      if (!(await awaitColleague(host, step, turnId, signal))) host.cursor.missed.push(step);
+      if (signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
+      host.cursor.value++;
+      executed++;
       continue;
     }
     const pending =

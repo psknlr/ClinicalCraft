@@ -47,6 +47,7 @@ import type { PanelView } from "../panel.js";
 import { portrait, STAFF_COLOURS } from "../portrait.js";
 import { parseAddress } from "../address.js";
 import { capList } from "./common.js";
+import { prescriptionsSection } from "./prescriptions-section.js";
 import { bedsideTests } from "./tests-tab.js";
 import { treatRow } from "./treat-row.js";
 import { distanceNotice, offered, onlyDistance, refusalNote } from "./verdicts.js";
@@ -464,8 +465,10 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       const scope = store.config?.practiceScope ?? game.session.settings.practiceScope;
       wrap.append(h("p", { class: "small muted" }, tr("treat.lead")));
       if (scope !== "full") wrap.append(h("p", { class: "notice" }, tr("treat.scopeLocked")));
+      // prescriptions: signed here, reviewed and supplied by the dispensary (docs/PRESCRIPTIONS.md)
+      const prescriptions = scope === "full" ? prescriptionsSection(app, game) : null;
       if (!c.interventions.length) {
-        wrap.append(h("div", { class: "empty" }, tr("treat.empty")));
+        wrap.append(prescriptions ?? h("div", { class: "empty" }, tr("treat.empty")));
         return wrap;
       }
       // clinical mode: the facility's bedside capabilities (embodied rows follow the world's verdict)
@@ -496,6 +499,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       for (const [kind, list] of groups) {
         wrap.append(h("h4", { class: "group-title" }, trMaybe(`kind.${kind}`, kind)), h("div", { class: "treat-list" }, list.map((iv) => treatRow(app, game, iv, caps, scope !== "full"))));
       }
+      if (prescriptions) wrap.append(prescriptions);
       return wrap;
     };
 

@@ -18,7 +18,8 @@
  * | paramedic | as a nurse | as a nurse | as a nurse + airway |
  * | porter | fetch_equipment, transport_patient (wheel the patient to a study and back) | — (no clinical class) | — |
  * | receptionist | fetch_equipment | — (no clinical class) | — |
- * | lab-tech, pharmacist, radiologist, pathologist | fetch_equipment | check_vitals, read_result | — (no patient interventions) |
+ * | lab-tech, radiologist, pathologist | fetch_equipment | check_vitals, read_result | — (no patient interventions) |
+ * | pharmacist | fetch_equipment | check_vitals, read_result, read_prescription, dispense (the dispensing steps at the device) | — (no patient interventions) |
  *
  * Pure: the role, the case and the item — no world, no session.
  */
@@ -62,6 +63,9 @@ const PORTER: RoleScope = { ...FETCH_ONLY, tasks: ["fetch_equipment", "transport
 const SERVICE: RoleScope = { tasks: ["fetch_equipment"], tools: ["check_vitals", "read_result"], interventionKinds: [], ivAccess: false, nursing: false, investigations: "bedside" };
 
 /** Role → scope of practice (see the module table). */
+/** A pharmacist (a dispenser) also reads the prescription record and takes the dispensing steps at the dispensing device (docs/PRESCRIPTIONS.md). */
+const PHARMACY: RoleScope = { ...SERVICE, tools: [...(SERVICE.tools as readonly string[]), "read_prescription", "dispense"] };
+
 export const SCOPE_OF_PRACTICE: Readonly<Record<ActorRole, RoleScope>> = {
   clinician: FULL,
   attending: FULL,
@@ -70,7 +74,7 @@ export const SCOPE_OF_PRACTICE: Readonly<Record<ActorRole, RoleScope>> = {
   porter: PORTER,
   receptionist: FETCH_ONLY,
   "lab-tech": SERVICE,
-  pharmacist: SERVICE,
+  pharmacist: PHARMACY,
   radiologist: SERVICE,
   pathologist: SERVICE,
 };

@@ -6,7 +6,7 @@
  * the footprint centre on the floor, `rot` in degrees about +Y.
  */
 import type { CaseDefinition, Investigation } from "../schema/case.js";
-import type { Condition } from "../schema/common.js";
+import type { Condition, PrescriptionPredicate } from "../schema/common.js";
 import { CAPABILITIES, PERSONAL_KIT } from "../schema/common.js";
 import { DEFAULT_LEVEL_ID, DEFAULT_REACH } from "../schema/facility.js";
 import type { DeviceBehavior, EquipmentCatalog, EquipmentType, FacilityDefinition, Level, MaterialDef, Placement, Rect, Room, VoxelPart, WorldPredicate } from "../schema/facility.js";
@@ -82,7 +82,8 @@ export function investigationNeeds(inv: Pick<Investigation, "requires" | "perfor
 
 /** A case item a facility cannot provide (its `requires` capabilities are missing there). */
 export interface CapabilityGap {
-  kind: "exam" | "investigation" | "intervention";
+  /** `prescription`: a prescription whose dispensing device (`requires`) the facility lacks — it can be signed, never supplied. */
+  kind: "exam" | "investigation" | "intervention" | "prescription";
   id: string;
   /** The item's `requires` capabilities the facility lacks. */
   missing: string[];
@@ -104,7 +105,21 @@ function satisfiableWithout(cond: Condition, unavailable: ReadonlySet<ItemKey>):
   if ("read" in cond) return !unavailable.has(`investigation:${cond.read}`);
   if ("resultReady" in cond) return !unavailable.has(`investigation:${cond.resultReady}`);
   if ("intervened" in cond) return !unavailable.has(`intervention:${cond.intervened}`);
+  if ("prescription" in cond) return !suppliedPrescriptions(cond.prescription, unavailable).length || cond.prescription.id == null;
   return true;
+}
+
+/**
+ * The unavailable prescriptions a `prescription` leaf needs **supplied** (its `dispensed`, a `dispensed` status, a
+ * label checked or not, a supply read or not, a supply discrepancy): with an `id`, that one; without, every unavailable one (the leaf is then
+ * still satisfiable while the case has another prescription — judged by the caller).
+ */
+function suppliedPrescriptions(p: PrescriptionPredicate, unavailable: ReadonlySet<ItemKey>): ItemKey[] {
+  const statuses = p.status == null ? [] : Array.isArray(p.status) ? p.status : [p.status];
+  // either value of `labelChecked` / `supplyRead` is about a supply that was made
+  const supplied = p.dispensed != null || p.labelChecked != null || p.supplyRead != null || (p.discrepancy != null && p.discrepancy !== false) || (statuses.length > 0 && statuses.every((x) => x === "dispensed" || x === "preparing"));
+  if (!supplied) return [];
+  return [...unavailable].filter((key) => key.startsWith("prescription:") && (p.id == null || key === `prescription:${p.id}`));
 }
 
 /** Item keys a condition refers to positively (outside `not`). */
@@ -116,6 +131,7 @@ function positiveItems(cond: Condition, out = new Set<ItemKey>()): Set<ItemKey> 
   else if ("read" in cond) out.add(`investigation:${cond.read}`);
   else if ("resultReady" in cond) out.add(`investigation:${cond.resultReady}`);
   else if ("intervened" in cond) out.add(`intervention:${cond.intervened}`);
+  else if ("prescription" in cond && cond.prescription.id != null) out.add(`prescription:${cond.prescription.id}`);
   return out;
 }
 
@@ -138,6 +154,8 @@ export function caseCapabilityGaps(c: CaseDefinition, f: FacilityDefinition, cat
   consider("exam", c.exam);
   consider("investigation", c.investigations.map((i) => ({ id: i.id, requires: investigationNeeds(i) })));
   consider("intervention", c.interventions);
+  // a prescription is supplied at a device providing its `requires` (docs/PRESCRIPTIONS.md)
+  consider("prescription", c.prescriptions ?? []);
   if (missingOf.size === 0) return [];
   const unavailable = new Set(missingOf.keys());
   const neededBy = new Map<ItemKey, Set<string>>();
@@ -158,6 +176,7 @@ export function caseCapabilityGaps(c: CaseDefinition, f: FacilityDefinition, cat
     if (step.type === "examine") use(`exam:${step.findingId}`, "solution");
     else if (step.type === "order" || step.type === "read") use(`investigation:${step.investigationId}`, "solution");
     else if (step.type === "intervene") use(`intervention:${step.interventionId}`, "solution");
+    else if (step.type === "prescription" && (step.prescription.op === "dispense" || step.prescription.op === "prepare")) use(`prescription:${step.prescription.prescription}`, "solution");
   }
   return [...neededBy.entries()].map(([key, by]) => {
     const [kind, ...rest] = key.split(":");

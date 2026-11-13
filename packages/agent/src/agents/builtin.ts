@@ -234,6 +234,11 @@ export const BUILTIN_AGENTS: readonly AgentProfile[] = Object.freeze([
       "order_study",
       "read_study",
       "list_studies",
+      // a case with prescriptions only (docs/PRESCRIPTIONS.md): a version signed, the record and the dispensary's
+      // review read, and the dispensing steps where the case makes the clinician the dispenser
+      "prescribe",
+      "read_prescription",
+      "dispense",
       // embodied mode only (registered only in embodied sessions)
       "observe_world",
       "get_agent_state",

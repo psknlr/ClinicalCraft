@@ -31,6 +31,23 @@ const MAX_WAIT_MINUTES = 240;
 /** Default autopilot turn budget. */
 export const DEFAULT_AUTOPILOT_TURNS = 12;
 
+/** Staff rounds the walkthrough gives a colleague for a step that is theirs (a review, a supply) before it goes on without it. */
+export const AWAIT_ROUNDS = 6;
+
+/**
+ * A step of the reference path that is a colleague's own work (`kind: "await"`, e.g. the dispensary's review of a
+ * signed version): the staff take their turns — the same round the browser's clock and every act of a learner drive —
+ * until the record shows it. Never done in their place: still open after `AWAIT_ROUNDS`, it is listed as missed.
+ * Returns true when the record shows it.
+ */
+export async function awaitColleague(host: AutopilotHost, step: Extract<OfflineClinicianStep, { kind: "await" }>, turnId: string, signal?: AbortSignal): Promise<boolean> {
+  const done = () => stepAlreadySatisfied(step, host.state(), host.cursor.extraOps);
+  if (done()) return true;
+  host.narrate(turnId, step.narration);
+  for (let round = 0; round < AWAIT_ROUNDS && !done() && !signal?.aborted; round++) await host.afterStep?.(signal);
+  return done();
+}
+
 /** What the autopilot needs from the session (bound to one submission). */
 export interface AutopilotHost {
   readonly caseDef: CaseDefinition;
@@ -82,7 +99,14 @@ export function walkthroughEndText(c: CaseDefinition, state: SessionState, misse
   if (prog.complete || state.finished) return rt(locale, "clinician.narrate.done");
   const labels = [
     ...new Set(
-      missed.flatMap((step) => (step.kind === "tool" && step.tool !== "finish_case" && !stepAlreadySatisfied(step, state) ? [formatRule(step.tool, actionSpecifier(step.action))] : [])),
+      missed.flatMap((step) =>
+        step.kind === "tool" && step.tool !== "finish_case" && !stepAlreadySatisfied(step, state)
+          ? [formatRule(step.tool, actionSpecifier(step.action))]
+          : // a colleague's work that never came: named as theirs
+            step.kind === "await" && !stepAlreadySatisfied(step, state)
+            ? [rt(locale, "rx.await.missed", { who: rt(locale, "rx.notify.title"), what: step.what })]
+            : [],
+      ),
     ),
   ];
   const list = labels.length > 0 ? rt(locale, "clinician.narrate.missed", { steps: joinList(locale, labels) }) : "";
@@ -118,6 +142,15 @@ export async function offlineClinicianTurn(host: AutopilotHost, turnId: string, 
     if (step.kind === "action") {
       host.cursor.value++;
       host.dispatch({ ...step.action, by: "agent" } as ClinicalAction);
+      continue;
+    }
+    if (step.kind === "await") {
+      // a colleague's own work: the staff's turn, until the record shows it
+      last = step.narration;
+      if (!(await awaitColleague(host, step, turnId, signal))) host.cursor.missed.push(step);
+      if (signal?.aborted) return { status: "interrupted", text: last, grounded: [], toolCalls: executed };
+      host.cursor.value++;
+      executed++;
       continue;
     }
     // A wait the timeline needs before this step: the result of a read ordered later than in the

@@ -1,4 +1,5 @@
 import { StudyProfileSchema } from "./study.js";
+import { PrescriptionDefinitionSchema } from "./prescription.js";
 import { z } from "zod";
 import {
   AssetRefSchema,
@@ -959,6 +960,12 @@ export const CaseSchema = z
      * are labelled simulated, never the source's.
      */
     studies: z.array(StudyProfileSchema).default([]),
+    /**
+     * The prescriptions that can be written in this case (docs/PRESCRIPTIONS.md): the products a line can name with the
+     * dispensary's stock, the formulations a prescriber can sign, the dispensary's review rules. What is signed,
+     * reviewed and supplied in an encounter is the record (`SessionState.prescriptions`).
+     */
+    prescriptions: z.array(PrescriptionDefinitionSchema).default([]),
     orderMatching: OrderMatchingSchema.default({}),
     interventions: z.array(InterventionSchema).default([]),
     physiology: PhysiologySchema.optional(),

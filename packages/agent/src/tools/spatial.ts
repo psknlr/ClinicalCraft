@@ -25,12 +25,13 @@ import type { ClinicalAction } from "@clinicalcraft/core";
 import { roleName, type ActorId, type ClinicalIntent, type SpatialCheck } from "@clinicalcraft/world";
 import { rt } from "../session/i18n.js";
 import { resolveFinding, resolveIntervention, resolveInvestigation, strArg } from "./clinical.js";
+import { resolveFormulation } from "./prescriptions.js";
 import { checkClinicalScope, type ScopeActor, type ScopeRefusal } from "./scope.js";
 import type { ToolContext, ToolDefinition, ToolOutput, VitalsView } from "./types.js";
 import { hintLines } from "./world-format.js";
 
 /** Clinical tools held to the spatial policy (EMBODIED §6). */
-export const SPATIALLY_GATED_TOOLS: readonly string[] = ["ask_patient", "examine", "check_vitals", "order_test", "read_result", "intervene", "operate", "observe_field"];
+export const SPATIALLY_GATED_TOOLS: readonly string[] = ["ask_patient", "examine", "check_vitals", "order_test", "read_result", "intervene", "operate", "observe_field", "prescribe", "read_prescription", "dispense"];
 
 /** Stable codes of spatial refusals. */
 export const SPATIAL_CODES = ["SPATIAL_REQUIREMENT_UNMET", "SPATIAL_PRECONDITION_CHANGED"] as const;
@@ -68,6 +69,17 @@ export function clinicalIntent(tool: string, args: Record<string, unknown>, ctx:
       return ctx.caseDef.procedure ? { tool, kind: "operate" } : null;
     case "observe_field":
       return ctx.caseDef.procedure ? { tool, kind: "observe" } : null;
+    case "prescribe":
+    case "read_prescription":
+    case "dispense": {
+      // a case without prescriptions: the tool refuses it anyway
+      const defs = c.prescriptions ?? [];
+      if (!defs.length) return null;
+      const id = strArg(args, "prescription");
+      const def = defs.find((p) => p.id === id) ?? (tool === "prescribe" ? resolveFormulation(c, strArg(args, "formulation") || strArg(args, "query"))[0]?.def : undefined) ?? (defs.length === 1 ? defs[0] : undefined);
+      const kind = tool === "prescribe" ? "prescribe" : tool === "read_prescription" ? "read-prescription" : "dispense";
+      return { tool, kind, ...(tool === "dispense" && strArg(args, "step") ? { itemId: strArg(args, "step") } : {}), ...(def ? { prescriptionId: def.id } : {}) };
+    }
     default:
       return null;
   }
@@ -88,6 +100,13 @@ export function actionIntent(action: ClinicalAction): ClinicalIntent | null {
       return { tool: "intervene", kind: "intervene", interventionId: action.interventionId, itemId: action.interventionId };
     case "operate":
       return { tool: "operate", kind: "operate" };
+    case "prescription": {
+      const op = action.prescription;
+      if (op.op === "submit") return { tool: "prescribe", kind: "prescribe", prescriptionId: op.prescription };
+      if (op.op === "acknowledge") return { tool: "read_prescription", kind: "read-prescription", prescriptionId: op.prescription };
+      // the dispensary's review is not the caller's act; a dispensing step is taken at the device
+      return op.op === "review" ? null : { tool: "dispense", kind: "dispense", itemId: op.op, prescriptionId: op.prescription };
+    }
     default:
       return null;
   }

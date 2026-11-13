@@ -866,6 +866,130 @@
         {
           "type": "object",
           "properties": {
+            "prescription": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "$ref": "#/definitions/Id"
+                },
+                "status": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "submitted",
+                        "queried",
+                        "confirmed",
+                        "preparing",
+                        "dispensed"
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "submitted",
+                          "queried",
+                          "confirmed",
+                          "preparing",
+                          "dispensed"
+                        ]
+                      },
+                      "minItems": 1
+                    }
+                  ]
+                },
+                "current": {
+                  "$ref": "#/definitions/Id"
+                },
+                "signed": {
+                  "$ref": "#/definitions/Id"
+                },
+                "dispensed": {
+                  "anyOf": [
+                    {
+                      "$ref": "#/definitions/Id"
+                    },
+                    {
+                      "type": "boolean",
+                      "const": true
+                    }
+                  ]
+                },
+                "versions": {
+                  "type": "object",
+                  "properties": {
+                    "gte": {
+                      "type": "integer",
+                      "minimum": 0
+                    },
+                    "lte": {
+                      "type": "integer",
+                      "minimum": 0
+                    }
+                  },
+                  "additionalProperties": false
+                },
+                "queried": {
+                  "type": "boolean"
+                },
+                "acknowledged": {
+                  "type": "boolean"
+                },
+                "refused": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "submit",
+                        "prepare",
+                        "pick",
+                        "dispense"
+                      ]
+                    }
+                  ]
+                },
+                "discrepancy": {
+                  "anyOf": [
+                    {
+                      "type": "boolean"
+                    },
+                    {
+                      "type": "string",
+                      "enum": [
+                        "identity",
+                        "omitted",
+                        "label",
+                        "expired",
+                        "label-unchecked"
+                      ]
+                    }
+                  ]
+                },
+                "labelChecked": {
+                  "type": "boolean"
+                },
+                "supplyRead": {
+                  "type": "boolean"
+                }
+              },
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "prescription"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "datum": {
               "$ref": "#/definitions/Id"
             },
@@ -2215,6 +2339,242 @@
           "required": [
             "type",
             "study"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "prescription"
+            },
+            "prescription": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "submit"
+                    },
+                    "prescription": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "formulation": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "key": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 120
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "prescription",
+                    "formulation",
+                    "key",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "review"
+                    },
+                    "prescription": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "prescription",
+                    "version",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "acknowledge"
+                    },
+                    "prescription": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "prescription",
+                    "version",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "prepare"
+                    },
+                    "prescription": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "device": {
+                      "type": "string",
+                      "maxLength": 120
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "prescription",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "pick"
+                    },
+                    "prescription": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "line": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "product": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "prescription",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "check-label"
+                    },
+                    "prescription": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "prescription",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "dispense"
+                    },
+                    "prescription": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "version": {
+                      "type": "integer",
+                      "minimum": 1
+                    },
+                    "key": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 120
+                    },
+                    "by": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "device": {
+                      "type": "string",
+                      "maxLength": 120
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "prescription",
+                    "key",
+                    "by"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "prescription"
           ],
           "additionalProperties": false
         },
@@ -4501,6 +4861,360 @@
               "name",
               "acquisition",
               "model"
+            ],
+            "additionalProperties": false
+          },
+          "default": []
+        },
+        "prescriptions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "id": {
+                "$ref": "#/definitions/Id"
+              },
+              "name": {
+                "$ref": "#/definitions/LocalizedText"
+              },
+              "products": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "name": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "synonyms": {
+                      "$ref": "#/definitions/LocalizedList",
+                      "default": []
+                    },
+                    "part": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "processing": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "class": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 40
+                    },
+                    "unit": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 20
+                    },
+                    "usualDose": {
+                      "type": "array",
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": [
+                        {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        {
+                          "type": "number",
+                          "exclusiveMinimum": 0
+                        }
+                      ]
+                    },
+                    "stock": {
+                      "type": "object",
+                      "properties": {
+                        "quantity": {
+                          "type": "number",
+                          "minimum": 0
+                        },
+                        "batch": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 40
+                        },
+                        "expiry": {
+                          "type": "string",
+                          "minLength": 1,
+                          "maxLength": 20
+                        },
+                        "expired": {
+                          "type": "boolean"
+                        },
+                        "note": {
+                          "$ref": "#/definitions/LocalizedText"
+                        }
+                      },
+                      "required": [
+                        "quantity"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "confusedWith": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "default": []
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "unit"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1
+              },
+              "formulations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "name": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "aliases": {
+                      "$ref": "#/definitions/LocalizedList",
+                      "default": []
+                    },
+                    "form": {
+                      "type": "string",
+                      "enum": [
+                        "decoction-pieces",
+                        "granules",
+                        "decoction",
+                        "proprietary",
+                        "topical",
+                        "other"
+                      ]
+                    },
+                    "route": {
+                      "type": "string",
+                      "enum": [
+                        "oral",
+                        "topical",
+                        "inhaled",
+                        "other"
+                      ],
+                      "default": "oral"
+                    },
+                    "frequency": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "dosesPerDay": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 24
+                    },
+                    "days": {
+                      "type": "integer",
+                      "minimum": 1,
+                      "maximum": 365
+                    },
+                    "lines": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "product": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "dose": {
+                            "type": "number",
+                            "exclusiveMinimum": 0
+                          },
+                          "unit": {
+                            "type": "string",
+                            "minLength": 1,
+                            "maxLength": 20
+                          },
+                          "note": {
+                            "$ref": "#/definitions/LocalizedText"
+                          }
+                        },
+                        "required": [
+                          "product",
+                          "dose",
+                          "unit"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "minItems": 1,
+                      "maxItems": 60
+                    },
+                    "signableWhen": {
+                      "$ref": "#/definitions/Condition"
+                    },
+                    "refusal": {
+                      "$ref": "#/definitions/LocalizedText"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "name",
+                    "form",
+                    "frequency",
+                    "dosesPerDay",
+                    "days",
+                    "lines"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1
+              },
+              "dispensary": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 80,
+                "default": "pharmacist"
+              },
+              "requires": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/definitions/Capability"
+                },
+                "minItems": 1,
+                "default": [
+                  "medications"
+                ]
+              },
+              "dispensedBy": {
+                "type": "string",
+                "enum": [
+                  "staff",
+                  "learner"
+                ],
+                "default": "staff"
+              },
+              "review": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "kind": {
+                      "type": "string",
+                      "enum": [
+                        "stock",
+                        "unit",
+                        "dose",
+                        "duplicate",
+                        "identity",
+                        "interaction",
+                        "history",
+                        "other"
+                      ]
+                    },
+                    "products": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "minItems": 1
+                    },
+                    "minDose": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "formulations": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/definitions/Id"
+                      },
+                      "minItems": 1
+                    },
+                    "when": {
+                      "$ref": "#/definitions/Condition"
+                    },
+                    "text": {
+                      "$ref": "#/definitions/LocalizedText"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "kind",
+                    "text"
+                  ],
+                  "additionalProperties": false
+                },
+                "default": []
+              },
+              "deviations": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "formulation": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "when": {
+                      "$ref": "#/definitions/Condition"
+                    },
+                    "label": {
+                      "type": "object",
+                      "properties": {
+                        "frequency": {
+                          "$ref": "#/definitions/LocalizedText"
+                        },
+                        "dosesPerDay": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 24
+                        },
+                        "days": {
+                          "type": "integer",
+                          "minimum": 1,
+                          "maximum": 365
+                        }
+                      },
+                      "additionalProperties": false
+                    },
+                    "substitutions": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "product": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "with": {
+                            "$ref": "#/definitions/Id"
+                          }
+                        },
+                        "required": [
+                          "product",
+                          "with"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "default": []
+                    },
+                    "summary": {
+                      "$ref": "#/definitions/LocalizedText"
+                    }
+                  },
+                  "required": [
+                    "formulation"
+                  ],
+                  "additionalProperties": false
+                },
+                "default": []
+              }
+            },
+            "required": [
+              "id",
+              "name",
+              "products",
+              "formulations"
             ],
             "additionalProperties": false
           },

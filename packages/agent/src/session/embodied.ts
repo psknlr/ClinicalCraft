@@ -25,7 +25,7 @@
  */
 import type { ClinicalActionFeedback } from "./action-ids.js";
 import { COUNT_TOOL, SurgicalCount } from "./count.js";
-import { assignPatientSlot, canLeaveAnaesthetisedPatient, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
+import { assignPatientSlot, canLeaveAnaesthetisedPatient, DISPENSING_STEPS, patientCues, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DispensingStep, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   behaviorOf,
   createWorldRuntime,
@@ -60,7 +60,8 @@ import { runSkill, skillResultText, type SkillRunner, type SkillToolCall } from 
 import { assessSkill, inlineSkillSpecifier, skillSummary, type SkillAssessment } from "../skills/risk.js";
 import { strArg } from "../tools/clinical.js";
 import { learnerVitals } from "../tools/format.js";
-import type { ScopeActor } from "../tools/scope.js";
+import { checkClinicalScope, type ScopeActor } from "../tools/scope.js";
+import { dispensingOp, dispensingOutput, dispensingTarget } from "../tools/prescriptions.js";
 import { spatiallyGated, SPATIALLY_GATED_TOOLS, spatialCodeOf, vitalsGated, type SpatialGate } from "../tools/spatial.js";
 import type { CallProgress, ToolContext, ToolDefinition, ToolOutput, VitalsView } from "../tools/types.js";
 import { createWorldTools, DELEGATION_TASKS, MAX_SKILL_NESTING, taskLabel, type WorldRequestInput, type WorldToolHost } from "../tools/world.js";
@@ -528,6 +529,38 @@ export class EmbodiedSession {
     return { ok: r.ok, output: r.output, outcome: r.ok ? "ok" : "rejected", clinicalEventIds: captured.map((e) => e.id) };
   }
 
+  /**
+   * A dispensing step by the dispensary's own staff at the device (docs/PRESCRIPTIONS.md §5): within their scope of
+   * practice it is recorded by the engine as theirs — the same op and the same words as the `dispense` tool — and a
+   * step the engine refuses is recorded as refused and leaves the device as it was.
+   */
+  private dispenseEffect(actorId: ActorId, args: Record<string, unknown>, actionId?: string): ClinicalInvokeResult {
+    const c = this.host.caseDef;
+    const L = this.host.locale();
+    const staffId = actorId.slice("staff:".length);
+    const who = this.staffActor(actorId, L) ?? { role: this.inner.actor(actorId)?.role ?? "" };
+    const scoped = checkClinicalScope(who, "dispense", null, c, L);
+    if (!scoped.ok) return { ok: false, output: scoped.message, outcome: "unauthorized", message: scoped.message, clinicalEventIds: [] };
+    const before = this.host.state();
+    const def = dispensingTarget(c, before, args);
+    const step = strArg(args, "step");
+    if (!def || !(DISPENSING_STEPS as readonly string[]).includes(step)) return { ok: false, output: rt(L, "rx.dispense.unknownStep", { step }), outcome: "rejected", clinicalEventIds: [] };
+    const captured: { id: string; type: DomainEvent["type"] }[] = [];
+    this.captures.add(captured);
+    let out: ToolOutput;
+    try {
+      const r = this.host.dispatch({ type: "prescription", prescription: dispensingOp(def, before, step as DispensingStep, args, staffId), by: "system" });
+      out = r.rejected ? { ok: false, output: r.rejected.message } : dispensingOutput(c, def, step as DispensingStep, args, before, this.host.state(), L);
+    } finally {
+      this.captures.delete(captured);
+    }
+    if (actionId) {
+      const changes = captured.filter((e) => e.type !== "action.rejected");
+      if (changes.length) this.engineChanges.set(actionId, [...(this.engineChanges.get(actionId) ?? []), ...changes]);
+    }
+    return { ok: out.ok, output: out.output, outcome: out.ok ? "ok" : "rejected", clinicalEventIds: captured.map((e) => e.id) };
+  }
+
   /** The caller of the most recent world action of `actorId` still in flight (a port called without an action id). */
   private lastCallerOf(actorId: ActorId): ClinicalCaller | null {
     let found: ClinicalCaller | null = null;
@@ -547,6 +580,8 @@ export class EmbodiedSession {
     const caller = (actionId ? this.callers.get(actionId)?.caller : undefined) ?? this.lastCallerOf(actorId) ?? { agent: "learner" as const };
     // the count board and the RF wand record what the world holds (never a caller's word): the count's own writer
     if (tool === COUNT_TOOL) return this.countEffect(actorId, args, actionId);
+    // a dispensing step taken by the dispensary's own staff at the device is theirs to take: no approval of the learner's
+    if (tool === "dispense" && actorId.startsWith("staff:") && dispensingTarget(this.host.caseDef, this.host.state(), args)?.dispensedBy === "staff") return this.dispenseEffect(actorId, args, actionId);
     const combined = anySignal([caller.signal, signal]);
     const captured: { id: string; type: DomainEvent["type"] }[] = [];
     this.captures.add(captured);

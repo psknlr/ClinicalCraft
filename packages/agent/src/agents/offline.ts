@@ -17,8 +17,12 @@ import {
   createSession as createEngineState,
   datumStatus,
   currentObjective,
+  currentVersion,
   matchOrders,
+  openPreparation,
   orderStatus,
+  prescriptionDef,
+  prescriptionVersions,
   reduce,
   resultKey,
   t,
@@ -306,6 +310,12 @@ export type OfflineClinicianStep = (
   | { kind: "tool"; tool: string; args: Record<string, unknown>; action: ClinicalAction; narration: string }
   /** Ungated direct action (start, note, flag, hint). */
   | { kind: "action"; action: ClinicalAction; narration: string | null }
+  /**
+   * A colleague's own work in the reference path (the dispensary's review of a version, its supply): never done by the
+   * clinician — the walkthrough lets the staff take their turn and goes on once the record shows it (`staff`: who it
+   * waits for, a staff id or role; `what`: what they are to do, for the narration).
+   */
+  | { kind: "await"; action: ClinicalAction; narration: string; staff: string; what: string }
 ) &
   OfflineStepContext;
 
@@ -347,6 +357,15 @@ export function narrateAction(c: CaseDefinition, action: ClinicalAction, locale:
       return rt(L, "hold.released", { name: interventionLabel(c, action.interventionId, L), by: action.releasedBy, reassessment: action.reassessment });
     case "finish":
       return rt(L, "clinician.narrate.finish");
+    case "prescription": {
+      const op = action.prescription;
+      const def = prescriptionDef(c, op.prescription);
+      const name = def ? t(def.name, L) : op.prescription;
+      if (op.op === "submit") return rt(L, "sum.prescribe", { name: t(def?.formulations.find((f) => f.id === op.formulation)?.name ?? op.formulation, L) });
+      if (op.op === "acknowledge") return rt(L, "sum.read_prescription", { name });
+      if (op.op === "review") return null;
+      return rt(L, "sum.dispense", { step: op.op, name });
+    }
     case "start":
     case "hint":
     case "flag":
@@ -391,6 +410,32 @@ export function stepForAction(c: CaseDefinition, action: ClinicalAction, locale:
       return tool("operate", { ...action.op });
     case "finish":
       return tool("finish_case", {});
+    case "prescription": {
+      // signing and reading are the prescriber's; the review is the dispensary's, and so is the supply unless the case
+      // makes the learner the dispenser — the walkthrough waits for the colleague whose work it is
+      const op = action.prescription;
+      const def = prescriptionDef(c, op.prescription);
+      const name = def ? t(def.name, locale) : op.prescription;
+      if (op.op === "submit") return tool("prescribe", { prescription: op.prescription, formulation: op.formulation, request_key: op.key });
+      if (op.op === "acknowledge") return tool("read_prescription", { prescription: op.prescription });
+      const staff = def?.dispensary ?? "pharmacist";
+      if (op.op === "review") {
+        const what = rt(locale, "rx.await.review", { n: op.version, prescription: name });
+        return { kind: "await", action, narration: rt(locale, "rx.await", { who: rt(locale, "rx.notify.title"), what }), staff, what };
+      }
+      if (def?.dispensedBy !== "learner") {
+        const what = rt(locale, "rx.await.supply", { n: "version" in op && op.version != null ? op.version : "", prescription: name }).replace(/\s+/gu, " ");
+        return { kind: "await", action, narration: rt(locale, "rx.await", { who: rt(locale, "rx.notify.title"), what }), staff, what };
+      }
+      return tool("dispense", {
+        step: op.op,
+        prescription: op.prescription,
+        ...("version" in op && op.version != null ? { version: op.version } : {}),
+        ...(op.op === "pick" && op.line ? { line: op.line } : {}),
+        ...(op.op === "pick" && op.product ? { product: op.product } : {}),
+        ...(op.op === "dispense" ? { request_key: op.key } : {}),
+      });
+    }
     case "start":
     case "hint":
     case "flag":
@@ -424,7 +469,16 @@ export function clinicianOfflineSteps(c: CaseDefinition, locale: string): Offlin
     if (!parsed.success) continue;
     const action = parsed.data;
     const step: OfflineClinicianStep = stepForAction(c, action, locale);
-    const key = action.type === "intervene" ? `intervene:${action.interventionId}` : action.type === "hint" ? "hint" : action.type === "operate" ? "operate" : null;
+    const key =
+      action.type === "intervene"
+        ? `intervene:${action.interventionId}`
+        : action.type === "hint"
+          ? "hint"
+          : action.type === "operate"
+            ? "operate"
+            : action.type === "prescription" && action.prescription.op === "review"
+              ? `review:${action.prescription.prescription}:${action.prescription.version}`
+              : null;
     if (key) {
       const n = (counts.get(key) ?? 0) + 1;
       counts.set(key, n);
@@ -493,6 +547,39 @@ export function stepAlreadySatisfied(step: OfflineClinicianStep, state: SessionS
       return (state.count?.entries.filter((e) => e.op === a.count.op).length ?? 0) >= (step.occurrence ?? 1);
     case "study":
       return a.study.op === "order" ? (state.studies?.orders.some((o) => o.key === (a.study as { key: string }).key) ?? false) : false;
+    case "prescription": {
+      // by the record: the version signed, reviewed (as many times as the reference has by then), read, supplied
+      const op = a.prescription;
+      const versions = prescriptionVersions(state, op.prescription);
+      const dispensings = (state.prescriptions?.dispensings ?? []).filter((d) => d.prescription === op.prescription);
+      const prep = openPreparation(state, op.prescription);
+      const supplied = (n: number | undefined) => dispensings.some((d) => d.version === (n ?? currentVersion(state, op.prescription)?.n));
+      switch (op.op) {
+        case "submit":
+          return versions.some((v) => v.key === op.key);
+        case "review":
+          return (versions.find((v) => v.n === op.version)?.reviews.length ?? 0) >= (step.occurrence ?? 1);
+        case "acknowledge": {
+          const v = versions.find((x) => x.n === op.version);
+          const review = v?.reviews.at(-1);
+          return !!v && !!review && !!v.acknowledged && v.acknowledged.seq > review.seq;
+        }
+        case "prepare":
+          return supplied(op.version) || (!!prep && (op.version == null || prep.version === op.version));
+        case "pick":
+          // nothing being put together any more: done once the version is supplied
+          if (!prep) return supplied(undefined);
+          return op.line == null ? Object.keys(prep.picks).length > 0 : prep.picks[op.line] === (op.product ?? op.line);
+        case "check-label":
+          return prep ? prep.labelChecked != null : supplied(undefined);
+        case "dispense":
+          return dispensings.some((d) => d.key === op.key) || supplied(op.version);
+        default: {
+          const never: never = op;
+          return never;
+        }
+      }
+    }
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":

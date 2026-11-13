@@ -99,6 +99,27 @@ export { nextEvent, pendingEvents, type PendingEvent } from "./next-event.js";
 export { anaesthetised, applyAnaesthesia, canLeaveAnaesthetisedPatient, responsibleAnaesthetist, type AnaesthesiaResult } from "./anaesthesia.js";
 export { applyStudy, BEDSIDE_COLLECTORS, DEPARTMENT_COLLECTORS, evaluateStudy, OPERATIVE_IMAGING, operativeImagingAsked, seeded, studyCategory, studyCollectors, studyObservations, studyOrderBlock, studyProfile, studyStatus, unmetPrerequisites, type StudyResult } from "./study.js";
 
+// prescriptions (docs/PRESCRIPTIONS.md)
+export {
+  applyPrescription,
+  currentVersion,
+  evaluatePrescription,
+  formulationOf,
+  medicinalProduct,
+  openPreparation,
+  preparationDiscrepancies,
+  prescriptionDef,
+  prescriptionStatus,
+  prescriptionVersions,
+  unreadVersion,
+  quantityNeeded,
+  reviewFindings,
+  stockOnHand,
+  supplyDeviation,
+  versionStatus,
+  type PrescriptionResult,
+} from "./prescription.js";
+
 // the surgical count (docs/TEAM.md §4.3)
 export { applyCount, closureOnOpenCount, compareCount, countLedger, countOpenItems, countSettled, countStatus, countSummary, evaluateCount, type CountLedgerView, type CountReport, type CountResult } from "./count.js";
 

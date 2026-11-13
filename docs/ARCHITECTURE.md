@@ -183,6 +183,15 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     asked, examined or read answers instead of the item's own text, and the
     reducer records which (`SessionState.told`, §3.1). Duplicate branch ids,
     unknown ids in a `when` and undeclared figures are integrity errors.
+  * `prescriptions[]` — optional, default `[]`; **prescriptions as versioned,
+    executable records** (`schema/prescription.ts`; contract:
+    docs/PRESCRIPTIONS.md): the medicinal products a line can name (identity,
+    unit, usual daily dose, stock), the formulations a prescriber can sign
+    (lines as data: product, daily dose, unit), the dispensary's review rules
+    and authored supply deviations, who reviews and supplies (`dispensary`),
+    the capabilities of the dispensing device (`requires`) and who works it
+    (`dispensedBy`). Unknown products, formulations and condition ids are
+    integrity errors.
   * `orderMatching.warnings[].unless` — `Condition`, optional; the warning
     no longer applies (is not returned by `orderWarnings`) while it holds on
     the session as the order is placed.
@@ -219,7 +228,10 @@ JSON Schema exported to `packages/content/schemas/` for editors).
 * **Condition DSL** — `schema/common.ts`: `all/any/not/always`, `asked`,
   `examined`, `ordered`, `read`, `resultReady`, `decided`, `attempted`,
   `decidedFirstTry`, `intervened`, `inOrder`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`, `procedure`. `intervened` takes `valid`: `true` counts only
+  `elapsed`, `hints`, `procedure`, `prescription` (a predicate on the
+  prescription record — status, the formulation current / signed / dispensed,
+  queried, acknowledged, refused, discrepancy, label checked, supply read:
+  docs/PRESCRIPTIONS.md §6). `intervened` takes `valid`: `true` counts only
   attempts that were not contraindicated when made, `false` only those that
   were; and `phase`: only attempts made while the case was in that phase
   (`InterventionRecord.phase`; an attempt saved before attempts carried their
@@ -330,6 +342,15 @@ toldFinding(c, s, finding): { finding, abnormal, media, branch }
 toldResult(c, s, investigationId, phase): { result, branch } | null   // the recorded branch laid over the result's own fields (no `branches`)
 historyAnswers(item): LocalizedText[]; examFindings(finding)   // every text an item can show (a grounding check knows them all)
 toldKey.history(id) / .exam(id) / .result(investigationId, phase)   // keys of `SessionState.told`
+
+// prescriptions (prescription.ts; docs/PRESCRIPTIONS.md)
+applyPrescription(c, s, op): PrescriptionResult         // pure: the new record · `changed: false` (a repeated request) · `refused` (recorded, nothing else changed) · or why the request itself is wrong
+prescriptionDef(c, id); formulationOf(def, id); medicinalProduct(def, id); quantityNeeded(formulation, line); stockOnHand(c, s, def, product)
+prescriptionVersions(s, id); currentVersion(s, id); versionStatus(s, v); prescriptionStatus(s, id)
+reviewFindings(c, s, def, formulation): ReviewFinding[] // what a review finds now: duplicate, unit, dose, stock from the data + the case's rules that apply
+openPreparation(s, id); preparationDiscrepancies(c, s, id)   // the supply being put together, and how it differs from its version so far
+unreadVersion(s, id): PrescriptionVersion | undefined   // a review or a supply the prescriber has not read yet
+evaluatePrescription(c, s, predicate): boolean          // the `prescription` condition leaf
 
 // history phase twins (`history[].supersedes`, twins.ts)
 historyTwin(c, id, phase): string | null                // the item answering for `id` in `phase`: itself, its (transitive) superseding twin, or null
@@ -452,6 +473,15 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   **No**: a missing result cannot be read; the UI shows "no record" from
   `resultFor` before ordering). Adds key to `seen`; a result with `branches`
   records the one read (`told["result:<id>@<phase>"]`, `result.read.branch`).
+* `prescription` — one op of the prescription record (`applyPrescription`;
+  docs/PRESCRIPTIONS.md §4): `submit` (the next version, idempotent by key),
+  `review` (the engine computes the findings), `acknowledge`, `prepare`,
+  `pick`, `check-label`, `dispense` (idempotent by key). An unknown id or
+  nothing to act on is a rejection; an attempt refused for a clinical reason
+  (not signable yet; an earlier, unreviewed, queried or supplied version; a
+  pick the shelf cannot cover) is **accepted and recorded as a refusal**
+  (`prescriptions.refusals`), changing nothing else. A repeated request is
+  `unchanged`. Emits `prescription.recorded`.
 * `set-phase` — unknown phase → `unknown-id`; `learnerSwitchable: false` →
   `phase-locked` until the phase's `enterWhen` holds (the case has reached it:
   a learner who looked back at an earlier phase can return).

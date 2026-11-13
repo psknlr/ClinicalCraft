@@ -13,6 +13,7 @@ import { PROCEDURE_EN, PROCEDURE_ZH } from "./i18n-procedure.js";
 import { CHECKLIST_EN, CHECKLIST_ZH } from "./i18n-checklist.js";
 import { COUNT_EN, COUNT_ZH } from "./i18n-count.js";
 import { STUDIES_EN, STUDIES_ZH } from "./i18n-studies.js";
+import { PRESCRIPTIONS_EN, PRESCRIPTIONS_ZH } from "./i18n-prescriptions.js";
 
 /** Runtime languages shipped with ClinicalCraft. */
 export type RuntimeLang = "zh-CN" | "en";
@@ -246,6 +247,9 @@ const EN = {
   "cmd.results": "Orders and their status",
   "cmd.read": "Read a result",
   "cmd.give": "Give a treatment or intervention",
+  "cmd.prescribe": "Sign a prescription (a formulation becomes its next version)",
+  "cmd.rx": "Read the prescription record and the dispensary's review",
+  "cmd.dispense": "A dispensing step at the device (prepare, pick, check-label, dispense)",
   "cmd.vitals": "Bedside monitor",
   "cmd.board": "Case board (decisions)",
   "cmd.answer": "Answer a decision",
@@ -488,6 +492,7 @@ const EN = {
   ...CHECKLIST_EN,
   ...COUNT_EN,
   ...STUDIES_EN,
+  ...PRESCRIPTIONS_EN,
 } as const;
 
 export type RuntimeKey = keyof typeof EN;
@@ -696,6 +701,9 @@ const ZH: Record<RuntimeKey, string> = {
   "cmd.results": "检查单及状态",
   "cmd.read": "查看结果",
   "cmd.give": "给予治疗或处置",
+  "cmd.prescribe": "签发处方（所选方案成为下一版本）",
+  "cmd.rx": "查看处方记录和药房审方意见",
+  "cmd.dispense": "调剂步骤（prepare、pick、check-label、dispense）",
   "cmd.vitals": "床旁监护",
   "cmd.board": "会诊板（决策）",
   "cmd.answer": "回答决策",
@@ -929,6 +937,7 @@ const ZH: Record<RuntimeKey, string> = {
   ...CHECKLIST_ZH,
   ...COUNT_ZH,
   ...STUDIES_ZH,
+  ...PRESCRIPTIONS_ZH,
 };
 
 const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };

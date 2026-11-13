@@ -7,14 +7,15 @@
  * evidence grid. Also the device panel (tests + bedside treatments; in
  * embodied mode also the device's own operations — an ECG cart's prepare →
  * connect → record → reset — and "Bring to the patient" for a cart, all
- * through `world_action`, the path the agents use). Embodied mode: what a
+ * through `world_action`, the path the agents use; a dispensing device shows
+ * the steps of a supply — docs/PRESCRIPTIONS.md). Embodied mode: what a
  * candidate offers is the world's verdict from where the learner stands
  * (`EmbodiedLink.verdict`) — a test that cannot be ordered here says why
  * before anything is placed (a lab test before any sample: at the patient's
  * side), and its click shows the way. "Sent" is said once the engine has the
  * order, never for a refused one.
  */
-import { matchOrders, orderWarnings, recordAvailability, resultFor, type CaseDefinition, type Investigation, type SessionState } from "@clinicalcraft/core";
+import { matchOrders, orderWarnings, recordAvailability, resultFor, type CaseDefinition, type DispensingStep, type Investigation, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import type { Verdict } from "../../app/embodied-link.js";
 import { ct, getLocale, tr } from "../../i18n/index.js";
@@ -22,6 +23,7 @@ import { clear, h } from "../dom.js";
 import type { PanelView } from "../panel.js";
 import { capList, evidenceGrid, minutesLeft, phaseName, riskBadge } from "./common.js";
 import { carryRow } from "./hands.js";
+import { dispensingSection } from "./prescriptions-section.js";
 import { treatRow } from "./treat-row.js";
 import type { ReportBack } from "./report.js";
 
@@ -369,6 +371,11 @@ function deviceOps(game: Game, placementId: string): HTMLElement | null {
   const run = (operation: string, extra: Record<string, unknown> = {}) => void emb.worldAction({ operation, targetId: entityId, ...extra });
   const wrap = h("section", { class: "device-ops" }, h("h3", null, tr("device.ops")), h("p", { class: "small muted" }, tr("device.opsLead")));
   if (carry) wrap.append(carry);
+  // a dispensing device (docs/PRESCRIPTIONS.md): its dispensing operations are the steps of a supply — shown with
+  // the version, its lines and what is picked, for every prescription of the case this device supplies
+  const dispenseOps = behavior ? Object.entries(behavior.operations).filter(([, op]) => op.clinical?.tool === "dispense") : [];
+  const caps = game.stations.caps(placementId);
+  const supplied = dispenseOps.length ? (game.caseDef.prescriptions ?? []).filter((def) => def.requires.every((r) => caps.includes(r))) : [];
   if (behavior) {
     // a handheld item: its own lifecycle state as the world stores it, and "held" / "equipped" while the learner
     // carries it (operations made for the hand: `from: ["held"]`)
@@ -381,13 +388,32 @@ function deviceOps(game: Game, placementId: string): HTMLElement | null {
       h(
         "div",
         { class: "row wrap device-op-list" },
-        Object.entries(behavior.operations).map(([id, op]) => {
-          const from = op.from ?? ["*"];
-          const offered = from.includes("*") || from.includes(state) || (!!carried && from.includes(carried));
-          return h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
-        }),
+        Object.entries(behavior.operations)
+          .filter(([, op]) => !(supplied.length && op.clinical?.tool === "dispense"))
+          .map(([id, op]) => {
+            const from = op.from ?? ["*"];
+            const offered = from.includes("*") || from.includes(state) || (!!carried && from.includes(carried));
+            return h("button", { type: "button", class: ["device-op", offered ? "" : "unavailable"], disabled: !offered, dataset: { op: id }, onclick: () => run(id) }, op.name ? ct(op.name) : id);
+          }),
       ),
     );
+    const stepOp = (step: DispensingStep) => dispenseOps.find(([, op]) => op.clinical?.item === step);
+    for (const def of supplied) {
+      wrap.append(
+        dispensingSection(
+          game,
+          def,
+          (step, parameters) => {
+            const op = stepOp(step);
+            if (op) run(op[0], { parameters });
+          },
+          (step) => {
+            const from = stepOp(step)?.[1].from ?? null;
+            return !!stepOp(step) && (!from || from.includes("*") || from.includes(state));
+          },
+        ),
+      );
+    }
   }
   if (portable && patient) {
     wrap.append(h("div", { class: "row wrap" }, h("button", { type: "button", id: "device-bring", dataset: { op: "move_to" }, onclick: () => run("move_to", { goal: { kind: "interact", id: patient } }) }, tr("device.bring"))));

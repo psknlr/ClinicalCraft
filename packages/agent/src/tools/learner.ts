@@ -60,6 +60,11 @@ export const LEARNER_CLINICAL_TOOLS = [
   "order_study",
   "read_study",
   "list_studies",
+  // prescriptions (docs/PRESCRIPTIONS.md): a version signed, the record read; a dispensing step where the case makes
+  // the learner the dispenser (refused otherwise: the dispensary's own staff supply)
+  "prescribe",
+  "read_prescription",
+  "dispense",
 ] as const;
 
 /** Every tool a learner (and a skill or delegated step) may call, in a stable order. */

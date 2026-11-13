@@ -10,6 +10,11 @@ import {
   activeHolds,
   countOpenItems,
   countStatus,
+  currentVersion,
+  formulationOf,
+  prescriptionDef,
+  prescriptionStatus,
+  unreadVersion,
   procedureStateOf,
   currentObjective,
   explainCondition,
@@ -21,6 +26,7 @@ import {
   type ClinicalAction,
   type Condition,
   type CountPredicate,
+  type PrescriptionPredicate,
   type ProcedurePredicate,
   type Requirement,
   type SessionState,
@@ -69,6 +75,50 @@ function countWords(p: CountPredicate, L: string): string {
   return parts.join(", ") || rt(L, "count.status.baseline");
 }
 
+/** A prescription condition in words (docs/PRESCRIPTIONS.md §6): the prescription it names, then every field it gives. */
+function prescriptionWords(c: CaseDefinition, p: PrescriptionPredicate, L: string): string {
+  const def = p.id != null ? prescriptionDef(c, p.id) : undefined;
+  const formulation = (id: string) => {
+    const f = def ? formulationOf(def, id) : (c.prescriptions ?? []).flatMap((d) => d.formulations).find((x) => x.id === id);
+    return f ? t(f.name, L) : id;
+  };
+  const parts: string[] = [];
+  if (p.status !== undefined) parts.push((Array.isArray(p.status) ? p.status : [p.status]).map((x) => rt(L, `req.rx.status.${x}` as RuntimeKey)).join(" / "));
+  if (p.current !== undefined) parts.push(rt(L, "req.rx.current", { name: formulation(p.current) }));
+  if (p.signed !== undefined) parts.push(rt(L, "req.rx.signed", { name: formulation(p.signed) }));
+  if (p.dispensed !== undefined) parts.push(p.dispensed === true ? rt(L, "req.rx.dispensedAny") : rt(L, "req.rx.dispensed", { name: formulation(p.dispensed) }));
+  if (p.versions?.gte !== undefined) parts.push(rt(L, "req.rx.versions.gte", { n: p.versions.gte }));
+  if (p.versions?.lte !== undefined) parts.push(rt(L, "req.rx.versions.lte", { n: p.versions.lte }));
+  if (p.queried !== undefined) parts.push(rt(L, p.queried ? "req.rx.queried" : "req.rx.notQueried"));
+  if (p.acknowledged !== undefined) parts.push(rt(L, p.acknowledged ? "req.rx.acknowledged" : "req.rx.notAcknowledged"));
+  if (p.refused !== undefined) parts.push(rt(L, p.refused === false ? "req.rx.notRefused" : "req.rx.refused"));
+  if (p.discrepancy !== undefined) parts.push(rt(L, p.discrepancy === false ? "req.rx.noDiscrepancy" : "req.rx.discrepancy"));
+  if (p.labelChecked !== undefined) parts.push(rt(L, p.labelChecked ? "req.rx.labelChecked" : "req.rx.labelUnchecked"));
+  if (p.supplyRead !== undefined) parts.push(rt(L, p.supplyRead ? "req.rx.supplyRead" : "req.rx.supplyUnread"));
+  const what = parts.join(", ") || rt(L, "req.rx.any");
+  return def ? rt(L, "req.rx", { name: t(def.name, L), what }) : what;
+}
+
+/**
+ * The prescriber's next step towards an open prescription condition: sign (the formulation it names, when it names
+ * one and that is not the current version already), read the record when the dispensary has written something
+ * unread, else nothing of theirs — the dispensary reviews and supplies on its own.
+ */
+function prescriptionNext(c: CaseDefinition, s: SessionState, p: PrescriptionPredicate, L: string): string | null {
+  const defs = (c.prescriptions ?? []).filter((d) => p.id == null || d.id === p.id);
+  if (!defs.length) return null;
+  if (defs.some((d) => unreadVersion(s, d.id))) return rt(L, "next.readPrescription");
+  const wanted = typeof p.dispensed === "string" ? p.dispensed : (p.current ?? p.signed);
+  const def = defs[0]!;
+  const current = currentVersion(s, def.id);
+  if (wanted && current?.formulation !== wanted) return rt(L, "next.prescribe", { id: wanted });
+  const status = prescriptionStatus(s, def.id);
+  if (status === "none") return rt(L, "next.prescribeAny");
+  // signed and nothing to read: what is open is the dispensary's (a review, a supply) — or a revision after a query
+  if (status === "queried") return rt(L, "next.prescribeAny");
+  return def.dispensedBy === "staff" && (status === "submitted" || status === "confirmed" || status === "preparing") ? rt(L, "next.awaitDispensary") : null;
+}
+
 /** The count's lines for `case_status` (docs/TEAM.md §4.3): its status, what is open, escalations, unsafe progression. */
 export function countLines(c: CaseDefinition, s: SessionState, L: string): string[] {
   if (!c.team?.count) return [];
@@ -113,6 +163,7 @@ export function requirementText(c: CaseDefinition, s: SessionState, r: Requireme
   if ("flag" in cond) return rt(L, "req.flag", { flag: cond.flag });
   if ("procedure" in cond) return rt(L, "req.procedure", { what: procedureWords(cond.procedure, L) });
   if ("count" in cond) return rt(L, "req.count", { what: countWords(cond.count, L) });
+  if ("prescription" in cond) return prescriptionWords(c, cond.prescription, L);
   return rt(L, "req.other", { what: Object.keys(cond)[0] ?? "?" });
 }
 
@@ -136,6 +187,7 @@ export function nextAction(c: CaseDefinition, s: SessionState, r: Requirement, L
     const step = procedureStep(cond.procedure);
     return step ? rt(L, "next.operate", { op: step }) : rt(L, "next.observe");
   }
+  if ("prescription" in cond) return prescriptionNext(c, s, cond.prescription, L);
   return null;
 }
 

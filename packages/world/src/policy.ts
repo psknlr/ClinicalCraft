@@ -14,6 +14,7 @@
  * | `order_test` / `read_result` of a record review (`performedAt: "records"`: an existing report retrieved from the chart) | `any-of` `at-provider` `records` (a records terminal) · `at-patient` (`why: "notes"`: the notes at the bedside) — never a transport, a sample or a device, whatever `requires` says |
  * | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) |
  * | `intervene` other kinds | its capabilities (empty `requires`: the kind's defaults, `KIND_DEFAULT_CAPABILITIES`) beyond the personal kit at the bedside (`bedside-provider`; nothing: `at-patient`); delivered capabilities (`DELIVERED_CAPABILITIES`) only need an in-service provider in the facility; `iv-access` is patient state — the case's IV-access procedure done first (`clinical`), unless the patient has a line in situ — except for that procedure itself, which needs the cannulation kit at the bedside |
+ * | `prescribe` · `read_prescription` · `dispense` (docs/PRESCRIPTIONS.md) | a version signed: `at-provider` `records` · the record read: `any-of` `at-provider` `records` · `at-patient` (`why: "notes"`) · a dispensing step: `at-provider` of the prescription's `requires` — the actor at the dispensing device, wherever the patient is |
  * | `operate` (a step of the case's operation) | `all-of` `patient-at-provider` `surgery` (the patient on an operating table) · `at-patient` 1.5 m — checked again after an approval wait and right before the engine commits, like every gated act |
  * | `observe_field` (the laparoscopic screen) | `near-patient` 3 m + line of sight (in the theatre, at the table) |
  * | `consult`, `delegate_task`, cognitive tools | anywhere |
@@ -181,6 +182,20 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
         return { kind: "all-of", options: [{ kind: "patient-at-provider", capabilities: [SURGERY_CAPABILITY], beds: true }, { kind: "at-patient", range: POLICY_RANGES.contact }] };
       case "observe":
         return { kind: "near-patient", range: POLICY_RANGES.talk, lineOfSight: true };
+      case "prescribe":
+        // a version is signed in the record: at a records terminal
+        return chart;
+      case "read-prescription":
+        // the record and the dispensary's review: the chart, or the notes at the bedside
+        return { kind: "any-of", options: [chart, { kind: "at-patient", range: POLICY_RANGES.contact, why: "notes" }] };
+      case "dispense": {
+        // a dispensing step is taken at the device that supplies it (a medication cabinet, a herb cabinet) — wherever
+        // the patient is: nothing is supplied from the bedside
+        const defs = c.prescriptions ?? [];
+        const def = defs.find((p) => p.id === intent.prescriptionId) ?? (defs.length === 1 ? defs[0] : undefined);
+        const caps = (def?.requires ?? []).filter((r) => !kit.has(r));
+        return caps.length ? { kind: "at-provider", capabilities: caps } : ANYWHERE;
+      }
       default:
         return ANYWHERE;
     }

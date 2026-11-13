@@ -23,6 +23,11 @@
  *   A checklist step (`checklist: true`) is never selected: attaching the
  *   monitor is one task and records no WHO Sign In.
  *
+ * - `item` with tool `dispense`: a step of the supply of a prescription (`prepare`, `pick`, `check-label`,
+ *   `dispense` — docs/PRESCRIPTIONS.md): the prescription the operation's `prescription` parameter names, else the
+ *   case's only one, else the first whose `requires` this device provides; `version`, `line`, `product` and
+ *   `request_key` are passed on.
+ *
  * Tool arguments use the agent tools' names: `order_test` /
  * `read_result {investigation_id, phase?}`, `intervene {intervention_id}`,
  * `examine {finding_id}`, `check_vitals {}`.
@@ -139,6 +144,8 @@ export function intentFor(tool: ClinicalEffect["tool"], itemId: string | null): 
       return itemId ? { tool, kind: "examine", findingId: itemId } : { tool, kind: "examine" };
     case "operate":
       return { tool, kind: "operate" };
+    case "dispense":
+      return itemId ? { tool, kind: "dispense", itemId } : { tool, kind: "dispense" };
     default:
       return { tool, kind: "vitals" };
   }
@@ -212,6 +219,18 @@ export function selectClinical(opts: {
     // an entry of the count record (the step is the effect's item): the session records it from the world
     const step = opts.effect.item ?? "";
     return { ok: true, value: { tool, args: { step }, intent: intentFor(tool, step), itemId: step, itemName: step } };
+  }
+  if (tool === "dispense") {
+    // a step of the supply of a prescription (the step is the effect's item): the case's prescription the operation
+    // names, else its only one, else the first this device can supply — through the session's tool path
+    const step = opts.effect.item ?? "";
+    const defs = c.prescriptions ?? [];
+    const named = typeof parameters?.["prescription"] === "string" ? defs.find((p) => p.id === parameters["prescription"]) : undefined;
+    const def = named ?? (defs.length === 1 ? defs[0] : defs.find((p) => p.requires.every((r) => caps.includes(r))));
+    if (!def) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.noItem", L, { target }) };
+    if (!def.requires.every((r) => caps.includes(r))) return { ok: false, code: "PRECONDITION_FAILED", message: worldMessage("pre.cannotProvide", L, { target, item: t(def.name, L), caps: listText(capabilityLabels(def.requires, L), L) || "—" }), intent: { ...intentFor(tool, step), prescriptionId: def.id } };
+    const pass = ["version", "line", "product", "request_key"].flatMap((k) => (parameters?.[k] != null && parameters[k] !== "" ? [[k, parameters[k]] as const] : []));
+    return { ok: true, value: { tool, args: { step, prescription: def.id, ...Object.fromEntries(pass) }, intent: { ...intentFor(tool, step), prescriptionId: def.id }, itemId: step, itemName: t(def.name, L) } };
   }
   const kind = itemKindOf(tool);
   if (!kind) return { ok: true, value: { tool, args: {}, intent: intentFor(tool, null), itemId: null, itemName: "" } };

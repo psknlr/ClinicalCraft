@@ -507,6 +507,9 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
 | `intervene`，kind 为 `consult` / `disposition` | 任意位置（电话 / 寻呼） | |
 | 以病例记录为准的核查板（`derived: "case-record"`）也能完成的核查步骤，用 `intervene` 完成时 | 还要满足该核查板操作的团队前提（除站位和身份以外声明的条件——WHO 核查板的 Time Out 需要清点板上已完成切皮前清点）；不满足时拒绝为 `SPATIAL_REQUIREMENT_UNMET`，原因 `checklist-prerequisite`，附核查板的说明和去该设备的路线 | 同一个核查动作，两种做法：核查板和 `intervene` 以同一规则记录同一步骤 |
 | `intervene`，其他 kind（`medication`、`fluid`、`oxygen`、`procedure`、`positioning`、`airway`、`monitoring`、`other`） | 其所需能力——`requires` 为空时取该 kind 的默认值（`KIND_DEFAULT_CAPABILITIES`：oxygen → `oxygen`，monitoring → `cardiac-monitor`，fluid → `iv-access`，airway → `airway`）——去掉随身器械：不剩任何能力 → `at-patient` 1.5 m；否则对这些能力要求 `bedside-provider`，但**配送类**能力（`DELIVERED_CAPABILITIES`：`medications`、`blood-bank`）只需场馆某处有在用的提供者。`iv-access` 是**患者状态**：`all-of` [`clinical` {intervened: 病例的建立静脉通路操作}，…]——若病例标注了 `extensions.embodied.ivAccessInSitu` 或没有此类操作则跳过；建立静脉通路操作本身需要穿刺包（抢救车或治疗车）在床旁 | 器械必须在床边（在花园里就得带过去）；静脉用药需要患者身上有留置针，而不是床边有输液架 |
+| `prescribe`（签发一个处方版本，docs/PRESCRIPTIONS.md） | `at-provider` `records` | 处方版本签在病历里：在病历终端前 |
+| `read_prescription`（处方记录、药房的审方意见、实际发药情况） | `any-of` [`at-provider` `records`、`at-patient` 1.5 米（`why: "notes"`）] | 查病历，或看患者身边的记录 |
+| `dispense`（一个调剂步骤：选定版本、取药、核对标签、发药） | 处方 `requires` 的 `at-provider`（药品柜；中药柜或配方颗粒调配机）——行动者在设备旁，患者在哪里都可以 | 床旁发不了药：发药的人必须站在调剂设备前 |
 | `operate`（病例手术的一个步骤，PROCEDURE.md） | `all-of` [`patient-at-provider` `surgery` 且 `beds`（患者在手术床上）、`at-patient` 1.5 米] | 术者在手术床旁：手术绝不能在另一个房间或楼层进行——与所有受门控的动作一样，审批等待之后、引擎提交之前会再次检查 |
 | `observe_field`（腹腔镜屏幕） | `near-patient` 3 米 + 视线可及 | 术野要在手术室里、手术床旁才能看到 |
 | `consult`、`delegate_task`、认知类工具（`answer_decision`、`update_workup`、`wait`、`set_phase`、`finish_case`、`list_options`、`case_status`） | 任意位置 | 电话 / 寻呼；思考；被委派的职员会亲自走过去 |
@@ -750,6 +753,12 @@ clinical     SPATIAL_REQUIREMENT_UNMET SPATIAL_PRECONDITION_CHANGED CLINICAL_REJ
   前置条件——不考虑位置（那由 `inReach` 说明）；`inspect` 列出每个操作及其
   `available` 和原因（包括空间原因）。
 * 职员的移动是确定性的路径跟随（不会每帧调用大模型）。
+
+**调剂设备**（docs/PRESCRIPTIONS.md §5）：药品柜、中药柜或配方颗粒调配机的操作带有指明调剂步骤的临床效果——
+`clinical: {tool: "dispense", select: "item", item: "prepare" | "pick" | "check-label" | "dispense"}`。操作的参数
+（`prescription`、`version`、`line`、`product`、`request_key`）原样传入，发药记录写明所用设备；引擎拒绝的步骤不改变
+设备状态。药房人员在处方版本确认后会自行用自己的身体依次完成这些操作，不需要学员审批；病例让学员担任调剂员
+（`dispensedBy: "learner"`）时，这些操作归学员执行，其他人在设备前会被拒绝（`NOT_AUTHORIZED`）。
 
 **显示病历记录的看板**（`derived: "case-record"`，例如 WHO 核查板、手术清点板、RF 检测棒）：在病例记录其操作所指内容的
 情况下——核查步骤（`clinical: {tool: "intervene", select: "item"}`），或手术清点（`clinical: {tool: "surgical_count",

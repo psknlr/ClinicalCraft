@@ -224,6 +224,8 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
       return [{ notification: { level: "info", title: rt(L, "status.holds"), body: rt(L, "hold.released", { name: interventionLabel(c, event.interventionId, L), by: event.releasedBy, reassessment: event.reassessment }) } }];
     case "study.recorded":
       return studyNotification(c, L, event);
+    case "prescription.recorded":
+      return prescriptionNotification(c, L, event);
     case "anaesthesia.recorded":
       return [];
     case "count.recorded":
@@ -257,4 +259,25 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
       return never;
     }
   }
+}
+
+/**
+ * What the chart announces of a prescription (docs/PRESCRIPTIONS.md): a query raised by the dispensary — a task for the
+ * prescriber —, a version confirmed, a supply completed, and an attempt that was refused. Never the findings
+ * themselves: the record is read (`read_prescription`).
+ */
+function prescriptionNotification(c: CaseDefinition, L: string, event: Extract<DomainEvent, { type: "prescription.recorded" }>): EventReaction[] {
+  const def = (c.prescriptions ?? []).find((p) => p.id === event.prescription);
+  const prescription = def ? t(def.name, L) : event.prescription;
+  const title = rt(L, "rx.notify.title");
+  if (event.refused) {
+    const formulation = event.refused.code === "not-signable" ? def?.formulations.find((f) => f.refusal && t(f.refusal, "en") === event.refused!.reason) : undefined;
+    const reason = formulation?.refusal ? t(formulation.refusal, L) : rt(L, `rx.code.${event.refused.code}` as RuntimeKey, { n: event.version ?? "" });
+    return [{ notification: { level: "warning", title, body: rt(L, "rx.notify.refused", { prescription, reason: reason.replace(/[.。]\s*$/u, "") }) } }];
+  }
+  if (event.op === "review") {
+    return [{ notification: event.findings ? { level: "warning", title, body: rt(L, "rx.notify.query", { prescription, n: event.version ?? "", count: event.findings }) } : { level: "info", title, body: rt(L, "rx.notify.confirmed", { prescription, n: event.version ?? "" }) } }];
+  }
+  if (event.op === "dispense") return [{ notification: { level: "info", title, body: rt(L, "rx.notify.supplied", { prescription, n: event.version ?? "" }) } }];
+  return [];
 }

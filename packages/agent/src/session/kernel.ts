@@ -15,6 +15,7 @@
  * - `resume.ts` — snapshots, and restoring a resumed session.
  */
 import { SessionStudies } from "./studies.js";
+import { SessionPrescriptions } from "./prescriptions.js";
 import { StaffAutonomy } from "./staff-autonomy.js";
 import { syncProcedureSupply } from "./procedure-supply.js";
 import { actionIdOf } from "./action-ids.js";
@@ -110,6 +111,8 @@ export class SessionKernel {
   readonly team: SessionTeam;
   /** New investigations: ordering, fulfilment, reporting, review (docs/STUDIES.md). */
   readonly studies: SessionStudies;
+  /** Prescriptions: the dispensary's review and supply of what the prescriber signs (docs/PRESCRIPTIONS.md). */
+  readonly prescriptions: SessionPrescriptions;
   /** What staff do on their own, round by round (`staff_step`, and after every act). */
   readonly staff: StaffAutonomy;
 
@@ -188,6 +191,7 @@ export class SessionKernel {
     this.embodied = this.settings.embodiment === "embodied" ? new EmbodiedSession(embodiedHost(this), opts.embodied ?? {}) : null;
     this.team = new SessionTeam(this, validTeamCheckpoint(opts.embodied?.team));
     this.studies = new SessionStudies(this);
+    this.prescriptions = new SessionPrescriptions(this);
     this.staff = new StaffAutonomy(this);
     if (opts.reportWriter) this.studies.writer = opts.reportWriter;
     if (opts.reportWriterTimeoutMs != null) this.studies.writerTimeoutMs = opts.reportWriterTimeoutMs;

@@ -195,7 +195,9 @@ async function clinicalOperation(host: EffectsHost, request: WorldActionRequest,
     const elsewhere = sel.intent ? checker.check(actor.id, sel.intent) : null;
     return failed(sel.code, sel.message, elsewhere && !elsewhere.ok ? { hint: elsewhere.hint } : {});
   }
-  const { tool, args, intent } = sel.value;
+  const { tool, intent } = sel.value;
+  // a dispensing step records the device it was taken at
+  const args = tool === "dispense" ? { ...sel.value.args, device: id } : sel.value.args;
   const check = checker.check(actor.id, intent);
   if (!check.ok) return failed(check.code, check.message, { hint: check.hint });
   if (!port) return failed("CLINICAL_REJECTED", worldMessage("NO_PORT", L));

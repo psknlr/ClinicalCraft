@@ -42,16 +42,17 @@ const READ_ONLY = ["case_status", "check_vitals", "get_debrief", "list_cases", "
 const DESTRUCTIVE = ["delegate_task", "execute_skill", "interact_object", "intervene", "operate", "order_test"];
 // taking the patient to the same destination again changes nothing ("already there")
 // …and a study ordered again with the same request_key, or a record retrieved again, is the same
-const IDEMPOTENT = [...READ_ONLY, "cancel_action", "finish_case", "order_study", "retrieve_report", "set_phase", "transport_patient", "update_workup"].sort();
+// …and a prescription read again records nothing new (the review was read already)
+const IDEMPOTENT = [...READ_ONLY, "cancel_action", "finish_case", "order_study", "read_prescription", "retrieve_report", "set_phase", "transport_patient", "update_workup"].sort();
 
 describe("tools/list annotations", () => {
   it("every tool has a title and all four hints; openWorldHint is false (a closed simulation)", async () => {
     const s = server();
     await call(s, "initialize", { protocolVersion: "2025-06-18", capabilities: {}, clientInfo: { name: "vitest", version: "1" } });
     const { tools } = (await call(s, "tools/list")) as { tools: McpToolSpec[] };
-    // 18 clinical-mode tools (with request_hint) + the operative field's 2 + the new investigations' 4 + 17 world
-    // tools (get_camera_frame needs a browser: never listed headless).
-    expect(tools.length).toBe(41);
+    // 18 clinical-mode tools (with request_hint) + the operative field's 2 + the new investigations' 4 + the
+    // prescriptions' 3 + 17 world tools (get_camera_frame needs a browser: never listed headless).
+    expect(tools.length).toBe(44);
     expect(tools.map((t) => t.name)).not.toContain("get_camera_frame");
     for (const name of ["navigate_to", "interact_object"]) expect(tools.find((t) => t.name === name)!.annotations.readOnlyHint, name).toBe(false);
     for (const tool of tools) {

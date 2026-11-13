@@ -643,6 +643,9 @@ test) and is evaluated by `SpatialChecker`. Review rounds G4–G10 and G8
 | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) | |
 | `intervene` of a checklist step that a record-backed board (`derived: "case-record"`) also takes | the board operation's team prerequisites as well (its declared predicates other than where the actor stands or who they are — the WHO board's Time Out needs the baseline count on the count board); refused `SPATIAL_REQUIREMENT_UNMET`, reason `checklist-prerequisite`, with the board's message and the way to the device | one checklist action, two ways to take it: the board and `intervene` record the same step under the same rule |
 | `intervene`, other kinds (`medication`, `fluid`, `oxygen`, `procedure`, `positioning`, `airway`, `monitoring`, `other`) | its capabilities — an empty `requires` takes the kind's defaults (`KIND_DEFAULT_CAPABILITIES`: oxygen → `oxygen`, monitoring → `cardiac-monitor`, fluid → `iv-access`, airway → `airway`) — minus the personal kit: nothing left → `at-patient` 1.5 m; otherwise `bedside-provider` for them, except **delivered** capabilities (`DELIVERED_CAPABILITIES`: `medications`, `blood-bank`), which need only an in-service provider somewhere in the facility. `iv-access` is **patient state**: `all-of` [`clinical` {intervened: the case's IV-access procedure}, …] — skipped when the case authors `extensions.embodied.ivAccessInSitu` or has no such procedure; that procedure itself needs the cannulation kit (a crash or treatment cart) at the bedside | the kit must be at the bed (in a garden it is brought); an IV drug needs a cannula in the patient, not an IV pole beside the bed |
+| `prescribe` (a prescription version signed, docs/PRESCRIPTIONS.md) | `at-provider` `records` | a version is signed in the record, at a records terminal |
+| `read_prescription` (the record, the dispensary's review, what was supplied) | `any-of` [`at-provider` `records`, `at-patient` 1.5 m (`why: "notes"`)] | the chart, or the notes at the patient's side |
+| `dispense` (a dispensing step: select the version, pick, check the label, supply) | `at-provider` of the prescription's `requires` (a medication cabinet; a herb cabinet or granule dispenser) — the actor at the device, wherever the patient is | nothing is supplied from the bedside: whoever supplies it stands at the dispensing device |
 | `operate` (a step of the case's operation, PROCEDURE.md) | `all-of` [`patient-at-provider` `surgery` with `beds` (the patient on an operating table), `at-patient` 1.5 m] | the operator at the table: an operation is never done from another room or floor — checked again after an approval wait and immediately before the engine commits, like every gated act |
 | `observe_field` (the laparoscopic screen) | `near-patient` 3 m + line of sight | the field is seen in the theatre, at the table |
 | `consult`, `delegate_task`, cognitive tools (`answer_decision`, `update_workup`, `wait`, `set_phase`, `finish_case`, `list_options`, `case_status`) | anywhere | phone/pager; thinking; delegated staff walk physically |
@@ -968,6 +971,15 @@ reservation) replaces them — the built-in catalogs declare one for
   says that); `inspect` lists every operation with `available` and the
   reason (spatial included).
 * Staff movement is deterministic path following (no LLM per frame).
+
+**Dispensing devices** (docs/PRESCRIPTIONS.md §5): a medication cabinet, a herb cabinet or a granule dispenser gives
+its operations a clinical effect naming a dispensing step — `clinical: {tool: "dispense", select: "item", item:
+"prepare" | "pick" | "check-label" | "dispense"}`. The operation's parameters (`prescription`, `version`, `line`,
+`product`, `request_key`) are passed on, the supply records the device it was made at, and a step the engine refuses
+leaves the device's state as it was. The dispensary's own staff run the operations in order with their own body — on
+their own, once a version is confirmed, and without asking the learner to approve their work; where the case makes
+the learner the dispenser (`dispensedBy: "learner"`) the operations are the learner's, and anybody else at the device
+is refused (`NOT_AUTHORIZED`).
 
 **Boards that show the case record** (`derived: "case-record"`, e.g. a WHO checklist board, a surgical count board, an
 RF wand): in a case that records what their operations name — checklist steps (`clinical: {tool: "intervene", select:

@@ -498,6 +498,38 @@ A theatre case can give its room a care team that works on its own in in-world m
   item moved in: six of five, or five of five with one still in the wound), and a positive control with a **documented
   transfer** (`items[].transfer`: a swab sent with the specimen — no hold expected).
 
+### 6.3 Prescriptions (`prescriptions`)
+
+A treatment that is **written, reviewed and supplied** — a discharge prescription, a herbal formula — is a
+prescription, not an intervention (contract: [PRESCRIPTIONS.md](PRESCRIPTIONS.md)). An intervention is given once at
+the bedside; a prescription has versions, a dispensary's review and a supply that can differ from what was signed.
+
+* **Write the lines as data.** Each formulation lists its products with a daily dose and unit; each product has its
+  unit, usual daily dose and — where the scenario turns on it — stock. The dispensary's review then finds a unit
+  error, a dose outside the range and a stock shortage on its own; author a `review` rule only for what the data
+  cannot show (an interaction with a medicine the patient takes, a history that is not recorded yet), and give it a
+  `when` so that the query closes once the prescriber has done what it asks.
+* **A revision is another formulation**, signed as the next version. Offer every formulation a competent prescriber
+  might sign, the unsafe ones included: the review and the rubric judge them. Gate a formulation that only makes
+  sense later with `signableWhen` and say why in `refusal` — the refused attempt is recorded.
+* **Let the dispensary supply** (`dispensedBy: "staff"`, the default) unless dispensing is what the case teaches;
+  `dispensedBy: "learner"` makes the learner work the dispensing device step by step, with `confusedWith` look-alikes
+  on the shelf.
+* **An execution error is a `deviation`**, hidden until the supply is read against the version: the label printed
+  with another frequency, a look-alike supplied. Credit finding it with
+  `{ "prescription": { "id": "…", "supplyRead": true } }` and the act that corrects it.
+* **Score from the record**, not from interventions that stand in for it:
+  `{ "prescription": { "id": "rx", "dispensed": "v2" } }` (that formulation was supplied),
+  `{ "prescription": { "id": "rx", "queried": true, "acknowledged": true } }` (the query was read),
+  `{ "prescription": { "id": "rx", "refused": "submit" } }` (an attempt to sign something not yet signable).
+  Counselling stays an intervention: `indicatedWhen` the supply was made.
+* **Follow-up facts follow the supply**: a history answer, a finding or a result at review takes `branches` (§3.1)
+  on what was dispensed.
+* **The reference `solution` lists the dispensary's steps** (`review`, the staff's `dispense`) where they happen;
+  the demonstration waits for the dispensary to take them. In-world a version is signed at a records terminal and
+  supplied at a device providing the prescription's `requires` — the facility must have both (`cases validate`
+  reports a missing device as a capability gap).
+
 ## 7. Learning design
 
 * 4–6 `objectives` (chapters) in logical order with `hint`, `guidance` and
@@ -523,7 +555,8 @@ A theatre case can give its room a care team that works on its own in in-world m
 * Conditions available everywhere: `all/any/not/always`, `asked`, `examined`,
   `ordered`, `read`, `resultReady`, `decided`, `decidedFirstTry` (rubric: first
   attempt correct), `attempted`, `intervened`, `inOrder`, `held` (a hold stands),
-  `phase`, `flag`, `objective`, `vital`, `elapsed`, `hints`.
+  `phase`, `flag`, `objective`, `vital`, `elapsed`, `hints`, `prescription`
+  (the prescription record: §6.3, docs/PRESCRIPTIONS.md §6).
   `intervened` takes `valid` (`true`: only attempts that were not
   contraindicated when made; `false`: only those that were), `minCount` and
   `phase`: only attempts made while the case was in that phase — so a step

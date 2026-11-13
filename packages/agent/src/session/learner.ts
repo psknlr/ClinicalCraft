@@ -256,6 +256,11 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "count.handEntry") }), code: "permission_denied" });
       return null;
     }
+    // a version is reviewed by the dispensary (docs/PRESCRIPTIONS.md): its findings are never entered by the prescriber
+    if (requested.type === "prescription" && requested.prescription.op === "review") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "rx.handEntry") }), code: "permission_denied" });
+      return null;
+    }
     // a colleague's operative step is done with their body (delegate_task hold_traction / release_traction), never
     // entered in their name
     // anaesthesia responsibility moves with people (a relief at the patient, a hand-over accepted), never by typing it
@@ -270,7 +275,14 @@ export class LearnerPath {
     // who holds or releases is the caller, never a name the caller supplies (docs/PROTOCOL.md §3.1): a learner who
     // writes `releasedBy: "attending"` releases as the learner — refused unless the learner placed that hold
     let action: ClinicalAction =
-      requested.type === "hold" ? { ...requested, placedBy: LEARNER_HOLDER } : requested.type === "release-hold" ? { ...requested, releasedBy: LEARNER_HOLDER } : requested;
+      requested.type === "hold"
+        ? { ...requested, placedBy: LEARNER_HOLDER }
+        : requested.type === "release-hold"
+          ? { ...requested, releasedBy: LEARNER_HOLDER }
+          : // who signs, reads or supplies is the caller too: a learner never acts in the dispensary's name
+            requested.type === "prescription"
+            ? { ...requested, prescription: { ...requested.prescription, by: LEARNER_HOLDER } }
+            : requested;
     const toolName = actionToolName(action);
     const tool = toolName ? k.registry.get(toolName) : undefined;
     let args = tool ? actionToolArgs(k.caseDef, action, L) : null;

@@ -45,6 +45,19 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
       return {};
     case "study":
       return action.study.op === "order" ? { code: action.study.code, ...(action.study.indication ? { indication: action.study.indication } : {}) } : {};
+    case "prescription": {
+      const op = action.prescription;
+      if (op.op === "submit") return { prescription: op.prescription, formulation: op.formulation, request_key: op.key };
+      if (op.op === "acknowledge" || op.op === "review") return { prescription: op.prescription };
+      return {
+        step: op.op,
+        prescription: op.prescription,
+        ...("version" in op && op.version != null ? { version: op.version } : {}),
+        ...(op.op === "pick" && op.line ? { line: op.line } : {}),
+        ...(op.op === "pick" && op.product ? { product: op.product } : {}),
+        ...(op.op === "dispense" ? { request_key: op.key } : {}),
+      };
+    }
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":
@@ -135,6 +148,7 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
     case "note":
     case "count":
     case "study":
+    case "prescription":
     case "anaesthesia":
     case "alarm-response":
     case "procedure-supply":

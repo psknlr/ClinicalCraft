@@ -1,5 +1,6 @@
 import { z } from "zod";
 import { AppearanceSchema, CaseSettingSchema } from "./case.js";
+import { DISPENSING_STEPS } from "./prescription.js";
 import { CapabilitySchema, ConditionSchema, COUNT_STAGES, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
 
 /**
@@ -158,8 +159,11 @@ export const ClinicalEffectSchema = z
      * `operate`: a step of the operation itself, `item` naming it (`insufflate` — at the procedure's usual pressure,
      * or the operation's `pressure` parameter — or `desufflate`): a laparoscopy tower's gas controls are the
      * operation's own pneumoperitoneum, so the device, the record and the field never disagree.
+     * `dispense`: a step of the supply of a prescription (docs/PRESCRIPTIONS.md), `item` naming it (`prepare`: the
+     * version selected; `pick`: a product picked for a line; `check-label`; `dispense`: the supply completed) — a
+     * dispensing cabinet's operations write the case's prescription record through the session's tool path.
      */
-    tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine", "surgical_count", "operate"]),
+    tool: z.enum(["order_test", "read_result", "intervene", "check_vitals", "examine", "surgical_count", "operate", "dispense"]),
     /** `item`: the case item with id `item` (a WHO board's `sign_in` → the case's `sign-in`; a count's step). */
     select: z.enum(["param", "capability", "monitoring", "item"]),
     item: IdSchema.optional(),
@@ -171,6 +175,9 @@ export const ClinicalEffectSchema = z
   })
   .refine((e) => e.tool !== "operate" || (e.select === "item" && (DEVICE_OPERATIVE_STEPS as readonly string[]).includes(e.item ?? "")), {
     message: `an operate effect names its step: select "item", item one of ${DEVICE_OPERATIVE_STEPS.join(", ")}`,
+  })
+  .refine((e) => e.tool !== "dispense" || (e.select === "item" && (DISPENSING_STEPS as readonly string[]).includes(e.item ?? "")), {
+    message: `a dispense effect names its step: select "item", item one of ${DISPENSING_STEPS.join(", ")}`,
   });
 export type ClinicalEffect = z.infer<typeof ClinicalEffectSchema>;
 

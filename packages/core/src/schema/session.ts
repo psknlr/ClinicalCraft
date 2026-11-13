@@ -3,6 +3,7 @@ import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility
 import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "./alarm.js";
 import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
+import { PrescriptionOpSchema, type PrescriptionOp, type PrescriptionRecord, type PrescriptionRefusal } from "./prescription.js";
 import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
 
 /**
@@ -106,6 +107,8 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("release-hold"), interventionId: IdSchema, releasedBy: HolderSchema, reassessment: z.string().trim().min(1).max(1000), ...base }).strict(),
   /** A new investigation (`StudyOpSchema`; docs/STUDIES.md): order, wait, acquire, release, review. */
   z.object({ type: z.literal("study"), study: StudyOpSchema, ...base }).strict(),
+  /** A step of a prescription (`PrescriptionOpSchema`; docs/PRESCRIPTIONS.md): sign, review, read, prepare, pick, check, dispense. */
+  z.object({ type: z.literal("prescription"), prescription: PrescriptionOpSchema, ...base }).strict(),
   /** A step of anaesthesia responsibility (docs/TEAM.md §5): a relief requested, arrived, the hand-over accepted. */
   z.object({ type: z.literal("anaesthesia"), anaesthesia: AnaesthesiaOpSchema, ...base }).strict(),
   /**
@@ -260,6 +263,8 @@ export interface SessionState {
   count?: CountRecord;
   /** New investigations ordered in this encounter (docs/STUDIES.md), from the first order on. */
   studies?: StudyRecord;
+  /** The prescriptions signed, reviewed and supplied in this encounter (docs/PRESCRIPTIONS.md), from the first act on. */
+  prescriptions?: PrescriptionRecord;
   /** Who is responsible for the anaesthetised patient, and the hand-overs (absent: the case team's anaesthetist). */
   anaesthesia?: AnaesthesiaResponsibility;
   /** Critical alarms and the responses to them (docs/TEAM.md §5), one episode per alarm. */
@@ -330,6 +335,13 @@ export type DomainEvent =
     }
   /** A study op recorded: the order, acquisition or report it concerns (`id`). */
   | { type: "study.recorded"; op: StudyOp["op"]; code: string; id: string; reason?: string }
+  /**
+   * A prescription op recorded (`version`: the version it concerns). `refused`: the attempt was refused for a clinical
+   * reason and recorded as such, nothing else changed; `findings`: how many points a review raised; `discrepancies`: how many
+   * differences a **label check** found between the supply being prepared and its version. What a completed supply got
+   * wrong is never in an event: it is on the record, found by reading it.
+   */
+  | { type: "prescription.recorded"; op: PrescriptionOp["op"]; prescription: string; version?: number; refused?: Pick<PrescriptionRefusal, "code" | "reason">; findings?: number; discrepancies?: number }
   | { type: "anaesthesia.recorded"; op: AnaesthesiaOp["op"]; responsible: string; relief?: string }
   /** The operation's equipment supply changed (`deflated`: the pneumoperitoneum was lost with the gas). */
   | { type: "procedure.supply"; image: boolean; gas: boolean; source?: string; deflated?: true }
