@@ -22,6 +22,8 @@ export { explainCondition, requirementLeaves, type Requirement } from "./explain
 export { correctionMatches, correctionMade, correctionsFor } from "./corrections.js";
 export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus, presentedOptions } from "./queries.js";
 export { historyTwin, historyAvailable, historyCredited, creditedHistory, supersededIn, supersededItems, hasHistoryTwins } from "./twins.js";
+// facts that follow the record (case `branches`)
+export { currentHistory, examBranch, examFindings, historyAnswers, historyBranch, resultBranch, toldFinding, toldHistory, toldKey, toldResult, type ToldAnswer, type ToldFinding } from "./branches.js";
 export {
   vitalsAt,
   vitalValue,

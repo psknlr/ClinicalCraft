@@ -22,6 +22,7 @@ import {
   reduce,
   resultKey,
   t,
+  toldResult,
   vitalsAt,
   type AssessmentReport,
   type CaseDefinition,
@@ -169,10 +170,10 @@ export function consultantOffline(role: "radiologist" | "pathologist" | string, 
     for (const id of asked) {
       const mine = obtained.filter((o) => o.investigationId === id);
       if (mine.length === 0) parts.push(rt(L, "consultant.offline.notObtained", { name: investigationName(c, id, L) }));
-      for (const o of mine) parts.push(resultLine(c, o.investigationId, o.phase, L));
+      for (const o of mine) parts.push(resultLine(c, s, o.investigationId, o.phase, L));
     }
   } else {
-    for (const o of obtained) parts.push(resultLine(c, o.investigationId, o.phase, L));
+    for (const o of obtained) parts.push(resultLine(c, s, o.investigationId, o.phase, L));
   }
   // The authored `npcs[].knowledge` is a brief for model-backed consultants (it may describe other
   // studies): never recite it. Offline, state the evidence boundary itself.
@@ -180,9 +181,9 @@ export function consultantOffline(role: "radiologist" | "pathologist" | string, 
   return parts.join("\n");
 }
 
-function resultLine(c: CaseDefinition, id: string, phase: string, locale: string): string {
-  const inv = c.investigations.find((i) => i.id === id);
-  const result = inv?.results[phase];
+function resultLine(c: CaseDefinition, s: SessionState, id: string, phase: string, locale: string): string {
+  // the result as this session read it (a result that follows the record)
+  const result = toldResult(c, s, id, phase)?.result;
   const why = result && !result.available ? t(result.text, locale) : "";
   const text = result ? (result.available ? t(result.text, locale) : why ? joinSentences(locale, [why, rt(locale, "tool.result.notAvailable")]) : rt(locale, "tool.result.unavailable")) : rt(locale, "tool.result.unavailable");
   return rt(locale, "consultant.offline.result", { name: investigationName(c, id, locale), phase: phaseLabel(c, phase, locale), text });

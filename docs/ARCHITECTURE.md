@@ -174,6 +174,15 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     assessment without revealing them (§3.1, §3.3, §3.4;
     docs/CASE_AUTHORING.md §3). Unknown ids, self-references and cycles
     are integrity errors.
+  * `history[].branches`, `exam[].branches`,
+    `investigations[].results.*.branches` — optional; **facts that follow the
+    record** (docs/CASE_AUTHORING.md §3.1): each branch has an `id`, a `when`
+    condition and the text it replaces (`answer`; `finding` with optional
+    `abnormal` / `media`; any of a result's `date`, `text`, `values`,
+    `figures`, `note`). The first branch whose `when` holds as the item is
+    asked, examined or read answers instead of the item's own text, and the
+    reducer records which (`SessionState.told`, §3.1). Duplicate branch ids,
+    unknown ids in a `when` and undeclared figures are integrity errors.
   * `orderMatching.warnings[].unless` — `Condition`, optional; the warning
     no longer applies (is not returned by `orderWarnings`) while it holds on
     the session as the order is placed.
@@ -212,7 +221,9 @@ JSON Schema exported to `packages/content/schemas/` for editors).
   `decidedFirstTry`, `intervened`, `inOrder`, `phase`, `flag`, `objective`, `vital`,
   `elapsed`, `hints`, `procedure`. `intervened` takes `valid`: `true` counts only
   attempts that were not contraindicated when made, `false` only those that
-  were. `inOrder: [id…]` holds when those interventions were first validly
+  were; and `phase`: only attempts made while the case was in that phase
+  (`InterventionRecord.phase`; an attempt saved before attempts carried their
+  phase matches none). `inOrder: [id…]` holds when those interventions were first validly
   given in that order, compared by committed action sequence
   (`InterventionRecord.seq`), so two acts in the same simulated minute keep
   their order. An intervention with `checklist: true` (a WHO checklist step)
@@ -309,6 +320,16 @@ interventionNegation(c, utterance, locale): { withheld: string[]; alternatives: 
 analyzeNegation(text): { negated: boolean; affirmative: string; scopes: string[]; context: string[]; doubleNegated: string[] }   // clause-level cues, en + zh-CN
 matchSpecificity(c, kind: "history"|"exam"|"interventions", utterance, locale, id): number   // coverage (chars) of the item's best phrase; tie-break only (§3.3)
 interface MatchOptions { phase?: string; includeUnknown?: boolean }   // §3.3; omitted = all phases, unknown items included
+
+// facts that follow the record (`branches`, branches.ts; docs/CASE_AUTHORING.md §3.1)
+historyBranch(c, s, item): string | null; examBranch(c, s, finding); resultBranch(c, s, investigationId, phase)
+                                                        // the branch that holds now (null: the item's own text) — what the reducer records
+currentHistory(c, s, item): { answer, branch }          // the answer as it would be given now (what is said when it is asked)
+toldHistory(c, s, item): { answer, branch }             // as the learner was told it: the recorded branch, else the one that holds now
+toldFinding(c, s, finding): { finding, abnormal, media, branch }
+toldResult(c, s, investigationId, phase): { result, branch } | null   // the recorded branch laid over the result's own fields (no `branches`)
+historyAnswers(item): LocalizedText[]; examFindings(finding)   // every text an item can show (a grounding check knows them all)
+toldKey.history(id) / .exam(id) / .result(investigationId, phase)   // keys of `SessionState.told`
 
 // history phase twins (`history[].supersedes`, twins.ts)
 historyTwin(c, id, phase): string | null                // the item answering for `id` in `phase`: itself, its (transitive) superseding twin, or null
@@ -416,14 +437,21 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   `firstTime` flag). Only the item asked is added: items it supersedes are
   credited by `asked` conditions and `assess()` (`historyCredited`), never
   revealed.
-* `examine` — same pattern for `examined`.
+  An item with `branches` (facts that follow the record) also records the
+  branch that holds on the state it is asked in — `told["history:<id>"]`, `""`
+  for the item's own answer — and names it on `history.asked` (`branch`);
+  asked again, the record follows what is true then. Items without branches
+  leave `told` untouched (absent until the first).
+* `examine` — same pattern for `examined` (`told["exam:<id>"]`,
+  `exam.performed.branch`).
 * `order` — key `${id}@${phase}`; duplicates emit `order.duplicate` (no state
   change). Records `readyAt`.
 * `read` — phase defaults to current. Rejected `not-ordered` if no order with
   that key, `not-ready` if turnaround not elapsed, `no-record` if
   `resultFor` is null (still counts as "read" for the V4 "no record" notice?
   **No**: a missing result cannot be read; the UI shows "no record" from
-  `resultFor` before ordering). Adds key to `seen`.
+  `resultFor` before ordering). Adds key to `seen`; a result with `branches`
+  records the one read (`told["result:<id>@<phase>"]`, `result.read.branch`).
 * `set-phase` — unknown phase → `unknown-id`; `learnerSwitchable: false` →
   `phase-locked` until the phase's `enterWhen` holds (the case has reached it:
   a learner who looked back at an earlier phase can return).
@@ -438,7 +466,8 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   `contraindicated` if `contraindicatedWhen` true (evaluated **before**
   applying), else `indicated` if `indicatedWhen` true, else `neutral`.
   Applies `setFlags`; effects are applied lazily by `vitalsAt` from the
-  intervention records. A checklist step (`checklist: true`) attempted while
+  intervention records. Every attempt records the phase it was made in
+  (`InterventionRecord.phase`), which `{intervened, phase}` reads. A checklist step (`checklist: true`) attempted while
   contraindicated is recorded `invalid`: nothing applied, no dose used.
 * `hold {interventionId, placedBy, reason}` — an explicit hold (an
   anaesthetist or attending withholding clearance): appended to `holds` with

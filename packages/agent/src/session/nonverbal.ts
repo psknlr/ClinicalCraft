@@ -6,7 +6,7 @@
  * refuses the question: `cannot-answer`). An opening line written as an aside ("(She is on a ventilator…)") is
  * narration too. Shared by the patient pipeline, the learner's button questions and `list_options`.
  */
-import { patientNonVerbal, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { currentHistory, patientNonVerbal, t, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { isZh, rt, type RuntimeKey } from "./i18n.js";
 
 /** A display name without its "(pseudonym)" / "（化名）" note. */
@@ -69,7 +69,8 @@ function patientPronoun(c: CaseDefinition, locale: string): string {
 export function spokenAnswer(c: CaseDefinition, s: SessionState, itemId: string, locale: string, speaker: "patient" | "companion"): string {
   const item = c.history.find((h) => h.id === itemId);
   if (!item) return "";
-  const answer = t(item.answer, locale);
+  // an answer that follows the record: what is true on the state it is asked in (the engine records the same branch)
+  const answer = t(currentHistory(c, s, item).answer, locale);
   const companion = c.patient.persona.companion;
   const ownWords = !companion?.answersHistory || item.speaker === "patient";
   if (speaker !== "companion" || !companion || !ownWords || !patientNonVerbal(c, s) || !answer) return answer;

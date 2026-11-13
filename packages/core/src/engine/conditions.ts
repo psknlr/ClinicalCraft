@@ -90,7 +90,8 @@ export function activeHolds(s: SessionState, interventionId: string): HoldRecord
  * `all: []` is true, `any: []` is false; `read`/`ordered`/`resultReady`
  * without `phase` match any phase. `asked` also holds when an item that
  * supersedes it (`history[].supersedes`, transitively) was asked. `decidedFirstTry` looks only at the first
- * recorded attempt (rejected answers are not attempts).
+ * recorded attempt (rejected answers are not attempts). `intervened` with `phase` counts only attempts made in that
+ * phase (records saved before attempts carried their phase match none).
  */
 export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): boolean {
   if ("all" in cond) return cond.all.every((x) => evaluate(c, s, x));
@@ -106,7 +107,9 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("attempted" in cond) return s.attempts.some((a) => a.decisionId === cond.attempted);
   if ("decidedFirstTry" in cond) return s.attempts.find((a) => a.decisionId === cond.decidedFirstTry)?.correct === true;
   if ("intervened" in cond) {
-    const count = s.interventions.filter((r) => r.interventionId === cond.intervened && (cond.valid == null || (r.appropriateness !== "contraindicated") === cond.valid)).length;
+    const count = s.interventions.filter(
+      (r) => r.interventionId === cond.intervened && (cond.valid == null || (r.appropriateness !== "contraindicated") === cond.valid) && (cond.phase == null || r.phase === cond.phase),
+    ).length;
     return count >= (cond.minCount ?? 1);
   }
   if ("inOrder" in cond) {
@@ -147,7 +150,7 @@ export type ConditionRef =
   | { kind: "exam"; id: string; path: (string | number)[] }
   | { kind: "investigation"; id: string; phase?: string; requiresRecord: boolean; path: (string | number)[] }
   | { kind: "decision"; id: string; path: (string | number)[] }
-  | { kind: "intervention"; id: string; minCount?: number; path: (string | number)[] }
+  | { kind: "intervention"; id: string; minCount?: number; phase?: string; path: (string | number)[] }
   | { kind: "phase"; id: string; path: (string | number)[] }
   | { kind: "flag"; id: string; path: (string | number)[] }
   | { kind: "objective"; id: string; path: (string | number)[] }
@@ -172,7 +175,7 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("attempted" in node) out.push({ kind: "decision", id: node.attempted, path: [...path, "attempted"] });
     else if ("decidedFirstTry" in node) out.push({ kind: "decision", id: node.decidedFirstTry, path: [...path, "decidedFirstTry"] });
     else if ("intervened" in node)
-      out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), path: [...path, "intervened"] });
+      out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), ...(node.phase != null ? { phase: node.phase } : {}), path: [...path, "intervened"] });
     else if ("inOrder" in node) node.inOrder.forEach((id, i) => out.push({ kind: "intervention", id, path: [...path, "inOrder", i] }));
     else if ("held" in node) out.push({ kind: "intervention", id: node.held, path: [...path, "held"] });
     else if ("phase" in node) out.push({ kind: "phase", id: node.phase, path: [...path, "phase"] });

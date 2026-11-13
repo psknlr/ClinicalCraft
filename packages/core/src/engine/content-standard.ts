@@ -211,6 +211,11 @@ function checkExamPlaceholders(c: CaseDefinition): Issue[] {
   c.exam.forEach((f, i) => {
     const said = localesOf(c, f.finding).filter((l) => NOT_RECORDED.test(t(f.finding, l)));
     if (said.length) issues.push(warn(`exam.${i}.finding`, `finding "${f.id}" says it is not recorded (${said.join(", ")}): leave the manoeuvre out — examNotRecorded answers for anything unrecorded`));
+    // a branch is a finding too: the same rule for what is found when the record is a certain way
+    (f.branches ?? []).forEach((b, j) => {
+      const also = localesOf(c, b.finding).filter((l) => NOT_RECORDED.test(t(b.finding, l)));
+      if (also.length) issues.push(warn(`exam.${i}.branches.${j}.finding`, `branch "${b.id}" of finding "${f.id}" says it is not recorded (${also.join(", ")}): leave the branch out — the finding's own text answers when no branch holds`));
+    });
   });
   return issues;
 }

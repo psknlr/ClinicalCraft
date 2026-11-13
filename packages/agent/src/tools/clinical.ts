@@ -23,6 +23,7 @@ import {
   progress,
   resultFor,
   t,
+  toldFinding,
   vitalsAt,
   type CaseDefinition,
   type ClinicalAction,
@@ -309,8 +310,10 @@ const examine: ToolDefinition<ToolArgs> = {
     if (result.rejected) return rejectedOutput(L, result);
     const f = c.exam.find((e) => e.id === r.id)!;
     const maneuver = t(f.maneuver, L);
-    const finding = t(f.finding, L);
-    return { ok: true, output: rt(L, "tool.examined", { maneuver, finding }), data: { findingId: f.id, system: f.system, maneuver, finding, abnormal: f.abnormal, media: f.media ?? null } };
+    // the finding as it was just found (a finding that follows the record: the branch the engine recorded)
+    const found = toldFinding(c, ctx.state(), f);
+    const finding = t(found.finding, L);
+    return { ok: true, output: rt(L, "tool.examined", { maneuver, finding }), data: { findingId: f.id, system: f.system, maneuver, finding, abnormal: found.abnormal, media: found.media, ...(found.branch ? { branch: found.branch } : {}) } };
   },
 };
 
@@ -434,7 +437,7 @@ const readResult: ToolDefinition<ToolArgs> = {
       }
       return rejectedOutput(L, result);
     }
-    const formatted = formatResult(c, r.id, phase, L);
+    const formatted = formatResult(c, r.id, phase, L, ctx.state());
     return { ok: true, output: formatted.text, data: formatted.data };
   },
 };

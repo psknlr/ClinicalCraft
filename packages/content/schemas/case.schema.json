@@ -230,6 +230,9 @@
             },
             "valid": {
               "type": "boolean"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
             }
           },
           "required": [
@@ -3652,6 +3655,33 @@
               "answer": {
                 "$ref": "#/definitions/LocalizedText"
               },
+              "branches": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "when": {
+                      "$ref": "#/definitions/Condition"
+                    },
+                    "source": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "answer": {
+                      "$ref": "#/definitions/LocalizedText"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "when",
+                    "answer"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1
+              },
               "keywords": {
                 "$ref": "#/definitions/LocalizedList",
                 "default": []
@@ -3768,6 +3798,39 @@
               },
               "finding": {
                 "$ref": "#/definitions/LocalizedText"
+              },
+              "branches": {
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "when": {
+                      "$ref": "#/definitions/Condition"
+                    },
+                    "source": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "finding": {
+                      "$ref": "#/definitions/LocalizedText"
+                    },
+                    "abnormal": {
+                      "type": "boolean"
+                    },
+                    "media": {
+                      "$ref": "#/definitions/Id"
+                    }
+                  },
+                  "required": [
+                    "id",
+                    "when",
+                    "finding"
+                  ],
+                  "additionalProperties": false
+                },
+                "minItems": 1
               },
               "abnormal": {
                 "type": "boolean",
@@ -3900,6 +3963,94 @@
                     },
                     "text": {
                       "$ref": "#/definitions/LocalizedText"
+                    },
+                    "branches": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "properties": {
+                          "id": {
+                            "$ref": "#/definitions/Id"
+                          },
+                          "when": {
+                            "$ref": "#/definitions/Condition"
+                          },
+                          "source": {
+                            "$ref": "#/definitions/LocalizedText"
+                          },
+                          "date": {
+                            "$ref": "#/definitions/LocalizedText"
+                          },
+                          "text": {
+                            "$ref": "#/definitions/LocalizedText"
+                          },
+                          "values": {
+                            "type": "array",
+                            "items": {
+                              "type": "object",
+                              "properties": {
+                                "analyte": {
+                                  "$ref": "#/definitions/LocalizedText"
+                                },
+                                "value": {
+                                  "anyOf": [
+                                    {
+                                      "type": "number"
+                                    },
+                                    {
+                                      "$ref": "#/definitions/LocalizedText"
+                                    }
+                                  ]
+                                },
+                                "unit": {
+                                  "type": "string",
+                                  "default": ""
+                                },
+                                "refLow": {
+                                  "type": "number"
+                                },
+                                "refHigh": {
+                                  "type": "number"
+                                },
+                                "refText": {
+                                  "$ref": "#/definitions/LocalizedText"
+                                },
+                                "flag": {
+                                  "type": "string",
+                                  "enum": [
+                                    "H",
+                                    "L",
+                                    "HH",
+                                    "LL",
+                                    "A",
+                                    "N"
+                                  ]
+                                }
+                              },
+                              "required": [
+                                "analyte",
+                                "value"
+                              ],
+                              "additionalProperties": false
+                            }
+                          },
+                          "figures": {
+                            "type": "array",
+                            "items": {
+                              "$ref": "#/definitions/Id"
+                            }
+                          },
+                          "note": {
+                            "$ref": "#/definitions/LocalizedText"
+                          }
+                        },
+                        "required": [
+                          "id",
+                          "when"
+                        ],
+                        "additionalProperties": false
+                      },
+                      "minItems": 1
                     },
                     "values": {
                       "type": "array",

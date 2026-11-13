@@ -224,9 +224,11 @@ export type Condition =
   | { decidedFirstTry: string }
   /**
    * Intervention given at least `minCount` times (default 1). `valid: true` counts only attempts that were not
-   * contraindicated when made (a checklist step in order); `valid: false` only those that were.
+   * contraindicated when made (a checklist step in order); `valid: false` only those that were. `phase` counts only
+   * attempts made while the case was in that phase — a tuina refused at the first visit and one refused at the review
+   * are two facts (an attempt recorded before attempts carried their phase matches no `phase`).
    */
-  | { intervened: string; minCount?: number; valid?: boolean }
+  | { intervened: string; minCount?: number; valid?: boolean; phase?: string }
   /**
    * Interventions first validly given in this order (by committed action sequence, so two acts in the same
    * simulated minute keep their order): `{"inOrder": ["sign-in", "induction"]}`. False while one is missing.
@@ -267,7 +269,7 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ decided: IdSchema }).strict(),
     z.object({ attempted: IdSchema }).strict(),
     z.object({ decidedFirstTry: IdSchema }).strict(),
-    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional(), valid: z.boolean().optional() }).strict(),
+    z.object({ intervened: IdSchema, minCount: z.number().int().min(1).optional(), valid: z.boolean().optional(), phase: IdSchema.optional() }).strict(),
     z.object({ inOrder: z.array(IdSchema).min(2).max(8) }).strict(),
     z.object({ held: IdSchema }).strict(),
     z.object({ phase: IdSchema }).strict(),

@@ -125,6 +125,7 @@ function checkRef(c: CaseDefinition, ids: Ids, ref: ConditionRef): Issue[] {
       if (ref.minCount != null && max != null && ref.minCount > max) {
         return [err([...ref.path.slice(0, -1), "minCount"], `needs ${ref.minCount} doses but "${ref.id}" may be given at most ${max} time(s), so this can never become true`)];
       }
+      if (ref.phase != null && !ids.phases.has(ref.phase)) return [err([...ref.path.slice(0, -1), "phase"], `unknown phase "${ref.phase}"`)];
       return [];
     }
     case "phase":
@@ -209,6 +210,47 @@ function checkAllConditions(c: CaseDefinition, ids: Ids): Issue[] {
   c.safetyGates.forEach((g, i) => issues.push(...checkCondition(c, ids, g.when, ["safetyGates", i, "when"])));
   c.orderMatching.warnings.forEach((w, i) => issues.push(...checkCondition(c, ids, w.unless, ["orderMatching", "warnings", i, "unless"])));
   issues.push(...checkCondition(c, ids, c.team?.count?.when, ["team", "count", "when"]));
+  issues.push(...checkBranches(c, ids));
+  return issues;
+}
+
+/**
+ * Facts that follow the record (`branches`, docs/CASE_AUTHORING.md §3.1): branch ids unique within their item, every
+ * `when` a condition on the case's own ids, a branch's figures and media declared assets; a branch after one that
+ * always holds can never answer (a warning).
+ */
+function checkBranches(c: CaseDefinition, ids: Ids): Issue[] {
+  const issues: Issue[] = [];
+  const check = (branches: readonly { id: string; when: Condition }[] | undefined, at: PathPart[], label: string) => {
+    const seen = new Set<string>();
+    let shadowed = false;
+    (branches ?? []).forEach((b, j) => {
+      if (seen.has(b.id)) issues.push(err([...at, "branches", j, "id"], `duplicate branch id "${b.id}" in ${label}`));
+      seen.add(b.id);
+      issues.push(...checkCondition(c, ids, b.when, [...at, "branches", j, "when"]));
+      if (shadowed) issues.push(warn([...at, "branches", j], `branch "${b.id}" of ${label} comes after a branch that always holds, so it can never answer`));
+      if ("always" in b.when && b.when.always) shadowed = true;
+    });
+  };
+  c.history.forEach((h, i) => check(h.branches, ["history", i], `history item "${h.id}"`));
+  c.exam.forEach((e, i) => {
+    check(e.branches, ["exam", i], `exam finding "${e.id}"`);
+    (e.branches ?? []).forEach((b, j) => {
+      if (b.media != null && !ids.assets.has(b.media)) issues.push(err(["exam", i, "branches", j, "media"], `unknown asset "${b.media}"`));
+    });
+  });
+  c.investigations.forEach((inv, i) => {
+    for (const [phase, result] of Object.entries(inv.results)) {
+      const at = ["investigations", i, "results", phase];
+      check(result.branches, at, `the "${inv.id}" result for phase "${phase}"`);
+      (result.branches ?? []).forEach((b, j) =>
+        (b.figures ?? []).forEach((fig, k) => {
+          if (!ids.assets.has(fig)) issues.push(err([...at, "branches", j, "figures", k], `unknown asset "${fig}"`));
+        }),
+      );
+      if (result.available === false && result.branches?.length) issues.push(warn([...at, "branches"], `the "${inv.id}" result for phase "${phase}" is marked unavailable: its branches are never read`));
+    }
+  });
   return issues;
 }
 

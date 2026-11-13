@@ -6,6 +6,7 @@
 import {
   resultFor,
   t,
+  toldResult,
   type CaseDefinition,
   type Investigation,
   type LabValue,
@@ -262,13 +263,18 @@ export interface FormattedResult {
     figures: string[];
     note: string | null;
     critical: boolean;
+    /** The authored branch this result was read as (a result that follows the record); absent: its own fields. */
+    branch?: string;
   } | null;
 }
 
 /** Result text for one (investigation, phase) — call ONLY for results the viewer has obtained. */
-export function formatResult(c: CaseDefinition, investigationId: string, phase: string, locale: string): FormattedResult {
+export function formatResult(c: CaseDefinition, investigationId: string, phase: string, locale: string, state?: SessionState): FormattedResult {
   const name = investigationName(c, investigationId, locale);
-  const result = resultFor(c, investigationId, phase);
+  // with the session: the result as it was read (a result that follows the record, core `toldResult`); without one,
+  // the result's own fields
+  const told = state ? toldResult(c, state, investigationId, phase) : null;
+  const result = told?.result ?? resultFor(c, investigationId, phase);
   if (!result) return { text: `${name}: ${rt(locale, "tool.result.unavailable")}`, data: null };
   const date = result.date ? t(result.date, locale) : "";
   const lines = [rt(locale, "tool.result.header", { name, phase: phaseLabel(c, phase, locale), date: date ? ` (${date})` : "" })];
@@ -307,6 +313,7 @@ export function formatResult(c: CaseDefinition, investigationId: string, phase: 
       figures: result.figures,
       note: result.note ? t(result.note, locale) : null,
       critical: result.critical,
+      ...(told?.branch ? { branch: told.branch } : {}),
     },
   };
 }

@@ -173,6 +173,49 @@ solution is sent to the browser).
   run-together keyword must not begin with a content word of 6+ letters:
   "examinetestes" is prefix-matched by "examine" in every exam request.
 
+### 3.1 Facts that follow the record (`branches`)
+
+Some answers depend on what was done in the encounter, not on the phase: at a review he can describe the needling
+only if he was needled, and the dispensing record lists the version that was actually supplied. A phase cannot say
+that — every path through the first visit ends in the same review phase. Give such an item **branches**:
+
+```json
+{ "id": "h-fu-needling", "topic": "hpi", "phases": ["review"],
+  "question": { "zh-CN": "上次针灸以后感觉怎么样？", "en": "How were you after the acupuncture?" },
+  "answer":   { "zh-CN": "上次没有扎针，我们说好这次再看。", "en": "I didn't have the needles last time — we said we'd see today." },
+  "branches": [
+    { "id": "needled", "when": { "intervened": "acu-insert", "valid": true },
+      "answer": { "zh-CN": "扎完当晚腰松了一些，第二天有点酸。", "en": "My back was looser that evening, a bit achy the next day." } }
+  ] }
+```
+
+* **Which one answers.** The first branch (declaration order) whose `when` holds on the session **as the item is
+  asked**; none holds: the item's own `answer`. So write `answer` for the path no branch describes, and order the
+  branches from the most specific to the most general. `when` is the full condition DSL (§7).
+* **The same for what is found and what is read.** An exam finding takes `branches: [{id, when, finding, abnormal?,
+  media?}]`; a result takes `branches: [{id, when, date?, text?, values?, figures?, note?}]` — a result's branch
+  replaces only the fields it gives (at least one), and never whether the record exists (`available`) or how it is
+  announced (`critical`).
+* **What the learner was told stays what they were told.** The engine records the branch as the item is asked,
+  examined or read (`SessionState.told`: `history:<id>`, `exam:<id>`, `result:<id>@<phase>` → the branch id, `""` for
+  the item's own text) and names it on the event (`history.asked`, `exam.performed`, `result.read`: `branch`). The
+  chart, the journal, a colleague who is shown the result and the patient model's ledger of revealed facts read that
+  record (core `toldHistory`, `toldFinding`, `toldResult`); the record changing afterwards does not rewrite it. Asked
+  again, the patient says what is true now and the record follows — the item is still asked once.
+* **Nothing else changes.** An item with branches is one item: one id for `asked` / `examined` / `read` conditions,
+  the rubric, required history, phase twins and the matcher (branches have no keywords — the question is the same).
+  Score what the learner *did* with the conditions the branches themselves use, never with which branch was heard.
+* **Grounding.** Every branch is authored fact, so every rule of §1 holds for each: both languages, the patient's
+  own words, no finding that says it is "not recorded" (the item's own text answers when no branch holds). An unasked
+  item's branches are all unrevealed: the patient's grounding check knows every one of them.
+* **Checks** (`cases validate`): duplicate branch ids within an item, unknown ids in a `when`, a branch's figures or
+  media that are not declared assets (errors); a branch after one that always holds, branches on a result marked
+  `available: false` (warnings).
+
+Use a phase twin (`supersedes`) when the answer changes because *time* moved on, and a branch when it depends on
+*what was done*. The follow-up evidence is then an **authored branch**: say so in the item's `source`, and keep it
+apart from recorded follow-up and from a calibrated model (docs of the pack that uses it).
+
 ## 4. Examination
 
 * 8–25 findings across relevant systems, including pertinent negatives. `requires`
@@ -481,6 +524,11 @@ A theatre case can give its room a care team that works on its own in in-world m
   `ordered`, `read`, `resultReady`, `decided`, `decidedFirstTry` (rubric: first
   attempt correct), `attempted`, `intervened`, `inOrder`, `held` (a hold stands),
   `phase`, `flag`, `objective`, `vital`, `elapsed`, `hints`.
+  `intervened` takes `valid` (`true`: only attempts that were not
+  contraindicated when made; `false`: only those that were), `minCount` and
+  `phase`: only attempts made while the case was in that phase — so a step
+  refused at the first visit and the same step refused at the review are two
+  facts (`{"intervened": "tuina", "valid": false, "phase": "review"}`).
 * `rubric`: 8–15 deterministic items across domains (history, examination,
   investigations, diagnosis, management, safety, efficiency) + 1–3
   communication items judged by the examiner (`judgeGuidance`, no `met`).

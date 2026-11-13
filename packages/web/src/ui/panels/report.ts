@@ -4,7 +4,7 @@
  * (local-only originals with the "not installed" placeholder), source footer;
  * plus the V4 zoom/pan original-image viewer with download.
  */
-import { isOrderReady, resultFor, type LabValue } from "@clinicalcraft/core";
+import { isOrderReady, toldResult, type LabValue } from "@clinicalcraft/core";
 import type { App } from "../../app/context.js";
 import { ct, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
@@ -101,7 +101,8 @@ export function reportPanel(app: App, args: ReportArgs): () => PanelView {
       clear(content);
       const s = store.snapshot?.state ?? game.session.session.state;
       const order = s.orders.find((o) => o.key === key);
-      const result = resultFor(c, args.investigationId, args.phase);
+      // the result as it was read (a result that follows the record: the branch the engine recorded as it was read)
+      const result = toldResult(c, s, args.investigationId, args.phase)?.result ?? null;
       const ready = order ? isOrderReady(c, s, order) : false;
       const seen = s.seen.includes(key);
       // Read once it is ordered, ready and has a record (reading costs simulated time — never twice).

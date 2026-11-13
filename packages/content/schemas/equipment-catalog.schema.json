@@ -1229,6 +1229,9 @@
             },
             "valid": {
               "type": "boolean"
+            },
+            "phase": {
+              "$ref": "#/definitions/Id"
             }
           },
           "required": [

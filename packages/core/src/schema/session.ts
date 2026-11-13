@@ -149,6 +149,8 @@ export interface InterventionRecord {
   appropriateness: "indicated" | "neutral" | "contraindicated";
   /** `SessionState.seq` when it was committed (orders acts of the same minute; absent in sessions saved before). */
   seq?: number;
+  /** The case phase it was attempted in (`{intervened, phase}` reads it; absent in sessions saved before). */
+  phase?: string;
   /**
    * A checklist step attempted out of order (`checklist: true`, contraindicated when attempted): recorded, but
    * its effects and flags did not apply and it used none of `maxDoses`.
@@ -218,6 +220,12 @@ export interface SessionState {
   orders: OrderRecord[];
   /** Result keys read, `${investigationId}@${phase}` */
   seen: string[];
+  /**
+   * Which authored branch of a fact was heard, found or read (case `branches`, `engine/branches.ts`), by fact key —
+   * `history:<id>`, `exam:<id>`, `result:<investigationId>@<phase>` — to the branch id, `""` for the item's own text.
+   * Only facts that have branches are listed; absent until the first. The latest time it was obtained wins.
+   */
+  told?: Record<string, string>;
   /** Decisions answered correctly → minute answered. */
   decisions: Record<string, number>;
   attempts: AttemptRecord[];
@@ -272,12 +280,13 @@ export interface SessionState {
 
 export type DomainEvent =
   | { type: "session.started" }
-  | { type: "history.asked"; itemId: string; firstTime: boolean; disclosure: string }
-  | { type: "exam.performed"; findingId: string; firstTime: boolean }
+  /** `branch`: the authored branch that answered (items with `branches`; `""`: the item's own answer). */
+  | { type: "history.asked"; itemId: string; firstTime: boolean; disclosure: string; branch?: string }
+  | { type: "exam.performed"; findingId: string; firstTime: boolean; branch?: string }
   | { type: "order.placed"; investigationId: string; phase: string; key: string; readyAt: number }
   | { type: "order.duplicate"; investigationId: string; phase: string; key: string }
   | { type: "result.ready"; key: string; investigationId: string; phase: string; critical: boolean }
-  | { type: "result.read"; key: string; investigationId: string; phase: string; firstTime: boolean }
+  | { type: "result.read"; key: string; investigationId: string; phase: string; firstTime: boolean; branch?: string }
   | { type: "phase.changed"; from: string; to: string; automatic: boolean }
   | { type: "decision.answered"; decisionId: string; correct: boolean; firstTry: boolean; optionIds: string[] }
   /** `invalid`: a checklist step attempted out of order — recorded, nothing applied (see `Intervention.checklist`). */

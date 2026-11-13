@@ -234,6 +234,26 @@ export const HISTORY_TOPICS = [
 ] as const;
 export const HistoryTopicSchema = z.enum(HISTORY_TOPICS);
 
+/**
+ * An authored branch of a fact (docs/CASE_AUTHORING.md §3.1): what the patient says, what an examination finds or what
+ * a record states **when the record of the encounter is a certain way** — he was needled or he was not, this version
+ * of the prescription was supplied or that one. The first branch whose `when` holds answers instead of the item's own
+ * text; none holds: the item's own. Which branch was heard is recorded when the item is asked, examined or read
+ * (`SessionState.told`), so what the learner was told stays what they were told.
+ */
+const branchBase = {
+  /** Unique within its item; names the branch in the record, the events and the transcript. */
+  id: IdSchema,
+  /** The state of the record this branch is true of (the condition DSL, on the session as the item is obtained). */
+  when: ConditionSchema,
+  /** Provenance note of this branch. */
+  source: LocalizedTextSchema.optional(),
+};
+
+/** A history answer that holds when the record is a certain way (see `branchBase`). */
+export const HistoryBranchSchema = z.object({ ...branchBase, answer: LocalizedTextSchema }).strict();
+export type HistoryBranch = z.infer<typeof HistoryBranchSchema>;
+
 export const HistoryItemSchema = z
   .object({
     id: IdSchema,
@@ -242,6 +262,11 @@ export const HistoryItemSchema = z
     question: LocalizedTextSchema,
     /** The patient's answer in their own voice. For `unknown` items: how they say it's not known/recorded. */
     answer: LocalizedTextSchema,
+    /**
+     * Answers that follow the record (`HistoryBranchSchema`): the first whose `when` holds is said instead of
+     * `answer` — a review answer about the treatment he actually received. `answer` is what he says when none holds.
+     */
+    branches: z.array(HistoryBranchSchema).min(1).optional(),
     /** Extra trigger words/phrases for the offline intent matcher (per locale). */
     keywords: LocalizedListSchema.default([]),
     /**
@@ -315,6 +340,10 @@ export const EXAM_SYSTEMS = [
 ] as const;
 export const ExamSystemSchema = z.enum(EXAM_SYSTEMS);
 
+/** An examination finding that holds when the record is a certain way (see `branchBase`); `abnormal` / `media` replace the item's when given. */
+export const ExamBranchSchema = z.object({ ...branchBase, finding: LocalizedTextSchema, abnormal: z.boolean().optional(), media: IdSchema.optional() }).strict();
+export type ExamBranch = z.infer<typeof ExamBranchSchema>;
+
 export const ExamFindingSchema = z
   .object({
     id: IdSchema,
@@ -325,6 +354,11 @@ export const ExamFindingSchema = z
     /** Phrases that down-weight this finding in `matchExam` (see `HistoryItemSchema.excludeKeywords`). */
     excludeKeywords: LocalizedListSchema.default([]),
     finding: LocalizedTextSchema,
+    /**
+     * Findings that follow the record (`ExamBranchSchema`): the first whose `when` holds is found instead of
+     * `finding` — needle sites to inspect only when he was needled.
+     */
+    branches: z.array(ExamBranchSchema).min(1).optional(),
     abnormal: z.boolean().default(false),
     /** Equipment capabilities needed (e.g. ["stethoscope"]). */
     requires: z.array(CapabilitySchema).default([]),
@@ -356,6 +390,24 @@ export const LabValueSchema = z
   .strict();
 export type LabValue = z.infer<typeof LabValueSchema>;
 
+/**
+ * A result that holds when the record is a certain way (see `branchBase`): the fields it gives replace the result's
+ * own — a dispensing record that lists what was actually supplied. A branch never changes whether the record exists
+ * (`available`) or how it is announced (`critical`).
+ */
+export const ResultBranchSchema = z
+  .object({
+    ...branchBase,
+    date: LocalizedTextSchema.optional(),
+    text: LocalizedTextSchema.optional(),
+    values: z.array(LabValueSchema).optional(),
+    figures: z.array(IdSchema).optional(),
+    note: LocalizedTextSchema.optional(),
+  })
+  .strict()
+  .refine((b) => b.text != null || b.values != null || b.figures != null || b.note != null || b.date != null, "a result branch replaces at least one of date, text, values, figures or note");
+export type ResultBranch = z.infer<typeof ResultBranchSchema>;
+
 export const ResultSchema = z
   .object({
     /**
@@ -366,6 +418,11 @@ export const ResultSchema = z
     date: LocalizedTextSchema.optional(),
     /** Narrative report text. */
     text: LocalizedTextSchema,
+    /**
+     * Versions of this result that follow the record (`ResultBranchSchema`): the first whose `when` holds as the
+     * result is read replaces the fields it gives.
+     */
+    branches: z.array(ResultBranchSchema).min(1).optional(),
     /** Structured values (rendered as a lab table, used by the physiology/monitor where relevant). */
     values: z.array(LabValueSchema).default([]),
     /** Asset ids of figures (original images). */

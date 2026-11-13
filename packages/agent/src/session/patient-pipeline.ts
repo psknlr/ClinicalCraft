@@ -24,10 +24,15 @@
  * the prompt); the verifier still runs.
  */
 import {
+  currentHistory,
   distinctHistoryHits,
+  examFindings,
+  historyAnswers,
   historyAvailable,
+  historyBranch,
   matchHistory,
   t,
+  toldHistory,
   type CaseDefinition,
   type ClinicalAction,
   type MatchHit,
@@ -324,13 +329,18 @@ export interface PatientTurnResult {
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
 
-function answerOf(c: CaseDefinition, id: string, locale: string): string {
+/**
+ * A fact's answer for this session (facts that follow the record, core `branches.ts`): `told` — as the learner was
+ * told it (the ledger of what was revealed); `now` — as it is answered when asked on this state (what is said this
+ * turn; the engine records the same branch as the question is credited).
+ */
+function answerOf(c: CaseDefinition, s: SessionState, id: string, locale: string, as: "told" | "now" = "told"): string {
   const h = c.history.find((x) => x.id === id);
-  return h ? t(h.answer, locale) : "";
+  return h ? t((as === "now" ? currentHistory(c, s, h) : toldHistory(c, s, h)).answer, locale) : "";
 }
 
-function facts(c: CaseDefinition, ids: readonly string[], locale: string): { id: string; answer: string }[] {
-  return ids.map((id) => ({ id, answer: answerOf(c, id, locale) })).filter((f) => f.answer);
+function facts(c: CaseDefinition, s: SessionState, ids: readonly string[], locale: string, as: "told" | "now" = "told"): { id: string; answer: string }[] {
+  return ids.map((id) => ({ id, answer: answerOf(c, s, id, locale, as) })).filter((f) => f.answer);
 }
 
 function speakerName(c: CaseDefinition, speaker: "patient" | "companion", locale: string): string {
@@ -362,12 +372,13 @@ export function caseConditionTerms(c: CaseDefinition): string[] {
  * Answers (session locale) of facts available now that were neither asked nor
  * are being spoken this turn. `disclosure: "unknown"` items are left out: their
  * answer ("I don't know…") tells no fact, and its everyday phrasing would only
- * cause false alarms.
+ * cause false alarms. An item whose answer follows the record contributes every
+ * one of its answers: none of them has been told.
  */
 function unrevealedAnswers(c: CaseDefinition, state: SessionState, allowed: ReadonlySet<string>, locale: string): string[] {
   return c.history
     .filter((h) => h.disclosure !== "unknown" && availableInPhase(h, state) && !state.asked.includes(h.id) && !allowed.has(h.id))
-    .map((h) => t(h.answer, locale));
+    .flatMap((h) => historyAnswers(h).map((a) => t(a, locale)));
 }
 
 /**
@@ -417,7 +428,7 @@ export function voiceGroundingInputs(
   clarify: string | null,
   locale: string,
 ): { sources: string[]; options: VerifyOptions } {
-  const answered = used.map((id) => answerOf(c, id, locale)).filter(Boolean);
+  const answered = used.map((id) => answerOf(c, state, id, locale, "now")).filter(Boolean);
   const sources = [...answered, ...personaSources(c, locale, state), utterance, clarify ?? ""];
   return {
     sources,
@@ -453,9 +464,9 @@ export function buildPatientContext(input: Pick<PatientTurnInput, "caseDef" | "l
     },
     companion: companion ? { role: companion.role, name: t(companion.name, L), persona: t(companion.persona, L), answersHistory: companion.answersHistory } : null,
     affect: { state: p.affect, intensity: input.memory.affectIntensity },
-    revealedFacts: facts(c, ledger, L),
-    selectedFacts: facts(c, selected, L),
-    volunteer: facts(c, volunteer, L),
+    revealedFacts: facts(c, state, ledger, L),
+    selectedFacts: facts(c, state, selected, L, "now"),
+    volunteer: facts(c, state, volunteer, L, "now"),
     fallbackUnknown: t(p.fallbackUnknown, L),
     clarify,
     locale: L,
@@ -627,7 +638,15 @@ function result(input: PatientTurnInput, partial: Partial<PatientTurnResult> & P
 function credit(input: PatientTurnInput, ids: readonly string[]): string[] {
   const out: string[] = [];
   for (const id of ids) {
-    if (input.state().asked.includes(id)) continue;
+    if (input.state().asked.includes(id)) {
+      // asked before, and its answer follows the record: what was just said is what is true now — record that it was
+      // heard again when it differs from what was heard before (nothing newly revealed: the item is the same)
+      const item = input.caseDef.history.find((h) => h.id === id);
+      if (item?.branches?.length && historyBranch(input.caseDef, input.state(), item) !== toldHistory(input.caseDef, input.state(), item).branch) {
+        input.dispatch({ type: "ask", itemId: id, via: "agent", by: "agent" });
+      }
+      continue;
+    }
     const r = input.dispatch({ type: "ask", itemId: id, via: "agent", by: "agent" });
     if (!r.rejected) out.push(id);
   }
@@ -773,7 +792,8 @@ export async function runPatientTurn(input: PatientTurnInput): Promise<PatientTu
   const diagnostics: string[] = check.ok ? [] : [...check.violations];
   if (nonverbal) {
     const examined = new Set(input.state().examined);
-    const unexaminedFindings = c.exam.filter((f) => !examined.has(f.id)).flatMap((f) => Object.values(f.finding ?? {}).filter((v): v is string => typeof v === "string"));
+    // every text an unexamined finding can show (its own and each of its branches'): none has been found
+    const unexaminedFindings = c.exam.filter((f) => !examined.has(f.id)).flatMap((f) => examFindings(f).flatMap((x) => (typeof x === "string" ? [x] : Object.values(x ?? {}).filter((v): v is string => typeof v === "string"))));
     const cue = checkNonverbal(nonverbal, sources, { drugLexicon: caseDrugLexicon(c), unexaminedFindings });
     if (!cue.ok) {
       nonverbal = null;
@@ -816,10 +836,10 @@ async function runToolPipeline(input: PatientTurnInput, usage: TokenUsage, warni
   const revealed = turn.grounded;
   const newlyRevealed = revealed.filter((id) => !before.has(id));
   const known = [...new Set([...input.state().asked, ...revealed])];
-  const sources = [...known.map((id) => answerOf(c, id, L)), ...personaSources(c, L, input.state()), input.utterance];
+  const sources = [...known.map((id) => answerOf(c, input.state(), id, L)), ...personaSources(c, L, input.state()), input.utterance];
   const check = verifyGrounding(turn.text, sources, { drugLexicon: caseDrugLexicon(c) });
   if (!check.ok && input.strictGrounding) {
-    const answers = revealed.map((id) => answerOf(c, id, L)).filter(Boolean);
+    const answers = revealed.map((id) => answerOf(c, input.state(), id, L)).filter(Boolean);
     const text = answers.length > 0 ? joinSentences(L, answers) : t(c.patient.persona.fallbackUnknown, L);
     return result(
       input,

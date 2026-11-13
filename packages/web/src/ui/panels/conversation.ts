@@ -23,6 +23,7 @@
 import { availableInPhase, RESOLVE_THRESHOLD, resolveHits, scopeOf, type Resolution } from "@clinicalcraft/agent";
 import {
   historyAvailable,
+  toldFinding,
   matchExam,
   matchInterventions,
   matchSpecificity,
@@ -431,6 +432,8 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
             { class: "exam-list" },
             list.map((f) => {
               const done = state.examined.includes(f.id);
+              // the finding as it was found (a finding that follows the record: the branch the engine recorded)
+              const found = toldFinding(c, state, f);
               const v = verdicts.get(f.id) ?? null;
               // clinical mode: the facility's bedside capabilities; embodied: the world's verdict
               const missing = v ? [] : missingCaps(f.requires, caps);
@@ -438,7 +441,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
               const disabled = !done && (v ? !offered(v) : missing.length > 0);
               return h(
                 "div",
-                { class: ["exam-row", done ? "done" : "", f.abnormal && done ? "abnormal" : ""] },
+                { class: ["exam-row", done ? "done" : "", found.abnormal && done ? "abnormal" : ""] },
                 h(
                   "button",
                   { type: "button", class: "question", disabled, dataset: { finding: f.id }, onclick: () => perform(f) },
@@ -446,7 +449,7 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
                   h("span", { class: "tick" }, done ? tr("exam.done") : missing.length ? tr("exam.needs", { caps: capList(missing) }) : refusedHere ? tr("exam.notHere") : tr("exam.do") + " →"),
                 ),
                 !done && v ? refusalNote(v) : null,
-                done ? h("div", { class: "finding" }, ct(f.finding)) : null,
+                done ? h("div", { class: "finding" }, ct(found.finding)) : null,
               );
             }),
           ),

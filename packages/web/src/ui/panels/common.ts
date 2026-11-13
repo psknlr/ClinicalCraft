@@ -3,7 +3,7 @@
  * phase names, the V4 evidence grid, case figures with the "not installed"
  * placeholder.
  */
-import { capabilityLabel, isOrderReady, resultFor, type CaseDefinition, type OrderRecord, type SessionState } from "@clinicalcraft/core";
+import { capabilityLabel, isOrderReady, toldResult, type CaseDefinition, type OrderRecord, type SessionState } from "@clinicalcraft/core";
 import { assetExists, caseAssetUrl } from "../../app/assets.js";
 import type { Game } from "../../app/context.js";
 import { ct, getLocale, joinList, tr, trMaybe } from "../../i18n/index.js";
@@ -67,7 +67,7 @@ export function evidenceGrid(game: Game, filter: (o: OrderRecord) => boolean, on
       "div",
       { class: "evidence-grid" },
       orders.map((o) => {
-        const r = resultFor(c, o.investigationId, o.phase);
+        const r = toldResult(c, s, o.investigationId, o.phase)?.result ?? null;
         const figs = r?.available ? r.figures.length : 0;
         const left = minutesLeft(c, s, o);
         const read = s.seen.includes(o.key);

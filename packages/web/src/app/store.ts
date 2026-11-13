@@ -526,7 +526,9 @@ export class SessionStore {
     switch (event.type) {
       case "exam.performed": {
         const f = c.exam.find((x) => x.id === event.findingId);
-        if (f) this.chat.push({ key: this.key("e"), role: "system", agent: "patient", speaker: t(f.maneuver, L), text: t(f.finding, L), grounded: [], streaming: false, tone: "exam", at });
+        // a finding that follows the record: the event names the branch that was found
+        const found = (event.branch ? f?.branches?.find((b) => b.id === event.branch) : undefined) ?? f;
+        if (f && found) this.chat.push({ key: this.key("e"), role: "system", agent: "patient", speaker: t(f.maneuver, L), text: t(found.finding, L), grounded: [], streaming: false, tone: "exam", at });
         break;
       }
       case "intervention.applied": {

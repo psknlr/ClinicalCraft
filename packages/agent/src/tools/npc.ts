@@ -19,8 +19,10 @@ import {
   orderStatus,
   progress,
   t,
+  toldHistory,
   vitalsAt,
   type CaseDefinition,
+  type SessionState,
 } from "@clinicalcraft/core";
 import { isZh, joinList, rt } from "../session/i18n.js";
 import { actorFor, lockedDecisionLabel, rejectedOutput, resolveIntervention, strArg, type ToolArgs } from "./clinical.js";
@@ -43,11 +45,11 @@ function uniqueIds(value: unknown): string[] {
   return [...new Set(list.map((x) => String(x).trim()).filter(Boolean))];
 }
 
-/** Fact answers for ids (ledger/tool output formatting). */
-export function factAnswers(c: CaseDefinition, ids: readonly string[], locale: string): { id: string; answer: string }[] {
+/** Fact answers for ids (ledger/tool output formatting), as this session was told them (`toldHistory`). */
+export function factAnswers(c: CaseDefinition, s: SessionState, ids: readonly string[], locale: string): { id: string; answer: string }[] {
   return ids.flatMap((id) => {
     const h = c.history.find((x) => x.id === id);
-    return h ? [{ id, answer: t(h.answer, locale) }] : [];
+    return h ? [{ id, answer: t(toldHistory(c, s, h).answer, locale) }] : [];
   });
 }
 
@@ -91,7 +93,8 @@ function revealFacts(options: NpcToolOptions): ToolDefinition<ToolArgs> {
         if (!ctx.state().asked.includes(id)) ctx.dispatch({ type: "ask", itemId: id, via: "agent", by: actorFor(ctx) });
       }
       const lines: string[] = [];
-      const answers = factAnswers(c, revealed, L);
+      // after the questions were credited: each answer is the branch the engine recorded for it
+      const answers = factAnswers(c, ctx.state(), revealed, L);
       if (answers.length > 0) {
         lines.push(rt(L, "tool.facts.revealed"));
         for (const a of answers) lines.push(`[${a.id}] ${a.answer}`);
@@ -142,7 +145,7 @@ export function obtainedResultsText(ctx: Pick<ToolContext, "caseDef" | "locale" 
     const id = o.order.investigationId;
     if (!isNurse && remit.length > 0 && !remit.includes(id)) continue;
     if (o.read) {
-      const formatted = formatResult(c, id, o.order.phase, L);
+      const formatted = formatResult(c, id, o.order.phase, L, s);
       lines.push(formatted.text);
       data.push(formatted.data);
     } else if (isNurse) {

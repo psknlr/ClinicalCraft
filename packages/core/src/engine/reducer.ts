@@ -22,6 +22,7 @@ import { currentObjective, progress } from "./queries.js";
 import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
+import { examBranch, historyBranch, resultBranch, toldKey } from "./branches.js";
 import { createProcedureState, operate, procedureFor, procedureStateOf } from "./procedure/index.js";
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
 import { applyStudy } from "./study.js";
@@ -104,7 +105,14 @@ function cloneState(s: SessionState): SessionState {
     objectivesDone: { ...s.objectivesDone },
     baselineOverrides: { ...s.baselineOverrides },
     ...(s.holds ? { holds: [...s.holds] } : {}),
+    ...(s.told ? { told: { ...s.told } } : {}),
   };
+}
+
+/** Record which authored branch of a fact was obtained (`SessionState.told`; `""`: the item's own text). */
+function tell(s: SessionState, key: string, branch: string | null): string {
+  s.told = { ...(s.told ?? {}), [key]: branch ?? "" };
+  return branch ?? "";
 }
 
 /** Simulated minutes an action consumes (0 on a static clock). */
@@ -158,7 +166,9 @@ function onAsk(ctx: Ctx, a: Action<"ask">): Outcome {
   if (historyVoice(c, s, item.id) === "none") return rejected("cannot-answer", `the patient cannot speak now and the case has no companion to answer "${item.id}"`);
   const firstTime = !s.asked.includes(item.id);
   if (firstTime) s.asked.push(item.id);
-  ctx.events.push({ type: "history.asked", itemId: item.id, firstTime, disclosure: item.disclosure });
+  // an answer that follows the record: the branch that holds as it is asked is the one heard (before this ask counts)
+  const branch = item.branches?.length ? tell(s, toldKey.history(item.id), historyBranch(c, ctx.before, item)) : undefined;
+  ctx.events.push({ type: "history.asked", itemId: item.id, firstTime, disclosure: item.disclosure, ...(branch !== undefined ? { branch } : {}) });
   return accepted(actionCost(c, "ask"));
 }
 
@@ -171,7 +181,8 @@ function onExamine(ctx: Ctx, a: Action<"examine">): Outcome {
   }
   const firstTime = !s.examined.includes(finding.id);
   if (firstTime) s.examined.push(finding.id);
-  ctx.events.push({ type: "exam.performed", findingId: finding.id, firstTime });
+  const branch = finding.branches?.length ? tell(s, toldKey.exam(finding.id), examBranch(c, ctx.before, finding)) : undefined;
+  ctx.events.push({ type: "exam.performed", findingId: finding.id, firstTime, ...(branch !== undefined ? { branch } : {}) });
   return accepted(actionCost(c, "examine"));
 }
 
@@ -209,10 +220,12 @@ function onRead(ctx: Ctx, a: Action<"read">): Outcome {
   if (c.clock.mode === "simulated" && s.clock < order.readyAt) {
     return rejected("not-ready", `result "${key}" is not ready until minute ${order.readyAt}`);
   }
-  if (!resultFor(c, investigation.id, phase)) return rejected("no-record", `the case has no "${investigation.id}" record for phase "${phase}"`);
+  const result = resultFor(c, investigation.id, phase);
+  if (!result) return rejected("no-record", `the case has no "${investigation.id}" record for phase "${phase}"`);
   const firstTime = !s.seen.includes(key);
   if (firstTime) s.seen.push(key);
-  ctx.events.push({ type: "result.read", key, investigationId: investigation.id, phase, firstTime });
+  const branch = result.branches?.length ? tell(s, toldKey.result(investigation.id, phase), resultBranch(c, ctx.before, investigation.id, phase)) : undefined;
+  ctx.events.push({ type: "result.read", key, investigationId: investigation.id, phase, firstTime, ...(branch !== undefined ? { branch } : {}) });
   return accepted(actionCost(c, "read"));
 }
 
@@ -287,7 +300,7 @@ function onIntervene(ctx: Ctx, a: Action<"intervene">): Outcome {
         ? "indicated"
         : "neutral";
   const invalid = intervention.checklist === true && appropriateness === "contraindicated";
-  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, ...(invalid ? { invalid: true as const } : {}) });
+  s.interventions.push({ interventionId: intervention.id, at: s.clock, appropriateness, seq: s.seq + 1, phase: s.phase, ...(invalid ? { invalid: true as const } : {}) });
   ctx.events.push({ type: "intervention.applied", interventionId: intervention.id, appropriateness, ...(invalid ? { invalid: true as const } : {}) });
   if (invalid) return accepted(actionCost(c, "intervene"));
   for (const flag of intervention.setFlags) {

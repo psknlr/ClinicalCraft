@@ -4,7 +4,7 @@
  * comparison (generalised V4 "治疗前后原图对照": any investigation with figures
  * read in ≥ 2 phases) and "finish" → debrief.
  */
-import { availableDecisions, presentedOptions, resultFor, type CaseDefinition, type Decision, type LocalizedText, type SessionState } from "@clinicalcraft/core";
+import { availableDecisions, presentedOptions, resultFor, toldResult, type CaseDefinition, type Decision, type LocalizedText, type SessionState } from "@clinicalcraft/core";
 import type { App, Game } from "../../app/context.js";
 import { ct, tr } from "../../i18n/index.js";
 import { clear, h } from "../dom.js";
@@ -16,7 +16,7 @@ export function comparablePairs(c: CaseDefinition, s: SessionState): { investiga
   const out: { investigationId: string; phases: { phase: string; figures: string[] }[] }[] = [];
   for (const inv of c.investigations) {
     const phases = c.phases
-      .map((p) => ({ phase: p.id, figures: resultFor(c, inv.id, p.id)?.figures ?? [] }))
+      .map((p) => ({ phase: p.id, figures: toldResult(c, s, inv.id, p.id)?.result.figures ?? [] }))
       .filter((p) => p.figures.length > 0 && s.seen.includes(`${inv.id}@${p.phase}`));
     if (phases.length >= 2) out.push({ investigationId: inv.id, phases });
   }

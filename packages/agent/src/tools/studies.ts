@@ -277,7 +277,7 @@ const retrieveReport: ToolDefinition<ToolArgs> = {
       if (read.rejected && read.rejected.code !== "not-ready") return rejectedOutput(L, read, read.rejected.message);
     }
     if (st.kind === "not-present") return { ok: true, output: rt(L, "study.retrieve.unavailable", { label: label("unavailable", L), name, text: t(result.text, L) }), data: { source: "unavailable", investigationId: inv.id } };
-    return { ok: true, output: rt(L, "study.retrieve.source", { label: label("source", L), name, text: formatResult(c, inv.id, phase, L).text }), data: { source: "record", investigationId: inv.id } };
+    return { ok: true, output: rt(L, "study.retrieve.source", { label: label("source", L), name, text: formatResult(c, inv.id, phase, L, ctx.state()).text }), data: { source: "record", investigationId: inv.id } };
   },
 };
 
