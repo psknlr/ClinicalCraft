@@ -19,5 +19,5 @@
   },
   "files": ["dist", "cases", "facilities", "catalogs", "schemas", "bench", "grounding", "templates", "assets"],
   "scripts": { "build": "tsc -b" },
-  "dependencies": { "@clinicalcraft/core": "5.0.0" }
+  "dependencies": { "@clinicalcraft/core": "5.1.0" }
 }

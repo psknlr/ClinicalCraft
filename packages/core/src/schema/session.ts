@@ -3,7 +3,7 @@ import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility
 import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "./alarm.js";
 import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
-import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
+import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState, type RefusalReason } from "./procedure.js";
 import { SeatSchema, type Place } from "./positions.js";
 
 /**
@@ -99,8 +99,16 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({
     type: z.literal("operate"),
     op: ProcedureOpSchema,
-    /** A colleague who does this step (a staff id: the assistant holding a port); absent: the operator. */
+    /**
+     * A colleague who does this step (a staff id: the assistant holding a port, the camera holder, the scrub nurse
+     * passing); absent: the operator. The stand-in surgeon, while the learner holds a place, is the operator.
+     */
     actor: z.string().min(1).max(80).optional(),
+    /**
+     * Informational: which step of a team member's plan this is (`standin:3`). The field's rules never read it; an
+     * accepted step records it (`ProcedureState.refs`), so a member's progress is read from the record (docs/TEAM.md).
+     */
+    ref: z.string().max(80).regex(/^[a-z0-9:._-]+$/, "a step reference is lower-case letters, digits and . _ : -").optional(),
     ...base,
   }).strict(),
   /**
@@ -344,10 +352,11 @@ export type DomainEvent =
   /** A step of the operation was carried out; `signals` are what the operator sees or feels (never the hidden anatomy). */
   /**
    * A committed operative step (`id` `op-<step>`: stable across replays; `step` its number in the operation, `seq`
-   * the session's action sequence, `at` the clock, `by` who acted, `detail` the op as committed) — what a
-   * presentation queue animates in order, once.
+   * the session's action sequence, `at` the clock, `by` who acted, `actor` the colleague who did it — absent: the
+   * operator, the stand-in surgeon included —, `detail` the op as committed, a `to` naming the operator left out;
+   * `ref` the action's own) — what a presentation queue animates in order, once, replaying `detail` with `actor`.
    */
-  | { type: "procedure.step"; op: ProcedureOpType; signals: ProcedureSignal[]; id?: string; step?: number; seq?: number; at?: number; by?: Actor; actor?: string; detail?: ProcedureOp }
+  | { type: "procedure.step"; op: ProcedureOpType; signals: ProcedureSignal[]; id?: string; step?: number; seq?: number; at?: number; by?: Actor; actor?: string; detail?: ProcedureOp; ref?: string }
   | { type: "hold.placed"; interventionId: string; placedBy: string; reason: string }
   | { type: "hold.released"; interventionId: string; releasedBy: string; reassessment: string }
   /** An entry of the count's record; `status` after it; a count's `missing` / `unexpected` items. */
@@ -377,8 +386,10 @@ export type DomainEvent =
   /**
    * A refused operative step also carries `at` (the clock), `after` (the action sequence it came after: the record's
    * order), `detail` (the step as asked) and `actor`: the scope shows it with its reason, the field unchanged.
+   * `reason`: what a front-end says in the learner's language (docs/PROCEDURE.md §3, `FIELD_REFUSALS`), where the
+   * refusal has one — `message` stays the engine's English.
    */
-  | { type: "action.rejected"; action: ClinicalActionType; code: RejectionCode; message: string; at?: number; after?: number; detail?: ProcedureOp; actor?: string };
+  | { type: "action.rejected"; action: ClinicalActionType; code: RejectionCode; message: string; at?: number; after?: number; detail?: ProcedureOp; actor?: string; reason?: RefusalReason };
 
 export type RejectionCode =
   | "not-started"
@@ -401,6 +412,6 @@ export type RejectionCode =
 export interface ReduceResult {
   state: SessionState;
   events: DomainEvent[];
-  /** Present when the action was rejected (state unchanged except where noted). */
-  rejected?: { code: RejectionCode; message: string };
+  /** Present when the action was rejected (state unchanged except where noted); `reason` as on `action.rejected`. */
+  rejected?: { code: RejectionCode; message: string; reason?: RefusalReason };
 }

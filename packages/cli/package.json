@@ -20,7 +20,7 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "@clinicalcraft/core": "5.0.0",
+    "@clinicalcraft/core": "5.1.0",
     "@clinicalcraft/content": "5.0.0",
     "@clinicalcraft/agent": "5.0.0",
     "@clinicalcraft/bench": "5.0.0",

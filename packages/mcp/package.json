@@ -11,5 +11,5 @@
   },
   "files": ["dist"],
   "scripts": { "build": "tsc -b" },
-  "dependencies": { "@clinicalcraft/core": "5.0.0", "@clinicalcraft/content": "5.0.0", "@clinicalcraft/agent": "5.0.0" }
+  "dependencies": { "@clinicalcraft/core": "5.1.0", "@clinicalcraft/content": "5.0.0", "@clinicalcraft/agent": "5.0.0" }
 }

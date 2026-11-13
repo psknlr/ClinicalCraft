@@ -215,13 +215,15 @@ export interface AssessmentReport {
   /**
    * What the operation really did (cases with a `procedure`, once it has begun): unsafe acts, injuries and
    * whether they were recognised, safety pauses with what was claimed against what the field showed, and
-   * the counters. For the debrief — never shown to an operator during the case.
+   * the counters. `by`: the colleague whose step an unsafe act or an injury was (a staff id; absent: the operator's),
+   * `recognisedBy` the colleague who said an injury aloud first. For the debrief — never shown to an operator during
+   * the case.
    */
   procedure?: {
-    unsafe: { code: string; structure?: string; at: number }[];
-    injuries: { kind: string; structure: string; recognised: boolean; severity: "minor" | "major" }[];
+    unsafe: { code: string; structure?: string; at: number; by?: string }[];
+    injuries: { kind: string; structure: string; recognised: boolean; severity: "minor" | "major"; by?: string; recognisedBy?: string }[];
     pauses: { view: string; at: number; achieved: boolean; claimsMatchField: boolean }[];
-    counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number };
+    counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number; colleague?: number; offView?: number };
   };
   /**
    * The surgical count (cases whose team keeps one; docs/TEAM.md §4.3), by item identity: its status, the items

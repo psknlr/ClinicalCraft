@@ -6,10 +6,10 @@
  * agents get this view and nothing else of the procedure state.
  */
 import type { LocalizedText } from "../../i18n.js";
-import type { InstrumentId, ProcedureDefinition } from "../../schema/procedure.js";
+import type { InstrumentId, ProcedureDefinition, ZoomLevel } from "../../schema/procedure.js";
 import { appearanceRule, clearedFraction, exposure, fieldOpen, isTubular, isVisible, obscured, structureOf } from "./field.js";
 import { describeDirection } from "./geometry.js";
-import type { ProcedureState } from "./state.js";
+import { cameraPort, type ProcedureState } from "./state.js";
 import { tubeVocabulary } from "./variant.js";
 
 export interface FieldView {
@@ -52,6 +52,16 @@ export interface FieldView {
   imaged: string[];
   pauses: number;
   closed: boolean;
+  /**
+   * The camera: the camera port the picture comes from, where it is aimed (`at`: a region id; null: the whole field)
+   * and how close (`zoom`); `holder`: the colleague holding it (absent: the operator). Absent while no camera port
+   * holds the laparoscope. Until the first aim it is the whole field, wide — the picture as it always was.
+   */
+  camera?: { port: string; at: string | null; zoom: ZoomLevel; holder?: string };
+  /** The region of the operator's last tissue step (absent before the first): where the camera would follow the work. */
+  working?: string;
+  /** Instruments passed and waiting to go in: to whom (absent: the operator) and by whom. */
+  passed: { instrument: InstrumentId; to?: string; by: string }[];
 }
 
 function dissectionBin(f: number): FieldView["regions"][number]["dissection"] {
@@ -123,5 +133,15 @@ export function observeField(def: ProcedureDefinition, s: ProcedureState, view: 
     imaged: [...s.imaged],
     pauses: s.pauses.length,
     closed: s.closed,
+    ...cameraOf(s),
+    ...(s.working ? { working: s.working } : {}),
+    passed: (s.passed ?? []).map((q) => ({ ...q })),
   };
+}
+
+/** The view's camera (absent without a laparoscope in a camera port): its port, aim, zoom and holder. */
+function cameraOf(s: ProcedureState): Pick<FieldView, "camera"> {
+  const p = cameraPort(s);
+  if (!p) return {};
+  return { camera: { port: p.site, at: s.camera?.at ?? null, zoom: s.camera?.zoom ?? "wide", ...(p.holder ? { holder: p.holder } : {}) } };
 }

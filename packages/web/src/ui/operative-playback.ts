@@ -156,9 +156,10 @@ export class OperativePlayback {
       const e = events[i]!;
       let after = base;
       if (e.type === "procedure.step") {
-        // an accepted step was accepted under the supply of its time: the replay does not re-ask the equipment
+        // an accepted step was accepted under the supply of its time: the replay does not re-ask the equipment; its
+        // actor (a colleague; none: the operator, the stand-in surgeon too) and its ref are the record's
         const { supply: _supply, ...unsupplied } = base;
-        const replayed = e.detail ? operate(def, unsupplied, e.detail, e.at ?? 0, e.actor) : null;
+        const replayed = e.detail ? operate(def, unsupplied, e.detail, e.at ?? 0, e.actor, e.ref) : null;
         // a step that cannot be replayed (a record without its detail): its frame is the session's field
         after = replayed && !replayed.rejected ? replayed.state : field;
       } else this.rejections++;

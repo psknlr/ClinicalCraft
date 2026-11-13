@@ -1,13 +1,14 @@
 /**
- * The operative-field reducer (docs/PROCEDURE.md §5): `operate(def, state, op, clock)` applies one
- * operator step. Pure and deterministic. A step that is physically impossible (an instrument out of
- * reach, a clip on a structure not yet free all round, a 10 mm scope in a 5 mm port) is rejected; a
- * step that is possible but unsafe is carried out and recorded (`state.unsafe`) with whatever
- * consequence the anatomy gives it — an injury follows from what was actually clipped, divided or
- * burnt, never from a script.
+ * The operative-field reducer (docs/PROCEDURE.md §5): `operate(def, state, op, clock, actor?)` applies one
+ * step — the operator's, or a colleague's (`actor`). Pure and deterministic: a step's effect depends only on the
+ * state, the op and the actor. A step that is physically impossible (an instrument out of reach, a clip on a
+ * structure not yet free all round, a 10 mm scope in a 5 mm port) is rejected; a step that is possible but unsafe is
+ * carried out and recorded (`state.unsafe`, with the colleague who did it) with whatever consequence the anatomy gives
+ * it — an injury follows from what was actually clipped, divided or burnt, never from a script. Who may do a step by
+ * their controls is the reducer's gate (`engine/seats.ts` `seatCheck`), asked before this one.
  */
 import type { UnsafeCode } from "../../schema/common.js";
-import type { InstrumentId, ProcedureDefinition, ProcedureOp, ProcedureOpType, ProcedureSignal, Structure, Vec3 } from "../../schema/procedure.js";
+import type { FieldRefusal, InstrumentId, ProcedureDefinition, ProcedureOp, ProcedureOpType, ProcedureSignal, RefusalReason, Structure, Vec3 } from "../../schema/procedure.js";
 import {
   appearanceRule,
   assignHandles,
@@ -25,7 +26,7 @@ import {
   entering,
 } from "./field.js";
 import { directionVector, portReport, reach, shaftsClash } from "./geometry.js";
-import { cloneProcedureState, type Injury, type PortState, type ProcedureState } from "./state.js";
+import { cameraPort, cloneProcedureState, waitingPass, type Injury, type PortState, type ProcedureState } from "./state.js";
 import { nameVocabulary } from "./variant.js";
 
 /** What `identify … as` records when the operator sees a structure and cannot say what it is. */
@@ -38,7 +39,8 @@ export interface ProcedureStepResult {
   /** Minutes the step takes on a simulated clock. */
   minutes: number;
   signals: ProcedureSignal[];
-  rejected?: { code: "invalid" | "requirements-unmet" | "unknown-id"; message: string };
+  /** `reason`: what a front-end says in the learner's language (`FIELD_REFUSALS`), where the refusal has one. */
+  rejected?: { code: "invalid" | "requirements-unmet" | "unknown-id"; message: string; reason?: RefusalReason };
 }
 
 /** Default minutes per step (a definition's `minutes` overrides by op name, or by `image:ioc` / `bailout:convert-open`). */
@@ -50,6 +52,9 @@ const MINUTES: Record<string, number> = {
   withdraw: 0.25,
   retract: 0.5,
   release: 0.25,
+  aim: 0,
+  zoom: 0,
+  pass: 0,
   dissect: 2,
   isolate: 2,
   identify: 0,
@@ -75,7 +80,7 @@ const MINUTES: Record<string, number> = {
 
 /** What each instrument can do (docs/PROCEDURE.md §2); front-ends offer these and nothing else. */
 export const INSTRUMENT_OPS: Readonly<Record<InstrumentId, readonly ProcedureOpType[]>> = {
-  laparoscope: [],
+  laparoscope: ["aim", "zoom"],
   grasper: ["retract"],
   maryland: ["retract", "dissect", "isolate", "coagulate"],
   hook: ["dissect", "isolate", "coagulate"],
@@ -110,13 +115,16 @@ class Rejection extends Error {
   constructor(
     readonly code: "invalid" | "requirements-unmet" | "unknown-id",
     message: string,
+    readonly reason?: RefusalReason,
   ) {
     super(message);
   }
 }
-const reject = (code: Rejection["code"], message: string): never => {
-  throw new Rejection(code, message);
+const reject = (code: Rejection["code"], message: string, reason?: RefusalReason): never => {
+  throw new Rejection(code, message, reason);
 };
+/** A refusal's reason (`FIELD_REFUSALS`). */
+const why = (key: FieldRefusal, params: Record<string, string>): RefusalReason => ({ key, params });
 
 interface Step {
   def: ProcedureDefinition;
@@ -127,25 +135,37 @@ interface Step {
   actor?: string;
 }
 
-/** What a colleague holding a port may do with it (the operator does everything else). */
-const ASSIST_OPS: ReadonlySet<ProcedureOpType> = new Set(["hand-over", "retract", "release", "withdraw", "suction", "irrigate"]);
+/**
+ * What a colleague may do (docs/PROCEDURE.md §3) — on a port handed to them, unless it is a pass or saying an injury
+ * aloud; their controls decide which of these are theirs (the reducer's gate). The operator does everything else.
+ */
+export const COLLEAGUE_OPS: ReadonlySet<ProcedureOpType> = new Set(["hand-over", "retract", "release", "withdraw", "suction", "irrigate", "aim", "zoom", "pass", "recognise", "insert"]);
+
+/** The most ports one colleague holds (the camera port counts as one): two hands. */
+export const COLLEAGUE_PORTS = 2;
 
 /** Only the one who holds a port works it: the operator, or the colleague it was handed to. */
 function mine(x: Step, p: PortState): void {
   const holder = p.holder ?? null;
   const actor = x.actor ?? null;
   if (holder === actor) return;
-  if (holder) reject("requirements-unmet", `${holder} holds the ${p.instrument ?? "instrument"} in port "${p.site}": ask them to hand it back first.`);
-  reject("requirements-unmet", `Port "${p.site}" is the operator's: it has not been handed to ${actor}.`);
+  if (holder) reject("requirements-unmet", `${holder} holds the ${p.instrument ?? "instrument"} in port "${p.site}": ask them to hand it back first.`, why("port-held", { holder, instrument: p.instrument ?? "", port: p.site }));
+  reject("requirements-unmet", `Port "${p.site}" is the operator's: it has not been handed to ${actor}.`, why("not-handed", { port: p.site, actor: actor ?? "" }));
+}
+
+/** A colleague takes one more port: never a third. */
+function handsFree(x: Step, who: string): void {
+  const held = x.s.ports.filter((q) => q.holder === who).map((q) => q.site);
+  if (held.length >= COLLEAGUE_PORTS) reject("requirements-unmet", `${who} already holds two ports (${held.join(", ")}): a colleague holds at most two.`, why("hands-full", { who, ports: held.join(", ") }));
 }
 
 function unsafe(x: Step, code: UnsafeCode, structure?: string): void {
-  x.s.unsafe.push({ code, at: x.at, ...(structure ? { structure } : {}) });
+  x.s.unsafe.push({ code, at: x.at, ...(structure ? { structure } : {}), ...(x.actor ? { by: x.actor } : {}) });
 }
 
-function injure(x: Step, injury: Omit<Injury, "at" | "recognised">): void {
+function injure(x: Step, injury: Omit<Injury, "at" | "recognised" | "by" | "recognisedBy">): void {
   if (x.s.injuries.some((i) => i.kind === injury.kind && i.structure === injury.structure)) return;
-  x.s.injuries.push({ ...injury, at: x.at, recognised: false });
+  x.s.injuries.push({ ...injury, at: x.at, recognised: false, ...(x.actor ? { by: x.actor } : {}) });
 }
 
 function portOf(x: Step, id: string): PortState {
@@ -194,10 +214,37 @@ function workAt(x: Step, p: PortState, point: Vec3): void {
       break;
     }
   }
-  if (p.hand) {
+  // crossed hands are the operator's: a colleague's step never counts them
+  if (p.hand && !x.actor) {
     const plan = x.def.portPlans.find((q) => q.id === x.s.plan);
     if (plan && portReport(x.def, plan).handsCross) x.s.counters.crossings++;
   }
+}
+
+/**
+ * The operator's tissue step in `region` (a dissection's region, the structure's for the others): the work is there
+ * now (`working`); off the camera's aim it is counted and signalled, and with the camera close it is out of frame.
+ */
+function framed(x: Step, region: string | undefined, structure?: string): void {
+  if (x.actor || !region) return;
+  x.s.working = region;
+  const view = x.s.camera;
+  if (!view || view.at === null || view.at === region) return;
+  x.s.counters.offView = (x.s.counters.offView ?? 0) + 1;
+  x.signals.push("off-view");
+  if (view.zoom === "close") unsafe(x, "out-of-frame", structure);
+}
+
+/**
+ * A colleague puts an instrument in: only into an empty port nobody holds, and only the laparoscope into a camera
+ * port or a grasper or the suction into an assist port; they hold it then, with at most two ports in their hands.
+ */
+function colleagueInsert(x: Step, p: PortState, instrument: InstrumentId): void {
+  if (p.holder) mine(x, p);
+  if (p.instrument) reject("invalid", `Port "${p.site}" already has the ${p.instrument} in it: a colleague puts an instrument only into an empty port.`, why("port-occupied", { port: p.site, instrument: p.instrument }));
+  const fits = p.role === "camera" ? instrument === "laparoscope" : p.role === "assist" && (instrument === "grasper" || instrument === "suction");
+  if (!fits) reject("invalid", `A colleague puts the laparoscope only into a camera port, and a grasper or the suction only into an assist port: port "${p.site}" is a ${p.role} port.`, why("port-role", { port: p.site, role: p.role, instrument }));
+  handsFree(x, x.actor!);
 }
 
 function handleStructure(x: Step, handle: string): Structure {
@@ -287,7 +334,7 @@ const DISSECTION_OPS: ReadonlySet<ProcedureOpType> = new Set(["dissect", "isolat
 
 function apply(x: Step, op: ProcedureOp): void {
   const { def, s } = x;
-  if (x.actor && !ASSIST_OPS.has(op.op)) reject("invalid", `Only the operator does "${op.op}": ${x.actor} assists (hand-over, retract, release, withdraw, suction, irrigate).`);
+  if (x.actor && !COLLEAGUE_OPS.has(op.op)) reject("invalid", `Only the operator does "${op.op}": ${x.actor} assists (hand-over, retract, release, withdraw, suction, irrigate).`, why("operator-only", { op: op.op, actor: x.actor }));
   if (ended(x) && op.op !== "inspect" && op.op !== "recognise") reject("requirements-unmet", s.closed ? "The operation is closed." : "The laparoscopic operation has ended.");
   if (s.bailouts.some((b) => b.startsWith("subtotal")) && DISSECTION_OPS.has(op.op)) reject("requirements-unmet", "A subtotal cholecystectomy was chosen: no further dissection.");
   switch (op.op) {
@@ -318,11 +365,19 @@ function apply(x: Step, op: ProcedureOp): void {
       s.pressure = 0;
       return;
     case "insert": {
-      const p = ownPort(x, op.port);
+      const p = portOf(x, op.port);
+      if (x.actor) colleagueInsert(x, p, op.instrument);
+      else mine(x, p);
       if (!def.instruments.some((i) => i.id === op.instrument)) return reject("unknown-id", `No ${op.instrument} is on the instrument table.`);
       const diameter = def.instruments.find((i) => i.id === op.instrument)?.diameterMm ?? DIAMETER[op.instrument];
       if (diameter > p.sizeMm) return reject("invalid", `A ${diameter} mm ${op.instrument} does not pass a ${p.sizeMm} mm port.`);
       if (!s.insufflated) return reject("requirements-unmet", "Insufflate before inserting instruments.");
+      // the instrument passed to this hand goes in (the first one waiting)
+      const passed = waitingPass(s, op.instrument, x.actor);
+      if (passed >= 0) {
+        s.passed!.splice(passed, 1);
+        if (!s.passed!.length) delete s.passed;
+      }
       if (p.instrument === op.instrument) return;
       if (p.instrument) {
         s.counters.exchanges++;
@@ -330,11 +385,14 @@ function apply(x: Step, op: ProcedureOp): void {
       }
       p.instrument = op.instrument;
       p.tip = null;
+      if (x.actor) p.holder = x.actor;
       assignHandles(def, s);
       return;
     }
     case "withdraw": {
       const p = ownPort(x, op.port);
+      // the camera holder takes the scope out while a bleed is not controlled: the operator is left blind
+      if (x.actor && p.instrument === "laparoscope" && s.bleeding.some((b) => !b.controlled)) unsafe(x, "scope-withdrawn-in-bleeding");
       for (const [k, r] of Object.entries(s.retractions)) if (r.port === p.site) delete s.retractions[k];
       p.instrument = null;
       p.tip = null;
@@ -346,11 +404,38 @@ function apply(x: Step, op: ProcedureOp): void {
       if (!p.instrument) return reject("requirements-unmet", `No instrument is in port "${op.port}": there is nothing to hand over.`);
       const from = p.holder ?? null;
       const to = op.to ?? null;
-      if (from === to) return reject("invalid", `${to ?? "The operator"} already holds the ${p.instrument} in port "${op.port}".`);
+      if (from === to) return reject("invalid", `${to ?? "The operator"} already holds the ${p.instrument} in port "${op.port}".`, why("holds-already", { who: to ?? "", instrument: p.instrument, port: op.port }));
       const actor = x.actor ?? null;
-      if (actor !== from && actor !== to) return reject("invalid", `Only the one who holds the ${p.instrument} in port "${op.port}" or the one who takes it can hand it over.`);
+      if (actor !== from && actor !== to) return reject("invalid", `Only the one who holds the ${p.instrument} in port "${op.port}" or the one who takes it can hand it over.`, why("not-a-party", { instrument: p.instrument, port: op.port }));
+      // consent: a colleague takes a port from the operator, or from a colleague who hands it over themselves
+      if (from && to && actor !== from) return reject("requirements-unmet", `${from} holds the ${p.instrument} in port "${op.port}": they hand it over first.`, why("take-from-colleague", { holder: from, instrument: p.instrument, port: op.port }));
+      if (to) handsFree(x, to);
       if (to) p.holder = to;
       else delete p.holder;
+      return;
+    }
+    case "aim":
+    case "zoom": {
+      // the camera holder's — or the operator's while nobody holds the camera port — with the field in view
+      const { p } = working(x, op.port, op.op);
+      if (p.role !== "camera") return reject("invalid", `Port "${p.site}" is a ${p.role} port: the laparoscope is aimed from the camera port.`, why("camera-port", { port: p.site, role: p.role }));
+      const view = s.camera ?? { at: null, zoom: "wide" };
+      if (op.op === "aim") {
+        if (op.at !== undefined && !regionOf(def, op.at)) return reject("unknown-id", `There is no region "${op.at}".`);
+        // the whole field again is the wide view: a close view is always on something
+        s.camera = op.at === undefined ? { at: null, zoom: "wide" } : { at: op.at, zoom: view.zoom };
+        return;
+      }
+      if (op.level === "close" && view.at === null) return reject("requirements-unmet", `Aim the camera first: a close view needs a region to look at.`, why("aim-first", { port: p.site }));
+      s.camera = { at: view.at, zoom: op.level };
+      return;
+    }
+    case "pass": {
+      if (!x.actor) return reject("invalid", "The operator does not pass instruments: the scrub nurse passes them.", why("colleague-only", { op: "pass" }));
+      if (!def.instruments.some((i) => i.id === op.instrument)) return reject("unknown-id", `No ${op.instrument} is on the instrument table.`);
+      if (op.to === x.actor) return reject("invalid", `${x.actor} cannot pass the ${op.instrument} to themselves.`, why("pass-self", { who: x.actor, instrument: op.instrument }));
+      if (waitingPass(s, op.instrument, op.to) >= 0) return reject("invalid", `The ${op.instrument} has already been passed to ${op.to ?? "the operator"}: it is waiting to go in.`, why("pass-waiting", { instrument: op.instrument, to: op.to ?? "" }));
+      s.passed = [...(s.passed ?? []), { instrument: op.instrument, ...(op.to ? { to: op.to } : {}), by: x.actor }];
       return;
     }
     case "retract": {
@@ -382,6 +467,7 @@ function apply(x: Step, op: ProcedureOp): void {
       if (obscured(s)) return reject("requirements-unmet", "The field is obscured by blood: suction first.");
       for (const prior of region.after) if (clearedFraction(def, s, prior) < 0.5) return reject("requirements-unmet", `Open "${prior}" first.`);
       workAt(x, p, region.centre);
+      framed(x, region.id);
       const e = exposure(def, s, region.id);
       const before = s.cleared[region.id] ?? 0;
       let after = Math.min(region.units, before + (op.energy ? 1.5 : 1) * (e < 0.5 ? 0.5 : 1));
@@ -431,6 +517,7 @@ function apply(x: Step, op: ProcedureOp): void {
       if (obscured(s)) return reject("requirements-unmet", "The field is obscured by blood: suction first.");
       if (st.in && clearedFraction(def, s, st.in) < 0.8) return reject("requirements-unmet", "Clear more of the surrounding tissue before freeing it all round.");
       workAt(x, p, pointOf(st));
+      framed(x, st.in, st.id);
       if (!s.isolated.includes(st.id)) s.isolated.push(st.id);
       return;
     }
@@ -470,6 +557,7 @@ function apply(x: Step, op: ProcedureOp): void {
       const stump = s.bleeding.find((b) => b.source === st.id && !b.controlled);
       if (!s.isolated.includes(st.id) && !stump) return reject("requirements-unmet", "The applier cannot close round a structure that is not free all round.");
       workAt(x, p, pointOf(st));
+      framed(x, st.in, st.id);
       if (!stump) irreversible(x, st, op.handle);
       else if (obscured(s)) unsafe(x, "blind-in-obscured-field", st.id);
       s.clips[st.id] = (s.clips[st.id] ?? 0) + op.count;
@@ -487,6 +575,7 @@ function apply(x: Step, op: ProcedureOp): void {
       if (!s.isolated.includes(st.id)) return reject("requirements-unmet", "Free it all round before dividing it.");
       if (s.divided.includes(st.id)) return reject("requirements-unmet", "It is already divided.");
       workAt(x, p, pointOf(st));
+      framed(x, st.in, st.id);
       irreversible(x, st, op.handle);
       s.divided.push(st.id);
       divisionConsequences(x, st);
@@ -496,6 +585,7 @@ function apply(x: Step, op: ProcedureOp): void {
       const { p } = working(x, op.port, "coagulate");
       const st = handleStructure(x, op.handle);
       workAt(x, p, pointOf(st));
+      framed(x, st.in, st.id);
       if (obscured(s)) unsafe(x, "blind-in-obscured-field", st.id);
       const source = s.bleeding.find((b) => b.source === st.id && !b.controlled);
       if (source && source.severity !== "major") {
@@ -535,9 +625,13 @@ function apply(x: Step, op: ProcedureOp): void {
       s.inspected = true;
       return;
     case "recognise": {
+      // anyone in the room may say it aloud; a colleague who says it first is recorded with it
       const matches = s.injuries.filter((i) => i.kind === op.injury || (op.injury === "bleeding" && i.kind === "vascular-injury"));
-      if (matches.length) for (const i of matches) i.recognised = true;
-      else s.counters.falseAlarms++;
+      for (const i of matches) {
+        if (!i.recognised && x.actor) i.recognisedBy = x.actor;
+        i.recognised = true;
+      }
+      if (!matches.length) s.counters.falseAlarms++;
       return;
     }
     case "bag": {
@@ -617,21 +711,27 @@ function openExposures(def: ProcedureDefinition, s: ProcedureState): Map<string,
   return out;
 }
 
-/** Apply one step to the field (pure: the input state is never mutated); `actor`: a colleague doing it (default: the operator). */
-export function operate(def: ProcedureDefinition, state: ProcedureState, op: ProcedureOp, at: number, actor?: string): ProcedureStepResult {
+/**
+ * Apply one step to the field (pure: the input state is never mutated); `actor`: a colleague doing it (default: the
+ * operator). `ref` is informational (the `operate` action's): an accepted step records it in `refs`, no rule reads it.
+ */
+export function operate(def: ProcedureDefinition, state: ProcedureState, op: ProcedureOp, at: number, actor?: string, ref?: string): ProcedureStepResult {
   const x: Step = { def, s: cloneProcedureState(state), at, signals: [], ...(actor ? { actor } : {}) };
   const before = TRACTION_OPS.has(op.op) ? openExposures(def, state) : null;
   try {
     apply(x, op);
     if (before && [...before].some(([id, e]) => e >= 0.5 && exposure(def, x.s, id) < 0.5)) x.signals.push("exposure-lost");
   } catch (err) {
-    if (err instanceof Rejection) return { state, minutes: 0, signals: [], rejected: { code: err.code, message: err.message } };
+    if (err instanceof Rejection) return { state, minutes: 0, signals: [], rejected: { code: err.code, message: err.message, ...(err.reason ? { reason: err.reason } : {}) } };
     throw err;
   }
+  // the camera's view goes with the laparoscope: out of the camera port (withdrawn, exchanged, converted, closed), it is gone
+  if (x.s.camera && !cameraPort(x.s)) delete x.s.camera;
   x.s.counters.steps++;
   // a colleague's own step (a release as they leave, a hand-over): counted apart, so the operator's place in the
   // operation is `steps - colleague`
   if (actor) x.s.counters.colleague = (x.s.counters.colleague ?? 0) + 1;
+  if (ref) x.s.refs = [...(x.s.refs ?? []), ref];
   return { state: x.s, minutes: minutesFor(def, op), signals: [...new Set(x.signals)] };
 }
 

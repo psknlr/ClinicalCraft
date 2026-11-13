@@ -3,7 +3,8 @@
  * for rubric items, objectives, phases, scenario events and safety gates. They read what really
  * happened (the true anatomy), not what the operator claimed — except `identified`, which is the claim.
  */
-import type { ProcedurePredicate } from "../../schema/common.js";
+import type { ProcedurePredicate, StepBy } from "../../schema/common.js";
+import type { Place } from "../../schema/positions.js";
 import { BASE_VARIANT, type ProcedureDefinition } from "../../schema/procedure.js";
 import { pauseValid } from "./claims.js";
 import { handleOf, viewCriteria, viewHolds } from "./field.js";
@@ -11,11 +12,22 @@ import type { ProcedureState } from "./state.js";
 
 const inRange = (v: number, r: { gte?: number; lte?: number }) => (r.gte == null || v >= r.gte) && (r.lte == null || v <= r.lte);
 
+/** Who stands in a place in the team as it is: their staff ids (the session's members — the condition evaluator's). */
+export type PlaceMembers = (place: Place) => readonly string[];
+
+/** A recorded step's `by` (a colleague's staff id; absent: the operator) is the one asked for (absent: anyone). */
+function byMatches(by: string | undefined, want: StepBy | undefined, members: PlaceMembers | undefined): boolean {
+  if (want === undefined) return true;
+  if (want === "operator") return by === undefined;
+  return by !== undefined && (members?.(want) ?? []).includes(by);
+}
+
 /**
  * Evaluate a procedure predicate; false when the case has no procedure or the operation has not begun.
- * `variant` is the session's anatomical variant (absent: the base definition, `reference`).
+ * `variant` is the session's anatomical variant (absent: the base definition, `reference`); `members` resolves a place
+ * named by an unsafe act's or an injury's `by` (without it a place matches nobody).
  */
-export function evaluateProcedure(def: ProcedureDefinition | undefined, s: ProcedureState | undefined, p: ProcedurePredicate, variant?: string): boolean {
+export function evaluateProcedure(def: ProcedureDefinition | undefined, s: ProcedureState | undefined, p: ProcedurePredicate, variant?: string, members?: PlaceMembers): boolean {
   if ("variant" in p) return !!def && (variant ?? BASE_VARIANT) === p.variant;
   if (!def || !s) {
     // before the first step: only negative facts hold
@@ -35,11 +47,11 @@ export function evaluateProcedure(def: ProcedureDefinition | undefined, s: Proce
     return p.valid ? valid : pauses.length > 0 && !valid;
   }
   if ("injury" in p) {
-    const hits = s.injuries.filter((i) => p.injury === "any" || i.kind === p.injury);
+    const hits = s.injuries.filter((i) => (p.injury === "any" || i.kind === p.injury) && byMatches(i.by, p.by, members));
     if (p.recognised == null) return hits.length > 0;
     return hits.some((i) => i.recognised === p.recognised);
   }
-  if ("unsafe" in p) return s.unsafe.some((u) => p.unsafe === "any" || u.code === p.unsafe);
+  if ("unsafe" in p) return s.unsafe.some((u) => (p.unsafe === "any" || u.code === p.unsafe) && byMatches(u.by, p.by, members));
   if ("clipped" in p) return (s.clips[p.clipped] ?? 0) >= (p.minCount ?? 1);
   if ("divided" in p) return s.divided.includes(p.divided);
   if ("isolated" in p) return s.isolated.includes(p.isolated);
@@ -63,7 +75,8 @@ export function evaluateProcedure(def: ProcedureDefinition | undefined, s: Proce
     const spilled = p.spillage === "bile" ? s.spillage.bile : s.spillage.stones;
     return p.cleared == null ? spilled : spilled && s.spillage.cleared === p.cleared;
   }
-  if ("counter" in p) return inRange(s.counters[p.counter], p);
+  // counters a field recorded before they existed (`colleague`, `offView`) are 0
+  if ("counter" in p) return inRange(s.counters[p.counter] ?? 0, p);
   if ("inspected" in p) return s.inspected === p.inspected;
   if ("dissectedExposed" in p) return (s.exposedMax[p.dissectedExposed] ?? 0) >= p.atLeast;
   if ("closed" in p) return s.closed === p.closed;

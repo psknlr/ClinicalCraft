@@ -1,13 +1,14 @@
 /**
  * The care team's positions, places and controls as one set of pure resolvers (docs/TEAM.md §1): which position a
- * member holds, which controls they may work, which body is whose, which places a learner may take. The reducer, the
- * world, the agent and the front-ends all ask these, so a member's controls never depend on who asks. Everything is read
- * from the case and the start's choices (`seat`, `lineup`, the team scenario); the facility only for a staff member
- * outside the team.
+ * member holds, which controls they may work, which body is whose, which places a learner may take — and the operative
+ * field's gate by control (docs/PROCEDURE.md §3: `seatCheck`, `passingRequired`). The reducer, the world, the agent and
+ * the front-ends all ask these, so a member's controls never depend on who asks. Everything is read from the case and
+ * the start's choices (`seat`, `lineup`, the team scenario); the facility only for a staff member outside the team.
  */
 import type { CaseDefinition } from "../schema/case.js";
 import type { ActorRole, FacilityDefinition } from "../schema/facility.js";
 import { canonicalPosition, DEFAULT_CONTROLS, SURGICAL_CONTROLS, TEAM_PLACES, type Place, type Seat, type StaffPosition, type SurgicalControl } from "../schema/positions.js";
+import type { FieldRefusal, InstrumentId, ProcedureOp, RefusalReason } from "../schema/procedure.js";
 import type { ClinicalAction, SessionState } from "../schema/session.js";
 import type { TeamDuty, TeamMember } from "../schema/team.js";
 
@@ -307,4 +308,167 @@ export function joinPath(c: CaseDefinition): ClinicalAction[] {
   const after = c.solution.slice(c.solution.findIndex((a) => a.type === "start") + 1);
   const stop = after.findIndex((a) => a.type === "finish" || (a.type === "operate" && a.op.op === "close"));
   return stop < 0 ? after : after.slice(0, stop);
+}
+
+/**
+ * The staff ids standing in a place in the team as it is (`effectiveTeam`; the learner's member when it is the
+ * learner's place): whose steps a condition's `by` names (docs/PROCEDURE.md §6).
+ */
+export function placeRefs(c: CaseDefinition, choice: TeamChoice, place: Place): string[] {
+  return effectiveTeam(c, choice)
+    .filter((m) => m.staff !== SURGEON && canonicalOf(m) === place)
+    .map((m) => m.staff);
+}
+
+/* ------------------------------------------------------------------ */
+/* The operative field's gate by control (docs/PROCEDURE.md §3)        */
+/* ------------------------------------------------------------------ */
+
+/** Whether `ref` names the operator in this encounter: the `surgeon` token, or the stand-in while the learner holds a place. */
+function isOperator(c: CaseDefinition, s: TeamChoice, ref: string): boolean {
+  return ref === SURGEON || (s.seat !== undefined && ref === operatorOf(c, s));
+}
+
+/**
+ * A step as the field records it (docs/PROCEDURE.md §3): an actor who is the operator — the stand-in while the learner
+ * holds a place, or the `surgeon` token — is no actor, and a `hand-over` or `pass` `to` the operator has no `to`. Every
+ * gate and the physics read the step so; the record's `procedure.step` carries it so.
+ */
+export function normaliseStep(c: CaseDefinition, s: TeamChoice, op: ProcedureOp, actor?: string): { op: ProcedureOp; actor?: string } {
+  const who = actor !== undefined && isOperator(c, s, actor) ? undefined : actor;
+  if ((op.op === "hand-over" || op.op === "pass") && op.to !== undefined && isOperator(c, s, op.to)) {
+    const { to: _operator, ...rest } = op;
+    return { op: rest as ProcedureOp, ...(who !== undefined ? { actor: who } : {}) };
+  }
+  return { op, ...(who !== undefined ? { actor: who } : {}) };
+}
+
+/** A gate's refusal of a step: its code, the engine's English message and the reason a front-end says. */
+export interface FieldGateRefusal {
+  code: "invalid" | "unknown-id" | "requirements-unmet";
+  message: string;
+  reason: RefusalReason;
+}
+
+const refusal = (code: FieldGateRefusal["code"], message: string, key: FieldRefusal, params: Record<string, string>): FieldGateRefusal => ({ code, message, reason: { key, params } });
+
+/**
+ * Whom a (normalised) step hands to or passes to must be someone of the team as it is: a pass's `to` always, and a
+ * hand-over's `to` while the learner holds a place (otherwise a colleague outside the team may still take a port handed
+ * to them, as always). Null: nothing to refuse.
+ */
+export function stepPartyRefusal(c: CaseDefinition, s: TeamChoice, op: ProcedureOp): FieldGateRefusal | null {
+  if ((op.op !== "pass" && op.op !== "hand-over") || op.to === undefined) return null;
+  if (op.op === "hand-over" && s.seat === undefined) return null;
+  if (effectiveTeam(c, s).some((m) => m.staff === op.to)) return null;
+  return refusal("unknown-id", `There is no "${op.to}" in the team.`, "unknown-member", { who: op.to });
+}
+
+/** The control a colleague works an instrument with: the laparoscope the camera, a grasper traction, the suction suction; null for every other instrument — the operator's own. */
+export function instrumentControl(instrument: InstrumentId): SurgicalControl | null {
+  if (instrument === "laparoscope") return "camera";
+  if (instrument === "grasper") return "retract";
+  if (instrument === "suction") return "suction";
+  return null;
+}
+
+/**
+ * The control a colleague needs for a step in the operative field (docs/PROCEDURE.md §3): the camera's steps (`aim`,
+ * `zoom`) the camera; traction and letting go `retract`; suction and irrigation `suction`; a pass `instruments`;
+ * putting an instrument in, taking it out or handing it on the control that instrument is worked with
+ * (`instrumentControl`; `instrument`: the port's, for a withdrawal or a hand-over). `null`: no control — saying an
+ * injury aloud, which anyone in the room may, and a port with nothing in it (the field's own refusal answers);
+ * `"operator"`: nobody's but the operator's — every other step, and an operating instrument.
+ */
+export function fieldControlFor(op: ProcedureOp, instrument?: InstrumentId | null): SurgicalControl | "operator" | null {
+  switch (op.op) {
+    case "aim":
+    case "zoom":
+      return "camera";
+    case "retract":
+    case "release":
+      return "retract";
+    case "suction":
+    case "irrigate":
+      return "suction";
+    case "pass":
+      return "instruments";
+    case "recognise":
+      return null;
+    case "insert":
+      return instrumentControl(op.instrument) ?? "operator";
+    case "withdraw":
+    case "hand-over":
+      return instrument ? (instrumentControl(instrument) ?? "operator") : null;
+    default:
+      return "operator";
+  }
+}
+
+/** A control is in a set (`all`: the operator's). */
+const holds = (controls: Controls, control: SurgicalControl): boolean => controls === "all" || controls.includes(control);
+
+/** What a step does, in the words of a refusal ("take the grasper in port "B""). */
+function doing(op: ProcedureOp, instrument: InstrumentId | null | undefined, taking: boolean): string {
+  switch (op.op) {
+    case "insert":
+      return `put the ${op.instrument} in`;
+    case "withdraw":
+      return `take the ${instrument ?? "instrument"} out of port "${op.port}"`;
+    case "hand-over":
+      return `${taking ? "take" : "hand over"} the ${instrument ?? "instrument"} in port "${op.port}"`;
+    case "release":
+      return "let go of the traction";
+    case "pass":
+      return `pass the ${op.instrument}`;
+    case "aim":
+    case "zoom":
+      return `${op.op} the camera`;
+    default:
+      return op.op;
+  }
+}
+
+/**
+ * The control gate of the operative field (docs/PROCEDURE.md §3; the reducer asks it before the physics, and it only
+ * refuses): an operator's step (no `actor`) is free; a colleague's step that only the operator does is left to the field,
+ * which says so itself ("Only the operator does …"); any other step of a colleague needs the control it is worked with
+ * (`fieldControlFor`) — their own (`fieldControls`), or `controls` when a session narrows them (a colleague outside the
+ * team, by their facility position) — and putting in, taking out or handing on an instrument only the operator works is
+ * refused. A hand-over to a colleague also needs the one who takes it to hold that instrument's control. `s.procedure`:
+ * the field the step is asked of (the port's instrument). Null: nothing to refuse.
+ */
+export function seatCheck(c: CaseDefinition, s: TeamChoice & Pick<SessionState, "procedure">, op: ProcedureOp, actor?: string, controls?: Controls): FieldGateRefusal | null {
+  const port = "port" in op ? s.procedure?.ports.find((p) => p.site === op.port) : undefined;
+  const instrument = op.op === "insert" ? op.instrument : port?.instrument;
+  if (actor !== undefined) {
+    const own = controls ?? fieldControls(c, s, actor);
+    const need = fieldControlFor(op, port?.instrument);
+    if (need === "operator") {
+      // an instrument only the operator works: never put in, taken out or handed on by a colleague
+      if (op.op === "insert" || op.op === "withdraw" || op.op === "hand-over") {
+        return refusal("invalid", `The ${instrument} is the operator's own instrument: ${actor} cannot ${doing(op, instrument, op.op === "hand-over" && op.to === actor)}.`, "needs-control", { who: actor, control: "operate", op: op.op, instrument: instrument ?? "", port: port?.site ?? "" });
+      }
+      return null;
+    }
+    if (need !== null && !holds(own, need)) {
+      return refusal("invalid", `${actor} cannot ${doing(op, instrument, op.op === "hand-over" && op.to === actor)}: it needs the ${need} control, which ${actor} does not hold.`, "needs-control", { who: actor, control: need, op: op.op, instrument: instrument ?? "", port: port?.site ?? "" });
+    }
+  }
+  // the one who takes an instrument holds its control
+  if (op.op === "hand-over" && op.to !== undefined && op.to !== actor && port?.instrument) {
+    const need = instrumentControl(port.instrument);
+    const theirs = fieldControls(c, s, op.to);
+    if (need === null) return refusal("invalid", `The ${port.instrument} is the operator's own instrument: ${op.to} cannot take it.`, "needs-control", { who: op.to, control: "operate", op: op.op, instrument: port.instrument, port: port.site });
+    if (!holds(theirs, need)) return refusal("invalid", `${op.to} cannot take the ${port.instrument} in port "${port.site}": it needs the ${need} control, which ${op.to} does not hold.`, "needs-control", { who: op.to, control: need, op: op.op, instrument: port.instrument, port: port.site });
+  }
+  return null;
+}
+
+/**
+ * Whether every instrument is passed before it goes in (`pass`; docs/PROCEDURE.md §3): in the scrub nurse's place only —
+ * the learner's work there. Everywhere else a pass is taken when one is waiting and never needed.
+ */
+export function passingRequired(_c: CaseDefinition, s: TeamChoice): boolean {
+  return s.seat === "scrub-nurse";
 }

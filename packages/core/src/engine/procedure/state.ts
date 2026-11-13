@@ -2,9 +2,9 @@
  * Operative-field state (docs/PROCEDURE.md §4): what the operation has done to the anatomy so far.
  * Plain JSON, replaced (never mutated) by `operate` — it lives in `SessionState.procedure`.
  */
-import type { ProcedureState } from "../../schema/procedure.js";
+import type { InstrumentId, PortState, ProcedureState } from "../../schema/procedure.js";
 
-export type { Bleeding, Injury, PortState, ProcedureState, Retraction, SafetyPause } from "../../schema/procedure.js";
+export type { Bleeding, CameraView, Injury, PassedInstrument, PortState, ProcedureState, Retraction, SafetyPause } from "../../schema/procedure.js";
 
 /** The field before the first incision. */
 export function createProcedureState(): ProcedureState {
@@ -35,9 +35,22 @@ export function createProcedureState(): ProcedureState {
   };
 }
 
-/** A deep copy (the state is plain JSON). */
+/** A deep copy (the state is plain JSON: the camera, the passes and the refs with the rest). */
 export function cloneProcedureState(s: ProcedureState): ProcedureState {
   return structuredClone(s);
+}
+
+/** The camera port the picture comes from: a camera-role port with the laparoscope in it (undefined: none). */
+export function cameraPort(s: Pick<ProcedureState, "ports">): PortState | undefined {
+  return s.ports.find((p) => p.role === "camera" && p.instrument === "laparoscope");
+}
+
+/**
+ * The first pass of `instrument` waiting for `to` (undefined: the operator) — its index in `passed`, -1 when there is
+ * none. An insert by that hand takes it.
+ */
+export function waitingPass(s: Pick<ProcedureState, "passed">, instrument: InstrumentId, to: string | undefined): number {
+  return (s.passed ?? []).findIndex((q) => q.instrument === instrument && q.to === to);
 }
 
 /**

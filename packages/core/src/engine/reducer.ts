@@ -18,14 +18,15 @@ import {
   type SessionState,
 } from "../schema/session.js";
 import type { Place } from "../schema/positions.js";
-import { canJoinTeam, initialPhase, joinPath, placeMember, standInOf } from "./seats.js";
+import type { RefusalReason } from "../schema/procedure.js";
+import { canJoinTeam, initialPhase, joinPath, normaliseStep, passingRequired, placeMember, seatCheck, standInOf, stepPartyRefusal } from "./seats.js";
 import { t } from "../i18n.js";
 import { activeHolds, evaluate, resultFor, resultKey } from "./conditions.js";
 import { currentObjective, progress } from "./queries.js";
 import { historyVoice } from "./speech.js";
 import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
-import { createProcedureState, operate, procedureFor, procedureStateOf } from "./procedure/index.js";
+import { createProcedureState, operate, procedureFor, procedureStateOf, waitingPass } from "./procedure/index.js";
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
 import { applyStudy } from "./study.js";
 import { reachPhase, recordAvailability } from "./records.js";
@@ -41,7 +42,7 @@ type Outcome =
   | { kind: "accepted"; cost: number }
   /** Accepted, but nothing changed (e.g. duplicate order): the input state is returned untouched. */
   | { kind: "unchanged" }
-  | { kind: "rejected"; code: RejectionCode; message: string };
+  | { kind: "rejected"; code: RejectionCode; message: string; reason?: RefusalReason };
 
 interface Ctx {
   c: CaseDefinition;
@@ -128,7 +129,7 @@ function actionCost(c: CaseDefinition, type: ClinicalActionType): number {
 }
 
 const accepted = (cost = 0): Outcome => ({ kind: "accepted", cost });
-const rejected = (code: RejectionCode, message: string): Outcome => ({ kind: "rejected", code, message });
+const rejected = (code: RejectionCode, message: string, reason?: RefusalReason): Outcome => ({ kind: "rejected", code, message, ...(reason ? { reason } : {}) });
 const has = (record: Record<string, unknown>, key: string) => Object.prototype.hasOwnProperty.call(record, key);
 
 /* ------------------------------------------------------------------ */
@@ -419,9 +420,13 @@ function onNote(ctx: Ctx, a: Action<"note">): Outcome {
 }
 
 /**
- * One step of the operation (docs/PROCEDURE.md §5): the field changes only here. Closure reads the count (docs/TEAM.md
- * §4.3): while it is not settled, closure is refused (`team.count.closure: "refuse"`) or carried out and recorded as
- * an unsafe progression — kept for the debrief whatever is pressed later.
+ * One step of the operation (docs/PROCEDURE.md §5): the field changes only here. The step comes normalised (`reduce`:
+ * the stand-in surgeon is the operator, a `to` the operator no `to`); the gates only refuse — someone the step names
+ * must be of the team as it is, a colleague needs the control the step is worked with (`seatCheck`), and in the scrub
+ * nurse's place every instrument is passed before it goes in (`passingRequired`) — and then the field's own physics,
+ * whose every change depends only on the state, the op and the actor (the web's playback replays it so). Closure reads
+ * the count (docs/TEAM.md §4.3): while it is not settled, closure is refused (`team.count.closure: "refuse"`) or carried
+ * out and recorded as an unsafe progression — kept for the debrief whatever is pressed later.
  */
 function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
   const def = procedureFor(ctx.c, ctx.s);
@@ -430,11 +435,18 @@ function onOperate(ctx: Ctx, a: Action<"operate">): Outcome {
   const open = a.op.op === "close" ? closureOnOpenCount(ctx.c, ctx.s) : null;
   if (open?.policy === "refuse") return rejected("requirements-unmet", openCountMessage(open));
   // the operation's first step: it opens with the equipment as recorded so far (a fault before it stays a fault)
-  const step = operate(def, procedureStateOf(ctx.s), a.op, ctx.s.clock, a.actor);
-  if (step.rejected) return rejected(step.rejected.code, step.rejected.message);
+  const field = procedureStateOf(ctx.s);
+  const gate = stepPartyRefusal(ctx.c, ctx.s, a.op) ?? seatCheck(ctx.c, { ...ctx.s, procedure: field }, a.op, a.actor);
+  if (gate) return rejected(gate.code, gate.message, gate.reason);
+  if (a.op.op === "insert" && passingRequired(ctx.c, ctx.s) && waitingPass(field, a.op.instrument, a.actor) < 0) {
+    const to = a.actor ?? "the operator";
+    return rejected("requirements-unmet", `The ${a.op.instrument} has not been passed to ${to}: in the scrub nurse's place every instrument is passed before it goes in.`, { key: "pass-first", params: { instrument: a.op.instrument, to: a.actor ?? "" } });
+  }
+  const step = operate(def, field, a.op, ctx.s.clock, a.actor, a.ref);
+  if (step.rejected) return rejected(step.rejected.code, step.rejected.message, step.rejected.reason);
   ctx.s.procedure = step.state;
   const n = step.state.counters.steps;
-  ctx.events.push({ type: "procedure.step", op: a.op.op, signals: step.signals, id: `op-${n}`, step: n, seq: ctx.s.seq + 1, at: ctx.s.clock, ...(a.by ? { by: a.by } : {}), ...(a.actor ? { actor: a.actor } : {}), detail: structuredClone(a.op) });
+  ctx.events.push({ type: "procedure.step", op: a.op.op, signals: step.signals, id: `op-${n}`, step: n, seq: ctx.s.seq + 1, at: ctx.s.clock, ...(a.by ? { by: a.by } : {}), ...(a.actor ? { actor: a.actor } : {}), detail: structuredClone(a.op), ...(a.ref ? { ref: a.ref } : {}) });
   if (open && ctx.s.count) {
     ctx.s.count = { ...ctx.s.count, unsafe: [...ctx.s.count.unsafe, { what: "closure", status: open.status, missing: open.missing, unexpected: open.unexpected, at: ctx.s.clock, seq: ctx.s.seq + 1 }] };
     ctx.events.push({ type: "count.unsafe", what: "closure", status: open.status, missing: open.missing, unexpected: open.unexpected });
@@ -593,10 +605,20 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
 /* reduce / replay                                                     */
 /* ------------------------------------------------------------------ */
 
-function rejection(s: SessionState, action: ClinicalActionType, code: RejectionCode, message: string, a?: ClinicalAction): ReduceResult {
+function rejection(s: SessionState, action: ClinicalActionType, code: RejectionCode, message: string, a?: ClinicalAction, reason?: RefusalReason): ReduceResult {
   // a refused operative step carries what was asked and where in the record (the scope shows it in order)
   const op = a?.type === "operate" ? { at: s.clock, after: s.seq, detail: structuredClone(a.op), ...(a.actor ? { actor: a.actor } : {}) } : {};
-  return { state: s, events: [{ type: "action.rejected", action, code, message, ...op }], rejected: { code, message } };
+  const why = reason ? { reason: structuredClone(reason) } : {};
+  return { state: s, events: [{ type: "action.rejected", action, code, message, ...op, ...why }], rejected: { code, message, ...why } };
+}
+
+/** An operative step as the field records it (`normaliseStep`: the stand-in is the operator, a `to` the operator none). */
+function normalised(c: CaseDefinition, s: SessionState, a: ClinicalAction): ClinicalAction {
+  if (a.type !== "operate") return a;
+  const { op, actor } = normaliseStep(c, s, a.op, a.actor);
+  if (op === a.op && actor === a.actor) return a;
+  const { actor: _asked, ...rest } = a;
+  return { ...rest, op, ...(actor !== undefined ? { actor } : {}) };
 }
 
 function guard(s: SessionState, type: ClinicalActionType): { code: RejectionCode; message: string } | null {
@@ -624,13 +646,13 @@ export function reduce(c: CaseDefinition, s: SessionState, a: ClinicalAction): R
     const type = (typeof a === "object" && a && "type" in a ? String(a.type) : "invalid") as ClinicalActionType;
     return rejection(s, type, "invalid", describeInvalid(a, parsed.error.issues));
   }
-  const action = parsed.data;
+  const action = normalised(c, s, parsed.data);
   const blocked = guard(s, action.type);
   if (blocked) return rejection(s, action.type, blocked.code, blocked.message, action);
 
   const ctx: Ctx = { c, before: s, s: cloneState(s), events: [] };
   const outcome = dispatch(ctx, action);
-  if (outcome.kind === "rejected") return rejection(s, action.type, outcome.code, outcome.message, action);
+  if (outcome.kind === "rejected") return rejection(s, action.type, outcome.code, outcome.message, action, outcome.reason);
   if (outcome.kind === "unchanged") return { state: s, events: ctx.events };
 
   ctx.s.seq += 1;

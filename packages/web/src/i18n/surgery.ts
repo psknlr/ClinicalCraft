@@ -2,9 +2,10 @@
  * UI strings of the laparoscopic surgery window and the debrief's operation section — merged into the
  * zh-CN and en tables (`zh-CN.ts`, `en.ts`), so `tr()` type-checks their keys. Dynamic labels (op names,
  * signals, findings, directions, instruments, warnings, injuries, bail-outs, unsafe acts) are read with
- * `trMaybe` by their engine value; `surgery.test.ts` checks every engine value has one in both languages.
+ * `trMaybe` by their engine value, and why a step was refused (`surgery.reason.<key>`, core `FIELD_REFUSALS`) with
+ * its params; `surgery.test.ts` checks every engine value has one in both languages.
  * Words follow the runtime's operative-field strings (agent `session/i18n-procedure.ts`): 术野, 布孔方案,
- * 气腹, 游离一周, 安全暂停…
+ * 气腹, 游离一周, 安全暂停, 辅助孔 (the assist port, never the assistant)…
  */
 
 export const SURGERY_ZH = {
@@ -163,6 +164,9 @@ export const SURGERY_ZH = {
   "surgery.op.retract": "牵拉",
   "surgery.op.release": "松开",
   "surgery.op.hand-over": "交接器械",
+  "surgery.op.aim": "调整镜头方向",
+  "surgery.op.zoom": "推近或拉远镜头",
+  "surgery.op.pass": "递器械",
   "surgery.op.dissect": "解剖",
   "surgery.op.isolate": "游离一周",
   "surgery.op.identify": "命名管道",
@@ -193,6 +197,7 @@ export const SURGERY_ZH = {
   "surgery.signal.pressure-high": "气腹压力超过常用上限",
   "surgery.signal.dense-fibrosis": "组织致密，层次已无法分开",
   "surgery.signal.exposure-lost": "牵引已松开：术野窗口已闭合",
+  "surgery.signal.off-view": "镜头对准别处：操作不在画面中央",
   "surgery.finding.bleeding": "出血",
   "surgery.finding.major-bleeding": "大出血",
   "surgery.finding.field-obscured": "术野被遮挡",
@@ -261,6 +266,26 @@ export const SURGERY_ZH = {
   "surgery.unsafe.continued-after-injury": "损伤未说出即继续手术",
   "surgery.unsafe.insufflation-over-max": "气腹压力超过上限",
   "surgery.unsafe.dissection-beyond-safe-plane": "在致密纤维化中越过安全层面继续解剖",
+  "surgery.unsafe.out-of-frame": "镜头推近在别的区域时在画面外操作",
+  "surgery.unsafe.scope-withdrawn-in-bleeding": "出血未控制时撤出腹腔镜",
+  /* why a step was refused (core FIELD_REFUSALS; names filled in by the caller) */
+  "surgery.reason.operator-only": "这一步（{op}）只能由术者完成；{actor}负责协助：牵引、吸引、扶镜、递器械。",
+  "surgery.reason.port-held": "{port} 孔的{instrument}由{holder}握持：请先让对方交还。",
+  "surgery.reason.not-handed": "{port} 孔属于术者：尚未交给{actor}。",
+  "surgery.reason.take-from-colleague": "{port} 孔的{instrument}由{holder}握持：须由对方亲自交出。",
+  "surgery.reason.hands-full": "{who}已握持两个孔（{ports}）：每人最多握持两个。",
+  "surgery.reason.needs-control": "{who}没有这一步所需的“{control}”分工权限。",
+  "surgery.reason.unknown-member": "团队中没有{who}。",
+  "surgery.reason.holds-already": "{port} 孔的{instrument}已由{who}握持。",
+  "surgery.reason.not-a-party": "只有握持 {port} 孔{instrument}的人或接手的人才能交接。",
+  "surgery.reason.port-occupied": "{port} 孔已有{instrument}：同事只能把器械置入空的孔。",
+  "surgery.reason.port-role": "同事只能把腹腔镜置入观察孔、把抓钳或吸引器置入辅助孔：{port} 孔是{role}。",
+  "surgery.reason.camera-port": "腹腔镜要从观察孔调整：{port} 孔是{role}。",
+  "surgery.reason.aim-first": "请先把镜头对准：推近需要一个对准的区域。",
+  "surgery.reason.colleague-only": "术者不递器械：器械由洗手护士递。",
+  "surgery.reason.pass-self": "{who}不能把{instrument}递给自己。",
+  "surgery.reason.pass-waiting": "{instrument}已递给{to}，正等待置入。",
+  "surgery.reason.pass-first": "{instrument}还没有递给{to}：在洗手护士岗位上，每件器械都要先递再置入。",
   /* ---------------- debrief ---------------- */
   "debrief.op.title": "手术",
   "debrief.op.afterFinish": "结束病例后，这里会显示手术复盘（安全结论、损伤、不安全操作与安全暂停）。",
@@ -369,7 +394,7 @@ export const SURGERY_EN: Record<keyof typeof SURGERY_ZH, string> = {
   "surgery.port.extract": "Extract the specimen through this port",
   "surgery.role.camera": "camera",
   "surgery.role.working": "working",
-  "surgery.role.assist": "assistant",
+  "surgery.role.assist": "assist",
   "surgery.hand.left": "left hand",
   "surgery.hand.right": "right hand",
   /* ---------------- actions ---------------- */
@@ -444,6 +469,9 @@ export const SURGERY_EN: Record<keyof typeof SURGERY_ZH, string> = {
   "surgery.op.retract": "retract",
   "surgery.op.release": "release",
   "surgery.op.hand-over": "hand over",
+  "surgery.op.aim": "aim the camera",
+  "surgery.op.zoom": "zoom the camera",
+  "surgery.op.pass": "pass an instrument",
   "surgery.op.dissect": "dissect",
   "surgery.op.isolate": "free all round",
   "surgery.op.identify": "name a duct or vessel",
@@ -474,6 +502,7 @@ export const SURGERY_EN: Record<keyof typeof SURGERY_ZH, string> = {
   "surgery.signal.pressure-high": "the pressure is above the usual maximum",
   "surgery.signal.dense-fibrosis": "the tissue is dense and the planes no longer separate",
   "surgery.signal.exposure-lost": "the traction has gone: the window has closed",
+  "surgery.signal.off-view": "the camera is aimed elsewhere: the work is off the picture",
   "surgery.finding.bleeding": "bleeding",
   "surgery.finding.major-bleeding": "major bleeding",
   "surgery.finding.field-obscured": "the field is obscured",
@@ -542,6 +571,25 @@ export const SURGERY_EN: Record<keyof typeof SURGERY_ZH, string> = {
   "surgery.unsafe.continued-after-injury": "carried on without saying a visible injury aloud",
   "surgery.unsafe.insufflation-over-max": "insufflation above the maximum pressure",
   "surgery.unsafe.dissection-beyond-safe-plane": "dissection carried on beyond the safe plane in dense fibrosis",
+  "surgery.unsafe.out-of-frame": "working out of frame, the camera close on another region",
+  "surgery.unsafe.scope-withdrawn-in-bleeding": "the laparoscope taken out while a bleed was not controlled",
+  "surgery.reason.operator-only": "Only the operator does that ({op}); {actor} assists: traction, suction, the camera, passing.",
+  "surgery.reason.port-held": "{holder} holds the {instrument} in port {port}: ask for it back first.",
+  "surgery.reason.not-handed": "Port {port} is the operator's: it has not been handed to {actor}.",
+  "surgery.reason.take-from-colleague": "{holder} holds the {instrument} in port {port}: they hand it over themselves first.",
+  "surgery.reason.hands-full": "{who} already holds two ports ({ports}): nobody holds more than two.",
+  "surgery.reason.needs-control": "{who} does not hold the {control} control that this needs.",
+  "surgery.reason.unknown-member": "There is nobody called {who} in the team.",
+  "surgery.reason.holds-already": "{who} already holds the {instrument} in port {port}.",
+  "surgery.reason.not-a-party": "Only the one who holds the {instrument} in port {port}, or the one who takes it, hands it over.",
+  "surgery.reason.port-occupied": "Port {port} already has the {instrument} in it: a colleague puts an instrument only into an empty port.",
+  "surgery.reason.port-role": "A colleague puts the laparoscope only into a camera port, and a grasper or the suction only into an assist port: port {port} is a {role} port.",
+  "surgery.reason.camera-port": "The laparoscope is aimed from the camera port: port {port} is a {role} port.",
+  "surgery.reason.aim-first": "Aim the camera first: a close view needs a region to look at.",
+  "surgery.reason.colleague-only": "The operator does not pass instruments: the scrub nurse passes them.",
+  "surgery.reason.pass-self": "{who} cannot pass the {instrument} to themselves.",
+  "surgery.reason.pass-waiting": "The {instrument} has already been passed to {to} and is waiting to go in.",
+  "surgery.reason.pass-first": "The {instrument} has not been passed to {to} yet: in the scrub nurse's place every instrument is passed before it goes in.",
   /* ---------------- debrief ---------------- */
   "debrief.op.title": "Operation",
   "debrief.op.afterFinish": "The operation's review (safety verdict, injuries, unsafe acts and safety pauses) shows here once you finish the case.",

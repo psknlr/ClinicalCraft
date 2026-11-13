@@ -13,8 +13,8 @@ export function surgeryOffered(c: CaseDefinition | null | undefined, phase: stri
   return !!c?.procedure && !!phase && c.procedure.phases.includes(phase);
 }
 
-/** An action a port's instrument offers (an `operate` op that names the port). */
-export type Control = "retract" | "dissect" | "isolate" | "clip" | "divide" | "coagulate" | "suction" | "irrigate" | "image" | "bag";
+/** An action a port's instrument offers (an `operate` op that names the port; `aim` and `zoom`: the laparoscope's). */
+export type Control = "retract" | "dissect" | "isolate" | "clip" | "divide" | "coagulate" | "suction" | "irrigate" | "image" | "bag" | "aim" | "zoom";
 
 /**
  * The actions each instrument offers: the engine's instrument vocabulary (`INSTRUMENT_OPS`, docs/PROCEDURE.md §2),
@@ -25,7 +25,7 @@ export const INSTRUMENT_CONTROLS = INSTRUMENT_OPS as Readonly<Record<InstrumentI
 /** Instruments that deliver energy (the "with energy" option of a dissection). */
 export { ENERGY_INSTRUMENTS };
 
-/** The actions the instrument in a port offers (none for an empty port or the laparoscope). */
+/** The actions the instrument in a port offers (none for an empty port; the laparoscope's are the camera's: aim, zoom). */
 export function controlsFor(instrument: InstrumentId | null | undefined): readonly Control[] {
   return instrument ? INSTRUMENT_CONTROLS[instrument] : [];
 }

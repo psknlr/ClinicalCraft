@@ -316,6 +316,10 @@ export type ProcedureDefinition = z.infer<typeof ProcedureDefinitionSchema>;
 /** Handles name what the operator sees ("T1", "T2"…) — never the anatomy, which is hidden state. */
 export const HandleSchema = z.string().regex(/^T\d+$/);
 
+/** How close the laparoscope looks (`zoom`): the wide view shows the whole field, a close one only where it is aimed. */
+export const ZoomLevelSchema = z.enum(["wide", "close"]);
+export type ZoomLevel = z.infer<typeof ZoomLevelSchema>;
+
 export const ProcedureOpSchema = z.discriminatedUnion("op", [
   /** Choose the port plan (before the first incision). */
   z.object({ op: z.literal("plan-ports"), plan: IdSchema }).strict(),
@@ -337,10 +341,24 @@ export const ProcedureOpSchema = z.discriminatedUnion("op", [
   z.object({ op: z.literal("release"), structure: IdSchema }).strict(),
   /**
    * Pass the instrument in `port` — and the traction it holds — to a colleague (`to`: their staff id), or take it
-   * back (no `to`). Done by the one who holds it or the one who takes it; while a colleague holds a port, only they
-   * work it (retract, release, withdraw, suction, irrigate). Withdrawn before the hand-over, the traction falls.
+   * back (no `to`, or `surgeon`). Done by the one who holds it or the one who takes it — a colleague takes a port only
+   * from the operator or from a colleague handing it over themselves, and holds at most two; while a colleague holds a
+   * port, only they work it (retract, release, withdraw, suction, irrigate, the camera's steps). Withdrawn before the
+   * hand-over, the traction falls.
    */
   z.object({ op: z.literal("hand-over"), port: IdSchema, to: z.string().min(1).max(80).optional() }).strict(),
+  /**
+   * Point the laparoscope in the camera port at a region (`at`: a region id) or back at the whole field (no `at`) —
+   * the camera holder's step, or the operator's while nobody holds the camera port (docs/PROCEDURE.md §3).
+   */
+  z.object({ op: z.literal("aim"), port: IdSchema, at: IdSchema.optional() }).strict(),
+  /** Bring the laparoscope closer to what it is aimed at, or back to the wide view (a close view needs an aim). */
+  z.object({ op: z.literal("zoom"), port: IdSchema, level: ZoomLevelSchema }).strict(),
+  /**
+   * Put an instrument from the table into the hand of the one who will insert it (`to`: their staff id; absent, or
+   * `surgeon`: the operator) — a colleague's step (the scrub nurse's). It waits until that one inserts it.
+   */
+  z.object({ op: z.literal("pass"), instrument: InstrumentIdSchema, to: z.string().min(1).max(80).optional() }).strict(),
   /** One dissection step in a region (with energy for the hook). */
   z.object({ op: z.literal("dissect"), port: IdSchema, region: IdSchema, energy: z.boolean().default(false) }).strict(),
   /** Dissect round a seen tubular structure until it is free all round. */
@@ -398,7 +416,57 @@ export type ProcedureSignal =
   /** The planes have stopped separating: dense fibrosis (further dissection there tears what lies in it). */
   | "dense-fibrosis"
   /** Traction let go (released, withdrawn, exchanged): a region being dissected fell below half exposure. */
-  | "exposure-lost";
+  | "exposure-lost"
+  /** The operator worked in a region the camera is not aimed at: the step is off the picture's centre. */
+  | "off-view";
+
+/**
+ * Why the operative field refused a step, for a front-end to say in the learner's own language with the people's names
+ * (`RefusalReason.key`; docs/PROCEDURE.md §3) — the engine's English `message` stays as it is:
+ * - `operator-only` {op, actor}: a step only the operator does;
+ * - `port-held` {holder, instrument, port}: a colleague holds the port; `not-handed` {port, actor}: the port is the
+ *   operator's, never handed to the actor;
+ * - `take-from-colleague` {holder, instrument, port}: the colleague who holds it hands it over themselves;
+ * - `hands-full` {who, ports}: a colleague holds two ports already;
+ * - `needs-control` {who, control, op, instrument, port}: a control the colleague does not hold (`control` `operate`:
+ *   an instrument only the operator works);
+ * - `unknown-member` {who}: a `to` who is not in the team as it is;
+ * - `holds-already` {who, instrument, port} and `not-a-party` {instrument, port}: a hand-over to the one who has it,
+ *   or by someone who neither holds nor takes it;
+ * - `port-occupied` {port, instrument} and `port-role` {port, role, instrument}: a colleague puts an instrument only
+ *   into an empty port of its kind (the laparoscope into a camera port, a grasper or the suction into an assist port);
+ * - `camera-port` {port, role}: the camera's steps are worked from the camera port; `aim-first` {port}: a close view
+ *   needs an aim;
+ * - `colleague-only` {op}: a step the operator leaves to a colleague (a pass); `pass-self` {who, instrument};
+ *   `pass-waiting` {instrument, to}: passed already, waiting to go in; `pass-first` {instrument, to}: in the scrub
+ *   nurse's place every instrument is passed before it goes in (`to` empty: the operator).
+ */
+export const FIELD_REFUSALS = [
+  "operator-only",
+  "port-held",
+  "not-handed",
+  "take-from-colleague",
+  "hands-full",
+  "needs-control",
+  "unknown-member",
+  "holds-already",
+  "not-a-party",
+  "port-occupied",
+  "port-role",
+  "camera-port",
+  "aim-first",
+  "colleague-only",
+  "pass-self",
+  "pass-waiting",
+  "pass-first",
+] as const;
+export type FieldRefusal = (typeof FIELD_REFUSALS)[number];
+
+/** A refusal's reason in words a front-end localises (`key`, with `params` — staff ids, ports, instruments, ops). */
+export interface RefusalReason {
+  key: string;
+  params: Record<string, string>;
+}
 
 export interface PortState {
   /** Port site id (= the port's id in ops). */
@@ -409,7 +477,7 @@ export interface PortState {
   instrument: InstrumentId | null;
   /** Where its instrument's tip last worked (patient frame), for shaft clashes. */
   tip: Vec3 | null;
-  /** A colleague who holds its instrument (a staff id: the assistant keeping traction); absent: the operator. */
+  /** A colleague who holds its instrument (a staff id: the assistant keeping traction, the camera holder); absent: the operator. */
   holder?: string;
 }
 
@@ -429,6 +497,23 @@ export interface Injury {
   recognised: boolean;
   /** `major`: needs an open repair or a specialist; `minor`: manageable laparoscopically. */
   severity: "minor" | "major";
+  /** The colleague whose step caused it (a staff id: excessive traction by an assistant); absent: the operator's. */
+  by?: string;
+  /** The colleague who said it aloud first (anyone in the room may); absent: the operator, or not yet said. */
+  recognisedBy?: string;
+}
+
+/** The camera's view (`aim`, `zoom`): the region it is aimed at (null: the whole field) and how close it looks. */
+export interface CameraView {
+  at: string | null;
+  zoom: ZoomLevel;
+}
+
+/** An instrument passed into a hand and waiting to go in (`pass`): `to` the one who will insert it (absent: the operator), `by` who passed it. */
+export interface PassedInstrument {
+  instrument: InstrumentId;
+  to?: string;
+  by: string;
 }
 
 export interface SafetyPause {
@@ -494,7 +579,8 @@ export interface ProcedureState {
   bleeding: Bleeding[];
   spillage: { bile: boolean; stones: boolean; cleared: boolean };
   pauses: SafetyPause[];
-  unsafe: { code: UnsafeCode; at: number; structure?: string }[];
+  /** `by`: the colleague whose step it was (a staff id); absent: the operator's. */
+  unsafe: { code: UnsafeCode; at: number; structure?: string; by?: string }[];
   imaged: ("ioc" | "lap-us")[];
   specimen: "in-situ" | "detached" | "bagged" | "extracted";
   bailouts: Bailout[];
@@ -502,7 +588,22 @@ export interface ProcedureState {
   superseded?: Bailout[];
   inspected: boolean;
   closed: boolean;
-  /** `colleague`: the steps a colleague did themselves (absent: none) — the operator's are `steps - colleague`. */
-  counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number; colleague?: number };
+  /**
+   * The camera's view (`aim`, `zoom`): absent until the first of them — the whole field, as always — and dropped when
+   * the laparoscope leaves the camera port (withdrawn, exchanged, a conversion, the close).
+   */
+  camera?: CameraView;
+  /** The region of the operator's last tissue step (dissect, isolate, clip, divide, coagulate); absent before the first. */
+  working?: string;
+  /** Instruments passed and waiting to go in (`pass`), in order; an insert by the one they were passed to takes one. Absent: none. */
+  passed?: PassedInstrument[];
+  /** The `ref` of every accepted `operate` action that carried one, in order (informational, never read by a rule; absent until the first). */
+  refs?: string[];
+  /**
+   * `colleague`: the steps a colleague did themselves (absent: none) — the operator's are `steps - colleague`;
+   * `offView`: the operator's tissue steps in a region the camera was not aimed at (absent: none). Crossed hands count
+   * the operator's own steps only.
+   */
+  counters: { steps: number; exchanges: number; clashes: number; crossings: number; falseAlarms: number; colleague?: number; offView?: number };
 }
 

@@ -18,6 +18,6 @@
     "build": "tsc -b"
   },
   "dependencies": {
-    "@clinicalcraft/core": "5.0.0"
+    "@clinicalcraft/core": "5.1.0"
   }
 }
