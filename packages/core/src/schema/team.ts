@@ -1,5 +1,7 @@
 import { z } from "zod";
 import { ConditionSchema, IdSchema, LocalizedTextSchema } from "./common.js";
+// the leaf module of positions and controls (not facility.ts, which imports case.ts, which imports this module)
+import { StaffPositionSchema, SurgicalControlSchema } from "./positions.js";
 import { ProvenanceTagSchema } from "./procedure.js";
 
 /**
@@ -13,9 +15,10 @@ import { ProvenanceTagSchema } from "./procedure.js";
 /**
  * What a member is there for: `circulate` (the circulating nurse: notices needs, asks the right colleague,
  * verifies what happened, escalates); `instruments` (the scrub nurse: the sterile instruments — locates,
- * carries and hands them over); `count` (the surgical count); `surgeon`; `anaesthesia`.
+ * carries and hands them over); `count` (the surgical count); `surgeon`; `anaesthesia`; `assist` (at the table with
+ * the surgeon — a first or second assistant; the member's controls say for what).
  */
-export const TeamDutySchema = z.enum(["circulate", "instruments", "count", "surgeon", "anaesthesia"]);
+export const TeamDutySchema = z.enum(["circulate", "instruments", "count", "surgeon", "anaesthesia", "assist"]);
 export type TeamDuty = z.infer<typeof TeamDutySchema>;
 
 /** A staff id of the facility without its prefix (`or-7.scrub-nurse`), or `surgeon`: the operating surgeon (the learner, or a simulated surgeon in observer mode). */
@@ -25,9 +28,41 @@ export const TeamMemberSchema = z
   .object({
     staff: MemberRef,
     duties: z.array(TeamDutySchema).min(1),
+    /**
+     * The member's position (default: from the duties, by priority — surgeon, anaesthesia, instruments, assist,
+     * circulate, count). Needed when two members share a duty: a first and a second assistant both `assist`.
+     */
+    position: StaffPositionSchema.optional(),
+    /** The member's controls, replacing their position's defaults (a scrub nurse who also holds the camera). */
+    controls: z
+      .array(SurgicalControlSchema)
+      .min(1)
+      .refine((xs) => new Set(xs).size === xs.length, { message: "each control is listed once" })
+      .optional(),
+    /**
+     * On the `surgeon` member only: the facility staff member who operates when the learner takes another place in
+     * the team (a first or second assistant, the scrub nurse) — the stand-in surgeon. A team without one offers the
+     * learner the surgeon's place only.
+     */
+    standIn: MemberRef.optional(),
   })
   .strict();
 export type TeamMember = z.infer<typeof TeamMemberSchema>;
+
+/**
+ * A line-up: assistants added to the team for this encounter (`start {lineup}`), the base team staying as it is — a
+ * three-surgeon team beside the two-surgeon one a report describes. Each added member assists (`duties: ["assist"]`).
+ */
+export const TeamLineupSchema = z
+  .object({
+    id: IdSchema,
+    name: LocalizedTextSchema,
+    provenance: ProvenanceTagSchema,
+    note: LocalizedTextSchema.optional(),
+    members: z.array(TeamMemberSchema).min(1),
+  })
+  .strict();
+export type TeamLineup = z.infer<typeof TeamLineupSchema>;
 
 /** Something the team has to provide: an item of a type for a member (the surgeon needs a needle holder). */
 export const TeamNeedSchema = z
@@ -148,6 +183,8 @@ export const CaseTeamSchema = z
      */
     cover: z.array(TeamMemberSchema).default([]),
     scenarios: z.array(TeamScenarioSchema).default([]),
+    /** Line-ups the encounter may choose at `start {lineup}` (assistants added to the members). */
+    lineups: z.array(TeamLineupSchema).default([]),
     note: LocalizedTextSchema.optional(),
   })
   .strict();

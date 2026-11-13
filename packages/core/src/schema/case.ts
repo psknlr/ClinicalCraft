@@ -14,6 +14,7 @@ import {
   VitalsSchema,
 } from "./common.js";
 import { ProcedureDefinitionSchema } from "./procedure.js";
+import { SeatSchema } from "./positions.js";
 import { CaseTeamSchema } from "./team.js";
 // session.ts depends only on common.ts, so importing it here creates no cycle
 import { ClinicalActionSchema } from "./session.js";
@@ -769,6 +770,11 @@ export const RubricItemSchema = z
      * `AssessmentReport.criticalMissed`). It does not cap the score.
      */
     critical: z.boolean().optional(),
+    /**
+     * The places in the care team this item scores (docs/TEAM.md §1). Absent: the operating surgeon's item — scored
+     * when the learner operates, as always. In another place (`start {seat}`) only the items that list it are scored.
+     */
+    seats: z.array(SeatSchema).min(1).optional(),
   })
   .strict();
 export type RubricItem = z.infer<typeof RubricItemSchema>;

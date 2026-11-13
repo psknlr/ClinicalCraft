@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { AppearanceSchema, CaseSettingSchema } from "./case.js";
 import { CapabilitySchema, ConditionSchema, COUNT_STAGES, HexColorSchema, IdSchema, LocalizedTextSchema, RoomKindSchema } from "./common.js";
+import { StaffPositionSchema, SurgicalControlSchema } from "./positions.js";
+
+// The positions, places and controls (a leaf module: see positions.ts) — re-exported for every existing import.
+export * from "./positions.js";
 
 /**
  * Virtual environment — facilities, rooms, equipment and materials.
@@ -191,6 +195,11 @@ export const BehaviorOperationSchema = z
     release: z.boolean().optional(),
     /** Roles allowed (default: everyone). */
     roles: z.array(ActorRoleSchema).min(1).optional(),
+    /**
+     * The surgical control the operation is part of (docs/TEAM.md §1: `retract` for a grasp, `instruments` for loading
+     * a needle). Declared for theatre operations only; the world does not check it yet (docs/EMBODIED.md §8.2).
+     */
+    control: SurgicalControlSchema.optional(),
   })
   .strict();
 export type BehaviorOperation = z.infer<typeof BehaviorOperationSchema>;
@@ -715,34 +724,6 @@ export const PatientSlotSchema = z
   })
   .strict();
 
-/**
- * A staff member's position — the job they hold, finer than `role` (which decides what their body may do in the
- * world): a nurse is a scrub, circulating, ward or recovery nurse; an attending is a surgeon, an assistant surgeon,
- * an anaesthetist or a physician. Each position has a role card (the agent's `characters/roles.ts`): its
- * responsibilities, authority, limits, communication protocol and whom it escalates to (docs/CHARACTERS.md).
- */
-export const StaffPositionSchema = z.enum([
-  "surgeon",
-  "assistant-surgeon",
-  "anaesthetist",
-  "scrub-nurse",
-  "circulating-nurse",
-  "ward-nurse",
-  "recovery-nurse",
-  "theatre-coordinator",
-  "physician",
-  "educator",
-  "radiologist",
-  "radiographer",
-  "pathologist",
-  "lab-technician",
-  "transfusion-scientist",
-  "pharmacist",
-  "receptionist",
-  "porter",
-  "paramedic",
-]);
-export type StaffPosition = z.infer<typeof StaffPositionSchema>;
 
 export const StaffSchema = z
   .object({

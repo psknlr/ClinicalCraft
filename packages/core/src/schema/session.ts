@@ -4,6 +4,7 @@ import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "
 import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
 import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
+import { SeatSchema, type Seat } from "./positions.js";
 
 /**
  * Session — the deterministic, event-sourced state of one learner working
@@ -64,6 +65,14 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
     variant: IdSchema.optional(),
     /** `team`: the team scenario for this session (docs/TEAM.md; hidden from the team's policies). */
     team: IdSchema.optional(),
+    /**
+     * `seat`: the learner's place in the case's care team (docs/TEAM.md §1). `surgeon` (the default) is the operating
+     * surgeon, the learner as always; another place joins the team at its phase while the team's stand-in surgeon
+     * operates — the case's reference path up to that phase is applied with the start, as the team's work.
+     */
+    seat: SeatSchema.optional(),
+    /** `lineup`: one of the team's line-ups (`team.lineups`): the assistants added for this encounter. */
+    lineup: IdSchema.optional(),
     ...base,
   }).strict(),
   /** Learner asked a history question (button, free text, or attributed by the patient agent). */
@@ -246,6 +255,13 @@ export interface SessionState {
   variant?: string;
   /** The team scenario chosen at `start` (docs/TEAM.md). Hidden state. */
   teamScenario?: string;
+  /**
+   * The learner's place in the care team chosen at `start` (docs/TEAM.md §1): a first or second assistant or the scrub
+   * nurse. Absent: the operating surgeon (`start {seat: "surgeon"}` is recorded as no place).
+   */
+  seat?: Exclude<Seat, "surgeon">;
+  /** The team's line-up chosen at `start` (`team.lineups`). Absent: the base team. */
+  lineup?: string;
   /** Holds placed on interventions, in order (absent until the first; sessions saved before have none). */
   holds?: HoldRecord[];
   /** The surgical count (cases whose team keeps one), from the baseline on. */
