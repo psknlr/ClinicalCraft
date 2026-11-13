@@ -186,8 +186,11 @@ export const CaseTeamSchema = z
      */
     cover: z.array(TeamMemberSchema).default([]),
     scenarios: z.array(TeamScenarioSchema).default([]),
-    /** Line-ups the encounter may choose at `start {lineup}` (assistants added to the members). */
-    lineups: z.array(TeamLineupSchema).default([]),
+    /**
+     * Line-ups the encounter may choose at `start {lineup}` (assistants added to the members). Optional with no
+     * default, so a team written before line-ups parses to the same object (its content revision and hash unchanged).
+     */
+    lineups: z.array(TeamLineupSchema).optional(),
     note: LocalizedTextSchema.optional(),
   })
   .strict();

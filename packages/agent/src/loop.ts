@@ -241,7 +241,8 @@ export async function executeToolCall(params: ExecuteToolCallParams): Promise<To
   p.emit({ type: "tool_call_begin", turnId: p.turnId, agent: p.agent, callId: p.call.id, tool: p.call.name, args: p.call.args });
 
   const finish = (status: ToolCallStatus, output: ToolOutput): ToolCallOutcome => {
-    const actionIds = actionIdsBetween(seqBefore, p.ctx.state().seq);
+    const after = p.ctx.state();
+    const actionIds = actionIdsBetween(seqBefore, after.seq, after.joined);
     p.emit({
       type: "tool_call_end",
       turnId: p.turnId,

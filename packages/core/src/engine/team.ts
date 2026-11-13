@@ -5,12 +5,12 @@
  * positions, the items and the placements a scenario moves exist there).
  */
 import type { CaseDefinition } from "../schema/case.js";
-import type { EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
+import type { ActorRole, EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
 import { canonicalPosition, FIELD_CONTROLS, isSterilePosition, NON_STERILE_CONTROLS, TEAM_PLACES, type StaffPosition } from "../schema/positions.js";
 import type { CaseTeam, TeamMember } from "../schema/team.js";
 import { formatPath } from "./parse.js";
 import { createSession, reduce } from "./reducer.js";
-import { positionOfMember, seatsOf, standInOf } from "./seats.js";
+import { positionOfMember, seatsOf, staffPosition, standInOf } from "./seats.js";
 import type { Issue } from "./types.js";
 
 type PathPart = string | number;
@@ -93,7 +93,8 @@ function everyMember(team: CaseTeam): { m: TeamMember; at: PathPart[] }[] {
 /**
  * Positions and controls (docs/TEAM.md §1): `operate` and the position `surgeon` are the surgeon member's alone, and the
  * surgeon's own controls keep `operate`; the controls worked at the sterile field go to scrubbed positions only, the
- * equipment and the anaesthetic to positions that are not; a stand-in is named on the surgeon member only.
+ * equipment and the anaesthetic to positions that are not; a stand-in is named on the surgeon member only; one member
+ * to each place in the team, in the base team and among the team as it is in each team scenario.
  */
 function checkPositionsAndControls(c: CaseDefinition): Issue[] {
   const team = c.team!;
@@ -114,31 +115,61 @@ function checkPositionsAndControls(c: CaseDefinition): Issue[] {
       if (sterile && NON_STERILE_CONTROLS.includes(control)) issues.push(err([...at, "controls"], `"${control}" is worked outside the sterile field: a ${p} is scrubbed`));
     }
   }
-  issues.push(...onePerPlace(team.members, ["team", "members"], []));
+  issues.push(...onePerPlace([], team.members.map((m, i) => ({ m, at: ["team", "members", i] }))), ...scenarioPlaces(team));
   return issues;
 }
 
-/** At most one member in each place (the first assistant, the second assistant, the scrub nurse) among `members`. */
-function onePerPlace(members: readonly TeamMember[], at: PathPart[], base: readonly TeamMember[]): Issue[] {
+/** The place in the team a member stands in (the first assistant, the second assistant, the scrub nurse), if any. */
+function placeOf(m: TeamMember): StaffPosition | null {
+  const p = positionOfMember(m);
+  if (m.staff === "surgeon" || !p) return null;
+  const place = canonicalPosition(p);
+  return (TEAM_PLACES as readonly string[]).includes(place) ? place : null;
+}
+
+/**
+ * At most one member in each place in the team: the `listed` members, in order, against the `present` ones and each
+ * other — a clash is reported at the later listing (`within` says in which encounter).
+ */
+function onePerPlace(present: readonly TeamMember[], listed: readonly { m: TeamMember; at: PathPart[] }[], within = ""): Issue[] {
   const issues: Issue[] = [];
   const holder = new Map<string, string>();
-  for (const m of base) {
-    const p = positionOfMember(m);
-    if (m.staff !== "surgeon" && p && isSeatPosition(canonicalPosition(p)) && !holder.has(canonicalPosition(p))) holder.set(canonicalPosition(p), m.staff);
+  for (const m of present) {
+    const place = placeOf(m);
+    if (place && !holder.has(place)) holder.set(place, m.staff);
   }
-  members.forEach((m, i) => {
-    const p = positionOfMember(m);
-    if (m.staff === "surgeon" || !p) return;
-    const place = canonicalPosition(p);
-    if (!isSeatPosition(place)) return;
+  for (const { m, at } of listed) {
+    const place = placeOf(m);
+    if (!place) continue;
     const first = holder.get(place);
-    if (first !== undefined) issues.push(err([...at, i], `"${first}" and "${m.staff}" are both the ${place}: one member to each place in the team`));
+    if (first !== undefined) issues.push(err(at, `"${first}" and "${m.staff}" are both the ${place}${within}: one member to each place in the team`));
     else holder.set(place, m.staff);
+  }
+  return issues;
+}
+
+/**
+ * One member to each place among the team as it is in each team scenario (`effectiveTeam`: the base team, with each
+ * line-up, less whoever is absent, and the scenario's relief colleagues): a relief colleague never stands in a place a
+ * present member holds — one camera holder, one "first assistant", one "scrub nurse" for everyone who asks.
+ */
+function scenarioPlaces(team: CaseTeam): Issue[] {
+  const issues: Issue[] = [];
+  const reported = new Set<string>();
+  team.scenarios.forEach((s, i) => {
+    const absent = new Set(s.absent);
+    for (const lineup of [undefined, ...(team.lineups ?? [])]) {
+      const present = [...team.members, ...(lineup?.members ?? [])].filter((m) => !absent.has(m.staff));
+      const relief = s.relief.flatMap((m, j) => (absent.has(m.staff) ? [] : [{ m, at: ["team", "scenarios", i, "relief", j] }]));
+      for (const issue of onePerPlace(present, relief, ` in team scenario "${s.id}"${lineup ? ` with line-up "${lineup.id}"` : ""}`)) {
+        if (reported.has(issue.path)) continue;
+        reported.add(issue.path);
+        issues.push(issue);
+      }
+    }
   });
   return issues;
 }
-
-const isSeatPosition = (p: StaffPosition): boolean => (TEAM_PLACES as readonly string[]).includes(p);
 
 /**
  * The stand-in surgeon (`standIn` on the surgeon member): a colleague of the facility who is no member of the team in
@@ -181,7 +212,7 @@ function checkLineups(c: CaseDefinition): Issue[] {
       if (m.duties.length !== 1 || m.duties[0] !== "assist") issues.push(err([...at, "members", j, "duties"], `a line-up adds assistants: their duties are ["assist"]`));
       if (m.position !== undefined && m.position !== "first-assistant" && m.position !== "second-assistant") issues.push(err([...at, "members", j, "position"], `a line-up's assistant is a first or second assistant (not "${m.position}")`));
     });
-    issues.push(...onePerPlace(l.members, [...at, "members"], team.members));
+    issues.push(...onePerPlace(team.members, l.members.map((m, j) => ({ m, at: [...at, "members", j] }))));
   });
   return issues;
 }
@@ -205,10 +236,29 @@ function checkJoin(c: CaseDefinition): Issue[] {
   return [...messages].map((m) => err(["team", "members", index, "standIn"], m));
 }
 
+/** The facility roles that may do the operating surgeon's work (a doctor's: every clinical tool, the operation's too). */
+const SURGEON_ROLES: readonly ActorRole[] = ["attending", "clinician"];
+
 /**
- * The team in its facility: the room; the members, the surgeon's stand-in and the line-ups' assistants (staff of that
- * room); each member's facility position agreeing with their position in the team; relief and cover colleagues; the
- * items needed; the placements moved.
+ * The stand-in surgeon in the facility: staff of the team's room, and a surgeon there — position `surgeon` (their own,
+ * a room template's, or what their role gives) and a doctor's role. They operate with the surgeon member's controls, so
+ * the card they speak from, the dress they wear and the controls they hold are one job.
+ */
+function standInIssues(c: CaseDefinition, f: FacilityDefinition, standIn: string, at: PathPart[]): Issue[] {
+  const s = f.staff.find((x) => x.id === standIn);
+  if (!s) return [err(at, `facility "${f.id}" has no staff "${standIn}"`)];
+  const issues: Issue[] = [];
+  if (s.room !== c.team!.room) issues.push(err(at, `"${standIn}" works in "${s.room}", not in the team's room "${c.team!.room}"`));
+  const p = staffPosition(c, f, standIn);
+  if (!p || canonicalPosition(p) !== "surgeon") issues.push(err(at, `the stand-in "${standIn}" operates: their position in facility "${f.id}" is "surgeon" (not ${p ? `"${p}"` : "none"})`));
+  if (!SURGEON_ROLES.includes(s.role)) issues.push(err(at, `the stand-in "${standIn}" operates: their role in facility "${f.id}" is a doctor's (${SURGEON_ROLES.map((r) => `"${r}"`).join(" or ")}, not "${s.role}")`));
+  return issues;
+}
+
+/**
+ * The team in its facility: the room; the members, the surgeon's stand-in (a surgeon of that room) and the line-ups'
+ * assistants (staff of that room); each member's facility position agreeing with their position in the team; relief
+ * and cover colleagues; the items needed; the placements moved.
  */
 export function teamFacilityIssues(c: CaseDefinition, f: FacilityDefinition, catalogs: readonly EquipmentCatalog[]): Issue[] {
   const team = c.team;
@@ -223,8 +273,7 @@ export function teamFacilityIssues(c: CaseDefinition, f: FacilityDefinition, cat
   };
   team.members.forEach((m, i) => {
     if (m.staff === "surgeon") {
-      // the stand-in surgeon operates in the team's room
-      if (m.standIn !== undefined) inRoom(m.standIn, ["team", "members", i, "standIn"]);
+      if (m.standIn !== undefined) issues.push(...standInIssues(c, f, m.standIn, ["team", "members", i, "standIn"]));
       return;
     }
     inRoom(m.staff, ["team", "members", i, "staff"]);

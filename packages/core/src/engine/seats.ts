@@ -152,6 +152,20 @@ export function isPlace(s: Pick<SessionState, "seat">): boolean {
   return s.seat !== undefined;
 }
 
+/** The phase an encounter of the case starts in (`createSession`). */
+export function initialPhase(c: CaseDefinition): string {
+  return c.initialPhase ?? c.phases[0].id;
+}
+
+/**
+ * Whether a place in the team can join this case's team at its phase: the case starts in one of the team's phases, or
+ * it carries the reference solution the join follows (`joinPath`). A case served without its solution — the content
+ * API's forms, `publicCase` and `learnerCase` — cannot be joined in a place: it offers the operating surgeon's only.
+ */
+export function canJoinTeam(c: CaseDefinition): boolean {
+  return (c.team?.phases ?? []).includes(initialPhase(c)) || c.solution.length > 0;
+}
+
 /**
  * The member a place is, with a line-up: the base team's or the line-up's member in that position (a relief colleague
  * never is one). Present or absent alike: `seatsOf` and the start say whether the place can be taken.
@@ -167,13 +181,15 @@ export function seatMember(c: CaseDefinition, s: TeamChoice): TeamMember | undef
 
 /**
  * The places a learner may take in a case (docs/TEAM.md §1), the operating surgeon's first — always offered, with a
- * team or without. A place in the team is offered when the team's surgeon member names a stand-in (`standIn`) and the
- * team, with the chosen line-up, has a member in that position who is present (not absent in the chosen team scenario).
- * A start in a place also needs the base anatomical variant: the stand-in follows the reference path.
+ * team or without. A place in the team is offered when the team's surgeon member names a stand-in (`standIn`), the case
+ * can be joined at the team's phase (`canJoinTeam`: not a case served without its reference solution) and the team,
+ * with the chosen line-up, has a member in that position who is present (not absent in the chosen team scenario). A
+ * start in a place also needs the base anatomical variant and an untouched encounter: the join follows the reference
+ * path from the beginning.
  */
 export function seatsOf(c: CaseDefinition, choice: Pick<TeamChoice, "lineup" | "teamScenario"> = {}): Seat[] {
   const seats: Seat[] = ["surgeon"];
-  if (!c.team || !standInOf(c)) return seats;
+  if (!c.team || !standInOf(c) || !canJoinTeam(c)) return seats;
   const scenario = choice.teamScenario ? (c.team.scenarios ?? []).find((x) => x.id === choice.teamScenario) : undefined;
   const absent = new Set(scenario?.absent ?? []);
   for (const place of TEAM_PLACES) {
@@ -208,16 +224,23 @@ export function memberBody(c: CaseDefinition, s: TeamChoice, ref: string): strin
 }
 
 /**
- * Whom a body works the operative field as (an `operate` action's `actor`; `memberBody` the other way round): the
- * learner's body is the operator (undefined) — holding a place, that place's member —, the stand-in's body is the
- * operator while the learner holds a place, any other staff body its own staff id. Any other body is the operator, as
- * an actor-less step always was.
+ * Whom a body works the operative field as (an `operate` action's `actor`; `memberBody` the other way round). A call
+ * with no body is the learner's body. The answer is closed:
+ * - `undefined` — the operator: the learner's body while the learner operates; the stand-in's body while the learner
+ *   holds a place;
+ * - a staff id — the learner's body in a place (that place's member), and any other staff body (its own id);
+ * - `null` — no part in the field, so the caller refuses the step: the colleague standing by while the learner holds
+ *   their place, a place with no member, and every body that is neither the learner's nor a member of staff's.
+ * Only a raw dispatch that names no actor (a replay, the system) is the operator without a body.
  */
-export function refOfBody(c: CaseDefinition, s: TeamChoice, body: string): string | undefined {
-  if (body === LEARNER_BODY) return seatMember(c, s)?.staff;
-  if (!body.startsWith("staff:")) return undefined;
-  const id = body.slice("staff:".length);
-  return s.seat && id === standInOf(c) ? undefined : id;
+export function refOfBody(c: CaseDefinition, s: TeamChoice, body: string = LEARNER_BODY): string | null | undefined {
+  const seat = seatMember(c, s);
+  if (body === LEARNER_BODY) return s.seat ? (seat?.staff ?? null) : undefined;
+  const id = body.startsWith("staff:") ? body.slice("staff:".length) : "";
+  if (!id) return null;
+  if (s.seat && id === standInOf(c)) return undefined;
+  if (s.seat && id === seat?.staff) return null;
+  return id;
 }
 
 /** A member's controls among the team as it is: their own set, else their position's defaults and the camera when no second assistant is present. */
@@ -245,9 +268,11 @@ export function memberControls(c: CaseDefinition, choice: TeamChoice, ref: strin
 /**
  * What a step's actor may work in the operative field: the operator — no actor, the `surgeon` token, the stand-in while
  * the learner holds a place — is unrestricted; a member of the team as it is holds their controls (`memberControls`);
- * a colleague outside it, traction and suction (`LEGACY_COLLEAGUE`).
+ * a colleague outside it, traction and suction (`LEGACY_COLLEAGUE`); a body with no part in the field (`refOfBody`'s
+ * `null`), nothing.
  */
-export function fieldControls(c: CaseDefinition, s: TeamChoice, ref?: string): Controls {
+export function fieldControls(c: CaseDefinition, s: TeamChoice, ref?: string | null): Controls {
+  if (ref === null) return [];
   if (ref === undefined || ref === SURGEON || ref === operatorOf(c, s)) return "all";
   return memberControls(c, s, ref) ?? [...LEGACY_COLLEAGUE];
 }
@@ -261,7 +286,7 @@ export function fieldControls(c: CaseDefinition, s: TeamChoice, ref?: string): C
  */
 export function bodyControls(c: CaseDefinition, s: TeamChoice, facility: FacilityDefinition | null | undefined, body: string, purpose: ControlPurpose): Controls {
   const seat = seatMember(c, s);
-  if (body === LEARNER_BODY) return seat ? (memberControls(c, s, seat.staff) ?? []) : "all";
+  if (body === LEARNER_BODY) return s.seat ? (seat ? (memberControls(c, s, seat.staff) ?? []) : []) : "all";
   if (!body.startsWith("staff:")) return [];
   const id = body.slice("staff:".length);
   if (s.seat && id === standInOf(c)) return memberControls(c, s, SURGEON) ?? [];

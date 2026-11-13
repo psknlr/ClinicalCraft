@@ -22,9 +22,11 @@ import {
 import { PLACES_TEAM, placesCase } from "./__fixtures__/team-places.js";
 import {
   bodyControls,
+  canJoinTeam,
   dutyPosition,
   effectiveTeam,
   fieldControls,
+  initialPhase,
   isPlace,
   joinPath,
   LEARNER_BODY,
@@ -166,6 +168,21 @@ describe("places", () => {
     expect(seatsOf(placesCase(MINI, undefined, { team: undefined }))).toEqual(["surgeon"]);
   });
 
+  it("a case served without its reference solution offers the operating surgeon's place only — unless it starts in the team's phase", () => {
+    // the content API's form (`publicCase`, `learnerCase`): everything but the solution, parsed as a front-end parses it
+    const served = placesCase(MINI, PLACES_TEAM, { solution: undefined });
+    expect(served.solution).toEqual([]);
+    expect(canJoinTeam(c)).toBe(true);
+    expect(canJoinTeam(served)).toBe(false);
+    expect(seatsOf(served)).toEqual(["surgeon"]);
+    expect(seatsOf(served, { lineup: "three-surgeons" })).toEqual(["surgeon"]);
+    // a team that works from the first phase needs no path to join
+    const fromTheStart = placesCase(MINI, { ...PLACES_TEAM, phases: ["arrival", "observation"] }, { solution: undefined });
+    expect(initialPhase(fromTheStart)).toBe("arrival");
+    expect(canJoinTeam(fromTheStart)).toBe(true);
+    expect(seatsOf(fromTheStart)).toEqual(["surgeon", "first-assistant", "scrub-nurse"]);
+  });
+
   it("who is who: the member whose place the learner holds, the stand-in operating, the colleague standing by", () => {
     expect(isPlace({})).toBe(false);
     expect(isPlace({ seat: "scrub-nurse" })).toBe(true);
@@ -192,7 +209,42 @@ describe("places", () => {
     expect(memberBody(c, { seat: "first-assistant" }, "doc-1")).toBe(LEARNER_BODY);
     expect(refOfBody(c, { seat: "first-assistant" }, LEARNER_BODY)).toBe("doc-1");
     expect(refOfBody(c, { seat: "first-assistant" }, "staff:doc-0")).toBeUndefined();
-    expect(refOfBody(c, { seat: "first-assistant" }, "patient:bay-1")).toBeUndefined();
+  });
+
+  it("a body's member is closed: a call with no body is the learner's; the colleague standing by and every other body have no part in the field", () => {
+    for (const choice of [{}, { seat: "first-assistant" }, { seat: "scrub-nurse" }, { seat: "second-assistant", lineup: "three-surgeons" }] as TeamChoice[]) {
+      // a call with no body is the learner's body (from the learner, the CLI, MCP or an external clinician)
+      expect(refOfBody(c, choice), JSON.stringify(choice)).toBe(refOfBody(c, choice, LEARNER_BODY));
+      // only the learner's body and staff bodies have a part in the field: nothing else is the operator
+      for (const body of ["patient:bay-1", "actor:ghost", "", "staff:", "clinician"]) expect(refOfBody(c, choice, body), `${JSON.stringify(choice)} ${body}`).toBeNull();
+    }
+    // in a place, the colleague standing by has no field identity of their own: never taken for the learner's place
+    for (const choice of [{ seat: "first-assistant" }, { seat: "scrub-nurse" }, { seat: "second-assistant", lineup: "three-surgeons" }] as TeamChoice[]) {
+      const by = standingBy(c, choice)!;
+      expect(refOfBody(c, choice, by), by).toBeNull();
+      expect(refOfBody(c, choice, LEARNER_BODY)).toBe(by.slice("staff:".length));
+    }
+    // without a place they are a member like any other
+    expect(refOfBody(c, {}, "staff:doc-1")).toBe("doc-1");
+    // a place with no member (a choice the start refuses): the learner's body has no part either
+    expect(refOfBody(c, { seat: "second-assistant" }, LEARNER_BODY)).toBeNull();
+    expect(bodyControls(c, { seat: "second-assistant" }, null, LEARNER_BODY, "field")).toEqual([]);
+  });
+
+  it("a body's controls and its member's field controls agree: the learner, the members, the colleague standing by, every refused body", () => {
+    for (const choice of [{}, { seat: "first-assistant" }, { seat: "scrub-nurse" }, { seat: "second-assistant", lineup: "three-surgeons" }] as TeamChoice[]) {
+      const standIn = choice.seat ? "staff:doc-0" : null;
+      const members = effectiveTeam(c, choice).map((m) => memberBody(c, choice, m.staff)).filter((b) => b !== standIn);
+      const bodies = [LEARNER_BODY, ...members, ...(choice.seat ? [standingBy(c, choice)!] : []), "patient:bay-1", "actor:ghost", ""];
+      for (const body of bodies) {
+        expect(fieldControls(c, choice, refOfBody(c, choice, body)), `${JSON.stringify(choice)} ${body}`).toEqual(bodyControls(c, choice, null, body, "field"));
+      }
+    }
+    // the stand-in's steps are the operator's in the field, while their body holds the surgeon member's controls
+    expect(fieldControls(c, { seat: "scrub-nurse" }, refOfBody(c, { seat: "scrub-nurse" }, "staff:doc-0"))).toBe("all");
+    expect(bodyControls(c, { seat: "scrub-nurse" }, null, "staff:doc-0", "field")).toEqual(memberControls(c, {}, "surgeon"));
+    // a refused body works nothing in the field
+    expect(fieldControls(c, {}, null)).toEqual([]);
   });
 });
 

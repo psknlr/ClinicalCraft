@@ -3,11 +3,15 @@
  * call's result names it, and the record resolves it (and an operative step's `op-<n>`) again after a save and a
  * resume; a refusal and an unchanged act get none.
  */
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import { parseCase, type CaseDefinition } from "@clinicalcraft/core";
+import { parseCase, replay, type CaseDefinition, type ClinicalAction } from "@clinicalcraft/core";
 import { LAP_CHOLE_SIT } from "../../../core/src/engine/procedure/__fixtures__/lap-chole-sit.js";
+import { placesCase } from "../../../core/src/engine/__fixtures__/team-places.js";
 import { makeSession, msgsOf } from "../__fixtures__/harness.js";
 import { actionIdsBetween, clinicalActionFeedback } from "./action-ids.js";
+
+const MINI = JSON.parse(readFileSync(new URL("../../../core/src/engine/__fixtures__/mini-anaphylaxis.case.json", import.meta.url), "utf8")) as Record<string, unknown>;
 
 function theatreCase(): CaseDefinition {
   const parsed = parseCase(structuredClone(LAP_CHOLE_SIT));
@@ -55,5 +59,23 @@ describe("persistent action ids", () => {
   it("the ids between two sequence numbers", () => {
     expect(actionIdsBetween(3, 3)).toEqual([]);
     expect(actionIdsBetween(3, 5)).toEqual(["act-4", "act-5"]);
+  });
+
+  it("a start in a place in the team is one action: the last of its numbers; those of what it joined after are no action's", () => {
+    const k = placesCase(MINI);
+    const accepted: ClinicalAction[] = [
+      { type: "start", seat: "scrub-nurse" },
+      { type: "answer", decisionId: "dx", optionIds: ["anaphylaxis"] },
+    ];
+    const joined = replay(k, accepted.slice(0, 1)).state.joined!;
+    expect(joined).toMatchObject({ actions: 5, seq: 6 });
+    // a tool call that committed the start names one action, and the next one after it
+    expect(actionIdsBetween(0, 6, joined)).toEqual(["act-6"]);
+    expect(actionIdsBetween(0, 7, joined)).toEqual(["act-6", "act-7"]);
+    expect(actionIdsBetween(6, 7, joined)).toEqual(["act-7"]);
+    // the record resolves the start by its id; the numbers its join used resolve to nothing
+    expect(clinicalActionFeedback(k, accepted, "act-6")).toMatchObject({ actionId: "act-6", seq: 6, type: "start", by: "learner" });
+    for (let n = 1; n <= 5; n++) expect(clinicalActionFeedback(k, accepted, `act-${n}`), `act-${n}`).toBeNull();
+    expect(clinicalActionFeedback(k, accepted, "act-7")).toMatchObject({ actionId: "act-7", type: "answer" });
   });
 });

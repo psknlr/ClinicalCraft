@@ -36,6 +36,7 @@ export const PROCEDURE_EN = {
   "team.notNow": "The team works on its own only during: {phases}.",
   "team.invalid": "That team request is not well formed: {reason}",
   "team.notYours": "That message was said to {to}, not to you: only they can read it back or answer it.",
+  "team.place.notOffered": "the {place}'s place in the team is not offered yet: no stand-in surgeon would operate while you held it. Start as the operating surgeon.",
 } as const;
 
 export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
@@ -69,6 +70,7 @@ export const PROCEDURE_ZH: Record<keyof typeof PROCEDURE_EN, string> = {
   "team.notNow": "团队只在以下阶段自主协作：{phases}。",
   "team.invalid": "团队请求格式不正确：{reason}",
   "team.notYours": "这句话是对{to}说的，不是对你：只有{to}能复述或回答。",
+  "team.place.notOffered": "暂不提供团队中的{place}岗位：你担任该岗位时，还没有主刀同事来主刀。请以主刀医生身份开始。",
 };
 
 /** Labels of the field view's enumerations (dissection, exposure, findings, signals…), per language. */
@@ -112,7 +114,7 @@ const LABELS: Record<"en" | "zh-CN", Record<string, string>> = {
     "lap-us": "laparoscopic ultrasound probe",
     camera: "camera",
     working: "working",
-    assist: "assist",
+    assist: "assistant",
     left: "left hand",
     right: "right hand",
     "in-situ": "in place",

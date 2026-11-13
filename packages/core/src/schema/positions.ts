@@ -7,11 +7,14 @@ import { z } from "zod";
  * `facility.ts`, they would read them before they exist.
  */
 
-/** A name in both languages (the shape of `LocalizedText`, kept here so the leaf imports nothing of the schema). */
-export interface PositionName {
+/**
+ * A name in both languages (the shape of `LocalizedText`, kept here so the leaf imports nothing of the schema; a type
+ * rather than an interface, so a name is a `LocalizedText` wherever one is asked for — `t(POSITION_TITLES[p], locale)`).
+ */
+export type PositionName = {
   en: string;
   "zh-CN": string;
-}
+};
 
 /**
  * A staff member's position — the job they hold, finer than `role` (which decides what their body may do in the

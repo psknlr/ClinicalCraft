@@ -6,7 +6,7 @@
  * commit, the engine, PostToolUse hooks. Only learner tools may run on this path (never an NPC's or a
  * front-end's), and simulation-owned flags can never be set directly.
  */
-import { ClinicalActionSchema, historyVoice, t, type ClinicalAction, type ReduceResult, type SessionState } from "@clinicalcraft/core";
+import { ClinicalActionSchema, historyVoice, POSITION_TITLES, t, type ClinicalAction, type ReduceResult, type SessionState } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { agentKind } from "../agents/prompts.js";
 import { executeCommand, type CommandHost } from "../commands.js";
@@ -25,6 +25,7 @@ import { MovementRequests } from "./movement.js";
 import { sessionSnapshot } from "./resume.js";
 import { parseLearnerInput, parseMention, resolveAgentAlias } from "./router.js";
 import { staffAgent, staffVoice, type StaffVoice } from "./staff-voice.js";
+import { placeNotOffered } from "./team/places.js";
 import { encounterRoom, lookupStaff, staffChoice } from "../tools/consult-target.js";
 
 /** The learner as the holder of a hold they place or release themselves. */
@@ -265,6 +266,12 @@ export class LearnerPath {
     }
     if (requested.type === "operate" && requested.actor) {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "assist.handEntry") }), code: "permission_denied" });
+      return null;
+    }
+    // a place in the team is not offered yet: nobody would operate while the learner held it (docs/TEAM.md §1)
+    const place = placeNotOffered(requested);
+    if (place) {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "team.place.notOffered", { place: t(POSITION_TITLES[place], L) }) }), code: "permission_denied" });
       return null;
     }
     // who holds or releases is the caller, never a name the caller supplies (docs/PROTOCOL.md §3.1): a learner who

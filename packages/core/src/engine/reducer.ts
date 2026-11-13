@@ -18,7 +18,7 @@ import {
   type SessionState,
 } from "../schema/session.js";
 import type { Place } from "../schema/positions.js";
-import { joinPath, placeMember, standInOf } from "./seats.js";
+import { canJoinTeam, initialPhase, joinPath, placeMember, standInOf } from "./seats.js";
 import { t } from "../i18n.js";
 import { activeHolds, evaluate, resultFor, resultKey } from "./conditions.js";
 import { currentObjective, progress } from "./queries.js";
@@ -166,6 +166,12 @@ function placeRefusal(c: CaseDefinition, s: SessionState, place: Place): string 
   const team = c.team;
   if (!team) return `this case has no care team: the learner operates (there is no ${place} place)`;
   if (!standInOf(c)) return `nobody in this case's team stands in for the surgeon (the surgeon member's "standIn"): the learner operates (there is no ${place} place)`;
+  // the join applies the reference path from its beginning: nothing may have been done before (a phase switched to,
+  // a note, a flag)
+  if (s.seq !== 0 || s.phase !== initialPhase(c)) {
+    return `a place in the team is taken at the start of an untouched encounter: the team's work up to its phase follows the reference path from the beginning (${s.seq} action${s.seq === 1 ? "" : "s"} came before this start)`;
+  }
+  if (!canJoinTeam(c)) return `this case was loaded without its reference solution, which a place in the team joins along: only the operating surgeon's place is offered`;
   if ((s.variant ?? BASE_VARIANT) !== BASE_VARIANT) return `the ${place} place is offered with the base anatomy only: the stand-in surgeon follows the reference path`;
   const member = placeMember(c, place, s.lineup);
   if (!member) return `this case's team${s.lineup ? ` with line-up "${s.lineup}"` : ""} has no ${place}: there is no such place`;

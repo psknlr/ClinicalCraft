@@ -365,7 +365,7 @@ export class SessionToolRunner {
     } finally {
       off();
     }
-    const actionIds = actionIdsBetween(seqBefore, this.session.state.seq);
+    const actionIds = actionIdsBetween(seqBefore, this.session.state.seq, this.session.state.joined);
     // the staff's own round follows a state-changing act, as on the session's op path (docs/TEAM.md §5): an
     // investigation's next stage, traction against where hands are, an alarm answered — what they say is a notice
     if (!tool.readOnly && !signal?.aborted && this.session.state.started && !this.session.state.finished) {

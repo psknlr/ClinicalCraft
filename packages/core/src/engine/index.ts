@@ -10,11 +10,13 @@ export { checkTeamDefinition, teamFacilityIssues } from "./team.js";
 // the care team's positions, places and controls (docs/TEAM.md §1)
 export {
   bodyControls,
+  canJoinTeam,
   DUTY_POSITION,
   DUTY_PRIORITY,
   dutyPosition,
   effectiveTeam,
   fieldControls,
+  initialPhase,
   isPlace,
   joinPath,
   LEARNER_BODY,

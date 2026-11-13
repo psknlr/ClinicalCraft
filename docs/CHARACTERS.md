@@ -53,11 +53,11 @@ The theatre's cards, in short:
 
 | position | mission | escalates to |
 |---|---|---|
-| surgeon (operating surgeon) | carries out the operation safely and leads the operative team; asks the scrub nurse for instruments and the assistant for traction | surgeon (a senior) |
+| surgeon (operating surgeon) | carries out the operation safely and leads the operative team; asks the scrub nurse for instruments, the first assistant for traction and the camera holder for the view | surgeon (a senior) |
 | first assistant | keeps the operating surgeon's exposure — traction and counter-traction, suction, help with haemostasis; the camera when the team gives it to them; never dissects, clips, divides or coagulates, never takes a port another colleague holds | surgeon |
 | second assistant | keeps the view: the working point centred and the camera steady; static retraction and suction when asked; never withdraws the scope on their own, above all in bleeding | first assistant, then surgeon |
 | assistant surgeon | (the first assistant's old name, its own card) keeps the exposure steady and hands back cleanly | surgeon |
-| scrub nurse | keeps the sterile field and its instruments, hands the surgeon what they need and counts with the circulating nurse | circulating nurse, then surgeon |
+| scrub nurse | keeps the sterile field and its instruments, hands the surgeon what they need — each instrument into the hand of the one who will insert it, clips and stapler reloads loaded — and counts with the circulating nurse | circulating nurse, then surgeon |
 
 Each position has a **role card** (`ROLE_CARDS`):
 
@@ -65,7 +65,7 @@ Each position has a **role card** (`ROLE_CARDS`):
 |---|---|---|
 | `mission` | why the position exists | "Keeps the sterile field and its instruments, and hands the surgeon what they need." |
 | `responsibilities` | what it is there to do | know where every instrument and swab is; hand instruments into the surgeon's hand, naming them; count with the circulating nurse |
-| `may` | its authority here | hand over sterile instruments; count and set items aside; ask the circulator for anything outside the field |
+| `may` | its authority here | hand over sterile instruments; pass each instrument into the hand of the one who will insert it; load clips and stapler reloads; count and set items aside; ask the circulator for anything outside the field |
 | `mayNot` | hard limits | leave the sterile field unrelieved; touch anything not sterile; fetch from outside the field |
 | `protocol` | how it communicates | read back a request; report the hand-over done; call a count discrepancy at once and ask for a hold |
 | `escalatesTo` | whom it raises what it cannot resolve to, in order | circulating nurse, then surgeon |

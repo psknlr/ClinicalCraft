@@ -4,19 +4,28 @@
  * a replay, after a reload and in every front-end. Clinical events carry it (`clinical_event.actionId`), a tool
  * call's result names the actions it committed (`tool_call_end.actionIds`; MCP `structuredContent.actionIds`), and
  * `get_action_feedback` resolves it — and an operative step's `op-<n>` — from the record itself (no second store
- * that a save could lose).
+ * that a save could lose). A start in a place in the team (docs/TEAM.md §1) is one committed action that uses a number
+ * for itself and one for each reference action it joins after (`SessionState.joined`): its id is the last of them
+ * (`act-<joined.seq>`), and the numbers before it are no action's id.
  */
-import { createSession, reduce, type CaseDefinition, type ClinicalAction, type DomainEvent } from "@clinicalcraft/core";
+import { createSession, reduce, type CaseDefinition, type ClinicalAction, type DomainEvent, type JoinRecord } from "@clinicalcraft/core";
 
 /** The id of the action that brought the session to `seq`. */
 export function actionIdOf(seq: number): string {
   return `act-${seq}`;
 }
 
-/** The ids of the actions committed between two sequence numbers (`after` exclusive, `upTo` inclusive). */
-export function actionIdsBetween(after: number, upTo: number): string[] {
+/**
+ * The ids of the actions committed between two sequence numbers (`after` exclusive, `upTo` inclusive). `joined` (the
+ * session's `SessionState.joined`): the numbers a start in a place used for the reference actions it joined after are
+ * skipped — the start is one action, `act-<joined.seq>`.
+ */
+export function actionIdsBetween(after: number, upTo: number, joined?: Pick<JoinRecord, "seq" | "actions">): string[] {
   const ids: string[] = [];
-  for (let n = after + 1; n <= upTo; n++) ids.push(actionIdOf(n));
+  for (let n = after + 1; n <= upTo; n++) {
+    if (joined && n >= joined.seq - joined.actions && n < joined.seq) continue;
+    ids.push(actionIdOf(n));
+  }
   return ids;
 }
 

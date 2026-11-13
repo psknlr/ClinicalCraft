@@ -113,10 +113,33 @@ describe("care team · positions, controls, the stand-in and line-ups", () => {
   });
 
   it("one member to each place, in the base team and with each line-up", () => {
-    expect(issuesOf((t) => t.members.splice(2, 0, { staff: "nurse-3", duties: ["instruments"] }))).toEqual(['team.members.2: "nurse-2" and "nurse-3" are both the scrub-nurse: one member to each place in the team']);
+    expect(issuesOf((t) => t.members.splice(2, 0, { staff: "nurse-3", duties: ["instruments"] }))).toEqual([
+      'team.members.2: "nurse-2" and "nurse-3" are both the scrub-nurse: one member to each place in the team',
+      // with nurse-2 on a break, nurse-3 is still there: her relief would be a second scrub nurse
+      'team.scenarios.0.relief.0: "nurse-3" and "nurse-9" are both the scrub-nurse in team scenario "scrub-break": one member to each place in the team',
+    ]);
     // the old name of the first assistant is the first assistant
     expect(issuesOf((t) => t.members.splice(3, 0, { staff: "doc-3", duties: ["assist"], position: "assistant-surgeon" }))).toEqual(['team.members.3: "doc-1" and "doc-3" are both the first-assistant: one member to each place in the team']);
     expect(issuesOf((t) => (t.lineups[0].members[0].position = "first-assistant"))).toEqual(['team.lineups.0.members.0: "doc-1" and "doc-2" are both the first-assistant: one member to each place in the team']);
+  });
+
+  it("one member to each place among the team as it is in each scenario: a relief colleague never doubles a present member", () => {
+    const scenario = (relief: Json[], extra: Json = {}) => ({ id: "extra-hands", name: L("Extra hands"), summary: L("Colleagues come to help."), provenance: "authored", relief, needs: [{ id: "n", item: "forceps", for: "surgeon" }], ...extra });
+    // nobody is absent: a second first assistant (two camera holders) and a second scrub nurse
+    expect(issuesOf((t) => t.scenarios.push(scenario([{ staff: "doc-8", duties: ["assist"] }, { staff: "nurse-8", duties: ["instruments"] }])))).toEqual([
+      'team.scenarios.2.relief.0: "doc-1" and "doc-8" are both the first-assistant in team scenario "extra-hands": one member to each place in the team',
+      'team.scenarios.2.relief.1: "nurse-2" and "nurse-8" are both the scrub-nurse in team scenario "extra-hands": one member to each place in the team',
+    ]);
+    // a relief second assistant doubles only the three-surgeon line-up's
+    expect(issuesOf((t) => t.scenarios.push(scenario([{ staff: "doc-7", duties: ["assist"], position: "second-assistant" }])))).toEqual([
+      'team.scenarios.2.relief.0: "doc-2" and "doc-7" are both the second-assistant in team scenario "extra-hands" with line-up "three-surgeons": one member to each place in the team',
+    ]);
+    // two relief colleagues in one place
+    expect(issuesOf((t) => t.scenarios.push(scenario([{ staff: "nurse-8", duties: ["instruments"] }, { staff: "nurse-7", duties: ["count", "instruments"] }], { absent: ["nurse-2"] })))).toEqual([
+      'team.scenarios.2.relief.1: "nurse-8" and "nurse-7" are both the scrub-nurse in team scenario "extra-hands": one member to each place in the team',
+    ]);
+    // relieving the member who is away, or counting beside the scrub nurse, is fine
+    expect(issuesOf((t) => t.scenarios.push(scenario([{ staff: "doc-8", duties: ["assist"] }, { staff: "nurse-8", duties: ["count"] }], { absent: ["doc-1"] })))).toEqual([]);
   });
 
   it("the position surgeon is the surgeon member's, and the surgeon member's position is surgeon", () => {
@@ -166,7 +189,7 @@ describe("care team · in its facility", () => {
     expect(teamFacilityIssues(withTeam(), f, catalogs)).toEqual([]);
   });
 
-  it("the stand-in works in the team's room, the line-ups' assistants too; a member's facility position is their position in the team", () => {
+  it("the stand-in is a surgeon of the team's room, the line-ups' assistants work there too; a member's facility position is their position in the team", () => {
     const { f, catalogs } = facility();
     const team = {
       ...TEAM,
@@ -179,10 +202,20 @@ describe("care team · in its facility", () => {
       `team.lineups.0.members.0.staff: facility "${f.id}" has no staff "doc-2"`,
     ]);
     const staffed = structuredClone(f);
-    staffed.staff.push({ ...f.staff[0], id: "doc-0", role: "attending", room: "bay-1" }, { ...f.staff[0], id: "doc-2", role: "attending", room: "bay-1" });
+    staffed.staff.push({ ...f.staff[0], id: "doc-0", role: "attending", position: "surgeon", room: "bay-1" }, { ...f.staff[0], id: "doc-2", role: "attending", room: "bay-1" });
     expect(messages(withTeam(team), staffed)).toEqual([`team.members.2.standIn: "doc-0" works in "bay-1", not in the team's room "consult"`, `team.lineups.0.members.0.staff: "doc-2" works in "bay-1", not in the team's room "consult"`]);
     for (const s of staffed.staff) if (s.id === "doc-0" || s.id === "doc-2") s.room = "consult";
     expect(messages(withTeam(team), staffed)).toEqual([]);
+    // the stand-in operates with the surgeon member's controls: a surgeon of the facility, with a doctor's role — not
+    // the assistant surgeon, an attending whose role gives a physician, or a nurse
+    const standIn = staffed.staff.find((s) => s.id === "doc-0")!;
+    standIn.position = "assistant-surgeon";
+    expect(messages(withTeam(team), staffed)).toEqual([`team.members.2.standIn: the stand-in "doc-0" operates: their position in facility "${f.id}" is "surgeon" (not "assistant-surgeon")`]);
+    delete standIn.position;
+    expect(messages(withTeam(team), staffed)).toEqual([`team.members.2.standIn: the stand-in "doc-0" operates: their position in facility "${f.id}" is "surgeon" (not "physician")`]);
+    Object.assign(standIn, { position: "surgeon", role: "nurse" });
+    expect(messages(withTeam(team), staffed)).toEqual([`team.members.2.standIn: the stand-in "doc-0" operates: their role in facility "${f.id}" is a doctor's ("attending" or "clinician", not "nurse")`]);
+    Object.assign(standIn, { role: "attending" });
     // the card a colleague speaks from and the controls the team gives them are one job: the old name of the first
     // assistant agrees with a first assistant, a circulating nurse does not with the scrub nurse's duty
     staffed.staff.find((s) => s.id === "doc-2")!.position = "assistant-surgeon";

@@ -182,9 +182,9 @@ export interface HoldRecord {
  * team's phases. None of it is the learner's: the assessment reports it as the team's.
  */
 export interface JoinRecord {
-  /** Reference actions applied. */
+  /** Reference actions applied, each with a sequence number of its own after the start's first (`SessionState.seq`). */
   actions: number;
-  /** The record when the learner joined: the last sequence number and the minute. */
+  /** The record when the learner joined: the last sequence number (the start's own id is `act-<seq>`) and the minute. */
   seq: number;
   at: number;
   /** History items asked, findings examined, order keys (`id@phase`), decisions answered and objectives done by then. */
@@ -303,7 +303,12 @@ export interface SessionState {
    * opens (`ProcedureState.supply`). Absent: everything supplied.
    */
   equipment?: { image: boolean; gas: boolean; source?: string };
-  /** Monotonic count of accepted actions (for transcripts / ordering). */
+  /**
+   * Monotonic count of accepted actions (for transcripts / ordering). A start in a place in the team (docs/TEAM.md §1)
+   * is one recorded action that counts one number for itself and one for each reference action it joins after
+   * (`joined.actions`, applied by the system), so the records those actions leave keep their order; the start is the
+   * last of its numbers (`joined.seq`) and the numbers before it are no action's own (an action id is `act-<seq>`).
+   */
   seq: number;
 }
 

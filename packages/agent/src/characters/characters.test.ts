@@ -152,6 +152,19 @@ describe("role cards", () => {
     for (const line of SHARED_PROTOCOL) expect(scrub).toContain(line);
     expect(scrub).not.toBe(anaes);
   });
+
+  it("the theatre's division of work: the scrub nurse passes into the inserting hand and loads; the surgeon asks each colleague for their part", () => {
+    const scrub = roleSection(ROLE_CARDS["scrub-nurse"], "Nurse Lim");
+    expect(scrub).toMatch(/You may:\n- hand over sterile instruments\n- pass each instrument into the hand of the one who will insert it\n- load clips and stapler reloads\n- count and set items aside\n/u);
+    // what the pack pins of the card stays
+    expect(scrub).toMatch(/^<role>\nYou are Nurse Lim, the scrub nurse\. Keeps the sterile field and its instruments/u);
+    expect(scrub).toMatch(/- leave the sterile field unrelieved/u);
+    const surgeon = roleSection(ROLE_CARDS.surgeon, "Dr Ito");
+    expect(surgeon).toMatch(/You may:\n- operate\n- ask the scrub nurse for instruments, the first assistant for traction and the camera holder for the view\n/u);
+    expect(surgeon).not.toMatch(/the assistant for traction/u);
+    // the call-out before a critical step stays the surgeon's protocol
+    expect(surgeon).toMatch(/- say aloud before a critical step \(clip, divide\) and wait for objections/u);
+  });
 });
 
 describe("a model-driven team member", () => {

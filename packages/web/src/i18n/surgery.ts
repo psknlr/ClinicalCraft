@@ -369,7 +369,7 @@ export const SURGERY_EN: Record<keyof typeof SURGERY_ZH, string> = {
   "surgery.port.extract": "Extract the specimen through this port",
   "surgery.role.camera": "camera",
   "surgery.role.working": "working",
-  "surgery.role.assist": "assist",
+  "surgery.role.assist": "assistant",
   "surgery.hand.left": "left hand",
   "surgery.hand.right": "right hand",
   /* ---------------- actions ---------------- */

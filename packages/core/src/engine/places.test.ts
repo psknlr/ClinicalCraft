@@ -6,13 +6,13 @@
  * the operator's (its start takes no seat), a team with a stand-in must be joinable, and in a place only the place's
  * rubric items are scored while what the team did before is reported apart.
  */
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
-import type { ClinicalAction, ReduceResult, SessionState } from "../schema/session.js";
+import type { ClinicalAction, DomainEvent, ReduceResult, SessionState } from "../schema/session.js";
 import { LAP_CHOLE_SIT } from "./procedure/__fixtures__/lap-chole-sit.js";
 import { PLACES_TEAM, placesCase } from "./__fixtures__/team-places.js";
-import { assess, checkCaseIntegrity, checkTeamDefinition, createSession, joinPath, parseCase, reduce, replay, verifyCase } from "./index.js";
+import { assess, checkCaseIntegrity, checkTeamDefinition, createSession, evaluate, joinPath, parseCase, reduce, replay, seatsOf, verifyCase } from "./index.js";
 
 type Json = Record<string, any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 const MINI: Json = JSON.parse(readFileSync(new URL("./__fixtures__/mini-anaphylaxis.case.json", import.meta.url), "utf8"));
@@ -20,6 +20,19 @@ const c = placesCase(MINI);
 const noTeam = placesCase(MINI, undefined, { team: undefined });
 const start = (k: CaseDefinition, action: Partial<Extract<ClinicalAction, { type: "start" }>> = {}): ReduceResult => reduce(k, createSession(k), { type: "start", ...action });
 const L = (en: string) => ({ en, "zh-CN": en });
+
+/** The actions reduced one by one, as a live session does (every one accepted). */
+function live(k: CaseDefinition, actions: readonly ClinicalAction[]): { state: SessionState; events: DomainEvent[] } {
+  let state = createSession(k);
+  const events: DomainEvent[] = [];
+  for (const a of actions) {
+    const r = reduce(k, state, a);
+    expect(r.rejected, a.type).toBeUndefined();
+    state = r.state;
+    events.push(...r.events);
+  }
+  return { state, events };
+}
 
 /** A path that ends before the team's phase: no oxygen, so the patient is never stabilised (and no disposition). */
 const SHORT = [...MINI.solution.slice(0, 5), { type: "answer", decisionId: "dx", optionIds: ["anaphylaxis"] }, { type: "finish" }];
@@ -68,6 +81,50 @@ describe("a place in the team, at start", () => {
     expect(start(lap.value, { seat: "first-assistant" }).state).toMatchObject({ seat: "first-assistant", phase: "theatre", joined: { actions: 1 } });
   });
 
+  it("is taken at the start of an untouched encounter: nothing before it, not even the team's phase switched to", () => {
+    // a team phase the learner may switch to (the schema's default when an author leaves `learnerSwitchable` out)
+    const switchable = structuredClone(MINI);
+    delete switchable.phases[1].learnerSwitchable;
+    const k = placesCase(switchable);
+    expect(checkCaseIntegrity(k).filter((i) => i.severity === "error")).toEqual([]);
+    const switched = reduce(k, createSession(k), { type: "set-phase", phase: "observation" });
+    expect(switched.rejected).toBeUndefined();
+    const r = reduce(k, switched.state, { type: "start", seat: "scrub-nurse" });
+    expect(r.rejected).toEqual({
+      code: "invalid",
+      message: "a place in the team is taken at the start of an untouched encounter: the team's work up to its phase follows the reference path from the beginning (1 action came before this start)",
+    });
+    expect(r.state).toBe(switched.state);
+    // a note before the start counts too
+    const noted = reduce(c, createSession(c), { type: "note", text: "Ready." });
+    expect(reduce(c, noted.state, { type: "start", seat: "first-assistant" }).rejected?.message).toMatch(/^a place in the team is taken at the start of an untouched encounter/u);
+    // the operating surgeon's start stays as it always was
+    expect(reduce(k, switched.state, { type: "start", seat: "surgeon" }).rejected).toBeUndefined();
+    expect(reduce(k, switched.state, { type: "start" }).rejected).toBeUndefined();
+  });
+
+  it("a case served without its reference solution offers no place in the team, and its start refuses one — the places offered are the places a start accepts", () => {
+    // the content API's form (`publicCase`, `learnerCase`): the solution left out, parsed as a front-end parses it
+    const served = placesCase(MINI, PLACES_TEAM, { solution: undefined });
+    expect(start(served, { seat: "scrub-nurse" }).rejected).toEqual({
+      code: "invalid",
+      message: "this case was loaded without its reference solution, which a place in the team joins along: only the operating surgeon's place is offered",
+    });
+    expect(start(served, { seat: "surgeon" }).rejected).toBeUndefined();
+    for (const k of [c, served]) {
+      for (const lineup of [undefined, "three-surgeons"]) {
+        for (const team of [undefined, "scrub-break", "second-away"]) {
+          const offered = seatsOf(k, { lineup, teamScenario: team });
+          if (k === served) expect(offered).toEqual(["surgeon"]);
+          for (const place of offered) {
+            const r = start(k, { seat: place, ...(lineup ? { lineup } : {}), ...(team ? { team } : {}) });
+            expect(r.rejected, `${place} ${lineup} ${team}`).toBeUndefined();
+          }
+        }
+      }
+    }
+  });
+
   it("records the place and the line-up chosen; the first assistant's place stands with the scrub nurse on a break", () => {
     expect(start(c, { seat: "second-assistant", lineup: "three-surgeons" }).state).toMatchObject({ seat: "second-assistant", lineup: "three-surgeons" });
     expect(start(c, { lineup: "three-surgeons" }).state).toMatchObject({ lineup: "three-surgeons" });
@@ -86,6 +143,9 @@ describe("joining at the team's phase", () => {
     expect(prefix.map((a) => a.type)).toEqual(["examine", "ask", "ask", "intervene", "intervene"]);
     expect(r.state).toMatchObject({ seat: "scrub-nurse", phase: "observation", joined: { actions: 5, asked: ["allergies", "trigger"], examined: ["airway"], orders: [], decisions: [], objectives: ["assess", "treat", "stabilise"] } });
     expect(r.state.joined).toMatchObject({ seq: r.state.seq, at: r.state.clock });
+    // one recorded action with a sequence number for itself and one for each action it joined after: the records those
+    // leave keep the operator's order, and the start is the last of its numbers (`act-6`)
+    expect(r.state.seq).toBe(1 + 5);
     // exactly what the reference path does when the operator works it: the start's events first, then the path's
     const classic = replay(c, [{ type: "start" }, ...prefix.map((a) => ({ ...a, by: "system" as const }))]);
     expect(classic.rejections).toEqual([]);
@@ -99,23 +159,21 @@ describe("joining at the team's phase", () => {
 
   it("is one recorded action: a transcript with start {seat} replays to the state the session reached", () => {
     const actions: ClinicalAction[] = [{ type: "start", seat: "scrub-nurse" }, ...AFTER];
-    let live: SessionState = createSession(c);
-    const events: unknown[] = [];
-    for (const a of actions) {
-      const r = reduce(c, live, a);
-      expect(r.rejected, a.type).toBeUndefined();
-      live = r.state;
-      events.push(...r.events);
-    }
+    const session = live(c, actions);
     const again = replay(c, actions);
     expect(again.rejections).toEqual([]);
-    expect(again.state).toEqual(live);
-    expect(again.events).toEqual(events);
+    expect(again.state).toEqual(session.state);
+    expect(again.events).toEqual(session.events);
     expect(replay(c, actions)).toEqual(again);
-    expect(live).toMatchObject({ finished: true, seat: "scrub-nurse", joined: { actions: 5 } });
-    // the line-up and the place are replayed too
+    expect(session.state).toMatchObject({ finished: true, seat: "scrub-nurse", joined: { actions: 5 } });
+    // the line-up, the team scenario and the place are replayed too, to the same state
     const three: ClinicalAction[] = [{ type: "start", seat: "second-assistant", lineup: "three-surgeons", team: "scrub-break" }, ...AFTER];
-    expect(replay(c, three).state).toMatchObject({ seat: "second-assistant", lineup: "three-surgeons", teamScenario: "scrub-break", finished: true });
+    const threeLive = live(c, three);
+    const threeAgain = replay(c, three);
+    expect(threeAgain.rejections).toEqual([]);
+    expect(threeAgain.state).toEqual(threeLive.state);
+    expect(threeAgain.events).toEqual(threeLive.events);
+    expect(threeLive.state).toMatchObject({ seat: "second-assistant", lineup: "three-surgeons", teamScenario: "scrub-break", finished: true, joined: { actions: 5 } });
   });
 
   it("is refused when the reference path cannot bring the team to its phase", () => {
@@ -211,5 +269,35 @@ describe("assessment in a place", () => {
     const gated = placesCase(MINI, PLACES_TEAM, { solution: EARLY, rubric, safetyGates: [{ id: "no-oxygen-first", label: L("Oxygen before adrenaline"), when: { flag: "oxygen-on" }, verdict: "complication" }] });
     const report = assess(gated, replay(gated, [{ type: "start", seat: "scrub-nurse" }, ...AFTER.slice(1)]).state);
     expect(report.safety).toMatchObject({ gates: [{ id: "no-oxygen-first", verdict: "complication" }], verdict: "complication" });
+  });
+});
+
+describe("the built-in library: an encounter without a place is assessed as it always was", () => {
+  const dir = new URL("../../../content/cases/", import.meta.url);
+  const library = readdirSync(dir).map((id) => {
+    const parsed = parseCase(JSON.parse(readFileSync(new URL(`${id}/case.json`, dir), "utf8")));
+    if (!parsed.ok) throw new Error(`${id}: ${JSON.stringify(parsed.issues)}`);
+    return parsed.value;
+  });
+
+  it.each(library.map((k) => [k.id, k] as const))("%s: no place and nothing joined; an item is unscored only by its own scoredWhen (or another place's seats)", (_id, k) => {
+    const run = replay(k, k.solution);
+    expect(run.rejections).toEqual([]);
+    const report = assess(k, run.state);
+    expect(run.state).not.toHaveProperty("seat");
+    expect(run.state).not.toHaveProperty("joined");
+    expect(report).not.toHaveProperty("seat");
+    expect(report).not.toHaveProperty("joined");
+    for (const item of report.rubric) {
+      const authored = k.rubric.find((r) => r.id === item.id)!;
+      const anotherPlace = authored.seats !== undefined && !authored.seats.includes("surgeon");
+      const notArisen = authored.scoredWhen !== undefined && !evaluate(k, run.state, authored.scoredWhen);
+      expect(item.scored === false, item.id).toBe(anotherPlace || notArisen);
+    }
+    // naming the operating surgeon's seat is the same encounter: the same record, events and report
+    const named = replay(k, k.solution.map((a) => (a.type === "start" ? { ...a, seat: "surgeon" as const } : a)));
+    expect(named.state).toEqual(run.state);
+    expect(named.events).toEqual(run.events);
+    expect(assess(k, named.state)).toEqual(report);
   });
 });
