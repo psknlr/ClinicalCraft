@@ -10,7 +10,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-70044` · v1.1.1 · CMCR collection (`cmcr-20`) |
+| Case | `cmcr-70044` · v1.1.2 · CMCR collection (`cmcr-20`) |
 | Source | 张睿, 裴亮, 王佳, 张晗, 韩晓华. 头孢噻肟钠/舒巴坦钠致过敏性休克一例. 中国小儿急救医学. 2014;21(1):63 |
 | Setting | Children's ward (`inpatient`); the reaction happens at the bedside |
 | Facility | `general-hospital` |
@@ -107,7 +107,7 @@ in the `reaction` phase (the `aftercare` decision needs adrenaline given).
 Every option has its own feedback. Decisions never lock once unlocked, so a learner who answers wrongly first
 can answer again; the rubric scores the first attempt (`decidedFirstTry`).
 
-### Rubric (11 deterministic items, 26 points, + 1 examiner-judged)
+### Rubric (12 deterministic items, 28 points, + 1 examiner-judged)
 
 | id | Domain | Item | Weight |
 |---|---|---|---|
@@ -120,19 +120,23 @@ can answer again; the rubric scores the first attempt (`decidedFirstTry`).
 | `rb-first-line` | Management | infusion stopped **and** IM adrenaline given (annotation: `critical`) | 3 |
 | `rb-support` | Management | help called, lying flat, high-flow oxygen, crystalloid bolus, monitoring | 2 |
 | `rb-no-unsafe-adrenaline` | **Safety** | IM adrenaline given with no IV push and no wrong-strength dose (needs the IM dose, so it cannot be earned by doing nothing; annotation: `critical`) | 2 |
+| `rb-no-rechallenge` | **Safety** | the culprit drug not restarted (scored once the infusion is stopped or the drug restarted; `critical`) | 2 |
 | `rb-aftercare` | Management | aftercare decision, first attempt | 2 |
 | `rb-tryptase` | Investigations | tryptase requested | 1 |
 | `rb-communication` | Communication (examiner) | calm words to the boy during the emergency, a plain explanation to the parent, the drug to avoid, a written allergy record, teach-back | 1 |
 
 **How wrong choices score.** A steroid or an antihistamine before any adrenaline is `contraindicated` (a
 safety event with harm text: it delays first-line treatment); after adrenaline the second dexamethasone, as
-in the report, is neutral. The report's IV push, the 1 mg/mL IV push, the 0.1 mg/mL IM injection and
-restarting the drug are `contraindicated` (`contraindicatedWhen: always`) and cost `rb-no-unsafe-adrenaline`.
+in the report, is neutral. The report's IV push, the 1 mg/mL IV push and the 0.1 mg/mL IM injection are
+`contraindicated` (`contraindicatedWhen: always`) and cost `rb-no-unsafe-adrenaline`; restarting the drug is
+contraindicated and costs `rb-no-rechallenge`. All four are `critical`: giving one fails the assessment's safety
+outcome (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score.
 Nasal oxygen 3 L/min (the report's) is neutral, with a response that explains why a non-rebreather mask is
 needed. A third IM dose is refused (`maxDoses: 2` — after two doses it is refractory anaphylaxis for
-specialists). Replayed paths (2026-10-28): the report's own sequence finishes with 12/26 and two safety
-events; a minimal correct path (no extra history, no supportive care) with 21/26; skipping ahead is refused
-(`phase-locked`, `not-ordered`, `requirements-unmet`).
+specialists). Replayed paths (2026-10-28, on 26 points): the report's own sequence finishes with 12/26 and two
+safety events; a minimal correct path (no extra history, no supportive care) with 21/26; skipping ahead is refused
+(`phase-locked`, `not-ordered`, `requirements-unmet`). Since 1.1.2 the total is 28: `rb-no-rechallenge` is
+earned whenever the infusion is stopped and the drug not restarted.
 
 ## Reference path (`solution`)
 
@@ -142,7 +146,7 @@ decision `pre-dose` → reaction: the boy's symptoms, skin, airway, perfusion, d
 infusion, call for help, IM adrenaline, lie him flat, high-flow oxygen, monitoring, a crystalloid bolus; the
 parent's account, conscious level, heart, monitor readings, tryptase; decision `adrenaline` → recovery: the
 boy's account, reassessment, the aftercare plan, decision `aftercare` → follow-up record → finish. It scores
-**26/26** with no contraindicated action, in clinical and in-world mode, in both languages.
+**28/28** with no contraindicated action (safety passed), in clinical and in-world mode, in both languages.
 
 ## Clinical numbers check
 
@@ -192,10 +196,10 @@ boy's account, reassessment, the aftercare plan, decision `aftercare` → follow
 | Taking the negative penicillin skin test as clearance (the report's sequence: skin test, then the infusion) | `pre-dose` distractor; feedback cites China 2021 and AAAAI/ACAAI 2022 |
 | Reading the monitor or the chart before treating | `diagnosis` opens on any one bedside step; no record is needed to treat |
 | Steroid or antihistamine first (the report's first step) | `contraindicated` before adrenaline; `adrenaline` distractor |
-| IV push on the ward (the report's practice) | `contraindicated`; distractor; the record still moves on because it is what the report did |
-| 1 mg/mL given IV, or 0.1 mg/mL given IM | `contraindicated`; distractors; the record does not move on |
+| IV push on the ward (the report's practice) | `contraindicated`, a critical safety failure; distractor; the record still moves on because it is what the report did |
+| 1 mg/mL given IV, or 0.1 mg/mL given IM | `contraindicated`, critical safety failures; distractors; the record does not move on |
 | Nasal oxygen for hypoxic shock | neutral, with a response pointing to the non-rebreather mask |
-| No tryptase, no allergy record, rechallenge | `aftercare` distractors; `restart-infusion` is contraindicated; `rb-tryptase` |
+| No tryptase, no allergy record, rechallenge | `aftercare` distractors; `restart-infusion` is contraindicated, a critical safety failure, and costs `rb-no-rechallenge`; `rb-tryptase` |
 
 ## Embodied mode
 
@@ -217,7 +221,7 @@ boy's account, reassessment, the aftercare plan, decision `aftercare` → follow
 * **The boy's voice.** He answers questions put to him (`speaker: "patient"` on his symptom items) and speaks
   throughout — the report says he described the numbness himself — so no `nonVerbalWhen` annotation is
   needed. His parent answers the history (`companion.answersHistory`).
-* Clinical, in-world, zh-CN and en demonstrations all score 26/26 with every objective done.
+* Clinical, in-world, zh-CN and en demonstrations all score 28/28 with every objective done.
 
 ## Source and adaptation
 
@@ -316,6 +320,19 @@ notices (no DOI exists).
 
 ## Changelog
 
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **Critical safety failures (audit P0-3).** The IV push of 1 in 10 000 adrenaline on the ward, the 2.5 mg IV
+  push of 1 mg/mL, the 30-microgram IM dose of 1 in 10 000 (a tenth of the dose) and restarting the culprit drug are
+  `critical: true`: giving one fails the safety outcome shown beside the score.
+* **New critical rubric item `rb-no-rechallenge`** (safety, weight 2; scored once the infusion is stopped or the
+  drug restarted): restarting the drug that caused the shock was not scored by any item. Deterministic total 26 → 28;
+  the reference path scores 28/28 and a restart 26/28 with the safety outcome failed.
+* No `doseSpec` (audit P0-2): the case writes its adrenaline orders as strength and volume ("1 mg/mL 0.3 mL
+  (300 micrograms)"), and an order's first dose would be read as the volume, which cannot be compared with a dose in
+  micrograms; the strengths a learner may confuse are separate interventions (`adrenaline-im-dilute`,
+  `adrenaline-iv-1mg`).
+
 ### 1.1.1 — 2026-10-30 (assessment validity)
 
 * **Options rebalanced so the key is not cued by length.** The keyed option was the uniquely longest in all four
@@ -385,8 +402,8 @@ notices (no DOI exists).
 npm run -s cc -- cases validate packages/content/cases/cmcr-70044/case.json --strict   # 0 errors, 0 warnings
 npm run -s cc -- cases verify cmcr-70044        # solution 47 steps · objectives 6/6 · decisions 4/4 · utterances 39/39
 npx vitest run packages/content/src/cmcr-20.test.ts -t cmcr-70044              # 1 passed
-npm run -s cc -- exec --case cmcr-70044 --autopilot --approval bypass --provider offline --output-format json             # 26/26, 6/6
-npm run -s cc -- exec --case cmcr-70044 --autopilot --approval bypass --provider offline --output-format json --embodied  # 26/26, 6/6
+npm run -s cc -- exec --case cmcr-70044 --autopilot --approval bypass --provider offline --output-format json             # 28/28, 6/6
+npm run -s cc -- exec --case cmcr-70044 --autopilot --approval bypass --provider offline --output-format json --embodied  # 28/28, 6/6
 ```
 
 ## 中文摘要

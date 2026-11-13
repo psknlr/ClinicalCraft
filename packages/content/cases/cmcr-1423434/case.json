@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1423434",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "反复心悸胸闷 · 42岁女性",
     "en": "Recurrent palpitations and chest tightness · 42-year-old woman"
@@ -2324,6 +2324,7 @@
         "zh-CN": "胺碘酮 0.2 g口服，每日1次。",
         "en": "Amiodarone 0.2 g orally once daily."
       },
+      "doseSpec": { "amount": 0.2, "unit": "g", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -2410,6 +2411,7 @@
         "medications"
       ],
       "risk": "low",
+      "critical": true,
       "contraindicatedWhen": {
         "any": [
           {
@@ -2703,6 +2705,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": false,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true

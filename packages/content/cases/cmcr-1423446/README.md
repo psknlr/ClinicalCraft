@@ -12,7 +12,7 @@ the decisions teach current guidance and say where the report's team acted diffe
 
 | | |
 |---|---|
-| id / version | `cmcr-1423446` / `1.1.1` |
+| id / version | `cmcr-1423446` / `1.1.2` |
 | setting / facility | `emergency` (an ED cubicle) / `general-hospital` |
 | specialty | emergency medicine, clinical pharmacology, endocrinology |
 | difficulty / estimated time | 3 / 5 · ~30 min (static clock) |
@@ -142,6 +142,10 @@ an option's text.
 | g. IM adrenaline first, then the reference path | 19/22 (86 %) | `r-glucose-first` 3 |
 | h. nothing done | 7/22 (32 %) — the three harm-avoidance items; 0/15 once `scoredWhen` applies | everything else |
 | i. the report's own course | 7/22 so far; cannot finish (no recheck) | `r-hx`, `r-abx`, `r-abx-safety`, `r-treat`, `r-no-oral`, `r-aftercare`, `r-no-reexposure` |
+
+Since 1.1.2 the restart of levofloxacin (paths d and i) is also a **critical safety failure**: the assessment's
+safety outcome fails (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the
+score. The other paths make no critical error.
 
 ## Reference path (`solution`)
 
@@ -317,6 +321,13 @@ ref. 5 — citation, authors and DOI from journal and indexing records; ref. 6 �
   not checked.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-3).** `restart-levofloxacin` — re-exposure to the drug that was running
+  when the severe hypoglycaemia began (in the report the glucose fell to 1.9 mmol/L) — is `critical: true`: it fails
+  the safety outcome shown beside the score (`r-no-reexposure` was already a critical rubric item). The first,
+  unindicated levofloxacin and the IM adrenaline stay recoverable misjudgements. Scores are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

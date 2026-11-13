@@ -15,7 +15,7 @@ feedback and debrief.
 
 | | |
 |---|---|
-| id / version | `cmcr-51617` / `1.1.1` |
+| id / version | `cmcr-51617` / `1.1.2` |
 | setting / facility | `inpatient` / `general-hospital` (paediatric ward bed `ward-1`) |
 | specialty | paediatrics, cardiology |
 | difficulty | 4 / 5 |
@@ -453,6 +453,12 @@ catalogues; the 2023 Chinese guideline on the journal's own site
   the IVIG infusion time of 10–12 hours, enoxaparin by anti-Xa.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Preset dose (audit P0-2):** `doseSpec` on IVIG 2 g/kg IV, compared with an order's dose through her 4.3 kg
+  (8.6 g; the report's 7.5 g, about 1.7 g/kg, is read as a different dose). No intervention here is high-risk or a
+  critical safety failure.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

@@ -368,6 +368,49 @@ solution is sent to the browser).
   the rubric (see `transfer-before-activation` in the STEMI case). Aliases
   must say what the learner means *now*: "/give epipen" during anaphylaxis is
   IM adrenaline, not a take-home prescription.
+* **The dangerous error: `critical: true`.** Mark the intervention whose
+  administration *while contraindicated* is the case's dangerous error — a
+  second thrombolytic, a potassium chloride push, a nitrate in
+  right-ventricular infarction, sedation in acute severe asthma, a
+  beta-blocker in anaphylaxis. Giving it then is a **critical safety failure**:
+  the effects and `harm` still apply (the learner meets the consequence) and
+  the numeric score is unchanged, but the assessment's safety outcome fails
+  (`AssessmentReport.safety.passed: false`, with the failure in
+  `criticalFailures`), and every debrief and export shows that beside the
+  score. Mark it only on the `contraindicatedWhen` that captures the error;
+  a step that is merely suboptimal (an adjunct before adrenaline, a
+  low-value test) is not critical. Every `risk: "high"` intervention with a
+  `contraindicatedWhen` states the decision — `critical: true`, or
+  `critical: false` when giving it while contraindicated is a recoverable
+  misjudgement — and `cases validate` warns while it is unset (§9.8). This is
+  not the rubric's `critical` (§7), which names a missed item first in the
+  debrief; a case usually has both: the critical intervention, and a
+  critical avoided-harm rubric item that loses its weight when it is given.
+* **The preset dose: `doseSpec`.** Give every medication and fluid whose
+  dose matters a machine-readable preset beside its `dose` text:
+  `"doseSpec": { "amount": 0.5, "unit": "mg", "route": "IM" }` — the same
+  dose the text states (`cases validate` warns when they differ, §9.8). Units: `g`, `mg`, `microgram`, `mL`, `unit`
+  (international units) or `mmol`, optionally per kg and per hour or minute
+  (`mg/kg`, `unit/kg/h`, `microgram/kg/min`) — `microgram` and `unit` are
+  never abbreviated. Routes: `IM`, `IV`, `IO`, `SC`, `PO`, `SL`, `PR`, `IN`,
+  `INH` (nebulised or inhaled), `TOP`. A range is `amount` to `upTo`
+  (labetalol 10–20 mg: `"amount": 10, "upTo": 20`). A weight-based preset
+  needs `patient.weightKg` (`cases validate` warns otherwise): an order in
+  absolute units is converted through it and may differ by up to 10 %
+  (rounding); when a cap applies to this patient ("max 90 mg"), author the
+  capped absolute dose. When a learner's order states a dose (the order as
+  written: `ordered.dose`, PROTOCOL §3.2), the engine compares it after unit
+  conversion — 500 microgram is 0.5 mg; a volume is never read as a mass, a
+  bolus never as a rate. An equivalent dose is given; another amount or
+  route, or a unit that cannot be compared, is **not given**: the session
+  records a **dose error** (the order as written, the dose read, the preset,
+  the ratio) for the debrief. It is critical — the safety outcome fails —
+  when the ratio is ≥ 10 or ≤ 0.1, or the intervention is `critical` or
+  `risk: "high"`. An order without a dose gives the preset, as does a choice
+  from a list. Write each dose a learner may choose as its own intervention
+  only when it changes the clinical course (IM vs IV-bolus adrenaline);
+  otherwise one intervention with its preset is enough — a wrong dose is
+  caught as a dose error.
 
 ### 6.1 Operations (`procedure`, `safetyGates`)
 
@@ -480,7 +523,7 @@ A theatre case can give its room a care team that works on its own in in-world m
 * Conditions available everywhere: `all/any/not/always`, `asked`, `examined`,
   `ordered`, `read`, `resultReady`, `decided`, `decidedFirstTry` (rubric: first
   attempt correct), `attempted`, `intervened`, `inOrder`, `held` (a hold stands),
-  `phase`, `flag`, `objective`, `vital`, `elapsed`, `hints`. `ordered` and `read` take a `phase` (that phase's order or
+  `phase`, `flag`, `objective`, `vital`, `elapsed`, `elapsedSince`, `hints`. `ordered` and `read` take a `phase` (that phase's order or
   result — an unphased `read` is also met by a "no result yet" placeholder of any
   phase). An act done **in time**: `{ "intervened": "tpe", "whenIndicated": true }`
   counts only the times the intervention was given while its `indicatedWhen` held
@@ -488,6 +531,32 @@ A theatre case can give its room a care team that works on its own in in-world m
   so a `{ "phase": … }` leaf there is false at the end, and one in an objective's
   `completeWhen` can become impossible to meet, leaving the case impossible to
   finish.
+* **Time since a dose.** `{ "elapsedSince": { "intervened": "adrenaline-im",
+  "gte": 5 } }` holds when the simulated minutes since that intervention was
+  **last** given (a dose given while contraindicated counts; an invalid
+  checklist attempt does not) lie in the range (`gte`, `lte`); it is false
+  while it has never been given. A scenario event or phase that waits on it
+  happens at that exact minute. A **repeat dose** is scored through its own
+  window: write the intervention's `indicatedWhen` as "the first dose, or a
+  repeat once the interval has passed, after the reassessment, while the
+  indication continues" —
+
+  ```json
+  "indicatedWhen": { "any": [
+    { "not": { "intervened": "adrenaline-im" } },
+    { "all": [
+      { "elapsedSince": { "intervened": "adrenaline-im", "gte": 5 } },
+      { "flag": "reassessed-before-repeat" },
+      { "any": [{ "vital": "sbp", "op": "lt", "value": 90 }, { "vital": "spo2", "op": "lt", "value": 94 }] }
+    ] }
+  ] }
+  ```
+
+  — and credit it with `{ "intervened": "adrenaline-im", "whenIndicated":
+  true, "minCount": 2 }`: a second dose at 1.5 minutes, or at 5 minutes in a
+  patient who has improved, is given (neutral) but not counted. Keep the
+  reassessment, the interval and the continuing indication as separate
+  leaves, so each can be named in the debrief and tested on its own.
 * `rubric`: 8–15 deterministic items across domains (history, examination,
   investigations, diagnosis, management, safety, efficiency) + 1–3
   communication items judged by the examiner (`judgeGuidance`, no `met`).
@@ -513,7 +582,10 @@ A theatre case can give its room a care team that works on its own in in-world m
   missed life-saving act (IM adrenaline within 5 minutes; no thrombolysis in a
   post-operative PE): a scored, unmet critical item is named first in every
   debrief (web, CLI `/debrief`, MCP `get_debrief`; `AssessmentReport.criticalMissed`).
-  It does not cap the score. Mark one or two items, not every safety item.
+  It does not cap the score. Mark one or two items, not every safety item. The
+  dangerous error itself is marked on the intervention (`interventions[].critical`,
+  §6): making it, not missing a rubric item, fails the safety outcome
+  (`AssessmentReport.safety.passed`).
 * `cases verify` reports the reference path's rubric score (`--json`:
   `score.earned`, `score.possible`, `score.percent`); it warns when the
   reference path misses a critical item. Replay the main wrong paths and
@@ -533,7 +605,30 @@ A theatre case can give its room a care team that works on its own in in-world m
   teaching points, guideline references, and the formative-assessment notice.
 * `solution`: an array of typed `ClinicalAction`s — the reference action path (start → … → finish) that completes all
   objectives and answers all decisions correctly. `clinicalcraft cases verify`
-  must pass.
+  must pass. The reference path is the case's intended course, and `cases verify`
+  fails it (with the step) when it gives any intervention while contraindicated
+  (an out-of-order checklist attempt included), makes a critical safety failure,
+  orders a dose that conflicts with a preset (a dose error), runs into
+  `clock.limitMinutes`, or ends with a safety-critical gate holding.
+* **Error recognition and recovery.** A case whose reference path deliberately
+  makes an error so that the demonstration (示范接诊) shows its recognition
+  and recovery declares it — and only it — in `errorRecovery`:
+
+  ```json
+  "errorRecovery": {
+    "interventions": ["nitroglycerin"],
+    "rationale": { "zh-CN": "示范：硝酸甘油致低血压后识别右室梗死，停药并补液。", "en": "Demonstrates recognising RV infarction from the hypotension after nitroglycerin, stopping it and giving fluid." }
+  }
+  ```
+
+  `cases verify` then accepts those interventions given while contraindicated
+  (a critical one draws a warning: the reference path's own assessment does not
+  pass safety, and a safety-critical gate holding at its end becomes a warning
+  too); every other contraindicated step, every dose error and a timeout still
+  fail it. A declared id the path never gives while contraindicated is a
+  warning. Keep teaching cases of this kind few and say so in the README; the
+  usual case teaches errors through what the learner may do, not through its
+  reference path.
 * `extensions.testUtterances`: at least 15–40 `{ "text", "locale", "expect": [historyIds] }`
   paraphrases (both locales; the built-in cases carry several dozen) used as a
   matcher regression corpus. `cases verify` applies the patient pipeline's
@@ -851,3 +946,5 @@ wrong for a case, say so in the README rather than bending the text to it.
 | a key reasoning point is not a teaching point again (the same text in any locale, case, spaces and punctuation aside) | `debrief.keyReasoning.<i>` |
 | a test utterance is not one of its expected item's keywords (compared the same way) | `extensions.testUtterances.<i>` |
 | every specialty id is canonical — one id per discipline, US spelling (`CANONICAL_SPECIALTIES` in `packages/core/src/specialties.ts`, labelled in `SPECIALTY_LABELS`); a synonym's warning names its replacement (`SPECIALTY_SYNONYMS`). Paediatric scheme: the age group is `pediatrics` (`neonatology` for a newborn) and a child's organ specialty is the adult id beside it (`["pediatrics", "neurology"]`, not `paediatric-neurology`); `pediatric-surgery` and `neonatology` are disciplines of their own | `specialty.<i>` |
+| a `risk: "high"` intervention with a `contraindicatedWhen` states whether giving it then is a critical safety failure: `critical: true` or `critical: false` (§6) | `interventions.<i>.critical` |
+| a preset dose states the dose its `dose` text states, in every locale: the text's first dose (an amount or a range, end for end with `amount`–`upTo`, through `patient.weightKg` for a dose per kg) where the units can be compared, and its route when the text names exactly one | `interventions.<i>.doseSpec` |

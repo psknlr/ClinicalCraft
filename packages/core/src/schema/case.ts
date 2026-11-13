@@ -4,6 +4,7 @@ import {
   AssetRefSchema,
   CapabilitySchema,
   ConditionSchema,
+  DoseSpecSchema,
   HexColorSchema,
   IdSchema,
   LocaleTagSchema,
@@ -514,6 +515,13 @@ export const InterventionSchema = z
     excludeKeywords: LocalizedListSchema.default([]),
     /** Human-readable dose/route (e.g. "Aspirin 300 mg PO chewed"). */
     dose: LocalizedTextSchema.optional(),
+    /**
+     * The preset dose, machine-readable (docs/CASE_AUTHORING.md §6): what giving it gives — the dose the `dose` text
+     * states. An order that states a dose (`intervene` `ordered.dose`) is compared with it after unit conversion
+     * (`compareDose`): an equivalent dose is given; another amount or route, or a unit that cannot be compared, is not
+     * given — the session records a dose error. Without it an order's stated dose is kept, not checked.
+     */
+    doseSpec: DoseSpecSchema.optional(),
     requires: z.array(CapabilitySchema).default([]),
     /**
      * Scope of practice when another body does it (embodied mode: a delegated nurse, a skill step): `nursing` —
@@ -557,6 +565,14 @@ export const InterventionSchema = z
     indicatedWhen: ConditionSchema.optional(),
     /** When given while this is true it is unsafe (scored as a safety event; effects still apply). */
     contraindicatedWhen: ConditionSchema.optional(),
+    /**
+     * Giving it while `contraindicatedWhen` holds is a critical safety failure — the case's dangerous error (a second
+     * thrombolytic, a potassium chloride push, a nitrate in right-ventricular infarction): the assessment's safety
+     * outcome fails (`AssessmentReport.safety.passed: false`) whatever the score, which is unchanged. Its effects
+     * still apply, so the learner meets the consequence. `false` records that it is not one; `cases validate` warns
+     * when a high-risk intervention with a `contraindicatedWhen` leaves it unset.
+     */
+    critical: z.boolean().optional(),
     /** What happens / what the nurse says when contraindicated. */
     harm: LocalizedTextSchema.optional(),
     /** Narrative shown after giving it. */
@@ -943,6 +959,20 @@ export const CaseSchema = z
      * are checked by `checkCaseIntegrity`.
      */
     solution: z.array(ClinicalActionSchema).default([]),
+    /**
+     * Error recognition and recovery that the reference path teaches (docs/CASE_AUTHORING.md §7): the interventions
+     * its `solution` deliberately gives while contraindicated, and why. `cases verify` accepts these and only these;
+     * any other contraindicated step, a critical safety failure or a dose error of another intervention, or a
+     * timeout fails the reference path.
+     */
+    errorRecovery: z
+      .object({
+        interventions: z.array(IdSchema).min(1),
+        /** Why the reference path makes the error: what recognising it and recovering teaches (for reviewers). */
+        rationale: LocalizedTextSchema,
+      })
+      .strict()
+      .optional(),
     /** Free-form extension data for plugins. */
     extensions: z.record(z.string(), z.unknown()).default({}),
   })

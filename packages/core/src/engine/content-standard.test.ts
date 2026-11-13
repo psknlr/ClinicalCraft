@@ -29,6 +29,8 @@ function standard(j: Json): void {
   const feedback = ["Right: airway, skin and circulation together.", "Wheeze alone does not explain urticaria and hypotension.", "Panic does not cause urticaria.", "Six hours at least.", "Two pens.", "Not yet: biphasic risk.", "Allergy work-up."];
   let k = 0;
   for (const d of j.decisions) for (const o of d.options) o.feedback = both(feedback[k]!, `反馈${k++}`);
+  // the high-risk beta-blocker can be contraindicated: the author decides it is the case's critical error
+  j.interventions.find((i: Json) => i.id === "beta-blocker").critical = true;
   j.extensions = {
     testUtterances: [
       { text: "What happened just before your lips swelled?", locale: "en", expect: ["trigger"] },
@@ -286,6 +288,39 @@ describe("content standard lints", () => {
       ["specialty.1", 'specialty "paediatric-endocrinology" is a synonym: use "endocrinology" — a child\'s organ specialty is the adult id beside the age group ("pediatrics", or "neonatology" for a newborn)'],
       ["specialty.2", 'specialty "paediatric-surgery" is a synonym: use "pediatric-surgery"'],
     ]);
+  });
+});
+
+describe("content standard lints: critical interventions and preset doses", () => {
+  const iv = (j: Json, id: string): Json => j.interventions.find((i: Json) => i.id === id);
+
+  it("a high-risk intervention that can be contraindicated says whether giving it then is a critical failure", () => {
+    const unset = build((j) => delete iv(j, "beta-blocker").critical);
+    expect(lints(unset).map((i) => [i.path, i.severity])).toEqual([["interventions.3.critical", "warning"]]);
+    expect(lints(unset)[0]!.message).toMatch(/high-risk intervention "beta-blocker" can be contraindicated .* set critical to true .* or false/);
+    // an explicit false is a decision too; a lower risk, or no contraindication, needs none
+    expect(lints(build((j) => (iv(j, "beta-blocker").critical = false)))).toEqual([]);
+    expect(lints(build((j) => Object.assign(iv(j, "beta-blocker"), { critical: undefined, risk: "moderate" })))).toEqual([]);
+    expect(lints(build((j) => Object.assign(iv(j, "fluids"), { risk: "high" })))).toEqual([]);
+  });
+
+  it("a preset dose states the dose its text states (amount, range and route, in every locale)", () => {
+    const epi = (dose: Json, spec: Json) => build((j) => Object.assign(iv(j, "epi"), { dose, doseSpec: spec }));
+    const same = epi(both("Adrenaline 0.5 mg IM (0.5 mL of 1 mg/mL)", "肾上腺素0.5mg肌注（1 mg/mL，0.5 mL）"), { amount: 500, unit: "microgram", route: "IM" });
+    expect(lints(same)).toEqual([]);
+    // a tenfold slip in the preset, and a route the text does not give
+    const off = epi(both("Adrenaline 0.5 mg IM", "肾上腺素0.5mg肌注"), { amount: 5, unit: "mg", route: "IV" });
+    expect(lints(off).map((i) => [i.path, i.message])).toEqual([
+      ["interventions.0.doseSpec", 'the preset dose of "epi" (5 mg IV) is not what its dose text states (en: 0.5 mg, IM; zh-CN: 0.5 mg, IM): make them say the same dose'],
+    ]);
+    // a range is compared end for end; a dose per kg through the weight; units that cannot be compared are left alone
+    const labetalol = (text: string, spec: Json) => build((j) => Object.assign(iv(j, "beta-blocker"), { dose: text, doseSpec: spec }));
+    expect(lints(labetalol("Labetalol 10–20 mg IV", { amount: 10, upTo: 20, unit: "mg", route: "IV" }))).toEqual([]);
+    expect(lints(labetalol("Labetalol 10 mg IV", { amount: 10, upTo: 20, unit: "mg", route: "IV" })).map((i) => i.path)).toEqual(["interventions.3.doseSpec"]);
+    expect(lints(labetalol("Labetalol 12–20 mg IV", { amount: 10, upTo: 20, unit: "mg" })).map((i) => i.path)).toEqual(["interventions.3.doseSpec"]);
+    const weighed = (text: string, spec: Json) => build((j) => ((j.patient.weightKg = 60), Object.assign(iv(j, "beta-blocker"), { dose: text, doseSpec: spec })));
+    expect(lints(weighed("Propranolol 0.015 mg/kg IV", { amount: 0.9, unit: "mg", route: "IV" }))).toEqual([]);
+    expect(lints(weighed("Propranolol 1 mL of 1 mg/mL IV", { amount: 1, unit: "mg", route: "IV" }))).toEqual([]);
   });
 });
 

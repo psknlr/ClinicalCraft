@@ -12,7 +12,7 @@ medical advice (`disclaimer`).
 
 | | |
 |---|---|
-| id / version | `cmcr-138898` / `1.1.1` |
+| id / version | `cmcr-138898` / `1.1.2` |
 | setting / facility | `inpatient` / `general-hospital` (ward bed; he lies in bed throughout) |
 | specialty | haematology, oncology |
 | difficulty | 4 / 5 |
@@ -156,8 +156,11 @@ goals-of-care conversation with him and his relative when he deteriorates.
 ### How wrong choices score
 
 - `aml-induction`, `hypertonic-bolus`, `rapid-correction` and `pancreatitis-nbm` are always `contraindicated` (a
-  safety event with its `harm` text) and fail `rb-safety`; `rb-safety` is earned only once `next-step` has been
-  attempted, so doing nothing earns nothing (the annotation file adds `scoredWhen` and `critical`).
+  safety event with its `harm` text) and fail `rb-safety`; `rb-safety` counts only once `next-step` has been
+  attempted or one of them given (`scoredWhen`), so doing nothing earns nothing, and it is `critical`.
+- `aml-induction` and `rapid-correction` are `critical` interventions (since 1.1.2): either fails the assessment's
+  safety outcome (`safety.passed: false`) whatever the score, and every debrief and export shows it beside the
+  score; the hypertonic bolus and further fasting are recoverable (`hypertonic-bolus` is `critical: false`).
 - `bronchoscopy` is `low-value` (no result: not done, with the authors' reason).
 - Oxygen, meropenem and goals of care are `indicated` on day 5; `sodium-plan` once `sodium` is answered; transfusion
   once a blood count has been read; transfer once the diagnosis is made.
@@ -339,6 +342,14 @@ The NCI PDQ summary cited by 1.0.0 is dropped (a summary, not a guideline).
   this pass.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failures (audit P0-3).** Correcting the chronic hyponatraemia to ≥ 135 mmol/L within
+  24 hours (osmotic demyelination) and intensive AML induction for an unproven AML are `critical: true`; `rb-safety`
+  was already a critical rubric item. The 3 % saline bolus (high risk) is `critical: false`: not indicated, but
+  recoverable with sodium monitoring. Scores are unchanged.
+- **Preset dose (audit P0-2):** `doseSpec` on meropenem 1 g IV.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

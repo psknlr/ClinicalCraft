@@ -14,7 +14,7 @@ not medical advice.).
 
 | | |
 |---|---|
-| id / version | `new-onset-t2dm` / `1.1.2` |
+| id / version | `new-onset-t2dm` / `1.1.3` |
 | setting / facility | `outpatient` / `general-hospital` (outpatient consulting room) |
 | specialty | endocrinology, general practice, internal medicine |
 | difficulty | 3 / 5 |
@@ -524,6 +524,15 @@ against a publisher record.
   代谢功能障碍相关脂肪性肝病 as the literal rendering of MASLD.
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Preset doses (audit P0-2):** `doseSpec` on atorvastatin 40 mg, perindopril 4 mg (and 8 mg at review),
+  dapagliflozin 10 mg (PO), semaglutide 0.25 mg SC and the hepatitis B vaccine 20 micrograms IM — the doses their
+  texts state; a free-text order of another dose is not given and is kept as a dose error for the debrief. The
+  metformin titration and the varenicline schedule have none (a schedule, not one dose).
+- No intervention here is a critical safety failure (none is high-risk; leading with insulin, a sulfonylurea or
+  prescribing before the eGFR stay recoverable and cost `r-safety`).
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

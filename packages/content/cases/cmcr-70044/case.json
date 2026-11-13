@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-70044",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "咳嗽、发热 · 10岁男孩",
     "en": "Cough and fever · 10-year-old boy"
@@ -2053,6 +2053,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -2096,6 +2097,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -2140,6 +2142,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -2283,6 +2286,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -3014,6 +3018,31 @@
             "not": {
               "intervened": "adrenaline-im-dilute"
             }
+          }
+        ]
+      },
+      "critical": true
+    },
+    {
+      "id": "rb-no-rechallenge",
+      "domain": "safety",
+      "weight": 2,
+      "text": {
+        "zh-CN": "未再次给予引起过敏性休克的药物（不做再激发）",
+        "en": "Did not restart the drug that caused the anaphylactic shock (no rechallenge)"
+      },
+      "met": {
+        "not": {
+          "intervened": "restart-infusion"
+        }
+      },
+      "scoredWhen": {
+        "any": [
+          {
+            "intervened": "stop-infusion"
+          },
+          {
+            "intervened": "restart-infusion"
           }
         ]
       },

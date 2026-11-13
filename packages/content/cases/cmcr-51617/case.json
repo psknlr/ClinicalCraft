@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-51617",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "持续发热与嗜睡 · 34日龄女婴",
     "en": "Persistent fever and drowsiness · 34-day-old girl"
@@ -2305,6 +2305,7 @@
         "zh-CN": "IVIG 2 g/kg，单次静脉输注，一般10–12小时输完；输注中监测生命体征及输注反应。",
         "en": "IVIG 2 g/kg as a single IV infusion, usually over 10–12 hours; monitor vital signs and for infusion reactions."
       },
+      "doseSpec": { "amount": 2, "unit": "g/kg", "route": "IV" },
       "requires": [
         "medications",
         "infusion-pump",

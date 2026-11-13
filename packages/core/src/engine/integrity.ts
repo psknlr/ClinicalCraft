@@ -2,8 +2,8 @@
  * Referential integrity of a parsed case: every id referenced from
  * conditions (incl. rubric `scoredWhen` and `patient.nonVerbalWhen`),
  * waypoints, results, figures, order matching (incl. warning `unless`
- * conditions), history `supersedes` links and the reference solution must
- * exist; condition leaves must be able to become true;
+ * conditions), history `supersedes` links, `errorRecovery` and the reference
+ * solution must exist; condition leaves must be able to become true;
  * objectives must be completable, decisions unlockable and answerable, and
  * phases enterable.
  */
@@ -171,11 +171,18 @@ function leaves(cond: Condition, path: PathPart[], visit: (leaf: Condition, path
   else visit(cond, path);
 }
 
-/** `elapsed` / `hints` ranges with `gte > lte` can never hold. */
+/** `elapsed` / `elapsedSince` / `hints` ranges with `gte > lte` can never hold. */
 function checkRanges(cond: Condition, path: PathPart[]): Issue[] {
   const issues: Issue[] = [];
   leaves(cond, path, (leaf, at) => {
-    const [key, range] = "elapsed" in leaf ? (["elapsed", leaf.elapsed] as const) : "hints" in leaf ? (["hints", leaf.hints] as const) : [null, null];
+    const [key, range] =
+      "elapsed" in leaf
+        ? (["elapsed", leaf.elapsed] as const)
+        : "elapsedSince" in leaf
+          ? (["elapsedSince", leaf.elapsedSince] as const)
+          : "hints" in leaf
+            ? (["hints", leaf.hints] as const)
+            : [null, null];
     if (!key) return;
     if (range.gte != null && range.lte != null && range.gte > range.lte) {
       issues.push(err([...at, key], `empty range (gte ${range.gte} > lte ${range.lte}), so this can never become true`));
@@ -425,6 +432,34 @@ function checkMeasures(c: CaseDefinition): Issue[] {
 }
 
 /* ------------------------------------------------------------------ */
+/* Critical interventions, preset doses, error-recovery teaching       */
+/* ------------------------------------------------------------------ */
+
+/**
+ * `critical` needs a `contraindicatedWhen` to mean anything; a dose per kg needs the patient's weight to be compared
+ * with an order in absolute units; `errorRecovery` names interventions the case has, each of them contraindicated
+ * at some point (else declaring it allows nothing).
+ */
+function checkSafetyFields(c: CaseDefinition, ids: Ids): Issue[] {
+  const issues: Issue[] = [];
+  c.interventions.forEach((iv, i) => {
+    if (iv.critical === true && !iv.contraindicatedWhen) {
+      issues.push(warn(["interventions", i, "critical"], `"${iv.id}" is critical but has no contraindicatedWhen, so it can never be a critical safety failure`));
+    }
+    if (iv.doseSpec?.unit.includes("/kg") && c.patient.weightKg == null) {
+      issues.push(warn(["interventions", i, "doseSpec", "unit"], `"${iv.id}" has a dose per kg but the patient has no weightKg: an order in absolute units cannot be compared with it, so it is never given`));
+    }
+  });
+  c.errorRecovery?.interventions.forEach((id, j) => {
+    const path = ["errorRecovery", "interventions", j];
+    const iv = c.interventions.find((x) => x.id === id);
+    if (!ids.interventions.has(id)) issues.push(err(path, `unknown intervention "${id}"`));
+    else if (!iv?.contraindicatedWhen) issues.push(warn(path, `"${id}" has no contraindicatedWhen: it is never given while contraindicated, so declaring it allows nothing`));
+  });
+  return issues;
+}
+
+/* ------------------------------------------------------------------ */
 /* Solution                                                            */
 /* ------------------------------------------------------------------ */
 
@@ -659,6 +694,7 @@ export function checkCaseIntegrity(c: CaseDefinition): Issue[] {
     ...checkOrderMatching(c, ids),
     ...checkDecisions(c),
     ...checkPhysiology(c, ids),
+    ...checkSafetyFields(c, ids),
     ...checkSolution(c, ids),
     ...checkReachability(c, ids),
     ...checkProcedureDefinition(c),

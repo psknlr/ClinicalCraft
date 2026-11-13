@@ -104,6 +104,8 @@ function satisfiableWithout(cond: Condition, unavailable: ReadonlySet<ItemKey>):
   if ("read" in cond) return !unavailable.has(`investigation:${cond.read}`);
   if ("resultReady" in cond) return !unavailable.has(`investigation:${cond.resultReady}`);
   if ("intervened" in cond) return !unavailable.has(`intervention:${cond.intervened}`);
+  // minutes since a dose: false until it has been given
+  if ("elapsedSince" in cond) return !unavailable.has(`intervention:${cond.elapsedSince.intervened}`);
   return true;
 }
 
@@ -116,6 +118,7 @@ function positiveItems(cond: Condition, out = new Set<ItemKey>()): Set<ItemKey> 
   else if ("read" in cond) out.add(`investigation:${cond.read}`);
   else if ("resultReady" in cond) out.add(`investigation:${cond.resultReady}`);
   else if ("intervened" in cond) out.add(`intervention:${cond.intervened}`);
+  else if ("elapsedSince" in cond) out.add(`intervention:${cond.elapsedSince.intervened}`);
   return out;
 }
 

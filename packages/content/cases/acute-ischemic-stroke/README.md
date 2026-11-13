@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `acute-ischemic-stroke` · v1.1.2 |
+| Case | `acute-ischemic-stroke` · v1.1.3 |
 | Setting | Emergency department, resus bay 1 (`emergency`); later the neuro-angiography suite |
 | Facility | `general-hospital` (also playable in `teaching-hospital`) |
 | Difficulty | 4 / 5 |
@@ -229,7 +229,7 @@ Every option carries educational feedback, including the distractors:
 `d-evt` quotes NIHSS 14 and ASPECTS 9 in its options, so it unlocks only once the NIHSS has been
 scored and the CT head and the CTA have been read (plus the pre-stroke function question).
 
-### Rubric (13 deterministic items, 18 points, + 2 examiner-judged)
+### Rubric (14 deterministic items, 20 points, + 2 examiner-judged)
 
 | Domain | Item | Weight |
 |---|---|---|
@@ -242,6 +242,7 @@ scored and the CT head and the CTA have been read (plus the pre-stroke function 
 | Diagnosis | Left MCA / cardioembolic, correct at the **first attempt** (`decidedFirstTry`) | 1 |
 | Safety | BP < 185/110 with an IV agent before lysis, no nifedipine and no over-lowering (**critical**) | 2 |
 | Safety | No aspirin or heparin within 24 h of lysis (**critical**; scored once the lysis decision is reached or a lytic, aspirin or heparin is given) | 2 |
+| Safety | One thrombolytic, given only once every prerequisite is met: never while contraindicated, never a second agent (**critical**; scored once the lysis decision is reached or a lytic is given) | 2 |
 | Safety | Swallow screen and no oral intake | 1 |
 | Management | DTN ≤ 60 min with a safe checklist | 2 |
 | Management | Bridging EVT (decision, neurointervention call, transfer) | 2 |
@@ -252,6 +253,15 @@ scored and the CT head and the CTA have been read (plus the pre-stroke function 
 The lysis items (BP, DTN, no lab wait) are unmet when thrombectomy reperfused him before any lytic.
 A missed **critical** item (`critical: true`) is named first in the debrief; it does not cap the score.
 
+**Safety outcome.** Four interventions are `critical`: **alteplase** and **tenecteplase** given while
+contraindicated (before CT, glucose and the anticoagulant check; with BP > 185/110; after the other
+agent — a second thrombolytic; after a suspected sICH or recanalisation), **IV heparin** and **sublingual
+nifedipine**. Giving one fails the assessment's safety outcome (`safety.passed: false`) whatever the score;
+every debrief and export shows it beside the score, and the effects still play out. `transfer-angio` and
+`sich-protocol` are `critical: false` (recoverable misjudgements). Preset doses (`doseSpec`): tenecteplase
+0.25 mg/kg (20 mg at 80 kg) and alteplase 0.9 mg/kg (72 mg); a free-text order of "tenecteplase 25 mg" is not
+given — a critical dose error (a thrombolytic is high-risk).
+
 ### How wrong choices score
 
 * **Safety events** (contraindicated, scored as such; effects still apply): aspirin at any point in
@@ -259,7 +269,12 @@ A missed **critical** item (`critical: true`) is named first in the debrief; it 
   IV heparin for the AF; mannitol; oral water or tablets before the swallow screen (he coughs, his
   voice turns wet); sublingual nifedipine; transfer for EVT before CT/CTA; a thrombolytic given
   before the checklist is complete or with BP > 185/110 (the sICH branch); a second thrombolytic;
-  over-treatment of BP below SBP 160.
+  over-treatment of BP below SBP 160. The thrombolytic, heparin and nifedipine errors are critical
+  safety failures (above).
+* **The audit's replay** (2026-11-12): alteplase straight after tenecteplase on the reference path scored
+  18/18 with no critical miss. It now scores 18/20 (90 %), names `r-no-unsafe-lysis` first and fails the
+  safety outcome (`criticalFailures`: alteplase at minute 26.5); the reference path, one agent, scores 20/20
+  and passes, as does alteplase given instead of tenecteplase.
 * **Low-value tests** carry teaching notes: CT perfusion (not needed < 6 h); MRI (no record — not in
   the hyperacute pathway); echo (no record — done on the stroke unit); chest X-ray; lipids/HbA1c.
 * **Delays** set flags that fail rubric items: `ct-delayed` (no CT order by 20 min),
@@ -273,7 +288,7 @@ head, CTA and ECG ordered together; labetalol at minute 12 (BP 171/93 by minute 
 contraindication questions, weight and function; targeted examination; ECG and CT read; the
 diagnosis and lysis decisions; consent; **tenecteplase 20 mg at minute 25 (DTN 25 min)**; CTA read,
 `d-evt`, neurointervention call, post-lysis orders, swallow screen and transfer (minute 31.5); DSA
-in the angio suite; the late laboratory results are read last. It scores **18/18** on the
+in the angio suite; the late laboratory results are read last. It scores **20/20** on the
 deterministic rubric, has no contraindicated actions and no critical alarms, reads every result it
 orders and ends at simulated minute 75.5 (embodied autopilot: 80.2 / 79.7 in en / zh-CN).
 
@@ -357,7 +372,8 @@ responses, after the learner has the weight.
 | Waiting for coagulation / platelets | `waited-for-labs` (≥ 45 min, result ready, no lysis) fails `r-no-lab-wait`; `dtn-60` nurse line |
 | Lysis with BP still > 185/110 | `sich` event (headache, vomiting, GCS 9), thrombectomy off, sICH protocol |
 | Sublingual nifedipine, or stacking IV agents | `nifedipine-drop` / `bp-overshoot` (GCS 11) |
-| Aspirin, heparin, mannitol | safety events with explanatory `harm` texts |
+| A second thrombolytic (alteplase after tenecteplase, or the reverse) | contraindicated; a critical safety failure; `r-no-unsafe-lysis` (critical) fails |
+| Aspirin, heparin, mannitol | safety events with explanatory `harm` texts; heparin is a critical safety failure |
 | Water or tablets before the swallow screen | coughs, wet voice, brief desaturation; `r-swallow` unmet |
 | CT perfusion or MRI before treatment | low-value notes; time cost |
 | Transfer before CT/CTA | contraindicated; the `angio` phase waits for the reads |
@@ -495,6 +511,22 @@ journal, volume and pages); none was added from memory.
 
 ## Changelog
 
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **A second thrombolytic is a critical safety failure (audit P0-1).** The audit gave alteplase straight after
+  tenecteplase on the reference path: the engine marked it contraindicated, yet it scored 18/18 with no critical
+  miss. Alteplase and tenecteplase are now `critical: true` (each is contraindicated after the other, before the
+  checklist, with BP > 185/110, after a suspected sICH or recanalisation; the audit cites the AHA/ASA 2026 guideline,
+  §4.6.2, doi:10.1161/STR.0000000000000513), so giving one then fails the safety outcome shown beside the
+  score. The new critical rubric item `r-no-unsafe-lysis` (safety, weight 2; scored once the lysis decision is
+  reached or a lytic is given) is lost by any thrombolytic given while contraindicated: deterministic total
+  18 → 20; the reference path (tenecteplase alone) and the alteplase-alone path score 20/20 and pass; the
+  audit's path scores 18/20 and fails safety.
+* IV heparin and sublingual nifedipine are `critical: true` (heparin within 24 h of lysis; a precipitous BP fall
+  that extends the infarct); `transfer-angio` and `sich-protocol` are `critical: false` (`cases validate`).
+* Preset doses (`doseSpec`, audit P0-2): tenecteplase 0.25 mg/kg and alteplase 0.9 mg/kg, compared with an
+  order's dose through his 80 kg.
+
 ### 1.1.2 — 2026-10-30 (assessment validity)
 
 * Options rebalanced so the key is not cued by length: in all 3 single-best decisions the keyed option was the uniquely
@@ -557,7 +589,8 @@ npm run -s cc -- bench run --agent reference && npm run -s cc -- bench run --age
 npm run -s cc -- bench grounding --split dev && npm run -s cc -- bench grounding --split test     # this case: dev 53/55, test 67/78 (= baseline)
 ```
 
-The reference solution scores 18/18 on the deterministic rubric with no contraindicated action.
+The reference solution scores 20/20 on the deterministic rubric with no contraindicated action and passes the
+safety outcome.
 
 ## 中文摘要
 

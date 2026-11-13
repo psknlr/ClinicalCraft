@@ -167,6 +167,17 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     attaches the monitor, or never its ECG leads.
   * `investigations[].alternativeTo` — investigation ids, default `[]`; a
     mutual "can stand in for" link used by `assess()` (§3.4).
+  * Safety fields (docs/CASE_AUTHORING.md §6–§7; PROTOCOL §3.2), all
+    optional: `interventions[].critical` (boolean — giving it while its
+    `contraindicatedWhen` holds is a critical safety failure:
+    `AssessmentReport.safety.passed` is false, the score unchanged; a
+    content lint warns while a high-risk intervention with a
+    `contraindicatedWhen` leaves it unset), `interventions[].doseSpec`
+    (`{amount, upTo?, unit: DoseUnit, route?: DoseRoute}` — the preset dose
+    an order's stated dose is compared with) and `errorRecovery`
+    (`{interventions: id[], rationale}` — the interventions the reference
+    `solution` deliberately gives while contraindicated, to teach error
+    recognition and recovery; `verifyCase` accepts those and no others).
   * `history[].supersedes` — history ids, optional; **phase twins**: in a
     phase where this item is available it answers for the items it
     supersedes (selection routes to it, they cannot be asked there) and
@@ -210,7 +221,10 @@ JSON Schema exported to `packages/content/schemas/` for editors).
 * **Condition DSL** — `schema/common.ts`: `all/any/not/always`, `asked`,
   `examined`, `ordered`, `read`, `resultReady`, `decided`, `attempted`,
   `decidedFirstTry`, `intervened`, `inOrder`, `phase`, `flag`, `objective`, `vital`,
-  `elapsed`, `hints`, `procedure`. `intervened` takes `valid`: `true` counts only
+  `elapsed`, `elapsedSince`, `hints`, `procedure`. `elapsedSince: {intervened, gte?, lte?}`
+  measures the simulated minutes since that intervention was last given (false
+  while never given) — a repeat dose's window in its own `indicatedWhen`
+  (docs/CASE_AUTHORING.md §7). `intervened` takes `valid`: `true` counts only
   attempts that were not contraindicated when made, `false` only those that
   were. `inOrder: [id…]` holds when those interventions were first validly
   given in that order, compared by committed action sequence
@@ -264,7 +278,9 @@ interface Issue { path: string; message: string; severity: "error" | "warning" }
 checkCaseIntegrity(c: CaseDefinition): Issue[]          // referential integrity of every id in conditions, waypoints, results, figures, alternativeTo, solution steps…;
                                                         // warnings for keyword wildcards (an English keyword of ≥ 3 words that tokenizes to one token, §3.3)
 verifyCase(c: CaseDefinition): { ok: boolean; issues: Issue[]; finalState: SessionState; assessment: AssessmentReport }
-                                                        // replays c.solution; ok iff all objectives done, all decisions decided, no rejections
+                                                        // replays c.solution; ok iff all objectives done, all decisions decided, no rejections,
+                                                        // no timeout, nothing given while contraindicated (but `errorRecovery`'s ids), no dose error,
+                                                        // no safety-critical gate holding at the end (docs/CASE_AUTHORING.md §7)
 checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[]   // unknown equipment/material ids, overlapping solids, slots outside rooms,
                                                         // levels / connectors / access zones (FACILITIES.md "Embodiment fields")…
 
@@ -322,6 +338,12 @@ MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2; ELLIPSIS_FACTOR = 0.8; NEG
 compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, phraseCoverage, longestCommonSubstring,
 ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behind the scored matchers (§3.3)
 
+// doses (PROTOCOL §3.2)
+parseDose(text): OrderedDose | null                     // the dose a written order states (zh-CN + en): {amount, unit} and/or {route}
+compareDose(ordered, preset: DoseSpec, weightKg?): { equivalent: boolean; ratio: number | null; conflicts: ("amount" | "route" | "unit")[] }
+doseErrorSeverity(ratio, intervention): "warning" | "critical"   // critical: ratio ≥ 10 or ≤ 0.1 (TENFOLD), or a critical / high-risk intervention
+doseMentions(text), doseRoute(text), formatDose(dose), WEIGHT_BASED_TOLERANCE
+
 // assessment
 assess(c, s): AssessmentReport
 interface AssessmentReport {
@@ -331,7 +353,11 @@ interface AssessmentReport {
   exam: { performed: number; required: number; requiredPerformed: number; missingRequired: string[] };
   investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };   // unread = result keys, §3.4
   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
-  safety: { contraindicated: { interventionId: string; at: number }[]; criticalAlarms: number };
+  safety: { contraindicated: { interventionId: string; at: number }[]; criticalAlarms: number;
+            gates?: { id: string; verdict: "safety-critical" | "complication" }[]; verdict?: "clear" | "complication" | "safety-critical";
+            passed: boolean;                                // false: a critical failure, a critical dose error or a safety-critical gate (PROTOCOL §3.2)
+            criticalFailures: { interventionId: string; at: number; harm?: LocalizedText }[];   // a `critical` intervention given while contraindicated
+            doseErrors: AssessedDoseError[] };              // orders not given: their dose conflicted with the preset (`doseSpec`)
   rubric: { id: string; domain: string; weight: number; met: boolean | null }[];   // null = needs examiner agent
   score: { earned: number; possible: number; percent: number };                    // deterministic rubric only
 }
@@ -434,12 +460,18 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   Appends to `attempts`; on correct sets `decisions[id] = clock`.
 * `intervene` — `maxDoses` exceeded → `max-doses`. A hold standing on the
   intervention (see `hold`) → `on-hold`, naming who placed it and why; nothing
-  is recorded. Appropriateness:
+  is recorded. An order as written (`ordered: {text, dose?}`) whose dose
+  conflicts with the intervention's preset (`doseSpec`, `compareDose`) is
+  accepted but **not given**: a `DoseErrorRecord` is appended to `doseErrors`
+  and `dose.error` emitted; the action's time passes (PROTOCOL §3.2).
+  Appropriateness:
   `contraindicated` if `contraindicatedWhen` true (evaluated **before**
   applying), else `indicated` if `indicatedWhen` true, else `neutral`.
   Applies `setFlags`; effects are applied lazily by `vitalsAt` from the
-  intervention records. A checklist step (`checklist: true`) attempted while
-  contraindicated is recorded `invalid`: nothing applied, no dose used.
+  intervention records (which keep `ordered`). A checklist step (`checklist: true`) attempted while
+  contraindicated is recorded `invalid`: nothing applied, no dose used. A
+  `critical` intervention given while contraindicated is a critical safety
+  failure: applied, its `intervention.applied` event marked `critical: true`.
 * `hold {interventionId, placedBy, reason}` — an explicit hold (an
   anaesthetist or attending withholding clearance): appended to `holds` with
   the minute and sequence. Unknown id → `unknown-id`; an intervention already

@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1423446",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "恶心呕吐与腹泻 · 78岁女性",
     "en": "Nausea, vomiting and diarrhoea · 78-year-old woman"
@@ -2633,6 +2633,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true

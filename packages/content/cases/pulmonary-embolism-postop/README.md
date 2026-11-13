@@ -11,7 +11,7 @@ advice and does not replace local protocols or current guidelines.
 
 | | |
 |---|---|
-| id / version | `pulmonary-embolism-postop` / `1.1.2` |
+| id / version | `pulmonary-embolism-postop` / `1.1.3` |
 | setting / facility | `inpatient` (surgical ward bed) / `general-hospital` (ward bed 1) |
 | specialty | acute medicine, respiratory medicine, general surgery |
 | difficulty / estimated time | 4 / 5 · ~40 min (simulated clock from 16:20, 180-min limit) |
@@ -210,6 +210,13 @@ anticoagulation in the lytic-haemorrhage branch, where it is contraindicated.
 
 A single catastrophic act costs only its own item: the managed-lysis path still scores 73 %, but `r-safety-no-lysis`
 is a **critical** item, so the debrief names that miss first (see Fidelity limits).
+
+**Safety outcome.** `alteplase` is `critical`: systemic thrombolysis on day 3 after an open colectomy (major surgery
+within 3 weeks) in a normotensive patient fails the assessment's safety outcome (`safety.passed: false`) whatever the
+score, and every debrief and export shows it beside the score; the haemorrhage branch still plays out. Every
+lysis path above therefore fails safety, the managed-lysis path's 73 % included. The vasopressor and rescue
+reperfusion are `critical: false` (not indicated while she is stable; recoverable). Free-text orders of paracetamol
+are checked against its preset dose (1 g IV).
 
 ## Reference path (`solution`)
 
@@ -446,6 +453,15 @@ Refs. 16 and 17 are the PEITHO and PREPIC2 trials.
 - BTS began a new guideline on target oxygen saturations in 2023; the case keeps the 2017 target (94–98 %).
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-3).** `alteplase` is `critical: true`: thrombolysis on post-operative day 3 in
+  this normotensive patient fails the safety outcome shown beside the score (`r-safety-no-lysis` was already
+  critical). Scores are unchanged — e.g. alteplase straight after the UFH on the reference path: 14/22 (64 %),
+  safety failed. `noradrenaline` and `rescue-reperfusion` are `critical: false` (`cases validate`).
+- **Preset dose (audit P0-2):** `doseSpec` on paracetamol 1 g IV. UFH (a bolus then an hourly rate per kg, the
+  first dose an order states) and the titrated morphine have none.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

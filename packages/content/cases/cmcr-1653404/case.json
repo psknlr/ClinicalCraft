@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653404",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "高热与足背红肿 · 4岁1个月男孩",
     "en": "High fever and a swollen foot · boy aged 4 years 1 month"
@@ -2149,6 +2149,7 @@
         "medications"
       ],
       "risk": "low",
+      "critical": true,
       "effects": [],
       "setFlags": [],
       "maxDoses": 1,

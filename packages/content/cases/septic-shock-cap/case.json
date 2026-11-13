@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "septic-shock-cap",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "title": {
     "zh-CN": "发热、咳嗽伴意识模糊 · 72岁女性",
     "en": "Fever, cough and confusion · 72-year-old woman"
@@ -6555,6 +6555,7 @@
         "zh-CN": "头孢曲松 2 g 静脉滴注，每24小时一次（无需按肾功能调整）",
         "en": "Ceftriaxone 2 g IV every 24 h (no renal dose adjustment needed)"
       },
+      "doseSpec": { "amount": 2, "unit": "g", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -6599,6 +6600,7 @@
         "zh-CN": "阿奇霉素 500 mg 静脉滴注，每24小时一次（无需按肾功能调整；注意QTc）",
         "en": "Azithromycin 500 mg IV every 24 h (no renal adjustment; watch the QTc)"
       },
+      "doseSpec": { "amount": 500, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -6653,6 +6655,7 @@
         "zh-CN": "莫西沙星 400 mg 静脉滴注，每24小时一次（无需按肾功能调整；注意QTc）",
         "en": "Moxifloxacin 400 mg IV every 24 h (no renal adjustment; watch the QTc)"
       },
+      "doseSpec": { "amount": 400, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -6706,6 +6709,7 @@
         "zh-CN": "哌拉西林他唑巴坦 4.5 g 静脉滴注（首剂全量，后续按肾功能调整）",
         "en": "Piperacillin–tazobactam 4.5 g IV (full first dose; later doses adjusted to renal function)"
       },
+      "doseSpec": { "amount": 4.5, "unit": "g", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -6968,6 +6972,7 @@
         "zh-CN": "氢化可的松 50 mg 静脉注射，每6小时一次（200 mg/d）",
         "en": "Hydrocortisone 50 mg IV every 6 h (200 mg/day)"
       },
+      "doseSpec": { "amount": 50, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -7010,6 +7015,7 @@
         "zh-CN": "对乙酰氨基酚 1 g 静脉滴注（15分钟），必要时重复——若肌酐清除率≤30 mL/min，间隔至少6小时；存在脱水、进食差等肝毒性危险因素，24小时不超过3 g",
         "en": "Paracetamol 1 g IV over 15 min, repeated if needed — at least 6 h apart if creatinine clearance is ≤ 30 mL/min; max 3 g/24 h because dehydration and poor intake are risk factors for hepatotoxicity"
       },
+      "doseSpec": { "amount": 1, "unit": "g", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -7160,6 +7166,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "effects": [
         {
           "vital": "sbp",
@@ -9019,7 +9026,8 @@
             "intervened": "ward-admission"
           }
         ]
-      }
+      },
+      "critical": true
     },
     {
       "id": "r-med-safety",

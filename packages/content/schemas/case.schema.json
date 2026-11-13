@@ -368,6 +368,35 @@
         {
           "type": "object",
           "properties": {
+            "elapsedSince": {
+              "type": "object",
+              "properties": {
+                "intervened": {
+                  "$ref": "#/definitions/Id"
+                },
+                "gte": {
+                  "type": "number",
+                  "minimum": 0
+                },
+                "lte": {
+                  "type": "number",
+                  "minimum": 0
+                }
+              },
+              "required": [
+                "intervened"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "elapsedSince"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "hints": {
               "type": "object",
               "properties": {
@@ -1131,6 +1160,86 @@
             },
             "interventionId": {
               "$ref": "#/definitions/Id"
+            },
+            "ordered": {
+              "type": "object",
+              "properties": {
+                "text": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 1000
+                },
+                "dose": {
+                  "type": "object",
+                  "properties": {
+                    "amount": {
+                      "type": "number",
+                      "exclusiveMinimum": 0
+                    },
+                    "unit": {
+                      "type": "string",
+                      "enum": [
+                        "g",
+                        "g/h",
+                        "g/min",
+                        "g/kg",
+                        "g/kg/h",
+                        "g/kg/min",
+                        "mg",
+                        "mg/h",
+                        "mg/min",
+                        "mg/kg",
+                        "mg/kg/h",
+                        "mg/kg/min",
+                        "microgram",
+                        "microgram/h",
+                        "microgram/min",
+                        "microgram/kg",
+                        "microgram/kg/h",
+                        "microgram/kg/min",
+                        "mL",
+                        "mL/h",
+                        "mL/min",
+                        "mL/kg",
+                        "mL/kg/h",
+                        "mL/kg/min",
+                        "unit",
+                        "unit/h",
+                        "unit/min",
+                        "unit/kg",
+                        "unit/kg/h",
+                        "unit/kg/min",
+                        "mmol",
+                        "mmol/h",
+                        "mmol/min",
+                        "mmol/kg",
+                        "mmol/kg/h",
+                        "mmol/kg/min"
+                      ]
+                    },
+                    "route": {
+                      "type": "string",
+                      "enum": [
+                        "IM",
+                        "IV",
+                        "IO",
+                        "SC",
+                        "PO",
+                        "SL",
+                        "PR",
+                        "IN",
+                        "INH",
+                        "TOP"
+                      ]
+                    }
+                  },
+                  "additionalProperties": false
+                }
+              },
+              "required": [
+                "text"
+              ],
+              "additionalProperties": false
             },
             "by": {
               "type": "string",
@@ -4475,6 +4584,80 @@
               "dose": {
                 "$ref": "#/definitions/LocalizedText"
               },
+              "doseSpec": {
+                "type": "object",
+                "properties": {
+                  "amount": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "upTo": {
+                    "type": "number",
+                    "exclusiveMinimum": 0
+                  },
+                  "unit": {
+                    "type": "string",
+                    "enum": [
+                      "g",
+                      "g/h",
+                      "g/min",
+                      "g/kg",
+                      "g/kg/h",
+                      "g/kg/min",
+                      "mg",
+                      "mg/h",
+                      "mg/min",
+                      "mg/kg",
+                      "mg/kg/h",
+                      "mg/kg/min",
+                      "microgram",
+                      "microgram/h",
+                      "microgram/min",
+                      "microgram/kg",
+                      "microgram/kg/h",
+                      "microgram/kg/min",
+                      "mL",
+                      "mL/h",
+                      "mL/min",
+                      "mL/kg",
+                      "mL/kg/h",
+                      "mL/kg/min",
+                      "unit",
+                      "unit/h",
+                      "unit/min",
+                      "unit/kg",
+                      "unit/kg/h",
+                      "unit/kg/min",
+                      "mmol",
+                      "mmol/h",
+                      "mmol/min",
+                      "mmol/kg",
+                      "mmol/kg/h",
+                      "mmol/kg/min"
+                    ]
+                  },
+                  "route": {
+                    "type": "string",
+                    "enum": [
+                      "IM",
+                      "IV",
+                      "IO",
+                      "SC",
+                      "PO",
+                      "SL",
+                      "PR",
+                      "IN",
+                      "INH",
+                      "TOP"
+                    ]
+                  }
+                },
+                "required": [
+                  "amount",
+                  "unit"
+                ],
+                "additionalProperties": false
+              },
               "requires": {
                 "type": "array",
                 "items": {
@@ -4651,6 +4834,9 @@
               },
               "contraindicatedWhen": {
                 "$ref": "#/definitions/Condition"
+              },
+              "critical": {
+                "type": "boolean"
               },
               "harm": {
                 "$ref": "#/definitions/LocalizedText"
@@ -6686,6 +6872,26 @@
             "$ref": "#/definitions/ClinicalAction"
           },
           "default": []
+        },
+        "errorRecovery": {
+          "type": "object",
+          "properties": {
+            "interventions": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Id"
+              },
+              "minItems": 1
+            },
+            "rationale": {
+              "$ref": "#/definitions/LocalizedText"
+            }
+          },
+          "required": [
+            "interventions",
+            "rationale"
+          ],
+          "additionalProperties": false
         },
         "extensions": {
           "type": "object",

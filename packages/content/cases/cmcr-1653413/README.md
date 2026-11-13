@@ -14,7 +14,7 @@ advice and does not replace local protocols or current guidelines.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653413` / `1.1.1` |
+| id / version | `cmcr-1653413` / `1.1.2` |
 | setting / facility | `inpatient` (respiratory unit) / `general-hospital` |
 | specialty | respiratory medicine, critical care, traditional Chinese medicine |
 | difficulty / estimated time | 4 / 5 · ~35 min (static clock; historical review) |
@@ -283,6 +283,12 @@ reachable from the editing session. No DOI is given where none could be verified
   were unreachable); they are well-formed AJRCCM/CID DOIs.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-3).** `tcm-decoction-aconite` (the report's decoction with 60 g of
+  processed aconite, decocted fast) is `critical: true`: giving it fails the safety outcome shown beside the score
+  (`r-safety-aconite` was already a critical rubric item). Scores are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

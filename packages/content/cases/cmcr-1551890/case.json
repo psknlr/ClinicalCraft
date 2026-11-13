@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1551890",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "胸痛后心功能恶化 · 65岁女性",
     "en": "Worsening cardiac function after chest pain · 65-year-old woman"
@@ -2549,6 +2549,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
