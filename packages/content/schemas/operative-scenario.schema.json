@@ -420,6 +420,22 @@
                     },
                     "recognised": {
                       "type": "boolean"
+                    },
+                    "by": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "first-assistant",
+                            "second-assistant",
+                            "scrub-nurse"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "operator"
+                        }
+                      ]
                     }
                   },
                   "required": [
@@ -444,12 +460,30 @@
                             "excessive-traction",
                             "continued-after-injury",
                             "insufflation-over-max",
-                            "dissection-beyond-safe-plane"
+                            "dissection-beyond-safe-plane",
+                            "out-of-frame",
+                            "scope-withdrawn-in-bleeding"
                           ]
                         },
                         {
                           "type": "string",
                           "const": "any"
+                        }
+                      ]
+                    },
+                    "by": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "enum": [
+                            "first-assistant",
+                            "second-assistant",
+                            "scrub-nurse"
+                          ]
+                        },
+                        {
+                          "type": "string",
+                          "const": "operator"
                         }
                       ]
                     }
@@ -660,7 +694,9 @@
                         "steps",
                         "exchanges",
                         "clashes",
-                        "crossings"
+                        "crossings",
+                        "colleague",
+                        "offView"
                       ]
                     },
                     "gte": {
@@ -1233,6 +1269,11 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 80
+            },
+            "ref": {
+              "type": "string",
+              "maxLength": 80,
+              "pattern": "^[a-z0-9:._-]+$"
             },
             "by": {
               "type": "string",
@@ -2470,6 +2511,85 @@
           "required": [
             "op",
             "port"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "aim"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "at": {
+              "$ref": "#/definitions/Id"
+            }
+          },
+          "required": [
+            "op",
+            "port"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "zoom"
+            },
+            "port": {
+              "$ref": "#/definitions/Id"
+            },
+            "level": {
+              "type": "string",
+              "enum": [
+                "wide",
+                "close"
+              ]
+            }
+          },
+          "required": [
+            "op",
+            "port",
+            "level"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "op": {
+              "type": "string",
+              "const": "pass"
+            },
+            "instrument": {
+              "type": "string",
+              "enum": [
+                "laparoscope",
+                "grasper",
+                "maryland",
+                "hook",
+                "scissors",
+                "clip-applier",
+                "suction",
+                "retrieval-bag",
+                "cholangiocatheter",
+                "lap-us"
+              ]
+            },
+            "to": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 80
+            }
+          },
+          "required": [
+            "op",
+            "instrument"
           ],
           "additionalProperties": false
         },

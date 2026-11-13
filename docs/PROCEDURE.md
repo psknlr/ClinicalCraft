@@ -59,7 +59,7 @@ It states consequences, never a verdict: there is no single right plan.
 
 | instrument | can |
 |---|---|
-| laparoscope | show the field (in any port its diameter passes) |
+| laparoscope | show the field (in any port its diameter passes); from the camera port: `aim`, `zoom` |
 | grasper | retract |
 | maryland | retract, dissect, isolate, coagulate (energy) |
 | hook | dissect (energy), isolate, coagulate |
@@ -72,24 +72,41 @@ It states consequences, never a verdict: there is no single right plan.
 
 An instrument wider than its port does not pass.
 
+**The camera.** The picture comes from the camera port — a port of role `camera` with the laparoscope in it.
+`aim {port, at?}` points it at a region (`at`, a region id) or back at the whole field (no `at`); `zoom {port, level}`
+brings it `close` to where it is aimed or back to `wide` (a close view needs an aim: `aim-first`; aiming back at the
+whole field is the wide view again). Both take no time, work only from the camera port with the laparoscope in it and
+the field in view (`camera-port`, or the field's own reason), and are the camera holder's steps — whoever holds the
+camera port — or the operator's while nobody holds it (§3). The view is `ProcedureState.camera` (`{at, zoom}`): absent
+until the first `aim` or `zoom` — the whole field, as every reference solution has it — and gone when the laparoscope
+leaves the camera port (withdrawn, exchanged, a conversion, the close). Wide shows everything; what the camera's aim
+changes is said in §5 (work off the aim, out of frame). Rotation, the horizon, fogging and soiling are not modelled.
+
+**Passing.** `pass {instrument, to?}` puts an instrument from the table (`instruments`) into the hand of the one who
+will insert it (`to`, a staff id; absent, or `surgeon`: the operator) — a colleague's step, the scrub nurse's
+(`instruments` control, §3). It waits in `ProcedureState.passed` (`{instrument, to?, by}`) until that one inserts that
+instrument: their `insert` takes the first pass waiting for them. A second pass of the same instrument to the same hand
+while one waits is refused (`pass-waiting`), and so is a pass by the operator (`colleague-only`) or to oneself. A pass
+is needed only in the scrub nurse's place (§3); everywhere else an insert takes a waiting pass and needs none.
+
 ## 3. Operations (`operate`)
 
-`{ type: "operate", op }` is accepted only while the session is in one of `procedure.phases`. It
+`{ type: "operate", op, actor?, ref? }` is accepted only while the session is in one of `procedure.phases`. It
 applies one step:
 
 ```
-plan-ports · insufflate · desufflate · insert · withdraw · retract · release · hand-over · dissect ·
-isolate · identify · safety-pause · clip · divide · coagulate · suction · irrigate · image · inspect ·
-recognise · bag · extract · bailout · close
+plan-ports · insufflate · desufflate · insert · withdraw · retract · release · hand-over · aim · zoom ·
+pass · dissect · isolate · identify · safety-pause · clip · divide · coagulate · suction · irrigate ·
+image · inspect · recognise · bag · extract · bailout · close
 ```
 
 **Who does a step.** The operator does every step, unless the `operate` action names an `actor` — a
 colleague's staff id. `hand-over {port, to?}` passes the instrument in a port, with the traction it
-holds, to a colleague (`to`), or takes it back (no `to`); it is done by the one who holds it or the one
-who takes it. While a colleague holds a port (`PortState.holder`), only they work it — `retract`,
-`release`, `withdraw`, `suction`, `irrigate` — and they do nothing else; the operator's step on that
-port is refused ("… holds the grasper in port B: ask them to hand it back first"). Withdrawn before
-the hand-over, there is nothing to hand over: the traction has already fallen. A step that lets
+holds, to a colleague (`to`), or takes it back (no `to`, or `to: "surgeon"`); it is done by the one who holds it or
+the one who takes it. While a colleague holds a port (`PortState.holder`), only they work it — `retract`,
+`release`, `withdraw`, `suction`, `irrigate`, and the camera's `aim` and `zoom` on the camera port — and the
+operator's step on that port is refused ("… holds the grasper in port B: ask them to hand it back first"). Withdrawn
+before the hand-over, there is nothing to hand over: the traction has already fallen. A step that lets
 traction go (release, withdraw, an exchange, a new retraction, conversion) and drops a region being
 dissected below half exposure carries the signal `exposure-lost`. In-world, a colleague takes a port
 with their own body (`delegate_task hold_traction`, EMBODIED §8): they walk to the table first, and
@@ -102,9 +119,59 @@ longer held (a colleague left the table with it) is re-grasped first, once, and 
 gallbladder-infundibulum has gone: re-grasping before the next step."); the re-grasp is not a reference
 step, so the walkthrough goes on from where it was (`lostTraction`, `session/autopilot.ts`).
 
-The care team's positions and controls (docs/TEAM.md §1: the camera, traction, suction…) are not read by the field yet:
-any colleague named as `actor` works a port handed to them as above, and an `operate` with no `actor` is the
-operator's step, as it always was.
+**Colleagues and their controls.** The field answers in two layers, both pure core. The **physics**
+(`operate(def, state, op, at, actor?, ref?)`, `engine/procedure/reduce.ts`) decides what a step does, and every
+change it makes depends only on the state, the op and the actor — the web's playback replays the record's steps so,
+frame for frame. Its rules for colleagues hold for anyone named as `actor`:
+
+- A colleague does `hand-over`, `retract`, `release`, `withdraw`, `suction`, `irrigate`, `aim`, `zoom`, `pass`,
+  `recognise` and a restricted `insert` (`COLLEAGUE_OPS`); every other step is the operator's ("Only the operator does
+  "dissect": … assists (…)", reason `operator-only`).
+- A colleague puts an instrument in only into an **empty port nobody holds**: the laparoscope into a camera port, a
+  grasper or the suction into an assist port (`port-occupied`, `port-role`); they hold it then. So a camera holder puts
+  the scope back after taking it out, and an assistant puts their own grasper into an assist port (four-port
+  cholecystectomy).
+- **Consent**: a colleague takes a port from the operator, or from a colleague who hands it over themselves — never
+  from another colleague's hands ("… holds the grasper in port "B": they hand it over first.", `take-from-colleague`).
+  The operator may always take a port back (`hand-over` without `to`).
+- **Two hands**: a colleague holds at most two ports, the camera port counting as one (`hands-full`).
+- **Crossed hands** (`counters.crossings`) count the operator's own steps only.
+- An unsafe act or an injury that follows from a colleague's step is theirs (`by`, §5).
+
+The **gate** (the reducer, `engine/seats.ts`) is asked first, and only refuses:
+
+1. **Normalised**: an actor who is the operator — the stand-in surgeon while the learner holds a place (docs/TEAM.md
+   §1), or the token `surgeon` — is no actor, and a `hand-over` or `pass` `to` them has no `to` (back to the operator).
+   The record's `procedure.step` (and an `action.rejected`) carries the step so: the stand-in's steps are the
+   operator's, as every reference step is.
+2. **Whom a step names**: a pass's `to`, and a hand-over's while the learner holds a place, must be someone of the team
+   as it is (`effectiveTeam`: base members, the chosen line-up, the scenario's relief, less the absent;
+   `unknown-member`, `unknown-id`). Without a place a colleague outside the team still takes a port handed to them.
+3. **Controls** (`seatCheck`): a colleague's step needs the control it is worked with (`fieldControlFor`): `aim` and
+   `zoom` the `camera`; `retract` and `release` `retract`; `suction` and `irrigate` `suction`; `pass` `instruments`;
+   putting in, taking out or handing on an instrument its own control (`instrumentControl`: the laparoscope `camera`,
+   a grasper `retract`, the suction `suction`) — every other instrument (the dissectors, the hook, the clip applier,
+   the scissors, the bag…) is nobody's but the operator's. A hand-over to a colleague also needs the one who takes it to
+   hold that control. Saying an injury aloud (`recognise`) needs none: anyone in the room may (§5). A step no colleague
+   does is left to the physics, which says so itself; a port with nothing in it too ("nothing to hand over"). Refused
+   `invalid`, reason `needs-control`. Whose controls: `fieldControls` (docs/TEAM.md §1) — the operator every one, a
+   member of the team as it is their own, a colleague outside the team traction and suction (`LEGACY_COLLEAGUE`: no
+   camera); a session may narrow that set by a colleague's facility position (`seatCheck`'s `controls`).
+4. **Passes**: in the scrub nurse's place (`passingRequired`) every insert — the operator's too — needs a pass of
+   that instrument to the one who inserts it (`requirements-unmet`, `pass-first`). Nowhere else is a pass needed: a
+   reference solution, `cases verify`, the benchmarks and the demonstration need none.
+
+A refusal carries a **reason** where this layer or the colleague rules give one — `reason: {key, params}` on the
+reducer's result and on the `action.rejected` event (`FIELD_REFUSALS`: `operator-only`, `port-held`, `not-handed`,
+`take-from-colleague`, `hands-full`, `needs-control`, `unknown-member`, `holds-already`, `not-a-party`,
+`port-occupied`, `port-role`, `camera-port`, `aim-first`, `colleague-only`, `pass-self`, `pass-waiting`, `pass-first`;
+params are staff ids, ports, instruments and ops) — which a front-end says in the learner's language with names; the
+English `message` stays the engine's, word for word. An `operate` action's `ref` (a short lower-case token) is
+informational: no rule reads it, and an accepted step records it in `ProcedureState.refs` (so a team member's progress
+is read from the record; docs/TEAM.md).
+
+For now the learner is the operator in a session: no session offers a place in the team yet (docs/TEAM.md §1), and
+an `operate` with no `actor` is the learner's step as the operator, as it always was.
 
 **Equipment.** The picture and the pneumoperitoneum depend on the equipment (`ProcedureState.supply`,
 `PROCEDURE_SUPPLY`): the image needs a working camera and light source (`endoscopic-camera`, `light-source`), the
@@ -215,6 +282,18 @@ The following are also recorded as unsafe:
 - `excessive-traction`.
 - `insufflation-over-max`.
 - `dissection-beyond-safe-plane`: dissection carried on past dense fibrosis's safe limit (§3).
+- `out-of-frame`: an operator's tissue step (dissect, isolate, clip, divide, coagulate) in a region the camera is not
+  aimed at while it is close (§2) — working where the picture is not.
+- `scope-withdrawn-in-bleeding`: a colleague took the laparoscope out while a bleed was not controlled — the camera
+  holder turns the view away instead. The operator's own withdrawal is not recorded so.
+
+**Whose step it was.** An unsafe act or an injury that follows from a colleague's step carries `by` (their staff id:
+the first assistant's excessive traction, and the perforation it causes); the operator's carry none — the stand-in
+surgeon's are the operator's. **Work off the camera's aim**: an operator's tissue step in a region other than the one
+the camera is aimed at (`camera.at`; a structure's region is its `in`) is carried out as ever, counted
+(`counters.offView`) and signalled (`off-view`); at a close view it is also `out-of-frame`. With no aim — the whole
+field, every reference solution — nothing is counted. `ProcedureState.working` is the region of the operator's last
+tissue step.
 
 Injuries follow from the anatomy:
 
@@ -237,7 +316,8 @@ Major bleeding cannot be controlled laparoscopically in this model: it needs `ba
 unidentified for an irreversible step (`irreversible-on-unidentified`).
 
 `recognise` names an injury aloud: it marks matching injuries recognised, and counts a false alarm
-otherwise. `image` (cholangiography through a free, clipped, undivided cystic duct, or ultrasound)
+otherwise. Anyone in the room may say it — no control is needed —, and a colleague who says it first is recorded with
+it (`recognisedBy`); it credits nobody else. `image` (cholangiography through a free, clipped, undivided cystic duct, or ultrasound)
 makes duct injuries visible and shows the ducts by name.
 
 Bail-outs work as follows:
@@ -255,8 +335,9 @@ subtotal technique (`subtotal-fenestrating` ↔ `subtotal-reconstituting`) needs
 `bailout {strategy, revise: true}`: the earlier technique moves to `superseded` and stays in the record.
 
 Every accepted step is one `procedure.step` event with a stable identity: `id` (`op-<n>`), `step` (`n`,
-the field's own step count), `seq` (the session's action sequence), `at` (the clock), `by` (the actor)
-and `detail` (the operation as accepted). A front-end presents the steps in that order, one by one —
+the field's own step count), `seq` (the session's action sequence), `at` (the clock), `by` (the actor),
+`actor` (the colleague who did it, as normalised in §3; absent: the operator), `detail` (the operation as accepted)
+and the action's `ref`. A front-end presents the steps in that order, one by one —
 each accepted clip on its own, even when a demonstration runs fast — and a rejected step changes
 nothing and is shown with its reason.
 
@@ -267,14 +348,21 @@ rubric items, objectives, phases, scenario events and safety gates:
 
 ```
 { "view": id } · { "criterion": id } · { "documented": id, "valid"?: bool } ·
-{ "injury": kind|"any", "recognised"?: bool } · { "unsafe": code|"any" } ·
+{ "injury": kind|"any", "recognised"?: bool, "by"?: place|"operator" } · { "unsafe": code|"any", "by"?: place|"operator" } ·
 { "clipped": id, "minCount"? } · { "divided": id } · { "isolated": id } ·
 { "identified": id, "as"?: id } · { "specimen": state } · { "bailout": strategy|"any" } ·
 { "imaged": "ioc"|"lap-us" } · { "plan": id } · { "insufflated": bool, "pressure"?: range } ·
 { "bleeding": severity|"any", "controlled"?: bool } · { "spillage": "bile"|"stones", "cleared"?: bool } ·
-{ "counter": "steps"|"exchanges"|"clashes"|"crossings", gte?, lte? } · { "inspected": bool } · { "closed": bool } ·
+{ "counter": "steps"|"exchanges"|"clashes"|"crossings"|"colleague"|"offView", gte?, lte? } · { "inspected": bool } · { "closed": bool } ·
 { "dissectedExposed": region, "atLeast": 0–1 } · { "variant": id|"reference" }
 ```
+
+`by` narrows an unsafe act or an injury to whose step it was: `operator` (the operator's own — the learner's, or the
+stand-in surgeon's while the learner holds a place) or a place in the team (`first-assistant`, `second-assistant`,
+`scrub-nurse`), resolved through the team as it is in the session (`effectiveTeam`; the relief of a team scenario
+stands in their place, and the learner's own steps are their place's). `counter` reads 0 for a counter a field never
+counted: `colleague` (the steps colleagues did themselves) and `offView` (the operator's tissue steps off the camera's
+aim, §5).
 
 `variant` reads the session's anatomical variant (§9). It is hidden truth, like the anatomy. It lets
 rubric items be `scoredWhen` a variant is in force and lets gates depend on it. Structure ids in
@@ -294,7 +382,9 @@ cannot reach the field, so a condition cannot be faked.
 `T2`…), numbered in the order they came into view. Each has what it looks like (`appearsAs`), whether
 it is free all round, its clips, whether it is divided, what the operator named it, and what
 imaging showed. The view also has organs by name, each region's dissection and exposure as coarse
-bins, the retractions and the findings.
+bins, the retractions and the findings; the **camera** (`{port, at, zoom, holder?}`: the camera port the picture
+comes from, where it is aimed — null for the whole field —, how close, and the colleague holding it), where the
+operator last worked (`working`), and the instruments **passed** and waiting to go in (`{instrument, to?, by}`).
 
 It never contains a safety-view verdict, an injury the field does not show, an unsafe-act record, a
 score or the session's variant. `names` lists the ids a duct or vessel can be given with `identify`.
@@ -350,8 +440,9 @@ instructor mode may show more, as long as it is never what a benchmark agent rec
 
 ## 8. Assessment and safety gates
 
-`assess` adds `procedure` (unsafe acts, injuries with whether each was recognised, safety pauses
-with claims against the field, and counters) for the debrief. A case's `safetyGates` are conditions
+`assess` adds `procedure` (unsafe acts, injuries with whether each was recognised — with `by` for a colleague's step
+and `recognisedBy` for a colleague who said it first —, safety pauses with claims against the field, and counters)
+for the debrief. A case's `safetyGates` are conditions
 no score compensates:
 
 - `safety-critical` gates set the verdict and cap the reported percentage (default 40). The uncapped

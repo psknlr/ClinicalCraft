@@ -236,3 +236,26 @@ export function lapCholeCase(): CaseDefinition {
   if (!parsed.ok) throw new Error(`fixture invalid: ${JSON.stringify(parsed.issues.slice(0, 3))}`);
   return parsed.value;
 }
+
+/**
+ * The fixture with a theatre team (as core's `lap-chole-team.ts`, docs/TEAM.md §1): the circulating nurse `nurse-1`, the
+ * scrub nurse `nurse-2`, the first assistant `doc-1` (who holds the camera: no second assistant), the anaesthetist
+ * `anaes-1`, and the surgeon, whose stand-in `doc-0` operates while the learner holds a place; the reference path goes
+ * into the theatre, where the team works — the place a learner takes joins there.
+ */
+export function lapCholeTeamCase(): CaseDefinition {
+  const team = {
+    room: "theatre-1",
+    phases: ["theatre"],
+    members: [
+      { staff: "nurse-1", duties: ["circulate"] },
+      { staff: "nurse-2", duties: ["count", "instruments"] },
+      { staff: "doc-1", duties: ["assist"] },
+      { staff: "anaes-1", duties: ["anaesthesia"] },
+      { staff: "surgeon", duties: ["surgeon"], standIn: "doc-0" },
+    ],
+  };
+  const parsed = parseCase({ ...structuredClone(LAP_CHOLE_SIT), team, solution: [{ type: "start" }, { type: "set-phase", phase: "theatre" }] });
+  if (!parsed.ok) throw new Error(`fixture invalid: ${JSON.stringify(parsed.issues.slice(0, 3))}`);
+  return parsed.value;
+}

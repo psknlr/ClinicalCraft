@@ -440,9 +440,10 @@ function doing(op: ProcedureOp, instrument: InstrumentId | null | undefined, tak
  */
 export function seatCheck(c: CaseDefinition, s: TeamChoice & Pick<SessionState, "procedure">, op: ProcedureOp, actor?: string, controls?: Controls): FieldGateRefusal | null {
   const port = "port" in op ? s.procedure?.ports.find((p) => p.site === op.port) : undefined;
-  const instrument = op.op === "insert" ? op.instrument : port?.instrument;
-  if (actor !== undefined) {
-    const own = controls ?? fieldControls(c, s, actor);
+  const instrument = "instrument" in op ? op.instrument : port?.instrument;
+  const own = actor === undefined ? "all" : (controls ?? fieldControls(c, s, actor));
+  // the operator's own step — whoever operates is unrestricted
+  if (actor !== undefined && own !== "all") {
     const need = fieldControlFor(op, port?.instrument);
     if (need === "operator") {
       // an instrument only the operator works: never put in, taken out or handed on by a colleague
@@ -451,7 +452,7 @@ export function seatCheck(c: CaseDefinition, s: TeamChoice & Pick<SessionState, 
       }
       return null;
     }
-    if (need !== null && !holds(own, need)) {
+    if (need !== null && !own.includes(need)) {
       return refusal("invalid", `${actor} cannot ${doing(op, instrument, op.op === "hand-over" && op.to === actor)}: it needs the ${need} control, which ${actor} does not hold.`, "needs-control", { who: actor, control: need, op: op.op, instrument: instrument ?? "", port: port?.site ?? "" });
     }
   }

@@ -111,9 +111,11 @@ operates is unrestricted, a member holds their controls, a colleague outside the
 `standingBy`, `memberBody` and `refOfBody`. `refOfBody` is closed: a call with no body is the learner's body; it answers
 the operator (no actor) for the learner's body while the learner operates and for the stand-in's while the learner
 holds a place, a staff id for the learner's body in a place (that place's member) and for any other staff body, and
-nothing (`null`, to be refused) for the colleague standing by and for any other body. **Nothing enforces the controls
-yet**: the operative field (docs/PROCEDURE.md §3), the world's operations, the scope of practice, delegation and the
-policies below work as they did.
+nothing (`null`, to be refused) for the colleague standing by and for any other body. **The operative field enforces
+the controls** (docs/PROCEDURE.md §3: `seatCheck` — a colleague's step needs the control it is worked with, and taking
+an instrument its control; `passingRequired` — passes in the scrub nurse's place; the stand-in normalised to the
+operator, `normaliseStep`); the world's operations, the scope of practice, delegation and the policies below do not
+read them yet.
 
 ### Places
 
@@ -146,8 +148,9 @@ The learner chooses a **place** once, at `start {seat, lineup}`, recorded with t
   history, examination, investigation and decision sections count what was left to do. Safety gates stay the team's
   outcomes.
 
-In the engine the learner in a place is still the operator: an `operate` with no actor is the operator's step, whoever
-sends it, and no stand-in surgeon is driven. So a session refuses a place in the team (`permission_denied`,
+In the engine the stand-in's steps are the operator's — recorded with no actor (docs/PROCEDURE.md §3) — and an
+`operate` with no actor is the operator's step, whoever sends it; nothing drives the stand-in yet, and no session
+stamps the learner's place on their steps. So a session refuses a place in the team (`permission_denied`,
 docs/PROTOCOL.md) and no front-end offers one; only the engine's own tests take one.
 
 ### Checks
@@ -457,11 +460,12 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   knows whether someone is in it.
 - **The surgeon is the learner's body.** In observer mode the simulated surgeon acts with it.
 - **Places and controls are the engine's only.** A place in the team can be taken at the engine's `start` and joins
-  at the team's phase, but there the learner is still the operator (an `operate` with no actor is the operator's step)
-  and no stand-in surgeon is driven, so a session refuses a place and no front-end offers one. The join drives the
-  record only — the world's device state machines (the count board) are not driven by it —, the Sign Out and the steps
-  after the operation are the operator's, and a case served without its reference solution offers no place. The
-  controls are not enforced in the operative field, the world, the scope of practice, delegation or these policies.
+  at the team's phase, but nothing drives the stand-in surgeon yet and no session stamps the learner's place on their
+  steps (an `operate` with no actor is the operator's step), so a session refuses a place and no front-end offers one.
+  The join drives the record only — the world's device state machines (the count board) are not driven by it —, the
+  Sign Out and the steps after the operation are the operator's, and a case served without its reference solution
+  offers no place. The controls are enforced in the operative field only (docs/PROCEDURE.md §3) — not in the world,
+  the scope of practice, delegation or these policies.
   There is no place for the circulating nurse or the anaesthetist, and a place does not change during an encounter.
 - **Only the duties above have policies.** `anaesthesia` is declared only. Relief colleagues are reached "by phone";
   nobody walks to fetch an instrument from another room.

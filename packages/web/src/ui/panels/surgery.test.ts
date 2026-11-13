@@ -1,13 +1,15 @@
 /**
  * The surgery window's controls: when the window is offered, which actions each instrument offers (kept
- * in step with the engine by running it), the ops the controls build (valid `operate` ops), the
- * identification choices (never in the order handles are given out), and a label in both languages for
- * every engine value the window shows.
+ * in step with the engine by running it; the laparoscope's are the camera's), the ops the controls build (valid
+ * `operate` ops), the identification choices (never in the order handles are given out), and a label in both
+ * languages for every engine value the window shows — the assist port never called the assistant — and every reason a
+ * step can be refused for.
  */
 import {
   BailoutSchema,
   createProcedureState,
   createSession,
+  FIELD_REFUSALS,
   InjuryKindSchema,
   InstrumentIdSchema,
   observeField,
@@ -83,12 +85,16 @@ function controlOp(control: Control, port: string): ProcedureOp {
       return { op: "clip", port, handle: "T1", count: 1 };
     case "image":
       return { op: "image", port, modality: "ioc" };
+    case "aim":
+      return { op: "aim", port, at: "hepatocystic-triangle" };
+    case "zoom":
+      return { op: "zoom", port, level: "wide" };
     default:
       return { op: control, port };
   }
 }
 
-const CONTROLS: Control[] = ["retract", "dissect", "isolate", "clip", "divide", "coagulate", "suction", "irrigate", "image", "bag"];
+const CONTROLS: Control[] = ["retract", "dissect", "isolate", "clip", "divide", "coagulate", "suction", "irrigate", "image", "bag", "aim", "zoom"];
 
 describe("when the surgery window is offered", () => {
   it("only for a case with an operation, in one of its phases", () => {
@@ -122,6 +128,16 @@ describe("the actions each instrument offers", () => {
     }
     expect(Object.keys(INSTRUMENT_CONTROLS).sort()).toEqual([...InstrumentIdSchema.options].sort());
     expect(controlsFor(null)).toEqual([]);
+  });
+
+  it("the laparoscope's are the camera's: aim and zoom, from the camera port", () => {
+    expect(controlsFor("laparoscope")).toEqual(["aim", "zoom"]);
+    for (const instrument of InstrumentIdSchema.options) expect(controlsFor(instrument).includes("aim"), instrument).toBe(instrument === "laparoscope");
+    const s = after(def, [{ op: "plan-ports", plan: "three-port-left" }, { op: "insufflate", pressure: 12 }, { op: "insert", port: "A", instrument: "laparoscope" }]);
+    const aimed = operate(def, s, { op: "aim", port: "A", at: "hepatocystic-triangle" }, 0);
+    expect(aimed.rejected).toBeUndefined();
+    expect(observeField(def, aimed.state).camera).toEqual({ port: "A", at: "hepatocystic-triangle", zoom: "wide" });
+    expect(observeField(def, operate(def, aimed.state, { op: "zoom", port: "A", level: "close" }, 0).state).camera).toMatchObject({ zoom: "close" });
   });
 
   it("offer energy only on the instruments the engine lets deliver it", () => {
@@ -213,7 +229,7 @@ describe("what the window keeps selected", () => {
 });
 
 describe("labels of the engine's values", () => {
-  const SIGNALS = ["instrument-clash", "hands-cross", "bleeding", "major-bleeding", "bile-in-field", "stones-spilled", "field-obscured", "field-clear", "bleeding-controlled", "specimen-detached", "imaging-done", "pressure-high"];
+  const SIGNALS = ["instrument-clash", "hands-cross", "bleeding", "major-bleeding", "bile-in-field", "stones-spilled", "field-obscured", "field-clear", "bleeding-controlled", "specimen-detached", "imaging-done", "pressure-high", "dense-fibrosis", "exposure-lost", "off-view"];
   const groups: Record<string, readonly string[]> = {
     op: ProcedureOpSchema.options.map((o) => o.shape.op.value),
     signal: SIGNALS,
@@ -232,6 +248,7 @@ describe("labels of the engine's values", () => {
     role: ["camera", "working", "assist"],
     hand: ["left", "right"],
     side: ["left", "right"],
+    reason: FIELD_REFUSALS,
   };
 
   it("exist in both languages for every value", () => {
@@ -242,6 +259,22 @@ describe("labels of the engine's values", () => {
         if (!SURGERY_ZH[key] || !SURGERY_EN[key]) missing.push(key);
       }
     expect(missing).toEqual([]);
+  });
+
+  it("name the new steps, the work off the camera's aim, the camera's unsafe acts and every refusal's reason — with the same blanks in both languages", () => {
+    for (const op of ["aim", "zoom", "pass"]) expect([SURGERY_ZH[`surgery.op.${op}` as keyof typeof SURGERY_ZH], SURGERY_EN[`surgery.op.${op}` as keyof typeof SURGERY_ZH]].every(Boolean), op).toBe(true);
+    expect(SURGERY_EN["surgery.signal.off-view"]).toMatch(/aimed elsewhere/);
+    expect(SURGERY_EN["surgery.unsafe.out-of-frame"]).toMatch(/out of frame/);
+    expect(SURGERY_ZH["surgery.unsafe.scope-withdrawn-in-bleeding"]).toMatch(/出血未控制/);
+    const blanks = (text: string) => [...text.matchAll(/\{(\w+)\}/gu)].map((m) => m[1]).sort();
+    for (const key of FIELD_REFUSALS) {
+      const k = `surgery.reason.${key}` as keyof typeof SURGERY_ZH;
+      expect(blanks(SURGERY_ZH[k]), key).toEqual(blanks(SURGERY_EN[k]));
+    }
+    // a port's role: the assist port, never "assistant" (the assistant is a person)
+    expect([SURGERY_EN["surgery.role.assist"], SURGERY_ZH["surgery.role.assist"]]).toEqual(["assist", "辅助孔"]);
+    setLocale("en");
+    expect(label("role", "assist")).toBe("assist");
   });
 
   it("follow the UI language", () => {

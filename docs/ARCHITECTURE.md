@@ -372,9 +372,11 @@ SurgicalControlSchema, CONTROL_TITLES, DEFAULT_CONTROLS, FIELD_CONTROLS, NON_STE
                                                         // importing only zod (facility.ts imports case.ts, which imports team.ts and
                                                         // session.ts: those read the positions from the leaf); facility.ts re-exports it
 effectiveTeam, memberPosition, staffPosition, memberControls, fieldControls, bodyControls, seatsOf, canJoinTeam, seatMember,
-placeMember, operatorOf, standingBy, memberBody, refOfBody, joinPath, initialPhase, LEARNER_BODY, DUTY_POSITION, DUTY_PRIORITY
+placeMember, operatorOf, standingBy, memberBody, refOfBody, joinPath, initialPhase, LEARNER_BODY, DUTY_POSITION, DUTY_PRIORITY,
+normaliseStep, stepPartyRefusal, fieldControlFor, instrumentControl, seatCheck, passingRequired, placeRefs
                                                         // engine/seats.ts (TEAM.md §1): who holds which position and controls, which
-                                                        // body is whose, which places a learner may take — from the case and the start
+                                                        // body is whose, which places a learner may take — from the case and the start;
+                                                        // the operative field's gate by control (PROCEDURE.md §3)
 PERSONAL_KIT, ROOM_KINDS                                // schema/common.ts: capabilities every learner carries (no equipment needed), room kinds
 DestinationSchema, PostureSchema; RoomTemplateSchema     // schema/case.ts (§2: where a step takes the patient, postures); schema/facility.ts (room templates)
 CAPABILITY_LABELS, capabilityLabels(capabilities, locale): string[]   // i18n.ts: capability display names (zh-CN / en) for every front-end
@@ -398,7 +400,7 @@ fitModel(bounds, ref, footprint): ModelFit; modelScale(ref): Vec3 | undefined; e
 GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web renderer loads / those that need a decoder (DRACO; KTX2/Basis, not bundled)
 ```
 
-**Operative field** (`engine/procedure`, schema `schema/procedure.ts`; contract [PROCEDURE.md](PROCEDURE.md)): `operate(def, state, op, at)` — the pure step behind the `operate` action, whose result lands in `SessionState.procedure`; `observeField(def, state)` — the operator's view (handles, never duct or vessel names); `evaluateProcedure` — the `procedure` condition leaf; `portReport` and `reach` — port ergonomics; `viewCriteria`/`viewHolds` — safety views judged on the field; `procedureFor(case, state)` — the session's definition with its anatomical variant laid over it (`resolveProcedure`), the one every reader uses. The operative benchmark (`@clinicalcraft/bench` `operative/`, `clinicalcraft bench operative`; [BENCHMARK_OPERATIVE.md](BENCHMARK_OPERATIVE.md)) runs agents on a case's procedure with the variant hidden. `assess` adds `procedure` and, from the case's `safetyGates`, `safety.verdict` (a `safety-critical` gate caps the percentage).
+**Operative field** (`engine/procedure`, schema `schema/procedure.ts`; contract [PROCEDURE.md](PROCEDURE.md)): `operate(def, state, op, at, actor?, ref?)` — the pure step behind the `operate` action (the operator's, or a colleague's: `actor`), whose result lands in `SessionState.procedure`, asked after the reducer's gate by control (`engine/seats.ts` `seatCheck`, PROCEDURE.md §3); `observeField(def, state)` — the operator's view (handles, never duct or vessel names); `evaluateProcedure` — the `procedure` condition leaf; `portReport` and `reach` — port ergonomics; `viewCriteria`/`viewHolds` — safety views judged on the field; `procedureFor(case, state)` — the session's definition with its anatomical variant laid over it (`resolveProcedure`), the one every reader uses. The operative benchmark (`@clinicalcraft/bench` `operative/`, `clinicalcraft bench operative`; [BENCHMARK_OPERATIVE.md](BENCHMARK_OPERATIVE.md)) runs agents on a case's procedure with the variant hidden. `assess` adds `procedure` and, from the case's `safetyGates`, `safety.verdict` (a `safety-critical` gate caps the percentage).
 
 ### 3.1 Reducer semantics
 

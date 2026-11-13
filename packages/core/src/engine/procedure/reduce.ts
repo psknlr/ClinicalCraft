@@ -1,7 +1,7 @@
 /**
- * The operative-field reducer (docs/PROCEDURE.md §5): `operate(def, state, op, clock, actor?)` applies one
+ * The operative-field reducer (docs/PROCEDURE.md §5): `operate(def, state, op, clock, actor?, ref?)` applies one
  * step — the operator's, or a colleague's (`actor`). Pure and deterministic: a step's effect depends only on the
- * state, the op and the actor. A step that is physically impossible (an instrument out of reach, a clip on a
+ * state, the op and the actor (`ref` is only recorded). A step that is physically impossible (an instrument out of reach, a clip on a
  * structure not yet free all round, a 10 mm scope in a 5 mm port) is rejected; a step that is possible but unsafe is
  * carried out and recorded (`state.unsafe`, with the colleague who did it) with whatever consequence the anatomy gives
  * it — an injury follows from what was actually clipped, divided or burnt, never from a script. Who may do a step by

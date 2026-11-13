@@ -4,11 +4,12 @@
  * before the next energy step — the tissue already cleared stays cleared (the picture's dissection layer and its
  * exposure window are apart); several steps committed at once (an accelerated demonstration) are shown one by one,
  * each clip on its own, and the last frame is the session's own field; a refused step is a frame of its own and keeps
- * its time; a first look shows the field as it is.
+ * its time; a first look shows the field as it is. In a place in the team, a colleague's insert, the camera's aim, a
+ * pass and the stand-in surgeon's steps (recorded as the operator's) replay frame for frame as the session has them.
  */
-import { createSession, observeField, reduce, type ClinicalAction, type DomainEvent, type ProcedureOp, type SessionState } from "@clinicalcraft/core";
+import { createSession, observeField, reduce, type ClinicalAction, type DomainEvent, type ProcedureOp, type ProcedureState, type SessionState } from "@clinicalcraft/core";
 import { describe, expect, it } from "vitest";
-import { lapCholeCase } from "./panels/__fixtures__/lap-chole-sit.js";
+import { lapCholeCase, lapCholeTeamCase } from "./panels/__fixtures__/lap-chole-sit.js";
 import { lapScene } from "./panels/surgery-scene.js";
 import { OperativePlayback, type OperativeEvent } from "./operative-playback.js";
 
@@ -274,5 +275,81 @@ describe("an abdomen the equipment let down stays down on every frame shown afte
       for (let i = 0; i < 60; i++) clock.advance(2000);
       expect([worst, p.frame().state!.pressure, observeField(def, p.frame().state!).inView], `backlog ${backlog}`).toEqual([0, 0, false]);
     }
+  });
+});
+
+describe("a place in the team, frame by frame", () => {
+  it("a colleague's insert, an aim, a pass and the stand-in's steps replay frame-equal; a refusal is a frame of its own, with its reason", () => {
+    const k = lapCholeTeamCase();
+    const tdef = k.procedure!;
+    // the scrub nurse's place: the stand-in (doc-0) operates, the learner (nurse-2) passes, the first assistant holds the camera
+    let s = reduce(k, createSession(k), { type: "start", seat: "scrub-nurse" }).state;
+    expect(s.phase).toBe("theatre");
+    const steps: { op: ProcedureOp; actor: string; ref?: string }[] = [
+      { op: { op: "plan-ports", plan: "three-port-left" }, actor: "doc-0", ref: "standin:2" },
+      { op: { op: "insufflate", pressure: 12 }, actor: "doc-0", ref: "standin:3" },
+      { op: { op: "insert", port: "A", instrument: "laparoscope" }, actor: "doc-1" },
+      { op: { op: "pass", instrument: "laparoscope", to: "doc-1" }, actor: "nurse-2" },
+      { op: { op: "insert", port: "A", instrument: "laparoscope" }, actor: "doc-1" },
+      { op: { op: "aim", port: "A", at: "hepatocystic-triangle" }, actor: "doc-1" },
+      { op: { op: "pass", instrument: "grasper", to: "doc-0" }, actor: "nurse-2" },
+      { op: { op: "insert", port: "B", instrument: "grasper" }, actor: "doc-0", ref: "standin:4" },
+      { op: { op: "zoom", port: "A", level: "close" }, actor: "doc-1" },
+    ];
+    const events: OperativeEvent[] = [];
+    /** The field after each operative event, as the session has it. */
+    const fields: ProcedureState[] = [];
+    for (const x of steps) {
+      const r = reduce(k, s, { type: "operate", op: x.op, actor: x.actor, by: "agent", ...(x.ref ? { ref: x.ref } : {}) } as ClinicalAction);
+      for (const e of r.events) if (e.type === "procedure.step" || (e.type === "action.rejected" && e.action === "operate")) events.push(e);
+      s = r.state;
+      fields.push(structuredClone(s.procedure!));
+    }
+    // the record as the session has it: the stand-in's steps the operator's, a pass "to the stand-in" to the operator
+    expect(events.map((e) => `${e.type === "procedure.step" ? e.op : `refused ${e.detail?.op}`}:${e.actor ?? "operator"}`)).toEqual([
+      "plan-ports:operator",
+      "insufflate:operator",
+      "refused insert:doc-1",
+      "pass:nurse-2",
+      "insert:doc-1",
+      "aim:doc-1",
+      "pass:nurse-2",
+      "insert:operator",
+      "zoom:doc-1",
+    ]);
+    const refusal = events[2] as Extract<DomainEvent, { type: "action.rejected" }>;
+    expect(refusal.reason).toEqual({ key: "pass-first", params: { instrument: "laparoscope", to: "doc-1" } });
+    expect((events[6] as Extract<DomainEvent, { type: "procedure.step" }>).detail).toEqual({ op: "pass", instrument: "grasper" });
+    expect(s.procedure).toMatchObject({ camera: { at: "hepatocystic-triangle", zoom: "close" }, refs: ["standin:2", "standin:3", "standin:4"] });
+    expect(s.procedure!.passed).toBeUndefined();
+
+    // the views: a first look after the plan, then everything else in one burst
+    const clock = manualTimers();
+    const p = new OperativePlayback(clock.timers);
+    p.attach("place", tdef);
+    p.sync(events.slice(0, 1), fields[0]!);
+    const frames: { kind: string; op: string; actor: string | null; reason?: string; state: ProcedureState }[] = [];
+    p.subscribe(() => {
+      const f = p.frame();
+      frames.push({ kind: f.item!.kind, op: f.item!.operation, actor: f.item!.actor, ...(f.item!.rejectionReason ? { reason: f.item!.rejectionReason } : {}), state: f.state! });
+    });
+    p.sync(events, s.procedure!);
+    for (let i = 0; i < 40; i++) clock.advance(2000);
+    expect(frames.map((f) => `${f.kind}:${f.op}:${f.actor ?? "operator"}`)).toEqual([
+      "step:insufflate:operator",
+      "rejected:insert:doc-1",
+      "step:pass:nurse-2",
+      "step:insert:doc-1",
+      "step:aim:doc-1",
+      "step:pass:nurse-2",
+      "step:insert:operator",
+      "step:zoom:doc-1",
+    ]);
+    // each frame is the field the session had after that event — the refusal's the field before it, unchanged
+    frames.forEach((f, i) => expect(f.state, `${i} ${f.op}`).toEqual(fields[i + 1]));
+    expect(frames[1]!.reason).toBe(refusal.message);
+    expect(frames[1]!.state).toEqual(frames[0]!.state);
+    expect(observeField(tdef, frames[4]!.state).camera).toEqual({ port: "A", at: "hepatocystic-triangle", zoom: "wide", holder: "doc-1" });
+    expect(p.frame().state).toBe(s.procedure);
   });
 });
