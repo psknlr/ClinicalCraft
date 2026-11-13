@@ -1,0 +1,944 @@
+diff --git a/packages/core/src/engine/acquisition.test.ts b/packages/core/src/engine/acquisition.test.ts
+new file mode 100644
+index 0000000..3f7594f
+--- /dev/null
++++ b/packages/core/src/engine/acquisition.test.ts
+@@ -0,0 +1,133 @@
++/**
++ * The stages of a study done on the patient at a device (audit 2026-11-12 P1-7, docs/EMBODIED.md §8.5): the order,
++ * the acquisition, the report's release (acquisition + turnaround), the review and the resulting action are distinct
++ * and recorded. In-world orders carry a `modality` and wait for the patient there; text mode keeps the acquisition
++ * implied at the order (recorded as implied), so its play and its verification do not change.
++ */
++import { readFileSync } from "node:fs";
++import { describe, expect, it } from "vitest";
++import type { CaseDefinition } from "../schema/case.js";
++import type { ClinicalAction, SessionState } from "../schema/session.js";
++import { assess, awaitingAcquisition, createSession, evaluate, isOrderReady, orderStatus, parseCase, reduce, replay, verifyCase } from "./index.js";
++import { pendingEvents } from "./next-event.js";
++
++function builtin(id: string): CaseDefinition {
++  const parsed = parseCase(JSON.parse(readFileSync(new URL(`../../../content/cases/${id}/case.json`, import.meta.url), "utf8")));
++  if (!parsed.ok) throw new Error(JSON.stringify(parsed.issues));
++  return parsed.value;
++}
++
++const PE = builtin("pulmonary-embolism-postop");
++
++/** Apply actions, each accepted. */
++function play(c: CaseDefinition, actions: ClinicalAction[], from: SessionState = createSession(c)): SessionState {
++  let s = from;
++  for (const a of actions) {
++    const r = reduce(c, s, a);
++    if (r.rejected) throw new Error(`${a.type} rejected: ${r.rejected.code} ${r.rejected.message}`);
++    s = r.state;
++  }
++  return s;
++}
++
++/** The CTPA ordered in the world at minute 1 (the session sets `modality` from the world's rule). */
++function orderedAtMinuteOne(): SessionState {
++  const s = play(PE, [{ type: "start" }, { type: "advance-time", minutes: 1 }, { type: "order", investigationId: "ctpa", modality: ["ct"], by: "learner" }]);
++  expect(s.orders.find((o) => o.investigationId === "ctpa")?.orderedAt).toBe(1);
++  return s;
++}
++
++const ctpa = (s: SessionState) => s.orders.find((o) => o.investigationId === "ctpa")!;
++
++describe("audit replay: a CTPA ordered at minute 1 while the patient stays on the ward", () => {
++  it("is neither acquired nor released at minute 30 — nor ever, until the patient is at the CT", () => {
++    let s = orderedAtMinuteOne();
++    const order = ctpa(s);
++    expect(order).toMatchObject({ orderedAt: 1, by: "learner", modality: ["ct"] });
++    expect(order.acquired).toBeUndefined();
++    expect(order.readyAt).toBeUndefined();
++    expect(awaitingAcquisition(order)).toBe(true);
++    s = play(PE, [{ type: "advance-time", minutes: 28 }], s);
++    expect(s.clock).toBe(30);
++    expect(isOrderReady(PE, s, ctpa(s))).toBe(false);
++    expect(evaluate(PE, s, { ordered: "ctpa" })).toBe(true);
++    expect(evaluate(PE, s, { resultReady: "ctpa" })).toBe(false);
++    // the missing-tests list keeps it outstanding; the debrief lists it as never done; nothing waits on time for it
++    const report = assess(PE, s).investigations;
++    expect(report.essentialMissing).toContain("ctpa");
++    expect(report.notAcquired).toEqual(["ctpa@ward"]);
++    expect(report.unread).not.toContain("ctpa@ward");
++    expect(pendingEvents(PE, s).map((e) => e.id)).not.toContain("ctpa@ward");
++    expect(orderStatus(PE, s).find((x) => x.order.investigationId === "ctpa")).toMatchObject({ acquired: false, ready: false, read: false });
++    // there is no result to read
++    const read = reduce(PE, s, { type: "read", investigationId: "ctpa" });
++    expect(read.rejected?.code).toBe("not-ready");
++    expect(read.rejected?.message).toMatch(/not been acquired/);
++    s = play(PE, [{ type: "advance-time", minutes: 60 }], s);
++    expect(isOrderReady(PE, s, ctpa(s))).toBe(false);
++  });
++
++  it("with transport: acquired on arrival, released after the turnaround, then the read and the next action — in order", () => {
++    let s = orderedAtMinuteOne();
++    // the walk to the CT (the world charges the travel), then the acquisition on arrival at the scanner
++    s = play(PE, [{ type: "advance-time", minutes: 4, reason: "travel" }], s);
++    const arrival = s.clock;
++    const acquired = reduce(PE, s, { type: "acquire", investigationId: "ctpa", collector: "radiographer", where: "eq:ct-scanner", by: "system" });
++    expect(acquired.rejected).toBeUndefined();
++    expect(acquired.events.map((e) => e.type)).toContain("order.acquired");
++    s = acquired.state;
++    const turnaround = PE.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes;
++    expect(ctpa(s).acquired).toMatchObject({ at: arrival, collector: "radiographer", where: "eq:ct-scanner" });
++    expect(ctpa(s).readyAt).toBe(arrival + turnaround);
++    expect(assess(PE, s).investigations.essentialMissing).not.toContain("ctpa");
++    // a second acquisition changes nothing
++    expect(reduce(PE, s, { type: "acquire", investigationId: "ctpa" }).state).toBe(s);
++    // not before the release
++    expect(reduce(PE, s, { type: "read", investigationId: "ctpa" }).rejected?.code).toBe("not-ready");
++    s = play(PE, [{ type: "advance-time", minutes: turnaround }], s);
++    expect(isOrderReady(PE, s, ctpa(s))).toBe(true);
++    // the review, then reading another result and asking (not management), then the resulting action
++    s = play(PE, [{ type: "read", investigationId: "ctpa", by: "learner" }, { type: "ask", itemId: "h-bleeding" }, { type: "intervene", interventionId: "ufh", by: "learner" }], s);
++    const o = ctpa(s);
++    expect(o.reviewed).toMatchObject({ by: "learner" });
++    expect(o.next).toMatchObject({ type: "intervene", id: "ufh" });
++    const stages = [o.orderedAt, arrival, o.acquired!.at, o.readyAt!, o.reviewed!.at, o.next!.at];
++    expect([...stages].sort((a, b) => a - b)).toEqual(stages);
++    const seqs = [o.seq!, o.acquired!.seq, o.reviewed!.seq, o.next!.seq];
++    expect([...seqs].sort((a, b) => a - b)).toEqual(seqs);
++    expect(new Set(seqs).size).toBe(seqs.length);
++    // a later read is not a new review; a later act is not the resulting action
++    s = play(PE, [{ type: "read", investigationId: "ctpa" }, { type: "intervene", interventionId: "consult-pert" }], s);
++    expect(ctpa(s).reviewed).toEqual(o.reviewed);
++    expect(ctpa(s).next).toEqual(o.next);
++  });
++
++  it("an acquisition of a test ordered in text mode, or not ordered, is not an acquisition", () => {
++    const s = play(PE, [{ type: "start" }, { type: "order", investigationId: "cbc" }]);
++    expect(reduce(PE, s, { type: "acquire", investigationId: "cbc" }).state).toBe(s);
++    expect(reduce(PE, s, { type: "acquire", investigationId: "ctpa" }).rejected?.code).toBe("not-ordered");
++  });
++});
++
++describe("text mode keeps today's abstraction", () => {
++  it("the acquisition is implied at the order and recorded as implied; the result's clock starts there", () => {
++    const s = play(PE, [{ type: "start" }, { type: "advance-time", minutes: 1 }, { type: "order", investigationId: "ctpa" }]);
++    const o = ctpa(s);
++    expect(o.acquired).toEqual({ at: 1, seq: o.seq, implied: true });
++    expect(o.readyAt).toBe(1 + PE.investigations.find((i) => i.id === "ctpa")!.turnaroundMinutes);
++    expect(assess(PE, s).investigations.essentialMissing).not.toContain("ctpa");
++    expect(assess(PE, s).investigations.notAcquired).toBeUndefined();
++  });
++
++  it("the reference path still verifies and finishes", () => {
++    expect(verifyCase(PE).ok).toBe(true);
++    const r = replay(PE, PE.solution as ClinicalAction[]);
++    expect(r.rejections).toEqual([]);
++    expect(r.state.finished).toBe(true);
++    // its CTPA was reviewed; the resulting action after it is recorded
++    const o = ctpa(r.state);
++    expect(o.acquired?.implied).toBe(true);
++    expect(o.reviewed).toBeDefined();
++    expect(o.next).toBeDefined();
++  });
++});
+diff --git a/packages/core/src/engine/assessment.ts b/packages/core/src/engine/assessment.ts
+index 618593d..d1946a9 100644
+--- a/packages/core/src/engine/assessment.ts
++++ b/packages/core/src/engine/assessment.ts
+@@ -8,7 +8,7 @@ import { ENGINE_VERSION } from "./version.js";
+ import { procedureFor } from "./procedure/variant.js";
+ import type { CaseDefinition } from "../schema/case.js";
+ import type { SessionState } from "../schema/session.js";
+-import { evaluate, parseResultKey, resultFor } from "./conditions.js";
++import { awaitingAcquisition, evaluate, parseResultKey, resultFor } from "./conditions.js";
+ import { patientAlarmsAt } from "./physiology.js";
+ import { progress } from "./queries.js";
+ import { creditedHistory } from "./twins.js";
+@@ -49,6 +49,8 @@ function alternativesOf(c: CaseDefinition, id: string): string[] {
+ 
+ function investigationSummary(c: CaseDefinition, s: SessionState): AssessmentReport["investigations"] {
+   const orderedIds = unique(s.orders.map((o) => o.investigationId));
++  // done: acquired — an in-world study ordered but never done on the patient at its device stays outstanding
++  const doneIds = unique(s.orders.filter((o) => !awaitingAcquisition(o)).map((o) => o.investigationId));
+   // investigations with an informative result read in some phase (an `available: false` record yields no information)
+   const informativeReads = new Set(
+     s.seen.flatMap((key) => {
+@@ -57,15 +59,19 @@ function investigationSummary(c: CaseDefinition, s: SessionState): AssessmentRep
+     }),
+   );
+   const byValue = (value: string) => c.investigations.filter((i) => i.value === value && orderedIds.includes(i.id)).map((i) => i.id);
+-  // an essential investigation is satisfied by ordering it, or by reading (any phase) an available result of one of its alternatives
+-  const satisfied = (id: string) => orderedIds.includes(id) || alternativesOf(c, id).some((alt) => informativeReads.has(alt));
++  // an essential investigation is satisfied by doing it (ordered and acquired: at the order unless it waits for the
++  // patient at a device), or by reading (any phase) an available result of one of its alternatives
++  const satisfied = (id: string) => doneIds.includes(id) || alternativesOf(c, id).some((alt) => informativeReads.has(alt));
+   return {
+     ordered: s.orders.length,
+     essentialMissing: c.investigations.filter((i) => i.value === "essential" && !satisfied(i.id)).map((i) => i.id),
+     lowValue: byValue("low-value"),
+     harmful: byValue("harmful"),
+-    // ordered results that carry information but were never read ("no record" / available:false results are not counted)
+-    unread: s.orders.filter((o) => !s.seen.includes(o.key) && resultFor(c, o.investigationId, o.phase)?.available === true).map((o) => o.key),
++    // results that exist and carry information but were never read ("no record" / available:false results are not
++    // counted, nor a study never acquired: it has no result)
++    unread: s.orders.filter((o) => !awaitingAcquisition(o) && !s.seen.includes(o.key) && resultFor(c, o.investigationId, o.phase)?.available === true).map((o) => o.key),
++    // in-world studies ordered but never done on the patient at their device (the patient never went there)
++    ...((pending) => (pending.length ? { notAcquired: pending } : {}))(s.orders.filter((o) => awaitingAcquisition(o)).map((o) => o.key)),
+   };
+ }
+ 
+@@ -92,7 +98,7 @@ function sampleMinutes(c: CaseDefinition, s: SessionState): number[] {
+   const points = new Set<number>();
+   for (let m = 0; m < s.clock; m++) points.add(m);
+   const recorded = [
+-    ...s.orders.flatMap((o) => (c.clock.mode === "simulated" ? [o.orderedAt, o.readyAt] : [o.orderedAt])),
++    ...s.orders.flatMap((o) => (c.clock.mode === "simulated" && o.readyAt != null ? [o.orderedAt, o.readyAt] : [o.orderedAt])),
+     ...s.interventions.map((r) => r.at),
+     ...s.attempts.map((a) => a.at),
+     ...s.notes.map((n) => n.at),
+diff --git a/packages/core/src/engine/conditions.ts b/packages/core/src/engine/conditions.ts
+index 9ba3a60..ddf5915 100644
+--- a/packages/core/src/engine/conditions.ts
++++ b/packages/core/src/engine/conditions.ts
+@@ -40,9 +40,21 @@ export function resultFor(c: CaseDefinition, investigationId: string, phase: str
+   return Object.prototype.hasOwnProperty.call(investigation.results, phase) ? investigation.results[phase] : null;
+ }
+ 
+-/** True when the order's result can be read: static clock, or turnaround elapsed. */
++/**
++ * Is the order's study still waiting for its acquisition — placed with a `modality` (in-world mode: done on the
++ * patient at that device, docs/EMBODIED.md §8.5) and the patient not yet there? Its result does not exist yet.
++ */
++export function awaitingAcquisition(order: Pick<OrderRecord, "modality" | "acquired">): boolean {
++  return !!order.modality?.length && !order.acquired;
++}
++
++/**
++ * True when the order's result can be read: it was acquired (implied at the order unless it waits for the patient
++ * at a device), and on a simulated clock its turnaround after the acquisition has elapsed.
++ */
+ export function isOrderReady(c: CaseDefinition, s: SessionState, order: OrderRecord): boolean {
+-  return c.clock.mode === "static" || s.clock >= order.readyAt;
++  if (awaitingAcquisition(order)) return false;
++  return c.clock.mode === "static" || (order.readyAt != null && s.clock >= order.readyAt);
+ }
+ 
+ function inRange(value: number, range: { gte?: number; lte?: number }): boolean {
+diff --git a/packages/core/src/engine/index.ts b/packages/core/src/engine/index.ts
+index aecfec7..e3e1973 100644
+--- a/packages/core/src/engine/index.ts
++++ b/packages/core/src/engine/index.ts
+@@ -14,10 +14,10 @@ export { verifyCase } from "./verify.js";
+ export * from "./procedure/index.js";
+ 
+ // session lifecycle
+-export { createSession, reduce, replay } from "./reducer.js";
++export { createSession, reduce, replay, RESULTING_ACTS } from "./reducer.js";
+ 
+ // queries
+-export { evaluate, conditionRefs, elapsedSinceLeaves, lastGiven, lastGivenRecord, resultFor, resultKey, parseResultKey, isOrderReady, activeHolds, type ConditionRef } from "./conditions.js";
++export { evaluate, conditionRefs, elapsedSinceLeaves, lastGiven, lastGivenRecord, resultFor, resultKey, parseResultKey, isOrderReady, awaitingAcquisition, activeHolds, type ConditionRef } from "./conditions.js";
+ export { explainCondition, requirementLeaves, type Requirement } from "./explain.js";
+ export { correctionMatches, correctionMade, correctionsFor } from "./corrections.js";
+ export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus, presentedOptions } from "./queries.js";
+diff --git a/packages/core/src/engine/next-event.ts b/packages/core/src/engine/next-event.ts
+index 567b06a..a6c0eba 100644
+--- a/packages/core/src/engine/next-event.ts
++++ b/packages/core/src/engine/next-event.ts
+@@ -22,7 +22,8 @@ export interface PendingEvent {
+ export function pendingEvents(c: CaseDefinition, s: SessionState): PendingEvent[] {
+   const out: PendingEvent[] = [];
+   for (const o of s.orders) {
+-    if (o.readyAt <= s.clock + 1e-9) continue;
++    // an order waiting for its acquisition (the patient at the device) is waiting on that, not on time
++    if (o.readyAt == null || o.readyAt <= s.clock + 1e-9) continue;
+     const inv = c.investigations.find((x) => x.id === o.investigationId);
+     out.push({ kind: "result", id: o.key, at: o.readyAt, name: inv?.name ?? o.investigationId });
+   }
+diff --git a/packages/core/src/engine/queries.ts b/packages/core/src/engine/queries.ts
+index fcb35a5..e0fc671 100644
+--- a/packages/core/src/engine/queries.ts
++++ b/packages/core/src/engine/queries.ts
+@@ -4,7 +4,7 @@
+  */
+ import type { CaseDefinition, Objective } from "../schema/case.js";
+ import type { SessionState } from "../schema/session.js";
+-import { evaluate, isOrderReady } from "./conditions.js";
++import { awaitingAcquisition, evaluate, isOrderReady } from "./conditions.js";
+ import { createRng, seedFrom } from "./random.js";
+ import type { DecisionAvailability, ObjectiveProgress, OrderStatus } from "./types.js";
+ 
+@@ -51,9 +51,12 @@ export function availableDecisions(c: CaseDefinition, s: SessionState): Decision
+   }));
+ }
+ 
+-/** Orders in placement order with readiness (turnaround elapsed) and read status. */
++/**
++ * Orders in placement order with their acquisition (an in-world study done at a device waits for the patient there),
++ * readiness (acquired, turnaround elapsed) and read status.
++ */
+ export function orderStatus(c: CaseDefinition, s: SessionState): OrderStatus[] {
+-  return s.orders.map((order) => ({ order, ready: isOrderReady(c, s, order), read: s.seen.includes(order.key) }));
++  return s.orders.map((order) => ({ order, acquired: !awaitingAcquisition(order), ready: isOrderReady(c, s, order), read: s.seen.includes(order.key) }));
+ }
+ 
+ /**
+diff --git a/packages/core/src/engine/reducer.test.ts b/packages/core/src/engine/reducer.test.ts
+index fc2f53c..fc3e4ed 100644
+--- a/packages/core/src/engine/reducer.test.ts
++++ b/packages/core/src/engine/reducer.test.ts
+@@ -103,9 +103,12 @@ describe("static clock (V4 behaviour)", () => {
+   it("actions cost nothing and results are ready immediately", () => {
+     const { state, events } = play(V4, [{ type: "start" }, { type: "ask", itemId: "pain" }, { type: "order", investigationId: "cbc" }, { type: "read", investigationId: "cbc" }]);
+     expect(state.clock).toBe(0);
+-    expect(state.orders).toEqual([{ key: "cbc@pre", investigationId: "cbc", phase: "pre", orderedAt: 0, readyAt: 0 }]);
++    // text mode: the acquisition implied at the order, recorded as such; the read is the review
++    expect(state.orders).toEqual([
++      { key: "cbc@pre", investigationId: "cbc", phase: "pre", orderedAt: 0, readyAt: 0, seq: 3, acquired: { at: 0, seq: 3, implied: true }, reviewed: { at: 0, seq: 4 } },
++    ]);
+     expect(types(events)).toEqual(["session.started", "history.asked", "order.placed", "result.ready", "result.read"]);
+-    expect(orderStatus(V4, state)).toEqual([{ order: state.orders[0], ready: true, read: true }]);
++    expect(orderStatus(V4, state)).toEqual([{ order: state.orders[0], acquired: true, ready: true, read: true }]);
+   });
+ 
+   it("advance-time still moves the clock explicitly", () => {
+diff --git a/packages/core/src/engine/reducer.ts b/packages/core/src/engine/reducer.ts
+index 9162e99..51593e2 100644
+--- a/packages/core/src/engine/reducer.ts
++++ b/packages/core/src/engine/reducer.ts
+@@ -20,7 +20,7 @@ import {
+ } from "../schema/session.js";
+ import type { Intervention } from "../schema/case.js";
+ import { t } from "../i18n.js";
+-import { activeHolds, evaluate, resultFor, resultKey } from "./conditions.js";
++import { activeHolds, awaitingAcquisition, evaluate, resultFor, resultKey } from "./conditions.js";
+ import { currentObjective, progress } from "./queries.js";
+ import { historyVoice } from "./speech.js";
+ import { advanceClock, openTimeline, settle } from "./timeline.js";
+@@ -193,8 +193,16 @@ function onOrder(ctx: Ctx, a: Action<"order">): Outcome {
+     ctx.events.push({ type: "order.duplicate", investigationId: investigation.id, phase: s.phase, key });
+     return { kind: "unchanged" };
+   }
++  const placed = { key, investigationId: investigation.id, phase: s.phase, orderedAt: s.clock, ...(a.at != null ? { at: a.at } : {}), ...(a.by ? { by: a.by } : {}), seq: s.seq + 1 };
++  // in-world, a study done on the patient at a device waits for them there: no acquisition, no result clock yet
++  if (a.modality?.length) {
++    s.orders.push({ ...placed, modality: [...a.modality] });
++    ctx.events.push({ type: "order.placed", investigationId: investigation.id, phase: s.phase, key, modality: [...a.modality] });
++    return accepted(actionCost(c, "order"));
++  }
++  // otherwise the acquisition is implied at the order (text mode's abstraction, recorded as such)
+   const readyAt = c.clock.mode === "simulated" ? s.clock + investigation.turnaroundMinutes : s.clock;
+-  s.orders.push({ key, investigationId: investigation.id, phase: s.phase, orderedAt: s.clock, readyAt, ...(a.at != null ? { at: a.at } : {}) });
++  s.orders.push({ ...placed, readyAt, acquired: { at: s.clock, seq: s.seq + 1, implied: true } });
+   ctx.events.push({ type: "order.placed", investigationId: investigation.id, phase: s.phase, key, readyAt });
+   const result = resultFor(c, investigation.id, s.phase);
+   if (readyAt <= s.clock && result) {
+@@ -203,6 +211,30 @@ function onOrder(ctx: Ctx, a: Action<"order">): Outcome {
+   return accepted(actionCost(c, "order"));
+ }
+ 
++/**
++ * The study of an order placed with a `modality`, done with the patient on the device (docs/EMBODIED.md §8.5): the
++ * result's clock starts here — released after the turnaround. No action cost (the scan's time is the turnaround).
++ * Already acquired, or implied at the order: nothing changes.
++ */
++function onAcquire(ctx: Ctx, a: Action<"acquire">): Outcome {
++  const { c, s } = ctx;
++  const investigation = c.investigations.find((i) => i.id === a.investigationId);
++  if (!investigation) return rejected("unknown-id", `unknown investigation "${a.investigationId}"`);
++  const phase = a.phase ?? s.phase;
++  const key = resultKey(investigation.id, phase);
++  const index = s.orders.findIndex((o) => o.key === key);
++  if (index < 0) return rejected("not-ordered", `"${investigation.id}" has not been ordered in phase "${phase}"`);
++  const order = s.orders[index]!;
++  if (!awaitingAcquisition(order)) return { kind: "unchanged" };
++  const readyAt = c.clock.mode === "simulated" ? s.clock + investigation.turnaroundMinutes : s.clock;
++  const acquired = { at: s.clock, seq: s.seq + 1, ...(a.collector ? { collector: a.collector } : {}), ...(a.where ? { where: a.where } : {}) };
++  s.orders[index] = { ...order, readyAt, acquired };
++  ctx.events.push({ type: "order.acquired", investigationId: investigation.id, phase, key, readyAt, ...(a.collector ? { collector: a.collector } : {}), ...(a.where ? { where: a.where } : {}) });
++  const result = resultFor(c, investigation.id, phase);
++  if (readyAt <= s.clock && result) ctx.events.push({ type: "result.ready", key, investigationId: investigation.id, phase, critical: result.critical });
++  return accepted();
++}
++
+ function onRead(ctx: Ctx, a: Action<"read">): Outcome {
+   const { c, s } = ctx;
+   const investigation = c.investigations.find((i) => i.id === a.investigationId);
+@@ -210,18 +242,57 @@ function onRead(ctx: Ctx, a: Action<"read">): Outcome {
+   const phase = a.phase ?? s.phase;
+   if (!c.phases.some((p) => p.id === phase)) return rejected("unknown-id", `unknown phase "${phase}"`);
+   const key = resultKey(investigation.id, phase);
+-  const order = s.orders.find((o) => o.key === key);
++  const index = s.orders.findIndex((o) => o.key === key);
++  const order = s.orders[index];
+   if (!order) return rejected("not-ordered", `"${investigation.id}" has not been ordered in phase "${phase}"`);
+-  if (c.clock.mode === "simulated" && s.clock < order.readyAt) {
++  // ordered, not done: the patient was never on the device — there is no result to read
++  if (awaitingAcquisition(order)) return rejected("not-ready", `"${key}" has not been acquired: the patient must be at the device (${order.modality!.join(", ")})`);
++  if (c.clock.mode === "simulated" && s.clock < (order.readyAt ?? order.orderedAt)) {
+     return rejected("not-ready", `result "${key}" is not ready until minute ${order.readyAt}`);
+   }
+   if (!resultFor(c, investigation.id, phase)) return rejected("no-record", `the case has no "${investigation.id}" record for phase "${phase}"`);
+   const firstTime = !s.seen.includes(key);
+   if (firstTime) s.seen.push(key);
++  // the clinician review: the first read (who, when) — the act after it is the resulting action
++  if (!order.reviewed) s.orders[index] = { ...order, reviewed: { at: s.clock, seq: s.seq + 1, ...(a.by ? { by: a.by } : {}) } };
+   ctx.events.push({ type: "result.read", key, investigationId: investigation.id, phase, firstTime });
+   return accepted(actionCost(c, "read"));
+ }
+ 
++/**
++ * Acts that change management — the "resulting action" of a review (`OrderRecord.next`): an intervention (given, or
++ * refused as a dose error), an order, a decision, a hold or its release, an operative step, a new investigation.
++ * Gathering information (asking, examining, reading), time and bookkeeping are not.
++ */
++export const RESULTING_ACTS: ReadonlySet<ClinicalActionType> = new Set<ClinicalActionType>(["intervene", "order", "answer", "hold", "release-hold", "operate", "study"]);
++
++/** The item an act concerns (an intervention, investigation, decision or study id), for `OrderRecord.next`. */
++function actItem(a: ClinicalAction): string | undefined {
++  switch (a.type) {
++    case "intervene":
++    case "hold":
++    case "release-hold":
++      return a.interventionId;
++    case "order":
++      return a.investigationId;
++    case "answer":
++      return a.decisionId;
++    case "study":
++      return a.study.op === "order" ? a.study.code : undefined;
++    default:
++      return undefined;
++  }
++}
++
++/** Record `a` (committed at `s.seq`) as the resulting action of every reviewed order that has none yet. */
++function noteResultingAct(s: SessionState, a: ClinicalAction): void {
++  if (!RESULTING_ACTS.has(a.type) || a.by === "system") return;
++  if (a.type === "study" && a.study.op !== "order") return;
++  if (!s.orders.some((o) => o.reviewed && !o.next && o.reviewed.seq < s.seq)) return;
++  const id = actItem(a);
++  s.orders = s.orders.map((o) => (o.reviewed && !o.next && o.reviewed.seq < s.seq ? { ...o, next: { type: a.type, ...(id ? { id } : {}), at: s.clock, seq: s.seq } } : o));
++}
++
+ function onSetPhase(ctx: Ctx, a: Action<"set-phase">): Outcome {
+   const { c, s } = ctx;
+   const phase = c.phases.find((p) => p.id === a.phase);
+@@ -537,6 +608,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
+       return onOrder(ctx, a);
+     case "read":
+       return onRead(ctx, a);
++    case "acquire":
++      return onAcquire(ctx, a);
+     case "set-phase":
+       return onSetPhase(ctx, a);
+     case "hint":
+@@ -617,6 +690,7 @@ export function reduce(c: CaseDefinition, s: SessionState, a: ClinicalAction): R
+   if (outcome.kind === "unchanged") return { state: s, events: ctx.events };
+ 
+   ctx.s.seq += 1;
++  noteResultingAct(ctx.s, action);
+   if (ctx.s.started && !ctx.s.finished) {
+     const timeline = openTimeline(c, s, ctx.s, ctx.events);
+     settle(timeline);
+diff --git a/packages/core/src/engine/timeline.ts b/packages/core/src/engine/timeline.ts
+index e9e34a4..7026d3e 100644
+--- a/packages/core/src/engine/timeline.ts
++++ b/packages/core/src/engine/timeline.ts
+@@ -166,7 +166,8 @@ function checkAlarms(tl: Timeline): void {
+ function emitReadyResults(tl: Timeline, from: number, to: number): void {
+   const { c, s } = tl;
+   for (const order of s.orders) {
+-    if (order.readyAt <= from || order.readyAt > to) continue;
++    // a study still waiting for the patient at its device has no release minute yet
++    if (order.readyAt == null || order.readyAt <= from || order.readyAt > to) continue;
+     const result = resultFor(c, order.investigationId, order.phase);
+     if (!result) continue;
+     tl.events.push({ type: "result.ready", key: order.key, investigationId: order.investigationId, phase: order.phase, critical: result.critical });
+diff --git a/packages/core/src/engine/types.ts b/packages/core/src/engine/types.ts
+index 37078a3..0be0083 100644
+--- a/packages/core/src/engine/types.ts
++++ b/packages/core/src/engine/types.ts
+@@ -52,6 +52,8 @@ export interface DecisionAvailability {
+ /** An order with its readiness/read state. */
+ export interface OrderStatus {
+   order: OrderRecord;
++  /** Acquired (implied at the order, or the patient was at the device: docs/EMBODIED.md §8.5). */
++  acquired: boolean;
+   ready: boolean;
+   read: boolean;
+ }
+@@ -187,7 +189,11 @@ export interface AssessmentReport {
+   history: { asked: number; required: number; requiredAsked: number; missingRequired: string[] };
+   exam: { performed: number; required: number; requiredPerformed: number; missingRequired: string[] };
+   /** `unread` lists result keys (`${id}@${phase}`) ordered but never read. */
+-  investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[] };
++  /**
++   * `essentialMissing`: essential investigations not done (an in-world study ordered but never acquired at its device
++   * counts as not done); `notAcquired`: order keys of in-world studies ordered whose patient never got to the device.
++   */
++  investigations: { ordered: number; essentialMissing: string[]; lowValue: string[]; harmful: string[]; unread: string[]; notAcquired?: string[] };
+   decisions: { id: string; firstTryCorrect: boolean; attempts: number; decided: boolean }[];
+   safety: {
+     contraindicated: { interventionId: string; at: number }[];
+diff --git a/packages/core/src/schema/session.ts b/packages/core/src/schema/session.ts
+index caa6b77..8aadd68 100644
+--- a/packages/core/src/schema/session.ts
++++ b/packages/core/src/schema/session.ts
+@@ -1,7 +1,7 @@
+ import { z } from "zod";
+ import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility } from "./anaesthesia.js";
+ import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "./alarm.js";
+-import { CountStageSchema, IdSchema, OrderedDoseSchema, type CountStage, type CountStatus, type DoseSpec, type OrderedDose, type Vitals, type VitalKey } from "./common.js";
++import { CapabilitySchema, CountStageSchema, IdSchema, OrderedDoseSchema, type CountStage, type CountStatus, type DoseSpec, type OrderedDose, type Vitals, type VitalKey } from "./common.js";
+ import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
+ import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
+ 
+@@ -81,8 +81,27 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
+   /** Learner asked a history question (button, free text, or attributed by the patient agent). */
+   z.object({ type: z.literal("ask"), itemId: IdSchema, via: z.enum(["button", "free-text", "agent"]).optional(), ...base }).strict(),
+   z.object({ type: z.literal("examine"), findingId: IdSchema, ...base }).strict(),
+-  /** `at` = placement id of the workstation/device used (world-level rules check capabilities). */
+-  z.object({ type: z.literal("order"), investigationId: IdSchema, at: z.string().optional(), ...base }).strict(),
++  /**
++   * `at` = placement id of the workstation/device used (world-level rules check capabilities). `modality` (in-world
++   * mode, docs/EMBODIED.md §8.5): the study is done on the patient at a device providing these capabilities (CT, MRI…)
++   * — acquired there once the patient is on it (`acquire`), not at the order; the session sets it from the world's
++   * rule. Absent (text mode, a test not done at a device): the acquisition is implied at the order.
++   */
++  z.object({ type: z.literal("order"), investigationId: IdSchema, at: z.string().optional(), modality: z.array(CapabilitySchema).min(1).max(8).optional(), ...base }).strict(),
++  /**
++   * The acquisition of an order placed with a `modality` (docs/EMBODIED.md §8.5): the study done with the patient on
++   * the device — `collector`, who did it (a staff id or role: the department's radiographer), and `where`, the device's
++   * entity id. The result is released its turnaround later. The session records it when the world has the patient
++   * there; a learner never enters it. Default `phase`: the current one (the order's key).
++   */
++  z.object({
++    type: z.literal("acquire"),
++    investigationId: IdSchema,
++    phase: IdSchema.optional(),
++    collector: z.string().trim().min(1).max(120).optional(),
++    where: z.string().trim().min(1).max(120).optional(),
++    ...base,
++  }).strict(),
+   /** Read the result of an investigation for `phase` (default: current phase). Must have been ordered in that phase. */
+   z.object({ type: z.literal("read"), investigationId: IdSchema, phase: IdSchema.optional(), ...base }).strict(),
+   z.object({ type: z.literal("set-phase"), phase: IdSchema, ...base }).strict(),
+@@ -145,14 +164,41 @@ export type ClinicalActionType = ClinicalAction["type"];
+ /* State                                                               */
+ /* ------------------------------------------------------------------ */
+ 
++/**
++ * One investigation ordered in a phase, and its stages (docs/PROTOCOL.md §3.1, docs/EMBODIED.md §8.5): the order (who,
++ * when), the acquisition (who, when, where), the report's release (`readyAt`: the acquisition plus the turnaround),
++ * the clinician's review (the first read: who, when) and the next clinical act after it. Sessions saved before the
++ * stages were recorded have none of the optional fields: their acquisition is the order's (implied).
++ */
+ export interface OrderRecord {
+   /** `${investigationId}@${phase}` */
+   key: string;
+   investigationId: string;
+   phase: string;
+   orderedAt: number;
+-  readyAt: number;
++  /**
++   * The minute the result is released: the acquisition plus the investigation's turnaround (simulated clock). Absent
++   * while the acquisition is outstanding (`awaitingAcquisition`): the result does not exist yet.
++   */
++  readyAt?: number;
+   at?: string;
++  /** Who placed the order (the action's `by`) and its action sequence (`SessionState.seq` when committed). */
++  by?: Actor;
++  seq?: number;
++  /** In-world mode: the capabilities of the device the study is done at, with the patient on it (`order.modality`). */
++  modality?: string[];
++  /**
++   * The acquisition: when, its action sequence, who (`collector`) and where (`where`, the device). `implied`: at the
++   * order (text mode, a test not done at a device). Absent on an order with a `modality` until the patient was there.
++   */
++  acquired?: { at: number; seq: number; implied?: true; collector?: string; where?: string };
++  /** The clinician review: the first read of its result — when, its action sequence, who. */
++  reviewed?: { at: number; seq: number; by?: Actor };
++  /**
++   * The resulting action: the first act after the review that changes management (`RESULTING_ACTS`: an intervention,
++   * an order, a decision, a hold, an operative step, a new investigation) — its type, item id, minute and sequence.
++   */
++  next?: { type: ClinicalActionType; id?: string; at: number; seq: number };
+ }
+ 
+ export interface AttemptRecord {
+@@ -336,8 +382,11 @@ export type DomainEvent =
+   | { type: "session.started" }
+   | { type: "history.asked"; itemId: string; firstTime: boolean; disclosure: string }
+   | { type: "exam.performed"; findingId: string; firstTime: boolean }
+-  | { type: "order.placed"; investigationId: string; phase: string; key: string; readyAt: number }
++  /** `readyAt` absent with `modality`: the study waits for the patient at that device (`order.acquired` then). */
++  | { type: "order.placed"; investigationId: string; phase: string; key: string; readyAt?: number; modality?: string[] }
+   | { type: "order.duplicate"; investigationId: string; phase: string; key: string }
++  /** An order placed with a `modality` was acquired there (`acquire`): its result is released at `readyAt`. */
++  | { type: "order.acquired"; investigationId: string; phase: string; key: string; readyAt: number; collector?: string; where?: string }
+   | { type: "result.ready"; key: string; investigationId: string; phase: string; critical: boolean }
+   | { type: "result.read"; key: string; investigationId: string; phase: string; firstTime: boolean }
+   | { type: "phase.changed"; from: string; to: string; automatic: boolean }
+diff --git a/packages/world/src/capabilities.ts b/packages/world/src/capabilities.ts
+index db1a44a..99c5994 100644
+--- a/packages/world/src/capabilities.ts
++++ b/packages/world/src/capabilities.ts
+@@ -58,6 +58,14 @@ export const RHYTHM_CAPABILITIES: readonly string[] = ["cardiac-monitor", "ecg-1
+  */
+ export const PATIENT_AT_PROVIDER_CAPABILITIES: readonly string[] = ["ct", "mri", "xray", "fluoroscopy", "pet-ct", "endoscopy"];
+ 
++/**
++ * Who does a study on the patient at a fixed device (EMBODIED §8.5): the department's own staff — an endoscopist at an
++ * endoscopy tower, otherwise a radiographer (a scanner, an X-ray machine, a C-arm). The acquisition records them by role.
++ */
++export function acquisitionStaff(capabilities: readonly string[]): string {
++  return capabilities.includes("endoscopy") ? "endoscopist" : "radiographer";
++}
++
+ /** Capabilities of patient-performed tests at a fixed station (peak flow, weight): the patient goes to the station. */
+ export const PATIENT_PERFORMED_CAPABILITIES: readonly string[] = ["peak-flow", "scale"];
+ 
+diff --git a/packages/world/src/contracts.ts b/packages/world/src/contracts.ts
+index 2da080f..9ae65cc 100644
+--- a/packages/world/src/contracts.ts
++++ b/packages/world/src/contracts.ts
+@@ -356,6 +356,36 @@ export interface PatientPlaceState {
+    * positions the patient, a transport or a transfer replaces it. Absent or null: the clinical posture.
+    */
+   asked?: { posture: BodyPosture; over: BodyPosture } | null;
++  /**
++   * The patient's journeys so far, oldest first (EMBODIED §8.5; the last `MAX_PATIENT_LEGS`): one leg per transport or
++   * transfer that moved them. Absent until the first.
++   */
++  legs?: PatientLeg[];
++}
++
++/** Where a leg of the patient's journey starts or ends: a bed space, a device, the room. */
++export interface LegEnd {
++  slot: string | null;
++  provider: EntityId | null;
++  room: string | null;
++}
++
++/**
++ * One leg of the patient's journey (EMBODIED §8.5), recorded by the world when the patient arrives — or stops short:
++ * who held responsibility in transit (`by`, the body that wheeled or walked them, with its `role`; null: the team
++ * carried out a transfer, nobody named), where from and to, the simulated minutes of departure and arrival, and the
++ * monitor that travelled with them (a device providing cardiac monitoring at their side all the way; null: none).
++ */
++export interface PatientLeg {
++  by: ActorId | null;
++  role: string | null;
++  from: LegEnd;
++  to: LegEnd;
++  departedAt: number;
++  arrivedAt: number;
++  monitor: EntityId | null;
++  /** `arrived`; `stopped`: the walk ended short (interrupted, or the patient could no longer go on). */
++  status: "arrived" | "stopped";
+ }
+ 
+ /** Where the patient is now, resolved (`WorldRuntime.patientPlace`). */
+@@ -759,9 +789,10 @@ export interface ClinicalIntent {
+   /**
+    * `operate`: a step of the case's operation (docs/PROCEDURE.md); `observe`: the operative field on the laparoscopic
+    * screen; `count`: an entry of the surgical count (docs/TEAM.md §4.3) — where it is made is the device operation's
+-   * own requirement (at the count board, the wand at the table).
++   * own requirement (at the count board, the wand at the table); `acquire`: the acquisition of an ordered study (EMBODIED
++   * §8.5) — the patient on the device a study done on them needs (`anywhere`: acquired at the order).
+    */
+-  kind: "ask" | "examine" | "vitals" | "order" | "read" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count";
++  kind: "ask" | "examine" | "vitals" | "order" | "read" | "acquire" | "intervene" | "operate" | "observe" | "consult" | "delegate" | "cognitive" | "count";
+   itemId?: string;
+   findingId?: string;
+   investigationId?: string;
+diff --git a/packages/world/src/i18n.ts b/packages/world/src/i18n.ts
+index 38c4411..5eac506 100644
+--- a/packages/world/src/i18n.ts
++++ b/packages/world/src/i18n.ts
+@@ -13,6 +13,8 @@ export const ROLE_NAMES: Record<string, Pair> = {
+   clinician: { "zh-CN": "医生", en: "Clinician" },
+   nurse: { "zh-CN": "护士", en: "Nurse" },
+   radiologist: { "zh-CN": "放射科医生", en: "Radiologist" },
++  radiographer: { "zh-CN": "放射技师", en: "Radiographer" },
++  endoscopist: { "zh-CN": "内镜医师", en: "Endoscopist" },
+   pathologist: { "zh-CN": "病理科医生", en: "Pathologist" },
+   "lab-tech": { "zh-CN": "检验技师", en: "Lab technician" },
+   attending: { "zh-CN": "上级医师", en: "Attending" },
+@@ -239,6 +241,8 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
+   "pre.cannotWalk.unresponsive": { "zh-CN": "{patient}无法回应，不能跟你走。", en: "{patient} cannot respond and cannot walk with you." },
+   "pre.trolleyOutOfService": { "zh-CN": "{trolley}已停用，不能用它转运{patient}：需要一张可用的推床或病床——先推一张来（或请护工带来），再转运。", en: "{trolley} is out of service, so {patient} cannot be taken on it: a usable trolley or bed is needed — bring one (or ask a porter for one) first." },
+   "pre.stoppedEnRoute": { "zh-CN": "已在{place}停下，让{patient}就地安全躺下。", en: "Stopped in {place} and laid {patient} down safely where they were." },
++  "pre.noTravelMonitor": { "zh-CN": "{patient}床旁没有可随行的便携监护设备（如带监护的除颤仪）：先推一台到床旁，再带着它转运。", en: "No portable monitor at {patient}'s bedside to take along (a defibrillator with its monitor): wheel one to the bedside first, then take it with you." },
++  "pre.monitorUnusable": { "zh-CN": "{monitor}不能随{patient}转运：它须是在用的便携心电监护设备，就在床旁，且没有别人在用。", en: "{monitor} cannot go with {patient}: it must be a portable cardiac monitor in service, at the bedside, and not in use by someone else." },
+   "pre.needsTrolley": { "zh-CN": "转运{patient}需要推床或病床，身边没有：先推一张来（或请护工带来），再转运。", en: "Taking {patient} anywhere needs a trolley or a bed, and none is at hand: bring one (or ask a porter for one) first." },
+   "pre.cannotWalk.unwell": { "zh-CN": "{patient}情况不稳定，现在不宜走动。", en: "{patient} is too unwell to walk now." },
+   "pre.cannotStand.lying": { "zh-CN": "{patient}现在需要卧床，不能站起来。", en: "{patient} has to stay lying down and cannot stand up." },
+@@ -267,6 +271,7 @@ export const WORLD_MESSAGES: Record<string, Pair> = {
+   "ok.screen": { "zh-CN": "「{target}」屏幕：{screen}", en: '"{target}" screen: {screen}' },
+   "ok.moved": { "zh-CN": "已把「{target}」推到 {place}（{distance} 米）。", en: 'Moved "{target}" to {place} ({distance} m).' },
+   "ok.cancelled": { "zh-CN": "已取消 {count} 个进行中的操作。", en: "Cancelled {count} pending action(s)." },
++  "ok.monitorTravelled": { "zh-CN": "{monitor}随行监护。", en: "{monitor} went with them, monitoring." },
+   "ok.transported": { "zh-CN": "已把{patient}送到{place}（{distance} 米）。", en: "Took {patient} to {place} ({distance} m)." },
+   "ok.patientThere": { "zh-CN": "{patient}已在{place}。", en: "{patient} is already at {place}." },
+   "ok.patientFollows": { "zh-CN": "{patient}起身跟着你走。", en: "{patient} gets up and walks with you." },
+diff --git a/packages/world/src/policy.ts b/packages/world/src/policy.ts
+index 75278a5..98fd2cf 100644
+--- a/packages/world/src/policy.ts
++++ b/packages/world/src/policy.ts
+@@ -9,7 +9,8 @@
+  * | `ask_patient` (and the companion) | `near-patient` 3 m + line of sight |
+  * | `examine` | `at-patient` 1.5 m; a finding needing capabilities beyond the personal kit: `bedside-provider` (those capabilities at the bedside + actor within 1.5 m of the patient) |
+  * | `check_vitals` | `any-of`: `monitor-screen` (the patient's attached monitor, 6 m, line of sight from its own room — never through a window) · `at-patient` 1.5 m (observations by hand) · `at-provider` `records` (the chart) |
+- * | `order_test` | no capability: anywhere · personal kit only: `at-patient` · a study done on the patient at a fixed device (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT, MRI, a fixed X-ray machine, fluoroscopy, PET-CT, endoscopy — unless authored `performedAt: "bedside"`): `all-of` `patient-at-provider` · `at-provider` (the scanner or a console) · a patient-performed test (`PATIENT_PERFORMED_CAPABILITIES`: peak flow, weight): `all-of` `patient-at-provider` · `any-of` `at-patient` · `at-provider` · other `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`] (a fixed station counts only with the patient within its reach, G8) · only `LAB_CAPABILITIES`: the sample at the patient — `at-patient` (ordered there, sent by pneumatic tube), or, once the case's IV-access procedure drew the bloods (`clinical`), order entry at a `records` terminal or a laboratory station · otherwise `at-provider` |
++ * | `order_test` | no capability: anywhere · personal kit only: `at-patient` · a study done on the patient at a fixed device (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT, MRI, a fixed X-ray machine, fluoroscopy, PET-CT, endoscopy — unless authored `performedAt: "bedside"`; `studyDevice`): wherever a clinician orders — `any-of` `at-patient` (the ward) · `at-provider` `records` (an order-entry terminal) · `at-provider` (the device or its console); its acquisition is a separate act (below) · a patient-performed test (`PATIENT_PERFORMED_CAPABILITIES`: peak flow, weight): `all-of` `patient-at-provider` · `any-of` `at-patient` · `at-provider` · other `BEDSIDE_CAPABILITIES`: `any-of` `bedside-provider` · `all-of` [`patient-at-provider`, `at-provider` with `fixedOnly`] (a fixed station counts only with the patient within its reach, G8) · only `LAB_CAPABILITIES`: the sample at the patient — `at-patient` (ordered there, sent by pneumatic tube), or, once the case's IV-access procedure drew the bloods (`clinical`), order entry at a `records` terminal or a laboratory station · otherwise `at-provider` |
++ * | acquisition of an ordered study (`acquire`, EMBODIED §8.5) | a study done on the patient at a fixed device: `patient-at-provider` (the patient on the device) — the session records it when this holds; any other test: anywhere (acquired at the order) |
+  * | `read_result` | bedside capabilities: `at-patient` · a `records` terminal · a fixed station providing them — never the device · laboratory capabilities: a `records` terminal · `at-patient` · a laboratory station · otherwise `at-provider` (the report at a console — never the patient) |
+  * | `order_test` / `read_result` of a record review (`performedAt: "records"`: an existing report retrieved from the chart) | `any-of` `at-provider` `records` (a records terminal) · `at-patient` (`why: "notes"`: the notes at the bedside) — never a transport, a sample or a device, whatever `requires` says |
+  * | `intervene` kind `consult` / `disposition` | anywhere (phone/pager) |
+@@ -55,7 +56,7 @@
+  * actor where it stood when checked; `ok`, `code` and `requirement` are
+  * eager. A UI that only asks whether an act can be done here pays no flood.
+  */
+-import { capabilityLabels, evaluate, monitorAttached, PERSONAL_KIT, t, type CaseDefinition, type Condition } from "@clinicalcraft/core";
++import { capabilityLabels, evaluate, monitorAttached, PERSONAL_KIT, t, type CaseDefinition, type Condition, type Investigation } from "@clinicalcraft/core";
+ import { RANGES, type ActionHint, type ActorId, type ActorState, type ClinicalIntent, type ClinicalView, type EncounterBinding, type EntityId, type InteractionKind, type NavGoal, type SpatialCheck, type SpatialErrorCode, type SpatialPolicy, type SpatialRequirement } from "./contracts.js";
+ import { BEDSIDE_CAPABILITIES, BLOOD_SAMPLE_CAPABILITIES, CHART_CAPABILITY, DELIVERED_CAPABILITIES, IV_ACCESS_CAPABILITY, KIND_DEFAULT_CAPABILITIES, LAB_CAPABILITIES, PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
+ import { ivAccessIntervention, ivAccessInSitu } from "./clinical.js";
+@@ -112,6 +113,15 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
+     this.performed = new Set(opts.patientPerformedCapabilities ?? PATIENT_PERFORMED_CAPABILITIES);
+   }
+ 
++  /**
++   * The capabilities of the fixed device a study is done on the patient at (`PATIENT_AT_PROVIDER_CAPABILITIES`: CT,
++   * MRI…) — empty when none: a mobile unit comes to the bed (`performedAt: "bedside"`), a record review, any other test.
++   */
++  studyDevice(inv: Pick<Investigation, "requires" | "performedAt">): string[] {
++    if (inv.performedAt === "bedside" || inv.performedAt === "records") return [];
++    return inv.requires.filter((r) => !kit.has(r) && this.onDevice.has(r));
++  }
++
+   requirementFor(intent: ClinicalIntent, binding: EncounterBinding): SpatialRequirement {
+     const c: CaseDefinition = binding.caseDef;
+     const atPatient: SpatialRequirement = { kind: "at-patient", range: POLICY_RANGES.contact };
+@@ -127,21 +137,30 @@ export class DefaultSpatialPolicy implements SpatialPolicy {
+       case "vitals":
+         return { kind: "any-of", options: [{ kind: "monitor-screen", range: POLICY_RANGES.screen }, { kind: "at-patient", range: POLICY_RANGES.contact, why: "observations" }, chart] };
+       case "order":
+-      case "read": {
++      case "read":
++      case "acquire": {
+         const inv = intent.investigationId ? c.investigations.find((x) => x.id === intent.investigationId) : undefined;
++        // the acquisition (EMBODIED §8.5): a study done on the patient at a fixed device needs them on it; anything
++        // else is acquired at the order
++        if (intent.kind === "acquire") {
++          const device = inv ? this.studyDevice(inv) : [];
++          return device.length ? { kind: "patient-at-provider", capabilities: device } : ANYWHERE;
++        }
+         // a record review: an existing report retrieved from the chart — at a records terminal, or the notes at
+         // the bedside; never a transport, a sample or a device, whatever `requires` says
+         if (inv?.performedAt === "records") return { kind: "any-of", options: [chart, { kind: "at-patient", range: POLICY_RANGES.contact, why: "notes" }] };
+         if (!inv || inv.requires.length === 0) return ANYWHERE;
+         const caps = inv.requires.filter((r) => !kit.has(r));
+         if (!caps.length) return atPatient;
+-        // a study done on the patient at a fixed device, or a test the patient performs at a station: the patient is
+-        // brought there (G8) — then ordered at the device or its console, the patient-performed one with them
+-        const onPatient = inv.performedAt === "bedside" ? [] : caps.filter((r) => this.onDevice.has(r) || this.performed.has(r));
+-        if (intent.kind === "order" && onPatient.length) {
+-          const there: SpatialRequirement = { kind: "patient-at-provider", capabilities: onPatient };
+-          const by: SpatialRequirement = onPatient.every((r) => this.performed.has(r)) ? { kind: "any-of", options: [atPatient, { kind: "at-provider", capabilities: caps }] } : { kind: "at-provider", capabilities: caps };
+-          return { kind: "all-of", options: [there, by] };
++        // a study done on the patient at a fixed device: ordered wherever a clinician orders — at the patient (the
++        // ward), at an order-entry (records) terminal, at the device or its console; the patient goes there for the
++        // acquisition, not for the order
++        if (intent.kind === "order" && this.studyDevice(inv).length) return { kind: "any-of", options: [atPatient, chart, { kind: "at-provider", capabilities: caps }] };
++        // a test the patient performs at a station: the patient is brought there (G8) — then ordered with them
++        const performed = inv.performedAt === "bedside" ? [] : caps.filter((r) => this.performed.has(r));
++        if (intent.kind === "order" && performed.length) {
++          const there: SpatialRequirement = { kind: "patient-at-provider", capabilities: performed };
++          return { kind: "all-of", options: [there, { kind: "any-of", options: [atPatient, { kind: "at-provider", capabilities: caps }] }] };
+         }
+         if (caps.every((r) => this.bedside.has(r))) {
+           if (intent.kind === "read") return { kind: "any-of", options: [atPatient, chart, { kind: "at-provider", capabilities: caps, fixedOnly: true, providerKinds: ["workstation"] }] };
+diff --git a/packages/world/src/transport.ts b/packages/world/src/transport.ts
+index 8de6023..e052810 100644
+--- a/packages/world/src/transport.ts
++++ b/packages/world/src/transport.ts
+@@ -16,7 +16,7 @@
+  */
+ import { capabilityLabels } from "@clinicalcraft/core";
+ import { PATIENT_AT_PROVIDER_CAPABILITIES, PATIENT_PERFORMED_CAPABILITIES } from "./capabilities.js";
+-import type { ActorState, BodyPosture, EntityId, PatientDestination, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, WorldActionRequest, WorldEvent, WorldJourney } from "./contracts.js";
++import type { ActorState, BodyPosture, EntityId, LegEnd, PatientDestination, PatientLeg, PatientPlace, PatientPlaceState, PathPoint, PatientRelocation, Pose, WorldActionRequest, WorldEvent, WorldJourney } from "./contracts.js";
+ import { failed, type EffectsHost, type Outcome, type Walk } from "./effects.js";
+ import { endEscortIfUnable } from "./escort.js";
+ import { listText, metres, worldMessage } from "./i18n.js";
+@@ -141,12 +141,80 @@ function equipmentArea(host: EffectsHost, id: EntityId): { level: string; area:
+ 
+ const grow = (a: Area, m: number): Area => ({ minX: a.minX - m, maxX: a.maxX + m, minZ: a.minZ - m, maxZ: a.maxZ + m });
+ 
++/** Park a portable device beside the patient's body (a free spot near it; none: back where it is kept), re-stamping the grids. */
++function placeBeside(host: TransportHost, id: EntityId, near: { level: string; area: Area }): void {
++  const { store, mover, facility, registry } = host.d;
++  const e = registry.entity(id);
++  const at = host.d.patient.equipmentAt(id);
++  if (!e || !at) return;
++  const before = equipmentArea(host, id);
++  const spot = trolleySpot(targetDeps(host), id, near.level, near.area);
++  const position = spot ? { x: spot.x, y: levelElevation(facility, near.level), z: spot.z, level: near.level, rot: at.rot } : undefined;
++  store.patchEntity(id, { position });
++  const after = equipmentArea(host, id);
++  for (const a of [before, after]) if (a) host.invalidate({ level: a.level, ...grow(a.area, 0.6) });
++  mover.placeEntity?.(id, position ?? { x: e.position.x, y: e.position.y, z: e.position.z, level: e.level, rot: e.rot });
++}
++
++/** How many legs of the patient's journey the world keeps (`PatientPlaceState.legs`, oldest dropped). */
++export const MAX_PATIENT_LEGS = 32;
++
++/** The capability of a monitor that can travel with the patient (EMBODIED §8.5). */
++export const TRAVEL_MONITOR_CAPABILITY = "cardiac-monitor";
++
++/** How a leg of the patient's journey began (`commitPatient` records the leg when it ends). */
++export interface Departure {
++  /** Simulated minute of departure. */
++  at: number;
++  /** The role of the body that took them (null: the team, a transfer). */
++  role: string | null;
++  /** The monitor that travels with them, or null. */
++  monitor: EntityId | null;
++  status: PatientLeg["status"];
++}
++
++/** Where a leg ends, from a stored place: the bed space, the device, the room. */
++function legEnd(host: TransportHost, st: Pick<PatientPlaceState, "slot" | "provider" | "spot">): LegEnd {
++  const room = st.slot ? (host.d.patient.slot(st.slot)?.room ?? null) : st.spot ? host.d.registry.roomAt(st.spot.level, st.spot.x, st.spot.z) : null;
++  return { slot: st.slot, provider: st.provider, room };
++}
++
++/**
++ * The monitor that travels with the patient on this transport (`parameters.monitor`, EMBODIED §8.5): `true` — a
++ * portable device providing cardiac monitoring at the patient's bedside now, in service and free (a defibrillator's
++ * monitor on its cart, put on the bed for the journey); an id or alias — that device, under the same conditions. Null
++ * when none is asked for; an error message when one was asked for and none can come.
++ */
++function travellingMonitor(host: TransportHost, request: WorldActionRequest, actor: ActorState): { id: EntityId | null } | { error: string } {
++  const asked = request.parameters?.monitor;
++  if (asked === undefined || asked === false || asked === null) return { id: null };
++  const { registry, locator, store, locale: L } = host.d;
++  const free = (id: EntityId) => {
++    const rt = store.entity(id);
++    const holder = rt?.reservedBy ?? rt?.heldBy ?? host.busy.get(id) ?? null;
++    return !holder || holder === actor.id;
++  };
++  const usable = (id: EntityId) => {
++    const e = registry.entity(id);
++    const p = locator.place(id);
++    return !!e && e.kind === "equipment" && !!e.portable && locator.capabilities(id).includes(TRAVEL_MONITOR_CAPABILITY) && !!p && locator.atBedside(p) && free(id);
++  };
++  const patient = locator.patientId ? locator.name(locator.patientId) : "—";
++  if (typeof asked === "string" && asked.trim()) {
++    const id = registry.resolveId(asked.trim()) ?? asked.trim();
++    return usable(id) ? { id } : { error: worldMessage("pre.monitorUnusable", L, { monitor: registry.entity(id) ? locator.name(id) : asked.trim(), patient }) };
++  }
++  const id = registry.ofKind("equipment").find((e) => usable(e.id))?.id ?? null;
++  return id ? { id } : { error: worldMessage("pre.noTravelMonitor", L, { patient }) };
++}
++
+ /**
+  * Commit the patient's new place: the trolley (parked beside a provider, carrying the patient at a spot,
+- * or home again with the patient in a bed space), home, the grids where bodies and beds were and are, the
+- * event. Returns the events.
++ * or home again with the patient in a bed space), the monitor that travelled with them (beside them now), home, the
++ * grids where bodies and beds were and are, the leg of the journey (`PatientPlaceState.legs`), the event. Returns the
++ * events.
+  */
+-export function commitPatient(host: TransportHost, target: PatientTarget, trolley: EntityId | null, home: "set" | "keep", by: string | null, path: PathPoint[], distance: number): WorldEvent[] {
++export function commitPatient(host: TransportHost, target: PatientTarget, trolley: EntityId | null, home: "set" | "keep", by: string | null, path: PathPoint[], distance: number, departure: Departure): WorldEvent[] {
+   const { store, patient: body, facility, mover } = host.d;
+   const id = body.id!;
+   const st = body.state()!;
+@@ -164,6 +232,18 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
+     trolley: st.trolley,
+     support,
+   };
++  // the leg of the journey, recorded on arrival (or where it stopped): who took them, from where, when, with what monitor
++  const leg: PatientLeg = {
++    by,
++    role: departure.role,
++    from: { slot: from.slot, provider: from.provider, room: from.room },
++    to: legEnd(host, target.slot ? { slot: target.slot, provider: target.provider, spot: null } : next),
++    departedAt: departure.at,
++    arrivedAt: host.d.clinical.clock(),
++    monitor: departure.monitor,
++    status: departure.status,
++  };
++  next.legs = [...(st.legs ?? []), leg].slice(-MAX_PATIENT_LEGS);
+   /** Trolley moves: a position, or undefined (back where it is kept). */
+   const moves: { id: EntityId; position: { x: number; y: number; z: number; level: string; rot: number } | undefined }[] = [];
+   if (target.slot) {
+@@ -204,6 +284,8 @@ export function commitPatient(host: TransportHost, target: PatientTarget, trolle
+   const newBody = body.body();
+   if (newBody) touched.push(newBody);
+   for (const t of touched) host.invalidate({ level: t.level, ...grow(t.area, 0.1) });
++  // the monitor that travelled with them waits beside them where they are now (back where it is kept if no room)
++  if (departure.monitor && newBody) placeBeside(host, departure.monitor, newBody);
+   host.patientStamp = { key: body.bodyKey(), posture: body.posture(), body: newBody };
+   const to = body.place()!;
+   const events = [host.emit({ type: "patient.moved", entityId: id, from, to, by, distance: Math.round(distance * 100) / 100, path: path.map((p) => ({ ...p })) })];
+@@ -247,10 +329,16 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+     return failed("PRECONDITION_FAILED", `${worldMessage(`pre.cannotWalk.${unable}`, L, { patient: name })} ${why}`, { hint: null });
+   }
+   if (trolley !== st.trolley) target = resolveTarget(deps, dest, trolley) ?? target;
++  // a monitor asked to travel with them (high acuity): one at their bedside, or the transport does not set off
++  const monitor = travellingMonitor(host, request, actor);
++  if ("error" in monitor) return failed("PRECONDITION_FAILED", monitor.error, { hint: null });
+   const plan = backend.plan({ actorId: actor.id, from: actor.pose, goal: target.stand, role: actor.role, accessibleOnly: true });
+   if (!plan.ok) return failed(plan.code, plan.message, { hint: null });
++  const departedAt = host.d.clinical.clock();
++  const departure = (status: Departure["status"]): Departure => ({ at: departedAt, role: actor.role, monitor: monitor.id, status });
+   host.busy.set(patientId, actor.id);
+   if (trolley) host.busy.set(trolley, actor.id);
++  if (monitor.id) host.busy.set(monitor.id, actor.id);
+   // lying only on the trolley the walker pushes; otherwise upright beside them (the place's posture comes on arrival)
+   host.transit = { by: actor.id, trolley, posture: trolley ? "lying" : "standing" };
+   host.journey = { by: actor.id, patient: patientId, actionId: request.actionId, parameters: structuredClone(request.parameters ?? {}) };
+@@ -277,6 +365,7 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+     host.transitStop = null;
+     host.busy.delete(patientId);
+     if (trolley) host.busy.delete(trolley);
++    if (monitor.id) host.busy.delete(monitor.id);
+   }
+   const base = { navigation: walk.record, elapsedSeconds: walk.travelSeconds };
+   if (collapsed) {
+@@ -286,18 +375,20 @@ export async function transportPatient(host: TransportHost, request: WorldAction
+     const stop = stopTarget(host, now.pose, null);
+     // unresponsive or to be kept lying: lying; too unwell to walk on: sat down
+     const posture = collapsed === "unwell" && body.clinicalPostureOf(body.state()!) !== "lying" ? "sitting" : "lying";
+-    const events = [...walk.events, ...commitPatient(host, { ...stop, posture }, null, "keep", actor.id, walk.record.path, walk.walked)];
++    const events = [...walk.events, ...commitPatient(host, { ...stop, posture }, null, "keep", actor.id, walk.record.path, walk.walked, departure("stopped"))];
+     const message = `${worldMessage(`pre.cannotWalk.${collapsed}`, L, { patient: name })} ${worldMessage("pre.stoppedEnRoute", L, { patient: name, place: stop.name })} ${worldMessage("pre.needsTrolley", L, { patient: name })}`;
+     return { status: "failed", errorCode: "PRECONDITION_FAILED", message, events, hint: null, ...base };
+   }
+   if (walk.interrupted) {
+     const now = host.d.store.actor(actor.id)!;
+     const stop = stopTarget(host, now.pose, trolley);
+-    const events = [...walk.events, ...commitPatient(host, stop, trolley, "keep", actor.id, walk.record.path, walk.walked)];
++    const events = [...walk.events, ...commitPatient(host, stop, trolley, "keep", actor.id, walk.record.path, walk.walked, departure("stopped"))];
+     return { status: "cancelled", errorCode: "MOVEMENT_INTERRUPTED", message: worldMessage("ok.interrupted", L, { distance: metres(walk.walked) }), events, ...base };
+   }
+-  const events = [...walk.events, ...commitPatient(host, target, trolley, target.slot ? "set" : "keep", actor.id, plan.path, walk.walked)];
+-  return { status: "completed", message: worldMessage("ok.transported", L, { patient: name, place: target.name, distance: metres(walk.walked) }), events, ...base };
++  const events = [...walk.events, ...commitPatient(host, target, trolley, target.slot ? "set" : "keep", actor.id, plan.path, walk.walked, departure("arrived"))];
++  const transported = worldMessage("ok.transported", L, { patient: name, place: target.name, distance: metres(walk.walked) });
++  const monitored = monitor.id ? ` ${worldMessage("ok.monitorTravelled", L, { monitor: locator.name(monitor.id) })}` : "";
++  return { status: "completed", message: `${transported}${monitored}`, events, ...base };
+ }
+ 
+ /** `WorldRuntime.relocatePatient` (see the module docs). */
+@@ -323,7 +414,8 @@ export function relocatePatient(host: TransportHost, dest: PatientDestination):
+   const p = body.place()!;
+   const from: Pose = { x: p.x, y: p.y, z: p.z, yaw: 0, pitch: 0, level: p.level };
+   const plan = backend.plan({ actorId: id, from, goal: target.stand, role: "nurse", accessibleOnly: true, ignoreObstacles: true });
+-  commitPatient(host, target, trolley, "set", null, plan.ok ? plan.path : [], plan.ok ? plan.length : 0);
++  const now = host.d.clinical.clock();
++  commitPatient(host, target, trolley, "set", null, plan.ok ? plan.path : [], plan.ok ? plan.length : 0, { at: now, role: null, monitor: null, status: "arrived" });
+   return { ok: true, moved: true, place: body.place()!, name: target.name, message: worldMessage("relocate.done", L, { patient: name, place: target.name }) };
+ }
+ 

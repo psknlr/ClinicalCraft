@@ -7,7 +7,7 @@
     "en": "Transient memory disturbance, then heavy rectal bleeding · 38-year-old woman"
   },
   "summary": {
-    "zh-CN": "一位38岁女性回想不起某天上午的经过，当天夜里开始大量便血，伴右下腹痛和发热，收入病房。",
+    "zh-CN": "一位38岁女性回想不起某天早上的经过，当天夜里开始大量便血，伴右下腹痛和发热，收入病房。",
     "en": "A 38-year-old woman who cannot recall one morning starts passing large amounts of blood that night, with right lower abdominal pain and fever, and is admitted to the ward."
   },
   "specialty": [
@@ -28,8 +28,8 @@
       "en": "Grade a flare of bloody diarrhoea as acute severe colitis with the Truelove and Witts criteria (≥ 6 bloody stools a day plus a systemic sign such as Hb < 105 g/L), without downgrading it for missing observations, and admit for intravenous treatment (BSG 2025; AGA 2026)."
     },
     {
-      "zh-CN": "送检粪便标本后开始静脉甲泼尼龙60 mg/24 h（或氢化可的松100 mg每6小时），非重度出血时仍给予低分子肝素预防血栓（CAG 2014），并停用止泻药、阿片类和非甾体抗炎药。",
-      "en": "Start IV methylprednisolone 60 mg/24 h (or hydrocortisone 100 mg 6-hourly) once stool samples are sent, give LMWH thromboprophylaxis despite non-severe bleeding (CAG 2014), and withhold antidiarrhoeals, opioids and NSAIDs."
+      "zh-CN": "送检粪便标本后开始静脉甲泼尼龙60 mg/24 h（或氢化可的松100 mg每6小时），虽在便血仍给予低分子肝素预防血栓（BSG 2025；CAG 2014），并停用止泻药、阿片类和非甾体抗炎药。",
+      "en": "Start IV methylprednisolone 60 mg/24 h (or hydrocortisone 100 mg 6-hourly) once stool samples are sent, give LMWH thromboprophylaxis although she is bleeding (BSG 2025; CAG 2014), and withhold antidiarrhoeals, opioids and NSAIDs."
     },
     {
       "zh-CN": "按排便次数和CRP安排第3天评估（Travis 1996），与结直肠外科共同规划挽救方案（英夫利西单抗、环孢素或结肠切除），并在白质病变原因未明时权衡抗TNF治疗的风险。",
@@ -81,6 +81,7 @@
       ],
       "guidelines": [
         "BSG 2025 guidelines on inflammatory bowel disease in adults (Gut 2025;74 Suppl 2)",
+        "BSG 2019 consensus guidelines on the management of inflammatory bowel disease in adults (Gut 2019;68 Suppl 3)",
         "ACG 2025 clinical guideline update: ulcerative colitis in adults",
         "AGA 2024 living clinical practice guideline: pharmacological management of moderate-to-severe ulcerative colitis",
         "AGA 2026 clinical practice update on inpatient management of adults with inflammatory bowel disease",
@@ -111,11 +112,11 @@
     "ageUnit": "years",
     "sex": "female",
     "chiefComplaint": {
-      "zh-CN": "那天上午的事我想不起来，当天夜里开始拉了好多血",
+      "zh-CN": "那天早上的事我想不起来，当天夜里开始拉了好多血",
       "en": "I can't remember one morning, and that night I started passing a lot of blood"
     },
     "triageNote": {
-      "zh-CN": "38岁女性。某日上午有一段时间的事她回忆不起来，下午已神志清楚；当晚开始大量便血，伴右下腹痛和发热，现每天便血十余次，收住病房。",
+      "zh-CN": "38岁女性。某日早上有一段时间的事她回忆不起来，下午已神志清楚；当晚开始大量便血，伴右下腹痛和发热，现每天便血十余次，收住病房。",
       "en": "38-year-old woman. One morning she had a spell she cannot recall and was alert again by the afternoon; that night heavy rectal bleeding began, with right lower abdominal pain and fever, and she now passes blood more than ten times a day. Admitted to the ward."
     },
     "tags": [
@@ -138,7 +139,7 @@
     ],
     "persona": {
       "personality": {
-        "zh-CN": "38岁女性，便血这么多、又有一个上午的事想不起来，让她很害怕。两年来她一直把反复拉稀带血归结为压力大；现在她想弄清楚到底是什么病。她回答清楚、很配合，不知道的事会直说不知道。",
+        "zh-CN": "38岁女性，便血这么多、又有一个早上的事想不起来，让她很害怕。两年来她一直把反复拉稀带血归结为压力大；现在她想弄清楚到底是什么病。她回答清楚、很配合，不知道的事会直说不知道。",
         "en": "A 38-year-old woman frightened by how much blood she is losing and by the morning she cannot remember. For two years she has put her bouts of loose, bloody stools down to stress; now she wants to know what is wrong. She answers clearly and cooperates, and says plainly when she does not know something."
       },
       "speechStyle": {
@@ -148,7 +149,7 @@
       "healthLiteracy": "medium",
       "affect": "anxious",
       "openingLine": {
-        "zh-CN": "医生，我从那天夜里开始一直拉血，拉了好多……那天上午的事，我到现在都想不起来。",
+        "zh-CN": "医生，我从那天夜里开始一直拉血，拉了好多……那天早上的事，我到现在都想不起来。",
         "en": "Doctor, ever since that night I've been passing blood — a lot of it… and that morning, I still can't remember any of it."
       },
       "fallbackUnknown": {
@@ -161,12 +162,12 @@
           "en": "With this much blood — could it be something bad, a growth?"
         },
         {
-          "zh-CN": "那天上午的事想不起来，是不是脑子出了问题？",
+          "zh-CN": "那天早上的事想不起来，是不是脑子出了问题？",
           "en": "Not being able to remember that morning — is something wrong with my brain?"
         }
       ],
       "actingNotes": {
-        "zh-CN": "扮演提示：她躺在床上，神志清楚，很紧张，常常要去厕所；右下腹疼。只回答被问到的内容，用自己的话说，不增减数字、时间、药物或症状。那天上午的情况她自己记不得，描述不出来。不知道的事就说说不上来，绝不猜测。",
+        "zh-CN": "扮演提示：她躺在床上，神志清楚，很紧张，常常要去厕所；右下腹疼。只回答被问到的内容，用自己的话说，不增减数字、时间、药物或症状。那天早上的情况她自己记不得，描述不出来。不知道的事就说说不上来，绝不猜测。",
         "en": "For the actor: she lies in bed, alert and anxious, often needing the toilet; the right side of her lower tummy hurts. She answers only what is asked, in her own words, and never adds or changes numbers, times, medicines or symptoms. She cannot describe that morning because she does not remember it. For anything she does not know, she says she is not sure — she never guesses."
       }
     },
@@ -184,7 +185,7 @@
         "en": "Admission: heavy rectal bleeding"
       },
       "description": {
-        "zh-CN": "她因大量便血收入病房；便血始于她回忆不起来的那个上午之后的当天夜里。",
+        "zh-CN": "她因大量便血收入病房；便血始于她回忆不起来的那个早上之后的当天夜里。",
         "en": "She has been admitted to the ward with heavy rectal bleeding, which began on the night after a morning she cannot recall."
       },
       "learnerSwitchable": false
@@ -284,7 +285,7 @@
         "en": "When did the bleeding start?"
       },
       "answer": {
-        "zh-CN": "就是那天夜里——就是我上午那段想不起来的那一天。开始拉血，拉了好多。",
+        "zh-CN": "就是那天夜里——就是我早上那段想不起来的那一天。开始拉血，拉了好多。",
         "en": "That night — the same day as the morning I can't remember. I started passing a lot of blood."
       },
       "keywords": {
@@ -540,11 +541,11 @@
       "id": "memory-gap",
       "topic": "hpi",
       "question": {
-        "zh-CN": "说说那天上午记不起来的事。",
+        "zh-CN": "说说那天早上记不起来的事。",
         "en": "Tell me about the morning you can't remember."
       },
       "answer": {
-        "zh-CN": "那天上午的事我想不起来，脑子里一片空白。是突然这样的，就在一天之内。",
+        "zh-CN": "那天早上的事我想不起来，脑子里一片空白。是突然这样的，就在一天之内。",
         "en": "That morning's a blank — I can't remember what happened. It came on suddenly, all within the one day."
       },
       "keywords": {
@@ -598,7 +599,7 @@
         "workup"
       ],
       "source": {
-        "zh-CN": "报告（1.0.0版摘录）：现病史（记忆问题1天内突然出现，那天上午的事记不起来）；患者口吻为教学改写",
+        "zh-CN": "报告（1.0.0版摘录）：现病史（记忆问题1天内突然出现，那天早上的事记不起来）；患者口吻为教学改写",
         "en": "Report (version 1.0.0 extract): present illness (the memory problem came on suddenly within a day; she cannot recall that morning); her words are a teaching adaptation"
       }
     },
@@ -650,11 +651,11 @@
       "id": "witness",
       "topic": "hpi",
       "question": {
-        "zh-CN": "那天上午有人看到你当时的样子吗？",
+        "zh-CN": "那天早上有人看到你当时的样子吗？",
         "en": "Did anyone see what you were like that morning?"
       },
       "answer": {
-        "zh-CN": "那天上午我是什么样子，我自己记不得，也说不上来。",
+        "zh-CN": "那天早上我是什么样子，我自己记不得，也说不上来。",
         "en": "I don't know what I was like that morning — I can't remember it, and I can't tell you more."
       },
       "keywords": {
@@ -741,7 +742,7 @@
       "id": "previous-spells",
       "topic": "hpi",
       "question": {
-        "zh-CN": "以前出现过类似那天上午的情况吗？",
+        "zh-CN": "以前出现过类似那天早上的情况吗？",
         "en": "Has anything like that morning ever happened before?"
       },
       "answer": {
@@ -838,7 +839,8 @@
           "诱因",
           "有关",
           "身边",
-          "别人"
+          "别人",
+          "那天早上"
         ],
         "en": [
           "that morning",
@@ -1406,7 +1408,7 @@
         "en": "What worries you most about all this?"
       },
       "answer": {
-        "zh-CN": "拉这么多血，我怕是长了什么不好的东西。还有那天上午的事想不起来，是不是脑子出了问题？",
+        "zh-CN": "拉这么多血，我怕是长了什么不好的东西。还有那天早上的事想不起来，是不是脑子出了问题？",
         "en": "With this much blood, I'm scared it's something bad, like a growth. And not remembering that morning — is something wrong with my brain?"
       },
       "keywords": {
@@ -2445,12 +2447,12 @@
             "en": "Timing not recorded"
           },
           "text": {
-            "zh-CN": "进镜约30 cm处见不规则环周隆起性病变；其远端黏膜弥漫浅溃疡、糜烂及充血。记录为结肠镜（肠镜）检查；本病例没有记录进镜深度、是否做过肠道准备，以及病变以上结肠的情况。",
-            "en": "At about 30 cm, an irregular circumferential raised lesion; distal to it, diffuse shallow ulcers, erosions and erythema. Recorded as a colonoscopy (肠镜); this case does not record how far the scope was passed, whether the bowel was prepared, or the colon above the lesion."
+            "zh-CN": "进镜约30 cm处见不规则环周隆起性病变；远端黏膜弥漫浅溃疡、糜烂及充血。记录为结肠镜（肠镜）检查；本病例没有记录进镜深度、是否做过肠道准备，以及病变以上结肠的情况。",
+            "en": "At about 30 cm, an irregular circumferential raised lesion; distally, diffuse shallow ulcers, erosions and erythema. Recorded as a colonoscopy; this case does not record how far the scope was passed, whether the bowel was prepared, or the colon above the lesion."
           },
           "source": {
             "zh-CN": "报告（1.0.0版摘录）：肠镜（约30 cm处不规则环状隆起，远端弥漫浅溃疡、糜烂及充血）",
-            "en": "Report (version 1.0.0 extract): colonoscopy (irregular circumferential elevation at about 30 cm; diffuse shallow ulcers, erosions and erythema distal to it)"
+            "en": "Report (version 1.0.0 extract): colonoscopy (irregular circumferential elevation at about 30 cm; distal diffuse shallow ulcers, erosions and erythema)"
           }
         }
       }
@@ -2505,8 +2507,8 @@
             "en": "Timing not recorded"
           },
           "text": {
-            "zh-CN": "黏膜活检：严重急慢性炎症，未见明确隐窝脓肿，未见肿瘤细胞；免疫组化不支持淋巴瘤。本病例没有记录活检部位、所用抗体，以及有无肉芽肿、隐窝结构改变或巨细胞病毒染色。",
-            "en": "Mucosal biopsies: severe acute and chronic inflammation; no definite crypt abscesses; no tumour cells. Immunohistochemistry does not support lymphoma. The biopsy sites, the antibodies used, and any granulomas, crypt architectural change or CMV staining are not recorded in this case."
+            "zh-CN": "黏膜活检：严重急慢性炎症，未见明确隐窝脓肿或肿瘤细胞；免疫组化不支持淋巴瘤。本病例没有记录活检部位、所用抗体，以及有无肉芽肿、隐窝结构改变或巨细胞病毒染色。",
+            "en": "Mucosal biopsies: severe acute and chronic inflammation, without definite crypt abscesses or tumour cells. Immunohistochemistry does not support lymphoma. The biopsy sites, the antibodies used, and any granulomas, crypt architectural change or CMV staining are not recorded in this case."
           },
           "source": {
             "zh-CN": "报告（1.0.0版摘录）：黏膜病理（严重急慢性炎症，未见明确隐窝脓肿或肿瘤细胞，免疫组化不支持淋巴瘤）",
@@ -2612,6 +2614,64 @@
           "source": {
             "zh-CN": "1.0.0版没有记录：保持未知，不补写",
             "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          }
+        },
+        "workup": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版没有记录：保持未知，不补写",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          }
+        }
+      }
+    },
+    {
+      "id": "igra",
+      "name": {
+        "zh-CN": "γ-干扰素释放试验（T-SPOT.TB）",
+        "en": "Interferon-gamma release assay (T-SPOT.TB)"
+      },
+      "category": "lab",
+      "aliases": {
+        "zh-CN": [
+          "t-spot",
+          "tspot",
+          "结核感染t细胞",
+          "干扰素释放试验",
+          "查结核",
+          "结核血液检查"
+        ],
+        "en": [
+          "igra",
+          "t-spot",
+          "quantiferon",
+          "tb blood test",
+          "latent tb",
+          "tuberculosis test"
+        ]
+      },
+      "requires": [
+        "lab-serology"
+      ],
+      "value": "useful",
+      "results": {
+        "admission": {
+          "available": false,
+          "text": {
+            "zh-CN": "此项检查没有结果记录。",
+            "en": "No result is recorded for this test."
+          },
+          "source": {
+            "zh-CN": "1.0.0版没有记录：保持未知，不补写",
+            "en": "Not recorded in version 1.0.0: kept unknown, nothing added"
+          },
+          "note": {
+            "zh-CN": "用任何抗TNF药物之前要筛查潜伏结核；在我国，肠结核也是克罗恩病的重要鉴别。",
+            "en": "Latent tuberculosis is screened for before any anti-TNF drug; in China intestinal tuberculosis is also an important mimic of Crohn's disease."
           }
         },
         "workup": {
@@ -2987,6 +3047,11 @@
         "zh-CN": "依诺肝素40 mg皮下注射，每日1次（肾功能不全或体重极端时调整）；每天结合出血情况复评。",
         "en": "Enoxaparin 40 mg subcutaneously once daily (adjusted for renal impairment and extremes of weight); reviewed daily against the bleeding."
       },
+      "doseSpec": {
+        "amount": 40,
+        "unit": "mg",
+        "route": "SC"
+      },
       "requires": [
         "medications"
       ],
@@ -3258,8 +3323,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "急性重症结肠炎时使用止泻药可诱发结肠扩张和中毒性巨结肠，还会掩盖第3天决定是否挽救治疗的排便次数；重症发作时应避免使用（BSG 2019炎症性肠病指南）。",
-        "en": "In acute severe colitis antidiarrhoeals can precipitate colonic dilatation and toxic megacolon, and they mask the stool frequency that decides rescue therapy on day 3; they are avoided in a severe flare (BSG 2019 IBD guideline)."
+        "zh-CN": "止泻药不能治疗炎症：洛哌丁胺说明书（英国SmPC）把急性溃疡性结肠炎，以及一切抑制肠蠕动可能导致肠梗阻或中毒性巨结肠的情况列为禁忌；它还会削弱第3天决定是否挽救治疗所依据的排便次数（BSG 2019，沿用Travis 1996的标准）。",
+        "en": "Antidiarrhoeals do not treat the inflammation: loperamide labelling contraindicates it in acute ulcerative colitis and wherever slowing peristalsis risks ileus or toxic megacolon (UK SmPC), and it blunts the stool frequency on which the day-3 decision on rescue therapy rests (BSG 2019, after Travis 1996)."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -3304,8 +3369,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "阿片类药物抑制结肠蠕动，在重症结肠炎时可诱发结肠扩张，还可能掩盖穿孔时的腹痛；应使用对乙酰氨基酚，新出现或加重的腹痛要作为排查扩张或穿孔的信号（BSG 2019炎症性肠病指南）。",
-        "en": "Opioids slow colonic motility and can precipitate dilatation in severe colitis, and they can mask the pain of a developing perforation; use paracetamol, and treat new or worsening pain as a reason to look for dilatation or perforation (BSG 2019 IBD guideline)."
+        "zh-CN": "阿片类药物抑制结肠运动：BSG 2019指出，暴发性结肠炎时使用阿片类药物与中毒性巨结肠相关，AGA 2026住院管理更新建议尽量避免使用阿片类药物；它们还可能掩盖穿孔时的腹痛。应使用对乙酰氨基酚，新出现或加重的腹痛要作为排查扩张或穿孔的信号。",
+        "en": "Opioids slow the colon: BSG 2019 notes the association of opioid prescription with toxic megacolon in fulminant colitis, and the AGA 2026 inpatient update advises avoiding opioids where possible; they can also mask the pain of a developing perforation. Use paracetamol, and treat new or worsening pain as a reason to look for dilatation or perforation."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -3349,8 +3414,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "非甾体抗炎药可诱发或加重炎症性肠病，还会增加正在失血的患者的出血风险；英国指南在急性重症结肠炎时与阿片类、抗胆碱能药和止泻药一并停用（NICE CG166，2013）。止痛退热首选对乙酰氨基酚。",
-        "en": "NSAIDs can trigger or worsen inflammatory bowel disease and add to the bleeding risk in a woman already losing blood; UK guidance withholds them in acute severe colitis together with opioids, anticholinergics and antidiarrhoeals (NICE CG166, 2013). Paracetamol is the analgesic and antipyretic of choice."
+        "zh-CN": "炎症性肠病活动期使用非甾体抗炎药，加重病情的风险更高（BSG 2019第123条陈述），AGA 2026住院管理更新也提醒慎用；对正在失血的患者还会增加出血风险。止痛退热首选对乙酰氨基酚。",
+        "en": "NSAIDs taken during active inflammatory bowel disease carry more risk of worsening it (BSG 2019, statement 123), the AGA 2026 inpatient update counsels caution with them, and they add to the bleeding risk in a woman already losing blood. Paracetamol is the analgesic and antipyretic of choice."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -3395,8 +3460,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "急性重症结肠炎时行全结肠镜会增加穿孔风险，得到的信息却不会改变治疗；早期不做肠道准备的乙状结肠镜加活检已经足够（BSG 2019炎症性肠病指南）。",
-        "en": "In acute severe colitis a full colonoscopy adds perforation risk without adding information that changes treatment; an early unprepared flexible sigmoidoscopy with biopsies is enough (BSG 2019 IBD guideline)."
+        "zh-CN": "BSG 2019和BSG 2025要求急性重症结肠炎早期做乙状结肠镜并活检——用于确诊、取组织查巨细胞病毒并排除恶性病变；BSG 2019还指出炎症肠段内基本没有粪便，不必做肠道准备。给每天便血十余次的患者口服泻剂清肠，会加重液体和电解质丢失并推迟检查，换来的信息也不会改变第一天的治疗；病变范围可在发作控制后再评估。",
+        "en": "BSG 2019 and BSG 2025 call for an early flexible sigmoidoscopy with biopsies in acute severe colitis — to confirm the diagnosis, sample for CMV and exclude malignancy — and BSG 2019 advises against bowel preparation, since the inflamed colon is largely free of stool. Purging a woman who passes blood more than ten times a day adds fluid and electrolyte losses and delays the examination for information that does not change the first day's treatment; the full extent can be mapped once the flare settles."
       },
       "response": {
         "zh-CN": "已开具肠道准备。",
@@ -3444,6 +3509,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "effects": [],
       "contraindicatedWhen": {
         "always": true
@@ -3637,8 +3703,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "抗胆碱能解痉药抑制结肠运动，在急性重症结肠炎时可诱发结肠扩张，并掩盖病情变化；重症发作时应避免（BSG 2019炎症性肠病指南）。",
-        "en": "Anticholinergic antispasmodics slow the colon and can precipitate dilatation in acute severe colitis while masking a change in her condition; they are avoided in a severe flare (BSG 2019 IBD guideline)."
+        "zh-CN": "抗胆碱能解痉药抑制结肠运动，在急性重症结肠炎时可诱发结肠扩张，并掩盖病情变化；丁溴东莨菪碱注射剂说明书（英国SmPC）把巨结肠列为禁忌。应按BSG 2019的要求每天复评，必要时复查影像以发现扩张；治疗针对炎症，而不是针对绞痛。",
+        "en": "Anticholinergic antispasmodics slow the colon and can precipitate dilatation in acute severe colitis while masking a change in her condition; the hyoscine butylbromide injection label lists megacolon among its contraindications (UK SmPC). Review her daily, with imaging when dilatation is suspected, as BSG 2019 asks, and treat the inflammation rather than the cramps."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -3650,7 +3716,7 @@
     {
       "id": "obj-story",
       "title": {
-        "zh-CN": "问清便血和那个记不起来的上午",
+        "zh-CN": "问清便血和那个记不起来的早上",
         "en": "Take the story of the bleeding and the forgotten morning"
       },
       "short": {
@@ -3658,7 +3724,7 @@
         "en": "History"
       },
       "hint": {
-        "zh-CN": "便血是什么时候开始的、现在一天几次？伴随什么症状？那个上午她是怎样恢复的？这次之前，她的肠道有过什么情况？",
+        "zh-CN": "便血是什么时候开始的、现在一天几次？伴随什么症状？那个早上她是怎样恢复的？这次之前，她的肠道有过什么情况？",
         "en": "When did the bleeding start, and how often is it now? What came with it? How did she recover from the morning she cannot recall? What was her bowel like before this?"
       },
       "guidance": {
@@ -3837,7 +3903,7 @@
     {
       "id": "obj-neuro",
       "title": {
-        "zh-CN": "查清那个上午的神经系统事件",
+        "zh-CN": "查清那个早上的神经系统事件",
         "en": "Work up the episode she cannot recall"
       },
       "short": {
@@ -4005,7 +4071,7 @@
     {
       "id": "flare-severity",
       "prompt": {
-        "zh-CN": "38岁女性：两年来反复糊状血便伴便意频繁；在她回忆不起来的那个上午之后的当天夜里开始大量便血，现每天十余次，伴右下腹痛和发热。查体右下腹疼痛，疑似可触及包块。血红蛋白由129降至93 g/L，CRP 95.8 mg/L。脉搏和体温读数没有记录。你如何判断这次发病，应在哪里治疗？",
+        "zh-CN": "38岁女性：两年来反复糊状血便伴便意频繁；在她回忆不起来的那个早上之后的当天夜里开始大量便血，现每天十余次，伴右下腹痛和发热。查体右下腹疼痛，疑似可触及包块。血红蛋白由129降至93 g/L，CRP 95.8 mg/L。脉搏和体温读数没有记录。你如何判断这次发病，应在哪里治疗？",
         "en": "A 38-year-old woman: two years of relapsing loose, bloody stools with urgency; since the night after a morning she cannot recall, heavy rectal bleeding, now more than ten times a day, with right lower abdominal pain and fever. On examination, right lower abdominal pain and a possible mass. Haemoglobin has fallen from 129 to 93 g/L; CRP 95.8 mg/L. No pulse or temperature reading is recorded. How do you classify this illness, and where should she be treated?"
       },
       "kind": "single",
@@ -4094,7 +4160,7 @@
     {
       "id": "neuro-workup",
       "prompt": {
-        "zh-CN": "那天上午她突然出现一段记忆和意识障碍，下午已神志清楚，目前神经系统查体无明确定位体征。当天夜里开始大量便血并发热，肠道炎症正处于活动期。你怎样检查这次发作？",
+        "zh-CN": "那天早上她突然出现一段记忆和意识障碍，下午已神志清楚，目前神经系统查体无明确定位体征。当天夜里开始大量便血并发热，肠道炎症正处于活动期。你怎样检查这次发作？",
         "en": "That morning she had a sudden spell of disturbed memory and awareness; she was alert again by the afternoon and now has no definite focal neurological abnormality. Heavy rectal bleeding with fever began that night, and her bowel inflammation is active. How do you investigate the episode?"
       },
       "kind": "single",
@@ -4121,7 +4187,7 @@
         ]
       },
       "need": {
-        "zh-CN": "先问清那个上午的情况、恢复经过、便血和发热，并检查她的神志和神经系统。",
+        "zh-CN": "先问清那个早上的情况、恢复经过、便血和发热，并检查她的神志和神经系统。",
         "en": "First ask about that morning, her recovery, the bleeding and the fever, and examine her conscious level and nervous system."
       },
       "options": [
@@ -4210,8 +4276,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。静脉糖皮质激素（甲泼尼龙60 mg/24 h或氢化可的松100 mg每6小时）是急性重症结肠炎的一线治疗（ACG 2025；AGA 2026认为更大剂量无额外获益）；CAG 2014建议炎症性肠病发作住院者使用抗凝药物预防血栓，出血不严重时也建议使用。止泻药、阿片类和非甾体抗炎药可诱发结肠扩张。不经肠道准备的有限内镜加活检可确认结肠炎并取组织查巨细胞病毒、排除恶性病变；第3天的排便次数和CRP决定是否需要挽救治疗（Travis 1996）。",
-            "en": "Right. Intravenous corticosteroids (methylprednisolone 60 mg/24 h or hydrocortisone 100 mg 6-hourly) are first-line for acute severe colitis (ACG 2025; AGA 2026 finds no gain from higher doses), and CAG 2014 recommends anticoagulant prophylaxis for inpatients with an IBD flare and suggests it even when bleeding is non-severe. Antidiarrhoeals, opioids and NSAIDs can precipitate colonic dilatation. A limited unprepared endoscopy with biopsies confirms the colitis and samples tissue for CMV and malignancy; the day-3 stool frequency and CRP decide on rescue therapy (Travis 1996)."
+            "zh-CN": "正确。送检粪便标本、并看过CT有无会改变方案的并发症（她的CT只记录了肠壁增厚）之后，静脉糖皮质激素——甲泼尼龙每日60 mg或氢化可的松100 mg每6小时——是急性重症结肠炎的一线治疗（BSG 2025；ACG 2025；更大剂量无额外获益，BSG 2025和AGA 2026）。预防剂量低分子肝素不会诱发或加重结肠出血（BSG 2025），CAG 2014在出血不严重时也建议使用。止泻药、阿片类和非甾体抗炎药可诱发结肠扩张或加重发作。不经肠道准备的有限内镜加活检可确认结肠炎并取组织查巨细胞病毒、排除恶性病变；第3天的排便次数和CRP决定是否需要挽救治疗（Travis 1996）。",
+            "en": "Right. Once the stool samples are sent and the CT has been read for a complication that would change the plan (hers records wall thickening only), intravenous corticosteroids — methylprednisolone 60 mg a day or hydrocortisone 100 mg 6-hourly — are first-line for acute severe colitis (BSG 2025; ACG 2025; higher doses add nothing, BSG 2025 and AGA 2026). Prophylactic LMWH does not precipitate or exacerbate colonic bleeding (BSG 2025), and CAG 2014 suggests it even when bleeding is non-severe. Antidiarrhoeals, opioids and NSAIDs can precipitate colonic dilatation or worsen the flare. A limited unprepared endoscopy with biopsies confirms the colitis and samples tissue for CMV and malignancy; the day-3 stool frequency and CRP decide on rescue therapy (Travis 1996)."
           }
         },
         {
@@ -4222,8 +4288,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "泼尼松和硫唑嘌呤正是本病例记录的用药，但作为今天的方案并不够：住院的急性重症结肠炎需要静脉激素（ACG 2025）；硫唑嘌呤数周至数月才起效，是维持用药，开始前要有TPMT和NUDT15结果（CPIC 2018）；因非重度出血不预防血栓，会让她暴露于血栓风险（CAG 2014）；洛哌丁胺可诱发中毒性扩张。",
-            "en": "Prednisone and azathioprine are the drugs this case records, but as today's plan this falls short: a hospitalised patient with acute severe colitis needs intravenous steroids (ACG 2025); azathioprine takes weeks to months to act, is a maintenance drug and first needs TPMT and NUDT15 results (CPIC 2018); withholding prophylaxis for non-severe bleeding leaves her exposed to thrombosis (CAG 2014); and loperamide can precipitate toxic dilatation."
+            "zh-CN": "泼尼松和硫唑嘌呤正是本病例记录的用药，但作为今天的方案并不够：住院的急性重症结肠炎需要静脉激素（ACG 2025）；硫唑嘌呤数周至数月才起效，是维持用药，开始前要有TPMT和NUDT15结果（CPIC 2018）；因结肠炎出血而不预防血栓，会让她暴露于血栓风险（BSG 2025；CAG 2014）；洛哌丁胺可诱发中毒性扩张。",
+            "en": "Prednisone and azathioprine are the drugs this case records, but as today's plan this falls short: a hospitalised patient with acute severe colitis needs intravenous steroids (ACG 2025); azathioprine takes weeks to months to act, is a maintenance drug and first needs TPMT and NUDT15 results (CPIC 2018); withholding prophylaxis because of colitic bleeding leaves her exposed to thrombosis (BSG 2025; CAG 2014); and loperamide can precipitate toxic dilatation."
           }
         },
         {
@@ -4258,8 +4324,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "接近正确——但完全不做血栓预防是这类患者常见而危险的疏漏。CAG 2014建议对住院的炎症性肠病发作患者使用抗凝药物预防，出血不严重时也建议使用；AGA 2026建议所有住院的炎症性肠病患者预防血栓。如果出血重到必须停用肝素，应改用机械预防并每天复评。",
-            "en": "Nearly right — but withholding all prophylaxis is a common and dangerous omission in these patients. CAG 2014 recommends anticoagulant prophylaxis for inpatients with an IBD flare and suggests it when bleeding is non-severe, and AGA 2026 advises prophylaxis for every hospitalised IBD patient. If bleeding is severe enough to withhold heparin, use mechanical prophylaxis and review it daily."
+            "zh-CN": "接近正确——但完全不做血栓预防是这类患者常见而危险的疏漏。CAG 2014建议对住院的炎症性肠病发作患者使用抗凝药物预防，出血不严重时也建议使用；AGA 2026建议所有住院的炎症性肠病患者预防血栓；BSG 2025指出预防剂量抗凝不会诱发或加重结肠出血。如果出血重到必须停用肝素，应改用机械预防并每天复评。",
+            "en": "Nearly right — but withholding all prophylaxis is a common and dangerous omission in these patients. CAG 2014 recommends anticoagulant prophylaxis for inpatients with an IBD flare and suggests it when bleeding is non-severe, AGA 2026 advises prophylaxis for every hospitalised IBD patient, and BSG 2025 notes that it does not precipitate or exacerbate colonic bleeding. If bleeding is severe enough to withhold heparin, use mechanical prophylaxis and review it daily."
           }
         }
       ]
@@ -4267,8 +4333,8 @@
     {
       "id": "colitis-cause",
       "prompt": {
-        "zh-CN": "报告已回：粪便病原学反复检查及艰难梭菌毒素均阴性，其他多项感染检查阴性；CT示升结肠和直肠壁增厚；内镜见进镜约30 cm处不规则环周隆起，其远端弥漫浅溃疡、糜烂和充血；活检为严重急慢性炎症，未见明确隐窝脓肿或肿瘤细胞，免疫组化不支持淋巴瘤。什么最能解释她的肠道病变？",
-        "en": "The reports are back: repeated stool pathogen tests and C. difficile toxin negative, several other infection tests negative; CT wall thickening of the ascending colon and rectum; at endoscopy an irregular circumferential raised lesion at about 30 cm with diffuse shallow ulcers, erosions and erythema distal to it; biopsies show severe acute and chronic inflammation without definite crypt abscesses or tumour cells, and immunohistochemistry does not support lymphoma. What best explains her bowel disease?"
+        "zh-CN": "报告已回：粪便病原学反复检查及艰难梭菌毒素均阴性，其他多项感染检查阴性；CT示升结肠和直肠壁增厚；内镜见进镜约30 cm处不规则环周隆起，远端弥漫浅溃疡、糜烂和充血；活检为严重急慢性炎症，未见明确隐窝脓肿或肿瘤细胞，免疫组化不支持淋巴瘤。什么最能解释她的肠道病变？",
+        "en": "The reports are back: repeated stool pathogen tests and C. difficile toxin negative, several other infection tests negative; CT wall thickening of the ascending colon and rectum; at endoscopy an irregular circumferential raised lesion at about 30 cm and, distally, diffuse shallow ulcers, erosions and erythema; biopsies show severe acute and chronic inflammation without definite crypt abscesses or tumour cells, and immunohistochemistry does not support lymphoma. What best explains her bowel disease?"
       },
       "kind": "single",
       "requires": {
@@ -4307,8 +4373,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。两年反复血便伴便意频繁、粪便检查阴性、活检为严重急慢性炎症且无肿瘤细胞，指向炎症性肠病。远端弥漫性浅溃疡符合溃疡性结肠炎，而升结肠壁增厚和腹部可疑包块使克罗恩结肠炎不能排除，因此暂不定型（未定型炎症性肠病）；急性期治疗相同，30 cm处的病变需要内镜和病理随访。",
-            "en": "Right. Two years of relapsing bloody diarrhoea with urgency, negative stool tests and biopsies of severe acute and chronic inflammation without tumour cells point to inflammatory bowel disease. Diffuse distal ulceration fits ulcerative colitis, while the ascending-colon thickening and a possible abdominal mass keep Crohn's colitis open, so the type stays unclassified for now; the acute treatment is the same, and the lesion at 30 cm needs endoscopic and histological follow-up."
+            "zh-CN": "正确。两年反复血便伴便意频繁、粪便检查阴性、活检为严重急慢性炎症且未见明确肿瘤细胞，指向炎症性肠病。远端弥漫性浅溃疡符合溃疡性结肠炎，而升结肠壁增厚和腹部可疑包块使克罗恩结肠炎不能排除，因此暂不定型（未定型炎症性肠病）；急性期治疗相同，30 cm处的病变需要内镜和病理随访。",
+            "en": "Right. Two years of relapsing bloody diarrhoea with urgency, negative stool tests and biopsies of severe acute and chronic inflammation without definite tumour cells point to inflammatory bowel disease. Diffuse distal ulceration fits ulcerative colitis, while the ascending-colon thickening and a possible abdominal mass keep Crohn's colitis open, so the type stays unclassified for now; the acute treatment is the same, and the lesion at 30 cm needs endoscopic and histological follow-up."
           }
         },
         {
@@ -4331,8 +4397,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "环周隆起性病变确实要考虑淋巴瘤，这正是做免疫组化的原因——但这里的免疫组化不支持淋巴瘤，也未见肿瘤细胞。没有病理诊断就不能化疗；如果炎症消退后病变仍在，应再次活检。",
-            "en": "A circumferential raised lesion rightly raises lymphoma, which is what the immunohistochemistry is for — but it does not support lymphoma here, and no tumour cells were seen. Chemotherapy without a tissue diagnosis is not justified; if the lesion persists once the inflammation settles, it is biopsied again."
+            "zh-CN": "环周隆起性病变确实要考虑淋巴瘤，这正是做免疫组化的原因——但这里的免疫组化不支持淋巴瘤，也未见明确肿瘤细胞。没有病理诊断就不能化疗；如果炎症消退后病变仍在，应再次活检。",
+            "en": "A circumferential raised lesion rightly raises lymphoma, which is what the immunohistochemistry is for — but it does not support lymphoma here, and no definite tumour cells were seen. Chemotherapy without a tissue diagnosis is not justified; if the lesion persists once the inflammation settles, it is biopsied again."
           }
         },
         {
@@ -4343,8 +4409,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "任何肿块样病变都要考虑癌，但活检未见肿瘤细胞；炎症位于病变的远端，而不是像梗阻性结肠炎那样位于狭窄的近端；两年反复发作的病史也符合炎症性肠病。凭现有证据切除，可能切掉一段经内科治疗即可愈合的肠管；发作控制后应复查内镜并再次活检。",
-            "en": "Cancer must be considered in any mass-like lesion, but the biopsies show no tumour cells, the inflammation lies distal to the lesion rather than proximal to a stricture as in an obstructive colitis, and the two-year relapsing history fits inflammatory bowel disease. Resection on this evidence could remove bowel that medical treatment may heal; the lesion is re-examined and re-biopsied after the flare."
+            "zh-CN": "任何肿块样病变都要考虑癌，但活检未见明确肿瘤细胞；记录的溃疡在远端，而不是像梗阻性结肠炎那样位于狭窄的近端；两年反复发作的病史也符合炎症性肠病。凭现有证据切除，可能切掉一段经内科治疗即可愈合的肠管；发作控制后应复查内镜并再次活检。",
+            "en": "Cancer must be considered in any mass-like lesion, but the biopsies show no definite tumour cells, the ulceration is recorded distally rather than proximal to a stricture as in an obstructive colitis, and the two-year relapsing history fits inflammatory bowel disease. Resection on this evidence could remove bowel that medical treatment may heal; the lesion is re-examined and re-biopsied after the flare."
           }
         },
         {
@@ -4396,8 +4462,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。对激素诱导的缓解，AGA 2024建议用硫嘌呤类药物维持；CPIC 2018更新版按TPMT和NUDT15基因型确定起始剂量，而亚洲患者的硫嘌呤骨髓毒性多由NUDT15变异引起。ECCO 2021要求在诊断时和免疫抑制治疗前筛查乙肝；骨髓毒性可在任何时间出现，要持续监测血常规。这一方案也暂时避开了在白质病变原因未明时使用抗TNF药物。",
-            "en": "Right. AGA 2024 suggests a thiopurine to maintain a corticosteroid-induced remission; CPIC's 2018 update sets the starting dose by TPMT and NUDT15 genotype, and NUDT15 variants cause most thiopurine myelotoxicity in Asian patients. ECCO 2021 screens for hepatitis B at diagnosis and before immunosuppression, and counts are monitored because myelotoxicity can come at any time. The plan also avoids an anti-TNF drug while her white-matter lesions are unexplained."
+            "zh-CN": "正确。BSG 2025建议对静脉激素有效的急性重症结肠炎患者用嘌呤类似物（或合适的先进治疗）维持，AGA 2024也建议用硫嘌呤类药物维持激素诱导的缓解；CPIC 2018更新版按TPMT和NUDT15基因型确定起始剂量，而亚洲患者的硫嘌呤骨髓毒性多由NUDT15变异引起。ECCO 2021要求在诊断时和免疫抑制治疗前筛查乙肝；骨髓毒性可在任何时间出现，要持续监测血常规。这一方案也暂时避开了在白质病变原因未明时使用抗TNF药物。",
+            "en": "Right. BSG 2025 suggests a purine analogue (or a suitable advanced therapy) once acute severe colitis has responded to IV steroids, and AGA 2024 suggests a thiopurine to maintain a corticosteroid-induced remission; CPIC's 2018 update sets the starting dose by TPMT and NUDT15 genotype, and NUDT15 variants cause most thiopurine myelotoxicity in Asian patients. ECCO 2021 screens for hepatitis B at diagnosis and before immunosuppression, and counts are monitored because myelotoxicity can come at any time. The plan also avoids an anti-TNF drug while her white-matter lesions are unexplained."
           }
         },
         {
@@ -4456,7 +4522,7 @@
       "id": "rb-history",
       "domain": "history",
       "text": {
-        "zh-CN": "问清便血（起始、次数、腹痛、发热、恶心呕吐）、记不起来的那个上午（恢复、有无目击者、神经系统症状）、两年的肠道病史、用药、旅行和接触史以及家族史",
+        "zh-CN": "问清便血（起始、次数、腹痛、发热、恶心呕吐）、记不起来的那个早上（恢复、有无目击者、神经系统症状）、两年的肠道病史、用药、旅行和接触史以及家族史",
         "en": "Took the bleeding history (onset, frequency, pain, fever, nausea), the story of the forgotten morning (recovery, any witness, neurological symptoms), the two-year bowel history, medicines, travel and contacts, and family history"
       },
       "weight": 3,
@@ -4640,6 +4706,7 @@
     {
       "id": "rb-avoided-harm",
       "domain": "safety",
+      "critical": true,
       "text": {
         "zh-CN": "没有用止泻药、阿片类、非甾体抗炎药或抗胆碱能解痉药，没有为全结肠镜做肠道准备，也没有足量抗凝",
         "en": "Gave no antidiarrhoeal, opioid, NSAID or anticholinergic antispasmodic, no bowel preparation for a full colonoscopy, and no full-dose anticoagulation"
@@ -4781,8 +4848,8 @@
         "en": "Dr Hao (gastroenterology attending, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“血便发作按什么标准分级？没有脉搏和体温，你还能判断吗？”“两年反复的血便、便意频繁，告诉你昨晚的出血是什么性质？”“治疗前要送哪些标本？要等结果吗？”“CT上看到什么会让你暂缓激素？”“正在便血的结肠炎患者为什么还要用肝素？”“哪些止痛、止泻的药在重症发作时是危险的，为什么？”“第3天你怎样判断激素是否有效？谁需要从第一天起就知道她？”“30 cm处的环周病变让你担心什么？什么能回答这个问题？”“炎症性肠病的类型你能确定到什么程度？这会改变今天的治疗吗？”“给中国患者用硫唑嘌呤之前必须查什么？”“你会怎样向她解释肠道和脑部扫描之间的关系？”。可以讲BSG 2025、ACG 2025、AGA 2026临床实践更新、中国溃疡性结肠炎诊治指南（2023年·西安）、CAG 2014血栓预防共识、CPIC 2018硫嘌呤指南和ECCO 2024肠外表现指南的相关原则。原报告的处理是历史记录，在病例结束时才展示，届时再与现行做法对照（CPIC到2018年更新版才把NUDT15纳入指南）。不提前说出诊断、任何决策的正确选项或结局；她的生命体征、完整血液检查、排便记录、泼尼松和硫唑嘌呤的剂量、静脉成像和脑电图、最终的炎症性肠病类型以及随访后的情况都没有记录，不要替它补上。",
-        "en": "A Socratic teacher who asks only about what the learner already has, for example: 'Which criteria grade a flare of bloody diarrhoea, and can you grade it without a pulse or temperature?', 'What do two years of relapsing bloody, urgent stools tell you about last night's bleeding?', 'Which samples go off before treatment, and do you wait for them?', 'What on the CT would make you hold the steroids?', 'Why does a bleeding patient with colitis still need heparin?', 'Which drugs for pain and diarrhoea are dangerous in a severe flare, and why?', 'How will you know on day 3 whether the steroids are working, and who needs to know about her from day one?', 'What does a circumferential lesion at 30 cm make you worry about, and what answers it?', 'How sure can you be about the type of inflammatory bowel disease, and does it change today's treatment?', 'What must you check before azathioprine in a Chinese patient?', 'How would you explain the link between her bowel and the brain scan?'. May explain the relevant principles of BSG 2025, ACG 2025, the AGA 2026 clinical practice update, the 2023 Chinese UC guideline, CAG 2014 on thromboprophylaxis, CPIC 2018 on thiopurines and ECCO 2024 on extraintestinal manifestations. The report's management is a historical record shown at the end of the case, and is compared with current practice only then (CPIC added NUDT15 to its guidance only in the 2018 update). Never states the diagnosis, any decision's correct option or the outcome early; her vital signs, a full blood panel, her stool chart, the prednisone and azathioprine doses, venous imaging and EEG, the final type of inflammatory bowel disease and what happened after follow-up are not recorded — do not supply them."
+        "zh-CN": "苏格拉底式带教，用PEARLS复盘，只围绕学员已经拿到的资料提问，例如：“血便发作按什么标准分级？没有脉搏和体温，你还能判断吗？”“两年反复的血便、便意频繁，告诉你那天夜里开始的出血是什么性质？”“治疗前要送哪些标本？要等结果吗？”“CT上看到什么会让你暂缓激素？”“正在便血的结肠炎患者为什么还要用肝素？”“哪些止痛、止泻的药在重症发作时是危险的，为什么？”“第3天你怎样判断激素是否有效？谁需要从第一天起就知道她？”“30 cm处的环周病变让你担心什么？什么能回答这个问题？”“炎症性肠病的类型你能确定到什么程度？这会改变今天的治疗吗？”“给中国患者用硫唑嘌呤之前必须查什么？”“你会怎样向她解释肠道和脑部扫描之间的关系？”。可以讲BSG 2025、ACG 2025、AGA 2026临床实践更新、中国溃疡性结肠炎诊治指南（2023年·西安）、CAG 2014血栓预防共识、CPIC 2018硫嘌呤指南和ECCO 2024肠外表现指南的相关原则。原报告的处理是历史记录，在病例结束时才展示，届时再与现行做法对照（CPIC到2018年更新版才把NUDT15纳入指南）。不提前说出诊断、任何决策的正确选项或结局；她的生命体征、完整血液检查、排便记录、泼尼松和硫唑嘌呤的剂量、静脉成像和脑电图、最终的炎症性肠病类型以及随访后的情况都没有记录，不要替它补上。",
+        "en": "A Socratic teacher who debriefs with PEARLS and asks only about what the learner already has, for example: 'Which criteria grade a flare of bloody diarrhoea, and can you grade it without a pulse or temperature?', 'What do two years of relapsing bloody, urgent stools tell you about the bleeding that began that night?', 'Which samples go off before treatment, and do you wait for them?', 'What on the CT would make you hold the steroids?', 'Why does a bleeding patient with colitis still need heparin?', 'Which drugs for pain and diarrhoea are dangerous in a severe flare, and why?', 'How will you know on day 3 whether the steroids are working, and who needs to know about her from day one?', 'What does a circumferential lesion at 30 cm make you worry about, and what answers it?', 'How sure can you be about the type of inflammatory bowel disease, and does it change today's treatment?', 'What must you check before azathioprine in a Chinese patient?', 'How would you explain the link between her bowel and the brain scan?'. May explain the relevant principles of BSG 2025, ACG 2025, the AGA 2026 clinical practice update, the 2023 Chinese UC guideline, CAG 2014 on thromboprophylaxis, CPIC 2018 on thiopurines and ECCO 2024 on extraintestinal manifestations. The report's management is a historical record shown at the end of the case, and is compared with current practice only then (CPIC added NUDT15 to its guidance only in the 2018 update). Never states the diagnosis, any decision's correct option or the outcome early; her vital signs, a full blood panel, her stool chart, the prednisone and azathioprine doses, venous imaging and EEG, the final type of inflammatory bowel disease and what happened after follow-up are not recorded — do not supply them."
       },
       "interprets": [
         "fbc",
@@ -4794,6 +4861,7 @@
         "ct-abdomen",
         "endoscopy",
         "viral-serology",
+        "igra",
         "tpmt-nudt15",
         "group-and-save"
       ],
@@ -4806,8 +4874,8 @@
         "en": "Nurse Lin (gastroenterology ward, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "消化内科病房护士。交班（ISBAR）：S——38岁女性，大量便血收入病房，现每天十余次，伴右下腹痛和发热；B——某日上午有一段时间的事她回忆不起来，下午已神志清楚，当晚开始便血；两年来反复糊状血便；平时不吃特别的药；A——我这里没有可以交班的生命体征记录；R——请您评估并开治疗医嘱。可以协助建立静脉通路、留取血标本和大便标本、开始排便记录和生命体征监测、执行皮下和静脉用药、绑气压套筒、联系放射科拍床旁平片；治疗车和病房视频脑电图仪都在病房，报告在护士站病历终端查看。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到没有记录的内容（脉搏、血压、体温读数、体重）时，如实说没有记录。",
-        "en": "Gastroenterology ward nurse. Handover (ISBAR): S — 38-year-old woman admitted with heavy rectal bleeding, now more than ten times a day, with right lower abdominal pain and fever; B — one morning she had a spell she cannot recall and was alert again by the afternoon, and the bleeding began that night; two years of relapsing loose, bloody stools; no regular medicines; A — I have no recorded set of observations to hand over; R — please assess her and write up her treatment. Can place a cannula, take bloods and stool samples, start a stool chart and observations, give subcutaneous and intravenous drugs, fit compression sleeves and call radiology for a portable film; the treatment cart and the ward video-EEG cart are on the ward, and reports are read at the nursing-station records terminal. Reads back orders, reports only results that are back, never interprets or diagnoses, and says plainly when something is not recorded (her pulse, blood pressure, temperature reading, weight)."
+        "zh-CN": "消化内科病房护士。交班（ISBAR）：S——38岁女性，大量便血收入病房，现每天十余次，伴右下腹痛和发热；B——某日早上有一段时间的事她回忆不起来，下午已神志清楚，当晚开始便血；两年来反复糊状血便；平时不吃特别的药；A——我这里没有可以交班的生命体征记录；R——请您评估并开治疗医嘱。可以协助建立静脉通路、留取血标本和大便标本、开始排便记录和生命体征监测、执行皮下和静脉用药、绑气压套筒、联系放射科拍床旁平片；治疗车和病房视频脑电图仪都在病房，报告在护士站病历终端查看。复述医嘱，只报告已经出来的结果，不解读、不诊断；被问到没有记录的内容（脉搏、血压、体温读数、体重）时，如实说没有记录。",
+        "en": "Gastroenterology ward nurse. Handover (ISBAR): S — 38-year-old woman admitted with heavy rectal bleeding, now more than ten times a day, with right lower abdominal pain and fever; B — one morning she had a spell she cannot recall and was alert again by the afternoon, and the bleeding began that night; two years of relapsing loose, bloody stools; nothing unusual in her medicines; A — I have no recorded set of observations to hand over; R — please assess her and write up her treatment. Can place a cannula, take bloods and stool samples, start a stool chart and observations, give subcutaneous and intravenous drugs, fit compression sleeves and call radiology for a portable film; the treatment cart and the ward video-EEG cart are on the ward, and reports are read at the nursing-station records terminal. Reads back orders, reports only results that are back, never interprets or diagnoses, and says plainly when something is not recorded (her pulse, blood pressure, temperature reading, weight)."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -4854,21 +4922,21 @@
       "en": "Debrief: acute severe colitis with an unexplained transient neurological episode"
     },
     "conclusion": {
-      "zh-CN": "38岁女性，两年来反复糊状血便伴便意频繁，自认为与压力有关；某日上午的事回忆不起来，下午神志清楚，当晚起大量便血，伴右下腹痛和发热，之后每天十余次。血红蛋白由129降至93 g/L，CRP 95.8 mg/L，符合Truelove–Witts急性重症结肠炎。CT示升结肠和直肠壁增厚；内镜见约30 cm处不规则环周隆起，其远端弥漫浅溃疡、糜烂和充血；活检为严重急慢性炎症，无肿瘤细胞，免疫组化不支持淋巴瘤；粪便病原学反复阴性。头颅MRI示多发点状白质异常，脑脊液无异常。原报告用泼尼松和硫唑嘌呤治疗，随访MRI部分消退、肠镜黏膜改善；炎症性肠病类型和脑部病变机制均未明确。按现行做法：静脉甲泼尼龙加低分子肝素预防血栓，避免止泻和阿片类药物，第3天与外科共同评估，做脑静脉成像，查TPMT/NUDT15后再用硫唑嘌呤。",
-      "en": "A 38-year-old woman with two years of relapsing loose, bloody stools and urgency, put down to stress, could not recall one morning and was alert by the afternoon; that night heavy rectal bleeding began with right lower abdominal pain and fever, rising to more than ten stools a day. Hb fell from 129 to 93 g/L and CRP was 95.8 mg/L: acute severe colitis by Truelove and Witts. CT showed thickening of the ascending colon and rectum; endoscopy an irregular circumferential lesion at about 30 cm with diffuse shallow ulcers below it; biopsies severe acute and chronic inflammation without tumour cells, with immunohistochemistry against lymphoma; stool tests were negative. Brain MRI showed multifocal punctate white-matter changes; CSF was unremarkable. The report gave prednisone and azathioprine; at follow-up the MRI changes partly resolved and the mucosa improved. Today: IV steroids with LMWH, venous imaging, and azathioprine after TPMT/NUDT15 testing."
+      "zh-CN": "38岁女性，两年来反复糊状血便伴便意频繁，自认为与压力有关；某日早上的事回忆不起来，下午神志清楚，当晚起大量便血，伴右下腹痛和发热，之后每天十余次。血红蛋白由129降至93 g/L，CRP 95.8 mg/L，符合Truelove–Witts急性重症结肠炎。CT示升结肠和直肠壁增厚；内镜见约30 cm处不规则环周隆起，远端弥漫浅溃疡、糜烂和充血；活检为严重急慢性炎症，未见明确隐窝脓肿或肿瘤细胞，免疫组化不支持淋巴瘤；粪便病原学反复阴性。头颅MRI示多发点状白质异常，脑脊液无异常。原报告用泼尼松和硫唑嘌呤治疗，随访MRI部分消退、肠镜黏膜改善；炎症性肠病类型和脑部病变机制均未明确。按现行做法：送检标本后静脉甲泼尼龙，加低分子肝素预防血栓，避免止泻药、阿片类和非甾体抗炎药，第3天与外科共同评估，做脑静脉成像，查TPMT/NUDT15后再用硫唑嘌呤。",
+      "en": "A 38-year-old woman with two years of relapsing loose, bloody stools and urgency, which she put down to stress, could not recall one morning and was alert by the afternoon; that night heavy rectal bleeding began with right lower abdominal pain and fever, rising to more than ten stools a day. Hb fell from 129 to 93 g/L and CRP was 95.8 mg/L: acute severe colitis by Truelove and Witts. CT showed thickening of the ascending colon and rectum; endoscopy an irregular circumferential lesion at about 30 cm with diffuse shallow ulcers, erosions and erythema distally; biopsies severe acute and chronic inflammation without definite crypt abscesses or tumour cells, with immunohistochemistry against lymphoma; repeated stool tests were negative. Brain MRI showed multifocal punctate white-matter changes; CSF was unremarkable. The report gave prednisone and azathioprine; at follow-up the MRI changes partly resolved and the mucosa improved, while the type of inflammatory bowel disease and the mechanism of the brain lesions stayed unestablished. Today: IV methylprednisolone once samples are sent, LMWH prophylaxis, no antidiarrhoeals, opioids or NSAIDs, a joint day-3 review with the surgeon, cerebral venous imaging, and azathioprine only after TPMT/NUDT15 testing."
     },
     "keyReasoning": [
       {
-        "zh-CN": "长病史改变了对急性表现的解读：两年反复血便伴便意频繁，使昨晚的大出血成为慢性结肠炎的一次重症发作，而不是第一次出血或一次食物中毒。",
-        "en": "A long history reframes the acute picture: two years of relapsing bloody diarrhoea with urgency make last night's haemorrhage a severe flare of a chronic colitis, not a first bleed or a bout of food poisoning."
+        "zh-CN": "长病史改变了对急性表现的解读：两年反复血便伴便意频繁，使那天夜里开始的大出血成为慢性结肠炎的一次重症发作，而不是第一次出血或一次食物中毒。",
+        "en": "A long history reframes the acute picture: two years of relapsing bloody diarrhoea with urgency make the heavy bleeding that began that night a severe flare of a chronic colitis, not a first bleed or a bout of food poisoning."
       },
       {
         "zh-CN": "按已有记录分级：每天十余次血便加血红蛋白93 g/L已符合Truelove–Witts标准；缺少脉搏和体温只说明分级不完整，不说明病情较轻。",
         "en": "Severity is graded on what is recorded: more than ten bloody stools a day with an Hb of 93 g/L already meet Truelove and Witts; missing pulse and temperature readings make the grade incomplete, not milder."
       },
       {
-        "zh-CN": "安全措施与治疗同步：先送标本、不等结果即用激素；出血不严重时照样预防血栓；抑制结肠的药物一律不用。",
-        "en": "Safety runs alongside treatment: samples go off and steroids start without waiting; thromboprophylaxis is given despite non-severe bleeding; drugs that slow the colon are withheld."
+        "zh-CN": "安全措施与治疗同步：先送标本、不等结果即用激素；虽在便血也照样预防血栓，因为结肠炎出血本身不是停用的理由；抑制结肠的药物一律不用。",
+        "en": "Safety runs alongside treatment: samples go off and steroids start without waiting; thromboprophylaxis is given although she is bleeding, because colitic bleeding is not in itself a reason to withhold it; drugs that slow the colon are withheld."
       },
       {
         "zh-CN": "肿块样病变要靠组织而不是靠印象：活检和免疫组化回答淋巴瘤和癌的问题，病变持续存在就在发作后再次活检。",
@@ -4893,7 +4961,7 @@
         "en": "Vital signs at any stage (pulse, temperature reading, blood pressure, respiratory rate, oxygen saturation) — the pulse and temperature items of Truelove and Witts cannot be scored."
       },
       {
-        "zh-CN": "那个上午到底发生了什么（有无目击者、持续多久、有无抽搐表现、当时的血糖），以及以前有无类似发作。",
+        "zh-CN": "那个早上到底发生了什么（有无目击者、持续多久、有无抽搐表现、当时的血糖），以及以前有无类似发作。",
         "en": "What happened during the morning she cannot recall (any witness account, its duration, any features of a seizure, a glucose at the time) and whether there were earlier episodes."
       },
       {
@@ -4919,16 +4987,16 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "急性重症结肠炎：每天血便≥6次，加至少一项全身中毒表现——脉搏>90次/分、体温>37.8 ℃、血红蛋白<105 g/L或血沉>30 mm/h（现多以CRP>30 mg/L代替）（Truelove–Witts 1955，BSG指南沿用）。她仅凭排便次数和血红蛋白就已符合。AGA 2026临床实践更新要求所有住院的炎症性肠病患者送检粪便培养、两步法艰难梭菌检测并做断层影像，重症溃疡性结肠炎尽早请外科会诊。本病例没有记录原报告的严重程度评估。",
-        "en": "Acute severe colitis is ≥ 6 bloody stools a day with at least one sign of systemic toxicity — pulse > 90/min, temperature > 37.8 °C, Hb < 105 g/L or ESR > 30 mm/h (CRP > 30 mg/L is now often used instead) (Truelove and Witts 1955, the definition BSG guidance uses). She met it on frequency and Hb alone. The AGA 2026 clinical practice update asks for stool culture, two-step C. difficile testing and cross-sectional imaging in every hospitalised IBD patient, and early surgical consultation in severe UC. This case does not record how the report graded her."
+        "zh-CN": "急性重症结肠炎：每天血便≥6次，加至少一项全身中毒表现——脉搏>90次/分、体温>37.8 ℃、血红蛋白<105 g/L或血沉>30 mm/h（现多以CRP>30 mg/L代替）（Truelove–Witts 1955，BSG指南沿用）。她仅凭排便次数和血红蛋白就已符合。AGA 2026临床实践更新要求所有住院的炎症性肠病患者送检粪便培养、两步法艰难梭菌检测并做断层影像，可能需要结肠切除时请外科会诊。本病例没有记录原报告的严重程度评估。",
+        "en": "Acute severe colitis is ≥ 6 bloody stools a day with at least one sign of systemic toxicity — pulse > 90/min, temperature > 37.8 °C, Hb < 105 g/L or ESR > 30 mm/h (CRP > 30 mg/L is now often used instead) (Truelove and Witts 1955, the definition BSG guidance uses). She met it on frequency and Hb alone. The AGA 2026 clinical practice update asks for stool culture, two-step C. difficile testing and cross-sectional imaging in every hospitalised IBD patient, and a surgical consultation whenever colectomy may be needed. This case does not record how the report graded her."
       },
       {
-        "zh-CN": "一线治疗为静脉甲泼尼龙60 mg/24 h或氢化可的松100 mg每6小时（ACG 2025；AGA 2026认为更大剂量无额外获益）。第3天评估：每天排便>8次，或3–8次且CRP>45 mg/L，在生物制剂时代之前预测85%需结肠切除（Travis 1996），如今提示需要英夫利西单抗或环孢素挽救治疗，或与结直肠外科商定手术。原报告用的是泼尼松（剂量和途径未记录）；本病例无法显示她第3天的反应。",
-        "en": "First-line treatment is IV methylprednisolone 60 mg/24 h or hydrocortisone 100 mg 6-hourly (ACG 2025; AGA 2026 finds no gain from higher doses). On day 3, more than 8 stools a day, or 3–8 with CRP > 45 mg/L, predicted colectomy in 85 % in the pre-biologic era (Travis 1996) and now calls for rescue with infliximab or ciclosporin, or surgery agreed with the colorectal surgeon. The report used prednisone (dose and route not recorded); this case cannot show her day-3 response."
+        "zh-CN": "一线治疗为静脉甲泼尼龙60 mg/24 h或氢化可的松100 mg每6小时（BSG 2025；ACG 2025；更大剂量无额外获益，BSG 2025和AGA 2026）。第3天评估：每天排便>8次，或3–8次且CRP>45 mg/L，在生物制剂时代之前预测85%需结肠切除（Travis 1996），如今提示需要英夫利西单抗或环孢素挽救治疗，或与结直肠外科商定手术。原报告用的是泼尼松（剂量和途径未记录）；本病例无法显示她第3天的反应。",
+        "en": "First-line treatment is IV methylprednisolone 60 mg/24 h or hydrocortisone 100 mg 6-hourly (BSG 2025; ACG 2025; higher doses add nothing, BSG 2025 and AGA 2026). On day 3, more than 8 stools a day, or 3–8 with CRP > 45 mg/L, predicted colectomy in 85 % in the pre-biologic era (Travis 1996) and now calls for rescue with infliximab or ciclosporin, or surgery agreed with the colorectal surgeon. The report used prednisone (dose and route not recorded); this case cannot show her day-3 response."
       },
       {
-        "zh-CN": "所有因炎症性肠病发作住院的患者都要预防血栓：CAG 2014建议对无活动性出血的发作期住院患者使用抗凝药物预防，出血不严重时也建议使用；炎症性肠病使静脉血栓栓塞风险约增至3倍，发作期更高。停用止泻药、阿片类、抗胆碱能药和非甾体抗炎药，它们可诱发结肠扩张（BSG 2019；NICE CG166 2013）；用不经肠道准备的乙状结肠镜加活检，而不是全结肠镜。本病例没有记录她是否接受过血栓预防。",
-        "en": "Every inpatient with an IBD flare needs thromboprophylaxis: CAG 2014 recommends anticoagulant prophylaxis for inpatients with a flare and no active bleeding and suggests it when bleeding is non-severe; IBD roughly triples the risk of venous thromboembolism, more in a flare. Withhold antidiarrhoeals, opioids, anticholinergics and NSAIDs, which can precipitate colonic dilatation (BSG 2019; NICE CG166, 2013), and use an unprepared flexible sigmoidoscopy with biopsies rather than a full colonoscopy. This case does not record whether she received thromboprophylaxis."
+        "zh-CN": "所有因炎症性肠病发作住院的患者都要预防血栓：炎症性肠病使静脉血栓栓塞风险约增至3倍，发作期更高（CAG 2014）；BSG 2019和BSG 2025对急性重症结肠炎使用预防剂量低分子肝素，并指出它不会诱发或加重结肠出血；CAG 2014建议无活动性出血时使用，出血不严重时也建议使用——只有出血重到威胁循环时才改为机械预防并每天复评。避免抑制结肠或加重炎症的药物：阿片类（与中毒性巨结肠相关，BSG 2019）、止泻药和抗胆碱能药（洛哌丁胺说明书：急性溃疡性结肠炎禁用）以及非甾体抗炎药（加重活动期炎症性肠病，BSG 2019）；用不经肠道准备的乙状结肠镜加活检（BSG 2019；BSG 2025）。本病例没有记录她是否接受过血栓预防。",
+        "en": "Every inpatient with an IBD flare needs thromboprophylaxis: IBD roughly triples the risk of venous thromboembolism, more in a flare (CAG 2014); BSG 2019 and BSG 2025 give prophylactic LMWH in acute severe colitis and note that it does not precipitate or exacerbate colonic bleeding, and CAG 2014 recommends it with no active bleeding and suggests it when bleeding is non-severe — only bleeding severe enough to threaten the circulation turns it into mechanical prophylaxis with daily review. Avoid what slows the colon or inflames it: opioids (linked with toxic megacolon, BSG 2019), antidiarrhoeals and anticholinergics (loperamide labelling: contraindicated in acute ulcerative colitis) and NSAIDs (worse active IBD, BSG 2019); use an unprepared flexible sigmoidoscopy with biopsies (BSG 2019; BSG 2025). This case does not record whether she received thromboprophylaxis."
       },
       {
         "zh-CN": "粪便检查反复阴性、两年反复发作和活检的急慢性炎症，使炎症性肠病成为诊断；当病变分布（远端弥漫溃疡伴升结肠增厚）和一次活检不能定型时，可暂定为未定型炎症性肠病——在我国，肠结核和白塞病也是需要记住的鉴别。环周病变要做淋巴瘤免疫组化并在发作后复查；本例随访时肠镜黏膜已改善。",
@@ -4965,7 +5033,7 @@
       "en": "Vital signs at any stage (pulse, temperature reading, blood pressure, respiratory rate, oxygen saturation) — the pulse and temperature items of Truelove and Witts cannot be scored."
     },
     {
-      "zh-CN": "那个上午到底发生了什么（有无目击者、持续多久、有无抽搐表现、当时的血糖），以及以前有无类似发作。",
+      "zh-CN": "那个早上到底发生了什么（有无目击者、持续多久、有无抽搐表现、当时的血糖），以及以前有无类似发作。",
       "en": "What happened during the morning she cannot recall (any witness account, its duration, any features of a seizure, a glucose at the time) and whether there were earlier episodes."
     },
     {

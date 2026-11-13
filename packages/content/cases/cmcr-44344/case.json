@@ -155,8 +155,8 @@
         }
       ],
       "actingNotes": {
-        "zh-CN": "扮演者：他躺在病床上，脸色很白，安静、有点紧张，说话简短；看到针头会缩一下。只回答被问到的内容，不提任何检查结果或数字，不编造病史、用药或过敏。家属陪在床边，但病史由他自己回答。手术之后的阶段，他说恢复得还行，别的说不上来。",
-        "en": "For the actor: he lies in bed, very pale, quiet and a little tense, answering briefly, and flinches at needles. He answers only what he is asked, never mentions results or numbers, and never invents history, medicines or allergies. A relative sits at the bedside, but he answers his own history. After the operation he says he is getting on fine and cannot say more."
+        "zh-CN": "扮演者：他躺在病床上，脸色很白，安静、有点紧张，说话简短；看到针头会缩一下。只回答被问到的内容，不提任何检查结果或数字，不编造病史、用药或过敏。家属陪在床边，但病史由他自己回答。治疗结束后的最后两个阶段，他说恢复得还行，别的说不上来。",
+        "en": "For the actor: he lies in bed, very pale, quiet and a little tense, answering briefly, and flinches at needles. He answers only what he is asked, never mentions results or numbers, and never invents history, medicines or allergies. A relative sits at the bedside, but he answers his own history. In the last two phases, once his treatment is over, he says he is getting on fine and cannot say more."
       },
       "companion": {
         "role": "carer",
@@ -165,8 +165,8 @@
           "en": "Feng Qinghe's relative (pseudonym)"
         },
         "persona": {
-          "zh-CN": "陪孩子住院的一位近亲属；具体是哪位亲属本病例没有记录，不要另加设定。担心孩子又这么苍白，话不多；病史让孩子自己说，被问到时请医生直接问孩子；签字同意前想先弄清楚输血和手术的风险；不补充病例没有记录的任何事。",
-          "en": "A close relative staying with him in hospital; which relative is not recorded, so add nothing. Worried to see him so pale again and says little; leaves the history to him and suggests the doctor ask him directly; wants to understand the risks of transfusion and surgery before signing; adds nothing the case does not record."
+          "zh-CN": "陪孩子住院的一位近亲属；具体是哪位亲属本病例没有记录，不要另加设定。担心孩子又这么苍白，话不多；病史让孩子自己说，被问到时请医生直接问孩子；签字同意前想先弄清楚治疗的风险；不补充病例没有记录的任何事。",
+          "en": "A close relative staying with him in hospital; which relative is not recorded, so add nothing. Worried to see him so pale again and says little; leaves the history to him and suggests the doctor ask him directly; wants to understand the risks of any treatment before signing; adds nothing the case does not record."
         },
         "answersHistory": false,
         "appearance": {
@@ -225,8 +225,8 @@
         "en": "After the operation"
       },
       "description": {
-        "zh-CN": "贫血纠正之后他接受了手术，现在回到病房：调阅手术记录和病理报告，制订出院后的计划。",
-        "en": "Once his anaemia had been corrected he had his operation and is back on the ward: read the operation note and the pathology report, and plan what follows discharge."
+        "zh-CN": "贫血纠正之后他接受了手术，现在回到病房：调阅治疗记录和病理报告，制订出院后的计划。",
+        "en": "Once his anaemia had been corrected he had his operation and is back on the ward: read the treatment record and the histopathology report, and plan what follows discharge."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -303,7 +303,11 @@
           "为什么住院",
           "这次住院",
           "住进来",
-          "住院是因为"
+          "住院是因为",
+          "大便是黑",
+          "大便发黑",
+          "拉黑便",
+          "感觉怎么样"
         ],
         "en": [
           "broughtyouin",
@@ -312,7 +316,13 @@
           "main problem",
           "whatsthematter",
           "troubling you",
-          "landedyouin"
+          "landedyouin",
+          "bringsyouin",
+          "whatbringsyou",
+          "black poo",
+          "poos black",
+          "black stools",
+          "howareyoufeeling"
         ]
       },
       "excludeKeywords": {
@@ -322,14 +332,27 @@
           "以前",
           "几年",
           "这个月",
-          "手术"
+          "手术",
+          "八年",
+          "反复",
+          "这些年",
+          "多久",
+          "几岁",
+          "什么时候"
         ],
         "en": [
           "first",
           "years",
           "before",
           "this month",
-          "operation"
+          "operation",
+          "how often",
+          "school",
+          "how old",
+          "started",
+          "when did",
+          "coming back",
+          "kept"
         ]
       },
       "disclosure": "volunteer",
@@ -491,13 +514,18 @@
           "这次",
           "这回",
           "多久一次",
-          "隔多久"
+          "隔多久",
+          "手术",
+          "术后"
         ],
         "en": [
           "this month",
           "this time",
           "latest",
-          "how often"
+          "how often",
+          "since the operation",
+          "operation",
+          "surgery"
         ]
       },
       "disclosure": "on-ask",
@@ -546,7 +574,8 @@
           "几岁",
           "不舒服",
           "住院",
-          "住进来"
+          "住进来",
+          "多久"
         ],
         "en": [
           "first",
@@ -648,7 +677,11 @@
           "yunnan baiyao",
           "didtheyhelp",
           "whathaveyoutaken",
-          "helped"
+          "helped",
+          "takenforit",
+          "medicinesforit",
+          "triedforthis",
+          "triedforit"
         ]
       },
       "excludeKeywords": {
@@ -684,7 +717,7 @@
         "en": "What have doctors told you about the bleeding so far?"
       },
       "answer": {
-        "zh-CN": "都说是肠子里在出血，可一直没找到原因。",
+        "zh-CN": "都说是肠胃里在出血，可一直没找到原因。",
         "en": "They all said I was bleeding somewhere inside my gut, but nobody ever found why."
       },
       "keywords": {
@@ -731,7 +764,10 @@
           "每次几天",
           "多长时间犯",
           "频率",
-          "一年几次"
+          "一年几次",
+          "多久发作",
+          "发作一次",
+          "多久犯"
         ],
         "en": [
           "how often",
@@ -906,6 +942,21 @@
       "source": {
         "zh-CN": "1.0.0 版未记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      },
+      "excludeKeywords": {
+        "en": [
+          "vomit",
+          "sick",
+          "bright red",
+          "poo",
+          "stool"
+        ],
+        "zh-CN": [
+          "吐",
+          "呕",
+          "鲜红",
+          "大便"
+        ]
       }
     },
     {
@@ -986,7 +1037,10 @@
         "en": [
           "allerg",
           "omeprazole",
-          "did they help"
+          "did they help",
+          "for it",
+          "for this",
+          "tried"
         ]
       },
       "disclosure": "unknown",
@@ -1228,8 +1282,8 @@
         "en": "Just between us: has being ill affected school or how you feel in yourself?"
       },
       "answer": {
-        "zh-CN": "这个我的病历里没写，我说不上来。",
-        "en": "That isn't in my notes, so I can't really say."
+        "zh-CN": "我也说不好，医生。",
+        "en": "I can't really say, doctor."
       },
       "keywords": {
         "zh-CN": [
@@ -1239,7 +1293,9 @@
           "难过",
           "同学",
           "功课",
-          "体育课"
+          "体育课",
+          "学习",
+          "成绩"
         ],
         "en": [
           "school",
@@ -1257,7 +1313,8 @@
           "术后",
           "头晕",
           "喘",
-          "没力气"
+          "没力气",
+          "现在"
         ],
         "en": [
           "surgery",
@@ -1265,7 +1322,10 @@
           "faint",
           "breath",
           "dizzy",
-          "tired"
+          "tired",
+          "now",
+          "today",
+          "how are you feeling"
         ]
       },
       "disclosure": "unknown",
@@ -1282,8 +1342,8 @@
         "en": "Also just between us: do you smoke, vape or drink at all?"
       },
       "answer": {
-        "zh-CN": "这个我的病历里也没写，我说不上来。",
-        "en": "That isn't in my notes either, so I can't say."
+        "zh-CN": "这个我说不上来，医生。",
+        "en": "I'm not sure, doctor."
       },
       "keywords": {
         "zh-CN": [
@@ -1375,7 +1435,8 @@
           "since the surgery",
           "feeling now",
           "recovering",
-          "howareyounow"
+          "howareyounow",
+          "howareyoufeeling"
         ]
       },
       "excludeKeywords": {
@@ -1491,6 +1552,15 @@
       "source": {
         "zh-CN": "报告病例资料·体格检查（心率 100 次/分）（据 1.0.0 版 exam.pallor 提取，待对照原文全文核对）",
         "en": "Case presentation in the report: examination (heart rate 100/min) (from 1.0.0 exam.pallor; check against the full article pending)"
+      },
+      "excludeKeywords": {
+        "en": [
+          "respiratory",
+          "resp rate"
+        ],
+        "zh-CN": [
+          "呼吸"
+        ]
       }
     },
     {
@@ -1612,11 +1682,18 @@
       "excludeKeywords": {
         "zh-CN": [
           "肝",
-          "脾"
+          "脾",
+          "皮肤",
+          "直肠",
+          "肛门",
+          "肛诊"
         ],
         "en": [
           "liver",
-          "spleen"
+          "spleen",
+          "skin",
+          "rectal",
+          "back passage"
         ]
       },
       "finding": {
@@ -2413,8 +2490,8 @@
     {
       "id": "operation-note",
       "name": {
-        "zh-CN": "手术记录",
-        "en": "Operation note"
+        "zh-CN": "治疗记录",
+        "en": "Treatment record"
       },
       "category": "record",
       "aliases": {
@@ -2422,14 +2499,16 @@
           "手术记录",
           "手术所见",
           "术中所见",
-          "手术经过"
+          "手术经过",
+          "治疗记录"
         ],
         "en": [
           "operation note",
           "operative findings",
           "op note",
           "operative record",
-          "what they found at surgery"
+          "what they found at surgery",
+          "treatment record"
         ]
       },
       "requires": [
@@ -2463,8 +2542,8 @@
     {
       "id": "pathology",
       "name": {
-        "zh-CN": "切除标本病理报告",
-        "en": "Pathology report on the resected bowel"
+        "zh-CN": "病理报告",
+        "en": "Histopathology report"
       },
       "category": "pathology",
       "aliases": {
@@ -2480,7 +2559,8 @@
           "histology",
           "pathology report",
           "specimen",
-          "biopsy result"
+          "biopsy result",
+          "histopathology"
         ]
       },
       "requires": [
@@ -2893,13 +2973,18 @@
       "excludeKeywords": {
         "zh-CN": [
           "口服",
-          "铁蛋白"
+          "铁蛋白",
+          "奥美拉唑",
+          "抑酸"
         ],
         "en": [
           "oral",
           "by mouth",
           "tablets",
-          "ferritin"
+          "ferritin",
+          "omeprazole",
+          "ppi",
+          "pantoprazole"
         ]
       },
       "dose": {
@@ -2930,7 +3015,9 @@
           "质子泵抑制剂",
           "抑酸",
           "泮托拉唑",
-          "静脉抑酸"
+          "静脉抑酸",
+          "静脉用奥美拉唑",
+          "静脉奥美拉唑"
         ],
         "en": [
           "ppi",
@@ -2983,12 +3070,15 @@
           "随访计划",
           "出院计划",
           "手术以后",
-          "术后"
+          "术后",
+          "计划"
         ],
         "en": [
           "follow-up plan",
           "discharge plan",
-          "after the operation"
+          "after the operation",
+          "plan",
+          "since the operation"
         ]
       },
       "dose": {
@@ -3000,11 +3090,18 @@
       "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
-        "always": true
+        "any": [
+          {
+            "phase": "admission"
+          },
+          {
+            "phase": "localisation"
+          }
+        ]
       },
       "harm": {
-        "zh-CN": "不要：血红蛋白 28 g/L、粪便隐血 ++、出血来源还没找到，奥美拉唑和云南白药他已经间断用过、效果不佳。带着这样的贫血回家，再次出血时几乎没有代偿余地；他需要住院纠正贫血并检查小肠（ESGE 2022）。",
-        "en": "No: with a haemoglobin of 28 g/L, faecal occult blood ++ and the source still unknown — and omeprazole and Yunnan Baiyao already tried without benefit — the next bleed at home would find almost no reserve. He needs admission, correction of the anaemia and a small-bowel search (ESGE 2022)."
+        "zh-CN": "不要：他的血红蛋白曾低到 28 g/L，粪便隐血 ++，出血来源还没有得到处理；奥美拉唑和云南白药他已经间断用过、效果不佳。这时回家，再次出血时几乎没有代偿余地；他需要在住院期间纠正贫血，并找到、处理出血来源（ESGE 2022）。",
+        "en": "No: his haemoglobin was 28 g/L with faecal occult blood ++, the source of the bleeding has not been treated, and omeprazole and Yunnan Baiyao have already been tried without benefit; at home the next bleed would find almost no reserve. He needs the anaemia corrected and the source found and treated in hospital (ESGE 2022)."
       },
       "response": {
         "zh-CN": "已安排出院。本病例不模拟这一选择之后的经过；接下来的记录按实际病程展开。",
@@ -3035,8 +3132,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "用孩子听得懂的话讲清输血或手术的理由、做法、风险和替代方案，征得孩子本人的同意和家属的知情同意并签字。",
-        "en": "Explain the reason, the procedure, the risks and the alternatives for the transfusion or the operation in words he understands, and obtain his assent and the family's signed consent."
+        "zh-CN": "用孩子听得懂的话讲清拟行治疗的理由、做法、风险和替代方案，征得孩子本人的同意和家属的知情同意并签字。",
+        "en": "Explain the reason, the procedure, the risks and the alternatives of a proposed treatment in words he understands, and obtain his assent and the family's signed consent."
       },
       "requires": [],
       "risk": "none",
@@ -3104,8 +3201,8 @@
     {
       "id": "segmental-resection",
       "name": {
-        "zh-CN": "安排手术：切除病变空肠段并一期吻合",
-        "en": "Book the operation: resection of the affected jejunal segment with primary anastomosis"
+        "zh-CN": "安排手术：切除出血的病变肠段并一期吻合",
+        "en": "Book the operation: resection of the bleeding bowel segment with primary anastomosis"
       },
       "kind": "consult",
       "aliases": {
@@ -3127,7 +3224,9 @@
           "operate",
           "laparotomy",
           "take him to theatre",
-          "book the operation"
+          "book the operation",
+          "book him for surgery",
+          "book surgery"
         ]
       },
       "excludeKeywords": {
@@ -3147,8 +3246,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "开腹或腹腔镜探查：切除含病灶的空肠段并一期吻合，术中检查全部小肠（有条件时术中内镜），切除标本送病理。",
-        "en": "Open or laparoscopic exploration: resect the jejunal segment containing the lesion with a primary anastomosis, examine the whole small bowel (intraoperative enteroscopy where available) and send the specimen for histology."
+        "zh-CN": "开腹或腹腔镜探查：切除含出血病灶的肠段并一期吻合，术中检查全部小肠（有条件时术中内镜），切除标本送病理。",
+        "en": "Open or laparoscopic exploration: resect the bowel segment containing the bleeding lesion with a primary anastomosis, examine the whole small bowel (intraoperative enteroscopy where available) and send the specimen for histology."
       },
       "requires": [],
       "risk": "high",
@@ -3192,8 +3291,8 @@
         "en": "Correct the anaemia first: at a haemoglobin of 28 g/L there is almost no oxygen-delivery reserve for anaesthesia, and none for blood lost in theatre. He is compensated and no active major bleeding is recorded, so nothing justifies operating before the anaemia is corrected."
       },
       "response": {
-        "en": "The operation is booked for once his anaemia has been corrected. As recorded: after the anaemia had been corrected he had a partial jejunal resection with anastomosis; the findings and the pathology are in the next phase's records.",
-        "zh-CN": "手术已安排在贫血纠正之后。与记录一致：他在贫血纠正之后接受了空肠部分切除吻合术；手术所见和病理见下一阶段的记录。"
+        "zh-CN": "手术已预约。本病例不模拟手术过程；术后可在病历中调阅治疗记录和病理报告。",
+        "en": "The operation is booked. This case does not simulate the operation; the treatment record and the histopathology report can be read afterwards."
       }
     },
     {
@@ -3218,8 +3317,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "对空肠病灶做小剂量外照射，使其萎缩。",
-        "en": "Low-dose external-beam radiotherapy to the jejunal lesion to shrink it."
+        "zh-CN": "对病灶做小剂量外照射，使其萎缩。",
+        "en": "Low-dose external-beam radiotherapy to the lesion to shrink it."
       },
       "requires": [],
       "risk": "high",
@@ -3259,8 +3358,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "按婴儿血管瘤的用法，每日 2–3 mg/kg 分次口服。",
-        "en": "As for infantile haemangioma: 2–3 mg/kg per day by mouth in divided doses."
+        "zh-CN": "每日 2–3 mg/kg，分次口服。",
+        "en": "2–3 mg/kg per day by mouth in divided doses."
       },
       "requires": [
         "medications"
@@ -3303,8 +3402,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "继续补铁至血红蛋白和铁蛋白恢复，出院后数周复查血常规；教会孩子和家属识别黑便和面色苍白，复发时及时回院并再次检查小肠；查看皮肤并询问有无其他血管性病变。",
-        "en": "Iron until the haemoglobin and ferritin have recovered, with a blood count a few weeks after discharge; teach him and his family to recognise black stools and pallor and to come back promptly for a further small-bowel look if they recur; examine his skin and ask about other vascular lesions."
+        "zh-CN": "继续补铁至血红蛋白和铁蛋白恢复，出院后数周复查血常规；教会孩子和家属识别黑便和面色苍白，复发时及时回院并再次检查小肠；查看皮肤，留意其他部位有无病变。",
+        "en": "Iron until the haemoglobin and ferritin have recovered, with a blood count a few weeks after discharge; teach him and his family to recognise black stools and pallor and to come back promptly for a further small-bowel look if they recur; examine his skin and look for lesions elsewhere."
       },
       "requires": [],
       "risk": "none",
@@ -3501,8 +3600,8 @@
         "en": "What can each study answer, and what can it not? Which treatment solves the problem in one go, and what must be in place before it starts?"
       },
       "guidance": {
-        "en": "Read the two nuclear medicine reports, take him for the contrast CT and read it; answer decisions 3 and 4, involve the paediatric surgeons, then arrange the treatment you have chosen.",
-        "zh-CN": "调阅两份核素显像报告，送他去做腹部增强 CT 并阅读结果；作答决策 3 和 4，请小儿外科会诊，然后安排你选择的治疗。"
+        "en": "Read the two nuclear medicine reports, take him for the contrast CT and read it; answer decisions 3 and 4, involve the specialists his treatment needs, then arrange the treatment you have chosen.",
+        "zh-CN": "调阅两份核素显像报告，送他去做腹部增强 CT 并阅读结果；作答决策 3 和 4，请治疗需要的专科会诊，然后安排你选择的治疗。"
       },
       "completeWhen": {
         "all": [
@@ -3570,20 +3669,20 @@
     {
       "id": "obj-after-operation",
       "title": {
-        "zh-CN": "术后复盘并安排随访",
-        "en": "Review the operation and plan follow-up"
+        "zh-CN": "复盘所见并安排随访",
+        "en": "Review the findings and plan follow-up"
       },
       "short": {
-        "zh-CN": "术后",
-        "en": "After surgery"
+        "zh-CN": "随访",
+        "en": "Follow-up"
       },
       "hint": {
         "zh-CN": "这个病理名称按今天的分类该怎么理解？这对他以后会不会再出血、需要怎样随访意味着什么？",
         "en": "What would today's classification call this pathology label — and what does that mean for further bleeding and the follow-up he needs?"
       },
       "guidance": {
-        "zh-CN": "问问他术后感觉，调阅手术记录和病理报告，作答决策 5，并开出补铁和随访计划。",
-        "en": "Ask how he has been since the operation, read the operation note and the pathology report, answer decision 5, and prescribe iron and the follow-up plan."
+        "zh-CN": "问问他术后感觉，调阅治疗记录和病理报告，作答决策 5，并开出补铁和随访计划。",
+        "en": "Ask how he has been since the operation, read the treatment record and the histopathology report, answer decision 5, and prescribe iron and the follow-up plan."
       },
       "completeWhen": {
         "all": [
@@ -3753,7 +3852,7 @@
           "correct": false,
           "text": {
             "zh-CN": "今天就送手术室剖腹探查找出血点，术中边输血边纠正贫血，不必再等定位检查",
-            "en": "Take him to theatre today for an exploratory laparotomy to find the bleeding point, transfusing during the operation"
+            "en": "Take him to theatre today for an exploratory laparotomy to find the bleeding point, transfusing during the operation rather than waiting for localising tests"
           },
           "feedback": {
             "zh-CN": "不对。现在还不知道出血在哪里——胃镜、结肠镜和 CT 都是阴性——而在血红蛋白 28 g/L 时手术，麻醉和术中失血都没有储备。先纠正贫血、再定位来源；记录中的团队也是先纠正贫血再手术。",
@@ -3976,8 +4075,8 @@
             "en": "Once the anaemia is corrected, resect the affected jejunal segment with a primary anastomosis and check the whole small bowel"
           },
           "feedback": {
-            "zh-CN": "对。这样大小的孤立出血性血管病变，在贫血纠正后切除病变肠段、一期吻合即可根治；术中检查全部小肠（有条件时术中内镜），是因为这类病变可以多发。记录中的团队也是先纠正贫血，再行空肠部分切除吻合。",
-            "en": "Right. A solitary bleeding vascular lesion of this size is cured by resecting the segment with a primary anastomosis once the anaemia is corrected; the whole small bowel is examined at operation (with intraoperative enteroscopy where available) because such lesions can be multiple. The recorded team likewise corrected his anaemia and then resected the jejunal segment."
+            "zh-CN": "对。影像上表现为单个、这样大小的出血性血管病变，在贫血纠正后切除病变肠段并一期吻合，就是确定性治疗；术中检查全部小肠（有条件时术中内镜），是因为这类病变可以多发。记录中的团队也是先纠正贫血，再行空肠部分切除吻合。",
+            "en": "Right. A bleeding vascular lesion that imaging shows as a single mass of this size is treated definitively by resecting the segment with a primary anastomosis once the anaemia is corrected; the whole small bowel is examined at operation (with intraoperative enteroscopy where available) because such lesions can be multiple. The recorded team likewise corrected his anaemia and then resected the jejunal segment."
           }
         },
         {
@@ -4024,8 +4123,8 @@
             "en": "Sirolimus for six months to control the lesion, transfusing as needed, then a repeat CT before any decision on surgery"
           },
           "feedback": {
-            "en": "No. Sirolimus is for extensive or multifocal slow-flow malformations that cannot be removed, such as blue rubber bleb naevus syndrome; for one resectable lesion that has already brought his haemoglobin to 28 g/L, months of immunosuppression only delay the cure. Classify the lesion and its extent first (ISSVA 2025), then choose.",
-            "zh-CN": "不对。西罗莫司用于无法切除的广泛或多发慢血流畸形（如蓝色橡皮疱样痣综合征）；一个可切除、已经把血红蛋白拖到 28 g/L 的孤立病灶，用几个月的免疫抑制换来的只是推迟根治。先按 ISSVA 2025 分类判断病变的性质和范围，再选治疗。"
+            "en": "No. Sirolimus is for extensive or multifocal slow-flow malformations that cannot be removed, such as blue rubber bleb naevus syndrome; for a single resectable mass on CT that has already brought his haemoglobin to 28 g/L, months of immunosuppression only delay the cure. Classify the lesion and its extent first (ISSVA 2025), then choose.",
+            "zh-CN": "不对。西罗莫司用于无法切除的广泛或多发慢血流畸形（如蓝色橡皮疱样痣综合征）；CT 上单个、可切除、已经把血红蛋白拖到 28 g/L 的病灶，用几个月的免疫抑制换来的只是推迟根治。先按 ISSVA 2025 分类判断病变的性质和范围，再选治疗。"
           }
         }
       ]
@@ -4390,8 +4489,8 @@
       "weight": 3,
       "critical": true,
       "text": {
-        "zh-CN": "没有快速大量输血，没有在贫血纠正前安排手术，也没有让他带着重度贫血出院",
-        "en": "Did not run a rapid large-volume transfusion, book the operation before the anaemia was corrected, or send him home with severe anaemia"
+        "zh-CN": "没有快速大量输血，没有在贫血纠正前安排手术，也没有在出血来源处理之前让他出院",
+        "en": "Did not run a rapid large-volume transfusion, book the operation before the anaemia was corrected, or send him home before the bleeding source was treated"
       },
       "met": {
         "not": {
@@ -4404,7 +4503,8 @@
               "valid": false
             },
             {
-              "intervened": "discharge-home"
+              "intervened": "discharge-home",
+              "valid": false
             }
           ]
         }
@@ -4418,10 +4518,12 @@
             "intervened": "rapid-transfusion"
           },
           {
-            "intervened": "segmental-resection"
+            "intervened": "segmental-resection",
+            "valid": false
           },
           {
-            "intervened": "discharge-home"
+            "intervened": "discharge-home",
+            "valid": false
           }
         ]
       }
@@ -4461,8 +4563,8 @@
         "en": "Dr Shen (paediatric gastroenterology attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“黑便说明血在肠道里停留了多久、大致来自哪一段？”“胃镜和结肠镜各能看到哪里？两者之间还剩哪一段没人看过？”“这样低的血红蛋白是几周里慢慢降下来的，还是一下子降的？这对输血速度意味着什么？”“为什么不能只靠补铁等它升上来？”“异位胃黏膜显像、标记红细胞显像和增强 CT 各回答什么问题？”“门静脉期强化加上点状钙化，你会想到什么？”“手术之前必须先具备什么条件？”“‘海绵状血管瘤’这个病理名称，按今天的分类该怎么理解？”。可以讲解 ESGE 2022、ACG 2015、NICE NG24（2015）、BSH 2016 儿童输血指南、AAP 2019 和 ISSVA 2025 分类的相关原则；学员读到相应记录之后，可以对比记录中的做法（骨髓检查呈缺铁表现、核素显像和增强 CT 定位、先纠正贫血再切除）与现行做法（血清铁蛋白、胶囊内镜一线、按体重分次输血、ISSVA 命名）。不提前说出诊断或任何决策的正确选项；不补充病例没有的资料（血压、体温、体重、红细胞指数、铁蛋白、纠正贫血的方法、手术入路和出院后的随访都没有记录）。",
-        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “How long has blood been in the gut to turn the stool black, and roughly where does that put it?”, “Where do a gastroscope and a colonoscope reach — and which stretch between them has nobody seen?”, “Did a haemoglobin this low fall over weeks or overnight, and what does that mean for how fast you transfuse?”, “Why not simply give iron and wait?”, “What question does each of the ectopic gastric mucosa scan, the red-cell scan and the contrast CT answer?”, “Portal-venous enhancement with punctate calcification — what does that make you think of?”, “What must be in place before he goes to theatre?”, “What would today's classification call a ‘cavernous haemangioma’?”. May explain the relevant principles of ESGE 2022, ACG 2015, NICE NG24 (2015), the BSH 2016 paediatric transfusion guideline, AAP 2019 and the ISSVA 2025 classification and, once the learner has read the records, contrast the recorded practice (a bone marrow showing iron deficiency, nuclear scans and contrast CT to localise, anaemia corrected before resection) with current practice (serum ferritin, capsule endoscopy first-line, weight-based divided transfusion, ISSVA naming). Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (blood pressure, temperature, weight, red-cell indices, ferritin, how the anaemia was corrected, the surgical approach and the follow-up after discharge are not recorded)."
+        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“黑便说明血在肠道里停留了多久、大致来自哪一段？”“胃镜和结肠镜各能看到哪里？两者之间还剩哪一段没人看过？”“这样低的血红蛋白是几周里慢慢降下来的，还是一下子降的？这对输血速度意味着什么？”“为什么不能只靠补铁等它升上来？”“异位胃黏膜显像、标记红细胞显像和增强 CT 各回答什么问题？”“门静脉期强化加上点状钙化，你会想到什么？”“确定性治疗之前必须先具备什么条件？”“‘海绵状血管瘤’这个病理名称，按今天的分类该怎么理解？”。可以讲解 ESGE 2022、ACG 2015、NICE NG24（2015）、BSH 2016 儿童输血指南、AAP 2019 和 ISSVA 2025 分类的相关原则；学员读到相应记录之后，可以对比记录中的做法（骨髓检查呈缺铁表现、核素显像和增强 CT 定位、先纠正贫血再切除）与现行做法（血清铁蛋白、胶囊内镜一线、按体重分次输血、ISSVA 命名）。不提前说出诊断或任何决策的正确选项；不补充病例没有的资料（血压、体温、体重、红细胞指数、铁蛋白、纠正贫血的方法、手术入路和出院后的随访都没有记录）。",
+        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “How long has blood been in the gut to turn the stool black, and roughly where does that put it?”, “Where do a gastroscope and a colonoscope reach — and which stretch between them has nobody seen?”, “Did a haemoglobin this low fall over weeks or overnight, and what does that mean for how fast you transfuse?”, “Why not simply give iron and wait?”, “What question does each of the ectopic gastric mucosa scan, the red-cell scan and the contrast CT answer?”, “Portal-venous enhancement with punctate calcification — what does that make you think of?”, “What must be in place before any definitive treatment?”, “What would today's classification call a ‘cavernous haemangioma’?”. May explain the relevant principles of ESGE 2022, ACG 2015, NICE NG24 (2015), the BSH 2016 paediatric transfusion guideline, AAP 2019 and the ISSVA 2025 classification and, once the learner has read the records, contrast the recorded practice (a bone marrow showing iron deficiency, nuclear scans and contrast CT to localise, anaemia corrected before resection) with current practice (serum ferritin, capsule endoscopy first-line, weight-based divided transfusion, ISSVA naming). Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (blood pressure, temperature, weight, red-cell indices, ferritin, how the anaemia was corrected, the surgical approach and the follow-up after discharge are not recorded)."
       },
       "interprets": [
         "cbc",
@@ -4503,8 +4605,8 @@
         "en": "Dr Qiao (paediatric surgeon)"
       },
       "knowledge": {
-        "zh-CN": "学员请小儿外科会诊后参与。只解读学员已经读过的 CT、手术记录和病理报告：为什么先纠正贫血再手术；切除病变肠段并一期吻合；术中检查全部小肠、有条件时用术中内镜寻找其他病灶；向孩子和家属说明手术、取得同意的要点。不编造手术入路、切除长度、切缘、术中出血或术后并发症（都没有记录）。",
-        "en": "Joins once the learner asks for a paediatric surgical consultation. Interprets only the CT, the operation note and the pathology report the learner has read: why the anaemia is corrected before the operation; resection of the affected segment with a primary anastomosis; examining the whole small bowel at operation, with intraoperative enteroscopy where available, for other lesions; and how to explain the operation to him and his family and obtain consent. Never invents the approach, the length resected, the margins, operative blood loss or complications (none is recorded)."
+        "zh-CN": "学员请小儿外科会诊后参与。只解读学员已经读过的 CT、治疗记录和病理报告：为什么先纠正贫血再手术；切除病变肠段并一期吻合；术中检查全部小肠、有条件时用术中内镜寻找其他病灶；向孩子和家属说明手术、取得同意的要点。不编造手术入路、切除长度、切缘、术中出血或术后并发症（都没有记录）。",
+        "en": "Joins once the learner asks for a paediatric surgical consultation. Interprets only the CT, the treatment record and the histopathology report the learner has read: why the anaemia is corrected before the operation; resection of the affected segment with a primary anastomosis; examining the whole small bowel at operation, with intraoperative enteroscopy where available, for other lesions; and how to explain the operation to him and his family and obtain consent. Never invents the approach, the length resected, the margins, operative blood loss or complications (none is recorded)."
       },
       "interprets": [
         "ct",
@@ -4533,16 +4635,16 @@
         "en": "A haemoglobin of 28 g/L with a positive faecal occult blood, normal clotting and a platelet count that is not low points to chronic blood loss rather than a bleeding disorder or marrow failure; the iron-deficient marrow agrees."
       },
       {
-        "zh-CN": "他目前代偿——心率 100 次/分、腹软、肝脾不大、下肢不肿——所以眼下的危险不只是血红蛋白低，还包括纠正得太快。",
-        "en": "He is compensated — heart rate 100/min, soft abdomen, no enlarged liver or spleen, no leg oedema — so the danger of the moment is not only the low haemoglobin but also correcting it too fast."
+        "zh-CN": "没有记录到心力衰竭的征象——心率 100 次/分、肝脾未触及、下肢无水肿——但血红蛋白 28 g/L 时已出现收缩期杂音，说明他的储备很少；所以眼下的危险不只是血红蛋白低，还包括纠正得太快。",
+        "en": "No sign of heart failure is recorded — heart rate 100/min, liver and spleen not palpable, no leg oedema — yet a systolic murmur at a haemoglobin of 28 g/L shows how little reserve he has; so the danger of the moment is not only the low haemoglobin but also correcting it too fast."
       },
       {
         "zh-CN": "异位胃黏膜显像阴性让梅克尔憩室的可能性降低，标记红细胞显像有较固定的浓集，CT 显示空肠强化肿块伴点状钙化：三者合在一起指向空肠的血管性病变。",
         "en": "The negative ectopic gastric mucosa scan makes a Meckel source less likely, the red-cell scan shows a relatively fixed focus, and CT finds an enhancing jejunal mass with punctate calcification: together they point to a vascular lesion of the jejunum."
       },
       {
-        "zh-CN": "只有切除能同时给出组织诊断和根治；病理“海绵状血管瘤伴出血及钙化”与影像相符，而它在今天分类中的归属决定了还需要怎样随访。",
-        "en": "Only resection gives both the tissue diagnosis and the cure; the pathology — cavernous haemangioma with haemorrhage and calcification — fits the imaging, and where it sits in today's classification decides the follow-up he still needs."
+        "zh-CN": "切除既去除了出血的病灶，又给出组织诊断；病理“海绵状血管瘤伴出血及钙化”与影像相符，而它在今天分类中的归属决定了还需要怎样随访。",
+        "en": "Resection both removes the bleeding lesion and gives the tissue diagnosis; the pathology — cavernous haemangioma with haemorrhage and calcification — fits the imaging, and where it sits in today's classification decides the follow-up he still needs."
       }
     ],
     "boundaries": {
@@ -4608,9 +4710,9 @@
       "Argüelles-Arias F, Donat E, Fernández-Urién I, et al. Guideline for wireless capsule endoscopy in children and adolescents: a consensus document by the SEGHNP (Spanish Society for Pediatric Gastroenterology, Hepatology, and Nutrition) and the SEPD (Spanish Society for Digestive Diseases). Rev Esp Enferm Dig. 2015;107(12):714-731.",
       "New HV, Berryman J, Bolton-Maggs PHB, et al. Guidelines on transfusion for fetuses, neonates and older children. Br J Haematol. 2016;175(5):784-828. doi:10.1111/bjh.14233",
       "National Institute for Health and Care Excellence. Blood transfusion. NICE guideline NG24. London: NICE; 2015 (last updated 2026).",
-      "Goldenberg DC, Vikkula M, Penington A, et al. Updated classification of vascular anomalies: a living document from the International Society for the Study of Vascular Anomalies Classification Group. J Vasc Anom (Phila). 2025;6(2):e113. doi:10.1097/JOVA.0000000000000113",
-      "Krowchuk DP, Frieden IJ, Mancini AJ, et al. Clinical practice guideline for the management of infantile hemangiomas. Pediatrics. 2019;143(1):e20183475.",
-      "Steele L, Zbeidy S, Thomson J, Flohr C. How is the term haemangioma used in the literature? An evaluation against the revised ISSVA classification. Pediatr Dermatol. 2019. doi:10.1111/pde.13885"
+      "Goldenberg DC, Vikkula M, Penington A, Blei F, Schultze-Kool L, Wassef M, et al. Updated classification of vascular anomalies: a living document from the International Society for the Study of Vascular Anomalies Classification Group. J Vasc Anom (Phila). 2025;6(2):e113. doi:10.1097/JOVA.0000000000000113",
+      "Krowchuk DP, Frieden IJ, Mancini AJ, et al. Clinical practice guideline for the management of infantile hemangiomas. Pediatrics. 2019;143(1):e20183475. doi:10.1542/peds.2018-3475",
+      "Steele L, Zbeidy S, Thomson J, Flohr C. How is the term haemangioma used in the literature? An evaluation against the revised ISSVA classification. Pediatr Dermatol. 2019;36(5):628-633. doi:10.1111/pde.13885"
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
@@ -5267,6 +5369,48 @@
         "text": "did you have breakfast this morning?",
         "locale": "en",
         "expect": []
+      },
+      {
+        "text": "What brings you in today?",
+        "locale": "en",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "大便是黑的吗？",
+        "locale": "zh-CN",
+        "expect": [
+          "presenting"
+        ]
+      },
+      {
+        "text": "Have you ever vomited blood?",
+        "locale": "en",
+        "expect": [
+          "blood-vomit"
+        ]
+      },
+      {
+        "text": "多久发作一次？",
+        "locale": "zh-CN",
+        "expect": [
+          "frequency"
+        ]
+      },
+      {
+        "text": "How are you feeling now?",
+        "locale": "en",
+        "expect": [
+          "postop-status"
+        ]
+      },
+      {
+        "text": "What medicines have you taken for it?",
+        "locale": "en",
+        "expect": [
+          "prev-meds"
+        ]
       }
     ]
   }

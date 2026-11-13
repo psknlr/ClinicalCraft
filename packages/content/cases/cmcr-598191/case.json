@@ -88,16 +88,16 @@
       "en": "Rank the suspect drugs by timing — the drug started four to five weeks before the illness, not the antibiotic added after the rash — and examine the mucosae and any peeling to exclude an SJS/TEN overlap (BAD 2016)."
     },
     {
-      "zh-CN": "治疗肝脏严重受累的DRESS：保持致敏药停用，不用非甾体抗炎药和非必需的新药，开始全身糖皮质激素（重症DRESS泼尼松1 mg/kg/d，法国国家DRESS诊疗方案PNDS 2024），并在6周至3个月或更长时间内缓慢减量（2024年国际Delphi共识）。",
-      "en": "Treat DRESS with severe liver involvement: keep the culprit stopped, add no NSAID or non-essential new drug, and start a systemic corticosteroid (prednisone 1 mg/kg/day in severe DRESS; French national DRESS protocol, PNDS 2024) tapered over 6 weeks to 3 months or longer (international Delphi consensus 2024)."
+      "zh-CN": "治疗肝脏严重受累的DRESS：保持致敏药停用，不用非甾体抗炎药和非必需的新药，开始全身糖皮质激素（重症DRESS泼尼松1 mg/kg/d，约用1个月，不用冲击；法国国家DRESS诊疗方案PNDS 2024），再在3–6个月内缓慢减量（PNDS 2024；2024年国际Delphi共识）。",
+      "en": "Treat DRESS with severe liver involvement: keep the culprit stopped, add no NSAID or non-essential new drug, and start a systemic corticosteroid (prednisone 1 mg/kg/day for about a month in severe DRESS, no pulses; French national DRESS protocol, PNDS 2024), tapered over 3 to 6 months (PNDS 2024; international Delphi consensus 2024)."
     },
     {
       "zh-CN": "在皮疹好转而胆红素上升、凝血酶原活动度下降时识别肝衰竭风险，监测意识状态、扑翼样震颤和血糖，并与肝移植中心联系（ACG 2021；EASL 2019）。",
       "en": "Recognise threatened liver failure when the rash improves but bilirubin rises and prothrombin activity falls, monitor conscious level, asterixis and glucose, and discuss the patient with a liver transplant centre (ACG 2021; EASL 2019)."
     },
     {
-      "zh-CN": "病程数周后再次发热和黄疸时，先排查感染、病毒再激活和新加药物，再恢复糖皮质激素剂量并更慢地减量（2024年国际Delphi共识）。",
-      "en": "Manage fever and jaundice returning weeks into the illness by looking for infection, viral reactivation and newly added drugs before restoring the corticosteroid dose and tapering more slowly (Delphi consensus 2024)."
+      "zh-CN": "病程数周后再次发热和黄疸时，先排查感染和DRESS复发的诱因——隐匿的再接触或新加的药物、激素减量过快、人类疱疹病毒6型、EB病毒或巨细胞病毒再激活（法国PNDS 2024）——再重新加大糖皮质激素剂量并更慢地减量。",
+      "en": "Manage fever and jaundice returning weeks into the illness by looking for infection and for the triggers of a DRESS flare — a hidden re-exposure or a newly added drug, a too-rapid taper, HHV-6, EBV or CMV reactivation (French PNDS 2024) — before raising the corticosteroid again and tapering more slowly."
     },
     {
       "zh-CN": "防止再次接触：把致敏药作为严重迟发型反应登记并发放警示卡，在过敏专科评估前避免非甾体抗炎药，绝不再激发，转诊药物过敏专科，并随访迟发性自身免疫并发症（NICE CG183，2014；Kano 2015）。",
@@ -2817,7 +2817,7 @@
           "available": true,
           "text": {
             "zh-CN": "报告把五天后的肝功能恶化（总胆红素255.9 μmol/L、白蛋白26.3 g/L、凝血酶原活动度37%、腹水）称为肝衰竭。治疗包括糖皮质激素和多种支持药物（其中有多种保肝药联用）；病情好转后，第25天再次发热、黄疸，此后逐渐恢复，约第38天肝功能恢复正常；停药后一年无复发。本病例没有记录各药物的名称、剂量和疗程，也没有记录肝性脑病评估、INR、人类疱疹病毒6型检测和过敏专科评估。单个病例无法区分各药物各自的作用。",
-            "en": "The report calls the deterioration five days later (total bilirubin 255.9 μmol/L, albumin 26.3 g/L, prothrombin activity 37%, ascites) liver failure. Treatment included glucocorticoids and several supportive medicines, among them a combination of liver-protective drugs; after improving she had fever and jaundice again on day 25, then recovered gradually, with normal liver tests by about day 38, and no recurrence in the year after the medicines were stopped. The case does not record the drugs' names, doses or durations, any encephalopathy assessment, INR, human herpesvirus 6 testing or an allergy-specialist assessment. A single case cannot separate the effect of each drug."
+            "en": "The report calls the deterioration five days later (total bilirubin 255.9 μmol/L, albumin 26.3 g/L, prothrombin activity 37%, ascites) liver failure. Treatment included glucocorticoids and several supportive medicines, among them a combination of liver-protective drugs; after improving she had fever and jaundice again on day 25, then recovered gradually, with normal liver tests around day 38, and no recurrence in the year after the medicines were stopped. The case does not record the drugs' names, doses or durations, any encephalopathy assessment, INR, human herpesvirus 6 testing or an allergy-specialist assessment. A single case cannot separate the effect of each drug."
           },
           "source": {
             "zh-CN": "报告（1.0.0版摘录）：治疗及转归（激素及多种支持药后改善，第25天再发热黄疸，约第38天肝功能正常，停药后一年无复发）；“肝衰竭”的称谓与“保肝药组合”见1.0.0版的决策选项和反馈",
@@ -3041,8 +3041,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "布洛芬是首要怀疑的致敏药：同属丙酸类的萘普生、酮洛芬等最可能交叉反应，其他非甾体抗炎药在过敏专科评估前也应避免（EAACI 2013非甾体抗炎药超敏反应分类）；她又正处于严重肝损伤之中。发热先用物理降温。",
-        "en": "Ibuprofen is the prime suspect: propionic-acid relatives such as naproxen and ketoprofen are the likeliest to cross-react, and other NSAIDs wait for an allergist's advice (EAACI 2013 classification of NSAID hypersensitivity) — and her liver is badly injured. Cool her physically for the fever."
+        "zh-CN": "布洛芬是首要怀疑的致敏药：法国PNDS（2024）规定致敏药及同一化学类别的药物一律禁用——同属丙酸类的萘普生、酮洛芬等最可能交叉反应（EAACI 2013非甾体抗炎药超敏反应分类）——其他非甾体抗炎药在过敏专科评估前也应避免；她又正处于严重肝损伤之中。发热用物理降温：肝细胞损伤如此明显时，PNDS也不主张用对乙酰氨基酚。",
+        "en": "Ibuprofen is the prime suspect: the French PNDS (2024) contraindicates the culprit and its chemical family — propionic acids such as naproxen and ketoprofen, the likeliest to cross-react (EAACI 2013 classification of NSAID hypersensitivity) — and other NSAIDs wait for an allergist's advice; her liver is badly injured too. Cool her physically for the fever: with liver-cell injury this marked the PNDS rules out paracetamol as well."
       },
       "response": {
         "zh-CN": "已给药。",
@@ -3146,8 +3146,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "泼尼松1 mg/kg/d（重症DRESS的剂量；或等效剂量的泼尼松龙、甲泼尼龙，不能口服时静脉给予），不用冲击；病情控制后在6周至3个月或更长时间内缓慢减量。",
-        "en": "Prednisone 1 mg/kg/day (the dose for severe DRESS; or an equivalent dose of prednisolone or methylprednisolone, IV if she cannot swallow), no pulses; tapered slowly over 6 weeks to 3 months or longer once the illness is controlled."
+        "zh-CN": "泼尼松1 mg/kg/d（重症DRESS的剂量；或等效剂量的泼尼松龙、甲泼尼龙，不能口服时静脉给予），不用冲击，约用1个月；之后在3–6个月内非常缓慢地减量。",
+        "en": "Prednisone 1 mg/kg/day (the dose for severe DRESS; or an equivalent dose of prednisolone or methylprednisolone, IV if she cannot swallow), no pulses, for about a month; then tapered very gradually over 3 to 6 months."
       },
       "requires": [
         "medications"
@@ -3505,8 +3505,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "DRESS在激素骤停或减量过快时容易复发，2024年国际Delphi共识建议重症患者的全身糖皮质激素在6周至3个月内逐渐减量。皮疹好转不是停药的理由，肝脏指标恶化也不是——后者提示需要评估肝衰竭风险。",
-        "en": "DRESS tends to flare when steroids are stopped suddenly or tapered too fast, and the 2024 international Delphi consensus tapers systemic glucocorticoids over 6 weeks to 3 months in severe disease. A settling rash is no reason to stop, and nor is a worsening liver — that is a signal to assess for liver failure."
+        "zh-CN": "DRESS在激素骤停或减量过快时容易复发，2024年国际Delphi共识建议重症患者的全身糖皮质激素在3–6个月内逐渐减量，法国PNDS（2024）亦同。皮疹好转不是停药的理由，肝脏指标恶化也不是——后者提示需要评估肝衰竭风险。",
+        "en": "DRESS tends to flare when steroids are stopped suddenly or tapered too fast, and the 2024 international Delphi consensus tapers systemic glucocorticoids over 3 to 6 months in severe disease, as does the French PNDS (2024). A settling rash is no reason to stop, and nor is a worsening liver — that is a signal to assess for liver failure."
       },
       "response": {
         "zh-CN": "已停用。",
@@ -3552,8 +3552,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "在药物超敏反应活动期一次加用几种新药，会增加新的致敏和病情反复的风险，而没有证据表明这类联用能阻止肝衰竭；它们也不能替代糖皮质激素、严密监测和及早与肝移植中心联系（ACG 2021）。",
-        "en": "Several new drugs at once during an active drug hypersensitivity add to the risk of new sensitisation and flares, with no evidence that such combinations prevent liver failure; nor do they replace the steroid, close monitoring and an early call to a transplant centre (ACG 2021)."
+        "zh-CN": "在药物超敏反应活动期一次加用几种新药，会增加新的致敏和病情反复的风险（法国PNDS 2024要求新药只用必需的）；《中国药物性肝损伤诊治指南（2023年版）》不推荐2种或以上以降低ALT为主的药物联合应用，也没有证据表明这类联用能阻止肝衰竭。它们也不能替代糖皮质激素、严密监测和及早与肝移植中心联系（ACG 2021）。",
+        "en": "Several new drugs at once during an active drug hypersensitivity add to the risk of new sensitisation and flares (the French PNDS 2024 limits new drugs to the essential), and the 2023 Chinese DILI guideline advises against combining two or more mainly ALT-lowering drugs — nothing shows such combinations prevent liver failure. Nor do they replace the steroid, close monitoring and an early call to a transplant centre (ACG 2021)."
       },
       "response": {
         "zh-CN": "已给药。治疗中用过多种保肝药联用有记录；本病例不模拟其效果。",
@@ -3629,8 +3629,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "恢复到起始剂量（泼尼松1 mg/kg/d或等效剂量），病情控制后更慢地减量。",
-        "en": "Back to the starting dose (prednisone 1 mg/kg/day or equivalent), then a slower taper once controlled."
+        "zh-CN": "重新加量到上次能控制病情的剂量，最多为起始剂量（泼尼松1 mg/kg/d或等效剂量）；病情控制后更慢地减量。",
+        "en": "Raise it again to the dose that last controlled the illness, at most the starting prednisone 1 mg/kg/day or equivalent; then a slower taper once controlled."
       },
       "requires": [
         "medications"
@@ -4267,8 +4267,8 @@
     {
       "id": "first-day-plan",
       "prompt": {
-        "zh-CN": "你的工作诊断是布洛芬引起的DRESS，伴肝脏受累——黄疸（总胆红素133.6 μmol/L）、ALT 585 U/L、凝血酶原活动度64%。布洛芬和青霉素都已停用；她体温39.2 ℃，血压96/60，白细胞11.62×10⁹/L。今天怎么处理？",
-        "en": "You are treating this as DRESS to ibuprofen with liver involvement — jaundice (bilirubin 133.6 μmol/L), ALT 585 U/L and a prothrombin activity of 64%. The ibuprofen and the penicillin have both been stopped; she is at 39.2 °C with a BP of 96/60 and white cells of 11.62×10⁹/L. What do you do today?"
+        "zh-CN": "你的工作诊断是布洛芬引起的DRESS，伴肝脏受累——黄疸（总胆红素133.6 μmol/L）、ALT 585 U/L、AST 878 U/L、凝血酶原活动度64%。布洛芬和青霉素都已停用；她体温39.2 ℃，血压96/60，白细胞11.62×10⁹/L。今天怎么处理？",
+        "en": "You are treating this as DRESS to ibuprofen with liver involvement — jaundice (bilirubin 133.6 μmol/L), ALT 585 U/L, AST 878 U/L and a prothrombin activity of 64%. The ibuprofen and the penicillin have both been stopped; she is at 39.2 °C with a BP of 96/60 and white cells of 11.62×10⁹/L. What do you do today?"
       },
       "kind": "single",
       "requires": {
@@ -4287,8 +4287,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。停用致敏药是第一步治疗，新药——尤其非甾体抗炎药和抗生素——只用确有指征的。黄疸加上凝血酶原活动度降低，说明肝脏已有功能障碍，而不只是转氨酶升高：2024年国际Delphi共识对重症DRESS使用全身糖皮质激素，并在6周至3个月内减量；法国国家DRESS诊疗方案（PNDS，2024）对重症DRESS用泼尼松等效剂量1 mg/kg/d。血培养回答感染问题，而不必先上抗生素。",
-            "en": "Right. Withdrawing the culprit is the first treatment, and new drugs — NSAIDs and antibiotics above all — are kept to what is clearly needed. Jaundice with a reduced prothrombin activity is liver dysfunction, not just an enzyme rise: the 2024 international Delphi consensus gives systemic glucocorticoids in severe DRESS, tapered over 6 weeks to 3 months, and the French national DRESS protocol (PNDS, 2024) uses 1 mg/kg/day of prednisone equivalent in severe DRESS. Blood cultures answer the infection question without an antibiotic first."
+            "zh-CN": "正确。停用致敏药是第一步治疗，新药——尤其非甾体抗炎药和抗生素——只用确有指征的（法国国家DRESS诊疗方案PNDS 2024提醒DRESS容易多重致敏）。AST 878 U/L远超任何常用参考上限的15倍（本病例没有记录参考范围），按Delphi共识和PNDS的分级属于肝脏重度受累；黄疸加上凝血酶原活动度降低，说明肝脏已有功能障碍，而不只是转氨酶升高。2024年国际Delphi共识对每一例重症DRESS都使用全身糖皮质激素，并在3–6个月内减量；PNDS用泼尼松等效剂量1 mg/kg/d，约1个月，不用冲击。血培养回答感染问题，而不必先上抗生素。",
+            "en": "Right. Withdrawing the culprit is the first treatment, and new drugs — NSAIDs and antibiotics above all — are kept to what is clearly needed (the French national DRESS protocol, PNDS 2024, warns of polysensitisation). AST 878 U/L is far above 15 times any usual upper limit (no reference range is recorded) — severe liver involvement in the Delphi and PNDS grading — and jaundice with a reduced prothrombin activity is liver dysfunction, not just an enzyme rise. The 2024 international Delphi consensus starts systemic glucocorticoids in every severe case and tapers them over 3 to 6 months; the PNDS gives 1 mg/kg/day of prednisone equivalent for about a month, without pulses. Blood cultures answer the infection question without an antibiotic first."
           }
         },
         {
@@ -4299,8 +4299,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "强效外用激素是2024年国际Delphi共识对轻度DRESS的治疗，中度可视情况加用全身激素；但她有黄疸——总胆红素133.6 μmol/L、ALT 585 U/L、凝血酶原活动度64%——这种程度的肝功能障碍要用全身激素治疗。等皮疹加重再用，看错了器官：威胁她生命的不是皮肤。",
-            "en": "High-potency topical steroids are the 2024 Delphi consensus treatment for mild DRESS, with systemic steroids added as needed in moderate disease, but she is jaundiced — bilirubin 133.6 μmol/L, ALT 585 U/L, prothrombin activity 64% — and liver dysfunction of this degree is treated systemically. Waiting for the rash to worsen watches the wrong organ: her skin is not what threatens her life."
+            "zh-CN": "强效外用激素是2024年国际Delphi共识对轻度DRESS的治疗，中度可考虑加用全身激素；但她有黄疸——总胆红素133.6 μmol/L、AST 878 U/L、凝血酶原活动度64%——肝脏重度受累一律用全身激素治疗。等皮疹加重再用，看错了器官：威胁她生命的不是皮肤。",
+            "en": "High-potency topical steroids are the 2024 Delphi consensus treatment for mild DRESS, with systemic steroids considered in moderate disease, but she is jaundiced — bilirubin 133.6 μmol/L, AST 878 U/L, prothrombin activity 64% — and severe liver involvement is treated systemically in every case. Waiting for the rash to worsen watches the wrong organ: her skin is not what threatens her life."
           }
         },
         {
@@ -4311,8 +4311,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "留血培养是对的，但发热、白细胞升高和偏低的血压本身就是DRESS的表现，她的血压未到休克范围，记录中也没有感染灶：拯救脓毒症运动指南（2021）对可能的脓毒症而无休克者要求迅速评估，感染可能性低时暂缓抗菌药物并密切监测。药物反应活动期加用新的β-内酰胺类可能诱发病情反复；等48小时培养结果再用激素，会延误她的肝脏所需的治疗（2024年国际Delphi共识）。",
-            "en": "Cultures are right, but fever, a raised white count and a low-normal blood pressure are part of DRESS, her blood pressure is not in the shock range and no source is recorded: for possible sepsis without shock the Surviving Sepsis Campaign (2021) asks for rapid assessment and defers antimicrobials, with close monitoring, when infection is unlikely. A new β-lactam during an active drug reaction can provoke a flare, and holding steroids for 48 hours of cultures delays the treatment her liver needs (Delphi 2024)."
+            "zh-CN": "留血培养是对的，但发热、白细胞升高和偏低的血压本身就是DRESS的表现，她的血压未到休克范围，记录中也没有感染灶：拯救脓毒症运动指南（2021）对可能的脓毒症而无休克者要求迅速评估，感染可能性低时暂缓抗菌药物并密切监测。药物反应活动期加用新的β-内酰胺类可能诱发病情反复；等48小时培养结果再用激素，会延误她的肝脏所需的治疗（2024年国际Delphi共识）；而且法国PNDS（2024）在明显的肝细胞损伤时禁用对乙酰氨基酚，退热应改用物理降温。",
+            "en": "Cultures are right, but fever, a raised white count and a low-normal blood pressure are part of DRESS, her blood pressure is not in the shock range and no source is recorded: for possible sepsis without shock the Surviving Sepsis Campaign (2021) asks for rapid assessment and defers antimicrobials, with close monitoring, when infection is unlikely. A new β-lactam during an active drug reaction can provoke a flare, holding steroids for 48 hours of cultures delays the treatment her liver needs (Delphi 2024), and the French PNDS (2024) contraindicates paracetamol in marked liver-cell injury — cool her physically instead."
           }
         },
         {
@@ -4323,8 +4323,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "冲击3天后直接停药，很容易复发：DRESS在激素骤停或减量过快时常常反复，2024年国际Delphi共识建议全身糖皮质激素在6周至3个月内逐渐减量，法国PNDS（2024）也不推荐冲击治疗。黄疸患者使用激素确有代价，但对策是严密监测，而不是骤停。",
-            "en": "Three days of pulses and an abrupt stop invite a relapse: DRESS commonly flares when steroids are withdrawn suddenly or quickly, the 2024 Delphi consensus tapers systemic glucocorticoids over 6 weeks to 3 months, and the French PNDS (2024) does not recommend pulses. Steroids carry a real cost in a jaundiced patient, but the answer is close monitoring, not a sudden stop."
+            "zh-CN": "冲击3天后直接停药，很容易复发：DRESS在激素骤停或减量过快时常常反复，2024年国际Delphi共识建议重症DRESS的全身糖皮质激素在3–6个月内逐渐减量，法国PNDS（2024）也不推荐冲击治疗，认为冲击似与更多的病毒再激活和更高的死亡率相关。黄疸患者使用激素确有代价，但对策是严密监测，而不是骤停。",
+            "en": "Three days of pulses and an abrupt stop invite a relapse: DRESS commonly flares when steroids are withdrawn suddenly or quickly, the 2024 Delphi consensus tapers systemic glucocorticoids over 3 to 6 months in severe DRESS, and the French PNDS (2024) does not recommend pulses, which it links to more viral reactivation and higher mortality. Steroids carry a real cost in a jaundiced patient, but the answer is close monitoring, not a sudden stop."
           }
         }
       ]
@@ -4365,8 +4365,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。皮疹和体温在好转，胆红素却从133.6升到255.9 μmol/L，凝血酶原活动度从64%降到37%，还出现了腹水：皮肤好转时肝脏正在衰竭。ACG 2021把伴进行性黄疸（无论有无凝血障碍）的药物性肝损伤患者转诊到可做肝移植的中心评估，EASL 2019也要求对药物性急性肝衰竭考虑肝移植；是否已经达到急性肝衰竭，要看肝性脑病和INR，而这两项都没有记录——所以必须去查，并监测血糖。此时骤停激素，只会在肝脏危机之上再加一次DRESS复发。",
-            "en": "Right. The skin and temperature improved while bilirubin rose from 133.6 to 255.9 μmol/L, prothrombin activity fell from 64% to 37% and ascites appeared: the liver is failing as the rash settles. ACG 2021 sends drug-induced liver injury with progressive jaundice, with or without coagulopathy, to a tertiary centre that can consider liver transplantation, and EASL (2019) asks for transplantation to be considered in drug-induced acute liver failure; whether this already is acute liver failure turns on encephalopathy and the INR, neither of them recorded — so look for both, and watch the glucose. Stopping the steroid suddenly now would add a DRESS flare to the liver crisis."
+            "zh-CN": "正确。皮疹和体温在好转，胆红素却从133.6升到255.9 μmol/L，凝血酶原活动度从64%降到37%，还出现了腹水：皮肤好转时肝脏正在衰竭。ACG 2021把伴进行性黄疸（无论有无凝血障碍）的药物性肝损伤患者转诊到可做肝移植的中心评估，EASL 2019也要求对药物性急性肝衰竭考虑肝移植；是否已经达到急性肝衰竭，要看肝性脑病和INR，而这两项都没有记录——所以必须去查，并监测血糖；法国PNDS（2024）把凝血酶原活动度低于50%伴肝性脑病称为暴发性肝炎，需紧急评估肝移植。此时骤停激素，只会在肝脏危机之上再加一次DRESS复发。",
+            "en": "Right. The skin and temperature improved while bilirubin rose from 133.6 to 255.9 μmol/L, prothrombin activity fell from 64% to 37% and ascites appeared: the liver is failing as the rash settles. ACG 2021 sends drug-induced liver injury with progressive jaundice, with or without coagulopathy, to a tertiary centre that can consider liver transplantation, and EASL (2019) asks for transplantation to be considered in drug-induced acute liver failure; whether this already is acute liver failure turns on encephalopathy and the INR, neither of them recorded — so look for both, and watch the glucose; the French PNDS (2024) calls a prothrombin activity below 50% with encephalopathy fulminant hepatitis, for urgent transplant assessment. Stopping the steroid suddenly now would add a DRESS flare to the liver crisis."
           }
         },
         {
@@ -4377,8 +4377,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "没有证据表明是激素造成了恶化：停用致敏药后，DRESS的肝损伤仍可进展数天；而骤停激素会诱发复发（2024年国际Delphi共识：6周至3个月内减量）。多种保肝药联用等于在超敏反应活动期一次加几种新药，没有证据能阻止肝衰竭；凝血酶原活动度37%时，等三天也太久。这种多药保肝的做法接近报告当年的支持治疗。",
-            "en": "Nothing shows the steroid caused this: DRESS hepatitis can progress for days after the culprit is stopped, and an abrupt stop invites a flare (Delphi 2024: taper over 6 weeks to 3 months). A combination of liver-protective drugs adds several new drugs to an active hypersensitivity with no evidence that it prevents liver failure, and three days is too long to wait at a prothrombin activity of 37%. Several liver-protective drugs together is close to the report's supportive care."
+            "zh-CN": "没有证据表明是激素造成了恶化：停用致敏药后，DRESS的肝损伤仍可进展数天；而骤停激素会诱发复发（2024年国际Delphi共识：重症DRESS在3–6个月内减量）。多种保肝药联用等于在超敏反应活动期一次加几种新药，《中国药物性肝损伤诊治指南（2023年版）》也不推荐2种或以上以降低ALT为主的药物联合应用，且没有证据表明联用能阻止肝衰竭；凝血酶原活动度37%时，等三天也太久。这种多药保肝的做法接近报告当年的支持治疗。",
+            "en": "Nothing shows the steroid caused this: DRESS hepatitis can progress for days after the culprit is stopped, and an abrupt stop invites a flare (Delphi 2024: taper severe DRESS over 3 to 6 months). A combination of liver-protective drugs adds several new drugs to an active hypersensitivity, the 2023 Chinese DILI guideline advises against combining two or more mainly ALT-lowering drugs, and nothing shows such combinations prevent liver failure; three days is too long to wait at a prothrombin activity of 37%. Several liver-protective drugs together is close to the report's supportive care."
           }
         },
         {
@@ -4436,13 +4436,13 @@
         {
           "id": "relapse-workup",
           "text": {
-            "zh-CN": "先按DRESS复发处理：核对入院后新加的药，留血培养找感染灶，查HHV-6和CMV DNA及肝功能；激素恢复到起始剂量后更慢地减量",
-            "en": "Treat it as a DRESS relapse until shown otherwise: review the drugs added since admission, take blood cultures, send HHV-6 and CMV DNA and liver tests, and restore the steroid dose with a slower taper"
+            "zh-CN": "先按DRESS复发处理：核对入院后新加的药，留血培养找感染灶，查HHV-6和CMV DNA及肝功能；激素重新加量后更慢地减量",
+            "en": "Treat it as a DRESS relapse until shown otherwise: review the drugs added since admission, take blood cultures, send HHV-6 and CMV DNA and liver tests, and raise the steroid again with a slower taper"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。DRESS常在起病数周后再次加重，多伴人类疱疹病毒6型或巨细胞病毒再激活，激素减量过快或新加药物也可诱发；她在用激素，感染必须排除。2024年国际Delphi共识要求检测EB病毒、巨细胞病毒和人类疱疹病毒6型载量，激素在6周至3个月内减量，巨细胞病毒载量高时考虑更昔洛韦或缬更昔洛韦，对激素无效者再考虑环孢素、抗IL-5抗体或静脉免疫球蛋白。本病例没有记录第25天实际做了什么。",
-            "en": "Right. Flares weeks into the illness are characteristic of DRESS — often with human herpesvirus 6 or CMV reactivation — and a fast taper or a newly added drug can also set one off; on steroids, infection must be excluded. The 2024 Delphi consensus measures EBV, CMV and HHV-6 viral loads, tapers over 6 weeks to 3 months, considers ganciclovir or valganciclovir for a high CMV load, and keeps ciclosporin, anti-IL-5 antibodies or IVIG for disease that does not respond to corticosteroids. The case does not record what was done on day 25."
+            "zh-CN": "正确。DRESS常在起病数周后再次加重，法国PNDS（2024）列出了要查找的诱因：隐匿地再次接触致敏药或结构相近的药物、急性期新加的药物、激素减量过快，以及人类疱疹病毒6型、EB病毒或巨细胞病毒复制；她在用激素，感染也必须排除。2024年国际Delphi共识要求检测EB病毒、巨细胞病毒和人类疱疹病毒6型载量，重症DRESS的激素在3–6个月内减量，巨细胞病毒载量高时考虑更昔洛韦或缬更昔洛韦，对激素无效者再考虑环孢素、抗IL-5抗体或静脉免疫球蛋白。本病例没有记录第25天实际做了什么。",
+            "en": "Right. Flares weeks into the illness are characteristic of DRESS, and the French PNDS (2024) lists what to look for: a hidden re-exposure to the drug or a chemically related one, a drug newly added in the acute phase, a too-rapid taper and HHV-6, EBV or CMV replication; on steroids, infection must be excluded too. The 2024 Delphi consensus measures EBV, CMV and HHV-6 viral loads, tapers severe DRESS over 3 to 6 months, considers ganciclovir or valganciclovir for a high CMV load, and keeps ciclosporin, anti-IL-5 antibodies or IVIG for disease that does not respond to corticosteroids. The case does not record what was done on day 25."
           }
         },
         {
@@ -4465,8 +4465,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "2024年国际Delphi共识在DRESS对糖皮质激素无效时才考虑环孢素、抗IL-5抗体或静脉免疫球蛋白——不是在一度好转后出现一次复发就替换，更不能不查感染、病毒再激活和新加药物。骤停激素还会再添一次撤药性反复。",
-            "en": "The 2024 Delphi consensus considers ciclosporin, anti-IL-5 antibodies or IVIG when DRESS does not respond to corticosteroids — not as a replacement after one relapse in a patient who had been improving, and never without first looking for infection, viral reactivation and newly added drugs. A sudden stop adds a withdrawal flare."
+            "zh-CN": "2024年国际Delphi共识在DRESS对糖皮质激素无效时才考虑环孢素、抗IL-5抗体或静脉免疫球蛋白——不是在一度好转后出现一次复发就替换，更不能不查感染、病毒再激活和新加药物。静脉免疫球蛋白也不能单用：法国PNDS（2024）认为单用无效且耐受差，Delphi专家组也提到不联用激素时的毒性反应。骤停激素还会再添一次撤药性反复。",
+            "en": "The 2024 Delphi consensus considers ciclosporin, anti-IL-5 antibodies or IVIG when DRESS does not respond to corticosteroids — not as a replacement after one relapse in a patient who had been improving, and never without first looking for infection, viral reactivation and newly added drugs. Nor is IVIG given on its own: the French PNDS (2024) finds it ineffective and poorly tolerated alone, and the Delphi panel notes toxic effects without corticosteroids. A sudden stop adds a withdrawal flare."
           }
         },
         {
@@ -4486,8 +4486,8 @@
     {
       "id": "long-term-plan",
       "prompt": {
-        "zh-CN": "复发控制后她将出院。一年前她对一种含布洛芬的药物出过全身皮疹，这次又在连续服用布洛芬后发病。出院时你给她什么样的长期安全方案？",
-        "en": "Once the relapse is controlled she will go home. A year ago an ibuprofen-containing product gave her a rash all over, and this illness followed weeks of ibuprofen. What long-term safety plan does she leave with?"
+        "zh-CN": "提前为她出院作打算。一年前她对一种含布洛芬的药物出过全身皮疹，这次又在连续服用布洛芬后发病。出院时你要给她什么样的长期安全方案？",
+        "en": "Plan ahead for her discharge. A year ago an ibuprofen-containing product gave her a rash all over, and this illness followed weeks of ibuprofen. What long-term safety plan should she leave with?"
       },
       "kind": "single",
       "requires": {
@@ -4501,13 +4501,13 @@
         {
           "id": "allergy-plan",
           "text": {
-            "zh-CN": "布洛芬登记为严重迟发型药物反应的致敏药并发警示卡，过敏专科评估前避免所有非甾体抗炎药（含复方感冒止痛药）；注明青霉素为出疹后加用；转诊药物过敏专科；数月内随访甲状腺功能、血糖和肝功能",
-            "en": "Record ibuprofen as the cause of a severe delayed reaction with an alert card, advise against all NSAIDs — cold and pain combinations included — until an allergist has seen her, note that the penicillin came after the rash, refer to a drug-allergy service, and check thyroid function, glucose and liver tests for months"
+            "zh-CN": "布洛芬登记为严重迟发型反应的致敏药并发警示卡，过敏专科评估前不用任何非甾体抗炎药（含复方感冒止痛药）；注明青霉素为出疹后加用；转诊药物过敏专科；数月内随访甲状腺功能、血糖和肝功能",
+            "en": "Record ibuprofen as the cause of a severe delayed reaction, with an alert card; no NSAIDs, cold and pain combinations included, until an allergist has seen her; note that the penicillin was added after the rash; refer to a drug-allergy service; thyroid, glucose and liver tests for months"
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。NICE CG183（2014）要求把药物过敏连同药名、反应和时间记录下来，告诉患者需要避免哪些药物，并把DRESS这类严重非速发型反应转诊到药物过敏专科。她一年前已经对含布洛芬的药物出过反应——这条病史如果被记录、被解释，就能避免这次再接触。DRESS后还可出现迟发的自身免疫病（甲状腺炎、1型糖尿病；Kano 2015），所以随访不能只看肝脏。",
-            "en": "Right. NICE CG183 (2014) asks that a drug allergy be recorded with the drug, the reaction and when it happened, that the person be told which drugs to avoid, and that a severe non-immediate reaction such as DRESS be referred to a specialist drug-allergy service. She had already reacted to an ibuprofen-containing product a year before — history that, recorded and explained, prevents a re-exposure. Late autoimmune disease (thyroiditis, type 1 diabetes) is reported after DRESS (Kano 2015), so follow-up goes beyond the liver."
+            "zh-CN": "正确。NICE CG183（2014）要求把药物过敏连同药名、反应和时间记录下来，告诉患者需要避免哪些药物，并把DRESS这类严重非速发型反应转诊到药物过敏专科；法国PNDS（2024）规定致敏药及同一化学类别的药物一律禁用。她一年前已经对含布洛芬的药物出过反应——这条病史如果被记录、被解释，就能避免这次再接触。青霉素不是这场病的诱因，但急性期新加的药物可能造成共同致敏，所以由过敏专科评估，现在既不贴标签，也不宣布可以放心使用。DRESS后还可出现迟发的自身免疫病（甲状腺炎、1型糖尿病；Kano 2015），所以随访不能只看肝脏，至少持续一年（PNDS 2024）。",
+            "en": "Right. NICE CG183 (2014) asks that a drug allergy be recorded with the drug, the reaction and when it happened, that the person be told which drugs to avoid, and that a severe non-immediate reaction such as DRESS be referred to a specialist drug-allergy service; the French PNDS (2024) contraindicates the culprit and its chemical family. She had already reacted to an ibuprofen-containing product a year before — history that, recorded and explained, prevents a re-exposure. The penicillin did not start the illness, but a drug added in the acute phase can co-sensitise, so the allergist assesses it rather than anyone labelling or clearing it now. Late autoimmune disease (thyroiditis, type 1 diabetes) is reported after DRESS (Kano 2015), so follow-up goes beyond the liver and lasts at least a year (PNDS 2024)."
           }
         },
         {
@@ -4525,13 +4525,13 @@
         {
           "id": "naproxen-switch",
           "text": {
-            "zh-CN": "把布洛芬登记为致敏药并发警示卡，教她认出含布洛芬的感冒药；她的膝痛改用另一种非甾体抗炎药萘普生，一个月后复查肝功能；转诊药物过敏专科，数月内随访甲状腺功能和血糖",
-            "en": "Record ibuprofen as the culprit with an alert card and show her which cold remedies contain it; treat her knee pain with a different NSAID, naproxen, with liver tests after a month; refer to a drug-allergy service and follow thyroid function and glucose for months"
+            "zh-CN": "把布洛芬登记为致敏药并发警示卡，教她认出含布洛芬的感冒药；她的膝痛改用另一种非甾体抗炎药萘普生，从最低有效剂量用起，一个月后复查肝功能；转诊药物过敏专科，数月内随访甲状腺功能和血糖",
+            "en": "Record ibuprofen as the culprit with an alert card and show her which cold remedies contain it; treat her knee pain with a different NSAID, naproxen, at the lowest effective dose with liver tests after a month; refer to a drug-allergy service and follow thyroid function and glucose for months"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "萘普生和布洛芬同属丙酸类非甾体抗炎药，是最可能交叉反应的一组（EAACI 2013非甾体抗炎药超敏反应分类）；其他非甾体抗炎药要等过敏专科的意见，何况她的肝脏刚刚恢复。膝痛的止痛方案应与过敏专科和肝病科共同商定。",
-            "en": "Naproxen is a propionic-acid NSAID like ibuprofen, the group likeliest to cross-react (EAACI 2013 classification of NSAID hypersensitivity); other NSAIDs wait for the allergist, and her liver has only just recovered. Pain relief for her knee should be agreed with the allergy and liver teams."
+            "zh-CN": "萘普生和布洛芬同属丙酸类非甾体抗炎药，是最可能交叉反应的一组（EAACI 2013非甾体抗炎药超敏反应分类），法国PNDS（2024）更规定致敏药的同一化学类别一律禁用；其他非甾体抗炎药要等过敏专科的意见，何况她的肝脏刚刚恢复。膝痛的止痛方案应与过敏专科和肝病科共同商定。",
+            "en": "Naproxen is a propionic-acid NSAID like ibuprofen, the group likeliest to cross-react (EAACI 2013 classification of NSAID hypersensitivity), and the French PNDS (2024) contraindicates the culprit's chemical family outright; other NSAIDs wait for the allergist, and her liver has only just recovered. Pain relief for her knee should be agreed with the allergy and liver teams."
           }
         },
         {
@@ -4846,8 +4846,8 @@
       "domain": "management",
       "weight": 2,
       "text": {
-        "zh-CN": "首次作答即按DRESS复发处理（决策 4），在第25天送检血培养和病毒DNA，并恢复激素剂量",
-        "en": "Handled the recurrence as a DRESS relapse at the first attempt (decision 4), sent blood cultures and viral DNA on day 25 and restored the steroid dose"
+        "zh-CN": "首次作答即按DRESS复发处理（决策 4），在第25天送检血培养和病毒DNA，并重新加大激素剂量",
+        "en": "Handled the recurrence as a DRESS relapse at the first attempt (decision 4), sent blood cultures and viral DNA on day 25 and raised the steroid again"
       },
       "met": {
         "all": [
@@ -4913,8 +4913,8 @@
         "en": "Dr Feng (general medicine attending, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教，只围绕学员已经拿到的资料提问，例如：“把布洛芬、青霉素和三个症状排在一条时间线上，哪种药在发病前几周就开始了？”“嗜酸性粒细胞6.7%、白细胞11.62，绝对值是多少？为什么不能只看百分比？”“RegiSCAR现在能打几分，哪几项要等病程才知道？”“口腔溃疡、唇部血痂和躯干剥脱，提醒你还要查什么？”“她的肝脏受累算轻还是重？治疗强度要跟着哪个器官走？”“皮疹好了，肝脏呢？还缺什么信息才能说是肝衰竭？什么情况下你会给肝移植中心打电话？”“第三周以后又烧起来，你先想到哪几种原因？”“她一年前就对含布洛芬的药起过疹子，为什么还会再吃？这次你要在病历里写什么、告诉她什么？”。可以讲2024年国际Delphi共识、法国国家DRESS诊疗方案（2024）、RegiSCAR评分、英国皮肤科医师协会SJS/TEN指南（2016）、ACG 2021和EASL 2019药物性肝损伤指南、中国药物性肝损伤诊治指南（2023）和NICE CG183（2014）的相关原则；也可以指出一个值得追问的细节：既往已对同类药物致敏的人再次服用后常在几天内发病，而她这次在连续服药约32天后才发热，所以一年前那次皮疹的药物成分和这次的致敏药都只能说“很可能”，需要过敏专科判断。原报告的处理（糖皮质激素和多种支持药物，包括多种保肝药联用）是历史记录，在病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；血小板、肾功能、人类疱疹病毒6型、INR、意识状态、激素剂量和减量方案都没有记录，不要替它补上。",
-        "en": "A Socratic teacher who asks only about information the learner already has, for example: 'Put the ibuprofen, the penicillin and the three symptoms on one timeline — which drug started weeks before the illness?', 'Eosinophils 6.7% of 11.62 — what is the absolute count, and why is the percentage not enough?', 'How much of the RegiSCAR score can you give now, and which items must wait for the course?', 'The mouth ulcers, crusted lips and peeling trunk — what else do they make you check?', 'Is her liver involvement mild or severe, and which organ sets the strength of treatment?', 'The rash is better — and the liver? What is missing before you call this liver failure, and when would you phone a transplant centre?', 'A fever coming back after the third week — what causes do you think of first?', 'She had a rash after an ibuprofen product a year ago — how did she come to take it again, and what will you write and tell her this time?'. May explain the relevant principles of the 2024 international Delphi consensus, the French national DRESS protocol (2024), the RegiSCAR score, the BAD SJS/TEN guideline (2016), the ACG 2021 and EASL 2019 DILI guidelines, the 2023 Chinese DILI guideline and NICE CG183 (2014); and may point out a detail worth questioning: someone already sensitised to a drug usually reacts within days of taking it again, whereas her fever began about 32 days into continuous ibuprofen — so both what caused last year's rash and the culprit now are 'probable', for an allergist to assess. The report's management (glucocorticoids and several supportive medicines, including a combination of liver-protective drugs) is a historical record shown at the end of the case and compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; the platelet count, renal function, human herpesvirus 6, INR, conscious level, the steroid dose and the taper are not recorded — do not supply them."
+        "zh-CN": "苏格拉底式带教，复盘采用PEARLS框架，只围绕学员已经拿到的资料提问，例如：“把布洛芬、青霉素和三个症状排在一条时间线上，哪种药在发病前几周就开始了？”“嗜酸性粒细胞6.7%、白细胞11.62，绝对值是多少？为什么不能只看百分比？”“RegiSCAR现在能打几分，哪几项要等病程才知道？”“口腔溃疡、唇部血痂和躯干剥脱，提醒你还要查什么？”“她的肝脏受累算轻还是重？治疗强度要跟着哪个器官走？”“皮疹好了，肝脏呢？还缺什么信息才能说是肝衰竭？什么情况下你会给肝移植中心打电话？”“第三周以后又烧起来，你先想到哪几种原因？”“她一年前就对含布洛芬的药起过疹子，为什么还会再吃？这次你要在病历里写什么、告诉她什么？”。可以讲2024年国际Delphi共识、法国国家DRESS诊疗方案（2024）、RegiSCAR评分、英国皮肤科医师协会SJS/TEN指南（2016）、ACG 2021和EASL 2019药物性肝损伤指南、中国药物性肝损伤诊治指南（2023）和NICE CG183（2014）的相关原则；也可以指出一个值得追问的细节：既往已对同类药物致敏的人再次服用后常在几天内发病，而她这次在连续服药约32天后才发热，所以一年前那次皮疹的药物成分和这次的致敏药都只能说“很可能”，需要过敏专科判断。原报告的处理（糖皮质激素和多种支持药物，包括多种保肝药联用）是历史记录，在病例结束时才展示，届时再与现行指南对照。不提前说出诊断、任何决策的正确选项或结局；血小板、肾功能、人类疱疹病毒6型、INR、意识状态、激素剂量和减量方案都没有记录，不要替它补上。",
+        "en": "A Socratic preceptor who debriefs with PEARLS and asks only about information the learner already has, for example: 'Put the ibuprofen, the penicillin and the three symptoms on one timeline — which drug started weeks before the illness?', 'Eosinophils 6.7% of 11.62 — what is the absolute count, and why is the percentage not enough?', 'How much of the RegiSCAR score can you give now, and which items must wait for the course?', 'The mouth ulcers, crusted lips and peeling trunk — what else do they make you check?', 'Is her liver involvement mild or severe, and which organ sets the strength of treatment?', 'The rash is better — and the liver? What is missing before you call this liver failure, and when would you phone a transplant centre?', 'A fever coming back after the third week — what causes do you think of first?', 'She had a rash after an ibuprofen product a year ago — how did she come to take it again, and what will you write and tell her this time?'. May explain the relevant principles of the 2024 international Delphi consensus, the French national DRESS protocol (2024), the RegiSCAR score, the BAD SJS/TEN guideline (2016), the ACG 2021 and EASL 2019 DILI guidelines, the 2023 Chinese DILI guideline and NICE CG183 (2014); and may point out a detail worth questioning: someone already sensitised to a drug usually reacts within days of taking it again, whereas her fever began about 32 days into continuous ibuprofen — so both what caused last year's rash and the culprit now are 'probable', for an allergist to assess. The report's management (glucocorticoids and several supportive medicines, including a combination of liver-protective drugs) is a historical record shown at the end of the case and compared with current guidance only then. Never states the diagnosis, any decision's correct option or the outcome early; the platelet count, renal function, human herpesvirus 6, INR, conscious level, the steroid dose and the taper are not recorded — do not supply them."
       },
       "interprets": [
         "fbc",
@@ -4949,8 +4949,8 @@
         "en": "Dr Lu (dermatology, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "皮肤科会诊医生，只解读学员已经看过的结果。可以讲：DRESS与SJS/TEN的床旁鉴别（面部水肿、浸润、紫癜、鳞屑与水疱、表皮松解、尼氏征、靶形损害和黏膜受累部位；SJS/TEN的剥脱面积和SCORTEN——英国皮肤科医师协会2016）；RegiSCAR评分的各项及分档（<2排除，2–3可能，4–5很可能，>5确诊；Kardaun 2007），以及嗜酸性粒细胞要看绝对值；日本DIHS标准把人类疱疹病毒6型再激活作为条件之一；2024年国际Delphi共识按肝、肾、血液受累分轻中重度，轻度外用强效激素，重度用全身激素（中度视情况加用）并在6周至3个月内减量，激素无效时考虑环孢素、抗IL-5抗体或静脉免疫球蛋白；法国国家DRESS诊疗方案（PNDS，2024）对重症用泼尼松等效剂量1 mg/kg/d，不用冲击；恢复后由过敏专科评估，需要时做斑贴试验，绝不再激发。不说出诊断结论，不补充病例没有记录的数值或皮肤活检结果。",
-        "en": "Dermatology consultant who interprets only results the learner has read. Can explain: telling DRESS from SJS/TEN at the bedside (facial oedema, infiltration, purpura and scaling versus blisters, epidermal detachment, Nikolsky's sign, target lesions and the mucosal sites involved; the detached area and SCORTEN in SJS/TEN — BAD 2016); the RegiSCAR items and bands (< 2 excluded, 2–3 possible, 4–5 probable, > 5 definite; Kardaun 2007), and that eosinophils are counted as an absolute number; that the Japanese DIHS criteria include human herpesvirus 6 reactivation; the 2024 international Delphi consensus — severity graded by liver, kidney and blood involvement, high-potency topical steroids for mild disease, systemic steroids (as needed in moderate, always in severe disease) tapered over 6 weeks to 3 months, ciclosporin, anti-IL-5 antibodies or IVIG when steroids fail; the French PNDS (2024) — prednisone equivalent 1 mg/kg/day in severe DRESS, no pulses; and allergy assessment after recovery, with patch tests where appropriate and never a rechallenge. Does not state the diagnosis and adds no values or biopsy findings the case does not record."
+        "zh-CN": "皮肤科会诊医生，只解读学员已经看过的结果。可以讲：DRESS与SJS/TEN的床旁鉴别（面部水肿、浸润、紫癜、鳞屑与水疱、表皮松解、尼氏征、靶形损害和黏膜受累部位；SJS/TEN的剥脱面积和SCORTEN——英国皮肤科医师协会2016）；RegiSCAR评分的各项及分档（<2排除，2–3可能，4–5很可能，>5确诊；Kardaun 2007），以及嗜酸性粒细胞要看绝对值；日本DIHS标准把人类疱疹病毒6型再激活作为条件之一；2024年国际Delphi共识按肝、肾、血液受累分轻中重度，轻度外用强效激素，重度一律用全身激素（中度可考虑加用），轻中度在6周至3个月内、重度在3–6个月内减量，激素无效时考虑环孢素、抗IL-5抗体或静脉免疫球蛋白；法国国家DRESS诊疗方案（PNDS，2024）对重症用泼尼松等效剂量1 mg/kg/d，约1个月，不用冲击，静脉免疫球蛋白不能单用；恢复后由过敏专科评估，需要时做斑贴试验，绝不再激发。不说出诊断结论，不补充病例没有记录的数值或皮肤活检结果。",
+        "en": "Dermatology consultant who interprets only results the learner has read. Can explain: telling DRESS from SJS/TEN at the bedside (facial oedema, infiltration, purpura and scaling versus blisters, epidermal detachment, Nikolsky's sign, target lesions and the mucosal sites involved; the detached area and SCORTEN in SJS/TEN — BAD 2016); the RegiSCAR items and bands (< 2 excluded, 2–3 possible, 4–5 probable, > 5 definite; Kardaun 2007), and that eosinophils are counted as an absolute number; that the Japanese DIHS criteria include human herpesvirus 6 reactivation; the 2024 international Delphi consensus — severity graded by liver, kidney and blood involvement, high-potency topical steroids for mild disease, systemic steroids (considered in moderate, always in severe disease), tapers over 6 weeks to 3 months in mild and moderate and over 3 to 6 months in severe disease, ciclosporin, anti-IL-5 antibodies or IVIG when steroids fail; the French PNDS (2024) — prednisone equivalent 1 mg/kg/day for about a month in severe DRESS, no pulses, IVIG never on its own; and allergy assessment after recovery, with patch tests where appropriate and never a rechallenge. Does not state the diagnosis and adds no values or biopsy findings the case does not record."
       },
       "interprets": [
         "fbc",
@@ -4967,8 +4967,8 @@
         "en": "Dr Shen (hepatology, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "肝病科会诊医生，只解读学员已经看过的结果。可以讲：药物性肝损伤是排除性诊断，靠详细的用药史和排除其他病因（中国药物性肝损伤诊治指南2023）；没有碱性磷酸酶就算不出R值，只能说转氨酶明显升高并伴黄疸；凝血酶原活动度和INR的区别，以及本病例只记录了前者；西方定义的急性肝衰竭需要凝血障碍加肝性脑病（EASL 2017），而意识状态在这里没有记录；中国《肝衰竭诊治指南（2024年版）》有自己的分类；伴进行性黄疸（无论有无凝血障碍）的药物性肝损伤要转到能评估肝移植的上级中心（ACG 2021），ACG 2021也强烈建议不再接触很可能的致敏药，药物性急性肝衰竭要考虑肝移植（EASL 2019）；成人特异质性药物性肝损伤所致早期急性肝衰竭可考虑静脉乙酰半胱氨酸（ACG 2021，有条件推荐）；激素在一般药物性肝损伤中有争议，用于DRESS是针对超敏反应本身。不说出诊断结论，不补充病例没有记录的数值。",
-        "en": "Hepatology consultant who interprets only results the learner has read. Can explain: drug-induced liver injury is a diagnosis of exclusion, resting on a detailed drug history and the exclusion of other causes (2023 Chinese DILI guideline); without an alkaline phosphatase the R ratio cannot be calculated, so the most one can say is marked transaminase rise with jaundice; prothrombin activity versus INR, and that only the former is recorded here; Western acute liver failure needs coagulopathy plus encephalopathy (EASL 2017), and her conscious level is not recorded; the Chinese liver-failure guideline (2024) has its own categories; DILI with progressive jaundice, with or without coagulopathy, goes to a tertiary centre that can consider transplantation (ACG 2021), which also advises strongly against re-exposure to the probable culprit, and transplantation is considered in drug-induced acute liver failure (EASL 2019); IV acetylcysteine may be considered in early acute liver failure from idiosyncratic DILI in adults (ACG 2021, conditional); steroids are debated in DILI generally, and in DRESS they treat the hypersensitivity itself. Does not state the diagnosis and adds no values the case does not record."
+        "zh-CN": "肝病科会诊医生，只解读学员已经看过的结果。可以讲：药物性肝损伤是排除性诊断，靠详细的用药史和排除其他病因（中国药物性肝损伤诊治指南2023）；该指南认为异甘草酸镁或双环醇可用于ALT明显升高的急性肝细胞损伤型或混合型药物性肝损伤，但不推荐2种或以上以降低ALT为主的药物联合应用；没有碱性磷酸酶就算不出R值，只能说转氨酶明显升高并伴黄疸；凝血酶原活动度和INR的区别，以及本病例只记录了前者；西方定义的急性肝衰竭需要凝血障碍加肝性脑病（EASL 2017），而意识状态在这里没有记录；中国《肝衰竭诊治指南（2024年版）》有自己的分类；伴进行性黄疸（无论有无凝血障碍）的药物性肝损伤要转到能评估肝移植的上级中心（ACG 2021），ACG 2021也强烈建议不再接触很可能的致敏药，药物性急性肝衰竭要考虑肝移植（EASL 2019）；法国DRESS诊疗方案（PNDS 2024）把凝血酶原活动度低于50%伴肝性脑病视为暴发性肝炎，需紧急评估肝移植；成人特异质性药物性肝损伤所致早期急性肝衰竭可考虑静脉乙酰半胱氨酸（ACG 2021，有条件推荐）；激素在一般药物性肝损伤中有争议，用于DRESS是针对超敏反应本身。不说出诊断结论，不补充病例没有记录的数值。",
+        "en": "Hepatology consultant who interprets only results the learner has read. Can explain: drug-induced liver injury is a diagnosis of exclusion, resting on a detailed drug history and the exclusion of other causes (2023 Chinese DILI guideline), which allows one anti-inflammatory liver drug (magnesium isoglycyrrhizinate or bicyclol) for acute hepatocellular or mixed DILI with a markedly raised ALT but advises against combining two or more mainly ALT-lowering drugs; without an alkaline phosphatase the R ratio cannot be calculated, so the most one can say is marked transaminase rise with jaundice; prothrombin activity versus INR, and that only the former is recorded here; Western acute liver failure needs coagulopathy plus encephalopathy (EASL 2017), and her conscious level is not recorded; the Chinese liver-failure guideline (2024) has its own categories; DILI with progressive jaundice, with or without coagulopathy, goes to a tertiary centre that can consider transplantation (ACG 2021), which also advises strongly against re-exposure to the probable culprit, and transplantation is considered in drug-induced acute liver failure (EASL 2019); the French DRESS protocol (PNDS 2024) treats a prothrombin activity below 50% with encephalopathy as fulminant hepatitis, for urgent transplant assessment; IV acetylcysteine may be considered in early acute liver failure from idiosyncratic DILI in adults (ACG 2021, conditional); steroids are debated in DILI generally, and in DRESS they treat the hypersensitivity itself. Does not state the diagnosis and adds no values the case does not record."
       },
       "interprets": [
         "liver-panel",
@@ -4988,8 +4988,8 @@
         "en": "Pharmacist Wen (clinical pharmacist, pseudonym)"
       },
       "knowledge": {
-        "zh-CN": "临床药师。可以讲：把每种药的开始和停用时间与症状排成时间线，起病前2–6周开始的药是首要怀疑对象（NICE CG183，2014）；过敏记录要写明药名、反应、时间和处理，并告诉患者需要避免什么；布洛芬属丙酸类非甾体抗炎药，同类还有萘普生、酮洛芬、氟比洛芬等，交叉反应可能性最大（EAACI 2013），在过敏专科评估前避免所有非甾体抗炎药；许多复方感冒药和止痛药含布洛芬，要教她看成分表；一年前那次“含布洛芬的药”具体是什么，值得追问；在超敏反应活动期尽量不加新药。不说出诊断结论，不补充病例没有记录的药名或剂量。",
-        "en": "Clinical pharmacist. Can explain: lining up each drug's start and stop against the symptoms, with a drug started 2–6 weeks before the illness the prime suspect (NICE CG183, 2014); an allergy record naming the drug, the reaction, the date and what was done, and telling the patient what to avoid; ibuprofen is a propionic-acid NSAID, like naproxen, ketoprofen and flurbiprofen, the likeliest to cross-react (EAACI 2013), so all NSAIDs wait for an allergist's advice; many cold and pain combinations contain ibuprofen, so she needs to read ingredient lists; the 'ibuprofen-containing product' of a year ago is worth identifying; and new drugs are best avoided during an active hypersensitivity. Does not state the diagnosis and adds no drug names or doses the case does not record."
+        "zh-CN": "临床药师。可以讲：把每种药的开始和停用时间与症状排成时间线，起病前2–6周开始的药是首要怀疑对象（NICE CG183，2014）；过敏记录要写明药名、反应、时间和处理，并告诉患者需要避免什么；布洛芬属丙酸类非甾体抗炎药，同类还有萘普生、酮洛芬、氟比洛芬等，交叉反应可能性最大（EAACI 2013），在过敏专科评估前避免所有非甾体抗炎药；许多复方感冒药和止痛药含布洛芬，要教她看成分表；一年前那次“含布洛芬的药”具体是什么，值得追问；超敏反应活动期容易多重致敏，新药只用必需的，致敏药及其同一化学类别一律禁用（法国PNDS 2024）；肝细胞损伤明显时也不用对乙酰氨基酚（PNDS 2024）。不说出诊断结论，不补充病例没有记录的药名或剂量。",
+        "en": "Clinical pharmacist. Can explain: lining up each drug's start and stop against the symptoms, with a drug started 2–6 weeks before the illness the prime suspect (NICE CG183, 2014); an allergy record naming the drug, the reaction, the date and what was done, and telling the patient what to avoid; ibuprofen is a propionic-acid NSAID, like naproxen, ketoprofen and flurbiprofen, the likeliest to cross-react (EAACI 2013), so all NSAIDs wait for an allergist's advice; many cold and pain combinations contain ibuprofen, so she needs to read ingredient lists; the 'ibuprofen-containing product' of a year ago is worth identifying; and new drugs are kept to the essential during an active hypersensitivity, which polysensitises easily, while the culprit and its chemical family are contraindicated (French PNDS 2024); paracetamol, too, is avoided while liver-cell injury is marked (PNDS 2024). Does not state the diagnosis and adds no drug names or doses the case does not record."
       },
       "interprets": [],
       "revealsDiagnosis": false
@@ -5001,8 +5001,8 @@
       "en": "Debrief: DRESS with severe liver involvement after ibuprofen"
     },
     "conclusion": {
-      "zh-CN": "29岁女性因膝痛自入院前39天起连续服用缓释布洛芬；一年前曾服含布洛芬药物后出现全身斑丘疹。入院前7天发热（最高41 ℃），伴明显咽痛；次日起出现迅速扩展融合的瘙痒性红斑，伴眼睑肿，随后黄疸；出疹后加用的青霉素和停药后4天的治疗都没能止住病情。入院时体温39.2 ℃、血压96/60，面部水肿性红斑伴鳞屑、躯干剥脱、口腔溃疡、唇部血痂、颌下淋巴结肿痛；白细胞11.62×10⁹/L，嗜酸性粒细胞6.7%（约0.78×10⁹/L），总胆红素133.6 μmol/L，ALT 585 U/L，凝血酶原活动度64%。五天后热退疹减，胆红素却升至255.9 μmol/L、凝血酶原活动度降至37%并出现腹水，报告称为肝衰竭；经糖皮质激素和多种支持药物治疗好转，第25天复发，约第38天肝功能恢复正常，停药后一年无复发。按现行指南：尽早识别DRESS，不用非甾体抗炎药和非必需的新药，全身激素并缓慢减量，皮疹好转而肝脏恶化时按肝衰竭风险处理并联系肝移植中心，终身记录并避免致敏药。",
-      "en": "A 29-year-old took ibuprofen continuously for knee pain from 39 days before admission; a year earlier an ibuprofen-containing product had caused a widespread rash. Fever to 41 °C began 7 days before admission, then a spreading itchy erythema and jaundice. On admission: 39.2 °C, BP 96/60, facial oedema, truncal peeling, oral ulcers, tender submandibular nodes; white cells 11.62×10⁹/L with 6.7% eosinophils (≈0.78×10⁹/L), bilirubin 133.6 μmol/L, ALT 585 U/L, prothrombin activity 64%. Five days later the rash and fever settled but bilirubin reached 255.9 μmol/L and prothrombin activity fell to 37%, with new ascites — reported as liver failure. On glucocorticoids and supportive drugs she improved, relapsed on day 25 and had normal liver tests by about day 38. Today: name DRESS early, avoid NSAIDs and needless drugs, taper systemic steroids slowly, treat a worsening liver under a settling rash as threatened liver failure with a transplant centre, and record the culprit for life."
+      "zh-CN": "29岁女性因膝痛自入院前39天起连续服用缓释布洛芬；一年前曾服含布洛芬药物后出现全身斑丘疹。入院前7天发热（最高41 ℃），伴明显咽痛；次日起出现迅速扩展融合的瘙痒性红斑，伴眼睑肿，随后黄疸；出疹后用过青霉素2天，随后两药停用，又治疗4天仍高热，皮损和黄疸加重。入院时体温39.2 ℃、血压96/60，面部水肿性红斑伴鳞屑、躯干剥脱、口腔溃疡、唇部血痂、颌下淋巴结肿痛；白细胞11.62×10⁹/L，嗜酸性粒细胞6.7%（约0.78×10⁹/L），总胆红素133.6 μmol/L，ALT 585 U/L，凝血酶原活动度64%。五天后热退疹减，胆红素却升至255.9 μmol/L、凝血酶原活动度降至37%并出现腹水，报告称为肝衰竭；经糖皮质激素和多种支持药物治疗好转，第25天再次发热、黄疸，约第38天肝功能恢复正常，停药后一年无复发。按现行指南：尽早识别DRESS，不用非甾体抗炎药和非必需的新药，全身激素并缓慢减量（重症3–6个月），皮疹好转而肝脏恶化时按肝衰竭风险处理并联系肝移植中心，终身记录并避免致敏药。",
+      "en": "A 29-year-old woman took slow-release ibuprofen continuously for knee pain from 39 days before admission; a year earlier an ibuprofen-containing product had caused a widespread rash. Fever to 41 °C with a marked sore throat began 7 days before admission, then a rapidly spreading itchy erythema with swollen eyelids, and jaundice; penicillin was given for two days after the rash began, both drugs were then stopped, and four days of treatment later she was still febrile, with the rash and jaundice worse. On admission: 39.2 °C, BP 96/60, oedematous facial erythema, truncal peeling, oral ulcers, tender submandibular nodes; white cells 11.62×10⁹/L with 6.7% eosinophils (≈0.78×10⁹/L), bilirubin 133.6 μmol/L, ALT 585 U/L, prothrombin activity 64%. Five days later the rash and fever settled but bilirubin reached 255.9 μmol/L and prothrombin activity fell to 37%, with new ascites — reported as liver failure. On glucocorticoids and supportive drugs she improved; fever and jaundice returned on day 25, liver tests were normal around day 38, and there was no recurrence in the year after the medicines were stopped. Today: name DRESS early, avoid NSAIDs and needless drugs, give systemic steroids with a slow taper, treat a worsening liver under a settling rash as threatened liver failure with a transplant centre, and record the culprit for life."
     },
     "keyReasoning": [
       {
@@ -5010,16 +5010,16 @@
         "en": "Line the drugs up against the illness: ibuprofen from 39 days before admission, fever 7 days before admission (about 32 days into it), the rash the next day, penicillin only after the rash — the drug that preceded the illness by weeks is the suspect."
       },
       {
-        "zh-CN": "把所见合在一起：发热、迅速扩展融合并伴面部水肿和鳞屑的皮疹、淋巴结肿痛、嗜酸性粒细胞约0.78×10⁹/L和伴黄疸的肝细胞损伤——这是累及多系统的药物反应，而不只是一场皮疹。",
-        "en": "Put the findings together: fever, a spreading, merging rash with facial oedema and scaling, tender nodes, eosinophils of about 0.78×10⁹/L and hepatocellular injury with jaundice — a multisystem drug reaction, not a rash alone."
+        "zh-CN": "把所见合在一起：发热、迅速扩展融合并伴面部水肿和鳞屑的皮疹、淋巴结肿痛、嗜酸性粒细胞约0.78×10⁹/L和转氨酶明显升高伴黄疸——这是累及多系统的药物反应，而不只是一场皮疹。",
+        "en": "Put the findings together: fever, a spreading, merging rash with facial oedema and scaling, tender nodes, eosinophils of about 0.78×10⁹/L and a marked transaminase rise with jaundice — a multisystem drug reaction, not a rash alone."
       },
       {
         "zh-CN": "主动寻找危险的重叠和类似病：SJS/TEN（黏膜、剥脱）、感染（血培养、感染灶）、成人斯蒂尔病和中毒性休克——并说清哪些检查本病例没有记录。",
         "en": "Look for the dangerous overlaps and mimics — SJS/TEN (mucosae, peeling), infection (cultures, a source), adult-onset Still's disease and toxic shock — and say what the case does not record."
       },
       {
-        "zh-CN": "按器官分别评估严重度：决定病情轻重和是否用全身激素的是肝脏——黄疸（胆红素133.6 μmol/L）伴凝血酶原活动度64%，已是肝功能障碍而不只是转氨酶升高；皮肤不是衡量标准。",
-        "en": "Grade the organs separately: the liver sets the severity and the need for systemic steroids — jaundice (bilirubin 133.6 μmol/L) with a prothrombin activity of 64% is liver dysfunction, not just an enzyme rise; the skin is not the yardstick."
+        "zh-CN": "按器官分别评估严重度：决定病情轻重和是否用全身激素的是肝脏——AST 878 U/L远超任何常用参考上限的15倍，黄疸（胆红素133.6 μmol/L）伴凝血酶原活动度64%，已是肝功能障碍而不只是转氨酶升高；皮肤不是衡量标准。",
+        "en": "Grade the organs separately: the liver sets the severity and the need for systemic steroids — AST 878 U/L is far above 15 times any usual upper limit, and jaundice (bilirubin 133.6 μmol/L) with a prothrombin activity of 64% is liver dysfunction, not just an enzyme rise; the skin is not the yardstick."
       },
       {
         "zh-CN": "五天后皮疹好转，而胆红素升到255.9 μmol/L、凝血酶原活动度降到37%并出现腹水：重新评估肝脏，查意识状态和INR，联系肝移植中心。",
@@ -5040,16 +5040,16 @@
         "en": "Excluding an SJS/TEN overlap: DRESS can bring cheilitis and mouth ulcers, but ulcers, blood-crusted lips and a peeling trunk call for Nikolsky's sign, the detached area, the eyes and genitals, and a skin biopsy if in doubt (BAD SJS/TEN guideline 2016); if it is SJS/TEN, the detached area and SCORTEN follow. None of these is recorded in this case."
       },
       {
-        "zh-CN": "治疗：2024年国际Delphi共识按肝、肾、血液受累分轻中重度——轻度外用强效激素，重度一律全身糖皮质激素（中度视情况加用），在6周至3个月内减量；激素无效时考虑环孢素、抗IL-5抗体或静脉免疫球蛋白，巨细胞病毒载量高时考虑更昔洛韦或缬更昔洛韦。法国国家DRESS诊疗方案（PNDS，2024）对重症DRESS用泼尼松等效剂量1 mg/kg/d，不用冲击，激素在3–6个月内逐步撤停。急性期避免非甾体抗炎药和非必需的新药。原报告用了糖皮质激素和多种支持药物（含多种保肝药联用），剂量和时间没有记录。",
-        "en": "Treatment: the 2024 international Delphi consensus grades severity by liver, kidney and blood involvement — high-potency topical steroids for mild disease, systemic glucocorticoids for every severe case (and as needed in moderate disease), tapered over 6 weeks to 3 months; ciclosporin, anti-IL-5 antibodies or IVIG when steroids fail; ganciclovir or valganciclovir for a high CMV load. The French national DRESS protocol (PNDS, 2024) uses 1 mg/kg/day of prednisone equivalent in severe DRESS, no pulses, and withdraws steroids over 3–6 months. Avoid NSAIDs and needless new drugs in the acute phase. The report used glucocorticoids and several supportive drugs, including a combination of liver-protective drugs; doses and timing are not recorded."
+        "zh-CN": "治疗：2024年国际Delphi共识按肝、肾、血液受累分轻中重度——轻度外用超强效激素，中度可考虑、重度一律使用全身糖皮质激素；轻中度在6周至3个月内、重度在3–6个月内减量；激素无效时考虑环孢素、抗IL-5抗体或静脉免疫球蛋白，巨细胞病毒载量高时考虑更昔洛韦或缬更昔洛韦。法国国家DRESS诊疗方案（PNDS，2024）对重症DRESS用泼尼松等效剂量1 mg/kg/d约1个月，不用冲击，之后在3–6个月内逐步撤停；因DRESS容易多重致敏，新药只用必需的。原报告用了糖皮质激素和多种支持药物（含多种保肝药联用，而《中国药物性肝损伤诊治指南（2023年版）》不推荐这样联用），剂量和时间没有记录。",
+        "en": "Treatment: the 2024 international Delphi consensus grades severity by liver, kidney and blood involvement — very high-potency topical steroids for mild disease, systemic glucocorticoids considered in moderate disease and started in every severe case; tapers over 6 weeks to 3 months in mild and moderate disease and over 3 to 6 months in severe disease; ciclosporin, anti-IL-5 antibodies or IVIG when steroids fail; ganciclovir or valganciclovir for a high CMV load. The French national DRESS protocol (PNDS, 2024) gives 1 mg/kg/day of prednisone equivalent for about a month in severe DRESS, without pulses, then withdraws it over 3–6 months, and keeps new drugs to the essential because DRESS polysensitises. The report used glucocorticoids and several supportive drugs, including a combination of liver-protective drugs — which the 2023 Chinese DILI guideline advises against; doses and timing are not recorded."
       },
       {
-        "zh-CN": "皮肤好转不等于肝脏好转：五天后胆红素由133.6升至255.9 μmol/L，白蛋白由33.9降至26.3 g/L，凝血酶原活动度由64%降至37%，并出现腹水。ACG 2021要求伴进行性黄疸（无论有无凝血障碍）的药物性肝损伤转诊到能评估肝移植的上级中心，并对早期急性肝衰竭有条件推荐乙酰半胱氨酸；EASL 2017定义的急性肝衰竭需要凝血障碍加肝性脑病——本病例INR和意识状态都没有记录。报告称之为肝衰竭，这一称谓是否符合中国《肝衰竭诊治指南（2024年版）》的分类，有待核实。",
-        "en": "A better skin is not a better liver: five days on, bilirubin rose from 133.6 to 255.9 μmol/L, albumin fell from 33.9 to 26.3 g/L and prothrombin activity from 64% to 37%, with new ascites. ACG 2021 sends DILI with progressive jaundice, with or without coagulopathy, to a tertiary centre that can consider liver transplantation, and conditionally suggests acetylcysteine in early acute liver failure; EASL 2017 defines acute liver failure by coagulopathy plus encephalopathy — and neither the INR nor her conscious level is recorded. The report calls it liver failure; how that label maps onto the categories of the 2024 Chinese liver-failure guideline remains to be verified."
+        "zh-CN": "皮肤好转不等于肝脏好转：五天后胆红素由133.6升至255.9 μmol/L，白蛋白由33.9降至26.3 g/L，凝血酶原活动度由64%降至37%，并出现腹水。ACG 2021要求伴进行性黄疸（无论有无凝血障碍）的药物性肝损伤转诊到能评估肝移植的上级中心，并对早期急性肝衰竭有条件推荐乙酰半胱氨酸；EASL 2017定义的急性肝衰竭需要凝血障碍加肝性脑病——本病例INR和意识状态都没有记录；法国PNDS（2024）把凝血酶原活动度低于50%伴肝性脑病称为暴发性肝炎。报告称之为肝衰竭，这一称谓是否符合中国《肝衰竭诊治指南（2024年版）》的分类，有待核实。",
+        "en": "A better skin is not a better liver: five days on, bilirubin rose from 133.6 to 255.9 μmol/L, albumin fell from 33.9 to 26.3 g/L and prothrombin activity from 64% to 37%, with new ascites. ACG 2021 sends DILI with progressive jaundice, with or without coagulopathy, to a tertiary centre that can consider liver transplantation, and conditionally suggests acetylcysteine in early acute liver failure; EASL 2017 defines acute liver failure by coagulopathy plus encephalopathy — and neither the INR nor her conscious level is recorded; the French PNDS (2024) calls a prothrombin activity below 50% with encephalopathy fulminant hepatitis. The report calls it liver failure; how that label maps onto the categories of the 2024 Chinese liver-failure guideline remains to be verified."
       },
       {
-        "zh-CN": "复发与随访：DRESS常在起病数周后再次加重，诱因包括人类疱疹病毒6型或巨细胞病毒再激活、激素减量过快或新加药物；她在第25天复发，约第38天肝功能恢复正常。DRESS痊愈后还可出现自身免疫性甲状腺病和暴发性1型糖尿病等迟发并发症（Kano 2015，145例随访），需要数月的随访。",
-        "en": "Relapse and follow-up: DRESS often flares again weeks into the illness, with human herpesvirus 6 or CMV reactivation, a fast taper or a newly added drug as triggers; she relapsed on day 25 and her liver tests were normal by about day 38. Autoimmune thyroid disease and fulminant type 1 diabetes can follow recovery (Kano 2015, 145 patients followed), so follow-up runs for months."
+        "zh-CN": "复发与随访：DRESS常在起病数周后再次加重；法国PNDS（2024）列出了要查找的诱因——隐匿地再次接触致敏药或结构相近的药物、急性期新加的药物、激素减量过快，以及人类疱疹病毒6型、EB病毒或巨细胞病毒复制。她在第25天再次发热、黄疸，约第38天肝功能恢复正常。DRESS痊愈后还可出现自身免疫性甲状腺病和暴发性1型糖尿病等迟发并发症（Kano 2015，145例随访），随访至少持续一年（PNDS 2024）。",
+        "en": "Relapse and follow-up: DRESS often flares again weeks into the illness; the French PNDS (2024) names the triggers to look for — a hidden re-exposure to the drug or a chemically related one, a drug added in the acute phase, a too-rapid taper, and HHV-6, EBV or CMV replication. Her fever and jaundice returned on day 25, and her liver tests were normal around day 38. Autoimmune thyroid disease and fulminant type 1 diabetes can follow recovery (Kano 2015, 145 patients followed), so follow-up lasts at least a year (PNDS 2024)."
       },
       {
         "zh-CN": "防止再接触：按NICE CG183（2014）记录药名、反应和时间，告诉患者要避免什么，把严重非速发型反应转诊药物过敏专科；绝不再激发；在专科评估前避免非甾体抗炎药，尤其是萘普生等丙酸类（EAACI 2013），并教她识别含布洛芬的复方药。她一年前对含布洛芬药物的皮疹，正是每次都要问、都要记下来的那条病史。",
@@ -5097,6 +5097,7 @@
     "references": [
       "朱礼尧, 朱农, 孙信林, 周建, 张鑫. 布洛芬致药物超敏反应综合征一例并文献复习. 中华全科医师杂志. 2013;12(10):849-850. doi:10.3760/cma.j.issn.1671-7368.2013.10.029. Available from: https://rs.yiigle.com/cmaid/598191",
       "Brüggen MC, Walsh S, Ameri MM, Anasiewicz N, Maverakis E, French LE, et al. Management of adult patients with drug reaction with eosinophilia and systemic symptoms: a Delphi-based international consensus. JAMA Dermatol. 2024;160(1):37-44. doi:10.1001/jamadermatol.2023.4450",
+      "Centre de référence des dermatoses bulleuses toxiques et toxidermies graves (TOXIBUL), FISARD, Groupe Toxidermies de la Société Française de Dermatologie. Protocole national de diagnostic et de soins (PNDS) : DRESS de l'adulte et de l'enfant. Saint-Denis: Haute Autorité de Santé; 2024. Available from: https://www.has-sante.fr/jcms/p_3557694/fr/dress-de-l-adulte-et-de-l-enfant",
       "Kardaun SH, Sidoroff A, Valeyrie-Allanore L, Halevy S, Davidovici BB, Mockenhaupt M, et al. Variability in the clinical pattern of cutaneous side-effects of drugs with systemic symptoms: does a DRESS syndrome really exist? Br J Dermatol. 2007;156(3):609-611. doi:10.1111/j.1365-2133.2006.07704.x",
       "Kardaun SH, Sekula P, Valeyrie-Allanore L, et al. Drug reaction with eosinophilia and systemic symptoms (DRESS): an original multisystem adverse drug reaction. Results from the prospective RegiSCAR study. Br J Dermatol. 2013;169(5):1071-1080. doi:10.1111/bjd.12501",
       "Chalasani NP, Maddur H, Russo MW, Wong RJ, Reddy KR; Practice Parameters Committee of the American College of Gastroenterology. ACG clinical guideline: diagnosis and management of idiosyncratic drug-induced liver injury. Am J Gastroenterol. 2021;116(5):878-898. doi:10.14309/ajg.0000000000001259",

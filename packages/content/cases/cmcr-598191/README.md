@@ -34,13 +34,14 @@ By the end of the case the learner can:
 2. Rank the suspect drugs by timing — the drug started four to five weeks before the illness, not the antibiotic
    added after the rash — and examine the mucosae and any peeling to exclude an SJS/TEN overlap (BAD 2016).
 3. Treat DRESS with severe liver involvement: keep the culprit stopped, add no NSAID or non-essential new drug, and
-   start a systemic corticosteroid (prednisone 1 mg/kg/day in severe DRESS; French national DRESS protocol, PNDS
-   2024) tapered over 6 weeks to 3 months or longer (international Delphi consensus 2024).
+   start a systemic corticosteroid (prednisone 1 mg/kg/day for about a month in severe DRESS, no pulses; French
+   national DRESS protocol, PNDS 2024), tapered over 3 to 6 months (PNDS 2024; international Delphi consensus 2024).
 4. Recognise threatened liver failure when the rash improves but bilirubin rises and prothrombin activity falls,
    monitor conscious level, asterixis and glucose, and discuss the patient with a liver transplant centre
    (ACG 2021; EASL 2019).
-5. Manage fever and jaundice returning weeks into the illness by looking for infection, viral reactivation and
-   newly added drugs before restoring the corticosteroid dose and tapering more slowly (Delphi consensus 2024).
+5. Manage fever and jaundice returning weeks into the illness by looking for infection and for the triggers of a DRESS
+   flare — a hidden re-exposure or a newly added drug, a too-rapid taper, HHV-6, EBV or CMV reactivation (French PNDS
+   2024) — before raising the corticosteroid again and tapering more slowly.
 6. Prevent re-exposure: record the culprit as a severe delayed reaction with an alert card, avoid NSAIDs until an
    allergist has advised, never rechallenge, refer to a drug-allergy service, and follow up for late autoimmune
    complications (NICE CG183, 2014; Kano 2015).
@@ -70,12 +71,13 @@ Five days later the fever had subsided and the rash lessened, but bilirubin had 
 to 26.3 g/L and prothrombin activity to 37%, with new ascites; no encephalopathy assessment or INR is recorded. The
 report calls this liver failure. With glucocorticoids and several supportive medicines (version 1.0.0 describes them
 as including a combination of liver-protective drugs) she improved; fever and jaundice returned on day 25, recovery
-was then gradual, liver tests were normal by about day 38, and there was no recurrence in the year after the
+was then gradual, liver tests were normal around day 38, and there was no recurrence in the year after the
 medicines were stopped. Drug names, doses, start dates and the taper are not recorded.
 
 **Diagnosis (as taught):** drug reaction with eosinophilia and systemic symptoms (DRESS; the report's term is drug-
 induced hypersensitivity syndrome, 药物超敏反应综合征) with ibuprofen the probable culprit, severe liver involvement
-progressing to what the report calls liver failure, and a relapse on day 25. The oral ulcers, blood-crusted
+progressing to what the report calls liver failure, and fever and jaundice again on day 25, taught as a DRESS relapse
+until shown otherwise (what was found then is not recorded). The oral ulcers, blood-crusted
 lips and truncal peeling require an SJS/TEN overlap to be excluded; whether it was is not recorded. RegiSCAR, as far
 as the record allows: about 3–5 on admission (possible to probable) and about 4–6 once the course outlasts 15 days
 (probable to definite) — see the numbers check.
@@ -122,12 +124,12 @@ Hints are Socratic questions; none contains a key's text (`cases validate` check
 | 1 | `working-diagnosis` | eight history items (the sore throat included), six exam findings and the five admission results | DRESS to ibuprofen with severe liver involvement; SJS/TEN overlap to be looked for | SJS/TEN from the penicillin (the mouth, lips and peeling); adult-onset Still's disease (fever to 41 °C, sore throat, nodes, knee pain, hepatitis); toxic shock (fever, BP 96/60, peeling, mucosa and liver) |
 | 2 | `first-day-plan` | decision 1 | keep both drugs stopped, no NSAID or needless new drug, blood cultures, prednisone 1 mg/kg/day with skin care, daily liver tests and clotting | topical steroid only (right for mild DRESS); treat as sepsis with a cephalosporin and hold steroids until cultures are negative; a 3-day methylprednisolone pulse, then stop |
 | 3 | `day5-liver` | day-5 liver tests, clotting and progress note | threatened liver failure: conscious level, asterixis, glucose and INR; transplant centre today; steroid continued, no abrupt stop, no needless new drug | stop the steroid and switch to liver-protective drugs (**close to the report's supportive care**); taper and discharge because the skin is better; treat the ascites first |
-| 4 | `day25-recurrence` | the day-25 note and re-examination | a DRESS relapse until shown otherwise: drug review, blood cultures, HHV-6 and CMV DNA, liver tests, steroid back to the starting dose with a slower taper | infection — stop the steroid and start a β-lactam; the steroid has failed — switch to IVIG alone, no tests; a benign fluctuation — wait a week and add a liver-protective drug |
-| 5 | `long-term-plan` | decision 4 | ibuprofen recorded as a severe delayed reaction with an alert card; no NSAIDs (including combination products) until an allergist has advised; penicillin noted as added after the rash; drug-allergy referral; months of thyroid, glucose and liver follow-up | a supervised ibuprofen challenge to confirm the label; switch the knee pain to naproxen; label all penicillins for life and skip the referral |
+| 4 | `day25-recurrence` | the day-25 note and re-examination | a DRESS relapse until shown otherwise: drug review, blood cultures, HHV-6 and CMV DNA, liver tests, the steroid raised again with a slower taper (the triggers to look for: French PNDS 2024 §4.4) | infection — stop the steroid and start a β-lactam; the steroid has failed — switch to IVIG alone, no tests; a benign fluctuation — wait a week and add a liver-protective drug |
+| 5 | `long-term-plan` | decision 4 | ibuprofen recorded as a severe delayed reaction with an alert card; no NSAIDs (including combination products) until an allergist has advised; penicillin noted as added after the rash (the allergist assesses it: co-sensitisation); drug-allergy referral; months of thyroid, glucose and liver follow-up | a supervised ibuprofen challenge to confirm the label; switch the knee pain to naproxen; label all penicillins for life and skip the referral |
 
-All decisions are single best answer with option-specific feedback naming the guidance. Length cue: the key is the
-uniquely longest option only in decision 5 (the long-term plan, whose key lists the elements NICE CG183 asks for), in
-both languages; in decisions 1–4 a distractor is at least as long as the key (`cases validate --strict` checks it).
+All decisions are single best answer with option-specific feedback naming the guidance. Length cue: in no decision
+is the key the uniquely longest option, in either language — in each one a distractor is at least as long as the key
+(decision 5's naproxen distractor by a few characters; `cases validate --strict` checks it).
 
 ### Rubric (11 deterministic items, weight 30, + 1 examiner-judged)
 
@@ -238,11 +240,20 @@ recorded, so the R ratio and the DILI pattern cannot be calculated; no INR is re
 be converted. No reference ranges are recorded: the flags in the result tables are interpretive (H/L), not the
 laboratory's.
 
-Doses in the case are guidance formulas, not the report's: prednisone 1 mg/kg/day in severe DRESS (0.5 mg/kg/day in
-moderate disease, no pulses; French PNDS 2024, read from search extracts of the protocol — confirm in the full text),
-tapered over 6 weeks to 3 months (Delphi 2024; the PNDS withdraws steroids over 3–6 months); naproxen 250 mg twice
-daily, ibuprofen 400 mg every 8 hours and ceftriaxone 2 g daily appear only in harmful items as examples. No weight is
-recorded, so no dose is computed.
+Severity, as far as the record allows: AST 878 U/L is above 15 times any usual upper reference limit (15 × 40 =
+600 U/L), the threshold for severe liver involvement in the Delphi grading that the PNDS reproduces (Annexe 4); ALT
+585 U/L is about 15 × 40; no reference range and no factor V are recorded, so this is an inference, and the
+prothrombin activity is 64% on admission (the PNDS lists a prothrombin activity with factor V below 50% as a sign of
+severity — 37% on day 5).
+
+Doses in the case are guidance formulas, not the report's: prednisone 1 mg/kg/day, oral or IV, for about a month in
+severe DRESS, without pulses, then withdrawn very gradually over 3–6 months (0.5 mg/kg/day for about a month,
+tapered over 3 months, in moderate disease; French PNDS 2024 §3.5, read in the full protocol). The 2024 Delphi
+consensus states no dose; it tapers systemic glucocorticoids over 3 to 6 months in severe DRESS and over 6 weeks to
+3 months in mild and moderate DRESS. For the day-25 recurrence the case raises the steroid again to the dose that last
+controlled the illness, at most the starting dose: neither cited guidance states a relapse dose (listed to verify).
+Naproxen 250 mg twice daily, ibuprofen 400 mg every 8 hours and ceftriaxone 2 g daily appear only in harmful items as
+examples. No weight is recorded, so no dose is computed.
 
 ## Facilitator notes
 
@@ -260,7 +271,7 @@ recorded, so no dose is computed.
    * "Her liver involvement decided the steroid dose. What made it severe?"
    * "On day 5 the skin was better. What told you the liver was not — and what was missing to call it liver failure?"
    * "What would you have said on the phone to the transplant centre?"
-   * "She relapsed on day 25. What were you looking for before you increased the steroid?"
+   * "Fever and jaundice came back on day 25. What were you looking for before you increased the steroid?"
    * "She had reacted to an ibuprofen product a year earlier. How do you think she came to take ibuprofen again, and
      what will stop it happening a third time?"
    * "The report's team used several liver-protective drugs together. What would you say to them today?"
