@@ -442,11 +442,11 @@ A theatre case can give its room a care team that works on its own in in-world m
   holds the camera while no second assistant is present: describe a two-surgeon team as the source reports it and add
   the second assistant in a line-up, rather than writing the camera in.
 * **Places for the learner.** Name the surgeon's stand-in (`standIn` on the member `surgeon`: a surgeon of the room —
-  facility position `surgeon`, role `attending` — who is not otherwise in the team) to offer the learner the first
-  assistant's, the second assistant's or the scrub nurse's place (`start {seat}`); without one the learner can only
-  operate. A team with a stand-in works in every phase of the operation, and the reference solution must bring the case
-  to the team's phases with every step accepted: a place joins there along that path (`checkTeamDefinition` tries every
-  place). The reference solution's own `start` takes no seat. Sessions do not offer a place yet (TEAM.md §1).
+  facility position `surgeon`, role `attending` or `clinician` — who is not otherwise in the team) to offer the learner
+  the first assistant's, the second assistant's or the scrub nurse's place (`start {seat}`); without one the learner can
+  only operate. A team with a stand-in works in every phase of the operation, and the reference solution must bring the
+  case to the team's phases with every step accepted: a place joins there along that path (`checkTeamDefinition` tries
+  every place). The reference solution's own `start` takes no seat. Sessions do not offer a place yet (TEAM.md §1).
 * **Line-ups** (`lineups`: id, name, provenance, note, members) add assistants for one encounter (`start {lineup}`):
   new staff of the room, each with the duties `["assist"]` and a first or second assistant's position. Keep the base
   team as the source reports it and mark an added line-up `provenance: "authored"`.
