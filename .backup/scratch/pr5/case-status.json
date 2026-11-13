@@ -1,0 +1,163 @@
+{
+ "cmcr-1067457": {
+  "authored": true,
+  "drafted": "2026-10"
+ },
+ "cmcr-1067477": {
+  "authored": true
+ },
+ "cmcr-1067495": {
+  "allChecksPass": true,
+  "authored": true,
+  "committed": true,
+  "reviewed": true
+ },
+ "cmcr-1068535": {
+  "authored": true
+ },
+ "cmcr-1069544": {
+  "authored": true
+ },
+ "cmcr-1171301": {
+  "authored": true
+ },
+ "cmcr-1233223": {
+  "authored": true
+ },
+ "cmcr-1322371": {
+  "authored": true,
+  "drafted": "2026-10"
+ },
+ "cmcr-138892": {
+  "authored": true
+ },
+ "cmcr-1423433": {
+  "authored": true
+ },
+ "cmcr-1551888": {
+  "allChecksPass": true,
+  "authored": true,
+  "committed": true,
+  "reviewed": true
+ },
+ "cmcr-1551889": {
+  "authored": true,
+  "drafted": "2026-10"
+ },
+ "cmcr-1653411": {
+  "allChecksPass": true,
+  "authored": true,
+  "committed": true,
+  "reviewed": true
+ },
+ "cmcr-33555": {
+  "authored": true
+ },
+ "cmcr-33666": {
+  "authored": true
+ },
+ "cmcr-33667": {
+  "authored": true
+ },
+ "cmcr-33686": {
+  "authored": true
+ },
+ "cmcr-33729": {
+  "authored": true,
+  "drafted": "2026-10"
+ },
+ "cmcr-33736": {
+  "authored": true,
+  "drafted": "2026-10"
+ },
+ "cmcr-33789": {
+  "authored": true,
+  "drafted": "2026-10"
+ },
+ "cmcr-33790": {
+  "allChecksPass": true,
+  "authored": true,
+  "committed": true,
+  "reviewed": true
+ },
+ "cmcr-44344": {
+  "authored": true
+ },
+ "cmcr-44477": {
+  "authored": true
+ },
+ "cmcr-44614": {
+  "authored": true
+ },
+ "cmcr-44848": {
+  "allChecksPass": true,
+  "authored": true,
+  "committed": true,
+  "reviewed": true
+ },
+ "cmcr-561144": {
+  "allChecksPass": true,
+  "authored": true,
+  "committed": true,
+  "reviewed": true
+ },
+ "cmcr-598191": {
+  "authored": true
+ },
+ "cmcr-598475": {
+  "authored": true
+ },
+ "cmcr-635101": {
+  "authored": true,
+  "drafted": "2026-10"
+ },
+ "cmcr-639083": {
+  "authored": true,
+  "drafted": "2026-10"
+ },
+ "cmcr-639115": {
+  "authored": true
+ },
+ "cmcr-655458": {
+  "allChecksPass": true,
+  "authored": true,
+  "committed": true,
+  "reviewed": true
+ },
+ "cmcr-655474": {
+  "authored": true
+ },
+ "cmcr-70094": {
+  "allChecksPass": true,
+  "authored": true,
+  "committed": true,
+  "reviewed": true
+ },
+ "cmcr-70172": {
+  "partialDraft": true
+ },
+ "cmcr-77850": {
+  "authored": true
+ },
+ "cmcr-857041": {
+  "allChecksPass": true,
+  "authored": true,
+  "committed": true,
+  "reviewed": true
+ },
+ "cmcr-857347": {
+  "authored": true
+ },
+ "cmcr-857933": {
+  "authored": true
+ },
+ "cmcr-857953": {
+  "authored": true
+ },
+ "cmcr-858035": {
+  "authored": true
+ },
+ "cmcr-859852": {
+  "authored": true
+ }
+}

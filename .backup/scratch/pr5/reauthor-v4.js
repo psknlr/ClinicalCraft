@@ -86,14 +86,16 @@ Then FIX: every critical and major finding that holds against the 1.0.0 fact bas
 ${a ? `The author reported: ${JSON.stringify(a).slice(0, 12000)}` : 'The author\'s report is not available (an earlier run authored this case): read its README (extraction table, changelog, To verify) instead.'}
 Severity: critical = teaches something unsafe or false, or invents/changes a patient fact; major = substantive fact, teaching or validity gap; minor = polish.`
 
-const results = await pipeline(
-  CASES,
-  (c) => (c.mode === 'review' ? Promise.resolve({ authored: 'earlier' }) : agent(authorPrompt(c.id), { label: `author:${c.id}`, phase: 'Author', schema: AUTHOR_OUT })),
-  (a, c) => {
-    const report = a && !a.authored ? a : null
-    return agent(reviewFixPrompt(c.id, report), { label: `review+fix:${c.id}`, phase: 'Review and fix', schema: REVIEWFIX_OUT }).then((r) => ({ id: c.id, author: report, review: r }))
-  },
+// The cases already authored are reviewed first (their calls are queued before any author's), then each new case
+// is authored and reviewed in turn. A stopped run is not resumed: a new run gets the cases still to do.
+const review = (c, report) => agent(reviewFixPrompt(c.id, report), { label: `review+fix:${c.id}`, phase: 'Review and fix', schema: REVIEWFIX_OUT }).then((r) => ({ id: c.id, author: report, review: r }))
+const reviewsOnly = parallel(CASES.filter((c) => c.mode === 'review').map((c) => () => review(c, null)))
+const authored = pipeline(
+  CASES.filter((c) => c.mode !== 'review'),
+  (c) => agent(authorPrompt(c.id), { label: `author:${c.id}`, phase: 'Author', schema: AUTHOR_OUT }),
+  (a, c) => review(c, a),
 )
+const results = [...(await reviewsOnly), ...(await authored)]
 const done = results.filter(Boolean)
 log(`${done.length}/${CASES.length} cases through the pipeline; ${done.filter((x) => x.review && x.review.allChecksPass).length} with all checks passing`)
 return done.map((x) => ({ id: x.id, allChecksPass: !!(x.review && x.review.allChecksPass), findings: x.review ? x.review.findings.length : null }))
