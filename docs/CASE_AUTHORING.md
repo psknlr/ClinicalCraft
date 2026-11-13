@@ -426,12 +426,33 @@ A theatre case can give its room a care team that works on its own in in-world m
 [TEAM.md](TEAM.md)):
 - the room;
 - the phases in which the team acts;
-- the members and their duties (`circulate`, `instruments`, `count`, `surgeon`);
+- the members and their duties: `circulate` (the circulating nurse), `instruments` (the scrub nurse), `count`,
+  `surgeon` (the member `surgeon`), `anaesthesia` (the room's anaesthetist), `assist` (a first or second assistant);
 - optionally, the count it keeps item by item (`count`: the counted handheld type, when it falls due, and the places
   the circulating nurse searches).
 
 * **Members are the room's own staff** (`teamFacilityIssues`: they work in `team.room`); the surgeon is `surgeon` (the
   learner). Somebody must circulate.
+* **Positions and controls** (TEAM.md §1). A member's position follows from their duties, by priority (`[count,
+  instruments]` is a scrub nurse); give `position` when two members share a duty — a first and a second assistant
+  both `assist` — and keep it the job the facility gives that staff member (`cases validate` refuses a disagreement).
+  Each position holds default controls; give a member `controls` only where your source says the team divides the
+  work otherwise (the surgeon keeps the camera; the scrub nurse also holds it), and keep `operate` the surgeon's, the
+  sterile field's controls on scrubbed positions and `equipment` / `anaesthesia` on the others. A first assistant
+  holds the camera while no second assistant is present: describe a two-surgeon team as the source reports it and add
+  the second assistant in a line-up, rather than writing the camera in.
+* **Places for the learner.** Name the surgeon's stand-in (`standIn` on the member `surgeon`: a staff member of the
+  room who is not otherwise in the team) to offer the learner the first assistant's, the second assistant's or the
+  scrub nurse's place (`start {seat}`); without one the learner can only operate. A team with a stand-in works in every
+  phase of the operation, and the reference solution must bring the case to the team's phases with every step accepted:
+  a place joins there along that path (`checkTeamDefinition` tries every place). The reference solution's own `start`
+  takes no seat.
+* **Line-ups** (`lineups`: id, name, provenance, note, members) add assistants for one encounter (`start {lineup}`):
+  new staff of the room, each with the duties `["assist"]` and a first or second assistant's position. Keep the base
+  team as the source reports it and mark an added line-up `provenance: "authored"`.
+* **Rubric items by place** (`rubric[].seats`): an item without `seats` is the operating surgeon's; in another place
+  only the items that list it are scored, and what the team did before the learner joined is reported apart. List a
+  place only for what that place does (the scrub nurse's passing and the count, not the extraction).
 * **Team scenarios set up conditions, never steps.** A scenario can:
   - post a need (an item for a member, with what the team calls it aloud);
   - put a member on a break (`absent`), with a relief colleague from another room (`relief`);

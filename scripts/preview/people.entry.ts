@@ -2,7 +2,7 @@
  * The people of the world as the web world draws them (`packages/web/src/world/npc.ts`, bundled by render.mjs):
  * one cell per person, lit like the world (hemisphere + sun, ACES, no environment map), the camera fitted to
  * the figure (or to its face, its hands, its chest). The people come from a facility's staff, a case's patient
- * and companion, or a built-in sheet (every role and theatre position, the looks an appearance can ask for).
+ * and companion, or a built-in sheet (every role, every position core knows, the looks an appearance can ask for).
  */
 import * as THREE from "three";
 import { StaffPositionSchema, type StaffPosition } from "@clinicalcraft/core";

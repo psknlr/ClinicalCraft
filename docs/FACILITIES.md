@@ -50,7 +50,7 @@ Schemas: `packages/core/src/schema/facility.ts`. Content lives in
   patient standing, sitting and in bed, and their companion; `--posture lateral [--up right] [--cover blanket|drapes]
   [--flex 9] [--asleep 1]` lays whoever is drawn on their side on an operating table ("A body drawn with
   equipment" below; `--view front|back|head|top`; `--breath` and `--rise` draw the chest that far out); `--sheet roles|positions|looks|patients` the
-  reference sheets (every role's uniform, every theatre position, what an appearance can ask for);
+  reference sheets (every role's uniform, every position core knows, worn by its role, what an appearance can ask for);
   `--view hand` the hand by itself in each of its poses (`--detail 0`: as a figure has it), `--view held` the
   player's own hand and stethoscope as the camera sees them.
   Files may lie outside the checkout (a `contentDirs` folder): only the files
@@ -137,13 +137,15 @@ stands 1.74 m; the web's `src/world/figure/`), dressed for the job:
 | `receptionist` | a shirt and belted trousers, the identity card on a lanyard |
 | `paramedic` | a uniform shirt with epaulettes and reflective bands, boots |
 | `porter` | a polo shirt, the identity card on a lanyard |
-| position `surgeon`, `assistant-surgeon`, `scrub-nurse` | scrubbed: theatre cap, mask, sterile gown and gloves, the hands held together in front |
+| position `surgeon`, `first-assistant`, `second-assistant`, `assistant-surgeon`, `scrub-nurse` | scrubbed: theatre cap, mask, sterile gown and gloves, the hands held together in front |
 | position `anaesthetist`, `circulating-nurse` | theatre scrubs, cap and mask (the anaesthetist a stethoscope) |
 | position `theatre-coordinator` | theatre scrubs and cap |
 | position `recovery-nurse`, `radiographer` | scrubs — with a stethoscope, with a dosimeter |
 
 A `position` (CHARACTERS.md §2) changes what its `role` wears, so nobody stands in theatre in a
-white coat. `appearance` sets skin, hair and its style, build, stature, an accessory (glasses, a
+white coat: every position that works scrubbed (core `STERILE_POSITIONS`) is gowned and gloved, and the web's
+`npc.test.ts` dresses every position core knows. A figure is dressed by the facility's `position` (people are built
+from the facility alone). `appearance` sets skin, hair and its style, build, stature, an accessory (glasses, a
 mask, a cap…) and — with `shirt` and `pants` — the uniform's colours. The styles of hair:
 
 | `hairStyle` | the hair |
@@ -315,7 +317,7 @@ Compilation rules:
   removes it), `partitions`, `lights`, `omit: [local ids]` (placements,
   slots, staff or zones), `placements: { localId: patch }` (any placement
   field but the id), `patientSlots: { localId: { accepts?, posture? } }`,
-  `staff: { localId: { name?, role?, greeting?, appearance? } }`; an unknown
+  `staff: { localId: { name?, role?, position?, greeting?, appearance? } }`; an unknown
   local id is a warning.
 * Errors: an unknown template, a rotation other than 0/90/180/270, an
   instance id that collides with an authored id or another instance, a

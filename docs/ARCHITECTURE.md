@@ -366,6 +366,15 @@ checkCatalogs(catalogs): Issue[]; placementBox; rectContains; SPATIAL_TOLERANCE 
 facilityLevels(f): Level[]; defaultLevelId(f); roomLevel(f, room); entityLevel(f, {level?, room?}); buildingLevels(f, b)
                                                         // levels with defaults (implicit "L0"; default level = elevation 0, else first; FACILITIES.md)
 ACTOR_ROLES, DEFAULT_REACH, DEFAULT_LEVEL_ID, WorldPredicateSchema, DeviceBehaviorSchema // schema/facility.ts: embodiment vocabulary (EMBODIED §3, §8)
+StaffPositionSchema, POSITION_TITLES, canonicalPosition, STERILE_POSITIONS, SeatSchema, TEAM_PLACES,
+SurgicalControlSchema, CONTROL_TITLES, DEFAULT_CONTROLS, FIELD_CONTROLS, NON_STERILE_CONTROLS
+                                                        // schema/positions.ts (TEAM.md §1): positions, places, controls — a leaf module
+                                                        // importing only zod (facility.ts imports case.ts, which imports team.ts and
+                                                        // session.ts: those read the positions from the leaf); facility.ts re-exports it
+effectiveTeam, memberPosition, staffPosition, memberControls, fieldControls, bodyControls, seatsOf, seatMember, placeMember,
+operatorOf, standingBy, memberBody, refOfBody, joinPath, LEARNER_BODY, DUTY_POSITION, DUTY_PRIORITY
+                                                        // engine/seats.ts (TEAM.md §1): who holds which position and controls, which
+                                                        // body is whose, which places a learner may take — from the case and the start
 PERSONAL_KIT, ROOM_KINDS                                // schema/common.ts: capabilities every learner carries (no equipment needed), room kinds
 DestinationSchema, PostureSchema; RoomTemplateSchema     // schema/case.ts (§2: where a step takes the patient, postures); schema/facility.ts (room templates)
 CAPABILITY_LABELS, capabilityLabels(capabilities, locale): string[]   // i18n.ts: capability display names (zh-CN / en) for every front-end
@@ -397,7 +406,15 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   `start` are rejected `not-started`, except `set-phase`, `note`, `flag`.
   `start {variant}` also records the procedure's anatomical variant
   (`SessionState.variant`, hidden state; an unknown one is rejected
-  `unknown-id`; PROCEDURE.md §9).
+  `unknown-id`; PROCEDURE.md §9). `start {seat, lineup}` chooses the
+  learner's place in the case's care team and the team's line-up (TEAM.md
+  §1; an unknown line-up → `unknown-id`): `surgeon` is recorded as no place;
+  a place in the team needs a team whose surgeon names a stand-in, a member
+  present in that place and the base variant (else `invalid`), and joins at
+  the team's phase — within the start, the case's reference path after its
+  own start is applied action by action, each `by: "system"`, until the case
+  is in one of the team's phases (`SessionState.joined`); its events follow
+  the start's own, and a refused step refuses the start.
   After `finish`, everything is rejected `finished`.
 * Static clock: actions cost 0 minutes; turnaround is ignored (results ready
   immediately). Simulated clock: each action advances `clock` by

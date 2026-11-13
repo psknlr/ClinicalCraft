@@ -102,6 +102,10 @@ longer held (a colleague left the table with it) is re-grasped first, once, and 
 gallbladder-infundibulum has gone: re-grasping before the next step."); the re-grasp is not a reference
 step, so the walkthrough goes on from where it was (`lostTraction`, `session/autopilot.ts`).
 
+The care team's positions and controls (docs/TEAM.md §1: the camera, traction, suction…) are not read by the field yet:
+any colleague named as `actor` works a port handed to them as above, and an `operate` with no `actor` is the
+operator's step, as it always was.
+
 **Equipment.** The picture and the pneumoperitoneum depend on the equipment (`ProcedureState.supply`,
 `PROCEDURE_SUPPLY`): the image needs a working camera and light source (`endoscopic-camera`, `light-source`), the
 gas a working insufflator (`insufflator`). *Working* is the world's one capability rule (`WorldRuntime.provides`):

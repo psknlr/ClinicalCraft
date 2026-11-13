@@ -112,7 +112,7 @@ const LABELS: Record<"en" | "zh-CN", Record<string, string>> = {
     "lap-us": "laparoscopic ultrasound probe",
     camera: "camera",
     working: "working",
-    assist: "assistant",
+    assist: "assist",
     left: "left hand",
     right: "right hand",
     "in-situ": "in place",

@@ -18,8 +18,9 @@ This is the contract (code: `packages/agent/src/session/team/`, `packages/core/s
 `packages/agent/src/session/count.ts`). If code and this page disagree, fix one of them in the same change.
 
 Learner-facing words follow [GLOSSARY.md](GLOSSARY.md): the care team (手术团队), circulating nurse (巡回护士), scrub
-nurse (洗手护士), surgeon (术者), read-back (复述确认), count (清点), count discrepancy (清点不符), hold on closure
-(暂停关闭), unsafe progression (不安全推进), observer mode (观察模式).
+nurse (洗手护士), surgeon (术者), first and second assistant (第一助手、第二助手), controls (分工权限), your place in the
+team (你担任的岗位), stand-in surgeon (主刀同事), line-up (团队配置), read-back (复述确认), count (清点), count
+discrepancy (清点不符), hold on closure (暂停关闭), unsafe progression (不安全推进), observer mode (观察模式).
 
 ## 1. What a case declares
 
@@ -55,21 +56,111 @@ Duties:
 - `surgeon`: the surgeon.
 - `anaesthesia`: the room's anaesthetist. No team policy acts on it; asked to leave the room while the patient is
   under anaesthesia, they hand over first (§5, "leaving an anaesthetised patient").
+- `assist`: an assistant at the table with the surgeon, a first or a second assistant; their controls say for what. No
+  team policy acts on it yet.
+
+### Positions and controls
+
+A member's **position** (docs/CHARACTERS.md §2) is their own `position` when the team gives one — needed when two
+members share a duty, as a first and a second assistant both `assist` — else it follows from their duties, read by
+priority, never by their order: `surgeon`, `anaesthesia`, `instruments`, `assist`, `circulate`, `count` (so
+`[count, instruments]` is a scrub nurse). `assistant-surgeon`, the first assistant's old name, counts as
+`first-assistant` wherever controls, places or sterility are decided (`canonicalPosition`).
+
+A **control** is a named permission to work one part of an operation (`SurgicalControlSchema`, named by
+`CONTROL_TITLES`): `operate`, `camera`, `retract` (traction), `suction`, `close`, `instruments` (the instrument table),
+`count`, `equipment`, `anaesthesia`. The first six are worked at the sterile field and go to scrubbed positions only
+(`STERILE_POSITIONS`: the surgeon, both assistants, the scrub nurse), `equipment` and `anaesthesia` to the others, and
+`count` is held on both sides. Who works at a given moment is decided by holding — a port's holder in the field, a
+carried item's holder in the world — never by the control alone.
+
+| position | default controls (`DEFAULT_CONTROLS`) |
+|---|---|
+| surgeon | operate, camera, retract, suction, close |
+| first assistant (and the assistant surgeon) | retract, suction — and camera while no second assistant is present |
+| second assistant | camera, retract, suction |
+| scrub nurse | instruments, count |
+| circulating nurse | count, equipment |
+| anaesthetist | anaesthesia |
+| every other position | none |
+
+The surgeon's controls cover every assistant's work, so no reference path depends on an assistant. A member's own
+`controls` replace their position's defaults and the camera rule (a scrub nurse who also holds the camera:
+`["instruments", "count", "camera"]`; a team whose surgeon keeps the camera gives the first assistant
+`["retract", "suction"]`). The **team as it is** in an encounter (`effectiveTeam`) is the base members, the chosen
+line-up's assistants and the chosen team scenario's relief colleagues, less whoever that scenario makes absent: who is
+present decides who holds the camera, never the learner's place.
+
+```jsonc
+"members": [
+  …,
+  { "staff": "or-1.assistant", "duties": ["assist"] },                         // the first assistant (illustrative ids)
+  { "staff": "surgeon", "duties": ["surgeon"], "standIn": "or-1.surgeon" }     // the operator while the learner holds a place
+],
+"lineups": [{                            // optional: assistants added for one encounter (`start {lineup}`)
+  "id": "three-surgeons", "name": { … }, "provenance": "authored",
+  "members": [{ "staff": "or-1.second", "duties": ["assist"], "position": "second-assistant" }]
+}]
+```
+
+The resolvers (core `engine/seats.ts`) read only the case and the start's choices — the facility only for a staff
+member outside the team: `memberPosition`, `staffPosition` (for role cards and dress: the team's position, the
+facility's, the duties, the facility role's default), `memberControls`, `fieldControls` (the operative field: whoever
+operates is unrestricted, a member holds their controls, a colleague outside the team traction and suction),
+`bodyControls` (a body, in the field or in the world), `seatsOf`, `seatMember`, `operatorOf`, `standingBy`,
+`memberBody` and `refOfBody`. **Nothing enforces the controls yet**: the operative field (docs/PROCEDURE.md §3), the
+world's operations, the scope of practice, delegation and the policies below work as they did.
+
+### Places
+
+The learner chooses a **place** once, at `start {seat, lineup}`, recorded with the variant and the team scenario:
+- `surgeon` — the operating surgeon: the learner as always, who may also do the team's parts. It is the default and is
+  recorded as no place (`SessionState.seat` absent), with a team or without.
+- `first-assistant`, `second-assistant`, `scrub-nurse` — a place in the team. It is offered (`seatsOf`) when the team's
+  surgeon member names a stand-in (`standIn`: the colleague who is the operator meanwhile) and the team, with the chosen
+  line-up, has a member in that place who is present — a team scenario that makes them absent refuses it —, with the
+  base anatomical variant only. A place is a base member's or a line-up assistant's, never a relief colleague's.
+- A start in a place **joins at the team's phase**: within the start, the case's reference path after its own start is
+  applied, each action by the system, until the case is in one of the team's phases (never a finish or the
+  operation's close). It is one recorded action, so a transcript or a save replays it to the same state; what the team
+  did is kept in `SessionState.joined`. A refused step, or a path that never reaches the team's phases, refuses the
+  start (`checkTeamDefinition` reports such a case).
+- A place is assessed on the rubric items whose `seats` list it (an item without `seats` is the operating surgeon's),
+  and what the team did before the learner joined is reported apart, never credited (`AssessmentReport.joined`): the
+  history, examination, investigation and decision sections count what was left to do. Safety gates stay the team's
+  outcomes.
+
+Nobody operates in a place yet — no stand-in surgeon is driven — and no front-end offers one: the protocol's `start`
+accepts it.
+
+### Checks
 
 `checkTeamDefinition` (part of `checkCaseIntegrity`) checks the team on its own:
 - known phases;
-- each member listed once, with exactly one surgeon;
+- each member listed once; only the member `surgeon` has the duty `surgeon`, and it has it;
 - somebody circulates;
-- needs are for members;
-- absent members are members, and the surgeon is never absent;
+- needs are for members (a line-up's assistants and the scenario's relief colleagues too);
+- absent members are members (or a line-up's assistants, or relief colleagues), and the surgeon is never absent;
 - relief and cover colleagues are not members (and nobody covers the surgeon);
 - the solution's `start {team}` names a scenario;
-- `expect` matches what is set up.
+- `expect` matches what is set up;
+- `operate` and the position `surgeon` are the surgeon member's alone, and the surgeon's own `controls` keep `operate`;
+- the sterile field's controls only on scrubbed positions, `equipment` and `anaesthesia` only on the others;
+- one member to each place (first assistant, second assistant, scrub nurse), in the base team and with each line-up;
+- a stand-in is named on the surgeon member only and is no member, cover, relief colleague or line-up assistant; a team
+  with a stand-in works in every phase of the operation;
+- line-ups: unique ids, each adding new staff with the duties `["assist"]`, a first or a second assistant;
+- with a stand-in, every place the team offers, with each line-up, can be joined along the reference path.
+
+The reference solution is the operating surgeon's: `checkCaseIntegrity` refuses a seat on its start, and a line-up
+the team does not have.
 
 `teamFacilityIssues` (run by `cases validate`) checks the team against its facility:
 - the room exists;
-- the members are staff of that room;
+- the members, the stand-in and the line-ups' assistants are staff of that room;
 - relief and cover colleagues exist;
+- a member's facility position is their position in the team — the card they speak from and the controls they hold
+  are one job;
 - the needed items and the counted item are handheld types;
 - the count's search places and the scenarios' placements exist.
 
@@ -305,7 +396,14 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
 
 ## 8. Tested
 
-- `core/src/engine/team.test.ts`: consistency, facility fit, the scenario at `start`.
+- `core/src/engine/team.test.ts`: consistency, facility fit, the scenario at `start`; positions, controls, the stand-in
+  and line-ups (a failing case per rule, every earlier message unchanged).
+- `core/src/engine/seats.test.ts`: every position's default controls, the assistant surgeon as the first assistant,
+  positions by duty priority, the camera following who is present (two surgeons, three, one away, an override), the
+  places offered, members' bodies and their inverse, controls in the field and in the world.
+- `core/src/engine/places.test.ts`: the operating surgeon's seat recorded as no place; what a place needs; the join at
+  the team's phase (the reference path's events and state) and a transcript replaying to the same state; the reference
+  path's checks; assessment by place.
 - `world/src/conceal.test.ts`: concealed items out of everyone's sight, untouchable by id, revealed by a search within
   reach or of what they are in, kept by a snapshot.
 - `agent/src/session/team/policy.test.ts`: every rule above on hand-built views.
@@ -337,6 +435,10 @@ Every scenario must pass (exit 1 otherwise). It is separate from the operative b
   room or in hands there, never a concealed one) — not a model of a nurse miscounting. A member outside the room
   knows whether someone is in it.
 - **The surgeon is the learner's body.** In observer mode the simulated surgeon acts with it.
+- **Places and controls are the engine's only.** A place in the team can be taken at `start` and joins at the team's
+  phase, but nobody then operates (no stand-in surgeon is driven), no front-end offers a place, and the controls are not
+  enforced in the operative field, the world, the scope of practice, delegation or these policies. There is no place
+  for the circulating nurse or the anaesthetist, and a place does not change during an encounter.
 - **Only the duties above have policies.** `anaesthesia` is declared only. Relief colleagues are reached "by phone";
   nobody walks to fetch an instrument from another room.
 - The **benchmark measures the reference policies** (it must stay at 100 %). Measuring an agent or a learner in a

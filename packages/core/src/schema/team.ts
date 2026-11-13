@@ -21,7 +21,10 @@ import { ProvenanceTagSchema } from "./procedure.js";
 export const TeamDutySchema = z.enum(["circulate", "instruments", "count", "surgeon", "anaesthesia", "assist"]);
 export type TeamDuty = z.infer<typeof TeamDutySchema>;
 
-/** A staff id of the facility without its prefix (`or-7.scrub-nurse`), or `surgeon`: the operating surgeon (the learner, or a simulated surgeon in observer mode). */
+/**
+ * A staff id of the facility without its prefix (`or-7.scrub-nurse`), or `surgeon`: the operating surgeon (the learner —
+ * the surgeon's stand-in while the learner holds another place —, or a simulated surgeon in observer mode).
+ */
 const MemberRef = z.string().regex(/^(surgeon|[A-Za-z0-9._-]+)$/, "a staff id (or-7.scrub-nurse) or surgeon");
 
 export const TeamMemberSchema = z
@@ -40,9 +43,9 @@ export const TeamMemberSchema = z
       .refine((xs) => new Set(xs).size === xs.length, { message: "each control is listed once" })
       .optional(),
     /**
-     * On the `surgeon` member only: the facility staff member who operates when the learner takes another place in
-     * the team (a first or second assistant, the scrub nurse) — the stand-in surgeon. A team without one offers the
-     * learner the surgeon's place only.
+     * On the `surgeon` member only: the facility staff member who is the operator while the learner holds another place
+     * in the team (a first or second assistant, the scrub nurse) — the stand-in surgeon. A team without one offers the
+     * learner the operating surgeon's place only.
      */
     standIn: MemberRef.optional(),
   })

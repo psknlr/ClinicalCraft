@@ -519,6 +519,8 @@
                 "enum": [
                   "surgeon",
                   "assistant-surgeon",
+                  "first-assistant",
+                  "second-assistant",
                   "anaesthetist",
                   "scrub-nurse",
                   "circulating-nurse",

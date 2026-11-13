@@ -27,18 +27,37 @@ never less complete than the rules, and the benchmarks stay deterministic (they 
 
 A staff member's **position** is the job they hold, finer than their facility `role` (which decides what their body
 may do in the world; in the 3D world the position also decides what they wear — a scrub nurse is gowned and gloved, an
-anaesthetist in theatre scrubs: FACILITIES.md "Staff in the 3D world"): a nurse is a scrub, circulating, ward or recovery nurse; an attending is a surgeon, an assistant
-surgeon, an anaesthetist, a physician or an educator. Positions (`StaffPositionSchema`): `surgeon`,
-`assistant-surgeon`, `anaesthetist`, `scrub-nurse`, `circulating-nurse`, `ward-nurse`, `recovery-nurse`,
-`theatre-coordinator`, `physician`, `educator`, `radiologist`, `radiographer`, `pathologist`, `lab-technician`,
-`transfusion-scientist`, `pharmacist`, `receptionist`, `porter`, `paramedic`.
+anaesthetist in theatre scrubs: FACILITIES.md "Staff in the 3D world"): a nurse is a scrub, circulating, ward or recovery nurse; an attending is a surgeon, a first
+or second assistant, an anaesthetist, a physician or an educator. Positions (`StaffPositionSchema`, core
+`schema/positions.ts`; their names in both languages `POSITION_TITLES`): `surgeon` (the operating surgeon),
+`assistant-surgeon`, `first-assistant`, `second-assistant`, `anaesthetist`, `scrub-nurse`, `circulating-nurse`,
+`ward-nurse`, `recovery-nurse`, `theatre-coordinator`, `physician`, `educator`, `radiologist`, `radiographer`,
+`pathologist`, `lab-technician`, `transfusion-scientist`, `pharmacist`, `receptionist`, `porter`, `paramedic`.
+`assistant-surgeon` is the first assistant's old name: it stays valid and keeps its own card (Dr Mori speaks from it),
+and counts as `first-assistant` wherever controls, places or sterility are decided (docs/TEAM.md §1). What each
+position may work in an operation — its controls — is the care team's (docs/TEAM.md §1); a card says it in words.
 
-**Where a position comes from** (`positionOf`): the facility's `staff.position` (or a room template instance's staff
-override), else the case team's duty (`anaesthesia` → anaesthetist, `instruments` → scrub nurse, `circulate` or
-`count` → circulating nurse, `surgeon` → surgeon; the scenario's relief colleagues too), else the facility role's
-default (`nurse` → ward nurse, `attending` → physician, `lab-tech` → laboratory technician, …). An agent answering as
-itself, with no staff member named, holds its profile's position (`PROFILE_POSITION`: the nurse is a ward nurse, the
-attending is the educator). The patient, the companion, the examiner and the demonstrating clinician are not staff.
+**Where a position comes from** (`positionOf`, core's `staffPosition`): the case team's own `position` for the member
+(a first and a second assistant share the duty `assist`), else the facility's `staff.position` (or a room template
+instance's staff override), else the case team's duties, read by priority — `surgeon` → surgeon, `anaesthesia` →
+anaesthetist, `instruments` → scrub nurse, `assist` → first assistant, `circulate` or `count` → circulating nurse, so
+`[count, instruments]` is a scrub nurse; the line-ups' assistants and the scenarios' relief colleagues too —, else the
+facility role's default (`nurse` → ward nurse, `attending` → physician, `lab-tech` → laboratory technician, …). A team
+member whose facility position is not their position in the team is an error of `cases validate`
+(`teamFacilityIssues`), so the card a colleague speaks from and the controls the team gives them never disagree. An
+agent answering as itself, with no staff member named, holds its profile's position (`PROFILE_POSITION`: the nurse is
+a ward nurse, the attending is the educator). The patient, the companion, the examiner and the demonstrating
+clinician are not staff.
+
+The theatre's cards, in short:
+
+| position | mission | escalates to |
+|---|---|---|
+| surgeon (operating surgeon) | carries out the operation safely and leads the operative team; asks the scrub nurse for instruments and the assistant for traction | surgeon (a senior) |
+| first assistant | keeps the operating surgeon's exposure — traction and counter-traction, suction, help with haemostasis; the camera when the team gives it to them; never dissects, clips, divides or coagulates, never takes a port another colleague holds | surgeon |
+| second assistant | keeps the view: the working point centred and the camera steady; static retraction and suction when asked; never withdraws the scope on their own, above all in bleeding | first assistant, then surgeon |
+| assistant surgeon | (the first assistant's old name, its own card) keeps the exposure steady and hands back cleanly | surgeon |
+| scrub nurse | keeps the sterile field and its instruments, hands the surgeon what they need and counts with the circulating nurse | circulating nurse, then surgeon |
 
 Each position has a **role card** (`ROLE_CARDS`):
 
@@ -135,8 +154,10 @@ the speaker's model the intent ("a new critical alarm … you are now at the pat
 
 ## 5. Tested
 
-- `packages/agent/src/characters/characters.test.ts`: every position has a complete, distinct card; positions from the
-  facility, the team's duties and the facility role; the role section; a model-driven member does the protocol's move
+- `packages/agent/src/characters/characters.test.ts`: every position has a complete, distinct card, its title the
+  position's name (`POSITION_TITLES`); the first and the second assistant's cards and the assistant surgeon's kept;
+  positions from the facility, the team's duties and the facility role, the team's own position first and duties by
+  priority; the role section; a model-driven member does the protocol's move
   in its own words, refuses ungrounded lines (a stray number, a colleague not in view, the wrong language), waits at
   most once and never on a read-back it owes, falls back to the rules on an option not offered, an unreadable answer,
   no model or a slow model (one warning), notices to a colleague and escalates its stuck task; grounded staff lines;

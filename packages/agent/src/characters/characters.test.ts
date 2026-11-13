@@ -5,7 +5,7 @@
  * rules stand in for anything else; a staff line worded by a model is checked the same way.
  */
 import { describe, expect, it } from "vitest";
-import { StaffPositionSchema, type CaseDefinition, type FacilityDefinition, type TeamDuty } from "@clinicalcraft/core";
+import { POSITION_TITLES, staffPosition, StaffPositionSchema, type CaseDefinition, type FacilityDefinition, type TeamDuty } from "@clinicalcraft/core";
 import { ScriptedProvider, textScript } from "../providers/scripted.js";
 import type { ChatRequest } from "../providers/types.js";
 import type { ColleagueView, MemberView } from "../session/team/policy.js";
@@ -105,6 +105,41 @@ describe("role cards", () => {
     expect(positionOf(c, facility, "ward.nurse")).toBe("ward-nurse");
     expect(positionOf(c, facility, "porter")).toBe("porter");
     expect(positionOf(c, facility, "nobody")).toBeNull();
+  });
+
+  it("the first and the second assistant have cards of their own; the assistant surgeon, the first assistant's old name, keeps its card", () => {
+    // every card's title is the position's name (core POSITION_TITLES): one source for cards, refusals and labels
+    for (const p of StaffPositionSchema.options) expect(ROLE_CARDS[p].title, p).toBe(POSITION_TITLES[p]);
+    expect(ROLE_CARDS["first-assistant"].title).toEqual({ en: "first assistant", "zh-CN": "第一助手" });
+    expect(ROLE_CARDS["second-assistant"].title).toEqual({ en: "second assistant", "zh-CN": "第二助手" });
+    const first = roleSection(ROLE_CARDS["first-assistant"], "Dr Sato");
+    expect(first).toMatch(/^<role>\nYou are Dr Sato, the first assistant\. Keeps the operating surgeon's exposure: traction and counter-traction, suction, help with haemostasis; the camera when this team gives it to you\./u);
+    expect(first).toMatch(/- take a port another colleague holds/u);
+    expect(first).toMatch(/You escalate what you cannot resolve to: operating surgeon\./u);
+    const second = roleSection(ROLE_CARDS["second-assistant"], "Dr Ito");
+    expect(second).toMatch(/^<role>\nYou are Dr Ito, the second assistant\. Keeps the view: the working point centred and the camera steady/u);
+    expect(second).toMatch(/- withdraw the scope on your own, above all in bleeding — turn the view away instead/u);
+    expect(second).toMatch(/You escalate what you cannot resolve to: first assistant, then operating surgeon\./u);
+    const mori = roleSection(ROLE_CARDS["assistant-surgeon"], "Dr Mori (assistant surgeon)");
+    expect(mori).toMatch(/^<role>\nYou are Dr Mori \(assistant surgeon\), the assistant surgeon\. Keeps the operating surgeon's exposure steady and hands back cleanly\./u);
+    expect(mori).toMatch(/- dissect, clip, divide or coagulate on your own initiative/u);
+  });
+
+  it("a staff member's position is core's: the team's own position first, duties by priority, never by their order", () => {
+    expect(positionOf).toBe(staffPosition);
+    const facility = { staff: [{ id: "or.assistant", role: "attending", position: "assistant-surgeon" }, { id: "or.scrub", role: "nurse" }] } as unknown as FacilityDefinition;
+    const c = {
+      team: {
+        members: [{ staff: "or.scrub", duties: ["count", "instruments"] }, { staff: "or.second", duties: ["assist"], position: "second-assistant" }, { staff: "or.first", duties: ["assist"] }],
+        lineups: [{ members: [{ staff: "or.third", duties: ["assist"], position: "second-assistant" }] }],
+        scenarios: [],
+      },
+    } as unknown as CaseDefinition;
+    expect(positionOf(c, facility, "or.scrub")).toBe("scrub-nurse");
+    expect(positionOf(c, facility, "or.second")).toBe("second-assistant");
+    expect(positionOf(c, facility, "or.first")).toBe("first-assistant");
+    expect(positionOf(c, facility, "or.third")).toBe("second-assistant");
+    expect(positionOf(c, facility, "or.assistant")).toBe("assistant-surgeon");
   });
 
   it("the role section is the job description: distinct duties and limits, then the shared protocol", () => {

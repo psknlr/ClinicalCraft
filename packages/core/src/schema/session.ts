@@ -67,8 +67,9 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
     team: IdSchema.optional(),
     /**
      * `seat`: the learner's place in the case's care team (docs/TEAM.md §1). `surgeon` (the default) is the operating
-     * surgeon, the learner as always; another place joins the team at its phase while the team's stand-in surgeon
-     * operates — the case's reference path up to that phase is applied with the start, as the team's work.
+     * surgeon, the learner as always (recorded as no place); another place joins the team at its phase, the team's
+     * stand-in surgeon (`standIn`) being the operator — the case's reference path up to that phase is applied with the
+     * start, as the team's work.
      */
     seat: SeatSchema.optional(),
     /** `lineup`: one of the team's line-ups (`team.lineups`): the assistants added for this encounter. */

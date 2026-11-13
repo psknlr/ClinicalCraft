@@ -873,6 +873,18 @@
             "team": {
               "$ref": "#/definitions/Id"
             },
+            "seat": {
+              "type": "string",
+              "enum": [
+                "surgeon",
+                "first-assistant",
+                "second-assistant",
+                "scrub-nurse"
+              ]
+            },
+            "lineup": {
+              "$ref": "#/definitions/Id"
+            },
             "by": {
               "type": "string",
               "enum": [

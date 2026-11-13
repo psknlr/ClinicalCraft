@@ -1,7 +1,8 @@
 /**
- * Checks of a case's care team (docs/TEAM.md §6): its own consistency (`checkTeamDefinition`, part of
- * `checkCaseIntegrity`) and its fit to the case's facility (`teamFacilityIssues`: the room, the staff, the
- * items and the placements a scenario moves exist there).
+ * Checks of a case's care team (docs/TEAM.md §1, "Checks"): its own consistency (`checkTeamDefinition`, part of
+ * `checkCaseIntegrity`: members, duties, scenarios, positions and controls, the stand-in, line-ups, and that every place
+ * it offers can be joined) and its fit to the case's facility (`teamFacilityIssues`: the room, the staff and their
+ * positions, the items and the placements a scenario moves exist there).
  */
 import type { CaseDefinition } from "../schema/case.js";
 import type { EquipmentCatalog, FacilityDefinition } from "../schema/facility.js";
@@ -17,7 +18,11 @@ type PathPart = string | number;
 const err = (path: readonly PathPart[], message: string): Issue => ({ path: formatPath(path), message, severity: "error" });
 const warn = (path: readonly PathPart[], message: string): Issue => ({ path: formatPath(path), message, severity: "warning" });
 
-/** The team's own consistency: phases, members and their duties, scenarios, needs, who is absent and who relieves. */
+/**
+ * The team's own consistency: phases, members and their duties, scenarios, needs, who is absent and who relieves; the
+ * positions and controls its members hold, the surgeon's stand-in, the line-ups; and, for a team that is otherwise
+ * sound and names a stand-in, that every place it offers can be joined along the reference path.
+ */
 export function checkTeamDefinition(c: CaseDefinition): Issue[] {
   const team = c.team;
   if (!team) return [];
@@ -200,7 +205,11 @@ function checkJoin(c: CaseDefinition): Issue[] {
   return [...messages].map((m) => err(["team", "members", index, "standIn"], m));
 }
 
-/** The team in its facility: the room, members (in that room), relief colleagues, the items needed, the placements moved. */
+/**
+ * The team in its facility: the room; the members, the surgeon's stand-in and the line-ups' assistants (staff of that
+ * room); each member's facility position agreeing with their position in the team; relief and cover colleagues; the
+ * items needed; the placements moved.
+ */
 export function teamFacilityIssues(c: CaseDefinition, f: FacilityDefinition, catalogs: readonly EquipmentCatalog[]): Issue[] {
   const team = c.team;
   if (!team) return [];

@@ -904,6 +904,18 @@
             "team": {
               "$ref": "#/definitions/Id"
             },
+            "seat": {
+              "type": "string",
+              "enum": [
+                "surgeon",
+                "first-assistant",
+                "second-assistant",
+                "scrub-nurse"
+              ]
+            },
+            "lineup": {
+              "$ref": "#/definitions/Id"
+            },
             "by": {
               "type": "string",
               "enum": [
@@ -5146,6 +5158,19 @@
               },
               "critical": {
                 "type": "boolean"
+              },
+              "seats": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "surgeon",
+                    "first-assistant",
+                    "second-assistant",
+                    "scrub-nurse"
+                  ]
+                },
+                "minItems": 1
               }
             },
             "required": [
@@ -6350,10 +6375,59 @@
                         "instruments",
                         "count",
                         "surgeon",
+                        "anaesthesia",
+                        "assist"
+                      ]
+                    },
+                    "minItems": 1
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": [
+                      "surgeon",
+                      "assistant-surgeon",
+                      "first-assistant",
+                      "second-assistant",
+                      "anaesthetist",
+                      "scrub-nurse",
+                      "circulating-nurse",
+                      "ward-nurse",
+                      "recovery-nurse",
+                      "theatre-coordinator",
+                      "physician",
+                      "educator",
+                      "radiologist",
+                      "radiographer",
+                      "pathologist",
+                      "lab-technician",
+                      "transfusion-scientist",
+                      "pharmacist",
+                      "receptionist",
+                      "porter",
+                      "paramedic"
+                    ]
+                  },
+                  "controls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "operate",
+                        "camera",
+                        "retract",
+                        "suction",
+                        "close",
+                        "instruments",
+                        "count",
+                        "equipment",
                         "anaesthesia"
                       ]
                     },
                     "minItems": 1
+                  },
+                  "standIn": {
+                    "type": "string",
+                    "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
                   }
                 },
                 "required": [
@@ -6425,10 +6499,59 @@
                         "instruments",
                         "count",
                         "surgeon",
+                        "anaesthesia",
+                        "assist"
+                      ]
+                    },
+                    "minItems": 1
+                  },
+                  "position": {
+                    "type": "string",
+                    "enum": [
+                      "surgeon",
+                      "assistant-surgeon",
+                      "first-assistant",
+                      "second-assistant",
+                      "anaesthetist",
+                      "scrub-nurse",
+                      "circulating-nurse",
+                      "ward-nurse",
+                      "recovery-nurse",
+                      "theatre-coordinator",
+                      "physician",
+                      "educator",
+                      "radiologist",
+                      "radiographer",
+                      "pathologist",
+                      "lab-technician",
+                      "transfusion-scientist",
+                      "pharmacist",
+                      "receptionist",
+                      "porter",
+                      "paramedic"
+                    ]
+                  },
+                  "controls": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "operate",
+                        "camera",
+                        "retract",
+                        "suction",
+                        "close",
+                        "instruments",
+                        "count",
+                        "equipment",
                         "anaesthesia"
                       ]
                     },
                     "minItems": 1
+                  },
+                  "standIn": {
+                    "type": "string",
+                    "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
                   }
                 },
                 "required": [
@@ -6525,10 +6648,59 @@
                               "instruments",
                               "count",
                               "surgeon",
+                              "anaesthesia",
+                              "assist"
+                            ]
+                          },
+                          "minItems": 1
+                        },
+                        "position": {
+                          "type": "string",
+                          "enum": [
+                            "surgeon",
+                            "assistant-surgeon",
+                            "first-assistant",
+                            "second-assistant",
+                            "anaesthetist",
+                            "scrub-nurse",
+                            "circulating-nurse",
+                            "ward-nurse",
+                            "recovery-nurse",
+                            "theatre-coordinator",
+                            "physician",
+                            "educator",
+                            "radiologist",
+                            "radiographer",
+                            "pathologist",
+                            "lab-technician",
+                            "transfusion-scientist",
+                            "pharmacist",
+                            "receptionist",
+                            "porter",
+                            "paramedic"
+                          ]
+                        },
+                        "controls": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "operate",
+                              "camera",
+                              "retract",
+                              "suction",
+                              "close",
+                              "instruments",
+                              "count",
+                              "equipment",
                               "anaesthesia"
                             ]
                           },
                           "minItems": 1
+                        },
+                        "standIn": {
+                          "type": "string",
+                          "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
                         }
                       },
                       "required": [
@@ -6610,6 +6782,123 @@
                   "name",
                   "summary",
                   "provenance"
+                ],
+                "additionalProperties": false
+              },
+              "default": []
+            },
+            "lineups": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "$ref": "#/definitions/Id"
+                  },
+                  "name": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "provenance": {
+                    "type": "string",
+                    "enum": [
+                      "published-case",
+                      "imaging",
+                      "reference",
+                      "guideline",
+                      "authored",
+                      "synthetic"
+                    ]
+                  },
+                  "note": {
+                    "$ref": "#/definitions/LocalizedText"
+                  },
+                  "members": {
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "staff": {
+                          "type": "string",
+                          "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                        },
+                        "duties": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "circulate",
+                              "instruments",
+                              "count",
+                              "surgeon",
+                              "anaesthesia",
+                              "assist"
+                            ]
+                          },
+                          "minItems": 1
+                        },
+                        "position": {
+                          "type": "string",
+                          "enum": [
+                            "surgeon",
+                            "assistant-surgeon",
+                            "first-assistant",
+                            "second-assistant",
+                            "anaesthetist",
+                            "scrub-nurse",
+                            "circulating-nurse",
+                            "ward-nurse",
+                            "recovery-nurse",
+                            "theatre-coordinator",
+                            "physician",
+                            "educator",
+                            "radiologist",
+                            "radiographer",
+                            "pathologist",
+                            "lab-technician",
+                            "transfusion-scientist",
+                            "pharmacist",
+                            "receptionist",
+                            "porter",
+                            "paramedic"
+                          ]
+                        },
+                        "controls": {
+                          "type": "array",
+                          "items": {
+                            "type": "string",
+                            "enum": [
+                              "operate",
+                              "camera",
+                              "retract",
+                              "suction",
+                              "close",
+                              "instruments",
+                              "count",
+                              "equipment",
+                              "anaesthesia"
+                            ]
+                          },
+                          "minItems": 1
+                        },
+                        "standIn": {
+                          "type": "string",
+                          "pattern": "^(surgeon|[A-Za-z0-9._-]+)$"
+                        }
+                      },
+                      "required": [
+                        "staff",
+                        "duties"
+                      ],
+                      "additionalProperties": false
+                    },
+                    "minItems": 1
+                  }
+                },
+                "required": [
+                  "id",
+                  "name",
+                  "provenance",
+                  "members"
                 ],
                 "additionalProperties": false
               },
