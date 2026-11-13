@@ -12,7 +12,7 @@ record; the decisions teach current guidance and say where earlier care fell sho
 
 | | |
 |---|---|
-| id / version | `cmcr-33716` / `1.1.1` |
+| id / version | `cmcr-33716` / `1.1.3` |
 | setting / facility | `inpatient` (a ward bed: respiratory ward, then cardiology) / `general-hospital` |
 | specialty | cardiology, infectious diseases, cardiac surgery |
 | difficulty / estimated time | 3 / 5 · ~35 min (static clock) |
@@ -302,6 +302,13 @@ independently; see To verify.
 - Whether a **newer Chinese IE guideline** has replaced the 2014 consensus was not checked.
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **Critical-failure decision (audit P0-3).** `defer-surgery` (high risk, always contraindicated) is
+  `critical: false` (`cases validate`): deferring indicated valve surgery is the case's key misjudgement, scored by the
+  critical `r-surgery` item and by `r-no-deferral`, not a critical safety failure of an act given. No intervention here
+  is critical; scores are unchanged.
 
 ### 1.1.2 — 2026-10-30 (completable)
 

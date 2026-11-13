@@ -197,6 +197,11 @@ developer documents use.
 | rubric | rubric | 评分细则 | `rubric[]` | |
 | critical item | critical item; in the debrief "Critical items missed" | 关键项；复盘中“未达成的关键项” | `rubric[].critical`, `AssessmentReport.criticalMissed` | the case's dangerous error or missed life-saving act, named first in every debrief; never caps the score |
 | not scored | not scored ("the situation this item scores did not arise") | 未计分（“本次接诊中没有出现该项评分的情形”） | `rubric[].scoredWhen`, rubric result `scored: false` | an avoided-harm item counts only once the harm was possible |
+| safety outcome; passed / not passed | safety: passed / not passed | 安全性：通过 / 未通过 | `AssessmentReport.safety.passed` | shown beside the score on every debrief and export, never folded into it; a run that did not pass is never called passed, whatever its percentage |
+| critical safety failure | critical safety failure | 严重安全失误 | `interventions[].critical`, `safety.criticalFailures` | the case's dangerous error, made: a critical intervention given while contraindicated. Not "critical item" (关键项), which is a rubric item missed |
+| dose error; critical dose error | dose error; critical dose error ("not given: the dose ordered differs from the preset") | 剂量错误；严重剂量错误（“未给药：医嘱剂量与预设剂量不符”） | `dose.error`, `safety.doseErrors`, `severity` | the order is not carried out; critical when tenfold (×10 or ÷10) or on a critical or high-risk drug |
+| the order as written; the dose read from it; the preset dose | as ordered; read as; preset dose | 医嘱原文；识别剂量；预设剂量 | `ordered.text`, `ordered.dose`, `doseSpec` | the debrief shows all three apart |
+| error recognition and recovery | error recognition and recovery (teaching) | 错误识别与补救（教学） | `errorRecovery` | a reference path that makes an error on purpose, declared; facilitator-facing |
 | debrief | debrief | 复盘 | `/debrief`, `debrief` | the method is debriefing (引导性反馈), here PEARLS |
 | key reasoning, teaching points, evidence boundaries, unknowns, references | key reasoning, teaching points, evidence boundaries, unknowns, references | 关键推理、教学要点、证据边界、仍未知的信息、参考文献 | `debrief.*` | |
 

@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "cmcr-1653409",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "title": {
     "zh-CN": "逐渐增大的耻骨上皮下肿物 · 15岁女孩",
     "en": "Enlarging lump under the skin above the pubic bone · 15-year-old girl"
@@ -1570,6 +1570,7 @@
       "requires": [],
       "scope": "medical",
       "risk": "high",
+      "critical": false,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "phase": "initial"
@@ -1747,6 +1748,7 @@
       "requires": [],
       "scope": "medical",
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },

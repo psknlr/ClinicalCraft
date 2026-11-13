@@ -248,6 +248,15 @@ export type Condition =
   | { vital: VitalKey; op: "lt" | "lte" | "gt" | "gte" | "eq"; value: number }
   /** Simulated minutes elapsed since the case started. */
   | { elapsed: { gte?: number; lte?: number } }
+  /**
+   * Simulated minutes since the intervention was last given (its latest record that is not an invalid checklist
+   * attempt — a dose given while contraindicated was given) lie in the range; false while it has never been given.
+   * In the intervention's own `indicatedWhen` it sets a repeat dose's window, which `{ intervened, whenIndicated }`
+   * then counts: `{ "any": [{ "not": { "intervened": "adrenaline-im" } }, { "all": [{ "elapsedSince": { "intervened":
+   * "adrenaline-im", "gte": 5 } }, { "flag": "still-compromised" }] }] }` — the first dose, or one ≥ 5 min after the
+   * last while the patient is still compromised.
+   */
+  | { elapsedSince: { intervened: string; gte?: number; lte?: number } }
   /** Number of hints used. */
   | { hints: { gte?: number; lte?: number } }
   | { procedure: ProcedurePredicate }
@@ -288,6 +297,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ objective: IdSchema }).strict(),
     z.object({ vital: VitalKeySchema, op: z.enum(["lt", "lte", "gt", "gte", "eq"]), value: z.number() }).strict(),
     z.object({ elapsed: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
+    /** Minutes since an intervention was last given (false while never given). */
+    z.object({ elapsedSince: z.object({ intervened: IdSchema, gte: z.number().min(0).optional(), lte: z.number().min(0).optional() }).strict() }).strict(),
     z.object({ hints: z.object({ gte: z.number().optional(), lte: z.number().optional() }).strict() }).strict(),
     /** The operative field (case `procedure`, docs/PROCEDURE.md §6). */
     z.object({ procedure: ProcedurePredicateSchema }).strict(),
@@ -299,6 +310,65 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ datum: IdSchema, status: z.array(z.enum(["not-asked", "asked-unknown", "verified-negative", "verified-positive", "mitigated"])).min(1) }).strict(),
   ])),
 );
+
+/* ------------------------------------------------------------------ */
+/* Doses (an intervention's preset dose; the dose an order states)     */
+/* ------------------------------------------------------------------ */
+
+/** What a dose is counted in: a mass (g, mg, microgram), a volume (mL), international units, millimoles. */
+export const DOSE_QUANTITIES = ["g", "mg", "microgram", "mL", "unit", "mmol"] as const;
+export type DoseQuantity = (typeof DOSE_QUANTITIES)[number];
+
+/**
+ * A dose's unit: a quantity, per kilogram of body weight or not, and per hour or per minute for a rate — `mg`,
+ * `mg/kg`, `unit/kg/h`, `microgram/kg/min`. Written `microgram` (never µg or mcg, the abbreviation misread a
+ * thousandfold) and `unit` (never U or IU, misread as 0 or 10).
+ */
+export type DoseUnit = `${DoseQuantity}${"" | "/kg"}${"" | "/h" | "/min"}`;
+/** Every `DoseUnit`, quantity by quantity: `g`, `g/h`, `g/min`, `g/kg`, `g/kg/h`, `g/kg/min`, `mg`, …. */
+export const DOSE_UNITS = DOSE_QUANTITIES.flatMap((q) =>
+  (["", "/kg"] as const).flatMap((kg) => (["", "/h", "/min"] as const).map((rate): DoseUnit => `${q}${kg}${rate}`)),
+) as unknown as readonly [DoseUnit, ...DoseUnit[]];
+export const DoseUnitSchema = z.enum(DOSE_UNITS);
+
+/**
+ * Routes of administration: intramuscular, intravenous, intraosseous, subcutaneous, oral, sublingual, rectal,
+ * intranasal, inhaled (nebulised or by inhaler), topical.
+ */
+export const DOSE_ROUTES = ["IM", "IV", "IO", "SC", "PO", "SL", "PR", "IN", "INH", "TOP"] as const;
+export type DoseRoute = (typeof DOSE_ROUTES)[number];
+export const DoseRouteSchema = z.enum(DOSE_ROUTES);
+
+/**
+ * An intervention's preset dose, machine-readable (`interventions[].doseSpec`; the learner reads the `dose` text):
+ * what giving it gives. `upTo` is the top of a range the dose may take, in the same unit (labetalol 10–20 mg:
+ * `{ "amount": 10, "upTo": 20, "unit": "mg", "route": "IV" }`). An order's dose is checked against it (`compareDose`).
+ */
+export const DoseSpecSchema = z
+  .object({
+    amount: z.number().positive(),
+    upTo: z.number().positive().optional(),
+    unit: DoseUnitSchema,
+    route: DoseRouteSchema.optional(),
+  })
+  .strict()
+  .refine((d) => d.upTo == null || d.upTo >= d.amount, { message: "upTo is the top of the dose's range: it cannot be below amount", path: ["upTo"] });
+export type DoseSpec = z.infer<typeof DoseSpecSchema>;
+
+/**
+ * The dose an order states, as read from what was written (`parseDose`): an amount with its unit, a route, or both —
+ * `{ "amount": 5, "unit": "mg", "route": "IM" }`, `{ "route": "IV" }`.
+ */
+export const OrderedDoseSchema = z
+  .object({
+    amount: z.number().positive().optional(),
+    unit: DoseUnitSchema.optional(),
+    route: DoseRouteSchema.optional(),
+  })
+  .strict()
+  .refine((d) => (d.amount == null) === (d.unit == null), "an amount needs its unit, and a unit its amount")
+  .refine((d) => d.amount != null || d.route != null, "a dose states an amount, a route or both");
+export type OrderedDose = z.infer<typeof OrderedDoseSchema>;
 
 /* ------------------------------------------------------------------ */
 /* Capabilities vocabulary                                             */

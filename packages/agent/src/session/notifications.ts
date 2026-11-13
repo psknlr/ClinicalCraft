@@ -251,6 +251,9 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     case "procedure.step":
     case "alarm.response":
     case "procedure.supply":
+    // a dose error (core `dose.error`: an order's dose conflicted with the preset, nothing given) is reported by the
+    // `intervene` tool that placed the order
+    case "dose.error":
       return [];
     default: {
       const never: never = event;

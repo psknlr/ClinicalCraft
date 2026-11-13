@@ -12,7 +12,7 @@ medical advice and does not replace local protocols or current guidelines. 虚�
 
 | | |
 |---|---|
-| id / version | `septic-shock-cap` / `1.1.2` |
+| id / version | `septic-shock-cap` / `1.1.3` |
 | setting / facility | `emergency` (ED resus bay 1, night shift) / `general-hospital` |
 | specialty | emergency medicine, critical care, infectious diseases, respiratory medicine |
 | difficulty / estimated time | 4 / 5 · ~45 min (simulated clock from 21:30, 180-min limit) |
@@ -158,7 +158,7 @@ norepinephrine first line and the key history (2 each).
 | `r-abx-regimen` | management | 1 | a β-lactam plus atypical cover |
 | `r-fluids` | management | 1 | ≥ 3 boluses and a post-fluid perfusion reassessment |
 | `r-norepi` | management | 2 | norepinephrine, and no dopamine |
-| `r-safety` | safety | **3** | no fluid restriction, no antibiotic hold for CT and no CT before antibiotics, no intubation, no ward admission — scored once resuscitation has started (a bolus or an antibiotic) or one of these has happened |
+| `r-safety` | safety | **3** | no fluid restriction, no antibiotic hold for CT and no CT before antibiotics, no intubation, no ward admission — scored once resuscitation has started (a bolus or an antibiotic) or one of these has happened; **critical** |
 | `r-med-safety` | safety | 1 | the home ibuprofen elicited and home medicines held |
 | `r-icu` | efficiency | 1 | ICU referral within 90 min of resus |
 | `r-comm-family` | communication | 1 (judged) | plain-language explanation, the husband at home, goals of care, teach-back |
@@ -199,6 +199,15 @@ named, unless stated):
 | j. Ibuprofen not asked, home medicines not held | 20/21 (95 %) | `r-med-safety` 1 |
 | k. ICU called after 90 min | 20/21 (95 %) | `r-icu` 1 |
 | l. Nothing done for 180 min | 0/18 (0 %); 0/6 objectives | everything; `r-safety` is not scored before resuscitation starts (3/21 in 1.1.0) |
+| m. Rapid-sequence intubation after the first bolus, before norepinephrine (1.1.3) | 18/21 (86 %); safety **failed** | `r-safety` 3 |
+
+**Safety outcome** (since 1.1.3). `intubation` is `critical`: rapid-sequence induction while she protects her
+airway (GCS ≥ 9) or without a vasopressor running risks profound hypotension or arrest on induction, so it fails the
+assessment's safety outcome (`safety.passed: false`) whatever the score; every debrief and export shows it beside the
+score, and her blood pressure still falls. Paths a–l above make no critical error (paths d, f and g cost
+`r-safety`, now a critical rubric item, but pass safety). Free-text orders are checked against the preset doses
+(`doseSpec`): ceftriaxone 2 g, azithromycin 500 mg, moxifloxacin 400 mg, piperacillin–tazobactam 4.5 g,
+hydrocortisone 50 mg and paracetamol 1 g, all IV.
 
 ## Reference path (`solution`)
 
@@ -438,6 +447,15 @@ Ref. 13 is the CAPE COD trial; ref. 14 derives CURB-65.
 - **SOFA-2** (JAMA 2025): whether the debrief should show the SOFA-2 count beside the original SOFA.
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-3).** `intubation` is `critical: true` (RSI without an indication or without a
+  vasopressor running in septic shock): it fails the safety outcome shown beside the score, and `r-safety` is a
+  critical rubric item beside `r-abx-1h`. Scores are unchanged (path m: 18/21, safety failed).
+- **Preset doses (audit P0-2):** `doseSpec` on ceftriaxone 2 g, azithromycin 500 mg, moxifloxacin 400 mg,
+  piperacillin–tazobactam 4.5 g, hydrocortisone 50 mg and paracetamol 1 g IV. Norepinephrine (a bag and a titrated
+  rate) and the weight-based vancomycin load have none.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

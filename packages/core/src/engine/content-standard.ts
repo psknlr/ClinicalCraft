@@ -23,11 +23,14 @@
  * | a key reasoning point is not a copy of a teaching point | `debrief.keyReasoning.<i>` |
  * | a test utterance is not one of its expected item's keywords | `extensions.testUtterances.<i>` |
  * | every specialty id is canonical (`CANONICAL_SPECIALTIES`); a synonym's warning names its replacement | `specialty.<i>` |
+ * | a high-risk intervention with a `contraindicatedWhen` says whether giving it then is a critical safety failure (`critical: true` or `false`) | `interventions.<i>.critical` |
+ * | a preset dose (`doseSpec`) states the dose its `dose` text states (the text's first dose and its route, where both can be compared) | `interventions.<i>.doseSpec` |
  */
 import type { CaseDefinition, Decision, HistoryItem } from "../schema/case.js";
 import { PERSONAL_KIT, type Condition } from "../schema/common.js";
 import { hasLocale, t, tList, type LocalizedText } from "../i18n.js";
 import { canonicalSpecialty, isCanonicalSpecialty } from "../specialties.js";
+import { compareDose, doseMentions, doseRoute, formatDose } from "./dose.js";
 import { createSession } from "./reducer.js";
 import { historyVoice } from "./speech.js";
 import { compactText } from "./text.js";
@@ -509,6 +512,55 @@ function checkSpecialties(c: CaseDefinition): Issue[] {
 }
 
 /* ------------------------------------------------------------------ */
+/* Critical interventions and preset doses                             */
+/* ------------------------------------------------------------------ */
+
+/**
+ * A high-risk intervention that can be contraindicated is where a case's dangerous errors are: its author decides
+ * whether giving it while contraindicated is a critical safety failure (`critical: true`) or not (`false`).
+ */
+function checkCriticalDecided(c: CaseDefinition): Issue[] {
+  return c.interventions.flatMap((iv, i) =>
+    iv.risk === "high" && iv.contraindicatedWhen && iv.critical === undefined
+      ? [warn(`interventions.${i}.critical`, `high-risk intervention "${iv.id}" can be contraindicated but does not say whether giving it then is a critical safety failure: set critical to true (the safety outcome fails) or false`)]
+      : [],
+  );
+}
+
+/**
+ * The preset dose and the `dose` text state the same dose: the text's first dose (an amount or a range) against
+ * `[amount, upTo]` — where their units can be compared, through the patient's weight for a dose per kg — and its
+ * route, when the text names exactly one.
+ */
+function checkDoseSpecs(c: CaseDefinition): Issue[] {
+  const issues: Issue[] = [];
+  c.interventions.forEach((iv, i) => {
+    const spec = iv.doseSpec;
+    if (!spec) return;
+    // each end of the text's dose against the same end of the preset's
+    const bottom = { ...spec, upTo: undefined };
+    const top = { ...spec, amount: spec.upTo ?? spec.amount, upTo: undefined };
+    const differ = localesOf(c, iv.dose).flatMap((l) => {
+      const text = t(iv.dose, l);
+      const first = doseMentions(text)[0];
+      const route = doseRoute(text);
+      const amountDiffers =
+        first != null &&
+        [compareDose({ amount: first.amount, unit: first.unit }, bottom, c.patient.weightKg), compareDose({ amount: first.upTo ?? first.amount, unit: first.unit }, top, c.patient.weightKg)].some((r) =>
+          r.conflicts.includes("amount"),
+        );
+      const said = [
+        ...(amountDiffers ? [formatDose({ amount: first.amount, upTo: first.upTo, unit: first.unit })] : []),
+        ...(route && spec.route && route !== spec.route ? [route] : []),
+      ];
+      return said.length ? [`${l}: ${said.join(", ")}`] : [];
+    });
+    if (differ.length) issues.push(warn(`interventions.${i}.doseSpec`, `the preset dose of "${iv.id}" (${formatDose(spec)}) is not what its dose text states (${differ.join("; ")}): make them say the same dose`));
+  });
+  return issues;
+}
+
+/* ------------------------------------------------------------------ */
 /* Entry point                                                         */
 /* ------------------------------------------------------------------ */
 
@@ -533,5 +585,7 @@ export function checkContentStandard(c: CaseDefinition): Issue[] {
     ...checkKeyReasoningEchoes(c),
     ...checkKeywordUtterances(c),
     ...checkSpecialties(c),
+    ...checkCriticalDecided(c),
+    ...checkDoseSpecs(c),
   ];
 }

@@ -15,7 +15,7 @@ medical advice.
 
 | | |
 |---|---|
-| id / version | `dka-adult` / `1.1.2` |
+| id / version | `dka-adult` / `1.1.4` |
 | setting / facility | `emergency` (resus bay 1, managed to HDU/ICU level 2) / `general-hospital` |
 | specialty | emergency medicine, endocrinology, critical care |
 | difficulty | 3 / 5 |
@@ -168,7 +168,7 @@ potassium down further?", "which number recovers first?").
 | `r-mx-friii` | management | 1 | FRIII without a bolus |
 | `r-mx-dextrose` | management | 1 | 10% glucose given, no hypoglycaemia |
 | `r-mx-level-monitoring` | management | 1 | HDU referral and hourly monitoring plan |
-| `r-safety-avoid` | safety | **2** | no bicarbonate, no KCl push (a never event), no insulin through the old pump set — scored once treatment has started (fluids, potassium or insulin) or one of these is given |
+| `r-safety-avoid` | safety | **2** | no bicarbonate, no KCl push (a never event), no insulin through the old pump set — scored once treatment has started (fluids, potassium or insulin) or one of these is given; **critical** |
 | `r-transition` | management | 1 | SC insulin before stopping FRIII, no gap, diabetes team |
 | `r-efficiency` | efficiency | 1 | no ABG, CT abdomen or empirical antibiotics — scored once the severity decision is reached or one of them is ordered or given |
 | `r-comm` | communication | — | examiner-judged: blame-free explanation, ICE, sick-day rules, SBAR handover |
@@ -178,6 +178,18 @@ potassium down further?", "which number recovers first?").
 The percentage comes from the weighted deterministic rubric. A contraindicated
 step is also recorded as a **safety event** and listed in the debrief, and the
 patient's critical episodes are counted, separately from the percentage.
+
+**Safety outcome.** Three interventions are `critical`: the **KCl IV push** (a
+never event, even though the nurse refuses it), and **insulin before the potassium
+is replaced** — the fixed-rate infusion (`friii`) or an insulin bolus while she is in
+`resus` (K⁺ 3.2 mmol/L). Ordering one fails the assessment's safety outcome
+(`safety.passed: false`) whatever the percentage, and every debrief and export shows
+it beside the score. Bicarbonate at pH 7.08 is `critical: false`: harmful (it
+worsens the hypokalaemia — `ev-bicarbonate`) and it costs `r-safety-avoid`, but
+recoverable. In the audit's replay (KCl push after the IV lines) the score stays
+14/16 (88 %), with `r-safety-avoid` named first and the safety outcome failed.
+Free-text orders are checked against the preset doses of ondansetron (4 mg IV) and
+enoxaparin (40 mg SC).
 Decisions are scored on the first attempt (`decidedFirstTry` for `dx-severity`
 in `r-dx`); every option has feedback.
 
@@ -333,11 +345,11 @@ Minute-checked by replaying the solution through the engine (85 steps).
 
 | error | how the case surfaces it | where it scores |
 |---|---|---|
-| Insulin before potassium | the nurse offers the made-up infusion at minute 12 (`ev-insulin-ready`); FRIII is contraindicated in `resus`; about an hour later ectopics, a 6-beat run of VT and K⁺ 2.6 (`ev-k-crash` / `-unmonitored`); `k-replete` waits until minute ≥ 180 | `r-safety-k-first` (weight 2), safety event |
+| Insulin before potassium | the nurse offers the made-up infusion at minute 12 (`ev-insulin-ready`); FRIII is contraindicated in `resus`; about an hour later ectopics, a 6-beat run of VT and K⁺ 2.6 (`ev-k-crash` / `-unmonitored`); `k-replete` waits until minute ≥ 180 | `r-safety-k-first` (weight 2, critical), a critical safety failure |
 | "Blind" potassium | `kcl-replacement` is contraindicated until a K⁺ result has been read | safety event |
-| KCl push | the nurse refuses and escalates (never event) | `r-safety-avoid` (weight 2), safety event |
+| KCl push | the nurse refuses and escalates (never event) | `r-safety-avoid` (weight 2, critical), a critical safety failure |
 | Bicarbonate at pH 7.08 | her pulse becomes irregular (`ev-bicarbonate`) | `r-safety-avoid`, safety event |
-| Insulin bolus | pharmacist note; contraindicated in `resus` | `r-mx-friii` |
+| Insulin bolus | pharmacist note; contraindicated in `resus` (a critical safety failure there) | `r-mx-friii` |
 | Fluids delayed | the nurse warns at minute 45 and the BP drifts (`ev-no-fluids-45`) | `r-mx-fluids` |
 | Treating severity by pH alone | `dx-moderate-dka` feedback | `r-dx` (first try) |
 | No glucose when it falls below 14 / stopping insulin | `glucose-falling` feedback; hypoglycaemia events (`ev-hypoglycaemia`, `ev-severe-hypo`) | `r-mx-dextrose` |
@@ -393,8 +405,9 @@ bed is prepared.
   Texts the learner can meet before the monitor is attached do not claim one:
   the KCl order says it *needs* continuous ECG monitoring (attach the monitor),
   and the HDU referral that she needs HDU-level monitoring in resus.
-- **The potassium recheck is time-gated** by elapsed-minute tiers, because the
-  engine has no "minutes since intervention X" condition. Potassium started
+- **The potassium recheck is time-gated** by elapsed-minute tiers: the case
+  predates the engine's `elapsedSince` condition, and re-expressing the tiers as
+  minutes since `kcl-replacement` is left to a later revision. Potassium started
   before minute 600 always runs 45–105 min before the `k-replete` result;
   only a start after minute 600 can get a shorter interval.
 - **The insulin rate is not titrated.** The engine cannot change a running
@@ -513,6 +526,24 @@ them:
   ≥ 8 mmol/L) depend on the strip brand.
 
 ## Changelog
+
+### 1.1.4 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failures (audit P0-3).** The audit's replay (a KCl IV push after
+  the IV lines) scored 14/16 (88 %) with no critical outcome. `kcl-push`, `friii`
+  and `insulin-bolus` are now `critical: true` — the push is never given safely
+  (FDA labelling of potassium chloride concentrate), and insulin while she is in
+  `resus` (K⁺ 3.2 mmol/L) is the case's dangerous error — so giving one fails the
+  safety outcome shown beside the score; `r-safety-avoid` is a critical rubric item
+  beside `r-safety-k-first`. The percentage is unchanged (14/16 for the push).
+  `sodium-bicarbonate` is `critical: false` (harmful, recoverable).
+- **Preset doses (audit P0-2):** `doseSpec` on ondansetron 4 mg IV and enoxaparin
+  40 mg SC. The insulin infusion and the potassium bag have none: their orders are
+  written as a syringe or a bag and a rate, which an order's first dose does not
+  capture.
+- README: the case card showed version 1.1.2; it now shows 1.1.4. The fidelity
+  note on the potassium recheck no longer says the engine lacks a "minutes since"
+  condition.
 
 ### 1.1.3 — 2026-11-12 (assessment validity)
 

@@ -15,7 +15,7 @@ traditional characters; the case uses simplified Chinese.
 
 | | |
 |---|---|
-| id / version | `cmcr-1653404` / `1.1.1` |
+| id / version | `cmcr-1653404` / `1.1.2` |
 | setting / facility | `inpatient` / `general-hospital` (paediatric ward bed `ward-1`) |
 | specialty | paediatrics, immunology, infectious disease |
 | difficulty | 4 / 5 |
@@ -194,13 +194,16 @@ teach-back.
   `ivig-replacement`, `vaccine-plan`, `genetic-counselling` and
   `steroid-eczema` are `indicated` once their evidence exists.
 
-### Framework annotations (pending)
+### Framework annotations
 
-`S/pr3/fxc-annotations/cmcr-1653404.json` (not in `case.json`): the outside
-reports and the follow-up record are record reviews (`performedAt: "records"`);
-`rb-confirm` and `rb-safety-longterm` are `critical`; `rb-safety-vaccine` is
-`critical` and counts only once `long-term` has been attempted
-(`scoredWhen: {attempted: "long-term"}`), so doing nothing does not earn it.
+In `case.json`: the outside reports and the follow-up record are record reviews
+(`performedAt: "records"`); `rb-confirm` and `rb-safety-longterm` are
+`critical`; `rb-safety-vaccine` is `critical` and counts only once `long-term`
+has been attempted or a live vaccine given (`scoredWhen`), so doing nothing
+does not earn it. Since 1.1.2 `live-vaccine` is a `critical` intervention:
+giving it once the low immunoglobulins have been read fails the assessment's
+safety outcome (`safety.passed: false`), which every debrief and export shows
+beside the score.
 
 ## Reference path (`solution`)
 
@@ -405,6 +408,12 @@ entry (NBK1453, no DOI); the CDC chapter carries no DOI.
   discussion but are not carried into the case.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failure (audit P0-3).** A live attenuated vaccine once the immunoglobulins show a severe
+  antibody deficiency is `critical: true` (vaccine-associated poliomyelitis, disseminated BCG); `rb-safety-vaccine` was
+  already a critical rubric item. Scores are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

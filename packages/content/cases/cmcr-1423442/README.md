@@ -15,7 +15,7 @@ taught in the decisions, feedback and debrief. Not medical advice
 
 | | |
 |---|---|
-| id / version | `cmcr-1423442` / `1.1.1` |
+| id / version | `cmcr-1423442` / `1.1.2` |
 | setting / facility | `inpatient` / `general-hospital` (ward bed) |
 | specialty | endocrinology, nephrology, clinical pharmacology, hepatology |
 | difficulty | 4 / 5 |
@@ -408,6 +408,12 @@ DOI is given where none could be checked (3, 5–7, 9).
   checked through a label mirror).
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Preset doses (audit P0-2):** `doseSpec` on entecavir 0.5 mg, tenofovir alafenamide 25 mg and calcitriol
+  1 microgram (PO), the doses their texts state; a free-text order of another dose is not given and is kept as a dose
+  error for the debrief. No intervention here is high-risk or a critical safety failure.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

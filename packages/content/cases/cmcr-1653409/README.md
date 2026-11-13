@@ -12,7 +12,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-1653409` · v1.1.1 |
+| Case | `cmcr-1653409` · v1.1.2 |
 | Source | 古杰鳴. 淺表性血管黏液瘤1例. 鏡湖醫學. 2025;25(2):57 (title names the diagnosis — facilitators only) |
 | Setting | Outpatient clinic (`outpatient`); excision and pathology; a follow-up record 6 years later |
 | Facility | `general-hospital` (consult room 1; pathology) |
@@ -293,6 +293,13 @@ ref. 4 — citation and DOI from the PR #3 audit (academic.oup.com).
 * The specialty label `dermatology` has no zh/en label in the framework (reported).
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **Critical safety failure (audit P0-3).** Radiotherapy for a benign tumour in a 15-year-old is
+  `critical: true` (late radiation damage and second cancers, no benefit); `r-safety` was already a critical rubric
+  item. A wide excision before imaging and a tissue diagnosis (high risk) is `critical: false` (recoverable). Scores
+  are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

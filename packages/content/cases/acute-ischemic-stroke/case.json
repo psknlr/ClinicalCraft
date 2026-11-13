@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "acute-ischemic-stroke",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "title": {
     "zh-CN": "右侧无力伴言语困难 · 67岁男性",
     "en": "Right-sided weakness and difficulty speaking · 67-year-old man"
@@ -4408,6 +4408,7 @@
         "medications"
       ],
       "risk": "moderate",
+      "critical": true,
       "effects": [
         {
           "vital": "sbp",
@@ -4511,12 +4512,14 @@
         "zh-CN": "阿替普酶 0.9 mg/kg（最大90 mg），按他的体重计算——其中10%于1分钟内静推，其余于60分钟内静脉泵入",
         "en": "Alteplase 0.9 mg/kg (max 90 mg) by his weight — 10% as an IV bolus over 1 minute, the rest infused over 60 minutes"
       },
+      "doseSpec": { "amount": 0.9, "unit": "mg/kg", "route": "IV" },
       "requires": [
         "medications",
         "infusion-pump",
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "setFlags": [
         "thrombolysed",
         "alteplase-given"
@@ -4685,11 +4688,13 @@
         "zh-CN": "替奈普酶 0.25 mg/kg（最大25 mg），按他的体重计算，5–10秒内单次静推",
         "en": "Tenecteplase 0.25 mg/kg (max 25 mg) by his weight, as a single IV bolus over 5–10 seconds"
       },
+      "doseSpec": { "amount": 0.25, "unit": "mg/kg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "setFlags": [
         "thrombolysed",
         "tenecteplase-given"
@@ -4907,6 +4912,7 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "setFlags": [
         "heparin-given"
       ],
@@ -5174,6 +5180,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": false,
       "setFlags": [
         "transferred-angio"
       ],
@@ -5243,6 +5250,7 @@
         "blood-bank"
       ],
       "risk": "high",
+      "critical": false,
       "setFlags": [
         "sich-managed"
       ],
@@ -6792,6 +6800,18 @@
           }
         ]
       },
+      "critical": true
+    },
+    {
+      "id": "r-no-unsafe-lysis",
+      "domain": "safety",
+      "weight": 2,
+      "text": {
+        "zh-CN": "只用一种溶栓药，且在全部溶栓前提满足后才用：禁忌时不溶栓，不叠加第二种溶栓药",
+        "en": "Gave one thrombolytic, and only once every prerequisite was met: never while contraindicated, never a second agent"
+      },
+      "met": { "all": [{ "not": { "intervened": "alteplase", "valid": false } }, { "not": { "intervened": "tenecteplase", "valid": false } }] },
+      "scoredWhen": { "any": [{ "attempted": "d-lysis" }, { "intervened": "alteplase" }, { "intervened": "tenecteplase" }] },
       "critical": true
     },
     {

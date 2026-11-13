@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility } from "./anaesthesia.js";
 import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "./alarm.js";
-import { CountStageSchema, IdSchema, type CountStage, type CountStatus, type Vitals, type VitalKey } from "./common.js";
+import { CountStageSchema, IdSchema, OrderedDoseSchema, type CountStage, type CountStatus, type DoseSpec, type OrderedDose, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
 import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
 
@@ -57,6 +57,18 @@ export const CountOpSchema = z.discriminatedUnion("op", [
 ]);
 export type CountOp = z.infer<typeof CountOpSchema>;
 
+/**
+ * An order as the learner wrote it (`intervene` `ordered`): the text, and the dose read from it (`parseDose`) —
+ * kept apart from the dose given, so the debrief can show both.
+ */
+export const WrittenOrderSchema = z
+  .object({
+    text: z.string().trim().min(1).max(1000),
+    dose: OrderedDoseSchema.optional(),
+  })
+  .strict();
+export type WrittenOrder = z.infer<typeof WrittenOrderSchema>;
+
 export const ClinicalActionSchema = z.discriminatedUnion("type", [
   /** `variant`: the procedure's anatomical variant for this session (docs/PROCEDURE.md §9; hidden from the operator). */
   z.object({
@@ -76,7 +88,13 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
   z.object({ type: z.literal("set-phase"), phase: IdSchema, ...base }).strict(),
   z.object({ type: z.literal("hint"), ...base }).strict(),
   z.object({ type: z.literal("answer"), decisionId: IdSchema, optionIds: z.array(IdSchema).min(1), ...base }).strict(),
-  z.object({ type: z.literal("intervene"), interventionId: IdSchema, ...base }).strict(),
+  /**
+   * Give an intervention. `ordered`: the order as written and the dose read from it. When it states a dose and the
+   * intervention has a preset (`doseSpec`), the two are compared (`compareDose`): an equivalent dose is given and
+   * recorded with the order; a conflicting one is not given — a dose error is recorded (`dose.error`). An order
+   * without a dose, or no `ordered`, gives the preset.
+   */
+  z.object({ type: z.literal("intervene"), interventionId: IdSchema, ordered: WrittenOrderSchema.optional(), ...base }).strict(),
   /**
    * Let simulated time pass. `reason` (optional, informational — the engine treats every reason alike):
    * `wait` (the learner or an agent waited), `travel` (an embodied walk, docs/EMBODIED.md R8),
@@ -154,6 +172,38 @@ export interface InterventionRecord {
    * its effects and flags did not apply and it used none of `maxDoses`.
    */
   invalid?: true;
+  /**
+   * The order as written, when the action carried one: its text and the dose read from it (equivalent to the
+   * preset when the intervention has a `doseSpec` — a conflicting dose is never given, see `DoseErrorRecord`).
+   */
+  ordered?: WrittenOrder;
+}
+
+/** What an order's dose conflicts with in the preset: the amount, the route, or a unit the preset's cannot be compared with. */
+export type DoseConflict = "amount" | "route" | "unit";
+
+/**
+ * An order whose dose conflicts with the intervention's preset (`interventions[].doseSpec`): it was not given.
+ * Kept for the debrief — what was written, what was read from it, the preset, how far apart they are — never erased.
+ */
+export interface DoseErrorRecord {
+  interventionId: string;
+  at: number;
+  seq: number;
+  /** The order as written. */
+  text: string;
+  /** The dose read from it. */
+  ordered: OrderedDose;
+  /** The intervention's preset dose. */
+  preset: DoseSpec;
+  /**
+   * The ordered amount over the preset's, after unit conversion (over the nearer end of a preset range): 10 is a
+   * tenfold overdose. Null when the order states no amount or its unit cannot be compared with the preset's.
+   */
+  ratio: number | null;
+  conflicts: DoseConflict[];
+  /** `critical`: ratio ≥ 10 or ≤ 0.1, or the intervention is critical or high-risk; otherwise `warning`. */
+  severity: "warning" | "critical";
 }
 
 /** An explicit hold on an intervention (see the `hold` action): placed, and later released after a reassessment. */
@@ -248,6 +298,8 @@ export interface SessionState {
   teamScenario?: string;
   /** Holds placed on interventions, in order (absent until the first; sessions saved before have none). */
   holds?: HoldRecord[];
+  /** Orders not given because their dose conflicted with the preset, in order (absent until the first). */
+  doseErrors?: DoseErrorRecord[];
   /** The surgical count (cases whose team keeps one), from the baseline on. */
   count?: CountRecord;
   /** New investigations ordered in this encounter (docs/STUDIES.md), from the first order on. */
@@ -280,8 +332,13 @@ export type DomainEvent =
   | { type: "result.read"; key: string; investigationId: string; phase: string; firstTime: boolean }
   | { type: "phase.changed"; from: string; to: string; automatic: boolean }
   | { type: "decision.answered"; decisionId: string; correct: boolean; firstTry: boolean; optionIds: string[] }
-  /** `invalid`: a checklist step attempted out of order — recorded, nothing applied (see `Intervention.checklist`). */
-  | { type: "intervention.applied"; interventionId: string; appropriateness: "indicated" | "neutral" | "contraindicated"; invalid?: true }
+  /**
+   * `invalid`: a checklist step attempted out of order — recorded, nothing applied (see `Intervention.checklist`).
+   * `critical`: given while contraindicated, and the intervention is `critical` — a critical safety failure.
+   */
+  | { type: "intervention.applied"; interventionId: string; appropriateness: "indicated" | "neutral" | "contraindicated"; invalid?: true; critical?: true }
+  /** An order whose dose conflicts with the preset: nothing was given (the fields of its `DoseErrorRecord`). */
+  | { type: "dose.error"; interventionId: string; text: string; ordered: OrderedDose; preset: DoseSpec; ratio: number | null; conflicts: DoseConflict[]; severity: "warning" | "critical" }
   /**
    * A vital newly crossing an alarm limit on the bedside monitor. `unmeasurable`: the monitor has no
    * reading — `value` is the cardiac-arrest placeholder 0 (`VitalsSnapshot.unmeasurable`), never a measurement.

@@ -11,7 +11,7 @@ pseudonym (刘振华（化名）/ Liu Zhenhua; his wife 王丽（化名）/ Wang
 
 | | |
 |---|---|
-| id / version | `stemi-inferior-rv` / `1.1.2` |
+| id / version | `stemi-inferior-rv` / `1.1.3` |
 | setting / facility | `emergency` / `general-hospital` (resus bay 1) |
 | specialty | emergency medicine, cardiology |
 | difficulty / estimated time | 3 / 5 · 35 min (simulated clock, 120-min limit) |
@@ -149,7 +149,7 @@ never state a result.
 | `r-fluid` | management | 1 | fluid bolus given |
 | `r-no-nitrate` | safety | **3** | no nitroglycerin — scored once the nitrate decision is reached or a nitrate is given; **critical** |
 | `r-no-routine-o2` | safety | 1 | no `routine-oxygen` flag — scored once aspirin is given, the cath lab is called or routine oxygen is given |
-| `r-no-harmful-drugs` | safety | **2** | no tenecteplase, fondaparinux, furosemide, IV metoprolol or CCU admission — scored once the reperfusion or antithrombotic decision is reached or one of them is given |
+| `r-no-harmful-drugs` | safety | **2** | no tenecteplase, fondaparinux, furosemide, IV metoprolol or CCU admission, and no shock or arrest-dose adrenaline while he has a pulse — scored once the reperfusion or antithrombotic decision is reached or one of them is given; **critical** |
 | `r-door-to-lab` | efficiency | 2 | transferred after activation, before 60 min, no VF |
 | `r-explain-consent` | communication | 1 | examiner-judged (plain explanation, consent, his fear) |
 | `r-handover` | communication | 1 | examiner-judged (SBAR, read-back) |
@@ -159,7 +159,16 @@ never state a result.
 of the five harmful options costs 2; routine oxygen, troponin-waiting, a late ECG, a transfer before activation and a
 VF arrest each fail their own item. Contraindicated interventions are also logged as safety events with their `harm`
 text. Doing nothing earns none of the three avoided-harm items (each counts once its decision point is reached:
-`scoredWhen`), and a missed `r-no-nitrate` is named first in the debrief (`critical`).
+`scoredWhen`), and a missed `r-no-nitrate` or `r-no-harmful-drugs` is named first in the debrief (`critical`).
+
+**Safety outcome.** Five interventions are `critical`: **nitroglycerin** (RV infarction), **tenecteplase** (primary
+PCI 15 minutes away), **IV metoprolol** (bradycardia, borderline BP, RV involvement), and an **unsynchronised shock**
+or **adrenaline 1 mg IV** while he has a pulse. Giving one fails the assessment's safety outcome
+(`safety.passed: false`) whatever the score, and every debrief and export shows it beside the score; the effects still
+play out. In the audit's replay (nitroglycerin after the IV line) the score stays 19/22 (86 %), with `r-no-nitrate`
+named first and the safety outcome failed. Free-text orders are checked against the preset doses (`doseSpec`):
+aspirin 300 mg, ticagrelor 180 mg, clopidogrel 600 mg, atorvastatin 40–80 mg (PO), UFH 70–100 units/kg and
+enoxaparin 0.5 mg/kg (IV, through his 78 kg), ondansetron 4 mg IV.
 
 ## Reference path (`solution`)
 
@@ -215,14 +224,14 @@ finish at 60.5 min. Without VF and in the lab within 60 min, the deterministic r
 | Error | What the case does |
 |---|---|
 | Waiting for troponin before activating | `troponin-wait` / `late-activation` (nurse prompt at 20 min); `r-no-troponin-wait` lost; VF at 35 min if still not activated |
-| Nitrate for ongoing pain | `nitrate-crash` alarm as SBP falls < 85; possible `hypotensive-collapse`; `r-no-nitrate` (3) lost |
+| Nitrate for ongoing pain | `nitrate-crash` alarm as SBP falls < 85; possible `hypotensive-collapse`; `r-no-nitrate` (3) lost; a critical safety failure |
 | No right-sided leads | `dx-diagnosis` stays locked; `obj2-ecg` incomplete; `r-right-leads` lost |
 | Furosemide for the raised JVP | harm text (clear lungs, RV failure); SBP falls; `r-no-harmful-drugs` lost |
 | Routine oxygen at SpO₂ 96 % | `routine-oxygen`; `r-no-routine-o2` lost |
-| Thrombolysis although PCI is 15 min away | harm text (bleeding, ASSENT-4 PCI); `r-no-harmful-drugs` lost |
+| Thrombolysis although PCI is 15 min away | harm text (bleeding, ASSENT-4 PCI); `r-no-harmful-drugs` lost; a critical safety failure |
 | Clopidogrel after ticagrelor | harm text (duplicate P2Y12 inhibition) |
 | Transfer before the activation call | `transfer-before-activation` (he waits at the door); `r-door-to-lab` lost |
-| Shock with a pulse | `early-shock` (painful; may itself induce VF) |
+| Shock with a pulse | `early-shock` (painful; may itself induce VF); `r-no-harmful-drugs` lost; a critical safety failure |
 
 ## Embodied mode
 
@@ -380,6 +389,21 @@ no major ALS changes since 2021; AHA 2025 keeps atropine 1 mg for bradycardia.
 - Ref. 2: the issue number (cited without it); ref. 4: a DOI (none could be verified, so none is given).
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **Critical safety failures (audit P0-3).** The audit's replay (sublingual nitroglycerin after the IV line) scored
+  19/22 (86 %) with no safety outcome. `nitroglycerin` is now `critical: true`, as are `tenecteplase` (fibrinolysis
+  with primary PCI 15 minutes away), `metoprolol-iv` (bradycardia, borderline BP, RV involvement), and
+  `defibrillation` and `adrenaline` given while he has a pulse: giving one fails the safety outcome shown beside the
+  score. The percentage is unchanged (19/22 for the nitrate).
+- `r-no-harmful-drugs` is a critical rubric item and now also covers an unsynchronised shock or arrest-dose
+  adrenaline while he has a pulse (`{ "intervened": …, "valid": false }`; its `scoredWhen` names both); the item's
+  weight, the total (22) and the reference path (22/22) are unchanged — the VF branch's indicated shocks and
+  adrenaline do not cost it.
+- **Preset doses (audit P0-2):** `doseSpec` on aspirin 300 mg, ticagrelor 180 mg, clopidogrel 600 mg, atorvastatin
+  40–80 mg, UFH 70–100 units/kg, enoxaparin 0.5 mg/kg and ondansetron 4 mg, the doses their texts state. Atropine
+  (0.5 mg here, 1 mg in the AHA algorithm the text cites), morphine (titrated) and the infusions have none.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

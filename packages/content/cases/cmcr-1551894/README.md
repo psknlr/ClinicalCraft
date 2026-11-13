@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `cmcr-1551894` · v1.1.1 · CMCR collection (`cmcr-20`) |
+| Case | `cmcr-1551894` · v1.1.2 · CMCR collection (`cmcr-20`) |
 | Source | 王立恒, 庄聰. 中西醫結合治療巴德-吉亞利綜合征1例. 鏡湖醫學. 2025;25(1):68 (references continued on p. 61) — the journal's Chinese-medicine column (中醫專欄) |
 | Setting | Outpatient presentation (`outpatient`) → admission work-up → after angioplasty and stenting → discharge (phase locations) |
 | Facility | `general-hospital` |
@@ -371,6 +371,12 @@ editorial check is labelled "EASL 2025" in the case text (the guideline's year; 
 * The source DOI (ref. 1) against the publisher's landing page.
 
 ## Changelog
+
+### 1.1.2 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **Critical-failure decision (audit P0-3).** Angioplasty and stenting before any vascular imaging, and TIPS
+  out of sequence (both high risk), are `critical: false` (`cases validate`): recoverable sequencing misjudgements,
+  scored by `r-safety-stepwise` and the decisions. No intervention here is critical; scores are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

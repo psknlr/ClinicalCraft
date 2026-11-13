@@ -15,7 +15,7 @@ Fictional teaching case — not medical advice.
 
 | | |
 |---|---|
-| id / version | `acute-appendicitis` / `1.1.2` |
+| id / version | `acute-appendicitis` / `1.1.3` |
 | setting / facility | `emergency` (night shift; the first slot accepting `emergency`, currently `resus-1`) / `general-hospital` |
 | specialty | emergency medicine, general surgery |
 | difficulty | 2 / 5 |
@@ -579,6 +579,16 @@ them:
   out.
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+- **No critical intervention.** After the audit's review of critical failures, none of this case's contraindicated
+  steps is a critical safety failure: the discharge is stopped by the attending, the laxative, oral intake and
+  withheld analgesia are recoverable, and listing for theatre before surgical review, imaging and consent
+  (`lap-appendectomy`, high risk) is now explicitly `critical: false` (`cases validate`). The safety outcome passes
+  on every path; the score and `r-safety` are unchanged.
+- **Preset doses (audit P0-2):** `doseSpec` on paracetamol 1 g IV and ondansetron 4 mg IV. The titrated morphine
+  and the parecoxib (whose text offers ketorolac 15 mg as an alternative) have none.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

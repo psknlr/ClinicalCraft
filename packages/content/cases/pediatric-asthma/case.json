@@ -1,7 +1,7 @@
 {
   "schema": "clinicalcraft/case@1",
   "id": "pediatric-asthma",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "title": {
     "zh-CN": "夜间喘息加重 · 6岁男孩",
     "en": "Worsening wheeze overnight · 6-year-old boy"
@@ -6428,6 +6428,7 @@
         "zh-CN": "异丙托溴铵 250 µg 雾化（体重≤20 kg），与沙丁胺醇混合，第1小时每20分钟1次，共3次（重度发作的附加治疗）。",
         "en": "Ipratropium bromide 250 µg nebulised (weight ≤ 20 kg), mixed with salbutamol, every 20 min ×3 in the first hour (add-on for severe exacerbations)."
       },
+      "doseSpec": { "amount": 250, "unit": "microgram", "route": "INH" },
       "effects": [
         {
           "vital": "rr",
@@ -6481,6 +6482,7 @@
         "zh-CN": "布地奈德混悬液每次1 mg雾化吸入（中国儿童哮喘指南：急性发作早期可加用大剂量雾化ICS，如每6～8小时1次）。仅为辅助治疗，不能替代全身糖皮质激素；已给全身激素时，GINA和BTS不推荐常规加用。",
         "en": "Budesonide nebuliser suspension 1 mg per dose (Chinese paediatric guideline: high-dose nebulised ICS may be added early in an acute attack, e.g. every 6–8 h). An adjunct only — it does not replace the systemic corticosteroid; GINA and BTS do not recommend it routinely once a systemic steroid has been given."
       },
+      "doseSpec": { "amount": 1, "unit": "mg", "route": "INH" },
       "effects": [],
       "response": {
         "zh-CN": "护士按医嘱给他雾化了布地奈德。提醒：雾化吸入激素只是辅助，不能代替口服泼尼松龙（或静脉激素）——全身激素仍需在第1小时内给。",
@@ -6523,6 +6525,7 @@
         "zh-CN": "沙丁胺醇雾化液每次 2.5–5 mg（BTS：>5岁每次 2.5–5 mg；中国指南：体重≤20 kg 每次 2.5 mg、>20 kg 每次 5 mg——本例20 kg，2.5 mg 同时符合两者，5 mg 也在 BTS 范围内），氧气驱动 6–8 L/min；第1小时每20分钟1次，共3次，可与异丙托溴铵混合雾化。",
         "en": "Salbutamol nebuliser solution 2.5–5 mg per dose (BTS: 2.5–5 mg for age > 5 years; Chinese guideline: 2.5 mg for weight ≤ 20 kg, 5 mg above 20 kg — at 20 kg, 2.5 mg satisfies both and 5 mg is within the BTS range), driven by oxygen at 6–8 L/min; every 20 min ×3 in the first hour; may be mixed with ipratropium."
       },
+      "doseSpec": { "amount": 2.5, "upTo": 5, "unit": "mg", "route": "INH" },
       "effects": [
         {
           "vital": "spo2",
@@ -6835,6 +6838,7 @@
         "zh-CN": "泼尼松龙 40 mg 口服（2 mg/kg，最大40 mg），1小时内给予；之后每日1次，共3天（3–5天均可）。可用5 mg可溶片溶于水或口服液。",
         "en": "Prednisolone 40 mg orally (2 mg/kg, maximum 40 mg) within the first hour; then once daily to complete 3 days (3–5 days acceptable). Soluble 5 mg tablets dispersed in water, or oral solution."
       },
+      "doseSpec": { "amount": 40, "unit": "mg", "route": "PO" },
       "effects": [
         {
           "vital": "spo2",
@@ -6996,6 +7000,7 @@
         "zh-CN": "硫酸镁 40 mg/kg = 800 mg（最大 2 g），稀释后静脉输注≥20分钟，同时监测血压。",
         "en": "Magnesium sulfate 40 mg/kg = 800 mg (maximum 2 g) IV, diluted, infused over at least 20 min with blood-pressure monitoring."
       },
+      "doseSpec": { "amount": 40, "unit": "mg/kg", "route": "IV" },
       "effects": [
         {
           "vital": "spo2",
@@ -7070,6 +7075,7 @@
       "id": "aminophylline-iv",
       "kind": "medication",
       "risk": "high",
+      "critical": false,
       "requires": [
         "iv-access",
         "infusion-pump",
@@ -7096,6 +7102,7 @@
         "zh-CN": "氨茶碱负荷量 5 mg/kg = 100 mg，静脉输注≥20分钟（此前未用茶碱类；心电监护下），随后以 1 mg/(kg·h) 持续输注并监测血药浓度——仅考虑用于对最大剂量吸入支气管舒张剂、全身激素和静脉硫酸镁均无反应的重度或危及生命发作，并在PICU/HDU条件下使用；GINA 不推荐在急性发作中使用。",
         "en": "Aminophylline loading dose 5 mg/kg = 100 mg IV over ≥ 20 min (no prior theophylline; with ECG monitoring), then 1 mg/kg/h by infusion with level monitoring — only considered for severe or life-threatening asthma unresponsive to maximal inhaled bronchodilators, systemic steroids and IV magnesium, in a PICU/HDU setting; GINA advises against it in exacerbations."
       },
+      "doseSpec": { "amount": 5, "unit": "mg/kg", "route": "IV" },
       "effects": [
         {
           "vital": "hr",
@@ -7193,6 +7200,7 @@
       "id": "sedation",
       "kind": "medication",
       "risk": "high",
+      "critical": true,
       "requires": [
         "iv-access",
         "medications"

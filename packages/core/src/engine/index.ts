@@ -17,7 +17,7 @@ export * from "./procedure/index.js";
 export { createSession, reduce, replay } from "./reducer.js";
 
 // queries
-export { evaluate, conditionRefs, resultFor, resultKey, parseResultKey, isOrderReady, activeHolds, type ConditionRef } from "./conditions.js";
+export { evaluate, conditionRefs, elapsedSinceLeaves, lastGiven, resultFor, resultKey, parseResultKey, isOrderReady, activeHolds, type ConditionRef } from "./conditions.js";
 export { explainCondition, requirementLeaves, type Requirement } from "./explain.js";
 export { correctionMatches, correctionMade, correctionsFor } from "./corrections.js";
 export { progress, currentObjective, currentWaypoint, availableDecisions, orderStatus, presentedOptions } from "./queries.js";
@@ -84,6 +84,9 @@ export {
   ENGLISH_STOP_WORDS,
   ENGLISH_LEMMAS,
 } from "./text.js";
+
+// doses: an order's stated dose against an intervention's preset (docs/PROTOCOL.md §3.2)
+export { compareDose, doseErrorSeverity, doseMentions, doseRoute, formatDose, parseDose, TENFOLD, WEIGHT_BASED_TOLERANCE, type DoseComparison, type DoseMention } from "./dose.js";
 
 // assessment
 export { assess, countCriticalAlarms } from "./assessment.js";
@@ -165,6 +168,7 @@ export type {
   MatchHit,
   MatchOptions,
   AssessmentReport,
+  AssessedDoseError,
   PatientSlot,
   WaypointLocation,
   VerifyResult,

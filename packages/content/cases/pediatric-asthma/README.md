@@ -9,7 +9,7 @@
 
 | | |
 |---|---|
-| Case | `pediatric-asthma` · v1.1.2 |
+| Case | `pediatric-asthma` · v1.1.3 |
 | Setting | Paediatric emergency department, resus cubicle (`emergency`) — on the monitor from arrival |
 | Facility | `general-hospital` (also playable in `teaching-hospital`) |
 | Difficulty | 3 / 5 |
@@ -234,6 +234,16 @@ life-threatening features, a duplicate systemic steroid, excess salbutamol and p
 contraindicated (safety events); antibiotics, routine tests and IV magnesium for a responder are
 neutral but cost rubric points.
 
+**Safety outcome.** `sedation` is `critical`: a sedative in acute severe asthma (outside an intubated, ventilated
+patient in intensive care) fails the assessment's safety outcome (`safety.passed: false`) whatever the score, and
+every debrief and export shows it beside the score; SpO₂, RR, EtCO₂ and GCS still respond. In the audit's replay
+(a sedative after the prednisolone) the score stays 18/20 (90 %), with the sedation/discharge item named first and
+the safety outcome failed. Aminophylline without life-threatening features is `critical: false` (not indicated,
+recoverable). Free-text orders are checked against the preset doses (`doseSpec`): ipratropium 250 micrograms and
+budesonide 1 mg nebulised, salbutamol 2.5–5 mg nebulised, prednisolone 40 mg PO, and magnesium sulfate 40 mg/kg
+and aminophylline 5 mg/kg IV (through his 20 kg — an adult 2 g of magnesium is not given). The spacer's salbutamol
+(dosed in puffs) and hydrocortisone (the text gives two regimens) have none.
+
 ## Reference path (`solution`)
 
 86 steps: bedside assessment and PRAM; oxygen, salbutamol + ipratropium neb #1 and upright position
@@ -373,7 +383,7 @@ autopilot: 265.6).
 | Salbutamol alone for a severe attack | `dec-first-line` feedback; `r-burst` needs three ipratropium doses |
 | No systemic steroid (or nebulised budesonide instead) | 60-min nurse prompt (`steroid-delayed`); the discharge phase stays locked |
 | Reading the salbutamol tachycardia as deterioration | `dec-response` distractor ("stop salbutamol"); IV magnesium for a responder costs `r-stewardship` |
-| Sedating the distressed child | contraindicated: SpO₂ falls, EtCO₂ rises, GCS drops |
+| Sedating the distressed child | contraindicated: SpO₂ falls, EtCO₂ rises, GCS drops; a critical safety failure |
 | Antibiotics for the low-grade fever, routine CXR/bloods | rubric deductions; the results are distractors |
 | Discharge before the criteria | `premature-discharge`; the nurse holds the discharge |
 | Discharge without the education bundle | `r-discharge-bundle` unmet |
@@ -506,6 +516,16 @@ because none could be confirmed; guideline documents 1–4 have none.
 * The 2020 recommendations (ref. 7): DOI not confirmed.
 
 ## Changelog
+
+### 1.1.3 — 2026-11-12 (clinical and gameplay audit of 2026-11-12)
+
+* **Sedation is a critical safety failure (audit P0-3).** The audit's replay (a sedative after the prednisolone)
+  scored 18/20 (90 %) with no safety outcome. `sedation` is now `critical: true`: it fails the safety outcome shown
+  beside the score (the score is unchanged). The sedation/discharge rubric item was already critical.
+  `aminophylline-iv` is `critical: false` (`cases validate`).
+* **Preset doses (audit P0-2):** `doseSpec` on ipratropium 250 micrograms, budesonide 1 mg and salbutamol 2.5–5 mg
+  (nebulised), prednisolone 40 mg PO, magnesium sulfate 40 mg/kg and aminophylline 5 mg/kg IV — the doses their
+  texts state; a weight-based order is compared through his 20 kg.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

@@ -79,6 +79,18 @@ function resultReady(c: CaseDefinition, s: SessionState, investigationId: string
   );
 }
 
+/**
+ * The minute an intervention was last given — its latest record that is not an invalid checklist attempt (a dose
+ * given while contraindicated was given) — or null while it has never been given.
+ */
+export function lastGiven(s: SessionState, interventionId: string): number | null {
+  for (let i = s.interventions.length - 1; i >= 0; i--) {
+    const r = s.interventions[i]!;
+    if (r.interventionId === interventionId && !r.invalid) return r.at;
+  }
+  return null;
+}
+
 /** The holds standing on an intervention (placed, not released), oldest first. */
 export function activeHolds(s: SessionState, interventionId: string): HoldRecord[] {
   return (s.holds ?? []).filter((h) => h.interventionId === interventionId && !h.released);
@@ -90,7 +102,8 @@ export function activeHolds(s: SessionState, interventionId: string): HoldRecord
  * `all: []` is true, `any: []` is false; `read`/`ordered`/`resultReady`
  * without `phase` match any phase. `asked` also holds when an item that
  * supersedes it (`history[].supersedes`, transitively) was asked. `decidedFirstTry` looks only at the first
- * recorded attempt (rejected answers are not attempts).
+ * recorded attempt (rejected answers are not attempts). `elapsedSince` measures from the last time the
+ * intervention was given (`lastGiven`) and is false while it never was.
  */
 export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): boolean {
   if ("all" in cond) return cond.all.every((x) => evaluate(c, s, x));
@@ -131,6 +144,11 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
     return value != null && compare(value, cond.op, cond.value);
   }
   if ("elapsed" in cond) return inRange(s.clock, cond.elapsed);
+  if ("elapsedSince" in cond) {
+    const at = lastGiven(s, cond.elapsedSince.intervened);
+    // minutes, freed of floating-point noise (fractional action costs add up)
+    return at != null && inRange(Math.round((s.clock - at) * 1e6) / 1e6, cond.elapsedSince);
+  }
   if ("hints" in cond) return inRange(s.hints, cond.hints);
   if ("procedure" in cond) return evaluateProcedure(procedureFor(c, s), s.procedure, cond.procedure, s.variant);
   if ("count" in cond) return evaluateCount(s, cond.count);
@@ -160,6 +178,15 @@ export type ConditionRef =
   /** A `procedure` leaf (its ids are checked against the case's procedure by `checkCaseIntegrity`). */
   | { kind: "procedure"; predicate: ProcedurePredicate; path: (string | number)[] };
 
+/** The `elapsedSince` leaves of a condition (through all, any and not), in document order. */
+export function elapsedSinceLeaves(cond: Condition | undefined): Extract<Condition, { elapsedSince: unknown }>["elapsedSince"][] {
+  if (!cond) return [];
+  if ("all" in cond) return cond.all.flatMap(elapsedSinceLeaves);
+  if ("any" in cond) return cond.any.flatMap(elapsedSinceLeaves);
+  if ("not" in cond) return elapsedSinceLeaves(cond.not);
+  return "elapsedSince" in cond ? [cond.elapsedSince] : [];
+}
+
 /** Collect every id referenced by a condition tree (depth-first, document order). */
 export function conditionRefs(cond: Condition, base: (string | number)[] = []): ConditionRef[] {
   const out: ConditionRef[] = [];
@@ -179,6 +206,7 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("intervened" in node)
       out.push({ kind: "intervention", id: node.intervened, ...(node.minCount != null ? { minCount: node.minCount } : {}), ...(node.whenIndicated ? { whenIndicated: true } : {}), path: [...path, "intervened"] });
     else if ("inOrder" in node) node.inOrder.forEach((id, i) => out.push({ kind: "intervention", id, path: [...path, "inOrder", i] }));
+    else if ("elapsedSince" in node) out.push({ kind: "intervention", id: node.elapsedSince.intervened, path: [...path, "elapsedSince", "intervened"] });
     else if ("held" in node) out.push({ kind: "intervention", id: node.held, path: [...path, "held"] });
     else if ("phase" in node) out.push({ kind: "phase", id: node.phase, path: [...path, "phase"] });
     else if ("flag" in node) out.push({ kind: "flag", id: node.flag, path: [...path, "flag"] });
