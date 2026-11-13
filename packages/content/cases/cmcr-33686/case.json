@@ -195,8 +195,8 @@
         "en": "After treatment: the disease flares again"
       },
       "description": {
-        "zh-CN": "初始治疗后病情一度缓解，此后又出现活动迹象（是哪些表现、在什么时候，本病例没有记录）。基因检测报告已经出来。",
-        "en": "After the first treatment the disease went into remission for a time, then showed signs of activity again (which signs, and when, this case does not record). The gene report is back."
+        "zh-CN": "初始治疗后病情一度缓解，此后又出现活动迹象（是哪些表现、在什么时候，本病例没有记录）。基因检测报告现在可以调阅（何时出结果没有记录）。",
+        "en": "After the first treatment the disease went into remission for a time, then showed signs of activity again (which signs, and when, this case does not record). The gene report can now be read (when it came back is not recorded)."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -432,7 +432,7 @@
       },
       "answer": {
         "zh-CN": "刚开始发烧那阵子，医生就说他的肝和脾都大了。",
-        "en": "Right at the start of the fevers the doctors said his liver and spleen were both big."
+        "en": "Early on, not long after the fevers started, the doctors said his liver and spleen were both big."
       },
       "keywords": {
         "zh-CN": [
@@ -1492,8 +1492,8 @@
       "results": {
         "admission": {
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "白细胞3.4×10⁹/L，中性粒细胞0.84，血小板50×10⁹/L，血红蛋白71 g/L。",
@@ -1557,8 +1557,8 @@
             "en": "The neutrophil figure “0.84” has no unit: it may be an absolute count (× 10⁹/L) or a fraction of the white cells (84 %)."
           },
           "source": {
-            "zh-CN": "报告病例资料·入院检查（WBC 3.4、中性0.84、血小板50×10⁹/L，Hb 71 g/L）（取自1.0.0版，尚待对照原文核对）",
-            "en": "The report's case data · admission tests (WBC 3.4, neutrophils 0.84, platelets 50 × 10⁹/L, Hb 71 g/L) (taken from version 1.0.0; not yet checked against the full article)"
+            "zh-CN": "报告病例资料·早期检查（WBC 3.4、中性0.84、血小板50×10⁹/L，Hb 71 g/L）（取自1.0.0版，尚待对照原文核对）",
+            "en": "The report's case data · early investigations (WBC 3.4, neutrophils 0.84, platelets 50 × 10⁹/L, Hb 71 g/L) (taken from version 1.0.0; not yet checked against the full article)"
           }
         }
       }
@@ -1587,8 +1587,8 @@
       "results": {
         "admission": {
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "铁蛋白1176.6 μg/L。",
@@ -1609,8 +1609,8 @@
             }
           ],
           "source": {
-            "zh-CN": "报告病例资料·入院检查（铁蛋白1176.6 μg/L）（取自1.0.0版，尚待对照原文核对）",
-            "en": "The report's case data · admission tests (ferritin 1176.6 µg/L) (taken from version 1.0.0; not yet checked against the full article)"
+            "zh-CN": "报告病例资料·早期检查（铁蛋白1176.6 μg/L）（取自1.0.0版，尚待对照原文核对）",
+            "en": "The report's case data · early investigations (ferritin 1176.6 µg/L) (taken from version 1.0.0; not yet checked against the full article)"
           }
         }
       }
@@ -1643,8 +1643,8 @@
       "results": {
         "admission": {
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "甘油三酯5.8 mmol/L；是否空腹采血没有注明。",
@@ -1665,8 +1665,8 @@
             }
           ],
           "source": {
-            "zh-CN": "报告病例资料·入院检查（TG 5.8 mmol/L）（取自1.0.0版，尚待对照原文核对）",
-            "en": "The report's case data · admission tests (triglycerides 5.8 mmol/L) (taken from version 1.0.0; not yet checked against the full article)"
+            "zh-CN": "报告病例资料·早期检查（TG 5.8 mmol/L）（取自1.0.0版，尚待对照原文核对）",
+            "en": "The report's case data · early investigations (triglycerides 5.8 mmol/L) (taken from version 1.0.0; not yet checked against the full article)"
           }
         }
       }
@@ -1703,8 +1703,8 @@
       "results": {
         "admission": {
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "纤维蛋白原1.3 g/L。PT、APTT等其他凝血指标没有结果记录。",
@@ -1726,8 +1726,8 @@
             }
           ],
           "source": {
-            "zh-CN": "报告病例资料·入院检查（纤维蛋白原1.3 g/L（1.0.0版称纤维蛋白原降低））（取自1.0.0版，尚待对照原文核对）",
-            "en": "The report's case data · admission tests (fibrinogen 1.3 g/L (version 1.0.0 calls it low)) (taken from version 1.0.0; not yet checked against the full article)"
+            "zh-CN": "报告病例资料·早期检查（纤维蛋白原1.3 g/L（1.0.0版称纤维蛋白原降低））（取自1.0.0版，尚待对照原文核对）",
+            "en": "The report's case data · early investigations (fibrinogen 1.3 g/L (version 1.0.0 calls it low)) (taken from version 1.0.0; not yet checked against the full article)"
           }
         }
       }
@@ -1764,8 +1764,8 @@
       "results": {
         "admission": {
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "血EB病毒DNA 5.43×10⁷拷贝；未注明是每多少体积（如每毫升）的拷贝数，也未注明是血浆还是全血。",
@@ -1786,8 +1786,8 @@
             }
           ],
           "source": {
-            "zh-CN": "报告病例资料·入院检查（血EBV DNA 5.43×10⁷ copies，每体积单位未明确）（取自1.0.0版，尚待对照原文核对）",
-            "en": "The report's case data · admission tests (blood EBV DNA 5.43 × 10⁷ copies, the per-volume unit unspecified) (taken from version 1.0.0; not yet checked against the full article)"
+            "zh-CN": "报告病例资料·早期检查（血EBV DNA 5.43×10⁷ copies，每体积单位未明确）（取自1.0.0版，尚待对照原文核对）",
+            "en": "The report's case data · early investigations (blood EBV DNA 5.43 × 10⁷ copies, the per-volume unit unspecified) (taken from version 1.0.0; not yet checked against the full article)"
           }
         }
       }
@@ -1825,16 +1825,16 @@
       "results": {
         "admission": {
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "骨髓涂片见噬血细胞。骨髓的其余形态学描述（增生程度、各系比例、有无异常细胞）没有记录。",
             "en": "Marrow smear: haemophagocytes are seen. The rest of the marrow description (cellularity, the lineages, any abnormal cells) is not recorded."
           },
           "source": {
-            "zh-CN": "报告病例资料·入院检查（骨髓噬血细胞）（取自1.0.0版，尚待对照原文核对）",
-            "en": "The report's case data · admission tests (marrow haemophagocytes) (taken from version 1.0.0; not yet checked against the full article)"
+            "zh-CN": "报告病例资料·早期检查（骨髓噬血细胞）（取自1.0.0版，尚待对照原文核对）",
+            "en": "The report's case data · early investigations (marrow haemophagocytes) (taken from version 1.0.0; not yet checked against the full article)"
           }
         }
       }
@@ -1871,8 +1871,8 @@
       "results": {
         "admission": {
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "NK细胞1.9%（分母未注明）；穿孔素和颗粒酶B阳性细胞比例偏低，没有给出数值。",
@@ -1917,8 +1917,8 @@
             "en": "These are cell proportions and protein expression, not a complete cytotoxic-function assay."
           },
           "source": {
-            "zh-CN": "报告病例资料·入院检查（NK细胞1.9%；颗粒酶B及穿孔素阳性率偏低）（取自1.0.0版，尚待对照原文核对）",
-            "en": "The report's case data · admission tests (NK cells 1.9 %; granzyme B- and perforin-positive proportions low) (taken from version 1.0.0; not yet checked against the full article)"
+            "zh-CN": "报告病例资料·早期检查（NK细胞1.9%；颗粒酶B及穿孔素阳性率偏低）（取自1.0.0版，尚待对照原文核对）",
+            "en": "The report's case data · early investigations (NK cells 1.9 %; granzyme B- and perforin-positive proportions low) (taken from version 1.0.0; not yet checked against the full article)"
           }
         }
       }
@@ -1958,8 +1958,8 @@
         "admission": {
           "available": false,
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "此项检查没有结果记录。",
@@ -2001,8 +2001,8 @@
         "admission": {
           "available": false,
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "此项检查没有结果记录。",
@@ -2048,8 +2048,8 @@
         "admission": {
           "available": false,
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "此项检查没有结果记录。",
@@ -2107,8 +2107,8 @@
         "admission": {
           "available": false,
           "date": {
-            "zh-CN": "入院时",
-            "en": "On admission"
+            "zh-CN": "早期检查",
+            "en": "Early investigations"
           },
           "text": {
             "zh-CN": "此项检查没有结果记录。",
@@ -2157,8 +2157,8 @@
       "results": {
         "reactivation": {
           "date": {
-            "zh-CN": "初始治疗后",
-            "en": "After the first treatment"
+            "zh-CN": "病程中（具体时间没有记录）",
+            "en": "Later in the course (timing not recorded)"
           },
           "text": {
             "zh-CN": "报告：UNC13D基因（报告写作MUNC13-4）c.1228A>C杂合变异；SH2D1A基因半合子变异，其核苷酸和蛋白命名排印不清。没有报告第二个UNC13D变异，没有完整的双等位基因证据。变异的致病性分类、检测方法和父母验证没有记录。",
@@ -2528,8 +2528,8 @@
       "results": {
         "outcome": {
           "date": {
-            "zh-CN": "移植后至9个月",
-            "en": "From the transplant to 9 months"
+            "zh-CN": "至9个月随访",
+            "en": "To the 9-month follow-up"
           },
           "text": {
             "zh-CN": "报告标题的诊断：MUNC13-4突变所致家族性噬血细胞性淋巴组织细胞增多症。病程：按HLH方案治疗后缓解，此后又出现活动迹象，接受HLA全相合非血缘供者造血干细胞移植。移植后出现HHV-6阳性腹泻及临床Ⅲ度肠道GVHD，治疗后好转（所用治疗本病例没有记录；两者是同时还是先后出现，本病例没有说明）。9个月时供者完全嵌合、无病生存，无慢性GVHD。移植后的血液基因检测反映的是供者造血。本病例没有记录：所用HLH方案和剂量、预处理方案、移植物来源和配型细节、GVHD预防与治疗用药、HHV-6标本和载量、父母基因检测和9个月以后的随访。",
@@ -2666,7 +2666,8 @@
       "requires": [
         "medications"
       ],
-      "risk": "moderate",
+      "risk": "high",
+      "critical": true,
       "indicatedWhen": {
         "all": [
           {
@@ -2685,8 +2686,8 @@
         }
       },
       "harm": {
-        "zh-CN": "骨髓检查完成之前就用糖皮质激素，可能掩盖白血病或淋巴瘤等基础疾病，使诊断无法完成；应先取得诊断性标本，再开始激素。",
-        "en": "Steroids given before the marrow has been examined can mask an underlying leukaemia or lymphoma and leave the diagnosis incomplete; take the diagnostic samples first, then start the steroid."
+        "zh-CN": "HLH-94剂量的地塞米松本身就有抗白血病作用：骨髓结果出来之前就用，可能部分治疗并掩盖白血病或淋巴瘤，使诊断无法完成。先看骨髓结果，再开始激素。",
+        "en": "Dexamethasone at the HLH-94 dose is itself an anti-leukaemic drug: started before the marrow result has been read, it can partly treat and hide a leukaemia or lymphoma and leave the diagnosis incomplete. Read the marrow first, then start the steroid."
       },
       "response": {
         "zh-CN": "地塞米松已开始（HLH-94方案的激素部分）。本病例没有记录所用的具体药物和剂量；不模拟其效果。",
@@ -2725,6 +2726,7 @@
         "medications"
       ],
       "risk": "high",
+      "critical": true,
       "indicatedWhen": {
         "all": [
           {
@@ -2885,8 +2887,8 @@
         "en": "Antivirals do little against EBV latent in lymphocytes and do not control the hyperinflammation; given instead of HLH-94 induction they only delay etoposide, and in EBV-HLH long-term survival was better when etoposide began within four weeks of diagnosis (Imashuku 2001). The 2021 Chinese consensus on EBV-related disease in children also warns against antiviral overuse."
       },
       "response": {
-        "zh-CN": "本病例没有记录抗病毒治疗；不模拟其效果。",
-        "en": "This case does not record antiviral treatment; it does not simulate its effect."
+        "zh-CN": "本病例没有记录抗病毒治疗；不模拟其效果。更昔洛韦治疗不了HLH，对潜伏在淋巴细胞内的EB病毒也基本无效，还会加重骨髓抑制。",
+        "en": "This case does not record antiviral treatment; it does not simulate its effect. Ganciclovir does not treat HLH or the EBV latent in his lymphocytes, and it adds marrow suppression."
       }
     },
     {
@@ -2916,13 +2918,14 @@
         "en": "Home with antipyretics and a repeat blood count in clinic in a week."
       },
       "requires": [],
-      "risk": "moderate",
+      "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
-        "zh-CN": "治疗无效的一个月发热伴肝脾肿大需要住院检查，而不是门诊随访：要排除的包括危及生命的过度炎症、白血病和淋巴瘤，下一步取决于血常规和骨髓结果。",
-        "en": "A month of fever with an enlarged liver and spleen that treatment has not settled needs inpatient work-up, not a clinic review: the causes to exclude include life-threatening hyperinflammation, leukaemia and lymphoma, and the blood count and marrow decide what comes next."
+        "zh-CN": "治疗无效的一个月发热伴肝脾肿大需要住院检查，而不是门诊随访：要排除的包括危及生命的过度炎症、白血病和淋巴瘤，NACHO（2019）也提醒HLH常被延误诊断。下一步取决于血常规和骨髓结果。",
+        "en": "A month of fever with an enlarged liver and spleen that treatment has not settled needs inpatient work-up, not a clinic review: the causes to exclude include life-threatening hyperinflammation, leukaemia and lymphoma, and NACHO (2019) warns that HLH is often diagnosed late. The blood count and the marrow decide what comes next."
       },
       "response": {
         "zh-CN": "本病例没有这样处理（他已住院）；不模拟其后果。",
@@ -3600,8 +3603,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。国际组织细胞协会的HLH-2004标准（2007）要求8条中满足5条：脾大、血红蛋白71 g/L加血小板50×10⁹/L、甘油三酯5.8 mmol/L加纤维蛋白原1.3 g/L、铁蛋白1176.6 μg/L和骨髓噬血现象已满5条，一个月的发热是第6条。EB病毒是最可能的诱因，但男孩的EB病毒相关HLH可能是遗传病的首次表现，也要查找淋巴瘤，所以基因和功能检测要现在就送（NACHO 2019）。",
-            "en": "Right. The Histiocyte Society's HLH-2004 criteria (2007) need five of eight: splenomegaly, haemoglobin 71 g/L with platelets 50 × 10⁹/L, triglycerides 5.8 mmol/L with fibrinogen 1.3 g/L, ferritin 1176.6 µg/L and marrow haemophagocytosis already make five, and the month of fever a sixth. EBV is the likeliest trigger, but EBV-HLH in a boy can be the first sign of an inherited disorder and lymphoma must be sought, so genetic and functional tests go off now (NACHO 2019)."
+            "zh-CN": "正确。国际组织细胞协会的HLH-2004标准（2007）要求8条中满足5条：脾大、血红蛋白71 g/L加血小板50×10⁹/L、甘油三酯5.8 mmol/L加纤维蛋白原1.3 g/L、铁蛋白1176.6 μg/L和骨髓噬血现象已满5条；一个月的发热可能是第6条，但体温没有记录。EB病毒是最可能的诱因，但男孩的EB病毒相关HLH可能是遗传病的首次表现，也要查找淋巴瘤，所以基因和功能检测要现在就送（NACHO 2019）。",
+            "en": "Right. The Histiocyte Society's HLH-2004 criteria (2007) need five of eight: splenomegaly, haemoglobin 71 g/L with platelets 50 × 10⁹/L, triglycerides 5.8 mmol/L with fibrinogen 1.3 g/L, ferritin 1176.6 µg/L and marrow haemophagocytosis already make five; the month of fever may be a sixth, but no temperature is recorded. EBV is the likeliest trigger, but EBV-HLH in a boy can be the first sign of an inherited disorder and lymphoma must be sought, so genetic and functional tests go off now (NACHO 2019)."
           }
         },
         {
@@ -3737,8 +3740,8 @@
         {
           "id": "transplant-and-verify",
           "text": {
-            "zh-CN": "病情再活动本身就是异基因移植的指征：先重新控制病情，启动非血缘供者检索；同时请实验室按HGVS重新出具变异并分类，用SAP和脱颗粒试验验证，并检测父母",
-            "en": "The flare itself is an indication for allogeneic transplantation: regain control, start an unrelated-donor search, and have the variants re-issued in HGVS, classified, checked with SAP and degranulation assays and tested in both parents"
+            "zh-CN": "再活动本身就是异基因移植指征：重新控制病情，启动非血缘供者检索；请实验室按HGVS重新出具两个变异并分类，做功能检测，并检测父母",
+            "en": "Reactivation is itself an indication for transplant: regain control, search for an unrelated donor, and have both variants re-issued in HGVS, classified, functionally tested and checked in both parents"
           },
           "correct": true,
           "feedback": {
@@ -3778,8 +3781,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "半合子SH2D1A变异只有在写法清楚、按ACMG/AMP（2015）分类为致病、并有SAP表达支持（NACHO 2019）时才意味着XLP1。即便确诊XLP1，发生过HLH正是最需要移植的理由：国际多中心XLP1研究中，发生HLH后未移植者的生存率只有18.8%（Booth 2011）。",
-            "en": "A hemizygous SH2D1A variant means XLP1 only once it is clearly written, classified as pathogenic (ACMG/AMP 2015) and supported by SAP expression (NACHO 2019). And if it is XLP1, HLH is the strongest reason to transplant: in the international XLP1 series, survival without transplant after HLH was 18.8 % (Booth 2011)."
+            "zh-CN": "半合子SH2D1A变异只有在写法清楚、按ACMG/AMP（2015）分类为致病、并有SAP表达支持（NACHO 2019）时才意味着XLP1。即便确诊XLP1，它也是遗传性HLH，HLH-2004（国际组织细胞协会，2007）建议对家族性或分子确诊的HLH行移植；何况他的再活动本身就是移植指征。",
+            "en": "A hemizygous SH2D1A variant means XLP1 only once it is clearly written, classified as pathogenic (ACMG/AMP 2015) and supported by SAP expression (NACHO 2019). And XLP1 is an inherited form: HLH-2004 (Histiocyte Society, 2007) recommends transplantation for familial or molecularly diagnosed HLH, and his flare is an indication in its own right."
           }
         }
       ]
@@ -4060,8 +4063,8 @@
       "id": "rb-treatment-plan",
       "domain": "management",
       "text": {
-        "zh-CN": "首次作答即选对初始治疗方案；用药前问过过敏史和身高体重，送出基因检测并开始肺孢子菌预防",
-        "en": "Chose the first-treatment plan at the first attempt; asked about allergies, weight and height before dosing, sent the gene panel and started Pneumocystis prophylaxis"
+        "zh-CN": "首次作答即选对初始治疗方案；用药前问过过敏史和身高体重，送出基因检测，开始肺孢子菌预防，没有用抗病毒药代替诱导",
+        "en": "Chose the first-treatment plan at the first attempt; asked about allergies, weight and height before dosing, sent the gene panel, started Pneumocystis prophylaxis and gave no antiviral in place of induction"
       },
       "weight": 3,
       "met": {
@@ -4081,6 +4084,12 @@
           },
           {
             "intervened": "cotrimoxazole"
+          },
+          {
+            "not": {
+              "intervened": "ganciclovir-ebv",
+              "valid": false
+            }
           }
         ]
       }
@@ -4111,8 +4120,8 @@
       "id": "rb-diarrhoea-workup",
       "domain": "diagnosis",
       "text": {
-        "zh-CN": "首次作答即对移植后腹泻同时评估GVHD和感染：送粪便病原学、记录大便量",
-        "en": "Worked up the post-transplant diarrhoea for GVHD and infection together at the first attempt, sending stool pathogen tests and charting the stools"
+        "zh-CN": "首次作答即对移植后腹泻同时评估GVHD和感染：送粪便病原学、记录大便量，并且没有停用免疫抑制剂",
+        "en": "Worked up the post-transplant diarrhoea for GVHD and infection together at the first attempt, sending stool pathogen tests, charting the stools and not stopping his immunosuppression"
       },
       "weight": 3,
       "met": {
@@ -4126,6 +4135,11 @@
           },
           {
             "intervened": "stool-chart"
+          },
+          {
+            "not": {
+              "intervened": "withdraw-immunosuppression"
+            }
           }
         ]
       }
@@ -4160,19 +4174,16 @@
       "id": "rb-no-harm",
       "domain": "safety",
       "text": {
-        "zh-CN": "没有做危险的处置：按病毒感染让他出院、用抗病毒药代替诱导、骨髓检查前用激素或依托泊苷、移植后为清除病毒停用免疫抑制剂",
-        "en": "Avoided the dangerous steps: discharge as a viral illness, antivirals instead of induction, steroids or etoposide before the marrow, and stopping immunosuppression after the transplant to clear the virus"
+        "zh-CN": "避免了危险错误：按病毒感染让他出院，或在读到骨髓结果之前就用地塞米松或依托泊苷",
+        "en": "Avoided the dangerous errors: discharging him as a viral illness, or starting dexamethasone or etoposide before the marrow result had been read"
       },
       "weight": 4,
+      "critical": true,
       "met": {
         "not": {
           "any": [
             {
               "intervened": "discharge-viral"
-            },
-            {
-              "intervened": "ganciclovir-ebv",
-              "valid": false
             },
             {
               "intervened": "dexamethasone",
@@ -4181,9 +4192,6 @@
             {
               "intervened": "etoposide",
               "valid": false
-            },
-            {
-              "intervened": "withdraw-immunosuppression"
             }
           ]
         }
@@ -4191,17 +4199,13 @@
       "scoredWhen": {
         "any": [
           {
+            "attempted": "hlh-recognition"
+          },
+          {
             "attempted": "first-treatment"
           },
           {
-            "attempted": "diarrhoea-approach"
-          },
-          {
             "intervened": "discharge-viral"
-          },
-          {
-            "intervened": "ganciclovir-ebv",
-            "valid": false
           },
           {
             "intervened": "dexamethasone",
@@ -4210,9 +4214,6 @@
           {
             "intervened": "etoposide",
             "valid": false
-          },
-          {
-            "intervened": "withdraw-immunosuppression"
           }
         ]
       }
@@ -4239,8 +4240,8 @@
         "en": "Dr Fang (paediatric haematology attending)"
       },
       "knowledge": {
-        "zh-CN": "儿童血液科上级医师，用苏格拉底式提问带教，按PEARLS复盘，只围绕学员已经得到的资料提问，例如：“长期发热、肝脾肿大、血细胞减少，你会怎样一步步缩小鉴别范围？”“哪些结果单独看不特异，合在一起却构成诊断？”“基因结果要几周，现在等待的代价是什么？”“用药前还缺他的哪些数据？”到了后面的阶段再问：“治疗后再活动，对下一步意味着什么？”“一个杂合变异和一个写法不清的半合子变异，分别能证明什么？”“出现腹泻又查到病毒阳性时，怎样避免只看到一个原因？”“在病程的不同阶段，用什么标本才能查到他本人的基因型？”说明这是2013年发表的历史病例：当年的检查和变异书写方式与现在不同，它的病程不能用来评价现在的治疗。不提前透露诊断、决策答案或后续病程；体温等生命体征、体重身高、肝功能、可溶性CD25、NK细胞活性、脑脊液、骨髓除噬血细胞以外的描述、所用方案和剂量、预处理和供者细节、GVHD的预防和治疗都没有记录，不要替它补上。",
-        "en": "Paediatric haematology attending who teaches by Socratic questions and debriefs with PEARLS, asking only about what the learner already has, e.g. “With a month of fever, an enlarged liver and spleen and low counts, how will you narrow the differential step by step?”, “Which results mean little alone but together make a diagnosis?”, “The genes take weeks — what does waiting cost?”, “What do you still need to know about him before dosing?”. Later, only once the case reaches them: “What does a flare after treatment mean for the plan?”, “What can one heterozygous variant and one unclearly written hemizygous variant each prove?”, “When diarrhoea comes with a positive viral test, how do you avoid seeing only one cause?”, “Which sample shows his own genotype at each stage of his care?”. Explains that this is a historical case published in 2013: its testing and variant notation differ from today's, and its course is no measure of treatment now. Never reveals the diagnosis, a decision's answer or the later course early; vital signs, weight and height, liver tests, soluble CD25, NK-cell activity, the CSF, the marrow beyond its haemophagocytes, the regimen and doses, conditioning and donor details, and GVHD prophylaxis and treatment are not recorded — never supply them."
+        "zh-CN": "儿童血液科上级医师，用苏格拉底式提问带教，按PEARLS复盘，只围绕学员已经得到的资料提问，例如：“长期发热、肝脾肿大、血细胞减少，你会怎样一步步缩小鉴别范围？”“哪些结果单独看不特异，合在一起却构成诊断？”“基因结果要几周，现在等待的代价是什么？”“用药前还缺他的哪些数据？”到了后面的阶段再问：“治疗后再活动，对下一步意味着什么？”“一个杂合变异和一个写法不清的半合子变异，分别能证明什么？”“出现腹泻又查到病毒阳性时，怎样避免只看到一个原因？”“在病程的不同阶段，用什么标本才能查到他本人的基因型？”说明这是2013年发表的历史病例：当年的检查和变异书写方式未必符合现在的规范，它的病程不能用来评价现在的治疗。不提前透露诊断、决策答案或后续病程；体温等生命体征、体重身高、肝功能、可溶性CD25、NK细胞活性、脑脊液、骨髓除噬血细胞以外的描述、所用方案和剂量、预处理和供者细节、GVHD的预防和治疗都没有记录，不要替它补上。",
+        "en": "Paediatric haematology attending who teaches by Socratic questions and debriefs with PEARLS, asking only about what the learner already has, e.g. “With a month of fever, an enlarged liver and spleen and low counts, how will you narrow the differential step by step?”, “Which results mean little alone but together make a diagnosis?”, “The genes take weeks — what does waiting cost?”, “What do you still need to know about him before dosing?”. Later, only once the case reaches them: “What does a flare after treatment mean for the plan?”, “What can one heterozygous variant and one unclearly written hemizygous variant each prove?”, “When diarrhoea comes with a positive viral test, how do you avoid seeing only one cause?”, “Which sample shows his own genotype at each stage of his care?”. Explains that this is a historical case published in 2013: its testing and variant notation may not meet today's standards, and its course is no measure of treatment now. Never reveals the diagnosis, a decision's answer or the later course early; vital signs, weight and height, liver tests, soluble CD25, NK-cell activity, the CSF, the marrow beyond its haemophagocytes, the regimen and doses, conditioning and donor details, and GVHD prophylaxis and treatment are not recorded — never supply them."
       },
       "interprets": [
         "blood-count",
@@ -4312,8 +4313,8 @@
       "en": "Debrief: EBV-triggered HLH, an unproven genotype and a transplant"
     },
     "conclusion": {
-      "zh-CN": "孙清和，7岁1个月，间断发热约1个月，按上呼吸道感染治疗无效，肝脾肿大。血红蛋白71 g/L、血小板50×10⁹/L，铁蛋白1176.6 μg/L，甘油三酯5.8 mmol/L，纤维蛋白原1.3 g/L，骨髓见噬血细胞，满足HLH-2004诊断标准；血EB病毒DNA 5.43×10⁷拷贝提示EB病毒是诱因。基因报告只有一个UNC13D（MUNC13-4）杂合变异和一个写法不清的SH2D1A半合子变异，不足以证明报告标题所称的家族性HLH。按HLH方案治疗后缓解，此后又再活动，接受HLA全相合非血缘供者造血干细胞移植；移植后HHV-6阳性腹泻和临床Ⅲ度肠道GVHD经治疗好转，9个月时供者完全嵌合、无病生存、无慢性GVHD。现行做法：确诊后即开始HLH-94，不等基因结果；因再活动而移植；移植后腹泻同时评估GVHD和感染；胚系检测用移植前或非血液来源的DNA。",
-      "en": "Sun Qinghe (7 years 1 month) had about a month of fever unresolved by treatment for an upper respiratory infection, with an enlarged liver and spleen. Haemoglobin 71 g/L, platelets 50 × 10⁹/L, ferritin 1176.6 µg/L, triglycerides 5.8 mmol/L, fibrinogen 1.3 g/L and marrow haemophagocytes met the HLH-2004 criteria; blood EBV DNA of 5.43 × 10⁷ copies pointed to an EBV trigger. The gene report showed one heterozygous UNC13D (MUNC13-4) variant and an unclearly written hemizygous SH2D1A variant — not enough to prove the familial HLH named in the report's title. He remitted on an HLH protocol, flared and had a fully HLA-matched unrelated-donor transplant; HHV-6-positive diarrhoea and clinical grade III intestinal GVHD improved with treatment, and at 9 months he had complete donor chimerism, no disease and no chronic GVHD. Today: HLH-94 without waiting for genes, transplant for the flare, GVHD and infection assessed together, germline testing on pre-transplant or non-blood DNA."
+      "zh-CN": "孙清和，7岁1个月，间断发热约1个月，按上呼吸道感染治疗无效，肝脾肿大。血红蛋白71 g/L、血小板50×10⁹/L，铁蛋白1176.6 μg/L，甘油三酯5.8 mmol/L，纤维蛋白原1.3 g/L，骨髓见噬血细胞，满足HLH-2004诊断标准；血EB病毒DNA 5.43×10⁷拷贝提示EB病毒是诱因。基因报告只有一个UNC13D（MUNC13-4）杂合变异和一个写法不清的SH2D1A半合子变异，按本病例记录的内容，不足以证明报告标题所称的家族性HLH。按HLH方案治疗后缓解，此后又再活动，接受HLA全相合非血缘供者造血干细胞移植；移植后HHV-6阳性腹泻和临床Ⅲ度肠道GVHD经治疗好转，9个月时供者完全嵌合、无病生存、无慢性GVHD。现行做法：确诊后即开始HLH-94，不等基因结果；因再活动而移植；移植后腹泻同时评估GVHD和感染；胚系检测用移植前或非血液来源的DNA。",
+      "en": "Sun Qinghe (7 years 1 month) had about a month of fever unresolved by treatment for an upper respiratory infection, with an enlarged liver and spleen. Haemoglobin 71 g/L, platelets 50 × 10⁹/L, ferritin 1176.6 µg/L, triglycerides 5.8 mmol/L, fibrinogen 1.3 g/L and marrow haemophagocytes met the HLH-2004 criteria; blood EBV DNA of 5.43 × 10⁷ copies pointed to an EBV trigger. The gene report showed one heterozygous UNC13D (MUNC13-4) variant and an unclearly written hemizygous SH2D1A variant — as recorded, not enough to prove the familial HLH named in the report's title. He remitted on an HLH protocol, flared and had a fully HLA-matched unrelated-donor transplant; HHV-6-positive diarrhoea and clinical grade III intestinal GVHD improved with treatment, and at 9 months he had complete donor chimerism, no disease and no chronic GVHD. Today: HLH-94 without waiting for genes, transplant for the flare, GVHD and infection assessed together, germline testing on pre-transplant or non-blood DNA."
     },
     "keyReasoning": [
       {
@@ -4329,8 +4330,8 @@
         "en": "The time-critical step is induction: genetic and functional answers take weeks, while survival in EBV-HLH depended on etoposide starting early."
       },
       {
-        "zh-CN": "决定移植的是再活动，而不是基因型；基因检查决定的是供者选择、家庭咨询和诊断标签——而本例的标签并没有被证实。",
-        "en": "The flare, not the genotype, made transplantation necessary; the genetic work-up then shapes the donor choice, the family's counselling and the label — and here the label was never proven."
+        "zh-CN": "决定移植的是再活动，而不是基因型；基因检查决定的是供者选择、家庭咨询和诊断标签——而本病例记录的内容并不能证实这个标签。",
+        "en": "The flare, not the genotype, made transplantation necessary; the genetic work-up then shapes the donor choice, the family's counselling and the label — and what this case records does not prove the label."
       },
       {
         "zh-CN": "移植后病毒阳性和GVHD不是二选一：两者同时查，严重的肠道GVHD不等病毒结果就治疗。",
@@ -4393,8 +4394,8 @@
         "en": "Reading the genes: one heterozygous UNC13D variant (c.1228A>C) does not establish autosomal recessive FHL3, which needs a second pathogenic variant or other proof of biallelic loss. A hemizygous SH2D1A variant in a boy would mean XLP1 if pathogenic — but only once the laboratory re-issues it in HGVS, it is classified under ACMG/AMP 2015, SAP expression supports it and testing his mother shows where it came from (NACHO 2019 lists perforin, SAP and XIAP expression and CD107a degranulation as the functional assays). The 2013 report's title calls this MUNC13-4-mutated familial HLH; by today's standard that label needs both alleles."
       },
       {
-        "zh-CN": "移植：HLH-2004把家族性或分子确诊的HLH，以及诱导后重症持续或再活动列为造血干细胞移植指征——本例由再活动决定；2021年儿童EB病毒感染相关疾病专家共识也把复发或难治的EB病毒相关HLH作为移植的主要指征。若是XLP1，发生HLH后未移植者生存率仅18.8%，有HLH史者移植后生存率50%（Booth 2011）。他没有同胞，报告记录做了HLA全相合非血缘移植；预处理和移植物来源没有记录。",
-        "en": "Transplantation: HLH-2004 lists familial or molecularly proven HLH and severe, persistent or reactivated disease after induction as indications — the reactivation decided it here, and the 2021 Chinese consensus on EBV-related disease in children names relapsed or refractory EBV-HLH as the main indication. If this is XLP1, survival without transplant after HLH was 18.8 %, and 50 % after transplant in patients who had had HLH (Booth 2011). He has no siblings; the report records a fully HLA-matched unrelated transplant, not the conditioning or graft source."
+        "zh-CN": "移植：HLH-2004把家族性或分子确诊的HLH，以及诱导后重症持续或再活动列为造血干细胞移植指征——本例由再活动决定；2021年儿童EB病毒感染相关疾病专家共识也把复发或难治的EB病毒相关HLH作为移植的主要指征。若SH2D1A变异被证实致病（XLP1，遗传性HLH），这本身也是移植指征。他没有同胞，报告记录做了HLA全相合非血缘移植；预处理和移植物来源没有记录。",
+        "en": "Transplantation: HLH-2004 lists familial or molecularly proven HLH and severe, persistent or reactivated disease after induction as indications — the reactivation decided it here, and the 2021 Chinese consensus on EBV-related disease in children names relapsed or refractory EBV-HLH as the main indication. A proven pathogenic SH2D1A variant (XLP1, an inherited form) would be an indication in itself. He has no siblings; the report records a fully HLA-matched unrelated transplant, not the conditioning or graft source."
       },
       {
         "zh-CN": "移植后腹泻：可能是急性GVHD、感染或两者并存。在按粪便量分期的同时，送粪便病原学、HHV-6定量PCR并争取活检（ECIL-7，2019：注意染色体整合型HHV-6，膦甲酸钠或更昔洛韦用于HHV-6病）。Ⅱ–Ⅳ度急性GVHD一线用甲泼尼龙2 mg/kg/天；治疗3天后仍进展或7天后无改善为激素耐药，EBMT 2024以芦可替尼为标准治疗；不为清除病毒而停用免疫抑制剂。报告记录HHV-6阳性腹泻和临床Ⅲ度肠道GVHD经治疗好转，所用治疗没有记录。",
@@ -4412,7 +4413,6 @@
       "Imashuku S, et al. Requirement for etoposide in the treatment of Epstein-Barr virus-associated hemophagocytic lymphohistiocytosis. J Clin Oncol. 2001;19(10):2665-2673.",
       "中华医学会儿科学分会感染学组, 全国儿童EB病毒感染协作组. 儿童EB病毒感染相关疾病的诊断和治疗原则专家共识. 中华儿科杂志. 2021;59(11):905-911.",
       "Jordan MB, Allen CE, Greenberg J, et al. Challenges in the diagnosis of hemophagocytic lymphohistiocytosis: recommendations from the North American Consortium for Histiocytosis (NACHO). Pediatr Blood Cancer. 2019;66(11):e27929. doi:10.1002/pbc.27929",
-      "Booth C, Gilmour KC, Veys P, et al. X-linked lymphoproliferative disease due to SAP/SH2D1A deficiency: a multicenter study on the manifestations, management and outcome of the disease. Blood. 2011;117(1):53-62. doi:10.1182/blood-2010-06-284935",
       "Richards S, Aziz N, Bale S, et al. Standards and guidelines for the interpretation of sequence variants: a joint consensus recommendation of the American College of Medical Genetics and Genomics and the Association for Molecular Pathology. Genet Med. 2015;17(5):405-424. doi:10.1038/gim.2015.30",
       "Penack O, Marchetti M, et al. Prophylaxis and management of graft-versus-host disease after stem-cell transplantation for haematological malignancies: updated consensus recommendations of the European Society for Blood and Marrow Transplantation. Lancet Haematol. 2024;11:e147-e159. doi:10.1016/S2352-3026(23)00342-3",
       "Ward KN, Hill JA, Hubacek P, et al. Guidelines from the 2017 European Conference on Infections in Leukaemia for management of HHV-6 infection in patients with hematologic malignancies and after hematopoietic stem cell transplantation. Haematologica. 2019;104:2155-2163."
@@ -4974,7 +4974,7 @@
         ]
       },
       {
-        "text": "你们住哪个小区？",
+        "text": "他晚上睡觉打呼噜吗？",
         "locale": "zh-CN",
         "expect": []
       },
@@ -5084,12 +5084,12 @@
         ]
       },
       {
-        "text": "Can I check your parking ticket?",
+        "text": "Does he snore at night?",
         "locale": "en",
         "expect": []
       },
       {
-        "text": "Is it raining outside?",
+        "text": "Has he ever broken a bone?",
         "locale": "en",
         "expect": []
       }

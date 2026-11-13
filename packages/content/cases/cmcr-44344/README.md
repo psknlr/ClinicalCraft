@@ -24,7 +24,7 @@ record stays unknown.
 | languages | `zh-CN` (source language), `en` |
 | review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a paediatric gastroenterologist or paediatric surgeon review it before teaching use |
 | phases | `admission` 入院评估 / Admission assessment → `localisation` 寻找出血部位 / Finding where he bleeds → `after-surgery` 手术之后 / After the operation → `followup` 记录的转归 / Recorded outcome — all one-way, none learner-switchable |
-| content | 25 history items (9 recorded facts, 1 labelled teaching device, 15 unknown; 7 required) · 6 exam findings (all recorded, admission only) · 15 investigations (6 record reviews; 4 without a recorded result) · 12 interventions (4 harmful, 1 harmful when given untransfused, 1 neutral) · 6 objectives · 5 decisions (25 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 38 test utterances |
+| content | 25 history items (9 recorded facts, 1 labelled teaching device, 15 unknown; 7 required) · 6 exam findings (all recorded, admission only) · 15 investigations (6 record reviews; 4 without a recorded result) · 14 interventions (4 always harmful, 1 harmful before any transfusion, 2 neutral; 3 marked `critical: true`) · 6 objectives · 5 decisions (25 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 2 critical) · 4 staff · 6 learning outcomes · 5 teaching points · 38 test utterances |
 
 ## Learning outcomes
 
@@ -41,8 +41,8 @@ After the case the learner can:
 4. Plan definitive treatment of a solitary bleeding small-bowel vascular lesion — segmental resection with primary
    anastomosis once the anaemia is corrected, with the whole small bowel examined — and explain why radiotherapy,
    propranolol or endoscopic ablation are not the answer (ESGE 2022; AAP 2019).
-5. Relate the pathology label "cavernous haemangioma" to the ISSVA classification (2018) of vascular tumours and
-   malformations, and plan follow-up for iron repletion, recurrence and multifocal disease accordingly.
+5. Relate the pathology label "cavernous haemangioma" to the ISSVA classification (2025) of vascular tumours and
+   slow-flow malformations, and plan follow-up for iron repletion, recurrence and multifocal disease accordingly.
 6. Explain the reasons for and risks of transfusion and surgery to a 12-year-old and his family, seeking his assent and
    their informed consent, and say what the record cannot answer.
 
@@ -71,7 +71,7 @@ anastomosis** was done. Histology: **cavernous haemangioma with haemorrhage and 
 after the operation; nothing later is recorded.
 
 **Diagnosis.** Chronic, recurrent small-bowel bleeding from a solitary cavernous haemangioma of the proximal jejunum —
-in ISSVA (2018) terms most likely a slow-flow venous malformation (the case cannot confirm the reclassification: no
+in ISSVA (2025) terms most likely a slow-flow venous malformation (the case cannot confirm the reclassification: no
 immunohistochemistry is recorded) — with severe iron-deficiency anaemia.
 
 **Today's answer.** Correct the anaemia safely — slow, weight-based red-cell aliquots with reassessment for
@@ -95,13 +95,14 @@ nuclear scans and CT, and no capsule endoscopy or enteroscopy is recorded.
     admission bloods (blood count — a **critical** result the nurse phones through — faecal occult blood, clotting;
     iron studies and the crossmatch have no recorded result), the bone marrow (orderable, low-value today), the earlier
     hospitals' reports (record review), decisions 1 and 2 and a **committed act for the anaemia** (the slow transfusion,
-    the rapid one, oral iron or a discharge home). Orders of the nuclear scans and the later records are refused here
-    ("not yet created"); the CT returns "no result at this stage".
+    the rapid one, oral or intravenous iron, or a discharge home). Orders of the nuclear scans and the later records
+    are refused here ("not yet created"); the CT returns "no result at this stage".
   - `localisation` — opens once the history, the bedside-and-bloods objective and the first-steps objective (decisions 1
     and 2 plus an anaemia act) are done (`enterWhen`: `obj-bleeding-story`, `obj-bedside-and-bloods`,
     `obj-first-plan`). The two nuclear medicine reports (record reviews: the general hospital has no gamma camera), the
     **contrast CT** (orderable: he is taken to the CT scanner), capsule endoscopy (orderable, no recorded result),
-    decisions 3 and 4 and a **committed definitive act** (the resection, radiotherapy or propranolol).
+    decisions 3 and 4, the paediatric surgical consultation (available in any phase) and a **committed definitive act**
+    (booking the operation, radiotherapy or propranolol).
   - `after-surgery` — opens once `obj-find-source` is done. He is back on the ward after the operation (no location
     change: the operation itself happens between phases); the **operation note** and the **pathology report**, his
     post-operative status (phase twin item `postop-status`: "getting on fine"), iron, the follow-up plan and decision 5.
@@ -119,8 +120,8 @@ nuclear scans and CT, and no capsule endoscopy or enteroscopy is recorded.
 |---|---|---|
 | 1 | `obj-bleeding-story` Take the story of the black stools | onset, course, this bout, earlier tests and medicines asked |
 | 2 | `obj-bedside-and-bloods` Examine him and read the admission tests | colour, heart rate, heart, abdomen, liver and spleen, legs examined; blood count, faecal occult blood and clotting read (phase `admission`) |
-| 3 | `obj-first-plan` Decide the first steps | `anaemia-plan` and `source-search` right **and** one anaemia act given: the slow transfusion, the rapid one, oral iron or a discharge home |
-| 4 | `obj-find-source` Locate the source and choose the treatment | both nuclear reports and the CT read (phase `localisation`); `bleeding-source` and `definitive-treatment` right **and** one definitive act: the resection, radiotherapy or propranolol |
+| 3 | `obj-first-plan` Decide the first steps | `anaemia-plan` and `source-search` right **and** one anaemia act given: the slow transfusion, the rapid one, oral iron, intravenous iron or a discharge home |
+| 4 | `obj-find-source` Locate the source and choose the treatment | both nuclear reports and the CT read (phase `localisation`); `bleeding-source` and `definitive-treatment` right **and** one definitive act: booking the operation, radiotherapy or propranolol |
 | 5 | `obj-after-operation` Review the operation and plan follow-up | operation note and pathology read (phase `after-surgery`); `after-surgery-plan` right |
 | 6 | `obj-recorded-course` Read how his course ended | outcome record read |
 
@@ -129,7 +130,8 @@ not obtained ("What does black stool tell you about where the blood comes from �
 looked at, and which never have?"). Objectives 3 and 4 need a **committed act** among the right one and its
 diversions (as cmcr-70044 and cmcr-1653411 do), so the localisation phase opens only after the learner has acted on the
 anaemia, and the operation records only after a definitive act — the critical acts are not forced and can still be
-missed.
+missed. The surgical consultation is not a definitive act: asking the surgeons early is good practice and never
+counts as operating.
 
 ### Decisions
 
@@ -140,11 +142,13 @@ missed.
   "compensated"), `oral-iron-home` (discharge with clinic tests), `operate-first` (exploratory laparotomy today,
   transfusing in theatre).
 - **2 `source-search`** (select all; needs decision 1, onset, earlier tests and medicines asked, and the earlier
-  hospitals' reports read). Keys: `pertechnetate-scan`, `ct-enterography`, `capsule-if-no-narrowing`. Distractors:
-  `repeat-scopes-only` (another gastroscopy and colonoscopy, stopping if normal), `red-cell-scan-first` (a labelled
-  red-cell scan as the first localising test — the report's own test, used here as the historical near-miss).
+  hospitals' reports read). Keys: `pertechnetate-scan`, `ct-enterography` (MR enterography named in the feedback as the
+  radiation-free alternative in a child), `capsule-if-no-narrowing`. Distractors: `repeat-scopes-only` (another
+  gastroscopy and colonoscopy, stopping if normal — ESGE 2022 advises against a routine second look), `red-cell-scan-first`
+  (a labelled red-cell scan as the first localising test — the report's own test, used here as the historical
+  near-miss).
 - **3 `bleeding-source`** (single; needs decision 2 and the three localisation records in phase `localisation`). Key:
-  `jejunal-vascular-lesion` — a vascular lesion of the jejunum such as a cavernous haemangioma (a venous malformation),
+  `jejunal-vascular-lesion` — a vascular lesion of the jejunum such as a cavernous haemangioma or venous malformation,
   bleeding on and off. Distractors: `missed-meckel`, `jejunal-gist` (the near-miss: only histology separates them),
   `jejunal-lymphoma`, `diffuse-angioectasia`.
 - **4 `definitive-treatment`** (single; needs decision 3). Key: `resection-after-correction` — once the anaemia is
@@ -155,11 +159,13 @@ missed.
   `iron-until-replete`, `look-for-other-lesions`, `return-if-recurs`. Distractors: `propranolol-prevention`,
   `six-monthly-ct`.
 
-Every option has its own feedback naming the guidance it rests on (ESGE 2022, ACG 2015, ESPGHAN/ESGE 2017, NICE NG24
-2015, BSH 2016, AAP 2019, ISSVA 2018) and the reason. Option ids name their content. **No length cue:** in the three
-single-best decisions the key is the uniquely longest option in neither language (measured 2026-11-12: decision 1 key
-40 of 32–47 characters in zh-CN, 129 of 115–135 in en; decision 3 key 28 of 19–36 and 110 of 64–127; decision 4 key 37
-of 25–38 and 125 of 74–126).
+Every option has its own feedback naming the guidance it rests on (ESGE 2022, ACG 2015, SEGHNP/SEPD 2015, NICE NG24
+2015, BSH 2016, AAP 2019, ISSVA 2025) and the reason. Option ids name their content. **No length cue** (measured
+2026-11-13): in the three single-best decisions the key is the uniquely longest option in neither language (decision 1
+key 40 of 32–47 characters in zh-CN, 129 of 115–135 in en; decision 3 key 27 of 19–36 and 109 of 64–127; decision 4
+key 37 of 25–38 and 125 of 74–126); in the two select-all decisions the distractors are as long as the keys (decision
+2: keys 78–97, distractors 79–96 in en; decision 5: keys 90–108, distractors 110–111 in en, keys 26–30, distractors
+30–37 in zh-CN).
 
 ### Rubric (11 deterministic items, total weight 26, + 1 examiner-judged)
 
@@ -173,44 +179,50 @@ of 25–38 and 125 of 74–126).
 | `rb-transfusion` | management | 4 | **critical** — the slow red-cell transfusion given **in time**: after the blood count is read and before the operation (`whenIndicated`, window = phases `admission` and `localisation`) |
 | `rb-search-decision` | investigations | 2 | `source-search` right first time and both nuclear reports and the CT read in `localisation` |
 | `rb-source-decision` | diagnosis | 3 | `bleeding-source` right first time |
-| `rb-definitive` | management | 3 | `definitive-treatment` right first time, the resection booked validly (after a transfusion), consent obtained, no radiotherapy or propranolol |
-| `rb-after-surgery` | management | 2 | `after-surgery-plan` right first time, oral iron and the follow-up plan given |
-| `rb-no-unsafe-step` | safety | 3 | **critical** — no rapid transfusion, no resection booked before any transfusion, no discharge home; scored once decision 1 is attempted or any of these is done |
+| `rb-definitive` | management | 3 | `definitive-treatment` right first time, the paediatric surgeons consulted, the operation booked **in its window** (`whenIndicated`: CT read, `bleeding-source` answered, a transfusion given), consent obtained, no radiotherapy or propranolol |
+| `rb-after-surgery` | management | 2 | `after-surgery-plan` right first time, oral or intravenous iron and the follow-up plan given |
+| `rb-no-unsafe-step` | safety | 3 | **critical** — no rapid transfusion, no operation booked before any transfusion, no discharge home; scored once decision 1 is attempted or any of these is done |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge, adolescent: speaks to him, offers confidential time, explains transfusion speed, tests and the operation, his assent and the family's consent, honest about the unrecorded future |
 
-### How wrong choices score (measured with the reducer on 2026-11-12)
+### How wrong choices score (measured with the reducer on 2026-11-13)
 
-| path | deterministic score | critical items missed |
-|---|---:|---|
-| reference path (`solution`) | 26/26 (100 %) | none |
-| start and do nothing | 0/23 | `rb-transfusion` (`rb-no-unsafe-step` not scored) |
-| wrong first answer at all five decisions, then right | 13/26 (50 %) | none |
-| wrong first answer at decision 1 only | 23/26 (88 %) | none |
-| wrong first answer at decision 2 only | 24/26 (92 %) | none |
-| wrong first answer at decision 3 only | 23/26 (88 %) | none |
-| wrong first answer at decision 4 only | 23/26 (88 %) | none |
-| wrong first answer at decision 5 only | 24/26 (92 %) | none |
-| rapid transfusion instead of the slow one | 19/26 (73 %) | `rb-transfusion`, `rb-no-unsafe-step` |
-| rapid transfusion, then the slow one as well | 23/26 (88 %) | `rb-no-unsafe-step` |
-| oral iron only, no transfusion (the resection then booked untransfused) | 16/26 (62 %) | `rb-transfusion`, `rb-no-unsafe-step` |
-| discharge home instead of a transfusion | 16/26 (62 %) | `rb-transfusion`, `rb-no-unsafe-step` |
-| slow transfusion given only after the operation | 16/26 (62 %) | `rb-transfusion`, `rb-no-unsafe-step` |
-| radiotherapy instead of the resection | 23/26 (88 %) | none (`rb-definitive` lost) |
-| propranolol instead of the resection, or added to the reference path | 23/26 (88 %) | none (`rb-definitive` lost) |
-| reference path without consent | 23/26 (88 %) | none (`rb-definitive` lost) |
-| reference path without the transfusion observations | 23/26 (88 %) | none (`rb-anaemia-decision` lost) |
-| reference path without the five safety-screen questions | 25/26 (96 %) | none |
-| reference path without iron and the follow-up plan | 24/26 (92 %) | none |
-| reference path without any definitive act: the operation records never open and the case cannot be finished | 21/26 (81 %) | none |
+| path | deterministic score | critical items missed | safety outcome |
+|---|---:|---|---|
+| reference path (`solution`) | 26/26 (100 %) | none | passed |
+| start and do nothing | 0/23 | `rb-transfusion` (`rb-no-unsafe-step` not scored) | passed (nothing given) |
+| wrong first answer at all five decisions, then right | 13/26 (50 %) | none | passed |
+| wrong first answer at decision 1 only | 23/26 (88 %) | none | passed |
+| wrong first answer at decision 2 only | 24/26 (92 %) | none | passed |
+| wrong first answer at decision 3 only | 23/26 (88 %) | none | passed |
+| wrong first answer at decision 4 only | 23/26 (88 %) | none | passed |
+| wrong first answer at decision 5 only | 24/26 (92 %) | none | passed |
+| rapid transfusion instead of the slow one | 19/26 (73 %) | `rb-transfusion`, `rb-no-unsafe-step` | **failed** (`rapid-transfusion`) |
+| rapid transfusion, then the slow one as well | 23/26 (88 %) | `rb-no-unsafe-step` | **failed** (`rapid-transfusion`) |
+| oral iron only, no transfusion (the operation then booked untransfused) | 16/26 (62 %) | `rb-transfusion`, `rb-no-unsafe-step` | **failed** (`segmental-resection`) |
+| intravenous iron only, no transfusion (the operation then booked untransfused) | 16/26 (62 %) | `rb-transfusion`, `rb-no-unsafe-step` | **failed** (`segmental-resection`) |
+| discharge home instead of a transfusion | 16/26 (62 %) | `rb-transfusion`, `rb-no-unsafe-step` | **failed** (`discharge-home`, `segmental-resection`) |
+| oral iron first, the slow transfusion only after the operation | 16/26 (62 %) | `rb-transfusion`, `rb-no-unsafe-step` | **failed** (`segmental-resection`) |
+| the operation booked in the admission phase before the transfusion (then transfused) | 20/26 (77 %) | `rb-no-unsafe-step` | **failed** (`segmental-resection`) |
+| the surgical consultation asked early, before the transfusion | 26/26 (100 %) | none | passed |
+| radiotherapy instead of the operation | 23/26 (88 %) | none (`rb-definitive` lost) | passed (`critical: false`) |
+| propranolol instead of the operation, or added to the reference path | 23/26 (88 %) | none (`rb-definitive` lost) | passed |
+| reference path without consent | 23/26 (88 %) | none (`rb-definitive` lost) | passed |
+| reference path without the surgical consultation | 23/26 (88 %) | none (`rb-definitive` lost) | passed |
+| reference path without the transfusion observations | 23/26 (88 %) | none (`rb-anaemia-decision` lost) | passed |
+| reference path without the five safety-screen questions | 25/26 (96 %) | none | passed |
+| reference path without iron and the follow-up plan | 24/26 (92 %) | none | passed |
+| intravenous instead of oral iron after the operation; intravenous iron added to the transfusion; an IV PPI added | 26/26 (100 %) | none | passed |
+| reference path without any definitive act: the operation records never open and the case cannot be finished | 21/26 (81 %) | none | passed |
 
 Decisions are scored with `decidedFirstTry`, so guessing through the options costs the item. The four harmful
-interventions (rapid transfusion, discharge home, radiotherapy, propranolol) are always `contraindicated`, and the
-resection is contraindicated while no transfusion has been given — each named in the debrief's safety list with its
-own harm text. The avoided-harm item counts only once the harm was possible (`scoredWhen`), so doing nothing earns 0.
-**Timing of the critical act.** `rb-transfusion` counts only a transfusion given while its `indicatedWhen` held (blood
-count read, phase `admission` or `localisation`), so a transfusion after the operation records does not earn it; the
-localisation phase itself waits for an anaemia act. **Known limits:** the rubric's conditions carry no time beyond
-that window, so transfusion observations, consent, iron and the follow-up plan given late still meet their
+interventions (rapid transfusion, discharge home, radiotherapy, propranolol) are always `contraindicated`, and booking
+the operation is contraindicated while no transfusion has been given — each named in the debrief's safety list with
+its own harm text. The avoided-harm item counts only once the harm was possible (`scoredWhen`), so doing nothing earns
+0. **Timing of the critical act.** `rb-transfusion` counts only a transfusion given while its `indicatedWhen` held
+(blood count read, phase `admission` or `localisation`), so a transfusion after the operation records does not earn it;
+the localisation phase itself waits for an anaemia act. `rb-definitive` likewise counts the operation only when booked
+after the CT, the source decision and a transfusion. **Known limits:** the rubric's conditions carry no time beyond
+these windows, so transfusion observations, consent, iron and the follow-up plan given late still meet their
 non-critical items; debrief the order of the acts from the transcript.
 
 ### Critical items
@@ -219,20 +231,30 @@ non-critical items; debrief the order of the acts from the transcript.
 to him) and `rb-no-unsafe-step` (the dangerous error: a rapid large-volume transfusion in chronic anaemia, an operation
 booked before the anaemia is corrected, or a discharge home). Both are acts; neither reads a final-phase record.
 
+**Safety outcome.** `rapid-transfusion`, `discharge-home` and `segmental-resection` (booking the operation) are
+`critical: true`: a rapid large-volume transfusion in chronic severe anaemia (transfusion-associated circulatory
+overload), sending him home with a haemoglobin of 28 g/L and an unexplained, continuing loss, and an operation booked
+before any transfusion has begun to correct the anaemia are each life-threatening, so giving any of them fails the
+assessment's safety outcome (`safety.passed: false`) whatever the score, and every debrief and export shows it beside
+the score; all three also sit in the critical avoided-harm item `rb-no-unsafe-step`. `radiotherapy` is
+`critical: false`: an obsolete treatment for a benign lesion, a misjudgement that is corrected before anything is
+delivered — it shows its harm text and costs `rb-definitive` but does not on its own fail the safety outcome.
+`propranolol` (moderate risk) is scored through `rb-definitive` only.
+
 ## Reference path (`solution`)
 
-70 steps, static clock: start → his story (presentation, onset, pain at onset, course, this bout, earlier tests,
-earlier medicines, what doctors said) → examination (colour, heart rate, heart, abdomen, liver and spleen, legs) → IV
-cannula → blood count, faecal occult blood, clotting, iron studies (no result) → allergies, transfusions, other
-medicines → crossmatch (no result) → `anaemia-plan` → consent, transfusion observations, **slow red-cell transfusion** →
-the rest of the history (frequency, haematemesis, anaemia symptoms, pain now, family, skin, other illness, operations,
-growth, the two confidential questions, his worry) → earlier hospitals' reports → `source-search` → (phase
-`localisation`) ectopic gastric mucosa scan, red-cell scan, **contrast CT** → `bleeding-source` → `definitive-treatment`
-→ consent, **resection** → (phase `after-surgery`) his post-operative status and bleeding → operation note, pathology →
-oral iron, follow-up plan → `after-surgery-plan` → (phase `followup`) outcome record → finish. `cases verify` passes:
-objectives 6/6, decisions 5/5, utterances 38/38, rubric 26/26. The reference path does not order the bone marrow (a
-serum ferritin answers that question today) or a capsule endoscopy (no result is recorded, and by then the CT has
-shown a mass).
+71 steps, static clock: start → his story (presentation, onset, pain at onset, course, this bout, frequency,
+haematemesis, anaemia symptoms, pain now, earlier tests, earlier medicines, what doctors said, transfusions, allergies,
+other medicines, other illness, operations, family, skin, growth, his worry) → examination (colour, heart rate, heart,
+abdomen, liver and spleen, legs) → IV cannula → blood count, faecal occult blood, clotting, iron studies (no result),
+crossmatch (no result) → `anaemia-plan` → consent, transfusion observations, **slow red-cell transfusion** → the two
+confidential questions → earlier hospitals' reports → `source-search` → (phase `localisation`) ectopic gastric mucosa
+scan, red-cell scan, **contrast CT** → `bleeding-source` → **paediatric surgical consultation** → `definitive-treatment`
+→ consent, **the operation booked** → (phase `after-surgery`) his post-operative status and bleeding → operation note,
+pathology → oral iron, follow-up plan → `after-surgery-plan` → (phase `followup`) outcome record → finish.
+`cases verify` passes: objectives 6/6, decisions 5/5, utterances 38/38, rubric 26/26; nothing on the path is given
+while contraindicated. The reference path does not order the bone marrow (a serum ferritin answers that question today)
+or a capsule endoscopy (no result is recorded, and by then the CT has shown a mass).
 
 ## Clinical numbers check
 
@@ -263,7 +285,7 @@ article is pending**. Extraction table (1.0.0 field → 1.1.0 field):
 
 **Times.** Recorded: eight years of symptoms (onset therefore at about 4 years of age); the last month's recurrence;
 the anaemia corrected before the operation. Not recorded: the time of any test after admission (the case dates them
-"on admission" or "during this admission", exact time not recorded — staging), the order of the nuclear scans and the
+"this admission" or "during this admission", exact time not recorded — staging), the order of the nuclear scans and the
 CT, and the time from admission to the operation. **Derived values** (README only; not in the case text): MCH ≈ Hb ÷
 RBC = 28 ÷ 1.81 ≈ **15.5 pg**, a markedly hypochromic picture consistent with the iron-deficient marrow (no measured
 indices are recorded). **Sizes:** the CT gives two dimensions (about 2.0 × 3.5 cm) and the operation three (5 × 3 × 3 cm)
@@ -271,11 +293,12 @@ indices are recorded). **Sizes:** the CT gives two dimensions (about 2.0 × 3.5 
 
 **Guidance numbers used in teaching text** (no patient value is needed; doses as formulas): capsule endoscopy ideally
 within 48 hours of an overt bleed (ESGE 2022); red cells one unit at a time, or a weight-equivalent volume in a child,
-with reassessment after each when there is no active bleeding (NICE NG24, 2015), volumes by weight (BSH 2016);
-propranolol 2–3 mg/kg/day for infantile haemangioma (AAP 2019; quoted only in the harmful option); oral iron as
-mg/kg/day per the national paediatric formulary, continued after the haemoglobin recovers (no figure given — see To
-verify). The harmful "20 mL/kg over one hour" appears only in the distractor it describes. No weight is recorded, so
-no weight-based dose is computed.
+with reassessment after each for patients who are not actively bleeding (NICE NG24, 2015), volumes by weight (BSH
+2016); propranolol 2–3 mg/kg/day for infantile haemangioma (AAP 2019; quoted only in the harmful option); oral iron as
+mg/kg/day per the national paediatric formulary, continued after the haemoglobin recovers, and intravenous iron as a
+weight-based dose per the formulary and the product licence (no figure given for either — see To verify). The harmful
+"20 mL/kg over one hour" appears only in the distractor it describes. No weight is recorded, so no weight-based dose is
+computed and no intervention carries a `doseSpec`.
 
 ## Facilitator notes
 
@@ -287,7 +310,7 @@ no weight-based dose is computed.
    - "What does a black stool tell you about where the blood has been — and which stretch of gut had nobody seen?"
    - "His haemoglobin was 28 g/L but his heart rate 100/min. Why transfuse at all, and why slowly?"
    - "Why is intravenous iron alone not enough today, and why is oral iron at home unsafe?"
-   - "The report confirmed iron deficiency with a bone marrow. What would you send instead?"
+   - "The report records a bone marrow with an iron-deficiency pattern. What would you send instead today?"
    - "Which question does each of the Meckel scan, the red-cell scan and the contrast CT answer? Which one found the
      lesion?" (the red-cell focus's site is not recorded — do not let the group place it)
    - "Portal-venous enhancement with punctate calcification in a jejunal mass — what are you thinking of, and what
@@ -306,8 +329,8 @@ follow-up: do not let the group conclude that the lesion was solitary beyond wha
 | error | how the case surfaces it | where it scores |
 |---|---|---|
 | Running blood in fast to "normal" in chronic severe anaemia | `rapid-full-correction` feedback; `rapid-transfusion` contraindicated | `rb-anaemia-decision`, `rb-transfusion`, `rb-no-unsafe-step` |
-| Waiting on iron alone, or sending him home | `iv-iron-alone`, `oral-iron-home` feedback; `discharge-home` contraindicated | `rb-transfusion`, `rb-no-unsafe-step` |
-| Operating before the anaemia is corrected or the source localised | `operate-first` feedback; the resection contraindicated untransfused | `rb-no-unsafe-step`, `rb-definitive` |
+| Waiting on iron alone, or sending him home | `iv-iron-alone`, `oral-iron-home` feedback; `iv-iron` is neutral, `discharge-home` contraindicated and critical | `rb-transfusion`, `rb-no-unsafe-step` |
+| Operating before the anaemia is corrected or the source localised | `operate-first` feedback; booking the operation is contraindicated (and critical) before any transfusion, and scores only in its window | `rb-no-unsafe-step`, `rb-definitive` |
 | Another round of gastroscopy and colonoscopy as the whole plan | `repeat-scopes-only` feedback | `rb-search-decision` |
 | A red-cell scan as the first localising test | `red-cell-scan-first` feedback | `rb-search-decision` |
 | Explaining away the jejunal mass (missed Meckel, angioectasia) | `missed-meckel`, `diffuse-angioectasia` feedback | `rb-source-decision` |
@@ -324,7 +347,7 @@ ESGE 2022), then and now; (2) transfuse chronic severe anaemia slowly, by weight
 BSH 2016) — the report records the correction, not the method; (3) what each localisation study can answer, and the
 marrow versus ferritin (ACG 2015); (4) resect a solitary bleeding lesion once the anaemia is corrected, examine the
 whole small bowel; no propranolol (AAP 2019), no radiotherapy — the report's order matches today's; (5) name the
-lesion in ISSVA (2018) terms and follow up for iron, recurrence and multifocal disease (ESGE 2022).
+lesion in ISSVA (2025) terms and follow up for iron, recurrence and multifocal disease (ESGE 2022).
 
 ## Embodied mode
 
@@ -340,18 +363,20 @@ lesion in ISSVA (2018) terms and follow up for iron, recurrence and multifocal d
 - **Staff.** 温护士 / Nurse Wen gives the ISBAR handover from the triage facts and knows where the kit is; she gives no
   number beyond the recorded heart rate. 沈医生 / Dr Shen (attending) teaches Socratically; 鲁医生 / Dr Lu
   (radiologist) interprets only the imaging and nuclear reports the learner has read; 乔医生 / Dr Qiao (paediatric
-  surgeon) only the CT, operation note and pathology read.
+  surgeon) joins once the learner asks for a surgical consultation and interprets only the CT, operation note and
+  pathology read.
 - **Kit.** The cannula and samples come from the ward's treatment cart (`iv-access`); red cells come from the blood
   bank to the bedside (`blood-bank`, `iv-access`); the transfusion observations use the bedside monitor
   (`cardiac-monitor`). The patient arrives without a cannula (`extensions.embodied.ivAccessInSitu: false`): the case's
   IV-access procedure precedes the transfusion in the reference path.
 - **Scope of practice.** The cannula, the monitoring, the transfusion (a fluid) and the medicines are nursing-scope by
-  kind once prescribed; consent, the surgical referral, radiotherapy and the discharge are medical.
+  kind once prescribed; consent, the surgical consultation, booking the operation, radiotherapy and the discharge are
+  medical.
 - **Voice.** He is 12 and conscious, so **he answers his own history** (`answersHistory: false`; no `nonVerbalWhen`).
   His relative (role `carer`, named "冯清和的家属（化名）" / "Feng Qinghe's relative (pseudonym)") is at the bedside; the
   relationship is not recorded, so the companion has no `presentation` and adds no fact. Two items are asked "just
   between us" (school and mood; smoking, vaping and drinking) — adolescent confidential history; both are unknown.
-- **Measured (offline demonstration, 2026-11-12).** `embodied-autopilot.test.ts -t "cmcr-44344:"` passes in en and
+- **Measured (offline demonstration, 2026-11-13).** `embodied-autopilot.test.ts -t "cmcr-44344:"` passes in en and
   zh-CN: every objective done, in-world score equal to the clinical score (26/26), no "cannot do this"; the CT trip is
   made with the patient wheeled to the scanner and back.
 
@@ -367,10 +392,10 @@ in the portal venous phase with punctate calcification; anaemia corrected first,
 anastomosis; a 5 × 3 × 3 cm dark-red nodular mass about 5 cm distal to the ligament of Treitz; cavernous haemangioma
 with haemorrhage and calcification; good recovery; no stated follow-up duration.
 
-**Adapted for teaching.** The four phases and their staging — the admission bloods dated "on admission", the nuclear
+**Adapted for teaching.** The four phases and their staging — the admission bloods dated "this admission", the nuclear
 scans and CT "during this admission", the operation between phases and its records read on the ward (none of these
 times or places is recorded); the boy's dialogue (lay rewording of the recorded facts); his relative, the staff; the
-five decisions, their options and feedback; the twelve interventions (their responses say the case does not record
+five decisions, their options and feedback; the fourteen interventions (their responses say the case does not record
 whether they were done, except where the report records the step); the rubric; the unrecorded tests a learner would
 order (iron studies, crossmatch, capsule endoscopy, ultrasound) as honest `available: false` records; the CT as an
 orderable study rather than a record (1.0.0 had it as a record).
@@ -385,7 +410,7 @@ measured the mass at about **2.0 × 3.5 cm** and the operation at **5 × 3 × 3 
 shown, neither preferred; 1.0.0 calls the CT a contrast CT and describes the portal venous phase but gives no protocol;
 the red-cell focus has no recorded site, so the case never says the scan localised the lesion. 1.0.0's README and
 debrief named "a jejunal cavernous haemangioma" as the explanation; 1.1.0 keeps the report's label and teaches its
-ISSVA (2018) reading as an interpretation (no immunohistochemistry is recorded). 1.0.0's decision distractors alluded to
+ISSVA (2025) reading as an interpretation (no immunohistochemistry is recorded). 1.0.0's decision distractors alluded to
 "historical radiotherapy advice to every diffuse lesion" and to a claim of "100 % CT localisation"; neither is a
 patient fact, and neither is attributed to the article here (both listed under To verify).
 
@@ -436,6 +461,12 @@ guideline reference.
 - **English keywords** avoid one-token wildcards: run-together forms where a phrase would reduce to one token
   (`broughtyouin`, `landedyouin`, `howmanyyears`, `howoldwereyou`, `overtheyears`, `didtheyhelp`, `whathaveyoutaken`,
   `whattheysaid`, `howmanydays`, `outofbreath`, `anymoreblack`, `lookathim`).
+- **Interventions.** Asking for the surgeons is a consultation, not the operation: 会诊 / consult / referral / opinion
+  down-weight booking the operation, and 切除 / resect / laparotomy down-weight the consultation ("refer him to the
+  paediatric surgeons" → `surgical-consult`; "book the operation", "resect the jejunal segment", "安排手术切除病变肠段"
+  → `segmental-resection`). Oral and intravenous iron are separated by 静脉 / intravenous / infusion and 口服 / oral /
+  tablets ("静脉补铁" → `iv-iron`, "口服铁剂" and "start oral iron" → `oral-iron`). Measured with the core matcher on
+  2026-11-13.
 - **Order entry.** Bare "ct" is not an alias (it is contained in "ectopic"); `orderMatching.exact` maps "ct" / "CT" /
   "增强CT" to the CT, a rule sends "previous / outside / 以前 / 外院 CT" to the earlier hospitals' reports, another drops
   the blood count from "red-cell scan" queries.
@@ -452,24 +483,40 @@ guideline reference.
    diagnosis and treatment of small-bowel disorders: European Society of Gastrointestinal Endoscopy (ESGE) Guideline -
    Update 2022. Endoscopy. 2023;55(1):58-95. doi:10.1055/a-1973-3796
 3. Gerson LB, Fidler JL, Cave DR, Leighton JA. ACG clinical guideline: diagnosis and management of small bowel bleeding.
-   Am J Gastroenterol. 2015;110(9):1265-1287.
-4. Thomson M, Tringali A, Dall'Oglio L, et al. Paediatric gastrointestinal endoscopy: European Society for Paediatric
-   Gastroenterology Hepatology and Nutrition and European Society of Gastrointestinal Endoscopy guidelines. J Pediatr
-   Gastroenterol Nutr. 2017;64(1):133-153.
+   Am J Gastroenterol. 2015;110(9):1265-1287. doi:10.1038/ajg.2015.246
+4. Argüelles-Arias F, Donat E, Fernández-Urién I, et al. Guideline for wireless capsule endoscopy in children and
+   adolescents: a consensus document by the SEGHNP (Spanish Society for Pediatric Gastroenterology, Hepatology, and
+   Nutrition) and the SEPD (Spanish Society for Digestive Diseases). Rev Esp Enferm Dig. 2015;107(12):714-731.
 5. New HV, Berryman J, Bolton-Maggs PHB, et al. Guidelines on transfusion for fetuses, neonates and older children. Br
    J Haematol. 2016;175(5):784-828. doi:10.1111/bjh.14233
-6. National Institute for Health and Care Excellence. Blood transfusion. NICE guideline NG24. London: NICE; 2015.
-7. International Society for the Study of Vascular Anomalies. ISSVA classification of vascular anomalies. Revised 2018.
+6. National Institute for Health and Care Excellence. Blood transfusion. NICE guideline NG24. London: NICE; 2015 (last
+   updated 2026).
+7. Goldenberg DC, Vikkula M, Penington A, et al. Updated classification of vascular anomalies: a living document from the
+   International Society for the Study of Vascular Anomalies Classification Group. J Vasc Anom (Phila). 2025;6(2):e113.
+   doi:10.1097/JOVA.0000000000000113
 8. Krowchuk DP, Frieden IJ, Mancini AJ, et al. Clinical practice guideline for the management of infantile hemangiomas.
    Pediatrics. 2019;143(1):e20183475.
+9. Steele L, Zbeidy S, Thomson J, Flohr C. How is the term haemangioma used in the literature? An evaluation against
+   the revised ISSVA classification. Pediatr Dermatol. 2019. doi:10.1111/pde.13885
 
-**DOIs and checks.** Ref. 1: the source map's `verifiedDoi` (publisher page checked 2026-10-29). Ref. 2: confirmed by
-web search in this session (2026-11-12: Endoscopy 2023;55(1):58-95, doi:10.1055/a-1973-3796; recommendations MR1 —
-capsule endoscopy first-line for suspected small-bowel bleeding, MR2 — within 48 hours of an overt bleed, MR5 —
-device-assisted enteroscopy to confirm and possibly treat). Ref. 5: the DOI string verified in the cmcr-655458 review
-(PubMed 27861734, 2026-10-30), not re-verified here. Refs. 3, 4, 6, 7 and 8 carry no DOI because none could be
-verified: this session's web-search budget ran out after the ESGE check, so their bibliographic details are from the
-library's existing citations and memory and are listed below.
+**DOIs and checks (web searches on 2026-11-12 and 2026-11-13).** Ref. 1: the source map's `verifiedDoi` (publisher
+page checked 2026-10-29). Ref. 2: Endoscopy 2023;55(1):58-95, doi:10.1055/a-1973-3796 — recommendations MR1 (capsule
+endoscopy first-line for suspected small-bowel bleeding), MR2 (within 48 hours of an overt bleed), MR3 (no routine
+second-look endoscopy before the capsule) and device-assisted enteroscopy to confirm and treat. Ref. 3: the DOI and the
+statements used — "small bowel bleeding" in place of "obscure" bleeding, capsule endoscopy first-line, CT enterography
+when a narrowing is suspected or after a negative capsule, tagged red-cell scintigraphy for overt bleeding, and a
+conditional suggestion of a Meckel scan in younger patients with overt bleeding whose capsule and enterography are
+negative — from the abstract and published summaries, not the full text. Ref. 4: journal, volume and pages from its
+index records; its abstract says capsule endoscopy helps in obscure gastrointestinal bleeding in children and can be
+placed endoscopically in a child who cannot swallow it. Ref. 5: DOI as indexed (PubMed 27861734). Ref. 6: scope adults,
+young people and children aged 1 year and over; single-unit (weight-equivalent in children) transfusion with
+reassessment after each for patients who are not actively bleeding; oral iron before and after surgery for
+iron-deficiency anaemia; published 18 November 2015, last updated 26 February 2026 (tranexamic acid). Ref. 7: the 2025
+ISSVA classification (journal record and ISSVA's classification page): vascular tumours and vascular malformations,
+the malformations grouped as fast-flow, slow-flow and anomalies of named vessels. Ref. 8: no DOI given (not checked).
+Ref. 9: DOI and finding ("cavernous haemangioma" the term most often misused, 27.1 % of misuses) from its abstract. The
+earlier draft's ESPGHAN/ESGE 2017 paediatric endoscopy guideline is no longer cited: its scope (upper endoscopy and
+ileocolonoscopy) could not be shown to cover capsule endoscopy, which the draft had attributed to it.
 
 ### To verify
 
@@ -496,26 +543,26 @@ library's existing citations and memory and are listed below.
 - What each of the two approved figures shows (the media review describes cropped imaging, virtual-endoscopy and
   histology panels for the case's two files).
 
-**In the guidance (only ESGE 2022 could be checked in this session):**
+**In the guidance:**
 
-- ACG 2015 (ref. 3): its DOI; the wording on "suspected small bowel bleeding", on the pertechnetate (Meckel) scan in
-  younger patients, on CT enterography beside capsule endoscopy, on red-cell scintigraphy (active bleeding, regional
-  localisation) and on surgery with intraoperative enteroscopy; whether a newer ACG small-bowel bleeding guideline
-  supersedes it as of 2026-10.
-- ESPGHAN/ESGE 2017 (ref. 4): title, volume, pages, DOI, and its recommendations on small-bowel capsule endoscopy and
-  balloon-assisted enteroscopy in children.
-- NICE NG24 (2015): the single-unit (weight-equivalent in children) recommendation with reassessment, its scope (people
-  over 1 year), and "offer oral iron before and after surgery to patients with iron deficiency anaemia".
-- BSH 2016 (ref. 5): its weight-based volume formula for older children and any statement on transfusion rate in
-  chronic severe anaemia (the case states no number; the 2020 addendum).
+- ACG 2015 (ref. 3): the full-text wording of the statements used (above) and of its advice on surgery with
+  intraoperative enteroscopy; no newer ACG small-bowel bleeding guideline was found on 2026-11-13.
+- SEGHNP/SEPD 2015 (ref. 4): the full author list and its recommendation on obscure bleeding in children.
+- BSH 2016 (ref. 5) and its 2020 addendum: the weight-based volume formula for older children and any statement on
+  transfusion rate in chronic severe anaemia (the case states no number).
+- NICE NG24 (ref. 6): the current numbering of the recommendations used (sources differ after the updates).
+- ISSVA 2025 (ref. 7): the exact title, the slow-flow grouping of venous malformations and the glossary's wording on
+  "cavernous haemangioma"; a citable statement that the label usually describes a venous malformation.
 - AAP 2019 (ref. 8): the propranolol dose (2–3 mg/kg/day) and its DOI.
-- ISSVA (ref. 7): the current revision (2018, or a later one) and its wording on lesions called "cavernous
-  haemangioma"; a citable source for "most such lesions are venous malformations".
-- Paediatric oral iron dosing (mg/kg/day of elemental iron, maximum, duration after recovery) in the national
-  formulary or a Chinese paediatric guideline (e.g. 《儿童缺铁和缺铁性贫血防治建议》, 2008) — not cited until checked;
-  serum ferritin thresholds (WHO 2020 guideline on ferritin) likewise.
-- A Chinese small-bowel bleeding guideline or consensus (e.g. 中华医学会消化病学分会小肠疾病协作组, 2018) to add to the
-  guidance, once its citation is confirmed.
+- Steele 2019 (ref. 9): volume and pages.
+- Whether a current paediatric guideline prefers MR to CT enterography for suspected small-bowel bleeding in children
+  (the case offers MR enterography as the radiation-free alternative).
+- Paediatric oral and intravenous iron dosing (mg/kg/day of elemental iron, maximum, duration after recovery; licensed
+  intravenous preparations for children) in the national formulary or a Chinese paediatric guideline (e.g.
+  《儿童缺铁和缺铁性贫血防治建议》, 2008) — not cited until checked; serum ferritin thresholds (WHO 2020 guideline on
+  ferritin) likewise.
+- A Chinese small-bowel bleeding guideline or consensus (e.g. 中华医学会消化病学分会, 2018) — not found in a web search
+  on 2026-11-13; to add once its citation is confirmed.
 
 ## Changelog
 
@@ -555,6 +602,19 @@ library's existing citations and memory and are listed below.
   full article; not reviewed by a licensed clinician — the English last sentence reads "The case is not yet reviewed by
   a licensed clinician." because the collection contract matches that phrase case-sensitively);
   `sourceTextChecked: false`; `sourceDoi` + `doiVerifiedAt` replace `sourceDoiVerification`.
+- **Completed 2026-11-13 (same version, before release).** The safety outcome: `rapid-transfusion`,
+  `discharge-home` (now high risk) and `segmental-resection` marked `critical: true`, `radiotherapy` `critical: false`.
+  The surgical consultation separated from booking the operation (an early referral no longer counts as operating
+  untransfused) and intravenous iron added as a neutral option; `rb-definitive` now scores the consultation and the
+  operation booked in its window (`whenIndicated`), `rb-after-surgery` accepts oral or intravenous iron. Guidance
+  brought up to date: ISSVA 2025 replaces ISSVA 2018; NICE NG24 cited with its 2026 update; the unverified
+  ESPGHAN/ESGE 2017 claim on capsule endoscopy in children replaced by the SEGHNP/SEPD 2015 consensus; ESGE 2022's
+  advice against a routine second-look endoscopy and ACG 2015's conditional place for the Meckel scan stated as
+  published; Steele 2019 added for the misuse of "cavernous haemangioma". Text re-checked against 1.0.0: "about"
+  restored to the CT size and the pathology and operation given in full in the conclusion; the earlier endoscopies no longer called repeated over eight years; the
+  marrow no longer said to have been done to confirm iron deficiency; laboratory results dated "this admission" rather
+  than "on admission"; the decision-3 key no longer equates a cavernous haemangioma with a venous malformation. The
+  select-all distractors lengthened to the keys' length; the reference path takes the whole history before acting.
 
 ### 1.0.0 — 2026-10-28
 
@@ -571,7 +631,7 @@ npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-443
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-44344:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-11-12: all five pass.
+Measured on 2026-11-13: all five pass (`cases validate --strict`: 0 errors, 0 warnings).
 
 ## 中文摘要
 
@@ -580,7 +640,7 @@ Measured on 2026-11-12: all five pass.
 未触及，双下肢无水肿；血红蛋白 28 g/L，红细胞 1.81×10¹²/L，血小板 363×10⁹/L，粪便隐血 ++，凝血功能正常，骨髓呈缺铁表现。异位
 胃黏膜显像阴性，标记红细胞显像见较固定的放射性浓集（部位未记录），腹部增强 CT 示空肠约 2.0 cm × 3.5 cm 肿块，门静脉期明显强化，
 伴点状钙化。先纠正贫血（方法未记录），再手术：屈氏韧带远侧约 5 cm 处见 5 cm × 3 cm × 3 cm 暗红色结节状肿物，行空肠部分切除吻合
-术；病理为海绵状血管瘤伴出血及钙化，术后恢复良好，此后的随访没有记录。按 ISSVA 2018 分类，这类病变多属慢血流静脉畸形（本病例没有
+术；病理为海绵状血管瘤伴出血及钙化，术后恢复良好，此后的随访没有记录。按 ISSVA 2025 分类，这类病变多属慢血流静脉畸形（本病例没有
 免疫组化，无法确认）。本版依据 1.0.0 版提取的事实改写，尚未对照原文全文核对。
 
 **学习目标。**
@@ -591,23 +651,29 @@ Measured on 2026-11-12: all five pass.
    2015；BSH 2016）。
 3. 按各自能回答的问题解读异位胃黏膜显像、标记红细胞显像和增强 CT。
 4. 孤立的出血性小肠血管病变：贫血纠正后切除病变肠段并一期吻合、术中检查全部小肠；说明为什么不用放疗、普萘洛尔或内镜烧灼（AAP 2019）。
-5. 用 ISSVA 2018 分类理解“海绵状血管瘤”这一病理名称，并据此安排补铁、复发和多发病变的随访。
+5. 用 ISSVA 2025 分类理解“海绵状血管瘤”这一病理名称（血管肿瘤与慢血流血管畸形之分），并据此安排补铁、复发和多发病变的随访。
 6. 向 12 岁的孩子和家属解释输血和手术，征得孩子本人的同意和家属的知情同意，并说明病历回答不了的问题。
 
 **关键决策。**
 
 - 决策 1（贫血）：配血后按体重小量分次、缓慢输注红细胞，每份输完复评，稳定后补铁；干扰项为 1 小时内 20 mL/kg 并输到正常、只静脉补铁、
   口服铁剂回家、今天就剖腹探查。决策 1 答对并做出一项处理贫血的行动后，病例才进入定位阶段；缓慢输血必须在手术前完成才计分（关键项）。
-- 决策 2（多选，寻找来源）：异位胃黏膜显像、小肠增强 CT（CT 小肠成像）、无狭窄时的胶囊内镜；干扰项为“再做一次胃镜和结肠镜、正常就结束”
-  和“先做标记红细胞显像”（报告中确实做过，作为历史做法对照）。
-- 决策 3（来源）：空肠的血管性病变（如海绵状血管瘤，即静脉畸形）；干扰项为漏诊的梅克尔憩室、间质瘤（只能靠病理区分的近似项）、淋巴瘤、
+- 决策 2（多选，寻找来源）：异位胃黏膜显像、小肠增强 CT（CT 小肠成像；儿童也可改用无辐射的 MR 小肠成像）、无狭窄时的胶囊内镜；
+  干扰项为“再做一次胃镜和结肠镜、正常就结束”和“先做标记红细胞显像”（报告中确实做过，作为历史做法对照）。
+- 决策 3（来源）：空肠的血管性病变（如海绵状血管瘤或静脉畸形）；干扰项为漏诊的梅克尔憩室、间质瘤（只能靠病理区分的近似项）、淋巴瘤、
   多发血管扩张。
 - 决策 4（确定性治疗）：贫血纠正后切除病变空肠段并一期吻合、检查全部小肠；干扰项为小肠镜下氩离子凝固、普萘洛尔、放疗、西罗莫司。
+  请小儿外科会诊随时可做，不算手术；手术须在定位之后、输血之后安排才计分。
 - 决策 5（多选，术后）：补铁至血红蛋白和铁蛋白恢复、检查皮肤和其他部位有无病变、教会孩子和家属复发时回院并重新检查小肠；不用普萘洛尔，
   不做定期 CT。
 
+**安全结果。** `rapid-transfusion`、`discharge-home` 和 `segmental-resection`（安排手术）标为 `critical: true`：慢性重度贫血时快速大量输血、
+血红蛋白 28 g/L 且出血原因不明时让他回家、尚未输血纠正贫血就安排手术，任何一项都会使安全结果判为不通过（`safety.passed: false`），无论
+得分多少，所有复盘和导出都在分数旁显示；`radiotherapy` 标为 `critical: false`，显示伤害说明并扣去 `rb-definitive` 的分值，但单独不会使安全
+结果不通过。
+
 **复盘要点（PEARLS）。** 先谈面对一个八年都没查清的孩子时的感受；用两句话说清他入院时有多危险、你先做了什么；分析黑便提示的出血部位、
 为什么要输血又为什么要慢、为什么只补铁不够、骨髓检查与铁蛋白、三项定位检查各回答什么、门静脉期强化和点状钙化的意义、手术前必须具备的
-条件、ISSVA 分类下的病理名称；总结下次胃镜结肠镜都正常而黑便反复时怎么做。评分：确定性总分 26 分，两项关键项（手术前实际开始缓慢分次
-输血；没有快速大量输血、没有在纠正贫血前安排手术、没有让他带着重度贫血出院），沟通项由考官评判。记录中的做法（骨髓确认缺铁、核素显像和
-CT 定位、先纠正贫血再切除）只作为历史对照。本病例经人工智能辅助编辑审核，尚未经执业医师审核；待核实事项见上文 “To verify”。
+条件、ISSVA 2025 分类下的病理名称；总结下次胃镜结肠镜都正常而黑便反复时怎么做。评分：确定性总分 26 分，两项关键项（手术前实际开始缓慢分次
+输血；没有快速大量输血、没有在纠正贫血前安排手术、没有让他带着重度贫血出院），沟通项由考官评判。记录中的做法（骨髓检查呈缺铁表现、核素
+显像和 CT 定位、先纠正贫血再切除）只作为历史对照。本病例经人工智能辅助编辑审核，尚未经执业医师审核；待核实事项见上文 “To verify”。

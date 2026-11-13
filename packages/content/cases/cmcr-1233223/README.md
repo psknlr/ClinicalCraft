@@ -20,11 +20,11 @@ record stays unknown.
 | setting / facility | `outpatient` / `general-hospital` (a consulting room; MRI and CT in imaging; records at the nurses' station) |
 | specialty | neurology, radiology |
 | difficulty | 4 / 5 |
-| estimated time | about 40 min (static clock: four record phases spanning about 19 months, no simulated time) |
+| estimated time | about 40 min (static clock: four record phases across the two recorded intervals of about ten and about nine months; no simulated time) |
 | languages | `zh-CN` (source language), `en` |
 | review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a neurologist review it before teaching use |
 | phases | `first-visit` 首诊（门诊） / First visit (clinic) → `second-episode` 约 10 个月后：新的症状 / About ten months later: new symptoms → `third-episode` 再约 9 个月后：再次复诊 / About nine months later: back again → `outcome` 记录的结局 / Recorded outcome — all one-way, none learner-switchable |
-| content | 30 history items (6 recorded facts, 2 labelled teaching devices, 22 unknown; 9 required) · 5 examination findings (all recorded) · 9 investigations (4 record reviews; 3 without a recorded result) · 10 interventions (4 always harmful, 2 harmful before their precondition) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 25; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 38 test utterances |
+| content | 30 history items (6 recorded facts, 2 labelled teaching devices, 22 unknown; 9 required) · 5 examination findings (all recorded) · 9 investigations (4 record reviews; 3 without a recorded result) · 10 interventions (4 always harmful, 2 harmful before their precondition; 1 marked critical) · 6 objectives · 5 decisions (24 options) · 12 rubric items (11 deterministic, weight 25; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 6 teaching points · 38 test utterances |
 
 ## Learning outcomes
 
@@ -39,9 +39,10 @@ After the case the learner can:
 3. Before attributing a new ring-enhancing lesion with reduced hearing and blurred vision to MS, order the mimic work-up
    — AQP4-IgG and MOG-IgG by cell-based assay (IPND 2015; International MOGAD Panel 2023), CSF with paired oligoclonal
    bands, eye and hearing assessment — and hold MS immunotherapy until AQP4-IgG has been sent and its result is known.
-4. Treat a relapse that affects daily activities with methylprednisolone 500 mg orally once daily for 5 days (IV if
-   oral treatment fails, is not tolerated or admission is needed) after looking for infection, and explain that
-   steroids speed recovery but do not modify the disease (NICE NG220, 2022).
+4. Treat a relapse that affects daily activities with methylprednisolone 500 mg orally once daily for 5 days within
+   14 days of onset (1 g IV once daily for 3–5 days if oral treatment fails, is not tolerated or admission is needed)
+   after looking for infection, and explain that steroids speed recovery but do not modify the disease (NICE NG220,
+   2022).
 5. Once active relapsing MS is established, agree early disease-modifying therapy with the patient, matched to disease
    activity, with clinical and MRI monitoring (ECTRIMS/EAN 2018).
 6. When a person with MS shows depressive features, screen for depression, ask directly about suicidal thoughts, and
@@ -69,8 +70,8 @@ date not recorded, was described only as unremarkable, without oligoclonal band 
 **Outcome.** After the third episode the report diagnosed **relapsing–remitting multiple sclerosis in an acute phase**.
 Long-term treatment, later relapses, disability and follow-up are not recorded.
 
-**Today's answer.** Under the 2017 McDonald criteria (Lancet Neurol 2018) and their 2024 revision (Lancet Neurol 2025),
-the second MRI already showed dissemination in space (periventricular + spinal cord) and in time (a lesion the first
+**Today's answer.** Under the 2017 McDonald criteria (Lancet Neurol 2018) and their 2024 revision (Lancet Neurol 2025;
+adopted by NICE NG220 in 2026), the second MRI already showed dissemination in space (periventricular + spinal cord) and in time (a lesion the first
 scan did not have). With the atypical features — reduced hearing, ring enhancement — the diagnosis needs a mimic work-up
 first (AQP4-IgG and MOG-IgG by cell-based assay, CSF with paired oligoclonal bands, eye and hearing assessment); the
 relapse is treated with high-dose methylprednisolone after an infection screen (NICE NG220, 2022), and disease-modifying
@@ -87,8 +88,9 @@ question about suicidal thoughts.
 | `third-episode` | objectives 3–4 complete (decisions 2–4 and the fever question) | worse again; the 35-day treatment; low mood (on asking); suicidal thoughts unknown; depressive features on mental-state examination | follow-up MRI after 35 days of treatment (enhancement resolved); MRI: six new lesions incl. left temporal; CSF (unremarkable, no oligoclonal band details, date not recorded) | 5 `long-term-plan` |
 | `outcome` | every objective before it and all five decisions | — | recorded diagnosis and outcome (relapsing–remitting MS, acute phase; nothing later); the report's three MRI figure groups | — |
 
-No physiology is modelled (static clock). The interval MRI and the CSF are shown in the third-episode phase because
-they predate it; the case does not record when the lumbar puncture was done, and every text that shows the CSF says so.
+No physiology is modelled (static clock). The interval MRI (after 35 days of treatment) predates the third visit and is
+shown there. The case does not record when the lumbar puncture was done, so the CSF is shown with the third episode as
+well, and every text that shows it says that its date is not recorded.
 
 ## Decisions and assessment
 
@@ -132,11 +134,13 @@ scored by the rubric only. The interventions are required by no objective, so th
   recorded.
 
 Every option has its own feedback, naming the 2024 McDonald revision (Lancet Neurol 2025), the 2017 criteria (Lancet
-Neurol 2018), the 2010 revision (Ann Neurol 2011), IPND 2015, the International MOGAD Panel (2023), NICE NG220 (2022)
-and quality standard QS108, ECTRIMS/EAN (Mult Scler 2018) or NICE CG91 (2009). Option ids name their content. **No length
-cue:** in no single-best decision is the key the uniquely longest option in either language (characters, measured on
-2026-11-12): decision 1 key 57 of 49–64 (zh-CN), 192 of 148–193 (en); decision 2 key 54 of 43–55, 187 of 150–187;
-decision 4 key 51 of 38–55, 130 of 130–160.
+Neurol 2018), the 2010 revision (Ann Neurol 2011), IPND 2015, the International MOGAD Panel (2023), NICE NG220 (2022),
+ECTRIMS/EAN (Mult Scler 2018) or NICE CG91 (2009). Option ids name their content. **No length cue:** in no single-best
+decision is the key the uniquely longest option in either language (characters, measured on 2026-11-13): decision 1 key
+57 of 49–64 (zh-CN), 192 of 148–193 (en); decision 2 key 54 of 43–55, 187 of 150–187 (tied); decision 4 key 51 of
+38–55, 130 of 130–160. In the select-all decisions keys and distractors overlap in length: decision 3 keys 19–28 and
+distractors 24–26 (zh-CN), keys 46–90 and distractors 79–82 (en); decision 5 keys 30–46 and distractors 32–41 (zh-CN),
+keys 91–154 and distractors 109–149 (en).
 
 ### Rubric (11 deterministic items, total weight 25, + 1 examiner-judged)
 
@@ -147,7 +151,7 @@ decision 4 key 51 of 38–55, 130 of 130–160.
 | `rb-records` | investigations | 1 | the three MRIs, the interval MRI, the first visit's blood tests and neurophysiology, the CSF (each in its phase) |
 | `rb-first-plan` | diagnosis | 3 | decision 1 right first time **and** the follow-up plan given in phase `first-visit` **and** no discharge without follow-up |
 | `rb-criteria` | diagnosis | 3 | decision 2 right first time |
-| `rb-mimic-workup` | investigations | 2 | decision 3 right first time, AQP4/MOG antibodies ordered in phase `second-episode`, eye and hearing assessment requested, **no** biopsy referral |
+| `rb-mimic-workup` | investigations | 2 | decision 3 right first time, AQP4/MOG antibodies ordered in phase `second-episode`, eye and hearing assessment requested in that phase (`whenIndicated`), **no** biopsy referral |
 | `rb-relapse-treatment` | management | 2 | decision 4 right first time, methylprednisolone given while indicated (after that phase's infection screen), **no** contraindicated dose, low-dose prednisolone or standby supply |
 | `rb-dmt-in-time` | management | 3 | disease-modifying therapy planned in phase `second-episode` after the antibodies were ordered (`whenIndicated`) |
 | `rb-long-term` | management | 2 | decision 5 right first time and the clinical/MRI monitoring plan given |
@@ -155,24 +159,25 @@ decision 4 key 51 of 38–55, 130 of 130–160.
 | `rb-suicide-screen` | safety | 3 | **critical** — the suicidal-thoughts question asked (phase `third-episode` only) **and** the depression and suicide-risk assessment given in that phase |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge: uncertainty at the first visit, the probable diagnosis and remaining tests at the second, steroid effects and long-term choices, his mood and a direct, sensitive question about suicidal thoughts at the third |
 
-### How wrong choices score (measured with the reducer on 2026-11-12)
+### How wrong choices score (measured with the reducer on 2026-11-13)
 
-| path | deterministic score | critical items missed |
-|---|---:|---|
-| reference path (`solution`) | 25/25 (100 %) | none |
-| start and do nothing | 0/22 | `rb-suicide-screen` |
-| wrong first answer at all five decisions, then right | 13/25 (52 %) | none |
-| wrong first answer at decision 1 or 2 only | 22/25 (88 %) | none |
-| wrong first answer at decision 3, 4 or 5 only | 23/25 (92 %) | none |
-| reference path plus disease-modifying therapy at the first visit | 22/25 (88 %) | `rb-no-premature-dmt` |
-| disease-modifying therapy in episode 2 *before* the antibodies are sent (instead of after) | 19/25 (76 %) | `rb-no-premature-dmt` |
-| disease-modifying therapy planned only at the third episode, or never | 22/25 (88 %) | none (`rb-dmt-in-time` lost) |
-| methylprednisolone before the episode-2 infection screen (then the rest of the path) | 23/25 (92 %) | none (`rb-relapse-treatment` lost) |
-| reference path plus low-dose prednisolone, a standby steroid supply or a biopsy referral | 23/25 (92 %) | none |
-| reference path plus discharge without follow-up at the first visit | 22/25 (88 %) | none (`rb-first-plan` lost) |
-| no follow-up plan at the first visit | 22/25 (88 %) | none |
-| no eye/hearing referral | 23/25 (92 %) | none |
-| no suicide question, no mood assessment, or the assessment only after the outcome record | 22/25 (88 %) | `rb-suicide-screen` |
+| path | deterministic score | critical items missed | safety outcome |
+|---|---:|---|---|
+| reference path (`solution`) | 25/25 (100 %) | none | passes |
+| start and do nothing | 0/22 | `rb-suicide-screen` | passes (the case cannot be finished: objectives incomplete) |
+| wrong first answer at all five decisions, then right | 13/25 (52 %) | none | passes |
+| wrong first answer at decision 1 or 2 only | 22/25 (88 %) | none | passes |
+| wrong first answer at decision 3, 4 or 5 only | 23/25 (92 %) | none | passes |
+| reference path plus disease-modifying therapy at the first visit | 22/25 (88 %) | `rb-no-premature-dmt` | **fails** (`start-dmt`) |
+| disease-modifying therapy in episode 2 *before* the antibodies are sent (instead of after) | 19/25 (76 %) | `rb-no-premature-dmt` | **fails** (`start-dmt`) |
+| no antibodies sent at all (the therapy plan is then given while contraindicated) | 17/25 (68 %) | `rb-no-premature-dmt` | **fails** (`start-dmt`) |
+| disease-modifying therapy planned only at the third episode, or never | 22/25 (88 %) | none (`rb-dmt-in-time` lost) | passes |
+| methylprednisolone at the first visit, or before the episode-2 infection screen | 23/25 (92 %) | none (`rb-relapse-treatment` lost) | passes |
+| reference path plus low-dose prednisolone, a standby steroid supply or a biopsy referral | 23/25 (92 %) | none | passes |
+| reference path plus discharge without follow-up at the first visit | 22/25 (88 %) | none (`rb-first-plan` lost) | passes |
+| no follow-up plan at the first visit | 22/25 (88 %) | none | passes |
+| no eye/hearing referral, or the referral only at the third episode | 23/25 (92 %) | none (`rb-mimic-workup` lost) | passes |
+| no suicide question, no mood assessment, or the assessment only after the outcome record | 22/25 (88 %) | `rb-suicide-screen` | passes |
 
 Decisions are scored with `decidedFirstTry`, so guessing through the options costs the item. Every harmful act is also
 listed as contraindicated in the debrief, with its own harm text. The avoided-harm item counts only once its harm was
@@ -181,24 +186,36 @@ possible (`scoredWhen`), so doing nothing earns 0.
 ### Critical items
 
 `rb-no-premature-dmt` (the dangerous error: MS immunotherapy for a man who does not meet the criteria at the first
-visit, or before NMOSD has been tested for — some MS immunotherapies appear to aggravate NMOSD, IPND 2015) and
+visit, or before NMOSD has been tested for — some MS immunotherapies can make NMOSD worse) and
 `rb-suicide-screen` (the missed safety act: depressive features with no direct question about suicide and no
 assessment). Both are acts; neither reads a final-phase record. The suicide question exists only in the third-episode
 phase and the assessment counts only when given there, so neither can be credited in hindsight after the outcome record.
 
+**Safety outcome.** One intervention is marked `critical: true`: `start-dmt`. Giving MS immunotherapy while it is
+contraindicated — at the first visit, with no diagnosis, or before AQP4-IgG has been sent — is this case's dangerous
+error: it commits a young man who may not have MS to long-term immunotherapy, or risks a severe NMOSD exacerbation that
+some MS drugs can provoke. Giving it then fails the assessment's safety outcome (`safety.passed: false`) whatever the
+score (see the table), and every debrief and export shows it beside the score and the critical rubric item
+`rb-no-premature-dmt`. No intervention is `risk: "high"`; the other contraindicated steps are
+recoverable misjudgements and stay non-critical — methylprednisolone at the first visit or before that episode's
+infection screen, low-dose prednisolone, a standby steroid supply, a biopsy referral before the non-invasive work-up and
+discharge without follow-up: each loses its rubric item and is listed as contraindicated in the debrief.
+
 ## Reference path (`solution`)
 
-73 steps, static clock: start → (first visit) presenting complaint, duration, the character, pattern and triggers of the
+71 steps, static clock: start → (first visit) presenting complaint, duration, the character, pattern and triggers of the
 dizziness, hearing/vision and limb symptoms, earlier episodes, a preceding infection, past health, medicines, allergies,
 family history, smoking, his worry → vital signs, neurological examination, EDSS → **MRI** → routine tests →
 neurophysiology report → **follow-up plan** → decision 1 → (second episode) the new symptoms, onset, which side, which eye,
-which ear, **fever/infection**, impact, the dizziness now → EDSS → **MRI** → decision 2 → **AQP4-IgG/MOG-IgG** → CSF record
-(not yet available) → **eye and hearing assessment** → decision 3 → **infection screen** → **methylprednisolone** →
+which ear, **fever/infection**, impact, the dizziness now → EDSS → **MRI** → decision 2 → **AQP4-IgG/MOG-IgG**
+→ **eye and hearing assessment** → decision 3 → **infection screen** → **methylprednisolone** →
 **disease-modifying therapy plan** → **monitoring plan** → decision 4 → (third episode) what has changed, the last
 treatment, **mood**, **suicidal thoughts**, preventive medicine, function, his worry → mental-state examination →
 **mood assessment** → MRI, interval MRI, CSF → infection screen → methylprednisolone → decision 5 → (outcome) outcome
 record → finish. `cases verify` passes: objectives 6/6, decisions 5/5, rubric 25/25, utterances 38/38. The demonstration
-asks only age-appropriate questions.
+asks only age-appropriate questions. It retrieves no CSF report in the second episode, since none exists yet (the CSF's
+date is not recorded); the lumbar puncture is taught through decision 3 (with the MRI checked for mass effect first) and
+is not simulated.
 
 ## Clinical numbers check
 
@@ -216,13 +233,13 @@ is pending**. Extraction table (1.0.0 field → 1.1.0 field):
 | routine laboratory tests unremarkable | `investigations.baseline` | `investigations.routine-bloods` result `first-visit` (no values) |
 | about ten months later: weakness (乏力), blurred vision, reduced hearing; EDSS 2 | `investigations.serial` | `history.presenting-2`; `exam.neuro-exam-second`; decisions 2 and 4 |
 | ring-enhancing left periventricular lesion | `investigations.serial` | `investigations.mri-brain-spine` result `second-episode` |
-| enhancement resolved after 35 days of treatment (treatment not named) | `investigations.serial` | `investigations.mri-interval` (record, phase `third-episode`); `history.treatment-last`; `interventions.methylprednisolone` response |
+| enhancement resolved after 35 days of treatment (the treatment is not named in 1.0.0) | `investigations.serial` | `investigations.mri-interval` (record, phase `third-episode`); `history.treatment-last`; `interventions.methylprednisolone` response |
 | about nine months later: worsening with depressive features | `investigations.serial` | `history.presenting-3`, `history.mood-3`; `exam.mental-state-third` |
 | six new lesions including the left temporal lobe (en: "left temporal white matter") | `investigations.serial` | `investigations.mri-brain-spine` result `third-episode` (both wordings in its note) |
 | CSF described only as unremarkable, no oligoclonal band details | `investigations.serial` | `investigations.csf` (record; placeholder in `second-episode`, result in `third-episode`, date not recorded) |
 | diagnosis of relapsing–remitting MS, acute phase, after the third episode; long-term treatment and outcome not given | `investigations.followup` | `investigations.outcome` (phase `outcome`) |
 | missing: neurological localisation, oligoclonal bands, AQP4/MOG, long-term therapy | README "Fidelity limits"; `unknowns` | 22 unknown history items; `aqp4-mog`, `infection-screen`, `ct-head` (`available: false`); `examNotRecorded`; 8 `unknowns` |
-| the article applied the 2005 criteria ("文中2005条款") | decision `management` option `old` | decision 2 feedback ("the report's own path"); To verify |
+| the article applied the 2005 criteria ("文中2005条款") | decision `management` option `old` | decision 2 `await-third-attack` feedback and teaching point 2 ("the report applied the 2005 revision"); To verify |
 
 **Times.** Recorded: dizziness for over a month at the first visit; "about ten months later" (1.0.0 does not say from
 what — the case reads it from the first visit and says only "about ten months later"); 35 days of treatment before the
@@ -234,9 +251,9 @@ sub-scores are not inferred.
 **Guidance numbers used in teaching text** (no patient value is needed): dissemination in space ≥ 1 lesion in at least two
 characteristic regions (five regions since the 2024 revision, the optic nerve added); dissemination in time by a new T2
 or enhancing lesion on follow-up MRI against a baseline scan, or CSF-specific oligoclonal bands (2017), or the kappa free
-light chain index (2024); methylprednisolone 0.5 g orally once daily for 5 days (NICE NG220, 2022), IV when oral steroids
-fail, are not tolerated or admission is needed, within 14 days of onset, no lower doses and no standby supplies (NICE
-QS108); the distractor's prednisolone 30 mg daily for 2 weeks is a teaching foil, not a recommendation.
+light chain index (2024); methylprednisolone 0.5 g orally once daily for 5 days within 14 days of onset, or 1 g IV once
+daily for 3–5 days when oral steroids fail, are not tolerated or admission is needed, no lower doses and no standby
+supplies (NICE NG220, 2022); the distractor's prednisolone 30 mg daily for 2 weeks is a teaching foil, not a recommendation.
 
 ## Facilitator notes
 
@@ -256,6 +273,8 @@ QS108); the distractor's prednisolone 30 mg daily for 2 weeks is a teaching foil
    - "The enhancement was gone after 35 days. Was that the end of the disease?" (six new lesions came about nine months
      later)
    - "At the third visit he said he felt low. What did you ask next? What did you do with an 'I can't say'?"
+   - "You treated the third episode with steroids in a man with depressive features. What do steroids do to mood, and
+     when does NICE suggest admission and IV treatment so that a psychological condition can be monitored?"
 4. **Summary.** "What will you do the next time a young adult brings a single small cord lesion — and the next time a
    second lesion appears?"
 
@@ -265,12 +284,12 @@ Do not let the group claim that earlier treatment would have prevented the third
 
 | error | where it shows |
 |---|---|
-| Labelling MS (or "RIS") and starting treatment at the first visit | decision 1 distractors `ms-start-dmt`, `ris-start-dmt`; `start-dmt` contraindicated in `first-visit` → critical `rb-no-premature-dmt` |
+| Labelling MS (or "RIS") and starting treatment at the first visit | decision 1 distractors `ms-start-dmt`, `ris-start-dmt`; `start-dmt` contraindicated in `first-visit` → critical `rb-no-premature-dmt` and a failed safety outcome |
 | Discharging a young adult with a cord lesion | decision 1 `reassure-discharge`; `discharge-no-follow-up` contraindicated → `rb-first-plan` lost |
 | Waiting for a third attack (the report's path) | decision 2 `await-third-attack`; DMT only in the third episode → `rb-dmt-in-time` lost |
 | Treating CSF bands as obligatory | decision 2 `wait-for-ocb` |
 | Biopsy before the non-invasive work-up | decision 2 `biopsy-first-tumour`, decision 3 `biopsy-before-tests`; `biopsy-referral` contraindicated |
-| Starting MS drugs before NMOSD is tested for | `start-dmt` contraindicated until `aqp4-mog` is ordered → critical item |
+| Starting MS drugs before NMOSD is tested for | `start-dmt` contraindicated until `aqp4-mog` is ordered → critical item and a failed safety outcome (`start-dmt` is `critical: true`) |
 | Steroids without looking for infection, low-dose courses, standby supplies | decision 4 distractors; `methylprednisolone` contraindicated before that phase's infection screen; `prednisolone-low-dose`, `steroid-standby-supply` contraindicated → `rb-relapse-treatment` lost |
 | Reading loss of enhancement as cure | decision 5 prompt and teaching point 4 |
 | Overlooking the depressive features | decision 5 `low-mood-part-of-relapse`; no suicide question or assessment → critical `rb-suicide-screen` |
@@ -283,15 +302,15 @@ Do not let the group claim that earlier treatment would have prevented the third
   infection screen are sampled at his side (`lab-hematology`, `lab-chemistry`, `lab-urinalysis`, `lab-serology`). The four
   record reviews (`neurophysiology`, `csf`, `mri-interval`, `outcome`) need only `records`: a records terminal or the
   notes at the bedside.
-- **Interventions.** The medicines need only `medications` (delivered to the bedside; methylprednisolone is written as the
-  oral NICE course, so no IV line is needed); the follow-up, eye and hearing, biopsy and mood steps are consults or plans
+- **Interventions.** The medicines need only `medications` (delivered to the bedside; methylprednisolone is the oral NICE
+  course — the IV alternative is named in its dose text but not modelled as a separate step — so no IV line is needed); the follow-up, eye and hearing, biopsy and mood steps are consults or plans
   that need no kit. The hospital has no audiometry, optical coherence tomography or evoked-potential equipment, so the eye
   and hearing assessment is a referral and the neurophysiology a record review (STANDARD §0.3).
 - **Scope of practice.** The medicines are nursing-scope by kind; the mood assessment is marked `scope: "medical"`; the
   consults, plans and the disposition are medical.
 - **He speaks throughout** (a conscious adult answers for himself; no companion). Examination manoeuvres the record does
   not cover answer with `examNotRecorded` ("No result is recorded in this case for this examination…").
-- **Measured (offline demonstration, 2026-11-12).** `embodied-autopilot.test.ts -t "cmcr-1233223:"` passes in en and
+- **Measured (offline demonstration, 2026-11-13).** `embodied-autopilot.test.ts -t "cmcr-1233223:"` passes in en and
   zh-CN: the case finishes in the general hospital with the clinical-mode score.
 
 ## Source and adaptation (fidelity limits)
@@ -358,21 +377,28 @@ English multi-word keywords that would collapse to one token are run together (`
 4. Polman CH, et al. Diagnostic criteria for multiple sclerosis: 2010 revisions to the McDonald criteria. Ann Neurol.
    2011;69(2):292-302.
 5. National Institute for Health and Care Excellence. Multiple sclerosis in adults: management. NICE guideline NG220.
-   London: NICE; 2022.
-6. National Institute for Health and Care Excellence. Multiple sclerosis. Quality standard QS108, quality statement 5:
-   managing relapses [Internet]. London: NICE [cited 2026 Oct 30]. Available from: https://www.nice.org.uk/guidance/qs108
-7. Montalban X, Gold R, Thompson AJ, et al. ECTRIMS/EAN guideline on the pharmacological treatment of people with
+   London: NICE; 2022 [updated 2026].
+6. Montalban X, Gold R, Thompson AJ, et al. ECTRIMS/EAN guideline on the pharmacological treatment of people with
    multiple sclerosis. Mult Scler. 2018;24(2):96-120.
-8. Wingerchuk DM, et al. International consensus diagnostic criteria for neuromyelitis optica spectrum disorders.
+7. Wingerchuk DM, et al. International consensus diagnostic criteria for neuromyelitis optica spectrum disorders.
    Neurology. 2015;85(2):177-189.
-9. Banwell B, et al. Diagnosis of myelin oligodendrocyte glycoprotein antibody-associated disease: International MOGAD
+8. Banwell B, et al. Diagnosis of myelin oligodendrocyte glycoprotein antibody-associated disease: International MOGAD
    Panel proposed criteria. Lancet Neurol. 2023;22(3):268-282.
-10. National Institute for Health and Care Excellence. Depression in adults with a chronic physical health problem:
-    recognition and management. Clinical guideline CG91. London: NICE; 2009.
+9. National Institute for Health and Care Excellence. Depression in adults with a chronic physical health problem:
+   recognition and management. Clinical guideline CG91. London: NICE; 2009.
 
 The article's DOI is the verified one in `scripts/cmcr-105-sources.json` (publisher check 2026-10-29). No other DOI is
-given: none was resolved in this session. Citations 2–4 and 7–9 and the existence of NG220 and QS108 were confirmed by web
-search during re-authoring (2026-11-12); CG91 is cited from the editor's knowledge and is listed below.
+given: none was resolved through Crossref or doi.org in this session. Confirmed by web search (2026-11-12 and
+2026-11-13): references 2–4 and 6–8 (journal, year, volume, pages); NG220 (first published June 2022; in June 2026 its
+diagnosis recommendations were amended to refer to the 2024 McDonald criteria); CG91 (October 2009, still current:
+alertness to depression, two screening questions, a direct question about suicidal ideation and intent); NICE quality
+standard QS108 (January 2016), whose statement 5 — relapse treatment within 14 days of onset, oral methylprednisolone
+0.5 g daily for 5 days, IV methylprednisolone when oral treatment fails or is not tolerated or admission is needed, no
+supply of steroids to self-treat at home — cites NG220's recommendations, so the case cites NG220 for these points; the
+IV dose (1 g daily for 3–5 days) and the dose floor (nothing lower than 0.5 g daily for 5 days), found in the 2014
+predecessor guideline (CG186) and in secondary summaries of the NICE guidance; and the open-ring sign behind the
+radiologist's teaching (Masdeu JC, et al. Open-ring imaging sign: highly specific for atypical brain demyelination.
+Neurology. 2000;54(7):1427-1433).
 
 ### To verify
 
@@ -401,25 +427,25 @@ search during re-authoring (2026-11-12); CG91 is cited from the editor's knowled
 
 **In the guidance** (not confirmed in this session, or confirmed only in outline):
 
-11. The 2024 McDonald revision (Lancet Neurol 2025): its exact DIS/DIT wording, whether DIS in ≥ 4 regions removes the
-    need for DIT (secondary summaries disagree), how optic-nerve involvement is shown (MRI, VEP, OCT), and its DOI
-    (10.1016/S1474-4422(25)00270-4 appeared in a search summary but was not resolved).
+11. The 2024 McDonald revision (Lancet Neurol 2025): its exact wording for dissemination in space and in time —
+    secondary summaries say dissemination in time is no longer needed when ≥ 4 of 5 regions are involved, and that CSF
+    oligoclonal bands or the kappa free light chain index, the central vein sign and paramagnetic rim lesions support the
+    diagnosis in defined situations; how optic-nerve involvement is shown (MRI, VEP, OCT); its rule for radiologically
+    isolated syndrome; and its DOI (10.1016/S1474-4422(25)00270-4 appears in repository records but was not resolved).
 12. ECTRIMS/EAN 2018: the exact wording and numbers of the early-treatment and MRI-monitoring recommendations (the
     reference-scan timing).
-13. NICE: NG220's publication year (2022, from the editor's knowledge; the search confirmed the guideline, not its date),
-    whether the IV methylprednisolone indications and "within 14 days" sit in NG220 itself or only in QS108, and QS108's
-    publication year.
-14. NICE CG91 (2009): the wording of its screening (two questions) and suicide-risk recommendations, and whether NG220
-    cross-refers to it.
-15. 中华医学会神经病学分会神经免疫学组. 多发性硬化诊断与治疗中国指南（2023版）. 中华神经科杂志. 2024 — confirmed to exist
-    and its issuing body, but not its volume, pages or recommendations on relapse treatment and disease-modifying therapy;
-    add it to the teaching points once checked.
-16. Not cited because they could not be verified here: the 2023 updated consensus on the differential diagnosis of
-    suspected MS (Lancet Neurol), the Optic Neuritis Treatment Trial (1992) on oral prednisone alone, the AAN 2018
-    disease-modifying therapy guideline's exact recommendations, and the interferon-beta labelling on depression and
-    suicidal ideation (relevant to decision 5 if confirmed).
-17. The radiologist's general teaching that an incomplete (open) ring of enhancement favours demyelination — check against
-    a neuroradiology reference.
+13. NICE NG220: the recommendation numbers and wording for the 14-day window, the IV alternative, the dose floor and the
+    no-self-supply advice (NG220's own text was not opened in this session), and the exact wording of its June 2026
+    amendment.
+14. NICE CG91 (2009): the wording of its two screening questions, and whether NG220 cross-refers to it.
+15. 中华医学会神经病学分会神经免疫学组. 多发性硬化诊断与治疗中国指南（2023版）. 中华神经科杂志. 2024;57(1) — its issuing body,
+    journal, volume and issue are confirmed, not its pages, DOI or recommendations on relapse treatment and
+    disease-modifying therapy; add it to the teaching points and references once checked.
+16. Not cited because they could not be verified here: IPND 2015's own wording on MS therapies that worsen NMOSD (the case
+    states the risk — reviews name interferon beta, natalizumab and fingolimod — without attributing it to IPND); the
+    2023 updated consensus on the differential diagnosis of suspected MS (Lancet Neurol); the Optic Neuritis Treatment
+    Trial (1992) on oral prednisone alone; the AAN 2018 disease-modifying therapy guideline's exact recommendations; and
+    the interferon-beta labelling on depression and suicidal ideation (relevant to decision 5 if confirmed).
 
 ## Changelog
 
@@ -431,14 +457,26 @@ search during re-authoring (2026-11-12); CG91 is cited from the editor's knowled
 - History rebuilt for this patient (30 items, his own lay voice, 22 honest unknowns, two labelled worries); examination
   split into the recorded manoeuvres, with EDSS 2 and the depressive features as findings of their own phases.
 - Five decisions at the real decision points (first-visit restraint, today's criteria at the second episode, the mimic
-  work-up, relapse treatment, the long-term plan with mood), content option ids, no length cue, guideline-named feedback.
+  work-up, relapse treatment, the long-term plan with mood), content option ids, no length cue (single-best keys never
+  uniquely longest; select-all keys and distractors overlap in length), guideline-named feedback.
 - Ten interventions, including the tempting wrong steps (DMT too early, steroids before an infection screen, low-dose
-  and standby steroids, biopsy first, discharge without follow-up) with harm texts.
+  and standby steroids, biopsy first, discharge without follow-up) with harm texts; disease-modifying therapy given
+  while contraindicated is marked `critical: true` and fails the safety outcome.
 - Rubric of 12 with two critical acts (no premature MS immunotherapy; suicide question and assessment), measured scoring
   table; three staff; debrief with key reasoning, six dated teaching points contrasting the report's course with current
-  guidance, eight unknowns and ten references.
-- Extensions unified (`sourceDoi`, `doiVerifiedAt`, `sourceTextChecked: false`); the three approved figures kept, retitled
-  and attached to the outcome record.
+  guidance, eight unknowns and nine references.
+- Extensions unified (`sourceDoi`, `doiVerifiedAt`, `sourceTextChecked: false`); the three approved figures kept,
+  retitled and attached to the outcome record.
+- Editorial re-check before release (2026-11-13). Facts the draft had added or implied were removed: "周身不适" for the
+  recorded 头晕不适, a derived "year and a half" / "19 months", a claim that the CSF predated the third visit, and
+  statements that the report itself lacks the drug, the long-term data or a mood assessment (now "this case does not
+  record"). The relapse rules are cited to NICE NG220 (its quality standard QS108 takes them from NG220) and the IV
+  alternative (1 g daily for 3–5 days) is named; NG220's 2026 move to the 2024 McDonald criteria is noted; the claim that
+  IPND 2015 itself warns about MS drugs in NMOSD became an unattributed statement of the risk. The low-dose distractor
+  names one drug (prednisolone / 泼尼松龙) in both languages; the eye and hearing referral scores only in its window
+  (`whenIndicated`); the demonstration no longer retrieves a CSF report that does not yet exist; intervention names no
+  longer name the diagnosis ("with the MS team", "for a relapse"); select-all distractors were made as specific as the
+  keys, removing the longest-option cue.
 
 ### 1.0.0 — 2026-10-28
 
@@ -454,27 +492,32 @@ npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-123
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1233223:"  # in-world demonstration, en + zh-CN
 ```
 
-All five passed on 2026-11-12.
+All five passed on 2026-11-13.
 
 ## 中文摘要
 
 **病例概要。** 26岁男性，头晕不适一个多月。首诊查体和神经电生理未见明显异常（EDSS 0 分；血压 110/65 mmHg，体温 36.9 ℃），
 常规化验无明显异常，颅脑 MRI 未见明显异常，仅颈髓点状异常信号、无明显强化。约 10 个月后出现乏力、视物模糊和听力下降
 （EDSS 2 分），左侧侧脑室旁环形强化病灶，治疗 35 天后强化消失（药名和剂量未记录）。再约 9 个月后症状加重并有抑郁表现，
-新增 6 个病灶（包括左颞叶）；脑脊液仅记为未见明显异常，没有寡克隆带结果。报告在第三次发作后诊断复发缓解型多发性硬化（急性期），
-此后情况未记录。本版患者事实全部沿用 1.0.0 版提取的内容，尚未对照原文全文核对。
+新增 6 个病灶（包括左颞叶）；脑脊液仅记为未见明显异常，没有寡克隆带结果，检查日期未记录。报告在第三次发作后诊断复发缓解型
+多发性硬化（急性期），此后情况未记录。本版患者事实全部沿用 1.0.0 版提取的内容，尚未对照原文全文核对。
 
 **学习目标。** 按 2017 年 McDonald 标准及其 2024 年修订读连续 MRI，判断空间和时间多发；认识到首诊既不能诊断也不该治疗，
 安排随访；在归为多发性硬化前完成鉴别检查（细胞法 AQP4-IgG、MOG-IgG，配对寡克隆带的脑脊液，眼科和听力评估），AQP4 有结果前
-不用多发性硬化的免疫治疗；排查感染后用甲泼尼龙 500 mg 口服 5 天治疗影响生活的复发（NICE NG220，2022）；确诊后尽早共同决定疾病
-修正治疗并监测（ECTRIMS/EAN 2018）；出现抑郁表现时直接询问轻生念头并安排评估（NICE CG91，2009）。
+不用多发性硬化的免疫治疗；排查感染后，在起病 14 天内用甲泼尼龙 500 mg 口服 5 天（必要时 1 g 静脉 3–5 天）治疗影响生活的
+复发（NICE NG220，2022）；确诊后尽早共同决定疾病修正治疗并监测（ECTRIMS/EAN 2018）；出现抑郁表现时直接询问轻生念头并安排
+评估（NICE CG91，2009）。
 
 **关键决策。** 决策 1：首诊暂不诊断、不治疗，随访复查 MRI；决策 2：第二次发作时已满足空间和时间多发，排除相似疾病后即可诊断
-（报告当年等到第三次发作）；决策 3：AQP4/MOG 抗体、脑脊液和眼科听力评估；决策 4：先排查感染，再用足量甲泼尼龙，不用小剂量
-疗程、不给备用激素；决策 5：疾病修正治疗、抑郁与自杀风险筛查、临床和 MRI 监测。关键项：不过早使用疾病修正治疗；第三次就诊时
-直接询问轻生念头并安排评估。
+（报告采用 2005 年标准，诊断记录在第三次发作之后）；决策 3：AQP4/MOG 抗体、脑脊液和眼科听力评估；决策 4：先排查感染，再用
+足量甲泼尼龙，不用小剂量疗程、不给备用激素；决策 5：疾病修正治疗、抑郁与自杀风险筛查、临床和 MRI 监测。关键项：不过早使用
+疾病修正治疗；第三次就诊时直接询问轻生念头并安排评估。
+
+**安全结果。** 唯一标为 `critical: true` 的处置是 `start-dmt`（疾病修正治疗）：在首诊或送检 AQP4-IgG 之前使用即为本例的
+危险错误，无论得分多少，安全结果都判为不通过（`safety.passed: false`），所有复盘和导出都在分数旁显示；其余禁忌操作（首诊或
+未排查感染即用激素、小剂量激素、备用激素、过早活检、不安排随访）属可纠正的失误，只失去相应评分项。
 
 **复盘要点。** 一个病灶只占一个部位，非特异症状不是典型发作；随访 MRI 上的新病灶就是时间多发，不必等第三次发作；不典型表现
-（听力下降、环形强化）要先排除 NMOSD、MOGAD 等疾病，部分多发性硬化免疫治疗可能加重 NMOSD；强化消失只说明该病灶不再活动；
+（听力下降、环形强化）要先排除 NMOSD、MOGAD 等疾病，部分多发性硬化免疫治疗可使 NMOSD 加重；强化消失只说明该病灶不再活动；
 抑郁需要单独评估。单个病例不能证明更早治疗能否避免第三次发作。待核实：见上文 “To verify”（各次发作细节、两段间隔的起算点、
 35 天治疗的药物、脑脊液时间与细节、左颞病灶的两种写法、报告所用诊断标准，以及多项指南原文）。本稿尚未经执业医师审核。

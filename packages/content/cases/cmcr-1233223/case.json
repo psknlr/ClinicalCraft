@@ -7,8 +7,8 @@
     "en": "Dizziness for over a month · 26-year-old man"
   },
   "summary": {
-    "zh-CN": "一位年轻男性因头晕来门诊，首诊检查几乎都正常；此后一年半左右，他又两次带着新的症状回来——每一次都要读懂新的 MRI，决定能否下诊断、该怎样治疗。",
-    "en": "A young man comes to clinic with dizziness and an almost unremarkable first work-up; over the next year and a half he returns twice with new symptoms — each time, read the new MRI and decide whether a diagnosis can be made and how to treat."
+    "zh-CN": "一位年轻男性因头晕来门诊，首诊检查几乎都正常；此后他又两次带着新的症状回来——每一次都要读懂新的 MRI，判断能否下诊断、该怎样治疗。",
+    "en": "A young man comes to clinic with dizziness and an almost unremarkable first work-up; he later returns twice with new symptoms — each time, read the new MRI and decide whether a diagnosis can be made and how to treat."
   },
   "specialty": [
     "neurology",
@@ -52,11 +52,11 @@
       "guidelines": [
         "McDonald criteria, 2024 revision (Montalban et al., Lancet Neurol 2025)",
         "McDonald criteria, 2017 revision (Thompson et al., Lancet Neurol 2018); 2010 revision (Polman et al., Ann Neurol 2011) for the historical comparison",
-        "NICE NG220 (2022) Multiple sclerosis in adults: management; NICE quality standard QS108, statement 5 (managing relapses)",
+        "NICE NG220 (2022; diagnosis recommendations amended 2026) Multiple sclerosis in adults: management, with NICE quality standard QS108 statement 5 (managing relapses)",
         "ECTRIMS/EAN 2018 guideline on the pharmacological treatment of people with multiple sclerosis",
         "IPND 2015 international consensus diagnostic criteria for NMOSD",
         "International MOGAD Panel 2023 proposed criteria",
-        "NICE CG91 (2009) Depression in adults with a chronic physical health problem"
+        "NICE CG91 (2009) Depression in adults with a chronic physical health problem: recognition and management"
       ],
       "notes": {
         "zh-CN": "人工智能辅助编写的教学设计，已对照所引指南进行编辑审核。患者事实沿用 1.0.0 版从已发表报告中提取的内容，尚未对照原文全文核对。尚未经执业医师审核。",
@@ -82,8 +82,8 @@
       "en": "Before attributing a new ring-enhancing lesion with reduced hearing and blurred vision to MS, order the mimic work-up — AQP4-IgG and MOG-IgG by cell-based assay (IPND 2015; International MOGAD Panel 2023), CSF with paired oligoclonal bands, eye and hearing assessment — and hold MS immunotherapy until AQP4-IgG has been sent and its result is known."
     },
     {
-      "zh-CN": "对影响日常活动的复发，先排查感染，再给予甲泼尼龙 500 mg 口服、每日 1 次、共 5 天（口服无效、不耐受或需住院时改静脉），并说明激素加快恢复但不是疾病修正治疗（NICE NG220，2022）。",
-      "en": "Treat a relapse that affects daily activities with methylprednisolone 500 mg orally once daily for 5 days (IV if oral treatment fails, is not tolerated or admission is needed) after looking for infection, and explain that steroids speed recovery but do not modify the disease (NICE NG220, 2022)."
+      "zh-CN": "对影响日常活动的复发，先排查感染，再在起病 14 天内给予甲泼尼龙 500 mg 口服、每日 1 次、共 5 天（口服无效、不耐受或需住院时改为 1 g 静脉、每日 1 次、共 3–5 天），并说明激素加快恢复但不是疾病修正治疗（NICE NG220，2022）。",
+      "en": "Treat a relapse that affects daily activities with methylprednisolone 500 mg orally once daily for 5 days within 14 days of onset (1 g IV once daily for 3–5 days if oral treatment fails, is not tolerated or admission is needed) after looking for infection, and explain that steroids speed recovery but do not modify the disease (NICE NG220, 2022)."
     },
     {
       "zh-CN": "确诊活动性复发型多发性硬化后，与患者共同决定尽早开始疾病修正治疗，按疾病活动度选择药物，并安排临床和 MRI 监测（ECTRIMS/EAN 2018）。",
@@ -107,8 +107,8 @@
       "en": "I've been dizzy and not feeling right for over a month"
     },
     "triageNote": {
-      "zh-CN": "26岁男性，门诊首诊：头晕、周身不适一个多月。记录的血压 110/65 mmHg，体温 36.9 ℃。",
-      "en": "26-year-old man at his first clinic visit with dizziness and feeling unwell for over a month. Recorded BP 110/65 mmHg, temperature 36.9 °C."
+      "zh-CN": "26岁男性，门诊首诊：头晕不适一个多月。测得血压 110/65 mmHg，体温 36.9 ℃。",
+      "en": "26-year-old man at his first clinic visit with dizziness and feeling unwell for over a month. BP 110/65 mmHg, temperature 36.9 °C."
     },
     "tags": [
       {
@@ -116,7 +116,7 @@
         "en": "Dizziness"
       },
       {
-        "zh-CN": "周身不适",
+        "zh-CN": "人不舒服",
         "en": "Feeling unwell"
       },
       {
@@ -206,8 +206,8 @@
         "en": "About nine months later: back again"
       },
       "description": {
-        "zh-CN": "再约 9 个月后，他又来复诊。病历中已有上次发作治疗后的复查 MRI 和一份脑脊液报告。问清这段时间的情况，复查 MRI，制订长期方案。",
-        "en": "About nine months later he is back again. His record now holds the follow-up MRI after the last episode's treatment and a CSF report. Find out how things have gone since, repeat the MRI and set the long-term plan."
+        "zh-CN": "再约 9 个月后，他又来复诊。病历中已有上次发作治疗后的复查 MRI，还有一份没有记录日期的脑脊液报告。问清这段时间的情况，复查 MRI，制订长期方案。",
+        "en": "About nine months later he is back again. His record holds the follow-up MRI after the last episode's treatment, and a CSF report whose date is not recorded. Find out how things have gone since, repeat the MRI and set the long-term plan."
       },
       "learnerSwitchable": false,
       "enterWhen": {
@@ -1590,8 +1590,8 @@
       "id": "long-term-medicine",
       "topic": "medications",
       "question": {
-        "zh-CN": "这一年多有没有长期用什么药来预防再发作？",
-        "en": "Over the past year or so, have you been on any long-term medicine to prevent further attacks?"
+        "zh-CN": "这段时间有没有长期用什么药来预防再发作？",
+        "en": "Have you been on any long-term medicine to prevent further attacks?"
       },
       "answer": {
         "zh-CN": "这个我说不上来，医生。",
@@ -2358,8 +2358,8 @@
         },
         "third-episode": {
           "text": {
-            "zh-CN": "脑脊液检查：未见明显异常。没有给出寡克隆带等具体结果。",
-            "en": "CSF: no clear abnormality. No oligoclonal band or other detailed result is given."
+            "zh-CN": "脑脊液检查：未见明显异常。寡克隆带等具体项目没有结果记录。",
+            "en": "CSF: no clear abnormality. No oligoclonal band or other detailed result is recorded."
           },
           "note": {
             "zh-CN": "本病例没有记录腰椎穿刺的日期，也没有记录细胞数、蛋白、IgG 指数、寡克隆带或 κ 游离轻链指数。",
@@ -2558,8 +2558,8 @@
     {
       "id": "start-dmt",
       "name": {
-        "zh-CN": "制订并启动疾病修正治疗（与多发性硬化专科团队共同决定，AQP4-IgG 阴性后首剂）",
-        "en": "Plan and start disease-modifying therapy with the MS team (first dose once AQP4-IgG is negative)"
+        "zh-CN": "开始疾病修正治疗（长期免疫治疗）",
+        "en": "Start disease-modifying therapy (long-term immunotherapy)"
       },
       "kind": "medication",
       "aliases": {
@@ -2592,6 +2592,7 @@
         "medications"
       ],
       "risk": "moderate",
+      "critical": true,
       "maxDoses": 2,
       "indicatedWhen": {
         "all": [
@@ -2616,19 +2617,19 @@
         ]
       },
       "harm": {
-        "zh-CN": "首诊时既不满足空间多发，也没有典型发作，此时用药是让一位可能没有多发性硬化的人长期接受免疫治疗（2024 年 McDonald 修订，Lancet Neurol 2025）。在送检 AQP4-IgG 之前开始多发性硬化的免疫治疗，可能加重未被识别的 NMOSD——2015 年国际共识（IPND）指出，部分多发性硬化免疫治疗似乎会加重 NMOSD。",
-        "en": "At the first visit there is neither dissemination in space nor a typical attack, so treatment would commit someone who may not have MS to long-term immunotherapy (2024 McDonald revision, Lancet Neurol 2025). Started before AQP4-IgG has been tested, MS immunotherapy may aggravate unrecognised NMOSD — the 2015 international criteria (IPND) note that some MS immunotherapies appear to do so."
+        "zh-CN": "首诊时既没有典型发作，也不满足空间多发，此时用药是让一位可能没有多发性硬化的年轻人长期承受免疫治疗的风险（2024 年 McDonald 修订，Lancet Neurol 2025）。在送检 AQP4-IgG 之前开始多发性硬化的免疫治疗，可能漏掉 NMOSD：部分多发性硬化免疫治疗（如 β 干扰素、那他珠单抗、芬戈莫德）可使 NMOSD 加重，严重时可致盲或瘫痪；2015 年国际共识（IPND）强烈推荐用细胞法检测 AQP4-IgG。",
+        "en": "At the first visit there is no typical attack and no dissemination in space, so treatment would expose a young man who may not have MS to long-term immunotherapy (2024 McDonald revision, Lancet Neurol 2025). Started before AQP4-IgG has been sent, MS immunotherapy risks missing NMOSD: some MS immunotherapies (interferon beta, natalizumab, fingolimod) can make NMOSD worse, at worst with blindness or paralysis; the 2015 international criteria (IPND) strongly recommend a cell-based AQP4-IgG assay."
       },
       "response": {
-        "zh-CN": "已与他讨论并制订疾病修正治疗方案，待 AQP4-IgG 结果阴性后开始首剂。本病例没有记录任何疾病修正治疗（诊断前后都没有），也没有记录抗体结果，不模拟其效果。",
-        "en": "Disease-modifying therapy has been discussed with him and planned, with the first dose once AQP4-IgG is back negative. This case records no disease-modifying therapy, before or after the diagnosis, and no antibody result, and does not simulate its effect."
+        "zh-CN": "已与他讨论并制订疾病修正治疗方案，AQP4-IgG 结果阴性并完成治疗前筛查后开始首剂。本病例没有记录任何疾病修正治疗（诊断前后都没有），也没有记录抗体结果，不模拟其效果。",
+        "en": "Disease-modifying therapy has been discussed with him and planned, with the first dose once AQP4-IgG is back negative and the pre-treatment screening is complete. This case does not record any disease-modifying therapy, before or after the diagnosis, or any antibody result, and does not simulate its effect."
       }
     },
     {
       "id": "methylprednisolone",
       "name": {
-        "zh-CN": "大剂量甲泼尼龙（复发治疗）",
-        "en": "High-dose methylprednisolone for a relapse"
+        "zh-CN": "大剂量甲泼尼龙",
+        "en": "High-dose methylprednisolone"
       },
       "kind": "medication",
       "aliases": {
@@ -2651,8 +2652,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "甲泼尼龙 500 mg 口服，每日 1 次，共 5 天；口服无效或不耐受、或需住院（严重复发，或需监测躯体或心理情况）时改为静脉给药。用药前先排查感染；用药期间注意血糖、血压、睡眠和情绪。",
-        "en": "Methylprednisolone 500 mg orally once daily for 5 days; IV instead if oral treatment fails or is not tolerated, or if he needs admission (a severe relapse, or monitoring of a medical or psychological condition). Look for infection first; watch glucose, blood pressure, sleep and mood during the course."
+        "zh-CN": "甲泼尼龙 500 mg 口服，每日 1 次，共 5 天；口服无效或不耐受、或需住院（严重复发，或需监测躯体或心理情况）时，考虑改为甲泼尼龙 1 g 静脉滴注，每日 1 次，共 3–5 天。用药前先排查感染；用药期间注意血糖、血压、睡眠和情绪。",
+        "en": "Methylprednisolone 500 mg orally once daily for 5 days; consider methylprednisolone 1 g IV once daily for 3–5 days instead if oral treatment fails or is not tolerated, or if he needs admission (a severe relapse, or monitoring of a medical or psychological condition). Look for infection first; watch glucose, blood pressure, sleep and mood during the course."
       },
       "requires": [
         "medications"
@@ -2723,22 +2724,23 @@
         "en": "At the first visit there is no relapse to treat, so steroids bring only side effects (NICE NG220, 2022: steroids are for a relapse that affects daily activities). In a relapse, giving them before infection has been looked for risks treating a pseudo-relapse caused by fever or infection — and high-dose steroids can make an infection worse."
       },
       "response": {
-        "zh-CN": "已开具甲泼尼龙。本病例记录他第二次发作时接受过治疗，但没有记录药名、剂量和途径；第三次发作的治疗没有记录。不模拟这一医嘱的效果。",
-        "en": "Methylprednisolone prescribed. This case records that he was treated at the second episode, without the drug, dose or route, and records no treatment at the third. It does not simulate the effect of this order."
+        "zh-CN": "已开具甲泼尼龙。本病例记录他第二次发作后接受过治疗，但没有记录药名、剂量和途径，也没有记录第三次发作时的治疗和任何感染筛查结果。不模拟这一医嘱的效果。",
+        "en": "Methylprednisolone prescribed. This case records that he was treated after the second episode but not the drug, dose or route, and it does not record the treatment at the third episode or any infection-screen result. It does not simulate the effect of this order."
       }
     },
     {
       "id": "prednisolone-low-dose",
       "name": {
-        "zh-CN": "小剂量泼尼松口服 2 周后减停",
+        "zh-CN": "小剂量泼尼松龙口服 2 周后减停",
         "en": "Low-dose oral prednisolone for 2 weeks, then a taper"
       },
       "kind": "medication",
       "aliases": {
         "zh-CN": [
-          "泼尼松",
+          "泼尼松龙",
           "小剂量激素",
-          "口服泼尼松",
+          "口服泼尼松龙",
+          "泼尼松",
           "强的松",
           "激素减量"
         ],
@@ -2747,11 +2749,12 @@
           "low-dose steroid",
           "oral prednisolone",
           "pred",
+          "prednisone",
           "steroid taper"
         ]
       },
       "dose": {
-        "zh-CN": "泼尼松 30 mg 口服，每日 1 次，2 周后逐渐减停。",
+        "zh-CN": "泼尼松龙 30 mg 口服，每日 1 次，2 周后逐渐减停。",
         "en": "Prednisolone 30 mg orally once daily for 2 weeks, then tapered off."
       },
       "requires": [
@@ -2763,8 +2766,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "NICE 的多发性硬化质量标准（QS108）指出，复发不应使用较低剂量的激素；推荐方案是甲泼尼龙 0.5 g、每日 1 次、共 5 天（NICE NG220，2022）。小剂量长疗程只会延长激素暴露。",
-        "en": "NICE's MS quality standard (QS108) says lower steroid doses should not be used for relapse; the recommended course is methylprednisolone 0.5 g once daily for 5 days (NICE NG220, 2022). A longer low-dose course only prolongs steroid exposure."
+        "zh-CN": "NICE NG220（2022）不建议用低于甲泼尼龙 0.5 g、每日 1 次、共 5 天的激素剂量治疗复发，推荐的正是这一短程大剂量方案；小剂量长疗程只会延长激素暴露。",
+        "en": "NICE NG220 (2022) advises against steroid doses lower than methylprednisolone 0.5 g once daily for 5 days for a relapse and recommends that short high-dose course; a longer low-dose course only prolongs steroid exposure."
       },
       "response": {
         "zh-CN": "已开具。本病例没有记录这一做法，不模拟其效果。",
@@ -2807,8 +2810,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "NICE（QS108）指出，不应给患者备用激素在家自行治疗以后的复发：每次疑似复发都要由有多发性硬化经验的医生评估，并排除感染和假性复发，因为并非每次复发都需要激素。",
-        "en": "NICE (QS108) says people should not be given steroids to self-treat future relapses at home: each suspected relapse needs assessment by a clinician experienced in MS, with infection and pseudo-relapse excluded, because not every relapse needs steroids."
+        "zh-CN": "NICE NG220（2022）指出，不应给多发性硬化患者备用激素在家自行治疗以后的复发：每次疑似复发都要由有多发性硬化经验的医生评估，排除感染和假性复发，因为并非每次复发都需要激素。",
+        "en": "NICE NG220 (2022) says people with MS should not be given steroids to self-treat future relapses at home: each suspected relapse needs assessment by a clinician experienced in MS, with infection and pseudo-relapse excluded, because not every relapse needs steroids."
       },
       "response": {
         "zh-CN": "已开具备用药。本病例没有记录这一做法，不模拟其效果。",
@@ -3343,7 +3346,7 @@
       "id": "first-visit-plan",
       "kind": "single",
       "prompt": {
-        "zh-CN": "26岁男性，头晕、周身不适一个多月。查体未见明显阳性体征，EDSS 0 分；血压 110/65 mmHg，体温 36.9 ℃。MRI：颅脑未见明显异常，颈髓内点状异常信号，无明显强化；常规化验和神经电生理检查无明显异常。你的判断和下一步是什么？",
+        "zh-CN": "26岁男性，头晕不适一个多月。查体未见明显阳性体征，EDSS 0 分；血压 110/65 mmHg，体温 36.9 ℃。MRI：颅脑未见明显异常，颈髓内点状异常信号，无明显强化；常规化验和神经电生理检查无明显异常。你的判断和下一步是什么？",
         "en": "A 26-year-old man has had dizziness and felt unwell for over a month. Examination shows no clear abnormal signs (EDSS 0); BP 110/65 mmHg, temperature 36.9 °C. MRI: no clear abnormality in the brain; a punctate signal abnormality in the cervical cord without clear enhancement. Routine blood tests and neurophysiology are unremarkable. What is your assessment and plan?"
       },
       "requires": {
@@ -3390,8 +3393,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。McDonald 标准针对的是典型的脱髓鞘综合征（影像孤立综合征等情形另有规定）；按 2024 年修订（Lancet Neurol 2025），空间多发需要至少 2 个特征部位各有病灶，并要有时间多发或脑脊液证据。非特异的头晕、正常查体和一个颈髓病灶，既不支持诊断，也不支持治疗；但脊髓是特征部位之一，所以要随访复查 MRI，并告诉他哪些新症状要马上回来。",
-            "en": "Correct. The McDonald criteria are built for a typical demyelinating syndrome (with set rules for exceptions such as radiologically isolated syndrome), and under the 2024 revision (Lancet Neurol 2025) dissemination in space needs lesions in at least two characteristic regions, plus dissemination in time or CSF evidence. Non-specific dizziness, a normal examination and one cord lesion support neither a diagnosis nor treatment — but the cord is one of those regions, so arrange review with repeat MRI and tell him which new symptoms should bring him straight back."
+            "zh-CN": "正确。McDonald 标准针对的是典型的脱髓鞘综合征（影像孤立综合征等情形另有规定）；按 2024 年修订（Lancet Neurol 2025），空间多发需要至少 2 个特征部位各有病灶，并要有时间多发或脑脊液阳性等进一步证据。非特异的头晕、正常查体和一个颈髓病灶，既不支持诊断，也不支持治疗；但脊髓是特征部位之一，所以要随访复查 MRI，并告诉他哪些新症状要马上回来。",
+            "en": "Correct. The McDonald criteria are built for a typical demyelinating syndrome (with set rules for exceptions such as radiologically isolated syndrome), and under the 2024 revision (Lancet Neurol 2025) dissemination in space needs lesions in at least two characteristic regions, with further evidence such as dissemination in time or positive CSF. Non-specific dizziness, a normal examination and one cord lesion support neither a diagnosis nor treatment — but the cord is one of those regions, so arrange review with repeat MRI and tell him which new symptoms should bring him straight back."
           }
         },
         {
@@ -3402,8 +3405,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。2024 年修订（Lancet Neurol 2025）仍要求至少 2 个特征部位（脑室旁、皮质/近皮质、幕下、脊髓，以及新增的视神经）各有病灶，并有时间多发或脑脊液证据；一个颈髓病灶只占一个部位，头晕也不是典型发作。过早诊断会让一位可能没有多发性硬化的年轻人长期承受免疫治疗的风险。",
-            "en": "No. The 2024 revision (Lancet Neurol 2025) still needs lesions in at least two characteristic regions — periventricular, cortical/juxtacortical, infratentorial, spinal cord and now the optic nerve — with dissemination in time or CSF evidence; one cord lesion is one region, and dizziness is not a typical attack. A premature label commits a young man who may not have MS to long-term immunotherapy and its risks."
+            "zh-CN": "不对。2024 年修订（Lancet Neurol 2025）仍要求至少 2 个特征部位（脑室旁、皮质/近皮质、幕下、脊髓，以及新增的视神经）各有病灶，并有时间多发或脑脊液阳性等进一步证据；一个颈髓病灶只占一个部位，头晕也不是典型发作。过早诊断会让一位可能没有多发性硬化的年轻人长期承受免疫治疗的风险。",
+            "en": "No. The 2024 revision (Lancet Neurol 2025) still needs lesions in at least two characteristic regions — periventricular, cortical/juxtacortical, infratentorial, spinal cord and now the optic nerve — with further evidence such as dissemination in time or positive CSF; one cord lesion is one region, and dizziness is not a typical attack. A premature label commits a young man who may not have MS to long-term immunotherapy and its risks."
           }
         },
         {
@@ -3494,8 +3497,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "这是早年标准的思路，但已不是现行标准。2010 年修订（Ann Neurol 2011）就把空间多发简化为 4 个部位中至少 2 个各有 ≥ 1 个 T2 病灶，并接受随访 MRI 上的新病灶作为时间多发；2017 年标准和 2024 年修订沿用了这一点。等待第三次发作会推迟诊断和疾病修正治疗。",
-            "en": "This is how the older criteria worked, but it is no longer the standard. The 2010 revision (Ann Neurol 2011) already reduced dissemination in space to ≥ 1 T2 lesion in at least two of four regions and accepted a new lesion on follow-up MRI as dissemination in time; the 2017 criteria and the 2024 revision kept this. Waiting for a third attack delays the diagnosis and disease-modifying therapy."
+            "zh-CN": "这接近报告当年所用的 2005 年标准的思路，但已不是现行标准。2010 年修订（Ann Neurol 2011）就把空间多发简化为 4 个部位中至少 2 个各有 ≥ 1 个 T2 病灶，并接受随访 MRI 上的新病灶（不论基线检查做于何时）作为时间多发；2017 年标准和 2024 年修订沿用了这一点。等待第三次发作会推迟诊断和疾病修正治疗。",
+            "en": "This is close to the 2005 criteria the report applied, but it is no longer the standard. The 2010 revision (Ann Neurol 2011) already reduced dissemination in space to ≥ 1 T2 lesion in at least two of four regions and accepted a new lesion on follow-up MRI, whenever the baseline scan was done, as dissemination in time; the 2017 criteria and the 2024 revision kept this. Waiting for a third attack delays the diagnosis and disease-modifying therapy."
           }
         },
         {
@@ -3567,8 +3570,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "需要。2015 年 NMOSD 国际共识（IPND，Neurology 2015）强烈推荐用细胞法检测 AQP4-IgG，并指出部分多发性硬化免疫治疗似乎会加重 NMOSD；MOG-IgG 是 2023 年国际 MOGAD 专家组标准（Lancet Neurol 2023）的核心条件。视物模糊加脊髓病灶正是需要排除这两种疾病的情形；本病例没有记录这两项结果。",
-            "en": "Needed. The 2015 international NMOSD criteria (IPND, Neurology 2015) strongly recommend a cell-based assay for AQP4-IgG and note that some MS immunotherapies appear to aggravate NMOSD; MOG-IgG is the core criterion of the 2023 International MOGAD Panel criteria (Lancet Neurol 2023). Blurred vision with a cord lesion is exactly when both must be excluded; the case records neither result."
+            "zh-CN": "需要。2015 年 NMOSD 国际共识（IPND，Neurology 2015）强烈推荐用细胞法检测 AQP4-IgG；MOG-IgG 是 2023 年国际 MOGAD 专家组标准（Lancet Neurol 2023）的核心条件。视物模糊加脊髓病灶正是需要排除这两种疾病的情形，而且部分多发性硬化免疫治疗可使 NMOSD 加重。本病例没有记录这两项结果。",
+            "en": "Needed. The 2015 international NMOSD criteria (IPND, Neurology 2015) strongly recommend a cell-based assay for AQP4-IgG, and MOG-IgG is the core criterion of the 2023 International MOGAD Panel criteria (Lancet Neurol 2023). Blurred vision with a cord lesion is exactly when both must be excluded — and some MS immunotherapies can make NMOSD worse. The case records neither result."
           }
         },
         {
@@ -3579,8 +3582,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "需要。脑脊液可以发现感染或其他炎症性疾病；按 2017 年标准（Lancet Neurol 2018），只出现在脑脊液而不出现在血清中的寡克隆带才算阳性，所以要送配对血清，2024 年修订（Lancet Neurol 2025）还接受 κ 游离轻链指数。本病例的脑脊液记录随后续病程展示，检查日期没有记录。",
-            "en": "Needed. CSF can show infection or another inflammatory disease, and under the 2017 criteria (Lancet Neurol 2018) oligoclonal bands count only when present in CSF but not in serum — hence the paired sample; the 2024 revision (Lancet Neurol 2025) also accepts the kappa free light chain index. This case's CSF record appears with the later course, and its date is not recorded."
+            "zh-CN": "需要。脑脊液可以发现感染或其他炎症性疾病；按 2017 年标准（Lancet Neurol 2018），只出现在脑脊液而不出现在血清中的寡克隆带才算阳性，所以要送配对血清，2024 年修订（Lancet Neurol 2025）还接受 κ 游离轻链指数。腰椎穿刺前先在 MRI 上确认强化病灶没有明显占位效应。本病例的脑脊液记录随后续病程展示，检查日期没有记录。",
+            "en": "Needed. CSF can show infection or another inflammatory disease, and under the 2017 criteria (Lancet Neurol 2018) oligoclonal bands count only when present in CSF but not in serum — hence the paired sample; the 2024 revision (Lancet Neurol 2025) also accepts the kappa free light chain index. Before the lumbar puncture, check the MRI for mass effect from the enhancing lesion. This case's CSF record appears with the later course, and its date is not recorded."
           }
         },
         {
@@ -3598,8 +3601,8 @@
         {
           "id": "biopsy-before-tests",
           "text": {
-            "zh-CN": "先做立体定向脑活检，再决定其他检查",
-            "en": "A stereotactic brain biopsy first, other tests afterwards"
+            "zh-CN": "先做立体定向脑活检，弄清病灶性质后再决定其他检查",
+            "en": "A stereotactic brain biopsy first, to settle what the lesion is before other tests"
           },
           "correct": false,
           "feedback": {
@@ -3610,13 +3613,13 @@
         {
           "id": "repeat-mri-only",
           "text": {
-            "zh-CN": "暂不做其他检查，6 个月后复查 MRI 再说",
-            "en": "No further tests now; repeat the MRI in six months"
+            "zh-CN": "暂不做其他检查：观察症状，6 个月后复查颅脑 MRI",
+            "en": "No further tests now: watch the symptoms and repeat the brain MRI in six months"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。有新症状、新的强化病灶和不典型表现时，等 6 个月会同时推迟鉴别诊断和治疗；NICE 的多发性硬化质量标准（QS108）要求对需要治疗的复发在起病 14 天内开始治疗，鉴别检查应在这次就诊时完成。",
-            "en": "No. With new symptoms, a new enhancing lesion and atypical features, six months of waiting delays both the differential diagnosis and treatment; NICE's MS quality standard (QS108) expects a relapse that needs treatment to be treated within 14 days of onset, and the work-up belongs to this visit."
+            "zh-CN": "不对。有新症状、新的强化病灶和不典型表现时，等 6 个月会同时推迟鉴别诊断和治疗；NICE NG220（2022）要求对需要治疗的复发在起病 14 天内开始治疗，鉴别检查应在这次就诊时完成。",
+            "en": "No. With new symptoms, a new enhancing lesion and atypical features, six months of waiting delays both the differential diagnosis and treatment; NICE NG220 (2022) expects a relapse that needs treatment to be treated within 14 days of onset, and the work-up belongs to this visit."
           }
         }
       ]
@@ -3655,20 +3658,20 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。NICE NG220（2022）对影响日常活动的复发给予甲泼尼龙 0.5 g 口服、每日 1 次、共 5 天；NICE 质量标准（QS108）在口服无效或不耐受、严重复发需住院或需监测躯体或心理情况时考虑静脉给药，并要求起病 14 天内开始。用激素前先排查感染，因为发热和感染可以引起类似复发的“假性复发”。激素加快恢复，但不是疾病修正治疗。",
-            "en": "Correct. NICE NG220 (2022) offers methylprednisolone 0.5 g orally once daily for 5 days for a relapse that affects daily activities; NICE's quality standard (QS108) considers IV treatment when oral steroids fail or are not tolerated, or admission is needed for a severe relapse or for medical or psychological monitoring, and asks for treatment within 14 days of onset. Look for infection first: fever and infection can cause a pseudo-relapse. Steroids speed recovery; they do not modify the disease."
+            "zh-CN": "正确。NICE NG220（2022）对影响日常活动的复发，在起病 14 天内给予甲泼尼龙 0.5 g 口服、每日 1 次、共 5 天；口服无效或不耐受、严重复发需住院或需监测躯体或心理情况时，考虑甲泼尼龙 1 g 静脉、每日 1 次、共 3–5 天。用激素前先排查感染，因为发热和感染可以引起类似复发的“假性复发”。激素加快恢复，但不是疾病修正治疗。",
+            "en": "Correct. NICE NG220 (2022) offers methylprednisolone 0.5 g orally once daily for 5 days, within 14 days of onset, for a relapse that affects daily activities, and considers 1 g IV once daily for 3–5 days when oral steroids fail or are not tolerated, or admission is needed for a severe relapse or for medical or psychological monitoring. Look for infection first: fever and infection can cause a pseudo-relapse. Steroids speed recovery; they do not modify the disease."
           }
         },
         {
           "id": "low-dose-prednisolone",
           "text": {
-            "zh-CN": "为减少副作用，给泼尼松 30 mg 口服、每日 1 次、共 2 周，之后逐渐减停，不用大剂量疗程",
+            "zh-CN": "为减少副作用，给泼尼松龙 30 mg 口服、每日 1 次、共 2 周，之后逐渐减停，不用大剂量疗程",
             "en": "To limit side effects, prednisolone 30 mg orally once daily for 2 weeks and then a slow taper, in place of a short high-dose course"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不对。NICE 的多发性硬化质量标准（QS108）指出，复发不应使用较低剂量的激素；NICE NG220（2022）推荐的是甲泼尼龙 0.5 g、每日 1 次、共 5 天的短程大剂量方案。小剂量长疗程反而延长了激素暴露。",
-            "en": "No. NICE's MS quality standard (QS108) says lower steroid doses should not be used for relapse; NICE NG220 (2022) recommends a short high-dose course, methylprednisolone 0.5 g once daily for 5 days. A longer low-dose course only prolongs steroid exposure."
+            "zh-CN": "不对。NICE NG220（2022）不建议用低于甲泼尼龙 0.5 g、每日 1 次、共 5 天的激素剂量治疗复发，推荐的正是这一短程大剂量方案。小剂量长疗程反而延长了激素暴露。",
+            "en": "No. NICE NG220 (2022) advises against steroid doses lower than methylprednisolone 0.5 g once daily for 5 days for a relapse and recommends that short high-dose course instead. A longer low-dose course only prolongs steroid exposure."
           }
         },
         {
@@ -3679,8 +3682,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不完全对。NICE（QS108）承认并非每次复发都需要激素，但影响日常活动的复发应在起病 14 天内给予甲泼尼龙，以加快恢复（NICE NG220，2022）。把“不改变远期残疾”当作一律不治疗的理由，会让他承受本可缩短的功能障碍。",
-            "en": "Not quite. NICE (QS108) accepts that not every relapse needs steroids, but one that affects daily activities should be offered methylprednisolone within 14 days of onset to speed recovery (NICE NG220, 2022). Using 'no effect on long-term disability' as a reason never to treat leaves him with a disability that could have been shortened."
+            "zh-CN": "不完全对。NICE NG220（2022）承认并非每次复发都需要激素，但影响日常活动的复发应在起病 14 天内给予甲泼尼龙，以加快恢复。把“不改变远期残疾”当作一律不治疗的理由，会让他承受本可缩短的功能障碍。",
+            "en": "Not quite. NICE NG220 (2022) accepts that not every relapse needs steroids, but one that affects daily activities should be offered methylprednisolone within 14 days of onset to speed recovery. Using 'no effect on long-term disability' as a reason never to treat leaves him with a disability that could have been shortened."
           }
         },
         {
@@ -3691,8 +3694,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "前半部分正确，但 NICE（QS108）指出，不应给患者备用激素在家自行治疗以后的复发：每次疑似复发都要由有多发性硬化经验的医生评估，先排除感染和假性复发，因为并非每次复发都需要激素。",
-            "en": "The first half is right, but NICE (QS108) says people should not be given steroids to self-treat future relapses at home: each suspected relapse needs assessment by a clinician experienced in MS, with infection and pseudo-relapse excluded first, because not every relapse needs steroids."
+            "zh-CN": "前半部分正确，但 NICE NG220（2022）指出，不应给患者备用激素在家自行治疗以后的复发：每次疑似复发都要由有多发性硬化经验的医生评估，先排除感染和假性复发，因为并非每次复发都需要激素。",
+            "en": "The first half is right, but NICE NG220 (2022) says people should not be given steroids to self-treat future relapses at home: each suspected relapse needs assessment by a clinician experienced in MS, with infection and pseudo-relapse excluded first, because not every relapse needs steroids."
           }
         }
       ]
@@ -3776,8 +3779,8 @@
         {
           "id": "steroids-per-relapse",
           "text": {
-            "zh-CN": "每次复发用一疗程激素即可，等残疾累积后再考虑疾病修正治疗",
-            "en": "A course of steroids for each relapse, keeping disease-modifying therapy until disability builds up"
+            "zh-CN": "每次复发用一疗程激素即可；激素已能缩短每次发作，等残疾开始累积后再考虑疾病修正治疗",
+            "en": "A course of steroids for each relapse; since steroids already shorten each attack, keep disease-modifying therapy until disability starts to build up"
           },
           "correct": false,
           "feedback": {
@@ -3965,7 +3968,8 @@
             "phase": "second-episode"
           },
           {
-            "intervened": "eye-hearing-referral"
+            "intervened": "eye-hearing-referral",
+            "whenIndicated": true
           },
           {
             "not": {
@@ -4112,7 +4116,7 @@
         "en": "Nurse Yan"
       },
       "knowledge": {
-        "zh-CN": "首诊交班（ISBAR）：26岁男性，门诊首诊，头晕、周身不适一个多月；记录的血压 110/65 mmHg，体温 36.9 ℃。诊室可做床旁查体；抽血在患者身边进行；MRI 和 CT 在影像科，她可以陪他走过去；护士站有病历终端，可调阅既往报告和会诊记录；药物由药房送到床旁。复述医嘱，只做护理范围内的事；只报告已经出来的结果，不解读、不诊断。被问到心率、体重或其他没有记录的数值时，如实说没有记录，绝不报数字。之后两次复诊时，她只说明他又来就诊，不预先透露症状或检查结果。",
+        "zh-CN": "首诊交班（ISBAR）：26岁男性，门诊首诊，头晕不适一个多月；记录的血压 110/65 mmHg，体温 36.9 ℃。诊室可做床旁查体；抽血在患者身边进行；MRI 和 CT 在影像科，她可以陪他走过去；护士站有病历终端，可调阅既往报告和会诊记录；药物由药房送到床旁。复述医嘱，只做护理范围内的事；只报告已经出来的结果，不解读、不诊断。被问到心率、体重或其他没有记录的数值时，如实说没有记录，绝不报数字。之后两次复诊时，她只说明他又来就诊，不预先透露症状或检查结果。",
         "en": "First-visit handover (ISBAR): a 26-year-old man at his first clinic visit with dizziness and feeling unwell for over a month; recorded BP 110/65 mmHg, temperature 36.9 °C. The consulting room allows a bedside examination; blood is taken at his side; MRI and CT are in imaging, and she can walk him there; the nurses' station has a records terminal for earlier reports and consultation notes; medicines come from the pharmacy to the bedside. Reads orders back and does only nursing-scope tasks; reports only results that are back, never interprets or diagnoses. Asked for a heart rate, a weight or any other value that is not recorded, says plainly there is none — never gives a number. At his later visits she says only that he is back, without anticipating his symptoms or results."
       },
       "interprets": [],
@@ -4125,8 +4129,8 @@
         "en": "Dr Feng (neurology attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“什么样的症状才算典型的脱髓鞘发作？头晕算吗？”“一个病灶占几个特征部位？诊断至少要几个？”“随访 MRI 出现了基线上没有的病灶，说明了什么？”“哪些表现在多发性硬化里少见，会让你去找别的病？”“开始多发性硬化的药物之前，为什么要先查 AQP4 抗体？”“用激素之前要先排除什么？”“强化消失说明病好了吗？”“如果单个强化病灶让你真的怀疑淋巴瘤，活检之前用激素会有什么问题？”“除了神经系统，他本人还有什么需要你关注？”。可以讲解 2017 年 McDonald 标准及其 2024 年修订（2010 年修订已把空间多发简化为 4 个部位中至少 2 个）、2015 年 NMOSD 国际共识和 2023 年 MOGAD 标准、NICE NG220（2022）和质量标准 QS108 的复发治疗、ECTRIMS/EAN 2018 年指南的疾病修正治疗原则，以及 NICE CG91（2009）对慢性躯体疾病合并抑郁的要求；学员读过结局记录后，可以对比记录的病程与现行标准。不提前说出诊断或任何决策的正确选项，不说出学员尚未读到的结果；不补充病例中没有的资料（首诊头晕的性质、各次发作的细节、EDSS 分项、病灶大小和强化形态、治疗的药名剂量、抗体和脑脊液细节、情绪评估和远期结局都没有记录）。",
-        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. 'What makes an episode a typical demyelinating attack — is dizziness one?', 'How many characteristic regions does one lesion occupy, and how many does the diagnosis need?', 'If a follow-up MRI shows a lesion the baseline scan did not have, what does that establish?', 'Which features are uncommon in MS and should send you looking for something else?', 'Why test AQP4 antibodies before any MS drug?', 'What must you exclude before giving steroids?', 'Does loss of enhancement mean the disease has gone?', 'If a single enhancing lesion really made you suspect lymphoma, what would steroids before a biopsy do?', 'Beyond his nervous system, what else about him needs your attention?'. May explain the 2017 McDonald criteria and their 2024 revision (the 2010 revision had already reduced dissemination in space to at least two of four regions), the 2015 international NMOSD criteria and the 2023 MOGAD criteria, relapse treatment in NICE NG220 (2022) and quality standard QS108, the disease-modifying principles of the ECTRIMS/EAN guideline (2018) and NICE CG91 (2009) on depression with a chronic physical illness; once the learner has read the outcome record, may contrast the recorded course with current criteria. Never states the diagnosis or any decision's correct option before the learner commits, never gives a result the learner has not read, and adds nothing the case does not record (the nature of the first dizziness, the details of each episode, the EDSS sub-scores, lesion size and ring pattern, the treatment's drug and dose, antibody and CSF details, a mood assessment and the long-term outcome are not recorded)."
+        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“什么样的症状才算典型的脱髓鞘发作？头晕算吗？”“一个病灶占几个特征部位？诊断至少要几个？”“随访 MRI 出现了基线上没有的病灶，说明了什么？”“哪些表现在多发性硬化里少见，会让你去找别的病？”“开始多发性硬化的药物之前，为什么要先查 AQP4 抗体？”“用激素之前要先排除什么？”“强化消失说明病好了吗？”“如果单个强化病灶让你真的怀疑淋巴瘤，活检之前用激素会有什么问题？”“除了神经系统，他本人还有什么需要你关注？”。可以讲解 2017 年 McDonald 标准及其 2024 年修订（2010 年修订已把空间多发简化为 4 个部位中至少 2 个）、2015 年 NMOSD 国际共识和 2023 年 MOGAD 标准、NICE NG220（2022）的复发治疗、ECTRIMS/EAN 2018 年指南的疾病修正治疗原则，以及 NICE CG91（2009）对慢性躯体疾病合并抑郁的要求；学员读过结局记录后，可以对比记录的病程与现行标准。不提前说出诊断或任何决策的正确选项，不说出学员尚未读到的结果；不补充病例中没有的资料（首诊头晕的性质、各次发作的细节、EDSS 分项、病灶大小和强化形态、治疗的药名剂量、抗体和脑脊液细节、情绪评估和远期结局都没有记录）。",
+        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. 'What makes an episode a typical demyelinating attack — is dizziness one?', 'How many characteristic regions does one lesion occupy, and how many does the diagnosis need?', 'If a follow-up MRI shows a lesion the baseline scan did not have, what does that establish?', 'Which features are uncommon in MS and should send you looking for something else?', 'Why test AQP4 antibodies before any MS drug?', 'What must you exclude before giving steroids?', 'Does loss of enhancement mean the disease has gone?', 'If a single enhancing lesion really made you suspect lymphoma, what would steroids before a biopsy do?', 'Beyond his nervous system, what else about him needs your attention?'. May explain the 2017 McDonald criteria and their 2024 revision (the 2010 revision had already reduced dissemination in space to at least two of four regions), the 2015 international NMOSD criteria and the 2023 MOGAD criteria, relapse treatment in NICE NG220 (2022), the disease-modifying principles of the ECTRIMS/EAN guideline (2018) and NICE CG91 (2009) on depression with a chronic physical illness; once the learner has read the outcome record, may contrast the recorded course with current criteria. Never states the diagnosis or any decision's correct option before the learner commits, never gives a result the learner has not read, and adds nothing the case does not record (the nature of the first dizziness, the details of each episode, the EDSS sub-scores, lesion size and ring pattern, the treatment's drug and dose, antibody and CSF details, a mood assessment and the long-term outcome are not recorded)."
       },
       "interprets": [
         "mri-brain-spine",
@@ -4160,7 +4164,7 @@
       "en": "Debrief: serial MRI and the timing of a multiple sclerosis diagnosis"
     },
     "conclusion": {
-      "zh-CN": "26岁男性，头晕、周身不适一个多月。查体和神经电生理检查未见明显异常（EDSS 0 分；血压 110/65 mmHg，体温 36.9 ℃），常规化验无明显异常，颅脑 MRI 未见明显异常，仅颈髓点状异常信号、无明显强化。约 10 个月后出现乏力、视物模糊和听力下降（EDSS 2 分），左侧侧脑室旁见环形强化病灶，治疗 35 天后强化消失。再约 9 个月后症状加重并有抑郁表现，MRI 新增 6 个病灶（包括左侧颞叶）；脑脊液报告未见明显异常，没有寡克隆带结果。报告此时诊断为复发缓解型多发性硬化（急性期）。按 2017 年 McDonald 标准及其 2024 年修订，第二次发作时已同时满足空间和时间多发：完成鉴别检查后即可诊断并开始疾病修正治疗。此后的情况没有记录。",
+      "zh-CN": "26岁男性，头晕不适一个多月。查体和神经电生理检查未见明显异常（EDSS 0 分；血压 110/65 mmHg，体温 36.9 ℃），常规化验无明显异常，颅脑 MRI 未见明显异常，仅颈髓点状异常信号、无明显强化。约 10 个月后出现乏力、视物模糊和听力下降（EDSS 2 分），左侧侧脑室旁见环形强化病灶，治疗 35 天后强化消失。再约 9 个月后症状加重并有抑郁表现，MRI 新增 6 个病灶（包括左侧颞叶）；脑脊液报告未见明显异常，没有寡克隆带结果。报告此时诊断为复发缓解型多发性硬化（急性期）。按 2017 年 McDonald 标准及其 2024 年修订，第二次发作时已同时满足空间和时间多发：完成鉴别检查后即可诊断并开始疾病修正治疗。此后的情况没有记录。",
       "en": "A 26-year-old man had felt dizzy and unwell for over a month. Examination and neurophysiology showed no clear abnormality (EDSS 0; BP 110/65 mmHg, temperature 36.9 °C), routine tests were unremarkable, and MRI showed only a punctate cervical cord signal without clear enhancement. About ten months later he had weakness, blurred vision and reduced hearing (EDSS 2) with a ring-enhancing left periventricular lesion; its enhancement had gone after 35 days of treatment. About nine months later his symptoms worsened with depressive features and six new lesions appeared, including the left temporal lobe; the CSF was reported unremarkable without oligoclonal band results. The report then diagnosed relapsing–remitting multiple sclerosis in an acute phase. Under the 2017 McDonald criteria and their 2024 revision the second episode already met dissemination in space and time: once mimics were excluded, diagnosis and disease-modifying therapy could have come then. Nothing later is recorded."
     },
     "keyReasoning": [
@@ -4182,12 +4186,12 @@
       },
       {
         "zh-CN": "再约 9 个月后，6 个新病灶和症状加重证实病程活动；抑郁表现是另一个需要单独评估的问题，包括轻生风险。",
-        "en": "Nine months on, six new lesions and worsening symptoms confirm active disease; the depressive features are a second problem with its own assessment, including the risk of suicide."
+        "en": "About nine months on, six new lesions and worsening symptoms confirm active disease; the depressive features are a second problem with its own assessment, including the risk of suicide."
       }
     ],
     "boundaries": {
-      "zh-CN": "这是单篇病例报告，本版依据 1.0.0 版提取的事实改写，尚未对照原文全文核对。它不能说明更早开始疾病修正治疗能否避免第三次发作和新增病灶。病例没有记录首诊头晕的性质、各次发作的细节和 EDSS 分项、病灶大小与强化形态、第二次发作所用的治疗、抗体和脑脊液细节、情绪评估以及远期结局；决策、处置选项和评分是教学设计，不改变记录的病程。",
-      "en": "A single case report, re-authored here from the facts extracted for version 1.0.0 and not yet checked against the full article. It cannot show whether earlier disease-modifying therapy would have prevented the third episode or the new lesions. The nature of the first dizziness, the details and EDSS sub-scores of each episode, lesion size and ring pattern, the treatment given at the second episode, antibody and CSF details, any mood assessment and the long-term outcome are not recorded; the decisions, intervention options and scoring are teaching design and do not change the recorded course."
+      "zh-CN": "这是单篇病例报告；本病例的事实尚未对照原文全文核对。它不能说明更早开始疾病修正治疗能否避免第三次发作和新增病灶。病例没有记录首诊头晕的性质、各次发作的细节和 EDSS 分项、病灶大小与强化形态、第二次发作所用的治疗、抗体和脑脊液细节、情绪评估以及远期结局；决策、处置选项和评分是教学设计，不改变记录的病程。",
+      "en": "A single case report; the facts in this case have not yet been checked against the full article. It cannot show whether earlier disease-modifying therapy would have prevented the third episode or the new lesions. The nature of the first dizziness, the details and EDSS sub-scores of each episode, lesion size and ring pattern, the treatment given at the second episode, antibody and CSF details, any mood assessment and the long-term outcome are not recorded; the decisions, intervention options and scoring are teaching design and do not change the recorded course."
     },
     "unknowns": [
       {
@@ -4225,28 +4229,28 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "按现行标准读连续 MRI。2017 年 McDonald 标准（Lancet Neurol 2018）及其 2024 年修订（Lancet Neurol 2025）：空间多发 = 至少 2 个特征部位（脑室旁、皮质/近皮质、幕下、脊髓，2024 年新增视神经）各有 ≥ 1 个病灶；时间多发 = 随访 MRI 上与基线相比的新 T2 或强化病灶（不论基线检查做于何时），或脑脊液特异性寡克隆带（2024 年起也可用 κ 游离轻链指数）。记录与现行做法：到第二次发作时，他的 MRI 已同时满足两者，报告却在第三次发作后才作诊断。",
-        "en": "Read serial MRI by today's criteria. 2017 McDonald criteria (Lancet Neurol 2018) and their 2024 revision (Lancet Neurol 2025): dissemination in space = ≥ 1 lesion in at least two characteristic regions (periventricular, cortical/juxtacortical, infratentorial, spinal cord; the optic nerve added in 2024); dissemination in time = a new T2 or enhancing lesion on follow-up MRI against a baseline scan, whenever that was done, or CSF-specific oligoclonal bands (from 2024 also the kappa free light chain index). Then and now: by the second episode his scans already met both, yet the report made the diagnosis only after the third episode."
+        "zh-CN": "按现行标准读连续 MRI。2017 年 McDonald 标准（Lancet Neurol 2018）及其 2024 年修订（Lancet Neurol 2025）：空间多发 = 至少 2 个特征部位（脑室旁、皮质/近皮质、幕下、脊髓，2024 年新增视神经）各有 ≥ 1 个病灶；时间多发 = 随访 MRI 上与基线相比的新 T2 或强化病灶（不论基线检查做于何时），也可由脑脊液特异性寡克隆带替代（2024 年起也可用 κ 游离轻链指数）。NICE NG220 在 2026 年的修订中也改用 2024 年标准。记录与现行做法：到第二次发作时，他的 MRI 已同时满足两者，而报告的诊断记录在第三次发作之后。",
+        "en": "Read serial MRI by today's criteria. 2017 McDonald criteria (Lancet Neurol 2018) and their 2024 revision (Lancet Neurol 2025): dissemination in space = ≥ 1 lesion in at least two characteristic regions (periventricular, cortical/juxtacortical, infratentorial, spinal cord; the optic nerve added in 2024); dissemination in time = a new T2 or enhancing lesion on follow-up MRI against a baseline scan, whenever that was done, for which CSF-specific oligoclonal bands can substitute (from 2024 also the kappa free light chain index). NICE NG220 moved to the 2024 criteria in its 2026 amendment. Then and now: by the second episode his scans already met both, yet the report's diagnosis is recorded only after the third episode."
       },
       {
-        "zh-CN": "标准是怎么变过来的。2005 年修订用 Barkhof 病灶计数判断空间多发；2010 年修订（Ann Neurol 2011）改为 4 个部位中至少 2 个各有 ≥ 1 个 T2 病灶，并接受随访 MRI 上的新病灶作为时间多发，此后的 2017 年标准和 2024 年修订都以此为基础。等到第三次发作才诊断，反映的是旧的计数思路；今天在第二次发作时要回答的，是有没有其他疾病能更好地解释全部表现。",
-        "en": "How the criteria changed. The 2005 revision judged dissemination in space by Barkhof lesion counts; the 2010 revision (Ann Neurol 2011) replaced them with ≥ 1 T2 lesion in at least two of four regions and accepted a new lesion on follow-up MRI as dissemination in time — the basis of the 2017 criteria and the 2024 revision. A diagnosis made only after a third episode reflects the older counting; today the question at the second episode is whether anything else explains the whole picture better."
+        "zh-CN": "标准是怎么变过来的。报告采用的是 2005 年修订的条款。2010 年修订（Ann Neurol 2011）把 2005 年按 Barkhof 病灶计数判断空间多发的做法，简化为 4 个部位中至少 2 个各有 ≥ 1 个 T2 病灶，并接受随访 MRI 上的新病灶（不论基线检查做于何时）作为时间多发；此后的 2017 年标准和 2024 年修订都以此为基础。等到第三次发作才诊断，符合旧的计数思路；今天在第二次发作时要回答的，是有没有其他疾病能更好地解释全部表现。",
+        "en": "How the criteria changed. The report applied the 2005 revision. The 2010 revision (Ann Neurol 2011) replaced its Barkhof lesion counts for dissemination in space with ≥ 1 T2 lesion in at least two of four regions, and accepted a new lesion on follow-up MRI, whenever the baseline scan was done, as dissemination in time — the basis of the 2017 criteria and the 2024 revision. A diagnosis made only after a third episode fits the older counting; today the question at the second episode is whether anything else explains the whole picture better."
       },
       {
-        "zh-CN": "诊断多发性硬化之前先排除相似疾病。视物模糊加脊髓病灶要查 AQP4-IgG（2015 年 NMOSD 国际共识强烈推荐细胞法，并指出部分多发性硬化免疫治疗似乎会加重 NMOSD）和 MOG-IgG（2023 年国际 MOGAD 标准的核心条件）；听力下降在多发性硬化中少见，要客观测听（Susac 综合征同时有听力下降、视觉症状和脑白质病灶）；环形强化要结合大小、强化环形态、占位效应和弥散判断。本病例没有记录抗体、眼科和听力结果，也没有记录这些影像特征。",
-        "en": "Exclude the mimics before diagnosing MS. Blurred vision with a cord lesion calls for AQP4-IgG — by cell-based assay, as the 2015 international NMOSD criteria strongly recommend, noting that some MS immunotherapies appear to aggravate NMOSD — and MOG-IgG, the core of the 2023 International MOGAD Panel criteria; reduced hearing is uncommon in MS and needs audiometry (Susac syndrome combines hearing loss, visual symptoms and white-matter lesions); ring enhancement is judged by size, ring pattern, mass effect and diffusion. The case records none of the antibody, eye or hearing results, nor those imaging features."
+        "zh-CN": "诊断多发性硬化之前先排除相似疾病。视物模糊加脊髓病灶要查 AQP4-IgG（2015 年 NMOSD 国际共识强烈推荐细胞法）和 MOG-IgG（2023 年国际 MOGAD 标准的核心条件）——部分多发性硬化免疫治疗（如 β 干扰素、那他珠单抗、芬戈莫德）可使 NMOSD 加重；听力下降在多发性硬化中少见，要客观测听（Susac 综合征同时有听力下降、视觉症状和脑白质病灶）；环形强化要结合大小、强化环形态、占位效应和弥散判断，不完整的开环更支持脱髓鞘。本病例没有记录抗体、眼科和听力结果，也没有记录这些影像特征。",
+        "en": "Exclude the mimics before diagnosing MS. Blurred vision with a cord lesion calls for AQP4-IgG — by cell-based assay, as the 2015 international NMOSD criteria strongly recommend — and MOG-IgG, the core of the 2023 International MOGAD Panel criteria; some MS immunotherapies (interferon beta, natalizumab, fingolimod) can make NMOSD worse. Reduced hearing is uncommon in MS and needs audiometry (Susac syndrome combines hearing loss, visual symptoms and white-matter lesions); ring enhancement is judged by size, ring pattern, mass effect and diffusion, an open ring favouring demyelination. The case records none of the antibody, eye or hearing results, nor those imaging features."
       },
       {
-        "zh-CN": "复发的治疗：NICE NG220（2022）对影响日常活动的复发给予甲泼尼龙 0.5 g 口服、每日 1 次、共 5 天；NICE 质量标准（QS108）在口服无效、不耐受或需住院时考虑静脉给药，要求起病 14 天内开始，不用较低剂量，也不给备用激素。先排查感染，以免把假性复发当作复发。激素加快恢复，但不是疾病修正治疗。记录与现行做法：报告只记录“治疗 35 天后强化消失”，没有药名和剂量；强化消失只说明该病灶不再活动——约 9 个月后又出现 6 个新病灶。",
-        "en": "Relapse treatment: NICE NG220 (2022) offers methylprednisolone 0.5 g orally once daily for 5 days for a relapse that affects daily activities; NICE's quality standard (QS108) considers IV treatment when oral steroids fail, are not tolerated or admission is needed, asks for treatment within 14 days of onset, and rules out lower doses and standby supplies. Look for infection first so that a pseudo-relapse is not treated as a relapse. Steroids speed recovery; they do not modify the disease. Then and now: the report records only that the enhancement had resolved after 35 days of treatment, naming no drug or dose — and that meant only that one lesion was quiet: about nine months later six new lesions appeared."
+        "zh-CN": "复发的治疗：NICE NG220（2022）对影响日常活动的复发，在起病 14 天内给予甲泼尼龙 0.5 g 口服、每日 1 次、共 5 天；口服无效、不耐受或需住院（严重复发，或需监测躯体或心理情况）时考虑 1 g 静脉、每日 1 次、共 3–5 天；不用更低的剂量，也不给备用激素在家自行服用。先排查感染，以免把假性复发当作复发。激素加快恢复，但不是疾病修正治疗。记录与现行做法：本病例只记录“治疗 35 天后强化消失”，没有记录药名和剂量；强化消失只说明该病灶不再活动——约 9 个月后又出现 6 个新病灶。",
+        "en": "Relapse treatment: NICE NG220 (2022) offers methylprednisolone 0.5 g orally once daily for 5 days, within 14 days of onset, for a relapse that affects daily activities, considers 1 g IV once daily for 3–5 days when oral steroids fail or are not tolerated or admission is needed (a severe relapse, or medical or psychological monitoring), and rules out lower doses and standby supplies for home use. Look for infection first so that a pseudo-relapse is not treated as a relapse. Steroids speed recovery; they do not modify the disease. Then and now: this case records only that the enhancement had resolved after 35 days of treatment, not the drug or dose — and that meant only that one lesion was quiet: about nine months later six new lesions appeared."
       },
       {
-        "zh-CN": "确诊后尽早疾病修正治疗：ECTRIMS/EAN 指南（Mult Scler 2018）主张活动性复发型多发性硬化尽早开始治疗，按疾病活动度、安全性和患者意愿共同选择，并结合临床和 MRI 监测疗效。用药前先有 AQP4-IgG 结果，并完成所选药物要求的筛查。记录与现行做法：报告没有记录任何长期治疗；按现行标准，第二次发作时就应开始讨论治疗。",
-        "en": "After the diagnosis, early disease-modifying therapy: the ECTRIMS/EAN guideline (Mult Scler 2018) favours starting early in active relapsing MS, choosing with the patient by disease activity, safety and preference, and monitoring response clinically and with MRI. Have the AQP4-IgG result and the chosen drug's pre-treatment screening first. Then and now: the report records no long-term treatment; by today's criteria the discussion would have started at the second episode."
+        "zh-CN": "确诊后尽早开始疾病修正治疗：ECTRIMS/EAN 指南（Mult Scler 2018）主张活动性复发型多发性硬化（临床复发或 MRI 活动）尽早开始治疗，按疾病活动度、安全性和患者意愿共同选择，并结合临床和 MRI 监测疗效。用药前先有 AQP4-IgG 结果，并完成所选药物要求的筛查。记录与现行做法：本病例没有记录任何长期治疗；按现行标准，第二次发作时就应开始讨论治疗。",
+        "en": "After the diagnosis, early disease-modifying therapy: the ECTRIMS/EAN guideline (Mult Scler 2018) favours starting early in active relapsing MS (clinical relapses or MRI activity), choosing with the patient by disease activity, safety and preference, and monitoring response clinically and with MRI. Have the AQP4-IgG result and the chosen drug's pre-treatment screening first. Then and now: this case records no long-term treatment; by today's criteria the discussion would have started at the second episode."
       },
       {
-        "zh-CN": "情绪同样是诊疗的一部分。NICE CG91（2009）要求对慢性躯体疾病患者保持对抑郁的警觉并主动筛查；出现抑郁表现时要直接询问轻生念头，回答含糊不能当作没有，并按风险安排治疗和随访。大剂量激素本身也可能影响情绪。记录与现行做法：报告记录了第三次发作时的抑郁表现，但没有记录评估或处理。",
-        "en": "Mood is part of the care. NICE CG91 (2009) asks clinicians to stay alert to depression in people with a chronic physical health problem and to screen for it; when depressive features appear, ask directly about suicidal thoughts, treat a vague answer as unresolved, and arrange treatment and follow-up by risk. High-dose steroids can themselves affect mood. Then and now: the report records depressive features at the third episode but no assessment or treatment."
+        "zh-CN": "情绪同样是诊疗的一部分。NICE CG91（2009）要求对慢性躯体疾病患者保持对抑郁的警觉，可用两个问题筛查，并始终直接询问抑郁患者有无轻生念头和意图；回答含糊不能当作没有，并按风险安排治疗和随访。大剂量激素本身也可能影响情绪。记录与现行做法：本病例记录了第三次发作时的抑郁表现，但没有记录评估或处理。",
+        "en": "Mood is part of the care. NICE CG91 (2009) asks clinicians to stay alert to depression in people with a chronic physical health problem, to consider two screening questions, and always to ask a person with depression directly about suicidal ideation and intent; treat a vague answer as unresolved and arrange treatment and follow-up by risk. High-dose steroids can themselves affect mood. Then and now: this case records depressive features at the third episode but no assessment or treatment."
       }
     ],
     "references": [
@@ -4254,8 +4258,7 @@
       "Montalban X, et al. Diagnosis of multiple sclerosis: 2024 revisions of the McDonald criteria. Lancet Neurol. 2025;24(10):850-865.",
       "Thompson AJ, et al. Diagnosis of multiple sclerosis: 2017 revisions of the McDonald criteria. Lancet Neurol. 2018;17(2):162-173.",
       "Polman CH, et al. Diagnostic criteria for multiple sclerosis: 2010 revisions to the McDonald criteria. Ann Neurol. 2011;69(2):292-302.",
-      "National Institute for Health and Care Excellence. Multiple sclerosis in adults: management. NICE guideline NG220. London: NICE; 2022.",
-      "National Institute for Health and Care Excellence. Multiple sclerosis. Quality standard QS108, quality statement 5: managing relapses [Internet]. London: NICE [cited 2026 Oct 30]. Available from: https://www.nice.org.uk/guidance/qs108",
+      "National Institute for Health and Care Excellence. Multiple sclerosis in adults: management. NICE guideline NG220. London: NICE; 2022 [updated 2026].",
       "Montalban X, Gold R, Thompson AJ, et al. ECTRIMS/EAN guideline on the pharmacological treatment of people with multiple sclerosis. Mult Scler. 2018;24(2):96-120.",
       "Wingerchuk DM, et al. International consensus diagnostic criteria for neuromyelitis optica spectrum disorders. Neurology. 2015;85(2):177-189.",
       "Banwell B, et al. Diagnosis of myelin oligodendrocyte glycoprotein antibody-associated disease: International MOGAD Panel proposed criteria. Lancet Neurol. 2023;22(3):268-282.",
@@ -4523,15 +4526,6 @@
     {
       "type": "read",
       "investigationId": "aqp4-mog",
-      "phase": "second-episode"
-    },
-    {
-      "type": "order",
-      "investigationId": "csf"
-    },
-    {
-      "type": "read",
-      "investigationId": "csf",
       "phase": "second-episode"
     },
     {

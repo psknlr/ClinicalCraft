@@ -55,12 +55,12 @@
         "ClinicalCraft editorial review (AI-assisted)"
       ],
       "guidelines": [
-        "ESGE 2022: small-bowel capsule endoscopy and device-assisted enteroscopy (guideline update)",
+        "ESGE 2022: small-bowel capsule endoscopy and device-assisted enteroscopy for small-bowel disorders (guideline update, Endoscopy 2023)",
         "ACG 2015: diagnosis and management of small bowel bleeding",
-        "ESPGHAN/ESGE 2017: paediatric gastrointestinal endoscopy",
-        "BSH 2016: guidelines on transfusion for fetuses, neonates and older children",
-        "NICE NG24 (2015): blood transfusion",
-        "ISSVA classification of vascular anomalies (2018)",
+        "SEGHNP/SEPD 2015: wireless capsule endoscopy in children and adolescents (consensus document)",
+        "BSH 2016: guidelines on transfusion for fetuses, neonates and older children (with the 2020 addendum)",
+        "NICE NG24 (2015, last updated 2026): blood transfusion",
+        "ISSVA 2025: updated classification of vascular anomalies",
         "AAP 2019: clinical practice guideline for the management of infantile hemangiomas"
       ],
       "notes": {
@@ -91,8 +91,8 @@
       "en": "Plan definitive treatment of a solitary bleeding small-bowel vascular lesion — segmental resection with primary anastomosis once the anaemia is corrected, with the whole small bowel examined — and explain why radiotherapy, propranolol or endoscopic ablation are not the answer (ESGE 2022; AAP 2019)."
     },
     {
-      "zh-CN": "用 ISSVA 2018 分类理解病理名称“海绵状血管瘤”（血管肿瘤与血管畸形之分），并据此安排补铁、复发和多发病变的随访。",
-      "en": "Relate the pathology label 'cavernous haemangioma' to the ISSVA classification (2018) of vascular tumours and malformations, and plan follow-up for iron repletion, recurrence and multifocal disease accordingly."
+      "zh-CN": "用 ISSVA 2025 分类理解病理名称“海绵状血管瘤”（血管肿瘤与慢血流血管畸形之分），并据此安排补铁、复发和多发病变的随访。",
+      "en": "Relate the pathology label 'cavernous haemangioma' to the ISSVA classification (2025) of vascular tumours and slow-flow malformations, and plan follow-up for iron repletion, recurrence and multifocal disease accordingly."
     },
     {
       "zh-CN": "向 12 岁的孩子和他的家属解释输血和手术的理由与风险，征得孩子本人的同意和家属的知情同意，并说明病历不能回答的问题。",
@@ -293,7 +293,7 @@
       },
       "answer": {
         "zh-CN": "我拉的大便又是黑的了，脸也发白。",
-        "en": "My poo has gone black again, and I've gone really pale."
+        "en": "My poo's gone black again, and my face has gone pale."
       },
       "keywords": {
         "zh-CN": [
@@ -1278,7 +1278,7 @@
       "id": "substances",
       "topic": "social",
       "question": {
-        "zh-CN": "也是就我们俩说：你抽烟或者喝酒吗？",
+        "zh-CN": "也是就我们俩说：你抽烟、抽电子烟或者喝酒吗？",
         "en": "Also just between us: do you smoke, vape or drink at all?"
       },
       "answer": {
@@ -1746,8 +1746,8 @@
           "available": true,
           "critical": true,
           "date": {
-            "zh-CN": "入院时（具体时间未记录）",
-            "en": "On admission (exact time not recorded)"
+            "zh-CN": "本次住院（具体时间未记录）",
+            "en": "This admission (exact time not recorded)"
           },
           "text": {
             "zh-CN": "血红蛋白 28 g/L，红细胞 1.81×10¹²/L，血小板 363×10⁹/L。",
@@ -1838,8 +1838,8 @@
         "admission": {
           "available": true,
           "date": {
-            "zh-CN": "入院时（具体时间未记录）",
-            "en": "On admission (exact time not recorded)"
+            "zh-CN": "本次住院（具体时间未记录）",
+            "en": "This admission (exact time not recorded)"
           },
           "text": {
             "zh-CN": "粪便隐血 ++。",
@@ -1900,8 +1900,8 @@
         "admission": {
           "available": true,
           "date": {
-            "zh-CN": "入院时（具体时间未记录）",
-            "en": "On admission (exact time not recorded)"
+            "zh-CN": "本次住院（具体时间未记录）",
+            "en": "This admission (exact time not recorded)"
           },
           "text": {
             "zh-CN": "凝血功能：报告为正常。",
@@ -2548,8 +2548,8 @@
             "en": "From admission to recovery after the operation"
           },
           "text": {
-            "zh-CN": "记录的病程：12岁男孩，黑便、面色苍白反复 8 年，近 1 个月再发。8 年前一次低热后出现黑便，伴脐周阵发性痛和面色苍白，此后反复；多家医院的胃镜、结肠镜和腹部 CT 未明确原因，间断服用奥美拉唑和云南白药效果不佳。入院时重度贫血貌，心率 100 次/分，心前区 Ⅱ/6 级收缩期杂音，腹软，肝脾未触及，双下肢无水肿；血红蛋白 28 g/L，红细胞 1.81×10¹²/L，血小板 363×10⁹/L，粪便隐血 ++，凝血功能正常，骨髓呈缺铁表现。异位胃黏膜显像阴性；标记红细胞显像见较固定的放射性浓集；腹部增强 CT 示空肠约 2.0 cm × 3.5 cm 肿块，门静脉期明显强化，伴点状钙化。先纠正贫血，再行手术：屈氏韧带远侧约 5 cm 处见 5 cm × 3 cm × 3 cm 暗红色结节状肿物，行空肠部分切除吻合术；病理为海绵状血管瘤伴出血及钙化。术后恢复良好。本病例没有记录纠正贫血的方法、出院用药、随访时长和此后是否再出血。",
-            "en": "Recorded course: a 12-year-old boy with eight years of recurrent black stools and pallor, recurring over the last month. Eight years earlier, after a low-grade fever, black stools began with intermittent periumbilical pain and pallor, and recurred thereafter; gastroscopy, colonoscopy and abdominal CT at several hospitals found no cause, and intermittent omeprazole and Yunnan Baiyao helped little. On admission he looked severely anaemic, heart rate 100/min, with a grade II/6 systolic murmur over the precordium; abdomen soft, liver and spleen not palpable, no leg oedema; haemoglobin 28 g/L, red cells 1.81×10¹²/L, platelets 363×10⁹/L, faecal occult blood ++, normal clotting and an iron-deficiency marrow pattern. The ectopic gastric mucosa scan was negative; a labelled red-cell scan showed a relatively fixed focus of tracer; contrast-enhanced CT showed a jejunal mass of about 2.0 × 3.5 cm, enhancing markedly in the portal venous phase, with punctate calcification. The anaemia was corrected first; at operation a dark-red nodular mass of 5 × 3 × 3 cm lay about 5 cm distal to the ligament of Treitz and a partial jejunal resection with anastomosis was done; histology showed cavernous haemangioma with haemorrhage and calcification. He recovered well after the operation. This case records neither how the anaemia was corrected, nor the discharge medicines, the length of follow-up or whether he bled again."
+            "zh-CN": "记录的病程：12岁男孩，黑便、面色苍白反复 8 年，近 1 个月再发。8 年前一次低热后出现黑便，伴脐周阵发性痛和面色苍白，此后反复；多家医院的胃镜、结肠镜和腹部 CT 未明确原因，间断服用奥美拉唑和云南白药效果不佳。入院时重度贫血貌，心率 100 次/分，心前区 Ⅱ/6 级收缩期杂音，腹软，肝脾未触及，双下肢无水肿。本次住院化验：血红蛋白 28 g/L，红细胞 1.81×10¹²/L，血小板 363×10⁹/L，粪便隐血 ++，凝血功能正常，骨髓呈缺铁表现。异位胃黏膜显像阴性；标记红细胞显像见较固定的放射性浓集；腹部增强 CT 示空肠约 2.0 cm × 3.5 cm 肿块，门静脉期明显强化，伴点状钙化。先纠正贫血，再行手术：屈氏韧带远侧约 5 cm 处见 5 cm × 3 cm × 3 cm 暗红色结节状肿物，行空肠部分切除吻合术；病理为海绵状血管瘤伴出血及钙化。术后恢复良好。本病例没有记录纠正贫血的方法、出院用药、随访时长和此后是否再出血。",
+            "en": "Recorded course: a 12-year-old boy with eight years of recurrent black stools and pallor, recurring over the last month. Eight years earlier, after a low-grade fever, black stools began with intermittent periumbilical pain and pallor, and recurred thereafter; gastroscopy, colonoscopy and abdominal CT at several hospitals found no cause, and intermittent omeprazole and Yunnan Baiyao helped little. On admission he looked severely anaemic, heart rate 100/min, with a grade II/6 systolic murmur over the precordium; abdomen soft, liver and spleen not palpable, no leg oedema. Tests this admission: haemoglobin 28 g/L, red cells 1.81×10¹²/L, platelets 363×10⁹/L, faecal occult blood ++, normal clotting and an iron-deficiency marrow pattern. The ectopic gastric mucosa scan was negative; a labelled red-cell scan showed a relatively fixed focus of tracer; contrast-enhanced CT showed a jejunal mass of about 2.0 × 3.5 cm, enhancing markedly in the portal venous phase, with punctate calcification. The anaemia was corrected first; at operation a dark-red nodular mass of 5 × 3 × 3 cm lay about 5 cm distal to the ligament of Treitz and a partial jejunal resection with anastomosis was done; histology showed cavernous haemangioma with haemorrhage and calcification. He recovered well after the operation. This case records neither how the anaemia was corrected, nor the discharge medicines, the length of follow-up or whether he bled again."
           },
           "figures": [
             "fig01",
@@ -2795,13 +2795,14 @@
         "iv-access"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
         "zh-CN": "不要：缺铁的骨髓、八年反复出血加上这一个月的再发，提示贫血是慢慢形成的，血容量已经代偿性扩张；这时短时间大量输血最容易引起输血相关循环超负荷（急性肺水肿、心力衰竭）。NICE NG24（2015）对没有活动性出血的患者建议每次一个单位（儿童按体重折算等量）、每次输后复评；BSH 2016 儿童输血指南按体重计算输注量。不需要也不应该一下子把血红蛋白补到正常。",
-        "en": "No: an iron-deficient marrow, eight years of recurrent bleeding and a month of renewed loss point to anaemia that developed slowly, with an expanded plasma volume, and a rapid large transfusion is then the likeliest cause of transfusion-associated circulatory overload (acute pulmonary oedema, heart failure). NICE NG24 (2015) advises one unit at a time (a weight-equivalent volume in children) with reassessment after each when there is no active bleeding, and the BSH 2016 paediatric guideline calculates volumes by weight. There is no need to restore a normal haemoglobin at once."
+        "en": "No: an iron-deficient marrow, eight years of recurrent bleeding and a month of renewed loss point to anaemia that developed slowly, with an expanded plasma volume, and a rapid large transfusion is then the likeliest cause of transfusion-associated circulatory overload (acute pulmonary oedema, heart failure). NICE NG24 (2015) advises, for patients who are not actively bleeding, one unit at a time (a weight-equivalent volume in children) with reassessment after each, and the BSH 2016 paediatric guideline calculates volumes by weight. There is no need to restore a normal haemoglobin at once."
       },
       "response": {
         "zh-CN": "红细胞开始快速输注。本病例不模拟其效果。",
@@ -2835,12 +2836,17 @@
         "zh-CN": [
           "铁蛋白",
           "铁代谢",
-          "血清铁"
+          "血清铁",
+          "静脉",
+          "输注"
         ],
         "en": [
           "ferritin",
           "iron studies",
-          "serum iron"
+          "serum iron",
+          "intravenous",
+          "infusion",
+          "iv iron"
         ]
       },
       "dose": {
@@ -2859,6 +2865,56 @@
       "response": {
         "zh-CN": "口服铁剂已开出。本病例没有记录是否做过这一步；不模拟其效果。",
         "en": "Oral iron is prescribed. This case does not record whether this was done; it does not simulate its effect."
+      }
+    },
+    {
+      "id": "iv-iron",
+      "name": {
+        "zh-CN": "静脉铁剂",
+        "en": "Intravenous iron"
+      },
+      "kind": "medication",
+      "aliases": {
+        "zh-CN": [
+          "静脉补铁",
+          "静脉铁",
+          "蔗糖铁",
+          "羧基麦芽糖铁",
+          "输铁剂"
+        ],
+        "en": [
+          "iv iron",
+          "intravenous iron",
+          "iron infusion",
+          "iron sucrose",
+          "ferric carboxymaltose"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "口服",
+          "铁蛋白"
+        ],
+        "en": [
+          "oral",
+          "by mouth",
+          "tablets",
+          "ferritin"
+        ]
+      },
+      "dose": {
+        "zh-CN": "静脉铁剂（如蔗糖铁）按体重计算剂量，按儿童处方集和药品说明书使用；输注期间及输注后观察有无过敏反应。",
+        "en": "An intravenous iron preparation (such as iron sucrose) at a weight-based dose per the paediatric formulary and the product licence, watching for hypersensitivity during and after the infusion."
+      },
+      "requires": [
+        "medications",
+        "iv-access"
+      ],
+      "risk": "moderate",
+      "maxDoses": 1,
+      "response": {
+        "en": "Intravenous iron is prescribed. This case does not record whether this was done; it does not simulate its effect.",
+        "zh-CN": "静脉铁剂已开出。本病例没有记录是否做过这一步；不模拟其效果。"
       }
     },
     {
@@ -2940,7 +2996,8 @@
         "en": "Continue omeprazole and Yunnan Baiyao with oral iron, book tests in clinic, and readmit if the black stools worsen."
       },
       "requires": [],
-      "risk": "moderate",
+      "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -2993,42 +3050,100 @@
       }
     },
     {
-      "id": "segmental-resection",
+      "id": "surgical-consult",
       "name": {
-        "zh-CN": "小儿外科：择期切除病变空肠段并一期吻合",
-        "en": "Paediatric surgery: elective resection of the affected jejunal segment with primary anastomosis"
+        "zh-CN": "请小儿外科会诊",
+        "en": "Paediatric surgical consultation"
       },
       "kind": "consult",
       "aliases": {
         "zh-CN": [
-          "手术",
-          "切除",
-          "空肠切除",
-          "肠段切除",
-          "小儿外科",
           "外科会诊",
-          "剖腹探查",
-          "腹腔镜手术"
+          "小儿外科会诊",
+          "请外科医生",
+          "请外科看",
+          "外科意见",
+          "转外科"
         ],
         "en": [
-          "surgery",
+          "surgical consult",
+          "surgical referral",
+          "refer to the surgeons",
+          "paediatric surgeons",
+          "surgical opinion",
+          "call the surgeons"
+        ]
+      },
+      "excludeKeywords": {
+        "zh-CN": [
+          "切除",
+          "开腹",
+          "放疗"
+        ],
+        "en": [
+          "resect",
+          "laparotomy",
+          "radiotherapy"
+        ]
+      },
+      "dose": {
+        "zh-CN": "请小儿外科医生会诊，一起看他本人和已有的检查结果，讨论手术时机和方式。",
+        "en": "Ask the paediatric surgeons to see him and review the results so far, and to discuss the timing and type of any operation."
+      },
+      "requires": [],
+      "risk": "none",
+      "maxDoses": 2,
+      "indicatedWhen": {
+        "always": true
+      },
+      "response": {
+        "en": "Dr Qiao, the paediatric surgeon, comes to see him, reviews the results so far and will talk the options through with him and his family. This case does not record the consultation; it does not simulate its effect.",
+        "zh-CN": "小儿外科乔医生前来会诊，查看了他本人和目前的检查结果，并会与孩子和家属一起讨论处理方案。本病例没有记录这次会诊；不模拟其效果。"
+      }
+    },
+    {
+      "id": "segmental-resection",
+      "name": {
+        "zh-CN": "安排手术：切除病变空肠段并一期吻合",
+        "en": "Book the operation: resection of the affected jejunal segment with primary anastomosis"
+      },
+      "kind": "consult",
+      "aliases": {
+        "zh-CN": [
+          "手术切除",
+          "空肠切除",
+          "肠段切除",
+          "切除病变肠段",
+          "开腹手术",
+          "腹腔镜手术",
+          "剖腹探查",
+          "送手术室"
+        ],
+        "en": [
           "resection",
           "resect",
           "bowel resection",
-          "paediatric surgeons",
-          "surgical referral",
+          "segmental resection",
+          "operate",
           "laparotomy",
-          "operation"
+          "take him to theatre",
+          "book the operation"
         ]
       },
       "excludeKeywords": {
         "zh-CN": [
           "放疗",
-          "内镜"
+          "内镜",
+          "会诊",
+          "请外科",
+          "转外科"
         ],
         "en": [
           "radiotherapy",
-          "endoscop"
+          "endoscop",
+          "consult",
+          "referral",
+          "opinion"
         ]
       },
       "dose": {
@@ -3037,6 +3152,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "indicatedWhen": {
         "all": [
@@ -3076,8 +3192,8 @@
         "en": "Correct the anaemia first: at a haemoglobin of 28 g/L there is almost no oxygen-delivery reserve for anaesthesia, and none for blood lost in theatre. He is compensated and no active major bleeding is recorded, so nothing justifies operating before the anaemia is corrected."
       },
       "response": {
-        "zh-CN": "小儿外科已接手，计划在贫血纠正后手术。与报告一致：他在贫血纠正之后接受了空肠部分切除吻合术；手术所见和病理见下一阶段的记录。",
-        "en": "The paediatric surgeons have taken him on, planning to operate once his anaemia is corrected. As in the report: after the anaemia had been corrected he had a partial jejunal resection with anastomosis; the findings and the pathology are in the next phase's records."
+        "en": "The operation is booked for once his anaemia has been corrected. As recorded: after the anaemia had been corrected he had a partial jejunal resection with anastomosis; the findings and the pathology are in the next phase's records.",
+        "zh-CN": "手术已安排在贫血纠正之后。与记录一致：他在贫血纠正之后接受了空肠部分切除吻合术；手术所见和病理见下一阶段的记录。"
       }
     },
     {
@@ -3107,13 +3223,14 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": false,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
       },
       "harm": {
-        "zh-CN": "不要：放疗曾经用于血管瘤，如今已被弃用。照射儿童腹部会带来放射性肠炎、生长发育受损和远期第二肿瘤的风险，而一个孤立的出血病灶可以手术切除。按 ISSVA 2018 分类，这类慢血流血管畸形今天靠切除、硬化治疗或（病变广泛时）西罗莫司处理，没有放疗的位置。",
-        "en": "No: radiotherapy was once used for haemangiomas and has been abandoned. Irradiating a child's abdomen brings radiation enteritis, impaired growth and a later second-cancer risk, while a solitary bleeding lesion can be removed. Slow-flow malformations, as ISSVA (2018) classifies them, are managed today by excision, sclerotherapy or — when extensive — sirolimus; radiotherapy has no place."
+        "en": "No: radiotherapy was once used for haemangiomas and has been abandoned. Irradiating a child's abdomen brings radiation enteritis, impaired growth and a later second-cancer risk, while a solitary bleeding lesion can be removed. Slow-flow malformations, as the ISSVA classification (2025) groups them, are managed today by excision, sclerotherapy or — when extensive — sirolimus; radiotherapy has no place.",
+        "zh-CN": "不要：放疗曾经用于血管瘤，如今已被弃用。照射儿童腹部会带来放射性肠炎、生长发育受损和远期第二肿瘤的风险，而一个孤立的出血病灶可以手术切除。ISSVA 2025 分类中的慢血流血管畸形，今天靠切除、硬化治疗或（病变广泛时）西罗莫司处理，没有放疗的位置。"
       },
       "response": {
         "zh-CN": "本病例没有记录放疗，不模拟其效果。",
@@ -3348,6 +3465,9 @@
                 "intervened": "oral-iron"
               },
               {
+                "intervened": "iv-iron"
+              },
+              {
                 "intervened": "discharge-home"
               }
             ]
@@ -3381,8 +3501,8 @@
         "en": "What can each study answer, and what can it not? Which treatment solves the problem in one go, and what must be in place before it starts?"
       },
       "guidance": {
-        "zh-CN": "调阅两份核素显像报告，送他去做腹部增强 CT 并阅读结果；作答决策 3 和 4，然后安排你选择的治疗。",
-        "en": "Read the two nuclear medicine reports, take him for the contrast CT and read it; answer decisions 3 and 4, then arrange the treatment you have chosen."
+        "en": "Read the two nuclear medicine reports, take him for the contrast CT and read it; answer decisions 3 and 4, involve the paediatric surgeons, then arrange the treatment you have chosen.",
+        "zh-CN": "调阅两份核素显像报告，送他去做腹部增强 CT 并阅读结果；作答决策 3 和 4，请小儿外科会诊，然后安排你选择的治疗。"
       },
       "completeWhen": {
         "all": [
@@ -3588,8 +3708,8 @@
             "en": "Crossmatch and transfuse red cells slowly in weight-based aliquots, checking for circulatory overload after each, then start iron"
           },
           "feedback": {
-            "zh-CN": "对。血红蛋白 28 g/L 时氧供储备极少，需要现在就输红细胞；但慢慢形成的贫血伴有代偿性扩张的血容量，安全的做法是按体重小量分次、缓慢输注，每次输后复评（NICE NG24，2015；BSH 2016 儿童输血指南）。铁剂随后补足储备，单靠铁剂升不了那么快。",
-            "en": "Right. At a haemoglobin of 28 g/L his oxygen-delivery reserve is minimal and he needs red cells now, but slowly developed anaemia comes with an expanded plasma volume: small weight-based aliquots, run slowly and reassessed after each, are the safe way (NICE NG24, 2015; BSH 2016 paediatric transfusion guideline). Iron then refills the stores; on its own it cannot lift the haemoglobin fast enough."
+            "en": "Right. At a haemoglobin of 28 g/L, still losing blood (faecal occult blood ++) and facing a search and probably an operation, he has almost no reserve and needs red cells now; but anaemia that developed slowly comes with an expanded plasma volume, so small weight-based aliquots, run slowly and reassessed after each, are the safe way (NICE NG24, 2015; BSH 2016 paediatric transfusion guideline). Iron then refills the stores; on its own it works too slowly.",
+            "zh-CN": "对。血红蛋白 28 g/L、仍在失血（粪便隐血 ++），接下来还要做检查、很可能还要手术，他几乎没有储备，需要现在就输红细胞；但慢慢形成的贫血伴有代偿性扩张的血容量，安全的做法是按体重小量分次、缓慢输注，每次输后复评（NICE NG24，2015；BSH 2016 儿童输血指南）。铁剂随后补足储备，单靠铁剂起效太慢。"
           }
         },
         {
@@ -3601,7 +3721,7 @@
           },
           "feedback": {
             "zh-CN": "不对。慢性重度贫血时快速大量输血，是输血相关循环超负荷的典型诱因：心脏已在加速工作（心率 100 次/分、收缩期杂音），再快速扩容可致肺水肿。NICE NG24（2015）建议没有活动性出血时每次一个单位（儿童按体重折算）并复评，不需要一下子补到正常。",
-            "en": "No. A fast, large transfusion in chronic severe anaemia is the classic route to transfusion-associated circulatory overload: his heart is already working hard (rate 100/min, a systolic murmur), and rapid expansion can tip him into pulmonary oedema. NICE NG24 (2015) advises one unit at a time (weight-equivalent in children) with reassessment when there is no active bleeding; there is no need to reach normal at once."
+            "en": "No. A fast, large transfusion in chronic severe anaemia is the classic route to transfusion-associated circulatory overload: his heart is already working hard (rate 100/min, a systolic murmur), and rapid expansion can tip him into pulmonary oedema. For patients who are not actively bleeding NICE NG24 (2015) advises one unit at a time (weight-equivalent in children) with reassessment; there is no need to reach normal at once."
           }
         },
         {
@@ -3613,7 +3733,7 @@
           },
           "feedback": {
             "zh-CN": "不对。静脉铁剂要几周才能明显升高血红蛋白，不是几小时；他仍在失血（粪便隐血 ++），28 g/L 时没有等待的余地。铁剂应在谨慎输血让他脱离危险之后接着用，而不是代替输血；NICE NG24（2015）对没有活动性出血的患者，用的正是按单位（儿童按体重折算）输注、每次复评的办法。",
-            "en": "No. Intravenous iron raises the haemoglobin over weeks, not hours; he is still losing blood (faecal occult blood ++), and at 28 g/L there is no reserve to wait with. Iron follows a cautious transfusion rather than replacing it; for a patient without active bleeding NICE NG24 (2015) transfuses one unit (a weight-equivalent volume in a child) at a time with reassessment, which is how to make him safe while iron takes effect."
+            "en": "No. Intravenous iron raises the haemoglobin over weeks, not hours; he is still losing blood (faecal occult blood ++), and at 28 g/L there is no reserve to wait with. Iron follows a cautious transfusion rather than replacing it; for a patient who is not actively bleeding NICE NG24 (2015) transfuses one unit (a weight-equivalent volume in a child) at a time with reassessment, which is how to make him safe while iron takes effect."
           }
         },
         {
@@ -3682,8 +3802,8 @@
             "en": "A technetium-99m pertechnetate scan for ectopic gastric mucosa (a Meckel scan)"
           },
           "feedback": {
-            "zh-CN": "应选。儿童不明原因的消化道出血要想到梅克尔憩室，它的出血多来自异位胃黏膜；高锝酸盐显像无创、可快速完成（ACG 2015 对年轻患者的小肠出血也提到这一检查）。阴性结果降低但不能排除这种可能。",
-            "en": "Include. In a child with unexplained gastrointestinal bleeding, think of a Meckel diverticulum, whose bleeding usually comes from ectopic gastric mucosa; a pertechnetate scan finds it non-invasively (ACG 2015 also lists it for small-bowel bleeding in younger patients). A negative scan lowers that possibility without removing it."
+            "en": "Include. In a child a Meckel diverticulum is a leading cause of small-bowel bleeding, which usually comes from its ectopic gastric mucosa, and a pertechnetate scan looks for that tissue without an endoscope. ACG 2015 suggests the scan for younger patients with overt bleeding whose capsule and enterography are negative; in children it is usually done earlier. A negative scan lowers that possibility without removing it.",
+            "zh-CN": "应选。儿童小肠出血要想到梅克尔憩室，它的出血多来自憩室内的异位胃黏膜，高锝酸盐显像无需内镜即可寻找这种组织。ACG 2015 建议在胶囊内镜和小肠成像均阴性的年轻显性出血患者中做这项检查；儿童通常更早安排。阴性结果降低但不能排除这种可能。"
           }
         },
         {
@@ -3694,8 +3814,8 @@
             "en": "Contrast-enhanced CT of the small bowel (CT enterography), which also shows a mass or a narrowing"
           },
           "feedback": {
-            "zh-CN": "应选。小肠增强 CT 能显示肠壁、肿块和血管性病变，放在胶囊内镜之前做还能发现可能卡住胶囊的狭窄；ACG 2015 把 CT 小肠成像列为疑似小肠出血检查中与胶囊内镜互补的一项。外院普通腹部 CT 阴性，不等于专门的小肠检查也会阴性。",
-            "en": "Include. Contrast CT of the small bowel shows the wall, masses and vascular lesions and, done before a capsule, reveals a narrowing that could trap it; ACG 2015 places CT enterography beside capsule endoscopy in the work-up of suspected small-bowel bleeding. A negative routine abdominal CT elsewhere does not make a dedicated small-bowel study negative."
+            "en": "Include. Contrast-enhanced small-bowel imaging shows the wall, masses and vascular lesions and, done before a capsule, a narrowing that could hold it; ACG 2015 uses CT enterography when a narrowing is suspected or after a negative capsule. In a child, MR enterography is an alternative without radiation where it is available. A negative routine abdominal CT elsewhere does not make a dedicated small-bowel study negative.",
+            "zh-CN": "应选。小肠增强成像能显示肠壁、肿块和血管性病变，放在胶囊内镜之前做还能发现可能让胶囊滞留的狭窄；ACG 2015 在怀疑狭窄或胶囊内镜阴性时使用 CT 小肠成像。儿童有条件时也可改用无辐射的 MR 小肠成像。外院普通腹部 CT 阴性，不等于专门的小肠检查也会阴性。"
           }
         },
         {
@@ -3706,8 +3826,8 @@
             "en": "Small-bowel capsule endoscopy, provided nothing suggests a narrowing that could hold the capsule"
           },
           "feedback": {
-            "zh-CN": "应选。ESGE 2022 指南推荐小肠胶囊内镜作为疑似小肠出血的一线检查（显性出血后最好 48 小时内完成），并用器械辅助小肠镜确认和治疗胶囊发现的病变；ESPGHAN/ESGE 2017 儿童内镜指南同样支持在能吞服胶囊的儿童中使用。",
-            "en": "Include. ESGE 2022 recommends small-bowel capsule endoscopy as the first-line test for suspected small-bowel bleeding (ideally within 48 hours of an overt bleed) and device-assisted enteroscopy to confirm and treat what it finds; the ESPGHAN/ESGE 2017 paediatric endoscopy guideline supports it in children able to swallow the capsule."
+            "en": "Include. ESGE 2022 recommends small-bowel capsule endoscopy as the first-line test for suspected small-bowel bleeding (ideally within 48 hours of an overt bleed), with device-assisted enteroscopy to confirm and treat what it finds. The Spanish paediatric consensus (SEGHNP/SEPD 2015) uses it for obscure bleeding in children; a child who cannot swallow the capsule can have it placed endoscopically.",
+            "zh-CN": "应选。ESGE 2022 推荐小肠胶囊内镜作为疑似小肠出血的一线检查（显性出血后最好 48 小时内完成），再用器械辅助小肠镜确认和治疗胶囊发现的病变。西班牙儿科共识（SEGHNP/SEPD 2015）把它用于儿童不明原因消化道出血；不能吞服胶囊的孩子可在内镜下放置。"
           }
         },
         {
@@ -3718,8 +3838,8 @@
             "en": "Another gastroscopy and colonoscopy, ending the search if both are normal again"
           },
           "feedback": {
-            "zh-CN": "不应选。前几次检查不完整时可以复查胃镜或结肠镜，但正常结果不能结束寻找：两者够不到的小肠还从来没人看过（ESGE 2022；ACG 2015）。",
-            "en": "Exclude. A repeat gastroscopy or colonoscopy can be justified when earlier ones were incomplete, but normal results cannot end the search: the small bowel, beyond the reach of both, has never been examined (ESGE 2022; ACG 2015)."
+            "en": "Exclude. A repeat gastroscopy or colonoscopy can be justified when earlier ones were incomplete, but ESGE 2022 does not recommend a routine second look before capsule endoscopy, and normal results cannot end the search: the small bowel, beyond the reach of both, has never been examined (ACG 2015).",
+            "zh-CN": "不应选。前几次检查不完整时可以复查胃镜或结肠镜，但 ESGE 2022 不建议在胶囊内镜之前常规做“二次内镜”，正常结果也不能结束寻找：两者都够不到的小肠还从没有人检查过（ACG 2015）。"
           }
         },
         {
@@ -3771,12 +3891,12 @@
           "id": "jejunal-vascular-lesion",
           "correct": true,
           "text": {
-            "zh-CN": "空肠的血管性病变（如海绵状血管瘤，即静脉畸形），间断出血",
-            "en": "A vascular lesion of the jejunum, such as a cavernous haemangioma (a venous malformation), bleeding on and off"
+            "en": "A vascular lesion of the jejunum, such as a cavernous haemangioma or venous malformation, bleeding on and off",
+            "zh-CN": "空肠的血管性病变（如海绵状血管瘤或静脉畸形），间断出血"
           },
           "feedback": {
-            "zh-CN": "对。门静脉期明显强化的空肠肿块、伴点状钙化（此时常为静脉石）、标记红细胞显像上较固定的血池浓集，加上从幼年起的反复出血，都符合慢血流的血管性病变；最终要靠病理确认。按 ISSVA 2018 分类，长期被叫作“海绵状血管瘤”的病变，在多数部位其实是静脉畸形，而不是真正的血管肿瘤。",
-            "en": "Right. A jejunal mass enhancing markedly into the portal venous phase, with punctate calcification (in this setting often phleboliths), a relatively fixed blood-pool focus on the red-cell scan and bleeding since early childhood all fit a slow-flow vascular lesion; histology must confirm it. Under the ISSVA classification (2018), lesions long called 'cavernous haemangioma' are, in most sites, venous malformations rather than true vascular tumours."
+            "en": "Right. A jejunal mass enhancing markedly in the portal venous phase, with punctate calcification (in this setting often phleboliths), a relatively fixed focus on the red-cell scan and bleeding since early childhood all fit a slow-flow vascular lesion; histology must confirm it. The ISSVA classification (2025) keeps 'haemangioma' for vascular tumours, and the old label 'cavernous haemangioma' usually describes a venous malformation.",
+            "zh-CN": "对。门静脉期明显强化的空肠肿块、伴点状钙化（此时常为静脉石）、标记红细胞显像上较固定的浓集，加上从幼年起的反复出血，都符合慢血流的血管性病变；最终要靠病理确认。ISSVA 2025 分类把“血管瘤”一词留给血管肿瘤，“海绵状血管瘤”这一旧称通常指的是静脉畸形。"
           }
         },
         {
@@ -3833,8 +3953,8 @@
       "id": "definitive-treatment",
       "kind": "single",
       "prompt": {
-        "zh-CN": "工作诊断：空肠的血管性病变（如海绵状血管瘤或静脉畸形）反复出血。入院时血红蛋白 28 g/L。你计划怎样做确定性治疗、在什么时候做？",
-        "en": "Working diagnosis: a bleeding vascular lesion of the jejunum, such as a cavernous haemangioma or venous malformation. His haemoglobin was 28 g/L on admission. What definitive treatment do you plan, and when?"
+        "zh-CN": "工作诊断：空肠的血管性病变（如海绵状血管瘤或静脉畸形）反复出血。记录的血红蛋白为 28 g/L。你计划怎样做确定性治疗、在什么时候做？",
+        "en": "Working diagnosis: a bleeding vascular lesion of the jejunum, such as a cavernous haemangioma or venous malformation. His recorded haemoglobin is 28 g/L. What definitive treatment do you plan, and when?"
       },
       "requires": {
         "all": [
@@ -3868,8 +3988,8 @@
             "en": "Argon plasma coagulation of the lesion through a double-balloon enteroscope, keeping surgery for a failed endoscopic treatment"
           },
           "feedback": {
-            "zh-CN": "不对。器械辅助小肠镜下的凝固治疗适用于血管扩张等小的黏膜血管病变（ESGE 2022）；一个 2.0 cm × 3.5 cm 的强化肿块无法安全地烧灼掉，反而有穿孔和大出血的风险。小肠镜可以在术前标记病灶位置，但不能代替切除。",
-            "en": "No. Coagulation through device-assisted enteroscopy treats small mucosal vascular lesions such as angioectasias (ESGE 2022); a 2.0 × 3.5 cm enhancing mass cannot be ablated safely and risks perforation or major bleeding. Enteroscopy can mark the site before surgery, not replace it."
+            "en": "No. Coagulation through device-assisted enteroscopy suits small mucosal vascular lesions such as angioectasias (ESGE 2022); an enhancing mass of about 2.0 × 3.5 cm is not a lesion to ablate, and trying risks perforation or major bleeding. Enteroscopy can mark the site before surgery, not replace it.",
+            "zh-CN": "不对。器械辅助小肠镜下的凝固治疗适用于血管扩张等小的黏膜血管病变（ESGE 2022）；约 2.0 cm × 3.5 cm 的强化肿块不适合烧灼，强行处理有穿孔和大出血的风险。小肠镜可以在术前标记病灶位置，但不能代替切除。"
           }
         },
         {
@@ -3892,8 +4012,8 @@
             "en": "Low-dose radiotherapy to shrink the lesion and spare him a bowel resection"
           },
           "feedback": {
-            "zh-CN": "不对。放疗曾经用于血管瘤，如今已被弃用：照射儿童腹部会带来放射性肠炎和远期第二肿瘤的风险，而切除就能根治孤立的病灶。按 ISSVA 2018 分类，这类慢血流血管畸形今天靠切除、硬化治疗或（病变广泛时）西罗莫司处理。",
-            "en": "No. Radiotherapy was once used for haemangiomas and has been abandoned: in a child it brings radiation enteritis and a later second-cancer risk, while resection cures a solitary lesion. Slow-flow malformations, as ISSVA (2018) classifies them, are managed today by excision, sclerotherapy or, when extensive, sirolimus."
+            "en": "No. Radiotherapy was once used for haemangiomas and has been abandoned: in a child it brings radiation enteritis and a later second-cancer risk, while resection cures a solitary lesion. Slow-flow malformations, as the ISSVA classification (2025) groups them, are managed today by excision, sclerotherapy or, when extensive, sirolimus.",
+            "zh-CN": "不对。放疗曾经用于血管瘤，如今已被弃用：照射儿童腹部会带来放射性肠炎和远期第二肿瘤的风险，而切除就能根治孤立的病灶。ISSVA 2025 分类中的慢血流血管畸形，今天靠切除、硬化治疗或（病变广泛时）西罗莫司处理。"
           }
         },
         {
@@ -3904,8 +4024,8 @@
             "en": "Sirolimus for six months to control the lesion, transfusing as needed, then a repeat CT before any decision on surgery"
           },
           "feedback": {
-            "zh-CN": "不对。西罗莫司用于无法切除的广泛或多发慢血流畸形（如蓝色橡皮疱样痣综合征）；一个可切除、已经把血红蛋白拖到 28 g/L 的孤立病灶，用几个月的免疫抑制换来的只是推迟根治。先按 ISSVA 2018 分类判断病变的范围，再选治疗。",
-            "en": "No. Sirolimus is for extensive or multifocal slow-flow malformations that cannot be removed, such as blue rubber bleb naevus syndrome; for one resectable lesion that has already brought his haemoglobin to 28 g/L, months of immunosuppression only delay the cure. Classify the extent first (ISSVA 2018), then choose."
+            "en": "No. Sirolimus is for extensive or multifocal slow-flow malformations that cannot be removed, such as blue rubber bleb naevus syndrome; for one resectable lesion that has already brought his haemoglobin to 28 g/L, months of immunosuppression only delay the cure. Classify the lesion and its extent first (ISSVA 2025), then choose.",
+            "zh-CN": "不对。西罗莫司用于无法切除的广泛或多发慢血流畸形（如蓝色橡皮疱样痣综合征）；一个可切除、已经把血红蛋白拖到 28 g/L 的孤立病灶，用几个月的免疫抑制换来的只是推迟根治。先按 ISSVA 2025 分类判断病变的性质和范围，再选治疗。"
           }
         }
       ]
@@ -3957,8 +4077,8 @@
             "en": "Examine his skin and ask about other lesions, because venous malformations can be multiple"
           },
           "feedback": {
-            "zh-CN": "应选。静脉畸形可以多发——例如蓝色橡皮疱样痣综合征，病变同时见于皮肤和整个消化道；本病例没有记录是否检查过他的皮肤，也没有记录术中是否看过全部小肠（ISSVA 2018 分类）。",
-            "en": "Include. Venous malformations can be multiple — in blue rubber bleb naevus syndrome they appear on the skin and throughout the gut — and this case records neither a skin examination nor whether the whole small bowel was seen at operation (ISSVA 2018 classification)."
+            "en": "Include. Venous malformations can be multiple — in blue rubber bleb naevus syndrome they appear on the skin and throughout the gut — and this case records neither a skin examination nor whether the whole small bowel was seen at operation (ISSVA 2025 classification).",
+            "zh-CN": "应选。静脉畸形可以多发——例如蓝色橡皮疱样痣综合征，病变同时见于皮肤和整个消化道；本病例没有记录是否检查过他的皮肤，也没有记录术中是否看过全部小肠（ISSVA 2025 分类）。"
           }
         },
         {
@@ -3977,8 +4097,8 @@
           "id": "propranolol-prevention",
           "correct": false,
           "text": {
-            "zh-CN": "口服普萘洛尔半年，防止血管瘤再长出来",
-            "en": "Propranolol for six months to stop the haemangioma growing back"
+            "en": "Propranolol by mouth for six months after discharge, to stop the haemangioma growing back near the anastomosis",
+            "zh-CN": "出院后口服普萘洛尔 6 个月，防止血管瘤在吻合口附近再长出来"
           },
           "feedback": {
             "zh-CN": "不应选。普萘洛尔治疗的是增殖期的婴儿血管瘤（AAP 2019），不能预防静脉畸形复发；对已经切除的这类病变没有作用，只增加低血压、低血糖和心动过缓等不良反应的风险。",
@@ -3989,8 +4109,8 @@
           "id": "six-monthly-ct",
           "correct": false,
           "text": {
-            "zh-CN": "即使没有症状，也每 6 个月复查一次腹部增强 CT，持续 5 年",
-            "en": "Contrast CT of the abdomen every six months for five years, even if he stays well"
+            "en": "Contrast CT of the abdomen every six months for five years to catch any recurrence early, even if he stays well",
+            "zh-CN": "即使没有症状，也每 6 个月复查腹部增强 CT，持续 5 年，及早发现复发"
           },
           "feedback": {
             "zh-CN": "不应选。没有问题要回答的定期 CT，只会让一个正在生长的孩子反复接受辐射；只有出血或贫血复发时才需要再检查，届时首选小肠胶囊内镜（ESGE 2022）。",
@@ -4202,8 +4322,8 @@
       "domain": "management",
       "weight": 3,
       "text": {
-        "zh-CN": "首次作答即选择贫血纠正后切除病变肠段，取得同意后安排手术，且没有用放疗或普萘洛尔代替",
-        "en": "Chose resection after the anaemia was corrected at the first attempt, booked it with consent, and used neither radiotherapy nor propranolol instead"
+        "en": "Chose resection after the anaemia was corrected at the first attempt, involved the paediatric surgeons, booked it after localisation with consent, and used neither radiotherapy nor propranolol instead",
+        "zh-CN": "首次作答即选择贫血纠正后切除病变肠段，请了小儿外科会诊，在定位之后取得同意并安排手术，且没有用放疗或普萘洛尔代替"
       },
       "met": {
         "all": [
@@ -4211,8 +4331,11 @@
             "decidedFirstTry": "definitive-treatment"
           },
           {
+            "intervened": "surgical-consult"
+          },
+          {
             "intervened": "segmental-resection",
-            "valid": true
+            "whenIndicated": true
           },
           {
             "intervened": "consent"
@@ -4246,7 +4369,14 @@
             "decidedFirstTry": "after-surgery-plan"
           },
           {
-            "intervened": "oral-iron"
+            "any": [
+              {
+                "intervened": "oral-iron"
+              },
+              {
+                "intervened": "iv-iron"
+              }
+            ]
           },
           {
             "intervened": "follow-up-plan"
@@ -4331,8 +4461,8 @@
         "en": "Dr Shen (paediatric gastroenterology attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“黑便说明血在肠道里停留了多久、大致来自哪一段？”“胃镜和结肠镜各能看到哪里？两者之间还剩哪一段没人看过？”“这样低的血红蛋白是几周里慢慢降下来的，还是一下子降的？这对输血速度意味着什么？”“为什么不能只靠补铁等它升上来？”“异位胃黏膜显像、标记红细胞显像和增强 CT 各回答什么问题？”“门静脉期强化加上点状钙化，你会想到什么？”“手术之前必须先具备什么条件？”“‘海绵状血管瘤’这个病理名称，按今天的分类该怎么理解？”。可以讲解 ESGE 2022、ACG 2015、NICE NG24（2015）、BSH 2016 儿童输血指南、AAP 2019 和 ISSVA 2018 分类的相关原则；学员读到相应记录之后，可以对比记录中的做法（骨髓检查确认缺铁、核素显像和增强 CT 定位、先纠正贫血再切除）与现行做法（血清铁蛋白、胶囊内镜一线、按体重分次输血、ISSVA 命名）。不提前说出诊断或任何决策的正确选项；不补充病例没有的资料（血压、体温、体重、红细胞指数、铁蛋白、纠正贫血的方法、手术入路和出院后的随访都没有记录）。",
-        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “How long has blood been in the gut to turn the stool black, and roughly where does that put it?”, “Where do a gastroscope and a colonoscope reach — and which stretch between them has nobody seen?”, “Did a haemoglobin this low fall over weeks or overnight, and what does that mean for how fast you transfuse?”, “Why not simply give iron and wait?”, “What question does each of the ectopic gastric mucosa scan, the red-cell scan and the contrast CT answer?”, “Portal-venous enhancement with punctate calcification — what does that make you think of?”, “What must be in place before he goes to theatre?”, “What would today's classification call a ‘cavernous haemangioma’?”. May explain the relevant principles of ESGE 2022, ACG 2015, NICE NG24 (2015), the BSH 2016 paediatric transfusion guideline, AAP 2019 and the ISSVA 2018 classification and, once the learner has read the records, contrast the recorded practice (a marrow to show iron deficiency, nuclear scans and contrast CT to localise, anaemia corrected before resection) with current practice (serum ferritin, capsule endoscopy first-line, weight-based divided transfusion, ISSVA naming). Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (blood pressure, temperature, weight, red-cell indices, ferritin, how the anaemia was corrected, the surgical approach and the follow-up after discharge are not recorded)."
+        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“黑便说明血在肠道里停留了多久、大致来自哪一段？”“胃镜和结肠镜各能看到哪里？两者之间还剩哪一段没人看过？”“这样低的血红蛋白是几周里慢慢降下来的，还是一下子降的？这对输血速度意味着什么？”“为什么不能只靠补铁等它升上来？”“异位胃黏膜显像、标记红细胞显像和增强 CT 各回答什么问题？”“门静脉期强化加上点状钙化，你会想到什么？”“手术之前必须先具备什么条件？”“‘海绵状血管瘤’这个病理名称，按今天的分类该怎么理解？”。可以讲解 ESGE 2022、ACG 2015、NICE NG24（2015）、BSH 2016 儿童输血指南、AAP 2019 和 ISSVA 2025 分类的相关原则；学员读到相应记录之后，可以对比记录中的做法（骨髓检查呈缺铁表现、核素显像和增强 CT 定位、先纠正贫血再切除）与现行做法（血清铁蛋白、胶囊内镜一线、按体重分次输血、ISSVA 命名）。不提前说出诊断或任何决策的正确选项；不补充病例没有的资料（血压、体温、体重、红细胞指数、铁蛋白、纠正贫血的方法、手术入路和出院后的随访都没有记录）。",
+        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “How long has blood been in the gut to turn the stool black, and roughly where does that put it?”, “Where do a gastroscope and a colonoscope reach — and which stretch between them has nobody seen?”, “Did a haemoglobin this low fall over weeks or overnight, and what does that mean for how fast you transfuse?”, “Why not simply give iron and wait?”, “What question does each of the ectopic gastric mucosa scan, the red-cell scan and the contrast CT answer?”, “Portal-venous enhancement with punctate calcification — what does that make you think of?”, “What must be in place before he goes to theatre?”, “What would today's classification call a ‘cavernous haemangioma’?”. May explain the relevant principles of ESGE 2022, ACG 2015, NICE NG24 (2015), the BSH 2016 paediatric transfusion guideline, AAP 2019 and the ISSVA 2025 classification and, once the learner has read the records, contrast the recorded practice (a bone marrow showing iron deficiency, nuclear scans and contrast CT to localise, anaemia corrected before resection) with current practice (serum ferritin, capsule endoscopy first-line, weight-based divided transfusion, ISSVA naming). Never states the diagnosis or any decision's correct option before the learner commits, and adds no data the case lacks (blood pressure, temperature, weight, red-cell indices, ferritin, how the anaemia was corrected, the surgical approach and the follow-up after discharge are not recorded)."
       },
       "interprets": [
         "cbc",
@@ -4373,8 +4503,8 @@
         "en": "Dr Qiao (paediatric surgeon)"
       },
       "knowledge": {
-        "zh-CN": "接到会诊后参与。只解读学员已经读过的 CT、手术记录和病理报告：为什么先纠正贫血再手术；切除病变肠段并一期吻合；术中检查全部小肠、有条件时用术中内镜寻找其他病灶；向孩子和家属说明手术、取得同意的要点。不编造手术入路、切除长度、切缘、术中出血或术后并发症（都没有记录）。",
-        "en": "Joins once asked to consult. Interprets only the CT, the operation note and the pathology report the learner has read: why the anaemia is corrected before the operation; resection of the affected segment with a primary anastomosis; examining the whole small bowel at operation, with intraoperative enteroscopy where available, for other lesions; and how to explain the operation to him and his family and obtain consent. Never invents the approach, the length resected, the margins, operative blood loss or complications (none is recorded)."
+        "zh-CN": "学员请小儿外科会诊后参与。只解读学员已经读过的 CT、手术记录和病理报告：为什么先纠正贫血再手术；切除病变肠段并一期吻合；术中检查全部小肠、有条件时用术中内镜寻找其他病灶；向孩子和家属说明手术、取得同意的要点。不编造手术入路、切除长度、切缘、术中出血或术后并发症（都没有记录）。",
+        "en": "Joins once the learner asks for a paediatric surgical consultation. Interprets only the CT, the operation note and the pathology report the learner has read: why the anaemia is corrected before the operation; resection of the affected segment with a primary anastomosis; examining the whole small bowel at operation, with intraoperative enteroscopy where available, for other lesions; and how to explain the operation to him and his family and obtain consent. Never invents the approach, the length resected, the margins, operative blood loss or complications (none is recorded)."
       },
       "interprets": [
         "ct",
@@ -4390,8 +4520,8 @@
       "en": "Debrief: years of black stools in a child — correct the anaemia safely, then search the small bowel"
     },
     "conclusion": {
-      "zh-CN": "12岁男孩，8 年前一次低热后开始黑便，伴脐周阵发性痛和面色苍白，此后反复；多家医院的胃镜、结肠镜和腹部 CT 未明确原因，奥美拉唑和云南白药效果不佳，近 1 个月再发。入院时重度贫血貌，心率 100 次/分，心前区 Ⅱ/6 级收缩期杂音；血红蛋白 28 g/L，红细胞 1.81×10¹²/L，血小板 363×10⁹/L，粪便隐血 ++，凝血功能正常，骨髓呈缺铁表现。异位胃黏膜显像阴性，标记红细胞显像见较固定的放射性浓集，增强 CT 示空肠约 2.0 cm × 3.5 cm 肿块，门静脉期明显强化伴点状钙化。先纠正贫血，再切除屈氏韧带远侧约 5 cm 处 5 cm × 3 cm × 3 cm 的暗红色结节状肿物并行空肠吻合；病理为海绵状血管瘤伴出血及钙化，术后恢复良好。按今天的做法：按体重缓慢分次输血，再以胶囊内镜为一线检查寻找小肠来源（ESGE 2022），手术切除，并按 ISSVA 2018 分类理解病理名称。",
-      "en": "A 12-year-old boy had eight years of recurring black stools and pallor, beginning after a low-grade fever with periumbilical pain; gastroscopy, colonoscopy and abdominal CT at several hospitals found no cause, omeprazole and Yunnan Baiyao did not help, and it recurred last month. He looked severely anaemic, heart rate 100/min, with a grade II/6 systolic murmur; Hb 28 g/L, red cells 1.81×10¹²/L, platelets 363×10⁹/L, faecal occult blood ++, clotting normal, an iron-deficient marrow. The ectopic gastric mucosa scan was negative, a red-cell scan showed a relatively fixed focus, and CT a 2.0 × 3.5 cm jejunal mass enhancing in the portal venous phase with punctate calcification. Once his anaemia was corrected, a 5 × 3 × 3 cm mass about 5 cm beyond the ligament of Treitz was resected with an anastomosis: cavernous haemangioma with haemorrhage and calcification; he recovered well. Today: slow weight-based transfusion, a capsule-led small-bowel search (ESGE 2022), resection, ISSVA terms."
+      "en": "A 12-year-old boy had eight years of recurring black stools and pallor, beginning after a low-grade fever with intermittent periumbilical pain and back over the last month; gastroscopy, colonoscopy and abdominal CT at several hospitals found no cause; omeprazole and Yunnan Baiyao helped little. He looked severely anaemic (heart rate 100/min, grade II/6 systolic murmur); Hb 28 g/L, red cells 1.81×10¹²/L, platelets 363×10⁹/L, faecal occult blood ++, normal clotting, iron-deficient marrow. The Meckel scan was negative, a red-cell scan showed a relatively fixed focus, and contrast CT a markedly enhancing jejunal mass of about 2.0 × 3.5 cm with punctate calcification. Once the anaemia was corrected, a partial jejunal resection with anastomosis removed a 5 × 3 × 3 cm mass about 5 cm beyond the ligament of Treitz: cavernous haemangioma with haemorrhage and calcification; he recovered well. Today: slow transfusion by weight, a capsule-led small-bowel search (ESGE 2022), resection, ISSVA terms.",
+      "zh-CN": "12岁男孩，8 年前一次低热后开始黑便，伴脐周阵发性痛和面色苍白，此后反复；多家医院的胃镜、结肠镜和腹部 CT 未明确原因，奥美拉唑和云南白药效果不佳，近 1 个月再发。入院时重度贫血貌，心率 100 次/分，心前区 Ⅱ/6 级收缩期杂音；血红蛋白 28 g/L，红细胞 1.81×10¹²/L，血小板 363×10⁹/L，粪便隐血 ++，凝血功能正常，骨髓呈缺铁表现。异位胃黏膜显像阴性，标记红细胞显像见较固定的放射性浓集，增强 CT 示空肠约 2.0 cm × 3.5 cm 肿块，门静脉期明显强化伴点状钙化。先纠正贫血，再切除屈氏韧带远侧约 5 cm 处 5 cm × 3 cm × 3 cm 的暗红色结节状肿物并行空肠吻合；病理为海绵状血管瘤伴出血及钙化，术后恢复良好。按今天的做法：按体重缓慢分次输血，再以胶囊内镜为一线检查寻找小肠来源（ESGE 2022），手术切除，并按 ISSVA 2025 分类理解病理名称。"
     },
     "keyReasoning": [
       {
@@ -4451,35 +4581,36 @@
     ],
     "teachingPoints": [
       {
-        "zh-CN": "黑便而胃镜、结肠镜阴性，应按“疑似小肠出血”处理（ACG 2015 用这一术语取代“不明原因消化道出血”）。ESGE 2022 指南推荐小肠胶囊内镜作为一线检查，显性出血后最好 48 小时内完成，并用器械辅助小肠镜确认和治疗胶囊发现的病变；儿童还要考虑异位胃黏膜显像。记录与现行做法：他八年里反复做胃镜和结肠镜，这次靠核素显像和增强 CT 定位，记录中没有胶囊内镜或小肠镜。",
-        "en": "Black stools with a negative gastroscopy and colonoscopy are suspected small-bowel bleeding (the term ACG 2015 uses in place of 'obscure' bleeding). ESGE 2022 recommends small-bowel capsule endoscopy as the first-line test — ideally within 48 hours of an overt bleed — and device-assisted enteroscopy to confirm and treat what it finds; in a child, add a scan for ectopic gastric mucosa. Then and now: for eight years he had upper and lower endoscopy; this admission localised the source with nuclear scans and contrast CT, and no capsule or enteroscopy is recorded."
+        "en": "Black stools with a negative gastroscopy and colonoscopy are suspected small-bowel bleeding; ACG 2015 keeps 'obscure' for bleeding whose source is not found even after the small bowel has been examined. ESGE 2022 recommends small-bowel capsule endoscopy as the first-line test — ideally within 48 hours of an overt bleed — and device-assisted enteroscopy to confirm and treat what it finds; in a child, add a scan for ectopic gastric mucosa. Then and now: before this admission, gastroscopy, colonoscopy and abdominal CT at several hospitals found no cause; this admission localised the source with nuclear scans and contrast CT, and no capsule or enteroscopy is recorded.",
+        "zh-CN": "黑便而胃镜、结肠镜阴性，应按“疑似小肠出血”处理；ACG 2015 只把连小肠也检查过仍找不到出血来源的情况称为“不明原因消化道出血”。ESGE 2022 指南推荐小肠胶囊内镜作为一线检查，显性出血后最好 48 小时内完成，并用器械辅助小肠镜确认和治疗胶囊发现的病变；儿童还要考虑异位胃黏膜显像。记录与现行做法：入院前多家医院的胃镜、结肠镜和腹部 CT 未找到原因，这次靠核素显像和增强 CT 定位，记录中没有胶囊内镜或小肠镜。"
       },
       {
         "zh-CN": "慢性重度贫血要输血，但要慢。缺铁的骨髓、八年反复出血和这一个月的再发，提示贫血是慢慢形成的，血容量已代偿性扩张；快速大量输血可引起输血相关循环超负荷。NICE NG24（2015）对没有活动性出血的患者建议每次一个单位（儿童按体重折算等量）、输后复评；BSH 2016 儿童输血指南按体重计算输注量。记录与现行做法：报告写明手术前先纠正了贫血，但没有记录用的什么方法。",
-        "en": "Transfuse chronic severe anaemia — slowly. An iron-deficient marrow, eight years of recurrent bleeding and a month of renewed loss point to anaemia that developed slowly, with an expanded plasma volume, and a rapid large transfusion can cause transfusion-associated circulatory overload. NICE NG24 (2015) advises, when there is no active bleeding, one unit at a time (a weight-equivalent volume in children) with reassessment after each; the BSH 2016 paediatric guideline calculates volumes by weight. Then and now: the report says the anaemia was corrected before the operation, but not how."
+        "en": "Transfuse chronic severe anaemia — slowly. An iron-deficient marrow, eight years of recurrent bleeding and a month of renewed loss point to anaemia that developed slowly, with an expanded plasma volume, and a rapid large transfusion can cause transfusion-associated circulatory overload. NICE NG24 (2015) advises, for patients who are not actively bleeding, one unit at a time (a weight-equivalent volume in children) with reassessment after each; the BSH 2016 paediatric guideline calculates volumes by weight. Then and now: the report says the anaemia was corrected before the operation, but not how."
       },
       {
-        "zh-CN": "看清每项检查能回答什么：异位胃黏膜显像查找异位胃黏膜（梅克尔憩室出血多由此引起），阴性降低但不排除这种可能；标记红细胞显像只显示检查期间仍在出血或积聚的血液，只能定位到腹部的某个区域（ACG 2015）；增强 CT 显示肠壁和肿块——这里空肠肿块门静脉期明显强化、伴点状钙化（常为静脉石），提示慢血流的血管性病变。记录与现行做法：报告用骨髓检查确认缺铁，今天血清铁蛋白就能回答这个问题，不必穿刺。",
-        "en": "Know what each study can answer. A scan for ectopic gastric mucosa looks for the tissue that makes a Meckel diverticulum bleed — a negative one lowers but does not exclude it; a labelled red-cell scan shows only blood leaking or pooling during the scan and localises it to a region (ACG 2015); contrast CT shows the wall and masses — here a jejunal mass enhancing markedly in the portal venous phase with punctate calcification (often phleboliths), suggesting a slow-flow vascular lesion. Then and now: the report confirmed iron deficiency with a bone-marrow examination; today a serum ferritin answers that without a needle."
+        "zh-CN": "看清每项检查能回答什么：异位胃黏膜显像查找异位胃黏膜（梅克尔憩室出血多由此引起），阴性降低但不排除这种可能；标记红细胞显像只显示检查期间仍在出血或积聚的血液，只能定位到腹部的某个区域（ACG 2015）；增强 CT 显示肠壁和肿块——这里空肠肿块门静脉期明显强化、伴点状钙化（常为静脉石），提示慢血流的血管性病变。记录与现行做法：报告记录了骨髓检查呈缺铁表现；今天通常查血清铁蛋白，结合血涂片和红细胞指数，就能回答这个问题，不必做骨髓穿刺。",
+        "en": "Know what each study can answer. A scan for ectopic gastric mucosa looks for the tissue that makes a Meckel diverticulum bleed — a negative one lowers but does not exclude it; a labelled red-cell scan shows only blood leaking or pooling during the scan and localises it to a region (ACG 2015); contrast CT shows the wall and masses — here a jejunal mass enhancing markedly in the portal venous phase with punctate calcification (often phleboliths), suggesting a slow-flow vascular lesion. Then and now: the report records a bone-marrow examination with an iron-deficiency pattern; today a serum ferritin, with the blood film and red-cell indices, usually answers that question without a marrow."
       },
       {
         "zh-CN": "孤立的小肠血管性病变反复出血、内镜处理不了时，手术切除病变肠段并一期吻合即可根治；术中检查全部小肠（有条件时术中内镜），因为这类病变可以多发。普萘洛尔用于需要治疗的婴儿血管瘤（AAP 2019），不适用于他；放疗曾用于血管瘤，现已弃用。记录与现行做法：报告先纠正贫血，再行空肠部分切除吻合，和今天的顺序一致。",
         "en": "A solitary bleeding small-bowel vascular lesion beyond endoscopic treatment is cured by resecting the segment with a primary anastomosis; examine the whole small bowel at operation (intraoperative enteroscopy where available), because such lesions can be multiple. Propranolol is for infantile haemangiomas that need treatment (AAP 2019), not for him; radiotherapy, once used for haemangiomas, has been abandoned. Then and now: the report corrected the anaemia first and then resected the jejunal segment — the same order as today."
       },
       {
-        "zh-CN": "用今天的名称理解病理：ISSVA 2018 分类把血管异常分为血管肿瘤（如婴儿血管瘤）和血管畸形；肠道里报告为“海绵状血管瘤”的病变，多数属于慢血流的静脉畸形。这一区分决定了：不用普萘洛尔；要想到多发病变（如蓝色橡皮疱样痣综合征）并查看皮肤；随访要补足铁储备，黑便再现时重新检查小肠（ESGE 2022：胶囊内镜一线）。记录与现行做法：报告沿用“海绵状血管瘤”的名称，没有记录术后随访。",
-        "en": "Name the lesion in today's terms. The ISSVA classification (2018) divides vascular anomalies into vascular tumours (such as infantile haemangioma) and vascular malformations, and most bowel lesions reported as 'cavernous haemangioma' are slow-flow venous malformations. The distinction matters: no propranolol; think of multifocal disease (blue rubber bleb naevus syndrome) and look at the skin; follow up to refill the iron stores and re-examine the small bowel if black stools return (ESGE 2022: capsule endoscopy first-line). Then and now: the report keeps the label 'cavernous haemangioma' and records no follow-up after the operation."
+        "en": "Name the lesion in today's terms. The ISSVA classification (2025) separates vascular tumours, such as infantile haemangioma, from vascular malformations, with venous malformations among the slow-flow lesions; the old label 'cavernous haemangioma', the term most often misused in one review of the literature (Steele 2019), usually describes a venous malformation. The distinction matters: no propranolol; think of multifocal disease (blue rubber bleb naevus syndrome) and look at the skin; follow up to refill the iron stores and re-examine the small bowel if black stools return (ESGE 2022: capsule endoscopy first-line). Then and now: the report keeps the label 'cavernous haemangioma' and records no follow-up after the operation.",
+        "zh-CN": "用今天的名称理解病理：ISSVA 2025 分类把血管肿瘤（如婴儿血管瘤）和血管畸形分开，静脉畸形属于慢血流病变；“海绵状血管瘤”这一旧称在一项文献回顾中是被误用最多的术语（Steele 2019），通常指的是静脉畸形。这一区分决定了：不用普萘洛尔；要想到多发病变（如蓝色橡皮疱样痣综合征）并查看皮肤；随访要补足铁储备，黑便再现时重新检查小肠（ESGE 2022：胶囊内镜一线）。记录与现行做法：报告沿用“海绵状血管瘤”的名称，没有记录术后随访。"
       }
     ],
     "references": [
       "史长松, 李歌, 王彦利, 高丽, 葛英辉, 郭芳芳. 小肠血管瘤一例. 中华儿科杂志. 2011;49(6):474-476. doi:10.3760/cma.j.issn.0578-1310.2011.06.020. Available from: https://rs.yiigle.com/cmaid/44344",
       "Pennazio M, Rondonotti E, Despott EJ, et al. Small-bowel capsule endoscopy and device-assisted enteroscopy for diagnosis and treatment of small-bowel disorders: European Society of Gastrointestinal Endoscopy (ESGE) Guideline - Update 2022. Endoscopy. 2023;55(1):58-95. doi:10.1055/a-1973-3796",
-      "Gerson LB, Fidler JL, Cave DR, Leighton JA. ACG clinical guideline: diagnosis and management of small bowel bleeding. Am J Gastroenterol. 2015;110(9):1265-1287.",
-      "Thomson M, Tringali A, Dall'Oglio L, et al. Paediatric gastrointestinal endoscopy: European Society for Paediatric Gastroenterology Hepatology and Nutrition and European Society of Gastrointestinal Endoscopy guidelines. J Pediatr Gastroenterol Nutr. 2017;64(1):133-153.",
+      "Gerson LB, Fidler JL, Cave DR, Leighton JA. ACG clinical guideline: diagnosis and management of small bowel bleeding. Am J Gastroenterol. 2015;110(9):1265-1287. doi:10.1038/ajg.2015.246",
+      "Argüelles-Arias F, Donat E, Fernández-Urién I, et al. Guideline for wireless capsule endoscopy in children and adolescents: a consensus document by the SEGHNP (Spanish Society for Pediatric Gastroenterology, Hepatology, and Nutrition) and the SEPD (Spanish Society for Digestive Diseases). Rev Esp Enferm Dig. 2015;107(12):714-731.",
       "New HV, Berryman J, Bolton-Maggs PHB, et al. Guidelines on transfusion for fetuses, neonates and older children. Br J Haematol. 2016;175(5):784-828. doi:10.1111/bjh.14233",
-      "National Institute for Health and Care Excellence. Blood transfusion. NICE guideline NG24. London: NICE; 2015.",
-      "International Society for the Study of Vascular Anomalies. ISSVA classification of vascular anomalies. Revised 2018.",
-      "Krowchuk DP, Frieden IJ, Mancini AJ, et al. Clinical practice guideline for the management of infantile hemangiomas. Pediatrics. 2019;143(1):e20183475."
+      "National Institute for Health and Care Excellence. Blood transfusion. NICE guideline NG24. London: NICE; 2015 (last updated 2026).",
+      "Goldenberg DC, Vikkula M, Penington A, et al. Updated classification of vascular anomalies: a living document from the International Society for the Study of Vascular Anomalies Classification Group. J Vasc Anom (Phila). 2025;6(2):e113. doi:10.1097/JOVA.0000000000000113",
+      "Krowchuk DP, Frieden IJ, Mancini AJ, et al. Clinical practice guideline for the management of infantile hemangiomas. Pediatrics. 2019;143(1):e20183475.",
+      "Steele L, Zbeidy S, Thomson J, Flohr C. How is the term haemangioma used in the literature? An evaluation against the revised ISSVA classification. Pediatr Dermatol. 2019. doi:10.1111/pde.13885"
     ],
     "notice": {
       "zh-CN": "教学脚本评估，并非经过验证的能力评分。",
@@ -4576,6 +4707,22 @@
     },
     {
       "type": "ask",
+      "itemId": "frequency"
+    },
+    {
+      "type": "ask",
+      "itemId": "blood-vomit"
+    },
+    {
+      "type": "ask",
+      "itemId": "anaemia-symptoms"
+    },
+    {
+      "type": "ask",
+      "itemId": "pain-now"
+    },
+    {
+      "type": "ask",
       "itemId": "prev-tests"
     },
     {
@@ -4585,6 +4732,42 @@
     {
       "type": "ask",
       "itemId": "never-found"
+    },
+    {
+      "type": "ask",
+      "itemId": "transfusions"
+    },
+    {
+      "type": "ask",
+      "itemId": "allergies"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-medicines"
+    },
+    {
+      "type": "ask",
+      "itemId": "other-illness"
+    },
+    {
+      "type": "ask",
+      "itemId": "operations"
+    },
+    {
+      "type": "ask",
+      "itemId": "family"
+    },
+    {
+      "type": "ask",
+      "itemId": "skin"
+    },
+    {
+      "type": "ask",
+      "itemId": "growth"
+    },
+    {
+      "type": "ask",
+      "itemId": "worries"
     },
     {
       "type": "examine",
@@ -4651,18 +4834,6 @@
       "phase": "admission"
     },
     {
-      "type": "ask",
-      "itemId": "allergies"
-    },
-    {
-      "type": "ask",
-      "itemId": "transfusions"
-    },
-    {
-      "type": "ask",
-      "itemId": "other-medicines"
-    },
-    {
       "type": "order",
       "investigationId": "crossmatch"
     },
@@ -4692,51 +4863,11 @@
     },
     {
       "type": "ask",
-      "itemId": "frequency"
-    },
-    {
-      "type": "ask",
-      "itemId": "blood-vomit"
-    },
-    {
-      "type": "ask",
-      "itemId": "anaemia-symptoms"
-    },
-    {
-      "type": "ask",
-      "itemId": "pain-now"
-    },
-    {
-      "type": "ask",
-      "itemId": "family"
-    },
-    {
-      "type": "ask",
-      "itemId": "skin"
-    },
-    {
-      "type": "ask",
-      "itemId": "other-illness"
-    },
-    {
-      "type": "ask",
-      "itemId": "operations"
-    },
-    {
-      "type": "ask",
-      "itemId": "growth"
-    },
-    {
-      "type": "ask",
       "itemId": "school-mood"
     },
     {
       "type": "ask",
       "itemId": "substances"
-    },
-    {
-      "type": "ask",
-      "itemId": "worries"
     },
     {
       "type": "order",
@@ -4789,6 +4920,10 @@
       "optionIds": [
         "jejunal-vascular-lesion"
       ]
+    },
+    {
+      "type": "intervene",
+      "interventionId": "surgical-consult"
     },
     {
       "type": "answer",
