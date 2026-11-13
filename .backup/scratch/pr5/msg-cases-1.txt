@@ -1,0 +1,33 @@
+CMCR 105: four more cases re-authored and reviewed (1.1.0)
+
+Four cases drafted earlier from the facts their 1.0.0 recorded, each then
+reviewed independently (every patient fact traced to 1.0.0; clinical
+accuracy against named, current guidance, with citations checked online;
+assessment validity; voice, privacy, spoilers) and fixed:
+
+- cmcr-1551888 — leg swelling and exertional chest tightness years after
+  valve replacement: prosthetic valve dysfunction first, why a normal LVEF
+  does not exclude right-heart failure, the mechanism of obstruction before
+  any reintervention. The review removed an embellished outcome ("an
+  uneventful recovery" where the record gives only the discharge day) and
+  re-dated a 3-month anticoagulation recommendation to ESC/EACTS 2021.
+- cmcr-33790 — an 80-year-old woman with inferior STEMI and right-ventricular
+  involvement: the catheter laboratory without delay, no nitrates with RV
+  involvement and hypotension, why routine thrombus aspiration is no longer
+  recommended, the mechanism when the artery shows no plaque, and
+  anticoagulation rather than antiplatelets alone once the echocardiogram
+  shows a left atrial thrombus.
+- cmcr-561144 — removing an internal jugular line five days after a thoracic
+  sympathectomy: safe removal (INS 2024), cerebral gas embolism recognised at
+  the bedside, first aid in the first minutes.
+- cmcr-70094 — a 7-day-old preterm girl whose breathing worsens: catheter
+  complications first in a newborn with a central line, the PICC tip against
+  its target, a line-related pleural effusion.
+
+Reviews: 2 critical, 22 major and 47 minor findings, every critical and
+major one fixed. Each case passes strict validation (including the audit's
+new safety lints), verification (100 %), the per-case quality check, the
+collection contract and the in-world demonstration in both languages.
+
+Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Claude-Session: https://claude.ai/code/session_01AWJW3iF3PiZeQzaQpyArab
