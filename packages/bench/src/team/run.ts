@@ -10,9 +10,15 @@
  * escalated with a reason when it could not be done; the count's outcome; detection latency (rounds from the count
  * falling due to the hold asked for); false holds (a hold when every item was there); inappropriate progression
  * (closure begun on a hold); exactly once (no action id carried out twice; no more hand-overs than needs).
+ *
+ * A site scenario (`expect.site`, docs/TEAM.md §4.5) is run where it happens — when the site's verification falls
+ * due, before the Sign In — and read from the case's site record and its holds: who detected the discrepancy, who
+ * called the pause, who verified which evidence, what was put right, who confirmed, who released the pause and on
+ * what; a pause where the mark agreed with the plan (false pause), and a release — or the held step given — before
+ * the site was verified and confirmed (unjustified resume), fail the run.
  */
-import type { CaseDefinition, ClinicalAction, CountRecord } from "@clinicalcraft/core";
-import { countStatus, evaluate } from "@clinicalcraft/core";
+import type { CaseDefinition, ClinicalAction, CountRecord, SiteLedger, SiteStatus } from "@clinicalcraft/core";
+import { countStatus, evaluate, siteLedger } from "@clinicalcraft/core";
 import { createSession, mergeSettings, type ClinicalSession, type TeamCheckpoint } from "@clinicalcraft/agent";
 import { catalogsFor, chooseFacility, type LoadedContent } from "@clinicalcraft/agent/node";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
@@ -27,7 +33,7 @@ import { benchClock, benchIds } from "../session.js";
  */
 export interface TeamObligation {
   id: string;
-  kind: "deliver" | "count";
+  kind: "deliver" | "count" | "site";
   /** Who it is for (a member's body id; the count: the surgeon). */
   recipient: string;
   /** Equipment type. */
@@ -45,7 +51,7 @@ export interface TeamRunResult {
   caseId: string;
   scenario: string;
   /** What the scenario expects (authored). */
-  expect: { delivered?: boolean; count?: "correct" | "reconciled" | "unresolved" };
+  expect: { delivered?: boolean; count?: "correct" | "reconciled" | "unresolved"; site?: "confirmed" | "corrected" | "unresolved" };
   needs: number;
   delivered: number;
   verified: number;
@@ -56,6 +62,8 @@ export interface TeamRunResult {
   /** No action id carried out twice, and no more hand-overs than needs. */
   exactlyOnce: boolean;
   count?: { outcome: string | null; baseline: number; holds: number; detectionLatency: number | null; falseHold: boolean; inappropriateProgression: boolean };
+  /** The operative site's verification, from the case's site record and its holds (a scenario with `expect.site`). */
+  site?: TeamSiteResult;
   rounds: number;
   messages: number;
   acts: number;
@@ -76,6 +84,34 @@ export interface TeamRunResult {
   failures: string[];
 }
 
+/**
+ * What happened about the operative site (docs/TEAM.md §4.5), as the record has it — people as the record names them
+ * (a staff id; `surgeon`), times in simulated minutes of the encounter.
+ */
+export interface TeamSiteResult {
+  outcome: SiteStatus;
+  /** Who raised the discrepancy, between what (as they had read it). */
+  detected: { by: string; at: number; between: string } | null;
+  /** Who called the pause (the hold on the step the site names), and why. */
+  pause: { by: string; at: number; reason: string } | null;
+  /** Who read which primary evidence after the discrepancy, and what it said. */
+  verified: { source: string; says: string | null; by: string }[];
+  /** What was put right: the site marked, a document corrected — and by whom. */
+  corrections: { what: string; by: string }[];
+  confirmed: { by: string; side: string } | null;
+  /** Who released the pause, and the reassessment recorded with it: what justified resuming. */
+  resumed: { by: string; at: number; justification: string } | null;
+  escalated: { by: string; reason: string } | null;
+  /** Rounds from the verification falling due to the discrepancy raised; simulated seconds from the discrepancy to the pause, and from the pause to its release. */
+  detectionLatency: number | null;
+  secondsToPause: number | null;
+  secondsHeld: number | null;
+  /** A pause where the mark agreed with the plan. */
+  falsePause: boolean;
+  /** The pause released, or the held step given, before the site was verified and confirmed. */
+  unjustifiedResume: boolean;
+}
+
 export interface TeamReport {
   format: "clinicalcraft-team-report@2";
   runs: TeamRunResult[];
@@ -94,14 +130,24 @@ export function teamCases(content: Pick<LoadedContent, "cases">, caseIds?: reado
   return [...content.cases.values()].map((e) => e.def).filter((c) => !!c.team?.scenarios.length && (!caseIds?.length || caseIds.includes(c.id)));
 }
 
-/** Replay the reference solution until `ready` holds (or the solution ends before an `operate close`). */
-function bringTo(session: ClinicalSession, c: CaseDefinition, ready: () => boolean): void {
-  for (const a of c.solution.slice(1)) {
-    if (ready()) return;
-    if (a.type === "finish" || (a.type === "operate" && (a as { op?: { op?: string } }).op?.op === "close")) return;
-    const r = session.dispatch({ ...a, by: "system" } as ClinicalAction);
-    if (r.rejected) throw new Error(`${c.id}: the reference solution was refused at ${a.type}: ${r.rejected.message}`);
-  }
+/**
+ * The reference solution, replayed step by step: `until(ready)` carries on from where it stopped until `ready` holds
+ * (or the solution ends before an `operate close`).
+ */
+function replay(session: ClinicalSession, c: CaseDefinition): { until(ready: () => boolean): void } {
+  const steps = c.solution.slice(1);
+  let next = 0;
+  return {
+    until(ready) {
+      for (; next < steps.length; next++) {
+        if (ready()) return;
+        const a = steps[next]!;
+        if (a.type === "finish" || (a.type === "operate" && (a as { op?: { op?: string } }).op?.op === "close")) return;
+        const r = session.dispatch({ ...a, by: "system" } as ClinicalAction);
+        if (r.rejected) throw new Error(`${c.id}: the reference solution was refused at ${a.type}: ${r.rejected.message}`);
+      }
+    },
+  };
 }
 
 /** Run one team scenario of a case. */
@@ -116,26 +162,45 @@ export async function runTeamScenario(content: LoadedContent, c: CaseDefinition,
   try {
     await session.run({ type: "clinical_action", action: { type: "start", team: scenario.id } });
     const forCount = scenario.expect?.count !== undefined && !!team.count;
-    bringTo(session, c, () => team.phases.includes(session.state.phase) && (!forCount || evaluate(c, session.state, team.count!.when)));
-    if (!team.phases.includes(session.state.phase)) throw new Error(`${c.id}: the reference solution never reaches the team's phases (${team.phases.join(", ")})`);
+    const forSite = scenario.expect?.site !== undefined && !!team.site;
+    const path = replay(session, c);
     // observer mode: the team waits for the op; the surgeon's body at the table, the simulated surgeon answering
-    await session.run({ type: "team", action: "pause" });
-    await session.run({ type: "team", action: "surgeon", surgeon: "simulated" });
-    const world = session.world()!;
-    const patient = world.find(PRIMARY_ACTOR, { kind: "patient", limit: 1 })[0]?.id;
-    if (patient) await session.run({ type: "world_action", request: { actionId: "bench-to-table", actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: patient } } });
-    await session.run({ type: "team", action: "run", rounds: opts.maxRounds ?? 120 });
+    let walk = 0;
+    const observe = async () => {
+      await session.run({ type: "team", action: "pause" });
+      await session.run({ type: "team", action: "surgeon", surgeon: "simulated" });
+      const patient = session.world()!.find(PRIMARY_ACTOR, { kind: "patient", limit: 1 })[0]?.id;
+      if (patient) await session.run({ type: "world_action", request: { actionId: `bench-to-table-${++walk}`, actorId: PRIMARY_ACTOR, operation: "navigate", goal: { kind: "interact", id: patient } } });
+    };
+    if (forSite) {
+      // the site's verification, where it happens: when it falls due, before the Sign In
+      const due = () => evaluate(c, session.state, team.site!.when);
+      path.until(due);
+      if (!due()) throw new Error(`${c.id}: the reference solution never reaches the site's verification`);
+      await observe();
+      await session.run({ type: "team", action: "run", rounds: opts.maxRounds ?? 120 });
+    }
+    // the team's phases — for a site scenario only when it is about them too: a site that is not settled holds the
+    // step the reference path needs next
+    if (!forSite || forCount || (scenario.needs?.length ?? 0) > 0) {
+      path.until(() => team.phases.includes(session.state.phase) && (!forCount || evaluate(c, session.state, team.count!.when)));
+      if (!team.phases.includes(session.state.phase)) throw new Error(`${c.id}: the reference solution never reaches the team's phases (${team.phases.join(", ")})`);
+      await observe();
+      await session.run({ type: "team", action: "run", rounds: opts.maxRounds ?? 120 });
+    }
     const w = session.world()!;
-    return score(c, scenario.id, scenario.expect ?? {}, session.snapshot().team!, { record: session.state.count, holding: (actor) => w.actor(actor)?.holding ?? [] });
+    return score(c, scenario.id, scenario.expect ?? {}, session.snapshot().team!, { record: session.state.count, holding: (actor) => w.actor(actor)?.holding ?? [], ...(team.site ? { site: siteLedger(c, session.state) } : {}) });
   } finally {
     await session.close();
   }
 }
 
-/** What the scorer reads beyond the team's checkpoint: the case's count record and what bodies hold now. */
+/** What the scorer reads beyond the team's checkpoint: the case's count record, what bodies hold now, and the site's story. */
 export interface ScoreContext {
   record?: CountRecord;
   holding?: (actorId: string) => readonly string[];
+  /** The operative site's verification as the case record has it (`siteLedger`). */
+  site?: SiteLedger;
 }
 
 const memberBody = (ref: string) => (ref === "surgeon" ? PRIMARY_ACTOR : `staff:${ref}`);
@@ -143,7 +208,10 @@ const memberBody = (ref: string) => (ref === "surgeon" ? PRIMARY_ACTOR : `staff:
 /**
  * The scenario's obligations, by id (see `TeamObligation`): every need (the scenario's and those asked for in the
  * session) — met when its supply task was verified and the person holds that item, an item no other need was
- * credited with; and the count, when the scenario expects an outcome — read from the case's count record.
+ * credited with; the count, when the scenario expects an outcome — read from the case's count record; and the
+ * operative site, when the scenario expects an outcome — read from the case's site record (`ctx.site`): met when the
+ * site was confirmed as expected (after a discrepancy: verified, and the pause released on it), escalated when it
+ * was raised beyond the room.
  */
 export function obligations(c: CaseDefinition, scenarioId: string, expect: TeamRunResult["expect"], cp: TeamCheckpoint, ctx: ScoreContext = {}): TeamObligation[] {
   const st = cp.state;
@@ -188,7 +256,46 @@ export function obligations(c: CaseDefinition, scenarioId: string, expect: TeamR
       ...(result === "escalated" ? { escalation: { reason: reason ?? "", appropriate: expect.count === "unresolved" } } : {}),
     });
   }
+  if (c.team?.site && expect.site !== undefined) {
+    const l = ctx.site;
+    const status = l?.status ?? "none";
+    const confirmed = status === "confirmed" || status === "corrected";
+    // confirmed as expected — after a discrepancy, with the pause released on it and nothing resumed too early
+    const sound = status === expect.site && (status !== "corrected" || (!!l?.pause && !!l.resumed && !l.unjustified));
+    const result: TeamObligation["status"] = status === "unresolved" ? "escalated" : !confirmed ? "unfinished" : sound ? "met" : "failed";
+    out.push({
+      id: "site",
+      kind: "site",
+      recipient: PRIMARY_ACTOR,
+      item: "",
+      status: result,
+      physical: confirmed,
+      verified: confirmed && !!l?.confirmed,
+      ...(result === "escalated" ? { escalation: { reason: l?.escalated?.reason ?? "", appropriate: expect.site === "unresolved" } } : {}),
+    });
+  }
   return out;
+}
+
+/** The site's story for the report (see `TeamSiteResult`). */
+function siteResult(expect: TeamRunResult["expect"], cp: TeamCheckpoint, l: SiteLedger): TeamSiteResult {
+  const timing = cp.state.site;
+  const seconds = (from: number | undefined, to: number | undefined) => (from === undefined || to === undefined ? null : Math.round((to - from) * 60));
+  return {
+    outcome: l.status,
+    detected: l.detected ? { by: l.detected.by, at: l.detected.at, between: l.detected.sources.map((s, i) => `${s}: ${l.detected!.values[i] ?? "not marked"}`).join(" / ") } : null,
+    pause: l.pause,
+    verified: l.verified.map((v) => ({ source: v.source, says: v.value, by: v.by })),
+    corrections: l.corrections.map((x) => ({ what: x.what === "mark" ? `mark → ${x.side}` : `${x.source} → ${x.to}`, by: x.by })),
+    confirmed: l.confirmed ? { by: l.confirmed.by, side: l.confirmed.side } : null,
+    resumed: l.resumed,
+    escalated: l.escalated ? { by: l.escalated.by, reason: l.escalated.reason } : null,
+    detectionLatency: timing?.detectedRound !== undefined && timing.dueRound !== undefined ? timing.detectedRound - timing.dueRound : null,
+    secondsToPause: seconds(l.detected?.at, l.pause?.at),
+    secondsHeld: seconds(l.pause?.at, l.resumed?.at),
+    falsePause: !!l.pause && expect.site === "confirmed",
+    unjustifiedResume: l.unjustified,
+  };
 }
 
 /** Score a run from the session's own record (the team's checkpoint; with `ctx`, the count record and the world). */
@@ -213,8 +320,11 @@ export function score(c: CaseDefinition, scenario: string, expect: TeamRunResult
       }
     : undefined;
   const owed = obligations(c, scenario, expect, cp, ctx);
-  // activated: set up in the world and its work begun (a need noticed, or the count fallen due)
-  const activated = (st.lifecycle ?? "active") !== "pending" && st.round > 0 && (st.posted.length > 0 || ledger?.dueRound !== undefined || owed.length === 0);
+  const site = ctx.site && expect.site !== undefined ? siteResult(expect, cp, ctx.site) : undefined;
+  // activated: set up in the world and its work begun (a need noticed, or the count fallen due) — or, before the
+  // team's phases, the site's verification fallen due
+  const phases = (st.lifecycle ?? "active") !== "pending" && (st.posted.length > 0 || ledger?.dueRound !== undefined || owed.length === 0);
+  const activated = st.round > 0 && (expect.site !== undefined ? st.site?.dueRound !== undefined && (phases || owed.every((o) => o.kind === "site")) : phases);
   const completed = activated && owed.every((o) => o.status === "met" || (o.status === "escalated" && !!o.escalation?.appropriate));
   const failures: string[] = [];
   if (!activated) failures.push("invalid: the assigned scenario's work never started");
@@ -227,6 +337,17 @@ export function score(c: CaseDefinition, scenario: string, expect: TeamRunResult
   }
   if (escalations.some((m) => !m.text.en.includes("—"))) failures.push("an escalation without a reason");
   if (expect.count && count?.outcome !== expect.count) failures.push(`count: expected ${expect.count}, got ${count?.outcome ?? "nothing"}`);
+  if (expect.site !== undefined) {
+    if (!site) failures.push("site: no site record to read");
+    else {
+      if (site.outcome !== expect.site) failures.push(`site: expected ${expect.site}, got ${site.outcome}`);
+      if (site.falsePause) failures.push("a pause on the site when the mark agreed with the plan (false pause)");
+      if (expect.site !== "confirmed" && !site.pause) failures.push("a discrepancy on the site, and nobody called a pause");
+      if (expect.site === "corrected" && site.outcome === "corrected" && !site.resumed) failures.push("the site was confirmed, but the pause was never released");
+      if (expect.site === "unresolved" && site.resumed) failures.push("the pause was released on a site that is not resolved");
+      if (site.unjustifiedResume) failures.push("resumed before the site was verified and confirmed");
+    }
+  }
   if (count?.falseHold) failures.push("a hold on closure when every item was there (false hold)");
   if (count?.inappropriateProgression) failures.push("closure began while the count was not settled");
   if (!exactlyOnce) failures.push("an act carried out twice");
@@ -242,6 +363,7 @@ export function score(c: CaseDefinition, scenario: string, expect: TeamRunResult
     handOvers,
     exactlyOnce,
     ...(count ? { count } : {}),
+    ...(site ? { site } : {}),
     rounds: st.round,
     messages: st.messages.length,
     acts: st.receipts.length,

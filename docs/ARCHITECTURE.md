@@ -741,7 +741,11 @@ See `docs/PROTOCOL.md` for full message shapes. Summary:
   each member's own view (what their body perceives, what was said to them, their tasks); their acts are world
   actions on a nurse's tool path. Driven by the `team` op (the browser's team clock and headless runs alike), saved as
   a `TeamCheckpoint`, scored by `bench team`. Concealed items and `search` live in the world
-  (`packages/world/src/conceal.ts`).
+  (`packages/world/src/conceal.ts`). Two records of the case are the team's to keep and everyone's to read, each
+  written only from what bodies did in the world: the surgical count (`engine/count.ts`, `session/count.ts`) and the
+  operative site's verification (`engine/site.ts`, `session/site.ts`: the skin mark against what says where the
+  operation is, a discrepancy seen through — who detected it, who called the pause, who verified what, what
+  justified resuming).
 * **Agents** — markdown + frontmatter definitions (Claude Code subagents):
   `patient` and `companion` (portrayed like standardised patients),
   `nurse` (ISBAR / SBAR), `radiologist`, `pathologist`, `attending`

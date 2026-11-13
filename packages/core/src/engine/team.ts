@@ -33,6 +33,25 @@ export function checkTeamDefinition(c: CaseDefinition): Issue[] {
     if (members.has(m.staff)) issues.push(err(["team", "cover", i, "staff"], `"${m.staff}" is already a member of the team`));
     if (m.duties.includes("surgeon")) issues.push(err(["team", "cover", i, "duties"], `the surgeon is the learner: nobody covers "surgeon"`));
   });
+  // the operative site the team verifies: sides, evidence that names them, primary evidence to verify against, the step held
+  const site = team.site;
+  const sides = new Set(Object.keys(site?.sides ?? {}));
+  const evidence = new Map((site?.evidence ?? []).map((e) => [e.id, e]));
+  if (site) {
+    const at = ["team", "site"];
+    if (sides.size < 2) issues.push(err([...at, "sides"], `a site is verified between at least two sides (or sites, or levels)`));
+    const seen = new Set<string>();
+    site.evidence.forEach((e, i) => {
+      if (seen.has(e.id) || e.id === "mark") issues.push(err([...at, "evidence", i, "id"], e.id === "mark" ? `"mark" is the skin mark: a piece of evidence needs another id` : `"${e.id}" is listed twice`));
+      seen.add(e.id);
+      if (!sides.has(e.says)) issues.push(err([...at, "evidence", i, "says"], `unknown side "${e.says}"`));
+    });
+    if (!site.evidence.some((e) => e.primary)) issues.push(err([...at, "evidence"], `no primary evidence: a discrepancy has nothing to be verified against`));
+    if (!site.evidence.some((e) => e.kind === "document")) issues.push(err([...at, "evidence"], `no document: the check compares the mark with what a document says`));
+    if (new Set(site.evidence.filter((e) => e.primary).map((e) => e.says)).size > 1) issues.push(err([...at, "evidence"], `the case's own primary evidence disagrees with itself (a team scenario may make it so; the case may not)`));
+    if (site.mark !== undefined && !sides.has(site.mark)) issues.push(err([...at, "mark"], `unknown side "${site.mark}"`));
+    if (!c.interventions.some((x) => x.id === site.holds)) issues.push(err([...at, "holds"], `unknown intervention "${site.holds}"`));
+  }
   const scenarios = new Set<string>();
   team.scenarios.forEach((s, i) => {
     const at = ["team", "scenarios", i];
@@ -57,8 +76,17 @@ export function checkTeamDefinition(c: CaseDefinition): Issue[] {
     });
     if (s.expect?.delivered !== undefined && s.needs.length === 0) issues.push(err([...at, "expect", "delivered"], `nothing is needed in team scenario "${s.id}" (no need to deliver)`));
     if (s.expect?.count && !team.count) issues.push(err([...at, "expect", "count"], `the team keeps no count (team.count)`));
-    // a control scenario (nothing set up) is fine when the team keeps a count: it measures false holds
-    if (s.needs.length === 0 && s.items.length === 0 && s.absent.length === 0 && !team.count) issues.push(warn(at, `team scenario "${s.id}" sets nothing up (no need, no item moved, nobody absent)`));
+    if ((s.expect?.site || s.site) && !site) issues.push(err([...at, s.site ? "site" : "expect"], `the team verifies no operative site (team.site)`));
+    if (s.site && site) {
+      if (typeof s.site.mark === "string" && !sides.has(s.site.mark)) issues.push(err([...at, "site", "mark"], `unknown side "${s.site.mark}"`));
+      for (const [id, side] of Object.entries(s.site.evidence ?? {})) {
+        if (!evidence.has(id)) issues.push(err([...at, "site", "evidence", id], `unknown site evidence "${id}"`));
+        if (!sides.has(side)) issues.push(err([...at, "site", "evidence", id], `unknown side "${side}"`));
+      }
+      if (!s.expect?.site) issues.push(warn([...at, "site"], `team scenario "${s.id}" changes the site and expects nothing of it (expect.site)`));
+    }
+    // a control scenario (nothing set up) is fine when the team keeps a count or verifies a site: it measures false holds
+    if (s.needs.length === 0 && s.items.length === 0 && s.absent.length === 0 && !s.site && !team.count && !site) issues.push(warn(at, `team scenario "${s.id}" sets nothing up (no need, no item moved, nobody absent)`));
   });
   c.solution.forEach((a, i) => {
     if (a.type === "start" && a.team !== undefined && !scenarios.has(a.team)) issues.push(err(["solution", i, "team"], `unknown team scenario "${a.team}"`));

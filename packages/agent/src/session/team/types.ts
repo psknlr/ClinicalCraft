@@ -27,6 +27,23 @@ export type MessageKind =
   /** Something noticed, said aloud (a need). */
   | "notice";
 
+/**
+ * What a message says about the operative site (docs/TEAM.md §4.5): asked to hold the step the site holds (`hold`),
+ * or to verify the side against the evidence and mark it (`verify`); the discrepancy as it was raised (`sources`, and
+ * what each said — a side id; null: not marked); what was found — the side `verified`, the evidence that disagrees
+ * with itself (`conflict`); the side `confirmed`, and the pause `released` with it.
+ */
+export interface SiteAbout {
+  hold?: boolean;
+  verify?: boolean;
+  sources?: [string, string];
+  values?: (string | null)[];
+  verified?: string;
+  conflict?: boolean;
+  confirmed?: string;
+  released?: boolean;
+}
+
 export interface TeamMessage {
   id: string;
   /** The conversation it belongs to (one task's exchange). */
@@ -56,6 +73,8 @@ export interface TeamMessage {
     setAside?: string[];
     hold?: boolean;
     recount?: boolean;
+    /** The operative site's verification (docs/TEAM.md §4.5). */
+    site?: SiteAbout;
   };
   room: string;
   patient: string | null;
@@ -118,14 +137,28 @@ export interface CountCheck {
   setAside?: string[];
 }
 
+/** The circulating nurse's work on the operative site (docs/TEAM.md §4.5), beyond what the site's record says. */
+export interface SiteProgress {
+  /** Colleagues asked to hold the step (the anaesthetist). */
+  told: MemberId[];
+  /** The surgeon was asked to verify the side (the round), and has reported: she looks again with her own eyes. */
+  asked?: number;
+  recheck?: boolean;
+  /** Who has been told how it ended (the confirmation, the release). */
+  reported: MemberId[];
+}
+
 export interface TeamTask {
   id: string;
   /**
    * `supply`: see that someone gets an item (the circulator's); `deliver`: take an item to someone (the scrub
    * nurse's); `count`: a count (the counter's); `check`: a count discrepancy seen through — hold, search, recount
-   * (the circulator's); `wound`: the surgeon checks the wound (the simulated surgeon's).
+   * (the circulator's); `wound`: the surgeon checks the wound (the simulated surgeon's); `site`: the operative site
+   * verified — the mark against the documents, and a discrepancy seen through: the pause, the surgeon asked, her own
+   * second look, the confirmation, the release (the circulator's); `verify`: the side verified against the primary
+   * evidence, the site marked or a document corrected (the simulated surgeon's).
    */
-  kind: "supply" | "deliver" | "count" | "check" | "wound";
+  kind: "supply" | "deliver" | "count" | "check" | "wound" | "site" | "verify";
   need: string;
   /** Equipment type id. */
   item: string;
@@ -153,6 +186,8 @@ export interface TeamTask {
   /** `count`: the number counted; `check`: the discrepancy's progress. */
   counted?: number;
   count?: CountCheck;
+  /** `site`: where the circulating nurse's work on the site has got to. */
+  site?: SiteProgress;
   /** Where the world pointed after a refusal for reach or sight (walk there, then act again). */
   goal?: NavGoal;
   /** Why it ended this way (declined, escalated): a short code, and what was said. */
@@ -218,6 +253,22 @@ export interface TeamState {
   extra: TeamNeed[];
   /** The count (a case team with `count`): the baseline and what happened, for the record and the benchmark. */
   count?: CountLedger;
+  /** The operative site (a case team with `site`): when its verification fell due, and the rounds of what followed. */
+  site?: SiteTiming;
+}
+
+/**
+ * The team's own timing of the site's verification (docs/TEAM.md §4.5), in rounds, for the benchmark. What happened —
+ * who detected, who called the pause, who verified what, what justified resuming — is the case's site record and its
+ * holds (`siteLedger`), never this.
+ */
+export interface SiteTiming {
+  /** The verification fell due (the record opened). */
+  dueRound?: number;
+  /** A discrepancy was raised; the pause was called; the site was settled (confirmed, corrected, or escalated). */
+  detectedRound?: number;
+  pausedRound?: number;
+  settledRound?: number;
 }
 
 /**

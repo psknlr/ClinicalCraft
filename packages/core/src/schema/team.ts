@@ -63,12 +63,26 @@ export const TeamScenarioSchema = z
     /**
      * What should come of it (the team benchmark's ground truth; never shown to the team): `delivered` — every need
      * ends with the person holding the item, verified (false: it ends escalated, with the reason); `count` — the
-     * count's outcome.
+     * count's outcome; `site` — how the operative site's verification ends (`confirmed`: no discrepancy, no pause;
+     * `corrected`: raised, verified, put right, resumed; `unresolved`: escalated — the operation does not go on).
      */
     expect: z
       .object({
         delivered: z.boolean().optional(),
         count: z.enum(["correct", "reconciled", "unresolved"]).optional(),
+        site: z.enum(["confirmed", "corrected", "unresolved"]).optional(),
+      })
+      .strict()
+      .optional(),
+    /**
+     * What is not as the case's team site says when the encounter starts (a team with `site`): `mark` — where the
+     * skin mark is (null: the site is not marked); `evidence` — what a piece of evidence says instead (the operating
+     * list typed with the usual side). Hidden like the rest of the scenario: the team has to see it.
+     */
+    site: z
+      .object({
+        mark: IdSchema.nullable().optional(),
+        evidence: z.record(IdSchema, IdSchema).optional(),
       })
       .strict()
       .optional(),
@@ -129,6 +143,44 @@ export const TeamCountSchema = z
   .strict();
 export type TeamCount = z.infer<typeof TeamCountSchema>;
 
+/**
+ * The operative site the team verifies before the patient is anaesthetised (docs/TEAM.md §4.5): where the skin mark
+ * is, and what says where the operation is. When `when` holds, the member who circulates looks at the mark with her
+ * own eyes and reads the documents; they agree — the site is confirmed. They do not (or there is no mark): the line
+ * stops — a discrepancy is raised, the step `holds` names is held (an explicit hold: who called it and why), and the
+ * surgeon verifies against the **primary** evidence (the imaging read off its own orientation marker, the consent,
+ * the patient's own word while he can speak), marks the site or has the wrong document corrected; the one who
+ * called the pause looks again, confirms and releases the hold — the release says what was verified, by whom, and
+ * what was put right. Primary evidence that disagrees with itself cannot be resolved in the room: escalated, and
+ * the hold stays.
+ */
+export const TeamSiteSchema = z
+  .object({
+    /** What the site is called aloud ("the operative site"). */
+    name: LocalizedTextSchema.optional(),
+    /** The sides (or sites, or levels) the mark and the evidence may name, in words ("the patient's left"). */
+    sides: z.record(IdSchema, LocalizedTextSchema),
+    /**
+     * What says where the operation is. `says`: the side it states; `kind`: a `document` read from the notes, the
+     * `imaging` read off its orientation marker, or the `patient`'s own word (asked at the bedside, and only while
+     * he can speak); `primary`: what a discrepancy is verified against — never corrected in the room.
+     */
+    evidence: z
+      .array(z.object({ id: IdSchema, name: LocalizedTextSchema, says: IdSchema, kind: z.enum(["document", "imaging", "patient"]), primary: z.boolean().optional() }).strict())
+      .min(2)
+      .max(8),
+    /** The side the skin mark is on when the encounter starts (omitted: the site is not marked). */
+    mark: IdSchema.optional(),
+    /** When the check falls due (the patient in theatre and on the monitor, before the Sign In). */
+    when: ConditionSchema,
+    /** The step a discrepancy holds until it is resolved (an intervention id: the induction). */
+    holds: IdSchema,
+    /** What the team calls that step aloud ("the induction"); default: the intervention's name. */
+    holdsName: LocalizedTextSchema.optional(),
+  })
+  .strict();
+export type TeamSite = z.infer<typeof TeamSiteSchema>;
+
 export const CaseTeamSchema = z
   .object({
     /** The room the team works in (a facility room id, e.g. `or-7`). */
@@ -140,6 +192,8 @@ export const CaseTeamSchema = z
     waitRounds: z.number().int().min(1).max(20).default(3),
     /** The count the team keeps (a member with the `count` duty counts; the circulating nurse searches). */
     count: TeamCountSchema.optional(),
+    /** The operative site the team verifies before the patient is anaesthetised (the member who circulates checks it). */
+    site: TeamSiteSchema.optional(),
     /**
      * Colleagues outside the room who take over a member's duty when that member has to leave during the case (the
      * duty anaesthetist relieving the room's anaesthetist): a member with the `anaesthesia` duty asked to go while

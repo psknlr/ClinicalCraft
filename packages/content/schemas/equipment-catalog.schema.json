@@ -2396,6 +2396,54 @@
         {
           "type": "object",
           "properties": {
+            "site": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "unchecked",
+                        "confirmed",
+                        "discrepancy",
+                        "corrected",
+                        "unresolved"
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "unchecked",
+                          "confirmed",
+                          "discrepancy",
+                          "corrected",
+                          "unresolved"
+                        ]
+                      },
+                      "minItems": 1
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "site"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "study": {
               "$ref": "#/definitions/Id"
             },

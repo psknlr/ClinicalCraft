@@ -348,6 +348,8 @@ export const ACTION_TOOL: Readonly<Record<ClinicalAction["type"], string | null>
   "procedure-supply": null,
   // where the patient arrived is the world's to say (a transport, a transfer by the team), never entered by hand
   arrival: null,
+  // the site's verification is written by who looked, marked or confirmed with their own body (the team, the `team` op), never entered by hand
+  site: null,
 };
 
 /** Equivalent tool name for a learner `clinical_action` (null when the action is not gated). */

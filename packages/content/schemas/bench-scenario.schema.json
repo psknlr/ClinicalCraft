@@ -825,6 +825,54 @@
         {
           "type": "object",
           "properties": {
+            "site": {
+              "type": "object",
+              "properties": {
+                "status": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "enum": [
+                        "none",
+                        "unchecked",
+                        "confirmed",
+                        "discrepancy",
+                        "corrected",
+                        "unresolved"
+                      ]
+                    },
+                    {
+                      "type": "array",
+                      "items": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "unchecked",
+                          "confirmed",
+                          "discrepancy",
+                          "corrected",
+                          "unresolved"
+                        ]
+                      },
+                      "minItems": 1
+                    }
+                  ]
+                }
+              },
+              "required": [
+                "status"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "required": [
+            "site"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
             "study": {
               "$ref": "#/definitions/Id"
             },
@@ -1936,6 +1984,226 @@
             "interventionId",
             "releasedBy",
             "reassessment"
+          ],
+          "additionalProperties": false
+        },
+        {
+          "type": "object",
+          "properties": {
+            "type": {
+              "type": "string",
+              "const": "site"
+            },
+            "site": {
+              "anyOf": [
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "open"
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "staff"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "read"
+                    },
+                    "source": {
+                      "anyOf": [
+                        {
+                          "type": "string",
+                          "const": "mark"
+                        },
+                        {
+                          "$ref": "#/definitions/Id"
+                        }
+                      ]
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "source",
+                    "staff"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "raise"
+                    },
+                    "sources": {
+                      "type": "array",
+                      "minItems": 2,
+                      "maxItems": 2,
+                      "items": [
+                        {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "const": "mark"
+                            },
+                            {
+                              "$ref": "#/definitions/Id"
+                            }
+                          ]
+                        },
+                        {
+                          "anyOf": [
+                            {
+                              "type": "string",
+                              "const": "mark"
+                            },
+                            {
+                              "$ref": "#/definitions/Id"
+                            }
+                          ]
+                        }
+                      ]
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "sources",
+                    "staff"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "mark"
+                    },
+                    "side": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "side",
+                    "staff"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "amend"
+                    },
+                    "source": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "to": {
+                      "$ref": "#/definitions/Id"
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "source",
+                    "to",
+                    "staff"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "confirm"
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "staff"
+                  ],
+                  "additionalProperties": false
+                },
+                {
+                  "type": "object",
+                  "properties": {
+                    "op": {
+                      "type": "string",
+                      "const": "escalate"
+                    },
+                    "staff": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 80
+                    },
+                    "reason": {
+                      "type": "string",
+                      "minLength": 1,
+                      "maxLength": 500
+                    }
+                  },
+                  "required": [
+                    "op",
+                    "staff",
+                    "reason"
+                  ],
+                  "additionalProperties": false
+                }
+              ]
+            },
+            "by": {
+              "type": "string",
+              "enum": [
+                "learner",
+                "agent",
+                "system",
+                "replay"
+              ]
+            }
+          },
+          "required": [
+            "type",
+            "site"
           ],
           "additionalProperties": false
         },

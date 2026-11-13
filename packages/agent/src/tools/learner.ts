@@ -60,6 +60,8 @@ export const LEARNER_CLINICAL_TOOLS = [
   "order_study",
   "read_study",
   "list_studies",
+  // the operative site's verification (docs/TEAM.md §4.5): the caller's own looks, the mark, the pause, the report
+  "verify_site",
 ] as const;
 
 /** Every tool a learner (and a skill or delegated step) may call, in a stable order. */

@@ -298,6 +298,7 @@
                   "order_study",
                   "read_study",
                   "list_studies",
+                  "verify_site",
                   "observe_world",
                   "get_agent_state",
                   "find_entities",

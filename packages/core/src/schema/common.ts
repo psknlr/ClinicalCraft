@@ -175,6 +175,20 @@ export type CountStatus = z.infer<typeof CountStatusSchema>;
 export const COUNT_SETTLED: readonly CountStatus[] = ["correct", "reconciled", "excluded"];
 
 /**
+ * The status of the operative site's verification (docs/TEAM.md §4.5; `engine/site.ts`), derived from its record:
+ * `none` (the case's team verifies no site, or a session without a world: no record), `unchecked` (nobody has
+ * confirmed it yet), `confirmed` (the mark and what the documents say agree, seen by the one who confirms), `discrepancy`
+ * (one raised — the mark and the plan disagree, or there is no mark — and still open), `corrected` (confirmed after
+ * a discrepancy was verified against the evidence and put right), `unresolved` (escalated: the evidence itself
+ * disagrees, or nobody verified it — the operation does not go on).
+ */
+export const SITE_STATUSES = ["none", "unchecked", "confirmed", "discrepancy", "corrected", "unresolved"] as const;
+export const SiteStatusSchema = z.enum(SITE_STATUSES);
+export type SiteStatus = z.infer<typeof SiteStatusSchema>;
+/** The statuses in which the site is settled for the operation to go on. */
+export const SITE_SETTLED: readonly SiteStatus[] = ["confirmed", "corrected"];
+
+/**
  * When a count was taken (the count board's columns): `baseline` — before incision, against the items opened onto
  * the field (it settles nothing about closure); then before cavity and skin closure, the final count, a recount after
  * a search, a staff hand-over.
@@ -260,6 +274,8 @@ export type Condition =
   | { procedure: ProcedurePredicate }
   /** The surgical count's record (docs/TEAM.md §4.3; `engine/count.ts`): every given field must hold. */
   | { count: CountPredicate }
+  /** The operative site's verification (docs/TEAM.md §4.5; `engine/site.ts`): its status is one of these. */
+  | { site: { status: SiteStatus | SiteStatus[] } }
   /** A new investigation (docs/STUDIES.md) reached at least `status` (default `ordered`). */
   | { study: string; status?: "ordered" | "acquired" | "released" | "reviewed" }
   | { datum: string; status: ("not-asked" | "asked-unknown" | "verified-negative" | "verified-positive" | "mitigated")[] };
@@ -291,6 +307,8 @@ export const ConditionSchema: z.ZodType<Condition> = z.lazy(() =>
     z.object({ procedure: ProcedurePredicateSchema }).strict(),
     /** The surgical count's record (docs/TEAM.md §4.3). */
     z.object({ count: CountPredicateSchema }).strict(),
+    /** The operative site's verification (docs/TEAM.md §4.5). */
+    z.object({ site: z.object({ status: z.union([SiteStatusSchema, z.array(SiteStatusSchema).min(1)]) }).strict() }).strict(),
     /** A new investigation (docs/STUDIES.md). */
     z.object({ study: IdSchema, status: z.enum(["ordered", "acquired", "released", "reviewed"]).optional() }).strict(),
     /** A safety datum's status is one of these (`datumStatus`: not asked, asked but unknown, verified, mitigated). */

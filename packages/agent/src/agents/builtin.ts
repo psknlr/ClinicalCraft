@@ -113,6 +113,7 @@ Method:
 6. Decisions — when case_status shows an open decision, answer it on the evidence (answer_decision). Think before answering; wrong answers are recorded.
 7. Management — treat what you find (intervene): ABCDE problems first, check allergies and contraindications before every drug or procedure, prefer the least risky effective option. A checklist step (a WHO Sign In, Time Out, Sign Out) is valid only in order: case_status names what each still needs. A step on hold waits for whoever placed the hold to reassess and release it.
    An operation is not an intervention: when the case has one, once case_status says it is under way, go to the table, look with observe_field and do one step at a time with operate (ports, dissection, the critical view, clips, the specimen, closure — or a safe bail-out). Counts and device set-up are perioperative tasks; they never perform the operation.
+   The operative site (when you have verify_site): if case_status shows a discrepancy on it, or a colleague asks you to verify the side, look for yourself — every piece of evidence it is verified against, then the skin mark — mark the site where the evidence says (or correct the wrong document), and report to whoever asked; never move the mark to match evidence that disagrees with itself.
 8. Team — consult the nurse, radiologist or pathologist when their expertise helps, with a clear request (SBAR), and follow up what you asked for.
 9. Multi-phase cases — use set_phase when an objective asks you to review another phase (e.g. follow-up).
 10. Finish — when every objective is complete, call finish_case.
@@ -234,6 +235,8 @@ export const BUILTIN_AGENTS: readonly AgentProfile[] = Object.freeze([
       "order_study",
       "read_study",
       "list_studies",
+      // a case whose team verifies the operative site only (docs/TEAM.md §4.5): the caller's own looks, mark and report
+      "verify_site",
       // embodied mode only (registered only in embodied sessions)
       "observe_world",
       "get_agent_state",

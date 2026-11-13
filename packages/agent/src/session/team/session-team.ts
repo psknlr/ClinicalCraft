@@ -10,16 +10,46 @@ import type { Op } from "../../protocol.js";
 import { rt } from "../i18n.js";
 import type { SessionKernel } from "../kernel.js";
 import { TeamScheduler, type TeamHost } from "./scheduler.js";
+import type { SiteStep } from "../site.js";
 import type { MemberState, TeamCheckpoint } from "./types.js";
 import { PRIMARY_ACTOR } from "@clinicalcraft/world";
 import { ModelTeamMind } from "../../characters/team-mind.js";
 import { positionOf } from "../../characters/roles.js";
 import { characterModel } from "../character-models.js";
-import { SURGEON_NAME } from "./i18n.js";
+import { both, SURGEON_NAME } from "./i18n.js";
 
 export { validTeamCheckpoint } from "./checkpoint.js";
 
 type TeamOp = Extract<Op, { type: "team" }>;
+
+/** The site step a `team` op (action `site`) asks for, or null: not one, or what it is about is missing. */
+function siteStepOf(op: TeamOp): SiteStep | null {
+  const text = (value: unknown) => (typeof value === "string" && value.trim() ? value.trim() : null);
+  const source = text(op.source);
+  const side = text(op.side);
+  switch (op.step) {
+    case "read":
+      return source ? { step: "read", source } : null;
+    case "raise": {
+      const [a, b] = Array.isArray(op.sources) ? op.sources.map(text) : [];
+      return a && b ? { step: "raise", sources: [a, b] } : null;
+    }
+    case "mark":
+      return side ? { step: "mark", side } : null;
+    case "amend":
+      return source && side ? { step: "amend", source, to: side } : null;
+    case "confirm":
+      return { step: "confirm" };
+    case "escalate":
+      return { step: "escalate", ...(text(op.reason) ? { reason: text(op.reason)! } : {}) };
+    case "pause":
+      return { step: "pause", ...(text(op.reason) ? { reason: text(op.reason)! } : {}) };
+    case "resume":
+      return { step: "resume", ...(text(op.reason) ? { reassessment: text(op.reason)! } : {}) };
+    default:
+      return null;
+  }
+}
 
 export class SessionTeam {
   private scheduler: TeamScheduler | null = null;
@@ -66,6 +96,8 @@ export class SessionTeam {
       holds: (cond) => evaluate(k.caseDef, k.state, cond),
       count: () => k.embodied?.count ?? null,
       record: () => k.state.count,
+      site: () => k.embodied?.site ?? null,
+      stepName: (id) => both(k.caseDef.interventions.find((i) => i.id === id)?.name ?? id),
       say: (speaker, text, member) => {
         const staffId = member?.startsWith("staff:") ? member.slice("staff:".length) : undefined;
         k.speakLine(k.currentSubmission, { agent: "nurse", speaker, text, grounded: [], ...(staffId ? { staffId } : {}) });
@@ -159,6 +191,8 @@ export class SessionTeam {
           k.emit(id, { type: "error", message: rt(k.locale, "team.notYours", { to }), code: "permission_denied" });
           return;
         }
+        // an answer is an act of the learner: the team carries on from it (autonomy `auto`)
+        if (s.autonomy === "auto" && s.active()) await s.run(signal, { untilIdle: true });
         break;
       }
       case "need": {
@@ -171,10 +205,39 @@ export class SessionTeam {
         if (s.autonomy === "auto") await s.run(signal, { untilIdle: true });
         break;
       }
+      case "site": {
+        // the learner's own step of the site's verification, with their own body where it stands
+        const site = k.embodied!.site;
+        if (!site.config()) return this.invalid(id, "this case's team verifies no operative site");
+        const step = siteStepOf(op);
+        if (!step) return this.invalid(id, "site needs step (read, raise, mark, amend, confirm, escalate, pause, resume) and what it is about (source, sources, side)");
+        const r = site.perform(PRIMARY_ACTOR, step);
+        k.emit(id, { type: "team_event", event: { kind: "site", step: step.step, ok: r.ok, output: r.output, status: r.data.status, ...(r.code ? { code: r.code } : {}), ...(r.goal ? { goal: r.goal } : {}) } });
+        if (s.autonomy === "auto") await s.run(signal, { untilIdle: true });
+        break;
+      }
       default:
         return this.invalid(id, `unknown team action "${String((op as { action?: unknown }).action)}"`);
     }
     this.record();
+  }
+
+  /**
+   * The surgeon's body tells whoever asked them to verify the operative site that it is done (`verify_site`
+   * `report`, docs/TEAM.md §4.5): the reply to their pending request, in these words. Nobody asked: nothing is said.
+   */
+  reportSite(actorId: string, text: string | null): { ok: boolean; output: string } {
+    const k = this.k;
+    const s = this.get();
+    const none = { ok: false, output: rt(k.locale, "site.report.none") };
+    if (!s || actorId !== PRIMARY_ACTOR) return none;
+    const answered = (id: string) => s.state.messages.some((x) => x.replyTo === id && x.from === PRIMARY_ACTOR && x.kind === "report");
+    const pending = s.state.messages.findLast((m) => m.to === PRIMARY_ACTOR && m.kind === "request" && !!m.about.site?.verify && !answered(m.id));
+    if (!pending) return none;
+    const r = s.reply(pending.id, "report", text ?? rt(k.locale, "site.report.words"));
+    if ("refused" in r) return none;
+    this.record();
+    return { ok: true, output: rt(k.locale, "site.report.said", { to: t(k.embodied!.world().entity(pending.from)?.name ?? pending.from, k.locale) }) };
   }
 
   /** The team works in this phase (else a warning that says when it does). */

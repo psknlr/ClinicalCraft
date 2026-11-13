@@ -12,16 +12,22 @@
  * colleague who does not answer is rerouted or escalated after a bounded wait. The world charges simulated
  * time for walking and acting, as it does for everyone.
  *
+ * The operative site (docs/TEAM.md §4.5) is verified before the team's phases begin: the team works as soon as the
+ * site's verification falls due, and until it is settled, whatever the phase; the scenario's own set-up (items, needs,
+ * the count's baseline) still waits for the team's phases. A site act (a look at the mark, a document read, the pause,
+ * the confirmation) is a member's own, carried out through the session's site record under the same stable ids.
+ *
  * Knowledge: a member's view is built from what their body perceives in the world (`find` with their own
  * awareness), what was said to them and their own tasks. The scenario's hidden set-up (where an item really
  * is, who is on a break) reaches the policies only through the world.
  */
-import { compareCount, countLedger, countStatus, t, type CaseTeam, type Condition, type CountRecord, type TeamNeed, type TeamScenario } from "@clinicalcraft/core";
+import { compareCount, countLedger, countStatus, openDiscrepancy, SITE_SETTLED, t, type CaseTeam, type Condition, type CountRecord, type SiteStatus, type TeamNeed, type TeamScenario } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, RANGES, type ActorState, type WorldActionRequest, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import type { EventMsg } from "../../protocol.js";
 import type { SurgicalCount } from "../count.js";
+import type { SiteStep, SiteVerification } from "../site.js";
 import { both, SURGEON_NAME, type Bilingual } from "./i18n.js";
-import { afterAct, propose, type ColleagueView, type ItemSighting, type MemberView } from "./policy.js";
+import { afterAct, propose, type ColleagueView, type ItemSighting, type MemberView, type SiteView } from "./policy.js";
 import { validTeamCheckpoint } from "./checkpoint.js";
 import { TEAM_STATE_VERSION, type ActionReceipt, type KnownNeed, type MemberId, type MemberState, type Proposal, type SurgeonMode, type TaskPatch, type TeamAutonomy, type TeamCheckpoint, type TeamMessage, type TeamState, type TeamTask } from "./types.js";
 
@@ -47,12 +53,18 @@ export interface TeamHost {
   count(): SurgicalCount | null;
   /** The case's count record now. */
   record(): CountRecord | undefined;
+  /** The session's site verification (the one writer of the case's site record), or null. */
+  site(): SiteVerification | null;
+  /** The intervention's name, in both languages (the step the site's discrepancy holds). */
+  stepName(interventionId: string): Bilingual;
 }
 
 /** Closure has begun (the count's hold is broken when this holds before the count is settled). */
 const CLOSURE: Condition = { procedure: { closed: true } };
 
 const TERMINAL = new Set(["done", "declined", "escalated"]);
+/** The site's verification has ended for the team: confirmed (at once, or after a discrepancy), or raised beyond the room. */
+const SITE_ENDED: readonly SiteStatus[] = [...SITE_SETTLED, "unresolved"];
 
 /** A member's body id from the case's reference (`surgeon` → the learner's avatar). */
 export function memberActor(ref: string): MemberId {
@@ -110,9 +122,20 @@ export class TeamScheduler {
   /* Running                                                           */
   /* ---------------------------------------------------------------- */
 
-  /** Does the team work now (its phases)? */
+  /** Does the team work now: in its phases, and — whatever the phase — while the site's verification is under way? */
   active(): boolean {
-    return this.autonomy !== "off" && this.config.phases.includes(this.host.phase());
+    return this.autonomy !== "off" && (this.inPhases() || this.siteActive());
+  }
+
+  private inPhases(): boolean {
+    return this.config.phases.includes(this.host.phase());
+  }
+
+  /** The site's verification has fallen due and is not settled yet (its work not finished). */
+  private siteActive(): boolean {
+    const site = this.host.site();
+    if (!this.config.site || !site || this.state.site?.settledRound !== undefined) return false;
+    return !!site.current() || site.due();
   }
 
   /**
@@ -197,20 +220,30 @@ export class TeamScheduler {
     return n;
   }
 
-  /** Something was set in motion, and all of it ended: every posted need's supply task, and the count once due. */
+  /**
+   * Something was set in motion, and all of it ended: in the team's phases, every posted need's supply task and the
+   * count once due (and the site's verification, if it was still under way); before them, the site's verification.
+   */
   settled(): boolean {
+    const site = this.state.site;
+    const siteDone = site?.dueRound === undefined || site.settledRound !== undefined;
+    if (!this.inPhases()) return site?.dueRound !== undefined && siteDone;
     const posted = this.state.posted;
     const ledger = this.state.count;
     const needsDone = posted.every((need) => this.state.tasks.some((t) => t.kind === "supply" && t.need === need && TERMINAL.has(t.status)));
     const countDone = !ledger || ledger.dueRound === undefined || ledger.settledRound !== undefined;
-    return (posted.length > 0 || ledger?.dueRound !== undefined) && needsDone && countDone;
+    return (posted.length > 0 || ledger?.dueRound !== undefined) && needsDone && countDone && siteDone;
   }
 
   /** One round: each awakened member proposes and carries out at most one thing. True when something was said or done. */
   async round(signal: AbortSignal): Promise<boolean> {
     if (!this.active()) return false;
-    this.prepare();
-    this.watchCount();
+    // the scenario's set-up and the count belong to the team's phases; the site's verification to when it falls due
+    if (this.inPhases()) {
+      this.prepare();
+      this.watchCount();
+    }
+    this.watchSite();
     let busy = false;
     for (const member of this.order()) {
       if (signal.aborted) break;
@@ -221,7 +254,8 @@ export class TeamScheduler {
       busy = (await this.carryOut(member, p, signal)) || busy;
     }
     this.state.round++;
-    if (this.state.lifecycle === "active" && this.settled()) this.state.lifecycle = "completed";
+    this.watchSite();
+    if (this.state.lifecycle === "active" && this.inPhases() && this.settled()) this.state.lifecycle = "completed";
     this.host.emit({ type: "team_event", event: { kind: "status", round: this.state.round, autonomy: this.autonomy, surgeon: this.surgeon } });
     return busy;
   }
@@ -233,6 +267,25 @@ export class TeamScheduler {
     if (!ledger || !count) return;
     if (ledger.dueRound === undefined && this.host.holds(count.when)) ledger.dueRound = this.state.round;
     if (!ledger.closedOnHold && ((this.record()?.unsafe.length ?? 0) > 0 || (ledger.detectedRound !== undefined && ledger.settledRound === undefined && this.host.holds(CLOSURE)))) ledger.closedOnHold = true;
+  }
+
+  /**
+   * The site's timing (docs/TEAM.md §4.5): its record opened when the verification falls due, and the rounds a
+   * discrepancy was raised, the pause called and the site settled — read from the case's site record and its holds.
+   */
+  private watchSite(): void {
+    const site = this.host.site();
+    if (!this.config.site || !site || !site.ensureOpen()) return;
+    const record = site.current();
+    if (!record) return;
+    const timing = (this.state.site ??= {});
+    timing.dueRound ??= this.state.round;
+    if (timing.detectedRound === undefined && record.entries.some((e) => e.op === "raise")) timing.detectedRound = this.state.round;
+    if (timing.pausedRound === undefined && timing.detectedRound !== undefined && site.pausedBy()) timing.pausedRound = this.state.round;
+    // its work has ended: no task of it under way, and what was said about it taken in by whoever the team drives
+    const working = this.state.tasks.some((t) => (t.kind === "site" || t.kind === "verify") && !TERMINAL.has(t.status));
+    const unheard = this.state.members.some((m) => !m.absent && !(m.id === PRIMARY_ACTOR && this.surgeon === "learner") && m.inbox.some((id) => !!this.state.messages.find((x) => x.id === id)?.about.site));
+    if (timing.settledRound === undefined && SITE_ENDED.includes(site.status()) && !working && !unheard) timing.settledRound = this.state.round;
   }
 
   /**
@@ -266,7 +319,7 @@ export class TeamScheduler {
       const unread = m.inbox.map((id) => this.state.messages.findIndex((x) => x.id === id)).filter((i) => i >= 0);
       if (unread.length) return [0, Math.min(...unread), m.id];
       if (this.state.tasks.some((t) => t.owner === m.id && !TERMINAL.has(t.status))) return [1, 0, m.id];
-      if (this.pendingNeeds(m).length || this.countDue(m)) return [2, 0, m.id];
+      if (this.pendingNeeds(m).length || this.countDue(m) || this.siteDue(m)) return [2, 0, m.id];
       return [3, 0, m.id];
     };
     return this.state.members
@@ -275,6 +328,12 @@ export class TeamScheduler {
       .filter((x) => x.r[0] < 3)
       .sort((a, b) => a.r[0] - b.r[0] || a.r[1] - b.r[1] || (a.r[2] < b.r[2] ? -1 : a.r[2] > b.r[2] ? 1 : 0))
       .map((x) => x.m);
+  }
+
+  /** The site's verification is under way and this member circulates and has not begun it yet. */
+  private siteDue(m: MemberState): boolean {
+    const status = this.host.site()?.status();
+    return m.duties.includes("circulate") && !m.relief && this.state.site?.dueRound !== undefined && (status === "unchecked" || status === "discrepancy") && !this.state.tasks.some((t) => t.owner === m.id && t.kind === "site");
   }
 
   /** The count is due and this member counts and has not counted yet. */
@@ -311,6 +370,7 @@ export class TeamScheduler {
     if (!task) return false;
     const actionId = `team.${task.id}.${task.acts + 1}`;
     const w = this.host.world();
+    if (p.operation.startsWith("site.")) return this.siteAct(member, task, p, actionId);
     let r: WorldActionResult | null = this.state.completed.includes(actionId) ? w.feedback(actionId) : null;
     if (!r) {
       r = await this.host.act(
@@ -341,6 +401,59 @@ export class TeamScheduler {
     this.host.emit({ type: "team_event", event: { kind: "receipt", receipt: structuredClone(receipt) } });
     // the member inspects the receipt at once: a hand-over done is reported; a refusal they cannot fix is said
     const follow = afterAct(this.view(member), task, { status: r.status, ...(r.errorCode ? { code: r.errorCode } : {}), message: r.message, operation: p.operation, ...(r.hint?.goal ? { hint: r.hint.goal } : {}) });
+    if (follow && follow.kind === "say") {
+      this.apply(member, follow.patch ?? []);
+      this.send(member, follow);
+    } else if (follow?.kind === "update") this.apply(member, follow.patch);
+    this.emitTask(task);
+    return true;
+  }
+
+  /**
+   * A site act of a member (docs/TEAM.md §4.5): a look, a discrepancy raised, the pause, a mark, a correction, the
+   * confirmation, the release — written by the session's site record with the member's own body where it stands, and
+   * kept as a receipt like any act (a completed id is never carried out again).
+   */
+  private siteAct(member: MemberState, task: TeamTask, p: Extract<Proposal, { kind: "act" }>, actionId: string): boolean {
+    const site = this.host.site();
+    task.acts++;
+    if (!site || this.state.completed.includes(actionId)) return false;
+    const params = p.parameters ?? {};
+    const text = (value: unknown): string | undefined => (typeof value === "string" ? value : value && typeof value === "object" ? t(value as Bilingual, this.host.locale) : undefined);
+    const name = p.operation.slice("site.".length);
+    const step: SiteStep | null =
+      name === "read" ? { step: "read", source: String(params.source ?? "") }
+      : name === "raise" ? { step: "raise", sources: (params.sources as [string, string]) ?? ["", ""] }
+      : name === "mark" ? { step: "mark", side: String(params.side ?? "") }
+      : name === "amend" ? { step: "amend", source: String(params.source ?? ""), to: String(params.to ?? "") }
+      : name === "confirm" ? { step: "confirm" }
+      : name === "escalate" ? { step: "escalate", ...(text(params.reason) ? { reason: text(params.reason)! } : {}) }
+      : name === "pause" ? { step: "pause" }
+      : name === "resume" ? { step: "resume" }
+      : null;
+    if (!step) return false;
+    const r = site.perform(member.id, step);
+    if (r.ok) this.state.completed.push(actionId);
+    const target = step.step === "read" || step.step === "amend" ? step.source : step.step === "mark" ? "mark" : undefined;
+    const receipt: ActionReceipt = {
+      id: actionId,
+      actor: member.id,
+      operation: p.operation,
+      ...(target ? { target } : {}),
+      initiator: task.initiator,
+      outcome: r.ok ? "completed" : "failed",
+      ...(r.code ? { code: r.code } : {}),
+      message: r.output.split("\n")[0] ?? "",
+      worldVersion: this.host.world().version,
+      at: this.host.clock(),
+      ...(r.seconds ? { seconds: r.seconds } : {}),
+      round: this.state.round,
+      task: task.id,
+    };
+    this.state.receipts.push(receipt);
+    this.observe(member, "receipt", receipt.id, `${receipt.operation} ${receipt.outcome}`);
+    this.host.emit({ type: "team_event", event: { kind: "receipt", receipt: structuredClone(receipt) } });
+    const follow = afterAct(this.view(member), task, { status: r.ok ? "completed" : "failed", ...(r.code ? { code: r.code } : {}), message: r.output, operation: p.operation, ...(r.goal ? { hint: r.goal } : {}) });
     if (follow && follow.kind === "say") {
       this.apply(member, follow.patch ?? []);
       this.send(member, follow);
@@ -515,6 +628,7 @@ export class TeamScheduler {
               check: (ids) => compareCount(this.record() ?? record, ids),
             }
           : null,
+      site: this.siteView(me),
       patient: w.find(me.id, { kind: "patient", limit: 1 })[0]?.id ?? null,
       round: this.state.round,
       waitRounds: this.config.waitRounds,
@@ -536,6 +650,57 @@ export class TeamScheduler {
       name: (who) => (who === PRIMARY_ACTOR ? SURGEON_NAME : both(w.entity(who)?.name ?? who)),
       itemName: (type) => this.itemName(type),
       newId: (prefix) => `${prefix}-${++this.state.seq}`,
+    };
+  }
+
+  /**
+   * The operative site as this member can know it (docs/TEAM.md §4.5): their own looks (never anyone else's), what
+   * was said aloud — the discrepancy, the pause — and the room's record of what was verified and put right since.
+   */
+  private siteView(me: MemberState): SiteView | null {
+    const service = this.host.site();
+    const site = this.config.site;
+    if (!service || !site) return null;
+    const record = service.current();
+    const staff = me.staff;
+    const w = this.host.world();
+    const sides = site.sides;
+    const view: Omit<SiteView, "due" | "status" | "mine" | "open" | "pausedBy" | "verification" | "corrections" | "confirmed"> = {
+      staff,
+      atPatient: service.atPatient(me.id),
+      sources: [{ id: "mark", kind: "mark" as const, primary: false, readable: true }, ...site.evidence.map((e) => ({ id: e.id, kind: e.kind, primary: !!e.primary, readable: e.kind !== "patient" || service.canAnswer() }))],
+      sideName: (side) => (side === null ? { en: "not marked", "zh-CN": "未标记" } : sides[side] ? both(sides[side]!) : both(side)),
+      sourceName: (source) => (source === "mark" ? { en: "the skin mark", "zh-CN": "皮肤标记" } : both(site.evidence.find((e) => e.id === source)?.name ?? source)),
+      nameOf: (who) => (who === "surgeon" || who === "learner" ? SURGEON_NAME : both(w.entity(`staff:${who}`)?.name ?? who)),
+      step: site.holdsName ? both(site.holdsName) : this.host.stepName(site.holds),
+    };
+    const none = { verified: false, side: null, missing: [], conflict: false, read: [] };
+    if (!record) return { ...view, due: false, status: "none", mine: new Map(), open: null, pausedBy: null, verification: none, corrections: [], confirmed: null };
+    const open = openDiscrepancy(record);
+    // "since the discrepancy": from when it was raised, whether it is still open or settled by now
+    const after = record.entries.findLast((e) => e.op === "raise")?.seq ?? -1;
+    // what changed a source last: a look from before that is no longer what the source says
+    const changed = new Map<string, number>();
+    for (const e of record.entries) {
+      if (e.op === "mark") changed.set("mark", e.seq);
+      else if (e.op === "amend") changed.set(e.source, e.seq);
+    }
+    const mine = new Map<string, string | null>();
+    for (const e of record.entries) if (e.op === "read" && e.staff === staff && e.seq > after && e.seq > (changed.get(e.source) ?? -1)) mine.set(e.source, e.value ?? null);
+    const primary = new Set(site.evidence.filter((e) => e.primary).map((e) => e.id));
+    const read = new Map<string, string | null>();
+    for (const e of record.entries) if (e.op === "read" && e.seq > after && primary.has(e.source)) read.set(e.source, e.value ?? null);
+    const confirm = record.entries.findLast((e) => e.op === "confirm");
+    return {
+      ...view,
+      due: true,
+      status: service.status(),
+      mine,
+      open: open ? { by: open.staff, sources: open.sources, values: open.values ?? [], escalated: record.entries.some((e) => e.op === "escalate" && e.seq > open.seq) } : null,
+      pausedBy: service.pausedBy(),
+      verification: { ...service.verification(), read: [...read].map(([source, value]) => ({ source, value })) },
+      corrections: record.entries.flatMap((e): SiteView["corrections"][number][] => (e.seq <= after ? [] : e.op === "mark" ? [{ what: "mark", side: e.side, by: e.staff }] : e.op === "amend" ? [{ what: "amend", source: e.source, to: e.to, by: e.staff }] : [])),
+      confirmed: confirm?.op === "confirm" ? { by: confirm.staff, side: confirm.side ?? "", basis: confirm.basis ?? [] } : null,
     };
   }
 

@@ -15,6 +15,7 @@ import { vitalValue } from "./signal.js";
 import { historyCredited } from "./twins.js";
 import { evaluateProcedure } from "./procedure/predicates.js";
 import { evaluateCount } from "./count.js";
+import { evaluateSite } from "./site.js";
 import { evaluateStudy } from "./study.js";
 import { procedureFor } from "./procedure/variant.js";
 
@@ -129,6 +130,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("hints" in cond) return inRange(s.hints, cond.hints);
   if ("procedure" in cond) return evaluateProcedure(procedureFor(c, s), s.procedure, cond.procedure, s.variant);
   if ("count" in cond) return evaluateCount(s, cond.count);
+  if ("site" in cond) return evaluateSite(s, cond.site);
   if ("study" in cond) return evaluateStudy(s, cond.study, cond.status);
   if ("datum" in cond) {
     const st = datumStatus(c, s, cond.datum);

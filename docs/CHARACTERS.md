@@ -91,7 +91,7 @@ own proposal first and hands it to the member's model as one of the **options**:
 
 | option | what it is | offered when |
 |---|---|---|
-| `act` | the protocol's move — the policy's proposal (notice a need, ask the colleague whose duty it is, read back, confirm, hand over, report, count, search, escalate), in the member's own words when it speaks | the policy has a move; an **owed** move — a closed-loop reply (read-back, confirmation, report, decline, escalation) or anything about the count — is then the only option |
+| `act` | the protocol's move — the policy's proposal (notice a need, ask the colleague whose duty it is, read back, confirm, hand over, report, count, search, escalate), in the member's own words when it speaks | the policy has a move; an **owed** move — a closed-loop reply (read-back, confirmation, report, decline, escalation), anything about the count, or a step of the operative site's verification (a look, the pause, the mark, the confirmation: docs/TEAM.md §4.5) — is then the only option |
 | `wait` | not now | the move is not owed, and was not deferred last round (a member never waits twice in a row on one move) |
 | `notice` | tell a colleague in the room what you see or are doing (`to`), creating no obligation | a colleague is in the room |
 | `escalate` | raise your own task, stuck waiting, to the person it is for, saying what was tried | the member owns a task in `waiting` |

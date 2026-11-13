@@ -47,7 +47,7 @@ import { DEFAULT_SETTINGS } from "../settings/merge.js";
 import { canonicalLocale, type ResolvedSettings } from "../settings/schema.js";
 import { BUILTIN_SKILLS } from "../skills/builtin.js";
 import type { SkillDefinition } from "../skills/schema.js";
-import { ToolRegistry } from "../tools/index.js";
+import { siteTools, ToolRegistry } from "../tools/index.js";
 import type { ToolDefinition } from "../tools/types.js";
 import { redactValue, TranscriptRecorder } from "../transcript.js";
 import { AgentModels } from "./agent-models.js";
@@ -194,6 +194,9 @@ export class SessionKernel {
     if (this.embodied) {
       for (const tool of this.embodied.gatedTools((name) => this.registry.get(name))) this.registry.replace(tool);
       for (const tool of this.embodied.worldTools()) this.registry.replace(tool);
+      // the operative site's verification: the tool acts through this session's site record, and reports to the team
+      const embodied = this.embodied;
+      for (const tool of siteTools({ actorOf: (ctx) => ctx.actorId ?? PRIMARY_ACTOR, perform: (actor, step) => embodied.site.perform(actor, step), report: (actor, text) => this.team.reportSite(actor, text) })) this.registry.replace(tool);
       // Bodies move through the world (its Mover animates them): a front-end's dynamic `walk_to` would bypass it.
       this.registry.remove("walk_to");
       // `/look`, `/go`, `/use`… after the built-in commands (custom commands keep their place after them).
@@ -366,6 +369,12 @@ export class SessionKernel {
   /* Engine                                                            */
   /* ---------------------------------------------------------------- */
 
+  /** A member of staff's name by their staff id, in the session's language (null: nobody of that id in this hospital). */
+  private staffName(staff: string): string | null {
+    const found = this.facility?.staff.find((x) => x.id === staff);
+    return found ? t(found.name, this.locale) : null;
+  }
+
   /** Dispatch an engine action: transcript, events, hooks, staff reactions, the examiner's dialogue. */
   dispatch(action: ClinicalAction, id: string): ReduceResult {
     // an operative step works with the equipment the room supplies now (a tower out of service: no picture, no gas)
@@ -384,7 +393,7 @@ export class SessionKernel {
       this.embodied?.noteClinicalEvent(this.hub.lastSeq, event);
       this.queueHook({ hook_event_name: "ClinicalEvent", event }, id);
       // A `vitals.alarm` says itself whether its value is an arrest placeholder (`unmeasurable`, set at the minute it fired).
-      for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale)) this.react(id, reaction);
+      for (const reaction of reactToDomainEvent(this.caseDef, event, this.locale, { staffName: (staff) => this.staffName(staff) })) this.react(id, reaction);
     }
     // in-world: the items opened onto the field are recorded at the start, before a scenario moves anything (the count)
     if (accepted && action.type === "start") this.embodied?.count.ensureBaseline("system");

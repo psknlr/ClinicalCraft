@@ -1113,6 +1113,8 @@ const en: Messages = {
   "trace.name.result.read": "Result read",
   "trace.name.intervention.applied": "Treatment given",
   "trace.name.patient.arrived": "Patient arrived",
+  "trace.name.site.recorded": "Site verification recorded",
+  "trace.name.verify_site": "Verify the operative site",
   "trace.name.flag.changed": "Flag changed",
   "trace.name.time.advanced": "Time passed",
   "trace.name.phase.changed": "Phase changed",

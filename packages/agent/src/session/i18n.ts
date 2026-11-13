@@ -12,6 +12,7 @@ import { EMBODIED_EN, EMBODIED_ZH } from "./i18n-embodied.js";
 import { PROCEDURE_EN, PROCEDURE_ZH } from "./i18n-procedure.js";
 import { CHECKLIST_EN, CHECKLIST_ZH } from "./i18n-checklist.js";
 import { COUNT_EN, COUNT_ZH } from "./i18n-count.js";
+import { SITE_EN, SITE_ZH } from "./i18n-site.js";
 import { STUDIES_EN, STUDIES_ZH } from "./i18n-studies.js";
 
 /** Runtime languages shipped with ClinicalCraft. */
@@ -487,6 +488,7 @@ const EN = {
   ...PROCEDURE_EN,
   ...CHECKLIST_EN,
   ...COUNT_EN,
+  ...SITE_EN,
   ...STUDIES_EN,
 } as const;
 
@@ -928,6 +930,7 @@ const ZH: Record<RuntimeKey, string> = {
   ...PROCEDURE_ZH,
   ...CHECKLIST_ZH,
   ...COUNT_ZH,
+  ...SITE_ZH,
   ...STUDIES_ZH,
 };
 

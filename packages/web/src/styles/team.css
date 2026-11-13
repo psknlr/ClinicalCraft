@@ -1,6 +1,7 @@
 /*
- * The care team's panel (ui/panels/team.ts): the pace and surgeon controls, the count's record, what was said
- * (the lines addressed to the learner marked, with their answers) and the tasks. The app's palette (app.css).
+ * The care team's panel (ui/panels/team.ts): the pace and surgeon controls, the operative site's verification (its
+ * status, the learner's own checks), the count's record, what was said (the lines addressed to the learner marked,
+ * with their answers) and the tasks. The app's palette (app.css).
  */
 .team-panel {
   display: grid;
@@ -25,6 +26,37 @@
   padding: 6px 10px;
   border-left: 3px solid var(--warn);
   background: var(--paper);
+}
+.team-site {
+  display: grid;
+  gap: 6px;
+  padding: 6px 10px;
+  border-left: 3px solid var(--line-soft);
+  background: var(--paper);
+}
+.team-site h3,
+.team-site h4,
+.team-site p {
+  margin: 0;
+}
+.team-site h4 {
+  font-size: 0.95em;
+  color: var(--muted);
+}
+.team-site:has(.team-site-status[data-status="discrepancy"]),
+.team-site:has(.team-site-status[data-status="unresolved"]) {
+  border-left-color: var(--danger);
+}
+.team-site:has(.team-site-status[data-status="confirmed"]),
+.team-site:has(.team-site-status[data-status="corrected"]) {
+  border-left-color: var(--ok);
+}
+.team-site-answer.refused {
+  color: var(--danger);
+}
+.team-site-seen {
+  color: var(--muted);
+  font-size: 0.95em;
 }
 .team-messages ol,
 .team-tasks ul {

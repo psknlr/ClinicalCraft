@@ -41,6 +41,7 @@ import {
   clinicalTools,
   procedureTools,
   studyTools,
+  siteTools,
   actionIdsBetween,
   formatRule,
   HookRunner,
@@ -170,10 +171,12 @@ type HookSpec =
 /**
  * Every bridged tool by name: the clinical tools of PROTOCOL §3 (without the dynamic `walk_to`) and the operative
  * field's `observe_field` / `operate` (docs/PROCEDURE.md §7 — they answer "this case has no operation" elsewhere) and
- * the new investigations' `retrieve_report` / `order_study` / `read_study` / `list_studies` (docs/STUDIES.md).
+ * the new investigations' `retrieve_report` / `order_study` / `read_study` / `list_studies` (docs/STUDIES.md) and the
+ * operative site's `verify_site` (docs/TEAM.md §4.5 — it acts only in an in-world session of a case whose team
+ * verifies a site, and says so elsewhere).
  */
 export function bridgedTools(): Map<string, ToolDefinition<Record<string, unknown>>> {
-  return new Map([...clinicalTools(), ...procedureTools(), ...studyTools()].map((t) => [t.name, t]));
+  return new Map([...clinicalTools(), ...procedureTools(), ...studyTools(), ...siteTools()].map((t) => [t.name, t]));
 }
 
 /** Runs tools as the learner on one session. Not re-entrant: callers serialise calls per session. */

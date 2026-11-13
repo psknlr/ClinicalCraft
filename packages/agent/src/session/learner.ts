@@ -268,6 +268,10 @@ export class LearnerPath {
       k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "arrival.handEntry") }), code: "permission_denied" });
       return null;
     }
+    if (requested.type === "site") {
+      k.emit(id, { type: "error", message: rt(L, "action.denied", { reason: rt(L, "site.handEntry") }), code: "permission_denied" });
+      return null;
+    }
     if (requested.type === "intervene" && (requested.place || requested.receivedBy)) {
       const { place: _place, receivedBy: _receivedBy, ...plain } = requested;
       requested = plain;

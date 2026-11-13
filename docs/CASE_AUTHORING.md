@@ -434,9 +434,11 @@ A theatre case can give its room a care team that works on its own in in-world m
 [TEAM.md](TEAM.md)):
 - the room;
 - the phases in which the team acts;
-- the members and their duties (`circulate`, `instruments`, `count`, `surgeon`);
+- the members and their duties (`circulate`, `instruments`, `count`, `surgeon`, `anaesthesia`);
 - optionally, the count it keeps item by item (`count`: the counted handheld type, when it falls due, and the places
-  the circulating nurse searches).
+  the circulating nurse searches);
+- optionally, the operative site it verifies before the Sign In (`site`: the sides, what says where the operation is,
+  where the skin mark is, when the check falls due and the step a discrepancy holds).
 
 * **Members are the room's own staff** (`teamFacilityIssues`: they work in `team.room`); the surgeon is `surgeon` (the
   learner). Somebody must circulate.
@@ -444,15 +446,18 @@ A theatre case can give its room a care team that works on its own in in-world m
   - post a need (an item for a member, with what the team calls it aloud);
   - put a member on a break (`absent`), with a relief colleague from another room (`relief`);
   - move an item beside another placement (in the room, or elsewhere in the hospital), or conceal it (`concealed`:
-    where it lies; `inside` + `beside: "patient"`: in the wound).
+    where it lies; `inside` + `beside: "patient"`: in the wound);
+  - change the operative site as this run has it (`site`: the mark on another side, or `null` for none; what a piece
+    of evidence says).
 
   The summary is facilitator text and is never shown to the team. Mark scenarios `provenance: "authored"`: they are
   teaching material, not the case report.
 * **Search places are the same for every scenario** (the room's usual places: the Mayo stand, the back table…). Never
   list a place because a scenario hides something there; that would point the team to it.
-* **Give each scenario an `expect`** (`delivered: true | false`, `count: "correct" | "reconciled" | "unresolved"`) and
-  keep one control with nothing set up: `clinicalcraft bench team` scores every scenario against it (all must pass),
-  and the control measures false holds.
+* **Give each scenario an `expect`** (`delivered: true | false`, `count: "correct" | "reconciled" | "unresolved"`,
+  `site: "confirmed" | "corrected" | "unresolved"`) and keep one control with nothing set up: `clinicalcraft bench
+  team` scores every scenario against it (all must pass), and the control measures false holds (and, for the site,
+  false pauses).
 * The counted items are placed one by one in the room (a facility's placements); the baseline is every one in the room,
   by entity id, recorded at the start of an in-world encounter. The count is the case's record (docs/TEAM.md §4.3):
   read it with `{ "count": {…} }` conditions — make the Sign Out contraindicated while it is open
@@ -462,6 +467,19 @@ A theatre case can give its room a care team that works on its own in in-world m
 * Exercise the count by identity, not only by number: keep a scenario with an item **not in the count** (another room's
   item moved in: six of five, or five of five with one still in the wound), and a positive control with a **documented
   transfer** (`items[].transfer`: a swab sent with the specimen — no hold expected).
+* **The operative site** (docs/TEAM.md §4.5). Name the `sides` in words ("the patient's left" — the patient's own,
+  never the viewer's) and list the `evidence`: `document`s read from the notes, the `imaging` read off its own
+  orientation marker, the `patient`'s own word (only while he can speak). Mark as `primary` what a discrepancy is
+  verified against — it is never corrected in the room, and as the case has it it must agree with itself; keep at
+  least one document that is not primary if a scenario is to have a wrong document corrected. `when` is the moment
+  the check falls due (the patient in theatre and on the monitor, before the Sign In); `holds` is the step a
+  discrepancy stops (the induction), `holdsName` what the team calls it aloud. Read the record with
+  `{ "site": { "status": … } }` conditions: make the Sign In contraindicated while a discrepancy is open
+  (`{"site": {"status": ["discrepancy", "unresolved"]}}`) — in text mode there is no record (`none`) and nothing is
+  judged on it. Author the scenarios as a set: the control (confirmed, no pause), the mark on the wrong side and no
+  mark (corrected by a new mark), a wrong non-primary document (corrected by correcting the document, not the mark),
+  and primary evidence that disagrees with itself (`unresolved`: escalated, the hold stays). What the mark and the
+  documents say is teaching material unless the source records it: say so in the team's `note`.
 
 ## 7. Learning design
 

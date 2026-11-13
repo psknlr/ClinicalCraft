@@ -1116,6 +1116,8 @@ const zh = {
   "trace.name.result.read": "已看结果",
   "trace.name.intervention.applied": "已处置",
   "trace.name.patient.arrived": "患者到达",
+  "trace.name.site.recorded": "手术部位核查记录",
+  "trace.name.verify_site": "核查手术部位",
   "trace.name.flag.changed": "状态标记改变",
   "trace.name.time.advanced": "时间推进",
   "trace.name.phase.changed": "阶段改变",

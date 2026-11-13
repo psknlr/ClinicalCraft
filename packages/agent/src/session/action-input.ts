@@ -49,6 +49,7 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
     case "alarm-response":
     case "procedure-supply":
     case "arrival":
+    case "site":
       return {};
     default: {
       const never: never = action;
@@ -140,6 +141,7 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
     case "alarm-response":
     case "procedure-supply":
     case "arrival":
+    case "site":
       return { ok: true, action };
     default: {
       const never: never = action;

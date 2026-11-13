@@ -29,6 +29,8 @@ export interface ReactionContext {
    * the minute it fired), which is what the session relies on.
    */
   unmeasurable?: readonly VitalKey[];
+  /** A member of staff's name by their staff id (a hold placed in a team member's own name is told with it), or null. */
+  staffName?: (id: string) => string | null;
 }
 
 /** "Nurse:", "Nurse Chen:", "护士：", "陈护士：" — a scenario line written as the nurse's speech. */
@@ -161,6 +163,24 @@ function countNotification(c: CaseDefinition, L: string, event: Extract<DomainEv
   return [];
 }
 
+/**
+ * The operative site's verification as the learner is told of it (docs/TEAM.md §4.5): a discrepancy raised and an
+ * escalation are warnings, a confirmation is said; a look, a mark or a correction is the acting member's own line.
+ */
+function siteNotification(c: CaseDefinition, L: string, event: Extract<DomainEvent, { type: "site.recorded" }>): EventReaction[] {
+  const site = c.team?.site;
+  if (!site || (event.op !== "raise" && event.op !== "escalate" && event.op !== "confirm")) return [];
+  const side = (id: string | null | undefined) => (id == null ? rt(L, "site.noMark") : site.sides[id] ? t(site.sides[id]!, L) : id);
+  const source = (id: string) => (id === "mark" ? rt(L, "site.source.mark") : t(site.evidence.find((e) => e.id === id)?.name ?? id, L));
+  const detail =
+    event.op === "raise" && event.sources
+      ? rt(L, "site.line.discrepancy", { a: source(event.sources[0]), va: side(event.values?.[0]), b: source(event.sources[1]), vb: side(event.values?.[1]) })
+      : event.op === "confirm" && event.side
+        ? rt(L, "site.line.confirmed", { side: side(event.side) })
+        : "";
+  return [{ notification: { level: event.op === "confirm" ? "info" : "warning", title: rt(L, "site.title"), body: rt(L, "site.line", { status: rt(L, `site.status.${event.status}` as RuntimeKey), detail }) } }];
+}
+
 function criticalResultKeys(c: CaseDefinition, investigationId: string): { body: RuntimeKey; line: RuntimeKey } {
   const category = c.investigations.find((i) => i.id === investigationId)?.category;
   switch (category) {
@@ -218,10 +238,14 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     }
     case "objective.completed":
       return [{ notification: { level: "info", title: rt(L, "notify.objective.title"), body: objectiveTitle(c, event.objectiveId, L) } }];
-    case "hold.placed":
-      return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by: event.placedBy, reason: sentence(event.reason) }) } }];
-    case "hold.released":
-      return [{ notification: { level: "info", title: rt(L, "status.holds"), body: rt(L, "hold.released", { name: interventionLabel(c, event.interventionId, L), by: event.releasedBy, reassessment: event.reassessment }) } }];
+    case "hold.placed": {
+      const by = context.staffName?.(event.placedBy) ?? event.placedBy;
+      return [{ notification: { level: "warning", title: rt(L, "status.holds"), body: rt(L, "hold.placed", { name: interventionLabel(c, event.interventionId, L), by, reason: sentence(event.reason) }) } }];
+    }
+    case "hold.released": {
+      const by = context.staffName?.(event.releasedBy) ?? event.releasedBy;
+      return [{ notification: { level: "info", title: rt(L, "status.holds"), body: rt(L, "hold.released", { name: interventionLabel(c, event.interventionId, L), by, reassessment: event.reassessment }) } }];
+    }
     case "study.recorded":
       return studyNotification(c, L, event);
     case "anaesthesia.recorded":
@@ -253,6 +277,8 @@ export function reactToDomainEvent(c: CaseDefinition, event: DomainEvent, locale
     case "procedure.supply":
     case "patient.arrived":
       return [];
+    case "site.recorded":
+      return siteNotification(c, L, event);
     default: {
       const never: never = event;
       return never;

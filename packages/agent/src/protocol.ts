@@ -15,9 +15,10 @@ import type {
   DomainEvent,
   ObjectiveProgress,
   SessionState,
+  SiteStatus,
   VitalsSnapshot,
 } from "@clinicalcraft/core";
-import type { ActorId, Pose, WorldActionRequest, WorldActionResult, WorldEvent } from "@clinicalcraft/world";
+import type { ActorId, NavGoal, Pose, WorldActionRequest, WorldActionResult, WorldEvent } from "@clinicalcraft/world";
 import type { Embodiment } from "./settings/schema.js";
 
 /* ------------------------------------------------------------------ */
@@ -111,11 +112,15 @@ export type Op =
    * `rounds`), `pause` (autonomy `step`: the team waits for `step`), `resume` (autonomy `auto`: the team acts after
    * each of the learner's acts), `surgeon` (who answers as the surgeon: the learner, or the simulated surgeon of
    * observer mode), `reply` (the learner, as the surgeon, answers a team message: a read-back, a confirmation, a
-   * decline), `need` (the learner says what they need: the team takes it from there). Answered by `team_event`s.
+   * decline), `need` (the learner says what they need: the team takes it from there), `site` (the learner's own step
+   * of the operative site's verification, docs/TEAM.md §4.5, with their own body where it stands: `step` `read` a
+   * `source` — `mark`, or a piece of the site's evidence —, `raise` a discrepancy between two `sources` they have
+   * looked at, `mark` a `side`, `amend` a `source` to a `side`, `confirm`, `escalate` with a `reason`, `pause` — the
+   * hold on the step the site names — and `resume`, its release). Answered by `team_event`s.
    */
   | {
       type: "team";
-      action: "step" | "run" | "pause" | "resume" | "surgeon" | "reply" | "need";
+      action: "step" | "run" | "pause" | "resume" | "surgeon" | "reply" | "need" | "site";
       rounds?: number;
       surgeon?: "learner" | "simulated";
       message?: string;
@@ -123,6 +128,11 @@ export type Op =
       text?: string;
       item?: string;
       for?: string;
+      step?: "read" | "raise" | "mark" | "amend" | "confirm" | "escalate" | "pause" | "resume";
+      source?: string;
+      sources?: [string, string];
+      side?: string;
+      reason?: string;
     }
   /**
    * The staff's own clock (docs/TEAM.md §5, "working on their own"): one round of what staff do without being asked —
@@ -314,4 +324,9 @@ export type TeamEvent =
   | { kind: "message"; message: TeamMessage }
   | { kind: "receipt"; receipt: ActionReceipt }
   | { kind: "task"; task: TeamTask }
-  | { kind: "status"; round: number; autonomy: "auto" | "step" | "off"; surgeon: "learner" | "simulated" };
+  | { kind: "status"; round: number; autonomy: "auto" | "step" | "off"; surgeon: "learner" | "simulated" }
+  /**
+   * The learner's own step of the site's verification (`team` op, action `site`): what it recorded, or why not —
+   * `code` `NOT_AT_PATIENT` / `NOT_IN_ROOM` with where to stand (`goal`), or `REFUSED` by the record's own rules.
+   */
+  | { kind: "site"; step: string; ok: boolean; output: string; status: SiteStatus; code?: string; goal?: NavGoal };

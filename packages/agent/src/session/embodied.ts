@@ -25,6 +25,7 @@
  */
 import type { ClinicalActionFeedback } from "./action-ids.js";
 import { COUNT_TOOL, SurgicalCount } from "./count.js";
+import { SiteVerification } from "./site.js";
 import { anaesthetised, assignPatientSlot, canLeaveAnaesthetisedPatient, patientCues, responsibleAnaesthetist, t, VITAL_KEYS, vitalsAt, type ClinicalAction, type DomainEvent, type EquipmentCatalog, type FacilityDefinition, type CaseDefinition, type ReduceResult, type SessionState, type VitalKey, type VitalsSnapshot } from "@clinicalcraft/core";
 import {
   behaviorOf,
@@ -207,6 +208,8 @@ export class EmbodiedSession {
   readonly port: ClinicalPort;
   /** The surgical count (docs/TEAM.md §4.3): the one writer of the case's count record from the world. */
   readonly count: SurgicalCount;
+  /** The operative site's verification (docs/TEAM.md §4.5): the one writer of the case's site record from the world. */
+  readonly site: SiteVerification;
 
   constructor(
     private readonly host: EmbodiedHost,
@@ -237,6 +240,7 @@ export class EmbodiedSession {
       elapse: (seconds, reason) => this.elapse(seconds, reason),
     };
     this.count = new SurgicalCount({ caseDef: c, world: () => this.inner, state: () => host.state(), dispatch: (a) => host.dispatch(a), locale: () => host.locale() });
+    this.site = new SiteVerification({ caseDef: c, world: () => this.inner, state: () => host.state(), dispatch: (a) => host.dispatch(a), elapse: (seconds) => this.elapse(seconds, "procedure"), locale: () => host.locale() });
     this.worldLocale = host.locale();
     this.carry = carryOf(options.snapshot);
     this.inner = this.build(options.snapshot, this.worldLocale, true);

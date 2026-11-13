@@ -10,6 +10,8 @@ import {
   activeHolds,
   countOpenItems,
   countStatus,
+  openDiscrepancy,
+  siteStatus,
   procedureStateOf,
   currentObjective,
   explainCondition,
@@ -82,6 +84,26 @@ export function countLines(c: CaseDefinition, s: SessionState, L: string): strin
   return lines;
 }
 
+/**
+ * The operative site's line for `case_status` (docs/TEAM.md §4.5): the verification's status, and only what someone
+ * has seen — the open discrepancy as it was raised, or the side confirmed. Nothing without a record.
+ */
+export function siteLines(c: CaseDefinition, s: SessionState, L: string): string[] {
+  const site = c.team?.site;
+  const r = s.site;
+  if (!site || !r) return [];
+  const side = (id: string | null | undefined) => (id == null ? rt(L, "site.noMark") : site.sides[id] ? t(site.sides[id]!, L) : id);
+  const source = (id: string) => (id === "mark" ? rt(L, "site.source.mark") : t(site.evidence.find((e) => e.id === id)?.name ?? id, L));
+  const open = openDiscrepancy(r);
+  const confirm = r.entries.findLast((e) => e.op === "confirm");
+  const detail = open
+    ? rt(L, "site.line.discrepancy", { a: source(open.sources[0]), va: side(open.values?.[0]), b: source(open.sources[1]), vb: side(open.values?.[1]) })
+    : confirm?.op === "confirm" && confirm.side
+      ? rt(L, "site.line.confirmed", { side: side(confirm.side) })
+      : "";
+  return [rt(L, "site.line", { status: rt(L, `site.status.${siteStatus(r)}` as RuntimeKey), detail })];
+}
+
 function decisionLabel(c: CaseDefinition, s: SessionState, id: string, L: string): string {
   const d = c.decisions.find((x) => x.id === id);
   const n = c.decisions.findIndex((x) => x.id === id) + 1;
@@ -113,6 +135,7 @@ export function requirementText(c: CaseDefinition, s: SessionState, r: Requireme
   if ("flag" in cond) return rt(L, "req.flag", { flag: cond.flag });
   if ("procedure" in cond) return rt(L, "req.procedure", { what: procedureWords(cond.procedure, L) });
   if ("count" in cond) return rt(L, "req.count", { what: countWords(cond.count, L) });
+  if ("site" in cond) return rt(L, "req.site", { what: (Array.isArray(cond.site.status) ? cond.site.status : [cond.site.status]).map((x) => rt(L, `site.status.${x}` as RuntimeKey)).join(" / ") });
   return rt(L, "req.other", { what: Object.keys(cond)[0] ?? "?" });
 }
 

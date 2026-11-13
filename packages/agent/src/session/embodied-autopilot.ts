@@ -25,9 +25,12 @@
  * taken to, they are taken back to their bed space unless the next step
  * needs them at a device too (EMBODIED §8). In a case that keeps a surgical count, closure waits for the count:
  * before `operate close` on a count that is not settled, the closing count is made at the count board in the
- * patient's room (docs/TEAM.md §4.3) — the autopilot never closes on a count it did not take.
+ * patient's room (docs/TEAM.md §4.3) — the autopilot never closes on a count it did not take. In a case whose team
+ * verifies the operative site, a discrepancy raised on it is seen through before the next step (docs/TEAM.md §4.5):
+ * the autopilot, as the surgeon, looks at the evidence and the mark with its own body (`verify_site`), marks the site
+ * or corrects the wrong document, and reports to whoever asked — never on evidence that disagrees with itself.
  */
-import { countSettled, countStatus, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
+import { countSettled, countStatus, siteStatus, t, type ClinicalAction, type SessionState } from "@clinicalcraft/core";
 import { behaviorOf, PRIMARY_ACTOR, roleName, type ActionHint, type NavGoal, type SpatialRequirement, type WorldActionResult, type WorldRuntime } from "@clinicalcraft/world";
 import { clinicianOfflineSteps, minutesUntilReadable, stepAlreadySatisfied, stepForAction, type OfflineClinicianStep } from "../agents/offline.js";
 import type { ToolCallStatus } from "../loop.js";
@@ -36,7 +39,7 @@ import type { WorldRequestInput } from "../tools/world.js";
 import { nameOf } from "../tools/world-format.js";
 import { lostTraction, walkthroughEndText, type AgentOutcome, type AutopilotHost } from "./autopilot.js";
 import { clinicalOperation, heldBy, operationPath, releaseHeld, releaseOperation, type DeviceRoute } from "./device-ops.js";
-import { rt } from "./i18n.js";
+import { joinList, rt } from "./i18n.js";
 import type { SessionTrace } from "./trace.js";
 
 /** What the embodied autopilot needs beyond the autopilot host. */
@@ -272,6 +275,68 @@ async function countBeforeClosure(host: AutopilotHost, e: EmbodiedAutopilotHost,
   await e.act({ operation: "put_down", targetId: wand.id }, turnId, signal);
 }
 
+/** The discrepancy (its raise's sequence number) each cursor has already seen through: never done twice. */
+const SITE_VERIFIED = new WeakMap<object, number>();
+
+/**
+ * Before a step, while a discrepancy is open on the operative site (docs/TEAM.md §4.5): the surgeon's part, with the
+ * autopilot's own body through `verify_site` — every piece of primary evidence looked at, then the mark, made where
+ * the evidence says; a document that says otherwise corrected — and reported to whoever asked. Evidence that
+ * disagrees with itself is reported as that, and nothing is marked on it: the team escalates and the step stays held.
+ */
+async function verifySiteFirst(host: AutopilotHost, e: EmbodiedAutopilotHost, turnId: string, signal?: AbortSignal): Promise<void> {
+  const site = host.caseDef.team?.site;
+  const record = host.state().site;
+  if (!site || !record || siteStatus(record) !== "discrepancy") return;
+  const raised = record.entries.findLast((x) => x.op === "raise")?.seq ?? -1;
+  if (SITE_VERIFIED.get(host.cursor) === raised) return;
+  SITE_VERIFIED.set(host.cursor, raised);
+  const L = host.locale;
+  host.narrate(turnId, rt(L, "clinician.narrate.site"));
+  const call = async (args: Record<string, unknown>) => {
+    let out = (await host.executeTool(turnId, "verify_site", args, signal)).output;
+    // refused for place: walk where the record's rule points (the mark is looked at beside the patient), then again
+    const goal = (out.data as { hint?: { goal?: WorldRequestInput["goal"] } } | undefined)?.hint?.goal;
+    if (!out.ok && goal) {
+      await e.act({ operation: "navigate", goal }, turnId, signal);
+      out = (await host.executeTool(turnId, "verify_site", args, signal)).output;
+    }
+    return out;
+  };
+  const seen = new Map<string, string | null>();
+  const look = async (source: string): Promise<boolean> => {
+    const out = await call({ step: "read", source });
+    if (out.ok) seen.set(source, (out.data as { value?: string | null } | undefined)?.value ?? null);
+    return out.ok;
+  };
+  const name = (id: string) => (id === "mark" ? rt(L, "site.source.mark") : t(site.evidence.find((x) => x.id === id)?.name ?? id, L));
+  const side = (id: string | null | undefined) => (id == null ? rt(L, "site.noMark") : t(site.sides[id] ?? id, L));
+  // what a discrepancy is verified against (a patient who cannot answer is left out)
+  const primary = site.evidence.filter((x) => x.primary);
+  for (const x of primary) if (signal?.aborted || (!(await look(x.id)) && x.kind !== "patient")) return;
+  const read = primary.filter((x) => seen.has(x.id));
+  const first = read[0];
+  if (!first) return;
+  const agreed = seen.get(first.id) ?? null;
+  const other = read.find((x) => (seen.get(x.id) ?? null) !== agreed);
+  if (other || agreed === null) {
+    const b = other ?? first;
+    await call({ step: "report", text: rt(L, "clinician.site.conflict", { a: name(first.id), va: side(agreed), b: name(b.id), vb: side(seen.get(b.id)) }) });
+    return;
+  }
+  if (!(await look("mark"))) return;
+  const done: string[] = [];
+  if (seen.get("mark") !== agreed) {
+    if (!(await call({ step: "mark", side: agreed })).ok) return;
+    done.push(rt(L, "clinician.site.marked", { side: side(agreed) }));
+  }
+  for (const d of site.evidence.filter((x) => x.kind === "document" && !x.primary)) {
+    if (!(await look(d.id)) || seen.get(d.id) === agreed) continue;
+    if ((await call({ step: "amend", source: d.id, side: agreed })).ok) done.push(rt(L, "clinician.site.amended", { source: name(d.id), side: side(agreed) }));
+  }
+  await call({ step: "report", text: rt(L, "clinician.site.verified", { evidence: joinList(L, read.map((x) => name(x.id))), side: side(agreed), done: done.join("") }) });
+}
+
 async function runEmbodiedStep(host: AutopilotHost, e: EmbodiedAutopilotHost, step: Extract<OfflineClinicianStep, { kind: "tool" }>, turnId: string, signal?: AbortSignal): Promise<StepRun> {
   const intent = actionIntent(step.action as ClinicalAction);
   const actor = PRIMARY_ACTOR;
@@ -408,6 +473,7 @@ export async function embodiedOfflineTurn(host: AutopilotHost, e: EmbodiedAutopi
     const clockBefore = host.state().clock;
     if (run === step) {
       await countBeforeClosure(host, e, run, turnId, signal);
+      await verifySiteFirst(host, e, turnId, signal);
       await host.afterStep?.(signal);
     }
     last = run.narration;

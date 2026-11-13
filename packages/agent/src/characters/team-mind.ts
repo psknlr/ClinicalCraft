@@ -7,7 +7,7 @@
  * - `act`: the team's protocol move — the policy's own proposal (ask the colleague whose duty it is, read back,
  *   hand over, report, count, search…), worded in the member's own words when it speaks;
  * - `wait`: not now — once in a row for the same move, and never for a closed-loop obligation (a read-back, a
- *   confirmation, a report, a decline, an escalation) or the count;
+ *   confirmation, a report, a decline, an escalation), the count or the operative site's verification;
  * - `notice`: say something you see to a colleague in the room (no obligation created);
  * - `escalate`: raise your own task, stuck waiting, to the person it is for.
  * A line is accepted only when it is grounded: one line, in the session's language, every number in it is in what
@@ -242,8 +242,9 @@ export class ModelTeamMind {
     const out: Option[] = [];
     // owed now: a closed-loop reply, and anything about the count (a count, a hold, a recount, an item set aside)
     const about = rules?.kind === "say" ? rules.message.about : null;
-    const owed = rules?.kind === "say" && (OWED.has(rules.message.kind) || !!rules.message.replyTo || about?.count !== undefined || !!about?.hold || !!about?.recount || !!about?.setAside);
-    const countWork = rules?.kind === "act" && view.tasks.some((x) => x.id === rules.task && (x.kind === "count" || x.kind === "check"));
+    const owed = rules?.kind === "say" && (OWED.has(rules.message.kind) || !!rules.message.replyTo || about?.count !== undefined || !!about?.hold || !!about?.recount || !!about?.setAside || !!about?.site);
+    // the count's work and the site's verification are never put off (a look, the pause, the mark, the confirmation)
+    const countWork = rules?.kind === "act" && (rules.operation.startsWith("site.") || view.tasks.some((x) => x.id === rules.task && (x.kind === "count" || x.kind === "check" || x.kind === "site" || x.kind === "verify")));
     if (rules) {
       const text =
         rules.kind === "say"
@@ -282,7 +283,7 @@ export class ModelTeamMind {
     const mine = view.tasks.filter((x) => x.status !== "done");
     if (mine.length) {
       lines.push("Your tasks:");
-      for (const x of mine) lines.push(`- ${x.id}: ${x.kind} — ${t(view.itemName(x.item), L)} for ${name(x.for)} — ${x.status}${x.assignee ? ` (asked: ${name(x.assignee)})` : ""}`);
+      for (const x of mine) lines.push(`- ${x.id}: ${x.kind}${x.item ? ` — ${t(view.itemName(x.item), L)}` : ""} for ${name(x.for)} — ${x.status}${x.assignee ? ` (asked: ${name(x.assignee)})` : ""}`);
     }
     if (view.needs.length) {
       lines.push("Needs you have noticed:");

@@ -441,8 +441,8 @@ export class GameWorldLink {
   private teamTick(dt: number): void {
     const session = this.o.app.session;
     if (this.teamBusy || !(this.o.clockRunning?.() ?? this.o.playing()) || this.o.agentDriving?.()) return;
-    const team = this.o.caseDef.team;
-    if (!team || !team.phases.includes(session.state.phase) || session.state.finished) return;
+    // in the team's phases, and before them while the operative site is being verified (docs/TEAM.md §4.5)
+    if (!this.o.caseDef.team || session.state.finished || !session.teamWorking()) return;
     if (session.team()?.autonomy !== "auto") return;
     this.teamWait += dt;
     if (this.teamWait < TEAM_STEP_MS) return;

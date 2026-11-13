@@ -24,6 +24,7 @@ import { advanceClock, openTimeline, settle } from "./timeline.js";
 import { supersededIn } from "./twins.js";
 import { createProcedureState, operate, procedureFor, procedureStateOf } from "./procedure/index.js";
 import { applyCount, closureOnOpenCount, countLedger, countStatus } from "./count.js";
+import { applySite, siteStatus } from "./site.js";
 import { applyStudy } from "./study.js";
 import { reachPhase, recordAvailability } from "./records.js";
 import { applyAnaesthesia } from "./anaesthesia.js";
@@ -493,6 +494,28 @@ function onCount(ctx: Ctx, a: Action<"count">): Outcome {
   return accepted();
 }
 
+/** An entry of the operative site's verification (docs/TEAM.md §4.5): what was read is the record's, never the caller's. */
+function onSite(ctx: Ctx, a: Action<"site">): Outcome {
+  const { c, s } = ctx;
+  const r = applySite(c, s, a.site, s.clock, s.seq + 1);
+  if (!r.ok) return rejected(r.code, r.message);
+  if (!r.entry) return { kind: "unchanged" };
+  s.site = r.record;
+  const e = r.entry;
+  ctx.events.push({
+    type: "site.recorded",
+    op: e.op,
+    staff: e.staff,
+    status: siteStatus(r.record),
+    ...(e.op === "read" ? { source: e.source, value: e.value ?? null } : {}),
+    ...(e.op === "raise" ? { sources: e.sources, values: e.values ?? [] } : {}),
+    ...(e.op === "amend" ? { source: e.source, side: e.to } : {}),
+    ...(e.op === "mark" ? { side: e.side } : {}),
+    ...(e.op === "confirm" && e.side ? { side: e.side } : {}),
+  });
+  return accepted();
+}
+
 function onFinish(ctx: Ctx): Outcome {
   const p = progress(ctx.c, ctx.s);
   if (!p.complete) return rejected("objectives-incomplete", `${p.total - p.done} objective(s) still open`);
@@ -537,6 +560,8 @@ function dispatch(ctx: Ctx, a: ClinicalAction): Outcome {
       return onCount(ctx, a);
     case "arrival":
       return onArrival(ctx, a);
+    case "site":
+      return onSite(ctx, a);
     case "study":
       return onStudy(ctx, a);
     case "anaesthesia":

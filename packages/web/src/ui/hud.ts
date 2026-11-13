@@ -379,7 +379,8 @@ export class Hud {
     e.phase.textContent = phaseBadge(c, s.phase, L);
     const surgery = surgeryOffered(c, s.phase);
     if (e.surgery.hidden === surgery) e.surgery.hidden = !surgery;
-    const team = !!game.embodied && !!c.team?.phases.includes(s.phase);
+    // the team's own phases, and from the moment the operative site's verification is on the record
+    const team = !!game.embodied && !!c.team && (c.team.phases.includes(s.phase) || !!s.site);
     if (e.team.hidden === team) e.team.hidden = !team;
     if (c.clock.mode === "simulated") {
       e.clock.hidden = false;

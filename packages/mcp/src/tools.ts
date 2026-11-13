@@ -115,6 +115,9 @@ export const TOOL_ANNOTATIONS: Readonly<Record<string, McpToolAnnotations>> = {
   order_study: { title: "Order a new investigation", ...RECORDS, idempotentHint: true },
   read_study: { title: "Read a new investigation", ...READ_ONLY },
   list_studies: { title: "List new investigations", ...READ_ONLY },
+  // The operative site's verification (docs/TEAM.md §4.5): a look, a mark, the pause — each an entry of the case's
+  // site record, written by the caller's own body (in-world mode).
+  verify_site: { title: "Verify the operative site", ...RECORDS },
   // Embodied mode (§12). Perception only reads (the body's memory of what it saw is not encounter state);
   // walking moves the body and spends simulated time; operations with a clinical effect (a device giving a
   // drug, delegated or skill steps) act on the patient through the approval gate.

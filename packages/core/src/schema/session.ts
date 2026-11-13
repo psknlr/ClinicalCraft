@@ -1,7 +1,7 @@
 import { z } from "zod";
 import { AnaesthesiaOpSchema, type AnaesthesiaOp, type AnaesthesiaResponsibility } from "./anaesthesia.js";
 import { AlarmResponseOpSchema, type AlarmEpisode, type AlarmResponseOp } from "./alarm.js";
-import { CountStageSchema, IdSchema, RoomKindSchema, type CountStage, type CountStatus, type RoomKind, type Vitals, type VitalKey } from "./common.js";
+import { CountStageSchema, IdSchema, RoomKindSchema, type CountStage, type CountStatus, type RoomKind, type SiteStatus, type Vitals, type VitalKey } from "./common.js";
 import { StudyOpSchema, type StudyOp, type StudyRecord } from "./study.js";
 import { ProcedureOpSchema, type ProcedureOp, type ProcedureOpType, type ProcedureSignal, type ProcedureState } from "./procedure.js";
 
@@ -56,6 +56,34 @@ export const CountOpSchema = z.discriminatedUnion("op", [
   z.object({ op: z.literal("escalate"), staff: HolderSchema, to: CountText, reason: CountText }).strict(),
 ]);
 export type CountOp = z.infer<typeof CountOpSchema>;
+
+/** What a site entry is about: the skin mark, or a piece of the evidence (its id in the case's team site). */
+const SiteSourceSchema = z.union([z.literal("mark"), IdSchema]);
+
+/**
+ * One entry of the operative site's verification (docs/TEAM.md §4.5). What was read is never supplied by a caller:
+ * the record holds where the mark is and what each piece of evidence says, and the engine writes what the reader
+ * saw. `staff` is who did it (a staff id, or `surgeon`):
+ * - `open`: the record begun for this encounter (in-world: the session's, once; the mark and the evidence as the
+ *   case and the team scenario have them).
+ * - `read`: someone looked at the mark, read a document or the imaging's orientation marker, or asked the patient.
+ * - `raise`: a discrepancy raised between two things the raiser has read themselves.
+ * - `mark`: the site marked (again) on `side`, by the one who operates.
+ * - `amend`: a document that is not primary evidence corrected to `to`.
+ * - `confirm`: the site confirmed by someone who has seen the mark and read a document and found them to agree —
+ *   after a discrepancy, only once the primary evidence was read again and agrees with it.
+ * - `escalate`: a discrepancy that cannot be resolved in the room, and why.
+ */
+export const SiteOpSchema = z.discriminatedUnion("op", [
+  z.object({ op: z.literal("open"), staff: HolderSchema }).strict(),
+  z.object({ op: z.literal("read"), source: SiteSourceSchema, staff: HolderSchema }).strict(),
+  z.object({ op: z.literal("raise"), sources: z.tuple([SiteSourceSchema, SiteSourceSchema]), staff: HolderSchema }).strict(),
+  z.object({ op: z.literal("mark"), side: IdSchema, staff: HolderSchema }).strict(),
+  z.object({ op: z.literal("amend"), source: IdSchema, to: IdSchema, staff: HolderSchema }).strict(),
+  z.object({ op: z.literal("confirm"), staff: HolderSchema }).strict(),
+  z.object({ op: z.literal("escalate"), staff: HolderSchema, reason: z.string().trim().min(1).max(500) }).strict(),
+]);
+export type SiteOp = z.infer<typeof SiteOpSchema>;
 
 export const ClinicalActionSchema = z.discriminatedUnion("type", [
   /** `variant`: the procedure's anatomical variant for this session (docs/PROCEDURE.md §9; hidden from the operator). */
@@ -118,6 +146,8 @@ export const ClinicalActionSchema = z.discriminatedUnion("type", [
    * decision (it may be to proceed under stated uncertainty).
    */
   z.object({ type: z.literal("release-hold"), interventionId: IdSchema, releasedBy: HolderSchema, reassessment: z.string().trim().min(1).max(1000), ...base }).strict(),
+  /** An entry of the operative site's verification (`SiteOpSchema`; docs/TEAM.md §4.5). */
+  z.object({ type: z.literal("site"), site: SiteOpSchema, ...base }).strict(),
   /** A new investigation (`StudyOpSchema`; docs/STUDIES.md): order, wait, acquire, release, review. */
   z.object({ type: z.literal("study"), study: StudyOpSchema, ...base }).strict(),
   /** A step of anaesthesia responsibility (docs/TEAM.md §5): a relief requested, arrived, the hand-over accepted. */
@@ -262,6 +292,32 @@ export interface CountUnsafe {
 }
 
 /**
+ * One entry of the site's record: the op as given, when, and what the engine wrote for it — what a `read` saw
+ * (`value`: a side, or null: no mark), what a `raise` found to differ (`values`, in the order of its `sources`), the
+ * side a `confirm` settled on and what the confirmer had read (`basis`).
+ */
+export type SiteEntry = SiteOp & {
+  at: number;
+  seq: number;
+  value?: string | null;
+  values?: (string | null)[];
+  side?: string;
+  basis?: string[];
+};
+
+/**
+ * The operative site's verification for the encounter (docs/TEAM.md §4.5). `mark`: where the skin mark is now
+ * (null: not marked); `says`: what each piece of evidence states now (a corrected document states the corrected
+ * side) — both hidden until someone reads them: an entry is what a reader saw. Append-only evidence of who looked,
+ * who raised, who verified what, who corrected what and who confirmed; the status is derived (`siteStatus`).
+ */
+export interface SiteRecord {
+  mark: string | null;
+  says: Record<string, string>;
+  entries: SiteEntry[];
+}
+
+/**
  * The surgical count of the encounter (docs/TEAM.md §4.3): one record per encounter and operating room, by item
  * identity. Append-only: every entry is evidence (who counted, scanned, recovered, transferred, escalated); the
  * status is derived (`countStatus`).
@@ -325,6 +381,8 @@ export interface SessionState {
   holds?: HoldRecord[];
   /** The surgical count (cases whose team keeps one), from the baseline on. */
   count?: CountRecord;
+  /** The operative site's verification (cases whose team verifies one; in-world mode), from its opening on. */
+  site?: SiteRecord;
   /** New investigations ordered in this encounter (docs/STUDIES.md), from the first order on. */
   studies?: StudyRecord;
   /** Who is responsible for the anaesthetised patient, and the hand-overs (absent: the case team's anaesthetist). */
@@ -401,6 +459,8 @@ export type DomainEvent =
   | { type: "anaesthesia.recorded"; op: AnaesthesiaOp["op"]; responsible: string; relief?: string }
   /** The patient arrived in another room (`arrival`). */
   | { type: "patient.arrived"; room: string; kind?: RoomKind; slot?: string; broughtBy?: string }
+  /** An entry of the operative site's verification (docs/TEAM.md §4.5); `status` after it. */
+  | { type: "site.recorded"; op: SiteOp["op"]; staff: string; status: SiteStatus; source?: string; value?: string | null; side?: string; sources?: [string, string]; values?: (string | null)[] }
   /** The operation's equipment supply changed (`deflated`: the pneumoperitoneum was lost with the gas). */
   | { type: "procedure.supply"; image: boolean; gas: boolean; source?: string; deflated?: true }
   /** An alarm response step (`id`: the episode). */

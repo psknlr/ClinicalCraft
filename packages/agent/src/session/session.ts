@@ -116,6 +116,14 @@ export class ClinicalSession implements ClinicalSessionApi {
   }
 
   /**
+   * Does the care team work now (docs/TEAM.md §2): in its phases, and — whatever the phase — while the operative
+   * site's verification is under way? A front-end's team clock runs on it.
+   */
+  teamWorking(): boolean {
+    return this.k.team.available() && (this.k.team.get()?.active() ?? false);
+  }
+
+  /**
    * Every staff member's role state now (docs/TEAM.md §5): goal, task, place, responsibility, held items,
    * reservations, pending requests, what blocks them — derived from the record and the world (empty in clinical mode).
    */

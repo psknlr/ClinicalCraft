@@ -488,7 +488,9 @@ export class EventRenderer {
         return;
       }
       case "team_event":
-        // the care team's speech is heard as each member's own line (agent_message); receipts and tasks stay in the record
+        // the care team's speech is heard as each member's own line (agent_message); receipts and tasks stay in the
+        // record; the learner's own step of the site's verification is answered here
+        if (msg.event.kind === "site") this.line(this.p.dim(`  ${msg.event.ok ? "⤷" : "✗"} ${truncate(sanitizeTerminal(msg.event.output.split("\n")[0] ?? ""), 200)}`));
         return;
       default: {
         const never: never = msg;

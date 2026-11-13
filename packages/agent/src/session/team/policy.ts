@@ -14,15 +14,20 @@
  *   that type she can see in the room (claiming it, so two tasks never carry one item), picks it up, reaches
  *   the person and hands it over, then reports; declines with the reason when she cannot.
  * - `surgeon` (the simulated surgeon of observer mode): acknowledges what is escalated to them.
+ * - the operative site (docs/TEAM.md §4.5): the circulating nurse looks at the mark and reads the documents herself;
+ *   they agree — confirmed; they do not — she raises it, holds the step, asks the anaesthetist to hold and the
+ *   surgeon to verify, and when the surgeon reports she looks again before she confirms and releases her hold. The
+ *   simulated surgeon verifies against the primary evidence, marks the site or corrects the wrong document — or says
+ *   that the evidence disagrees with itself. The anaesthetist (`anaesthesia`) reads the hold back.
  *
  * Knowledge: a member uses only what is in their view. An item is used only when the member perceives it
  * now (a remembered one may have been moved since: she looks where she last saw it, in the room she is in,
  * and it is not there).
  */
-import type { TeamDuty } from "@clinicalcraft/core";
+import type { SiteStatus, TeamDuty } from "@clinicalcraft/core";
 import { PRIMARY_ACTOR, type NavGoal } from "@clinicalcraft/world";
 import { phrase, type Bilingual, type TeamPhrase } from "./i18n.js";
-import type { KnownNeed, MemberId, MemberState, Proposal, TaskPatch, TeamMessage, TeamTask } from "./types.js";
+import type { KnownNeed, MemberId, MemberState, Proposal, SiteProgress, TaskPatch, TeamMessage, TeamTask } from "./types.js";
 
 /** An item of a type, as the member knows of it. */
 export interface ItemSighting {
@@ -72,6 +77,44 @@ export interface CountView {
   check(ids: readonly string[]): { missing: string[]; unexpected: string[] };
 }
 
+/**
+ * The operative site as a member can know it (docs/TEAM.md §4.5): what they have looked at themselves, what was said
+ * aloud in the room (the discrepancy, the pause) and the room's record of what was verified since. What the mark and
+ * the evidence really say reaches a member only by looking.
+ */
+export interface SiteView {
+  /** The verification has fallen due: its record is open. */
+  due: boolean;
+  status: SiteStatus;
+  /** Me, as the record names people. */
+  staff: string;
+  /** What can be looked at: the mark, then each piece of evidence in authored order (`readable`: now — the patient's own word only while he can speak). */
+  sources: readonly { id: string; kind: "mark" | "document" | "imaging" | "patient"; primary: boolean; readable: boolean }[];
+  /**
+   * What I saw with my own eyes, the latest of each source: since the open discrepancy when there is one, and only
+   * while nothing has changed it since I looked (a mark made, a document corrected: I look again).
+   */
+  mine: ReadonlyMap<string, string | null>;
+  /** The discrepancy open now, as it was raised; `escalated`: raised beyond the room. */
+  open: { by: string; sources: [string, string]; values: (string | null)[]; escalated: boolean } | null;
+  /** Who placed the hold that stands on the held step (as the record names people), or null: none stands. */
+  pausedBy: string | null;
+  /** The primary evidence read since the discrepancy, by anyone: agreed on a side, still missing, or in conflict. */
+  verification: { verified: boolean; side: string | null; missing: readonly string[]; conflict: boolean; read: readonly { source: string; value: string | null }[] };
+  /** What was put right since the discrepancy: the site marked, a document corrected. */
+  corrections: readonly ({ what: "mark"; side: string; by: string } | { what: "amend"; source: string; to: string; by: string })[];
+  /** The site's confirmation: who, the side, and what they had looked at. */
+  confirmed: { by: string; side: string; basis: readonly string[] } | null;
+  sideName(side: string | null): Bilingual;
+  sourceName(source: string): Bilingual;
+  /** A person as the record names them, in words. */
+  nameOf(staff: string): Bilingual;
+  /** The step a discrepancy holds, as the team says it ("the induction"). */
+  step: Bilingual;
+  /** I am at the patient's side now (where the mark is looked at, and made). */
+  atPatient: boolean;
+}
+
 /** What one member knows and can do now (built by the scheduler from the world, role-scoped). */
 export interface MemberView {
   me: MemberState & { holding: readonly string[]; inRoom: boolean };
@@ -79,6 +122,8 @@ export interface MemberView {
   room: string;
   /** The count the team keeps (null: none). */
   count: CountView | null;
+  /** The operative site the team verifies (null: none). */
+  site: SiteView | null;
   /** The patient's entity id, as the member knows it (the wound is searched there). */
   patient: string | null;
   round: number;
@@ -158,6 +203,7 @@ export function propose(v: MemberView): Proposal | null {
     if (p) return p;
   }
   if (has(v.me.duties, "instruments") || has(v.me.duties, "count")) return scrub(v);
+  if (has(v.me.duties, "anaesthesia")) return anaesthesia(v);
   return null;
 }
 
@@ -174,6 +220,8 @@ function circulate(v: MemberView): Proposal | null {
     if (m.kind === "report" && m.about.count !== undefined && m.about.of !== undefined && m.from !== SURGEON) return countReported(v, m);
     const check = v.tasks.find((t) => t.thread === m.thread && t.kind === "check" && !TERMINAL.has(t.status));
     if (check) return checkMessage(v, check, m);
+    const site = v.tasks.find((t) => t.thread === m.thread && t.kind === "site");
+    if (site) return siteMessage(v, site, m);
     const task = v.tasks.find((t) => t.thread === m.thread && t.kind === "supply");
     if (!task || TERMINAL.has(task.status)) return { kind: "update", patch: [{ read: m.id }] };
     if (m.kind === "readback") {
@@ -190,6 +238,9 @@ function circulate(v: MemberView): Proposal | null {
     }
     return { kind: "update", patch: [{ read: m.id }] };
   }
+  // the operative site, once its verification falls due: before anything else is begun
+  const site = circulateSite(v);
+  if (site) return site;
   // 2. a need noticed and not yet mine to see through: a supply task, acknowledged aloud to the person
   for (const n of v.needs) {
     const task: TeamTask = { id: v.newId("task"), kind: "supply", need: n.need.id, item: n.need.item, for: n.forId, owner: v.me.id, initiator: v.me.id, thread: v.newId("thread"), status: "open", since: v.round, tried: [], acts: 0, had: v.heldBy(n.forId, n.need.item) };
@@ -250,6 +301,177 @@ export function escalateTask(v: MemberView, task: TeamTask, reason: Bilingual, p
 function escalate(v: MemberView, task: TeamTask, reason: Bilingual, patch: TaskPatch[] = []): Proposal {
   const clause = { en: reason.en.replace(/[.。]\s*$/u, ""), "zh-CN": reason["zh-CN"].replace(/[.。]\s*$/u, "") };
   return say(v, task.for, "escalate", "unresolved", task, { extra: { reason: clause }, patch: [...patch, { id: task.id, set: { status: "escalated", since: v.round, reason: task.reason ?? "unresolved", reasonText: reason } }] });
+}
+
+/* ------------------------------------------------------------------ */
+/* the operative site (docs/TEAM.md §4.5)                              */
+/* ------------------------------------------------------------------ */
+
+/** Names said in a row: "a, b and c" / "a、b和c". */
+function list(names: readonly Bilingual[]): Bilingual {
+  const row = (items: string[], comma: string, and: string) => (items.length <= 1 ? (items[0] ?? "") : `${items.slice(0, -1).join(comma)}${and}${items.at(-1)}`);
+  return { en: row(names.map((n) => n.en), ", ", " and "), "zh-CN": row(names.map((n) => n["zh-CN"]), "、", "和") };
+}
+const NO_PROGRESS: SiteProgress = { told: [], reported: [] };
+/** A site act of a member's own body (the scheduler carries it out through the session's site record). */
+function siteAct(task: TeamTask, operation: string, parameters: Record<string, unknown>, patch: TaskPatch[] = []): Proposal {
+  return { kind: "act", task: task.id, operation: `site.${operation}`, parameters, patch };
+}
+
+/** The circulating nurse's site work: begun when the verification falls due, seen through until it is settled. */
+function circulateSite(v: MemberView): Proposal | null {
+  const s = v.site;
+  if (!s?.due) return null;
+  const task = v.tasks.find((t) => t.kind === "site");
+  if (task) return TERMINAL.has(task.status) ? null : siteStep(v, s, task, []);
+  // settled before I began (someone else confirmed it, or raised it beyond the room): not mine to redo
+  if (s.status !== "unchecked" && s.status !== "discrepancy") return null;
+  const created: TeamTask = { id: v.newId("task"), kind: "site", need: "site", item: "", for: SURGEON, owner: v.me.id, initiator: v.me.id, thread: v.newId("thread"), status: "open", since: v.round, tried: [], acts: 0, site: { told: [], reported: [] } };
+  return siteStep(v, s, created, [{ create: created }]);
+}
+
+function siteStep(v: MemberView, s: SiteView, task: TeamTask, patch: TaskPatch[]): Proposal | null {
+  // the record's own rule pointed somewhere after a refusal for place (the mark is looked at beside the patient)
+  if (task.goal) return { kind: "act", task: task.id, operation: "navigate", goal: task.goal, patch: [...patch, { id: task.id, set: { goal: undefined } }] };
+  const progress = task.site ?? NO_PROGRESS;
+  const set = (fields: Partial<TeamTask>): TaskPatch => ({ id: task.id, set: fields });
+  const message = (to: MemberId, kind: TeamMessage["kind"], text: Bilingual, about: NonNullable<TeamMessage["about"]["site"]>, more: TaskPatch[]): Proposal => ({ kind: "say", to, message: { thread: task.thread, kind, text, about: { site: about }, evidence: [] }, patch: [...patch, ...more] });
+  const pair = (a: string, va: string | null, b: string, vb: string | null) => ({ a: s.sourceName(a), va: s.sideName(va), b: s.sourceName(b), vb: s.sideName(vb) });
+  // what I look at myself: the mark, every document, and the patient's own word while he can give it
+  const own = s.sources.filter((x) => x.kind === "mark" || x.kind === "document" || (x.kind === "patient" && x.readable));
+  const unread = own.find((x) => !s.mine.has(x.id));
+  const mark = s.mine.get("mark") ?? null;
+  const differs = own.find((x) => x.id !== "mark" && s.mine.has(x.id) && s.mine.get(x.id) !== mark);
+  const basis = list(own.filter((x) => x.id !== "mark").map((x) => s.sourceName(x.id)));
+
+  // settled: my hold released, then said to whoever is owed it
+  if (s.status === "confirmed" || s.status === "corrected") {
+    const side = s.sideName(s.confirmed?.side ?? null);
+    if (s.pausedBy === s.staff) return siteAct(task, "resume", {}, patch);
+    if (!progress.reported.includes(SURGEON)) {
+      const reported = set({ site: { ...progress, reported: [...progress.reported, SURGEON] }, since: v.round });
+      if (s.status === "confirmed" && s.confirmed?.by === s.staff) return message(SURGEON, "report", phrase("siteConfirmed", { side, basis }), { confirmed: s.confirmed.side }, [reported]);
+      const hold = s.pausedBy ? phrase("siteHoldTheirs", { step: s.step, who: s.nameOf(s.pausedBy) }) : progress.told.length || progress.asked !== undefined ? phrase("siteHoldReleased", { step: s.step }) : { en: "", "zh-CN": "" };
+      const evidence = list([...new Set(s.verification.read.map((r) => r.source))].map((id) => s.sourceName(id)));
+      const text = s.confirmed?.by === s.staff ? phrase("siteCorrected", { side, evidence, basis, hold }) : phrase("siteSettledBy", { side, who: s.nameOf(s.confirmed?.by ?? ""), hold });
+      return message(SURGEON, "report", text, { confirmed: s.confirmed?.side ?? "", released: !s.pausedBy }, [reported]);
+    }
+    // whoever was asked to hold is told it is over
+    const owed = progress.told.find((id) => !progress.reported.includes(id));
+    if (owed && !s.pausedBy) return message(owed, "report", phrase("siteProceed", { to: v.name(owed), side, step: s.step }), { confirmed: s.confirmed?.side ?? "", released: true }, [set({ site: { ...progress, reported: [...progress.reported, owed] } })]);
+    return { kind: "update", patch: [...patch, set({ status: "done", verified: true, since: v.round })] };
+  }
+  // raised beyond the room: said to the surgeon with the reason, and my hold stays
+  if (s.status === "unresolved") {
+    const read = s.verification.read;
+    const first = read[0];
+    const other = first ? read.find((r) => r.value !== first.value) : undefined;
+    const p = first && other ? pair(first.source, first.value, other.source, other.value) : s.open ? pair(s.open.sources[0], s.open.values[0] ?? null, s.open.sources[1], s.open.values[1] ?? null) : pair("mark", mark, "mark", mark);
+    const text = phrase("siteUnresolved", { ...p, step: s.step });
+    return { kind: "say", to: SURGEON, message: { thread: task.thread, kind: "escalate", text, about: { site: { conflict: s.verification.conflict } }, evidence: [] }, patch: [...patch, set({ status: "escalated", since: v.round, reason: "site-unresolved", reasonText: text })] };
+  }
+  // the mark is looked at beside the patient: I go there first
+  const toPatient = (): Proposal | null => (unread?.kind === "mark" && !s.atPatient && v.patient ? { kind: "act", task: task.id, operation: "navigate", goal: { kind: "interact", id: v.patient }, patch } : null);
+  if (!s.open) {
+    // the first check: each thing looked at once, then confirmed — or raised from what I saw
+    if (unread) return toPatient() ?? siteAct(task, "read", { source: unread.id }, patch);
+    if (mark !== null && !differs) return siteAct(task, "confirm", {}, patch);
+    const other = differs ?? own.find((x) => x.id !== "mark");
+    if (!other) return null;
+    return siteAct(task, "raise", { sources: ["mark", other.id] }, patch);
+  }
+  // a discrepancy is open: the step is held (my hold, unless one stands already), and it is said
+  const raised = pair(s.open.sources[0], s.open.values[0] ?? null, s.open.sources[1], s.open.values[1] ?? null);
+  if (!s.pausedBy) return siteAct(task, "pause", {}, patch);
+  const anaesthetist = v.colleagues.find((c) => has(c.duties, "anaesthesia") && c.present && !c.relief)?.id;
+  if (anaesthetist && !progress.told.includes(anaesthetist)) {
+    return message(anaesthetist, "request", phrase("siteHold", { to: v.name(anaesthetist), step: s.step, ...raised }), { hold: true, sources: s.open.sources, values: s.open.values }, [set({ site: { ...progress, told: [...progress.told, anaesthetist] } })]);
+  }
+  const again = (text: Bilingual): Proposal => {
+    // asked again and again with nothing changed: it goes beyond the room
+    if (task.tried.length >= MAX_TRIES) return siteAct(task, "escalate", { reason: text }, patch);
+    return message(SURGEON, "request", text, { verify: true, sources: s.open!.sources, values: s.open!.values }, [set({ status: "asked", since: v.round, tried: [...task.tried, SURGEON], site: { ...progress, asked: v.round, recheck: false } })]);
+  };
+  if (progress.asked === undefined) {
+    const evidence = list(s.sources.filter((x) => x.primary && x.readable).map((x) => s.sourceName(x.id)));
+    return message(SURGEON, "request", phrase("siteVerify", { ...raised, step: s.step, evidence }), { verify: true, sources: s.open.sources, values: s.open.values }, [set({ status: "asked", since: v.round, site: { ...progress, asked: v.round } })]);
+  }
+  // the surgeon has not reported yet: I wait (the hold stands)
+  if (!progress.recheck) return null;
+  // the surgeon reported: what was verified, and then my own second look
+  if (s.verification.conflict) {
+    const read = s.verification.read;
+    const first = read[0]!;
+    const other = read.find((r) => r.value !== first.value) ?? first;
+    return siteAct(task, "escalate", { reason: phrase("why.siteConflict", pair(first.source, first.value, other.source, other.value)) }, patch);
+  }
+  if (!s.verification.verified) return again(phrase("siteUnverified", { evidence: list(s.verification.missing.map((id) => s.sourceName(id))) }));
+  if (unread) return toPatient() ?? siteAct(task, "read", { source: unread.id }, patch);
+  if (mark === null || mark !== s.verification.side) return again(phrase("siteStill", pair("mark", mark, s.verification.read[0]?.source ?? "mark", s.verification.side)));
+  if (differs) return again(phrase("siteStill", pair(differs.id, s.mine.get(differs.id) ?? null, "mark", mark)));
+  return siteAct(task, "confirm", {}, patch);
+}
+
+/** A message in the site's thread: the anaesthetist's read-back is confirmed; the surgeon's report sends me to look again. */
+function siteMessage(v: MemberView, task: TeamTask, m: TeamMessage): Proposal {
+  if (TERMINAL.has(task.status)) return { kind: "update", patch: [{ read: m.id }] };
+  const progress = task.site ?? NO_PROGRESS;
+  if (m.kind === "readback" && m.about.site?.hold) {
+    return { kind: "say", to: m.from, message: { thread: task.thread, kind: "confirm", text: phrase("siteHoldConfirm", { step: v.site?.step ?? phrase("siteStep") }), about: { site: { hold: true } }, evidence: [], replyTo: m.id }, patch: [{ read: m.id }] };
+  }
+  if ((m.kind === "report" || m.kind === "decline") && m.from === SURGEON && progress.asked !== undefined) {
+    return { kind: "update", patch: [{ read: m.id }, { id: task.id, set: { status: "accepted", since: v.round, site: { ...progress, recheck: true } } }] };
+  }
+  return { kind: "update", patch: [{ read: m.id }] };
+}
+
+/**
+ * The surgeon verifies the side (observer mode): every piece of primary evidence read, then the mark looked at and
+ * made where the evidence says, a document that says otherwise corrected — and reported; evidence that disagrees with
+ * itself is said, and nothing is marked on it.
+ */
+function verifyStep(v: MemberView, s: SiteView, task: TeamTask): Proposal | null {
+  if (task.goal) return { kind: "act", task: task.id, operation: "navigate", goal: task.goal, patch: [{ id: task.id, set: { goal: undefined } }] };
+  const primary = s.sources.filter((x) => x.primary && x.readable);
+  const unread = primary.find((x) => !s.mine.has(x.id));
+  if (unread) return siteAct(task, "read", { source: unread.id });
+  const first = primary[0];
+  if (!first) return null;
+  const side = s.mine.get(first.id) ?? null;
+  const other = primary.find((x) => (s.mine.get(x.id) ?? null) !== side);
+  const say = (kind: TeamMessage["kind"], text: Bilingual, about: NonNullable<TeamMessage["about"]["site"]>, fields: Partial<TeamTask>): Proposal => ({ kind: "say", to: task.initiator, message: { thread: task.thread, kind, text, about: { site: about }, evidence: [] }, patch: [{ id: task.id, set: { since: v.round, ...fields } }] });
+  if (other || side === null) {
+    const b = other ?? first;
+    const text = phrase("siteConflict", { a: s.sourceName(first.id), va: s.sideName(side), b: s.sourceName(b.id), vb: s.sideName(s.mine.get(b.id) ?? null) });
+    return say("decline", text, { conflict: true }, { status: "declined", reason: "site-conflict", reasonText: text });
+  }
+  // the mark: looked at, and made where the evidence says — beside the patient
+  if (!s.atPatient && v.patient && (!s.mine.has("mark") || s.mine.get("mark") !== side)) return { kind: "act", task: task.id, operation: "navigate", goal: { kind: "interact", id: v.patient } };
+  if (!s.mine.has("mark")) return siteAct(task, "read", { source: "mark" });
+  if (s.mine.get("mark") !== side) return siteAct(task, "mark", { side });
+  // a document that says otherwise is corrected (never the primary evidence)
+  for (const d of s.sources.filter((x) => x.kind === "document" && !x.primary)) {
+    if (!s.mine.has(d.id)) return siteAct(task, "read", { source: d.id });
+    if (s.mine.get(d.id) !== side) return siteAct(task, "amend", { source: d.id, to: side });
+  }
+  const mine = s.corrections.filter((c) => c.by === s.staff);
+  const done = mine.length
+    ? mine.map((c) => (c.what === "mark" ? phrase("siteDoneMarked", { side: s.sideName(c.side) }) : phrase("siteDoneAmended", { source: s.sourceName(c.source), side: s.sideName(c.to) })))
+    : [phrase("siteDoneRight")];
+  const joined = { en: done.map((d) => d.en).join(""), "zh-CN": done.map((d) => d["zh-CN"]).join("") };
+  const text = phrase("siteVerified", { evidence: list(primary.map((x) => s.sourceName(x.id))), side: s.sideName(side), done: joined });
+  return say("report", text, { verified: side }, { status: "done" });
+}
+
+/** The anaesthetist: asked to hold the step, reads it back (check-back); anything else said to them is taken in. */
+function anaesthesia(v: MemberView): Proposal | null {
+  for (const m of v.inbox) {
+    if (m.kind === "request" && m.about.site?.hold) {
+      return { kind: "say", to: m.from, message: { thread: m.thread, kind: "readback", text: phrase("siteHoldReadback", { step: v.site?.step ?? phrase("siteStep") }), about: { site: { hold: true } }, evidence: [], replyTo: m.id }, patch: [{ read: m.id }] };
+    }
+    return { kind: "update", patch: [{ read: m.id }] };
+  }
+  return null;
 }
 
 /* ------------------------------------------------------------------ */
@@ -451,6 +673,7 @@ function deliver(v: MemberView, task: TeamTask): Proposal | null {
 
 /** After an act: what the member does with its outcome (a refusal they cannot recover from is said, with the reason). */
 export function afterAct(v: MemberView, task: TeamTask, outcome: { status: string; code?: string; message: string; operation: string; hint?: NavGoal }): Proposal | null {
+  if (outcome.operation.startsWith("site.")) return afterSiteAct(v, task, outcome);
   const release = task.itemId ? [{ release: task.itemId }] : [];
   if (outcome.status === "completed") {
     if (outcome.operation === "search" && task.kind === "wound") return { kind: "update", patch: [{ id: task.id, set: { step: "searched" } }] };
@@ -464,12 +687,39 @@ export function afterAct(v: MemberView, task: TeamTask, outcome: { status: strin
   return say(v, task.initiator, "decline", "failedAct", task, { extra: { reason: { en: reason, "zh-CN": reason } }, reason: outcome.code ?? "failed", patch: [{ id: task.id, set: { status: "declined", since: v.round, reason: outcome.code ?? "failed" } }, ...release] });
 }
 
+/**
+ * After a site act: done — the next step follows from the record; refused for place — walk where the record's rule
+ * points, then look again; refused otherwise — said with the reason to whoever is owed it (the nurse asks the
+ * surgeon again; the surgeon tells the nurse), never tried again blindly.
+ */
+function afterSiteAct(v: MemberView, task: TeamTask, outcome: { status: string; code?: string; message: string; operation: string; hint?: NavGoal }): Proposal | null {
+  if (outcome.status === "completed") return null;
+  if ((outcome.code === "NOT_AT_PATIENT" || outcome.code === "NOT_IN_ROOM") && outcome.hint) return { kind: "update", patch: [{ id: task.id, set: { goal: outcome.hint } }] };
+  const reason = outcome.message.split("\n")[0]!.replace(/[.。]\s*$/u, "");
+  const text = phrase("siteBlocked", { reason: { en: reason, "zh-CN": reason } });
+  if (task.kind === "site") {
+    const progress = task.site ?? NO_PROGRESS;
+    // nothing more to try: it ends here, said with the reason (the hold, if mine, stands)
+    if (task.tried.length >= MAX_TRIES) return { kind: "say", to: SURGEON, message: { thread: task.thread, kind: "escalate", text: phrase("unresolvedSite", { reason: { en: reason, "zh-CN": reason } }), about: { site: {} }, evidence: [] }, patch: [{ id: task.id, set: { status: "escalated", since: v.round, reason: outcome.code ?? "failed", reasonText: text } }] };
+    return { kind: "say", to: SURGEON, message: { thread: task.thread, kind: "request", text, about: { site: { verify: true } }, evidence: [] }, patch: [{ id: task.id, set: { status: "asked", since: v.round, tried: [...task.tried, SURGEON], site: { ...progress, asked: v.round, recheck: false } } }] };
+  }
+  return { kind: "say", to: task.initiator, message: { thread: task.thread, kind: "decline", text, about: { site: {} }, evidence: [] }, patch: [{ id: task.id, set: { status: "declined", since: v.round, reason: outcome.code ?? "failed", reasonText: text } }] };
+}
+
 /* ------------------------------------------------------------------ */
 /* surgeon (observer mode)                                             */
 /* ------------------------------------------------------------------ */
 
 function surgeon(v: MemberView): Proposal | null {
   for (const m of v.inbox) {
+    if (m.kind === "request" && m.about.site?.verify) {
+      // asked to verify the side (again, when it is still not confirmed): read back, then done with my own eyes
+      const mine = v.tasks.find((t) => t.kind === "verify" && t.thread === m.thread);
+      const readback: Proposal = { kind: "say", to: m.from, message: { thread: m.thread, kind: "readback", text: phrase("siteVerifyReadback"), about: { site: { verify: true } }, evidence: [], replyTo: m.id }, patch: [{ read: m.id }] };
+      if (mine) return { ...readback, patch: [{ read: m.id }, { id: mine.id, set: { status: "accepted", since: v.round } }] };
+      const task: TeamTask = { id: v.newId("task"), kind: "verify", need: "site", item: "", for: m.from, owner: v.me.id, initiator: m.from, thread: m.thread, status: "accepted", since: v.round, tried: [], acts: 0 };
+      return { ...readback, patch: [{ read: m.id }, { create: task }] };
+    }
     if (m.kind === "request" && m.about.hold) {
       // check-back: the hold read back; then the wound is checked
       const task: TeamTask = { id: v.newId("task"), kind: "wound", need: "count", item: m.about.item ?? "", for: v.me.id, owner: v.me.id, initiator: m.from, thread: m.thread, status: "accepted", since: v.round, tried: [], acts: 0 };
@@ -481,6 +731,10 @@ function surgeon(v: MemberView): Proposal | null {
     return { kind: "update", patch: [{ read: m.id }] };
   }
   for (const task of v.tasks) {
+    if (task.kind === "verify" && task.status === "accepted" && v.site) {
+      const p = verifyStep(v, v.site, task);
+      if (p) return p;
+    }
     if (task.kind !== "wound" || task.status !== "accepted" || !v.patient) continue;
     if (task.goal) return { kind: "act", task: task.id, operation: "navigate", goal: task.goal, patch: [{ id: task.id, set: { goal: undefined } }] };
     if (task.step !== "searched") return { kind: "act", task: task.id, operation: "search", targetId: v.patient };
