@@ -206,7 +206,7 @@
         "en": "The team's plan"
       },
       "description": {
-        "zh-CN": "团队的讨论记录已经可以调阅：了解团队选择的方案，并为它做好准备。",
+        "zh-CN": "团队的方案记录已经可以调阅：了解团队选择的方案，并为它做好准备。",
         "en": "The team's record can now be read: learn which approach the team chose and get him ready for it."
       },
       "learnerSwitchable": false,
@@ -322,7 +322,10 @@
           "reason for admission",
           "swelling",
           "chest pain",
-          "howareyoufeeling"
+          "howareyoufeeling",
+          "legs",
+          "ankles",
+          "bringsyouin"
         ]
       },
       "excludeKeywords": {
@@ -1145,6 +1148,12 @@
       "source": {
         "zh-CN": "1.0.0 版没有记录：保持未知（待对照原文全文核对）",
         "en": "Not recorded in version 1.0.0: kept unknown (check against the full article pending)"
+      },
+      "excludeKeywords": {
+        "en": [
+          "legs",
+          "ankles"
+        ]
       }
     },
     {
@@ -2313,7 +2322,7 @@
     {
       "id": "team-plan",
       "name": {
-        "zh-CN": "治疗方案讨论记录",
+        "zh-CN": "治疗方案记录",
         "en": "Treatment planning record"
       },
       "category": "record",
@@ -2364,8 +2373,8 @@
             "en": "His symptoms recurred despite treatment to improve cardiac function; the team judged redo tricuspid valve replacement indicated. Planned approach: thoracoscope-assisted redo tricuspid valve replacement under hypothermic ventricular fibrillatory arrest."
           },
           "note": {
-            "zh-CN": "本病例没有记录团队为何选择这一方案（而不是经导管瓣中瓣或常规开胸再次手术）、是否使用风险评分，也没有记录术前经食管超声心动图、CT 或冠状动脉评估的结果。“拟定方案”即报告记录的实际术式，做出这一选择的时间没有记录。",
-            "en": "This case does not record why the team chose this approach (rather than transcatheter valve-in-valve or a conventional open re-operation), any risk score, or the results of a pre-operative transoesophageal echocardiogram, CT or coronary assessment. The planned approach is the operation the report records; when the choice was made is not recorded."
+            "zh-CN": "本病例没有记录团队为何选择这一方案（而不是经导管瓣中瓣或常规开胸再次手术）、是否召开过正式的心脏团队会议、是否使用风险评分，也没有记录术前经食管超声心动图、CT 或冠状动脉评估的结果。“拟定方案”即报告记录的实际术式，做出这一选择的时间没有记录。",
+            "en": "This case does not record why the team chose this approach (rather than transcatheter valve-in-valve or a conventional open re-operation), whether a formal Heart Team meeting took place, any risk score, or the results of a pre-operative transoesophageal echocardiogram, CT or coronary assessment. The planned approach is the operation the report records; when the choice was made is not recorded."
           },
           "source": {
             "zh-CN": "原报告病例资料（术前评估：具备再次置换指征）及题目所述术式（经 1.0.0 版提取，待对照原文全文核对）",
@@ -2721,8 +2730,8 @@
         "phase": "assessment"
       },
       "response": {
-        "zh-CN": "已提请心脏团队讨论。团队的讨论记录在下一部分展示。",
-        "en": "The Heart Team has been asked to review him. Its record is shown in the next part of the case."
+        "zh-CN": "已提请心脏团队评估。治疗团队的方案记录在下一部分展示；本病例没有记录是否召开过正式的心脏团队会议。",
+        "en": "Referral made: the Heart Team is asked to review him. The treating team's planning record is shown in the next part of the case; this case does not record whether a formal Heart Team meeting took place."
       }
     },
     {
@@ -2789,8 +2798,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "在他同意的前提下转介，不带评判地讨论复吸风险、安全注射与针具交换、需要时的替代治疗，以及这些与他心脏瓣膜感染风险的关系。",
-        "en": "With his agreement and without judgement: relapse risk, safer injecting and needle exchange, substitution treatment where relevant, and how all this bears on the infection risk of his heart valve."
+        "zh-CN": "在他同意的前提下转介，不带评判地讨论复吸风险、更安全的使用方式（如仍在注射，包括安全注射与针具交换）、需要时的替代治疗，以及这些与他心脏瓣膜感染风险的关系。",
+        "en": "With his agreement and without judgement: relapse risk, safer use (safer injecting and needle exchange if he injects), substitution treatment where relevant, and how all this bears on the infection risk of his heart valve."
       },
       "requires": [],
       "risk": "none",
@@ -2827,8 +2836,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "与心脏外科医生一起，用通俗的话说明方案、获益、主要风险（出血、心律失常与传导阻滞、卒中、感染）和替代方案，回答他的担心并确认他理解。",
-        "en": "Together with the cardiac surgeon, explain in plain words the plan, its benefits, the main risks (bleeding, arrhythmia and heart block, stroke, infection) and the alternatives; answer his worries and check he has understood."
+        "zh-CN": "与心脏外科医生一起，用通俗的话说明方案、获益、手术死亡风险、主要并发症（出血、心律失常与传导阻滞、卒中、感染，以及肝病带来的额外风险）和替代方案，回答他的担心并确认他理解。",
+        "en": "Together with the cardiac surgeon, explain in plain words the plan, its benefits, the risk to life, the main complications (bleeding, arrhythmia and heart block, stroke, infection, and the extra risk his liver disease brings) and the alternatives; answer his worries and check he has understood."
       },
       "requires": [],
       "risk": "none",
@@ -2958,8 +2967,8 @@
     {
       "id": "discharge-diuretics",
       "name": {
-        "zh-CN": "口服利尿剂加量后出院，3 个月后门诊复查",
-        "en": "Double the oral diuretic and discharge, clinic review in 3 months"
+        "zh-CN": "加用或加量口服利尿剂后出院，3 个月后门诊复查",
+        "en": "Start or increase an oral diuretic and discharge, clinic review in 3 months"
       },
       "kind": "disposition",
       "aliases": {
@@ -2979,8 +2988,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "呋塞米口服剂量加倍，出院回家，3 个月后门诊复查超声心动图。",
-        "en": "Double the oral furosemide, discharge him home and repeat the echocardiogram in clinic in 3 months."
+        "zh-CN": "加用口服袢利尿剂（如呋塞米），已在服用者剂量加倍，出院回家，3 个月后门诊复查超声心动图。",
+        "en": "Start an oral loop diuretic such as furosemide, or double it if he already takes one, discharge him home and repeat the echocardiogram in clinic in 3 months."
       },
       "requires": [],
       "risk": "moderate",
@@ -3088,8 +3097,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "球囊扩张生物瓣不是确立的治疗（ESC/EACTS 2025）：可能撕裂钙化的瓣叶造成重度反流或碎屑栓塞，即使有效也很短暂。",
-        "en": "Balloon dilation of a tissue valve is not an established treatment (ESC/EACTS 2025): it can tear calcified leaflets into severe regurgitation or release debris, and any benefit is short-lived."
+        "zh-CN": "球囊扩张退化的生物瓣不是确立的治疗：可能撕裂钙化的瓣叶造成重度反流或碎屑栓塞，即使有效也很短暂。生物瓣衰败的再次干预是外科再次置换或经导管瓣中瓣，由心脏团队选择（ESC/EACTS 2025）。",
+        "en": "Balloon dilation of a degenerated tissue valve is not an established treatment: it can tear calcified leaflets into severe regurgitation or release debris, and any relief is short-lived. Reintervention for a failed bioprosthesis is redo surgical replacement or transcatheter valve-in-valve, chosen by the Heart Team (ESC/EACTS 2025)."
       },
       "response": {
         "zh-CN": "已提出申请。本病例不模拟这一选择之后的经过；接下来的记录按实际病程展开。",
@@ -3132,8 +3141,8 @@
         "always": true
       },
       "harm": {
-        "zh-CN": "没有其他指征（如动脉粥样硬化性疾病）时，在华法林基础上加阿司匹林只增加出血，不减少瓣膜血栓（ESC/EACTS 2025）；他有乙肝、丙肝，肝病可能使出血风险更高。抗凝药物和疗程应按瓣膜的类型决定。",
-        "en": "Without another indication such as atherosclerotic disease, adding aspirin to warfarin increases bleeding without reducing valve thrombosis (ESC/EACTS 2025), and his hepatitis B and C may raise his bleeding risk further. The drug and duration of anticoagulation follow the type of valve he has."
+        "zh-CN": "ESC/EACTS 2025 只在有特定指征（如症状性动脉粥样硬化）的部分患者中考虑在维生素 K 拮抗剂基础上加用阿司匹林；没有这类指征时，联用会增加出血风险，而他的乙肝、丙肝可能使出血风险更高。抗凝药物和疗程应按瓣膜的类型决定。",
+        "en": "ESC/EACTS 2025 considers aspirin on top of a vitamin K antagonist only in selected patients with a specific indication such as symptomatic atherosclerosis; without one the combination adds bleeding risk, and his hepatitis B and C may raise that risk further. The drug and duration of anticoagulation follow the type of valve he has."
       },
       "response": {
         "zh-CN": "处方已开出。本病例没有记录出院用药；不模拟其效果。",
@@ -3340,7 +3349,7 @@
         "en": "What is unusual about the approach the team chose? What structures and vessels must be seen beforehand to do it safely — and how will you explain it to him and seek his consent?"
       },
       "guidance": {
-        "zh-CN": "在病历终端调阅治疗方案讨论记录，作答决策 4，然后向他解释方案并取得知情同意。",
+        "zh-CN": "在病历终端调阅治疗方案记录，作答决策 4，然后向他解释方案并取得知情同意。",
         "en": "Read the treatment planning record at a records terminal, answer decision 4, then explain the plan to him and obtain his consent."
       },
       "completeWhen": {
@@ -3744,7 +3753,7 @@
         ]
       },
       "need": {
-        "zh-CN": "先在病历终端调阅治疗方案讨论记录。",
+        "zh-CN": "先在病历终端调阅治疗方案记录。",
         "en": "First read the treatment planning record at a records terminal."
       },
       "options": [
@@ -3756,8 +3765,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "应选。室颤停搏常用于在再次手术中避免游离和阻断主动脉；主动脉不阻断时，明显的主动脉瓣反流会使颤动的左心室膨胀、术野被血淹没。打开右心房后，空气可经卵圆孔进入左心，一旦心脏恢复射血就会造成体循环气栓——报告的讨论也强调了排气和气栓风险。他有乙肝、丙肝，术中经食管超声前同样要排除食管静脉曲张。本病例没有记录这些检查是否做过。",
-            "en": "Include. Fibrillatory arrest is used to avoid dissecting and clamping the aorta at a re-operation; with the aorta unclamped, significant aortic regurgitation distends the fibrillating left ventricle and floods the field. Once the right atrium is open, air can cross a patent foramen ovale into the left heart and embolise as soon as the heart ejects again — the report's discussion also stresses de-airing and air embolism. With his hepatitis B and C, oesophageal varices should be excluded before the probe goes in. Whether these checks were done is not recorded."
+            "zh-CN": "应选。室颤停搏常用于在再次手术中避免游离和阻断主动脉；主动脉不阻断时，明显的主动脉瓣反流会使颤动的左心室膨胀，削弱心肌保护。打开右心房后，空气可经卵圆孔进入左心，一旦心脏恢复射血就会造成体循环气栓——报告的讨论也强调了排气和气栓风险。他有乙肝、丙肝，术中经食管超声前同样要排除食管静脉曲张。本病例没有记录这些检查是否做过。",
+            "en": "Include. Fibrillatory arrest is used to avoid dissecting and clamping the aorta at a re-operation; with the aorta unclamped, significant aortic regurgitation distends the fibrillating left ventricle and undermines myocardial protection. Once the right atrium is open, air can cross a patent foramen ovale into the left heart and embolise as soon as the heart ejects again — the report's discussion also stresses de-airing and air embolism. With his hepatitis B and C, oesophageal varices should be excluded before the probe goes in. Whether these checks were done is not recorded."
           }
         },
         {
@@ -3787,19 +3796,19 @@
         {
           "id": "defib-before-deair",
           "text": {
-            "zh-CN": "新瓣膜一缝好就立即电除颤恢复心跳，等心脏恢复射血以后再排气",
-            "en": "Defibrillate as soon as the new valve is seated, and de-air once the heart is beating and ejecting again"
+            "zh-CN": "新瓣膜一缝好就立即电除颤恢复心跳，以缩短体外循环时间，等心脏恢复射血以后再排气",
+            "en": "Defibrillate as soon as the new valve is seated, to shorten the bypass time, and de-air once the heart is beating and ejecting again"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不应选。顺序反了：室颤停搏下要在恢复射血之前彻底排气（术野二氧化碳灌注、经食管超声监测残余气体），再除颤复跳；先复跳再排气，左心内的空气会被射入冠状动脉和脑循环。",
-            "en": "Exclude. The order is reversed: under fibrillatory arrest, de-air thoroughly before the heart ejects (carbon dioxide in the field, TOE to watch for residual air), then defibrillate; restoring ejection first sends any air in the left heart into the coronary and cerebral circulations."
+            "zh-CN": "不应选。顺序反了：室颤停搏下要在恢复射血之前彻底排气（术野二氧化碳灌注、经食管超声监测残余气体），再除颤复跳；先复跳再排气，左心内的空气会被射入冠状动脉和脑循环。为节省几分钟体外循环冒这个风险，得不偿失。",
+            "en": "Exclude. The order is reversed: under fibrillatory arrest, de-air thoroughly before the heart ejects (carbon dioxide in the field, TOE to watch for residual air), then defibrillate; restoring ejection first sends any air in the left heart into the coronary and cerebral circulations. A few minutes saved on bypass are not worth that risk."
           }
         },
         {
           "id": "skip-toe-right-only",
           "text": {
-            "zh-CN": "不必做经食管超声：手术只打开右心，主动脉瓣和房间隔与这次手术无关",
+            "zh-CN": "不必做经食管超声：这次手术只打开右心，主动脉瓣和房间隔的情况都与这次手术无关",
             "en": "No transoesophageal echocardiography is needed: only the right heart is opened, so the aortic valve and the atrial septum are irrelevant"
           },
           "correct": false,
@@ -3841,8 +3850,8 @@
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "应选。本病例没有记录新植入瓣膜的类型，所以计划要先确认瓣膜类型：机械瓣需终身使用维生素 K 拮抗剂；外科植入三尖瓣位生物瓣后，早期抗栓治疗——通常为术后前 3 个月的维生素 K 拮抗剂——要结合出血风险个体化（ESC/EACTS 2025）。乙肝、丙肝可能影响凝血因子合成、血小板和华法林代谢，所以先查基线 INR 和血小板，之后更频繁地监测 INR。",
-            "en": "Include. The type of the new valve is not recorded, so the plan starts by confirming it: a mechanical valve needs a lifelong vitamin K antagonist; after a surgical bioprosthesis in the tricuspid position, early antithrombotic treatment — usually a vitamin K antagonist for the first 3 months — is individualised to bleeding risk (ESC/EACTS 2025). Hepatitis B and C can affect clotting-factor synthesis, platelets and warfarin handling, so check the baseline INR and platelets and then the INR more often."
+            "zh-CN": "应选。本病例没有记录新植入瓣膜的类型，所以计划要先确认瓣膜类型：机械瓣需终身使用维生素 K 拮抗剂；外科植入生物瓣后，ESC/EACTS 2025 按血栓与出血风险个体化决定早期抗栓治疗，2021 年版对二尖瓣位和三尖瓣位建议考虑术后前 3 个月使用维生素 K 拮抗剂。乙肝、丙肝可能影响凝血因子合成、血小板和华法林代谢，所以先查基线 INR 和血小板，之后更频繁地监测 INR。",
+            "en": "Include. The type of the new valve is not recorded, so the plan starts by confirming it: a mechanical valve needs a lifelong vitamin K antagonist; after a surgical bioprosthesis, ESC/EACTS 2025 individualises early antithrombotic treatment to thrombotic and bleeding risk, and the 2021 edition advised considering a vitamin K antagonist for the first 3 months in the mitral or tricuspid position. Hepatitis B and C can affect clotting-factor synthesis, platelets and warfarin handling, so check the baseline INR and platelets and then the INR more often."
           }
         },
         {
@@ -3872,13 +3881,13 @@
         {
           "id": "tissue-no-followup",
           "text": {
-            "zh-CN": "生物瓣既不需要抗栓治疗，也不需要超声随访；出院后按普通心衰患者随访即可",
-            "en": "A tissue valve needs neither antithrombotic treatment nor echocardiographic follow-up, so follow him up as an ordinary heart-failure patient"
+            "zh-CN": "生物瓣既不需要抗栓治疗，也不需要超声随访；出院后按普通心衰患者在心内科门诊随访，症状再出现时才复查超声心动图",
+            "en": "A tissue valve needs neither antithrombotic treatment nor echocardiographic follow-up, so follow him up as an ordinary heart-failure patient in the cardiology clinic and repeat the echo only if his symptoms come back"
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不应选。新瓣膜的类型没有记录；即使是生物瓣，术后早期也要考虑抗栓治疗——三尖瓣位通常为前 3 个月的维生素 K 拮抗剂（ESC/EACTS 2025）。所有人工瓣都需要出院前的基线超声和定期随访，以便及早发现衰败、血栓或心内膜炎。",
-            "en": "Exclude. The type of the new valve is not recorded; even for a tissue valve, early antithrombotic treatment is considered after surgery — in the tricuspid position usually a vitamin K antagonist for the first 3 months (ESC/EACTS 2025) — and every prosthetic valve needs a baseline echocardiogram and regular follow-up so that wear, thrombus or endocarditis are caught early."
+            "zh-CN": "不应选。新瓣膜的类型没有记录；即使是生物瓣，术后早期也要考虑抗栓治疗，并按血栓与出血风险个体化（ESC/EACTS 2025；2021 年版对三尖瓣位建议考虑前 3 个月的维生素 K 拮抗剂）。所有人工瓣都需要出院前的基线超声和定期随访，以便在症状出现之前及早发现衰败、血栓或心内膜炎。",
+            "en": "Exclude. The type of the new valve is not recorded; even for a tissue valve, early antithrombotic treatment is considered after surgery and individualised to thrombotic and bleeding risk (ESC/EACTS 2025; the 2021 edition advised considering a vitamin K antagonist for the first 3 months in the tricuspid position). Every prosthetic valve needs a baseline echocardiogram and regular follow-up, so that wear, thrombus or endocarditis is caught before symptoms return."
           }
         },
         {
@@ -3889,8 +3898,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "不应选。在华法林基础上加阿司匹林只适用于有其他指征（如动脉粥样硬化性疾病）的患者；没有指征时只会增加出血（ESC/EACTS 2025），而他的肝病可能使出血风险更高。第二次换瓣本身不是加药的理由。",
-            "en": "Exclude. Aspirin on top of warfarin is for patients with another indication such as atherosclerotic disease; without one it only adds bleeding (ESC/EACTS 2025), and his liver disease may raise that risk further. A second replacement is not, in itself, a reason to add it."
+            "zh-CN": "不应选。ESC/EACTS 2025 只在有特定指征（如症状性动脉粥样硬化）的部分患者中考虑在华法林基础上加用阿司匹林；没有这类指征时，联用会增加出血风险，而他的肝病可能使出血风险更高。第二次换瓣本身不是加药的理由。",
+            "en": "Exclude. ESC/EACTS 2025 considers aspirin on top of warfarin only in selected patients with a specific indication such as symptomatic atherosclerosis; without one it adds bleeding risk, and his liver disease may raise that risk further. A second replacement is not, in itself, a reason to add it."
           }
         }
       ]
@@ -4012,8 +4021,8 @@
       "id": "rb-infection-thrombus-screen",
       "domain": "safety",
       "text": {
-        "zh-CN": "在团队讨论之前就采集了血培养，并申请了经食管超声心动图或 CT，排查人工瓣感染和血栓",
-        "en": "Before the team met, took blood cultures and requested a transoesophageal echocardiogram or CT to look for prosthetic infection and thrombus"
+        "zh-CN": "在团队定下方案之前就采集了血培养，并申请了经食管超声心动图或 CT，排查人工瓣感染和血栓",
+        "en": "Before the team's plan was made, took blood cultures and requested a transoesophageal echocardiogram or CT to look for prosthetic infection and thrombus"
       },
       "weight": 4,
       "critical": true,
@@ -4095,8 +4104,8 @@
       "id": "rb-no-harm",
       "domain": "safety",
       "text": {
-        "zh-CN": "没有在无感染证据时用经验性抗生素，没有加量利尿后出院，没有球囊扩张人工瓣，也没有开终身华法林加阿司匹林",
-        "en": "Avoided empirical antibiotics without evidence of infection, discharge on more diuretic, balloon dilation of the prosthesis and lifelong warfarin plus aspirin"
+        "zh-CN": "没有在无感染证据时用经验性抗生素，没有加量利尿后出院，没有球囊扩张人工瓣，没有在手术前开始华法林，也没有开终身华法林加阿司匹林",
+        "en": "Avoided empirical antibiotics without evidence of infection, discharge on more diuretic, balloon dilation of the prosthesis, warfarin before the operation and lifelong warfarin plus aspirin"
       },
       "weight": 3,
       "met": {
@@ -4113,6 +4122,10 @@
             },
             {
               "intervened": "warfarin-aspirin"
+            },
+            {
+              "intervened": "warfarin-postop",
+              "valid": false
             }
           ]
         }
@@ -4139,6 +4152,10 @@
           },
           {
             "intervened": "warfarin-aspirin"
+          },
+          {
+            "intervened": "warfarin-postop",
+            "valid": false
           }
         ]
       }
@@ -4191,8 +4208,8 @@
       },
       "weight": 1,
       "judgeGuidance": {
-        "zh-CN": "良好表现（Calgary–Cambridge：开始接诊、收集信息、解释与计划、结束）：自我介绍，先了解他对自己病情的理解和担心；用通俗的话解释 22 年前换上的生物瓣现在开得很小，血回不到心脏而积在腿和肝里，所以腿肿、一活动就胸闷，而“射血分数正常”只说明左边的心室收缩正常；说明决定治疗前要先查清是磨损、血栓还是感染，所以要抽血培养、做经食管超声；以不带评判、保密的方式询问并回应他以前用毒品的经历，说明问这个是因为它关系到感染风险和治疗安排，并主动提供支持；说明心脏团队会比较再次手术和经导管瓣中瓣；诚实回应“又要做手术”和“肝受不受得了”的担心，不作虚假保证；取得知情同意；术后解释抗凝、口腔卫生和看牙前的预防性抗生素、发热时先抽血培养再用抗生素，以及肝炎治疗；用复述确认他听懂了，并留出提问时间。不编造病例没有记录的结果、风险数字或结局。",
-        "en": "Good performance (Calgary–Cambridge: initiating, gathering information, explaining and planning, closing): introduces themselves and first finds out what he understands and fears; explains in plain words that the tissue valve put in 22 years ago has narrowed, so blood backs up into his legs and liver — hence the swelling and the tightness when he moves about — and that a 'normal pumping fraction' describes only the left side of the heart; explains that before deciding on treatment the team must find out whether the valve is worn, clotted or infected, hence the blood cultures and the swallowed-probe echo; asks about his past drug use without judgement and in confidence, says why it matters (infection risk, planning) and offers support; explains that the Heart Team will compare another operation with a catheter valve-in-valve; answers his worries about another operation and about his liver honestly, without false reassurance; obtains consent; after surgery explains anticoagulation, dental care with antibiotic cover, blood cultures before any antibiotic if he gets a fever, and hepatitis treatment; checks understanding by teach-back and leaves room for questions. Invents no result, risk figure or outcome the case does not record."
+        "zh-CN": "良好表现（Calgary–Cambridge：开始接诊、收集信息、解释与计划、结束）：自我介绍，先了解他对自己病情的理解和担心；用通俗的话解释 22 年前换上的生物瓣现在开得很小，血回流受阻、积在静脉里，所以腿肿、一活动就胸闷，而“射血分数正常”只说明左边的心室收缩正常；说明决定治疗前要先查清是磨损、血栓还是感染，所以要抽血培养、做 CT 或经食管超声；以不带评判、保密的方式询问并回应他以前用毒品的经历，说明问这个是因为它关系到感染风险和治疗安排，并主动提供支持；说明心脏团队会比较再次手术和经导管瓣中瓣；诚实回应“又要做手术”和“肝受不受得了”的担心，不作虚假保证；取得知情同意；术后解释抗凝、口腔卫生和看牙前的预防性抗生素、发热时先抽血培养再用抗生素，以及肝炎治疗；用复述确认他听懂了，并留出提问时间。不编造病例没有记录的结果、风险数字或结局。",
+        "en": "Good performance (Calgary–Cambridge: initiating, gathering information, explaining and planning, closing): introduces themselves and first finds out what he understands and fears; explains in plain words that the tissue valve put in 22 years ago has narrowed, so blood backs up in the veins — hence the swelling in his legs and the tightness when he moves about — and that a 'normal pumping fraction' describes only the left side of the heart; explains that before deciding on treatment the team must find out whether the valve is worn, clotted or infected, hence the blood cultures and a CT or swallowed-probe echo; asks about his past drug use without judgement and in confidence, says why it matters (infection risk, planning) and offers support; explains that the Heart Team will compare another operation with a catheter valve-in-valve; answers his worries about another operation and about his liver honestly, without false reassurance; obtains consent; after surgery explains anticoagulation, dental care with antibiotic cover, blood cultures before any antibiotic if he gets a fever, and hepatitis treatment; checks understanding by teach-back and leaves room for questions. Invents no result, risk figure or outcome the case does not record."
       }
     }
   ],
@@ -4217,8 +4234,8 @@
         "en": "Dr Luo (cardiology attending)"
       },
       "knowledge": {
-        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“换瓣多年后又出现反复的淤血，你首先想到什么？”“射血分数能告诉你右心的哪些情况，又说明不了什么？”“除了磨损，还有什么会让生物瓣失功？哪一种可能不用开刀？”“如果患者用过毒品，你的检查顺序和谈话方式会有什么不同？”“衰败的人工瓣该由谁决定怎么处理、多快决定？”“一位患者恢复得好，能说明一种术式更好吗？”。可以讲解 ESC/EACTS 2025 瓣膜病指南、ESC 2023 心内膜炎指南和 ASE 2024 人工瓣影像指南的相关原则；学员读到相应记录之后，可以对比记录的病程与现行做法。不提前说出诊断、任何决策的正确选项或学员尚未读到的记录内容；不补充病例中没有的资料（生命体征、查体、化验、跨瓣压差、右心功能、首次手术的原因和人工瓣型号、用毒品的细节，以及出院以后的情况都没有记录）。",
-        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “Congestion that keeps returning years after a valve replacement — what comes first to mind?”, “What can an ejection fraction tell you about the right heart, and what can it not?”, “Apart from wear, what else can make a tissue valve fail — and which cause might need no operation?”, “If a patient has used drugs, what changes in the order of your tests and in how you talk with him?”, “Who decides how a failing prosthesis is treated, and how soon?”, “What can one patient's good recovery tell you about a technique?”. May explain the relevant principles of ESC/EACTS 2025 valvular heart disease, ESC 2023 endocarditis and ASE 2024 prosthetic valve imaging, and — once the learner has read the records — contrast the recorded course with current practice. Never states the diagnosis, any decision's correct option or the content of a record the learner has not read, and adds no data the case lacks (vital signs, examination, laboratory values, gradients, right-heart function, the cause of the first valve disease and the prosthesis model, the details of drug use and anything after discharge are not recorded)."
+        "zh-CN": "苏格拉底式带教（PEARLS），只围绕学员已经拿到的资料提问，例如：“换瓣多年后又出现反复的淤血，你首先想到什么？”“射血分数能告诉你右心的哪些情况，又说明不了什么？”“除了磨损，还有什么会让生物瓣失功？哪一种可能不用开刀？”“如果患者用过毒品，你的检查顺序和谈话方式会有什么不同？”“衰败的人工瓣该由谁决定怎么处理、多快决定？”“一位患者术后短期恢复，能说明一种术式更好吗？”。可以讲解 ESC/EACTS 2025 瓣膜病指南、ESC 2023 心内膜炎指南和 ASE 2024 人工瓣影像指南的相关原则；学员读到相应记录之后，可以对比记录的病程与现行做法。不提前说出诊断、任何决策的正确选项或学员尚未读到的记录内容；不补充病例中没有的资料（生命体征、查体、化验、跨瓣压差、右心功能、首次手术的原因和人工瓣型号、用毒品的细节，以及出院以后的情况都没有记录）。",
+        "en": "Socratic preceptor (PEARLS) who asks only about information the learner already has, e.g. “Congestion that keeps returning years after a valve replacement — what comes first to mind?”, “What can an ejection fraction tell you about the right heart, and what can it not?”, “Apart from wear, what else can make a tissue valve fail — and which cause might need no operation?”, “If a patient has used drugs, what changes in the order of your tests and in how you talk with him?”, “Who decides how a failing prosthesis is treated, and how soon?”, “What can one patient's short-term recovery tell you about a technique?”. May explain the relevant principles of ESC/EACTS 2025 valvular heart disease, ESC 2023 endocarditis and ASE 2024 prosthetic valve imaging, and — once the learner has read the records — contrast the recorded course with current practice. Never states the diagnosis, any decision's correct option or the content of a record the learner has not read, and adds no data the case lacks (vital signs, examination, laboratory values, gradients, right-heart function, the cause of the first valve disease and the prosthesis model, the details of drug use and anything after discharge are not recorded)."
       },
       "interprets": [
         "old-op-record",
@@ -4236,8 +4253,8 @@
         "en": "Dr Feng (cardiac surgeon)"
       },
       "knowledge": {
-        "zh-CN": "心脏外科医生，参加心脏团队讨论。只解读学员已经读过的既往瓣膜手术记录、治疗方案讨论记录和后续病程记录：解释再次手术的难点（粘连、再次进胸的风险），以及外科再次置换与经导管瓣中瓣各自需要的条件；学员读过治疗方案讨论记录之后，再解释其中所记方案的原理、前提和外周体外循环的做法。不报告学员尚未读到的记录；不编造手术细节、取出的旧瓣膜所见、出血或并发症（都没有记录）；在学员读到出院记录之前不谈结局。",
-        "en": "Cardiac surgeon on the Heart Team. Interprets only the previous valve operation record, the treatment planning record and the subsequent course record once the learner has read them: the difficulties of a re-operation (adhesions, the risks of re-entry) and what redo surgical replacement and transcatheter valve-in-valve each require; once the learner has read the planning record, the principle and prerequisites of the approach it records and how its bypass is run through peripheral vessels. Never reports a record the learner has not read, and never invents operative details, explanted-valve findings, blood loss or complications (none is recorded); says nothing of the outcome before the learner has read the discharge record."
+        "zh-CN": "心脏外科医生，参加心脏团队讨论。只解读学员已经读过的既往瓣膜手术记录、治疗方案记录和后续病程记录：解释再次手术的难点（粘连、再次进胸的风险），以及外科再次置换与经导管瓣中瓣各自需要的条件；学员读过治疗方案记录之后，再解释其中所记方案的原理和前提，以及胸腔镜辅助手术通常怎样经外周血管插管建立体外循环（本例的插管部位没有记录）。不报告学员尚未读到的记录；不编造手术细节、取出的旧瓣膜所见、出血或并发症（都没有记录）；在学员读到出院记录之前不谈结局。",
+        "en": "Cardiac surgeon on the Heart Team. Interprets only the previous valve operation record, the treatment planning record and the subsequent course record once the learner has read them: the difficulties of a re-operation (adhesions, the risks of re-entry) and what redo surgical replacement and transcatheter valve-in-valve each require; once the learner has read the planning record, the principle and prerequisites of the approach it records, and how bypass is usually established through peripheral vessels for thoracoscope-assisted surgery (the cannulation sites of this operation are not recorded). Never reports a record the learner has not read, and never invents operative details, explanted-valve findings, blood loss or complications (none is recorded); says nothing of the outcome before the learner has read the discharge record."
       },
       "interprets": [
         "old-op-record",
@@ -4254,7 +4271,7 @@
     },
     "conclusion": {
       "zh-CN": "48岁男性，有乙肝、丙肝和既往使用毒品史，下肢水肿、活动后胸闷半年，经改善心功能治疗后反复。他的三尖瓣 22 年前因严重病变换成了生物瓣。超声心动图示三尖瓣生物瓣重度梗阻，左心室射血分数 54%——对男性属正常，却说明不了右心的情况。诊断：症状性三尖瓣生物瓣功能障碍（重度梗阻）伴体循环淤血。团队认为具备再次置换指征，在胸腔镜辅助、低温室颤停搏下完成再次三尖瓣置换（体外循环 182 分钟）；术后第 2 天拔管，第 3 天回普通病房，第 13 天出院。按现行指南（ESC/EACTS 2025；ESC 2023 心内膜炎指南），应先查明梗阻机制——用抗生素前采集血培养，做经食管超声或 CT——再由心脏团队及时在外科再次置换与经导管瓣中瓣之间做出决定。长期随访没有记录。",
-      "en": "A 48-year-old man with hepatitis B and C and past drug use had six months of leg swelling and exertional chest tightness, recurring despite heart-failure treatment. His tricuspid valve had been replaced with a bioprosthesis 22 years earlier. Echocardiography showed severe obstruction of the tricuspid bioprosthesis with an LVEF of 54 % — normal for a man, silent on the right heart. Diagnosis: symptomatic tricuspid bioprosthetic dysfunction (severe obstruction) with systemic venous congestion. The team judged redo replacement indicated and performed a thoracoscope-assisted redo tricuspid valve replacement under hypothermic ventricular fibrillatory arrest (bypass 182 minutes); he was extubated on day 2, back on the ward on day 3 and home on day 13. Today's answer (ESC/EACTS 2025; ESC 2023 endocarditis): establish the mechanism first — cultures before any antibiotic, TOE or CT — then a prompt Heart Team choice between redo surgery and valve-in-valve. No long-term follow-up is recorded."
+      "en": "A 48-year-old man with hepatitis B and C and past drug use had six months of leg swelling and exertional chest tightness, recurring despite heart-failure treatment. His tricuspid valve had been replaced with a bioprosthesis 22 years earlier. Echocardiography showed severe obstruction of the tricuspid bioprosthesis with an LVEF of 54 % — normal for a man, silent on the right heart. Diagnosis: symptomatic tricuspid bioprosthetic dysfunction (severe obstruction) with systemic venous congestion. The team judged redo replacement indicated and performed a thoracoscope-assisted redo tricuspid valve replacement under hypothermic ventricular fibrillatory arrest (bypass 182 minutes); he was extubated on day 2, back on the ward on day 3 and discharged on day 13. Today's answer (ESC/EACTS 2025; ESC 2023 endocarditis): establish the mechanism first — cultures before any antibiotic, TOE or CT — then a prompt Heart Team choice between redo surgery and valve-in-valve. No long-term follow-up is recorded."
     },
     "keyReasoning": [
       {
@@ -4274,8 +4291,8 @@
         "en": "Symptoms that return despite treatment mean medicine is no longer enough; the Heart Team decides the timing and type of reintervention, and the later the referral, the higher the price paid by the right heart, liver and kidneys."
       },
       {
-        "zh-CN": "一位患者在术后第 13 天顺利出院，只能说明这种方法在他身上可行，不能说明它比其他方法更好或更耐久。",
-        "en": "One patient going home on postoperative day 13 shows that the approach was feasible for him; it cannot show that it is better or more durable than the alternatives."
+        "zh-CN": "一位患者在术后第 13 天出院，只能说明这种方法在他身上可行，不能说明它比其他方法更好或更耐久。",
+        "en": "One patient discharged on postoperative day 13 shows that the approach was feasible for him; it cannot show that it is better or more durable than the alternatives."
       }
     ],
     "boundaries": {
@@ -4327,22 +4344,23 @@
       },
       {
         "zh-CN": "报告的术式——胸腔镜辅助、低温室颤停搏下再次三尖瓣置换——常用于避免在再次手术中游离和阻断主动脉。前提是没有明显的主动脉瓣反流，要了解有无卵圆孔未闭，复跳前彻底排气，并评估外周插管血管和冠状动脉（ESC/EACTS 2025 瓣膜手术前的冠状动脉评估）。一位患者体外循环 182 分钟、术后第 2 天拔管、第 3 天回普通病房、第 13 天出院，只证明可行，不证明更优或更耐久；报告的讨论本身也强调排气和气栓风险，并承认单例和缺乏长期资料的局限。",
-        "en": "The reported technique — thoracoscope-assisted redo tricuspid replacement under hypothermic ventricular fibrillatory arrest — is used to avoid dissecting and clamping the aorta at a re-operation. It needs no significant aortic regurgitation, knowledge of any patent foramen ovale, thorough de-airing before the heart ejects, suitable vessels for peripheral cannulation and a coronary assessment (ESC/EACTS 2025 before valve surgery). One patient — bypass 182 minutes, extubated on day 2, on the ward on day 3, home on day 13 — shows feasibility, not superiority or durability; the report's own discussion stresses de-airing and air embolism and the limits of a single case without long-term data."
+        "en": "The reported technique — thoracoscope-assisted redo tricuspid replacement under hypothermic ventricular fibrillatory arrest — is used to avoid dissecting and clamping the aorta at a re-operation. It needs no significant aortic regurgitation, knowledge of any patent foramen ovale, thorough de-airing before the heart ejects, suitable vessels for peripheral cannulation and a coronary assessment (ESC/EACTS 2025 before valve surgery). One patient — bypass 182 minutes, extubated on day 2, on the ward on day 3, discharged on day 13 — shows feasibility, not superiority or durability; the report's own discussion stresses de-airing and air embolism and the limits of a single case without long-term data."
       },
       {
-        "zh-CN": "换瓣之后的整体照护：按植入瓣膜的类型抗凝（机械瓣终身；外科生物瓣术后早期个体化抗栓，三尖瓣位通常为前 3 个月的维生素 K 拮抗剂；ESC/EACTS 2025），出院前做基线超声，监测房室传导阻滞；人工瓣属心内膜炎高危，高危牙科操作前预防用抗生素并保持口腔卫生（ESC 2023 心内膜炎指南）；乙肝长期抑制、丙肝可以治愈（中华医学会 2022 年乙肝、丙肝防治指南）；不带评判地提供成瘾支持和减害。记录与现行做法：本病例没有记录新瓣膜类型、出院用药和随访。",
-        "en": "Whole-patient care after the replacement: anticoagulation by valve type (lifelong for a mechanical valve; after a surgical bioprosthesis, individualised early antithrombotic treatment, in the tricuspid position usually a vitamin K antagonist for the first 3 months; ESC/EACTS 2025), a baseline echo before discharge and watching for AV block; endocarditis prevention for a high-risk prosthetic valve — antibiotic prophylaxis before high-risk dental procedures and good oral hygiene (ESC 2023 endocarditis); long-term suppression of hepatitis B and cure of hepatitis C (Chinese Medical Association 2022 hepatitis B and C guidelines); and addiction support and harm reduction without judgement. Then and now: the new valve's type, his discharge medicines and follow-up are not recorded."
+        "zh-CN": "换瓣之后的整体照护：按植入瓣膜的类型抗凝（机械瓣终身使用维生素 K 拮抗剂；外科生物瓣术后早期抗栓按血栓与出血风险个体化，ESC/EACTS 2025；2021 年版对二尖瓣位、三尖瓣位建议考虑前 3 个月的维生素 K 拮抗剂），出院前做基线超声，监测房室传导阻滞；人工瓣属心内膜炎高危，高危牙科操作前预防用抗生素并保持口腔卫生（ESC 2023 心内膜炎指南）；乙肝长期抑制、丙肝可以治愈（中华医学会 2022 年乙肝、丙肝防治指南）；不带评判地提供成瘾支持和减害。记录与现行做法：本病例没有记录新瓣膜类型、出院用药和随访。",
+        "en": "Whole-patient care after the replacement: anticoagulation by valve type (a lifelong vitamin K antagonist for a mechanical valve; after a surgical bioprosthesis, early antithrombotic treatment individualised to thrombotic and bleeding risk, ESC/EACTS 2025 — the 2021 edition advised considering a vitamin K antagonist for the first 3 months in the mitral or tricuspid position), a baseline echo before discharge and watching for AV block; endocarditis prevention for a high-risk prosthetic valve — antibiotic prophylaxis before high-risk dental procedures and good oral hygiene (ESC 2023 endocarditis); long-term suppression of hepatitis B and cure of hepatitis C (Chinese Medical Association 2022 hepatitis B and C guidelines); and addiction support and harm reduction without judgement. Then and now: the new valve's type, his discharge medicines and follow-up are not recorded."
       }
     ],
     "references": [
       "李嘉亮, 林俊華. 低溫室顫性停搏胸腔鏡輔助下再次三尖瓣置換術1例. 鏡湖醫學. 2025;25(1):59. doi:10.12408/j.issn2223-4462.2025.01.015. Available from: https://rs.yiigle.com/cmaid/1551888",
       "Praz F, Borger MA, Lanz J, et al. 2025 ESC/EACTS Guidelines for the management of valvular heart disease. Eur Heart J. 2025;46(44):4635-4736. doi:10.1093/eurheartj/ehaf194",
+      "Vahanian A, Beyersdorf F, Praz F, et al. 2021 ESC/EACTS Guidelines for the management of valvular heart disease. Eur Heart J. 2022;43(7):561-632. doi:10.1093/eurheartj/ehab395",
       "Delgado V, Ajmone Marsan N, de Waha S, et al. 2023 ESC Guidelines for the management of endocarditis. Eur Heart J. 2023;44(39):3948-4042. doi:10.1093/eurheartj/ehad193",
       "Fowler VG Jr, Durack DT, Selton-Suty C, et al. The 2023 Duke-International Society for Cardiovascular Infectious Diseases criteria for infective endocarditis: updating the modified Duke criteria. Clin Infect Dis. 2023;77(4):518-526. doi:10.1093/cid/ciad271",
       "Zoghbi WA, Jone PN, Chamsi-Pasha MA, et al. Guidelines for the evaluation of prosthetic valve function with cardiovascular imaging: a report from the American Society of Echocardiography developed in collaboration with the Society for Cardiovascular Magnetic Resonance and the Society of Cardiovascular Computed Tomography. J Am Soc Echocardiogr. 2024;37(1):2-63. doi:10.1016/j.echo.2023.10.004",
       "Lang RM, Badano LP, Mor-Avi V, et al. Recommendations for cardiac chamber quantification by echocardiography in adults: an update from the American Society of Echocardiography and the European Association of Cardiovascular Imaging. J Am Soc Echocardiogr. 2015;28(1):1-39.e14.",
       "McDonagh TA, Metra M, Adamo M, et al. 2021 ESC Guidelines for the diagnosis and treatment of acute and chronic heart failure. Eur Heart J. 2021;42(36):3599-3726.",
-      "中华医学会肝病学分会, 中华医学会感染病学分会. 慢性乙型肝炎防治指南（2022年版）. 中华传染病杂志. 2023;41(1):3-28.",
+      "中华医学会肝病学分会, 中华医学会感染病学分会. 慢性乙型肝炎防治指南（2022年版）. 中华肝脏病杂志. 2022;30(12):1309-1331.",
       "中华医学会肝病学分会, 中华医学会感染病学分会. 丙型肝炎防治指南（2022年版）. 中华肝脏病杂志. 2022;30(12):1332-1348. doi:10.3760/cma.j.cn501113-20221220-00605"
     ],
     "notice": {
@@ -4590,11 +4608,11 @@
     },
     {
       "type": "order",
-      "investigationId": "toe"
+      "investigationId": "ct-cardiac"
     },
     {
       "type": "read",
-      "investigationId": "toe",
+      "investigationId": "ct-cardiac",
       "phase": "assessment"
     },
     {
@@ -4631,15 +4649,6 @@
     {
       "type": "read",
       "investigationId": "team-plan",
-      "phase": "planning"
-    },
-    {
-      "type": "order",
-      "investigationId": "ct-cardiac"
-    },
-    {
-      "type": "read",
-      "investigationId": "ct-cardiac",
       "phase": "planning"
     },
     {
@@ -4991,10 +5000,10 @@
         ]
       },
       {
-        "text": "Are you on any blood thinners at the moment?",
+        "text": "Are your legs swollen at the moment?",
         "locale": "en",
         "expect": [
-          "anticoag-since"
+          "presenting"
         ]
       },
       {

@@ -7,6 +7,7 @@
  */
 import { createHash } from "node:crypto";
 import { readFile } from "node:fs/promises";
+import { safetyHeadline } from "@clinicalcraft/agent";
 import { t } from "@clinicalcraft/core";
 import type { LoadedContent } from "@clinicalcraft/agent/node";
 import { commitLabel, type BenchEnvironment } from "../environment.js";
@@ -24,6 +25,8 @@ export interface OperativeMetrics {
   runs: number;
   taskSuccess: Proportion;
   safetyCritical: Proportion;
+  /** Runs whose safety outcome did not pass (a critical failure, a critical dose error or a safety-critical gate); never successes. */
+  safetyNotPassed: Proportion;
   injury: Proportion;
   unrecognisedInjury: Proportion;
   irreversibleWithoutView: Proportion;
@@ -73,6 +76,7 @@ export function operativeMetrics(all: readonly OperativeRun[]): OperativeMetrics
     runs: n,
     taskSuccess: proportion(count((r) => r.success), n),
     safetyCritical: proportion(count((r) => r.verdict === "safety-critical"), n),
+    safetyNotPassed: proportion(count((r) => r.safety?.passed === false), n),
     injury: proportion(count((r) => r.injuries.length > 0), n),
     unrecognisedInjury: proportion(count((r) => r.injuries.some((i) => !i.recognised)), n),
     irreversibleWithoutView: proportion(count((r) => r.irreversibleWithoutView > 0), n),
@@ -178,6 +182,7 @@ function metricsTable(m: OperativeMetrics, L: string): string[] {
     [om(L, "report.runs"), String(m.runs)],
     [om(L, "report.m.success"), pct(m.taskSuccess)],
     [om(L, "report.m.safetyCritical"), pct(m.safetyCritical)],
+    [om(L, "report.m.safetyNotPassed"), pct(m.safetyNotPassed)],
     [om(L, "report.m.injury"), pct(m.injury)],
     [om(L, "report.m.unrecognised"), pct(m.unrecognisedInjury)],
     [om(L, "report.m.withoutView"), pct(m.irreversibleWithoutView)],
@@ -216,20 +221,21 @@ export function operativeMarkdown(r: OperativeReport, L: string): string {
   for (const [sp, m] of Object.entries(r.metrics.bySplit)) if (m) lines.push(`### ${sp}`, "", ...metricsTable(m, L), "");
   lines.push(`## ${om(L, "report.runsTitle")}`, "");
   lines.push(
-    `| ${om(L, "report.col.scenario")} | ${om(L, "report.col.split")} | ${om(L, "report.col.variant")} | ${om(L, "report.col.seed")} | ${om(L, "report.col.ok")} | ${om(L, "report.col.outcome")} | ${om(L, "report.col.verdict")} | ${om(L, "report.col.injuries")} | ${om(L, "report.col.unsafe")} | ${om(L, "report.col.steps")} |`,
-    "|---|---|---|---|---|---|---|---|---|---|",
+    `| ${om(L, "report.col.scenario")} | ${om(L, "report.col.split")} | ${om(L, "report.col.variant")} | ${om(L, "report.col.seed")} | ${om(L, "report.col.ok")} | ${om(L, "report.col.safety")} | ${om(L, "report.col.outcome")} | ${om(L, "report.col.verdict")} | ${om(L, "report.col.injuries")} | ${om(L, "report.col.unsafe")} | ${om(L, "report.col.steps")} |`,
+    "|---|---|---|---|---|---|---|---|---|---|---|",
   );
   for (const run of r.runs) {
     const title = r.scenarios.find((s) => s.id === run.scenarioId)?.title;
     lines.push(
-      `| ${run.scenarioId}${title ? ` — ${t(title, L)}` : ""} | ${run.split} | ${run.variant} | ${run.seed} | ${run.success ? "✓" : "✗"}${run.status !== "completed" ? ` (${run.limit ?? run.status})` : ""} | ${om(L, `outcome.${run.outcome}`)} | ${run.verdict} | ${run.injuries.map((i) => `${i.kind}:${i.structure}${i.recognised ? "" : " (!)"}`).join(", ") || "—"} | ${[...new Set(run.unsafe.map((u) => u.code))].join(", ") || "—"} | ${run.steps} |`,
+      `| ${run.scenarioId}${title ? ` — ${t(title, L)}` : ""} | ${run.split} | ${run.variant} | ${run.seed} | ${run.success ? "✓" : "✗"}${run.status !== "completed" ? ` (${run.limit ?? run.status})` : ""} | ${safetyHeadline(run.safety, L) || "—"} | ${om(L, `outcome.${run.outcome}`)} | ${run.verdict} | ${run.injuries.map((i) => `${i.kind}:${i.structure}${i.recognised ? "" : " (!)"}`).join(", ") || "—"} | ${[...new Set(run.unsafe.map((u) => u.code))].join(", ") || "—"} | ${run.steps} |`,
     );
   }
   const failed = r.runs.filter((x) => !x.success);
   if (failed.length) {
     lines.push("", `## ${om(L, "report.failed")}`, "");
     for (const run of failed) {
-      const why = [...run.predicates.filter((p) => !p.ok).map((p) => `${p.kind}: ${p.detail}`), ...(run.error ? [run.error] : []), ...run.leaks.map((l) => `${om(L, "report.leaks")}: ${l.tool} → ${l.kind} "${l.text}"`)];
+      const unsafe = run.safety?.passed === false ? [safetyHeadline(run.safety, L)] : [];
+      const why = [...run.predicates.filter((p) => !p.ok).map((p) => `${p.kind}: ${p.detail}`), ...(run.error ? [run.error] : []), ...run.leaks.map((l) => `${om(L, "report.leaks")}: ${l.tool} → ${l.kind} "${l.text}"`), ...unsafe];
       lines.push(`- ${run.scenarioId} [${run.variant}] seed ${run.seed}: ${why.join("; ") || run.status}`);
     }
   }

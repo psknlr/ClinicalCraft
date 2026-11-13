@@ -174,10 +174,12 @@ JSON Schema exported to `packages/content/schemas/` for editors).
     content lint warns while a high-risk intervention with a
     `contraindicatedWhen` leaves it unset), `interventions[].doseSpec`
     (`{amount, upTo?, unit: DoseUnit, route?: DoseRoute}` — the preset dose
-    an order's stated dose is compared with) and `errorRecovery`
+    an order's stated dose is compared with; a range spans the doses the
+    case's cited guidance allows) and `errorRecovery`
     (`{interventions: id[], rationale}` — the interventions the reference
     `solution` deliberately gives while contraindicated, to teach error
-    recognition and recovery; `verifyCase` accepts those and no others).
+    recognition and recovery; `verifyCase` accepts those and no others, and
+    only the safety-critical gates their own error sets off; never a dose error).
   * `history[].supersedes` — history ids, optional; **phase twins**: in a
     phase where this item is available it answers for the items it
     supersedes (selection routes to it, they cannot be asked there) and
@@ -224,7 +226,10 @@ JSON Schema exported to `packages/content/schemas/` for editors).
   `elapsed`, `elapsedSince`, `hints`, `procedure`. `elapsedSince: {intervened, gte?, lte?}`
   measures the simulated minutes since that intervention was last given (false
   while never given) — a repeat dose's window in its own `indicatedWhen`
-  (docs/CASE_AUTHORING.md §7). `intervened` takes `valid`: `true` counts only
+  (docs/CASE_AUTHORING.md §7); `examined` takes `afterLast: id` — the
+  finding's latest examination came after that intervention was last given
+  (by action sequence, `SessionState.lastExamined`): the reassessment a repeat
+  needs, undone by a dose given since. `intervened` takes `valid`: `true` counts only
   attempts that were not contraindicated when made, `false` only those that
   were. `inOrder: [id…]` holds when those interventions were first validly
   given in that order, compared by committed action sequence
@@ -280,7 +285,8 @@ checkCaseIntegrity(c: CaseDefinition): Issue[]          // referential integrity
 verifyCase(c: CaseDefinition): { ok: boolean; issues: Issue[]; finalState: SessionState; assessment: AssessmentReport }
                                                         // replays c.solution; ok iff all objectives done, all decisions decided, no rejections,
                                                         // no timeout, nothing given while contraindicated (but `errorRecovery`'s ids), no dose error,
-                                                        // no safety-critical gate holding at the end (docs/CASE_AUTHORING.md §7)
+                                                        // no safety-critical gate holding at the end (but one whose `when` names a declared id or a
+                                                        // flag one sets: a warning; docs/CASE_AUTHORING.md §7)
 checkFacility(f: FacilityDefinition, catalogs: EquipmentCatalog[]): Issue[]   // unknown equipment/material ids, overlapping solids, slots outside rooms,
                                                         // levels / connectors / access zones (FACILITIES.md "Embodiment fields")…
 
@@ -338,11 +344,18 @@ MATCH_THRESHOLD = 0.34; EXCLUDE_KEYWORD_FACTOR = 0.2; ELLIPSIS_FACTOR = 0.8; NEG
 compactText, tokenize, canonicalToken, foldSpelling, tokensMatch, phraseScore, phraseCoverage, longestCommonSubstring,
 ENGLISH_STOP_WORDS, ENGLISH_LEMMAS                      // text primitives behind the scored matchers (§3.3)
 
-// doses (PROTOCOL §3.2)
+// doses (PROTOCOL §3.2; engine/dose.ts, engine/dose-read.ts)
+readOrder(text): OrderReading                           // every dose an order states (figures, Chinese numerals, English words; a volume through a
+                                                        // stated strength; a preparation not the dose), its route, and the first dose it cannot read
+                                                        // (`unclear`: unreadable | range | no-unit)
 parseDose(text): OrderedDose | null                     // the dose a written order states (zh-CN + en): {amount, unit} and/or {route}
+checkOrder(order: WrittenOrder, intervention, weightKg?): OrderCheck   // the reducer's one rule: given (the dose read) | query (reason: unreadable,
+                                                        // range, no-unit, strength, weight, rate — nothing given) | conflict (a dose error, its severity)
 compareDose(ordered, preset: DoseSpec, weightKg?): { equivalent: boolean; ratio: number | null; conflicts: ("amount" | "route" | "unit")[] }
-doseErrorSeverity(ratio, intervention): "warning" | "critical"   // critical: ratio ≥ 10 or ≤ 0.1 (TENFOLD), or a critical / high-risk intervention
+doseErrorSeverity(ratio, conflicts, intervention): "warning" | "critical"   // critical: ratio ≥ 10 or ≤ 0.1 (TENFOLD) for any medicine; for a critical
+                                                        // or high-risk intervention also ratio ≥ 2 (TWOFOLD) or another route
 doseMentions(text), doseRoute(text), formatDose(dose), WEIGHT_BASED_TOLERANCE
+safetyPassed({criticalFailures, doseErrors, verdict?}): boolean   // AssessmentReport.safety.passed — asked without `verdict` to leave a hidden gate out
 
 // assessment
 assess(c, s): AssessmentReport
@@ -460,10 +473,14 @@ GLB_RENDERER_EXTENSIONS, GLB_DECODER_EXTENSIONS          // extensions the web r
   Appends to `attempts`; on correct sets `decisions[id] = clock`.
 * `intervene` — `maxDoses` exceeded → `max-doses`. A hold standing on the
   intervention (see `hold`) → `on-hold`, naming who placed it and why; nothing
-  is recorded. An order as written (`ordered: {text, dose?}`) whose dose
-  conflicts with the intervention's preset (`doseSpec`, `compareDose`) is
-  accepted but **not given**: a `DoseErrorRecord` is appended to `doseErrors`
-  and `dose.error` emitted; the action's time passes (PROTOCOL §3.2).
+  is recorded. An order as written (`ordered: {text, dose?}`) is checked
+  against the intervention's preset (`doseSpec`) by `checkOrder`, which reads
+  the words itself (`readOrder`; the client's `dose` only where the words state
+  it): a dose it cannot read or compare (a fraction, "0。5 mg", a range, no
+  unit, a volume without its strength, a rate for a single dose) →
+  `dose-unclear`, nothing recorded; a conflicting amount or route is accepted
+  but **not given**: a `DoseErrorRecord` is appended to `doseErrors` and
+  `dose.error` emitted; the action's time passes (PROTOCOL §3.2).
   Appropriateness:
   `contraindicated` if `contraindicatedWhen` true (evaluated **before**
   applying), else `indicated` if `indicatedWhen` true, else `neutral`.

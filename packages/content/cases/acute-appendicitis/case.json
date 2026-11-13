@@ -4934,6 +4934,7 @@
         "zh-CN": "吗啡静脉滴定：每次 2–3 mg，每 5 分钟评估一次，按效果追加，总量约 0.1 mg/kg；监测呼吸频率、SpO₂ 及镇静程度，备纳洛酮",
         "en": "Morphine IV titrated: 2–3 mg every 5 min to effect, up to ~0.1 mg/kg; monitor RR, SpO₂ and sedation; naloxone available"
       },
+      "doseSpec": { "amount": 2, "upTo": 3, "unit": "mg", "route": "IV" },
       "requires": [
         "iv-access"
       ],
@@ -5252,7 +5253,6 @@
         "zh-CN": "昂丹司琼 4 mg 缓慢静脉推注",
         "en": "Ondansetron 4 mg IV, slowly"
       },
-      "doseSpec": { "amount": 4, "unit": "mg", "route": "IV" },
       "requires": [
         "iv-access"
       ],

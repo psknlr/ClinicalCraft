@@ -3,7 +3,7 @@
  * Only case data and engine results are stated (grounding rules §2.1); every
  * assessment ends with the teaching-script notice.
  */
-import { caseHandle, criticalMissLines, decisionNumber, investigationName, joinList, labelledOptions, reviewStatusLine, rt } from "@clinicalcraft/agent";
+import { caseHandle, criticalMissLines, decisionNumber, investigationName, joinList, labelledOptions, reviewStatusLine, rt, safetyLines } from "@clinicalcraft/agent";
 import { specialtyLabels, t, type AssessmentReport, type CaseDefinition, type LocalizedText } from "@clinicalcraft/core";
 import { mm } from "./i18n.js";
 
@@ -120,7 +120,8 @@ export function casesText(cases: readonly ListedCase[], locale: string): string 
 /**
  * Assessment report (+ examiner judgements and narrative) as text; ends with the teaching-script notice unless
  * `notice: false`. Once final, the critical rubric items missed come first (unless `critical: false`: the case
- * debrief that follows lists them).
+ * debrief that follows lists them). The safety outcome follows the score — passed or not, each critical safety
+ * failure and dose error (docs/PROTOCOL.md §3.2): what the learner did, so mid-case too.
  */
 export function assessmentText(
   c: CaseDefinition,
@@ -146,6 +147,7 @@ export function assessmentText(
       firstTry: report.decisions.filter((d) => d.firstTryCorrect).length,
       decisions: report.decisions.length,
     }),
+    ...safetyLines(c, report, L),
     mm(L, "debrief.coverage", {
       asked: report.history.requiredAsked,
       required: report.history.required,

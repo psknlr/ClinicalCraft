@@ -22,7 +22,7 @@
 | Languages | zh-CN (source language), en |
 | Learner level | Final-year students; foundation doctors and residents in surgery, anaesthesia and intensive care; ward and ICU nurses |
 | Review status | Editorial review 2026-10-30 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; patient facts not yet checked against the full article. Have an intensivist, a hyperbaric physician and an adult congenital cardiologist review it before teaching use |
-| Content | 15 history items (6 not recorded, 7 required) · 7 exam findings · 11 investigations (5 record reviews, 6 without any recorded result) · 19 interventions (6 contraindicated in some or all circumstances) · 6 objectives · 5 decisions (23 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 4 staff characters · 6 learning outcomes · 6 teaching points · 40 test utterances |
+| Content | 15 history items (6 not recorded, 7 required) · 7 exam findings · 11 investigations (5 record reviews, 6 without any recorded result) · 19 interventions (6 contraindicated in some or all circumstances) · 6 objectives · 5 decisions (23 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 3 critical) · 4 staff characters · 6 learning outcomes · 6 teaching points · 40 test utterances |
 
 ## Learning outcomes
 
@@ -75,17 +75,22 @@ the report's recorded states and never simulates the learner's treatment. Every 
 |---|---|---|---|
 | `ward` (initial) | post-operative day 5, before the line comes out | start | her own history (she is alert and answers), the earlier echo, the operation note and the line record; decision 1; the removal and positioning steps |
 | `collapse` (label "After the removal") | about 3 minutes after the removal, as she sits up | objective 1 done (core history, echo and line record read, decision 1 right, the line removed) | she cannot speak; six bedside findings (responsiveness, breathing, convulsions, central pulse, pupils, the neck site); glucose, ECG and blood gas (no recorded result); the removal record; decision 2; first aid, airway, ICU transfer and the traps |
-| `icu` | intensive care, intubated and ventilated | objective 2 done (bedside assessment, glucose ordered, decision 2, intubation **and** the ICU transfer) | her relative (teaching role) answers; airway and ventilation check; the emergency head CT; chest film, MRI and bedside echo (no recorded result); decisions 3–5; hyperbaric oxygen, disclosure, incident report, rehabilitation |
+| `icu` | intensive care, intubated and ventilated | `obj-at-bedside` done (bedside assessment, glucose ordered, decision 2, intubation **and** the ICU transfer) | her relative (teaching role) answers; airway and ventilation check; the emergency head CT; chest film, MRI and bedside echo (no recorded result); decisions 3–5; hyperbaric oxygen, disclosure, incident report, rehabilitation |
 | `followup` | from the event to about day 35 | all five decisions right, hyperbaric oxygen given **and** the family meeting held | the report's course and outcome record (with the approved figure) |
 
 Gating choices. Decision 2 opens on any one bedside examination — never on a record — and the CT result exists only
 in the ICU phase, so recognition and first aid cannot wait for, or be read off, the scan. Decision 3 opens on the
-ICU airway check, before the CT is read (hyperbaric oxygen must not wait for imaging). The first-minute acts are
-scored through objective 3, which latches only in the `collapse` phase (KIT §2), and the outcome record opens only
-after hyperbaric oxygen has been given, so neither critical act can be credited in hindsight. The ICU phase does
-**not** wait for objective 3: a learner who intubates and transfers without sealing, positioning or oxygen moves on,
-and the debrief names the missed critical item first. Because the case's `finish` requires every objective, such a
-learner cannot formally finish; the debrief is available as usual.
+ICU airway check, before the CT is read (hyperbaric oxygen must not wait for imaging). Time-critical acts are scored
+through a time window, never through a phase-bound objective: calling for help, sealing the site, laying her flat
+and high-flow oxygen are `indicatedWhen` the `collapse` phase holds **and** she has not yet been transferred to
+intensive care, and `rb-first-minute` counts them only when given inside that window (`whenIndicated`). A phase leaf
+alone would not close it — the engine lets a learner return to a locked phase that has been reached while its
+`enterWhen` still holds — but the ICU transfer closes it for good. Hyperbaric oxygen counts for `rb-hbot-given` only
+when given in intensive care, not while contraindicated (the chest film ordered), and before the outcome record is
+read; the outcome phase cannot open without it. The ICU phase does **not** wait for the first-aid acts: a learner who
+intubates and transfers without them moves on, can still do them late (the first-minutes objective latches on the
+acts alone, so the case stays finishable — the collection contract replays every step late), and misses the critical
+item (measured below).
 
 The removal itself follows the report whatever technique the learner chose in decision 1: the `remove-line` response
 says what the report records, and the `collapse` description adds "From here the case follows the report".
@@ -96,10 +101,11 @@ says what the report records, and the `collapse` description adds "From here the
 
 1. `obj-before-removal` — Before the line comes out: know her and plan the removal (status today, operation, heart
    and lungs, neck line; earlier echo and line record read; decision 1; the line removed).
-2. `obj-at-bedside` — After the removal: assess and stabilise her (responsiveness, breathing, central pulse, pupils,
+2. `obj-first-minute` — The first minutes (call for help, seal the site, lay her flat, high-flow oxygen). The chapter
+   appears as soon as she collapses and latches whenever the acts are done; whether they were done in time is scored
+   by `rb-first-minute`, not by the objective.
+3. `obj-at-bedside` — After the removal: assess and stabilise her (responsiveness, breathing, central pulse, pupils,
    neck site; glucose ordered; decision 2; intubation; ICU transfer).
-3. `obj-first-minute` — The first minutes (call for help, seal the site, lay her flat, high-flow oxygen — while still
-   in the `collapse` phase).
 4. `obj-icu-hbot` — Intensive care: the next few hours (airway check, decision 3, chest film ordered in ICU,
    hyperbaric physician, hyperbaric oxygen).
 5. `obj-route-family` — Where it came from, and the family (CT read, decision 4, the relative's knowledge and worry,
@@ -109,7 +115,8 @@ says what the report records, and the `collapse` description adds "From here the
 Hints are Socratic questions; none contains a key's text or names the diagnosis (`cases validate` checks the first).
 Objective titles, phase labels and the intervention and test names are visible before the event, so they describe
 steps and places, not the event or the diagnosis (the CT is "Head CT"; the transfer "Transfer to intensive care"; the
-family step "Hold a family meeting"). Objective 1 completes only once the line is out and objective 2 only at the ICU
+family step "Hold a family meeting"). The HUD shows the first unfinished chapter: objective 1 completes only once the
+line is out, so "The first minutes" appears the moment she collapses, and objective 3 completes only at the ICU
 transfer, so each chapter's quest-card text appears only when its events have happened.
 
 ### Decisions
@@ -135,15 +142,15 @@ and checked by `cases validate`).
 | `rb-line-removal` | Management | decision 1 first time | 3 |
 | `rb-bedside-assessment` | Examination | responsiveness, breathing, convulsions, central pulse, pupils, neck site; glucose ordered in the `collapse` phase | 2 |
 | `rb-recognition` | Diagnosis | decision 2 first time | 3 |
-| `rb-first-minute` | Safety · **critical** | site sealed, laid flat and high-flow oxygen (with the call for help) while still in the `collapse` phase (objective 3) | 4 |
+| `rb-first-minute` | Safety · **critical** | call for help, site sealed, laid flat and high-flow oxygen, each given in the `collapse` phase before the ICU transfer (`whenIndicated` on that window) | 4 |
 | `rb-hbot-plan` | Management | decision 3 first time **and** the chest film ordered in ICU | 3 |
-| `rb-hbot-given` | Management · **critical** | hyperbaric oxygen given (the outcome phase cannot open without it) | 4 |
-| `rb-no-harm` | Safety | no alteplase and no therapeutic heparin; `scoredWhen` decision 2 attempted or either drug given | 3 |
+| `rb-hbot-given` | Management · **critical** | hyperbaric oxygen given in intensive care, not while contraindicated (chest film ordered), before the outcome record is read (`whenIndicated`; the outcome phase cannot open without it) | 4 |
+| `rb-no-harm` | Safety · **critical** | no alteplase and no therapeutic heparin; `scoredWhen` decision 2 attempted or either drug given | 3 |
 | `rb-route` | Diagnosis | decision 4 first time | 2 |
 | `rb-candour` | Management | decision 5 first time, family meeting held, incident reported | 2 |
 | `rb-communication` | Communication (examiner) | honest, plain-language disclosure, apology, HBOT explained with its risks, uncertainty, teach-back (Calgary–Cambridge, duty of candour) | 1 |
 
-### How wrong choices score (measured 2026-10-30 with the core engine)
+### How wrong choices score (measured 2026-11-13 with the core engine)
 
 | Path | Score | Critical items missed | Flagged in the debrief |
 |---|---|---|---|
@@ -152,19 +159,34 @@ and checked by `cases validate`).
 | Wrong first answer at every decision, then the key | 16/29 (55 %) | none | none |
 | Wrong first at decision 1, 2 or 3 only | 26/29 (90 %) | none | none |
 | Wrong first at decision 4 or 5 only | 27/29 (93 %) | none | none |
-| The report's removal sequence chosen first (decision 1, option "flat-tape-up") | 26/29 (90 %) | none | none |
-| Seal, flat and oxygen skipped before the ICU transfer | 25/29 (86 %), cannot finish | `rb-first-minute` | — |
+| The report's removal sequence chosen first (decision 1, option `flat-tape-up`) | 26/29 (90 %) | none | none |
+| First aid (help, seal, flat, oxygen) done only after the ICU transfer | 25/29 (86 %), finishes | `rb-first-minute` | — |
+| First aid done only after reading the outcome, back in the `collapse` phase | 25/29 (86 %), finishes | `rb-first-minute` | — |
 | No hyperbaric oxygen | 25/29 (86 %), stays in ICU (no outcome record) | `rb-hbot-given` | — |
-| Reference plus alteplase (or therapeutic heparin) at the collapse | 26/29 (90 %) | none | alteplase / heparin (contraindicated) |
-| Reference without the pre-compression chest film | 26/29 (90 %), cannot finish | none | hyperbaric oxygen (contraindicated without the film) |
+| Hyperbaric oxygen before any chest film (the film ordered afterwards) | 25/29 (86 %), finishes | `rb-hbot-given` | hyperbaric oxygen (contraindicated without the film) |
+| The same, corrected: compression repeated after the film, before the outcome is read | 29/29 (100 %) | none | the first, contraindicated compression |
+| Reference plus alteplase at the collapse | 26/29 (90 %) | `rb-no-harm` | alteplase — **critical safety failure** (safety outcome fails) |
+| Reference plus therapeutic heparin at the collapse | 26/29 (90 %) | `rb-no-harm` | heparin (contraindicated; safety outcome passes) |
 | Reference plus "sit her up" after the removal (before hyperbaric oxygen) | 29/29 (100 %) | none | sit-up (contraindicated) |
 | Reference plus head-down tilt after the collapse | 29/29 (100 %) | none | head-down tilt (contraindicated) |
+| The line removed before decision 1 is answered | 29/29 (100 %) | none | line removal (contraindicated) |
 
-Ordering cannot be scored by the condition language (CMCR_CASES "Known limits"): sitting her up after the removal
-(until she has had hyperbaric oxygen; afterwards it is not flagged), a head-down tilt after the collapse and the
-line removed before decision 1 are flagged as contraindicated safety events, not scored. Thrombolysis and heparin
+Timing is scored where it saves the brain — the first-aid window and hyperbaric oxygen before the outcome (above).
+Following the collection's convention for other ordering errors (CMCR_CASES "Known limits"), sitting her up after the
+removal (until she has had hyperbaric oxygen; afterwards it is not flagged), a head-down tilt after the collapse and
+the line removed before decision 1 are flagged as contraindicated safety events, not scored. Thrombolysis and heparin
 are scored by `rb-no-harm`. The head-down tilt is **indicated** in the ward phase (for the removal) and
 contraindicated after the collapse — a deliberate contrast.
+
+**Safety outcome.** IV thrombolysis (`alteplase`, high risk) is `critical: true`: given five days after intrathoracic
+surgery, for gas rather than clot, it risks life-threatening bleeding at the operation site or in the brain, so
+giving it fails the run's safety outcome whatever the score, and the critical avoided-harm item `rb-no-harm` records
+it. Therapeutic heparin (moderate risk, contraindicated throughout) also costs `rb-no-harm` but, as a recoverable
+misjudgement (it can be stopped and reversed), does not fail the safety outcome by itself; nor do hyperbaric oxygen
+before the pre-compression chest film (moderate risk; it does not count towards `rb-hbot-given`), sitting her up
+before hyperbaric oxygen, a head-down tilt after the collapse or removing the line before decision 1 — all flagged.
+Rapid-sequence intubation is high risk but never contraindicated here (the report records it), so it carries no
+`critical` flag.
 
 ## Reference path (`solution`)
 
@@ -235,11 +257,11 @@ listed to verify against INS 2024 and WS/T 433—2023.
 | Error | How the case surfaces it | Where it scores |
 |---|---|---|
 | Removing the line routinely (brief pressure, ordinary tape, up at once) or sitting up with a deep breath in | decision 1 distractors; `remove-line` flagged before decision 1; `sit-up` flagged from the removal until hyperbaric oxygen | `rb-line-removal`; flagged |
-| Treating the collapse as a faint, a stroke for lysis, a PE or a first seizure | decision 2 distractors; `alteplase` and `heparin` always contraindicated | `rb-recognition`, `rb-no-harm` |
-| Scanning before first aid; leaving the site unsealed; leaving her sitting | decision 2 key ("no scan first"); the CT has no result before ICU; objective 3 | `rb-first-minute` (critical) |
+| Treating the collapse as a faint, a stroke for lysis, a PE or a first seizure | decision 2 distractors; `alteplase` and `heparin` always contraindicated | `rb-recognition`, `rb-no-harm` (critical; alteplase fails the safety outcome) |
+| Scanning before first aid; leaving the site unsealed; leaving her sitting | decision 2 key ("no scan first"); the CT has no result before ICU; objective 2 ("The first minutes") | `rb-first-minute` (critical; counted only before the ICU transfer) |
 | Head-down "to keep air from the brain" | `head-down-tilt` contraindicated after the collapse (indicated before removal); decision 3 distractor | flagged; `rb-hbot-plan` |
 | Waiting for a CT to decide on hyperbaric oxygen, or giving steroids first | decision 3 distractors | `rb-hbot-plan`, `rb-hbot-given` (critical) |
-| Compressing without excluding a pneumothorax after chest surgery | `hbot` contraindicated without the chest film; decision 3 key | `rb-hbot-plan`; flagged |
+| Compressing without excluding a pneumothorax after chest surgery | `hbot` contraindicated without the chest film; decision 3 key | `rb-hbot-plan`; `rb-hbot-given` counts only a compression after the film is ordered; flagged |
 | Over-reading the echo or the pupil sign as proof of the route; urgent ASD closure | decision 4 distractors (ESC 2020 ACHD) | `rb-route` |
 | Concealment, delay or blaming the patient | decision 5 distractors; examiner item | `rb-candour`, `rb-communication` |
 | Inventing the unrecorded (vital signs, glucose, CT details, HBOT pressure) | unknown items, no-result records, `examNotRecorded` | — |
@@ -315,7 +337,7 @@ does not record say "This case does not record whether…; it does not simulate 
 in lay words ("I'm not sure, doctor." / "这个我说不上来，医生。").
 
 **Survey audit findings applied.** The critical item moved from a hindsight route question to two acts (first-minute
-measures; hyperbaric oxygen), with an avoided-harm item (F0); recognition and first aid no longer locked behind the CT
+measures; hyperbaric oxygen), each scored in its time window, and a critical avoided-harm item (F0); recognition and first aid no longer locked behind the CT
 (F1, F21); 19 interventions with harm logic (F2); forward-only ward → collapse → ICU → follow-up phases (F3); realistic
 distractors (F4, F5) and a separate hyperbaric decision with pre-compression checks (F5); the route question reworded,
 placed before the outcome and given its clinical consequences (F6); a removal-technique decision (F7); case-specific
@@ -382,6 +404,10 @@ Guidance details to confirm in the full texts (taken from abstracts and secondar
 * The 2025 ACC/AHA adult congenital heart disease guideline (Circulation 2026;153(8):e115-e251,
   doi:10.1161/CIR.0000000000001402): its PVR thresholds for ASD closure in pulmonary hypertension, as an update to ESC
   2020 (not cited in the case text).
+* The heparin trap's harm text cites no guideline: add one once checked (for example the AHA/ASA position on urgent
+  anticoagulation after acute brain ischaemia, 2026 wording).
+* ESC adult congenital heart disease: whether a later ESC edition supersedes the 2020 guideline cited for ASD
+  closure in pulmonary hypertension.
 * GMC/NMC duty of candour: the full list of duties (telling and apologising confirmed); Decree No. 701 Art. 13 on
   written consent for special treatments.
 * Corticosteroids: "no corticosteroids" in a UHMS committee best-practice list for decompression illness and gas
@@ -458,7 +484,9 @@ ESC/ERS 2022 PH (institutional repository records with DOIs), ESC 2020 ACHD (jou
 DOI not seen, so not given), Feil 2012 (NLM collection record; pages not seen). The source article's DOI is the one
 verified in `scripts/cmcr-105-sources.json` (publisher check 2026-10-29). The 1.0.0 reference "UHMS. Hyperbaric
 treatment of air or gas embolism: current recommendations. 2019" with a `/fr/` URL was a journal article, not a UHMS
-guideline; it is now cited in Vancouver form, and the bare yiigle URL is part of the source citation.
+guideline; it is now cited in Vancouver form, and the bare yiigle URL is part of the source citation. The independent
+review of 2026-11-13 re-read every citation against this log but could not repeat the web checks; it added no
+new reference, and the items under "To verify" remain open.
 
 ## Changelog
 
@@ -491,6 +519,15 @@ against the full source article.
   `central-pulse`, `line-site`, `icu-support`); investigations `ct` → `head-ct`, `echo` → `echo-earlier`,
   `procedure` → `line-record`; decisions `interpretation`/`management`/`safety` → `line-removal`, `collapse-action`,
   `hbot-plan`, `route`, `disclosure`; option ids neutral (1.0.0 used `supported` and `alternative-N`).
+* **Independent review (2026-11-13).** The first-aid critical item could be earned in hindsight — a learner could
+  return to the `collapse` phase after reading the outcome and do the acts there — and the objective behind it held a
+  phase leaf. The four acts now have a time window (the `collapse` phase, before the ICU transfer) scored with
+  `whenIndicated`; their objective, now chapter 2 and shown as soon as she collapses, latches on the acts alone.
+  Hyperbaric oxygen counts only when given in intensive care with the chest film ordered and before the outcome is
+  read. `alteplase` is `critical: true`, `rb-no-harm` is a critical avoided-harm item, and a **Safety outcome**
+  paragraph was added; the scoring table was re-measured. Wording: the English non-verbal reason (she became
+  unresponsive minutes after the removal, not at it), the English conclusion now names the diagnosis as the Chinese
+  does, and the pupil-sign feedback cites Bothma and Schlimp. No patient fact was added or changed.
 * **Contract wording.** The English review note ends "The case is not yet reviewed by a licensed clinician." (the
   collection test matches the lower-case phrase); otherwise it is the standard's §6 text.
 
@@ -529,6 +566,8 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 ③ ICU：尽快高压氧，先胸片排除气胸、套囊注盐水（干扰项：看CT再定、先用激素、只限潜水员加头低位、过度通气等24小时）；
 ④ 途径：反常栓塞和逆行均可能、都未被证实，处理相同；今后排净管路空气、心内科评估（干扰项：超声证明反常栓塞马上封堵、瞳孔证明逆行、途径无关紧要）；
 ⑤ 告知家属：坦诚说明、道歉、解释高压氧和不确定预后、记录并上报（干扰项：说成中风、等结局再说、怪她坐起）。
+
+**安全结果。** 静脉溶栓（阿替普酶）设为危急操作（`critical: true`）：术后第5天、针对的是气体而非血栓，可致危及生命的出血，一旦给药，本次运行的安全结果即为不合格；治疗剂量肝素、未开胸片即加压、拔管后让她坐起、发病后头低位以及未定方案先拔管均作为禁忌操作标记，但不单独导致安全结果不合格。最初几分钟的急救（呼救、封闭穿刺点、放平、纯氧）只有在转入ICU之前完成才计分。
 
 **复盘要点（PEARLS）。** 先谈她坐起倒下那一刻的感受；复述拔管方案和最初一分钟做了什么；分析：穿刺点与心脏的高低、吸气的作用、
 缺损伴肺高压增加了什么风险、普通胶布为何不够、CT阴性怎么办、为何纯氧和水平位、为何不再头低位、加压前要查什么、瞳孔体征能说明

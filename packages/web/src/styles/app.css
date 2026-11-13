@@ -1780,7 +1780,19 @@ button.decision-option {
 /* Debrief / assessment                                              */
 /* ================================================================ */
 .debrief .metric-grid {
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
+}
+/* The safety outcome beside the score: a run that did not pass is never shown in the "passed" colours */
+.debrief .metric-grid div.safety-bad {
+  background: var(--danger-soft);
+}
+.debrief .metric-grid div.safety-bad b {
+  color: #b0442a;
+}
+.critical-missed.safety-outcome.review {
+  background: #fcf5dc;
+  border-left-color: var(--warn);
+  color: inherit;
 }
 .assessment {
   margin-top: 26px;

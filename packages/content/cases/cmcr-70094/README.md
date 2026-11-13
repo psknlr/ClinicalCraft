@@ -22,8 +22,8 @@ current guidance.
 | Specialty | Neonatology, critical care (no specialty names the cause) |
 | Languages | zh-CN (source language), en |
 | Learner level | Neonatal and paediatric trainees, final-year students, neonatal nurses (line care, the communication item) |
-| Review status | Editorial review 2026-10-30 (AI-assisted, against the guidance below) — **not yet reviewed by a licensed clinician**; facts not yet checked against the full article. Have a neonatologist review it before teaching use |
-| Content | 18 history items (8 unknown, 6 required; the relative answers) · 3 examination findings · 18 investigations (4 record reviews; 10 tests and the infusion chart without a recorded result) · 14 interventions (3 harmful, 2 timing-dependent, 2 low-value) · 6 objectives · 4 decisions (16 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 5 teaching points · 39 test utterances |
+| Review status | Editorial review 2026-10-30 (AI-assisted, against the guidance below), independently re-reviewed 2026-11-13 (AI-assisted; see the changelog) — **not yet reviewed by a licensed clinician**; facts not yet checked against the full article. Have a neonatologist review it before teaching use |
+| Content | 18 history items (8 unknown, 6 required; the relative answers) · 3 examination findings · 18 investigations (4 record reviews; 10 tests and the infusion chart without a recorded result) · 14 interventions (3 harmful, one of them `critical`; 2 timing-dependent; 2 low-value) · 6 objectives · 4 decisions (16 options) · 12 rubric items (11 deterministic, weight 29; 1 examiner-judged; 2 critical) · 3 staff · 6 learning outcomes · 5 teaching points · 39 test utterances |
 
 ## Learning outcomes
 
@@ -40,12 +40,13 @@ By the end of the case the learner can:
    breathing under ultrasound with the volume judged in mL/kg, send the fluid for cell count and differential,
    triglyceride, protein, glucose and culture, and continue nutrition peripherally for a short time when a central
    line has to come out (NICE NG154, 2020).
-4. Apply the paediatric chyle criteria — triglyceride > 1.1 mmol/L with oral fat intake, ≥ 1000 cells/µL with
+4. Apply the paediatric chyle criteria — triglyceride > 1.1 mmol/L with oral fat intake, > 1000 cells/µL with
    > 80 % lymphocytes (Büttiker 1999) — and explain why a clear appearance, an ether test or a Rivalta test cannot
    separate chyle from leaked infusate.
-5. Reserve chylothorax treatment for a confirmed, persistent leak — fat-free feeding first, parenteral nutrition with
-   enteric rest if it continues, and octreotide only as an unproven option (Cochrane review 2010: no randomised
-   trials) — and appraise the report's chylothorax label and causal claim against the anatomy and the tests recorded.
+5. Start chylothorax treatment only once chyle is confirmed — drainage and fat-free feeding first, parenteral
+   nutrition with enteric rest if the leak persists, and octreotide only as an unproven option (Cochrane review 2010:
+   no randomised trials) — and appraise the report's chylothorax label and causal claim against the anatomy and the
+   tests recorded.
 6. Explain a probable line complication to the family honestly — what happened, what is still uncertain and what will
    be done — report it as a patient-safety event, and arrange follow-up of breathing, growth and development.
 
@@ -73,9 +74,9 @@ development reported normal at **2 and 4 months**.
 **Diagnosis.** The report's title calls it **bilateral chylothorax with ascites caused by the PICC** in a
 very-low-birth-weight infant. The case teaches it as a **PICC-associated bilateral effusion with ascites whose chylous
 nature is not established**: on the recorded tests chyle cannot be told from leaked infusate (whatever ran through the
-line is not recorded), and a right basilic line never passes the thoracic duct's left-sided opening, so a direct duct
-injury is anatomically implausible; leaked infusate, or obstructed central venous and lymphatic drainage, fit the
-bilateral picture better.
+line is not recorded), and a right basilic line on its usual course does not pass the thoracic duct's left-sided
+opening, so a direct duct injury is anatomically implausible; leaked infusate, or obstructed central venous and
+lymphatic drainage, fit the bilateral picture better.
 
 ## Scenario timeline and physiology
 
@@ -120,12 +121,13 @@ contain no option text (`cases validate` checks it).
 |---|---|---|---|---|
 | 1 | `bedside-priorities` | colour, work of breathing and responsiveness examined; birth and onset asked; early notes and PICC record read | support breathing, call senior help, stop everything through the PICC without flushing or pushing it in, urgent bedside film and echocardiogram, blood culture then antibiotics through new peripheral access | worsening RDS — more pressure and oxygen, another dose of surfactant, infusions running, film in the morning (**anchoring on prematurity**); late-onset sepsis treated through the suspect PICC, PN running, no imaging; bilateral blind needle decompression for a presumed tension pneumothorax |
 | 2 | `imaging-plan` | decision 1; film, ultrasound and echocardiogram read (imaging phase) | line-related effusion: stop using and remove the PICC; check platelets and clotting, then an ultrasound-guided tap of the compromising side with cell count and differential, triglyceride, protein, glucose (paired with blood) and culture; peripheral fluids; rescan | congenital chylothorax — keep the PICC, MCT feeds and octreotide, no tap; PDA/fluid-overload heart failure — restrict fluids, furosemide, keep the PICC; "the tip is too high" — advance it 1 cm under the dressing and keep infusing |
-| 3 | `fluid-interpretation` | decision 2; the aspirate's routine analysis, culture, chemistry and cell count read | fat probably present in a low-protein, culture-negative fluid; chyle and leaked parenteral nutrition both fit; the chylothorax label still needs the cell differential and triglyceride (with fat intake) and a fluid glucose compared with the blood | "ether-positive proves chylomicrons" — MCT, octreotide, surgeons (**the report's own label made certain**); "clear fluid excludes chyle, Rivalta-negative means overload"; "the PICC perforated the thoracic duct" (anatomically implausible) |
-| 4 | `aftercare-plan` | decision 3; PICC removed and chest tapped | rescan for reaccumulation; peripheral nutrition for now and a new central line only if needed, tip confirmed outside the heart with the limb position recorded; chyle diets and octreotide only for a confirmed, persistent leak; incident report, honest disclosure, growth and development follow-up | re-site a PICC through the same vein to the same length on the old film; a two-week chylothorax regimen whatever happens; stop rescans, no report, tell the family it is "a common problem in premature babies" |
+| 3 | `fluid-interpretation` | decision 2; the aspirate's routine analysis, culture, chemistry and cell count read | fat probably present in a low-protein, culture-negative fluid; chyle and leaked parenteral nutrition both fit; the chylothorax label still needs the cell differential and triglyceride (with fat intake), and no fluid glucose is recorded to compare with the blood | "ether-positive proves chylomicrons" — MCT, octreotide, surgeons (**the report's own label made certain**); "clear, Rivalta-negative fluid makes chyle unlikely, though not impossible" — restrict fluids, a diuretic, test only if the fluid returns (a hedged distractor); "the PICC perforated the thoracic duct" (anatomically implausible) |
+| 4 | `aftercare-plan` | decision 3; PICC removed and chest tapped | rescan for reaccumulation; peripheral nutrition for now and a new central line only if needed, a central tip confirmed outside the heart with the limb position recorded; chyle diets only for a confirmed leak, octreotide only if it persists; incident report, honest disclosure, growth and development follow-up | re-site a PICC through the same vein to the same length on the old film, rescan in a week and tell the family only that the line was changed; a two-week chylothorax regimen whatever happens; stop rescans, no report, tell the family it is "a common problem in premature babies" |
 
 Single best answer each, 4 options, every option with its own 2–4-sentence feedback naming its guidance. Option ids
-name content (`line-first`, `rds-rescue`…), never correctness. Length cue: the key is the longest option only in
-decision 4 (both languages), which the lint allows once; in decisions 1–3 a distractor is at least as long as the key.
+name content (`line-first`, `rds-rescue`…), never correctness. No length cue: in no decision is the key the uniquely
+longest option in either language (in decision 3 the Chinese key ties with a distractor). No hedging cue: in
+decision 3 the "clear fluid" distractor hedges as the key does, so the cautious option is not automatically right.
 
 ### Rubric (11 deterministic items, weight 29, + 1 examiner-judged)
 
@@ -136,9 +138,9 @@ decision 4 (both languages), which the lint allows once; in decisions 1–3 a di
 | `rb-records` | investigations | 2 | early notes and PICC record (deterioration), film and ultrasound (imaging), aspirate routine analysis (fluid) read |
 | `rb-priorities` | management | 3 | decision 1 right first time |
 | `rb-line-first` | **safety · critical** | 4 | the PICC infusion stopped (or the line removed) and the film and echocardiogram ordered **in the deterioration phase** |
-| `rb-support-sepsis` | management | 2 | support escalated, monitoring, senior call, blood culture ordered, peripheral cannula, antibiotics |
+| `rb-support-sepsis` | management | 2 | support escalated, monitoring, senior call, blood culture ordered, peripheral cannula, antibiotics given **after** the culture was ordered (`whenIndicated`; one dose is allowed, so a dose before the culture loses the item) |
 | `rb-imaging-plan` | diagnosis | 3 | decision 2 right first time |
-| `rb-drain-remove` | management | 3 | ultrasound-guided tap and PICC removal |
+| `rb-drain-remove` | management | 3 | an ultrasound-guided tap once the imaging was read (`whenIndicated`) and no blind tap before it (`not` … `valid: false`), and PICC removal |
 | `rb-fluid` | diagnosis | 3 | decision 3 right first time |
 | `rb-aftercare` | management | 2 | decision 4 right first time |
 | `rb-no-line-harm` | **safety · critical** | 3 | none of: keeping the PICC infusions running, a hard flush, advancing the catheter (`scoredWhen`: decision 1 attempted or any of the three harms) |
@@ -149,22 +151,33 @@ the first steps (objective 3) are done, so the stop and the two orders always pr
 learner who never does them never sees the imaging. `rb-no-line-harm` counts only once a harm was possible, so doing
 nothing earns 0.
 
-### How wrong choices score (measured 2026-10-30, engine replay)
+### How wrong choices score (measured 2026-11-13, engine replay of the final files)
 
-| Path | Score | Critical items missed | Notes |
-|---|---:|---|---|
-| Reference `solution` | 29/29 (100 %) | — | no contraindicated action |
-| Do nothing (start, finish refused) | 0/26 | `rb-line-first` | `rb-no-line-harm` not scored: no harm became possible |
-| Wrong first answer at every decision, then right | 18/29 (62 %) | — | loses the four first-try items |
-| Anchored on RDS: decision 1 "worsening RDS" first, another surfactant dose, infusions kept running, then corrected | 23/29 (79 %) | `rb-no-line-harm` | keeping the infusions running is a safety event with harm text |
-| A hard flush and the infusions kept running before the stop | 26/29 (90 %) | `rb-no-line-harm` | two safety events |
-| Decision 2 "advance the line" first, the catheter advanced, then corrected | 23/29 (79 %) | `rb-no-line-harm` | safety event |
-| No blood culture, antibiotics, monitoring or senior call | 27/29 (93 %) | — | loses `rb-support-sepsis` |
-| The report's recorded steps only (support, taps, removal; correct decisions), no stop, echocardiogram or sepsis work-up | 13/29 when abandoned | `rb-line-first` | stuck in the deterioration phase: the imaging never comes back; the tap before imaging is a safety event |
-| Antibiotics before the blood culture; a tap before any imaging | 29/29 | — | safety events only (`contraindicatedWhen`): the rubric cannot express order |
+| Path | Score | Critical items missed | Safety outcome | Notes |
+|---|---:|---|---|---|
+| Reference `solution` | 29/29 (100 %) | — | passed | no contraindicated action |
+| Do nothing (start, finish refused) | 0/26 | `rb-line-first` | passed | `rb-no-line-harm` not scored: no harm became possible |
+| Wrong first answer at every decision, then right | 18/29 (62 %) | — | passed | loses the four first-try items |
+| Anchored on RDS: decision 1 "worsening RDS" first, another surfactant dose, infusions kept running, then corrected | 23/29 (79 %) | `rb-no-line-harm` | **failed** (`continue-picc-infusion`) | loses `rb-priorities` and `rb-no-line-harm` |
+| A hard flush and the infusions kept running before the stop | 26/29 (90 %) | `rb-no-line-harm` | **failed** (`continue-picc-infusion`) | the flush alone would be a non-critical safety event |
+| Decision 2 "advance the line" first, the catheter advanced, then corrected | 23/29 (79 %) | `rb-no-line-harm` | passed | `advance-picc` is `critical: false`: a debrief safety event |
+| No blood culture, antibiotics, monitoring or senior call | 27/29 (93 %) | — | passed | loses `rb-support-sepsis` |
+| Antibiotics before the blood culture (otherwise the reference path) | 27/29 (93 %) | — | passed | the one permitted dose was given while contraindicated, so `rb-support-sepsis` is lost; a debrief safety event |
+| A tap before any imaging, whether or not it is repeated under ultrasound after the imaging (otherwise the reference path) | 26/29 (90 %) | — | passed | loses `rb-drain-remove`; a debrief safety event |
+| The report's recorded steps at the bedside only: history and examination as in the reference up to decision 1, support escalated, a film ordered, a tap and the PICC removed — no stop, echocardiogram or sepsis work-up | 8/29 when abandoned | `rb-line-first` | passed | stuck in the deterioration phase: the echocardiogram was never requested, so the imaging never comes back; the blind tap is a safety event |
 
-Contraindicated actions are named in the debrief but, as everywhere in the library, do not lower the score by
-themselves; the three line harms that matter most are scored through `rb-no-line-harm`.
+Contraindicated actions are named in the debrief and cost marks through the items built on them: the three line
+harms through `rb-no-line-harm`, antibiotics before the culture through `rb-support-sepsis` and a blind tap through
+`rb-drain-remove` (both use `whenIndicated`). The one critical intervention also fails the safety outcome.
+
+**Safety outcome.** `continue-picc-infusion` is `critical: true`: keeping infusions running into a catheter that may be
+leaking into the chest or pericardium can turn an effusion into tamponade, the complication the BAPM framework puts
+first, so giving it fails the run's safety outcome whatever the score. `flush-picc` and `advance-picc` are high-risk but
+`critical: false`: a hard flush (more extravasated fluid, a ruptured catheter) and a re-advanced catheter (skin
+organisms carried in, a tip pushed towards the heart) are real errors the next clinician can usually still put right;
+both are scored through the critical avoided-harm item `rb-no-line-harm`. The two timing errors — antibiotics before the
+blood culture (low risk) and a tap before any imaging (moderate risk) — are safety events that cost
+`rb-support-sepsis` or `rb-drain-remove` and do not fail the safety outcome.
 
 ## Reference path (`solution`)
 
@@ -218,10 +231,11 @@ pending: none of these has been compared with the full article.
   postmenstrual age (33+3 weeks + 54 days; derived, not stated).
 * Follow-up "at 2 and 4 months": whether chronological or corrected age, or months after discharge, is not stated.
 * Teaching thresholds and doses (formulas, never patient values): chyle triglyceride > 1.1 mmol/L with oral fat
-  intake, ≥ 1000 cells/µL, > 80 % lymphocytes (Büttiker 1999); antibiotics within 1 hour of the decision, after the
+  intake, > 1000 cells/µL, > 80 % lymphocytes (Büttiker 1999); antibiotics within 1 hour of the decision, after the
   blood culture, narrow-spectrum combination such as flucloxacillin plus gentamicin for late-onset infection in a
-  neonatal unit, review at 48 hours (NICE NG195); short-term peripheral parenteral nutrition when a central line has
-  to come out (NICE NG154). No weight-based dose is printed for her: her current weight is unknown.
+  neonatal unit (NICE NG195; no stopping time is quoted — see *To verify*); short-term peripheral parenteral nutrition
+  when a central line has to come out (NICE NG154). No weight-based dose is printed for her: her current weight is
+  unknown.
 
 ## Facilitator notes
 
@@ -236,7 +250,8 @@ pending: none of these has been compared with the full article.
    * "Why stop the infusion rather than flush the line to see if it works?"
    * "The insertion film put the tip at the lower border of T3 and later films said 'unchanged'. Where should it be, and
      what does 'unchanged' not tell you?"
-   * "You tapped 20–30 mL. What is that per kilogram for a baby born at 1.1 kg — and why don't we know her real figure?"
+   * "The report's taps were 20–30 mL. What is that per kilogram for a baby born at 1.1 kg — and why don't we know her
+     real figure?"
    * "Clear, ether-positive, Rivalta-negative fluid in a baby who has had parenteral nutrition: chyle, or what was
      running into her?"
    * "Could a line in the right basilic vein tear the thoracic duct? Then how do both sides and the abdomen fill?"
@@ -249,12 +264,12 @@ pending: none of these has been compared with the full article.
 | Error | What the case does | Where it scores |
 |---|---|---|
 | Anchoring on prematurity/RDS (more support, more surfactant) | decision 1 distractor; extra surfactant answered with an explanation | `rb-priorities` |
-| Keeping the infusions running, flushing hard, pushing the line in | three contraindicated interventions with harm text; decision 2 distractor | `rb-no-line-harm` (critical), `rb-imaging-plan` |
+| Keeping the infusions running, flushing hard, pushing the line in | three contraindicated interventions with harm text; decision 2 distractor; keeping the infusions running fails the safety outcome | `rb-no-line-harm` (critical), `rb-imaging-plan` |
 | No echocardiogram — tamponade never excluded | the echocardiogram is in the decision 1 key and in the gate to the imaging phase; its result is honestly "not recorded" | `rb-line-first` (critical) |
 | Using the suspect line for antibiotics | decision 1 distractor; antibiotics need the new peripheral cannula | `rb-priorities`, `rb-support-sepsis` |
-| Antibiotics before the culture | contraindicated until the blood culture is ordered | debrief safety events |
-| A blind tap before any imaging | contraindicated until the film or ultrasound is read | debrief safety events |
-| Calling the fluid chyle on an ether test — or excluding chyle because it is clear | decision 3 distractors | `rb-fluid` |
+| Antibiotics before the culture | contraindicated until the blood culture is ordered; the single permitted dose is then spent | `rb-support-sepsis` (`whenIndicated`), a debrief safety event |
+| A blind tap before any imaging | contraindicated until the film or ultrasound is read | `rb-drain-remove` (`whenIndicated`, no blind tap), a debrief safety event |
+| Calling the fluid chyle on an ether test — or calling chyle unlikely because the fluid is clear | decision 3 distractors (the second one hedged, like the key) | `rb-fluid` |
 | Thoracic-duct "perforation" by a right-sided line | decision 3 distractor with the anatomy | `rb-fluid` |
 | Treating the label (MCT, octreotide for two weeks) | decisions 2–4 distractors (octreotide is not offered as an intervention: listed from the start, its name would point to the diagnosis) | `rb-aftercare` |
 | Re-siting through the same vein to the same length on an old film | decision 4 distractor | `rb-aftercare` |
@@ -290,8 +305,8 @@ separate; check its current version before pairing them.
   trolley), and IV antibiotics and furosemide need it first. Stopping the PICC infusion (`scope: nursing`), removing
   the PICC and the tap need only the clinician at the cot side; respiratory escalation needs the bed's ventilator.
 * **Capability check.** Everything the case needs exists in `general-hospital` (`caseCapabilityGaps` is empty).
-* **Demonstration (2026-10-30).** `embodied-autopilot.test.ts -t "cmcr-70094:"` passes (en and zh-CN) with the
-  clinical-mode score.
+* **Demonstration (2026-10-30; re-run 2026-11-13 after the review fixes).** `embodied-autopilot.test.ts -t
+  "cmcr-70094:"` passes (en and zh-CN) with the clinical-mode score.
 * **Limits.** No incubator, CPAP prongs or neonatal ventilator cue on the patient model; the film and the scans are
   ordered as bedside studies, so nobody is moved.
 
@@ -420,9 +435,16 @@ malpositioned CVAD; other access) from secondary sources citing INS; ref. 5 — 
 and the ESPGHAN advice guide based on it (tip outside the pericardial sac); ref. 6 — NICE pages (central venous
 catheter for neonatal PN; peripheral access when short-term or when a central line has to be removed); ref. 7 — NICE
 pages (blood culture before the first dose; antibiotics within 1 hour of the decision; flucloxacillin plus gentamicin
-as an example narrow-spectrum combination for late-onset infection in a neonatal unit; consider stopping at 48 hours);
-ref. 8 — abstract and DOI (the three criteria; fat-free feeding, then PN with enteric rest, then pleurodesis); ref. 9 —
-Cochrane records (no randomised trials; 19 case reports of 20 neonates; no practice recommendation).
+as an example narrow-spectrum combination for late-onset infection in a neonatal unit); ref. 8 — abstract and DOI (the
+three criteria; fat-free feeding, then PN with enteric rest, then pleurodesis); ref. 9 — Cochrane records (no
+randomised trials; 19 case reports of 20 neonates; no practice recommendation).
+
+Re-checked on 2026-11-13 in the independent review: the DOIs and metadata of refs 4, 5, 8 and 9 against their Crossref
+records (titles, journals, volumes, issues, pages and years as cited), and ref. 3's DOI against its doi.org handle
+record (registered in March 2021, resolving to the journal's site). Web search was unavailable to that review and the
+NICE, BAPM and journal sites could not be reached, so no guidance wording was re-read: the earlier draft's "consider
+stopping at 48 hours" (attributed to NICE NG195) was taken out because it could not be confirmed and may be the
+superseded 2012 figure, and the open points are listed below.
 
 ## To verify
 
@@ -465,8 +487,16 @@ Cochrane records (no randomised trials; 19 case reports of 20 neonates; no pract
 * ESPGHAN/ESPEN/ESPR/CSPEN 2018 venous access: the exact infant tip recommendation (distance from the heart) and its
   grading.
 * NICE NG195: the current version and the late-onset regimen wording for babies with central lines (a UK survey found
-  wide local variation, often vancomycin); NICE NG154: the peripheral-PN wording and any osmolarity limit.
-* Büttiker 1999: whether "fat-free" feeding there means MCT-based formula.
+  wide local variation, often vancomycin); whether, and after how many hours (36 or 48) and on which conditions, it
+  advises stopping antibiotics for suspected late-onset infection with a negative culture — the case quotes no
+  stopping time until this is checked. NICE NG154: the peripheral-PN wording and any osmolarity limit.
+* Büttiker 1999: whether "fat-free" feeding there means MCT-based formula; the exact operators of the three criteria
+  (the case writes "> 1000 cells/µL", as the criteria are usually quoted); that its sequence starts fat-free feeding
+  once chylothorax is diagnosed and keeps PN with enteric rest for a persisting leak (the case keys chyle diets at
+  confirmation and octreotide only for a leak that persists).
+* BAPM 2018 wording quoted in feedback and teaching point 1 (any deterioration with a CVC raises infection,
+  extravasation and tamponade; every central tip outside the cardiac silhouette): re-read on bapm.org, which the
+  2026-11-13 review could not reach.
 * Cochrane CD006388: whether any update after 2010 exists (some pages carry a 2022 issue label with the 2010 DOI).
 * The interpretive statements used in feedback: that a positive ether (乳糜) test indicates fat without proving
   chylomicrons; that a negative Rivalta test indicates low protein; that leaked parenteral nutrition gives a fluid
@@ -511,6 +541,26 @@ place until the echocardiogram, and the empirical antibiotic choice with a centr
 * **Staff, debrief, matcher.** Attending, nurse and radiologist briefs written for the case; a conclusion within 1,000
   characters, five key reasoning steps, five dated teaching points contrasting the report with current practice, seven
   unknowns, nine references; 39 hand-written test utterances with four negatives.
+* **Independent review (2026-11-13), still 1.1.0.** Every patient fact re-traced to 1.0.0; changes:
+  * *Facts.* The summary no longer says she had been in the unit since birth ("seventh day in the neonatal unit" →
+    "at 7 days old", which is what 1.0.0 records); the decision 3 key no longer says the fluid glucose "was never
+    compared" with the blood (1.0.0 records no fluid glucose, not that none was compared); the English conclusion
+    matches the Chinese ("7 days old"; the report *attributed* the effusions to the PICC); chylomicrons, named in 1.0.0's
+    unknowns, are back among the unknowns.
+  * *Safety outcome.* `continue-picc-infusion` `critical: true`; `flush-picc` and `advance-picc` `critical: false`
+    (strict validation warned while unset); the README's **Safety outcome** paragraph and 安全结果.
+  * *Scoring.* `rb-support-sepsis` counts antibiotics only when given after the blood culture was ordered, and
+    `rb-drain-remove` a tap only once the imaging was read and never a blind one (`whenIndicated`, `valid: false`):
+    both timing errors had scored full marks (the earlier note "the rubric cannot express order" was wrong). Score
+    table re-measured, with the safety outcome.
+  * *Cues.* Decision 3's key was the only option admitting uncertainty: the "clear fluid" distractor now hedges too,
+    with new feedback. Decision 4's key was the longest option by ~25 %: tightened, and the re-site distractor given the
+    same scope, so no key is the uniquely longest option in either language.
+  * *Clinical wording.* Chyle diets belong to a *confirmed* leak and octreotide to a *persistent* one (the text had
+    reserved MCT feeding for a "confirmed, persistent" leak, against the stepwise sequence the case itself cites);
+    the right-basilic anatomy is stated for the usual course of the line, not as "never"; key reasoning 5 no longer
+    says the treatment "worked"; Büttiker's cell count "> 1000/µL"; the unconfirmed NICE "48 hours" stopping point
+    removed from the antibiotic dose text.
 
 ### 1.0.0 — 2026-10-28
 
@@ -534,22 +584,26 @@ npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test
 示右侧较多，并有少量腹水；之后的胸片描述尖端位置同前。胸水淡黄透明，乙醚试验阳性，李凡他试验阴性，培养阴性；细胞、
 甘油三酯、蛋白和葡萄糖没有结果记录。胸腔穿刺（每次 20–30 mL）并拔除PICC后，积液和腹水消退，转回CPAP；住院 54 天，体重
 2.4 kg 出院；2 个月和 4 个月随访生长发育报告正常。报告诊断为PICC所致双侧乳糜胸并腹水；按已记录的检查，乳糜与外渗的输注
-液无法区分，右侧贵要静脉导管也不经过胸导管开口。本版事实沿用1.0.0版，尚未对照原文核对。
+液无法区分，右侧贵要静脉导管按正常走行也不经过胸导管开口。本版事实沿用1.0.0版，尚未对照原文核对。
 
 **学习目标。**
 1. 带中心静脉导管的新生儿恶化时先想导管：停输注不冲管，急查胸片和超声心动图（BAPM 2018）。
 2. 按“中心静脉、心脏之外”判断PICC尖端，椎体平面只是近似，记录肢体位置，脱出段不再送入（BAPM 2018；ESPGHAN 2018）。
 3. 导管相关积液：停用并拔管，超声引导穿刺（按mL/kg），胸水完整送检，短期外周营养（NICE NG154，2020）。
 4. 运用儿童乳糜标准（Büttiker 1999），说明外观、乙醚试验和李凡他试验为何区分不了乳糜和输注液。
-5. 乳糜胸专门治疗只用于确诊且持续的乳糜漏；奥曲肽无随机对照试验（Cochrane 2010）；评价报告的诊断和因果推断。
+5. 乳糜确诊后才开始乳糜胸专门治疗（先引流并无脂喂养，持续时禁食加肠外营养）；奥曲肽无随机对照试验（Cochrane 2010）；评价报告的诊断和因果推断。
 6. 如实向家属说明可能的导管并发症，上报不良事件，安排随访。
 
 **关键决策。** ① 床旁第一步：支持呼吸、呼叫上级、停止经PICC的全部输注（不冲管、不推送）、急查床旁胸片和超声心动图、取血
 培养后经外周静脉给抗生素（“呼吸窘迫综合征加重”是锚定陷阱）；② 影像后：按导管相关积液处理，停用并拔除PICC，查血小板和凝血
 后超声引导穿刺，胸水送细胞分类、甘油三酯、蛋白、葡萄糖（对照血糖）和培养；③ 胸水只说明可能含脂肪、蛋白不高，分不清乳糜
-和外渗的营养液，“导管穿破胸导管”在解剖上不成立；④ 恢复期：超声复查、短期外周营养、确需再置中心静脉时影像确认尖端，乳糜
-饮食和奥曲肽只用于确诊且持续的乳糜漏，上报并如实告知，安排生长发育随访。关键项：影像回报前停用PICC输注并申请胸片和超声心动
-图；没有继续经可疑PICC输注、用力冲管或推送导管。
+和外渗的营养液（“清亮所以乳糜可能性不大”这一同样留有余地的选项也是错的），“导管穿破胸导管”在解剖上不成立；④ 恢复期：超声
+复查、短期外周营养、需再置中心静脉时影像确认尖端，乳糜饮食只用于确诊的乳糜漏、奥曲肽只在持续时考虑，上报并如实告知，安排
+生长发育随访。关键项：影像回报前停用PICC输注并申请胸片和超声心动图；没有继续经可疑PICC输注、用力冲管或推送导管。抗生素须在
+取血培养之后、穿刺须在读过影像之后（且没有盲穿）才计分。
+
+**安全结果。** 经可疑PICC继续输注（`continue-picc-infusion`）是本病例的关键安全错误，一旦发生，本次安全结果即不通过；用力冲管和
+推送导管为高风险但非关键错误，在关键避害评分项 `rb-no-line-harm` 中失分。
 
 **复盘要点（PEARLS）。** 先谈感受；复述影像回来之前做了什么；分析：带管新生儿恶化时哪些导管并发症最致命、哪项检查最先做，
 为什么停输注而不是冲管，第 3 胸椎下缘和“位置同前”说明了什么，20–30 mL 合每千克多少，清亮、乙醚试验阳性的胸水是乳糜还是

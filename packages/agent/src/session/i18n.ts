@@ -13,6 +13,7 @@ import { PROCEDURE_EN, PROCEDURE_ZH } from "./i18n-procedure.js";
 import { CHECKLIST_EN, CHECKLIST_ZH } from "./i18n-checklist.js";
 import { COUNT_EN, COUNT_ZH } from "./i18n-count.js";
 import { STUDIES_EN, STUDIES_ZH } from "./i18n-studies.js";
+import { SAFETY_EN, SAFETY_ZH } from "./i18n-safety.js";
 
 /** Runtime languages shipped with ClinicalCraft. */
 export type RuntimeLang = "zh-CN" | "en";
@@ -218,6 +219,7 @@ const EN = {
   "reject.objectives-incomplete": "Objectives are still incomplete.",
   "reject.cannot-answer": "The patient cannot speak now, and nobody here can answer for them.",
   "reject.on-hold": "On hold: it needs a recorded reassessment and release by whoever placed the hold.",
+  "reject.dose-unclear": "Not given: the dose in the order is not clear — order it again with the dose as a number and its unit.",
   "reject.invalid": "Invalid action.",
 
   // approval summaries
@@ -448,7 +450,7 @@ const EN = {
   "attending.offline.nudge":
     "We're working on: {objective}. What have you found so far, and what is the most important thing you still need to know? If you're stuck, ask me for a hint (or type /hint) — hints count in the score.",
   "attending.offline.done": "You've completed every objective. Before you finish, let's debrief: how did that go for you? Then summarise the key events and your reasoning, and tell me what remains uncertain.",
-  "examiner.offline.narrative": "Teaching-script assessment (not a validated competency score): {percent}% of deterministic rubric points ({earned}/{possible}). Objectives {done}/{total}. Required history {hAsked}/{hRequired}, required examination {eDone}/{eRequired}. {missing}{judged}",
+  "examiner.offline.narrative": "Teaching-script assessment (not a validated competency score): {percent}% of deterministic rubric points ({earned}/{possible}). {safety}Objectives {done}/{total}. Required history {hAsked}/{hRequired}, required examination {eDone}/{eRequired}. {missing}{judged}",
   "examiner.offline.missing": "Missed required history: {list}. ",
   "examiner.offline.judged": "{count} communication item(s) need a language-model examiner and were not judged offline.",
   "examiner.unverifiedQuote": "(evidence quote not found in the transcript)",
@@ -493,6 +495,7 @@ const EN = {
   ...CHECKLIST_EN,
   ...COUNT_EN,
   ...STUDIES_EN,
+  ...SAFETY_EN,
 } as const;
 
 export type RuntimeKey = keyof typeof EN;
@@ -675,6 +678,7 @@ const ZH: Record<RuntimeKey, string> = {
   "reject.objectives-incomplete": "目标尚未全部完成。",
   "reject.cannot-answer": "患者现在无法说话，身边也没有人能代为回答。",
   "reject.on-hold": "已被暂缓：需由暂缓者记录重新评估并解除后才能进行。",
+  "reject.dose-unclear": "未给药：医嘱剂量不明确——请用数字加单位写明剂量，重新下医嘱。",
   "reject.invalid": "无效操作。",
 
   "sum.ask": "向患者提问：“{question}”",
@@ -896,7 +900,7 @@ const ZH: Record<RuntimeKey, string> = {
   "attending.offline.hint": "我们一起想一想。{hint}你下一步打算怎么做？为什么？",
   "attending.offline.nudge": "我们现在的目标是：{objective}。到目前为止你发现了什么？还最需要了解什么？如果卡住了，可以向我要提示（或输入 /hint）——提示会计入评分。",
   "attending.offline.done": "所有目标都已完成。结束之前我们先复盘一下：你感觉这次接诊怎么样？然后总结一下关键经过和你的推理，并说说还有哪些不确定的地方。",
-  "examiner.offline.narrative": "教学脚本评估（并非经过验证的能力评分）：确定性评分项得分 {percent}%（{earned}/{possible}）。目标完成 {done}/{total}。必问病史 {hAsked}/{hRequired}，必查体格检查 {eDone}/{eRequired}。{missing}{judged}",
+  "examiner.offline.narrative": "教学脚本评估（并非经过验证的能力评分）：确定性评分项得分 {percent}%（{earned}/{possible}）。{safety}目标完成 {done}/{total}。必问病史 {hAsked}/{hRequired}，必查体格检查 {eDone}/{eRequired}。{missing}{judged}",
   "examiner.offline.missing": "遗漏的必问病史：{list}。",
   "examiner.offline.judged": "{count} 项沟通类评分需要语言模型考官评判，离线模式下未评判。",
   "examiner.unverifiedQuote": "（在记录中找不到该证据引文）",
@@ -939,6 +943,7 @@ const ZH: Record<RuntimeKey, string> = {
   ...CHECKLIST_ZH,
   ...COUNT_ZH,
   ...STUDIES_ZH,
+  ...SAFETY_ZH,
 };
 
 const TABLES: Record<RuntimeLang, Record<RuntimeKey, string>> = { en: EN, "zh-CN": ZH };

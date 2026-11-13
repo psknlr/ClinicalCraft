@@ -6838,7 +6838,6 @@
         "zh-CN": "泼尼松龙 40 mg 口服（2 mg/kg，最大40 mg），1小时内给予；之后每日1次，共3天（3–5天均可）。可用5 mg可溶片溶于水或口服液。",
         "en": "Prednisolone 40 mg orally (2 mg/kg, maximum 40 mg) within the first hour; then once daily to complete 3 days (3–5 days acceptable). Soluble 5 mg tablets dispersed in water, or oral solution."
       },
-      "doseSpec": { "amount": 40, "unit": "mg", "route": "PO" },
       "effects": [
         {
           "vital": "spo2",
@@ -6997,10 +6996,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "硫酸镁 40 mg/kg = 800 mg（最大 2 g），稀释后静脉输注≥20分钟，同时监测血压。",
-        "en": "Magnesium sulfate 40 mg/kg = 800 mg (maximum 2 g) IV, diluted, infused over at least 20 min with blood-pressure monitoring."
+        "zh-CN": "硫酸镁 40 mg/kg = 800 mg（最大 2 g；中国指南 25–40 mg/kg，GINA 40–50 mg/kg），稀释后静脉输注≥20分钟，同时监测血压。",
+        "en": "Magnesium sulfate 40 mg/kg = 800 mg (maximum 2 g; Chinese guideline 25–40 mg/kg, GINA 40–50 mg/kg) IV, diluted, infused over at least 20 min with blood-pressure monitoring."
       },
-      "doseSpec": { "amount": 40, "unit": "mg/kg", "route": "IV" },
+      "doseSpec": { "amount": 25, "upTo": 50, "unit": "mg/kg", "route": "IV" },
       "effects": [
         {
           "vital": "spo2",
@@ -7102,7 +7101,6 @@
         "zh-CN": "氨茶碱负荷量 5 mg/kg = 100 mg，静脉输注≥20分钟（此前未用茶碱类；心电监护下），随后以 1 mg/(kg·h) 持续输注并监测血药浓度——仅考虑用于对最大剂量吸入支气管舒张剂、全身激素和静脉硫酸镁均无反应的重度或危及生命发作，并在PICU/HDU条件下使用；GINA 不推荐在急性发作中使用。",
         "en": "Aminophylline loading dose 5 mg/kg = 100 mg IV over ≥ 20 min (no prior theophylline; with ECG monitoring), then 1 mg/kg/h by infusion with level monitoring — only considered for severe or life-threatening asthma unresponsive to maximal inhaled bronchodilators, systemic steroids and IV magnesium, in a PICU/HDU setting; GINA advises against it in exacerbations."
       },
-      "doseSpec": { "amount": 5, "unit": "mg/kg", "route": "IV" },
       "effects": [
         {
           "vital": "hr",

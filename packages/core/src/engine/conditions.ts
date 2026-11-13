@@ -10,7 +10,7 @@
 import { datumStatus } from "./datum.js";
 import type { CaseDefinition, Result } from "../schema/case.js";
 import type { Condition, ProcedurePredicate } from "../schema/common.js";
-import type { HoldRecord, OrderRecord, SessionState } from "../schema/session.js";
+import type { HoldRecord, InterventionRecord, OrderRecord, SessionState } from "../schema/session.js";
 import { vitalValue } from "./signal.js";
 import { historyCredited } from "./twins.js";
 import { evaluateProcedure } from "./procedure/predicates.js";
@@ -84,11 +84,27 @@ function resultReady(c: CaseDefinition, s: SessionState, investigationId: string
  * given while contraindicated was given) — or null while it has never been given.
  */
 export function lastGiven(s: SessionState, interventionId: string): number | null {
+  return lastGivenRecord(s, interventionId)?.at ?? null;
+}
+
+/** The latest record of an intervention that is not an invalid checklist attempt (`lastGiven`), or null. */
+export function lastGivenRecord(s: SessionState, interventionId: string): InterventionRecord | null {
   for (let i = s.interventions.length - 1; i >= 0; i--) {
     const r = s.interventions[i]!;
-    if (r.interventionId === interventionId && !r.invalid) return r.at;
+    if (r.interventionId === interventionId && !r.invalid) return r;
   }
   return null;
+}
+
+/**
+ * Was a finding examined after the intervention was last given? By committed action sequence (records saved before
+ * `seq` compare minutes); false while either never happened.
+ */
+function examinedAfterLast(s: SessionState, findingId: string, interventionId: string): boolean {
+  const exam = s.lastExamined?.[findingId];
+  const last = lastGivenRecord(s, interventionId);
+  if (!exam || !last) return false;
+  return last.seq != null ? exam.seq > last.seq : exam.at > last.at;
 }
 
 /** The holds standing on an intervention (placed, not released), oldest first. */
@@ -103,7 +119,8 @@ export function activeHolds(s: SessionState, interventionId: string): HoldRecord
  * without `phase` match any phase. `asked` also holds when an item that
  * supersedes it (`history[].supersedes`, transitively) was asked. `decidedFirstTry` looks only at the first
  * recorded attempt (rejected answers are not attempts). `elapsedSince` measures from the last time the
- * intervention was given (`lastGiven`) and is false while it never was.
+ * intervention was given (`lastGiven`) and is false while it never was; `examined` with `afterLast` holds when the
+ * finding's latest examination came after it.
  */
 export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): boolean {
   if ("all" in cond) return cond.all.every((x) => evaluate(c, s, x));
@@ -111,7 +128,7 @@ export function evaluate(c: CaseDefinition, s: SessionState, cond: Condition): b
   if ("not" in cond) return !evaluate(c, s, cond.not);
   if ("always" in cond) return cond.always;
   if ("asked" in cond) return historyCredited(c, s, cond.asked);
-  if ("examined" in cond) return s.examined.includes(cond.examined);
+  if ("examined" in cond) return s.examined.includes(cond.examined) && (cond.afterLast == null || examinedAfterLast(s, cond.examined, cond.afterLast));
   if ("ordered" in cond) return s.orders.some((o) => matchesOrder(o, cond.ordered, cond.phase));
   if ("read" in cond) return wasRead(s, cond.read, cond.phase);
   if ("resultReady" in cond) return resultReady(c, s, cond.resultReady, cond.phase);
@@ -195,7 +212,10 @@ export function conditionRefs(cond: Condition, base: (string | number)[] = []): 
     else if ("any" in node) node.any.forEach((x, i) => visit(x, [...path, "any", i]));
     else if ("not" in node) visit(node.not, [...path, "not"]);
     else if ("asked" in node) out.push({ kind: "history", id: node.asked, path: [...path, "asked"] });
-    else if ("examined" in node) out.push({ kind: "exam", id: node.examined, path: [...path, "examined"] });
+    else if ("examined" in node) {
+      out.push({ kind: "exam", id: node.examined, path: [...path, "examined"] });
+      if (node.afterLast != null) out.push({ kind: "intervention", id: node.afterLast, path: [...path, "afterLast"] });
+    }
     else if ("ordered" in node) out.push({ kind: "investigation", id: node.ordered, phase: node.phase, requiresRecord: false, path: [...path, "ordered"] });
     else if ("read" in node) out.push({ kind: "investigation", id: node.read, phase: node.phase, requiresRecord: true, path: [...path, "read"] });
     else if ("resultReady" in node)

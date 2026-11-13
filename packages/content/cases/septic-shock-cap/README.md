@@ -206,8 +206,12 @@ airway (GCS ≥ 9) or without a vasopressor running risks profound hypotension o
 assessment's safety outcome (`safety.passed: false`) whatever the score; every debrief and export shows it beside the
 score, and her blood pressure still falls. Paths a–l above make no critical error (paths d, f and g cost
 `r-safety`, now a critical rubric item, but pass safety). Free-text orders are checked against the preset doses
-(`doseSpec`): ceftriaxone 2 g, azithromycin 500 mg, moxifloxacin 400 mg, piperacillin–tazobactam 4.5 g,
-hydrocortisone 50 mg and paracetamol 1 g, all IV.
+(`doseSpec`): ceftriaxone 1–2 g (the range of the CAP guidelines the dose text cites, around its 2 g: "ceftriaxone
+1 g" is given), azithromycin 500 mg, piperacillin–tazobactam 4.5 g and paracetamol 1 g, all IV; "ceftriaxone 20 g"
+is not given — a tenfold dose error that fails the safety outcome. Hydrocortisone and moxifloxacin have none: their items also
+answer for "steroids" and "a fluoroquinolone", and the dose check compares amounts, not drugs — "steroids:
+dexamethasone 4 mg" would read as a critical dose error against 50 mg of hydrocortisone, levofloxacin 750 mg as a
+dose error against 400 mg of moxifloxacin.
 
 ## Reference path (`solution`)
 
@@ -453,9 +457,11 @@ Ref. 13 is the CAPE COD trial; ref. 14 derives CURB-65.
 - **Critical safety failure (audit P0-3).** `intubation` is `critical: true` (RSI without an indication or without a
   vasopressor running in septic shock): it fails the safety outcome shown beside the score, and `r-safety` is a
   critical rubric item beside `r-abx-1h`. Scores are unchanged (path m: 18/21, safety failed).
-- **Preset doses (audit P0-2):** `doseSpec` on ceftriaxone 2 g, azithromycin 500 mg, moxifloxacin 400 mg,
-  piperacillin–tazobactam 4.5 g, hydrocortisone 50 mg and paracetamol 1 g IV. Norepinephrine (a bag and a titrated
-  rate) and the weight-based vancomycin load have none.
+- **Preset doses (audit P0-2):** `doseSpec` on ceftriaxone 1–2 g (the CAP guidelines' daily dose, which its text now
+  names around the 2 g), azithromycin 500 mg, piperacillin–tazobactam 4.5 g and paracetamol 1 g IV. Norepinephrine (a bag and a titrated rate), the weight-based vancomycin load, dopamine (a
+  deliberate error) and the hydrocortisone and moxifloxacin items — which also answer for "steroids" and "a
+  fluoroquinolone", whose other members' doses the amount-only check would read as dose errors (dexamethasone 4 mg
+  as a critical one) — have none.
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

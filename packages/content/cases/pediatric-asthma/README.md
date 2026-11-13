@@ -240,9 +240,14 @@ every debrief and export shows it beside the score; SpO₂, RR, EtCO₂ and GCS 
 (a sedative after the prednisolone) the score stays 18/20 (90 %), with the sedation/discharge item named first and
 the safety outcome failed. Aminophylline without life-threatening features is `critical: false` (not indicated,
 recoverable). Free-text orders are checked against the preset doses (`doseSpec`): ipratropium 250 micrograms and
-budesonide 1 mg nebulised, salbutamol 2.5–5 mg nebulised, prednisolone 40 mg PO, and magnesium sulfate 40 mg/kg
-and aminophylline 5 mg/kg IV (through his 20 kg — an adult 2 g of magnesium is not given). The spacer's salbutamol
-(dosed in puffs) and hydrocortisone (the text gives two regimens) have none.
+budesonide 1 mg nebulised, salbutamol 2.5–5 mg nebulised and magnesium sulfate 25–50 mg/kg IV — the doses the
+Chinese guideline (25–40 mg/kg) and GINA (40–50 mg/kg) allow, through his 20 kg: 800 mg and 1 g are given; an adult
+2 g of magnesium or 500 micrograms of ipratropium draws the nurse's read-back and is not given (a dose error to
+review). The spacer's salbutamol (dosed in puffs), hydrocortisone (the text gives two regimens), prednisolone and
+aminophylline have none. Prednisolone: GINA's 1–2 mg/kg allows 20–40 mg here, and the item also answers for
+"steroids", so dexamethasone's dose would read as a dose error against any prednisolone preset. Aminophylline: the
+guideline loading doses differ (5 mg/kg here and in BNFc, 4–6 mg/kg in the Chinese paediatric guideline, 6 mg/kg where
+it is dosed as theophylline) and its text gives a bolus then an infusion, so no single preset says it.
 
 ## Reference path (`solution`)
 
@@ -524,8 +529,11 @@ because none could be confirmed; guideline documents 1–4 have none.
   beside the score (the score is unchanged). The sedation/discharge rubric item was already critical.
   `aminophylline-iv` is `critical: false` (`cases validate`).
 * **Preset doses (audit P0-2):** `doseSpec` on ipratropium 250 micrograms, budesonide 1 mg and salbutamol 2.5–5 mg
-  (nebulised), prednisolone 40 mg PO, magnesium sulfate 40 mg/kg and aminophylline 5 mg/kg IV — the doses their
-  texts state; a weight-based order is compared through his 20 kg.
+  (nebulised) and magnesium sulfate 25–50 mg/kg IV — the range the cited guidelines allow (Chinese guideline
+  25–40 mg/kg, GINA 40–50 mg/kg; the dose text now names both, around its 40 mg/kg); a weight-based order is compared
+  through his 20 kg. Prednisolone has none (GINA's 1–2 mg/kg, and the "steroids" it also answers for, dexamethasone
+  included, whose doses would read as dose errors), nor has aminophylline (the guidelines' loading doses differ,
+  4–6 mg/kg, and its text gives a bolus then an infusion).
 
 ### 1.1.2 — 2026-10-30 (assessment validity)
 

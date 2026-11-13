@@ -1689,8 +1689,8 @@
     {
       "id": "adrenaline-im",
       "name": {
-        "zh-CN": "肾上腺素肌内注射（1 mg/mL，0.3 mL = 300 µg）",
-        "en": "IM adrenaline (1 mg/mL, 0.3 mL = 300 micrograms)"
+        "zh-CN": "肾上腺素肌内注射 300 µg（1 mg/mL 溶液 0.3 mL）",
+        "en": "IM adrenaline 300 micrograms (0.3 mL of 1 mg/mL)"
       },
       "kind": "medication",
       "aliases": {
@@ -1732,9 +1732,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "肾上腺素1 mg/mL（1:1000）0.3 mL（300 µg），大腿前外侧肌内注射（6–12岁、体重不详时按年龄给药）；5分钟后无改善可重复。",
-        "en": "Adrenaline 1 mg/mL (1 in 1000) 0.3 mL (300 micrograms) IM into the anterolateral thigh (age 6–12 with the weight unknown: dose by age); repeat after 5 minutes if no better."
+        "zh-CN": "肾上腺素300 µg肌内注射（1 mg/mL [1:1000] 溶液0.3 mL），大腿前外侧（6–12岁、体重不详时按年龄给药）；5分钟后无改善可重复。",
+        "en": "Adrenaline 300 micrograms IM (0.3 mL of 1 mg/mL [1 in 1000]) into the anterolateral thigh (age 6–12 with the weight unknown: dose by age); repeat after 5 minutes if no better."
       },
+      "doseSpec": { "amount": 300, "unit": "microgram", "route": "IM" },
       "requires": [
         "medications"
       ],

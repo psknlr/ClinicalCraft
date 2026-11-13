@@ -188,8 +188,21 @@ it beside the score. Bicarbonate at pH 7.08 is `critical: false`: harmful (it
 worsens the hypokalaemia — `ev-bicarbonate`) and it costs `r-safety-avoid`, but
 recoverable. In the audit's replay (KCl push after the IV lines) the score stays
 14/16 (88 %), with `r-safety-avoid` named first and the safety outcome failed.
-Free-text orders are checked against the preset doses of ondansetron (4 mg IV) and
-enoxaparin (40 mg SC).
+Free-text orders are checked against the preset doses (`doseSpec`), through her
+55 kg: the insulin infusion 0.1 units/kg/h IV (5.5 units/h), the potassium
+replacement 20 mmol/h IV, potassium phosphate 20 mmol IV, enoxaparin 40 mg SC
+and the insulin bolus 0.1 units/kg IV. An order may state the syringe or the bag
+with its rate — "insulin 50 units in 50 mL at 5.5 mL/h", "胰岛素 50U+NS 50ml
+5.5ml/h 泵入", "0.9% NaCl 1000 mL with KCl 40 mmol at 500 mL/h" — and is read as
+the rate it delivers. "IV insulin 1 unit/kg/h" or "55 units/h" (ten times the
+rate) is not given: a critical dose error that fails the safety outcome; so is an
+insulin bolus at twice its preset or more (high-risk). An order that cannot be
+checked — "依诺肝素 4000 IU" against 40 mg, the syringe alone without its rate —
+is asked about: nothing given, no dose error. The KCl push and bicarbonate have
+no preset: the push is never given safely (it is given whatever dose is written,
+so that the learner meets the consequence) and bicarbonate's text is a bag; the
+ondansetron item also answers for "an antiemetic", whose other members' doses the
+amount-only check would read as dose errors.
 Decisions are scored on the first attempt (`decidedFirstTry` for `dx-severity`
 in `r-dx`); every option has feedback.
 
@@ -537,10 +550,16 @@ them:
   safety outcome shown beside the score; `r-safety-avoid` is a critical rubric item
   beside `r-safety-k-first`. The percentage is unchanged (14/16 for the push).
   `sodium-bicarbonate` is `critical: false` (harmful, recoverable).
-- **Preset doses (audit P0-2):** `doseSpec` on ondansetron 4 mg IV and enoxaparin
-  40 mg SC. The insulin infusion and the potassium bag have none: their orders are
-  written as a syringe or a bag and a rate, which an order's first dose does not
-  capture.
+- **Preset doses (audit P0-2).** `doseSpec` on the insulin infusion (0.1 units/kg/h
+  IV), the potassium replacement (20 mmol/h IV), potassium phosphate (20 mmol IV),
+  the enoxaparin prophylaxis (40 mg SC) and the insulin bolus (0.1 units/kg IV) —
+  the high-alert medicines whose texts state one dose. An order written as a syringe
+  or a bag with its rate is read as the rate it delivers ("insulin 50 units in 50 mL
+  at 5.5 mL/h" is 5.5 units/h); a tenfold insulin rate ("1 unit/kg/h", "55 units/h")
+  is not given and fails the safety outcome. The KCl push (never given safely, so it
+  is given whatever dose is written) and bicarbonate have none, nor has ondansetron,
+  whose item also answers for "an antiemetic" ("antiemetic: metoclopramide 10 mg"
+  would read as a dose error).
 - README: the case card showed version 1.1.2; it now shows 1.1.4. The fidelity
   note on the potassium recheck no longer says the engine lacks a "minutes since"
   condition.

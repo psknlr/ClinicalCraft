@@ -3883,10 +3883,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "阿司匹林 300 mg 嚼服（非肠溶片）",
-        "en": "Aspirin 300 mg chewed (non-enteric-coated)"
+        "zh-CN": "阿司匹林 300 mg 嚼服（非肠溶片；指南负荷剂量 150–325 mg：ESC 与中国指南 150–300 mg，ACC/AHA 162–325 mg）",
+        "en": "Aspirin 300 mg chewed (non-enteric-coated; guideline loading doses 150–325 mg: ESC and Chinese 150–300 mg, ACC/AHA 162–325 mg)"
       },
-      "doseSpec": { "amount": 300, "unit": "mg", "route": "PO" },
+      "doseSpec": { "amount": 150, "upTo": 325, "unit": "mg", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -4162,7 +4162,6 @@
         "zh-CN": "阿托伐他汀 40–80 mg 口服",
         "en": "Atorvastatin 40–80 mg PO"
       },
-      "doseSpec": { "amount": 40, "upTo": 80, "unit": "mg", "route": "PO" },
       "requires": [
         "medications"
       ],
@@ -4312,6 +4311,7 @@
         "zh-CN": "吗啡 2–4 mg 静脉缓慢推注，必要时5–15分钟后重复（小剂量滴定）",
         "en": "Morphine 2–4 mg slow IV, repeat after 5–15 min if needed (small titrated doses)"
       },
+      "doseSpec": { "amount": 2, "upTo": 4, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -4394,7 +4394,6 @@
         "zh-CN": "昂丹司琼 4 mg 静脉注射",
         "en": "Ondansetron 4 mg IV"
       },
-      "doseSpec": { "amount": 4, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"

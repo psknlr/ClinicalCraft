@@ -99,6 +99,9 @@
           "properties": {
             "examined": {
               "$ref": "#/definitions/Id"
+            },
+            "afterLast": {
+              "$ref": "#/definitions/Id"
             }
           },
           "required": [

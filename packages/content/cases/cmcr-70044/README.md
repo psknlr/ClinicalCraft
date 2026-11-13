@@ -328,10 +328,17 @@ notices (no DOI exists).
 * **New critical rubric item `rb-no-rechallenge`** (safety, weight 2; scored once the infusion is stopped or the
   drug restarted): restarting the drug that caused the shock was not scored by any item. Deterministic total 26 → 28;
   the reference path scores 28/28 and a restart 26/28 with the safety outcome failed.
-* No `doseSpec` (audit P0-2): the case writes its adrenaline orders as strength and volume ("1 mg/mL 0.3 mL
-  (300 micrograms)"), and an order's first dose would be read as the volume, which cannot be compared with a dose in
-  micrograms; the strengths a learner may confuse are separate interventions (`adrenaline-im-dilute`,
-  `adrenaline-iv-1mg`).
+* **Preset dose (audit P0-2).** IM adrenaline's text now states the dose first, then the volume ("Adrenaline 300
+  micrograms IM (0.3 mL of 1 mg/mL [1 in 1000])"; zh-CN likewise), and the item has a `doseSpec` of 300 micrograms
+  IM — the RCUK 2021 dose for age 6–12, his weight not being recorded. "Adrenaline 0.3 mg IM" is that dose; "3 mg IM"
+  (ten times) or "30 micrograms IM" (a tenth — the dilute-strength error by its dose) is not given and is a critical
+  dose error that fails the safety outcome; the adult 0.5 mg draws the nurse's read-back and is kept as a dose error
+  to review. A volume with its strength ("0.3 mL of 1 mg/mL", "1:1000 0.3 mL") is read as the 300 micrograms it holds
+  and given; a volume without it ("0.3 mL") is asked about — not given, no dose error. The item's name now states the
+  dose first too ("IM adrenaline 300 micrograms (0.3 mL of 1 mg/mL)"; it read "IM adrenaline (1 mg/mL, 0.3 mL = 300
+  micrograms)", which, typed as an order, was read as 0.3 mL). The strengths a learner may confuse stay separate
+  interventions (`adrenaline-im-dilute`, `adrenaline-iv-1mg`), given whatever dose is written so that the error
+  plays out.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

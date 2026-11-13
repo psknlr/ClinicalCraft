@@ -22,9 +22,9 @@ Hospitals and calendar dates are removed. What 1.0.0 does not record stays unkno
 | difficulty | 4 / 5 |
 | estimated time | about 40 min (static clock: five record phases, no simulated time) |
 | languages | `zh-CN` (source language), `en` |
-| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a cardiologist review it before teaching use |
+| review status | `editorial` — AI-assisted teaching design with an editorial review against the cited guidance (2026-10-30; independent AI-assisted review and fixes 2026-11-13); the patient facts are those extracted for 1.0.0 and **not yet checked against the full source article**; **not yet reviewed by a licensed clinician** — have a cardiologist review it before teaching use |
 | phases | `ed` 急诊抢救区 / Emergency department resus bay → `cath-lab` 心导管室：急诊冠状动脉造影 / Catheter laboratory → `post-aspiration` 抽吸之后 / After aspiration → `day3` 术后第 3 天 / Day 3 after the procedure (ward) → `followup` 记录的病程与结局 / Recorded course and outcome — all one-way, none learner-switchable |
-| content | 27 history items (10 recorded facts, 2 labelled teaching devices, 15 unknown; 10 required) · 3 exam findings (all that 1.0.0 records) · 15 investigations (1 record review; 5 with no recorded result) · 19 interventions (7 harmful in the acute or any phase, plus a transfer that is unsafe before activation) · 6 objectives · 5 decisions (23 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 3 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 39 test utterances |
+| content | 27 history items (10 recorded facts, 2 labelled teaching devices, 15 unknown; 10 required) · 3 exam findings (all that 1.0.0 records) · 15 investigations (1 record review; 5 with no recorded result) · 19 interventions (7 harmful in the acute or any phase — 3 of them `critical` — plus a transfer that is unsafe before activation) · 6 objectives · 5 decisions (23 options) · 12 rubric items (11 deterministic, weight 26; 1 examiner-judged; 3 critical) · 4 staff · 6 learning outcomes · 6 teaching points · 39 test utterances |
 
 ## Learning outcomes
 
@@ -40,7 +40,7 @@ After the case the learner can:
    when selective aspiration, and intravascular imaging before any stent decision, are reasonable.
 4. Diagnose coronary embolism with the Shibata criteria (2015) from a smooth post-aspiration vessel, intravascular
    ultrasound without plaque rupture, untreated atrial fibrillation and a left atrial echo considered thrombus; state
-   the limits of IVUS and transthoracic echocardiography; and decide against a stent.
+   the limits of IVUS and of echocardiography (transthoracic versus transoesophageal); and decide against a stent.
 5. Prescribe anticoagulation after an AF-related embolic infarct: score CHA₂DS₂-VA, choose a DOAC over warfarin unless
    there is a mechanical valve or moderate–severe mitral stenosis, dose it to the label criteria for age, weight and
    renal function, and limit any antiplatelet to one agent for a defined period (ESC 2024 AF).
@@ -66,9 +66,10 @@ her taking no warfarin) and **creatinine 57.3 μmol/L**.
 After **thrombus aspiration** the vessel wall was **smooth with no significant stenosis**; **IVUS** showed an **intact
 intima without plaque rupture**; **no stent was placed**.
 
-**Day 3 after the procedure.** Transthoracic echo: **enlarged left atrium** with an **echo on the left atrial free
-wall considered to be thrombus**, **reduced inferior and posterior wall motion**, **LVEF 55 %**. **Troponin I
-94.12 μg/L** (reference 0–0.04) and **BNP 3981.2 ng/L** (sampling times not recorded; staged here).
+**Day 3 after the procedure.** Echocardiogram (whether transthoracic or transoesophageal is not recorded): **enlarged
+left atrium** with an **echo on the left atrial free wall considered to be thrombus**, **reduced inferior and posterior
+wall motion**, **LVEF 55 %**. **Troponin I 94.12 μg/L** (reference 0–0.04) and **BNP 3981.2 ng/L** (sampling times not
+recorded; staged here).
 
 **Recorded course.** **Warfarin** with **heparin during the transition**, plus **aspirin**; heparin stopped on
 **day 6** once the **INR reached 2.3**. **Heart-failure symptoms during the first 10 days**, then improvement, with the
@@ -103,11 +104,13 @@ antiplatelet therapy. The report's warfarin-plus-aspirin regimen is the historic
     "ward"}` — a staging convention: 1.0.0 does not record where she was. Her status (phase twin `status-day3`), the
     **echo**, the **troponin I** and **BNP** values, the TEE request (no result recorded), her second worry, decision 5
     and the antithrombotic act.
-  - `followup` — opens once objectives 1–5, decision 5 and **an antithrombotic act** (a DOAC, warfarin with heparin, or
-    one of the two harmful regimens) are done: the **reported course and outcome** record.
+  - `followup` — opens once objectives 1–5, decision 5 and **an antithrombotic act** are done — a DOAC or warfarin with
+    heparin prescribed after the procedure (`whenIndicated`), or one of the two harmful regimens: the **reported course
+    and outcome** record.
 - No prompt, hint, order response or harm text states a later phase's result before its record opens: the stent and
   DAPT harm texts name no post-aspiration finding; the troponin and BNP placeholders give no value; a wrong option's
-  feedback may name what the recorded team did only after the learner has committed (decision 5).
+  feedback may name what the recorded team did only after the learner has committed (decision 5); an echo ordered in the
+  ED answers only that no result is recorded at this point.
 
 ## Decisions and assessment
 
@@ -118,12 +121,14 @@ antiplatelet therapy. The report's warfarin-plus-aspirin regimen is the historic
 | 1 | `obj-ed-history` Hear the story: the pain, her illnesses and her medicines | presentation, onset, pain now, sweating, past history, medicines, blood thinners asked |
 | 2 | `obj-ed-assessment` Examine her, record the ECGs and send the bloods | vital signs, appearance, lungs examined; 12-lead ECG, right-sided leads, INR and creatinine read (phase `ed`); `reperfusion` right |
 | 3 | `obj-ed-plan` Decide her care in the ED and act on it | `rv-haemodynamics` right; catheter laboratory activated; transfer made |
-| 4 | `obj-cath-lab` Decide how to deal with the artery in the catheter laboratory | angiogram read (phase `cath-lab`); `thrombus-strategy` right; aspiration done |
-| 5 | `obj-after-aspiration` See the artery beneath the thrombus and decide on a stent | repeat angiogram and IVUS read (phase `post-aspiration`); `mechanism` right |
+| 4 | `obj-cath-lab` Read the new result and decide the next step | angiogram read (phase `cath-lab`); `thrombus-strategy` right; aspiration done |
+| 5 | `obj-after-aspiration` Look again: explain what you see and decide what it needs | repeat angiogram and IVUS read (phase `post-aspiration`); `mechanism` right |
 | 6 | `obj-day3` Day 3: set the long-term plan and review the outcome | status asked; echo, troponin and BNP read (phase `day3`); `anticoagulation` right; a DOAC or warfarin started; outcome record read |
 
-Titles name no finding, result or treatment; hints are Socratic questions with no answer in them ("Which of the usual
-chest-pain drugs could harm her now?"; "If the wall itself is sound, where else could the thrombus have come from?").
+Titles name no finding, result or treatment — the journal lists later objectives by title from the start, so titles 4–6
+name neither the catheter laboratory, the thrombus nor a stent; hints are Socratic questions with no answer in them
+("Which of the usual chest-pain drugs could harm her now?"; "Before you do anything irreversible to this artery, what
+else would you want to know?").
 
 ### Decisions
 
@@ -146,7 +151,8 @@ chest-pain drugs could harm her now?"; "If the wall itself is sound, where else 
 - **5 `anticoagulation`** (single; needs decision 4, the day-3 echo, the admission creatinine, her history and
   medicines). Key: `doac-label-dose` — a DOAC now at its label dose after weighing her and checking renal function;
   warfarin only for a mechanical valve or moderate–severe mitral stenosis; no DAPT; at most one time-limited
-  antiplatelet. Distractors: `dapt-not-oac`, `aspirin-until-tee`, `warfarin-plus-aspirin` (close to the recorded
+  antiplatelet. The prompt and the key's feedback say that her weight and her valves are not recorded: weigh her, and
+  confirm on the echo that there is no moderate–severe mitral stenosis before a DOAC. Distractors: `dapt-not-oac`, `aspirin-until-tee`, `warfarin-plus-aspirin` (close to the recorded
   regimen), `triple-12-months`.
 
 Every option has its own feedback naming ESC 2023 ACS, the Fourth Universal Definition of MI (2018), the Chinese STEMI
@@ -165,57 +171,73 @@ characters; en 240 of 132–240), the one decision the lint allows; elsewhere a 
 | `rb-bedside-exam` | examination | 1 | vital signs, appearance, lungs examined |
 | `rb-ecg-right-leads` | investigations | 2 | 12-lead ECG and right-sided leads read in phase `ed` |
 | `rb-reperfusion` | management | 4 | **critical** — `reperfusion` right first time, catheter laboratory activated, no tenecteplase |
-| `rb-no-preload-drop` | safety | 3 | **critical** — no GTN and no IV metoprolol; scored once decision 2 is attempted or either drug is given |
+| `rb-no-preload-drop` | safety | 3 | **critical** — no GTN, no IV metoprolol, and no IV furosemide while it is contraindicated (`valid: false`: ED, laboratory, after aspiration); scored once decision 2 is attempted or any of them is given |
 | `rb-ed-support` | management | 2 | `rv-haemodynamics` right first time; monitoring, antihypertensives held, fluid, aspirin |
 | `rb-cath-strategy` | management | 2 | `thrombus-strategy` right first time; aspiration; IVUS ordered after aspiration; UFH |
 | `rb-mechanism` | diagnosis | 3 | `mechanism` right first time |
 | `rb-no-stent` | safety | 2 | no stent; scored once decision 3 is attempted or a stent is placed |
-| `rb-anticoagulation` | management | 4 | **critical** — `anticoagulation` right first time, a DOAC or warfarin started, and neither DAPT-instead-of-OAC nor triple therapy |
+| `rb-anticoagulation` | management | 4 | **critical** — `anticoagulation` right first time, a DOAC or warfarin started after the procedure (`whenIndicated`: after aspiration or on day 3), and neither DAPT-instead-of-OAC nor triple therapy |
 | `rb-communication` | communication | (judged) | Calgary–Cambridge: the blocked artery and the urgent angiogram in the ED; on day 3 the clot from the heart, why long-term anticoagulation, how it differs from her tablets and aspirin, bleeding warning signs, missed doses, why weight and kidney function set the dose; teach-back; no blame, no unrecorded promises |
 
-### How wrong choices score (measured with the reducer on 2026-10-30)
+### How wrong choices score (re-measured with the reducer on 2026-11-13, after the review fixes)
 
-| path | deterministic score | critical items missed |
-|---|---:|---|
-| reference path (`solution`) | 26/26 (100 %) | none |
-| start and do nothing | 0/21 | `rb-reperfusion`, `rb-anticoagulation` |
-| wrong first answer at all five decisions, then right | 11/26 (42 %) | `rb-reperfusion`, `rb-anticoagulation` |
-| wrong first answer at decision 1 only | 22/26 (85 %) | `rb-reperfusion` |
-| wrong first answer at decision 2 only | 24/26 (92 %) | none |
-| wrong first answer at decision 3 only | 24/26 (92 %) | none |
-| wrong first answer at decision 4 only | 23/26 (88 %) | none |
-| wrong first answer at decision 5 only | 22/26 (85 %) | `rb-anticoagulation` |
-| reference path plus sublingual GTN in the ED | 23/26 (88 %) | `rb-no-preload-drop` |
-| reference path plus IV metoprolol in the ED | 23/26 (88 %) | `rb-no-preload-drop` |
-| reference path plus tenecteplase | 22/26 (85 %) | `rb-reperfusion` |
-| reference path plus a stent before aspiration | 24/26 (92 %) | none (`rb-no-stent` lost) |
-| reference path plus aspirin and clopidogrel instead of anticoagulation | 22/26 (85 %) | `rb-anticoagulation` |
-| reference path plus 12 months of triple therapy | 22/26 (85 %) | `rb-anticoagulation` |
-| the report's plan: warfarin-plus-aspirin answered first, warfarin with heparin given | 22/26 (85 %) | `rb-anticoagulation` |
-| reference path with warfarin and heparin instead of the DOAC | 26/26 (100 %) | none (warfarin is a valid anticoagulant act; decision 5 tests the choice) |
-| reference path without monitoring, holding, fluid and aspirin | 24/26 (92 %) | none |
-| reference path without the stroke, bleeding, allergy and weight questions | 24/26 (92 %) | none |
-| reference path plus IV furosemide in the ED | 26/26 (100 %) | none — flagged as contraindicated in the debrief, not scored (known limit below) |
-| reference path without any day-3 antithrombotic act: the outcome phase never opens, the case cannot be finished | 22/26 (85 %) | `rb-anticoagulation` |
-| reference path without the activation call: the catheter laboratory never opens | 11/24 (46 %) | `rb-reperfusion`, `rb-anticoagulation` |
+| path | deterministic score | critical items missed | safety outcome |
+|---|---:|---|---|
+| reference path (`solution`) | 26/26 (100 %) | none | passed |
+| start and do nothing | 0/21 | `rb-reperfusion`, `rb-anticoagulation` | passed |
+| wrong first answer at all five decisions, then right | 11/26 (42 %) | `rb-reperfusion`, `rb-anticoagulation` | passed |
+| wrong first answer at decision 1 only | 22/26 (85 %) | `rb-reperfusion` | passed |
+| wrong first answer at decision 2 only | 24/26 (92 %) | none | passed |
+| wrong first answer at decision 3 only | 24/26 (92 %) | none | passed |
+| wrong first answer at decision 4 only | 23/26 (88 %) | none | passed |
+| wrong first answer at decision 5 only | 22/26 (85 %) | `rb-anticoagulation` | passed |
+| reference path plus sublingual GTN in the ED | 23/26 (88 %) | `rb-no-preload-drop` | **failed** (`gtn-sublingual`) |
+| reference path plus IV metoprolol in the ED | 23/26 (88 %) | `rb-no-preload-drop` | **failed** (`metoprolol-iv`) |
+| reference path plus IV furosemide in the ED | 23/26 (88 %) | `rb-no-preload-drop` | **failed** (`furosemide-iv`) |
+| reference path plus IV furosemide on day 3 only (not contraindicated there) | 26/26 (100 %) | none | passed |
+| reference path plus tenecteplase | 22/26 (85 %) | `rb-reperfusion` | passed (`critical: false`) |
+| reference path plus a stent before aspiration | 24/26 (92 %) | none (`rb-no-stent` lost) | passed (`critical: false`) |
+| reference path plus aspirin and clopidogrel instead of anticoagulation | 22/26 (85 %) | `rb-anticoagulation` | passed (`critical: false`) |
+| reference path plus 12 months of triple therapy | 22/26 (85 %) | `rb-anticoagulation` | passed (`critical: false`) |
+| the report's plan: warfarin-plus-aspirin answered first, warfarin with heparin given | 22/26 (85 %) | `rb-anticoagulation` | passed |
+| reference path with warfarin and heparin instead of the DOAC | 26/26 (100 %) | none (warfarin is a valid anticoagulant act; decision 5 tests the choice) | passed |
+| a DOAC prescribed in the ED as well as on day 3 | 26/26 (100 %) | none (only the day-3 prescription counts and opens the outcome phase) | passed |
+| a DOAC prescribed only in the ED: the outcome phase waits for a prescription after the procedure | 22/26 (85 %) | `rb-anticoagulation` | passed |
+| reference path without monitoring, holding, fluid and aspirin | 24/26 (92 %) | none | passed |
+| reference path without the stroke, bleeding, allergy and weight questions | 24/26 (92 %) | none | passed |
+| reference path without any day-3 antithrombotic act: the outcome phase never opens, the case cannot be finished | 22/26 (85 %) | `rb-anticoagulation` | passed |
+| reference path without the activation call: the catheter laboratory never opens | 11/24 (46 %) | `rb-reperfusion`, `rb-anticoagulation` | passed |
 
 Decisions are scored with `decidedFirstTry`, so guessing through the options costs the item. The avoided-harm items
 count only once the harm was possible (`scoredWhen`), so doing nothing earns 0. **Timing of the critical acts.** The
 catheter laboratory opens only after the activation call and the transfer, so the call that meets `rb-reperfusion` is
-always made in the ED, before any confirming record. The outcome record opens only after an antithrombotic act, so the
-anticoagulant that meets `rb-anticoagulation` cannot be prescribed after reading the recorded regimen — and a harmful
-regimen given first (DAPT instead of anticoagulation, triple therapy) loses the item for good. **Known limits:** the
-rubric's conditions carry no time, so (1) IV furosemide is contraindicated only in the acute phases (a diuretic may be
-right for the recorded heart-failure symptoms on the ward) and is therefore flagged in the debrief but not scored;
-(2) monitoring, holding the antihypertensives, fluid and aspirin given late still meet the non-critical `rb-ed-support`.
-Debrief the order of the acts from the transcript.
+always made in the ED, before any confirming record. The anticoagulant that meets `rb-anticoagulation` counts only when
+it is prescribed after the procedure (`whenIndicated`: after aspiration or on day 3), and the outcome record opens only
+after such a prescription or a harmful regimen, so it cannot be prescribed after reading the recorded regimen — and a
+harmful regimen given first (DAPT instead of anticoagulation, triple therapy) loses the item for good. Both
+anticoagulant acts allow a second prescription (`maxDoses: 2`), so a learner who prescribed one too early can still
+prescribe it in its window. IV furosemide is scored only when it is given while contraindicated
+(`{"intervened": "furosemide-iv", "valid": false}`: the ED, the laboratory and after aspiration), so a diuretic for the
+recorded heart-failure symptoms on the ward costs nothing. **Known limit:** monitoring, holding the antihypertensives,
+fluid and aspirin given late still meet the non-critical `rb-ed-support`. Debrief the order of the acts from the
+transcript.
 
 ### Critical items
 
 `rb-reperfusion` (the missed life-saving act: primary PCI chosen and the call made in the ED, with no lytic),
-`rb-no-preload-drop` (the dangerous error: a nitrate or IV beta-blocker in hypotensive RV involvement) and
+`rb-no-preload-drop` (the dangerous error: a nitrate, a diuretic or an IV beta-blocker in hypotensive RV involvement) and
 `rb-anticoagulation` (the missed life-saving act of this case: anticoagulating an AF-related embolic infarct, with no
 antiplatelet substitute or triple therapy). All three are acts; none reads a final-phase record.
+
+**Safety outcome.** Sublingual GTN (`gtn-sublingual`, contraindicated throughout), IV furosemide in the ED, the
+laboratory or after aspiration (`furosemide-iv`) and IV metoprolol (`metoprolol-iv`) are `critical: true`: dropping
+the preload or the rate of a hypotensive, preload-dependent right ventricle is this case's dangerous error
+(CASE_AUTHORING §6 names the nitrate in right-ventricular infarction), so giving any of them fails the run's safety
+outcome whatever the score, and `rb-no-preload-drop` loses its weight. The other harmful options are `critical:
+false` — recoverable misjudgements that a critical rubric item already costs: tenecteplase where primary PCI is
+available (no absolute contraindication is recorded; `rb-reperfusion`), a stent before imaging (`rb-no-stent`), 12
+months of triple therapy and aspirin plus clopidogrel instead of anticoagulation (the next clinician can correct
+them; `rb-anticoagulation`).
 
 ## Reference path (`solution`)
 
@@ -250,7 +272,7 @@ is pending**. Extraction table (1.0.0 field → 1.1.0 field):
 | after aspiration smooth wall, no significant stenosis | `investigations.angio` | `investigations.angiography` (phase `post-aspiration`) |
 | IVUS: intact intima, no plaque rupture | `investigations.angio` | `investigations.ivus` (phase `post-aspiration`) |
 | no stent | `investigations.angio` | outcome record; decision 5 prompt (after decision 4); decision 4 key feedback |
-| echo day 3 after the procedure: LA enlarged, free-wall echo considered thrombus, inferior/posterior hypokinesis, LVEF 55 % | `investigations.echo` | `investigations.echo` (phase `day3`) |
+| echo day 3 after the procedure: LA enlarged, free-wall echo considered thrombus, inferior/posterior hypokinesis, LVEF 55 % | `investigations.echo` | `investigations.echo` (phase `day3`; named "echocardiogram" — 1.0.0 does not say transthoracic or transoesophageal) |
 | troponin I 94.12 μg/L (reference 0–0.04), BNP 3981.2 ng/L (times not recorded) | `investigations.labs` | `investigations.troponin`, `natriuretic-peptide` (phase `day3`, labelled "sampling time not recorded") |
 | admission INR 1.1, creatinine 57.3 μmol/L | `investigations.labs` | `investigations.coagulation`, `renal-function` (phase `ed`) |
 | warfarin with transitional heparin and aspirin; heparin stopped at INR 2.3 on day 6 | `investigations.outcome` | `investigations.outcome` (phase `followup`) |
@@ -278,7 +300,8 @@ onset and within 120 min of diagnosis in preference to fibrinolysis; aspirin 150
 300–600 mg loading, 75 mg daily; UFH 70–100 U/kg (50–70 U/kg with a GP IIb/IIIa inhibitor); GTN 0.4–0.5 mg only with
 SBP ≥ 90 mmHg and no RV infarction; V3R/V4R ST elevation ≥ 0.05 mV (≥ 0.1 mV in men under 30); crystalloid boluses of
 250–500 mL with reassessment (a common protocol volume, not a guideline number); metoprolol 5 mg IV up to 3 doses (a
-harmful option here); CHA₂DS₂-VA ≥ 2 → anticoagulation; apixaban 5 mg twice daily, 2.5 mg only with two of age ≥ 80,
+harmful option here; ESC 2023 ACS considers IV beta-blockers at presentation only with no signs of acute heart failure
+and SBP > 120 mmHg); tenecteplase weight-banded, halved from 75 years (a harmful option here); CHA₂DS₂-VA ≥ 2 → anticoagulation; apixaban 5 mg twice daily, 2.5 mg only with two of age ≥ 80,
 weight ≤ 60 kg, creatinine ≥ 133 μmol/L; warfarin INR 2.0–3.0 with heparin until in range; triple therapy ≤ 1 week
 after PCI for AF with ACS, then OAC + clopidogrel up to 12 months, then OAC alone.
 
@@ -312,26 +335,28 @@ after PCI for AF with ACS, then OAC + clopidogrel up to 12 months, then OAC alon
 | Waiting for troponin, or a CT aortogram first | `troponin-first`, `ct-aorta-first` feedback; `ct-aorta` is a low-value record | `rb-reperfusion` |
 | Fibrinolysis "because it is quicker" or "at her age" | `lysis-now` feedback; `fibrinolysis` contraindicated | `rb-reperfusion` (critical) |
 | Missing the right-sided leads | decision 2 needs them; `rb-ecg-right-leads` | `rb-ecg-right-leads` |
-| GTN for the pain; morphine with her usual tablets | `gtn-then-morphine` feedback; `gtn-sublingual` contraindicated | `rb-no-preload-drop` (critical) |
-| Diuretic "before heart failure sets in" | `furosemide-now` feedback; `furosemide-iv` contraindicated in the acute phases | `rb-ed-support` (decision); flagged, not scored |
-| IV beta-blocker | `iv-metoprolol` feedback; `metoprolol-iv` contraindicated | `rb-no-preload-drop` (critical) |
+| GTN for the pain; morphine with her usual tablets | `gtn-then-morphine` feedback; `gtn-sublingual` contraindicated (`critical: true`) | `rb-no-preload-drop` (critical); safety outcome fails |
+| Diuretic "before heart failure sets in" | `furosemide-now` feedback; `furosemide-iv` contraindicated in the acute phases (`critical: true`) | `rb-ed-support` (decision); `rb-no-preload-drop` (critical); safety outcome fails |
+| IV beta-blocker | `iv-metoprolol` feedback; `metoprolol-iv` contraindicated (`critical: true`) | `rb-no-preload-drop` (critical); safety outcome fails |
 | Pressor and no fluid | `pressor-no-fluid` feedback | `rb-ed-support` |
 | Stenting through the thrombus, or aspirating "because it is routine" and stenting | `direct-stent`, `routine-aspiration` feedback; `stent-implant` contraindicated | `rb-cath-strategy`, `rb-no-stent` |
 | Calling it erosion, spasm or dissection | `erosion-stent`, `vasospasm`, `dissection-conservative` feedback | `rb-mechanism` |
 | DAPT or aspirin instead of anticoagulation "at 80"; waiting for a TEE | `dapt-not-oac`, `aspirin-until-tee` feedback; `dapt-instead-of-oac` contraindicated | `rb-anticoagulation` (critical) |
 | The report's warfarin plus open-ended aspirin; triple therapy | `warfarin-plus-aspirin`, `triple-12-months` feedback; `triple-therapy` contraindicated | `rb-anticoagulation` (critical) |
-| Dosing a DOAC without a weight | key feedback, `doac-start` response, the pharmacist | — |
+| Starting the anticoagulant in the ED, before primary PCI | only a prescription after the procedure counts and opens the outcome phase | `rb-anticoagulation` (critical) |
+| Dosing a DOAC without a weight, or choosing it without checking the valves | decision 5 prompt and key feedback, `doac-start` response, the pharmacist | — |
 | Inventing a rhythm, a weight, a valve finding or the other vessels | unknown history items, `examNotRecorded`, record notes, the staff briefs | — |
 
 ### Teaching points for the debrief
 
 The six `debrief.teachingPoints`: (1) right-ventricular involvement — right-sided leads in every inferior STEMI
-(Chinese STEMI 2019), ≥ 0.05 mV in V3R/V4R (Fourth UDMI 2018), no nitrate (ESC 2023 ACS), preload kept up and no
+(Chinese STEMI 2019), ≥ 0.05 mV in V3R/V4R (Fourth UDMI 2018, replaced by the Fifth in 2026), no nitrate (ESC 2023 ACS), preload kept up and no
 diuretics or vasodilators (Chinese STEMI 2019), then and now; (2) primary PCI at 80 — 12 h, 120 min, aspirin, UFH,
 clopidogrel when anticoagulation is foreseeable (ESC 2023 ACS); (3) aspiration then and now — ESC 2012 IIa, TASTE 2013,
 TOTAL 2015, ESC 2023 class III, ACC/AHA 2025, selective use and OCT for ambiguous culprits; (4) coronary embolism — the
-Shibata criteria (2015), the appendage and the limits of TTE, myxoma, other emboli; (5) anticoagulation — CHA₂DS₂-VA
-(ESC 2024 AF), DOAC first, label dosing, ACTIVE W, bleeding scores; (6) the antithrombotic plan then and now — the
+Shibata criteria (2015), the appendage and the limits of TTE (this echo's modality is not recorded), myxoma, other
+emboli; (5) anticoagulation — CHA₂DS₂-VA (ESC 2024 AF), DOAC first once the valves are checked, label dosing (never for
+age alone), ACTIVE W, bleeding scores; (6) the antithrombotic plan then and now — the
 recorded warfarin + heparin + aspirin versus a DOAC with no DAPT and OAC alone after 12 months (ESC 2023 ACS; ESC 2024
 AF).
 
@@ -396,7 +421,8 @@ whether she has had a stroke this is an artefact of the record, not a persona tr
 
 **Unknowns kept honest.** The ECG rhythm (central in an AF case — never implied), other vital signs, weight, examination
 beyond the three findings, risk factors and bleeding history, why she was never anticoagulated, drug doses, ED
-treatment, angiographic and echo detail, the analyte and timing of BNP and troponin, reference ranges, the warfarin and
+treatment, angiographic and echo detail (including whether the echo was transthoracic or transoesophageal — 1.0.0 says
+only 超声 / echocardiography), the analyte and timing of BNP and troponin, reference ranges, the warfarin and
 aspirin details, the heart-failure drugs and the long-term outcome (8 `unknowns`). Record-facing texts say "No result is
 recorded for this test" or "This case does not record whether this was done; it does not simulate its effect" — never
 that the article lacks something.
@@ -452,8 +478,7 @@ false`; the unverifiable `authorChecks` booleans and `sourceTextSha256` removed 
 - **English keywords** avoid one-token wildcards: run-together forms (`whendiditstart`, `whereisthepain`,
   `whatwereyoudoing`, `outoften`, `thintheblood`, `liveswith`, `howareyounow`, `howarethings`, `treatmentfromhere`,
   `anythingforthepain`, `lookather`, `gotothelab`).
-- **Order entry.** `orderMatching.rules`: right-sided-lead queries drop the generic ECG; TEE queries drop the
-  transthoracic echo; CT and aorta queries drop coronary angiography; IVUS queries drop the angiogram.
+- **Order entry.** `orderMatching.rules`: right-sided-lead queries drop the generic ECG; TEE queries drop the echocardiogram; CT and aorta queries drop coronary angiography; IVUS queries drop the angiogram.
 - **Corpus.** 39 test utterances (23 zh-CN, 16 en), written as learners speak, including three look-alike negatives;
   every required item and the phase twin are covered; `cases verify` reports 39/39 with no extra selections.
 
@@ -499,8 +524,24 @@ antiplatelets not an alternative, adding antiplatelets to OAC not recommended fo
 not to withhold OAC; the Chinese AF guideline's (2023) citation; the Shibata criteria and citation (AF the most
 frequent cause); TASTE, TOTAL (more strokes at 30 days) and ACTIVE W results and citations; ESC 2012's class IIa for
 routine aspiration; ESC 2023 ACS's intravascular imaging (preferably OCT) for ambiguous culprit lesions. The DOI of
-ref 3 is the string the library's editorial reviews verified on 2026-10-28; refs 5, 7 and 9 carry no DOI because none
-was verified.
+ref 3 is the string the library's editorial reviews verified on 2026-10-28; refs 5, 7 and 9 carry no DOI because none was verified.
+
+**Review checks (2026-11-13, web searches; secondary sources where the primary text was not retrieved).** ESC 2023
+ACS: IV beta-blockers at presentation are considered (IIa) only with no signs of acute heart failure and SBP > 120 mmHg
+(a secondary summary — the case had "without hypotension or acute heart failure"; corrected); routine aspiration
+not recommended and OCT preferred (IIb) for ambiguous culprit lesions; AF with ACS: triple therapy up to 1 week, then
+a NOAC with clopidogrel, antiplatelets stopped at 12 months (ESC Essential Messages). 2025 ACC/AHA ACS: routine
+aspiration class 3 (no benefit); nitrates avoided in hypotension or RV infarction (secondary summaries). The Fourth
+UDMI's V3R/V4R ≥ 0.05 mV (≥ 0.1 mV in men under 30) — confirmed from an excerpt; the **Fifth Universal Definition of
+MI** (ESC/ACC/AHA/WHF) was published in August 2026 and replaces the Fourth — its ECG wording was not retrieved (To
+verify). ESC 2024 AF Essential Messages: bleeding-risk scores not to decide on starting or withdrawing anticoagulation;
+antiplatelets not added to anticoagulation for stroke prevention (except after an acute vascular event); CHA₂DS₂-VA
+≥ 2 → anticoagulation, prior stroke/TIA/arterial thromboembolism 2 points, vascular disease 1 point. Shibata 2015:
+definite (≥ 2 major, 1 major + ≥ 2 minor, 3 minor) and probable (1 major + 1 minor, 2 minor), major criterion 1 is
+"embolism and thrombosis without atherosclerotic components" (corrected from "or"). Half-dose tenecteplase from 75
+years (STREAM; the ESC dosing table — the 2023 table itself not retrieved). Not confirmed in review: the verbatim
+ESC 2023 ACS §4.2.2.2 text on nitrates and the Chinese STEMI guideline's (2019) right-ventricular paragraph (both kept
+on the strength of the earlier checks above; To verify).
 
 ### To verify
 
@@ -513,8 +554,9 @@ was verified.
   involvement; the LAD and LCx (the Shibata minor criterion); TIMI flow after aspiration; the aspirate and any
   histology; antiplatelet loading, heparin and any GP IIb/IIIa inhibitor; the access route.
 - IVUS detail (plaque burden, minimal lumen area, dissection or haematoma); whether OCT was considered.
-- The day-3 echo: left atrial size; the mass's size, mobility and exact site (free wall or appendage); mitral and other
-  valves (DOAC eligibility); right-ventricular size and function; any LV thrombus; any TEE, CT or follow-up imaging;
+- The day-3 echo: whether it was transthoracic or transoesophageal (1.0.0 says only 超声 / echocardiography); left
+  atrial size; the echo's size, mobility and exact site (free wall or appendage); mitral and other valves (DOAC
+  eligibility); right-ventricular size and function; any LV thrombus; any TEE, CT or follow-up imaging;
   the authors' differential (myxoma).
 - Troponin I and BNP: sampling times (admission, peak or later), the analyte (BNP or NT-proBNP) and reference ranges;
   the unit of the troponin reference; reference ranges for INR and creatinine; blood count, liver tests, electrolytes.
@@ -530,12 +572,17 @@ was verified.
 
 **In the guidance (primary texts not opened in this session):**
 
-- ESC 2023 ACS: the wording and class for IV beta-blockers at presentation (the "SBP > 120 mmHg, no acute heart
-  failure" condition carried from ESC 2017 — the case states only "without hypotension or acute heart failure"); the
-  aspirin, clopidogrel and UFH dose table; the bail-out role of GP IIb/IIIa inhibitors; the recommendations for AF
-  with ACS (≤ 1 week triple therapy, then OAC + clopidogrel up to 12 months) and for a single antiplatelet with OAC in
-  medically managed patients; whether it says anything specific about right-ventricular infarction beyond nitrates.
-- ESC 2024 AF: OAC monotherapy after 12 months post-ACS (class and wording); the exact apixaban dose-reduction table.
+- ESC 2023 ACS: the IV beta-blocker recommendation in the primary text (the case now states no signs of acute heart
+  failure and SBP > 120 mmHg, class IIa, from a secondary summary); §4.2.2.2 on nitrates (hypotension, RV infarction);
+  the aspirin, clopidogrel, UFH and fibrinolytic dose tables (half-dose tenecteplase from 75 years); the bail-out role
+  of GP IIb/IIIa inhibitors; the recommendations for AF with ACS (≤ 1 week triple therapy, then OAC + clopidogrel up to
+  12 months) and for a single antiplatelet with OAC in medically managed patients; whether it says anything specific
+  about right-ventricular infarction beyond nitrates.
+- ESC 2024 AF: OAC monotherapy after 12 months post-ACS (class and wording); the exact apixaban dose-reduction table
+  (two of age ≥ 80, weight ≤ 60 kg, creatinine ≥ 133 μmol/L; the European label also at a creatinine clearance of
+  15–29 mL/min).
+- Fifth Universal Definition of MI (ESC/ACC/AHA/WHF, August 2026; replaces the Fourth): whether its ECG criteria keep
+  ST elevation ≥ 0.05 mV in V3R/V4R (≥ 0.1 mV in men under 30); cite it in place of the Fourth once checked.
 - Chinese STEMI guideline (2019): the full right-ventricular infarction text (fluid volumes, when to add vasoactive
   drugs); the V4R threshold (≥ 0.1 mV) next to the UDMI's ≥ 0.05 mV.
 - Chinese AF guideline (2023): its stroke-risk score (CHA₂DS₂-VASc-60?) and DOAC wording — cited here without a
@@ -585,6 +632,26 @@ was verified.
   `sourceTextChecked: false`; `authorChecks` and `sourceTextSha256` removed until the source pass; `sourceDoi` +
   `doiVerifiedAt` added; the media statements reconciled with the approved `fig01`.
 
+- **Independent review (2026-11-13), fixes within 1.1.0.** (1) *Invented fact removed:* the day-3 echo had been
+  called transthoracic (经胸) in its name, result, decision 5, the day-3 phase and objective, and learning outcome 4;
+  1.0.0 records only 超声 / echocardiography — now "echocardiogram", with the modality listed as not recorded (record
+  note, TEE record, unknowns, To verify). (2) *Safety outcome:* GTN, IV furosemide (acute phases) and IV metoprolol
+  `critical: true`; tenecteplase, stent, triple therapy and DAPT-instead-of-OAC `critical: false` (the three strict
+  warnings are gone); IV furosemide given while contraindicated is now scored in `rb-no-preload-drop`
+  (`valid: false`). (3) *Spoilers:* objective titles 4–6, listed in the journal from the start, no longer name the
+  catheter laboratory, the thrombus, the stent or the procedure; objective 3's guidance no longer lists fluid before
+  decision 2; objective 4's hint no longer names the thrombus or the answer; the ED echo placeholder no longer
+  mentions a procedure. (4) *Guidance accuracy:* the IV beta-blocker criterion (ESC 2023 ACS: no signs of acute
+  heart failure, SBP > 120 mmHg); the 24-hour early invasive strategy (high-risk NSTE-ACS, not STEMI); Shibata major
+  criterion 1 ("and", not "or"); half-dose tenecteplase from 75 years; apixaban never reduced for age alone; the
+  Fifth UDMI (2026) acknowledged. (5) *Decision 5:* her valves are not recorded — the prompt, the key's feedback, the
+  DOAC response and the pharmacist now ask for mitral stenosis to be excluded before a DOAC. (6) *Timing:* the
+  anticoagulant counts, and opens the outcome phase, only when prescribed after the procedure (`whenIndicated`;
+  `maxDoses: 2` so an early prescription can be repeated in its window). (7) *Fidelity and language:* 大汗淋漓 → 大汗
+  (1.0.0); the English conclusion now states the heart-failure course, the absent plaque rupture and the unobserved
+  migration like the Chinese one; "the real problem" and "has already caused an arterial embolism" softened to
+  the probable mechanism; the score table re-measured.
+
 ### 1.0.0 — 2026-10-28
 
 - First release in the CMCR additional collection (PR #5): template version with 15 history items, 2 examination
@@ -600,7 +667,8 @@ npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-337
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-33790:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-10-30: all five pass.
+Measured on 2026-10-30, and again on 2026-11-13 after the review fixes: all five pass (strict validation 0 errors, 0
+warnings; before the fixes it reported the three unset `critical` flags).
 
 ## 中文摘要
 
@@ -610,8 +678,8 @@ Measured on 2026-10-30: all five pass.
 TIMI 1 级；血栓抽吸后管壁光滑、无明显狭窄，血管内超声内膜完整、无斑块破裂，未放支架。术后第 3 天超声心动图：左心房增大，
 游离壁回声考虑血栓，下壁、后壁运动减弱，LVEF 55%；肌钙蛋白 I 94.12 μg/L，BNP 3981.2 ng/L（采血时间未记录）。记录中用
 华法林加过渡期肝素（第 6 天 INR 2.3 后停肝素）并加阿司匹林；前 10 天有心衰症状，随后好转。诊断：未抗凝房颤患者左心房血栓
-栓塞冠状动脉所致急性心肌梗死（很可能；栓子迁移未被直接观察到）。心电图节律、体重、瓣膜、其他冠状动脉、药物剂量和远期结局
-均无记录。本版依据 1.0.0 版提取的事实改写，尚未对照原文全文核对。
+栓塞冠状动脉所致急性心肌梗死（很可能；栓子迁移未被直接观察到）。心电图节律、体重、瓣膜、超声心动图的检查方式（经胸还是
+经食管）、其他冠状动脉、药物剂量和远期结局均无记录。本版依据 1.0.0 版提取的事实改写，尚未对照原文全文核对。
 
 **学习目标。**
 
@@ -619,7 +687,7 @@ TIMI 1 级；血栓抽吸后管壁光滑、无明显狭窄，血管内超声内�
    直接 PCI（ESC 2023 ACS）。
 2. 右心室受累合并低血压、双肺清晰时不用硝酸酯、利尿剂、其他扩血管药和静脉 β 受体阻滞剂，暂停降压药，分次补液维持前负荷。
 3. 说明常规血栓抽吸为何不再推荐（ESC 2023 ACS Ⅲ类；TASTE、TOTAL），以及何时选择性抽吸并在定支架前做腔内影像。
-4. 依据 Shibata 标准（2015）诊断冠状动脉栓塞，说明 IVUS 与经胸超声的局限，并决定不放支架。
+4. 依据 Shibata 标准（2015）诊断冠状动脉栓塞，说明 IVUS 与超声心动图（经胸与经食管）的局限，并决定不放支架。
 5. 为房颤相关栓塞性心肌梗死制订抗凝方案：CHA₂DS₂-VA 评分、DOAC 优先、按说明书定剂量、抗血小板最多一种且限期（ESC 2024 AF）。
 6. 用通俗语言和复述法向高龄患者解释长期抗凝与出血警示信号。
 
@@ -633,13 +701,18 @@ TIMI 1 级；血栓抽吸后管壁光滑、无明显狭窄，血管内超声内�
   后放支架（ESC 2012 的做法）和推迟 48 小时。
 - 决策 4（机制与支架）：很可能是房颤相关冠状动脉栓塞，不放支架，开始抗凝并寻找栓子来源；干扰项为斑块侵蚀放支架、痉挛、
   自发性夹层。
-- 决策 5（长期抗栓）：按说明书剂量开始 DOAC（先称体重、核对肾功能），不用双联抗血小板；干扰项包括抗血小板代替抗凝、暂用
-  阿司匹林等经食管超声、记录中的华法林加长期阿司匹林、12 个月三联治疗。
+- 决策 5（长期抗栓）：按说明书剂量开始 DOAC（先称体重、核对肾功能，并在超声上确认没有机械瓣或中重度二尖瓣狭窄——体重和瓣膜
+  都没有记录），不用双联抗血小板；干扰项包括抗血小板代替抗凝、暂用阿司匹林等经食管超声、记录中的华法林加长期阿司匹林、
+  12 个月三联治疗。
 
 **复盘要点（PEARLS）。** 先谈护士要给 88/62 mmHg 的患者含服硝酸甘油时的感受；用四句话复述急诊和导管室的经过；分析右胸
 导联对每一种药物选择的意义、为何不溶栓也不等肌钙蛋白、抽吸是常规还是针对这处血栓的选择、抽吸后血管正常意味着什么以及
 IVUS 不能告诉我们什么、远段血栓与右胸导联抬高的矛盾、她这次之前的卒中风险评分、“考虑血栓”有多可靠、今天会怎样选药定量，
 以及怎样回应她对出血的担心；总结下次遇到高龄房颤患者要查什么。评分：确定性总分 26 分，三项关键项（首次作答即选直接 PCI
-并实际启动导管室、不溶栓；不给硝酸甘油或静脉美托洛尔；首次作答即以口服抗凝为核心并实际开始抗凝、不以抗血小板替代或三联
+并实际启动导管室、不溶栓；不给硝酸甘油、利尿剂或静脉美托洛尔；首次作答即以口服抗凝为核心并在术后实际开始抗凝、不以抗血小板替代或三联
 治疗），沟通项由考官评判。记录中的处置（华法林加肝素过渡并加阿司匹林）只作为历史对照，不代表现行推荐。本病例经人工智能
 辅助编辑审核，尚未经执业医师审核；待核实事项见上文 “To verify”。
+
+**安全结果。** 舌下含服硝酸甘油、急性期静脉推注呋塞米和静脉注射美托洛尔标为 `critical: true`——低血压、依赖前负荷的右心室
+梗死中给药即判定安全结果不合格；溶栓、未经影像评估的支架、以双联抗血小板代替抗凝和 12 个月三联治疗标为 `critical: false`
+（可由后续医生纠正的错误，由关键评分项扣分）。

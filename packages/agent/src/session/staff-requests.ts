@@ -26,6 +26,7 @@ import { handoverFromRecord, handoverText } from "./handover.js";
 import { MAX_HELD, PRIMARY_ACTOR, roleName, type ActorId, type ActorState, type NavGoal, type ObservedEntity, type WorldActionResult } from "@clinicalcraft/world";
 import { npcDisplayName } from "../agents/prompts.js";
 import { resolveIntervention } from "../tools/clinical.js";
+import { doseQueryReadBack, doseReadBack, orderClause } from "../tools/dose-order.js";
 import type { WorldRequestInput } from "../tools/world.js";
 import { checkTaskScope, scopeOf } from "../tools/scope.js";
 import { rt, type RuntimeKey } from "./i18n.js";
@@ -134,7 +135,15 @@ export class StaffRequests {
         const r = resolveIntervention(this.k.caseDef, { query: intent.what }, L);
         if (r.kind !== "id") return false;
         const item = this.k.caseDef.interventions.find((i) => i.id === r.id)!;
-        return this.task(id, say, who, "give_intervention", { params: { intervention: r.id } }, rt(L, "req.ackGive", { item: t(item.name, L) }), signal, r.id);
+        // the order as said — the part of the request that orders this item ("给患者静推呋塞米 40 mg" keeps its route;
+        // "paracetamol 1 g, then adrenaline 0.5 mg IM" gives adrenaline its own dose): its dose and route are checked
+        // against the dose prepared (docs/PROTOCOL.md §3.2). Several orders and none for this item alone: one at a time.
+        const order = orderClause(this.k.caseDef, body.trim() || intent.what, r.id, L);
+        if (order == null) {
+          say(rt(L, "req.oneAtATime"));
+          return true;
+        }
+        return this.task(id, say, who, "give_intervention", { params: { intervention: r.id, order } }, rt(L, "req.ackGive", { item: t(item.name, L) }), signal, r.id);
       }
       case "come": {
         const patient = this.k.embodied!.patientId();
@@ -197,6 +206,10 @@ export class StaffRequests {
     const d = (out.data as { delegation?: DelegationResult } | undefined)?.delegation;
     if (d?.status === "completed") say(rt(L, "req.done", { task: label }));
     else if (d?.status === "cancelled") say(rt(L, "req.stopped", { task: label }));
+    // the order's dose differed from the dose prepared: nothing given — they read the order back (closed loop)
+    else if (d?.doseError) say(doseReadBack(k.caseDef, { type: "dose.error", ...d.doseError }, L));
+    // the order's dose was not clear: nothing given — they ask for it as a number with its unit
+    else if (d?.doseQuery) say(doseQueryReadBack(k.caseDef, d.doseQuery.interventionId, { outcome: "query", reason: d.doseQuery.reason, words: d.doseQuery.words, dose: d.doseQuery.ordered }, L));
     else say(rt(L, "req.failed", { task: label, reason: this.reasonOf(d, out.output) }));
     return true;
   }

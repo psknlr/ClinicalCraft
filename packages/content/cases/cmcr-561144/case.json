@@ -194,7 +194,7 @@
     },
     "nonVerbalReason": {
       "zh-CN": "拔管后突然呼之不应，随后气管插管",
-      "en": "unresponsive since the line came out, then intubated"
+      "en": "suddenly unresponsive after the line came out, then intubated"
     }
   },
   "phases": [
@@ -2152,12 +2152,14 @@
       "posture": "lying",
       "risk": "low",
       "indicatedWhen": {
-        "any": [
-          {
-            "phase": "ward"
-          },
+        "all": [
           {
             "phase": "collapse"
+          },
+          {
+            "not": {
+              "intervened": "icu-transfer"
+            }
           }
         ]
       },
@@ -2249,7 +2251,16 @@
       "requires": [],
       "risk": "none",
       "indicatedWhen": {
-        "phase": "collapse"
+        "all": [
+          {
+            "phase": "collapse"
+          },
+          {
+            "not": {
+              "intervened": "icu-transfer"
+            }
+          }
+        ]
       },
       "response": {
         "zh-CN": "急救团队正在赶来。本病例没有记录是否呼叫过急救团队；不模拟其效果。",
@@ -2289,7 +2300,16 @@
       "scope": "nursing",
       "risk": "none",
       "indicatedWhen": {
-        "intervened": "remove-line"
+        "all": [
+          {
+            "phase": "collapse"
+          },
+          {
+            "not": {
+              "intervened": "icu-transfer"
+            }
+          }
+        ]
       },
       "response": {
         "zh-CN": "穿刺点已按压并封闭。原报告记录拔管后用的是普通胶布；本病例没有记录发病后穿刺点是否重新封闭；不模拟其效果。",
@@ -2333,12 +2353,14 @@
       "device": "non-rebreather-mask",
       "risk": "low",
       "indicatedWhen": {
-        "any": [
+        "all": [
           {
             "phase": "collapse"
           },
           {
-            "phase": "icu"
+            "not": {
+              "intervened": "icu-transfer"
+            }
           }
         ]
       },
@@ -2651,7 +2673,17 @@
       },
       "risk": "moderate",
       "indicatedWhen": {
-        "phase": "icu"
+        "all": [
+          {
+            "phase": "icu"
+          },
+          {
+            "not": {
+              "read": "outcome",
+              "phase": "followup"
+            }
+          }
+        ]
       },
       "contraindicatedWhen": {
         "not": {
@@ -2701,6 +2733,7 @@
         "infusion-pump"
       ],
       "risk": "high",
+      "critical": true,
       "maxDoses": 1,
       "contraindicatedWhen": {
         "always": true
@@ -2979,6 +3012,46 @@
       ]
     },
     {
+      "id": "obj-first-minute",
+      "title": {
+        "zh-CN": "最初的几分钟",
+        "en": "The first minutes"
+      },
+      "short": {
+        "zh-CN": "急救",
+        "en": "First aid"
+      },
+      "hint": {
+        "zh-CN": "颈部针眼封好了吗？她现在的体位、吸入的氧浓度合适吗？谁需要马上到床旁？",
+        "en": "Is the neck puncture sealed? Are her position and the oxygen she is breathing right? Who needs to be at the bedside now?"
+      },
+      "guidance": {
+        "zh-CN": "拔管后约3分钟，她坐起时出事；你就在她床旁，抢救车、氧气接口和监护仪都在。",
+        "en": "About 3 minutes after the removal, as she sat up, she collapsed; you are at her bed, with the crash cart, the oxygen outlet and the monitor."
+      },
+      "completeWhen": {
+        "all": [
+          {
+            "intervened": "call-help"
+          },
+          {
+            "intervened": "seal-site"
+          },
+          {
+            "intervened": "lie-flat"
+          },
+          {
+            "intervened": "oxygen-nrb"
+          }
+        ]
+      },
+      "waypoints": [
+        {
+          "target": "patient"
+        }
+      ]
+    },
+    {
       "id": "obj-at-bedside",
       "title": {
         "zh-CN": "拔管之后：床旁评估与稳定",
@@ -2993,8 +3066,8 @@
         "en": "Can she be roused? What are her breathing, central pulse and pupils doing? What does the neck puncture look like now, and which bedside test must not be missed?"
       },
       "guidance": {
-        "zh-CN": "拔管后约3分钟，她坐起时出事；你就在她床旁，抢救车、氧气接口和监护仪都在。",
-        "en": "About 3 minutes after the removal, as she sat up, she collapsed; you are at her bed, with the crash cart, the oxygen outlet and the monitor."
+        "zh-CN": "仍在她床旁，护士和抢救车都在。",
+        "en": "Still at her bed, with the nurse and the crash cart."
       },
       "completeWhen": {
         "all": [
@@ -3057,49 +3130,6 @@
           },
           "target": "airway"
         },
-        {
-          "target": "patient"
-        }
-      ]
-    },
-    {
-      "id": "obj-first-minute",
-      "title": {
-        "zh-CN": "最初的几分钟",
-        "en": "The first minutes"
-      },
-      "short": {
-        "zh-CN": "急救",
-        "en": "First aid"
-      },
-      "hint": {
-        "zh-CN": "颈部针眼封好了吗？她现在的体位、吸入的氧浓度合适吗？谁需要马上到床旁？",
-        "en": "Is the neck puncture sealed? Are her position and the oxygen she is breathing right? Who needs to be at the bedside now?"
-      },
-      "guidance": {
-        "zh-CN": "同一时间，在她床旁。",
-        "en": "At the same time, at her bed."
-      },
-      "completeWhen": {
-        "all": [
-          {
-            "intervened": "call-help"
-          },
-          {
-            "intervened": "seal-site"
-          },
-          {
-            "intervened": "lie-flat"
-          },
-          {
-            "intervened": "oxygen-nrb"
-          },
-          {
-            "phase": "collapse"
-          }
-        ]
-      },
-      "waypoints": [
         {
           "target": "patient"
         }
@@ -3607,8 +3637,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "右侧瞳孔反射迟钝是一个局灶体征，但说明不了气体是怎么到达的：经分流进入动脉的气体和沿静脉逆行的气体都可能造成这种表现；一个体征不能区分两条路径。缺损伴肺动脉高压对她今后的任何输液、置管和操作都仍然重要。",
-            "en": "A sluggish right pupil is a focal sign, but it says nothing about how the gas got there: gas reaching the brain through the arteries after crossing the shunt could produce it as well as gas rising in the veins; one sign cannot tell the routes apart. The defect with pulmonary hypertension still matters for every future line, infusion and procedure."
+            "zh-CN": "右侧瞳孔反射迟钝是一个局灶体征，但说明不了气体是怎么到达的：经分流进入动脉的气体和沿静脉逆行的气体都可能造成这种表现（Bothma与Schlimp，2014）；一个体征不能区分两条路径。缺损伴肺动脉高压对她今后的任何输液、置管和操作都仍然重要。",
+            "en": "A sluggish right pupil is a focal sign, but it says nothing about how the gas got there: gas reaching the brain through the arteries after crossing the shunt could produce it as well as gas rising in the veins (Bothma and Schlimp, 2014); one sign cannot tell the routes apart. The defect with pulmonary hypertension still matters for every future line, infusion and procedure."
           }
         },
         {
@@ -3826,22 +3856,26 @@
       "weight": 4,
       "critical": true,
       "text": {
-        "zh-CN": "她刚失去反应、还在原床位时，就封闭了穿刺点，让她放平，给予高流量纯氧并呼救",
-        "en": "While she was still where she collapsed, sealed the puncture, laid her flat, gave high-flow 100 % oxygen and called for help"
+        "zh-CN": "她失去反应后、转入ICU之前，就在原床位呼救、封闭穿刺点、让她放平，并给予高流量纯氧",
+        "en": "Before she was moved to intensive care, at the bed where she collapsed: called for help, sealed the puncture, laid her flat and gave high-flow 100 % oxygen"
       },
       "met": {
         "all": [
           {
-            "objective": "obj-first-minute"
+            "intervened": "call-help",
+            "whenIndicated": true
           },
           {
-            "intervened": "seal-site"
+            "intervened": "seal-site",
+            "whenIndicated": true
           },
           {
-            "intervened": "lie-flat"
+            "intervened": "lie-flat",
+            "whenIndicated": true
           },
           {
-            "intervened": "oxygen-nrb"
+            "intervened": "oxygen-nrb",
+            "whenIndicated": true
           }
         ]
       }
@@ -3872,17 +3906,19 @@
       "weight": 4,
       "critical": true,
       "text": {
-        "zh-CN": "在看到结局记录之前给予了高压氧治疗",
-        "en": "Gave hyperbaric oxygen before the outcome record was open"
+        "zh-CN": "在ICU开出加压前胸片后给予高压氧治疗，且在查看结局记录之前",
+        "en": "Gave hyperbaric oxygen in intensive care once the pre-compression chest film was ordered, before reading the outcome record"
       },
       "met": {
-        "intervened": "hbot"
+        "intervened": "hbot",
+        "whenIndicated": true
       }
     },
     {
       "id": "rb-no-harm",
       "domain": "safety",
       "weight": 3,
+      "critical": true,
       "text": {
         "zh-CN": "没有给静脉溶栓，也没有给治疗剂量的肝素",
         "en": "Gave no thrombolysis and no therapeutic-dose heparin"
@@ -4035,7 +4071,7 @@
     },
     "conclusion": {
       "zh-CN": "51岁女性，双手遇冷发白疼痛，检查中发现房间隔缺损和肺动脉高压；胸交感神经链切断术后第5天拔除右颈内静脉导管：平卧拔管，按压约1分钟，普通胶布覆盖。约3分钟后她坐起时突然呼之不应、呼吸短促并抽搐；大动脉搏动可触及，双侧瞳孔等大，右侧对光反射迟钝。给氧后气管插管，急诊头颅CT示颅内空气栓塞——中心静脉导管拔除后的脑空气栓塞。原报告记录呼吸支持、高压氧和康复治疗；次日神志转清但左侧重度偏瘫，约第35天能独立行走。现行做法：拔颈部导管时穿刺点低于心脏、屏气拔出、封闭敷料并平卧一段时间；出现这样的情况按气体栓塞处理，不等CT——封闭穿刺点、水平位、纯氧、保护气道——排除气胸后尽快高压氧。",
-      "en": "A 51-year-old woman with cold-induced white, painful hands, an atrial septal defect and pulmonary hypertension had her right internal jugular line removed on day 5 after a thoracic sympathectomy: lying flat, about a minute of pressure, ordinary tape. About 3 minutes later, sitting up, she became unresponsive with short, rapid breaths and convulsions; a central pulse was palpable, her pupils equal with a sluggish right light reflex. After oxygen she was intubated; the emergency head CT showed intracranial air embolism. The report records respiratory support, hyperbaric oxygen and rehabilitation; alert next day with severe left hemiplegia, she walked independently by about day 35. Today: remove neck lines with the site below the heart, a breath-hold, an air-occlusive seal and time lying flat; treat such a collapse as cerebral gas embolism without waiting for a scan — seal, horizontal, 100 % oxygen, airway — and recompress early once a pneumothorax is excluded."
+      "en": "A 51-year-old woman with cold-induced white, painful hands, an atrial septal defect and pulmonary hypertension had her right internal jugular line removed on day 5 after a thoracic sympathectomy: lying flat, about a minute of pressure, ordinary tape. About 3 minutes later, sitting up, she became unresponsive with short, rapid breaths and convulsions; a central pulse was palpable, her pupils equal with a sluggish right light reflex. After oxygen she was intubated; the emergency head CT showed intracranial air embolism — cerebral air embolism after line removal. The report records respiratory support, hyperbaric oxygen and rehabilitation; alert next day with severe left hemiplegia, she walked independently by about day 35. Today: remove neck lines with the site below the heart, a breath-hold, an air-occlusive seal and time flat; treat such a collapse as gas embolism without waiting for a scan — seal, horizontal, 100 % oxygen, airway — and recompress early once a pneumothorax is excluded."
     },
     "keyReasoning": [
       {

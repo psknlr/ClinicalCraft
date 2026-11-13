@@ -47,7 +47,7 @@ import { portrait, STAFF_COLOURS } from "../portrait.js";
 import { parseAddress } from "../address.js";
 import { capList } from "./common.js";
 import { bedsideTests } from "./tests-tab.js";
-import { treatRow } from "./treat-row.js";
+import { searchOrder, treatRow } from "./treat-row.js";
 import { distanceNotice, offered, onlyDistance, refusalNote } from "./verdicts.js";
 
 export { treatRow };
@@ -472,15 +472,19 @@ export function conversationPanel(app: App, args: ConversationArgs): () => Panel
       q.addEventListener("keydown", (e) => e.stopPropagation());
       const search = (e?: Event) => {
         e?.preventDefault();
-        const hits = q.value.trim() ? matchInterventions(c, q.value.trim(), getLocale()) : [];
+        const text = q.value.trim();
+        const hits = text ? matchInterventions(c, text, getLocale()) : [];
         mount(result);
         if (!hits.length) {
           result.append(h("div", { class: "empty" }, tr("treat.noMatch")));
           return;
         }
+        // words that state a dose are an order: the rows found give it as written, its dose checked against the
+        // dose prepared (docs/PROTOCOL.md §3.2) — never silently the preset
+        const ordered = searchOrder(text);
         for (const hit of hits.slice(0, 4)) {
           const iv = c.interventions.find((x) => x.id === hit.id);
-          if (iv) result.append(treatRow(app, game, iv, caps, scope !== "full"));
+          if (iv) result.append(treatRow(app, game, iv, caps, scope !== "full", ordered));
         }
       };
       wrap.append(h("form", { class: "exam-search", onsubmit: search }, q, h("button", { class: "primary" }, tr("treat.find"))), result);

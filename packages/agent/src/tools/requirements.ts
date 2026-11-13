@@ -94,6 +94,16 @@ function decisionLabel(c: CaseDefinition, s: SessionState, id: string, L: string
   return d && Object.prototype.hasOwnProperty.call(s.decisions, id) ? `${n}${isZh(L) ? "：" : ": "}${t(d.prompt, L)}` : n;
 }
 
+/** A time since the last dose in words: "at least 5 min after the last IM adrenaline" / "距上次肌注肾上腺素至少5分钟". */
+function elapsedSinceText(c: CaseDefinition, leaf: { intervened: string; gte?: number; lte?: number }, L: string): string {
+  const name = interventionLabel(c, leaf.intervened, L);
+  const { gte, lte } = leaf;
+  if (gte == null && lte == null) return rt(L, "req.intervened", { name });
+  const range =
+    gte != null && lte != null ? rt(L, "req.elapsedSince.between", { gte, lte }) : gte != null ? rt(L, "req.elapsedSince.gte", { gte }) : rt(L, "req.elapsedSince.lte", { lte: lte! });
+  return rt(L, "req.elapsedSince", { range, name });
+}
+
 /** One requirement in words (a leaf, or an `any` / `not` kept whole). */
 export function requirementText(c: CaseDefinition, s: SessionState, r: Requirement, L: string, visible: ReadonlySet<string>): string {
   if (r.kind === "not") return rt(L, "req.not", { text: requirementText(c, s, r.child, L, visible) });
@@ -110,6 +120,7 @@ export function requirementText(c: CaseDefinition, s: SessionState, r: Requireme
   }
   if ("inOrder" in cond) return rt(L, "req.inOrder", { names: cond.inOrder.map((id) => interventionLabel(c, id, L)).join(" → ") });
   if ("held" in cond) return rt(L, "req.held", { name: interventionLabel(c, cond.held, L) });
+  if ("elapsedSince" in cond) return elapsedSinceText(c, cond.elapsedSince, L);
   if ("decided" in cond) return rt(L, "req.decided", { label: decisionLabel(c, s, cond.decided, L) });
   if ("decidedFirstTry" in cond) return rt(L, "req.decided", { label: decisionLabel(c, s, cond.decidedFirstTry, L) });
   if ("attempted" in cond) return rt(L, "req.decided", { label: decisionLabel(c, s, cond.attempted, L) });

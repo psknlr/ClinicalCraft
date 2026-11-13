@@ -312,15 +312,59 @@ describe("content standard lints: critical interventions and preset doses", () =
     const off = epi(both("Adrenaline 0.5 mg IM", "肾上腺素0.5mg肌注"), { amount: 5, unit: "mg", route: "IV" });
     expect(lints(off).map((i) => [i.path, i.message])).toEqual([
       ["interventions.0.doseSpec", 'the preset dose of "epi" (5 mg IV) is not what its dose text states (en: 0.5 mg, IM; zh-CN: 0.5 mg, IM): make them say the same dose'],
+      // the fixture's name states 0.5 mg IM too: typed as an order it would not be given
+      [
+        "interventions.0.doseSpec",
+        '"epi" is named with a dose that is not its preset (5 mg IV), or one that cannot be checked against it: "Adrenaline 0.5 mg IM", "肾上腺素0.5mg肌注" — typed as an order it would not be given; name the preset\'s dose (one dose, with its unit), or none',
+      ],
     ]);
     // a range is compared end for end; a dose per kg through the weight; units that cannot be compared are left alone
-    const labetalol = (text: string, spec: Json) => build((j) => Object.assign(iv(j, "beta-blocker"), { dose: text, doseSpec: spec }));
+    const labetalol = (text: string, spec: Json) => build((j) => Object.assign(iv(j, "beta-blocker"), { name: both("IV beta-blocker", "静注β受体阻滞剂"), dose: text, doseSpec: spec }));
     expect(lints(labetalol("Labetalol 10–20 mg IV", { amount: 10, upTo: 20, unit: "mg", route: "IV" }))).toEqual([]);
-    expect(lints(labetalol("Labetalol 10 mg IV", { amount: 10, upTo: 20, unit: "mg", route: "IV" })).map((i) => i.path)).toEqual(["interventions.3.doseSpec"]);
+    // a single dose lies within the range (a preset spans the doses the cited guidance allows around the text's dose)
+    expect(lints(labetalol("Labetalol 10 mg IV", { amount: 10, upTo: 20, unit: "mg", route: "IV" }))).toEqual([]);
+    expect(lints(labetalol("Labetalol 25 mg IV", { amount: 10, upTo: 20, unit: "mg", route: "IV" })).map((i) => i.path)).toEqual(["interventions.3.doseSpec"]);
     expect(lints(labetalol("Labetalol 12–20 mg IV", { amount: 10, upTo: 20, unit: "mg" })).map((i) => i.path)).toEqual(["interventions.3.doseSpec"]);
-    const weighed = (text: string, spec: Json) => build((j) => ((j.patient.weightKg = 60), Object.assign(iv(j, "beta-blocker"), { dose: text, doseSpec: spec })));
+    const weighed = (text: string, spec: Json) => build((j) => ((j.patient.weightKg = 60), Object.assign(iv(j, "beta-blocker"), { name: both("IV beta-blocker", "静注β受体阻滞剂"), dose: text, doseSpec: spec })));
     expect(lints(weighed("Propranolol 0.015 mg/kg IV", { amount: 0.9, unit: "mg", route: "IV" }))).toEqual([]);
     expect(lints(weighed("Propranolol 1 mL of 1 mg/mL IV", { amount: 1, unit: "mg", route: "IV" }))).toEqual([]);
+  });
+
+  it("a name or alias that states a dose must be given when typed as an order: the preset's dose, one dose with its unit", () => {
+    const named = (aliases: string[]) => build((j) => Object.assign(iv(j, "epi"), { doseSpec: { amount: 0.5, unit: "mg", route: "IM" }, aliases: { en: aliases, "zh-CN": ["肾上腺素"] } }));
+    expect(lints(named(["adrenaline", "epi 500 micrograms"]))).toEqual([]);
+    // a number without its unit, a range, a volume without its strength: the nurse would ask
+    expect(lints(named(["adrenaline 0.5", "adrenaline 0.3–0.5 mg", "adrenaline 0.5 mL"])).map((i) => i.message)).toEqual([expect.stringContaining('"adrenaline 0.5", "adrenaline 0.3–0.5 mg", "adrenaline 0.5 mL" — typed as an order it would not be given')]);
+  });
+
+  it("a critical intervention is not low- or no-risk", () => {
+    const low = build((j) => Object.assign(iv(j, "beta-blocker"), { risk: "low" }));
+    expect(at(low, "interventions.3.risk").map((i) => [i.severity, i.message])).toEqual([
+      ["warning", 'critical intervention "beta-blocker" is low risk: giving it while contraindicated is a critical safety failure — set its risk to moderate or high (the learner is asked to confirm it, and its badge says so)'],
+    ]);
+    expect(at(build((j) => Object.assign(iv(j, "beta-blocker"), { risk: "moderate" })), "interventions.3.risk")).toEqual([]);
+  });
+
+  it("a high-alert medicine whose text states exactly one dose has a preset, and the warning names it (lead decision: bolus-then-infusion, schedules and alternatives are exempt)", () => {
+    const opioid = (dose: Json, extra: Json = {}) => build((j) => Object.assign(iv(j, "chlorphenamine"), { name: both("IV morphine", "静注吗啡"), dose, ...extra }));
+    // one dose, in every locale: the preset to add, as the text states it
+    expect(lints(opioid(both("Morphine 2.5 mg slow IV, repeat every 5 minutes", "吗啡2.5 mg缓慢静注，必要时每5分钟重复"))).map((i) => [i.path, i.message])).toEqual([
+      [
+        "interventions.2.doseSpec",
+        'high-alert medication "chlorphenamine" states one dose (2.5 mg IV) but has no preset dose: an order\'s dose is not checked — a tenfold one would be given; add "doseSpec": {"amount":2.5,"unit":"mg","route":"IV"}, widened with "upTo" to every dose the case\'s cited guidance allows',
+      ],
+    ]);
+    // one range: still one dose; without a route the warning asks for one
+    expect(lints(opioid(both("Morphine 2–4 mg, titrated", "吗啡2–4 mg滴定"))).map((i) => i.message)).toEqual([expect.stringContaining('add "doseSpec": {"amount":2,"upTo":4,"unit":"mg"} (with its "route")')]);
+    // a bolus then an infusion, alternatives, a schedule of doses: no single preset says it — exempt
+    expect(lints(opioid(both("Heparin 80 units/kg IV bolus, then 18 units/kg/h", "肝素80 U/kg静推，随后18 U/kg/h泵入")))).toEqual([]);
+    expect(lints(opioid(both("Morphine 2.5 mg IV or 5 mg IM", "吗啡2.5 mg静注或5 mg肌注")))).toEqual([]);
+    // no dose stated; a preset already there; never given right (contraindicated always)
+    expect(lints(opioid(both("Morphine IV, titrated to pain", "静注吗啡滴定镇痛")))).toEqual([]);
+    expect(lints(opioid(both("Morphine 2.5 mg IV", "吗啡2.5 mg静注"), { doseSpec: { amount: 2.5, unit: "mg", route: "IV" } }))).toEqual([]);
+    expect(lints(opioid(both("Morphine 2.5 mg IV", "吗啡2.5 mg静注"), { contraindicatedWhen: { always: true }, critical: true, risk: "high" }))).toEqual([]);
+    // an item that is not a high-alert medicine needs none
+    expect(lints(build((j) => (iv(j, "chlorphenamine").dose = both("Chlorphenamine 10 mg IV", "氯苯那敏10 mg静注"))))).toEqual([]);
   });
 });
 

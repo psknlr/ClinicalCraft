@@ -130,8 +130,11 @@ function loggable(event: AgentEvent, c: Pick<CaseDefinition, "id" | "decisions">
     }
     case "agent_message":
       return { seq: event.seq, type: msg.type, agent: msg.agent, speaker: msg.speaker, text: msg.text, grounded: msg.grounded, grounding: msg.grounding ?? null };
-    case "assessment":
-      return { seq: event.seq, type: msg.type, score: msg.report.score, completed: msg.report.completed, narrative: msg.narrative };
+    case "assessment": {
+      // the safety outcome beside the score (docs/PROTOCOL.md §3.2): the learner's own critical failures and dose errors
+      const { passed, criticalFailures, doseErrors } = msg.report.safety;
+      return { seq: event.seq, type: msg.type, score: msg.report.score, safety: { passed, criticalFailures, doseErrors }, completed: msg.report.completed, narrative: msg.narrative };
+    }
     case "command_output":
       return { seq: event.seq, type: msg.type, name: msg.name, text: msg.text };
     case "world_action_result": {

@@ -4395,9 +4395,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "普通肝素80 U/kg静脉推注，随后18 U/kg/h持续泵入；6小时后查APTT（目标为对照值的1.5–2.5倍，或抗Xa 0.3–0.7 IU/mL），按院内列线图调整；每2–3天复查血小板计数",
-        "en": "UFH 80 U/kg IV bolus, then 18 U/kg/h infusion; APTT at 6 h (target 1.5–2.5 × control, or anti-Xa 0.3–0.7 IU/mL) and adjust per the hospital nomogram; platelet count every 2–3 days"
+        "zh-CN": "普通肝素80 U/kg静脉推注（或固定剂量5000 U），随后18 U/kg/h持续泵入；6小时后查APTT（目标为对照值的1.5–2.5倍，或抗Xa 0.3–0.7 IU/mL），按院内列线图调整；每2–3天复查血小板计数",
+        "en": "UFH 80 U/kg IV bolus (or a fixed 5,000 U bolus), then 18 U/kg/h infusion; APTT at 6 h (target 1.5–2.5 × control, or anti-Xa 0.3–0.7 IU/mL) and adjust per the hospital nomogram; platelet count every 2–3 days"
       },
+      "doseSpec": { "amount": 70, "upTo": 80, "unit": "unit/kg", "route": "IV" },
       "requires": [
         "infusion-pump",
         "medications",
@@ -4488,7 +4489,7 @@
           "依诺肝素治疗量",
           "治疗剂量低分子肝素",
           "低分子肝素治疗",
-          "依诺肝素70",
+          "依诺肝素70 mg",
           "克赛治疗量",
           "依诺肝素",
           "克赛",
@@ -4502,7 +4503,7 @@
           "therapeutic enoxaparin",
           "therapeutic lmwh",
           "lmwh treatment",
-          "enoxaparin 70",
+          "enoxaparin 70 mg",
           "enoxaparin",
           "clexane",
           "lmwh",
@@ -4512,9 +4513,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "依诺肝素1 mg/kg皮下注射，每12小时一次；肌酐清除率<30 mL/min时需调整（先查肌酐）",
-        "en": "Enoxaparin 1 mg/kg SC every 12 hours; adjust if creatinine clearance is < 30 mL/min (check the creatinine first)"
+        "zh-CN": "依诺肝素1 mg/kg皮下注射，每12小时一次（或1.5 mg/kg每日一次）；肌酐清除率<30 mL/min时需调整（先查肌酐）",
+        "en": "Enoxaparin 1 mg/kg SC every 12 hours (or 1.5 mg/kg once daily); adjust if creatinine clearance is < 30 mL/min (check the creatinine first)"
       },
+      "doseSpec": { "amount": 1, "upTo": 1.5, "unit": "mg/kg", "route": "SC" },
       "requires": [
         "medications"
       ],
@@ -4606,13 +4608,13 @@
       "aliases": {
         "zh-CN": [
           "预防剂量依诺肝素",
-          "依诺肝素40",
+          "依诺肝素40 mg",
           "补打预防针",
           "预防性低分子肝素"
         ],
         "en": [
           "prophylactic enoxaparin",
-          "enoxaparin 40",
+          "enoxaparin 40 mg",
           "prophylactic lmwh",
           "dvt prophylaxis dose"
         ]
@@ -4621,6 +4623,7 @@
         "zh-CN": "依诺肝素40 mg（4000 IU）皮下注射，每日一次",
         "en": "Enoxaparin 40 mg (4,000 IU) SC once daily"
       },
+      "doseSpec": { "amount": 40, "unit": "mg", "route": "SC" },
       "requires": [
         "medications"
       ],
@@ -5111,6 +5114,7 @@
         "zh-CN": "吗啡2.5 mg缓慢静注，必要时每5–10分钟重复，监测呼吸和血压",
         "en": "Morphine 2.5 mg slow IV, repeat every 5–10 minutes as needed, monitoring RR and BP"
       },
+      "doseSpec": { "amount": 2.5, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"

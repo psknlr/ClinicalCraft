@@ -25,6 +25,7 @@ import {
   type Resolution,
 } from "../tools/clinical.js";
 import { decisionRefFor } from "../tools/decision-refs.js";
+import { writtenOrder } from "../tools/dose-order.js";
 import { interventionLabel, investigationName } from "../tools/format.js";
 import { optionLabelsFor } from "../tools/option-labels.js";
 
@@ -42,7 +43,8 @@ export function actionToolArgs(c: CaseDefinition, action: ClinicalAction, locale
     case "read":
       return { investigation_id: action.investigationId, ...(action.phase ? { phase: action.phase } : {}) };
     case "intervene":
-      return { intervention_id: action.interventionId };
+      // the order as written travels as the words the tool reads its dose from (`writtenOrder`)
+      return { intervention_id: action.interventionId, ...(action.ordered ? { query: action.ordered.text } : {}) };
     case "answer": {
       // The letters `answer_decision` reads (a one-letter authored id would read as a letter); the decision by its id
       // (`decisionRefFor`: its number when the id would read as another decision's number).
@@ -160,7 +162,12 @@ export function actionFromToolInput(c: CaseDefinition, action: ClinicalAction, i
     case "intervene": {
       const r = resolveIntervention(c, input, L);
       if (r.kind !== "id") return refuse(r, (id) => interventionLabel(c, id, L), ["intervention_id", "query"]);
-      return { ok: true, action: { ...action, interventionId: r.id } };
+      // The order as written: kept as the action states it (its dose as read) while the hook left the words alone,
+      // else read again from the words the input now holds (`writtenOrder`, as the tool reads them).
+      const asGiven = actionToolArgs(c, action, L);
+      const { ordered: _ordered, ...rest } = action;
+      const ordered = sameValue(input.query, asGiven.query) && sameValue(input.dose, asGiven.dose) ? action.ordered : writtenOrder(input);
+      return { ok: true, action: { ...rest, interventionId: r.id, ...(ordered ? { ordered } : {}) } };
     }
     case "answer": {
       // Input the hook left as `actionToolArgs` gave it keeps the action's own ids: they never pass through letters,

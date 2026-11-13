@@ -76,9 +76,9 @@ anticoagulation first if there is thrombus. Then a prompt Heart Team decision be
 transcatheter valve-in-valve. For the fibrillatory-arrest approach the team chose: TOE for aortic regurgitation and an
 interatrial shunt, CT of the chest and iliofemoral vessels, coronary assessment, and de-airing before the heart ejects.
 After surgery: anticoagulation by valve type, a baseline echo, watching for AV block, endocarditis prevention, hepatitis
-treatment and addiction support. The recorded course — a team decision for redo surgery and a quick short-term recovery
-— fits this; what the record cannot show is whether the mechanism was established first, which options were weighed,
-and how he did after discharge.
+treatment and addiction support. The recorded course — a team decision for redo surgery and a short-term recovery to
+discharge on day 13 — fits this; what the record cannot show is whether the mechanism was established first, which
+options were weighed, whether a formal Heart Team met, and how he did after discharge.
 
 ## Scenario timeline (staged evidence by phase)
 
@@ -157,8 +157,10 @@ Every option has its own feedback naming ESC/EACTS 2025, ESC 2023 endocarditis, 
 2015, ESC 2021 heart failure or the Chinese 2022 hepatitis guidelines. Option ids name their content. **No length
 cue:** in no single-best decision is the key the longest option in either language (measured on 2026-10-30, key vs
 longest distractor: decision 1 — 56 vs 58 characters zh-CN, 197 vs 199 en; decision 2 — 47 vs 53, 165 vs 171; decision
-3 — 44 vs 46, 162 vs 177). There is no appraisal decision; the feasibility-versus-superiority point is taught in the
-debrief and by the attending.
+3 — 44 vs 46, 162 vs 177). In the two select-all decisions the three longest options are never the three keys (decision
+4: two distractors outrank two keys in both languages; decision 5: the longest en option and the second-longest zh-CN
+option are distractors — measured 2026-11-13). There is no appraisal decision; the feasibility-versus-superiority point
+is taught in the debrief and by the attending.
 
 ### Rubric (11 deterministic items, total weight 30, + 1 examiner-judged)
 
@@ -172,12 +174,12 @@ debrief and by the attending.
 | `rb-infection-thrombus-screen` | safety | 4 | **critical** — blood cultures **and** a TOE or cardiac CT ordered in `admission` or `assessment`, i.e. before the planning record |
 | `rb-strategy` | management | 3 | `strategy` right first time |
 | `rb-heart-team` | management | 4 | **critical** — Heart Team referral made, and neither discharge on more diuretic nor balloon dilation |
-| `rb-no-harm` | safety | 3 | none of empirical antibiotics, discharge on more diuretic, balloon dilation, lifelong warfarin plus aspirin; scored once decision 2, 3 or 5 is attempted or any of the four is given |
+| `rb-no-harm` | safety | 3 | none of empirical antibiotics, discharge on more diuretic, balloon dilation, warfarin while contraindicated (before the operation), lifelong warfarin plus aspirin; scored once decision 2, 3 or 5 is attempted or any of the five is given |
 | `rb-technique` | management | 2 | `technique-prep` right first time |
 | `rb-discharge` | management | 2 | `discharge-plan` right first time, postoperative echo and blood count/clotting ordered (phase `postop`), endocarditis prevention given |
-| `rb-communication` | communication | (judged) | Calgary–Cambridge: explains the narrowed valve and why the LVEF does not reassure; the cultures and TOE; asks about drug use without judgement and offers support; options and the Heart Team; his two worries; consent; after surgery, anticoagulation, dental cover, fever → cultures first, hepatitis treatment; teach-back |
+| `rb-communication` | communication | (judged) | Calgary–Cambridge: explains the narrowed valve and why the LVEF does not reassure; the cultures and the CT or TOE; asks about drug use without judgement and offers support; options and the Heart Team; his two worries; consent; after surgery, anticoagulation, dental cover, fever → cultures first, hepatitis treatment; teach-back |
 
-### How wrong choices score (measured with the reducer on 2026-10-30)
+### How wrong choices score (measured with the reducer on 2026-10-30; re-measured on 2026-11-13 after the review)
 
 | path | deterministic score | critical items missed |
 |---|---:|---|
@@ -186,25 +188,28 @@ debrief and by the attending.
 | wrong first answer at all five decisions, then right | 17/30 (57 %) | none |
 | wrong first answer at decision 1, 2 or 3 only | 27/30 (90 %) | none |
 | wrong first answer at decision 4 or 5 only | 28/30 (93 %) | none |
-| reference path without blood cultures and TOE | 26/30 (87 %) | `rb-infection-thrombus-screen` |
-| cultures and TOE ordered only after the planning record | 26/30 (87 %) | `rb-infection-thrombus-screen` |
+| reference path with a TOE in place of the CT (both in `assessment`) | 30/30 (100 %) | none |
+| reference path without blood cultures and CT | 26/30 (87 %) | `rb-infection-thrombus-screen` |
+| reference path without blood cultures only | 26/30 (87 %) | `rb-infection-thrombus-screen` |
+| cultures and CT ordered only after the planning record | 26/30 (87 %) | `rb-infection-thrombus-screen` |
 | discharge on more diuretic in place of the referral | 23/30 (77 %) | `rb-heart-team` (and `rb-no-harm` lost) |
 | balloon dilation in place of the referral | 23/30 (77 %) | `rb-heart-team` (and `rb-no-harm` lost) |
-| discharge on more diuretic first, the referral only after the planning record | 23/30 (77 %) | `rb-heart-team` |
+| discharge on more diuretic first, the referral only after the planning record | 23/30 (77 %) | `rb-heart-team` (and `rb-no-harm` lost) |
 | reference path plus empirical antibiotics | 27/30 (90 %) | none (`rb-no-harm` lost) |
 | reference path plus lifelong warfarin and aspirin | 27/30 (90 %) | none (`rb-no-harm` lost) |
+| warfarin before the operation, then the reference path | 27/30 (90 %) | none (`rb-no-harm` lost) |
 | reference path without endocarditis prevention and warfarin | 28/30 (93 %) | none (`rb-discharge` lost) |
 | reference path without the valve-cause and fever questions | 28/30 (93 %) | none (`rb-risk-history` lost) |
-| warfarin before the operation, then the reference path | 30/30 (100 %) | none — known limit, see below |
 
 Decisions are scored with `decidedFirstTry`, so guessing through the options costs the item. The four harmful
 interventions are always `contraindicated`, and warfarin is contraindicated before the operation: each is named in the
-debrief's safety list with its own harm text; the avoided-harm item counts only once the harm was possible
-(`scoredWhen`), so doing nothing earns 0. **Known limits:** rubric conditions carry no time, so (1) warfarin given
-before the operation is flagged as a contraindicated act but does not lower the score (the discharge item is therefore
-met by phase-bound orders — the postoperative echo and blood count — not by the warfarin act itself); (2) a learner who
-orders the cultures and TOE in `assessment` only after answering decision 3 still meets the critical screen, because
-the planning record has not yet opened. Debrief the order of acts from the transcript.
+debrief's safety list with its own harm text, and each loses `rb-no-harm` (warfarin only when it was given while
+contraindicated: `{"intervened": "warfarin-postop", "valid": false}`); the avoided-harm item counts only once the harm
+was possible (`scoredWhen`), so doing nothing earns 0. The discharge item is met by phase-bound orders (the
+postoperative echo and blood count) and endocarditis prevention, not by the warfarin act. **Known limit:** rubric
+conditions carry no time within a phase, so a learner who orders the cultures and the CT or TOE in `assessment` only
+after answering decision 3 still meets the critical screen, because the planning record has not yet opened. Debrief
+the order of acts from the transcript.
 
 ### Critical items
 
@@ -215,18 +220,27 @@ unestablished balloon dilation). Both are acts; neither reads a final-phase reco
 hindsight: the screen counts only in `admission` or `assessment`, and the planning record opens only after a
 disposition act, so a referral made after a diversion fails the item.
 
+**Safety outcome.** No intervention in this case is high-risk, so none carries `critical: true`: the five
+contraindicated acts — discharge on more diuretic, empirical antibiotics before cultures, balloon dilation of the
+prosthesis, lifelong warfarin plus aspirin and warfarin before the operation — are moderate-risk, recoverable
+misjudgements. Each shows its harm text and loses `rb-no-harm`, and discharge on more diuretic or balloon dilation in
+place of the referral also fails the critical `rb-heart-team`, but none on its own fails the assessment's safety
+outcome.
+
 ## Reference path (`solution`)
 
-78 steps, static clock: start → presenting complaint, onset, course, earlier treatment, exercise tolerance, orthopnoea,
+76 steps, static clock: start → presenting complaint, onset, course, earlier treatment, exercise tolerance, orthopnoea,
 abdomen and jaundice, fever screen, palpitations → valve operation and its cause, anticoagulation since, hepatitis and
 its treatment, GI bleeding, drug use and its details, smoking and alcohol, medicines, allergies, family, his worries →
 old operation record, heart-failure treatment record → daily weights, IV cannula, liver/kidney panel, blood count and
 clotting, viral tests, ECG → IV furosemide → `leading-cause` → (phase `assessment`) echo → `before-reintervention` →
-blood cultures, TOE → dental health, HIV testing → hepatology, addiction support → `strategy` → **Heart Team referral**
-→ (phase `planning`) planning record, CT, coronary CT → `technique-prep` → consent → (phase `postop`) how the days went,
-subsequent course record, echo, ECG, blood count and clotting, liver/kidney panel → warfarin, endocarditis prevention,
-home support → `discharge-plan` → (phase `followup`) outcome record → finish. `cases verify` passes: objectives 6/6,
-decisions 5/5, rubric 30/30, utterances 40/40.
+blood cultures, then the contrast CT for thrombus, pannus and the re-entry anatomy (not a TOE: his GI-bleeding history
+is unknown and no platelet count or clotting result is recorded, so the case's own alternative is used) → dental
+health, HIV testing → hepatology, addiction support → `strategy` → **Heart Team referral** → (phase `planning`)
+planning record, coronary CT → `technique-prep` → consent → (phase `postop`) how the days went, subsequent course
+record, echo, ECG, blood count and clotting, liver/kidney panel → warfarin, endocarditis prevention, home support →
+`discharge-plan` → (phase `followup`) outcome record → finish. `cases verify` passes: objectives 6/6, decisions 5/5,
+rubric 30/30, utterances 40/40.
 
 ## Clinical numbers check
 
@@ -263,9 +277,10 @@ team decided and chose the approach; the day of the operation; how long he was i
 
 **Guidance numbers used in teaching text** (doses as formulas; no patient value is needed): LVEF normal ranges by sex
 (ASE/EACVI 2015); three sets of blood cultures before any antibiotic (ESC 2023); IV furosemide at least equal to the
-usual daily oral dose, or 20–40 mg if he takes none (ESC 2021 heart failure); warfarin usually for the first 3 months
-after a surgical tricuspid bioprosthesis, lifelong for a mechanical valve (ESC/EACTS; the 2025 class is to verify);
-aspirin 100 mg (the harmful add-on's dose text); CT coronary angiography for low-to-intermediate and invasive
+usual daily oral dose, or 20–40 mg if he takes none (ESC 2021 heart failure); a lifelong vitamin K antagonist for a
+mechanical valve; after a surgical bioprosthesis, early antithrombotic treatment individualised (ESC/EACTS 2025), with a
+vitamin K antagonist to be considered for the first 3 months in the mitral or tricuspid position (ESC/EACTS 2021, class
+IIa; the 2025 wording is to verify); aspirin 100 mg (the harmful add-on's dose text); CT coronary angiography for low-to-intermediate and invasive
 angiography for high pre-test probability (ESC/EACTS 2025). No Doppler threshold for prosthetic tricuspid stenosis is
 quoted (to verify). No weight is recorded, so no weight-based dose is computed.
 
@@ -288,7 +303,7 @@ quoted (to verify). No weight is recorded, so no weight-based dose is computed.
      record does not hold (the old valve's model and size)?"
    - "Why might a surgeon choose fibrillatory arrest for a re-operation — and what has to be checked before that is
      safe?"
-   - "He went home on day 13. What does that tell us about the technique, and what can it not tell us?"
+   - "He was discharged on day 13. What does that tell us about the technique, and what can it not tell us?"
    - "Which valve was put in? How did not knowing change your discharge plan?"
 4. **Summary.** "What will you check next time a patient with a prosthetic valve comes in with swollen legs?"
 
@@ -312,7 +327,7 @@ recorded, so the mechanism of this obstruction stays unknown.
 | Making treatment conditional on proof of abstinence | `abstinence-first` feedback; communication item | `rb-strategy` |
 | No TOE "because only the right heart is opened"; defibrillating before de-airing | `skip-toe-right-only`, `defib-before-deair` feedback | `rb-technique` |
 | No antithrombotic or echo after a tissue valve; warfarin plus aspirin | `tissue-no-followup`, `warfarin-aspirin-life` feedback; `warfarin-aspirin` contraindicated | `rb-discharge`, `rb-no-harm` |
-| Warfarin before the operation | `warfarin-postop` contraindicated before `postop` | — (safety list) |
+| Warfarin before the operation | `warfarin-postop` contraindicated before `postop` | `rb-no-harm` (`valid: false`) |
 | Inventing vital signs, examination findings or results | unknown history items, `examNotRecorded`, results with no record, the nurse's brief | — |
 
 ### Teaching points for the debrief
@@ -323,13 +338,15 @@ The five `debrief.teachingPoints`: (1) grade prosthetic obstruction by Doppler a
 and TOE (ESC/EACTS 2025; ESC 2023; Duke-ISCVID 2023) — whether any of this was done is not recorded; (3) the Heart Team
 sets the strategy, redo surgery against valve-in-valve, before right-heart and end-organ damage advance (ESC/EACTS 2025);
 (4) the reported technique, its rationale and prerequisites, and what one case can show; (5) whole-patient care after
-the replacement — anticoagulation by valve type, baseline echo, AV block, endocarditis prevention, hepatitis treatment
-(Chinese 2022 guidelines), addiction support without judgement.
+the replacement — anticoagulation by valve type (early antithrombotic treatment after a surgical bioprosthesis
+individualised in ESC/EACTS 2025; the 2021 edition's 3 months of a vitamin K antagonist in the mitral or tricuspid
+position), baseline echo, AV block, endocarditis prevention, hepatitis treatment (Chinese 2022 guidelines), addiction
+support without judgement.
 
 ## Embodied mode
 
 - **Where things are (`general-hospital`).** He lies in a ward bed (`setting: "inpatient"`) in every phase; no phase has
-  a `location` and no intervention a `destination`. The operation, the intensive-care days and the team meeting are
+  a `location` and no intervention a `destination`. The operation, the intensive-care days and the team's plan are
   records read at the ward's records terminal or in the notes at the bedside. The postoperative phase is set on day 3,
   after the recorded transfer to the general ward.
 - **Tests.** The echo and the TOE need the echo machine brought from imaging to the ward (`echocardiography`,
@@ -346,8 +363,9 @@ the replacement — anticoagulation by valve type, baseline echo, AV block, endo
 - **He can speak throughout** (a conscious adult answers for himself; no companion). There are no examination findings:
   every manoeuvre answers with `examNotRecorded` ("This case holds no recorded finding for this examination; treat it as
   unknown").
-- **Measured (offline demonstration, 2026-10-30).** `embodied-autopilot.test.ts -t "cmcr-1551888:"` passes in en and
-  zh-CN: every objective done, in-world score equal to the clinical score, nothing refused.
+- **Measured (offline demonstration, 2026-10-30; again 2026-11-13 with the CT in place of the TOE).**
+  `embodied-autopilot.test.ts -t "cmcr-1551888:"` passes in en and zh-CN: every objective done, in-world score equal to
+  the clinical score, nothing refused.
 
 ## Source and adaptation (fidelity limits)
 
@@ -365,7 +383,9 @@ shown as the "planned approach", the postoperative phase on day 3 — none of th
 dialogue (lay rewording of the recorded facts); the staff; the five decisions, their options and feedback; the 13
 interventions (their responses say the case does not record whether they were done); the rubric; the unrecorded tests a
 learner would order (ECG, chest film, liver/kidney panel and NT-proBNP, blood count and clotting, viral tests, abdominal
-ultrasound, cultures, TOE, CT, coronary CT, postoperative echo) as honest results with no record. **Labelled teaching
+ultrasound, cultures, TOE, CT, coronary CT, postoperative echo) as honest results with no record; the Heart Team
+referral's response stages the treating team's recorded judgement as the planning record that follows it — whether a
+formal Heart Team meeting took place is not recorded, and the response and the record say so. **Labelled teaching
 devices:** his voiced worries ("another heart operation", "will my liver take it", `persona.concerns` and the `concerns`
 item) and his hesitation before speaking about drug use (`persona.actingNotes`) add no clinical fact — 1.0.0 records no
 concerns or manner. Unknown history items answer with the collection's lay unknown ("这个我说不上来，医生。" / "I'm not
@@ -440,8 +460,11 @@ unverifiable `authorChecks` booleans and `sourceTextSha256` removed until the so
   `home-support` vs family disease.
 - **English keywords** avoid one-word wildcards: run-together forms (`broughtyouin`, `comingandgoing`, `didithelp`,
   `seenadoctor`, `howmuchdoyoutake`, `drugsareyoutaking`, `whywasitreplaced`, `whydidyouneed`, `whichdrugs`,
-  `howdidyoutake`, `lasttimeyouused`, `whoisathome`, `onyourmind`, `howareyoufeeling`); "at night" was dropped from
-  `orthopnoea` because it took the fever and night-sweats question.
+  `howdidyoutake`, `lasttimeyouused`, `whoisathome`, `onyourmind`, `howareyoufeeling`, `bringsyouin`); "at night" was
+  dropped from `orthopnoea` because it took the fever and night-sweats question. `presenting` also takes "legs" and
+  "ankles", and `abdomen-liver` excludes them, so "Are your legs swollen?" reaches the recorded complaint rather than the
+  unknown abdominal item (before the review it answered "I'm not sure, doctor."), and "What brings you in?" no longer
+  falls through to the lay unknown.
 - **Order entry.** `orderMatching.rules` send any echo query with 经食管/食道/TOE/TEE/transoesophageal to the TOE, any CT
   query with 冠脉/coronary/CCTA to the coronary CT, "this time / redo / post-op" record queries to the subsequent course
   record and "previous / old / 22" ones to the old operation record, and drop the TTE from "heart team" queries (the
@@ -461,29 +484,34 @@ unverifiable `authorChecks` booleans and `sourceTextSha256` removed until the so
    doi:10.12408/j.issn2223-4462.2025.01.015. Available from: https://rs.yiigle.com/cmaid/1551888
 2. Praz F, Borger MA, Lanz J, et al. 2025 ESC/EACTS Guidelines for the management of valvular heart disease. Eur Heart J.
    2025;46(44):4635-4736. doi:10.1093/eurheartj/ehaf194
-3. Delgado V, Ajmone Marsan N, de Waha S, et al. 2023 ESC Guidelines for the management of endocarditis. Eur Heart J.
+3. Vahanian A, Beyersdorf F, Praz F, et al. 2021 ESC/EACTS Guidelines for the management of valvular heart disease. Eur
+   Heart J. 2022;43(7):561-632. doi:10.1093/eurheartj/ehab395
+4. Delgado V, Ajmone Marsan N, de Waha S, et al. 2023 ESC Guidelines for the management of endocarditis. Eur Heart J.
    2023;44(39):3948-4042. doi:10.1093/eurheartj/ehad193
-4. Fowler VG Jr, Durack DT, Selton-Suty C, et al. The 2023 Duke-International Society for Cardiovascular Infectious
+5. Fowler VG Jr, Durack DT, Selton-Suty C, et al. The 2023 Duke-International Society for Cardiovascular Infectious
    Diseases criteria for infective endocarditis: updating the modified Duke criteria. Clin Infect Dis.
    2023;77(4):518-526. doi:10.1093/cid/ciad271
-5. Zoghbi WA, Jone PN, Chamsi-Pasha MA, et al. Guidelines for the evaluation of prosthetic valve function with
+6. Zoghbi WA, Jone PN, Chamsi-Pasha MA, et al. Guidelines for the evaluation of prosthetic valve function with
    cardiovascular imaging: a report from the American Society of Echocardiography developed in collaboration with the
    Society for Cardiovascular Magnetic Resonance and the Society of Cardiovascular Computed Tomography. J Am Soc
    Echocardiogr. 2024;37(1):2-63. doi:10.1016/j.echo.2023.10.004
-6. Lang RM, Badano LP, Mor-Avi V, et al. Recommendations for cardiac chamber quantification by echocardiography in
+7. Lang RM, Badano LP, Mor-Avi V, et al. Recommendations for cardiac chamber quantification by echocardiography in
    adults: an update from the American Society of Echocardiography and the European Association of Cardiovascular
    Imaging. J Am Soc Echocardiogr. 2015;28(1):1-39.e14.
-7. McDonagh TA, Metra M, Adamo M, et al. 2021 ESC Guidelines for the diagnosis and treatment of acute and chronic heart
+8. McDonagh TA, Metra M, Adamo M, et al. 2021 ESC Guidelines for the diagnosis and treatment of acute and chronic heart
    failure. Eur Heart J. 2021;42(36):3599-3726.
-8. 中华医学会肝病学分会, 中华医学会感染病学分会. 慢性乙型肝炎防治指南（2022年版）. 中华传染病杂志. 2023;41(1):3-28.
-9. 中华医学会肝病学分会, 中华医学会感染病学分会. 丙型肝炎防治指南（2022年版）. 中华肝脏病杂志. 2022;30(12):1332-1348.
-   doi:10.3760/cma.j.cn501113-20221220-00605
+9. 中华医学会肝病学分会, 中华医学会感染病学分会. 慢性乙型肝炎防治指南（2022年版）. 中华肝脏病杂志. 2022;30(12):1309-1331.
+10. 中华医学会肝病学分会, 中华医学会感染病学分会. 丙型肝炎防治指南（2022年版）. 中华肝脏病杂志. 2022;30(12):1332-1348.
+    doi:10.3760/cma.j.cn501113-20221220-00605
 
 **DOIs.** The source DOI is the one the source map (`scripts/cmcr-105-sources.json`) records as verified
-(`publisherCheckedAt` 2026-10-29). The DOIs of refs 2–5 and 9 and their volume and pages were confirmed by web search
-on 2026-10-30 (publisher, PubMed and repository records; the primary pages themselves could not be opened from this
-session — the fetch host is outside the allowed network). Refs 6 and 7 carry no DOI because none was confirmed; ref 8
-is cited as the library's other cases cite it.
+(`publisherCheckedAt` 2026-10-29). Refs 2, 3, 6 and 10 (journal, volume, pages and DOI) were re-confirmed by web search
+on 2026-11-13 (journal, repository and index records); refs 4 and 5 were confirmed the same way on 2026-10-30. The
+primary pages themselves could not be opened from these sessions. Refs 7 and 8 carry no DOI because none was confirmed.
+Ref 9 is cited at its first publication (中华肝脏病杂志 2022;30(12):1309-1331, confirmed from a citing record); its
+co-publication in 中华传染病杂志 (2023;41(1):3-28, as other library cases cite it) could not be confirmed. Ref 3 is the
+superseded 2021 edition, cited only for its 3-month vitamin K antagonist advice after a surgical mitral or tricuspid
+bioprosthesis.
 
 ### To verify
 
@@ -517,12 +545,16 @@ is cited as the library's other cases cite it.
 **In the guidance (the primary texts were not reachable from this session):**
 
 - ESC/EACTS 2025 VHD — the class and wording of: reintervention for symptomatic bioprosthetic failure; TOE or 4D-CT for
-  suspected valve thrombosis and anticoagulation before reintervention; transcatheter valve-in-valve in the tricuspid
-  position (2021: IIb for high surgical risk); early antithrombotic therapy after a surgical tricuspid bioprosthesis
-  (2021: a VKA for 3 months, IIa; a 2025 commentary describes it as individualised); coronary assessment before valve
-  surgery by pre-test probability (CCTA vs invasive angiography; whether the "men over 40" criterion remains); adding
-  aspirin to a VKA; Heart Team and centre requirements; any statement on balloon dilation of a bioprosthesis. The
-  teaching text states these without classes.
+  suspected valve thrombosis (reported as recommended in congress coverage) and anticoagulation with a VKA before
+  reintervention (a secondary summary of the 2025 table; 2021: VKA and/or UFH, class I); transcatheter valve-in-valve in
+  the tricuspid position (2021: IIb for high surgical risk); early antithrombotic therapy after a surgical
+  bioprosthesis (2025: individualised, per the ESC pharmacotherapy working group's summary; 2021: a VKA should be
+  considered for the first 3 months in the mitral or tricuspid position, IIa — the case attributes the 3 months to 2021
+  only); coronary assessment before valve surgery by pre-test probability (CCTA at ≤ 50 % / low-to-intermediate,
+  invasive angiography when high, per secondary summaries; whether the "men over 40" criterion remains); adding aspirin
+  to a VKA (2025, per secondary summaries: to be considered in selected patients with symptomatic atherosclerosis);
+  Heart Team and centre requirements. No guideline statement on balloon dilation of a bioprosthesis was found, so the
+  case states that point without a citation. The teaching text states these without classes.
 - ESC 2023 endocarditis — the blood-culture wording (number of sets, spacing), the class for antibiotic prophylaxis
   before high-risk dental procedures with prosthetic valves, and its recommendations for people who inject drugs.
 - ASE/SCMR/SCCT 2024 — the Doppler criteria for tricuspid prosthesis stenosis (mean gradient, pressure half-time, VTI
@@ -530,8 +562,9 @@ is cited as the library's other cases cite it.
 - ASE/EACVI 2015 — the LVEF normal range by sex (52–72 % for men) was confirmed only from secondary sources; its DOI.
 - ESC 2021 heart failure — the initial IV furosemide wording (at least the oral daily dose; 20–40 mg if diuretic-naive)
   and the citation's DOI.
-- 慢性乙型肝炎防治指南（2022年版） — the citation (cited as 中华传染病杂志 2023;41(1):3-28, as in the library's other
-  cases); 丙型肝炎防治指南（2022年版） — its DAA and screening statements.
+- 慢性乙型肝炎防治指南（2022年版） — now cited at its first publication (中华肝脏病杂志 2022;30(12):1309-1331); its DOI and
+  its co-publication in 中华传染病杂志 2023;41(1):3-28 (as the library's other cases cite it); 丙型肝炎防治指南（2022年版）
+  — its DAA and screening statements.
 - The prerequisites of hypothermic fibrillatory arrest taught here (aortic regurgitation, interatrial shunt, de-airing
   before the heart ejects) against a cardiac-surgical text, and the safety of TOE in liver disease with possible varices.
 
@@ -577,6 +610,24 @@ is cited as the library's other cases cite it.
   yet reviewed by a licensed clinician." because the collection contract matches that phrase case-sensitively);
   `sourceTextChecked: false`; `authorChecks` and `sourceTextSha256` removed until the source pass; `sourceDoi` +
   `doiVerifiedAt` added; the source citation without double space or zero-padded issue; the approved PDF kept.
+- **Independent review (2026-11-13), within 1.1.0.** Facts: the discharge on day 13 is no longer "home" (en) or
+  "顺利" (uneventful, zh) — 1.0.0 records only 出院; the attending's question speaks of a short-term, not a "good",
+  recovery; the surgeon's brief no longer implies this operation's cannulation sites; the discharge distractor no
+  longer presupposes oral furosemide and the addiction referral no longer presupposes injecting; the communication
+  guidance no longer asserts liver congestion. Heart Team staging: the referral's response, the planning record (zh
+  name 治疗方案记录) and its note say that whether a formal Heart Team met is not recorded; the critical screen's text
+  reads "before the team's plan was made". Guidance: the 3-month vitamin K antagonist after a surgical tricuspid
+  bioprosthesis is attributed to ESC/EACTS 2021 (2025 individualises; ref 3 added); the aspirin add-on is restated as
+  2025 confines it (selected patients with symptomatic atherosclerosis) instead of "no reduction in thrombosis"; the
+  balloon-dilation harm no longer cites ESC/EACTS 2025 for a statement not found there; fibrillatory arrest with
+  aortic regurgitation "undermines myocardial protection" (the right-heart field is not flooded); consent names the
+  risk to life and the liver's extra risk; ref 9 cited at its confirmed first publication. Assessment: warfarin given
+  before the operation now loses `rb-no-harm` (`valid: false`), closing the 1.1.0 known limit; the select-all
+  distractors of decisions 4 and 5 now match the keys' length and specificity (in zh-CN the three keys of decision 4
+  were its three longest options). Reference path: the mechanism scan is the contrast CT, not a TOE whose
+  preconditions (GI-bleeding history, platelets, clotting) the case cannot establish (76 steps). Matcher: "legs",
+  "ankles", "bringsyouin" on `presenting`, "legs"/"ankles" excluded from `abdomen-liver`; one en utterance now tests
+  the leg-swelling question. README: a **Safety outcome** paragraph, re-measured score table, references and To verify.
 
 ### 1.0.0 — 2026-10-28
 
@@ -587,13 +638,13 @@ is cited as the library's other cases cite it.
 
 ```bash
 npm run -s cc -- cases validate packages/content/cases/cmcr-1551888/case.json --strict --lang en   # 0 errors, 0 warnings
-npm run -s cc -- cases verify cmcr-1551888 --lang en                                                 # 78 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 30/30 (100 %)
+npm run -s cc -- cases verify cmcr-1551888 --lang en                                                 # 76 steps · objectives 6/6 · decisions 5/5 · utterances 40/40 · rubric 30/30 (100 %)
 npx tsx --conditions=source node_modules/.cc-tools/case-check.ts cmcr-1551888                       # depth floor, do-nothing 0, wrong-first 57 % < 100 %
 npx vitest run --maxWorkers=1 packages/content/src/cmcr-105.test.ts -t "cmcr-1551888:"              # collection contract
 npx vitest run --maxWorkers=1 packages/agent/src/session/embodied-autopilot.test.ts -t "cmcr-1551888:"  # in-world demonstration, en + zh-CN
 ```
 
-Measured on 2026-10-30: all five pass.
+Measured on 2026-10-30, and again on 2026-11-13 after the independent review: all five pass.
 
 ## 中文摘要
 
@@ -618,10 +669,16 @@ Measured on 2026-10-30: all five pass.
 不足）。决策 2：再次干预前先查明机制——血培养、经食管超声或 CT、有血栓先抗凝（干扰项：认定磨损直接手术、先用抗生素、因射血分
 数正常去查肝肾、抗凝后出院）。决策 3：现在提交心脏团队比较两种再干预方式（干扰项：继续利尿等待、瓣中瓣作为默认、球囊扩张、要求
 戒毒证明）。决策 4（多选）：经食管超声查主动脉瓣反流和心房水平分流、胸部及髂股血管 CT、冠状动脉评估。决策 5（多选）：按瓣膜类
-型抗凝、基线超声与房室传导阻滞监测、心内膜炎预防与肝炎治疗和成瘾支持。两个关键项：团队讨论前完成血培养和经食管超声（或 CT），
-以及及时提交心脏团队且不以加量利尿出院或球囊扩张代替。
+型抗凝、基线超声与房室传导阻滞监测、心内膜炎预防与肝炎治疗和成瘾支持。两个关键项：团队定下方案前完成血培养和 CT（或经食管超
+声），以及及时提交心脏团队且不以加量利尿出院或球囊扩张代替。参考路径在梗阻机制检查中选 CT：他的消化道出血史、血小板和凝血都没
+有记录，经食管超声的前提无法确认。
+
+**安全结果。** 本病例没有高风险处置，因此没有处置标为 `critical: true`：加量利尿后出院、未留血培养先用经验性抗生素、球囊扩张人工
+瓣、终身华法林加阿司匹林和术前开始华法林，都是中等风险、可挽回的误判，会显示各自的伤害说明并失去 `rb-no-harm` 的分值（以加量利尿
+出院或球囊扩张代替转诊，还会使关键项 `rb-heart-team` 不达标），但单独不会使安全结果判为不通过。
 
 **复盘要点。** 用多普勒量化人工瓣梗阻并与基线比较，射血分数正常不代表右心正常（ASE 2024；ASE/EACVI 2015）；再次干预前先定机制
 （ESC/EACTS 2025；ESC 2023 心内膜炎指南；Duke-ISCVID 2023）；策略由心脏团队决定，转诊不能拖；报告的术式有其前提，一例术后第 13
-天出院只证明可行；术后按瓣膜类型抗凝，预防心内膜炎，治疗乙肝丙肝（中华医学会 2022 年指南），不带评判地提供成瘾支持。记录的病程
-没有说明是否先查明了梗阻机制、比较过哪些方案，以及出院后的情况。
+天出院只证明可行；术后按瓣膜类型抗凝（外科生物瓣术后早期抗栓按血栓与出血风险个体化，ESC/EACTS 2025；2021 年版建议二尖瓣位、
+三尖瓣位考虑前 3 个月使用维生素 K 拮抗剂），预防心内膜炎，治疗乙肝丙肝（中华医学会 2022 年指南），不带评判地提供成瘾支持。记录
+的病程没有说明是否先查明了梗阻机制、比较过哪些方案、是否召开过正式的心脏团队会议，以及出院后的情况。

@@ -212,7 +212,7 @@ describe("bench operative", () => {
     expect(list.stdout).toContain("mini-frozen");
     const r = await run(["bench", "operative", "--suite", "mini-v1", "--agent", "reference", "--seeds", "1-2", "--out", "op1", "--lang", "en"], box);
     expect(r.code, r.stderr).toBe(0);
-    expect(r.stdout).toContain("reference: 2/2 runs succeeded (100.0 %); safety-critical 0/2; leaks 0");
+    expect(r.stdout).toContain("reference: 2/2 runs succeeded (100.0 %); safety-critical 0/2; safety not passed 0/2; leaks 0");
     const report = JSON.parse(readFileSync(join(box.cwd, "op1", "operative-report.json"), "utf8")) as { format: string; deterministic: boolean; digests: { dev: string } };
     expect(report).toMatchObject({ format: "clinicalcraft-operative-report@1", deterministic: true });
     expect(readFileSync(join(box.cwd, "op1", "operative-report.md"), "utf8")).toContain("# ClinicalCraft operative benchmark — mini-v1");

@@ -34,6 +34,7 @@ import { investigationName, objectiveTitle, phaseLabel, table } from "./tools/fo
 import { labelledOptions, optionTokens, resolveOptionToken } from "./tools/option-labels.js";
 import { executeEmbodiedCommand } from "./commands-world.js";
 import { criticalMisses } from "./critical.js";
+import { safetyLines, safetySummary } from "./safety.js";
 import type { ToolOutput } from "./tools/types.js";
 
 /** What commands need from the session. */
@@ -407,8 +408,10 @@ function debriefCommand(host: CommandHost): void {
   }
   const d = c.debrief;
   const colon = isZh(L) ? "：" : ": ";
-  // Critical items missed come first, prominently (they do not cap the score).
-  const critical = criticalMisses(c, assess(c, s), L);
+  // Critical items missed come first, prominently (they do not cap the score), then the safety outcome (PROTOCOL §3.2).
+  const report = assess(c, s);
+  const critical = criticalMisses(c, report, L);
+  const safety = safetySummary(c, report, L);
   const section = (key: RuntimeKey, items: string[], marker: (i: number) => string = () => "-") =>
     items.length > 0 ? [`${rt(L, key)}${colon.trimEnd()}`, ...items.map((x, i) => `  ${marker(i)} ${x}`)] : [];
   // The case's learning outcomes (they name the diagnosis: listed here, once the debrief is unlocked) and who
@@ -420,6 +423,7 @@ function debriefCommand(host: CommandHost): void {
   const lines = [
     t(d.title, L),
     ...critical.map((x) => rt(L, "critical.missed", { text: x.text })),
+    ...safetyLines(c, report, L),
     t(d.conclusion, L),
     ...section("cmd.debrief.reasoning", d.keyReasoning.map((x) => t(x, L))),
     ...section("cmd.debrief.outcomes", outcomes, (i) => `${i + 1}.`),
@@ -434,6 +438,7 @@ function debriefCommand(host: CommandHost): void {
   host.output(lines.join("\n"), {
     title: t(d.title, L),
     criticalMissed: critical,
+    safety,
     conclusion: t(d.conclusion, L),
     keyReasoning: d.keyReasoning.map((x) => t(x, L)),
     learningOutcomes: outcomes,
@@ -520,6 +525,18 @@ async function hintCommand(host: CommandHost): Promise<void> {
   host.output(rt(L, "cmd.hint.text", { hint }), { objectiveId: objective.id, hint, accepted: result !== null && !result.rejected });
 }
 
+/**
+ * `/give`'s tool input: an exact id alone (the prepared dose); an exact id and then the dose as written
+ * ("adrenaline-im 0.5 mg IM"); else the order in words ("IM adrenaline 0.5 mg", "肌注肾上腺素 0.5 mg"). The tool reads
+ * the dose and route from the words, and the engine checks them against the dose prepared (docs/PROTOCOL.md §3.2).
+ */
+export function giveArgs(c: Pick<CaseDefinition, "interventions">, text: string): Record<string, unknown> {
+  if (c.interventions.some((i) => i.id === text)) return { intervention_id: text };
+  const [first, ...rest] = text.split(/\s+/);
+  if (first && rest.length > 0 && c.interventions.some((i) => i.id === first)) return { intervention_id: first, dose: rest.join(" ") };
+  return { query: text };
+}
+
 /* ------------------------------------------------------------------ */
 /* Dispatcher                                                          */
 /* ------------------------------------------------------------------ */
@@ -557,7 +574,7 @@ export async function executeCommand(host: CommandHost, name: string, args: stri
     }
     case "give":
       if (!a) return usage(host, name, "<query>");
-      return toolOut(host, await host.runTool("intervene", c.interventions.some((i) => i.id === a) ? { intervention_id: a } : { query: a }), "give");
+      return toolOut(host, await host.runTool("intervene", giveArgs(c, a)), "give");
     case "vitals":
       return toolOut(host, await host.runTool("check_vitals", {}));
     case "board": {

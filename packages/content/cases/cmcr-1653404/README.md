@@ -413,7 +413,8 @@ entry (NBK1453, no DOI); the CDC chapter carries no DOI.
 
 - **Critical safety failure (audit P0-3).** A live attenuated vaccine once the immunoglobulins show a severe
   antibody deficiency is `critical: true` (vaccine-associated poliomyelitis, disseminated BCG); `rb-safety-vaccine` was
-  already a critical rubric item. Scores are unchanged.
+  already a critical rubric item. `live-vaccine` is moderate risk (it was low): a critical intervention's badge and
+  confirmation say what it can do. Scores are unchanged.
 
 ### 1.1.1 — 2026-10-30 (assessment validity)
 

@@ -7,8 +7,8 @@
     "en": "Worsening breathing in a preterm baby · 7-day-old girl"
   },
   "summary": {
-    "zh-CN": "一名孕33周出头出生、出生体重1.1 kg的早产女婴，在新生儿病房住到第7天时呼吸明显变差，护士请你马上到床旁。",
-    "en": "A baby girl born just after 33 weeks and weighing 1.1 kg breathes markedly worse on her seventh day in the neonatal unit, and the nurse asks you to come to her cot now."
+    "zh-CN": "一名孕33周出头出生、出生体重1.1 kg的早产女婴，生后第7天在新生儿病房里呼吸明显变差，护士请你马上到床旁。",
+    "en": "A baby girl born just after 33 weeks and weighing 1.1 kg is breathing markedly worse at 7 days old in the neonatal unit, and the nurse asks you to come to her cot now."
   },
   "specialty": [
     "neonatology",
@@ -85,12 +85,12 @@
       "en": "Manage a line-related pleural effusion: take the line out of use and remove it, tap an effusion that compromises breathing under ultrasound with the volume judged in mL/kg, send the fluid for cell count and differential, triglyceride, protein, glucose and culture, and continue nutrition peripherally for a short time when a central line has to come out (NICE NG154, 2020)."
     },
     {
-      "zh-CN": "运用儿童乳糜诊断标准——有经口脂肪摄入时甘油三酯 > 1.1 mmol/L，细胞数 ≥ 1000/µL且淋巴细胞 > 80 %（Büttiker 1999），并说明为什么外观清亮、乙醚试验或李凡他试验都不能区分乳糜和漏出的输注液。",
-      "en": "Apply the paediatric chyle criteria — triglyceride > 1.1 mmol/L with oral fat intake, ≥ 1000 cells/µL with > 80 % lymphocytes (Büttiker 1999) — and explain why a clear appearance, an ether test or a Rivalta test cannot separate chyle from leaked infusate."
+      "zh-CN": "运用儿童乳糜诊断标准——有经口脂肪摄入时甘油三酯 > 1.1 mmol/L，细胞数 > 1000/µL且淋巴细胞 > 80 %（Büttiker 1999），并说明为什么外观清亮、乙醚试验或李凡他试验都不能区分乳糜和漏出的输注液。",
+      "en": "Apply the paediatric chyle criteria — triglyceride > 1.1 mmol/L with oral fat intake, > 1000 cells/µL with > 80 % lymphocytes (Büttiker 1999) — and explain why a clear appearance, an ether test or a Rivalta test cannot separate chyle from leaked infusate."
     },
     {
-      "zh-CN": "把乳糜胸的专门治疗留给确诊且持续的乳糜漏——先无脂喂养，持续漏出时禁食并给予肠外营养，奥曲肽仅是证据不足的选择（Cochrane系统评价2010：没有随机对照试验），并结合解剖和已记录的检查评价报告的乳糜胸诊断及其因果推断。",
-      "en": "Reserve chylothorax treatment for a confirmed, persistent leak — fat-free feeding first, parenteral nutrition with enteric rest if it continues, and octreotide only as an unproven option (Cochrane review 2010: no randomised trials) — and appraise the report's chylothorax label and causal claim against the anatomy and the tests recorded."
+      "zh-CN": "乳糜确诊后才开始乳糜胸的专门治疗——引流并无脂喂养在先，乳糜漏持续时禁食并给予肠外营养，奥曲肽仅是证据不足的选择（Cochrane系统评价2010：没有随机对照试验），并结合解剖和已记录的检查评价报告的乳糜胸诊断及其因果推断。",
+      "en": "Start chylothorax treatment only once chyle is confirmed — drainage and fat-free feeding first, parenteral nutrition with enteric rest if the leak persists, and octreotide only as an unproven option (Cochrane review 2010: no randomised trials) — and appraise the report's chylothorax label and causal claim against the anatomy and the tests recorded."
     },
     {
       "zh-CN": "向家属如实说明可能的导管并发症——发生了什么、哪些还不确定、接下来怎么做，把它作为患者安全事件上报，并安排呼吸、生长和发育随访。",
@@ -2681,8 +2681,8 @@
         ]
       },
       "dose": {
-        "zh-CN": "先取血培养，在决定治疗后 1 小时内开始；已在新生儿病房的晚发型感染，NICE NG195（2021）首选窄谱联合方案（如氟氯西林加庆大霉素），带中心静脉导管时按当地方案调整；剂量按体重计算；48 小时培养阴性且起初怀疑不强时考虑停药。",
-        "en": "Blood culture first, then start within 1 hour of the decision; for late-onset infection in a baby already in a neonatal unit NICE NG195 (2021) advises a narrow-spectrum combination such as flucloxacillin plus gentamicin, adapted to local policy for babies with central lines; doses by weight; consider stopping at 48 hours if the culture is negative and the initial suspicion was low."
+        "zh-CN": "先取血培养，在决定治疗后 1 小时内开始；已在新生儿病房的晚发型感染，NICE NG195（2021）首选窄谱联合方案（如氟氯西林加庆大霉素）；带中心静脉导管时按本病区方案调整；剂量按体重计算；培养结果回报后重新评估是否继续用药。",
+        "en": "Blood culture first, then start within 1 hour of the decision; for late-onset infection in a baby already in a neonatal unit NICE NG195 (2021) advises a narrow-spectrum combination such as flucloxacillin plus gentamicin; with a central line, follow the unit's policy; doses by weight; review the need for antibiotics once the culture result is back."
       },
       "requires": [
         "iv-access",
@@ -2887,6 +2887,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": true,
       "contraindicatedWhen": {
         "always": true
       },
@@ -2928,6 +2929,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },
@@ -2969,6 +2971,7 @@
       },
       "requires": [],
       "risk": "high",
+      "critical": false,
       "contraindicatedWhen": {
         "always": true
       },
@@ -3501,8 +3504,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "先天性乳糜胸通常在出生前后就表现出来；置管第 5 天才出现的双侧积液伴腹水，应先按导管相关处理，而不是继续经这根导管输注。中链甘油三酯喂养和奥曲肽只用于确诊且持续的乳糜漏，Cochrane系统评价（2010）没有找到奥曲肽的随机对照试验，无法据此作出推荐。",
-            "en": "A congenital chylothorax usually shows itself before or around birth; effusions on both sides with ascites appearing on catheter day 5 are treated as line-related first, not by carrying on infusing through that line. MCT feeding and octreotide are for a confirmed, persistent chyle leak, and the Cochrane review (2010) found no randomised trials of octreotide on which to base a recommendation."
+            "zh-CN": "先天性乳糜胸通常在出生前后就表现出来；置管第 5 天才出现的双侧积液伴腹水，应先按导管相关处理，而不是继续经这根导管输注。中链甘油三酯喂养只用于确诊的乳糜漏，奥曲肽至多用于持续不止者，Cochrane系统评价（2010）没有找到奥曲肽的随机对照试验，无法据此作出推荐。",
+            "en": "A congenital chylothorax usually shows itself before or around birth; effusions on both sides with ascites appearing on catheter day 5 are treated as line-related first, not by carrying on infusing through that line. MCT feeding belongs to a confirmed chyle leak and octreotide at most to one that persists, and the Cochrane review (2010) found no randomised trials of octreotide on which to base a recommendation."
           }
         },
         {
@@ -3569,13 +3572,13 @@
         {
           "id": "source-unproven",
           "text": {
-            "zh-CN": "它提示液体里可能有脂肪、蛋白不高、培养阴性，但区分不了乳糜和漏出的静脉营养液；乳糜胸还缺细胞分类和甘油三酯（且要在有脂肪摄入时判断），液体葡萄糖也没有和血糖对照。",
-            "en": "It suggests fat in a low-protein, culture-negative fluid but cannot tell chyle from leaked parenteral nutrition; calling it chylothorax still needs the cell differential and triglyceride (read with fat intake), and its glucose was never compared with the blood."
+            "zh-CN": "它提示液体里可能有脂肪、蛋白不高、培养阴性，但区分不了乳糜和漏出的静脉营养液；乳糜胸还缺细胞分类和甘油三酯（且要在有脂肪摄入时判断），也没有液体葡萄糖可与血糖对照。",
+            "en": "It suggests fat in a low-protein, culture-negative fluid but cannot tell chyle from leaked parenteral nutrition; calling it chylothorax still needs the cell differential and triglyceride (read with fat intake), and no fluid glucose is recorded against the blood."
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。按Büttiker等（1999）的儿童标准，乳糜需要有经口脂肪摄入时甘油三酯 > 1.1 mmol/L，且细胞数 ≥ 1000/µL、淋巴细胞 > 80 %，这些都没有结果记录。乙醚试验只提示有脂肪，漏出的脂肪乳也会阳性；没有喂含脂肪的奶时乳糜可以清亮；液体葡萄糖远高于血糖、细胞又少，更支持输注液外渗。",
-            "en": "Right. The paediatric criteria of Büttiker and colleagues (1999) call fluid chyle at a triglyceride > 1.1 mmol/L with oral fat intake and ≥ 1000 cells/µL with > 80 % lymphocytes, and none of these is recorded here. An ether test shows only that fat is present, which leaked lipid emulsion also gives; chyle can look clear without fat feeds; and a fluid glucose far above the blood glucose with few cells would favour leaked infusate."
+            "zh-CN": "正确。按Büttiker等（1999）的儿童标准，乳糜需要有经口脂肪摄入时甘油三酯 > 1.1 mmol/L，且细胞数 > 1000/µL、淋巴细胞 > 80 %，这些都没有结果记录。乙醚试验只提示有脂肪，漏出的脂肪乳也会阳性；没有喂含脂肪的奶时乳糜可以清亮；液体葡萄糖远高于血糖、细胞又少，更支持输注液外渗。",
+            "en": "Right. The paediatric criteria of Büttiker and colleagues (1999) call fluid chyle at a triglyceride > 1.1 mmol/L with oral fat intake and > 1000 cells/µL with > 80 % lymphocytes, and none of these is recorded here. An ether test shows only that fat is present, which leaked lipid emulsion also gives; chyle can look clear without fat feeds; and a fluid glucose far above the blood glucose with few cells would favour leaked infusate."
           }
         },
         {
@@ -3593,13 +3596,13 @@
         {
           "id": "clear-not-chyle",
           "text": {
-            "zh-CN": "液体清亮、不是乳白色，可以排除乳糜；李凡他试验阴性说明是漏出液，原因是液体过多，限液加利尿即可，用不着再做甘油三酯和细胞学检查，也不必再穿刺。",
-            "en": "The fluid is clear, not milky, so chyle is excluded; a negative Rivalta test means a transudate from fluid overload, treated with fluid restriction and a diuretic, with no need for a triglyceride, cell count or further taps."
+            "zh-CN": "清亮、李凡他试验阴性的胸水虽不能完全排除乳糜，但可能性不大，更像液体过多所致：先限液、利尿，积液再长时再查甘油三酯和细胞计数。",
+            "en": "Clear, Rivalta-negative fluid makes chyle unlikely, though not impossible; it most likely reflects fluid overload, so restrict fluids and give a diuretic first, and send a triglyceride and cell count only if the effusions come back."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "清亮排除不了乳糜：没有喂含脂肪的奶时，乳糜可以是清亮的，Büttiker等（1999）的甘油三酯标准也以有经口脂肪摄入为前提。李凡他试验是粗略的定性试验，阴性只提示蛋白不高，不能说明原因是液体过多；漏出的静脉营养液蛋白同样很低。",
-            "en": "Clear fluid does not exclude chyle: without fat feeds chyle can be clear, and the triglyceride criterion of Büttiker and colleagues (1999) assumes oral fat intake. The Rivalta test is a crude qualitative test; a negative result suggests little protein, not fluid overload — leaked parenteral nutrition is low in protein as well."
+            "zh-CN": "清亮并不说明乳糜可能性小：没有喂含脂肪的奶时乳糜本来就清亮，Büttiker等（1999）的甘油三酯标准也以有经口脂肪摄入为前提。李凡他试验阴性只粗略提示蛋白不高，说明不了液体过多——漏出的静脉营养液蛋白同样很低；把甘油三酯、细胞计数和葡萄糖推迟到积液再长时才查，能回答问题的检查就一直没有做。",
+            "en": "Clear fluid does not make chyle unlikely: without fat feeds chyle is clear, and the triglyceride criterion of Büttiker and colleagues (1999) assumes oral fat intake. A negative Rivalta test is a crude sign of little protein, not of fluid overload — leaked parenteral nutrition is low in protein too — and putting off the triglyceride, cell count and glucose until the fluid returns leaves the deciding tests undone."
           }
         },
         {
@@ -3610,8 +3613,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "解剖上不成立：经右侧贵要静脉的导管走行于右锁骨下静脉、右头臂静脉到上腔静脉，而胸导管汇入左侧静脉角，这根导管不会经过胸导管的开口。双侧积液伴腹水更符合中心性的原因（输注液外渗，或中心静脉回流受阻影响淋巴回流）；而且是不是乳糜，本身还要先按儿童标准确定（Büttiker 1999）。",
-            "en": "Anatomically it does not hold: a line from the right basilic vein runs through the right subclavian and right brachiocephalic veins to the superior vena cava, while the thoracic duct drains into the left venous angle, so this catheter never passes the duct's opening. Bilateral effusions with ascites fit a central cause better (leaked infusate, or obstructed central venous return holding back lymph), and whether this is chyle at all must first be settled by the paediatric criteria (Büttiker 1999)."
+            "zh-CN": "解剖上不成立：经右侧贵要静脉的导管走行于右锁骨下静脉、右头臂静脉到上腔静脉，而胸导管汇入左侧静脉角，按正常走行这根导管不会经过胸导管的开口。双侧积液伴腹水更符合中心性的原因（输注液外渗，或中心静脉回流受阻影响淋巴回流）；而且是不是乳糜，本身还要先按儿童标准确定（Büttiker 1999）。",
+            "en": "Anatomically it does not hold: a line from the right basilic vein runs through the right subclavian and right brachiocephalic veins to the superior vena cava, while the thoracic duct drains into the left venous angle, so on its usual course this catheter does not pass the duct's opening. Bilateral effusions with ascites fit a central cause better (leaked infusate, or obstructed central venous return holding back lymph), and whether this is chyle at all must first be settled by the paediatric criteria (Büttiker 1999)."
           }
         }
       ]
@@ -3644,25 +3647,25 @@
         {
           "id": "staged-recovery",
           "text": {
-            "zh-CN": "用床旁超声复查积液是否再长；营养暂经外周静脉给予，确需再置中心静脉时用影像确认尖端在中心静脉、心脏之外并记录肢体位置；乳糜饮食和奥曲肽留给确诊且持续的乳糜漏；上报不良事件，如实告诉家属，安排生长发育随访。",
-            "en": "Rescan for reaccumulation; give nutrition peripherally for now and, if a central line is truly needed again, confirm on imaging a central tip outside the heart with the limb position recorded; keep chyle diets and octreotide for a confirmed, persistent leak; report the event, tell the family honestly and arrange growth and development follow-up."
+            "zh-CN": "超声复查积液是否再长；营养暂经外周静脉给予，需再置中心静脉时用影像确认尖端在中心静脉、心脏之外并记录肢体位置；乳糜饮食只用于确诊乳糜漏，奥曲肽只在持续时考虑；上报不良事件，如实告知家属，安排生长发育随访。",
+            "en": "Rescan for reaccumulation; peripheral nutrition for now; if a central line is needed again, confirm on imaging a central tip outside the heart, limb position recorded; chyle diets only for a confirmed leak, octreotide only if it persists; report the event, tell the family honestly, arrange growth and development follow-up."
           },
           "correct": true,
           "feedback": {
-            "zh-CN": "正确。中心静脉导管必须拔除时，短期经外周静脉给予营养是NICE NG154（2020）认可的做法；再置中心静脉时，尖端应位于心影之外（BAPM 2018），用影像确认并记录肢体位置。乳糜饮食只在乳糜确诊且持续时才有依据（Büttiker 1999以无脂喂养为第一步），奥曲肽缺乏随机对照试验（Cochrane 2010）；如实说明并发症及其不确定性，是家属信任的基础。",
-            "en": "Right. Short-term peripheral nutrition when a central line has to come out is what NICE NG154 (2020) allows; a new central line needs a tip outside the cardiac silhouette (BAPM 2018), confirmed on imaging with the limb position recorded. Chyle diets have a basis only for a confirmed, persistent leak (fat-free feeding came first in Büttiker 1999) and octreotide lacks randomised trials (Cochrane 2010); an honest account of the complication and its uncertainty is what keeps the family's trust."
+            "zh-CN": "正确。中心静脉导管必须拔除时，短期经外周静脉给予营养是NICE NG154（2020）认可的做法；再置中心静脉时，尖端应位于心影之外（BAPM 2018），用影像确认并记录肢体位置。乳糜饮食只在乳糜确诊后才有依据（Büttiker 1999以无脂喂养为第一步），奥曲肽缺乏随机对照试验（Cochrane 2010）；如实说明并发症及其不确定性，是家属信任的基础。",
+            "en": "Right. Short-term peripheral nutrition when a central line has to come out is what NICE NG154 (2020) allows; a new central line needs a tip outside the cardiac silhouette (BAPM 2018), confirmed on imaging with the limb position recorded. Chyle diets have a basis only once a leak is confirmed (fat-free feeding came first in Büttiker 1999) and octreotide lacks randomised trials (Cochrane 2010); an honest account of the complication and its uncertainty is what keeps the family's trust."
           }
         },
         {
           "id": "resite-same-vein",
           "text": {
-            "zh-CN": "积液已经抽出，趁血管条件还好，今天就从同一侧贵要静脉重新置入PICC，送到与上次相同的长度并恢复全量静脉营养；尖端位置以上次的定位片为准，这样可以少拍一张片子。",
-            "en": "Now that the fluid is out and her veins are still good, re-site a PICC through the same basilic vein today to the same length as before and restart full parenteral nutrition, taking the old position film as proof of the tip so as to spare her another X-ray."
+            "zh-CN": "积液已经抽出，趁血管条件还好，今天就从同一侧贵要静脉重新置入PICC，送到与上次相同的长度并恢复全量静脉营养；尖端位置以上次的定位片为准，免得再拍一张片子；一周后复查胸部超声，并跟家属说只是把管子换了一根。",
+            "en": "Now that the fluid is out and her veins are still good, re-site a PICC through the same basilic vein today to the same length as before and restart full parenteral nutrition, taking the old position film as proof of the tip to spare her another X-ray; rescan her chest in a week and tell the family the line has simply been changed."
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "旧片证明不了新导管的位置：每次置管都要用影像确认尖端在中心静脉、位于心影之外（BAPM 2018），并记录肢体位置，因为尖端会随肢体活动而移动。积液的原因（包括静脉血栓）还没有查清，不宜马上按同一路径、同一长度再置管；短期可经外周静脉给营养（NICE NG154，2020）。",
-            "en": "An old film proves nothing about a new line: every placement needs imaging that confirms a central tip outside the cardiac silhouette (BAPM 2018) with the limb position recorded, because tips move with the limb. With the cause of the effusions — thrombosis included — not yet established, re-siting by the same route to the same length at once is unwise; short-term peripheral nutrition is an option (NICE NG154, 2020)."
+            "zh-CN": "旧片证明不了新导管的位置：每次置管都要用影像确认尖端在中心静脉、位于心影之外（BAPM 2018），并记录肢体位置，因为尖端会随肢体活动而移动。积液的原因（包括静脉血栓）还没有查清，不宜马上按同一路径、同一长度再置管；短期可经外周静脉给营养（NICE NG154，2020）。只告诉家属换了一根管子，也没有说明发生了什么。",
+            "en": "An old film proves nothing about a new line: every placement needs imaging that confirms a central tip outside the cardiac silhouette (BAPM 2018) with the limb position recorded, because tips move with the limb. With the cause of the effusions — thrombosis included — not yet established, re-siting by the same route to the same length at once is unwise; short-term peripheral nutrition is an option (NICE NG154, 2020). Telling the family only that the line was changed leaves out what happened."
           }
         },
         {
@@ -3673,8 +3676,8 @@
           },
           "correct": false,
           "feedback": {
-            "zh-CN": "乳糜胸并未确诊（见决策 3），按标签而不是证据用药只会增加风险：奥曲肽在新生儿不是有确立证据的治疗，Cochrane系统评价（2010）没有找到随机对照试验；中链甘油三酯配方只适用于确诊且持续的乳糜漏。用超声随访积液，按结果决定下一步。",
-            "en": "Chylothorax is not established (decision 3), and treating the label rather than the evidence only adds risk: octreotide is not an established treatment in newborns and the Cochrane review (2010) found no randomised trials, while an MCT formula is for a confirmed, persistent chyle leak. Follow the effusions with ultrasound and decide on the results."
+            "zh-CN": "乳糜胸并未确诊（见决策 3），按标签而不是证据用药只会增加风险：奥曲肽在新生儿不是有确立证据的治疗，Cochrane系统评价（2010）没有找到随机对照试验；中链甘油三酯配方只适用于确诊的乳糜漏。用超声随访积液，按结果决定下一步。",
+            "en": "Chylothorax is not established (decision 3), and treating the label rather than the evidence only adds risk: octreotide is not an established treatment in newborns and the Cochrane review (2010) found no randomised trials, while an MCT formula is for a confirmed chyle leak. Follow the effusions with ultrasound and decide on the results."
           }
         },
         {
@@ -3858,7 +3861,8 @@
             "intervened": "iv-access"
           },
           {
-            "intervened": "antibiotics"
+            "intervened": "antibiotics",
+            "whenIndicated": true
           }
         ]
       }
@@ -3880,13 +3884,20 @@
       "domain": "management",
       "weight": 3,
       "text": {
-        "zh-CN": "完成超声引导下胸腔穿刺并拔除PICC",
-        "en": "Tapped the chest under ultrasound guidance and removed the PICC"
+        "zh-CN": "读过影像后才在超声引导下胸腔穿刺（影像回报前没有盲穿），并拔除PICC",
+        "en": "Tapped the chest under ultrasound guidance only once the imaging had been read (no blind tap before it), and removed the PICC"
       },
       "met": {
         "all": [
           {
-            "intervened": "thoracentesis"
+            "intervened": "thoracentesis",
+            "whenIndicated": true
+          },
+          {
+            "not": {
+              "intervened": "thoracentesis",
+              "valid": false
+            }
           },
           {
             "intervened": "remove-picc"
@@ -4034,7 +4045,7 @@
     },
     "conclusion": {
       "zh-CN": "孕 33+3 周因母亲重度子痫前期剖宫产的女婴，出生体重 1.1 kg，生后即气促，用过呼吸支持、肺表面活性物质和静脉营养；生后第 2 天经右侧贵要静脉置入PICC，尖端位于第 3 胸椎下缘。置管第 5 天（7日龄）出现发绀、三凹征明显、反应极差，呼吸支持升级。影像示双侧胸腔积液伴肺不张，右侧较多，并有少量腹水；之后的胸片描述尖端位置同前。胸水淡黄透明，乙醚试验阳性，李凡他试验阴性，培养阴性。经胸腔穿刺（每次 20–30 mL）并拔除PICC后，积液和腹水消退，转回CPAP；住院 54 天、体重 2.4 kg 出院，2 个月和 4 个月随访生长发育报告正常。报告诊断为PICC所致双侧乳糜胸并腹水，但已记录的检查分不清乳糜和外渗的输注液。现行做法：导管优先，停用导管并做超声心动图，超声引导下引流并完整送检，拔除导管、改用外周通路。",
-      "en": "A girl born by caesarean at 33+3 weeks for severe maternal pre-eclampsia (1.1 kg), breathless from birth, had respiratory support, surfactant and parenteral nutrition; a right basilic PICC went in on day 2, tip at the lower border of T3. On catheter day 5 (day 7 of life) she was cyanosed, with marked recession and very poor responsiveness, and support was escalated. Imaging showed bilateral pleural effusions with atelectasis, more on the right, and a little ascites; later films: tip unchanged. The fluid: pale yellow, clear, ether-positive, Rivalta-negative, culture-negative. After 20–30 mL taps and PICC removal the fluid resolved and she returned to CPAP; she went home after 54 days at 2.4 kg; growth and development were reported normal at 2 and 4 months. The report called it PICC-related bilateral chylothorax with ascites; the recorded tests cannot tell chyle from leaked infusate. Today: line first, echocardiography, ultrasound-guided drainage with full fluid tests, line removal."
+      "en": "A girl born by caesarean at 33+3 weeks for severe maternal pre-eclampsia (1.1 kg), breathless from birth, had respiratory support, surfactant and parenteral nutrition; a right basilic PICC went in on day 2, tip at the lower border of T3. On catheter day 5 (7 days old) she was cyanosed, with marked recession and very poor responsiveness, and support was escalated. Imaging showed bilateral pleural effusions with atelectasis, more on the right, and a little ascites; later films: tip unchanged. The fluid: pale yellow, clear, ether-positive, Rivalta-negative, culture-negative. After 20–30 mL taps and PICC removal the fluid resolved and she returned to CPAP; she went home after 54 days at 2.4 kg; growth and development were reported normal at 2 and 4 months. The report attributed bilateral chylothorax with ascites to the PICC; the recorded tests cannot tell chyle from leaked infusate. Today: line first, echocardiography, ultrasound-guided drainage with full fluid tests, line removal."
     },
     "keyReasoning": [
       {
@@ -4046,16 +4057,16 @@
         "en": "Cyanosis, marked recession and very poor responsiveness make this an emergency: supporting her breathing, stopping the line and looking at the heart and chest come before any cause is proven, and are needed whichever cause it turns out to be."
       },
       {
-        "zh-CN": "置管后出现双侧胸腔积液伴腹水，提示中心性的原因——输注液外渗，或静脉、淋巴回流受阻——而不是局部撕裂；经右侧贵要静脉的导管到不了位于左侧的胸导管开口。",
-        "en": "Effusions on both sides with ascites after a line went in point to a central cause — leaked infusate, or obstructed venous or lymphatic drainage — rather than a focal tear; a right basilic line never reaches the thoracic duct's left-sided opening."
+        "zh-CN": "置管后出现双侧胸腔积液伴腹水，提示中心性的原因——输注液外渗，或静脉、淋巴回流受阻——而不是局部撕裂；经右侧贵要静脉的导管按正常走行到不了位于左侧的胸导管开口。",
+        "en": "Effusions on both sides with ascites after a line went in point to a central cause — leaked infusate, or obstructed venous or lymphatic drainage — rather than a focal tear; on its usual course a right basilic line does not reach the thoracic duct's left-sided opening."
       },
       {
         "zh-CN": "清亮、乙醚试验阳性、李凡他试验阴性、培养阴性的胸水，只说明可能含脂肪、蛋白不高；在测出甘油三酯、细胞分类和葡萄糖之前，乳糜和漏出的营养液都说得通。",
         "en": "A clear, ether-positive, Rivalta-negative, culture-negative fluid says that fat is probably present and protein low, and nothing more: chyle and leaked nutrition both fit until the triglyceride, the cell differential and the glucose are known."
       },
       {
-        "zh-CN": "穿刺和拔管后她好转了，这只说明处理对她有效，说明不了液体是怎么来的：两步都做了，作用分不开，单凭积液消退也证实不了乳糜。",
-        "en": "Her recovery after the taps and the line's removal shows that this treatment worked for her, not how the fluid arose: both steps were taken, so their effects cannot be separated, and resolution alone cannot confirm chyle."
+        "zh-CN": "穿刺和拔管后她好转了，这只说明她在这些处理之后恢复了，说明不了液体是怎么来的：两步都做了，作用分不开，单凭积液消退也证实不了乳糜。",
+        "en": "Her recovery after the taps and the line's removal shows only that she got better after these steps, not how the fluid arose: both were taken, so their effects cannot be separated, and resolution alone cannot confirm chyle."
       }
     ],
     "boundaries": {
@@ -4080,8 +4091,8 @@
         "en": "Echocardiography (pericardial fluid, the ductus, cardiac function) and Doppler ultrasound of the arm and central veins."
       },
       {
-        "zh-CN": "胸水的细胞计数和分类、甘油三酯、胆固醇、蛋白、乳酸脱氢酶和葡萄糖及同步血液值；穿刺的侧别、次数和总量；腹水是否穿刺。",
-        "en": "The pleural fluid's cell count and differential, triglyceride, cholesterol, protein, LDH and glucose with paired blood values; the sides, number and total volume of the taps; whether the ascites was sampled."
+        "zh-CN": "胸水的细胞计数和分类、甘油三酯、胆固醇、乳糜微粒、蛋白、乳酸脱氢酶和葡萄糖及同步血液值；穿刺的侧别、次数和总量；腹水是否穿刺。",
+        "en": "The pleural fluid's cell count and differential, triglyceride, cholesterol, chylomicrons, protein, LDH and glucose with paired blood values; the sides, number and total volume of the taps; whether the ascites was sampled."
       },
       {
         "zh-CN": "血培养、血常规、CRP、血清白蛋白、血糖和甘油三酯；是否用过抗生素。",
@@ -4106,8 +4117,8 @@
         "en": "Line-related effusion: when a central line is suspect, stop infusing through it and use other access (INS Infusion Therapy Standards of Practice, 9th edition, 2024); tap an effusion that compromises breathing under ultrasound and record the volume in mL/kg — the report's taps of 20–30 mL were about 18–27 mL/kg of her 1.1 kg birth weight (her day-7 weight is not recorded); remove the line. When a central line has to come out, short-term peripheral parenteral nutrition is acceptable (NICE NG154, 2020)."
       },
       {
-        "zh-CN": "乳糜还是输注液：儿童胸水在有经口脂肪摄入时甘油三酯 > 1.1 mmol/L、细胞数 ≥ 1000/µL且淋巴细胞 > 80 % 才诊断为乳糜（Büttiker等，1999）。乙醚试验只提示有脂肪——漏出的脂肪乳也会阳性；没有喂含脂肪的奶时，乳糜可以清亮；液体葡萄糖远高于血糖且细胞很少，提示输注液外渗。本病例记录的检查中，只有乙醚试验提示有脂肪；按现行做法，要等甘油三酯、细胞分类和葡萄糖结果再下乳糜胸的诊断。",
-        "en": "Chyle or infusate: in children, fluid is chyle at a triglyceride > 1.1 mmol/L with oral fat intake and ≥ 1000 cells/µL with > 80 % lymphocytes (Büttiker and colleagues, 1999). An ether test shows only fat — leaked lipid emulsion gives it too — and chyle can look clear without fat feeds; a fluid glucose far above the blood glucose with few cells points to leaked infusate. Of the tests this case records, only the ether test points to fat; today the chylothorax label waits for the triglyceride, the cell differential and the glucose."
+        "zh-CN": "乳糜还是输注液：儿童胸水在有经口脂肪摄入时甘油三酯 > 1.1 mmol/L、细胞数 > 1000/µL且淋巴细胞 > 80 % 才诊断为乳糜（Büttiker等，1999）。乙醚试验只提示有脂肪——漏出的脂肪乳也会阳性；没有喂含脂肪的奶时，乳糜可以清亮；液体葡萄糖远高于血糖且细胞很少，提示输注液外渗。本病例记录的检查中，只有乙醚试验提示有脂肪；按现行做法，要等甘油三酯、细胞分类和葡萄糖结果再下乳糜胸的诊断。",
+        "en": "Chyle or infusate: in children, fluid is chyle at a triglyceride > 1.1 mmol/L with oral fat intake and > 1000 cells/µL with > 80 % lymphocytes (Büttiker and colleagues, 1999). An ether test shows only fat — leaked lipid emulsion gives it too — and chyle can look clear without fat feeds; a fluid glucose far above the blood glucose with few cells points to leaked infusate. Of the tests this case records, only the ether test points to fat; today the chylothorax label waits for the triglyceride, the cell differential and the glucose."
       },
       {
         "zh-CN": "乳糜胸的治疗：先引流，再无脂喂养，乳糜仍持续时禁食并给予肠外营养，保守治疗无效才考虑胸膜固定或手术（Büttiker 1999）；Cochrane系统评价（2010）没有找到奥曲肽治疗新生儿乳糜胸的随机对照试验，无法作出实践推荐。这些都代替不了先把诊断弄清；本病例没有记录她的喂养是否做过调整。",
@@ -4148,8 +4159,8 @@
       "en": "Echocardiography (pericardial fluid, the ductus, cardiac function) and Doppler ultrasound of the arm and central veins."
     },
     {
-      "zh-CN": "胸水的细胞计数和分类、甘油三酯、胆固醇、蛋白、乳酸脱氢酶和葡萄糖及同步血液值；穿刺的侧别、次数和总量；腹水是否穿刺。",
-      "en": "The pleural fluid's cell count and differential, triglyceride, cholesterol, protein, LDH and glucose with paired blood values; the sides, number and total volume of the taps; whether the ascites was sampled."
+      "zh-CN": "胸水的细胞计数和分类、甘油三酯、胆固醇、乳糜微粒、蛋白、乳酸脱氢酶和葡萄糖及同步血液值；穿刺的侧别、次数和总量；腹水是否穿刺。",
+      "en": "The pleural fluid's cell count and differential, triglyceride, cholesterol, chylomicrons, protein, LDH and glucose with paired blood values; the sides, number and total volume of the taps; whether the ascites was sampled."
     },
     {
       "zh-CN": "血培养、血常规、CRP、血清白蛋白、血糖和甘油三酯；是否用过抗生素。",

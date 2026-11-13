@@ -12,7 +12,7 @@
  * results) nor the debrief — and is told the encounter is still in progress.
  * After `finish` it also gets the guidance and the full authored debrief.
  */
-import { t, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
+import { formatDose, t, type AssessmentReport, type CaseDefinition, type SessionState } from "@clinicalcraft/core";
 import { examinerOffline } from "../agents/offline.js";
 import { buildSystemSections } from "../agents/prompts.js";
 import type { AgentProfile } from "../agents/types.js";
@@ -155,6 +155,24 @@ function encounterStatus(finished: boolean): string {
     : "<encounter_status>in progress</encounter_status>\nThe case is not finished yet: the learner asked for feedback mid-case. Judge only what the transcript shows so far. Your narrative is formative feedback on the encounter so far; do not name or hint at a diagnosis, the correct answer to any decision or the steps that remain.";
 }
 
+/**
+ * The safety outcome as the examiner is told it (docs/PROTOCOL.md §3.2): passed or not, and why — the learner's own
+ * critical safety failures and dose errors, never an answer key. A narrative never calls an encounter whose safety
+ * outcome did not pass passed or safe.
+ */
+export function examinerSafetyNote(report: AssessmentReport): string {
+  const s = report.safety;
+  if (typeof s.passed !== "boolean") return "";
+  // ids and doses only: the order's words are the learner's text, and they stay inside the transcript block
+  const failures = (s.criticalFailures ?? []).map((f) => `${f.interventionId} given while contraindicated at minute ${Math.round(f.at)}`);
+  const doses = (s.doseErrors ?? []).map((e) => `${e.severity} dose error on ${e.interventionId} (ordered ${formatDose(e.ordered)}, preset ${formatDose(e.preset)}; not given)`);
+  const gate = s.verdict === "safety-critical" ? ["a safety-critical event in the operation"] : [];
+  const why = [...failures, ...doses, ...gate];
+  return s.passed
+    ? `Safety outcome: passed${why.length ? ` (to review: ${why.join("; ")})` : ""}.`
+    : `Safety outcome: NOT passed — ${why.join("; ") || "see the report"}. Whatever the score, never describe this encounter as passed or safe; name the safety failure in your narrative.`;
+}
+
 /** Judge transcript-based rubric items (LLM) or fall back to the deterministic narrative (offline). Never throws. */
 export async function runExaminer(p: ExaminerParams): Promise<ExaminerVerdict> {
   const c = p.caseDef;
@@ -169,7 +187,7 @@ export async function runExaminer(p: ExaminerParams): Promise<ExaminerVerdict> {
   // Mid-case: the item texts only (judgeGuidance often spells out the diagnosis or results).
   const items = pending.map((r) => `- id: ${r.id} | domain: ${r.domain} | item: ${t(r.text, L)}${finished && r.judgeGuidance ? ` | what good looks like: ${t(r.judgeGuidance, L)}` : ""}`);
   const debrief = finished ? `${debriefBlock(c, L)}\n\n` : "";
-  const summary = `Deterministic results (already scored, for context only): ${p.report.score.percent}% of deterministic points; objectives ${p.report.objectives.filter((o) => o.done).length}/${p.report.objectives.length}.`;
+  const summary = `Deterministic results (already scored, for context only): ${p.report.score.percent}% of deterministic points; objectives ${p.report.objectives.filter((o) => o.done).length}/${p.report.objectives.length}. ${examinerSafetyNote(p.report)}`.trimEnd();
   const request: ChatRequest = {
     model: p.model ?? p.provider.model,
     system: buildSystemSections(p.profile, { caseDef: c, state: p.state, locale: L, memory: p.memory ?? null }),

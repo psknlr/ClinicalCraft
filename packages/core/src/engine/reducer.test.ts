@@ -2,7 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { CaseDefinition } from "../schema/case.js";
 import type { ClinicalAction, DomainEvent, SessionState } from "../schema/session.js";
-import { assess, availableDecisions, createSession, currentWaypoint, evaluate, orderStatus, parseCase, parseDose, progress, reduce, replay, resultFor, resultKey } from "./index.js";
+import { assess, availableDecisions, conditionRefs, createSession, currentWaypoint, evaluate, orderStatus, parseCase, parseDose, progress, reduce, replay, resultFor, resultKey } from "./index.js";
 
 const fixture = (name: string): unknown => JSON.parse(readFileSync(new URL(`./__fixtures__/${name}`, import.meta.url), "utf8"));
 
@@ -617,8 +617,35 @@ describe("intervene with the order as written: its dose against the preset", () 
     expect(ofType(r.events, "dose.error")).toMatchObject([{ ratio: 1, conflicts: ["route"], severity: "warning" }]);
     expect(r.state.interventions).toEqual([]);
     expect(assess(withPreset, r.state).safety).toMatchObject({ passed: true, doseErrors: [{ conflicts: ["route"], severity: "warning" }] });
-    // a volume cannot be checked against a mass: not given either
-    expect(ofType(reduce(withPreset, started, order("adrenaline 0.5 mL IM")).events, "dose.error")).toMatchObject([{ ratio: null, conflicts: ["unit"] }]);
+  });
+
+  it("asks about a dose it cannot read or compare: refused (`dose-unclear`), nothing given, no dose error", () => {
+    // a volume without its strength, a broken number, a range, a number with no unit
+    for (const text of ["adrenaline 0.5 mL IM", "肌注肾上腺素0。5mg", "IM adrenaline 0.5–1 mg", "IM adrenaline 0.5"]) {
+      const r = reduce(withPreset, started, order(text));
+      expect(r.rejected?.code, text).toBe("dose-unclear");
+      expect(r.rejected?.message, text).toMatch(/^the dose of the order ".+" for "epi" is not clear: .+; nothing was given/);
+      expect(r.state.interventions, text).toEqual([]);
+      expect(r.state.doseErrors, text).toBeUndefined();
+      expect(r.events.map((e) => e.type), text).toEqual(["action.rejected"]);
+    }
+    expect(reduce(withPreset, started, order("adrenaline 0.5 mL IM")).rejected?.message).toContain("0.5 mL IM cannot be compared with 0.5 mg IM without the strength");
+    // with its strength the volume is the dose it holds: given
+    expect(play(withPreset, [order("IM adrenaline 0.5 mL of 1 mg/mL")], started).state.interventions).toMatchObject([{ interventionId: "epi", ordered: { dose: { amount: 0.5, unit: "mg", route: "IM" } } }]);
+  });
+
+  it("reads the order's words itself: a client's missing or wrong dose never hides the dose written", () => {
+    // no dose sent: the words state 5 mg
+    const bare = reduce(withPreset, started, { type: "intervene", interventionId: "epi", ordered: { text: "IM adrenaline 5 mg" } });
+    expect(bare.state.interventions).toEqual([]);
+    expect(bare.state.doseErrors).toMatchObject([{ text: "IM adrenaline 5 mg", ordered: { amount: 5, unit: "mg", route: "IM" }, ratio: 10, severity: "critical" }]);
+    // a dose the words do not state: the words win
+    const lying = reduce(withPreset, started, { type: "intervene", interventionId: "epi", ordered: { text: "IM adrenaline 5 mg", dose: { amount: 0.5, unit: "mg", route: "IM" } } });
+    expect(lying.state.interventions).toEqual([]);
+    expect(lying.state.doseErrors).toMatchObject([{ ordered: { amount: 5, unit: "mg" }, ratio: 10 }]);
+    // the record keeps the engine's reading of the words (Chinese numerals included)
+    const zh = play(withPreset, [{ type: "intervene", interventionId: "epi", ordered: { text: "肌注肾上腺素零点五毫克" } }], started).state;
+    expect(zh.interventions).toMatchObject([{ ordered: { text: "肌注肾上腺素零点五毫克", dose: { amount: 0.5, unit: "mg", route: "IM" } } }]);
   });
 
   it("an order without a dose, or an intervention without a preset, gives the preset as before", () => {
@@ -690,5 +717,37 @@ describe("elapsedSince: minutes since an intervention was last given", () => {
     const improved = play(c, [...first, { type: "flag", flag: "still-compromised", value: false }, { type: "advance-time", minutes: 3.5 }, { type: "intervene", interventionId: "epi" }]).state;
     expect(improved.interventions.map((r) => [r.at, r.appropriateness])).toEqual([[0, "indicated"], [5, "neutral"]]);
     expect(evaluate(c, improved, repeatInTime)).toBe(false);
+  });
+});
+
+describe("examined afterLast: a reassessment since the last dose", () => {
+  const since = { examined: "airway", afterLast: "epi" } as const;
+
+  it("holds only for an examination after the intervention was last given; a dose since undoes it", () => {
+    let s = play(SIM, [{ type: "start" }]).state;
+    s = play(SIM, [{ type: "examine", findingId: "airway" }], s).state;
+    // examined, but the intervention was never given: false
+    expect(evaluate(SIM, s, { examined: "airway" })).toBe(true);
+    expect(evaluate(SIM, s, since)).toBe(false);
+    // given after the examination: still false (the examination came before it)
+    s = play(SIM, [{ type: "intervene", interventionId: "epi" }], s).state;
+    expect(evaluate(SIM, s, since)).toBe(false);
+    // examined again: true (compared by action sequence, so even within the same minute)
+    const before = s.clock;
+    s = play(SIM, [{ type: "examine", findingId: "airway" }], s).state;
+    expect(s.lastExamined?.airway).toEqual({ at: before, seq: s.seq });
+    expect(evaluate(SIM, s, since)).toBe(true);
+    // a further dose undoes it until the next examination
+    s = play(SIM, [{ type: "intervene", interventionId: "epi" }], s).state;
+    expect(evaluate(SIM, s, since)).toBe(false);
+    s = play(SIM, [{ type: "examine", findingId: "airway" }], s).state;
+    expect(evaluate(SIM, s, since)).toBe(true);
+  });
+
+  it("names the intervention among the condition's references (for the integrity checks)", () => {
+    expect(conditionRefs(since).map((r) => [r.kind, r.id])).toEqual([
+      ["exam", "airway"],
+      ["intervention", "epi"],
+    ]);
   });
 });

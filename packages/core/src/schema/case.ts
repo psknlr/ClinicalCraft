@@ -961,9 +961,11 @@ export const CaseSchema = z
     solution: z.array(ClinicalActionSchema).default([]),
     /**
      * Error recognition and recovery that the reference path teaches (docs/CASE_AUTHORING.md §7): the interventions
-     * its `solution` deliberately gives while contraindicated, and why. `cases verify` accepts these and only these;
-     * any other contraindicated step, a critical safety failure or a dose error of another intervention, or a
-     * timeout fails the reference path.
+     * its `solution` deliberately gives while contraindicated, and why. `cases verify` accepts these and only these
+     * (and a safety-critical gate their own error sets off: its `when` names one of them or a flag one sets); any other
+     * contraindicated step or critical safety failure, any other safety-critical gate, a timeout, and any dose error
+     * fail the reference path — a dose error cannot be declared (an order whose dose conflicts is not given, so there
+     * is nothing to recover from; the nurse's read-back is taught in play).
      */
     errorRecovery: z
       .object({

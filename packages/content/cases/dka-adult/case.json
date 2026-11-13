@@ -5919,9 +5919,10 @@
         ]
       },
       "dose": {
-        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol（约3.0 g；预混袋，40 mmol/L），经第二条外周大静脉以500 mL/h泵入（= 氯化钾20 mmol/h，约1.5 g/h）；需持续心电监护（请连接监护）；每小时复查钾",
+        "zh-CN": "0.9%氯化钠1000 mL + 氯化钾40 mmol（预混袋，40 mmol/L），经第二条外周大静脉以500 mL/h泵入（= 氯化钾20 mmol/h，约1.5 g/h；整袋含氯化钾约3.0 g）；需持续心电监护（请连接监护）；每小时复查钾",
         "en": "0.9% NaCl 1000 mL with KCl 40 mmol (pre-mixed bag, 40 mmol/L) via the second large peripheral line at 500 mL/h (= KCl 20 mmol/h) on a volumetric pump; needs continuous ECG monitoring (attach the monitor); recheck K⁺ hourly"
       },
+      "doseSpec": { "amount": 20, "unit": "mmol/h", "route": "IV" },
       "requires": [
         "infusion-pump",
         "iv-access"
@@ -6117,6 +6118,7 @@
         "zh-CN": "普通（可溶性）人胰岛素50 U加0.9%氯化钠至50 mL（1 U/mL），按0.1 U/kg/h固定速率静脉泵入，不需负荷量",
         "en": "Soluble (regular) human insulin 50 U made up to 50 mL with 0.9% NaCl (1 U/mL); fixed rate 0.1 U/kg/h IV, no bolus"
       },
+      "doseSpec": { "amount": 0.1, "unit": "unit/kg/h", "route": "IV" },
       "requires": [
         "infusion-pump",
         "iv-access"
@@ -6238,6 +6240,7 @@
         "zh-CN": "普通胰岛素0.1 U/kg静脉推注",
         "en": "Soluble insulin 0.1 U/kg IV bolus"
       },
+      "doseSpec": { "amount": 0.1, "unit": "unit/kg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"
@@ -6482,6 +6485,7 @@
         "zh-CN": "磷酸钾（含磷20 mmol）加入补液中6小时以上输注",
         "en": "Potassium phosphate (20 mmol phosphate) added to fluids over at least 6 hours"
       },
+      "doseSpec": { "amount": 20, "unit": "mmol", "route": "IV" },
       "requires": [
         "infusion-pump",
         "iv-access"
@@ -6519,7 +6523,6 @@
         "zh-CN": "昂丹司琼4 mg缓慢静注",
         "en": "Ondansetron 4 mg slow IV"
       },
-      "doseSpec": { "amount": 4, "unit": "mg", "route": "IV" },
       "requires": [
         "medications",
         "iv-access"

@@ -59,8 +59,10 @@ export function listResourceTemplates() {
 
 /**
  * The engine-state fields the learner can see: their own record (what was
- * asked, examined, ordered, read, decided and given, and when), the phase and
- * clock, completed objectives, hints, notes and when the monitor went on.
+ * asked, examined, ordered, read, decided and given, and when — and the
+ * orders not given because their dose differed from the dose prepared), the
+ * phase and clock, completed objectives, hints, notes and when the monitor
+ * went on.
  * Left out: `baselineOverrides` (scenario vitals and rhythm — `vitals`, i.e.
  * `vitalsAt`, shows them once something measures them), `firedEvents` and
  * `trendStops` (authored ids that name findings, e.g. "ev-dopamine-af") and
@@ -81,6 +83,8 @@ export const LEARNER_STATE_KEYS = [
   "decisions",
   "attempts",
   "interventions",
+  // orders not given because their dose differed from the dose prepared: the learner's own, as the nurse read them back
+  "doseErrors",
   "hints",
   "notes",
   "objectivesDone",
